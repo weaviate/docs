@@ -25,8 +25,8 @@ exports.handler = async (event) => {
       statusCode: 403,
       body: JSON.stringify({ error: 'Origin not allowed' }),
       headers: {
-        'Access-Control-Allow-Origin': allowedOriginPattern.startsWith('*')
-          ? null
+        'Access-Control-Allow-Origin': allowedOriginPattern === '*'
+          ? '*'
           : allowedOriginPattern,
       },
     };
@@ -112,8 +112,22 @@ exports.handler = async (event) => {
     });
 
     if (!response.ok) {
-      const errorBody = await response.json();
-      console.error('Failed to send data to Weaviate:', errorBody);
+      let errorBody;
+      try {
+        errorBody = await response.json();
+      } catch (jsonError) {
+        // If response is not JSON, get it as text
+        try {
+          errorBody = await response.text();
+        } catch (textError) {
+          errorBody = 'Unable to parse error response';
+        }
+      }
+      console.error('Failed to send data to Weaviate:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorBody,
+      });
       return {
         statusCode: response.status,
         body: JSON.stringify({ error: 'Failed to store feedback.' }),
