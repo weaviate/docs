@@ -135,7 +135,11 @@ exports.handler = async (event) => {
           debug: {
             weaviateStatus: response.status,
             weaviateStatusText: response.statusText,
+            weaviateUrl: WEAVIATE_DOCFEEDBACK_URL,
+            // TODO: Remove errorBody from production after debugging
+            weaviateError: errorBody,
             timestamp: new Date().toISOString(),
+            context: process.env.CONTEXT,
           },
         }),
         headers,
@@ -157,8 +161,9 @@ exports.handler = async (event) => {
           errorType: error.name,
           errorMessage: error.message,
           timestamp: new Date().toISOString(),
-          // Only include stack trace in non-production environments
-          ...(process.env.CONTEXT !== 'production' && { stack: error.stack }),
+          // TODO: Remove stack trace from production after debugging
+          stack: error.stack,
+          context: process.env.CONTEXT,
         },
       }),
       headers,
