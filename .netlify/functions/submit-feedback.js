@@ -77,10 +77,23 @@ exports.handler = async (event) => {
     }
 
     if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
-      console.error('Missing Weaviate environment variables.');
+      console.error('Missing Weaviate environment variables.', {
+        hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
+        hasKey: !!WEAVIATE_DOCFEEDBACK_API_KEY,
+        context: process.env.CONTEXT,
+        allEnvKeys: Object.keys(process.env).filter(k => k.includes('WEAVIATE')),
+      });
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'Server configuration error.' }),
+        body: JSON.stringify({
+          error: 'Server configuration error.',
+          debug: {
+            hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
+            hasKey: !!WEAVIATE_DOCFEEDBACK_API_KEY,
+            context: process.env.CONTEXT,
+            availableWeaviateVars: Object.keys(process.env).filter(k => k.includes('WEAVIATE')),
+          },
+        }),
         headers,
       };
     }
