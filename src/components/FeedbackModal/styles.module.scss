@@ -110,7 +110,12 @@
   border-color: #130c49 !important;
 
   &:hover {
-    background-color: #262262 !important; // A slightly lighter shade for hover
+    background-color: #262262 !important;
+  }
+
+  // Dark mode styles
+  [data-theme='dark'] & {
+    color: white !important;
   }
 }
 
