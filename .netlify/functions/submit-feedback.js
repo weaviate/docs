@@ -130,7 +130,18 @@ exports.handler = async (event) => {
       });
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: 'Failed to store feedback.' }),
+        body: JSON.stringify({
+          error: 'Failed to store feedback.',
+          debug: {
+            weaviateStatus: response.status,
+            weaviateStatusText: response.statusText,
+            weaviateUrl: WEAVIATE_DOCFEEDBACK_URL,
+            // TODO: Remove errorBody from production after debugging
+            weaviateError: errorBody,
+            timestamp: new Date().toISOString(),
+            context: process.env.CONTEXT,
+          },
+        }),
         headers,
       };
     }
@@ -146,6 +157,14 @@ exports.handler = async (event) => {
       statusCode: 500,
       body: JSON.stringify({
         error: 'There was an error processing your feedback.',
+        debug: {
+          errorType: error.name,
+          errorMessage: error.message,
+          timestamp: new Date().toISOString(),
+          // TODO: Remove stack trace from production after debugging
+          stack: error.stack,
+          context: process.env.CONTEXT,
+        },
       }),
       headers,
     };
