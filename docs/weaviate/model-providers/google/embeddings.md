@@ -27,6 +27,13 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 
 ![Embedding integration illustration](../_includes/integration_google_embedding.png)
 
+:::tip Which Google service should I use?
+
+- **Google AI Studio (Gemini API)**: Simpler setup, ideal for prototyping and development. Get started quickly with just an API key.
+- **Vertex AI**: Enterprise-grade service with more features, better for production deployments with advanced requirements.
+
+:::
+
 :::info Gemini API availability
 At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
 :::
@@ -60,9 +67,11 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 
 You must provide valid API credentials to Weaviate for the appropriate integration.
 
-#### Gemini API
+#### Google AI Studio (Gemini API)
 
-Go to [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
+1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key
+2. In the "Credentials" section, create credentials for "Gemini for Google Cloud API"
+3. Use the `X-Goog-Studio-Api-Key` header to provide your API key to Weaviate
 
 #### Vertex AI
 
@@ -75,12 +84,11 @@ import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.
 <UseGoogleAuthInstructions/>
 
 If you have the [Google Cloud CLI tool](https://cloud.google.com/cli) installed and set up, you can view your token by running the following command:
-
 ```shell
 gcloud auth print-access-token
 ```
 
-#### Token expiry for Vertex AI users
+##### Token expiry for Vertex AI users
 
 import GCPTokenExpiryNotes from '/_includes/gcp.token.expiry.notes.mdx';
 
@@ -90,7 +98,7 @@ import GCPTokenExpiryNotes from '/_includes/gcp.token.expiry.notes.mdx';
 
 Provide the API key to Weaviate at runtime, as shown in the examples below.
 
-Note the separate headers that are available for [Gemini API](#gemini-api) and [Vertex AI](#vertex-ai) users.
+Note the separate headers that are available for [Google AI Studio (Gemini API)](#google-ai-studio-gemini-api) and [Vertex AI](#vertex-ai) users.
 
 import ApiKeyNote from '../_includes/google-api-key-note.md';
 
@@ -131,45 +139,16 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Google embedding model:
 
-Note that the required parameters differ between Vertex AI and Gemini API.
+:::info Important: Different vectorizers for different services
+- **Google AI Studio (Gemini API)**: Use `text2vec_google_aistudio()` 
+- **Vertex AI**: Use `text2vec_palm()` or `text2vec_google()`
+:::
 
 You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
 
-### Vertex AI
+### Google AI Studio (Gemini API)
 
-Vertex AI users must provide the Google Cloud project ID in the vectorizer configuration.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START BasicVectorizerGoogleVertex"
-      endMarker="# END BasicVectorizerGoogleVertex"
-      language="py"
-    />
-  </TabItem>
-
-  <TabItem value="ts" label="JavaScript/TypeScript">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START BasicVectorizerGoogleVertex"
-      endMarker="// END BasicVectorizerGoogleVertex"
-      language="ts"
-    />
-  </TabItem>
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START BasicVectorizerGoogleVertex"
-      endMarker="// END BasicVectorizerGoogleVertex"
-      language="goraw"
-    />
-  </TabItem>
-
-</Tabs>
-
-### Gemini API
+For Google AI Studio, use the `text2vec_google_aistudio()` vectorizer. No `project_id` or `api_endpoint` is required.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -201,6 +180,40 @@ Vertex AI users must provide the Google Cloud project ID in the vectorizer confi
 
 </Tabs>
 
+### Vertex AI
+
+For Vertex AI, use the `text2vec_palm()` vectorizer. You must provide your Google Cloud `project_id`.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BasicVectorizerGoogleVertex"
+      endMarker="# END BasicVectorizerGoogleVertex"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BasicVectorizerGoogleVertex"
+      endMarker="// END BasicVectorizerGoogleVertex"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BasicVectorizerGoogleVertex"
+      endMarker="// END BasicVectorizerGoogleVertex"
+      language="goraw"
+    />
+  </TabItem>
+
+</Tabs>
+
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
@@ -214,10 +227,13 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 The following examples show how to configure Google-specific options.
 
-- `projectId` (Only required if using Vertex AI): e.g. `cloud-large-language-models`
-- `apiEndpoint` (Optional): e.g. `us-central1-aiplatform.googleapis.com`
-- `modelId` (Optional): e.g. `gemini-embedding-001`
-<!-- - `titleProperty` (Optional): The Weaviate property name for the `gecko-002` or `gecko-003` model to use as the title. -->
+**Google AI Studio (Gemini API) parameters:**
+- `modelId` (Optional): e.g. `text-embedding-004`, `gemini-embedding-001`
+
+**Vertex AI parameters:**
+- `projectId` (Required): Your Google Cloud project ID, e.g. `cloud-large-language-models`
+- `apiEndpoint` (Optional): Regional endpoint, e.g. `us-central1-aiplatform.googleapis.com`
+- `modelId` (Optional): e.g. `gemini-embedding-001`, `text-embedding-005`
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -376,7 +392,12 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-Vertex AI:
+**Google AI Studio (Gemini API):**
+- `text-embedding-004` (recommended)
+- `gemini-embedding-001` (default)
+    - `embedding-001` (deprecated name for `gemini-embedding-001`)
+
+**Vertex AI:**
 - `gemini-embedding-001` (default, added in 1.29.9, 1.30.11, 1.31.5 and onwards)
 - `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
 - `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
@@ -396,11 +417,6 @@ The following models have been deprecated by Google and are no longer supported.
 - `text-multilingual-embedding-preview-0409`
 
 </details>
-
-Gemini API:
-- `gemini-embedding-001` (default)
-    - `embedding-001` (deprecated name for `gemini-embedding-001`)
-- `text-embedding-004`
 
 ## Further resources
 
