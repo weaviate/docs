@@ -78,7 +78,7 @@ exports.handler = async (event) => {
 
     if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
       const relevantKeys = Object.keys(process.env).filter(
-        k => k.startsWith('WEAVIATE_') || k === 'CONTEXT' || k === 'ALLOWED_ORIGIN'
+        k => k.includes('WEAVIATE') || k.includes('FEEDBACK') || k === 'CONTEXT' || k === 'ALLOWED_ORIGIN' || k.startsWith('DEPLOY_')
       );
       console.error('Missing Weaviate environment variables.', {
         hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
