@@ -54,7 +54,6 @@ __pycache__
 
 # Local Netlify folder
 .netlify/*
-!.netlify/functions
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
