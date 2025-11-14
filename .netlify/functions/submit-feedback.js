@@ -77,11 +77,15 @@ exports.handler = async (event) => {
     }
 
     if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
+      const relevantKeys = Object.keys(process.env).filter(
+        k => k.startsWith('WEAVIATE_') || k === 'CONTEXT' || k === 'ALLOWED_ORIGIN'
+      );
       console.error('Missing Weaviate environment variables.', {
         hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
         hasKey: !!WEAVIATE_DOCFEEDBACK_API_KEY,
         context: process.env.CONTEXT,
-        allEnvKeys: Object.keys(process.env).filter(k => k.includes('WEAVIATE')),
+        weaviateRelatedKeyNames: relevantKeys,
+        weaviateRelatedKeyCount: relevantKeys.length,
       });
       return {
         statusCode: 500,
@@ -91,7 +95,8 @@ exports.handler = async (event) => {
             hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
             hasKey: !!WEAVIATE_DOCFEEDBACK_API_KEY,
             context: process.env.CONTEXT,
-            availableWeaviateVars: Object.keys(process.env).filter(k => k.includes('WEAVIATE')),
+            availableWeaviateVars: relevantKeys,
+            availableWeaviateVarCount: relevantKeys.length,
           },
         }),
         headers,
