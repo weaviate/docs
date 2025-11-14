@@ -76,7 +76,7 @@ export default function DocItemLayout({ children }) {
             <div className={styles.customTocStickyContainer}>
               {docTOC.desktop}
               {/* TODO: Temporarily hidden while debugging env vars */}
-              {/* <PageRatingWidget /> */}
+              <PageRatingWidget />
             </div>
             {/* Feedback component back in TOC column */}
             {showFeedback && (
