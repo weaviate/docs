@@ -1,0 +1,212 @@
+---
+title: Weaviate Docs MCP Server
+sidebar_label: Docs MCP Server
+# tags: ["mcp"]
+---
+
+The **Weaviate Docs MCP Server** brings instant access to Weaviate's documentation directly into your AI development environment. Built on the Model Context Protocol (MCP), this server integrates seamlessly with tools like Claude Desktop and Cursor, allowing you to query Weaviate's documentation without leaving your IDE.
+
+The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate under the hood) as its knowledge engine, which powers the search and retrieval of Weaviate documentation. The server offers:
+
+- **Instant documentation access**: Search Weaviate docs without context switching.
+- **Multi-source knowledge base**: Queries across docs, tutorials, API references, GitHub issues and community content.
+- **Always up-to-date**: Automatically syncs with the latest Weaviate documentation.
+
+## Setup Instructions
+
+### Claude Desktop
+
+1. Locate your Claude Desktop configuration file:
+
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+2. Add the Weaviate MCP server configuration:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-docs": {
+      "url": "https://weaviate-docs-mcp.netlify.app/mcp-server"
+    }
+  }
+}
+```
+
+3. Restart Claude Desktop
+
+4. Look for the tools indicator (🔨) in Claude Desktop to confirm the server is connected
+
+### Cursor
+
+1. Open Cursor settings (Cmd/Ctrl + ,)
+
+2. Navigate to **Features** → **Model Context Protocol**
+
+3. Add the server URL:
+
+```
+https://weaviate-docs-mcp.netlify.app/mcp-server
+```
+
+4. Restart Cursor
+
+## Using the MCP Server
+
+### In Claude Desktop
+
+Once configured, you can interact with Weaviate documentation naturally:
+
+**Example queries:**
+
+```
+"How do I set up a hybrid search in Weaviate?"
+
+"What are the best practices for schema design in Weaviate?"
+
+"Search the Weaviate docs for information about BM25 algorithm"
+
+"What's the difference between vector and keyword search in Weaviate?"
+```
+
+Claude will automatically use the MCP server to search the documentation and provide cited answers.
+
+### In Cursor
+
+While coding, you can ask Cursor to reference Weaviate documentation. Here's a typical workflow using the MCP server:
+
+1. **You're coding a Weaviate integration in Cursor**
+
+   ```python
+   import weaviate
+
+   # How do I set up authentication?
+   ```
+
+2. **Ask Cursor**: "Search Weaviate docs for authentication setup with Python client"
+
+3. **MCP Server queries kapa.ai**, which searches the Weaviate documentation using semantic search
+
+4. **You receive** a detailed answer with code examples and links to relevant docs:
+
+   ```python
+   import weaviate
+   from weaviate.auth import AuthApiKey
+
+   client = weaviate.Client(
+       url="https://your-instance.weaviate.network",
+       auth_client_secret=AuthApiKey(api_key="YOUR-API-KEY")
+   )
+   ```
+
+5. **Continue coding** without leaving your IDE
+
+## Technical Details
+
+### API Endpoint
+
+The server exposes a single endpoint:
+
+```
+GET  /mcp-server - SSE connection for MCP protocol
+POST /mcp-server - MCP JSON-RPC requests
+```
+
+### Available Tools
+
+The server provides one tool to AI assistants:
+
+**`search_weaviate_docs`**
+
+- **Description**: Search Weaviate documentation, tutorials, API references, and community content
+- **Input**: `query` (string) - Your question or search query
+- **Output**: Grounded answers with citations and source links
+
+### Protocol Support
+
+- **MCP Version**: 2024-11-05
+- **Protocol**: JSON-RPC 2.0
+- **Transport**: Server-Sent Events (SSE)
+
+## Troubleshooting
+
+#### Server Not Showing Up
+
+**Claude Desktop:**
+
+- Verify the config file syntax is valid JSON
+- Check that the file path is correct for your OS
+- Restart Claude Desktop completely (quit and reopen)
+
+**Cursor:**
+
+- Ensure the URL is entered correctly with `/mcp-server` path
+- Check Cursor's MCP settings are enabled
+- Restart Cursor
+
+#### Connection Errors
+
+If you see connection errors:
+
+1. Verify the server URL is accessible:
+
+   ```bash
+   curl https://weaviate-docs-mcp.netlify.app/mcp-server
+   ```
+
+2. Check your internet connection
+
+3. Try the MCP Inspector to debug:
+   ```bash
+   npx @modelcontextprotocol/inspector
+   ```
+
+#### No Results Returned
+
+If queries return empty results:
+
+- Check that your question is relevant to Weaviate documentation
+- Try rephrasing your query
+- Verify the MCP server is properly configured (test with curl)
+
+#### Rate Limiting
+
+The public Weaviate MCP server may have rate limits. If you experience issues:
+
+- Wait a few minutes before trying again
+- Consider deploying your own instance for higher usage
+
+## FAQ
+
+#### Is this official Weaviate infrastructure?
+
+Yes, the public Weaviate Docs MCP server is maintained by the Weaviate team for community use.
+
+#### Does this work with other AI assistants?
+
+The MCP protocol is supported by various AI tools. While this guide focuses on Claude Desktop and Cursor, any MCP-compatible client should work.
+
+#### Can I use this for my own documentation?
+
+Absolutely! The code is open source. Deploy your own instance with your kapa.ai credentials to create an MCP server for any documentation.
+
+#### What's the rate limit?
+
+The public server has reasonable rate limits for community use. For high-volume usage, consider deploying your own instance.
+
+#### Does this replace the Weaviate documentation site?
+
+No, this complements the documentation by bringing it into your development workflow. The full documentation site remains the authoritative source with complete content, guides, and resources.
+
+## Further resources
+
+- [Weaviate Documentation](https://weaviate.io/developers/weaviate)
+- [MCP Documentation](https://modelcontextprotocol.io)
+- [kapa.ai Documentation](https://docs.kapa.ai)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
