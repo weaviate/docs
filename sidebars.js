@@ -93,17 +93,15 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/index",
       },
-      items: []
+      items: [],
     },
     {
       type: "category",
-      label: "AI-based code generation",
-      link: {
-        type: "doc",
-        id: "weaviate/best-practices/code-generation",
-      },
-      items: []
-    }
+      label: "Vibe coding",
+      collapsed: false,
+      collapsible: false,
+      items: ["weaviate/best-practices/code-generation", "weaviate/mcp/index"],
+    },
   ],
   modelProvidersSidebar: [
     {
@@ -687,9 +685,7 @@ const sidebars = {
             type: "doc",
             id: "weaviate/client-libraries/java/index",
           },
-          items: [
-            "weaviate/client-libraries/java/java-v6",
-          ],
+          items: ["weaviate/client-libraries/java/java-v6"],
         },
         {
           type: "doc",
@@ -1452,7 +1448,7 @@ const sidebars = {
       items: [
         "integrations/compute-infrastructure/modal/index",
         "integrations/compute-infrastructure/replicate/index",
-        "integrations/compute-infrastructure/replicated/index"
+        "integrations/compute-infrastructure/replicated/index",
       ],
     },
     {
