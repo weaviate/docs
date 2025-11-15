@@ -26,7 +26,12 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+      onBrokenMarkdownImages: "throw",
+    },
+  },
 
   i18n: {
     defaultLocale: "en",

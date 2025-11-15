@@ -1,7 +1,7 @@
 ---
 title: Concepts
 sidebar_position: 0
-description: "Foundational concepts and architecture principles behind Weaviate's vector search and AI-native database capabilities."
+description: "Foundational concepts and architecture principles behind Weaviate's vector search and AI database capabilities."
 image: og/docs/concepts.jpg
 # tags: ['getting started']
 ---

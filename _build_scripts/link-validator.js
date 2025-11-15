@@ -27,6 +27,7 @@ const domainsToIgnore = [
     'https://ai.google.dev',
     'https://ai.meta.com/',
     'https://www.anthropic.com',
+    'https://console.anthropic.com',
     'https://www.computerhope.com',
     'https://console.x.ai/',
     'https://console.cloud.google.com',

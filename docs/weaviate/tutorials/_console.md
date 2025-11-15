@@ -22,7 +22,7 @@ When opening the [Weaviate Console](https://weaviate.io/go/console?utm_source=do
 
 ## Weaviate Cloud
 
-Use Weaviate Cloud to create serverless instances on our infrastructure. Self-hosted and serverless instances offer the same features. The main difference is that you don't have to manage the server or infrastructure for a serverless instance.
+Use Weaviate Cloud to create Shared Cloud instances on our infrastructure. Self-hosted and Shared Cloud instances offer the same features. The main difference is that you don't have to manage the server or infrastructure for a Shared Cloud instance.
 
 import SandBoxExpiry from '/_includes/sandbox.expiry.mdx';
 
@@ -56,7 +56,7 @@ The console might ask to downgrade to HTTP. This is done to avoid [CORS](https:/
 ## Recap
 
 * You can use the Weaviate Console to connect to any Weaviate instance.
-* You can use the Weaviate Console to connect to the Weaviate Cloud to create serverless Weaviate instances.
+* You can use the Weaviate Console to connect to the Weaviate Cloud to create Shared Cloud instances.
 * Because Weaviate uses GraphQL, you can easily query it with the console's GraphiQL integration.
 
 ## What next?
