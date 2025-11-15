@@ -12,11 +12,13 @@ The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate unde
 - **Multi-source knowledge base**: Queries across docs, tutorials, API references, GitHub issues and community content.
 - **Always up-to-date**: Automatically syncs with the latest Weaviate documentation.
 
-## Setup Instructions
+## How-to setup Docs MCP Server
+
+Here you can find instructions on how to connect to the Docs MCP Server from Claude Desktop and Cursor. For other platforms, consult their respective documentation (for example, [ChatGPT](https://platform.openai.com/docs/mcp), [Claude Code](https://code.claude.com/docs/en/mcp)).
 
 ### Claude Desktop
 
-1. Locate your Claude Desktop configuration file:
+1. Locate your Claude Desktop configuration file, usually located here:
 
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
@@ -34,15 +36,15 @@ The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate unde
 }
 ```
 
-3. Restart Claude Desktop
+3. Restart Claude Desktop.
 
-4. Look for the tools indicator (🔨) in Claude Desktop to confirm the server is connected
+4. Look for the **Weaviate Docs** option under the _Search and tools_ section in Claude Desktop to confirm the server is connected.
 
 ### Cursor
 
-1. Open Cursor settings (Cmd/Ctrl + ,)
+1. Open Cursor settings (Cmd/Ctrl + ,).
 
-2. Navigate to **Features** → **Model Context Protocol**
+2. Navigate to **Features** → **Model Context Protocol**,
 
 3. Add the server URL:
 
@@ -50,7 +52,7 @@ The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate unde
 https://weaviate-docs-mcp.netlify.app/mcp-server
 ```
 
-4. Restart Cursor
+4. Restart Cursor.
 
 ## Using the MCP Server
 
@@ -84,27 +86,15 @@ While coding, you can ask Cursor to reference Weaviate documentation. Here's a t
    # How do I set up authentication?
    ```
 
-2. **Ask Cursor**: "Search Weaviate docs for authentication setup with Python client"
+2. **Ask Cursor**: "Search Weaviate docs for authentication setup with Python client".
 
-3. **MCP Server queries kapa.ai**, which searches the Weaviate documentation using semantic search
+3. **MCP Server queries kapa.ai**, which searches the Weaviate documentation using semantic search.
 
-4. **You receive** a detailed answer with code examples and links to relevant docs:
+4. **You receive** a detailed answer with code examples and links to relevant docs.
 
-   ```python
-   import weaviate
-   from weaviate.auth import AuthApiKey
+## Technical details
 
-   client = weaviate.Client(
-       url="https://your-instance.weaviate.network",
-       auth_client_secret=AuthApiKey(api_key="YOUR-API-KEY")
-   )
-   ```
-
-5. **Continue coding** without leaving your IDE
-
-## Technical Details
-
-### API Endpoint
+### API endpoint
 
 The server exposes a single endpoint:
 
@@ -113,7 +103,7 @@ GET  /mcp-server - SSE connection for MCP protocol
 POST /mcp-server - MCP JSON-RPC requests
 ```
 
-### Available Tools
+### Available tools
 
 The server provides one tool to AI assistants:
 
@@ -121,9 +111,9 @@ The server provides one tool to AI assistants:
 
 - **Description**: Search Weaviate documentation, tutorials, API references, and community content
 - **Input**: `query` (string) - Your question or search query
-- **Output**: Grounded answers with citations and source links
+- **Output**: Answers with citations and source links
 
-### Protocol Support
+### Protocol support
 
 - **MCP Version**: 2024-11-05
 - **Protocol**: JSON-RPC 2.0
@@ -131,7 +121,8 @@ The server provides one tool to AI assistants:
 
 ## Troubleshooting
 
-#### Server Not Showing Up
+<details>
+  <summary>Server not showing up</summary>
 
 **Claude Desktop:**
 
@@ -145,7 +136,10 @@ The server provides one tool to AI assistants:
 - Check Cursor's MCP settings are enabled
 - Restart Cursor
 
-#### Connection Errors
+</details>
+
+<details>
+  <summary>Connection errors</summary>
 
 If you see connection errors:
 
@@ -162,7 +156,10 @@ If you see connection errors:
    npx @modelcontextprotocol/inspector
    ```
 
-#### No Results Returned
+</details>
+
+<details>
+  <summary>No results returned</summary>
 
 If queries return empty results:
 
@@ -170,40 +167,60 @@ If queries return empty results:
 - Try rephrasing your query
 - Verify the MCP server is properly configured (test with curl)
 
-#### Rate Limiting
+</details>
+
+<details>
+  <summary>Rate limiting</summary>
 
 The public Weaviate MCP server may have rate limits. If you experience issues:
 
 - Wait a few minutes before trying again
 - Consider deploying your own instance for higher usage
 
+</details>
+
 ## FAQ
 
-#### Is this official Weaviate infrastructure?
+<details>
+  <summary>Is this official Weaviate infrastructure?</summary>
 
 Yes, the public Weaviate Docs MCP server is maintained by the Weaviate team for community use.
 
-#### Does this work with other AI assistants?
+</details>
+
+<details>
+  <summary>Does this work with other AI assistants?</summary>
 
 The MCP protocol is supported by various AI tools. While this guide focuses on Claude Desktop and Cursor, any MCP-compatible client should work.
 
-#### Can I use this for my own documentation?
+</details>
+
+<details>
+  <summary>Can I use this for my own documentation?</summary>
 
 Absolutely! The code is open source. Deploy your own instance with your kapa.ai credentials to create an MCP server for any documentation.
 
-#### What's the rate limit?
+</details>
+
+<details>
+  <summary>What's the rate limit?</summary>
 
 The public server has reasonable rate limits for community use. For high-volume usage, consider deploying your own instance.
 
-#### Does this replace the Weaviate documentation site?
+</details>
+
+<details>
+  <summary>Does this replace the Weaviate documentation site?</summary>
 
 No, this complements the documentation by bringing it into your development workflow. The full documentation site remains the authoritative source with complete content, guides, and resources.
 
+</details>
+
 ## Further resources
 
-- [Weaviate Documentation](https://weaviate.io/developers/weaviate)
-- [MCP Documentation](https://modelcontextprotocol.io)
-- [kapa.ai Documentation](https://docs.kapa.ai)
+- [Vibe coding - Best practices](../best-practices/code-generation.md)
+- [MCP documentation](https://modelcontextprotocol.io)
+- [Kapa.ai documentation](https://docs.kapa.ai)
 
 ## Questions and feedback
 
