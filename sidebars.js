@@ -96,13 +96,15 @@ const sidebars = {
       items: []
     },
     {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
       type: "category",
-      label: "AI-based code generation",
-      link: {
-        type: "doc",
-        id: "weaviate/best-practices/code-generation",
-      },
-      items: []
+      label: "AI-assisted coding",
+      collapsed: false,
+      collapsible: false,
+      items: ["weaviate/mcp/docs-mcp-server", "weaviate/best-practices/code-generation"],
     }
   ],
   modelProvidersSidebar: [

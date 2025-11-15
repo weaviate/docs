@@ -1,12 +1,10 @@
 ---
-title: AI-based Weaviate code generation
-sidebar_position: 50
+title: AI-assisted Weaviate code generation
+sidebar_label: Vibe coding - Best practices
 description: "Tips and techniques for using generative AI models to write better Weaviate-related code."
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---
-
-# AI-based Weaviate code generation (vibe-coding)
 
 Generative AI models are becoming more capable at writing code. This practice is often referred to as "vibe-coding" or "AI-assisted coding". While this can speed up development, it is also subject to some pitfalls, such as hallucinations due to out-of-date, or missing information in the training data.
 
@@ -15,6 +13,13 @@ Here are some tips for writing Weaviate client library code with generative AI m
 ![Weaviate vibe-coding guide](./_img/weaviate_vibe_coding_guide.png "Weaviate vibe-coding guide")
 
 ## Specific recommendations
+
+### Weaviate Docs MCP Server
+
+The **[Weaviate Docs MCP Server](../mcp/docs-mcp-server.mdx)** brings instant access to Weaviate's documentation directly into your AI development environment. Built on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro), this server integrates seamlessly with tools like Claude Desktop and Cursor, allowing you to query Weaviate's documentation without leaving your IDE:
+
+- [Connect with Claude Desktop](../mcp/docs-mcp-server.mdx#claude-desktop)
+- [Connect with Cursor](../mcp/docs-mcp-server.mdx#cursor)
 
 ### High-performing models
 
@@ -34,12 +39,12 @@ We found that performances of the above LLMs improved significantly when provide
 
 As a starting point, we have curated a set of code examples below. Try copy and pasting this block of code into your prompt.
 
-import CodeExamples from '!!raw-loader!/_includes/code/python/best-practices.python.ai.py';
+import CodeExamples from '!!raw-loader!/\_includes/code/python/best-practices.python.ai.py';
 import CodeBlock from '@theme/CodeBlock';
 
 <div style={{height: '300px', overflow: 'auto'}}>
 
-  <CodeBlock language="python">{CodeExamples}</CodeBlock>
+<CodeBlock language="python">{CodeExamples}</CodeBlock>
 
 </div>
 <br/>
@@ -105,6 +110,6 @@ If you have any questions or feedback, please let us know by opening an issue on
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
