@@ -30,11 +30,23 @@ const sidebars = {
         id: "weaviate/connections/index",
       },
       items: [
-        "weaviate/connections/connect-cloud",
+        {
+          type: "doc",
+          id: "weaviate/connections/connect-cloud",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/connections/connect-local",
         "weaviate/connections/connect-custom",
         "weaviate/connections/connect-embedded",
-        "weaviate/connections/connect-query",
+        {
+          type: "doc",
+          id: "weaviate/connections/connect-query",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
       ],
     },
     {
@@ -114,6 +126,9 @@ const sidebars = {
           link: {
             type: "doc",
             id: "weaviate/model-providers/weaviate/index",
+          },
+          customProps: {
+            cloudOnly: true,
           },
           items: ["weaviate/model-providers/weaviate/embeddings"],
         },
@@ -521,6 +536,13 @@ const sidebars = {
       },
       items: [
         "weaviate/search/basics",
+        {
+          type: "doc",
+          id: "weaviate/search/query-agent",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/search/similarity",
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
@@ -540,6 +562,7 @@ const sidebars = {
         id: "weaviate/tutorials/index",
       },
       items: [
+        "weaviate/tutorials/quick-tour-of-weaviate",
         "weaviate/tutorials/multi-vector-embeddings",
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
@@ -1031,7 +1054,7 @@ const sidebars = {
     },
   ],
   deployProductionSidebar: [
-    "deploy/production/index", 
+    "deploy/production/index",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
@@ -1116,6 +1139,9 @@ const sidebars = {
         type: "doc",
         id: "agents/query/index",
       },
+      customProps: {
+        cloudOnly: true,
+      },
       items: [
         {
           type: "doc",
@@ -1143,6 +1169,9 @@ const sidebars = {
         type: "doc",
         id: "agents/transformation/index",
       },
+      customProps: {
+        cloudOnly: true,
+      },
       items: [
         {
           type: "doc",
@@ -1169,6 +1198,9 @@ const sidebars = {
       link: {
         type: "doc",
         id: "agents/personalization/index",
+      },
+      customProps: {
+        cloudOnly: true,
       },
       items: [
         {

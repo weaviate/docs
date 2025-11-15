@@ -38,6 +38,7 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sass": "^1.83.4",
+    "uuid": "^13.0.0",
     "weaviate-agents": "^1.0.0",
     "weaviate-client": "^3.9.0"
   },

@@ -24,8 +24,9 @@
   border-bottom: 1px solid var(--ifm-toc-border-color);
   position: sticky;
   width: 100%;
-  height: var(--secondary-navbar-height);
-  font-size: 1rem !important;
+  height: 60px;
+  font-size: 0.875rem !important; /* Reduced from 1rem */
+  font-weight: 500;
   z-index: 1001; /* Higher than defaultNavbar to be on top if they overlap */
 }
 
@@ -68,6 +69,7 @@
 .activeNavLink {
   color: var(--ifm-navbar-link-active-color) !important;
   border-bottom: 3px solid var(--ifm-navbar-link-active-color);
+  font-weight: 600;
 }
 
 /* Container for the dropdown */

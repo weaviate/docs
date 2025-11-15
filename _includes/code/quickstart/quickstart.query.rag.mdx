@@ -1,71 +1,60 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/python/quickstart.query.rag.py';
-import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.query.rag.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/3_2_rag/main.go';
-import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/quickstart.query.rag.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.query.rag.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/3_2_rag/main.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/RAG.java';
-
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/RAG.java";
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# RAG"
+      endMarker="# END RAG"
+      language="py"
+      title="quickstart_rag.py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// RAG"
+      endMarker="// END RAG"
+      language="ts"
+      title="quickstart_rag.ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// RAG"
+      endMarker="// END RAG"
+      language="goraw"
+      title="quickstart/3_2_rag/main.go"
+    />
+  </TabItem>
 
-We are using the OpenAI [generative AI integrations](/weaviate/model-providers/openai/generative) for retrieval augmented generation (RAG).
-
+  <TabItem value="java6" label="Java v6 (Beta)">
   <FilteredTextBlock
-    text={PyCode}
-    startMarker="# RAG"
-    endMarker="# END RAG"
-    language="py"
-    title="quickstart_rag.py"
+    text={JavaV6Code}
+    startMarker="// START RAG"
+    endMarker="// END RAG"
+    language="java"
   />
+  </TabItem>
 
-</TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-
-We are using the OpenAI [generative AI integrations](/weaviate/model-providers/openai/generative) for retrieval augmented generation (RAG).
-
-<FilteredTextBlock
-  text={TSCode}
-  startMarker="// RAG"
-  endMarker="// END RAG"
-  language="ts"
-  title="quickstart_rag.ts"
-/>
-
-</TabItem>
-
-<TabItem value="go" label="Go">
-<FilteredTextBlock
-  text={GoCode}
-  startMarker="// RAG"
-  endMarker="// END RAG"
-  language="goraw"
-  title="quickstart/3_2_rag/main.go"
-/>
-</TabItem>
-
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-  text={JavaV6Code}
-  startMarker="// START RAG"
-  endMarker="// END RAG"
-  language="java"
-/>
-</TabItem>
-
-<TabItem value="java" label="Java">
-<FilteredTextBlock
-  text={JavaCode}
-  startMarker="// START RAG"
-  endMarker="// END RAG"
-  language="javaraw"
-  title="quickstart/RAG.java"
-/>
-</TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START RAG"
+      endMarker="// END RAG"
+      language="javaraw"
+      title="quickstart/RAG.java"
+    />
+  </TabItem>
   <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
       text={CSharpCode}
@@ -74,8 +63,7 @@ We are using the OpenAI [generative AI integrations](/weaviate/model-providers/o
       language="csharp"
     />
   </TabItem>
-
-<TabItem value="curl" label="Curl">
+  <TabItem value="curl" label="Curl">
 
 ```bash
 # Best practice: store your credentials in environment variables
@@ -119,5 +107,5 @@ echo '{
     $WEAVIATE_URL/v1/graphql
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>

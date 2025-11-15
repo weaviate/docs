@@ -131,7 +131,7 @@ const config = {
             position: "right",
           },
           {
-            label: "Weaviate Academy",
+            label: "Academy",
             className: "academy-button",
             to: "https://academy.weaviate.io",
             position: "right",

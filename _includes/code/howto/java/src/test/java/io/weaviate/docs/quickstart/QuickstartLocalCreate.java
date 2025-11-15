@@ -1,0 +1,80 @@
+package io.weaviate.docs.quickstart;
+
+// START CreateCollection
+import io.weaviate.client.Config;
+import io.weaviate.client.WeaviateClient;
+import io.weaviate.client.base.Result;
+import io.weaviate.client.v1.auth.exception.AuthException;
+import io.weaviate.client.v1.schema.model.WeaviateClass;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class QuickstartLocalCreate {
+  public static void main(String[] args) throws AuthException {
+    // Step 1.1: Connect to your local Weaviate instance
+    Config config = new Config("http", "localhost:8080");
+    WeaviateClient client = new WeaviateClient(config);
+
+    // END CreateCollection
+
+    // NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
+    client.schema().classDeleter().withClassName("Movie").run();
+
+    // START CreateCollection
+    // Step 1.2: Create a collection
+    Map<String, Object> text2vecOllamaSettings = new HashMap<>();
+    text2vecOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
+    text2vecOllamaSettings.put("model", "nomic-embed-text"); // The model to use
+
+    Map<String, Object> generativeOllamaSettings = new HashMap<>();
+    generativeOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
+    generativeOllamaSettings.put("model", "llama3.2"); // The model to use
+
+    Map<String, Map<String, Object>> moduleConfig = new HashMap<>();
+    moduleConfig.put("text2vec-ollama", text2vecOllamaSettings);
+    moduleConfig.put("generative-ollama", generativeOllamaSettings);
+    
+    // highlight-start
+    WeaviateClass movieClass = WeaviateClass.builder()
+        .className("Movie")
+        .vectorizer("text2vec-ollama")
+        .moduleConfig(moduleConfig)
+        .build();
+
+    Result<Boolean> result = client.schema().classCreator()
+        .withClass(movieClass)
+        .run();
+    // highlight-end
+
+    // Step 1.3: Import three objects
+    List<Map<String, Object>> dataObjects = List.of(
+        Map.of(
+            "title", "The Matrix",
+            "description",
+            "A computer hacker learns about the true nature of reality and his role in the war against its controllers.",
+            "genre", "Science Fiction"),
+        Map.of(
+            "title", "Spirited Away",
+            "description",
+            "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.",
+            "genre", "Animation"),
+        Map.of(
+            "title", "The Lord of the Rings: The Fellowship of the Ring",
+            "description",
+            "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.",
+            "genre", "Fantasy"));
+
+    // Insert objects
+    for (Map<String, Object> obj : dataObjects) {
+      client.data().creator()
+          .withClassName("Movie")
+          .withProperties(obj)
+          .run();
+    }
+
+    System.out.println("Imported & vectorized " + dataObjects.size() + " objects into the Movie collection");
+  }
+}
+// END CreateCollection

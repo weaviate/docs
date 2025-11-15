@@ -18,6 +18,10 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchSimilarityTest
 
 Vector search returns the objects with most similar vectors to that of the query.
 
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
+
 ## Search with text
 
 Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to find objects with the nearest vector to an input text.
