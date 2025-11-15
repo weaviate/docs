@@ -153,7 +153,7 @@ function Footer() {
                 </li>
               </ul>
             </div>
-            {
+            {/* {
               <div className={styles.footerSection}>
                 <h5>Deployment options</h5>
                 <ul>
@@ -177,7 +177,7 @@ function Footer() {
                   </li>
                 </ul>
               </div>
-            }
+            } */}
           </div>
         </div>
         {/*
