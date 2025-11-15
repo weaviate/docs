@@ -8,7 +8,7 @@ image: og/wcd/user_guides.jpg
 [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) provides two instance types.
 
 - **[Sandbox clusters](#sandbox-clusters)**: Sandbox clusters are small, free clusters designed for learning and experimentation. Sandbox clusters are not scalable and expire after 14 days. You will also have an option to extend their lifetime and convert them into a production ready Shared Cloud cluster.
-- **[Shared Cloud clusters](#shared-clusters)**: Shared Cloud clusters are robust, paid clusters designed for production use.
+- **[Shared Cloud clusters](#shared-cloud-clusters)**: Shared Cloud clusters are robust, paid clusters designed for production use.
 
 When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters. There are no clusters when you log in to a new account.
 
@@ -50,8 +50,8 @@ To create a Sandbox cluster, follow these steps:
 1. In the clusters sidebar, click the plus button.
 2. Select the `Sandbox` option.
 3. Choose a name for your cluster.
-4. Select a cloud region from the dropdown.
-5. Configure the `Advanced configuration` settings if needed.
+4. Select a cloud provider (GCP by default).
+5. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
 6. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
@@ -59,8 +59,6 @@ To create a Sandbox cluster, follow these steps:
 The following advanced configuration settings are available:
 
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
-- [`Enable async indexing`](/weaviate/concepts/vector-index#asynchronous-indexing)
-- [`Enable async replication`](/deploy/configuration/replication#async-replication-settings)
 - `Allow all CORS origins`
 
 </details>
@@ -105,9 +103,9 @@ To create a Shared Cloud cluster, follow these steps:
 1. In the clusters sidebar, click the plus button.
 2. Select the `Shared Cloud` option.
 3. Choose a name for your cluster.
-4. Select a cloud region from the dropdown.
-5.  Optionally, enable `High Availability` to reduce downtime during upgrades or scaling.
-6. Configure the `Advanced configuration` settings if needed.
+4. Select a cloud provider (GCP by default).
+5. Select if you need high-availability (enabled by default).
+6. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
 7. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
@@ -115,8 +113,6 @@ To create a Shared Cloud cluster, follow these steps:
 The following advanced configuration settings are available:
 
   * [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
-  * [`Enable async indexing`](/weaviate/concepts/vector-index#asynchronous-indexing)
-  * [`Enable async replication`](/deploy/configuration/replication#async-replication-settings)
   * `Allow all CORS origins`
 
 </details>
