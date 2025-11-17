@@ -1,6 +1,7 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionConfig;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
+import io.weaviate.client6.v1.api.collections.Encoding;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.Replication;
 import io.weaviate.client6.v1.api.collections.Sharding;
@@ -13,7 +14,7 @@ import io.weaviate.client6.v1.api.collections.config.ShardStatus;
 import io.weaviate.client6.v1.api.collections.Reranker;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.vectorindex.Hnsw;
-
+import io.weaviate.client6.v1.api.collections.vectorindex.MultiVector;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -111,10 +112,59 @@ class ManageCollectionsTest {
   // Coming soon
   // END AddNamedVectors
 
-  // TODO[g-despot]: Add example when MultiValueVectorCollection is implemented
-  // START MultiValueVectorCollection
-  // Coming soon
-  // END MultiValueVectorCollection
+  @Test
+  void testMultiValueVectorCollection() throws IOException {
+    // START MultiValueVectorCollection
+    client.collections.create("DemoCollection", col -> col.vectorConfig(
+        // Example 1 - Use a model integration
+        // The factory function will automatically enable multi-vector support for the HNSW index
+        // highlight-start
+        VectorConfig.text2multivecJinaAi("jina_colbert",
+            vc -> vc.sourceProperties("text")
+                // In Java, explicitly configure the HNSW index for multi-vector
+                .vectorIndex(Hnsw.of(h -> h.multiVector(MultiVector.of())))),
+        // highlight-end
+        // Example 2 - User-provided multi-vector representations
+        // Must explicitly enable multi-vector support for the HNSW index
+        // highlight-start
+        VectorConfig.selfProvided("custom_multi_vector",
+            vc -> vc.vectorIndex(Hnsw.of(h -> h.multiVector(MultiVector.of()))))
+    // highlight-end
+    ).properties(Property.text("text"))
+    // Additional parameters not shown
+    );
+    // END MultiValueVectorCollection
+
+    assertThat(client.collections.exists("DemoCollection")).isTrue();
+  }
+
+  @Test
+  void testMultiValueVectorMuvera() throws IOException {
+    // START MultiValueVectorMuvera
+    client.collections.create("DemoCollection", col -> col.vectorConfig(
+        // Example 1 - Use a model integration
+        VectorConfig.text2multivecJinaAi("jina_colbert",
+            vc -> vc.sourceProperties("text")
+                // highlight-start
+                .vectorIndex(Hnsw.of(h -> h.multiVector(
+                    MultiVector.of(mv -> mv.encoding(Encoding.muvera(e -> e
+                    // Optional parameters for tuning MUVERA
+                    // .ksim(4)
+                    // .dprojections(16)
+                    // .repetitions(20)
+                    ))))))
+        // highlight-end
+        ),
+        // Example 2 - User-provided multi-vector representations
+        VectorConfig.selfProvided("custom_multi_vector",
+            vc -> vc.vectorIndex(Hnsw.of(h -> h.multiVector(
+                MultiVector.of(mv -> mv.encoding(Encoding.muvera())))))))
+    // Additional parameters not shown
+    );
+    // END MultiValueVectorMuvera
+
+    assertThat(client.collections.exists("DemoCollection")).isTrue();
+  }
 
   @Test
   void testSetVectorIndexType() throws IOException {
@@ -402,10 +452,20 @@ class ManageCollectionsTest {
     assertThat(config.invertedIndex().bm25().k1()).isEqualTo(1.5f);
   }
 
-  // TODO[g-despot]: Add example when AddProperty is implemented
-  // START AddProperty
-  // Coming soon
-  // END AddProperty
+  @Test
+  void testAddProperty() throws IOException {
+    client.collections.create("Article");
+
+    // START AddProperty
+    CollectionHandle<Map<String, Object>> articles =
+        client.collections.use("Article");
+
+    articles.config.addProperty(Property.bool("onHomepage"));
+    // END AddProperty
+
+    var config = articles.config.get().get();
+    assertThat(config.properties().size()).isEqualTo(1);
+  }
 
   @Test
   void testDeleteCollection() throws IOException {
@@ -418,6 +478,16 @@ class ManageCollectionsTest {
     // END DeleteCollection
 
     assertThat(client.collections.exists(collectionName)).isFalse();
+  }
+
+  @Test
+  void testExistsCollection() throws IOException {
+    String collectionName = "Article";
+    // START CheckIfExists
+    client.collections.exists(collectionName);
+    // END CheckIfExists
+
+    assertThat(client.collections.exists(collectionName)).isTrue();
   }
 
   @Test

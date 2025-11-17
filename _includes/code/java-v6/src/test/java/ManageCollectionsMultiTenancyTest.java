@@ -1,5 +1,7 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
+import io.weaviate.client6.v1.api.collections.ReferenceProperty;
+import io.weaviate.client6.v1.api.collections.data.Reference;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 
 import org.junit.jupiter.api.AfterEach;
@@ -161,6 +163,83 @@ class _ManageCollectionsMultiTenancyTest {
     // // END GetOneTenant
 
     assertThat(tenant).isPresent();
+  }
+
+  @Test
+  void testChangeTenantState() throws IOException {
+    String collectionName = "MultiTenancyCollection";
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
+
+    // // START ChangeTenantState
+    String tenantName = "tenantA";
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
+    collection.tenants.activate(tenantName);
+    collection.tenants.deactivate(tenantName);
+    collection.tenants.offload(tenantName);
+    // // END ChangeTenantState
+
+    Optional<Tenant> tenant = collection.tenants.get(tenantName);
+    assertThat(tenant).isPresent();
+  }
+
+  @Test
+  void testCreateTenantObject() throws IOException {
+    // START CreateMtObject
+    // highlight-start
+    var jeopardy =
+        client.collections.use("JeopardyQuestion").withTenant("tenantA");
+    // highlight-end
+
+    var uuid = jeopardy.data.insert(Map.of("question",
+        "This vector DB is OSS & supports automatic property type inference on import"))
+        .metadata()
+        .uuid();
+
+    System.out.println(uuid); // the return value is the object's UUID
+    // END CreateMtObject
+
+    var result = jeopardy.query.byId(uuid.toString());
+    assertThat(result).isPresent();
+    assertThat(result.get().properties().get("newProperty")).isEqualTo(123.0); // JSON numbers are parsed as Long
+  }
+
+  @Test
+  void testSearchTenant() throws IOException {
+    // START Search
+    // highlight-start
+    var jeopardy =
+        client.collections.use("JeopardyQuestion").withTenant("tenantA");
+    // highlight-end
+
+    var response = jeopardy.query.fetchObjects(c -> c.limit(2));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+    }
+    // END Search
+  }
+
+  @Test
+  void testAddReferenceToTenantObject() throws IOException {
+    // START AddCrossRef
+    var categoryCollection = client.collections.use("JeopardyCategory");
+    categoryCollection.data.insert(Map.of("name", "Test Category")).uuid();
+
+    var multiCollection = client.collections.use("MultiTenancyCollection");
+    var multiTenantA = multiCollection.withTenant("tenantA");
+    var referenceObject =
+        multiTenantA.data.insert(Map.of("title", "Object in Tenant A"));
+    String objectId = referenceObject.uuid();
+
+    multiCollection.config.addReference("hasCategory", "JeopardyCategory");
+
+    multiTenantA.data.referenceAdd(objectId, // from_uuid
+        "hasCategory", // from_property
+        Reference.object(referenceObject) // to
+    );
+    // END AddCrossRef
   }
 
   @Test

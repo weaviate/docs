@@ -47,23 +47,42 @@ class ConnectionTest {
     // END GetNodes
   }
 
-  // TODO[g-despot] Missing timeout options
-  // @Test
-  // void testTimeoutLocal() throws Exception {
-  // WeaviateClient client = WeaviateClient.connectToLocal(config -> config
-  // .port(8080)
-  // .grpcPort(50051));
+  @Test
+  void testConnectTimeoutLocal() throws Exception {
+    // START TimeoutLocal
+    WeaviateClient client =
+        WeaviateClient.connectToLocal(config -> config.timeout(30, 60, 120)); // Values in seconds
 
-  // System.out.println(client.isReady()); // Should print: `True`
+    System.out.println(client.isReady()); // Should print: `True`
 
-  // client.close(); // Free up resources
-  // }
-  // START TimeoutLocal
-  // Coming soon
-  // END TimeoutLocal
-  // START TimeoutCustom
-  // Coming soon
-  // END TimeoutCustom
+    client.close(); // Free up resources
+    // END TimeoutLocal
+  }
+
+  @Test
+  void testConnectTimeoutCustom() throws Exception {
+    // START TimeoutCustom
+    // Best practice: store your credentials in environment variables
+    String httpHost = System.getenv("WEAVIATE_HTTP_HOST");
+    String grpcHost = System.getenv("WEAVIATE_GRPC_HOST");
+    String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+    String cohereApiKey = System.getenv("COHERE_API_KEY");
+
+    WeaviateClient client =
+        WeaviateClient.connectToCustom(config -> config.scheme("https") // Corresponds to http_secure=True and grpc_secure=True
+            .httpHost(httpHost)
+            .httpPort(443)
+            .grpcHost(grpcHost)
+            .grpcPort(443)
+            .authentication(Authentication.apiKey(weaviateApiKey))
+            .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey))
+            .timeout(30, 60, 120)); // Values in seconds
+
+    System.out.println(client.isReady()); // Should print: `True`
+
+    client.close(); // Free up resources
+    // END TimeoutCustom
+  }
 
   void testConnectWCDWithApiKey() throws Exception {
     // START APIKeyWCD
@@ -189,7 +208,20 @@ class ConnectionTest {
     // END ThirdPartyAPIKeys
   }
 
-  // START TimeoutWCD
-  // Coming soon
-  // END TimeoutWCD
+  @Test
+  void testConnectTimeoutWCD() throws Exception {
+    // START TimeoutWCD
+    // Best practice: store your credentials in environment variables
+    String weaviateUrl = System.getenv("WEAVIATE_URL");
+    String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+
+    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, // Replace with your Weaviate Cloud URL
+        weaviateApiKey, // Replace with your Weaviate Cloud key
+        config -> config.timeout(30, 60, 120)); // Values in seconds
+
+    System.out.println(client.isReady()); // Should print: `True`
+
+    client.close(); // Free up resources
+    // END TimeoutWCD
+  }
 }

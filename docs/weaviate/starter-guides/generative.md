@@ -9,13 +9,16 @@ image: og/docs/tutorials.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/starter-guides/generative.py';
-import TSCodeEduDemo from '!!raw-loader!/_includes/code/starter-guides/generative_edudemo.ts';
-import TSCodeLocal from '!!raw-loader!/_includes/code/starter-guides/generative_local.ts';
+import PyCode from '!!raw-loader!/\_includes/code/starter-guides/generative.py';
+import TSCodeEduDemo from '!!raw-loader!/\_includes/code/starter-guides/generative_edudemo.ts';
+import TSCodeLocal from '!!raw-loader!/\_includes/code/starter-guides/generative_local.ts';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/StarterGuidesGenerativeTest.java";
 
 :::info Related pages
+
 - [Which Weaviate is right for me?](./which-weaviate.md)
 - [How-to: Retrieval augmented generation](../search/generative.md)
+
 :::
 
 This pages introduces you to retrieval augmented generation (RAG) using Weaviate. It covers:
@@ -38,6 +41,7 @@ Retrieval augmented generation is a powerful technique that retrieves relevant d
 ### Why use RAG?
 
 LLM are incredibly powerful, but can suffer from two important limitations. These limitation are that:
+
 - They can confidently produce incorrect, or outdated, information (also called 'hallucination'); and
 - They might simply not be trained on the information you need.
 
@@ -82,8 +86,14 @@ Connect to the instance like so, remembering to replace the API key for the LLM 
   language="ts"
 />
 </TabItem>
-
-
+<TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START Instantiation"
+      endMarker="// END Instantiation"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ### Data retrieval
@@ -109,33 +119,42 @@ Before we can generate text, we need to retrieve relevant data. Let's retrieve t
   language="ts"
 />
 </TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DataRetrieval"
+      endMarker="// END DataRetrieval"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 This should return a set of results like the following (truncated for brevity):
 
 ```
+
 {
-  "data": {
-    "Get": {
-      "GitBookChunk": [
-        {
-          "chapter_title": "01-introduction",
-          "chunk": "=== A Short History of Git\n\nAs with many great things in life, Git began with a bit of creative ...",
-          "chunk_index": 0
-        },
-        {
-          "chapter_title": "01-introduction",
-          "chunk": "== Nearly Every Operation Is Local\n\nMost operations in Git need only local files and resources ...",
-          "chunk_index": 2
-        },
-        {
-          "chapter_title": "02-git-basics",
-          "chunk": "==\nYou can specify more than one instance of both the `--author` and `--grep` search criteria...",
-          "chunk_index": 2
-        },
-      ]
-    }
-  }
+"data": {
+"Get": {
+"GitBookChunk": [
+{
+"chapter\_title": "01-introduction",
+"chunk": "=== A Short History of Git\\n\\nAs with many great things in life, Git began with a bit of creative ...",
+"chunk\_index": 0
+},
+{
+"chapter\_title": "01-introduction",
+"chunk": "== Nearly Every Operation Is Local\\n\\nMost operations in Git need only local files and resources ...",
+"chunk\_index": 2
+},
+{
+"chapter\_title": "02-git-basics",
+"chunk": "==\\nYou can specify more than one instance of both the `--author` and `--grep` search criteria...",
+"chunk\_index": 2
+},
+]
+}
+}
 }
 
 ```
@@ -163,32 +182,47 @@ Run the following code snippet, and inspect the results:
   language="ts"
 />
 </TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TransformResultSets"
+      endMarker="// END TransformResultSets"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 Here is our generated text:
 
 ```
-- Git began as a replacement for the proprietary DVCS called BitKeeper, which was used by the Linux kernel project.
-- The relationship between the Linux development community and BitKeeper broke down in 2005, leading to the development of Git by Linus Torvalds.
-- Git was designed with goals such as speed, simple design, strong support for non-linear development, and the ability to handle large projects efficiently.
-- Most operations in Git only require local files and resources, making them fast and efficient.
-- Git allows browsing project history instantly and can calculate differences between file versions locally.
-- Git allows offline work and does not require a network connection for most operations.
-- This book was written using Git version 2, but most commands should work in older versions as well.
+
+  - Git began as a replacement for the proprietary DVCS called BitKeeper, which was used by the Linux kernel project.
+  - The relationship between the Linux development community and BitKeeper broke down in 2005, leading to the development of Git by Linus Torvalds.
+  - Git was designed with goals such as speed, simple design, strong support for non-linear development, and the ability to handle large projects efficiently.
+  - Most operations in Git only require local files and resources, making them fast and efficient.
+  - Git allows browsing project history instantly and can calculate differences between file versions locally.
+  - Git allows offline work and does not require a network connection for most operations.
+  - This book was written using Git version 2, but most commands should work in older versions as well.
+
+<!-- end list -->
+
 ```
 
 In a `grouped task` RAG query, Weaviate:
+
 - Retrieves the three most similar passages to the meaning of `history of git`.
 - Then prompts the LLM with a combination of:
-    - Text from all of the search results, and
-    - The user-provided prompt, `Summarize the key information here in bullet points`.
+  - Text from all of the search results, and
+  - The user-provided prompt, `Summarize the key information here in bullet points`.
 
 Note that the user-provided prompt did not contain any information about the subject matter. But because Weaviate retrieved the relevant data about the history of git, it was able to summarize the information relating to this subject matter using verifiable data.
 
 That's how easy it is to perform RAG queries in Weaviate.
 
 :::note Your results may vary
+
 There will be variability in the actual text that has been generated. This due to the randomness in LLMs' behaviors, and variability across models. This is perfectly normal.
+
 :::
 
 ### Transform individual objects
@@ -216,6 +250,14 @@ Note that in this query, we apply a `single prompt` parameter. This means that t
   language="ts"
 />
 </TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TransformIndividualObjects"
+      endMarker="// END TransformIndividualObjects"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 As the query was run with a limit of 5, you should see 5 objects returned, including generated texts.
@@ -223,23 +265,26 @@ As the query was run with a limit of 5, you should see 5 objects returned, inclu
 Here is our generated text for the first object, and the source text:
 
 ```
-===== Generated text =====
+
+\===== Generated text =====
 🇺🇸🍷🌿🍑🌼🍯🍊🍮🍽️🌟
 
 Origine : États-Unis
 Titre : Schmitz 24 Brix 2012 Sauvignon Blanc (Sierra Foothills)
 Corps de la critique : Pas du tout un Sauvignon Blanc typique, il sent l'abricot et le chèvrefeuille et a le goût de la marmelade. Il est sec, mais a le goût d'un vin de dessert tardif. Attendez-vous à une petite aventure gustative ici.
 
-===== Original review =====
+\===== Original review =====
 Country: US,
 Title: Schmitz 24 Brix 2012 Sauvignon Blanc (Sierra Foothills)
 Review body Not at all a typical Sauvignon Blanc, this smells like apricot and honeysuckle and tastes like marmalade. It is dry, yet tastes like a late-harvest dessert wine. Expect a little taste adventure here.
+
 ```
 
 Here, Weaviate has:
+
 - Retrieved five most similar wine reviews to the meaning of `fruity white wine`.
 - For each result, prompted the LLM with:
-    - The user-provided prompt, replacing `{country}`, `{title}`, and `{review_body}` with the corresponding text.
+  - The user-provided prompt, replacing `{country}`, `{title}`, and `{review_body}` with the corresponding text.
 
 In both examples, you saw Weaviate return new text that is original, but grounded in the retrieved data. This is what makes RAG powerful, by combining the best of data retrieval and language generation.
 
@@ -253,11 +298,12 @@ For this example, you will need access to a Weaviate instance that you can write
 
 ### Configure Weaviate for RAG
 
-import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
+import MutableGenerativeConfig from '/\_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
 To use RAG, the appropriate `generative-xxx` module must be:
+
 - Enabled in Weaviate, and
 - Specified in the collection definition.
 
@@ -287,6 +333,14 @@ You can check which modules are enabled by viewing the `meta` information for yo
   language="ts"
 />
 </TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListModules"
+      endMarker="// END ListModules"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 The response will include a list of modules. Check that your desired module is enabled.
@@ -302,7 +356,7 @@ For configurable deployments, you can specify enabled modules. For example, in a
 services:
   weaviate:
     environment:
-      ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles'
+      ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles"
 ```
 
 Check the specific documentation for your deployment method ([Docker](/deploy/installation-guides/docker-installation.md), [Kubernetes](/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](/deploy/installation-guides/embedded.md)) for more information on how to configure it.
@@ -310,7 +364,7 @@ Check the specific documentation for your deployment method ([Docker](/deploy/in
 </details>
 
 <details>
-  <summary>How to configure the language model</summary>
+<summary>How to configure the language model</summary>
 
 Model properties are exposed through the Weaviate module configuration. Accordingly, you can customize them through the `moduleConfig` parameter in the collection definition.
 
@@ -344,7 +398,7 @@ And the `generative-openai` module may be configured as follows:
     }
 ```
 
-See the [documentation](../model-providers/index.md) for various model provider integrations.
+See the [documentation](/model-providers/index.md) for various model provider integrations.
 
 </details>
 
@@ -352,7 +406,7 @@ See the [documentation](../model-providers/index.md) for various model provider 
 
 Adding data to Weaviate for RAG is similar to adding data for other purposes. However, there are some important considerations to keep in mind, such as chunking and data structure.
 
-You can read further discussions in the [Best practices & tips](#best-practices--tips) section. Here, we will use a chunk length of 150 words and a 25-word overlap. We will also include the title of the book, the chapter it is from, and the chunk number. This will allow us to search through the chunks, as well as filter it.
+You can read further discussions in the [Best practices & tips](%23best-practices--tips) section. Here, we will use a chunk length of 150 words and a 25-word overlap. We will also include the title of the book, the chapter it is from, and the chunk number. This will allow us to search through the chunks, as well as filter it.
 
 #### Download & chunk
 
@@ -361,18 +415,26 @@ In the following snippet, we download a chapter of the `Pro Git` book, clean it 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# ChunkText"
-  endMarker="# END ChunkText"
-  language="py"
+text={PyCode}
+startMarker="# ChunkText"
+endMarker="# END ChunkText"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// ChunkText"
-  endMarker="// END ChunkText"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// ChunkText"
+endMarker="// END ChunkText"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START ChunkText"
+endMarker="// END ChunkText"
+language="javaraw"
 />
 </TabItem>
 </Tabs>
@@ -388,18 +450,26 @@ The below collection definition for the `GitBookChunk` collection specifies `tex
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# CreateClass"
-  endMarker="# END CreateClass"
-  language="py"
+text={PyCode}
+startMarker="# CreateClass"
+endMarker="# END CreateClass"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// CreateClass"
-  endMarker="// END CreateClass"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// CreateClass"
+endMarker="// END CreateClass"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START CreateClass"
+endMarker="// END CreateClass"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -411,18 +481,26 @@ Now, we can import the data into Weaviate.
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# ImportData"
-  endMarker="# END ImportData"
-  language="py"
+text={PyCode}
+startMarker="# ImportData"
+endMarker="# END ImportData"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// ImportData"
-  endMarker="// END ImportData"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// ImportData"
+endMarker="// END ImportData"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START ImportData"
+endMarker="// END ImportData"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -432,18 +510,26 @@ Once this is done, you should have imported a collection of chunks from the chap
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# CountObjects"
-  endMarker="# END CountObjects"
-  language="py"
+text={PyCode}
+startMarker="# CountObjects"
+endMarker="# END CountObjects"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// CountObjects"
-  endMarker="// END CountObjects"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// CountObjects"
+endMarker="// END CountObjects"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START CountObjects"
+endMarker="// END CountObjects"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -461,18 +547,26 @@ Single prompts tell Weaviate to generate text based on each retrieved object and
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# SinglePrompt"
-  endMarker="# END SinglePrompt"
-  language="py"
+text={PyCode}
+startMarker="# SinglePrompt"
+endMarker="# END SinglePrompt"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// SinglePrompt"
-  endMarker="// END SinglePrompt"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// SinglePrompt"
+endMarker="// END SinglePrompt"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START SinglePrompt"
+endMarker="// END SinglePrompt"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -500,18 +594,26 @@ In this example, we prompt the language model to write a trivia tweet based on t
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# GroupedTask"
-  endMarker="# END GroupedTask"
-  language="py"
+text={PyCode}
+startMarker="# GroupedTask"
+endMarker="# END GroupedTask"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// GroupedTask"
-  endMarker="// END GroupedTask"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// GroupedTask"
+endMarker="// END GroupedTask"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START GroupedTask"
+endMarker="// END GroupedTask"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -533,18 +635,26 @@ In this example, we search the chapter for passages that relate to the states of
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# NearTextGroupedTask"
-  endMarker="# END NearTextGroupedTask"
-  language="py"
+text={PyCode}
+startMarker="# NearTextGroupedTask"
+endMarker="# END NearTextGroupedTask"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// NearTextGroupedTask"
-  endMarker="// END NearTextGroupedTask"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// NearTextGroupedTask"
+endMarker="// END NearTextGroupedTask"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START NearTextGroupedTask"
+endMarker="// END NearTextGroupedTask"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -562,18 +672,26 @@ Now, simply by changing the search query, we can generate similar content about 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
-  text={PyCode}
-  startMarker="# SecondNearTextGroupedTask"
-  endMarker="# END SecondNearTextGroupedTask"
-  language="py"
+text={PyCode}
+startMarker="# SecondNearTextGroupedTask"
+endMarker="# END SecondNearTextGroupedTask"
+language="py"
 />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
-  text={TSCodeLocal}
-  startMarker="// SecondNearTextGroupedTask"
-  endMarker="// END SecondNearTextGroupedTask"
-  language="ts"
+text={TSCodeLocal}
+startMarker="// SecondNearTextGroupedTask"
+endMarker="// END SecondNearTextGroupedTask"
+language="ts"
+/>
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+text={JavaV6Code}
+startMarker="// START SecondNearTextGroupedTask"
+endMarker="// END SecondNearTextGroupedTask"
+language="java"
 />
 </TabItem>
 </Tabs>
@@ -591,7 +709,6 @@ Did you know? 🤔 Git stores everything by the hash value of its contents, not 
 As you can see, Weaviate allows you to use the full power of search to retrieve the objects you want to use for generation. This allows you to ground the language model in the context of up-to-date information, which you can retrieve with the full power of Weaviate's search capabilities.
 
 ## Best practices & tips
-
 
 ### Chunking
 
@@ -639,11 +756,10 @@ Our own [Connor Shorten's podcast](https://weaviate.io/podcast) is a great resou
 
 We've explored the dynamic capabilities of RAG in Weaviate, showcasing how it enhances large language models through retrieval-augmented generation.
 
-To learn more about specific search capabilities, check out the [How-to: search guide](../search/index.mdx). And to learn more about individual modules, check out the [Modules section](../modules/index.md).
-
+To learn more about specific search capabilities, check out the [How-to: search guide](/search/index.mdx). And to learn more about individual modules, check out the [Modules section](/modules/index.md).
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
