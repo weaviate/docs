@@ -211,7 +211,7 @@ Weaviate provides several tokenization methods optimized for different data type
 - **`kagome_ja`**: Japanese morphological analysis
 - **`kagome_kr`**: Korean morphological analysis
 
-See the [tokenization configuration reference](../../config-refs/collections#tokenization) for detailed specifications and behavior examples.
+See the [tokenization configuration reference](../../config-refs/collections.mdx#tokenization) for detailed specifications and behavior examples.
 
 ### Impact on search and filtering
 
