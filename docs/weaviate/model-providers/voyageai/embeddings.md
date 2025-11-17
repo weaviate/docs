@@ -341,6 +341,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
+- voyage-context-3
 - voyage-3.5
 - voyage-3.5-lite
 - voyage-3-large

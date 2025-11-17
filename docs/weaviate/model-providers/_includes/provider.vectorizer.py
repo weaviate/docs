@@ -1145,9 +1145,10 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             # Further options
-            # model="voyage-large-2"
+            # model="voyage-3.5-lite"
             # base_url="<custom_voyageai_url>",
             # truncate=True,
+            # dimensions=512,
         )
     ],
     # highlight-end

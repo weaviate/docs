@@ -1285,9 +1285,10 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
-      // model: 'voyage-large-2',
+      // model: 'voyage-3.5-lite',
       // baseURL: '<custom_voyageai_url>',
       // truncate: true
+      // dimensions: 512
     },
     ),
   ],
