@@ -1,10 +1,9 @@
 import io.weaviate.client6.v1.api.Authentication;
 import io.weaviate.client6.v1.api.WeaviateClient;
+import io.weaviate.client6.v1.api.cluster.NodeVerbosity;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ConnectionTest {
 
@@ -18,6 +17,34 @@ class ConnectionTest {
 
     client.close(); // Free up resources
     // END CustomURL
+  }
+
+  @Test
+  void testNodesEndpoint() throws Exception {
+    // START GetNodes
+    WeaviateClient client = WeaviateClient
+        .connectToLocal(config -> config.host("127.0.0.1").port(8080));
+
+    System.out.println(client.cluster.listNodes()); // all
+    System.out
+        .println(client.cluster.listNodes(n -> n.collection("JeopardyQuestion")
+            .shard("SomeShard")
+            .verbosity(NodeVerbosity.MINIMAL)));
+
+    client.close(); // Free up resources
+    // END GetNodes
+  }
+
+  // TODO[g-despot] Missiing meta info endpoint
+  @Test
+  void testGetMetaInfo() throws Exception {
+    // START GetNodes
+    WeaviateClient client = WeaviateClient.connectToLocal();
+
+    System.out.println(client.isReady()); // all
+
+    client.close(); // Free up resources
+    // END GetNodes
   }
 
   // TODO[g-despot] Missing timeout options
