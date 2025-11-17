@@ -52,7 +52,7 @@
   border: 1px solid var(--docs-cards-border-color);
   border-radius: 6px;
   transition: all 0.2s ease;
-  padding: 1rem;
+  padding: 0.4rem;
 }
 
 .wc-checkbox-container:hover {
@@ -119,14 +119,14 @@
 }
 
 .wc-checkbox-title {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--docs-header-color);
   margin-right: auto;
 }
 
 .wc-checkbox-description {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--ifm-color-emphasis-700);
   text-align: right;
   padding-left: 1rem;
@@ -138,18 +138,17 @@
   color: var(--docs-header-color);
 }
 
-.wc-form-description {
-  font-size: 0.75rem;
+.weaviate-configurator p.wc-form-description {
+  font-size: 0.9rem;
   color: var(--ifm-color-emphasis-700);
   text-align: right;
   padding-left: 1rem;
-  margin-bottom: 0.25rem;
 }
 
 /* Select Dropdown */
 .wc-select {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.4rem 0.5rem;
   border: 1px solid var(--docs-cards-border-color);
   border-radius: 6px;
   background-color: var(--docs-body-bg);
