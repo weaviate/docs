@@ -23,7 +23,7 @@ This architecture provides flexibility and performance optimization but also mea
 
 For `text` properties specifically, the indexing process follows these steps:
 
-1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
+1. **Tokenization**: The text is first tokenized according to the [tokenization method](#tokenization) configured for that property.
 3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
 
 This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
@@ -167,12 +167,107 @@ An example of a complete collection object without inverted indexes:
 
 </details>
 
+## Tokenization
+
+Tokenization is the process of breaking text into smaller units called tokens. This process is fundamental to how inverted indexes work - the tokens produced determine what can be searched and how matching occurs.
+
+### How tokenization works
+
+When you add an object to Weaviate, text in each property is tokenized according to that property's configured tokenization method. For example, the text:
+
+'"Ankh-Morpork's police captain"' could be tokenized using different tokenization methods:
+
+1. `'word'`: `["ankh", "morpork", "s", "police", "captain"]` - splits on non-alphanumeric characters, lowercased
+2. `'lowercase'`: `["ankh-morpork's", "police", "captain"]` - splits on whitespace only, lowercased
+3. `'whitespace'`: `["Ankh-Morpork's", "police", "captain"]` - splits on whitespace, preserves case
+4. `'field'`: `["Ankh-Morpork's police captain"]` - treats entire text as single token
+
+Each tokenization method serves different use cases and directly impacts search and filter behavior.
+
+### Tokenization and the inverted index
+
+The inverted index maps each token to the objects containing it. When you perform a keyword search or filter:
+
+1. Your query/filter text is tokenized using the **same method** as the indexed property
+2. The inverted index looks up which objects contain those tokens
+3. For searches, BM25f ranks results based on token matches
+4. For filters, exact token matches determine inclusion
+
+This means the tokenization method controls the "granularity" of matching. For example, with `word` tokenization, searching for `"clark"` will match an object containing `"Clark:"` because both tokenize to `["clark"]`. With `field` tokenization, only exact matches succeed.
+
+### Available tokenization methods
+
+Weaviate provides several tokenization methods optimized for different data types:
+
+**Standard methods:**
+- **`word`** (default): Splits on non-alphanumeric characters, lowercases. Best for typical text.
+- **`lowercase`**: Splits on whitespace, lowercases. Preserves symbols like `@`, `_`, `-`.
+- **`whitespace`**: Splits on whitespace, preserves case and symbols. For case-sensitive data.
+- **`field`**: No splitting - entire value is one token. For exact matching.
+
+**Language-specific methods** (for languages without word boundaries):
+- **`gse`**: Chinese text segmentation using Jieba algorithm
+- **`trigram`**: Splits into character trigrams for CJK languages
+- **`kagome_ja`**: Japanese morphological analysis
+- **`kagome_kr`**: Korean morphological analysis
+
+See the [tokenization configuration reference](../../config-refs/collections#tokenization) for detailed specifications and behavior examples.
+
+### Impact on search and filtering
+
+#### Filters
+
+Filters perform binary matching - an object either matches or doesn't. Tokenization determines what counts as a match:
+
+| Query | Indexed text | `word` | `lowercase` | `whitespace` | `field` |
+|-------|--------------|--------|-------------|--------------|---------|
+| `"clark"` | `"Clark:"` | ✅ | ❌ | ❌ | ❌ |
+| `"variable_name"` | `"variable_name"` | ✅ | ✅ | ✅ | ✅ |
+| `"variable_name"` | `"variable_new_name"` | ✅ | ❌ | ❌ | ❌ |
+
+With `word` tokenization, `"variable_name"` matches `"variable_new_name"` because both contain the tokens `["variable", "name"]`.
+
+#### Keyword searches
+
+Keyword searches use BM25f to rank results. Tokenization affects:
+
+1. **Result inclusion**: Only objects with matching tokens appear
+2. **Ranking scores**: More matching tokens = higher scores
+
+For example, searching for `"lois clark"` with `word` tokenization will rank objects containing both words higher than those with just one.
+
+### Stop words
+
+Stop words are common words (like "a", "the", "is") that are typically ignored during search. By default, Weaviate uses a standard English stop words list.
+
+After tokenization, stop words in queries behave as if they're not present for matching purposes:
+- Filter for `"a computer mouse"` behaves like `"computer mouse"`
+- Stop words still affect BM25f ranking scores
+
+You can [configure custom stop words](../../config-refs/indexing/inverted-index.mdx#stopwords) in your collection definition.
+
+**Note**: With `field` tokenization, stop words don't apply since the entire field is one token.
+
+### Choosing a tokenization method
+
+The choice of tokenization method should match your data characteristics and search requirements. Here are some general guidelines:
+
+- **General text** (articles, descriptions): Use `word` (default)
+- **Technical data with symbols** (code, emails): Use `lowercase`
+- **Case-sensitive data** (names, acronyms): Use `whitespace`
+- **Unique identifiers** (URLs, IDs): Use `field`
+- **CJK languages**: Use language-specific methods
+
+For detailed guidance and practical examples, see the [tokenization tutorial](../../tutorials/configure-tokenization.mdx).
+
 ## Further resources
 
 :::info Related pages
 
 - [Configuration: Inverted index](../../config-refs/indexing/inverted-index.mdx)
 - [How-to: Configure collections](../../manage-collections/vector-config.mdx#property-level-settings)
+- [Configuration: Tokenization](../../config-refs/collections.mdx#tokenization)
+- [Tutorial: Configure tokenization](../../tutorials/tokenization.md)
 
 :::
 
