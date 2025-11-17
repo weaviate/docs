@@ -221,25 +221,7 @@ We are working on a re-indexing API to allow you to re-index the data after addi
 
 For `text` properties, Weaviate first **[tokenizes](../collections.mdx#tokenization)** the text before creating inverted index entries. Tokenization is the process of breaking text into individual tokens (words, phrases, or characters) that can be indexed and searched.
 
-The tokenization method you choose directly impacts:
-
-- What tokens are created from your text
-- How these tokens are stored in the inverted index
-- How search queries and filters match against your data
-
-For example, with the text `"Hello, (beautiful) world"`:
-
-- **`word` tokenization** creates tokens: `["hello", "beautiful", "world"]`
-- **`whitespace` tokenization** creates tokens: `["hello", "(beautiful)", "world"]`
-- **`field` tokenization** creates a single token: `["Hello, (beautiful) world"]`
-
-Each token becomes a separate entry in the inverted index, pointing back to the objects containing that token.
-
-:::tip
-
-Different tokenization methods suit different use cases. Use `word` (default) for general text search, `field` for exact matching, or specialized tokenizers like `gse` or `kagome_ja` for Asian languages. Learn more about [tokenization options](../collections.mdx#tokenization).
-
-:::
+See the related [concepts page](../../concepts/indexing/inverted-index.md#tokenization) for more details.
 
 ## Further resources
 

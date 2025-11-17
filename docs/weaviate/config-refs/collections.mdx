@@ -314,27 +314,87 @@ Tokenization is a property-level configuration for `text` properties. [See how t
 
 </details>
 
-Each token will be indexed separately in the inverted index. For example, if you have a `text` property with the value `Hello, (beautiful) world`, the following table shows how the tokens would be indexed for each tokenization method:
+##### Standard tokenization methods
 
-import TokenizationDefinition from "/_includes/tokenization_definition.mdx";
+###### `word` tokenization
 
-<TokenizationDefinition />
+**Description**: Splits text by any non-alphanumeric characters, then lowercases each token. This is the default setting.
 
-##### Tokenization and search / filtering
+**Behavior examples**:
 
-Tokenization impacts how filters or keywords searches behave. The filter or keyword search query is also tokenized before being matched against the inverted index.
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["why", "hello", "there"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["lois", "clark", "the", "new", "adventures", "of", "superman"]` |
+| `"variable_name"` | `["variable", "name"]` |
+| `"Email: john.doe@example.com"` | `["email", "john", "doe", "example", "com"]` |
 
-The following table shows an example scenario showing whether a filter or keyword search would identify a `text` property with value `Hello, (beautiful) world` as a hit.
+**When to use**:
+- Recommended for most general text data (articles, descriptions).
+- When case-insensitivity and ignoring punctuation is desired for more forgiving searches.
 
-- **Row**: Various tokenization methods.
-- **Column**: Various search strings.
+---
 
-|                  | `Beautiful` | `(Beautiful)` | `(beautiful)` | `Hello, (beautiful) world` |
-| ---------------- | ----------- | ------------- | ------------- | -------------------------- |
-| `word` (default) | ✅          | ✅            | ✅            | ✅                         |
-| `lowercase`      | ❌          | ✅            | ✅            | ✅                         |
-| `whitespace`     | ❌          | ❌            | ✅            | ✅                         |
-| `field`          | ❌          | ❌            | ❌            | ✅                         |
+###### `lowercase` tokenization
+
+**Description**: Splits text by whitespace only, then lowercases each token. It preserves symbols that `word` tokenization would remove.
+
+**Behavior examples**:
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["why,", "hello", "there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["lois", "&", "clark:", "the", "new", "adventures", "of", "superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["email:", "john.doe@example.com"]` |
+
+**When to use**:
+- For technical data where symbols like `&`, `@`, or `_` are meaningful (e.g., code snippets, email addresses).
+- When you need case-insensitive matching but must preserve symbols.
+
+---
+
+###### `whitespace` tokenization
+
+**Description**: Splits text by whitespace only, preserving both case and symbols.
+
+**Behavior examples**:
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["Why,", "hello", "there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["Lois", "&", "Clark:", "The", "New", "Adventures", "of", "Superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["Email:", "john.doe@example.com"]` |
+
+**When to use**:
+- When case-sensitivity is important (e.g., for proper nouns, acronyms, or specific codes).
+- Requires careful query construction to match case.
+
+---
+
+###### `field` tokenization
+
+**Description**: Treats the entire value of the property as a single token. No splitting occurs.
+
+**Behavior examples**:
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["Why, hello there!"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["Email: john.doe@example.com"]` |
+
+**When to use**:
+- When you need to match the entire field value exactly.
+- For properties containing unique identifiers like URLs, UUIDs, or email addresses.
+- Limited use for keyword searches but powerful for exact filtering.
+
+---
+
+##### Language-specific tokenization
+
+The standard tokenization methods work well for English and other languages that use spaces to separate words. For languages like Chinese, Japanese, and Korean that don't rely on spaces, Weaviate provides specialized tokenization methods.
 
 <details>
   <summary>`gse` and `trigram` tokenization methods</summary>
@@ -448,6 +508,37 @@ Use trigram tokenization selectively on fields where fuzzy matching is preferred
 
 </details>
 
+##### Decision guide
+
+Use this table to quickly identify the right tokenization method for your data.
+
+| If your data is... | Consider | Because |
+|-------------------|----------|---------|
+| General text (articles, descriptions) | `word` | Case-insensitive, ignores punctuation, forgiving |
+| Code, technical IDs with `_` or `-` | `lowercase` | Preserves symbols, case-insensitive |
+| Names, acronyms where case matters | `whitespace` | Case-sensitive, preserves symbols |
+| Email addresses, URLs, unique IDs | `field` | Requires exact matches |
+| Chinese text | `gse` or `trigram` | Proper word segmentation |
+| Japanese text | `kagome_ja` or `trigram` | Proper morphological analysis |
+| Korean text | `kagome_kr` or `trigram` | Proper morphological analysis |
+
+##### Performance considerations
+
+**Indexing speed**
+- `word`, `lowercase`, `whitespace`: Fast, with similar performance.
+- `field`: Fastest, as no splitting is required.
+- `gse`, `trigram`, `kagome_*`: Slower due to more complex segmentation algorithms.
+
+**Query performance**
+- Simple tokenization methods (`word`, `lowercase`, `whitespace`): Fast.
+- `field` with wildcard filters: Can be slow and should be used judiciously.
+- Language-specific methods: Performance is similar to simple methods for queries.
+
+**Index size**
+- More tokens result in a larger index.
+- `field`: Creates the smallest index (one token per value).
+- `trigram`: Creates the largest index due to many overlapping trigrams.
+
 ---
 
 ### Inverted index {#inverted-index}
@@ -486,7 +577,7 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 | [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | Index type for this named vector                                                                                                                              | `hnsw`                  | No            |
 | [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | Index configuration for this named vector                                                                                                                     | Index-specific defaults | Partially\*   |
 
-\* See [vector index mutable parameters](./indexing/vector-index.mdx)  
+\* See [vector index mutable parameters](./indexing/vector-index.mdx)
 \*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
 
 #### Single vector collections
