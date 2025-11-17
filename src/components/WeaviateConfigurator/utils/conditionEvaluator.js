@@ -21,6 +21,12 @@ function compareVersions(v1, v2) {
 }
 
 function evaluateSingleCondition(condition, selections) {
+  // New "contains" operator
+  if (condition.includes('~~')) {
+    const [key, value] = condition.split('~~');
+    return selections[key] && Array.isArray(selections[key]) && selections[key].includes(value);
+  }
+
   // Handle version comparisons (e.g., "weaviate_version>=v1.21.0")
   const versionMatch = condition.match(/^(\w+)(>=|<=|>|<)(.+)$/);
   if (versionMatch) {

@@ -7,7 +7,7 @@
  * <WeaviateConfigurator />
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getVisibleParameters } from './utils/conditionEvaluator';
 import { generateDockerCompose } from './utils/dockerComposeGenerator';
 import './styles.css';
@@ -15,50 +15,109 @@ import './styles.css';
 // Import parameters
 import parametersData from './parameters.json';
 
-// Helper to render the correct input type
-function ParameterInput({ parameter, value, onChange, selections }) {
-  // Determine if the parameter should be a dropdown
-  const useDropdown =
-    (parameter.options && parameter.options.length > 4) ||
-    ['weaviate_version', 'weaviate_volume', 'modules'].includes(parameter.name);
+// This component will render individual parameters and their children
+function ParameterRenderer({
+  parameter,
+  selections,
+  onSelectionChange,
+  allParameters,
+}) {
+  const { name, displayName, description, type, options } = parameter;
+  const value = selections[name] || (type === 'checkbox-group' ? [] : '');
 
-  if (useDropdown) {
+  // Find sub-options for checkbox groups
+  const subOptionsMap = useMemo(() => {
+    const map = new Map();
+    if (type !== 'checkbox-group') return map;
+
+    for (const option of options) {
+      const children = allParameters.filter(p =>
+        p.conditions &&
+        Object.values(p.conditions)
+          .flat()
+          .includes(`${name}~~${option.name}`)
+      );
+      if (children.length > 0) {
+        map.set(option.name, children);
+      }
+    }
+    return map;
+  }, [allParameters, name, options, type]);
+
+  const InputComponent = () => {
+    if (type === 'checkbox-group') {
+      return (
+        <div className="wc-checkbox-group">
+          {options.map((option) => {
+            const isSelected = value.includes(option.name);
+            const subOptions = subOptionsMap.get(option.name);
+
+            return (
+              <div key={option.name} className={`wc-checkbox-container ${isSelected ? 'selected' : ''}`}>
+                <label className="wc-checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={name}
+                    value={option.name}
+                    checked={isSelected}
+                    onChange={(e) => {
+                      const newValues = [...value];
+                      if (e.target.checked) {
+                        newValues.push(option.name);
+                      } else {
+                        const index = newValues.indexOf(option.name);
+                        if (index > -1) newValues.splice(index, 1);
+                      }
+                      onSelectionChange(name, newValues);
+                    }}
+                  />
+                  <span className="wc-checkbox-title">{option.displayName}</span>
+                  {option.description && (
+                    <span className="wc-checkbox-description">{option.description}</span>
+                  )}
+                </label>
+                {isSelected && subOptions && (
+                  <div className="wc-sub-options-container">
+                    {subOptions.map(subParam => (
+                      <ParameterRenderer
+                        key={subParam.name}
+                        parameter={subParam}
+                        selections={selections}
+                        onSelectionChange={onSelectionChange}
+                        allParameters={allParameters}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // Dropdown (select)
     return (
       <select
         className="wc-select"
         value={value}
-        onChange={(e) => onChange(parameter.name, e.target.value)}
+        onChange={(e) => onSelectionChange(name, e.target.value)}
       >
-        {parameter.options.map((option) => (
+        {name === 'default_vectorizer' && <option value="">-- Select a default --</option>}
+        {options.map((option) => (
           <option key={option.name} value={option.name}>
             {option.displayName}
           </option>
         ))}
       </select>
     );
-  }
+  };
 
-  // Render radio buttons for other types
   return (
-    <div className="wc-radio-group">
-      {parameter.options.map((option) => (
-        <label
-          key={option.name}
-          className={`wc-radio-label ${value === option.name ? 'selected' : ''}`}
-        >
-          <input
-            type="radio"
-            name={parameter.name}
-            value={option.name}
-            checked={value === option.name}
-            onChange={(e) => onChange(parameter.name, e.target.value)}
-          />
-          <span className="wc-radio-title">{option.displayName}</span>
-          {option.description && (
-            <span className="wc-radio-description">{option.description}</span>
-          )}
-        </label>
-      ))}
+    <div className="wc-form-group">
+      <label className="wc-form-label">{displayName}</label>
+      {description && <p className="wc-form-description">{description}</p>}
+      <InputComponent />
     </div>
   );
 }
@@ -83,7 +142,6 @@ function WeaviateConfigurator() {
     }
   }, []);
 
-  // Update handler
   const handleSelectionChange = (name, value) => {
     setSelections((prev) => ({
       ...prev,
@@ -91,7 +149,6 @@ function WeaviateConfigurator() {
     }));
   };
 
-  // Generate Docker Compose file
   const handleGenerate = () => {
     const content = generateDockerCompose(selections);
     setDockerCompose(content);
@@ -103,27 +160,54 @@ function WeaviateConfigurator() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const visibleParameters = getVisibleParameters(parameters, selections);
+  // Memoize visible parameters to avoid re-calculating on every render
+  const visibleParameters = useMemo(() => {
+    // Filter out parameters that are sub-options of checkboxes
+    const topLevelParams = parameters.filter(p =>
+      !p.conditions ||
+      !Object.values(p.conditions)
+        .flat()
+        .some(c => c.includes('~~'))
+    );
+    return getVisibleParameters(topLevelParams, selections);
+  }, [parameters, selections]);
+
+  const needsDefaultVectorizer = (selections.text_vectorizers?.length || 0) + (selections.image_vectorizers?.length || 0) > 1;
 
   if (loading) return <div className="weaviate-configurator-loading">Loading...</div>;
   if (error) return <div className="weaviate-configurator-error">{error}</div>;
 
   return (
     <div className="weaviate-configurator">
-
       <div className="wc-form">
         {visibleParameters.map((param) => (
-          <div key={param.name} className="wc-form-group">
-            <label className="wc-form-label">{param.displayName}</label>
-            <p className="wc-form-description">{param.description}</p>
-            <ParameterInput
-              parameter={param}
-              value={selections[param.name] || ''}
-              onChange={handleSelectionChange}
-              selections={selections}
-            />
-          </div>
+          <ParameterRenderer
+            key={param.name}
+            parameter={param}
+            selections={selections}
+            onSelectionChange={handleSelectionChange}
+            allParameters={parameters}
+          />
         ))}
+
+        {needsDefaultVectorizer && (
+           <ParameterRenderer
+             parameter={{
+               name: 'default_vectorizer',
+               displayName: 'Default Vectorizer',
+               description: 'Since you have multiple vectorizers, select which one should be the default.',
+               type: 'select',
+               options: [
+                 ...(selections.text_vectorizers || []),
+                 ...(selections.image_vectorizers || [])
+               ].map(v => ({ name: v, displayName: v.replace('-pytorch', ' (PyTorch)').replace('-keras', ' (Keras)') }))
+             }}
+             selections={selections}
+             onSelectionChange={handleSelectionChange}
+             allParameters={parameters}
+           />
+        )}
+
         <button onClick={handleGenerate} className="wc-button wc-button-primary">
           Generate Configuration
         </button>
@@ -134,7 +218,7 @@ function WeaviateConfigurator() {
           <div className="wc-result-header">
             <h2>Your docker-compose.yml</h2>
             <button onClick={copyToClipboard} className="wc-button wc-button-secondary">
-              {copied ? '✓ Copied!' : 'Copy'}
+              {copied ? '✓ Copied!' : 'Copied!'}
             </button>
           </div>
           <textarea

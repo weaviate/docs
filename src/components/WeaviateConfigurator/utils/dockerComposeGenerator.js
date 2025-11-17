@@ -1,20 +1,20 @@
 /**
  * Generate docker-compose.yml content based on user selections
- * This is a simplified version focused on the most common configurations
  */
-
 export function generateDockerCompose(selections) {
   const {
     weaviate_version = 'v1.32.7',
     weaviate_volume = 'named-volume',
-    modules = 'none',
-    media_type,
-    text_module,
+    text_vectorizers = [],
+    image_vectorizers = [],
+    rerankers = [],
+    default_vectorizer,
     transformers_model,
     openai_key_approval,
     cohere_key_approval,
-    image_neural_model,
   } = selections;
+
+  const allModules = [...text_vectorizers, ...image_vectorizers, ...rerankers];
 
   // Start building the compose file
   let compose = `---
@@ -50,35 +50,35 @@ services:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: '${getDefaultVectorizer(selections)}'
-      ENABLE_MODULES: '${getEnabledModules(selections)}'
+      DEFAULT_VECTORIZER_MODULE: '${default_vectorizer || 'none'}'
+      ENABLE_MODULES: '${allModules.join(',')}'
       CLUSTER_HOSTNAME: 'node1'
 `;
 
   // Add module-specific environment variables
-  if (text_module === 'text2vec-openai' && openai_key_approval === 'yes') {
-    compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}
-`;
+  if (text_vectorizers.includes('text2vec-openai') && openai_key_approval === 'yes') {
+    compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}\n`;
   }
 
-  if (text_module === 'text2vec-cohere' && cohere_key_approval === 'yes') {
-    compose += `      COHERE_APIKEY: \${COHERE_APIKEY}
-`;
+  if (
+    (text_vectorizers.includes('text2vec-cohere') || rerankers.includes('reranker-cohere')) &&
+    cohere_key_approval === 'yes'
+  ) {
+    compose += `      COHERE_APIKEY: \${COHERE_APIKEY}\n`;
   }
 
-  // Add module containers if needed
-  if (modules === 'modules') {
-    if (text_module === 'text2vec-transformers') {
-      compose += getTransformersService(transformers_model);
-    }
-
-    if (text_module === 'text2vec-ollama') {
-      compose += getOllamaService();
-    }
-
-    if (media_type === 'image' || media_type === 'image,text') {
-      compose += getImageService(image_neural_model);
-    }
+  // Add module service containers
+  if (text_vectorizers.includes('text2vec-transformers')) {
+    compose += getTransformersService(transformers_model);
+  }
+  if (text_vectorizers.includes('text2vec-ollama')) {
+    compose += getOllamaService();
+  }
+  if (image_vectorizers.includes('img2vec-neural-pytorch')) {
+    compose += getImageService('pytorch');
+  }
+  if (image_vectorizers.includes('img2vec-neural-keras')) {
+    compose += getImageService('keras');
   }
 
   // Add volumes section if needed
@@ -92,41 +92,8 @@ volumes:
   return compose;
 }
 
-function getDefaultVectorizer(selections) {
-  if (selections.modules === 'none') {
-    return 'none';
-  }
-
-  if (selections.text_module) {
-    return selections.text_module;
-  }
-
-  return 'none';
-}
-
-function getEnabledModules(selections) {
-  if (selections.modules === 'none') {
-    return '';
-  }
-
-  const modules = [];
-
-  if (selections.text_module) {
-    modules.push(selections.text_module);
-  }
-
-  if (selections.media_type === 'image' || selections.media_type === 'image,text') {
-    modules.push('img2vec-neural');
-  }
-
-  return modules.join(',');
-}
-
 function getTransformersService(model) {
-  if (!model) return '';
-
   const modelTag = model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1';
-
   return `
   t2v-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:${modelTag}
@@ -146,14 +113,11 @@ function getOllamaService() {
 `;
 }
 
-function getImageService(model) {
-  if (!model) return '';
-
-  const modelTag = model === 'pytorch-resnet50' ? 'pytorch-resnet50' : 'resnet50';
-
+function getImageService(type) {
+  const modelTag = type === 'pytorch' ? 'pytorch-resnet50' : 'resnet50';
   return `
   i2v-neural:
-    image: cr.weaviate.io/semitechnologies/img2vec-${modelTag}:latest
+    image: cr.weaviate.io/semitechnologies/img2vec-neural:${modelTag}
     environment:
       ENABLE_CUDA: '0'
 `;
