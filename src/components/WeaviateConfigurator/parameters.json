@@ -1,0 +1,231 @@
+{
+  "parameters": [
+    {
+      "name": "weaviate_version",
+      "displayName": "Weaviate Version",
+      "description": "It is recommended to always use the latest version. You can also select an older version for compatibility sake, but not all features might be available on an older version.",
+      "type": "select-multiline",
+      "options": [
+        {
+          "name": "v1.32.7",
+          "displayName": "v1.32.7 (Latest)",
+          "description": "Latest stable release with all features"
+        },
+        {
+          "name": "v1.30.0",
+          "displayName": "v1.30.0",
+          "description": "Runtime config management, Dynamic user management, Dynamic RAG model selection"
+        },
+        {
+          "name": "v1.25.0",
+          "displayName": "v1.25.0",
+          "description": "Stable version with Ollama support"
+        }
+      ]
+    },
+    {
+      "name": "weaviate_volume",
+      "displayName": "Persistent Volume",
+      "description": "It's recommended to set a persistent volume to avoid data loss and improve reading and writing speeds.",
+      "type": "select-multiline",
+      "options": [
+        {
+          "name": "named-volume",
+          "displayName": "Persistent volume with named volume",
+          "description": "Docker will create a named volume called weaviate_data and mount it to the container."
+        },
+        {
+          "name": "host-binding",
+          "displayName": "Persistent volume with host binding",
+          "description": "Docker will mount ./weaviate_data on the host to the container. Note that a volume ./weaviate_data must exist."
+        },
+        {
+          "name": "no-volume",
+          "displayName": "No persistent volume",
+          "description": "Not recommended: You will not set a persistent volume. Data may be lost on container restart."
+        }
+      ]
+    },
+    {
+      "name": "modules",
+      "displayName": "Standalone or Modules",
+      "description": "Would you like to include modules or run Weaviate as a standalone vector database?",
+      "type": "select-multiline",
+      "options": [
+        {
+          "name": "standalone",
+          "displayName": "Standalone, no Modules",
+          "description": "You will provide your own vectors and use Weaviate as a pure vector database."
+        },
+        {
+          "name": "modules",
+          "displayName": "With Modules",
+          "description": "You can configure modules in the next step and feed specific media types into Weaviate which can then be vectorized using the right module."
+        }
+      ]
+    },
+    {
+      "name": "media_type",
+      "displayName": "Vectorizers & Retrievers Media Type",
+      "description": "Configure the media type, such as text, images, etc. to use with the Vectorizers & Retrievers Modules inside Weaviate.",
+      "type": "select-multiline",
+      "conditions": {
+        "or": ["modules==modules"]
+      },
+      "options": [
+        {
+          "name": "text",
+          "displayName": "Text",
+          "description": "Weaviate will turn your text (or code) objects to vectors at import and search time. Supports transformers, openai, contextionary and others."
+        },
+        {
+          "name": "image",
+          "displayName": "Images",
+          "description": "Weaviate will vectorize your images at import and at search time."
+        },
+        {
+          "name": "image,text",
+          "displayName": "Text & Image",
+          "description": "Weaviate will have the capabilities to vectorize both text and images. You can decide which vectorizer to use on a class-by-class basis."
+        }
+      ]
+    },
+    {
+      "name": "text_module",
+      "displayName": "Vectorizer & Retriever Text Module",
+      "description": "Select the text vectorization module for your Weaviate instance.",
+      "type": "select-multiline",
+      "conditions": {
+        "or": ["media_type==text", "media_type==image,text"]
+      },
+      "options": [
+        {
+          "name": "text2vec-transformers",
+          "displayName": "text2vec-transformers",
+          "description": "The transformers (e.g. BERT, etc.) module reaches the highest accuracy, but requires GPUs to run efficiently."
+        },
+        {
+          "name": "text2vec-openai",
+          "displayName": "text2vec-openai (OpenAI Embeddings API)",
+          "description": "Sends your text objects to OpenAI for embedding inference. Requires a valid OpenAI API key."
+        },
+        {
+          "name": "text2vec-cohere",
+          "displayName": "text2vec-cohere (Cohere Embeddings API)",
+          "description": "Sends your text objects to Cohere for embedding inference. Requires a valid Cohere API key."
+        },
+        {
+          "name": "text2vec-ollama",
+          "displayName": "text2vec-ollama (Ollama Embeddings API)",
+          "description": "Sends your text objects to Ollama container for embedding inference. Configurator adds bare ollama container.",
+          "conditions": {
+            "or": ["weaviate_version>=v1.25.0"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "transformers_model",
+      "displayName": "Transformers Model",
+      "description": "Each model can have specific advantages and disadvantages. Models are typically either English-only or multi-lingual.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["text_module==text2vec-transformers"]
+      },
+      "options": [
+        {
+          "name": "sentence-transformers-multi-qa-MiniLM-L6-cos-v1",
+          "displayName": "sentence-transformers/multi-qa-MiniLM-L6-cos-v1 (English, 384d)",
+          "description": "Sentence-Transformer recommendation for best accuracy/speed trade-off. Specifically trained for semantic search."
+        },
+        {
+          "name": "sentence-transformers-all-MiniLM-L12-v2",
+          "displayName": "sentence-transformers/all-MiniLM-L12-v2 (English, 384d)",
+          "description": "All-purpose model. Best accuracy/speed trade-off for a general purpose model, but not specifically trained for semantic search."
+        },
+        {
+          "name": "sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2",
+          "displayName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 (Multilingual, 384d)",
+          "description": "Currently the Sentence-Transformer recommendation for best accuracy/speed trade-off for a multi-lingual model."
+        }
+      ]
+    },
+    {
+      "name": "openai_key_approval",
+      "displayName": "OpenAI requires an API Key",
+      "description": "OpenAI is a commercial service independent of Weaviate. You will need to register with OpenAI. The docker-compose file will read your API key from an environment variable OPENAI_APIKEY.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["text_module==text2vec-openai"]
+      },
+      "options": [
+        {
+          "name": "yes",
+          "displayName": "Yes, I understand. I will set the environment variable myself.",
+          "description": "I will set the correct environment variable prior to starting up the docker-compose setup."
+        },
+        {
+          "name": "no",
+          "displayName": "Yes, I understand. I will provide the key with each request.",
+          "description": "No environment variable placeholder will be added. I will provide the key with each request using the X-OpenAI-Api-Key header."
+        }
+      ]
+    },
+    {
+      "name": "cohere_key_approval",
+      "displayName": "Cohere requires an API Key",
+      "description": "Cohere is a commercial service independent of Weaviate. You will need to register with Cohere. The docker-compose file will read your API key from an environment variable COHERE_APIKEY.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["text_module==text2vec-cohere"]
+      },
+      "options": [
+        {
+          "name": "yes",
+          "displayName": "Yes, I understand. I will set the environment variable myself.",
+          "description": "I will set the correct environment variable prior to starting up the docker-compose setup."
+        },
+        {
+          "name": "no",
+          "displayName": "Yes, I understand. I will provide the key with each request.",
+          "description": "No environment variable placeholder will be added. I will provide the key with each request using the X-Cohere-Api-Key header."
+        }
+      ]
+    },
+    {
+      "name": "image_neural_model",
+      "displayName": "Image2Vec Model",
+      "description": "Select the image vectorization model for your Weaviate instance.",
+      "type": "select-multiline",
+      "conditions": {
+        "or": ["media_type==image", "media_type==image,text"]
+      },
+      "options": [
+        {
+          "name": "pytorch-resnet50",
+          "displayName": "ResNet50 (Pytorch)",
+          "description": "Pytorch-based models work with CUDA-GPU or CPU. They can run on amd64 and arm64 architecture. Inference is single-threaded."
+        },
+        {
+          "name": "keras-resnet50",
+          "displayName": "ResNet50 (Keras)",
+          "description": "Keras-based models are restricted to amd64 and CPU at the moment. They allow for multi-threaded inference."
+        }
+      ]
+    },
+    {
+      "name": "runtime",
+      "displayName": "Select your desired runtime",
+      "description": "You can use this configuration generator to generate template for various runtimes.",
+      "type": "select",
+      "options": [
+        {
+          "name": "docker-compose",
+          "displayName": "Docker Compose"
+        }
+      ]
+    }
+  ]
+}
+
+
