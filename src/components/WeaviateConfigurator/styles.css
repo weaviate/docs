@@ -1,415 +1,174 @@
-/**
- * Weaviate Configurator Styles
- * All classes are prefixed with 'wc-' to avoid conflicts with host application styles
- */
-
 .weaviate-configurator {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.6;
-  color: #333;
-}
-
-.weaviate-configurator code {
-  background: #f4f4f4;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9em;
-}
-
-/* Header */
-.wc-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.wc-header h1 {
-  font-size: 2.5rem;
-  color: #130c4f;
-  margin-bottom: 10px;
-}
-
-.wc-header p {
-  font-size: 1.1rem;
-  color: #666;
-}
-
-/* Progress Bar */
-.wc-progress {
-  margin-bottom: 30px;
-}
-
-.wc-progress-text {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.wc-progress-bar {
-  height: 8px;
-  background: #e0e0e0;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.wc-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #130c4f 0%, #fa0171 100%);
-  transition: width 0.3s ease;
-}
-
-/* Parameter Step */
-.wc-parameter-step {
-  background: white;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: var(--site-font-base-family);
+  background-color: var(--docs-body-bg);
+  border: 1px solid var(--docs-cards-border-color);
   border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
 }
 
-.wc-parameter-header h2 {
-  font-size: 1.8rem;
-  color: #130c4f;
-  margin-bottom: 10px;
-}
 
-.wc-parameter-description {
-  color: #666;
-  margin-bottom: 30px;
-  line-height: 1.6;
-}
-
-.wc-parameter-options {
-  margin-bottom: 30px;
-}
-
-.wc-options-list {
+/* Form */
+.wc-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1.5rem;
 }
 
-.wc-option-card {
-  display: block;
-  padding: 20px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+.wc-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wc-form-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--docs-header-color);
+}
+
+.wc-form-description {
+  font-size: 0.9rem;
+  color: var(--docs-base-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Select Dropdown */
+.wc-select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--docs-cards-border-color);
+  border-radius: 6px;
+  background-color: var(--docs-body-bg);
+  color: var(--docs-base-color);
+  font-family: var(--site-font-base-family);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.wc-select:focus {
+  outline: none;
+  border-color: var(--site-primary);
+  box-shadow: 0 0 0 2px rgba(var(--site-primary-rgb), 0.2);
+}
+
+/* Radio Group */
+.wc-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.wc-radio-label {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid var(--docs-cards-border-color);
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: white;
 }
 
-.wc-option-card:hover {
-  border-color: #130c4f;
-  box-shadow: 0 2px 8px rgba(19, 12, 79, 0.1);
+.wc-radio-label:hover {
+  border-color: var(--site-primary);
 }
 
-.wc-option-card.selected {
-  border-color: #130c4f;
-  background: #f8f7ff;
+.wc-radio-label.selected {
+  border-color: var(--site-primary);
+  background-color: rgba(var(--site-primary-rgb), 0.05);
 }
 
-.wc-option-card input[type="radio"] {
-  margin-right: 12px;
+.wc-radio-label input[type="radio"] {
+  display: none; /* Hide native radio button */
 }
 
-.wc-option-content {
-  display: inline-block;
-  vertical-align: top;
-  width: calc(100% - 30px);
-}
-
-.wc-option-title {
+.wc-radio-title {
   font-weight: 600;
-  color: #130c4f;
-  margin-bottom: 5px;
+  color: var(--docs-header-color);
+  margin-bottom: 0.25rem;
 }
 
-.wc-option-description {
-  color: #666;
+.wc-radio-description {
   font-size: 0.9rem;
+  color: var(--docs-base-color);
 }
 
-.wc-text-input-container {
-  margin: 20px 0;
-}
-
-.wc-text-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-}
-
-.wc-text-input:focus {
-  outline: none;
-  border-color: #130c4f;
-}
 
 /* Buttons */
-.wc-button-group {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-
 .wc-button {
-  padding: 12px 24px;
+  padding: 0.8rem 1.5rem;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-
-.wc-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  text-align: center;
 }
 
 .wc-button-primary {
-  background: #130c4f;
+  background-color: var(--site-primary);
   color: white;
 }
 
-.wc-button-primary:hover:not(:disabled) {
-  background: #1a1164;
-  box-shadow: 0 4px 12px rgba(19, 12, 79, 0.3);
+.wc-button-primary:hover {
+  opacity: 0.9;
 }
 
 .wc-button-secondary {
-  background: #f0f0f0;
-  color: #333;
+  background-color: transparent;
+  color: var(--site-primary);
+  border: 1px solid var(--site-primary);
 }
 
-.wc-button-secondary:hover:not(:disabled) {
-  background: #e0e0e0;
+.wc-button-secondary:hover {
+  background-color: rgba(var(--site-primary-rgb), 0.1);
 }
 
-.wc-button-group-inline {
-  display: flex;
-  gap: 12px;
+/* Result Section */
+.wc-result {
+  margin-top: 2rem;
+  border-top: 1px solid var(--docs-cards-border-color);
+  padding-top: 2rem;
 }
 
-/* Selections Summary */
-.wc-selections-summary {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.wc-selections-summary h3 {
-  font-size: 1.2rem;
-  color: #130c4f;
-  margin-bottom: 15px;
-}
-
-.wc-empty-state {
-  color: #999;
-  font-style: italic;
-}
-
-.wc-selections-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.wc-selection-item {
-  padding: 10px;
-  background: #f8f7ff;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.wc-selection-key {
-  font-weight: 600;
-  color: #130c4f;
-}
-
-.wc-selection-value {
-  color: #666;
-}
-
-/* Result Page */
 .wc-result-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.wc-result-header h1 {
-  font-size: 2.5rem;
-  color: #130c4f;
-  margin-bottom: 10px;
-}
-
-.wc-result-header p {
-  font-size: 1.1rem;
-  color: #666;
-}
-
-.wc-result-content {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.wc-selections-summary-box {
-  background: white;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.wc-selections-summary-box h2 {
-  color: #130c4f;
-  margin-bottom: 20px;
-}
-
-.wc-selections-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 12px;
-}
-
-.wc-selection-row {
-  padding: 12px;
-  background: #f8f7ff;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.wc-selection-row .key {
-  font-size: 0.85rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.wc-selection-row .value {
-  font-weight: 600;
-  color: #130c4f;
-}
-
-/* Docker Compose Section */
-.wc-docker-compose-section {
-  background: white;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.wc-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 15px;
+  margin-bottom: 1rem;
 }
 
-.wc-section-header h2 {
-  color: #130c4f;
-  margin: 0;
+.wc-result-header h2 {
+  font-family: var(--site-font-heading-family);
+  font-size: 1.5rem;
+  color: var(--docs-header-color);
 }
 
-.wc-docker-compose-textarea {
+.wc-docker-compose-output {
   width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-family: 'Courier New', monospace;
+  padding: 1rem;
+  border: 1px solid var(--docs-cards-border-color);
+  border-radius: 6px;
+  font-family: var(--ifm-font-family-monospace);
   font-size: 0.9rem;
   line-height: 1.5;
   resize: vertical;
-  background: #f8f8f8;
-  color: #333;
-}
-
-.wc-docker-compose-textarea:focus {
-  outline: none;
-  border-color: #130c4f;
-}
-
-/* Next Steps */
-.wc-next-steps {
-  background: white;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.wc-next-steps h2 {
-  color: #130c4f;
-  margin-bottom: 15px;
-}
-
-.wc-next-steps ol {
-  padding-left: 20px;
-  color: #666;
-}
-
-.wc-next-steps li {
-  margin-bottom: 10px;
+  background-color: var(--ifm-code-background);
+  color: var(--ifm-code-color);
 }
 
 /* Loading and Error States */
-.wc-loading,
-.wc-error {
+.weaviate-configurator-loading,
+.weaviate-configurator-error {
   text-align: center;
   padding: 40px;
   font-size: 1.2rem;
-  color: #666;
+  color: var(--docs-base-color);
 }
 
-.wc-error {
-  color: #c33;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .wc-header h1 {
-    font-size: 2rem;
-  }
-
-  .wc-parameter-step {
-    padding: 20px;
-  }
-
-  .wc-selections-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .wc-button-group {
-    flex-direction: column-reverse;
-  }
-
-  .wc-button {
-    width: 100%;
-  }
-
-  .wc-section-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .wc-button-group-inline {
-    width: 100%;
-  }
-
-  .wc-button-group-inline .wc-button {
-    flex: 1;
-  }
+.weaviate-configurator-error {
+  color: var(--ifm-color-danger);
 }
 

@@ -145,7 +145,7 @@ Conditions control parameter/option visibility:
 
 | Operator | Example | Description |
 |----------|---------|-------------|
-| `==` | `modules==standalone` | Equals |
+| `==` | `modules==none` | Equals |
 | `!=` | `wcs!=true` | Not equals |
 | `>=` | `weaviate_version>=v1.25.0` | Greater than or equal (semantic versioning) |
 | `<=` | `weaviate_version<=v1.30.0` | Less than or equal |
@@ -227,7 +227,7 @@ Start with default selections:
 <WeaviateConfigurator
   initialSelections={{
     weaviate_version: 'v1.32.7',
-    modules: 'standalone'
+    modules: 'none'
   }}
 />
 ```

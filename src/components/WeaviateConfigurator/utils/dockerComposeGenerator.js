@@ -7,14 +7,13 @@ export function generateDockerCompose(selections) {
   const {
     weaviate_version = 'v1.32.7',
     weaviate_volume = 'named-volume',
-    modules = 'standalone',
+    modules = 'none',
     media_type,
     text_module,
     transformers_model,
     openai_key_approval,
     cohere_key_approval,
     image_neural_model,
-    runtime = 'docker-compose'
   } = selections;
 
   // Start building the compose file
@@ -94,7 +93,7 @@ volumes:
 }
 
 function getDefaultVectorizer(selections) {
-  if (selections.modules === 'standalone') {
+  if (selections.modules === 'none') {
     return 'none';
   }
 
@@ -106,7 +105,7 @@ function getDefaultVectorizer(selections) {
 }
 
 function getEnabledModules(selections) {
-  if (selections.modules === 'standalone') {
+  if (selections.modules === 'none') {
     return '';
   }
 

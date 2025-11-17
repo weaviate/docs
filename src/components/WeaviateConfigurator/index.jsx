@@ -8,21 +8,69 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import ParameterStep from './components/ParameterStep';
-import ResultPage from './components/ResultPage';
 import { getVisibleParameters } from './utils/conditionEvaluator';
+import { generateDockerCompose } from './utils/dockerComposeGenerator';
 import './styles.css';
 
-// Import parameters - in Docusaurus, you might want to fetch this or import directly
+// Import parameters
 import parametersData from './parameters.json';
+
+// Helper to render the correct input type
+function ParameterInput({ parameter, value, onChange, selections }) {
+  // Determine if the parameter should be a dropdown
+  const useDropdown =
+    (parameter.options && parameter.options.length > 4) ||
+    ['weaviate_version', 'weaviate_volume', 'modules'].includes(parameter.name);
+
+  if (useDropdown) {
+    return (
+      <select
+        className="wc-select"
+        value={value}
+        onChange={(e) => onChange(parameter.name, e.target.value)}
+      >
+        {parameter.options.map((option) => (
+          <option key={option.name} value={option.name}>
+            {option.displayName}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  // Render radio buttons for other types
+  return (
+    <div className="wc-radio-group">
+      {parameter.options.map((option) => (
+        <label
+          key={option.name}
+          className={`wc-radio-label ${value === option.name ? 'selected' : ''}`}
+        >
+          <input
+            type="radio"
+            name={parameter.name}
+            value={option.name}
+            checked={value === option.name}
+            onChange={(e) => onChange(parameter.name, e.target.value)}
+          />
+          <span className="wc-radio-title">{option.displayName}</span>
+          {option.description && (
+            <span className="wc-radio-description">{option.description}</span>
+          )}
+        </label>
+      ))}
+    </div>
+  );
+}
+
 
 function WeaviateConfigurator() {
   const [parameters, setParameters] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [selections, setSelections] = useState({});
-  const [isComplete, setIsComplete] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [dockerCompose, setDockerCompose] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // Load parameters
   useEffect(() => {
@@ -35,109 +83,68 @@ function WeaviateConfigurator() {
     }
   }, []);
 
-  // Get currently visible parameters based on selections
+  // Update handler
+  const handleSelectionChange = (name, value) => {
+    setSelections((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Generate Docker Compose file
+  const handleGenerate = () => {
+    const content = generateDockerCompose(selections);
+    setDockerCompose(content);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(dockerCompose);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const visibleParameters = getVisibleParameters(parameters, selections);
-  const currentParameter = visibleParameters[currentIndex];
-  const isLastStep = currentIndex >= visibleParameters.length - 1;
 
-  const handleNext = (value) => {
-    const newSelections = {
-      ...selections,
-      [currentParameter.name]: value
-    };
-    setSelections(newSelections);
-
-    if (isLastStep) {
-      setIsComplete(true);
-    } else {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
-  const handleReset = () => {
-    setSelections({});
-    setCurrentIndex(0);
-    setIsComplete(false);
-  };
-
-  if (loading) {
-    return (
-      <div className="weaviate-configurator">
-        <div className="wc-loading">Loading configuration wizard...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="weaviate-configurator">
-        <div className="wc-error">{error}</div>
-      </div>
-    );
-  }
-
-  if (isComplete) {
-    return (
-      <div className="weaviate-configurator">
-        <ResultPage
-          selections={selections}
-          onReset={handleReset}
-        />
-      </div>
-    );
-  }
+  if (loading) return <div className="weaviate-configurator-loading">Loading...</div>;
+  if (error) return <div className="weaviate-configurator-error">{error}</div>;
 
   return (
     <div className="weaviate-configurator">
-      <header className="wc-header">
-        <h1>Weaviate Configuration Generator</h1>
-        <p>Configure your Weaviate Docker Compose setup</p>
-      </header>
 
-      <div className="wc-progress">
-        <div className="wc-progress-text">
-          Step {currentIndex + 1} of {visibleParameters.length}
-        </div>
-        <div className="wc-progress-bar">
-          <div
-            className="wc-progress-fill"
-            style={{ width: `${((currentIndex + 1) / visibleParameters.length) * 100}%` }}
+      <div className="wc-form">
+        {visibleParameters.map((param) => (
+          <div key={param.name} className="wc-form-group">
+            <label className="wc-form-label">{param.displayName}</label>
+            <p className="wc-form-description">{param.description}</p>
+            <ParameterInput
+              parameter={param}
+              value={selections[param.name] || ''}
+              onChange={handleSelectionChange}
+              selections={selections}
+            />
+          </div>
+        ))}
+        <button onClick={handleGenerate} className="wc-button wc-button-primary">
+          Generate Configuration
+        </button>
+      </div>
+
+      {dockerCompose && (
+        <div className="wc-result">
+          <div className="wc-result-header">
+            <h2>Your docker-compose.yml</h2>
+            <button onClick={copyToClipboard} className="wc-button wc-button-secondary">
+              {copied ? '✓ Copied!' : 'Copy'}
+            </button>
+          </div>
+          <textarea
+            className="wc-docker-compose-output"
+            value={dockerCompose}
+            readOnly
+            rows={20}
           />
         </div>
-      </div>
-
-      {currentParameter && (
-        <ParameterStep
-          parameter={currentParameter}
-          selections={selections}
-          onNext={handleNext}
-          onBack={handleBack}
-          canGoBack={currentIndex > 0}
-          isLastStep={isLastStep}
-        />
       )}
-
-      <div className="wc-selections-summary">
-        <h3>Current Selections</h3>
-        {Object.keys(selections).length === 0 ? (
-          <p className="wc-empty-state">No selections yet</p>
-        ) : (
-          <div className="wc-selections-list">
-            {Object.entries(selections).map(([key, value]) => (
-              <div key={key} className="wc-selection-item">
-                <span className="wc-selection-key">{key}:</span>
-                <span className="wc-selection-value">{value}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }

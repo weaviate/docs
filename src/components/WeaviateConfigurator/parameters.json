@@ -3,7 +3,7 @@
     {
       "name": "weaviate_version",
       "displayName": "Weaviate Version",
-      "description": "It is recommended to always use the latest version. You can also select an older version for compatibility sake, but not all features might be available on an older version.",
+      "description": "Select the Weaviate version to use.",
       "type": "select-multiline",
       "options": [
         {
@@ -26,7 +26,7 @@
     {
       "name": "weaviate_volume",
       "displayName": "Persistent Volume",
-      "description": "It's recommended to set a persistent volume to avoid data loss and improve reading and writing speeds.",
+      "description": "How should Weaviate's data be persisted?",
       "type": "select-multiline",
       "options": [
         {
@@ -48,19 +48,19 @@
     },
     {
       "name": "modules",
-      "displayName": "Standalone or Modules",
-      "description": "Would you like to include modules or run Weaviate as a standalone vector database?",
+      "displayName": "Model integrations",
+      "description": "Enable any additional model integrations here. (All API-based modules are enabled by default.)",
       "type": "select-multiline",
       "options": [
         {
-          "name": "standalone",
-          "displayName": "Standalone, no Modules",
-          "description": "You will provide your own vectors and use Weaviate as a pure vector database."
+          "name": "none",
+          "displayName": "No additional model integrations",
+          "description": "API-based model integrations only."
         },
         {
           "name": "modules",
-          "displayName": "With Modules",
-          "description": "You can configure modules in the next step and feed specific media types into Weaviate which can then be vectorized using the right module."
+          "displayName": "Select integrations to enable",
+          "description": "Select the integrations to enable."
         }
       ]
     },
@@ -210,18 +210,6 @@
           "name": "keras-resnet50",
           "displayName": "ResNet50 (Keras)",
           "description": "Keras-based models are restricted to amd64 and CPU at the moment. They allow for multi-threaded inference."
-        }
-      ]
-    },
-    {
-      "name": "runtime",
-      "displayName": "Select your desired runtime",
-      "description": "You can use this configuration generator to generate template for various runtimes.",
-      "type": "select",
-      "options": [
-        {
-          "name": "docker-compose",
-          "displayName": "Docker Compose"
         }
       ]
     }
