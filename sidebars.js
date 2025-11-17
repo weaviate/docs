@@ -563,9 +563,10 @@ const sidebars = {
       },
       items: [
         "weaviate/tutorials/quick-tour-of-weaviate",
-        "weaviate/tutorials/multi-vector-embeddings",
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
+        "weaviate/tutorials/multi-vector-embeddings",
+        "weaviate/tutorials/tokenization",
         "weaviate/tutorials/rbac",
         "weaviate/tutorials/tls-ssl",
         "weaviate/tutorials/collection-aliases",

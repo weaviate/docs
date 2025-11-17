@@ -265,3 +265,4 @@ __marimo__/
 # C# code
 _includes/code/csharp/bin
 _includes/code/csharp/obj
+*.sln

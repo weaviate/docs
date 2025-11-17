@@ -830,7 +830,7 @@ status = 301
 
 [[redirects]]
 from = "/academy/py/tokenization/*"
-to   = "/weaviate/config-refs/collections#tokenization"
+to   = "/weaviate/concepts/indexing/inverted-index#tokenization"
 status = 301
 
 [[redirects]]
