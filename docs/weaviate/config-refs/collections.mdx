@@ -806,4 +806,244 @@ Sharding is configured via the `shardingConfig` object in the collection definit
 | `key`                 | String  | The property used for hashing to determine the target shard. Currently, only the object's internal UUID (`_id`) can be used.                              | `"_id"`         | No      |
 | `function`            | String  | The hashing function used on the `key`. Only `"murmur3"` is supported, which creates a 64-bit hash, making collisions highly unlikely.                    | `"murmur3"`     | No      |
 | `actualCount`         | Integer | **(Read-only)** The actual number of physical shards created. This typically matches `desiredCount` unless an issue occurred during creation.             | `1`             | No      |
-| `desiredVirtualCount` | Integer | **(Read-only)** A calculated value representing `desiredCount * virtualPerPhysical`.                                                                      | `
+| `desiredVirtualCount` | Integer | **(Read-only)** A calculated value representing `desiredCount * virtualPerPhysical`.                                                                      | `128`           | No      |
+| `actualVirtualCount`  | Integer | **(Read-only)** The actual number of virtual shards that were created.                                                                                    | `128`           | No      |
+
+<details>
+  <summary>Example sharding configuration -  JSON object</summary>
+
+An example of a complete `shardingConfig` object:
+
+```json
+  "shardingConfig": {
+    "virtualPerPhysical": 128,
+    "desiredCount": 1,           // defaults to the amount of Weaviate nodes in the cluster
+    "actualCount": 1,
+    "desiredVirtualCount": 128,
+    "actualVirtualCount": 128,
+    "key": "_id",
+    "strategy": "hash",
+    "function": "murmur3"
+  }
+```
+
+</details>
+
+#### Code example - How to configure sharding
+
+This code example shows how to configure the sharding parameters through a client library:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ShardingSettings"
+      endMarker="# END ShardingSettings"
+      language="py"
+    />
+  </TabItem>
+  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaReplicationCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="gonew"
+    />
+  </TabItem> -->
+</Tabs>
+
+:::tip Further resources
+
+For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+
+:::
+
+---
+
+### Multi-tenancy
+
+Multi-tenancy allows you to isolate data within a single collection, where objects are associated with specific tenants. This is a useful feature for building SaaS applications or any system requiring strict data partitioning.
+
+:::note Why use multi-tenancy?
+
+It provides data isolation at a lower overhead than creating a separate collection for each tenant, making it more scalable when you have a large number of tenants.
+
+:::
+
+To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyConfig` object. This parameter is immutable and must be set at creation time.
+
+| Parameter              | Type    | Description                                                                                                                                                 | Default | Mutable |
+| :--------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
+| `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                        | `false` | No      |
+| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. Added in `v1.25`                                              | `false` | Yes     |
+| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. Added in `v1.25.2` | `false` | Yes     |
+
+#### Code example - How to configure multi-tenancy
+
+This code example shows how to configure the multi-tenancy parameters through a client library:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeMultiTenancy}
+      startMarker="# START EnableMultiTenancy"
+      endMarker="# END EnableMultiTenancy"
+      language="py"
+    />
+  </TabItem>
+  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeMultiTenancy}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCodeMultiTenancy}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCodeMultiTenancy}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="go"
+    />
+  </TabItem> -->
+</Tabs>
+
+:::tip Further resources
+
+For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+
+:::
+
+## Mutability
+
+Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it.
+
+<details>
+  <summary>Mutable parameters</summary>
+
+import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
+
+<!-- Note: remove below "(not mutable in `v1.25`)" note when the feature is released. -->
+
+<RaftRFChangeWarning />
+
+import CollectionMutableParameters from "/_includes/collection-mutable-parameters.mdx";
+
+<CollectionMutableParameters />
+
+</details>
+
+After you create a collection, you can [add new properties](../manage-collections/collection-operations.mdx#add-a-property). You cannot modify existing properties after you create the collection. You can also [add new named vectors](../concepts/data.md#adding-a-named-vector-after-collection-creation).
+
+## Auto-schema
+
+The "Auto-schema" feature generates a collection definition automatically by inferring parameters from data being added. It is enabled by default, and can be disabled (e.g. in `docker-compose.yml`) by setting the environment variable [`AUTOSCHEMA_ENABLED`](/docs/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) to `'false'`.
+
+It will:
+
+- Create a collection if an object is added to a non-existent collection.
+- Add any missing property from an object being added.
+- Infer array data types, such as `int[]`, `text[]`, `number[]`, `boolean[]`, `date[]` and `object[]`.
+- Infer nested properties for `object` and `object[]` data types.
+- Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
+
+:::tip Define the collection manually for production use
+
+Generally speaking, we recommend that you disable auto-schema for production use.
+
+- A manual collection definition will provide more precise control.
+- There is a performance penalty associated with inferring the data structure at import time. This may be a costly operation in some cases, such as complex nested properties.
+
+:::
+
+#### Auto-schema data types
+
+Additional configurations are available to help the auto-schema infer properties to suit your needs.
+
+- `AUTOSCHEMA_DEFAULT_NUMBER=number` - create `number` columns for any numerical values (as opposed to `int`, etc).
+- `AUTOSCHEMA_DEFAULT_DATE=date` - create `date` columns for any date-like values.
+
+The following are not allowed:
+
+- Any map type is forbidden, unless it clearly matches one of the two supported types `phoneNumber` or `geoCoordinates`.
+- Any array type is forbidden, unless it is clearly a reference-type. In this case, Weaviate needs to resolve the beacon and see what collection the resolved beacon is from, since it needs the collection name to be able to alter the schema.
+
+## Collections count limit {#collections-count-limit}
+
+:::info Added in `v1.30`
+:::
+
+To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
+
+- **Default limit**: `1000` collections.
+- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) environment variable to adjust the collection count limit.
+
+:::note
+If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
+:::
+
+:::tip
+**Instead of raising the collections count limit, consider rethinking your architecture**.
+For more details, see [Starter Guides: Scaling limits with collections](../starter-guides/managing-collections/collections-scaling-limits.mdx).
+:::
+
+## Collection aliases
+
+:::info Added in `v1.32`
+:::
+
+Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
+
+Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>.
+
+In order to manage collection aliases, you need to posses the right [`Collection aliases`](../configuration/rbac/index.mdx#available-permissions) permissions. To manage the underlying collection the alias references, you also need the [`Collections`](../configuration/rbac/index.mdx#available-permissions) permissions for that specific collection.
+
+**Collection aliases cannot be used to update collection definitions**, including:
+- Updating and adding properties
+- Updating vector and inverted indexes
+- Configuring sharding and multi-tenancy
+- Modifying vectorizer, generative and reranker configurations
+
+import CollectionAliasUsage from "/_includes/collection-alias-usage.mdx";
+
+<CollectionAliasUsage />
+
+## Further resources
+
+- [Starter guides: Collection definition](/weaviate/starter-guides/managing-collections)
+- [How to: Manage collections](../manage-collections/index.mdx)
+- [Concepts: Data structure](/weaviate/concepts/data)
+- <SkipLink href="/weaviate/api/rest#tag/schema">
+    REST API: Collection definition (schema)
+  </SkipLink>
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
