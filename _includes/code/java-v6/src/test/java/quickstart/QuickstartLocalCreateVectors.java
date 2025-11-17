@@ -4,8 +4,10 @@ package quickstart;
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Generative;
+import io.weaviate.client6.v1.api.collections.ObjectMetadata;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
+import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 
@@ -69,9 +71,15 @@ public class QuickstartLocalCreateVectors {
       CollectionHandle<Map<String, Object>> movies =
           client.collections.use(collectionName);
       InsertManyResponse insertResponse = movies.data.insertMany(
-          WeaviateObject.of(props1, v -> v.vector(vector1)),
-          WeaviateObject.of(props2, v -> v.vector(vector2)),
-          WeaviateObject.of(props3, v -> v.vector(vector3)));
+          WeaviateObject.of(v -> v.properties(props1)
+              .metadata(ObjectMetadata
+                  .of(meta -> meta.vectors(Vectors.of(vector1))))),
+          WeaviateObject.of(v -> v.properties(props2)
+              .metadata(ObjectMetadata
+                  .of(meta -> meta.vectors(Vectors.of(vector2))))),
+          WeaviateObject.of(v -> v.properties(props3)
+              .metadata(ObjectMetadata
+                  .of(meta -> meta.vectors(Vectors.of(vector3))))));
 
       if (!insertResponse.errors().isEmpty()) {
         System.err.println("Errors during import: " + insertResponse.errors());

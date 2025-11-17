@@ -2,13 +2,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.DataType;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
-import io.weaviate.client6.v1.api.collections.query.NearText;
-import io.weaviate.client6.v1.api.collections.query.NearVector;
 import io.weaviate.client6.v1.api.collections.query.Target;
+import io.weaviate.client6.v1.api.collections.query.Target.VectorTarget;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -149,12 +147,14 @@ class MultiTargetSearchTest {
     assertThat(v1).isNotEmpty();
     assertThat(v2).isNotEmpty();
 
+    // TODO[g-despot]  (VectorTarget) is wrong, throws error
     // START MultiTargetNearVector
     var response = collection.query.nearVector(
         // highlight-start
         // Specify the query vectors for each target vector using Target objects
         // The default combination strategy is "average"
-        Target.average(Target.vector("jeopardy_questions_vector", v1),
+        (VectorTarget) Target.average(
+            Target.vector("jeopardy_questions_vector", v1),
             Target.vector("jeopardy_answers_vector", v2)),
         // highlight-end
         q -> q.limit(2).returnMetadata(Metadata.DISTANCE));
@@ -200,7 +200,8 @@ class MultiTargetSearchTest {
         // highlight-start
         // Pass multiple Target.vector objects with the same name
         // The default combination strategy is "average"
-        Target.average(Target.vector("jeopardy_questions_vector", v1),
+        (VectorTarget) Target.average(
+            Target.vector("jeopardy_questions_vector", v1),
             Target.vector("jeopardy_answers_vector", v2),
             Target.vector("jeopardy_answers_vector", v3)),
         // highlight-end
@@ -219,7 +220,7 @@ class MultiTargetSearchTest {
     var responseV2 = collection.query.nearVector(
         // highlight-start
         // Specify weights for each vector
-        Target.manualWeights(
+        (VectorTarget) Target.manualWeights(
             Target.vector("jeopardy_questions_vector", 10f, v1),
             Target.vector("jeopardy_answers_vector", 30f, v2),
             Target.vector("jeopardy_answers_vector", 30f, v3) // Weights match the vectors

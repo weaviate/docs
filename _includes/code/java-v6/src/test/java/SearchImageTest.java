@@ -21,15 +21,14 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class SearchImageTest {
 
   private static WeaviateClient client;
   private static final String QUERY_IMAGE_PATH = "images/search-image.jpg";
 
   // START helper base64 functions
-  private static String urlToBase64(String url) throws IOException, InterruptedException {
+  private static String urlToBase64(String url)
+      throws IOException, InterruptedException {
     HttpClient httpClient = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
     HttpResponse<byte[]> response =
@@ -53,12 +52,11 @@ class SearchImageTest {
       client.collections.delete("Dog");
     }
 
-    client.collections.create("Dog",
-        c -> c
-            .properties(Property.blob("image"), Property.text("breed"),
-                Property.text("description"))
-            .vectorConfig(VectorConfig
-                .multi2vecClip(i -> i.imageFields("image").textFields("breed", "description"))));
+    client.collections.create("Dog", c -> c
+        .properties(Property.blob("image"), Property.text("breed"),
+            Property.text("description"))
+        .vectorConfig(VectorConfig.multi2vecClip(
+            i -> i.imageFields("image").textFields("breed", "description"))));
 
     // Prepare and ingest sample dog images
     CollectionHandle<Map<String, Object>> dogs = client.collections.use("Dog");
@@ -78,8 +76,8 @@ class SearchImageTest {
     System.out.println("Inserting sample data...");
     for (var image : sampleImages) {
       String base64Image = urlToBase64(image.get("url"));
-      dogs.data.insert(Map.of("image", base64Image, "breed", image.get("breed"), "description",
-          image.get("description")));
+      dogs.data.insert(Map.of("image", base64Image, "breed", image.get("breed"),
+          "description", image.get("description")));
       System.out.println("Inserted: " + image.get("breed"));
     }
     System.out.println("Data insertion complete!");
@@ -88,7 +86,8 @@ class SearchImageTest {
     String queryImageUrl =
         "https://images.unsplash.com/photo-1590419690008-905895e8fe0d?q=80&w=1336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
     HttpClient httpClient = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder().uri(URI.create(queryImageUrl)).build();
+    HttpRequest request =
+        HttpRequest.newBuilder().uri(URI.create(queryImageUrl)).build();
     HttpResponse<InputStream> response =
         httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
@@ -96,7 +95,8 @@ class SearchImageTest {
     if (!Files.exists(imageDir)) {
       Files.createDirectories(imageDir);
     }
-    Files.copy(response.body(), Paths.get(QUERY_IMAGE_PATH), StandardCopyOption.REPLACE_EXISTING);
+    Files.copy(response.body(), Paths.get(QUERY_IMAGE_PATH),
+        StandardCopyOption.REPLACE_EXISTING);
   }
 
   @AfterAll
@@ -144,25 +144,23 @@ class SearchImageTest {
     // END search with base64
   }
 
-  // TODO[g-despot] Image search with file path needed
-  // @Test
-  // void testImageFileSearch() {
-  //   CollectionHandle<Map<String, Object>> dogs = client.collections.use("Dog");
-  //   var response = dogs.query.nearImage(
-  //       // highlight-start
-  //       QUERY_IMAGE_PATH,
-  //       // highlight-end
-  //       q -> q.returnProperties("breed").limit(1)
-  //   // targetVector: "vector_name" // required when using multiple named vectors
-  //   );
+  // TODO[g-despot] Needs testing
+  void testImageFileSearch() {
+    // START ImageFileSearch
+    CollectionHandle<Map<String, Object>> dogs = client.collections.use("Dog");
+    var response = dogs.query.nearImage(
+        // highlight-start
+        QUERY_IMAGE_PATH,
+        // highlight-end
+        q -> q.returnProperties("breed").limit(1)
+    // targetVector: "vector_name" // required when using multiple named vectors
+    );
 
-  //   if (!response.objects().isEmpty()) {
-  //     System.out.println(response.objects().get(0));
-  //   }
-  // }
-  // START ImageFileSearch
-  // Coming soon
-  // END ImageFileSearch
+    if (!response.objects().isEmpty()) {
+      System.out.println(response.objects().get(0));
+    }
+    // END ImageFileSearch
+  }
 
   void testDistance() {
     // START Distance
@@ -172,7 +170,8 @@ class SearchImageTest {
         .distance(0.8f) // Maximum accepted distance
         .returnMetadata(Metadata.DISTANCE) // return distance from the source image
         // highlight-end
-        .returnProperties("breed").limit(5));
+        .returnProperties("breed")
+        .limit(5));
 
     for (var item : response.objects()) {
       System.out.println(item);

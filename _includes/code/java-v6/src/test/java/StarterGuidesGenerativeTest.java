@@ -5,6 +5,7 @@ import io.weaviate.client6.v1.api.collections.DataType;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
+import io.weaviate.client6.v1.api.collections.WeaviateMetadata;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 import org.junit.jupiter.api.Test;
@@ -95,9 +96,8 @@ class CombinedWorkflowTest {
           client.collections.use(gitBookCollectionName);
       assertThat(client.collections.exists(gitBookCollectionName)).isTrue();
 
-      // TODO[g-despot] Why does WeaviateObject.of not work here?
       // START ImportData
-      List<WeaviateObject<Map<String, Object>, Object, Object>> chunksList =
+      List<WeaviateObject<Map<String, Object>, Object, WeaviateMetadata>> chunksList =
           new ArrayList<>();
       for (int i = 0; i < chunkedText.size(); i++) {
         Map<String, Object> dataProperties = new HashMap<>();
@@ -105,7 +105,7 @@ class CombinedWorkflowTest {
         dataProperties.put("chunk", chunkedText.get(i));
         dataProperties.put("chunk_index", (long) i); // Use long for integer
 
-        chunksList.add(WeaviateObject.of(dataProperties));
+        chunksList.add(WeaviateObject.of(b -> b.properties(dataProperties)));
       }
       chunks.data.insertMany(chunksList.toArray(new WeaviateObject[0]));
       // END ImportData

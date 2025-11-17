@@ -1,6 +1,5 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.Where;

@@ -1,6 +1,7 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.DataType;
+import io.weaviate.client6.v1.api.collections.GeoCoordinates;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
@@ -31,9 +32,7 @@ class SearchFilterTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
 
-    client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl,
-        weaviateApiKey,
+    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
   }
@@ -46,13 +45,13 @@ class SearchFilterTest {
   @Test
   void testSingleFilter() {
     // START SingleFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .where(Where.property("round").eq("Double Jeopardy!"))
-            // highlight-end
-            .limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .where(Where.property("round").eq("Double Jeopardy!"))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -63,14 +62,13 @@ class SearchFilterTest {
   @Test
   void testSingleFilterNearText() {
     // START NearTextSingleFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.nearText(
-        "fashion icons",
-        q -> q
-            // highlight-start
-            .where(Where.property("points").gt(200))
-            // highlight-end
-            .limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.nearText("fashion icons", q -> q
+        // highlight-start
+        .where(Where.property("points").gt(200))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -81,20 +79,20 @@ class SearchFilterTest {
   @Test
   void testContainsAnyFilter() {
     // START ContainsAnyFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
 
     // highlight-start
     String[] tokens = new String[] {"australia", "india"};
     // highlight-end
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            // Find objects where the `answer` property contains any of the strings in
-            // `token_list`
-            // TODO[g-despot] containsAny doesn't accept lists?
-            .where(Where.property("answer").containsAny(tokens))
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        // Find objects where the `answer` property contains any of the strings in
+        // `token_list`
+        // TODO[g-despot] containsAny doesn't accept lists?
+        .where(Where.property("answer").containsAny(tokens))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -105,22 +103,22 @@ class SearchFilterTest {
   @Test
   void testContainsAllFilter() {
     // START ContainsAllFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
 
     // highlight-start
     String[] tokens = new String[] {"blue", "red"};
 
     // highlight-end
 
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            // Find objects where the `question` property contains all of the strings in
-            // `token_list`
-            // TODO[g-despot] containsAll doesn't accept lists?
-            .where(Where.property("question").containsAll(tokens))
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        // Find objects where the `question` property contains all of the strings in
+        // `token_list`
+        // TODO[g-despot] containsAll doesn't accept lists?
+        .where(Where.property("question").containsAll(tokens))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -131,21 +129,21 @@ class SearchFilterTest {
   @Test
   void testContainsNoneFilter() {
     // START ContainsNoneFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
 
     // highlight-start
     String[] tokens = new String[] {"bird", "animal"};
     // highlight-end
 
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            // Find objects where the `question` property contains none of the strings in
-            // `token_list`
-            // TODO[g-despot] containsNone doesn't accept lists?
-            .where(Where.property("question").containsNone(tokens))
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        // Find objects where the `question` property contains none of the strings in
+        // `token_list`
+        // TODO[g-despot] containsNone doesn't accept lists?
+        .where(Where.property("question").containsNone(tokens))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -156,13 +154,13 @@ class SearchFilterTest {
   @Test
   void testLikeFilter() {
     // START LikeFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .where(Where.property("answer").like("*ala*"))
-            // highlight-end
-            .limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .where(Where.property("answer").like("*ala*"))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -173,17 +171,16 @@ class SearchFilterTest {
   @Test
   void testMultipleFiltersAnd() {
     // START MultipleFiltersAnd
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            // Combine filters with Where.and(), Where.or(), and Where.not()
-            .where(Where.and(
-                Where.property("round").eq("Double Jeopardy!"),
-                Where.property("points").lt(600),
-                Where.not(Where.property("answer").eq("Yucatan"))))
-            // highlight-end
-            .limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        // Combine filters with Where.and(), Where.or(), and Where.not()
+        .where(Where.and(Where.property("round").eq("Double Jeopardy!"),
+            Where.property("points").lt(600),
+            Where.not(Where.property("answer").eq("Yucatan"))))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -194,16 +191,15 @@ class SearchFilterTest {
   @Test
   void testMultipleFiltersAnyOf() {
     // START MultipleFiltersAnyOf
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .where(Where.or(
-                Where.property("points").gte(700),
-                Where.property("points").lt(500),
-                Where.property("round").eq("Double Jeopardy!")))
-            // highlight-end
-            .limit(5));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .where(Where.or(Where.property("points").gte(700),
+            Where.property("points").lt(500),
+            Where.property("round").eq("Double Jeopardy!")))
+        // highlight-end
+        .limit(5));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -214,16 +210,15 @@ class SearchFilterTest {
   @Test
   void testMultipleFiltersAllOf() {
     // START MultipleFiltersAllOf
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .where(Where.and(
-                Where.property("points").gt(300),
-                Where.property("points").lt(700),
-                Where.property("round").eq("Double Jeopardy!")))
-            // highlight-end
-            .limit(5));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .where(Where.and(Where.property("points").gt(300),
+            Where.property("points").lt(700),
+            Where.property("round").eq("Double Jeopardy!")))
+        // highlight-end
+        .limit(5));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -234,17 +229,15 @@ class SearchFilterTest {
   @Test
   void testMultipleFiltersNested() {
     // START MultipleFiltersNested
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .where(Where.and(
-                Where.property("answer").like("*bird*"),
-                Where.or(
-                    Where.property("points").gt(700),
-                    Where.property("points").lt(300))))
-            // highlight-end
-            .limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .where(Where.and(Where.property("answer").like("*bird*"),
+            Where.or(Where.property("points").gt(700),
+                Where.property("points").lt(300))))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -255,14 +248,16 @@ class SearchFilterTest {
   @Test
   void testCrossReference() {
     // START CrossReference
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .where(Where.reference("hasCategory", "JeopardyQuestion", "title").eq("Sport"))
-            .returnReferences(QueryReference.single("hasCategory", r -> r.returnProperties("title")))
-            // highlight-end
-            .limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .where(Where.reference("hasCategory", "JeopardyQuestion", "title")
+            .eq("Sport"))
+        .returnReferences(QueryReference.single("hasCategory",
+            r -> r.returnProperties("title")))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -277,11 +272,12 @@ class SearchFilterTest {
   @Test
   void testFilterById() {
     // START FilterById
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("Article");
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("Article");
 
     String targetId = "00037775-1432-35e5-bc59-443baaef7d80";
-    var response = collection.query.fetchObjects(
-        q -> q.where(Where.uuid().eq(targetId)));
+    var response =
+        collection.query.fetchObjects(q -> q.where(Where.uuid().eq(targetId)));
 
     for (var o : response.objects()) {
       System.out.println(o.properties()); // Inspect returned objects
@@ -324,11 +320,10 @@ class SearchFilterTest {
     String collectionName = "CollectionWithDate";
     client.collections.delete(collectionName);
     try {
-      client.collections.create(collectionName, col -> col
-          .properties(
-              Property.text("title"),
-              Property.date("some_date"))
-          .vectorConfig(VectorConfig.selfProvided()));
+      client.collections.create(collectionName,
+          col -> col
+              .properties(Property.text("title"), Property.date("some_date"))
+              .vectorConfig(VectorConfig.selfProvided()));
 
       // Get a handle to your collection
       var collection = client.collections.use(collectionName);
@@ -340,10 +335,12 @@ class SearchFilterTest {
       for (int year = 2020; year <= 2024; year++) {
         for (int month = 1; month <= 12; month += 2) {
           for (int day = 1; day <= 20; day += 5) {
-            Instant date = OffsetDateTime.of(year, month, day, 0, 0, 0, 0, ZoneOffset.UTC).toInstant();
-            objects.add(Map.of(
-                "title", String.format("Object: yr/month/day:%d/%d/%d", year, month, day),
-                "some_date", date));
+            Instant date =
+                OffsetDateTime.of(year, month, day, 0, 0, 0, 0, ZoneOffset.UTC)
+                    .toInstant();
+            objects.add(
+                Map.of("title", String.format("Object: yr/month/day:%d/%d/%d",
+                    year, month, day), "some_date", date));
           }
         }
       }
@@ -351,29 +348,32 @@ class SearchFilterTest {
       // 3. Call insertMany with the list of objects.
       // Note: We convert the List to an array to match the method's varargs
       // signature.
-      InsertManyResponse insertResponse = collection.data.insertMany(objects.toArray(new Map[0]));
+      InsertManyResponse insertResponse =
+          collection.data.insertMany(objects.toArray(new Map[0]));
 
       // 4. (Optional) Check for errors.
       if (!insertResponse.errors().isEmpty()) {
-        throw new RuntimeException("Errors occurred during batch insertion: " + insertResponse.errors());
+        throw new RuntimeException("Errors occurred during batch insertion: "
+            + insertResponse.errors());
       }
 
-      System.out.printf("Successfully inserted %d objects.", insertResponse.uuids().size());
+      System.out.printf("Successfully inserted %d objects.",
+          insertResponse.uuids().size());
 
       // START FilterByDateDatatype
       // highlight-start
       // Set the timezone for avoidance of doubt
-      Instant filterTime = OffsetDateTime.of(2022, 6, 10, 0, 0, 0, 0, ZoneOffset.UTC).toInstant();
+      Instant filterTime =
+          OffsetDateTime.of(2022, 6, 10, 0, 0, 0, 0, ZoneOffset.UTC)
+              .toInstant();
       // The filter threshold could also be an RFC 3339 timestamp, e.g.:
       // String filter_time = "2022-06-10T00:00:00.00Z";
       // highlight-end
 
-      var response = collection.query.fetchObjects(
-          q -> q
-              .limit(3)
-              // highlight-start
-              // This property (`some_date`) is a `DATE` datatype
-              .where(Where.property("some_date").gt(filterTime))
+      var response = collection.query.fetchObjects(q -> q.limit(3)
+          // highlight-start
+          // This property (`some_date`) is a `DATE` datatype
+          .where(Where.property("some_date").gt(filterTime))
       // highlight-end
       );
 
@@ -394,12 +394,11 @@ class SearchFilterTest {
     // START FilterByPropertyLength
     int lengthThreshold = 20;
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("JeopardyQuestion");
-    var response = collection.query.fetchObjects(
-        q -> q
-            .limit(3)
-            // highlight-start
-            .where(Where.property("answer").gt(lengthThreshold))
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("JeopardyQuestion");
+    var response = collection.query.fetchObjects(q -> q.limit(3)
+        // highlight-start
+        .where(Where.property("answer").gt(lengthThreshold))
     // highlight-end
     );
 
@@ -434,43 +433,37 @@ class SearchFilterTest {
   // }
 
   // TODO[g-despot] When geo properties become available
-  // @Test
-  // void testFilterByGeolocation() {
-  // String collectionName = "Publication";
-  // WeaviateClient localClient = WeaviateClient.connectToLocal();
-  // try {
-  // localClient.collections.create(collectionName, col -> col
-  // .properties(
-  // Property.text("title"),
-  // Property.geo("headquartersGeoLocation")));
-  // var publications = localClient.collections.use(collectionName);
-  // publications.data.insert(Map.of(
-  // "headquartersGeoLocation", Map.of(
-  // "latitude", 52.3932696,
-  // "longitude", 4.8374263)));
+  @Test
+  void testFilterByGeolocation() throws Exception {
+    String collectionName = "Publication";
+    WeaviateClient localClient = WeaviateClient.connectToLocal();
+    try {
+      localClient.collections.create(collectionName,
+          col -> col.properties(Property.text("title"),
+              Property.geoCoordinates("headquartersGeoLocation")));
+      var publications = localClient.collections.use(collectionName);
+      publications.data.insert(Map.of("headquartersGeoLocation",
+          Map.of("latitude", 52.3932696, "longitude", 4.8374263)));
 
-  // // START FilterbyGeolocation
-  // var response = publications.query.fetchObjects(
-  // q -> q.where(
-  // Where.property("headquartersGeoLocation")
-  // .withinGeoRange(
-  // GeoCoordinate.of(52.39f, 4.84f),
-  // 1000.0 // In meters
-  // )));
+      // START FilterbyGeolocation
+      var response = publications.query
+          .fetchObjects(q -> q.where(Where.property("headquartersGeoLocation")
+              .withinGeoRange(52.39f, 4.84f, 1000.0f) // In meters
+          ));
 
-  // for (var o : response.objects()) {
-  // System.out.println(o.properties()); // Inspect returned objects
-  // }
-  // // END FilterbyGeolocation
-  // } finally {
-  // if (localClient.collections.exists(collectionName)) {
-  // localClient.collections.delete(collectionName);
-  // }
-  // try {
-  // localClient.close();
-  // } catch (IOException e) {
-  // // ignore
-  // }
-  // }
-  // }
+      for (var o : response.objects()) {
+        System.out.println(o.properties()); // Inspect returned objects
+      }
+      // END FilterbyGeolocation
+    } finally {
+      if (localClient.collections.exists(collectionName)) {
+        localClient.collections.delete(collectionName);
+      }
+      try {
+        localClient.close();
+      } catch (IOException e) {
+        // ignore
+      }
+    }
+  }
 }

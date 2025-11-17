@@ -25,12 +25,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RbacAndUserManagementTest {
+class RBACTest {
 
   private static WeaviateClient client;
 
   @BeforeAll
-  public static void beforeAll() {
+  public static void beforeAll() throws IOException {
     // START AdminClient
     // Connect to Weaviate as root user
     client = WeaviateClient.connectToLocal(config -> config
@@ -41,6 +41,7 @@ class RbacAndUserManagementTest {
         // START AdminClient
         .authentication(Authentication.apiKey("root-user-key")));
     // END AdminClient
+    cleanup();
   }
 
   @AfterAll
@@ -50,22 +51,21 @@ class RbacAndUserManagementTest {
     }
   }
 
-  @AfterEach
-  public void cleanup() throws IOException {
+  public static void cleanup() throws IOException {
     // Clean up all test roles
-    List<String> builtInRoles = List.of("viewer", "root", "admin", "read-only");
+    List<String> builtInRoles = List.of("admin", "root", "viewer", "read-only");
     var allRoles = client.roles.list();
+    System.out.println(allRoles);
     for (Role role : allRoles) {
       if (!builtInRoles.contains(role.name())) {
         client.roles.delete(role.name());
       }
     }
-
     // Clean up all test users
     var allUsers = client.users.db.list();
+    System.out.println("num of users:" + allUsers);
     for (DbUser user : allUsers) {
-      // Assuming 'admin-alex' is the root/admin user from the docker-compose
-      if (!user.id().equals("admin-alex")) {
+      if (!user.id().equals("root-user")) {
         client.users.db.delete(user.id());
       }
     }
@@ -379,6 +379,7 @@ class RbacAndUserManagementTest {
     String testUser = "custom-user";
     String testRole = "testRole";
 
+    client.users.db.delete(testUser);
     // START CreateUser
     String userApiKey = client.users.db.create(testUser);
     System.out.println(userApiKey);
