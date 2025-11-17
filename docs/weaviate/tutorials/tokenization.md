@@ -5,10 +5,10 @@ title: Configure tokenization for keyword search
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCreateCollection from '!!raw-loader!/\_includes/code/tutorials/tokenization/310_create_collection.py';
-import PyAddObjects from '!!raw-loader!/\_includes/code/tutorials/tokenization/315_add_objects.py';
-import PyFilters from '!!raw-loader!/\_includes/code/tutorials/tokenization/320_filters.py';
-import PySearches from '!!raw-loader!/\_includes/code/tutorials/tokenization/400_searches.py';
+import PyCreateCollection from '!!raw-loader!/_includes/code/tutorials/tokenization/310_create_collection.py';
+import PyAddObjects from '!!raw-loader!/_includes/code/tutorials/tokenization/315_add_objects.py';
+import PyFilters from '!!raw-loader!/_includes/code/tutorials/tokenization/320_filters.py';
+import PySearches from '!!raw-loader!/_includes/code/tutorials/tokenization/400_searches.py';
 
 ## What you'll learn
 

@@ -258,7 +258,7 @@ The choice of tokenization method should match your data characteristics and sea
 - **Unique identifiers** (URLs, IDs): Use `field`
 - **CJK languages**: Use language-specific methods
 
-For detailed guidance and practical examples, see the [tokenization tutorial](../../tutorials/configure-tokenization.mdx).
+For detailed guidance and practical examples, see the [tokenization tutorial](../../tutorials/tokenization.md).
 
 ## Further resources
 
