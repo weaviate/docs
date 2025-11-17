@@ -133,48 +133,6 @@
           "description": "Recommended for multilingual use cases."
         }
       ]
-    },
-    {
-      "name": "openai_key_approval",
-      "displayName": "OpenAI API Key",
-      "description": "The docker-compose file can read your API key from an environment variable OPENAI_APIKEY.",
-      "type": "select-multiline",
-      "conditions": {
-        "and": ["text_vectorizers~~text2vec-openai"]
-      },
-      "options": [
-        {
-          "name": "yes",
-          "displayName": "Yes, set the environment variable placeholder.",
-          "description": "I will provide the OPENAI_APIKEY variable myself."
-        },
-        {
-          "name": "no",
-          "displayName": "No, I will provide the key in request headers.",
-          "description": "No environment variable placeholder will be added."
-        }
-      ]
-    },
-    {
-      "name": "cohere_key_approval",
-      "displayName": "Cohere API Key",
-      "description": "The docker-compose file can read your API key from an environment variable COHERE_APIKEY.",
-      "type": "select-multiline",
-      "conditions": {
-        "or": ["text_vectorizers~~text2vec-cohere", "rerankers~~reranker-cohere"]
-      },
-      "options": [
-        {
-          "name": "yes",
-          "displayName": "Yes, set the environment variable placeholder.",
-          "description": "I will provide the COHERE_APIKEY variable myself."
-        },
-        {
-          "name": "no",
-          "displayName": "No, I will provide the key in request headers.",
-          "description": "No environment variable placeholder will be added."
-        }
-      ]
     }
   ]
 }

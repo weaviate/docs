@@ -8,13 +8,11 @@ export function generateDockerCompose(selections) {
     text_vectorizers = [],
     image_vectorizers = [],
     rerankers = [],
-    default_vectorizer,
     transformers_model,
-    openai_key_approval,
-    cohere_key_approval,
   } = selections;
 
   const allModules = [...text_vectorizers, ...image_vectorizers, ...rerankers];
+  const allVectorizers = [...text_vectorizers, ...image_vectorizers];
 
   // Start building the compose file
   let compose = `---
@@ -50,20 +48,17 @@ services:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: '${default_vectorizer || 'none'}'
+      DEFAULT_VECTORIZER_MODULE: '${allVectorizers[0] || 'none'}'
       ENABLE_MODULES: '${allModules.join(',')}'
       CLUSTER_HOSTNAME: 'node1'
 `;
 
   // Add module-specific environment variables
-  if (text_vectorizers.includes('text2vec-openai') && openai_key_approval === 'yes') {
+  if (text_vectorizers.includes('text2vec-openai')) {
     compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}\n`;
   }
 
-  if (
-    (text_vectorizers.includes('text2vec-cohere') || rerankers.includes('reranker-cohere')) &&
-    cohere_key_approval === 'yes'
-  ) {
+  if (text_vectorizers.includes('text2vec-cohere') || rerankers.includes('reranker-cohere')) {
     compose += `      COHERE_APIKEY: \${COHERE_APIKEY}\n`;
   }
 

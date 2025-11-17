@@ -172,8 +172,6 @@ function WeaviateConfigurator() {
     return getVisibleParameters(topLevelParams, selections);
   }, [parameters, selections]);
 
-  const needsDefaultVectorizer = (selections.text_vectorizers?.length || 0) + (selections.image_vectorizers?.length || 0) > 1;
-
   if (loading) return <div className="weaviate-configurator-loading">Loading...</div>;
   if (error) return <div className="weaviate-configurator-error">{error}</div>;
 
@@ -189,24 +187,6 @@ function WeaviateConfigurator() {
             allParameters={parameters}
           />
         ))}
-
-        {needsDefaultVectorizer && (
-           <ParameterRenderer
-             parameter={{
-               name: 'default_vectorizer',
-               displayName: 'Default Vectorizer',
-               description: 'Since you have multiple vectorizers, select which one should be the default.',
-               type: 'select',
-               options: [
-                 ...(selections.text_vectorizers || []),
-                 ...(selections.image_vectorizers || [])
-               ].map(v => ({ name: v, displayName: v.replace('-pytorch', ' (PyTorch)').replace('-keras', ' (Keras)') }))
-             }}
-             selections={selections}
-             onSelectionChange={handleSelectionChange}
-             allParameters={parameters}
-           />
-        )}
 
         <button onClick={handleGenerate} className="wc-button wc-button-primary">
           Generate Configuration
