@@ -2,6 +2,7 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
+import io.weaviate.client6.v1.api.collections.query.Target;
 import io.weaviate.client6.v1.api.collections.query.Where;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,8 +24,9 @@ class SearchSimilarityTest {
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
     String cohereApiKey = System.getenv("COHERE_APIKEY");
 
-    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey, config -> config
-        .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey, "X-Cohere-Api-Key", cohereApiKey)));
+    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey,
+            "X-Cohere-Api-Key", cohereApiKey)));
     // END INSTANTIATION-COMMON
   }
 
@@ -33,17 +35,14 @@ class SearchSimilarityTest {
     client.close();
   }
 
-  // TODO[g-despot] Why isn't targetVector available?
   @Test
   void testNamedVectorNearText() {
     // START NamedVectorNearText
-    CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
-    var response = reviews.query.nearText("a sweet German white wine", q -> q.limit(2)
-        // highlight-start
-        // .targetVector("title_country") // Specify the target vector for named vector
-        // collections
-        // highlight-end
-        .returnMetadata(Metadata.DISTANCE));
+    CollectionHandle<Map<String, Object>> reviews =
+        client.collections.use("WineReviewNV");
+    var response = reviews.query.nearText(
+        Target.text("title_country", "a sweet German white wine"),
+        q -> q.limit(2).returnMetadata(Metadata.DISTANCE));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -55,7 +54,8 @@ class SearchSimilarityTest {
   @Test
   void testGetNearText() {
     // START GetNearText
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         // highlight-start
         "animals in movies",
@@ -71,7 +71,8 @@ class SearchSimilarityTest {
 
   @Test
   void testGetNearObject() {
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var initialResponse = jeopardy.query.fetchObjects(q -> q.limit(1));
     if (initialResponse.objects().isEmpty())
       return; // Skip test if no data
@@ -92,12 +93,17 @@ class SearchSimilarityTest {
 
   @Test
   void testGetNearVector() {
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var initialResponse =
         jeopardy.query.fetchObjects(q -> q.limit(1).includeVector());
     if (initialResponse.objects().isEmpty())
       return; // Skip test if no data
-    var queryVector = initialResponse.objects().get(0).metadata().vectors().getSingle("default");
+    var queryVector = initialResponse.objects()
+        .get(0)
+        .metadata()
+        .vectors()
+        .getSingle("default");
 
     // START GetNearVector
     // highlight-start
@@ -115,7 +121,8 @@ class SearchSimilarityTest {
   @Test
   void testGetLimitOffset() {
     // START GetLimitOffset
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("animals in movies", q -> q
         // highlight-start
         .limit(2) // return 2 objects
@@ -133,7 +140,8 @@ class SearchSimilarityTest {
   @Test
   void testGetWithDistance() {
     // START GetWithDistance
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("animals in movies", q -> q
         // highlight-start
         .distance(0.25f) // max accepted distance
@@ -151,7 +159,8 @@ class SearchSimilarityTest {
   @Test
   void testAutocut() {
     // START Autocut
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("animals in movies", q -> q
         // highlight-start
         .autocut(1) // number of close groups
@@ -169,7 +178,8 @@ class SearchSimilarityTest {
   // TODO[g-despot] Why isn't UUID available on top-level?
   void testGetWithGroupby() {
     // START GetWithGroupby
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     // highlight-start
     var response = jeopardy.query.nearText("animals in movies", // find object based on this query
         q -> q.limit(10) // maximum total objects
@@ -187,7 +197,8 @@ class SearchSimilarityTest {
     }
 
     response.groups().forEach((groupName, group) -> {
-      System.out.println("=" + "=".repeat(10) + group.name() + "=" + "=".repeat(10));
+      System.out
+          .println("=" + "=".repeat(10) + group.name() + "=" + "=".repeat(10));
       System.out.println(group.numberOfObjects());
       for (var o : group.objects()) {
         System.out.println(o.properties());
@@ -200,12 +211,14 @@ class SearchSimilarityTest {
   @Test
   void testGetWithWhere() {
     // START GetWithFilter
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("animals in movies", q -> q
         // highlight-start
         .where(Where.property("round").eq("Double Jeopardy!"))
         // highlight-end
-        .limit(2).returnMetadata(Metadata.DISTANCE));
+        .limit(2)
+        .returnMetadata(Metadata.DISTANCE));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());

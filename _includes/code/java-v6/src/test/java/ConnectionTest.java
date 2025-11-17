@@ -1,6 +1,7 @@
 import io.weaviate.client6.v1.api.Authentication;
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.cluster.NodeVerbosity;
+import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -24,24 +25,29 @@ class ConnectionTest {
     // START GetNodes
     WeaviateClient client = WeaviateClient
         .connectToLocal(config -> config.host("127.0.0.1").port(8080));
+    // END GetNodes
+    client.collections.delete("MyCollection");
+    client.collections.create("MyCollection",
+        c -> c.multiTenancy(m -> m.enabled(true))).tenants
+            .create(Tenant.active("MyShard"));;
+    // START GetNodes
 
     System.out.println(client.cluster.listNodes()); // all
     System.out
-        .println(client.cluster.listNodes(n -> n.collection("JeopardyQuestion")
-            .shard("SomeShard")
+        .println(client.cluster.listNodes(n -> n.collection("MyCollection")
+            .shard("MyShard")
             .verbosity(NodeVerbosity.MINIMAL)));
 
     client.close(); // Free up resources
     // END GetNodes
   }
 
-  // TODO[g-despot] Missiing meta info endpoint
   @Test
   void testGetMetaInfo() throws Exception {
     // START GetNodes
     WeaviateClient client = WeaviateClient.connectToLocal();
 
-    System.out.println(client.isReady()); // all
+    System.out.println(client.meta()); // all
 
     client.close(); // Free up resources
     // END GetNodes
@@ -159,6 +165,7 @@ class ConnectionTest {
     // END LocalNoAuth
   }
 
+  // TODO[g-despot] Should schema be null by default? null://127.0.0.1:8099
   @Test
   void testConnectLocalWithAuth() throws Exception {
     // START LocalAuth
@@ -166,8 +173,12 @@ class ConnectionTest {
     final String weaviateApiKey = System.getenv("WEAVIATE_LOCAL_API_KEY");
 
     // The local() factory doesn't support auth, so we must use custom().
-    WeaviateClient client = WeaviateClient.connectToCustom(
-        config -> config.authentication(Authentication.apiKey(weaviateApiKey)));
+    WeaviateClient client =
+        WeaviateClient.connectToCustom(config -> config.httpHost("127.0.0.1")
+            .scheme("http")
+            .httpPort(8099)
+            .grpcPort(50052)
+            .authentication(Authentication.apiKey(weaviateApiKey)));
 
     System.out.println(client.isReady()); // Should print: `True`
 

@@ -1,9 +1,8 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.ReferenceProperty;
 import io.weaviate.client6.v1.api.collections.data.Reference;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
-
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class _ManageCollectionsMultiTenancyTest {
+class ManageCollectionsMultiTenancyTest {
 
   private static WeaviateClient client;
 
@@ -30,9 +29,17 @@ class _ManageCollectionsMultiTenancyTest {
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
   }
 
-  @AfterEach
-  public void afterAll() throws Exception {
+  @AfterAll
+  public static void afterAll() throws Exception {
     client.close();
+  }
+
+  @AfterEach
+  public void cleanup() throws IOException {
+    // Clean up all test collections
+    client.collections.delete("MultiTenancyCollection");
+    client.collections.delete("CollectionWithAutoMTEnabled");
+    client.collections.delete("MTCollectionNoAutoMT");
   }
 
   //TODO[g.-despot] A lot of strange errors: IllegalState Connection pool shut down
@@ -169,7 +176,8 @@ class _ManageCollectionsMultiTenancyTest {
   void testChangeTenantState() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName,
-        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true))).tenants
+            .create(Tenant.active("tenantA"));
 
     // // START ChangeTenantState
     String tenantName = "tenantA";
@@ -186,6 +194,8 @@ class _ManageCollectionsMultiTenancyTest {
 
   @Test
   void testCreateTenantObject() throws IOException {
+    client.collections.use("JeopardyQuestion").tenants
+        .create(Tenant.active("tenantA"));
     // START CreateMtObject
     // highlight-start
     var jeopardy =
@@ -246,7 +256,8 @@ class _ManageCollectionsMultiTenancyTest {
   void testActivateTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName,
-        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true))).tenants
+            .create(Tenant.active("tenantA"));
 
     // // START ActivateTenants
     String tenantName = "tenantA";
@@ -280,7 +291,8 @@ class _ManageCollectionsMultiTenancyTest {
   void testOffloadTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName,
-        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true))).tenants
+            .create(Tenant.active("tenantA"));
 
     // // START OffloadTenants
     String tenantName = "tenantA";

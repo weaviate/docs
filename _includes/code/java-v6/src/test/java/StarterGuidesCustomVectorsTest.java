@@ -37,7 +37,6 @@ class StarterGuidesCustomVectorsTest {
   }
 
   //TODO[g-despot] NearVector missing targetVector
-  //TODO[g-despot] Why is UUID required?
   @Test
   void testBringYourOwnVectors() throws Exception {
     WeaviateClient client = null;

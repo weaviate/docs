@@ -119,7 +119,6 @@ class ConfigureRQTest {
     collection.config.update(c -> c.vectorConfig(VectorConfig
         .text2vecTransformers(vc -> vc.quantization(Quantization.rq()))));
     // END UpdateSchema
-    // TODO[g-despot]: Verify the update
   }
 
   @Test

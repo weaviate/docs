@@ -107,7 +107,6 @@ class ManageObjectsImportTest {
     client.collections.delete("MyCollection");
   }
 
-  // TODO[g-despot]: Implement once server-side batching is available
   // START ServerSideBatchImportExample
   // Coming soon
   // END ServerSideBatchImportExample

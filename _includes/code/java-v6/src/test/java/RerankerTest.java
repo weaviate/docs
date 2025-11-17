@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RerankTest {
 
   private static WeaviateClient client;
-  private static final String COLLECTION_NAME = "JeopardyQuestion";
+  private static final String COLLECTION_NAME = "JeopardyQuestionCollection";
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @BeforeAll
@@ -34,7 +34,7 @@ class RerankTest {
             "X-Cohere-Api-Key", cohereApiKey)));
     // END INSTANTIATION-COMMON
 
-    // Setup: Create and populate "JeopardyQuestion"
+    // Setup: Create and populate "JeopardyQuestionCollection"
     if (client.collections.exists(COLLECTION_NAME)) {
       client.collections.delete(COLLECTION_NAME);
     }
@@ -72,7 +72,7 @@ class RerankTest {
   void testNearText() throws Exception {
     // START nearText Python
     CollectionHandle<Map<String, Object>> jeopardy =
-        client.collections.use("JeopardyQuestion");
+        client.collections.use("JeopardyQuestionCollection");
     var response = jeopardy.query.nearText("flying", q -> q.limit(10));
 
     for (var o : response.objects()) {
@@ -88,7 +88,7 @@ class RerankTest {
   // void testNearTextRerank() throws Exception {
   //   // START nearTextRerank Python
   //   CollectionHandle<Map<String, Object>> jeopardy =
-  //       client.collections.use("JeopardyQuestion");
+  //       client.collections.use("JeopardyQuestionCollection");
 
   //   var response = jeopardy.query.nearText("flying",
   //       q -> q.limit(10)
@@ -110,7 +110,7 @@ class RerankTest {
   // void testBm25Rerank() throws Exception {
   //   // START bm25Rerank Python
   //   CollectionHandle<Map<String, Object>> jeopardy =
-  //       client.collections.use("JeopardyQuestion");
+  //       client.collections.use("JeopardyQuestionCollection");
 
   //   var response = jeopardy.query.bm25("paper",
   //       q -> q.limit(10)
