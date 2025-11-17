@@ -35,7 +35,7 @@ If you create a collection without specifying a `vectorIndexConfig`, Weaviate wi
 
 ### Tuning HNSW for Performance
 
-The key to HNSW is balancing the trade-offs between search speed, recall (accuracy), and import/build time. You can tune this balance by adjusting its parameters.
+The key to HNSW is balancing the trade-offs between search speed, recall (accuracy), and import/build time. You can tune this balance by adjusting [its parameters](../config-refs/indexing/vector-index.mdx#hnsw-index-parameters).
 
 The most important parameters are:
 - `maxConnections`: The number of connections each node in the graph will have. More connections lead to higher accuracy but use more memory and can slow down searches.
@@ -87,7 +87,7 @@ It works by:
 This is particularly useful in multi-tenant environments, as small tenants can use the memory-efficient `Flat` index, while large tenants automatically get the performance benefits of `HNSW`.
 
 :::info Asynchronous Indexing Required
-The `Dynamic` index requires asynchronous indexing to be enabled in your Weaviate instance.
+The `Dynamic` index requires [asynchronous indexing](../concepts/indexing/vector-index.md#asynchronous-indexing) to be enabled in your Weaviate instance.
 :::
 
 ### Basic Dynamic Index Configuration
