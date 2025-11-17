@@ -119,6 +119,7 @@
 }
 
 .wc-checkbox-title {
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--docs-header-color);
   margin-right: auto;
@@ -132,16 +133,17 @@
 }
 
 .wc-form-label {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--docs-header-color);
 }
 
 .wc-form-description {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--ifm-color-emphasis-700);
   text-align: right;
   padding-left: 1rem;
+  margin-bottom: 0.25rem;
 }
 
 /* Select Dropdown */
