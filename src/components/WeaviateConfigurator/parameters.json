@@ -96,6 +96,38 @@
       ]
     },
     {
+      "name": "generative_modules",
+      "displayName": "Generative Modules",
+      "description": "Enable generative AI modules to generate responses from your data.",
+      "type": "checkbox-group",
+      "options": [
+        {
+          "name": "generative-openai",
+          "displayName": "generative-openai",
+          "description": "Generate responses using the OpenAI API.",
+          "conditions": {
+            "and": ["weaviate_version>=v1.17.3"]
+          }
+        },
+        {
+          "name": "generative-cohere",
+          "displayName": "generative-cohere",
+          "description": "Generate responses using the Cohere API.",
+          "conditions": {
+            "and": ["weaviate_version>=v1.19.0"]
+          }
+        },
+        {
+          "name": "generative-aws",
+          "displayName": "generative-aws",
+          "description": "Generate responses using AWS Bedrock.",
+          "conditions": {
+            "and": ["weaviate_version>=v1.22.5"]
+          }
+        }
+      ]
+    },
+    {
       "name": "rerankers",
       "displayName": "Reranker Modules",
       "description": "Select a reranker module to refine search results.",

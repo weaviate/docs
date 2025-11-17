@@ -116,8 +116,10 @@ function ParameterRenderer({
 
   return (
     <div className="wc-form-group">
-      <label className="wc-form-label">{displayName}</label>
-      {description && <p className="wc-form-description">{description}</p>}
+      <div className="wc-form-group-header">
+        <label className="wc-form-label">{displayName}</label>
+        {description && <p className="wc-form-description">{description}</p>}
+      </div>
       <InputComponent />
     </div>
   );

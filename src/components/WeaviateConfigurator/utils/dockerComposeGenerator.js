@@ -8,10 +8,11 @@ export function generateDockerCompose(selections) {
     text_vectorizers = [],
     image_vectorizers = [],
     rerankers = [],
+    generative_modules = [],
     transformers_model,
   } = selections;
 
-  const allModules = [...text_vectorizers, ...image_vectorizers, ...rerankers];
+  const allModules = [...text_vectorizers, ...image_vectorizers, ...rerankers, ...generative_modules];
   const allVectorizers = [...text_vectorizers, ...image_vectorizers];
 
   // Start building the compose file
@@ -54,12 +55,21 @@ services:
 `;
 
   // Add module-specific environment variables
-  if (text_vectorizers.includes('text2vec-openai')) {
+  if (text_vectorizers.includes('text2vec-openai') || generative_modules.includes('generative-openai')) {
     compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}\n`;
   }
 
-  if (text_vectorizers.includes('text2vec-cohere') || rerankers.includes('reranker-cohere')) {
+  if (
+    text_vectorizers.includes('text2vec-cohere') ||
+    rerankers.includes('reranker-cohere') ||
+    generative_modules.includes('generative-cohere')
+  ) {
     compose += `      COHERE_APIKEY: \${COHERE_APIKEY}\n`;
+  }
+
+  if (generative_modules.includes('generative-aws')) {
+    compose += `      AWS_ACCESS_KEY_ID: \${AWS_ACCESS_KEY_ID}\n`;
+    compose += `      AWS_SECRET_ACCESS_KEY: \${AWS_SECRET_ACCESS_KEY}\n`;
   }
 
   // Add module service containers

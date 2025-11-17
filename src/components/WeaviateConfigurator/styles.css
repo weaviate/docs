@@ -22,6 +22,14 @@
   gap: 0.5rem;
 }
 
+.wc-form-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 /* Sub-options container */
 .wc-sub-options-container {
   margin-top: 1rem;
@@ -131,8 +139,9 @@
 
 .wc-form-description {
   font-size: 0.9rem;
-  color: var(--docs-base-color);
-  margin-bottom: 0.5rem;
+  color: var(--ifm-color-emphasis-700);
+  text-align: right;
+  padding-left: 1rem;
 }
 
 /* Select Dropdown */
