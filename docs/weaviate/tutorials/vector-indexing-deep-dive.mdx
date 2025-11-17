@@ -1,0 +1,122 @@
+---
+title: "Select & configure vector indexes"
+description: "Learn how to configure and tune Weaviate's vector indexes for your specific use case."
+---
+
+import PyCode from '!!raw-loader!/_includes/code/tutorials/vector-indexing/how-to-configure-vector-indexes.py';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+
+Each named vector in a Weaviate collection can have its own index configuration. This setting is then used to configure the index for that specific vector. In a multi-tenant collection, each tenant inherits the index configuration of the collection.
+
+This tutorial provides a hands-on guide to configuring and tuning these vector indexes. While the defaults are a great starting point, understanding how to adjust index parameters can help you optimize for search speed, accuracy, and memory usage.
+
+We will cover how to configure the `HNSW`, `Flat`, and `Dynamic` index types.
+
+:::info Prerequisites
+This tutorial assumes you are familiar with the basics of Weaviate. If not, start with the [Quickstart](../quickstart/index.md).
+
+We also assume you are familiar with the high-level concepts of [vector indexing](../concepts/indexing/vector-index.md).
+:::
+
+## The HNSW Index: For Speed and Scale
+
+The Hierarchical Navigable Small World (HNSW) index is the default in Weaviate. It's designed for large-scale datasets where you need fast and accurate similarity searches. HNSW builds a multi-layered graph of your vectors, which allows it to find approximate nearest neighbors very efficiently.
+
+### Default HNSW Configuration
+
+If you create a collection without specifying a `vectorIndexConfig`, Weaviate will use HNSW with its default settings. You can, however, explicitly define it.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ConfigHNSW"
+  endMarker="# END ConfigHNSW"
+  language="py"
+/>
+
+### Tuning HNSW for Performance
+
+The key to HNSW is balancing the trade-offs between search speed, recall (accuracy), and import/build time. You can tune this balance by adjusting its parameters.
+
+The most important parameters are:
+- `maxConnections`: The number of connections each node in the graph will have. More connections lead to higher accuracy but use more memory and can slow down searches.
+- `efConstruction`: The size of the dynamic list used during index construction. A higher value creates a more accurate graph, improving search performance at the cost of longer import times.
+- `ef`: The size of the dynamic list used during a search. This is one of the most critical parameters for tuning. A higher `ef` value leads to better recall but slower searches.
+
+Let's create a collection with custom HNSW parameters to optimize for high recall.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CustomConfigHNSW"
+  endMarker="# END CustomConfigHNSW"
+  language="py"
+/>
+
+For a deeper dive into all available parameters, see the [HNSW configuration reference](../config-refs/indexing/vector-index.mdx#hnsw-index).
+
+## The Flat Index: For Accuracy and Small Datasets
+
+The `Flat` index performs a brute-force search by comparing a query vector to every single vector in the index. This guarantees perfect recall but does not scale well for large datasets.
+
+It's an excellent choice for:
+- Small indexes (e.g., under 10,000-20,000 objects).
+- Multi-tenant use cases where each tenant has a small, isolated index.
+
+The main benefit of the Flat index is its extremely low memory overhead, as it doesn't need to store a complex graph structure.
+
+### Configuring a Flat Index
+
+Here’s how to configure a collection to use the `Flat` index. You can also enable quantization to speed up the brute-force search.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CustomConfigFlat"
+  endMarker="# END CustomConfigFlat"
+  language="py"
+/>
+
+For more details, see the [Flat index configuration reference](../config-refs/indexing/vector-index.mdx#flat-index).
+
+## The Dynamic Index: The Best of Both Worlds
+
+The `Dynamic` index is a powerful feature for use cases where the size of a collection (or a tenant's data) can vary unpredictably.
+
+It works by:
+1. Starting with a `Flat` index, which is efficient for small numbers of objects.
+2. Automatically converting to an `HNSW` index once the number of objects crosses a specified threshold (default is 10,000).
+
+This is particularly useful in multi-tenant environments, as small tenants can use the memory-efficient `Flat` index, while large tenants automatically get the performance benefits of `HNSW`.
+
+:::info Asynchronous Indexing Required
+The `Dynamic` index requires asynchronous indexing to be enabled in your Weaviate instance.
+:::
+
+### Basic Dynamic Index Configuration
+
+Here's how to set up a collection with a `Dynamic` index using default settings.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ConfigDynamic"
+  endMarker="# END ConfigDynamic"
+  language="py"
+/>
+
+### Custom Dynamic Index Configuration
+
+You can customize both the `HNSW` and `Flat` configurations that the `Dynamic` index will use, as well as the threshold for switching.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CustomConfigDynamic"
+  endMarker="# END CustomConfigDynamic"
+  language="py"
+/>
+
+For more details, see the [Dynamic index configuration reference](../config-refs/indexing/vector-index.mdx#dynamic-index).
+
+## Next Steps
+
+You now have a practical understanding of how to configure Weaviate's different vector index types.
+
+- For more about the concepts behind these indexes, visit the [Vector Index Concepts page](../concepts/indexing/vector-index.md).
+- To learn about reducing memory usage even further, check out the concepts page on [Vector Quantization](../concepts/vector-quantization.md).

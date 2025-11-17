@@ -566,6 +566,7 @@ const sidebars = {
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
         "weaviate/tutorials/multi-vector-embeddings",
+        "weaviate/tutorials/vector-indexing-deep-dive",
         "weaviate/tutorials/tokenization",
         "weaviate/tutorials/rbac",
         "weaviate/tutorials/tls-ssl",
