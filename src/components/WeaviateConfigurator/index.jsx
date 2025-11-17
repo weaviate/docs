@@ -71,6 +71,7 @@ function ParameterRenderer({
                       onSelectionChange(name, newValues);
                     }}
                   />
+                  <span className="wc-custom-checkbox" />
                   <span className="wc-checkbox-title">{option.displayName}</span>
                   {option.description && (
                     <span className="wc-checkbox-description">{option.description}</span>
