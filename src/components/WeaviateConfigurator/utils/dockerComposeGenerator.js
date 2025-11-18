@@ -10,9 +10,8 @@ export function generateDockerCompose(selections) {
     additional_modules = [],
     transformers_model,
     reranker_transformers_model,
-    qna_model,
+    multi2vec_clip_model,
     ner_model,
-    sum_model,
   } = selections;
 
   const apiModules = [
@@ -77,11 +76,25 @@ version: '3.4'
       DEFAULT_VECTORIZER_MODULE: '${allVectorizers[0] || 'none'}'
       ENABLE_MODULES: '${allModules.join(',')}'
       CLUSTER_HOSTNAME: 'node1'
-      OPENAI_APIKEY: \${OPENAI_APIKEY}
-      COHERE_APIKEY: \${COHERE_APIKEY}
-      AWS_ACCESS_KEY_ID: \${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: \${AWS_SECRET_ACCESS_KEY}
 `;
+
+  if (allModules.includes('text2vec-openai') || allModules.includes('generative-openai')) {
+    compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}\n`;
+  }
+  if (allModules.includes('text2vec-cohere') || allModules.includes('generative-cohere') || allModules.includes('reranker-cohere')) {
+    compose += `      COHERE_APIKEY: \${COHERE_APIKEY}\n`;
+  }
+  if (allModules.includes('generative-aws')) {
+    compose += `      AWS_ACCESS_KEY_ID: \${AWS_ACCESS_KEY_ID}\n`;
+    compose += `      AWS_SECRET_ACCESS_KEY: \${AWS_SECRET_ACCESS_KEY}\n`;
+  }
+
+  if (local_modules.includes('multi2vec-clip')) {
+    compose += `      CLIP_INFERENCE_API: http://multi2vec-clip:8080\n`;
+  }
+  if (local_modules.includes('text2vec-model2vec')) {
+    compose += `      MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080\n`;
+  }
 
   if (additional_modules.includes('backup-s3')) {
     compose += `      BACKUP_S3_BUCKET: \${BACKUP_S3_BUCKET}\n`;
@@ -94,17 +107,17 @@ version: '3.4'
   if (additional_modules.includes('reranker-transformers')) {
     compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2');
   }
-  if (additional_modules.includes('qna-transformers')) {
-    compose += getInferenceService('qna-transformers', qna_model || 'distilbert-base-uncased-distilled-squad');
-  }
   if (additional_modules.includes('ner-transformers')) {
     compose += getInferenceService('ner-transformers', ner_model || 'dbmdz-bert-large-cased-finetuned-conll03-english');
   }
-  if (additional_modules.includes('sum-transformers')) {
-    compose += getInferenceService('sum-transformers', sum_model || 'facebook-bart-large-cnn-1.0.0');
-  }
   if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += getOllamaService();
+  }
+  if (local_modules.includes('multi2vec-clip')) {
+    compose += getClipService(multi2vec_clip_model || 'sentence-transformers-clip-ViT-B-32-multilingual-v1');
+  }
+  if (local_modules.includes('text2vec-model2vec')) {
+    compose += getModel2VecService();
   }
   if (local_modules.includes('img2vec-neural-pytorch')) {
     compose += getImageService('pytorch');
@@ -157,6 +170,22 @@ function getImageService(type) {
     image: cr.weaviate.io/semitechnologies/img2vec-neural:${modelTag}
     environment:
       ENABLE_CUDA: '0'
+`;
+}
+
+function getClipService(model) {
+  return `
+  multi2vec-clip:
+    image: cr.weaviate.io/semitechnologies/multi2vec-clip:${model}
+    environment:
+      ENABLE_CUDA: '0'
+`;
+}
+
+function getModel2VecService() {
+  return `
+  text2vec-model2vec:
+    image: cr.weaviate.io/semitechnologies/model2vec-inference:minishlab-potion-base-32M
 `;
 }
 

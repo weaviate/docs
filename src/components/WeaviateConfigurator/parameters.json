@@ -78,14 +78,14 @@
           "description": "Uses a local Ollama container for embeddings."
         },
         {
-          "name": "img2vec-neural-pytorch",
-          "displayName": "img2vec-neural (PyTorch)",
-          "description": "Pytorch-based ResNet50 model. Runs on CPU or CUDA-GPU."
+          "name": "multi2vec-clip",
+          "displayName": "multi2vec-clip",
+          "description": "Multimodal CLIP embeddings."
         },
         {
-          "name": "img2vec-neural-keras",
-          "displayName": "img2vec-neural (Keras)",
-          "description": "Keras-based ResNet50 model. Restricted to amd64 and CPU."
+          "name": "text2vec-model2vec",
+          "displayName": "text2vec-model2vec",
+          "description": "Text embedding model."
         },
         {
           "name": "generative-ollama",
@@ -111,29 +111,9 @@
           "description": "Rerank search results using a local transformers model."
         },
         {
-          "name": "qna-transformers",
-          "displayName": "qna-transformers",
-          "description": "Answer extraction from documents, based on a question."
-        },
-        {
           "name": "ner-transformers",
           "displayName": "ner-transformers",
           "description": "Extract named entities from your text objects."
-        },
-        {
-          "name": "sum-transformers",
-          "displayName": "sum-transformers",
-          "description": "Summarize text snippets from your search results."
-        },
-        {
-          "name": "text-spellcheck",
-          "displayName": "text-spellcheck",
-          "description": "Suggest or auto-fix misspelled queries."
-        },
-        {
-          "name": "ref2vec-centroid",
-          "displayName": "ref2vec-centroid",
-          "description": "Vectorize a class with the average vectors of a cross-referenced class."
         }
       ]
     },
@@ -185,23 +165,53 @@
       ]
     },
     {
-      "name": "qna_model",
-      "displayName": "Q&A Model",
-      "description": "Select the model for the qna-transformers module.",
+      "name": "multi2vec_clip_model",
+      "displayName": "CLIP Model",
+      "description": "Select the model for the multi2vec-clip module.",
       "type": "select-multiline",
       "conditions": {
-        "and": ["additional_modules~~qna-transformers"]
+        "and": ["local_modules~~multi2vec-clip"]
       },
       "options": [
         {
-          "name": "distilbert-base-uncased-distilled-squad",
-          "displayName": "distilbert-base-uncased-distilled-squad",
-          "description": "English, uncased model."
+          "name": "google-siglip2-so400m-patch16-512",
+          "displayName": "google/siglip2-so400m-patch16-512",
+          "description": "SigLIP 2 model with 512x512 input size (Multilingual, 1152d)"
         },
         {
-          "name": "bert-large-uncased-whole-word-masking-finetuned-squad",
-          "displayName": "bert-large-uncased-whole-word-masking-finetuned-squad",
-          "description": "English, uncased, whole-word masking."
+          "name": "google-siglip2-so400m-patch16-384",
+          "displayName": "google/siglip2-so400m-patch16-384",
+          "description": "SigLIP 2 model with 384x384 input size (Multilingual, 1152d)"
+        },
+        {
+          "name": "sentence-transformers-clip-ViT-B-32",
+          "displayName": "sentence-transformers-clip-ViT-B-32",
+          "description": "Texts must be in English. (English, 768d)"
+        },
+        {
+          "name": "sentence-transformers-clip-ViT-B-32-multilingual-v1",
+          "displayName": "sentence-transformers-clip-ViT-B-32-multilingual-v1",
+          "description": "Supports a wide variety of languages for text. (Multilingual, 768d)"
+        },
+        {
+          "name": "openai-clip-vit-base-patch16",
+          "displayName": "openai-clip-vit-base-patch16",
+          "description": "Uses a ViT-B/16 Transformer architecture."
+        },
+        {
+          "name": "ViT-B-16-laion2b_s34b_b88k",
+          "displayName": "ViT-B-16-laion2b_s34b_b88k",
+          "description": "ViT-B/16 Transformer trained with LAION-2B dataset using OpenCLIP."
+        },
+        {
+          "name": "ViT-B-32-quickgelu-laion400m_e32",
+          "displayName": "ViT-B-32-quickgelu-laion400m_e32",
+          "description": "ViT-B/32 Transformer trained with LAION-400M dataset using OpenCLIP."
+        },
+        {
+          "name": "xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k",
+          "displayName": "xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k",
+          "description": "ViT-B/32 xlm roberta base model trained with LAION-5B dataset using OpenCLIP."
         }
       ]
     },
@@ -223,22 +233,6 @@
           "name": "dslim-bert-base-NER",
           "displayName": "dslim/bert-base-NER",
           "description": "English model."
-        }
-      ]
-    },
-    {
-      "name": "sum_model",
-      "displayName": "Summarization Model",
-      "description": "Select the model for the sum-transformers module.",
-      "type": "select-multiline",
-      "conditions": {
-        "and": ["additional_modules~~sum-transformers"]
-      },
-      "options": [
-        {
-          "name": "facebook-bart-large-cnn-1.0.0",
-          "displayName": "facebook/bart-large-cnn-1.0.0",
-          "description": "CNN summarization model."
         }
       ]
     }
