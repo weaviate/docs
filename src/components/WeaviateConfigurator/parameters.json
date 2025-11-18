@@ -75,27 +75,27 @@
         {
           "name": "text2vec-transformers",
           "displayName": "text2vec-transformers",
-          "description": "Text embeddings with the Hugging Face Transformers library."
+          "description": "Text embeddings (transformers library)."
         },
         {
           "name": "text2vec-model2vec",
           "displayName": "text2vec-model2vec",
-          "description": "Fast, static embedding models from Model2Vec."
+          "description": "Static Model2vec embeddings"
         },
         {
           "name": "text2vec-ollama",
           "displayName": "text2vec-ollama",
-          "description": "Embedding models from the Ollama library."
+          "description": "Ollama embeddings"
         },
         {
           "name": "multi2vec-clip",
           "displayName": "multi2vec-clip",
-          "description": "Multimodal CLIP embeddings with the Hugging Face Transformers library."
+          "description": "Multimodal CLIP embeddings (transformers library)"
         },
         {
           "name": "generative-ollama",
           "displayName": "generative-ollama",
-          "description": "Generative AI models from the Ollama library."
+          "description": "Generative AI models (ollama)"
         }
       ]
     },
@@ -191,6 +191,22 @@
       ]
     },
     {
+      "name": "t2v_transformers_cuda",
+      "displayName": "CUDA for Transformers",
+      "description": "Enable CUDA for the text2vec-transformers module.",
+      "type": "checkbox-group",
+      "conditions": {
+        "and": ["local_modules~~text2vec-transformers"]
+      },
+      "options": [
+        {
+          "name": "enabled",
+          "displayName": "Enable CUDA",
+          "description": "Requires NVIDIA drivers on the host machine."
+        }
+      ]
+    },
+    {
       "name": "multi2vec_clip_model",
       "displayName": "CLIP Model",
       "description": "Select the model for the multi2vec-clip module.",
@@ -242,6 +258,22 @@
       ]
     },
     {
+      "name": "multi2vec_clip_cuda",
+      "displayName": "CUDA for CLIP",
+      "description": "Enable CUDA for the multi2vec-clip module.",
+      "type": "checkbox-group",
+      "conditions": {
+        "and": ["local_modules~~multi2vec-clip"]
+      },
+      "options": [
+        {
+          "name": "enabled",
+          "displayName": "Enable CUDA",
+          "description": "Requires NVIDIA drivers on the host machine."
+        }
+      ]
+    },
+    {
       "name": "ner_model",
       "displayName": "NER Model",
       "description": "Select the model for the ner-transformers module.",
@@ -259,6 +291,22 @@
           "name": "dslim-bert-base-NER",
           "displayName": "dslim/bert-base-NER",
           "description": "English model."
+        }
+      ]
+    },
+    {
+      "name": "ner_transformers_cuda",
+      "displayName": "CUDA for NER",
+      "description": "Enable CUDA for the ner-transformers module.",
+      "type": "checkbox-group",
+      "conditions": {
+        "and": ["additional_modules~~ner-transformers"]
+      },
+      "options": [
+        {
+          "name": "enabled",
+          "displayName": "Enable CUDA",
+          "description": "Requires NVIDIA drivers on the host machine."
         }
       ]
     }

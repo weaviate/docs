@@ -3,7 +3,7 @@
  */
 export function generateDockerCompose(selections) {
   const {
-    weaviate_version = 'v1.32.7',
+    weaviate_version = 'v1.34.0',
     weaviate_volume = 'named-volume',
     authentication_scheme = 'none',
     local_modules = [],
@@ -12,18 +12,13 @@ export function generateDockerCompose(selections) {
     reranker_transformers_model,
     multi2vec_clip_model,
     ner_model,
+    t2v_transformers_cuda = [],
+    reranker_transformers_cuda = [],
+    multi2vec_clip_cuda = [],
+    ner_transformers_cuda = [],
   } = selections;
 
-  const apiModules = [
-    'text2vec-openai',
-    'text2vec-cohere',
-    'generative-openai',
-    'generative-cohere',
-    'generative-aws',
-    'reranker-cohere',
-  ];
-
-  const allModules = [...apiModules, ...local_modules, ...additional_modules];
+  const allModules = [...local_modules, ...additional_modules];
   const allVectorizers = ['text2vec-openai', 'text2vec-cohere', ...local_modules.filter(m => m.startsWith('text2vec-') || m.startsWith('img2vec-'))];
 
   // Start building the compose file
@@ -73,24 +68,15 @@ version: '3.4'
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: '${authentication_scheme === 'none'}'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: '${allVectorizers[0] || 'none'}'
       ENABLE_MODULES: '${allModules.join(',')}'
       CLUSTER_HOSTNAME: 'node1'
 `;
 
-  if (allModules.includes('text2vec-openai') || allModules.includes('generative-openai')) {
-    compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}\n`;
-  }
-  if (allModules.includes('text2vec-cohere') || allModules.includes('generative-cohere') || allModules.includes('reranker-cohere')) {
-    compose += `      COHERE_APIKEY: \${COHERE_APIKEY}\n`;
-  }
-  if (allModules.includes('generative-aws')) {
-    compose += `      AWS_ACCESS_KEY_ID: \${AWS_ACCESS_KEY_ID}\n`;
-    compose += `      AWS_SECRET_ACCESS_KEY: \${AWS_SECRET_ACCESS_KEY}\n`;
-  }
-
   if (local_modules.includes('multi2vec-clip')) {
     compose += `      CLIP_INFERENCE_API: http://multi2vec-clip:8080\n`;
+  }
+  if (local_modules.includes('text2vec-ollama')) {
+    compose += `      OLLAMA_INFERENCE_API: http://ollama:11434\n`;
   }
   if (local_modules.includes('text2vec-model2vec')) {
     compose += `      MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080\n`;
@@ -102,28 +88,22 @@ version: '3.4'
 
   // Add module service containers
   if (local_modules.includes('text2vec-transformers')) {
-    compose += getInferenceService('t2v-transformers', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1');
+    compose += getInferenceService('t2v-transformers', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1', t2v_transformers_cuda.includes('enabled'));
   }
   if (additional_modules.includes('reranker-transformers')) {
-    compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2');
+    compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2', reranker_transformers_cuda.includes('enabled'));
   }
   if (additional_modules.includes('ner-transformers')) {
-    compose += getInferenceService('ner-transformers', ner_model || 'dbmdz-bert-large-cased-finetuned-conll03-english');
+    compose += getInferenceService('ner-transformers', ner_model || 'dbmdz-bert-large-cased-finetuned-conll03-english', ner_transformers_cuda.includes('enabled'));
   }
   if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += getOllamaService();
   }
   if (local_modules.includes('multi2vec-clip')) {
-    compose += getClipService(multi2vec_clip_model || 'sentence-transformers-clip-ViT-B-32-multilingual-v1');
+    compose += getClipService(multi2vec_clip_model || 'sentence-transformers-clip-ViT-B-32-multilingual-v1', multi2vec_clip_cuda.includes('enabled'));
   }
   if (local_modules.includes('text2vec-model2vec')) {
     compose += getModel2VecService();
-  }
-  if (local_modules.includes('img2vec-neural-pytorch')) {
-    compose += getImageService('pytorch');
-  }
-  if (local_modules.includes('img2vec-neural-keras')) {
-    compose += getImageService('keras');
   }
 
   // Add volumes section if needed
@@ -142,13 +122,12 @@ volumes:
   return compose;
 }
 
-function getInferenceService(moduleName, model) {
-  const imageName = moduleName.replace(/-/g, '_');
+function getInferenceService(moduleName, model, cudaEnabled = false) {
   return `
   ${moduleName}:
     image: cr.weaviate.io/semitechnologies/${moduleName}-inference:${model}
     environment:
-      ENABLE_CUDA: '0'
+      ENABLE_CUDA: '${cudaEnabled ? '1' : '0'}'
 `;
 }
 
@@ -163,22 +142,12 @@ function getOllamaService() {
 `;
 }
 
-function getImageService(type) {
-  const modelTag = type === 'pytorch' ? 'pytorch-resnet50' : 'resnet50';
-  return `
-  i2v-neural:
-    image: cr.weaviate.io/semitechnologies/img2vec-neural:${modelTag}
-    environment:
-      ENABLE_CUDA: '0'
-`;
-}
-
-function getClipService(model) {
+function getClipService(model, cudaEnabled = false) {
   return `
   multi2vec-clip:
     image: cr.weaviate.io/semitechnologies/multi2vec-clip:${model}
     environment:
-      ENABLE_CUDA: '0'
+      ENABLE_CUDA: '${cudaEnabled ? '1' : '0'}'
 `;
 }
 

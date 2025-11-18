@@ -269,10 +269,10 @@
 
 /* Buttons */
 .wc-button {
-  padding: 0.7rem 1.5rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -300,22 +300,26 @@
 
 /* Result Section */
 .wc-result {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   border-top: 1px solid var(--docs-cards-border-color);
-  padding-top: 2rem;
+  padding-top: 0.5rem;
 }
 
 .wc-result-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
 }
 
 .wc-result-header h2 {
   font-family: var(--site-font-heading-family);
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   color: var(--docs-header-color);
+  margin: 0.1rem;
+  padding: 0.1rem;
 }
 
 /* Accordion */

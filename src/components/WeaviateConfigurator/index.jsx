@@ -173,6 +173,12 @@ function WeaviateConfigurator() {
     }
   }, []);
 
+  // Generate Docker compose automatically
+  useEffect(() => {
+    const content = generateDockerCompose(selections);
+    setDockerCompose(content);
+  }, [selections]);
+
   const handleAccordionToggle = (id) => {
     setOpenAccordion(prev =>
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
@@ -184,11 +190,6 @@ function WeaviateConfigurator() {
       ...prev,
       [name]: value,
     }));
-  };
-
-  const handleGenerate = () => {
-    const content = generateDockerCompose(selections);
-    setDockerCompose(content);
   };
 
   const copyToClipboard = () => {
@@ -294,16 +295,12 @@ function WeaviateConfigurator() {
             </AccordionItem>
           ))}
         </div>
-
-        <button onClick={handleGenerate} className="wc-button wc-button-primary">
-          Generate docker-compose.yml
-        </button>
       </div>
 
       {dockerCompose && (
         <div className="wc-result">
           <div className="wc-result-header">
-            <h2>Your docker-compose.yml</h2>
+            <h2>Generated docker-compose.yml</h2>
             <button onClick={copyToClipboard} className="wc-button wc-button-secondary">
               {copied ? '✓ Copied!' : 'Copied!'}
             </button>
