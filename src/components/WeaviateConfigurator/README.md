@@ -1,404 +1,157 @@
 # Weaviate Configurator Component
 
-A self-contained React component for generating Weaviate docker-compose configurations. Perfect for embedding in Docusaurus documentation.
+A self-contained React component for generating Weaviate `docker-compose.yml` configurations. This guide explains how to maintain and extend this component.
 
-## 📦 What's Included
+## How it Works
 
-```
-WeaviateConfigurator/
-├── index.jsx                          # Main component (import this)
-├── styles.css                         # Scoped styles (wc- prefixed)
-├── parameters.json                    # Parameter definitions
-├── components/
-│   ├── ParameterStep.jsx             # Wizard step component
-│   └── ResultPage.jsx                # Results/download page
-└── utils/
-    ├── conditionEvaluator.js         # Condition logic
-    └── dockerComposeGenerator.js     # Docker-compose generator
-```
+The configurator is driven by a JSON file and a generator script, which work together to create the user interface and the final configuration file:
 
-## 🚀 Quick Start (Docusaurus)
+1.  **`parameters.json`**: This file defines all the user-selectable options, such as dropdowns and checkboxes. It controls what appears in the UI, including descriptions and conditional visibility for certain options.
+2.  **`utils/dockerComposeGenerator.js`**: This script takes the user's selections from the UI and generates the final `docker-compose.yml` string.
 
-### 1. Copy the folder
+To add a new feature, you will typically need to modify both of these files.
 
-Copy the entire `WeaviateConfigurator` folder to your Docusaurus project:
+## How to Add a New Option
 
-```bash
-cp -r frontend/src/WeaviateConfigurator /path/to/your/docusaurus/src/components/
-```
+Here’s a step-by-step guide to adding a new selectable module. As an example, let's say we want to add a new module called `new-awesome-module`.
 
-### 2. Use in MDX
+### Step 1: Add the Option to `parameters.json`
 
-In any `.mdx` file:
+First, you need to add the new option so it appears in the UI. Open `parameters.json` and find the appropriate group for your new option. For a new module, you would typically add it to either `local_modules` or `additional_modules`.
 
-```mdx
----
-title: Docker Compose Configuration
----
-
-import WeaviateConfigurator from '@site/src/components/WeaviateConfigurator';
-
-# Generate Your Docker Compose File
-
-Use this interactive wizard to generate a customized `docker-compose.yml` file for Weaviate:
-
-<WeaviateConfigurator />
-```
-
-### 3. That's it!
-
-The component is fully self-contained with:
-- ✅ All dependencies bundled
-- ✅ Scoped CSS (no conflicts)
-- ✅ No backend required
-- ✅ Works offline after initial load
-
-## 🎨 Customization
-
-### Change Colors/Branding
-
-Edit `styles.css` and change the color variables:
-
-```css
-/* Primary color (currently Weaviate dark blue) */
-.wc-button-primary {
-  background: #your-color;
-}
-
-/* Accent color (currently Weaviate pink) */
-.wc-progress-fill {
-  background: linear-gradient(90deg, #your-color-1 0%, #your-color-2 100%);
-}
-```
-
-### Add/Edit Parameters
-
-Edit `parameters.json`:
+To add `new-awesome-module` as a local inference module, you would add a new object to the `options` array of the `local_modules` parameter:
 
 ```json
+// In parameters.json
 {
-  "parameters": [
+  "name": "local_modules",
+  "displayName": "Local Inference",
+  "description": "Enable locally-run model integrations.",
+  "type": "checkbox-group",
+  "options": [
+    // ... other options
     {
-      "name": "my_parameter",
-      "displayName": "My Parameter",
-      "description": "Help text for users",
-      "type": "select-multiline",
-      "conditions": {
-        "or": ["some_param==value"]
-      },
-      "options": [
-        {
-          "name": "option1",
-          "displayName": "Option 1",
-          "description": "First option description"
-        }
-      ]
+      "name": "new-awesome-module",
+      "displayName": "new-awesome-module",
+      "description": "A description of what this new module does."
     }
   ]
-}
+},
 ```
 
-### Extend Docker Compose Generator
+This change will automatically add a new checkbox for your module in the "Local Inference" section of the UI.
 
-Edit `utils/dockerComposeGenerator.js` to add support for new parameters:
+### Step 2: Add the Logic to `dockerComposeGenerator.js`
 
-```javascript
-export function generateDockerCompose(selections) {
-  const {
-    weaviate_version,
-    your_new_param  // Add your new parameter
-  } = selections;
+Next, you need to handle the new option in the Docker Compose generator. Open `utils/dockerComposeGenerator.js`.
 
-  // Add logic to handle your new parameter
-  // ...
-}
-```
+1.  **Add Environment Variables (if needed)**: If your new module requires Weaviate to have specific environment variables, you'll need to add logic to include them when the module is selected.
 
-## 📝 Parameters JSON Format
-
-### Parameter Object
-
-```json
-{
-  "name": "string",              // Required: Unique identifier
-  "displayName": "string",       // Required: User-facing name
-  "description": "string",       // Optional: Help text
-  "type": "select-multiline",    // Required: "select-multiline", "select", or "text"
-  "conditions": {                // Optional: When to show this parameter
-    "and": ["condition1"],       // All must be true
-    "or": ["condition2"]         // At least one must be true
-  },
-  "options": [                   // Required for select types
-    {
-      "name": "string",          // Required: Option value
-      "displayName": "string",   // Required: User-facing name
-      "description": "string",   // Optional: Help text
-      "conditions": {}           // Optional: When to show this option
+    ```javascript
+    // In generateDockerCompose function
+    if (local_modules.includes('new-awesome-module')) {
+      compose += `      NEW_MODULE_API: http://new-awesome-module:8080\n`;
     }
-  ]
-}
-```
+    ```
 
-### Condition Syntax
+2.  **Add the Service Container**: If your module runs in its own Docker container, you need to add a new service definition. The best practice is to create a new function for this.
 
-Conditions control parameter/option visibility:
+    ```javascript
+    // In generateDockerCompose function
+    if (local_modules.includes('new-awesome-module')) {
+      compose += getNewAwesomeModuleService();
+    }
+    ```
 
-| Operator | Example | Description |
-|----------|---------|-------------|
-| `==` | `modules==none` | Equals |
-| `!=` | `wcs!=true` | Not equals |
-| `>=` | `weaviate_version>=v1.25.0` | Greater than or equal (semantic versioning) |
-| `<=` | `weaviate_version<=v1.30.0` | Less than or equal |
-| `>` | `weaviate_version>v1.20.0` | Greater than |
-| `<` | `weaviate_version<v1.30.0` | Less than |
+3.  **Create the Service Function**: Add a new function at the bottom of the file to generate the service configuration string.
 
-### Example: Conditional Parameter
+    ```javascript
+    // At the end of the file
+    function getNewAwesomeModuleService() {
+      return `
+  new-awesome-module:
+    image: cr.weaviate.io/semitechnologies/new-awesome-module:latest
+    environment:
+      ENABLE_CUDA: '0'
+`;
+    }
+    ```
+
+### Step 3: Test
+
+After making these changes, run the application and test your new option to ensure it generates the correct `docker-compose.yml` file.
+
+## How to Add a Sub-selector (e.g., for models)
+
+If your new module has different models to choose from, you can add a conditional sub-selector that appears only when the module is selected.
+
+### Step 1: Add a New Parameter in `parameters.json`
+
+Create a new top-level parameter for the model selection. Use the `conditions` field to make it visible only when your module is selected.
 
 ```json
+// In parameters.json
 {
-  "name": "api_key",
-  "displayName": "API Key Configuration",
+  "name": "new_awesome_module_model",
+  "displayName": "Awesome Model",
+  "description": "Select the model for the new-awesome-module.",
   "type": "select-multiline",
   "conditions": {
-    "or": [
-      "text_module==text2vec-openai",
-      "text_module==text2vec-cohere"
-    ]
+    "and": ["local_modules~~new-awesome-module"]
   },
-  "options": [...]
+  "options": [
+    {
+      "name": "model1",
+      "displayName": "Model 1 (default)",
+      "description": "The first amazing model."
+    },
+    {
+      "name": "model2",
+      "displayName": "Model 2",
+      "description": "The second amazing model."
+    }
+  ]
 }
 ```
+The condition `local_modules~~new-awesome-module` means: "show this parameter when `new-awesome-module` is selected within the `local_modules` checkbox group."
 
-This parameter only shows if `text_module` is either `text2vec-openai` or `text2vec-cohere`.
+### Step 2: Update `dockerComposeGenerator.js`
 
-## 🔧 Advanced Usage
+1.  **Destructure the New Model Selection**: Add the new model parameter to the destructuring at the top of the `generateDockerCompose` function.
 
-### Load Parameters Dynamically
+    ```javascript
+    const {
+      // ... other selections
+      new_awesome_module_model,
+    } = selections;
+    ```
 
-Instead of bundling `parameters.json`, fetch it:
+2.  **Pass the Model to Your Service Function**: When calling the function to generate the service, pass the selected model to it. It's a good idea to provide a default model.
 
-```javascript
-// In index.jsx
-useEffect(() => {
-  fetch('/api/parameters')
-    .then(res => res.json())
-    .then(data => {
-      setParameters(data.parameters);
-      setLoading(false);
-    })
-    .catch(err => {
-      setError('Failed to load parameters');
-      setLoading(false);
-    });
-}, []);
-```
+    ```javascript
+    if (local_modules.includes('new-awesome-module')) {
+      compose += getNewAwesomeModuleService(new_awesome_module_model || 'model1');
+    }
+    ```
 
-### Custom Docker Compose Generator
+3.  **Update the Service Function to Use the Model**: Modify the service function to accept the model name and use it to construct the Docker image name.
 
-Create your own generator function:
-
-```javascript
-// utils/customGenerator.js
-export function generateCustomDockerCompose(selections) {
-  // Your custom logic here
-  return `version: '3.4'
-services:
-  your-service:
-    image: your-image
-    ...
+    ```javascript
+    function getNewAwesomeModuleService(model) {
+      return `
+  new-awesome-module:
+    image: cr.weaviate.io/semitechnologies/new-awesome-module:${model}
+    environment:
+      ENABLE_CUDA: '0'
 `;
-}
-```
+    }
+    ```
 
-Then use it in `ResultPage.jsx`:
+## File Structure Overview
 
-```javascript
-import { generateCustomDockerCompose } from '../utils/customGenerator';
-
-// In useEffect
-const content = generateCustomDockerCompose(selections);
-```
-
-### Pre-fill Selections
-
-Start with default selections:
-
-```jsx
-<WeaviateConfigurator
-  initialSelections={{
-    weaviate_version: 'v1.32.7',
-    modules: 'none'
-  }}
-/>
-```
-
-To support this, modify `index.jsx`:
-
-```javascript
-function WeaviateConfigurator({ initialSelections = {} }) {
-  const [selections, setSelections] = useState(initialSelections);
-  // ...
-}
-```
-
-## 🎯 Use Cases
-
-### Embed in Documentation
-
-```mdx
-# Quick Start
-
-<WeaviateConfigurator />
-
-## What's Next?
-
-After generating your configuration...
-```
-
-### Standalone Page
-
-```javascript
-// pages/configurator.jsx
-import WeaviateConfigurator from '@site/src/components/WeaviateConfigurator';
-
-export default function ConfiguratorPage() {
-  return (
-    <div>
-      <h1>Configuration Generator</h1>
-      <WeaviateConfigurator />
-    </div>
-  );
-}
-```
-
-### Multiple Configurations
-
-```mdx
-# Basic Setup
-
-<WeaviateConfigurator initialSelections={{ modules: 'standalone' }} />
-
-# Advanced Setup
-
-<WeaviateConfigurator initialSelections={{ modules: 'modules' }} />
-```
-
-## 🎨 Styling in Docusaurus
-
-All styles are scoped with `wc-` prefix to avoid conflicts. If you need to override:
-
-```css
-/* In your Docusaurus custom.css */
-.weaviate-configurator {
-  max-width: 1200px; /* Override max width */
-}
-
-.wc-button-primary {
-  background: var(--ifm-color-primary); /* Use Docusaurus theme colors */
-}
-```
-
-## 📊 Performance
-
-- **Bundle Size**: ~15 KB (minified + gzipped)
-- **No Dependencies**: Only React (already in Docusaurus)
-- **Load Time**: < 100ms
-- **Runtime**: Instant (no API calls)
-
-## 🔍 Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 🐛 Troubleshooting
-
-### Component doesn't render
-
-Check the browser console for errors. Common issues:
-- Missing import path
-- parameters.json not found
-- CSS not loading
-
-### Styles conflict with Docusaurus
-
-All classes are prefixed with `wc-`. If there are still conflicts, increase specificity:
-
-```css
-.weaviate-configurator .wc-button {
-  /* Your overrides */
-}
-```
-
-### Parameters not showing
-
-Check conditions in `parameters.json`. Enable debug mode:
-
-```javascript
-// In index.jsx
-console.log('Visible parameters:', visibleParameters);
-console.log('Current selections:', selections);
-```
-
-## 📚 Files You Need
-
-### Minimum (Required)
-
-```
-WeaviateConfigurator/
-├── index.jsx                    ← Main component
-├── styles.css                   ← Styles
-├── parameters.json              ← Config
-├── components/
-│   ├── ParameterStep.jsx
-│   └── ResultPage.jsx
-└── utils/
-    ├── conditionEvaluator.js
-    └── dockerComposeGenerator.js
-```
-
-That's it! All 7 files are self-contained.
-
-### Optional
-
-- `README.md` - This documentation
-- Test files (if you want unit tests)
-- Additional generators for other runtimes
-
-## 🚢 Production Checklist
-
-- [ ] Copy `WeaviateConfigurator` folder to your project
-- [ ] Test in development (`npm start`)
-- [ ] Customize colors/branding
-- [ ] Update `parameters.json` with your parameters
-- [ ] Build and test production bundle
-- [ ] Deploy!
-
-## 💡 Tips
-
-1. **Keep it simple**: The current generator covers 80% of use cases
-2. **Add parameters gradually**: Start with basics, expand as needed
-3. **Test conditions**: Complex conditions can be tricky
-4. **Use semantic versioning**: For version comparisons
-5. **Provide good descriptions**: Users rely on them
-
-## 🤝 Contributing
-
-To improve the generator:
-
-1. Edit `dockerComposeGenerator.js` for new services/features
-2. Add parameters to `parameters.json`
-3. Update conditions as needed
-4. Test thoroughly
-
-## 📖 Learn More
-
-- [React Documentation](https://react.dev)
-- [Docusaurus Documentation](https://docusaurus.io)
-- [Weaviate Documentation](https://weaviate.io/developers/weaviate)
-
----
-
-**Ready to integrate?** Just copy the `WeaviateConfigurator` folder and import it in your MDX file!
+-   `index.jsx`: The main React component that renders the UI. You should not need to edit this file for most changes.
+-   `styles.css`: All component styles are located here.
+-   `parameters.json`: Defines the UI and all available options. **This is your starting point for adding new options.**
+-   `utils/dockerComposeGenerator.js`: Contains the logic to generate the `docker-compose.yml` file. **This is where you'll handle the logic for new options.**
+-   `utils/conditionEvaluator.js`: Contains the logic for showing and hiding conditional parameters. You should not need to edit this file.
 
