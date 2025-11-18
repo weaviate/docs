@@ -41,6 +41,27 @@
   gap: 1.5rem;
 }
 
+.weaviate-configurator p.wc-form-description {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+  text-align: right;
+  padding-left: 1rem;
+}
+
+.weaviate-configurator .wc-sub-options-container .wc-form-label {
+  font-size: 0.8rem;
+}
+
+.weaviate-configurator .wc-sub-options-container p.wc-form-description {
+  font-size: 0.8rem;
+  margin-bottom: 0.1rem;
+}
+
+.weaviate-configurator .wc-sub-options-container .wc-select {
+  font-size: 0.8rem;
+  margin-bottom: 0.1rem;
+}
+
 /* Checkbox Group */
 .wc-checkbox-group {
   display: flex;
@@ -119,7 +140,7 @@
 }
 
 .wc-checkbox-title {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--docs-header-color);
   margin-right: auto;
@@ -130,6 +151,7 @@
   color: var(--ifm-color-emphasis-700);
   text-align: right;
   padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .wc-form-label {
@@ -143,6 +165,7 @@
   color: var(--ifm-color-emphasis-700);
   text-align: right;
   padding-left: 1rem;
+  padding-right: 0.75rem;
 }
 
 /* Select Dropdown */
