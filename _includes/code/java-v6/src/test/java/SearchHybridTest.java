@@ -4,6 +4,7 @@ import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Hybrid.FusionType;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.NearVector;
+import io.weaviate.client6.v1.api.collections.query.SearchOperator;
 import io.weaviate.client6.v1.api.collections.query.Where;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -165,7 +166,6 @@ class SearchHybridTest {
     // END HybridWithFusionTypePython
   }
 
-  // TODO Why isn't bm25Operator available?
   @Test
   void testHybridWithBM25OperatorOrWithMin() {
     // START HybridWithBM25OperatorOrWithMin
@@ -173,11 +173,9 @@ class SearchHybridTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.hybrid(
         // highlight-start
-        "Australian mammal cute"
-    // .bm25Operator(BM25Operator.or(2))
-    // highlight-end
-    // .limit(3)
-    );
+        "Australian mammal cute", c -> c.searchOperator(SearchOperator.or(2))
+        // highlight-end
+            .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());

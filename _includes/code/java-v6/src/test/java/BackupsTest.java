@@ -17,7 +17,7 @@ class BackupsTest {
 
   private static WeaviateClient client;
 
-  // TODO[g-despot] Authentication.apiKey is not needed, why not string?
+  // TODO[g-despot] DX: Authentication.apiKey is not needed, why not string?
   @BeforeAll
   public static void beforeAll() {
     // Connect to the Weaviate instance specified in the Python script

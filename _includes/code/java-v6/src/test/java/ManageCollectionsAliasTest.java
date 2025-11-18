@@ -106,7 +106,6 @@ class ManageCollectionsAliasTest {
     // END GetAlias
   }
 
-  // TODO[g-despot] Python alias creation returns bool
   @Test
   void testUpdateAlias() throws IOException {
     client.collections.create("Articles");
@@ -151,7 +150,6 @@ class ManageCollectionsAliasTest {
     // END DeleteAlias
   }
 
-  // TODO[g-despot] Python fetchObjects(...) can be empty
   @Test
   void testMigrationWorkflow() throws IOException {
     // START Step1CreateOriginal

@@ -132,7 +132,7 @@ class ConfigurePQTest {
         .isInstanceOf(Quantization.class);
   }
 
-  //TODO[g-despot] How to get quantizer parameters from config?
+  //TODO[g-despot] DX: How to get quantizer parameters from config?
   @Test
   void testGetSchema() throws IOException {
     // Create a collection with PQ enabled to inspect its schema

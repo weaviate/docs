@@ -165,7 +165,6 @@ class ConnectionTest {
     // END LocalNoAuth
   }
 
-  // TODO[g-despot] Should schema be null by default? null://127.0.0.1:8099
   @Test
   void testConnectLocalWithAuth() throws Exception {
     // START LocalAuth

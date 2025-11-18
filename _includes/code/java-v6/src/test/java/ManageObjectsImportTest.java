@@ -112,7 +112,7 @@ class ManageObjectsImportTest {
   // END ServerSideBatchImportExample
 
   @Test
-  // TODO[g-despot]: Somewhere it's string somewhere it's UUID, can we supply it as a string directly without ObjectMetadata?
+  // TODO[g-despot]: DX: Somewhere it's string somewhere it's UUID, can we supply it as a string directly without ObjectMetadata?
   void testBatchImportWithID() throws IOException {
     client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
 

@@ -36,13 +36,12 @@ class SearchBasicTest {
     client.close();
   }
 
-  // TODO[g-despot] Why doesn't standalone fetachObjects work?
   @Test
   void testBasicGet() {
     // START BasicGet
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     // highlight-start
-    var response = jeopardy.query.fetchObjects(config -> config.limit(1));
+    var response = jeopardy.query.fetchObjects();
     // highlight-end
 
     for (var o : response.objects()) {

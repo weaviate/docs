@@ -87,9 +87,7 @@ class SearchFilterTest {
     // highlight-end
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        // Find objects where the `answer` property contains any of the strings in
-        // `token_list`
-        // TODO[g-despot] containsAny doesn't accept lists?
+        // Find objects where the `answer` property contains any of the strings in `token_list`
         .where(Where.property("answer").containsAny(tokens))
         // highlight-end
         .limit(3));
@@ -138,9 +136,7 @@ class SearchFilterTest {
 
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        // Find objects where the `question` property contains none of the strings in
-        // `token_list`
-        // TODO[g-despot] containsNone doesn't accept lists?
+        // Find objects where the `question` property contains none of the strings in `token_list`
         .where(Where.property("question").containsNone(tokens))
         // highlight-end
         .limit(3));

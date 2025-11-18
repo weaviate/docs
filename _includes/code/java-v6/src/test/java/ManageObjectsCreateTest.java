@@ -2,14 +2,12 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Vectors;
-import io.weaviate.client6.v1.api.collections.query.Metadata;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,8 +179,7 @@ class ManageObjectsCreateTest {
         .isEqualTo(properties.get("question"));
   }
 
-  // TODO[g-despot]: Uncomment once GEO type added
-  // @Test
+  @Test
   void testWithGeoCoordinates() throws IOException {
     // START WithGeoCoordinates
     var publications = client.collections.use("Publication");

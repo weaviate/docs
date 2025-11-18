@@ -12,7 +12,6 @@ import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 
-import java.util.List;
 import java.util.Map;
 
 public class QuickstartCreateVectors {

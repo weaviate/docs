@@ -22,9 +22,9 @@ services:
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       CLUSTER_HOSTNAME: 'node1'
       OLLAMA_API_ENDPOINT: 'http://ollama:11434'
-      CONTEXTIONARY_URL: contextionary:9999
-      TRANSFORMERS_INFERENCE_API: http://text2vec-transformers:8080  # Set the inference API endpoint
-  text2vec-transformers:  # Set the name of the inference container
+      CONTEXTIONARY_URL: 'contextionary:9999'
+      TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'
+  text2vec-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
   ollama:
     image: ollama/ollama:0.9.6

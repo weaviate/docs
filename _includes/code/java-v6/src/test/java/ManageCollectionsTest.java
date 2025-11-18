@@ -107,10 +107,29 @@ class ManageCollectionsTest {
     assertThat(config.properties().get(1).propertyName().contains("country"));
   }
 
-  // TODO[g-despot]: Add example when AddNamedVectors is implemented
-  // START AddNamedVectors
-  // Coming soon
-  // END AddNamedVectors
+  @Test
+  void testAddNamedVectors() throws IOException {
+    client.collections.create("ArticleNV",
+        col -> col
+            .vectorConfig(VectorConfig.text2vecTransformers("title",
+                c -> c.sourceProperties("title").vectorIndex(Hnsw.of())))
+            .properties(Property.text("title"), Property.text("country")));
+    // START AddNamedVectors
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("ArticleNV");
+
+    collection.config.update(
+        u -> u.vectorConfig(VectorConfig.text2vecTransformers("title_country",
+            c -> c.sourceProperties("title", "country")
+                .vectorIndex(Hnsw.of()))));
+    // END AddNamedVectors
+
+    var config = client.collections.getConfig("ArticleNV").get();
+    assertThat(config.vectors()).hasSize(3)
+        .containsKeys("title", "title_country");
+    assertThat(config.properties().get(0).propertyName().contains("title"));
+    assertThat(config.properties().get(1).propertyName().contains("country"));
+  }
 
   @Test
   void testMultiValueVectorCollection() throws IOException {
@@ -235,8 +254,6 @@ class ManageCollectionsTest {
     // assertThat(config.rerankerModules().get(0).name()).isEqualTo("reranker-cohere");
   }
 
-  // TODO[g-despot] Update when more rerankers available
-  // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateReranker() throws IOException {
     // START UpdateReranker
@@ -246,8 +263,6 @@ class ManageCollectionsTest {
 
     var config = client.collections.getConfig("Article").get();
     assertThat(config.rerankerModules()).hasSize(1);
-    System.out.println("second:" + config.rerankerModules().get(0));
-    // assertThat(config.rerankerModules().get(0).name()).isEqualTo("reranker-cohere");
   }
 
   @Test
@@ -265,8 +280,6 @@ class ManageCollectionsTest {
     // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
   }
 
-  // TODO[g-despot] Update when more generative modules available
-  // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateGenerative() throws IOException {
     // START UpdateGenerative
@@ -276,22 +289,15 @@ class ManageCollectionsTest {
 
     var config = client.collections.getConfig("Article").get();
     assertThat(config.generativeModule()).isNotNull();
-    System.out.println("third: " + config.generativeModule());
-    // assertThat(config.generativeModule().name()).isEqualTo("generative-cohere");
-    // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
   }
 
-  // TODO[g-despot] Update when more model providers available
-  // @Test
-  // void testModuleSettings() throws IOException {
-  //   client.collections.create("Article",
-  //       col -> col.vectorConfig(VectorConfig.text2vecTransformers()));
-
-  //   var config = client.collections.getConfig("Article").get();
-  // }
-  // START ModuleSettings
-  // Coming soon
-  // END ModuleSettings
+  @Test
+  void testModuleSettings() throws IOException {
+    // START ModuleSettings
+    client.collections.create("Article",
+        col -> col.vectorConfig(VectorConfig.text2vecCohere(c->c.model("embed-multilingual-v2.0"))));
+    // END ModuleSettings
+  }  
 
   @Test
   void testCreateCollectionWithPropertyConfig() throws IOException {
