@@ -10,6 +10,7 @@ export function generateDockerCompose(selections) {
     transformers_model,
     reranker_transformers_model,
     multi2vec_clip_model,
+    model2vec_model,
     t2v_transformers_cuda = [],
     reranker_transformers_cuda = [],
     multi2vec_clip_cuda = [],
@@ -57,24 +58,27 @@ export function generateDockerCompose(selections) {
 `;
 
   if (local_modules.includes('text2vec-transformers')) {
-    compose += `      TRANSFORMERS_INFERENCE_API: http://transformers:8080\n`;
+    compose += `      TRANSFORMERS_INFERENCE_API: http://text2vec-transformers:8080\n`;
   }
   if (local_modules.includes('multi2vec-clip')) {
     compose += `      CLIP_INFERENCE_API: http://multi2vec-clip:8080\n`;
   }
-  if (local_modules.includes('text2vec-ollama')) {
-    compose += `      OLLAMA_INFERENCE_API: http://ollama:11434\n`;
+  if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
+    compose += `      OLLAMA_API_ENDPOINT: http://ollama:11434\n`;
   }
   if (local_modules.includes('text2vec-model2vec')) {
     compose += `      MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080\n`;
   }
+  if (local_modules.includes('reranker-transformers')) {
+    compose += `      RERANKER_INFERENCE_API: http://reranker-transformers:8080\n`;
+  }
 
   // Add module service containers
   if (local_modules.includes('text2vec-transformers')) {
-    compose += getInferenceService('transformers', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1', t2v_transformers_cuda.includes('enabled'));
+    compose += getInferenceService('text2vec-transformers', 'transformers-inference', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1', t2v_transformers_cuda.includes('enabled'));
   }
-  if (additional_modules.includes('reranker-transformers')) {
-    compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2', reranker_transformers_cuda.includes('enabled'));
+  if (local_modules.includes('reranker-transformers')) {
+    compose += getInferenceService('reranker-transformers', 'reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2', reranker_transformers_cuda.includes('enabled'));
   }
   if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += getOllamaService();
@@ -83,7 +87,7 @@ export function generateDockerCompose(selections) {
     compose += getClipService(multi2vec_clip_model || 'sentence-transformers-clip-ViT-B-32-multilingual-v1', multi2vec_clip_cuda.includes('enabled'));
   }
   if (local_modules.includes('text2vec-model2vec')) {
-    compose += getModel2VecService();
+    compose += getModel2VecService(model2vec_model || 'minishlab-potion-base-32M');
   }
 
   // Add volumes section if needed
@@ -102,10 +106,10 @@ volumes:
   return compose;
 }
 
-function getInferenceService(moduleName, model, cudaEnabled = false) {
+function getInferenceService(serviceName, imageName, model, cudaEnabled = false) {
   return `
-  ${moduleName}:
-    image: cr.weaviate.io/semitechnologies/${moduleName}-inference:${model}
+  ${serviceName}:
+    image: cr.weaviate.io/semitechnologies/${imageName}:${model}
     environment:
       ENABLE_CUDA: '${cudaEnabled ? '1' : '0'}'
 `;
@@ -131,10 +135,10 @@ function getClipService(model, cudaEnabled = false) {
 `;
 }
 
-function getModel2VecService() {
+function getModel2VecService(model) {
   return `
   text2vec-model2vec:
-    image: cr.weaviate.io/semitechnologies/model2vec-inference:minishlab-potion-base-32M
+    image: cr.weaviate.io/semitechnologies/model2vec-inference:${model}
 `;
 }
 
