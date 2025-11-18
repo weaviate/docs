@@ -1,0 +1,251 @@
+{
+  "parameters": [
+    {
+      "name": "weaviate_version",
+      "displayName": "Weaviate Version",
+      "description": "Select the Weaviate version to use.",
+      "type": "select-multiline",
+      "options": [
+        {
+          "name": "v1.34.0",
+          "displayName": "v1.34.0",
+          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.34.0"
+        },
+        {
+          "name": "v1.33.4",
+          "displayName": "v1.33.4",
+          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.33.4"
+        },
+        {
+          "name": "v1.32.16",
+          "displayName": "v1.32.16",
+          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.32.16"
+        }
+      ]
+    },
+    {
+      "name": "weaviate_volume",
+      "displayName": "Persistent Volume",
+      "description": "How should Weaviate's data be persisted?",
+      "type": "select-multiline",
+      "options": [
+        {
+          "name": "named-volume",
+          "displayName": "Persistent volume with named volume",
+          "description": "Docker will create a named volume called weaviate_data."
+        },
+        {
+          "name": "host-binding",
+          "displayName": "Persistent volume with host binding",
+          "description": "Docker will mount ./weaviate_data on the host to the container."
+        },
+        {
+          "name": "no-volume",
+          "displayName": "No persistent volume",
+          "description": "Not recommended: Data may be lost on container restart."
+        }
+      ]
+    },
+    {
+      "name": "local_modules",
+      "displayName": "Local Inference",
+      "description": "Enable locally-run model integrations. <br/>(All <a href='https://docs.weaviate.io/weaviate/model-providers#api-based'>API-based model provider integrations</a> are enabled by default.)",
+      "type": "checkbox-group",
+      "options": [
+        {
+          "name": "text2vec-transformers",
+          "displayName": "text2vec-transformers",
+          "description": "Text embeddings (transformers library)."
+        },
+        {
+          "name": "text2vec-ollama",
+          "displayName": "text2vec-ollama",
+          "description": "Ollama embeddings"
+        },
+        {
+          "name": "text2vec-model2vec",
+          "displayName": "text2vec-model2vec",
+          "description": "Static Model2vec embeddings"
+        },
+        {
+          "name": "multi2vec-clip",
+          "displayName": "multi2vec-clip",
+          "description": "Multimodal CLIP embeddings (transformers library)"
+        },
+        {
+          "name": "reranker-transformers",
+          "displayName": "reranker-transformers",
+          "description": "Rerank search results using a local transformers model."
+        },
+        {
+          "name": "generative-ollama",
+          "displayName": "generative-ollama",
+          "description": "Generative AI models (ollama)"
+        }
+      ]
+    },
+    {
+      "name": "transformers_model",
+      "displayName": "Transformers Model",
+      "description": "Select the specific model for the text2vec-transformers module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["local_modules~~text2vec-transformers"]
+      },
+      "options": [
+        {
+          "name": "google-gemma-3-300m-embedding-1.13.2",
+          "displayName": "Google Gemma 3 300m model",
+          "description": "A good modern model for most use cases."
+        },
+        {
+          "name": "eurobert-eurobert-2.1b",
+          "displayName": "EuroBERT model (European languages)",
+          "description": "A good modern model for most use cases."
+        },
+        {
+          "name": "snowflake-snowflake-arctic-embed-m",
+          "displayName": "Snowflake Arctic Embed M model (English)",
+          "description": ""
+        },
+        {
+          "name": "sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2",
+          "displayName": "paraphrase-multilingual-MiniLM-L12-v2",
+          "description": "Recommended for multilingual use cases."
+        },
+        {
+          "name": "baai-bge-base-en-v1.5",
+          "displayName": "BAAI/bge-base-en-v1.5",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "model2vec_model",
+      "displayName": "Model2Vec Model",
+      "description": "Select the specific model for the text2vec-model2vec module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["local_modules~~text2vec-model2vec"]
+      },
+      "options": [
+        {
+          "name": "minishlab-potion-base-32M",
+          "displayName": "minishlab-potion-base-32M",
+          "description": ""
+        },
+        {
+          "name": "minishlab-potion-multilingual-128M",
+          "displayName": "minishlab-potion-multilingual-128M",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "reranker_transformers_model",
+      "displayName": "Reranker Model",
+      "description": "Select the model for the reranker-transformers module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["local_modules~~reranker-transformers"]
+      },
+      "options": [
+        {
+          "name": "cross-encoder-ms-marco-MiniLM-L-6-v2",
+          "displayName": "ms-marco-MiniLM-L-6-v2",
+          "description": "Trained on MS Marco Passage Ranking task."
+        },
+        {
+          "name": "cross-encoder-ms-marco-TinyBERT-L-2-v2",
+          "displayName": "ms-marco-TinyBERT-L-2-v2",
+          "description": "A smaller, faster model for passage ranking."
+        }
+      ]
+    },
+    {
+      "name": "t2v_transformers_cuda",
+      "displayName": "CUDA for Transformers",
+      "description": "Enable CUDA for the text2vec-transformers module.",
+      "type": "checkbox-group",
+      "conditions": {
+        "and": ["local_modules~~text2vec-transformers"]
+      },
+      "options": [
+        {
+          "name": "enabled",
+          "displayName": "Enable CUDA",
+          "description": "Requires NVIDIA drivers on the host machine."
+        }
+      ]
+    },
+    {
+      "name": "multi2vec_clip_model",
+      "displayName": "CLIP Model",
+      "description": "Select the model for the multi2vec-clip module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["local_modules~~multi2vec-clip"]
+      },
+      "options": [
+        {
+          "name": "google-siglip2-so400m-patch16-512",
+          "displayName": "google/siglip2-so400m-patch16-512",
+          "description": "SigLIP 2 model with 512x512 input size (Multilingual, 1152d)"
+        },
+        {
+          "name": "google-siglip2-so400m-patch16-384",
+          "displayName": "google/siglip2-so400m-patch16-384",
+          "description": "SigLIP 2 model with 384x384 input size (Multilingual, 1152d)"
+        },
+        {
+          "name": "sentence-transformers-clip-ViT-B-32",
+          "displayName": "sentence-transformers-clip-ViT-B-32",
+          "description": "Texts must be in English. (English, 768d)"
+        },
+        {
+          "name": "sentence-transformers-clip-ViT-B-32-multilingual-v1",
+          "displayName": "sentence-transformers-clip-ViT-B-32-multilingual-v1",
+          "description": "Supports a wide variety of languages for text. (Multilingual, 768d)"
+        },
+        {
+          "name": "openai-clip-vit-base-patch16",
+          "displayName": "openai-clip-vit-base-patch16",
+          "description": "Uses a ViT-B/16 Transformer architecture."
+        },
+        {
+          "name": "ViT-B-16-laion2b_s34b_b88k",
+          "displayName": "ViT-B-16-laion2b_s34b_b88k",
+          "description": "ViT-B/16 Transformer trained with LAION-2B dataset using OpenCLIP."
+        },
+        {
+          "name": "ViT-B-32-quickgelu-laion400m_e32",
+          "displayName": "ViT-B-32-quickgelu-laion400m_e32",
+          "description": "ViT-B/32 Transformer trained with LAION-400M dataset using OpenCLIP."
+        },
+        {
+          "name": "xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k",
+          "displayName": "xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k",
+          "description": "ViT-B/32 xlm roberta base model trained with LAION-5B dataset using OpenCLIP."
+        }
+      ]
+    },
+    {
+      "name": "multi2vec_clip_cuda",
+      "displayName": "CUDA for CLIP",
+      "description": "Enable CUDA for the multi2vec-clip module.",
+      "type": "checkbox-group",
+      "conditions": {
+        "and": ["local_modules~~multi2vec-clip"]
+      },
+      "options": [
+        {
+          "name": "enabled",
+          "displayName": "Enable CUDA",
+          "description": "Requires NVIDIA drivers on the host machine."
+        }
+      ]
+    }
+  ]
+}
+
+
