@@ -9,12 +9,17 @@
         {
           "name": "v1.34.0",
           "displayName": "v1.34.0 (Latest)",
-          "description": "Latest stable release with all features"
+          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.34.0"
         },
         {
-          "name": "v1.30.0",
-          "displayName": "v1.30.0",
-          "description": "Runtime config management, Dynamic user management, Dynamic RAG model selection"
+          "name": "v1.33.4",
+          "displayName": "v1.33.4",
+          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.33.4"
+        },
+        {
+          "name": "v1.32.16",
+          "displayName": "v1.32.16",
+          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.32.16"
         }
       ]
     },
@@ -70,27 +75,27 @@
         {
           "name": "text2vec-transformers",
           "displayName": "text2vec-transformers",
-          "description": "Local, high-accuracy model. Requires GPUs to run efficiently."
-        },
-        {
-          "name": "text2vec-ollama",
-          "displayName": "text2vec-ollama",
-          "description": "Uses a local Ollama container for embeddings."
-        },
-        {
-          "name": "multi2vec-clip",
-          "displayName": "multi2vec-clip",
-          "description": "Multimodal CLIP embeddings."
+          "description": "Text embeddings with the Hugging Face Transformers library."
         },
         {
           "name": "text2vec-model2vec",
           "displayName": "text2vec-model2vec",
-          "description": "Text embedding model."
+          "description": "Fast, static embedding models from Model2Vec."
+        },
+        {
+          "name": "text2vec-ollama",
+          "displayName": "text2vec-ollama",
+          "description": "Embedding models from the Ollama library."
+        },
+        {
+          "name": "multi2vec-clip",
+          "displayName": "multi2vec-clip",
+          "description": "Multimodal CLIP embeddings with the Hugging Face Transformers library."
         },
         {
           "name": "generative-ollama",
           "displayName": "generative-ollama",
-          "description": "Uses a local Ollama container for generative AI."
+          "description": "Generative AI models from the Ollama library."
         }
       ]
     },
@@ -140,6 +145,27 @@
           "name": "sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2",
           "displayName": "paraphrase-multilingual-MiniLM-L12-v2",
           "description": "Recommended for multilingual use cases."
+        }
+      ]
+    },
+    {
+      "name": "model2vec_model",
+      "displayName": "Model2Vec Model",
+      "description": "Select the specific model for the text2vec-model2vec module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["local_modules~~text2vec-model2vec"]
+      },
+      "options": [
+        {
+          "name": "minishlab-potion-base-32M",
+          "displayName": "minishlab-potion-base-32M",
+          "description": ""
+        },
+        {
+          "name": "minishlab-potion-multilingual-128M",
+          "displayName": "minishlab-potion-multilingual-128M",
+          "description": ""
         }
       ]
     },

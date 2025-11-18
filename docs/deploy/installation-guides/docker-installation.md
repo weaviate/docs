@@ -147,13 +147,15 @@ For example, if your domain is `weaviate.example.com`, configure your reverse pr
 
 import WeaviateConfigurator from '@site/src/components/WeaviateConfigurator';
 
-<WeaviateConfigurator />
+
 
 The Configurator can generate a `docker-compose.yml` file for you. Use the Configurator to select specific Weaviate modules, including vectorizers that run locally (i.e. `text2vec-transformers`, or `multi2vec-clip`)
 
-import DocsConfigGen from '@site/src/components/DockerConfigGen';
+<WeaviateConfigurator />
 
-<DocsConfigGen />
+<!-- import DocsConfigGen from '@site/src/components/DockerConfigGen';
+
+<DocsConfigGen /> -->
 
 ## Environment variables
 
