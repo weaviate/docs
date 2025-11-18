@@ -143,7 +143,6 @@ function ParameterRenderer({
   return (
     <div className="wc-form-group">
       <div className="wc-form-group-header">
-        <label className="wc-form-label">{displayName}</label>
         {description && <p className="wc-form-description">{description}</p>}
       </div>
       <div className="wc-form-group-options">
