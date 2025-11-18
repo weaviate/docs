@@ -5,6 +5,7 @@ export function generateDockerCompose(selections) {
   const {
     weaviate_version = 'v1.32.7',
     weaviate_volume = 'named-volume',
+    authentication_scheme = 'none',
     local_modules = [],
     additional_modules = [],
     transformers_model,
@@ -29,7 +30,20 @@ export function generateDockerCompose(selections) {
   // Start building the compose file
   let compose = `---
 version: '3.4'
-services:
+`;
+
+  if (authentication_scheme !== 'none') {
+    compose += `#
+# IMPORTANT: Anonymous authentication is disabled.
+# You must configure an authentication method (e.g., OIDC, API keys)
+# for Weaviate to start.
+#
+# See https://weaviate.io/developers/weaviate/configuration/authentication
+#
+`;
+  }
+
+  compose += `services:
   weaviate:
     command:
     - --host
@@ -58,7 +72,7 @@ services:
   compose += `    restart: on-failure:0
     environment:
       QUERY_DEFAULTS_LIMIT: 25
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: '${authentication_scheme === 'none'}'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: '${allVectorizers[0] || 'none'}'
       ENABLE_MODULES: '${allModules.join(',')}'

@@ -44,6 +44,17 @@
   gap: 0.5rem;
 }
 
+.wc-form-group-inline {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.wc-form-group-inline .wc-select {
+  width: auto;
+  flex-grow: 1;
+}
+
 .wc-form-group-options {
   padding-left: 1.5rem;
 }

@@ -37,6 +37,7 @@ function ParameterRenderer({
   selections,
   onSelectionChange,
   allParameters,
+  isBaseConfig,
 }) {
   const { name, displayName, description, type, options } = parameter;
   const value = selections[name] || (type === 'checkbox-group' ? [] : '');
@@ -130,6 +131,15 @@ function ParameterRenderer({
     );
   };
 
+  if (isBaseConfig && type === 'select-multiline') {
+    return (
+      <div className="wc-form-group-inline">
+        <label className="wc-form-label">{displayName}</label>
+        <InputComponent />
+      </div>
+    );
+  }
+
   return (
     <div className="wc-form-group">
       <div className="wc-form-group-header">
@@ -209,7 +219,7 @@ function WeaviateConfigurator() {
     };
 
     visibleParameters.forEach(param => {
-      if (['weaviate_version', 'weaviate_volume'].includes(param.name)) {
+      if (['weaviate_version', 'authentication_scheme', 'weaviate_volume'].includes(param.name)) {
         groups['base-config'].params.push(param);
       } else if (param.name === 'local_modules') {
         groups['local-inference'].params.push(param);
@@ -279,6 +289,7 @@ function WeaviateConfigurator() {
                   selections={selections}
                   onSelectionChange={handleSelectionChange}
                   allParameters={parameters}
+                  isBaseConfig={id === 'base-config'}
                 />
               ))}
             </AccordionItem>

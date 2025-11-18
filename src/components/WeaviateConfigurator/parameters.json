@@ -19,6 +19,26 @@
       ]
     },
     {
+      "name": "authentication_scheme",
+      "displayName": "Authentication Scheme",
+      "description": "Select the authentication scheme to use.",
+      "type": "select-multiline",
+      "options": [
+        {
+          "name": "none",
+          "displayName": "None (Default)"
+        },
+        {
+          "name": "adminlist",
+          "displayName": "Admin List"
+        },
+        {
+          "name": "rbac",
+          "displayName": "RBAC"
+        }
+      ]
+    },
+    {
       "name": "weaviate_volume",
       "displayName": "Persistent Volume",
       "description": "How should Weaviate's data be persisted?",
