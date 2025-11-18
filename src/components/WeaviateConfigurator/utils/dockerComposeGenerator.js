@@ -8,6 +8,10 @@ export function generateDockerCompose(selections) {
     local_modules = [],
     additional_modules = [],
     transformers_model,
+    reranker_transformers_model,
+    qna_model,
+    ner_model,
+    sum_model,
   } = selections;
 
   const apiModules = [
@@ -70,8 +74,20 @@ services:
   }
 
   // Add module service containers
-  if (local_modules.includes('text2vec-transformers') || additional_modules.includes('reranker-transformers')) {
-    compose += getTransformersService(transformers_model);
+  if (local_modules.includes('text2vec-transformers')) {
+    compose += getInferenceService('t2v-transformers', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1');
+  }
+  if (additional_modules.includes('reranker-transformers')) {
+    compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2');
+  }
+  if (additional_modules.includes('qna-transformers')) {
+    compose += getInferenceService('qna-transformers', qna_model || 'distilbert-base-uncased-distilled-squad');
+  }
+  if (additional_modules.includes('ner-transformers')) {
+    compose += getInferenceService('ner-transformers', ner_model || 'dbmdz-bert-large-cased-finetuned-conll03-english');
+  }
+  if (additional_modules.includes('sum-transformers')) {
+    compose += getInferenceService('sum-transformers', sum_model || 'facebook-bart-large-cnn-1.0.0');
   }
   if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += getOllamaService();
@@ -99,11 +115,11 @@ volumes:
   return compose;
 }
 
-function getTransformersService(model) {
-  const modelTag = model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1';
+function getInferenceService(moduleName, model) {
+  const imageName = moduleName.replace(/-/g, '_');
   return `
-  t2v-transformers:
-    image: cr.weaviate.io/semitechnologies/transformers-inference:${modelTag}
+  ${moduleName}:
+    image: cr.weaviate.io/semitechnologies/${moduleName}-inference:${model}
     environment:
       ENABLE_CUDA: '0'
 `;

@@ -7,19 +7,14 @@
       "type": "select-multiline",
       "options": [
         {
-          "name": "v1.32.7",
-          "displayName": "v1.32.7 (Latest)",
+          "name": "v1.34.0",
+          "displayName": "v1.34.0 (Latest)",
           "description": "Latest stable release with all features"
         },
         {
           "name": "v1.30.0",
           "displayName": "v1.30.0",
           "description": "Runtime config management, Dynamic user management, Dynamic RAG model selection"
-        },
-        {
-          "name": "v1.25.0",
-          "displayName": "v1.25.0",
-          "description": "Stable version with Ollama support"
         }
       ]
     },
@@ -60,10 +55,7 @@
         {
           "name": "text2vec-ollama",
           "displayName": "text2vec-ollama",
-          "description": "Uses a local Ollama container for embeddings.",
-          "conditions": {
-            "or": ["weaviate_version>=v1.25.0"]
-          }
+          "description": "Uses a local Ollama container for embeddings."
         },
         {
           "name": "img2vec-neural-pytorch",
@@ -78,10 +70,7 @@
         {
           "name": "generative-ollama",
           "displayName": "generative-ollama",
-          "description": "Uses a local Ollama container for generative AI.",
-          "conditions": {
-            "and": ["weaviate_version>=v1.25.0"]
-          }
+          "description": "Uses a local Ollama container for generative AI."
         }
       ]
     },
@@ -94,26 +83,37 @@
         {
           "name": "backup-s3",
           "displayName": "backup-s3",
-          "description": "Back up and restore Weaviate to an S3 bucket.",
-          "conditions": {
-            "and": ["weaviate_version>=v1.18.0"]
-          }
+          "description": "Back up and restore Weaviate to an S3 bucket."
         },
         {
           "name": "reranker-transformers",
           "displayName": "reranker-transformers",
-          "description": "Rerank search results using a local transformers model.",
-          "conditions": {
-            "and": ["weaviate_version>=v1.20.0"]
-          }
+          "description": "Rerank search results using a local transformers model."
+        },
+        {
+          "name": "qna-transformers",
+          "displayName": "qna-transformers",
+          "description": "Answer extraction from documents, based on a question."
+        },
+        {
+          "name": "ner-transformers",
+          "displayName": "ner-transformers",
+          "description": "Extract named entities from your text objects."
+        },
+        {
+          "name": "sum-transformers",
+          "displayName": "sum-transformers",
+          "description": "Summarize text snippets from your search results."
         },
         {
           "name": "text-spellcheck",
           "displayName": "text-spellcheck",
-          "description": "Suggest or auto-fix misspelled queries.",
-          "conditions": {
-            "and": ["weaviate_version>=v1.7.0"]
-          }
+          "description": "Suggest or auto-fix misspelled queries."
+        },
+        {
+          "name": "ref2vec-centroid",
+          "displayName": "ref2vec-centroid",
+          "description": "Vectorize a class with the average vectors of a cross-referenced class."
         }
       ]
     },
@@ -140,6 +140,85 @@
           "name": "sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2",
           "displayName": "paraphrase-multilingual-MiniLM-L12-v2",
           "description": "Recommended for multilingual use cases."
+        }
+      ]
+    },
+    {
+      "name": "reranker_transformers_model",
+      "displayName": "Reranker Model",
+      "description": "Select the model for the reranker-transformers module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["additional_modules~~reranker-transformers"]
+      },
+      "options": [
+        {
+          "name": "cross-encoder-ms-marco-MiniLM-L-6-v2",
+          "displayName": "ms-marco-MiniLM-L-6-v2",
+          "description": "Trained on MS Marco Passage Ranking task."
+        },
+        {
+          "name": "cross-encoder-ms-marco-TinyBERT-L-2-v2",
+          "displayName": "ms-marco-TinyBERT-L-2-v2",
+          "description": "A smaller, faster model for passage ranking."
+        }
+      ]
+    },
+    {
+      "name": "qna_model",
+      "displayName": "Q&A Model",
+      "description": "Select the model for the qna-transformers module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["additional_modules~~qna-transformers"]
+      },
+      "options": [
+        {
+          "name": "distilbert-base-uncased-distilled-squad",
+          "displayName": "distilbert-base-uncased-distilled-squad",
+          "description": "English, uncased model."
+        },
+        {
+          "name": "bert-large-uncased-whole-word-masking-finetuned-squad",
+          "displayName": "bert-large-uncased-whole-word-masking-finetuned-squad",
+          "description": "English, uncased, whole-word masking."
+        }
+      ]
+    },
+    {
+      "name": "ner_model",
+      "displayName": "NER Model",
+      "description": "Select the model for the ner-transformers module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["additional_modules~~ner-transformers"]
+      },
+      "options": [
+        {
+          "name": "dbmdz-bert-large-cased-finetuned-conll03-english",
+          "displayName": "dbmdz/bert-large-cased-finetuned-conll03-english",
+          "description": "English model."
+        },
+        {
+          "name": "dslim-bert-base-NER",
+          "displayName": "dslim/bert-base-NER",
+          "description": "English model."
+        }
+      ]
+    },
+    {
+      "name": "sum_model",
+      "displayName": "Summarization Model",
+      "description": "Select the model for the sum-transformers module.",
+      "type": "select-multiline",
+      "conditions": {
+        "and": ["additional_modules~~sum-transformers"]
+      },
+      "options": [
+        {
+          "name": "facebook-bart-large-cnn-1.0.0",
+          "displayName": "facebook/bart-large-cnn-1.0.0",
+          "description": "CNN summarization model."
         }
       ]
     }
