@@ -49,7 +49,7 @@
     {
       "name": "local_modules",
       "displayName": "Local Inference",
-      "description": "Enable locally-run model integrations. (All <a href='https://docs.weaviate.io/weaviate/model-providers#api-based'>API-based</a> modules are enabled by default.)",
+      "description": "Enable locally-run model integrations. <br/>(All <a href='https://docs.weaviate.io/weaviate/model-providers#api-based'>API-based model provider integrations</a> are enabled by default.)",
       "type": "checkbox-group",
       "options": [
         {

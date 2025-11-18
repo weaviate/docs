@@ -144,7 +144,8 @@ function ParameterRenderer({
   return (
     <div className="wc-form-group">
       <div className="wc-form-group-header">
-        {description && <p className="wc-form-description">{description}</p>}
+        <label className="wc-form-label">{displayName}</label>
+        {description && <p className="wc-form-description" dangerouslySetInnerHTML={{ __html: description }} />}
       </div>
       <div className="wc-form-group-options">
         <InputComponent />
