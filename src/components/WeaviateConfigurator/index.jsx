@@ -17,7 +17,7 @@ import './styles.css';
 import parametersData from './parameters.json';
 
 // Accordion components
-function AccordionItem({ title, summary, children }) {
+function AccordionItem({ title, summary, children, description }) {
   return (
     <div className="wc-accordion-item">
       <div className="wc-accordion-header">
@@ -25,6 +25,7 @@ function AccordionItem({ title, summary, children }) {
           <span className="wc-accordion-title">{title}</span>
           {summary && <span className="wc-accordion-summary">{summary}</span>}
         </div>
+        {description && <p className="wc-accordion-description" dangerouslySetInnerHTML={{ __html: description }} />}
       </div>
       <div className="wc-accordion-content">{children}</div>
     </div>
@@ -146,7 +147,7 @@ function ParameterRenderer({
     <div className="wc-form-group">
       <div className="wc-form-group-header">
         {!isGroupLabel && <label className="wc-form-label">{displayName}</label>}
-        {description && <p className="wc-form-description" style={isGroupLabel ? { width: '100%'} : {}} dangerouslySetInnerHTML={{ __html: description }} />}
+        {description && !isGroupLabel && <p className="wc-form-description" dangerouslySetInnerHTML={{ __html: description }} />}
       </div>
       <div className="wc-form-group-options">
         <InputComponent />
@@ -212,8 +213,10 @@ function WeaviateConfigurator() {
         groups['base-config'].params.push(param);
       } else if (param.name === 'local_modules') {
         groups['local-inference'].params.push(param);
+        groups['local-inference'].description = param.description;
       } else if (param.name === 'additional_modules') {
         groups['additional-modules'].params.push(param);
+        groups['additional-modules'].description = param.description;
       }
     });
 
@@ -267,6 +270,7 @@ function WeaviateConfigurator() {
               key={id}
               title={group.title}
               summary={summaries[id]}
+              description={group.description}
             >
               {group.params.map(param => (
                 <ParameterRenderer

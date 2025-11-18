@@ -96,7 +96,7 @@
 }
 
 .weaviate-configurator .wc-sub-options-container .wc-select {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   margin-bottom: 0.1rem;
 }
 
@@ -139,8 +139,8 @@
 
 .wc-custom-checkbox {
   flex-shrink: 0;
-  width: 1.25em;
-  height: 1.25em;
+  width: 1em;
+  height: 1em;
   border: 2px solid var(--docs-cards-border-color);
   border-radius: 4px;
   display: flex;
@@ -177,7 +177,7 @@
 }
 
 .wc-checkbox-title {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--docs-header-color);
   margin-right: auto;
@@ -319,6 +319,24 @@
   font-size: 0.85rem;
   font-weight: 400;
   color: var(--ifm-color-emphasis-700);
+}
+
+.wc-accordion-header .wc-accordion-description {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+  text-align: right;
+  line-height: 1.4;
+  margin-bottom: 0;
+  max-width: 50%;
+}
+
+.wc-accordion-header .wc-accordion-description a {
+  color: var(--site-primary);
+  text-decoration: none;
+}
+
+.wc-accordion-header .wc-accordion-description a:hover {
+  text-decoration: underline;
 }
 
 .wc-accordion-content {
