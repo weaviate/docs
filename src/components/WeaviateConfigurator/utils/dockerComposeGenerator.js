@@ -63,9 +63,6 @@ export function generateDockerCompose(selections) {
   if (local_modules.includes('multi2vec-clip')) {
     compose += `      CLIP_INFERENCE_API: http://multi2vec-clip:8080\n`;
   }
-  if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
-    compose += `      OLLAMA_API_ENDPOINT: http://ollama:11434\n`;
-  }
   if (local_modules.includes('text2vec-model2vec')) {
     compose += `      MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080\n`;
   }
