@@ -49,7 +49,7 @@
     {
       "name": "text_vectorizers",
       "displayName": "Text Vectorizers",
-      "description": "Select one or more text vectorization modules. API-based modules are enabled by default.",
+      "description": "Enable any additional text vectorization modules.",
       "type": "checkbox-group",
       "options": [
         {
