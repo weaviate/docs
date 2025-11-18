@@ -8,6 +8,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
+import CodeBlock from '@theme/CodeBlock';
 import { getVisibleParameters } from './utils/conditionEvaluator';
 import { generateDockerCompose } from './utils/dockerComposeGenerator';
 import './styles.css';
@@ -159,7 +160,6 @@ function WeaviateConfigurator() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dockerCompose, setDockerCompose] = useState('');
-  const [copied, setCopied] = useState(false);
   const [openAccordion, setOpenAccordion] = useState(['base-config']);
 
   // Load parameters
@@ -190,12 +190,6 @@ function WeaviateConfigurator() {
       ...prev,
       [name]: value,
     }));
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(dockerCompose);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   // Memoize visible parameters to avoid re-calculating on every render
@@ -301,16 +295,8 @@ function WeaviateConfigurator() {
         <div className="wc-result">
           <div className="wc-result-header">
             <h2>Generated docker-compose.yml</h2>
-            <button onClick={copyToClipboard} className="wc-button wc-button-secondary">
-              {copied ? '✓ Copied!' : 'Copied!'}
-            </button>
           </div>
-          <textarea
-            className="wc-docker-compose-output"
-            value={dockerCompose}
-            readOnly
-            rows={20}
-          />
+          <CodeBlock language="yaml">{dockerCompose}</CodeBlock>
         </div>
       )}
     </div>

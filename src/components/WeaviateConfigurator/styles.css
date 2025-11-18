@@ -225,6 +225,16 @@
   box-shadow: 0 0 0 2px rgba(var(--site-primary-rgb), 0.2);
 }
 
+.wc-result {
+  font-size: 0.85rem;
+}
+
+.wc-result-header h2 {
+  padding-top: 1.75rem;
+  padding-bottom: 0.2rem;
+  font-size: 0.95rem;
+}
+
 /* Radio Group */
 .wc-radio-group {
   display: flex;
@@ -264,62 +274,6 @@
 .wc-radio-description {
   font-size: 0.9rem;
   color: var(--docs-base-color);
-}
-
-
-/* Buttons */
-.wc-button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.wc-button-primary {
-  background-color: var(--site-primary);
-  color: white;
-}
-
-.wc-button-primary:hover {
-  opacity: 0.9;
-}
-
-.wc-button-secondary {
-  background-color: transparent;
-  color: var(--site-primary);
-  border: 1px solid var(--site-primary);
-}
-
-.wc-button-secondary:hover {
-  background-color: rgba(var(--site-primary-rgb), 0.1);
-}
-
-/* Result Section */
-.wc-result {
-  margin-top: 0.5rem;
-  border-top: 1px solid var(--docs-cards-border-color);
-  padding-top: 0.5rem;
-}
-
-.wc-result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  margin: 0.5rem;
-  padding: 0.5rem;
-}
-
-.wc-result-header h2 {
-  font-family: var(--site-font-heading-family);
-  font-size: 1.1rem;
-  color: var(--docs-header-color);
-  margin: 0.1rem;
-  padding: 0.1rem;
 }
 
 /* Accordion */
@@ -382,19 +336,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-
-.wc-docker-compose-output {
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid var(--docs-cards-border-color);
-  border-radius: 6px;
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  resize: vertical;
-  background-color: var(--ifm-code-background);
-  color: var(--ifm-code-color);
 }
 
 /* Loading and Error States */
