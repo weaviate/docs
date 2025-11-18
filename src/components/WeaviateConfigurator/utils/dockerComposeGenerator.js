@@ -56,6 +56,9 @@ export function generateDockerCompose(selections) {
       CLUSTER_HOSTNAME: 'node1'
 `;
 
+  if (local_modules.includes('text2vec-transformers')) {
+    compose += `      TRANSFORMERS_INFERENCE_API: http://transformers:8080\n`;
+  }
   if (local_modules.includes('multi2vec-clip')) {
     compose += `      CLIP_INFERENCE_API: http://multi2vec-clip:8080\n`;
   }
@@ -64,10 +67,6 @@ export function generateDockerCompose(selections) {
   }
   if (local_modules.includes('text2vec-model2vec')) {
     compose += `      MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080\n`;
-  }
-
-  if (additional_modules.includes('backup-s3')) {
-    compose += `      BACKUP_S3_BUCKET: \${BACKUP_S3_BUCKET}\n`;
   }
 
   // Add module service containers
