@@ -127,7 +127,7 @@ exports.handler = async (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${WEAVIATE_DOCFEEDBACK_API_KEY}`,
+        Authorization: `Bearer ${WEAVIATE_DOCFEEDBACK_APIKEY2}`,
       },
       body: JSON.stringify(weaviatePayload),
     });
@@ -156,7 +156,7 @@ exports.handler = async (event) => {
           debug: {
             weaviateStatus: response.status,
             weaviateStatusText: response.statusText,
-            weaviateUrl: WEAVIATE_DOCFEEDBACK_URL,
+            weaviateUrl: WEAVIATE_DOCFEEDBACK_URL2,
             // TODO: Remove errorBody from production after debugging
             weaviateError: errorBody,
             timestamp: new Date().toISOString(),
