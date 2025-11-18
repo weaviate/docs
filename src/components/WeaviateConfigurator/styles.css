@@ -11,9 +11,8 @@
 
 /* Header */
 .wc-header {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .wc-header h1 {
@@ -27,6 +26,8 @@
   font-size: 0.9rem;
   color: var(--ifm-color-emphasis-700);
   line-height: 1.5;
+  padding-bottom: 0.1rem;
+  margin-bottom: 0.1rem;
 }
 
 
