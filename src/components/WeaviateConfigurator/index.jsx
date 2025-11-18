@@ -194,7 +194,7 @@ function WeaviateConfigurator() {
         ))}
 
         <button onClick={handleGenerate} className="wc-button wc-button-primary">
-          Generate Configuration
+          Generate docker-compose.yml
         </button>
       </div>
 

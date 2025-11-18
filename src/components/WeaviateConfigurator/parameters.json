@@ -48,8 +48,8 @@
     },
     {
       "name": "local_modules",
-      "displayName": "Local Inference Modules",
-      "description": "Enable locally-run models. API-based modules are enabled by default.",
+      "displayName": "Local Inference",
+      "description": "Enable locally-run model integrations.",
       "type": "checkbox-group",
       "options": [
         {
