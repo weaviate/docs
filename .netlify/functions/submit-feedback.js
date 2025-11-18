@@ -91,16 +91,16 @@ exports.handler = async (event) => {
         statusCode: 500,
         body: JSON.stringify({
           error: 'Server configuration error.',
-          debug: {
-            hasUrl: !!WEAVIATE_DOCFEEDBACK_URL2,
-            hasKey: !!WEAVIATE_DOCFEEDBACK_APIKEY2,
-            context: process.env.CONTEXT,
-            availableWeaviateVars: relevantKeys,
-            availableWeaviateVarCount: relevantKeys.length,
-            siteId: process.env.SITE_ID,
-            siteName: process.env.SITE_NAME,
-            timestamp: new Date().toISOString(),
-          },
+          // debug: {
+          //   hasUrl: !!WEAVIATE_DOCFEEDBACK_URL2,
+          //   hasKey: !!WEAVIATE_DOCFEEDBACK_APIKEY2,
+          //   context: process.env.CONTEXT,
+          //   availableWeaviateVars: relevantKeys,
+          //   availableWeaviateVarCount: relevantKeys.length,
+          //   siteId: process.env.SITE_ID,
+          //   siteName: process.env.SITE_NAME,
+          //   timestamp: new Date().toISOString(),
+          // },
         }),
         headers,
       };
