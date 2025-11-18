@@ -24,26 +24,6 @@
       ]
     },
     {
-      "name": "authentication_scheme",
-      "displayName": "Authentication Scheme",
-      "description": "Select the authentication scheme to use.",
-      "type": "select-multiline",
-      "options": [
-        {
-          "name": "none",
-          "displayName": "None (Default)"
-        },
-        {
-          "name": "adminlist",
-          "displayName": "Admin List"
-        },
-        {
-          "name": "rbac",
-          "displayName": "RBAC"
-        }
-      ]
-    },
-    {
       "name": "weaviate_volume",
       "displayName": "Persistent Volume",
       "description": "How should Weaviate's data be persisted?",
@@ -69,7 +49,7 @@
     {
       "name": "local_modules",
       "displayName": "Local Inference",
-      "description": "Enable locally-run model integrations.",
+      "description": "Enable locally-run model integrations. (All <a href='https://docs.weaviate.io/weaviate/model-providers#api-based'>API-based</a> modules are enabled by default.)",
       "type": "checkbox-group",
       "options": [
         {
@@ -78,14 +58,14 @@
           "description": "Text embeddings (transformers library)."
         },
         {
-          "name": "text2vec-model2vec",
-          "displayName": "text2vec-model2vec",
-          "description": "Static Model2vec embeddings"
-        },
-        {
           "name": "text2vec-ollama",
           "displayName": "text2vec-ollama",
           "description": "Ollama embeddings"
+        },
+        {
+          "name": "text2vec-model2vec",
+          "displayName": "text2vec-model2vec",
+          "description": "Static Model2vec embeddings"
         },
         {
           "name": "multi2vec-clip",
@@ -93,32 +73,14 @@
           "description": "Multimodal CLIP embeddings (transformers library)"
         },
         {
-          "name": "generative-ollama",
-          "displayName": "generative-ollama",
-          "description": "Generative AI models (ollama)"
-        }
-      ]
-    },
-    {
-      "name": "additional_modules",
-      "displayName": "Additional Modules",
-      "description": "Enable additional modules for backups, spell checking, etc.",
-      "type": "checkbox-group",
-      "options": [
-        {
-          "name": "backup-s3",
-          "displayName": "backup-s3",
-          "description": "Back up and restore Weaviate to an S3 bucket."
-        },
-        {
           "name": "reranker-transformers",
           "displayName": "reranker-transformers",
           "description": "Rerank search results using a local transformers model."
         },
         {
-          "name": "ner-transformers",
-          "displayName": "ner-transformers",
-          "description": "Extract named entities from your text objects."
+          "name": "generative-ollama",
+          "displayName": "generative-ollama",
+          "description": "Generative AI models (ollama)"
         }
       ]
     },
@@ -175,7 +137,7 @@
       "description": "Select the model for the reranker-transformers module.",
       "type": "select-multiline",
       "conditions": {
-        "and": ["additional_modules~~reranker-transformers"]
+        "and": ["local_modules~~reranker-transformers"]
       },
       "options": [
         {
@@ -264,43 +226,6 @@
       "type": "checkbox-group",
       "conditions": {
         "and": ["local_modules~~multi2vec-clip"]
-      },
-      "options": [
-        {
-          "name": "enabled",
-          "displayName": "Enable CUDA",
-          "description": "Requires NVIDIA drivers on the host machine."
-        }
-      ]
-    },
-    {
-      "name": "ner_model",
-      "displayName": "NER Model",
-      "description": "Select the model for the ner-transformers module.",
-      "type": "select-multiline",
-      "conditions": {
-        "and": ["additional_modules~~ner-transformers"]
-      },
-      "options": [
-        {
-          "name": "dbmdz-bert-large-cased-finetuned-conll03-english",
-          "displayName": "dbmdz/bert-large-cased-finetuned-conll03-english",
-          "description": "English model."
-        },
-        {
-          "name": "dslim-bert-base-NER",
-          "displayName": "dslim/bert-base-NER",
-          "description": "English model."
-        }
-      ]
-    },
-    {
-      "name": "ner_transformers_cuda",
-      "displayName": "CUDA for NER",
-      "description": "Enable CUDA for the ner-transformers module.",
-      "type": "checkbox-group",
-      "conditions": {
-        "and": ["additional_modules~~ner-transformers"]
       },
       "options": [
         {

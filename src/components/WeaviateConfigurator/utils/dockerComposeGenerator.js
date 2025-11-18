@@ -5,17 +5,14 @@ export function generateDockerCompose(selections) {
   const {
     weaviate_version = 'v1.34.0',
     weaviate_volume = 'named-volume',
-    authentication_scheme = 'none',
     local_modules = [],
     additional_modules = [],
     transformers_model,
     reranker_transformers_model,
     multi2vec_clip_model,
-    ner_model,
     t2v_transformers_cuda = [],
     reranker_transformers_cuda = [],
     multi2vec_clip_cuda = [],
-    ner_transformers_cuda = [],
   } = selections;
 
   const allModules = [...local_modules, ...additional_modules];
@@ -25,18 +22,6 @@ export function generateDockerCompose(selections) {
   let compose = `---
 version: '3.4'
 `;
-
-  if (authentication_scheme !== 'none') {
-    compose += `#
-# IMPORTANT: Anonymous authentication is disabled.
-# You must configure an authentication method (e.g., OIDC, API keys)
-# for Weaviate to start.
-#
-# See https://weaviate.io/developers/weaviate/configuration/authentication
-#
-`;
-  }
-
   compose += `services:
   weaviate:
     command:
@@ -66,7 +51,7 @@ version: '3.4'
   compose += `    restart: on-failure:0
     environment:
       QUERY_DEFAULTS_LIMIT: 25
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: '${authentication_scheme === 'none'}'
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ENABLE_MODULES: '${allModules.join(',')}'
       CLUSTER_HOSTNAME: 'node1'
@@ -92,9 +77,6 @@ version: '3.4'
   }
   if (additional_modules.includes('reranker-transformers')) {
     compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2', reranker_transformers_cuda.includes('enabled'));
-  }
-  if (additional_modules.includes('ner-transformers')) {
-    compose += getInferenceService('ner-transformers', ner_model || 'dbmdz-bert-large-cased-finetuned-conll03-english', ner_transformers_cuda.includes('enabled'));
   }
   if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += getOllamaService();

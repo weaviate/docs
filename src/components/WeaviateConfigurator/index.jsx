@@ -213,7 +213,7 @@ function WeaviateConfigurator() {
     };
 
     visibleParameters.forEach(param => {
-      if (['weaviate_version', 'authentication_scheme', 'weaviate_volume'].includes(param.name)) {
+      if (['weaviate_version', 'weaviate_volume'].includes(param.name)) {
         groups['base-config'].params.push(param);
       } else if (param.name === 'local_modules') {
         groups['local-inference'].params.push(param);
@@ -263,7 +263,6 @@ function WeaviateConfigurator() {
       <div className="wc-header">
         <p>
           Use this tool to generate a `docker-compose.yml` file for your Weaviate instance.
-          API-based modules are enabled by default. Select any local inference or other modules you want to add.
         </p>
       </div>
       <div className="wc-form">
