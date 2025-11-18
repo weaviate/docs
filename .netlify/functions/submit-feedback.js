@@ -76,13 +76,13 @@ exports.handler = async (event) => {
       };
     }
 
-    if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
-      // const relevantKeys = Object.keys(process.env).filter(
-      //   k => k.includes('WEAVIATE') || k.includes('FEEDBACK') || k === 'CONTEXT' || k === 'ALLOWED_ORIGIN' || k.startsWith('DEPLOY_')
-      // );
+    if (!WEAVIATE_DOCFEEDBACK_URL2 || !WEAVIATE_DOCFEEDBACK_APIKEY2) {
+      const relevantKeys = Object.keys(process.env).filter(
+        k => k.includes('WEAVIATE') || k.includes('FEEDBACK') || k === 'CONTEXT' || k === 'ALLOWED_ORIGIN' || k.startsWith('DEPLOY_')
+      );
       console.error('Missing Weaviate environment variables.', {
-        hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
-        hasKey: !!WEAVIATE_DOCFEEDBACK_API_KEY,
+        hasUrl: !!WEAVIATE_DOCFEEDBACK_URL2,
+        hasKey: !!WEAVIATE_DOCFEEDBACK_APIKEY2,
         context: process.env.CONTEXT,
         weaviateRelatedKeyNames: relevantKeys,
         weaviateRelatedKeyCount: relevantKeys.length,
@@ -91,16 +91,16 @@ exports.handler = async (event) => {
         statusCode: 500,
         body: JSON.stringify({
           error: 'Server configuration error.',
-          // debug: {
-          //   hasUrl: !!WEAVIATE_DOCFEEDBACK_URL,
-          //   hasKey: !!WEAVIATE_DOCFEEDBACK_API_KEY,
-          //   context: process.env.CONTEXT,
-          //   availableWeaviateVars: relevantKeys,
-          //   availableWeaviateVarCount: relevantKeys.length,
-          //   siteId: process.env.SITE_ID,
-          //   siteName: process.env.SITE_NAME,
-          //   timestamp: new Date().toISOString(),
-          // },
+          debug: {
+            hasUrl: !!WEAVIATE_DOCFEEDBACK_URL2,
+            hasKey: !!WEAVIATE_DOCFEEDBACK_APIKEY2,
+            context: process.env.CONTEXT,
+            availableWeaviateVars: relevantKeys,
+            availableWeaviateVarCount: relevantKeys.length,
+            siteId: process.env.SITE_ID,
+            siteName: process.env.SITE_NAME,
+            timestamp: new Date().toISOString(),
+          },
         }),
         headers,
       };
