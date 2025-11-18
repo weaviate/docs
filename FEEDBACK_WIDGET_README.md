@@ -47,9 +47,11 @@ See `.env.example` for an example of the required environment variables.
 
 Add the credentials to your `.env` file like this:
 
+Note: The variables have `2` suffixes as a result of debugging process. In case of any errors, check with folks with access to the Weaviate instance for the correct keys. The keys need to be scoped to "Functions" in Netlify so that the function can access them.
+
 ```
-WEAVIATE_DOCFEEDBACK_URL="https://your-weaviate-instance.weaviate.cloud"
-WEAVIATE_DOCFEEDBACK_API_KEY="YourSecretWeaviateApiKey"
+WEAVIATE_DOCFEEDBACK_URL2="https://your-weaviate-instance.weaviate.cloud"
+WEAVIATE_DOCFEEDBACK_APIKEY2="YourSecretWeaviateApiKey"
 ALLOWED_ORIGIN="http://localhost:8888"  # Set "https://docs.weaviate.io" for prod, "*.netlify.app" for staging and "http://localhost:8888" for local testing
 ```
 
