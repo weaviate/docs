@@ -8,7 +8,7 @@
       "options": [
         {
           "name": "v1.34.0",
-          "displayName": "v1.34.0 (Latest)",
+          "displayName": "v1.34.0",
           "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.34.0"
         },
         {
@@ -94,19 +94,29 @@
       },
       "options": [
         {
-          "name": "sentence-transformers-multi-qa-MiniLM-L6-cos-v1",
-          "displayName": "multi-qa-MiniLM-L6-cos-v1 (English)",
-          "description": "Recommended for semantic search."
+          "name": "google-gemma-3-300m-embedding-1.13.2",
+          "displayName": "Google Gemma 3 300m model",
+          "description": "A good modern model for most use cases."
         },
         {
-          "name": "sentence-transformers-all-MiniLM-L12-v2",
-          "displayName": "all-MiniLM-L12-v2 (English)",
-          "description": "A good all-purpose model."
+          "name": "eurobert-eurobert-2.1b",
+          "displayName": "EuroBERT model (European languages)",
+          "description": "A good modern model for most use cases."
+        },
+        {
+          "name": "snowflake-snowflake-arctic-embed-m",
+          "displayName": "Snowflake Arctic Embed M model (English)",
+          "description": ""
         },
         {
           "name": "sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2",
           "displayName": "paraphrase-multilingual-MiniLM-L12-v2",
           "description": "Recommended for multilingual use cases."
+        },
+        {
+          "name": "baai-bge-base-en-v1.5",
+          "displayName": "BAAI/bge-base-en-v1.5",
+          "description": ""
         }
       ]
     },

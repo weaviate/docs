@@ -16,11 +16,10 @@ export function generateDockerCompose(selections) {
   } = selections;
 
   const allModules = [...local_modules, ...additional_modules];
-  const allVectorizers = ['text2vec-openai', 'text2vec-cohere', ...local_modules.filter(m => m.startsWith('text2vec-') || m.startsWith('img2vec-'))];
+  const weaviateVersion = weaviate_version.replace('v', '');
 
   // Start building the compose file
   let compose = `---
-version: '3.4'
 `;
   compose += `services:
   weaviate:
@@ -31,7 +30,7 @@ version: '3.4'
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:${weaviate_version}
+    image: cr.weaviate.io/semitechnologies/weaviate:${weaviateVersion}
     ports:
     - 8080:8080
     - 50051:50051
@@ -73,7 +72,7 @@ version: '3.4'
 
   // Add module service containers
   if (local_modules.includes('text2vec-transformers')) {
-    compose += getInferenceService('t2v-transformers', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1', t2v_transformers_cuda.includes('enabled'));
+    compose += getInferenceService('transformers', transformers_model || 'sentence-transformers-multi-qa-MiniLM-L6-cos-v1', t2v_transformers_cuda.includes('enabled'));
   }
   if (additional_modules.includes('reranker-transformers')) {
     compose += getInferenceService('reranker-transformers', reranker_transformers_model || 'cross-encoder-ms-marco-MiniLM-L-6-v2', reranker_transformers_cuda.includes('enabled'));
