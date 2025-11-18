@@ -182,6 +182,13 @@ function WeaviateConfigurator() {
 
   return (
     <div className="weaviate-configurator">
+      <div className="wc-header">
+        <h1>Configurator</h1>
+        <p>
+          Use this tool to generate a `docker-compose.yml` file for your Weaviate instance.
+          API-based modules are enabled by default. Select any local inference or other modules you want to add.
+        </p>
+      </div>
       <div className="wc-form">
         {visibleParameters.map((param) => (
           <ParameterRenderer

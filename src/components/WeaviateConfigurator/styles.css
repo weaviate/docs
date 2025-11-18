@@ -9,6 +9,26 @@
   border-radius: 8px;
 }
 
+/* Header */
+.wc-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.wc-header h1 {
+  font-family: var(--site-font-heading-family);
+  font-size: 1.8rem;
+  color: var(--docs-header-color);
+  margin-bottom: 0.5rem;
+}
+
+.wc-header p {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.5;
+}
+
 
 /* Form */
 .wc-form {
