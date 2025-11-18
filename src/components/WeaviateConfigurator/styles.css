@@ -290,10 +290,6 @@
   transition: all 0.3s ease;
 }
 
-.wc-accordion-item.open {
-  background-color: var(--ifm-background-color);
-}
-
 .wc-accordion-header {
   display: flex;
   justify-content: space-between;
@@ -322,12 +318,6 @@
 .wc-accordion-summary {
   font-size: 0.85rem;
   font-weight: 400;
-  color: var(--ifm-color-emphasis-700);
-}
-
-.wc-accordion-icon {
-  font-size: 1.5rem;
-  font-weight: 300;
   color: var(--ifm-color-emphasis-700);
 }
 

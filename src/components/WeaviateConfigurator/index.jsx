@@ -17,17 +17,16 @@ import './styles.css';
 import parametersData from './parameters.json';
 
 // Accordion components
-function AccordionItem({ title, summary, children, isOpen, onToggle }) {
+function AccordionItem({ title, summary, children }) {
   return (
-    <div className={`wc-accordion-item ${isOpen ? 'open' : ''}`}>
-      <button className="wc-accordion-header" onClick={onToggle}>
+    <div className="wc-accordion-item">
+      <div className="wc-accordion-header">
         <div className="wc-accordion-title-group">
           <span className="wc-accordion-title">{title}</span>
           {summary && <span className="wc-accordion-summary">{summary}</span>}
         </div>
-        <span className="wc-accordion-icon">{isOpen ? '−' : '+'}</span>
-      </button>
-      {isOpen && <div className="wc-accordion-content">{children}</div>}
+      </div>
+      <div className="wc-accordion-content">{children}</div>
     </div>
   );
 }
@@ -61,6 +60,8 @@ function ParameterRenderer({
     }
     return map;
   }, [allParameters, name, options, type]);
+
+  const isGroupLabel = ['local_modules', 'additional_modules'].includes(name);
 
   const InputComponent = () => {
     if (type === 'checkbox-group') {
@@ -144,8 +145,8 @@ function ParameterRenderer({
   return (
     <div className="wc-form-group">
       <div className="wc-form-group-header">
-        <label className="wc-form-label">{displayName}</label>
-        {description && <p className="wc-form-description" dangerouslySetInnerHTML={{ __html: description }} />}
+        {!isGroupLabel && <label className="wc-form-label">{displayName}</label>}
+        {description && <p className="wc-form-description" style={isGroupLabel ? { width: '100%'} : {}} dangerouslySetInnerHTML={{ __html: description }} />}
       </div>
       <div className="wc-form-group-options">
         <InputComponent />
@@ -161,7 +162,6 @@ function WeaviateConfigurator() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dockerCompose, setDockerCompose] = useState('');
-  const [openAccordion, setOpenAccordion] = useState(['base-config']);
 
   // Load parameters
   useEffect(() => {
@@ -179,12 +179,6 @@ function WeaviateConfigurator() {
     const content = generateDockerCompose(selections);
     setDockerCompose(content);
   }, [selections]);
-
-  const handleAccordionToggle = (id) => {
-    setOpenAccordion(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
-  };
 
   const handleSelectionChange = (name, value) => {
     setSelections((prev) => ({
@@ -273,8 +267,6 @@ function WeaviateConfigurator() {
               key={id}
               title={group.title}
               summary={summaries[id]}
-              isOpen={openAccordion.includes(id)}
-              onToggle={() => handleAccordionToggle(id)}
             >
               {group.params.map(param => (
                 <ParameterRenderer
