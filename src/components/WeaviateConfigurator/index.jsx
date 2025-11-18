@@ -15,6 +15,22 @@ import './styles.css';
 // Import parameters
 import parametersData from './parameters.json';
 
+// Accordion components
+function AccordionItem({ title, summary, children, isOpen, onToggle }) {
+  return (
+    <div className={`wc-accordion-item ${isOpen ? 'open' : ''}`}>
+      <button className="wc-accordion-header" onClick={onToggle}>
+        <div className="wc-accordion-title-group">
+          <span className="wc-accordion-title">{title}</span>
+          {summary && <span className="wc-accordion-summary">{summary}</span>}
+        </div>
+        <span className="wc-accordion-icon">{isOpen ? '−' : '+'}</span>
+      </button>
+      {isOpen && <div className="wc-accordion-content">{children}</div>}
+    </div>
+  );
+}
+
 // This component will render individual parameters and their children
 function ParameterRenderer({
   parameter,
@@ -135,6 +151,7 @@ function WeaviateConfigurator() {
   const [error, setError] = useState(null);
   const [dockerCompose, setDockerCompose] = useState('');
   const [copied, setCopied] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState(['base-config']);
 
   // Load parameters
   useEffect(() => {
@@ -146,6 +163,12 @@ function WeaviateConfigurator() {
       setLoading(false);
     }
   }, []);
+
+  const handleAccordionToggle = (id) => {
+    setOpenAccordion(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
 
   const handleSelectionChange = (name, value) => {
     setSelections((prev) => ({
@@ -177,6 +200,57 @@ function WeaviateConfigurator() {
     return getVisibleParameters(topLevelParams, selections);
   }, [parameters, selections]);
 
+  // Group parameters for accordion
+  const parameterGroups = useMemo(() => {
+    const groups = {
+      'base-config': { title: 'Base Configuration', params: [] },
+      'local-inference': { title: 'Local Inference', params: [] },
+      'additional-modules': { title: 'Additional Modules', params: [] },
+    };
+
+    visibleParameters.forEach(param => {
+      if (['weaviate_version', 'weaviate_volume'].includes(param.name)) {
+        groups['base-config'].params.push(param);
+      } else if (param.name === 'local_modules') {
+        groups['local-inference'].params.push(param);
+      } else if (param.name === 'additional_modules') {
+        groups['additional-modules'].params.push(param);
+      }
+    });
+
+    return Object.entries(groups).filter(([, group]) => group.params.length > 0);
+  }, [visibleParameters]);
+
+  // Generate summaries for accordion items
+  const summaries = useMemo(() => {
+    const getDisplayName = (paramName, optionName) => {
+      const param = parameters.find(p => p.name === paramName);
+      const option = param?.options.find(o => o.name === optionName);
+      return option?.displayName || optionName;
+    };
+
+    const baseConfigParts = [];
+    if (selections.weaviate_version) {
+      baseConfigParts.push(`Version ${selections.weaviate_version}`);
+    }
+    if (selections.weaviate_volume) {
+      let volumeName = getDisplayName('weaviate_volume', selections.weaviate_volume);
+      if (volumeName.includes(' with ')) {
+        volumeName = volumeName.split(' with ')[1];
+      }
+      baseConfigParts.push(volumeName);
+    }
+
+    const localModulesCount = selections.local_modules?.length || 0;
+    const additionalModulesCount = selections.additional_modules?.length || 0;
+
+    return {
+      'base-config': baseConfigParts.join(' | '),
+      'local-inference': localModulesCount > 0 ? `${localModulesCount} selected` : 'Not enabled',
+      'additional-modules': additionalModulesCount > 0 ? `${additionalModulesCount} selected` : 'Not enabled',
+    };
+  }, [selections, parameters]);
+
   if (loading) return <div className="weaviate-configurator-loading">Loading...</div>;
   if (error) return <div className="weaviate-configurator-error">{error}</div>;
 
@@ -190,15 +264,27 @@ function WeaviateConfigurator() {
         </p>
       </div>
       <div className="wc-form">
-        {visibleParameters.map((param) => (
-          <ParameterRenderer
-            key={param.name}
-            parameter={param}
-            selections={selections}
-            onSelectionChange={handleSelectionChange}
-            allParameters={parameters}
-          />
-        ))}
+        <div className="wc-accordion">
+          {parameterGroups.map(([id, group]) => (
+            <AccordionItem
+              key={id}
+              title={group.title}
+              summary={summaries[id]}
+              isOpen={openAccordion.includes(id)}
+              onToggle={() => handleAccordionToggle(id)}
+            >
+              {group.params.map(param => (
+                <ParameterRenderer
+                  key={param.name}
+                  parameter={param}
+                  selections={selections}
+                  onSelectionChange={handleSelectionChange}
+                  allParameters={parameters}
+                />
+              ))}
+            </AccordionItem>
+          ))}
+        </div>
 
         <button onClick={handleGenerate} className="wc-button wc-button-primary">
           Generate docker-compose.yml

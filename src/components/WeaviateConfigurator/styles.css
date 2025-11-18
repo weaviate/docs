@@ -304,6 +304,68 @@
   color: var(--docs-header-color);
 }
 
+/* Accordion */
+.wc-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wc-accordion-item {
+  border: 1px solid var(--docs-cards-border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.wc-accordion-item.open {
+  background-color: var(--ifm-background-color);
+}
+
+.wc-accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.wc-accordion-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.wc-accordion-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--docs-header-color);
+}
+
+.wc-accordion-summary {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.wc-accordion-icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.wc-accordion-content {
+  padding: 0 1.25rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .wc-docker-compose-output {
   width: 100%;
   padding: 1rem;
