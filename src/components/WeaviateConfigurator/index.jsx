@@ -114,21 +114,17 @@ function ParameterRenderer({
     );
   };
 
-  const formGroup = (
+  return (
     <div className="wc-form-group">
       <div className="wc-form-group-header">
         <label className="wc-form-label">{displayName}</label>
         {description && <p className="wc-form-description">{description}</p>}
       </div>
-      <InputComponent />
+      <div className="wc-form-group-options">
+        <InputComponent />
+      </div>
     </div>
   );
-
-  if (parameter.style === 'nested-group') {
-    return <div className="wc-nested-group">{formGroup}</div>;
-  }
-
-  return formGroup;
 }
 
 

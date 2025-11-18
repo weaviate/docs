@@ -51,7 +51,6 @@
       "displayName": "Local Inference Modules",
       "description": "Enable locally-run models. API-based modules are enabled by default.",
       "type": "checkbox-group",
-      "style": "nested-group",
       "options": [
         {
           "name": "text2vec-transformers",
@@ -91,7 +90,6 @@
       "displayName": "Additional Modules",
       "description": "Enable additional modules for backups, spell checking, etc.",
       "type": "checkbox-group",
-      "style": "nested-group",
       "options": [
         {
           "name": "backup-s3",
