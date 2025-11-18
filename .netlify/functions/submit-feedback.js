@@ -62,7 +62,7 @@ exports.handler = async (event) => {
 
   try {
     const data = JSON.parse(event.body);
-    const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
+    const { WEAVIATE_DOCFEEDBACK_URL2, WEAVIATE_DOCFEEDBACK_APIKEY2 } =
       process.env;
 
     // Basic server-side validation
@@ -121,7 +121,7 @@ exports.handler = async (event) => {
       },
     };
 
-    const weaviateUrl = `${WEAVIATE_DOCFEEDBACK_URL}/v1/objects`;
+    const weaviateUrl = `${WEAVIATE_DOCFEEDBACK_URL2}/v1/objects`;
 
     const response = await fetch(weaviateUrl, {
       method: 'POST',
