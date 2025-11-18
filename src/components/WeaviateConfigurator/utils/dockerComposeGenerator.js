@@ -5,15 +5,22 @@ export function generateDockerCompose(selections) {
   const {
     weaviate_version = 'v1.32.7',
     weaviate_volume = 'named-volume',
-    text_vectorizers = [],
-    image_vectorizers = [],
-    rerankers = [],
-    generative_modules = [],
+    local_modules = [],
+    additional_modules = [],
     transformers_model,
   } = selections;
 
-  const allModules = [...text_vectorizers, ...image_vectorizers, ...rerankers, ...generative_modules];
-  const allVectorizers = [...text_vectorizers, ...image_vectorizers];
+  const apiModules = [
+    'text2vec-openai',
+    'text2vec-cohere',
+    'generative-openai',
+    'generative-cohere',
+    'generative-aws',
+    'reranker-cohere',
+  ];
+
+  const allModules = [...apiModules, ...local_modules, ...additional_modules];
+  const allVectorizers = ['text2vec-openai', 'text2vec-cohere', ...local_modules.filter(m => m.startsWith('text2vec-') || m.startsWith('img2vec-'))];
 
   // Start building the compose file
   let compose = `---
@@ -52,46 +59,41 @@ services:
       DEFAULT_VECTORIZER_MODULE: '${allVectorizers[0] || 'none'}'
       ENABLE_MODULES: '${allModules.join(',')}'
       CLUSTER_HOSTNAME: 'node1'
+      OPENAI_APIKEY: \${OPENAI_APIKEY}
+      COHERE_APIKEY: \${COHERE_APIKEY}
+      AWS_ACCESS_KEY_ID: \${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: \${AWS_SECRET_ACCESS_KEY}
 `;
 
-  // Add module-specific environment variables
-  if (text_vectorizers.includes('text2vec-openai') || generative_modules.includes('generative-openai')) {
-    compose += `      OPENAI_APIKEY: \${OPENAI_APIKEY}\n`;
-  }
-
-  if (
-    text_vectorizers.includes('text2vec-cohere') ||
-    rerankers.includes('reranker-cohere') ||
-    generative_modules.includes('generative-cohere')
-  ) {
-    compose += `      COHERE_APIKEY: \${COHERE_APIKEY}\n`;
-  }
-
-  if (generative_modules.includes('generative-aws')) {
-    compose += `      AWS_ACCESS_KEY_ID: \${AWS_ACCESS_KEY_ID}\n`;
-    compose += `      AWS_SECRET_ACCESS_KEY: \${AWS_SECRET_ACCESS_KEY}\n`;
+  if (additional_modules.includes('backup-s3')) {
+    compose += `      BACKUP_S3_BUCKET: \${BACKUP_S3_BUCKET}\n`;
   }
 
   // Add module service containers
-  if (text_vectorizers.includes('text2vec-transformers')) {
+  if (local_modules.includes('text2vec-transformers') || additional_modules.includes('reranker-transformers')) {
     compose += getTransformersService(transformers_model);
   }
-  if (text_vectorizers.includes('text2vec-ollama')) {
+  if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += getOllamaService();
   }
-  if (image_vectorizers.includes('img2vec-neural-pytorch')) {
+  if (local_modules.includes('img2vec-neural-pytorch')) {
     compose += getImageService('pytorch');
   }
-  if (image_vectorizers.includes('img2vec-neural-keras')) {
+  if (local_modules.includes('img2vec-neural-keras')) {
     compose += getImageService('keras');
   }
 
   // Add volumes section if needed
-  if (weaviate_volume === 'named-volume') {
+  if (weaviate_volume === 'named-volume' || local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
     compose += `
 volumes:
-  weaviate_data:
 `;
+    if (weaviate_volume === 'named-volume') {
+      compose += `  weaviate_data:\n`;
+    }
+    if (local_modules.includes('text2vec-ollama') || local_modules.includes('generative-ollama')) {
+      compose += `  ollama_data:\n`;
+    }
   }
 
   return compose;

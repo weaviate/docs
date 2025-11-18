@@ -47,25 +47,16 @@
       ]
     },
     {
-      "name": "text_vectorizers",
-      "displayName": "Text Vectorizers",
-      "description": "Enable any additional text vectorization modules.",
+      "name": "local_modules",
+      "displayName": "Local Inference Modules",
+      "description": "Enable locally-run models. API-based modules are enabled by default.",
       "type": "checkbox-group",
+      "style": "nested-group",
       "options": [
         {
           "name": "text2vec-transformers",
           "displayName": "text2vec-transformers",
           "description": "Local, high-accuracy model. Requires GPUs to run efficiently."
-        },
-        {
-          "name": "text2vec-openai",
-          "displayName": "text2vec-openai",
-          "description": "Uses OpenAI Embeddings API. Requires an API key."
-        },
-        {
-          "name": "text2vec-cohere",
-          "displayName": "text2vec-cohere",
-          "description": "Uses Cohere Embeddings API. Requires an API key."
         },
         {
           "name": "text2vec-ollama",
@@ -74,15 +65,7 @@
           "conditions": {
             "or": ["weaviate_version>=v1.25.0"]
           }
-        }
-      ]
-    },
-    {
-      "name": "image_vectorizers",
-      "displayName": "Image Vectorizers",
-      "description": "Select one or more image vectorization modules.",
-      "type": "checkbox-group",
-      "options": [
+        },
         {
           "name": "img2vec-neural-pytorch",
           "displayName": "img2vec-neural (PyTorch)",
@@ -92,51 +75,47 @@
           "name": "img2vec-neural-keras",
           "displayName": "img2vec-neural (Keras)",
           "description": "Keras-based ResNet50 model. Restricted to amd64 and CPU."
-        }
-      ]
-    },
-    {
-      "name": "generative_modules",
-      "displayName": "Generative Modules",
-      "description": "Enable generative AI modules to generate responses from your data.",
-      "type": "checkbox-group",
-      "options": [
-        {
-          "name": "generative-openai",
-          "displayName": "generative-openai",
-          "description": "Generate responses using the OpenAI API.",
-          "conditions": {
-            "and": ["weaviate_version>=v1.17.3"]
-          }
         },
         {
-          "name": "generative-cohere",
-          "displayName": "generative-cohere",
-          "description": "Generate responses using the Cohere API.",
+          "name": "generative-ollama",
+          "displayName": "generative-ollama",
+          "description": "Uses a local Ollama container for generative AI.",
           "conditions": {
-            "and": ["weaviate_version>=v1.19.0"]
-          }
-        },
-        {
-          "name": "generative-aws",
-          "displayName": "generative-aws",
-          "description": "Generate responses using AWS Bedrock.",
-          "conditions": {
-            "and": ["weaviate_version>=v1.22.5"]
+            "and": ["weaviate_version>=v1.25.0"]
           }
         }
       ]
     },
     {
-      "name": "rerankers",
-      "displayName": "Reranker Modules",
-      "description": "Select a reranker module to refine search results.",
+      "name": "additional_modules",
+      "displayName": "Additional Modules",
+      "description": "Enable additional modules for backups, spell checking, etc.",
       "type": "checkbox-group",
+      "style": "nested-group",
       "options": [
         {
-          "name": "reranker-cohere",
-          "displayName": "reranker-cohere",
-          "description": "Uses Cohere Rerank API. Requires a Cohere API key."
+          "name": "backup-s3",
+          "displayName": "backup-s3",
+          "description": "Back up and restore Weaviate to an S3 bucket.",
+          "conditions": {
+            "and": ["weaviate_version>=v1.18.0"]
+          }
+        },
+        {
+          "name": "reranker-transformers",
+          "displayName": "reranker-transformers",
+          "description": "Rerank search results using a local transformers model.",
+          "conditions": {
+            "and": ["weaviate_version>=v1.20.0"]
+          }
+        },
+        {
+          "name": "text-spellcheck",
+          "displayName": "text-spellcheck",
+          "description": "Suggest or auto-fix misspelled queries.",
+          "conditions": {
+            "and": ["weaviate_version>=v1.7.0"]
+          }
         }
       ]
     },
@@ -146,7 +125,7 @@
       "description": "Select the specific model for the text2vec-transformers module.",
       "type": "select-multiline",
       "conditions": {
-        "and": ["text_vectorizers~~text2vec-transformers"]
+        "and": ["local_modules~~text2vec-transformers"]
       },
       "options": [
         {

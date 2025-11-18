@@ -1,0 +1,1702 @@
+parameters:
+  - name: wcs_subscription_tier
+    displayName: Subscription Tier
+    description: Select the tier which has an influence on machine resources, expiration and the cost (if any) billed to your name.
+    type: select-multiline
+    conditions:
+      and:
+        - 'wcs==true'
+    options:
+      - name: sandbox
+        displayName: Sandbox Free
+        description: expires after 14 days, free
+
+
+  - name: weaviate_version
+    displayName: Weaviate Version
+    description: It is recommended to always use the latest version. You can also select an older version for compatibility sake, but not all features might be available on an older version. If you are running on arm64 hardware, please select v1.4.0 or newer.
+    type: select-multiline
+    options:
+      - name: v1.32.7
+        displayName: "v1.32.7"
+        description: "See release notes: https://github.com/weaviate/weaviate/releases/tag/v1.32.7"
+      - name: v1.30.0
+        displayName: v1.30.0
+        description: "Runtime config management, Dynamic user management, Dynamic RAG model selection, Multi-value vector support, BlockMax WAND-based BM25"
+      - name: v1.29.2
+        displayName: v1.29.2
+        description: "Async replication initialization improvements"
+        conditions:
+          or:
+            - 'wcs!=true'
+
+  - name: weaviate_volume
+    displayName: Persistent Volume
+    description: It's recommended to set a persistent volume to avoid data loss and improve reading and writing speeds.
+    type: select-multiline
+    conditions:
+      or:
+        - 'wcs!=true'
+    options:
+      - name: 'no-volume'
+        displayName: No persistent volume
+        description: You will no set a persistent volume. Note, that it is recommended to set a persistent volume to avoid data loss and improve reading and writing speeds.
+      - name: 'named-volume'
+        displayName: Persistent volume with named volume
+        description: Docker will create a named volume called `weaviate_data` and mount it to the `PERSISTENCE_DATA_PATH` inside the container.
+        conditions:
+          or:
+            - 'wcs!=true'
+      - name: 'host-binding'
+        displayName: Persistent volume with host binding
+        description: Docker will mount `./weaviate_data` on the host to the `PERSISTENCE_DATA_PATH` inside the container. Note that a volume `.weaviate_data` must exist.
+        conditions:
+          or:
+            - 'wcs!=true'
+
+  - name: modules
+    displayName: Standalone or Modules
+    description: Would you like to include modules or run Weaviate as a standalone-vector database?
+    type: select-multiline
+    conditions:
+      or:
+        - 'wcs!=true'
+    options:
+      - name: 'standalone'
+        displayName: Standalone, no Modules
+        description: You will provide your own vectors and use Weaviate as a pure vector database.
+      - name: 'modules'
+        displayName: With Modules
+        description: You can configure modules in the next step and feed specific media types into Weaviate which can then be vectorized using the right module.
+        conditions:
+          or:
+            - 'wcs!=true'
+
+  - name: media_type
+    displayName: Vectorizers & Retrievers Media Type
+    description: Configure the media type, such as text, images, etc. to use with the Vectorizers & Retrievers Modules inside Weaviate.
+    type: select-multiline
+    conditions:
+      or:
+        - 'modules==modules'
+    options:
+      - name: text
+        displayName: Text
+        description: Weaviate will turn your text (or code) objects to vectors import and search time. Supports transformers, openai, contextionary and others.
+      - name: image
+        displayName: Images
+        description: Weaviate will vectorize your images at import and at search time.
+      - name: image,text
+        displayName: Text & Image
+        description: Weaviate will have the capabiltites to vectorize both text and images. You can decide which vectorizer to use on a class-by-class basis. Cross-references can be made between any two classes.
+      - name: clip
+        displayName: CLIP (Text & Image in same vector space)
+        description: Weaviate will have the capabiltites to vectorize both text and images even within the same object. Limited to supported CLIP models.
+      - name: bind
+        displayName: BIND (Text, Image, Audio, Video, Depth, Thermal, IMU in same vector space)
+        description: Weaviate will have the capabiltites to vectorize images, text, audio, video, depth, thermal and IMU data with the same model. Limited to English language only.
+        conditions:
+          or:
+            - weaviate_version>=v1.21.0
+      - name: palm_clip
+        displayName: Google CLIP (Text, Image & Video in same vector space)
+        description: Weaviate will have the capabiltites to vectorize both text, images and videos even within the same object.
+        conditions:
+          or:
+            - weaviate_version>=v1.24.4
+
+  - name: text_module
+    conditions:
+      or:
+        - media_type==text
+        - media_type==image,text
+    displayName: Vectorizer & Retriever Text Module
+    type: select-multiline
+    options:
+      - name: text2vec-transformers
+        conditions:
+          or:
+            - weaviate_version>=v1.2.0
+        displayName: text2vec-transformers
+        description: The transformers (e.g. BERT, etc.) module reaches the highest accuracy, but requires GPUs to run efficiently.
+      - name: text2vec-openai
+        conditions:
+          or:
+            - weaviate_version>=v1.10.0
+        displayName: text2vec-openai (OpenAI Embeddings API)
+        description: Sends your text objects to OpenAI for embedding inference. Supports all publicly available OpenAI models. They can be configured on a per-class basis. Requires a valid OpenAI API key.
+      - name: text2vec-contextionary
+        displayName: text2vec-contextionary (Glove/fastText)
+        description: The contextionary model was trained using fastText and weighs words by how common they are. It runs efficiently on CPUs, but in some situations it cannot reach the accuracy of transformers.
+      - name: text2vec-huggingface
+        conditions:
+          or:
+            - weaviate_version>=v1.15.0
+        displayName: text2vec-huggingface (HuggingFace Embeddings API)
+        description: Sends your text objects to HuggingFace for embedding inference. Supports all publicly available HuggingFace models. They can be configured on a per-class basis. Requires a valid HuggingFace API key.
+      - name: text2vec-cohere
+        conditions:
+          or:
+            - weaviate_version>=v1.16.0
+        displayName: text2vec-cohere (Cohere Embeddings API)
+        description: Sends your text objects to Cohere for embedding inference. Supports all publicly available Cohere models. They can be configured on a per-class basis. Requires a valid Cohere API key.
+      - name: text2vec-palm
+        conditions:
+          or:
+            - weaviate_version>=v1.19.1
+        displayName: text2vec-palm (Google PaLM Embeddings API)
+        description: Sends your text objects to Google PaLM for embedding inference. Supports all publicly available Google PaLM models. They can be configured on a per-class basis. Requires a valid Google PaLM API key.
+      - name: text2vec-gpt4all
+        conditions:
+          or:
+            - weaviate_version>=v1.21.0
+        displayName: text2vec-gpt4all
+        description: |-
+          The GPT4All inference container module optimized for x86_64 processors architecture.
+      - name: text2vec-jinaai
+        conditions:
+          or:
+            - weaviate_version>=v1.22.3
+        displayName: text2vec-jinaai (JinaAI Embeddings API)
+        description: Sends your text objects to JinaAI for embedding inference. Requires a valid JinaAI API key.
+      - name: text2vec-aws
+        conditions:
+          or:
+            - weaviate_version>=v1.22.5
+        displayName: text2vec-aws (AWS Bedrock)
+        description: Sends your text objects to AWS Bedrock service for embedding inference. Requires a valid AWS credentials.
+      - name: text2vec-voyageai
+        conditions:
+          or:
+            - weaviate_version>=v1.24.2
+        displayName: text2vec-voyageai (VoyageAI Embeddings API)
+        description: Sends your text objects to VoyageAI for embedding inference. Requires a valid VoyageAI API key.
+      - name: text2vec-octoai
+        conditions:
+          or:
+            - weaviate_version>=v1.25.0
+        displayName: text2vec-octoai (OctoAI Embeddings API)
+        description: Sends your text objects to OctoAI for embedding inference. Requires a valid OctoAI API key.
+      - name: text2vec-ollama
+        conditions:
+          or:
+            - weaviate_version>=v1.25.0
+        displayName: text2vec-ollama (Ollama Embeddings API)
+        description: |-
+          Sends your text objects to Ollama container for embedding inference. Configurator adds bare ollama container.
+          The api endpoint that should be passed to Weaviate Ollama module configuration is: "http://ollama:11434".
+          It is advised to attach a local volume to Ollama container so that user would not have to download the models one more time.
+          In order to make use of Ollama efficiently it is advised to download a given model prior using it with Weaviate, example:
+            docker exec -i <ollama-container-id> ollama pull nomic-embed-text
+      - name: text2vec-mistral
+        conditions:
+          or:
+            - weaviate_version>=v1.25.13
+        displayName: text2vec-mistral (Mistral AI Embeddings API)
+        description: Sends your text objects to Mistral AI for embedding inference. Requires a valid Mistral AI API key.
+      - name: text2vec-databricks
+        conditions:
+          or:
+            - weaviate_version>=v1.26.3
+        displayName: text2vec-databricks (Databricks Embeddings API)
+        description: Sends your text objects to Databricks for embedding inference. Requires a valid Databricks token.
+
+  - name: transformers_model
+    conditions:
+      and:
+        - text_module==text2vec-transformers
+    displayName: Transformers Model (Vectorizers & Retrievers)
+    description: |-
+      Each model can have specific advantages and disadvantages. For
+      details (training data, training size) of sentence-bert models, see the
+      official documentation at
+      https://www.sbert.net/docs/pretrained_models.html. Models are typically
+      either English-only or multi-lingual.
+    type: select-multiline
+    options:
+      ## new
+      - name: sentence-transformers-multi-qa-MiniLM-L6-cos-v1
+        displayName: sentence-transformers/multi-qa-MiniLM-L6-cos-v1  (English, 384d)
+        description: |-
+          New (September 2021)! Sentence-Transformer recommendation for best
+          accuracy/speed trade-off. Speficially trained for semantic search.
+          The lower dimensionality also reduces memory requirements of larger
+          datasets in Weaviate.
+
+      - name: sentence-transformers-multi-qa-mpnet-base-cos-v1
+        displayName: sentence-transformers/multi-qa-mpnet-base-cos-v1  (English, 768d)
+        description: |-
+          New (September 2021)! Currently the highest Semantic Seach score on
+          SBERT.net.
+
+      - name: sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2
+        displayName: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 (Multilingual, 384d)
+        description: |-
+          Currently the Sentence-Transformer recommendation for best
+          accuracy/speed trade-off for a multi-lingual model. The lower
+          dimensionality also reduces memory requirements of larger datasets in
+          Weaviate.
+
+      - name: sentence-transformers-paraphrase-multilingual-mpnet-base-v2
+        displayName: sentence-transformers/paraphrase-multilingual-mpnet-base-v2 (Multilingual, 768d)
+        description: |-
+          Currently the highest overall score for a multi-lingual model
+          (across all benchmarks) on sentence-transformers benchmarks.
+
+      - name: sentence-transformers-all-mpnet-base-v2
+        displayName: sentence-transformers/all-mpnet-base-v2  (English, 768d)
+        description: |-
+          New (September 2021)! All-purpose model. Highest overall score on
+          SBERT.net, but not specifically trained for semantic search.
+
+      - name: sentence-transformers-all-MiniLM-L12-v2
+        displayName: sentence-transformers/all-MiniLM-L12-v2  (English, 384d)
+        description: |-
+          New (September 2021)! All-purpose model. Best
+          accuracy/speed trade of for a general purpose model on SBERT.net, but
+          not specifically trained for semantic search. The lower dimensonality
+          compared to the 768d models help in reducing memory requirements
+          in Weaviate.
+
+      ## passage / query
+      ## name used to store passage and query tags separated with "|" (1st passage tag; 2nd query tag)
+      - name: facebook-dpr-ctx_encoder-single-nq-base|facebook-dpr-question_encoder-single-nq-base
+        displayName: sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base && facebook-dpr-question_encoder-single-nq-base
+        description: |-
+          This is a port of the DPR Model to sentence-transformers model: It maps sentences
+          & paragraphs to a 768 dimensional dense vector space and can be used for tasks like clustering or semantic search.
+
+      - name: vblagoje-dpr-ctx_encoder-single-lfqa-wiki|vblagoje-dpr-question_encoder-single-lfqa-wiki
+        displayName: vblagoje/dpr-ctx_encoder-single-lfqa-wiki && dpr-question_encoder-single-lfqa-wiki
+        description: |-
+          The context/passage encoder model based on DPRContextEncoder architecture.
+          It uses the transformer's pooler outputs as context/passage representations.
+          The question encoder model based on DPRQuestionEncoder architecture.
+          It uses the transformer's pooler outputs as question representations.
+
+      - name: biu-nlp-abstract-sim-sentence|biu-nlp-abstract-sim-query
+        displayName: biu-nlp/abstract-sim-sentence && biu-nlp/abstract-sim-query
+        description: |-
+          The context/passage encoder model for mapping abstract sentence descriptions to sentences that fit the descriptions.
+          Trained on Wikipedia.
+
+      ## T5
+      - name: sentence-transformers-gtr-t5-base
+        displayName: sentence-transformers/gtr-t5-base (English, 768d)
+        description: |-
+          Built on Google's T5 Model. Optimized for Semantic Search.
+          The smallest of the T5 models, however also the weakest in performance.
+
+      - name: sentence-transformers-gtr-t5-large
+        displayName: sentence-transformers/gtr-t5-large (English, 768d)
+        description: |-
+          Built on Google's T5 Model. Optimized for Semantic Search.
+          Good trade-off between size/accuracy among the T5 models.
+
+      - name: google-flan-t5-base
+        displayName: google/flan-t5-base (Multilingual, 768d)
+        description: |-
+          These models are based on pretrained T5 (Raffel et al., 2020)
+          and fine-tuned with instructions for better zero-shot and few-shot performance.
+          The smallest of the T5 models, however also the weakest in performance.
+
+      - name: google-flan-t5-large
+        displayName: google/flan-t5-large (Multilingual, 768d)
+        description: |-
+          These models are based on pretrained T5 (Raffel et al., 2020)
+          and fine-tuned with instructions for better zero-shot and few-shot performance.
+          Good trade-off between size/accuracy among the T5 models.
+
+      - name: baai-bge-small-en-v1.5
+        displayName: BAAI/bge-small-en-v1.5 (English, 384d)
+        description: |-
+          Beijing Academy of Artificial Intelligence fast and default English model.
+
+      - name: baai-bge-base-en-v1.5
+        displayName: BAAI/bge-base-en-v1.5 (English, 768d)
+        description: |-
+          Beijing Academy of Artificial Intelligence base English model.
+
+      - name: baai-bge-m3
+        displayName: BAAI/bge-m3 (Multilingual, 1024d, ONNX runtime, CPU optimized)
+        description: |-
+          Beijing Academy of Artificial Intelligence multilingual model.
+
+      - name: mixedbread-ai-mxbai-embed-large-v1
+        displayName: mixedbread-ai/mxbai-embed-large-v1 (English, 1024d)
+        description: |-
+          Mixedbread.ai's highest performing english embedding model.
+          Maps sentences & paragraphs to a 1024 dimensional dense vector space and
+          can be used for semantic search. When running queries, prepend the query with
+          `Represent this sentence for searching relevant passages:{your_query_here}`.
+
+      - name: snowflake-snowflake-arctic-embed-xs
+        displayName: Snowflake/snowflake-arctic-embed-xs (English, 384d)
+        description: |-
+          Snowflake's Arctic-embed-xs models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+
+      - name: snowflake-snowflake-arctic-embed-s
+        displayName: Snowflake/snowflake-arctic-embed-s (English, 384d)
+        description: |-
+          Snowflake's Arctic-embed-s models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+
+      - name: snowflake-snowflake-arctic-embed-m
+        displayName: Snowflake/snowflake-arctic-embed-m (English, 768d)
+        description: |-
+          Snowflake's Arctic-embed-m models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+
+      - name: snowflake-snowflake-arctic-embed-l
+        displayName: Snowflake/snowflake-arctic-embed-l (English, 1024d)
+        description: |-
+          Snowflake's Arctic-embed-l models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+
+      ## ONNX models
+
+      - name: baai-bge-small-en-v1.5-onnx
+        displayName: BAAI/bge-small-en-v1.5 (English, 384d, ONNX runtime, CPU optimized)
+        description: |-
+          Beijing Academy of Artificial Intelligence fast and default English model.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: baai-bge-base-en-v1.5-onnx
+        displayName: BAAI/bge-base-en-v1.5 (English, 768d, ONNX runtime, CPU optimized)
+        description: |-
+          Beijing Academy of Artificial Intelligence base English model.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: baai-bge-m3-onnx
+        displayName: BAAI/bge-m3 (Multilingual, 1024d, ONNX runtime, CPU optimized)
+        description: |-
+          Beijing Academy of Artificial Intelligence multilingual model.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: sentence-transformers-all-MiniLM-L6-v2-onnx
+        displayName: all-MiniLM-L6-v2 (English, 384d, ONNX runtime, CPU optimized)
+        description: |-
+          Maps sentences & paragraphs to a 384 dimensional dense vector space
+          and can be used for semantic search.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: mixedbread-ai-mxbai-embed-large-v1-onnx
+        displayName: mixedbread-ai/mxbai-embed-large-v1 (English, 1024d)
+        description: |-
+          Mixedbread.ai's highest performing english embedding model.
+          Maps sentences & paragraphs to a 1024 dimensional dense vector space and
+          can be used for semantic search. When running queries, prepend the query with
+          `Represent this sentence for searching relevant passages:{your_query_here}`.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: snowflake-snowflake-arctic-embed-xs-onnx
+        displayName: Snowflake/snowflake-arctic-embed-xs (English, 384d)
+        description: |-
+          Snowflake's Arctic-embed-xs models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: snowflake-snowflake-arctic-embed-s-onnx
+        displayName: Snowflake/snowflake-arctic-embed-s (English, 384d)
+        description: |-
+          Snowflake's Arctic-embed-s models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: snowflake-snowflake-arctic-embed-m-onnx
+        displayName: Snowflake/snowflake-arctic-embed-m (English, 768d)
+        description: |-
+          Snowflake's Arctic-embed-m models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+      - name: snowflake-snowflake-arctic-embed-l-onnx
+        displayName: Snowflake/snowflake-arctic-embed-l (English, 1024d)
+        description: |-
+          Snowflake's Arctic-embed-l models is a suite of text embedding models that
+          focuses on creating high-quality retrieval models optimized for performance.
+          Optimized for CPU inferencing, uses ONNX runtime.
+
+
+      ## Custom
+      - displayName: Custom Image (Specify in next step)
+        name: _custom
+        description: Build your custom compatible image (and optionally upload it to a registry), specify the local or full docker tag in the next step.
+
+  - name: gpt4all_model
+    conditions:
+      and:
+        - text_module==text2vec-gpt4all
+    displayName: GPT4All Model (Vectorizers & Retrievers)
+    description: |-
+      GPT4All supports generating high quality embeddings of arbitrary length documents of text
+      using a CPU optimized contrastively trained Sentence Transformer. These embeddings are
+      comparable in quality for many tasks with OpenAI.
+    type: select-multiline
+    options:
+      ## new
+      - name: all-MiniLM-L6-v2
+        displayName: all-MiniLM-L6-v2 (English, 384d)
+        description: |-
+          Maps sentences & paragraphs to a 384 dimensional dense vector space
+          and can be used for semantic search.
+          This model is available only for x86_64 architecture processors.
+
+  - name: openai_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-openai
+    displayName: OpenAI requires an API Key
+    description: |-
+      OpenAI is a commercial service independent of Weaviate. You will
+      need to register with OpenAI at https://beta.openai.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      OPENAI_APIKEY set on your host machine that contains the key. For example
+      you can run "export OPENAI_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-OpenAI-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-OpenAI-Api-Key header.
+
+  - name: huggingface_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-huggingface
+    displayName: HuggingFace requires an API Key
+    description: |-
+      HuggingFace is a commercial service independent of Weaviate. You will
+      need to register with HuggingFace at https://huggingface.co/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      HUGGINGFACE_APIKEY set on your host machine that contains the key. For example
+      you can run "export HUGGINGFACE_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-HuggingFace-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-HuggingFace-Api-Key header.
+
+  - name: cohere_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-cohere
+    displayName: Cohere requires an API Key
+    description: |-
+      Cohere is a commercial service independent of Weaviate. You will
+      need to register with Cohere at https://cohere.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      COHERE_APIKEY set on your host machine that contains the key. For example
+      you can run "export COHERE_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Cohere-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Cohere-Api-Key header.
+
+  - name: palm_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-palm
+    displayName: Google PaLM requires an API Key
+    description: |-
+      Google PaLM is a commercial service independent of Weaviate. You will
+      need to register with Google PaLM at https://developers.generativeai.google/.
+      Since it is best practice to never store secrets in an infrastructure file,
+      the resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      PALM_APIKEY set on your host machine that contains the key. For example
+      you can run "export PALM_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Palm-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Palm-Api-Key header.
+  # NOTE: we currently skip asking for an image_module since there is only one
+  # - name: image_module
+
+  - name: jinaai_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-jinaai
+    displayName: JinaAI Embeddings requires an API Key
+    description: |-
+      JinaAI is a commercial service independent of Weaviate. You will
+      need to register with JinaAI at https://jina.ai/embeddings/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      JINAAI_APIKEY set on your host machine that contains the key. For example
+      you can run "export JINAAI_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-JinaAI-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-JinaAI-Api-Key header.
+
+  - name: aws_credentials_approval
+    conditions:
+      and:
+        - text_module==text2vec-aws
+    displayName: AWS module requires valid credentials
+    description: |-
+      AWS Bedrock is a commercial service independent of Weaviate. You will
+      need to register AWS (Amazon Web Services) in order to obtain credentials.
+      Since it is best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your credentials from
+      environment variables. Make sure you have an environment variable
+      AWS_ACCESS_KEY and AWS_SECRET_KEY set on your host machine. For example
+      you can run "export AWS_ACCESS_KEY=my-key; export AWS_SECRET_KEY=my-secret" prior to running
+      "docker-compose up". You can also provide the credentials with each request using
+      X-AWS-Access-Key and X-AWS-Secret-Key headers.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variables prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using X-AWS-Access-Key and X-AWS-Secret-Key headers.
+
+  - name: voyageai_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-voyageai
+    displayName: VoyageAI Embeddings requires an API Key
+    description: |-
+      VoyageAI is a commercial service independent of Weaviate. You will
+      need to register with VoyageAI at https://www.voyageai.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      VOYAGEAI_APIKEY set on your host machine that contains the key. For example
+      you can run "export VOYAGEAI_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-VoyageAI-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-VoyageAI-Api-Key header.
+
+  - name: octoai_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-octoai
+    displayName: OctoAI Embeddings requires an API Key
+    description: |-
+      OctoAI is a commercial service independent of Weaviate. You will
+      need to register with OctoAI at https://octo.ai. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      OCTOAI_APIKEY set on your host machine that contains the key. For example
+      you can run "export OCTOAI_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-OctoAI-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-OctoAI-Api-Key header.
+
+  - name: mistral_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-mistral
+    displayName: Mistral AI Embeddings requires an API Key
+    description: |-
+      Mistral AI is a commercial service independent of Weaviate. You will
+      need to register with Mistral AI at https://mistral.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      MISTRAL_APIKEY set on your host machine that contains the key. For example
+      you can run "export MISTRAL_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Mistral-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Mistral-Api-Key header.
+
+  - name: databricks_key_approval
+    conditions:
+      and:
+        - text_module==text2vec-databricks
+    displayName: Databricks Embeddings requires an valid token
+    description: |-
+      Databricks is a commercial service independent of Weaviate. You will
+      need to register with databricks AI at https://databricks.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your token from an
+      environment variable. Make sure you have an environment variable
+      DATABRICKS_TOKEN set on your host machine that contains the token. For example
+      you can run "export DATABRICKS_TOKEN=my-token-here" prior to running
+      "docker-compose up". You can also provide the token with each request using the
+      X-Databricks-Token header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide token with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide token with each request using the X-Databricks-Token header.
+
+  - name: image_neural_model
+    conditions:
+      or:
+        - media_type==image
+        - media_type==image,text
+    displayName: Image2Vec Model (Vectorizers & Retrievers)
+    type: select-multiline
+    options:
+      - displayName: ResNet50 (Pytorch)
+        description: Pytorch-based models work with CUDA-GPU or CPU. They can run on amd64 and arm64 architecture. Inference is single-threaded.
+        name: pytorch-resnet50
+      - displayName: ResNet50 (Keras)
+        description: Keras-based models are restricted to amd64 and CPU at the moment. They allow for multi-threaded inference.
+        name: keras-resnet50
+
+  - name: transformers_model_custom_image
+    conditions:
+      and:
+        - transformers_model==_custom
+    displayName: Transformers Model (Vectorizers & Retrievers)
+    description: |-
+      A custom-built text2vec-transformers image (e.g. for a non-prebuilt
+      Huggingface Module or a private/local model). Must be derived from the
+      official 'semitechnologies/transformers-inference:custom' image.
+    type: text
+
+  - name: contextionary_language
+    conditions:
+      and:
+        - text_module==text2vec-contextionary
+    displayName: Contextionary Language
+    type: select
+    options:
+      - name: en
+        displayName: English
+      - name: nl
+        displayName: Dutch
+      - name: de
+        displayName: German
+      - name: cs
+        displayName: Czech
+      - name: it
+        displayName: Italian
+
+  - name: contextionary_model
+    conditions:
+      and:
+        - text_module==text2vec-contextionary
+    displayName: Contextionary Model (Vectorizers & Retrievers)
+    type: select
+    options:
+      - name: 0.16.0
+        displayName: CommonCrawl and Wiki (0.16.0)
+        conditions:
+          or:
+            - contextionary_language==en
+            - contextionary_language==nl
+      - name: 0.14.0
+        displayName: Wiki-only (0.14.0)
+
+  - name: contextionary_compound_splitting
+    description: |
+      Compound Splitting is an optional feature of the contextionary. When a
+      word in your data objects is unknown to the contextionary model, it
+      attempts to split the word into known subwords. This can lead to a more
+      precise vector position. The benefit is greater on languages where
+      compounding is typical (e.g. German or Dutch). Note that import times may
+      increase significantly with compound slitting enabled.
+    conditions:
+      and:
+        - 'text_module==text2vec-contextionary'
+        - 'wcs!=true'
+    displayName: Contextionary Compound Splitting
+    type: select
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: clip_model
+    conditions:
+      and:
+        - media_type==clip
+    displayName: CLIP Model (Vectorizers & Retrievers)
+    description: |-
+      Select the desired CLIP Model to vectorize both images and text with the
+      same model.
+    type: select-multiline
+    options:
+      ## new
+      - name: sentence-transformers-clip-ViT-B-32
+        displayName: sentence-transformers/clip-ViT-B-32 (English, 768d)
+        description: |-
+          Supports both text and image vectorization. Texts must be in English.
+      - name: sentence-transformers-clip-ViT-B-32-multilingual-v1
+        displayName: sentence-transformers/clip-ViT-B-32-multilingual-v1 (Multilingual, 768d)
+        description: |-
+          Supports both text and image vectorization. Supports a wide variety
+          of languages for text. See sbert.net for details.
+      - name: openai-clip-vit-base-patch16
+        displayName: openai/clip-vit-base-patch16
+        description: |-
+          Supports both text and image vectorization. The base model
+          uses a ViT-B/16 Transformer architecture as an image encoder
+          and uses a masked self-attention Transformer as a text encoder.
+      - name: ViT-B-16-laion2b_s34b_b88k
+        displayName: ViT-B-16/laion2b_s34b_b88k
+        description: |-
+          Supports both text and image vectorization. The base model
+          uses a ViT-B/16 Transformer architecture as an image encoder
+          trained with LAION-2B dataset using OpenCLIP.
+      - name: ViT-B-32-quickgelu-laion400m_e32
+        displayName: ViT-B-32-quickgelu/laion400m_e32
+        description: |-
+          Supports both text and image vectorization. The base model
+          uses a ViT-B/32 Transformer architecture as an image encoder
+          trained with LAION-400M dataset using OpenCLIP.
+      - name: xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k
+        displayName: xlm-roberta-base-ViT-B-32/laion5b_s13b_b90k
+        description: |-
+          Supports both text and image vectorization. Uses
+          ViT-B/32 xlm roberta base model trained with the LAION-5B
+          dataset using OpenCLIP.
+      - displayName: Custom Image (Specify in next step)
+        name: _custom
+        description: Build your custom compatible image (and optionally upload it to a registry), specify the local or full docker tag in the next step.
+
+  - name: clip_model_custom_image
+    conditions:
+      and:
+        - clip_model==_custom
+    displayName: Custom CLIP Model Docker Image
+    description: |-
+      A custom-built multi2vec-clip image (e.g. for a non-prebuilt
+      Huggingface Module or a private/local model). Must be derived from the
+      official 'semitechnologies/multi2vec-clip:custom' image.
+    type: text
+
+  - name: bind_model
+    conditions:
+      and:
+        - media_type==bind
+    displayName: BIND Model (Vectorizers & Retrievers)
+    description: |-
+      Select the desired BIND Model to vectorize images, text, audio, video, depth, thermal and IMU data with the
+      same model.
+    type: select-multiline
+    options:
+      - name: imagebind
+        displayName: Meta AI ImageBind (English, 1024d)
+        description: |-
+          Supports vectorization of image, text, audio, video, depth, thermal and IMU data.
+          Supports only English language.
+
+  - name: palm_clip_key_approval
+    conditions:
+      and:
+        - media_type==palm_clip
+        - weaviate_version>=v1.24.2
+    displayName: Google PaLM CLIP requires an API Key
+    description: |-
+      Google PaLM is a commercial service independent of Weaviate. You will
+      need to register with Google PaLM at https://developers.generativeai.google/.
+      Since it is best practice to never store secrets in an infrastructure file,
+      the resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      PALM_APIKEY set on your host machine that contains the key. For example
+      you can run "export PALM_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Palm-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Palm-Api-Key header.
+
+  - name: qna_module
+    conditions:
+      or:
+        - media_type==text
+        - media_type==image,text
+        - media_type==clip
+    displayName: QnA (transformers) Module (Readers & Generators)
+    description: |
+      The QnA module allows for answer extraction for questions using
+      transformers. It requires a text2vec module for semantic search to narrow
+      the set of documents containing a potential answer down. The underlying
+      text2vec module can, but does not have to be transformers-based. So you
+      can also combine the qna-transformers model with text2vec-contextionary,
+      for example. Requires Weaviate => v1.3.0.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        conditions:
+          or:
+            - weaviate_version>=v1.3.0
+        displayName: Enabled
+        description: Allows you to perform ask.question->answer queries which perform answer extraction using a transformers model.
+
+  - name: qna_module_model
+    conditions:
+      and:
+        - 'qna_module==true'
+    displayName: Transformer Model for QnA Module
+    type: select
+    options:
+      - name: distilbert-base-uncased-distilled-squad
+        displayName: distilbert-base-uncased-distilled-squad (English, uncased)
+      - name: distilbert-base-cased-distilled-squad
+        displayName: distilbert-base-cased-distilled-squad (English, cased)
+      - name: bert-large-uncased-whole-word-masking-finetuned-squad
+        displayName: bert-large-uncased-whole-word-masking-finetuned-squad (English, uncased)
+      - name: deepset-bert-large-uncased-whole-word-masking-squad2
+        displayName: deepset/bert-large-uncased-whole-word-masking-squad2 (English, uncased)
+      - name: deepset-roberta-base-squad2
+        displayName: deepset/roberta-base-squad2 (English)
+        description: Deprecated. Only use for compatibility, prefer newer model if possible.
+
+  - name: ner_module
+    conditions:
+      or:
+        - media_type==text
+        - media_type==image,text
+        - media_type==clip
+    displayName: Named Entity Recognition Module (Readers & Generators)
+    description: |
+      The NER module allows for extracting recognized entities from text
+      objects using transformers. The specific model used for inference can be
+      determined in the next step. Requires Weaviate => v1.7.0.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        conditions:
+          or:
+            - weaviate_version>=v1.7.0
+        displayName: Enabled
+        description: Allows you usage of _additional.tokens which uses a transformers model for entity recognition.
+
+  - name: ner_module_model
+    conditions:
+      and:
+        - 'ner_module==true'
+    displayName: Transformer Model for NER Module (Readers & Generators)
+    type: select-multiline
+    options:
+      - name: dbmdz-bert-large-cased-finetuned-conll03-english
+        displayName: dbmdz/bert-large-cased-finetuned-conll03-english (English)
+      - name: dslim-bert-base-NER
+        displayName: dslim/bert-base-NER (English)
+      - displayName: Custom Image (Specify in next step)
+        name: _custom
+        description: Build your custom compatible image (and optionally upload it to a registry), specify the local or full docker tag in the next step.
+
+  - name: ner_module_model_custom_image
+    conditions:
+      and:
+        - ner_module_model==_custom
+    displayName: NER Transformers Model (Readers & Generators)
+    description: |-
+      A custom-built ner-transformers image (e.g. for a non-prebuilt
+      Huggingface Module or a private/local model). Must be derived from the
+      official 'semitechnologies/ner-inference:custom' image.
+    type: text
+
+  - name: sum_module
+    conditions:
+      or:
+        - media_type==text
+        - media_type==image,text
+        - media_type==clip
+    displayName: Summarizer Transformers Module (Readers & Generators)
+    description: |
+      The summarizer module can create summarizations of text snippets at query
+      time, i.e. it runs after the search query and takes the search results
+      into consideration.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        conditions:
+          or:
+            - weaviate_version>=v1.15.0
+        displayName: Enabled
+        description: Allows you usage of _additional.summary which uses a transformers model for summary generation.
+
+  - name: sum_module_model
+    conditions:
+      and:
+        - 'sum_module==true'
+    displayName: Transformer Model for Summarizer Module (Readers & Generators)
+    type: select-multiline
+    options:
+      - name: facebook-bart-large-cnn-1.0.0
+        displayName: facebook/bart-large-cnn-1.0.0
+      - displayName: Custom Image (Specify in next step)
+        name: _custom
+        description: Build your custom compatible image (and optionally upload it to a registry), specify the local or full docker tag in the next step.
+
+  - name: sum_module_model_custom_image
+    conditions:
+      and:
+        - sum_module_model==_custom
+    displayName: Summarizer Transformers Model (Readers & Generators)
+    description: |-
+      A custom-built sum-transformers image (e.g. for a non-prebuilt
+      Huggingface Module or a private/local model). Must be derived from the
+      official 'semitechnologies/sum-inference:custom' image.
+    type: text
+
+  - name: spellcheck_module
+    conditions:
+      or:
+        - media_type==text
+        - media_type==image,text
+        - media_type==clip
+    displayName: Text Spell Check Module (Other Modules)
+    description: |
+      The Spell Check module (text-spellcheck) allows suggesting or auto-fixing
+      misspelled queries in nearText or ask of other modules. Requires Weaviate
+      => v1.7.0.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        conditions:
+          or:
+            - weaviate_version>=v1.7.0
+        displayName: Enabled
+        description: Allows you usage of _additional.spellCheck, nearText.autoCorrect and ask.autoCorrect.
+
+  - name: spellcheck_module_model
+    conditions:
+      and:
+        - 'spellcheck_module==true'
+    displayName: Spellchecker model for text-spellcheck module
+    type: select-multiline
+    options:
+      - name: pyspellchecker-en
+        displayName: pyspellchecker (English)
+
+  - name: ref2vec_centroid
+    conditions:
+      and:
+        - 'modules==modules'
+        - 'wcs!=true'
+        - weaviate_version>=v1.16.0
+    displayName: Ref2Vec-Centroid Vectorizer Module
+    description: |
+      Ref2Vec Centroid is able to vectorize a class with the average vectors of a cross-referenced class.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_openai
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.17.3
+    displayName: Generative - OpenAI module
+    description: |
+      The Generative OpenAI (generative-openai) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid OpenAI API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_openai_key_approval
+    conditions:
+      and:
+        - generative_openai==true
+    displayName: OpenAI requires an API Key
+    description: |-
+      OpenAI is a commercial service independent of Weaviate. You will
+      need to register with OpenAI at https://beta.openai.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      OPENAI_APIKEY set on your host machine that contains the key. For example
+      you can run "export OPENAI_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-OpenAI-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-OpenAI-Api-Key header.
+
+  - name: generative_cohere
+    conditions:
+      and:
+        - 'modules==modules'
+        - weaviate_version>=v1.19.0
+    displayName: Generative - Cohere module
+    description: |
+      The Generative Cohere (generative-cohere) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid Cohere API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_cohere_key_approval
+    conditions:
+      and:
+        - generative_cohere==true
+    displayName: Cohere requires an API Key
+    description: |-
+      Cohere is a commercial service independent of Weaviate. You will
+      need to register with Cohere at https://cohere.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      COHERE_APIKEY set on your host machine that contains the key. For example
+      you can run "export COHERE_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Cohere-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Cohere-Api-Key header.
+
+  - name: generative_palm
+    conditions:
+      and:
+        - 'modules==modules'
+        - weaviate_version>=v1.19.1
+    displayName: Generative - Google PaLM module
+    description: |
+      The Generative Google PaLM (generative-palm) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid Google PaLM API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_palm_key_approval
+    conditions:
+      and:
+        - generative_palm==true
+    displayName: Google PaLM requires an API Key
+    description: |-
+      Google PaLM is a commercial service independent of Weaviate. You will
+      need to register with Google PaLM at https://developers.generativeai.google/.
+      Since it is best practice to never store secrets in an infrastructure file,
+      the resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      PALM_APIKEY set on your host machine that contains the key. For example
+      you can run "export PALM_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Palm-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Palm-Api-Key header.
+
+  - name: generative_aws
+    conditions:
+      and:
+        - 'modules==modules'
+        - weaviate_version>=v1.22.5
+    displayName: Generative - AWS module
+    description: |
+      The Generative AWS (generative-aws) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires valid AWS credentials.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_aws_credentials_approval
+    conditions:
+      and:
+        - generative_aws==true
+    displayName: AWS module requires valid credentials
+    description: |-
+      AWS Bedrock is a commercial service independent of Weaviate. You will
+      need to register AWS (Amazon Web Services) in order to obtain credentials.
+      Since it is best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your credentials from
+      environment variables. Make sure you have an environment variable
+      AWS_ACCESS_KEY and AWS_SECRET_KEY set on your host machine. For example
+      you can run "export AWS_ACCESS_KEY=my-key; export AWS_SECRET_KEY=my-secret" prior to running
+      "docker-compose up". You can also provide the credentials with each request using
+      X-AWS-Access-Key and X-AWS-Secret-Key headers.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variables prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using X-AWS-Access-Key and X-AWS-Secret-Key headers.
+
+  - name: generative_anyscale
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.23.0
+    displayName: Generative - Anyscale module
+    description: |
+      The Generative Anyscale (generative-anyscale) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid Anyscale API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_anyscale_key_approval
+    conditions:
+      and:
+        - generative_anyscale==true
+    displayName: Anyscale generative module requires an API Key
+    description: |-
+      Anyscale is a commercial service independent of Weaviate. You will
+      need to register with Anyscale at https://www.anyscale.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      ANYSCALE_APIKEY set on your host machine that contains the key. For example
+      you can run "export ANYSCALE_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Anyscale-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Anyscale-Api-Key header.
+
+  - name: generative_mistral
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.24.2
+    displayName: Generative - MISTRAL AI module
+    description: |
+      The Generative MISTRAL AI (generative-mistral) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid MISTRAL AI API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_mistral_key_approval
+    conditions:
+      and:
+        - generative_mistral==true
+    displayName: MISTRAL AI generative module requires an API Key
+    description: |-
+      MISTRAL AI is a commercial service independent of Weaviate. You will
+      need to register with MISTRAL AI at https://mistral.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      MISTRAL_APIKEY set on your host machine that contains the key. For example
+      you can run "export MISTRAL_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Mistral-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Mistral-Api-Key header.
+
+  - name: generative_octoai
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.25.0
+    displayName: Generative - OctoAI module
+    description: |
+      The Generative OctoAI (generative-octoai) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid OctoAI API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_octoai_key_approval
+    conditions:
+      and:
+        - generative_octoai==true
+    displayName: OctoAI generative module requires an API Key
+    description: |-
+      OctoAI is a commercial service independent of Weaviate. You will
+      need to register with OctoAI at https://octo.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      OCTOAI_APIKEY set on your host machine that contains the key. For example
+      you can run "export OCTOAI_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-OctoAI-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-OctoAI-Api-Key header.
+
+  - name: generative_ollama
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.25.0
+    displayName: Generative - Ollama module
+    description: |-
+      The Generative Ollama (generative-ollama) module is a Weaviate module for generating responses based on
+      the data stored in your Weaviate instance. Configurator adds bare ollama container.
+      The api endpoint that should be passed to Weaviate Ollama module configuration is: "http://ollama:11434".
+      It is advised to attach a local volume to Ollama container so that user would not have to download the models one more time.
+      In order to make use of Ollama efficiently it is advised to download a given model prior using it with Weaviate, example:
+        docker exec -i <ollama-container-id> ollama pull llama3
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_anthropic
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.26.0
+    displayName: Generative - Anthropic module
+    description: |
+      The Generative Anthropic (generative-anthropic) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid Anthropic API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_anthropic_key_approval
+    conditions:
+      and:
+        - generative_anthropic==true
+    displayName: Anthropic generative module requires an API Key
+    description: |-
+      Anthropic is a commercial service independent of Weaviate. You will
+      need to register with Anthropic at https://www.anthropic.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      ANTHROPIC_APIKEY set on your host machine that contains the key. For example
+      you can run "export ANTHROPIC_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Anthropic-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Anthropic-Api-Key header.
+
+  - name: generative_databricks
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.26.3
+    displayName: Generative - Databricks module
+    description: |
+      The Generative Databricks (generative-databricks) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid Databricks token.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_databricks_key_approval
+    conditions:
+      and:
+        - generative_databricks==true
+    displayName: Databricks generative module requires a token
+    description: |-
+      Databricks is a commercial service independent of Weaviate. You will
+      need to register with Databricks at https://www.databricks.com/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your token from an
+      environment variable. Make sure you have an environment variable
+      DATABRICKS_TOKEN set on your host machine that contains the key. For example
+      you can run "export DATABRICKS_TOKEN=my-token-here" prior to running
+      "docker-compose up". You can also provide token with each request using the
+      X-Databricks-Token header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide token with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide token with each request using the X-Databricks-Token header.
+
+  - name: generative_friendliai
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.26.3
+    displayName: Generative - FriendliAI module
+    description: |
+      The Generative FriendliAI (generative-friendliai) module is a Weaviate module for
+      generating responses based on the data stored in your Weaviate instance.
+      Requires a valid Friendli token.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: generative_friendliai_key_approval
+    conditions:
+      and:
+        - generative_friendliai==true
+    displayName: FriendliAI generative module requires a token
+    description: |-
+      FriendliAI is a commercial service independent of Weaviate. You will
+      need to register with Friendli at https://www.friendli.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your token from an
+      environment variable. Make sure you have an environment variable
+      FRIENDLI_TOKEN set on your host machine that contains the key. For example
+      you can run "export FRIENDLI_TOKEN=my-token-here" prior to running
+      "docker-compose up". You can also provide token with each request using the
+      X-Friendli-Token header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide token with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide token with each request using the X-Friendli-Token header.
+
+  - name: reranker_cohere
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.20.0
+    displayName: Reranker - Cohere module
+    description: |
+      The Reranker Cohere (reranker-cohere) module is a Weaviate module
+      for dynamically computing a score for the relevance of the query
+      with each of the initial search results.
+      Requires a valid Cohere API key.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: reranker_cohere_key_approval
+    conditions:
+      and:
+        - reranker_cohere==true
+    displayName: Cohere requires an API Key
+    description: |-
+      Cohere is a commercial service independent of Weaviate. You will
+      need to register with Cohere at https://cohere.ai/. Since it is
+      best practice to never store secrets in an infrastructure file, the
+      resulting docker-compose transcript will read your API key from an
+      environment variable. Make sure you have an environment variable
+      COHERE_APIKEY set on your host machine that contains the key. For example
+      you can run "export COHERE_APIKEY=my-key-here" prior to running
+      "docker-compose up". You can also provide the key with each request using the
+      X-Cohere-Api-Key header.
+    type: select-multiline
+    options:
+      - name: yes
+        displayName: Yes, I understand. I will set the environment variable myself.
+        description: |-
+          I will set the correct environment variable prior to starting up the
+          docker-compose setup.
+      - name: no
+        displayName: Yes, I understand. I will provide the key with each request.
+        description: |-
+          No environment variable placeholder will be added to my setup.
+          I will provide the key with each request using the X-Cohere-Api-Key header.
+
+  - name: reranker_transformers
+    conditions:
+      and:
+        - modules==modules
+        - weaviate_version>=v1.20.0
+    displayName: Reranker - Transformers module
+    description: |
+      The Reranker Transformers (reranker-transformers) module is a Weaviate module
+      for dynamically computing a score for the relevance of the query
+      with each of the initial search results.
+    type: select-multiline
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        displayName: Enabled
+
+  - name: reranker_transformers_model
+    conditions:
+      and:
+        - reranker_transformers==true
+    displayName: Reranker Transformers Model
+    description: |-
+      The Reranker Transformers (reranker-transformers) module is a Weaviate module
+      for dynamically computing a score for the relevance of the query
+      with each of the initial search results.
+    type: select-multiline
+    options:
+      - name: cross-encoder-ms-marco-MiniLM-L-6-v2
+        displayName: cross-encoder/ms-marco-MiniLM-L-6-v2
+        description: |-
+          This model was trained on the MS Marco Passage Ranking task.
+      - name: cross-encoder-ms-marco-TinyBERT-L-2-v2
+        displayName: cross-encoder/ms-marco-TinyBERT-L-2-v2
+        description: |-
+          This model was trained on the MS Marco Passage Ranking task.
+      - name: cross-encoder-ms-marco-MiniLM-L-2-v2
+        displayName: cross-encoder/ms-marco-MiniLM-L-2-v2
+        description: |-
+          This model was trained on the MS Marco Passage Ranking task.
+
+  - name: gpu_support
+    conditions:
+      or:
+        - 'text_module==text2vec-transformers'
+        - 'qna_module==true'
+    displayName: GPU support for Model Inference
+    description: |
+      Transformers-based Modules (tex2vec-transformers, qna-transformers) can
+      perform model inference much more efficiently on GPU-enabled hardware. To
+      enable GPU-support you need to make sure that you run on a
+      CUDA-accelarated machine, have the CUDA drivers and the NVIDIA Container
+      Toolkit installed.
+    type: select
+    options:
+      - name: 'false'
+        displayName: Disabled
+      - name: 'true'
+        conditions:
+          and:
+            - 'wcs!=true'
+        displayName: Enabled
+
+  - name: authentication
+    conditions:
+      and:
+        - 'wcs==true'
+    displayName: Enable Authentication
+    description: |
+      If enabled, all requests to your instance must contain either an OIDC token or the API key of your instance.
+      Note that loading a Demo dataset into Weaviate is not possible if the
+      instance is protected with Authentication.
+    type: select-multiline
+    options:
+      - name: 'true'
+        displayName: Enabled
+        description: You need to send a valid OIDC token or API key in the Authorization header.
+      - name: 'false'
+        displayName: Disabled
+        description: Anyone can access the instance.
+
+  - name: runtime
+    displayName: Select your desired runtime
+    description: You can use this configuration generator to generate template for various runtimes, such as Docker-compose or Kuberntes (Helm)
+    conditions:
+      and:
+        - 'wcs!=true'
+    type: select
+    options:
+      - name: docker-compose
+        displayName: Docker Compose
+      - name: helm
+        displayName: Kubernetes (Helm values.yaml)
+        error:
+          msg: |
+            Coming soon! In the meantime, you can configure your Weaviate Helm
+            chart directly, i.e. without the help of this configuration tool.
