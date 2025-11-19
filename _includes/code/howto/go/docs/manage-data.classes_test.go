@@ -165,7 +165,7 @@ func Test_ManageDataClasses(t *testing.T) {
 				"title": {
 					Vectorizer: map[string]interface{}{
 						"text2vec-openai": map[string]interface{}{
-							"sourceProperties": []string{"title"},
+							"properties": []string{"title"},
 						},
 					},
 					VectorIndexType: "hnsw",
@@ -173,7 +173,7 @@ func Test_ManageDataClasses(t *testing.T) {
 				"title_country": {
 					Vectorizer: map[string]interface{}{
 						"text2vec-openai": map[string]interface{}{
-							"sourceProperties": []string{"title", "country"},
+							"properties": []string{"title", "country"},
 						},
 					},
 					VectorIndexType: "hnsw",
