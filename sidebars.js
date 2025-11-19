@@ -50,6 +50,14 @@ const sidebars = {
       ],
     },
     {
+      type: "link",
+      label: "Concepts & architecture",
+      href: "https://academy.weaviate.io/courses/wa050-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
+    {
       type: "category",
       label: "Starter guides",
       link: {
@@ -113,10 +121,26 @@ const sidebars = {
       //className: "sidebar-main-category",
     },
     {
+      type: "link",
+      label: "AI models: A deep dive",
+      href: "https://academy.weaviate.io/courses/wa150-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
+    {
+      type: "link",
+      label: "Embedding model selection",
+      href: "https://academy.weaviate.io/courses/wa260-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
+    {
       type: "category",
       label: "API-based",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       className: "sidebar-item",
       items: [
         {
@@ -351,8 +375,8 @@ const sidebars = {
     {
       type: "category",
       label: "Locally hosted",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       className: "sidebar-item",
       items: [
         {
@@ -482,6 +506,14 @@ const sidebars = {
             "weaviate/configuration/rbac/manage-groups",
           ],
         },
+        {
+          type: "link",
+          label: "Architectural decisions guide",
+          href: "https://academy.weaviate.io/courses/wa210-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
       ],
     },
     {
@@ -525,6 +557,14 @@ const sidebars = {
         "weaviate/manage-objects/read-all-objects",
         "weaviate/manage-objects/update",
         "weaviate/manage-objects/delete",
+        {
+          type: "link",
+          label: "Data ingestion: In depth",
+          href: "https://academy.weaviate.io/courses/wa230-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
       ],
     },
     {
@@ -552,6 +592,14 @@ const sidebars = {
         "weaviate/search/rerank",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        {
+          type: "link",
+          label: "Search strategies: In depth",
+          href: "https://academy.weaviate.io/courses/wa220-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
       ],
     },
     {
@@ -562,6 +610,22 @@ const sidebars = {
         id: "weaviate/tutorials/index",
       },
       items: [
+        {
+          type: "link",
+          label: "Hands-on Weaviate with Python",
+          href: "https://academy.weaviate.io/courses/wa101t-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
+        {
+          type: "link",
+          label: "Your first AI app",
+          href: "https://academy.weaviate.io/courses/wa180-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
         "weaviate/tutorials/quick-tour-of-weaviate",
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
