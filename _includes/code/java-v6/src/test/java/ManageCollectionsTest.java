@@ -1,6 +1,7 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionConfig;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
+import io.weaviate.client6.v1.api.collections.Encoding;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.Replication;
 import io.weaviate.client6.v1.api.collections.Sharding;
@@ -13,7 +14,7 @@ import io.weaviate.client6.v1.api.collections.config.ShardStatus;
 import io.weaviate.client6.v1.api.collections.Reranker;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.vectorindex.Hnsw;
-
+import io.weaviate.client6.v1.api.collections.vectorindex.MultiVector;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -106,15 +107,83 @@ class ManageCollectionsTest {
     assertThat(config.properties().get(1).propertyName().contains("country"));
   }
 
-  // TODO[g-despot]: Add example when AddNamedVectors is implemented
-  // START AddNamedVectors
-  // Coming soon
-  // END AddNamedVectors
+  @Test
+  void testAddNamedVectors() throws IOException {
+    client.collections.create("ArticleNV",
+        col -> col
+            .vectorConfig(VectorConfig.text2vecTransformers("title",
+                c -> c.sourceProperties("title").vectorIndex(Hnsw.of())))
+            .properties(Property.text("title"), Property.text("country")));
+    // START AddNamedVectors
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("ArticleNV");
 
-  // TODO[g-despot]: Add example when MultiValueVectorCollection is implemented
-  // START MultiValueVectorCollection
-  // Coming soon
-  // END MultiValueVectorCollection
+    collection.config.update(
+        u -> u.vectorConfig(VectorConfig.text2vecTransformers("title_country",
+            c -> c.sourceProperties("title", "country")
+                .vectorIndex(Hnsw.of()))));
+    // END AddNamedVectors
+
+    var config = client.collections.getConfig("ArticleNV").get();
+    assertThat(config.vectors()).hasSize(3)
+        .containsKeys("title", "title_country");
+    assertThat(config.properties().get(0).propertyName().contains("title"));
+    assertThat(config.properties().get(1).propertyName().contains("country"));
+  }
+
+  @Test
+  void testMultiValueVectorCollection() throws IOException {
+    // START MultiValueVectorCollection
+    client.collections.create("DemoCollection", col -> col.vectorConfig(
+        // Example 1 - Use a model integration
+        // The factory function will automatically enable multi-vector support for the HNSW index
+        // highlight-start
+        VectorConfig.text2multivecJinaAi("jina_colbert",
+            vc -> vc.sourceProperties("text")
+                // In Java, explicitly configure the HNSW index for multi-vector
+                .vectorIndex(Hnsw.of(h -> h.multiVector(MultiVector.of())))),
+        // highlight-end
+        // Example 2 - User-provided multi-vector representations
+        // Must explicitly enable multi-vector support for the HNSW index
+        // highlight-start
+        VectorConfig.selfProvided("custom_multi_vector",
+            vc -> vc.vectorIndex(Hnsw.of(h -> h.multiVector(MultiVector.of()))))
+    // highlight-end
+    ).properties(Property.text("text"))
+    // Additional parameters not shown
+    );
+    // END MultiValueVectorCollection
+
+    assertThat(client.collections.exists("DemoCollection")).isTrue();
+  }
+
+  @Test
+  void testMultiValueVectorMuvera() throws IOException {
+    // START MultiValueVectorMuvera
+    client.collections.create("DemoCollection", col -> col.vectorConfig(
+        // Example 1 - Use a model integration
+        VectorConfig.text2multivecJinaAi("jina_colbert",
+            vc -> vc.sourceProperties("text")
+                // highlight-start
+                .vectorIndex(Hnsw.of(h -> h.multiVector(
+                    MultiVector.of(mv -> mv.encoding(Encoding.muvera(e -> e
+                    // Optional parameters for tuning MUVERA
+                    // .ksim(4)
+                    // .dprojections(16)
+                    // .repetitions(20)
+                    ))))))
+        // highlight-end
+        ),
+        // Example 2 - User-provided multi-vector representations
+        VectorConfig.selfProvided("custom_multi_vector",
+            vc -> vc.vectorIndex(Hnsw.of(h -> h.multiVector(
+                MultiVector.of(mv -> mv.encoding(Encoding.muvera())))))))
+    // Additional parameters not shown
+    );
+    // END MultiValueVectorMuvera
+
+    assertThat(client.collections.exists("DemoCollection")).isTrue();
+  }
 
   @Test
   void testSetVectorIndexType() throws IOException {
@@ -185,8 +254,6 @@ class ManageCollectionsTest {
     // assertThat(config.rerankerModules().get(0).name()).isEqualTo("reranker-cohere");
   }
 
-  // TODO[g-despot] Update when more rerankers available
-  // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateReranker() throws IOException {
     // START UpdateReranker
@@ -196,8 +263,6 @@ class ManageCollectionsTest {
 
     var config = client.collections.getConfig("Article").get();
     assertThat(config.rerankerModules()).hasSize(1);
-    System.out.println("second:" + config.rerankerModules().get(0));
-    // assertThat(config.rerankerModules().get(0).name()).isEqualTo("reranker-cohere");
   }
 
   @Test
@@ -215,8 +280,6 @@ class ManageCollectionsTest {
     // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
   }
 
-  // TODO[g-despot] Update when more generative modules available
-  // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateGenerative() throws IOException {
     // START UpdateGenerative
@@ -226,22 +289,15 @@ class ManageCollectionsTest {
 
     var config = client.collections.getConfig("Article").get();
     assertThat(config.generativeModule()).isNotNull();
-    System.out.println("third: " + config.generativeModule());
-    // assertThat(config.generativeModule().name()).isEqualTo("generative-cohere");
-    // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
   }
 
-  // TODO[g-despot] Update when more model providers available
-  // @Test
-  // void testModuleSettings() throws IOException {
-  //   client.collections.create("Article",
-  //       col -> col.vectorConfig(VectorConfig.text2vecTransformers()));
-
-  //   var config = client.collections.getConfig("Article").get();
-  // }
-  // START ModuleSettings
-  // Coming soon
-  // END ModuleSettings
+  @Test
+  void testModuleSettings() throws IOException {
+    // START ModuleSettings
+    client.collections.create("Article",
+        col -> col.vectorConfig(VectorConfig.text2vecCohere(c->c.model("embed-multilingual-v2.0"))));
+    // END ModuleSettings
+  }  
 
   @Test
   void testCreateCollectionWithPropertyConfig() throws IOException {
@@ -402,10 +458,20 @@ class ManageCollectionsTest {
     assertThat(config.invertedIndex().bm25().k1()).isEqualTo(1.5f);
   }
 
-  // TODO[g-despot]: Add example when AddProperty is implemented
-  // START AddProperty
-  // Coming soon
-  // END AddProperty
+  @Test
+  void testAddProperty() throws IOException {
+    client.collections.create("Article");
+
+    // START AddProperty
+    CollectionHandle<Map<String, Object>> articles =
+        client.collections.use("Article");
+
+    articles.config.addProperty(Property.bool("onHomepage"));
+    // END AddProperty
+
+    var config = articles.config.get().get();
+    assertThat(config.properties().size()).isEqualTo(1);
+  }
 
   @Test
   void testDeleteCollection() throws IOException {
@@ -418,6 +484,16 @@ class ManageCollectionsTest {
     // END DeleteCollection
 
     assertThat(client.collections.exists(collectionName)).isFalse();
+  }
+
+  @Test
+  void testExistsCollection() throws IOException {
+    String collectionName = "Article";
+    // START CheckIfExists
+    client.collections.exists(collectionName);
+    // END CheckIfExists
+
+    assertThat(client.collections.exists(collectionName)).isTrue();
   }
 
   @Test

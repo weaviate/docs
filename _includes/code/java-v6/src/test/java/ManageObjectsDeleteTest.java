@@ -40,7 +40,8 @@ class ManageObjectsDeleteTest {
     if (client.collections.exists(COLLECTION_NAME)) {
       client.collections.delete(COLLECTION_NAME);
     }
-    client.collections.create(COLLECTION_NAME, col -> col.properties(Property.text("name")));
+    client.collections.create(COLLECTION_NAME,
+        col -> col.properties(Property.text("name")));
   }
 
   @AfterEach
@@ -52,8 +53,10 @@ class ManageObjectsDeleteTest {
 
   @Test
   void testDeleteObject() throws IOException {
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(COLLECTION_NAME);
-    String uuidToDelete = collection.data.insert(Map.of("name", "EphemeralObjectA")).uuid();
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(COLLECTION_NAME);
+    String uuidToDelete =
+        collection.data.insert(Map.of("name", "EphemeralObjectA")).uuid();
     assertThat(collection.query.byId(uuidToDelete)).isPresent();
 
     // START DeleteObject
@@ -65,12 +68,14 @@ class ManageObjectsDeleteTest {
 
   @Test
   void testBatchDelete() {
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(COLLECTION_NAME);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(COLLECTION_NAME);
     List<Map<String, Object>> objects = IntStream.range(0, 5)
         .mapToObj(i -> Map.<String, Object>of("name", "EphemeralObject_" + i))
         .collect(Collectors.toList());
     collection.data.insertMany(objects.toArray(new Map[0]));
-    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount()).isEqualTo(5);
+    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isEqualTo(5);
 
     // START DeleteBatch
     collection.data.deleteMany(
@@ -80,15 +85,16 @@ class ManageObjectsDeleteTest {
     );
     // END DeleteBatch
 
-    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount()).isZero();
+    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isZero();
   }
 
   @Test
   void testDeleteContains() {
     // START DeleteContains
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(COLLECTION_NAME);
-    collection.data.insertMany(
-        Map.of("name", "asia"),
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(COLLECTION_NAME);
+    collection.data.insertMany(Map.of("name", "asia"),
         Map.of("name", "europe"));
 
     collection.data.deleteMany(
@@ -101,7 +107,8 @@ class ManageObjectsDeleteTest {
 
   @Test
   void testDryRun() {
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(COLLECTION_NAME);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(COLLECTION_NAME);
     List<Map<String, Object>> objects = IntStream.range(0, 5)
         .mapToObj(i -> Map.<String, Object>of("name", "EphemeralObject_" + i))
         .collect(Collectors.toList());
@@ -119,32 +126,37 @@ class ManageObjectsDeleteTest {
     // END DryRun
 
     assertThat(result.matches()).isEqualTo(5);
-    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount()).isEqualTo(5);
+    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isEqualTo(5);
   }
 
-  // TODO[g-despot]: containsAny should take list not single string
   @Test
   void testBatchDeleteWithIDs() {
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(COLLECTION_NAME);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(COLLECTION_NAME);
     List<Map<String, Object>> objects = IntStream.range(0, 5)
         .mapToObj(i -> Map.<String, Object>of("name", "EphemeralObject_" + i))
         .collect(Collectors.toList());
     collection.data.insertMany(objects.toArray(new Map[0]));
-    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount()).isEqualTo(5);
+    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isEqualTo(5);
 
     // START DeleteByIDBatch
-    QueryResponse<Map<String, Object>> queryResponse = collection.query.fetchObjects(q -> q.limit(3));
-    List<String> ids = queryResponse.objects().stream()
+    QueryResponse<Map<String, Object>> queryResponse =
+        collection.query.fetchObjects(q -> q.limit(3));
+    List<String> ids = queryResponse.objects()
+        .stream()
         .map(WeaviateObject::uuid)
         .collect(Collectors.toList());
 
     collection.data.deleteMany(
         // highlight-start
-        Where.uuid().containsAny(ids.toString()) // Delete the 3 objects
+        Where.uuid().containsAny(ids) // Delete the 3 objects
     // highlight-end
     );
     // END DeleteByIDBatch
 
-    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount()).isEqualTo(2);
+    assertThat(collection.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isEqualTo(2);
   }
 }

@@ -124,7 +124,7 @@ class ManageObjectsUpdateTest {
     assertThat(result1.get().properties().get("points")).isEqualTo(100.0);
 
     // START UpdateVector
-    float[] vector = new float[300];
+    float[] vector = new float[384];
     Arrays.fill(vector, 0.12345f);
 
     jeopardy.data.update(uuid, u -> u.properties(Map.of("points", 100.0))
@@ -137,14 +137,14 @@ class ManageObjectsUpdateTest {
     Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result2 =
         jeopardy.query.byId(uuid, q -> q.includeVector());
     assertThat(result2).isPresent();
-    assertThat(result2.get().metadata().vectors().getSingle("default")).hasSize(300);
+    assertThat(result2.get().metadata().vectors().getSingle("default")).hasSize(384);
 
     // START UpdateNamedVector
     CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
     String reviewUuid = reviews.query.fetchObjects(q -> q.limit(3)).objects().get(0).uuid();
-    float[] titleVector = new float[300];
-    float[] reviewBodyVector = new float[300];
-    float[] titleCountryVector = new float[300];
+    float[] titleVector = new float[384];
+    float[] reviewBodyVector = new float[384];
+    float[] titleCountryVector = new float[384];
     Arrays.fill(titleVector, 0.12345f);
     Arrays.fill(reviewBodyVector, 0.12345f);
     Arrays.fill(titleCountryVector, 0.12345f);

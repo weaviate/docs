@@ -1,7 +1,6 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryMetadata;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.AfterAll;
@@ -29,9 +28,7 @@ class ManageObjectsReadAllTest {
       client.collections.delete("WineReview");
     }
 
-    // TODO[g-despot] Collection create doesn't return handle
-    client.collections.create("WineReview");
-    var wineReview = client.collections.use("WineReview");
+    var wineReview = client.collections.create("WineReview");
     wineReview.data.insertMany(Map.of("title", "Review A"),
         Map.of("title", "Review B"));
 
@@ -75,7 +72,6 @@ class ManageObjectsReadAllTest {
     // END ReadAllProps
   }
 
-  // TODO[g-despot] Don't see include vector
   @Test
   void testReadAllVectors() {
     // START ReadAllVectors

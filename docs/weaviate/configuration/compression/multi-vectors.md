@@ -9,6 +9,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.ts';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 
 
 Multi-vector embeddings represent a single data object, like a document or image, using a set of multiple vectors rather than a single vector. This approach allows for a more granular capture of semantic information, as each vector can represent different parts of the object. However, this leads to a significant increase in memory consumption, as multiple vectors are stored for each item.
@@ -36,6 +37,14 @@ Compression techniques become especially crucial for multi-vector systems to man
       startMarker="// START MultiValueVectorMuvera"
       endMarker="// END MultiValueVectorMuvera"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START MultiValueVectorMuvera"
+      endMarker="// END MultiValueVectorMuvera"
+      language="java"
     />
   </TabItem>
   <TabItem value="java" label="Java">

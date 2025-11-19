@@ -67,7 +67,6 @@ class ConfigureSQTest {
     collection.config.update(c -> c.vectorConfig(VectorConfig
         .text2vecTransformers(vc -> vc.quantization(Quantization.sq()))));
     // END UpdateSchema
-    // TODO[g-despot]: Verify the update
   }
 
   @Test

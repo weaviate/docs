@@ -4,6 +4,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.query.rag.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.query.rag.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_3/quickstart.short.query.rag.go";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartQueryNearTextRAG.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartQueryNearTextRAG.java";
 
 <Tabs className="code" groupId="languages">
@@ -29,6 +30,14 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
       startMarker="// START RAG"
       endMarker="// END RAG"
       language="goraw"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RAG"
+      endMarker="// END RAG"
+      language="java"
     />
   </TabItem>
   <TabItem value="java" label="Java">
