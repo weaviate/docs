@@ -6,13 +6,13 @@ image: og/docs/tutorials.jpg
 # tags: ['getting started']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/\_includes/code/starter-guides/generative.py';
-import TSCodeEduDemo from '!!raw-loader!/\_includes/code/starter-guides/generative_edudemo.ts';
-import TSCodeLocal from '!!raw-loader!/\_includes/code/starter-guides/generative_local.ts';
-import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/StarterGuidesGenerativeTest.java";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/starter-guides/generative.py";
+import TSCodeEduDemo from "!!raw-loader!/_includes/code/starter-guides/generative_edudemo.ts";
+import TSCodeLocal from "!!raw-loader!/_includes/code/starter-guides/generative_local.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/StarterGuidesGenerativeTest.java";
 
 :::info Related pages
 
@@ -70,23 +70,23 @@ We have run this demo with an OpenAI language model and a cloud instance of Weav
 Connect to the instance like so, remembering to replace the API key for the LLM used (OpenAI in this case) with your own API key:
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# Instantiation"
-  endMarker="# END Instantiation"
-  language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-  text={TSCodeEduDemo}
-  startMarker="// Instantiation"
-  endMarker="// END Instantiation"
-  language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# Instantiation"
+      endMarker="# END Instantiation"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeEduDemo}
+      startMarker="// Instantiation"
+      endMarker="// END Instantiation"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Instantiation"
@@ -103,23 +103,23 @@ Let's take an illustrative example with passages from a book. Here, the Weaviate
 Before we can generate text, we need to retrieve relevant data. Let's retrieve the three most similar passages to the meaning of `history of git` with a semantic search.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# DataRetrieval"
-  endMarker="# END DataRetrieval"
-  language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-  text={TSCodeEduDemo}
-  startMarker="// DataRetrieval"
-  endMarker="// END DataRetrieval"
-  language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# DataRetrieval"
+      endMarker="# END DataRetrieval"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeEduDemo}
+      startMarker="// DataRetrieval"
+      endMarker="// END DataRetrieval"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DataRetrieval"
@@ -131,32 +131,30 @@ Before we can generate text, we need to retrieve relevant data. Let's retrieve t
 
 This should return a set of results like the following (truncated for brevity):
 
-```
-
+```json
 {
-"data": {
-"Get": {
-"GitBookChunk": [
-{
-"chapter\_title": "01-introduction",
-"chunk": "=== A Short History of Git\\n\\nAs with many great things in life, Git began with a bit of creative ...",
-"chunk\_index": 0
-},
-{
-"chapter\_title": "01-introduction",
-"chunk": "== Nearly Every Operation Is Local\\n\\nMost operations in Git need only local files and resources ...",
-"chunk\_index": 2
-},
-{
-"chapter\_title": "02-git-basics",
-"chunk": "==\\nYou can specify more than one instance of both the `--author` and `--grep` search criteria...",
-"chunk\_index": 2
-},
-]
+  "data": {
+    "Get": {
+      "GitBookChunk": [
+        {
+          "chapter_title": "01-introduction",
+          "chunk": "=== A Short History of Git\n\nAs with many great things in life, Git began with a bit of creative ...",
+          "chunk_index": 0
+        },
+        {
+          "chapter_title": "01-introduction",
+          "chunk": "== Nearly Every Operation Is Local\n\nMost operations in Git need only local files and resources ...",
+          "chunk_index": 2
+        },
+        {
+          "chapter_title": "02-git-basics",
+          "chunk": "==\nYou can specify more than one instance of both the `--author` and `--grep` search criteria...",
+          "chunk_index": 2
+        }
+      ]
+    }
+  }
 }
-}
-}
-
 ```
 
 ### Transform result sets
@@ -166,23 +164,23 @@ We can transform this result set into new text using RAG with just a minor modif
 Run the following code snippet, and inspect the results:
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# TransformResultSets"
-  endMarker="# END TransformResultSets"
-  language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-  text={TSCodeEduDemo}
-  startMarker="// TransformResultSets"
-  endMarker="// END TransformResultSets"
-  language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# TransformResultSets"
+      endMarker="# END TransformResultSets"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeEduDemo}
+      startMarker="// TransformResultSets"
+      endMarker="// END TransformResultSets"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TransformResultSets"
@@ -195,7 +193,6 @@ Run the following code snippet, and inspect the results:
 Here is our generated text:
 
 ```
-
   - Git began as a replacement for the proprietary DVCS called BitKeeper, which was used by the Linux kernel project.
   - The relationship between the Linux development community and BitKeeper broke down in 2005, leading to the development of Git by Linus Torvalds.
   - Git was designed with goals such as speed, simple design, strong support for non-linear development, and the ability to handle large projects efficiently.
@@ -203,9 +200,6 @@ Here is our generated text:
   - Git allows browsing project history instantly and can calculate differences between file versions locally.
   - Git allows offline work and does not require a network connection for most operations.
   - This book was written using Git version 2, but most commands should work in older versions as well.
-
-<!-- end list -->
-
 ```
 
 In a `grouped task` RAG query, Weaviate:
@@ -234,23 +228,23 @@ Here we prompt the model to translate individual wine reviews into French, using
 Note that in this query, we apply a `single prompt` parameter. This means that the LLM is prompted with each object individually, rather than with the entire result set.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# TransformIndividualObjects"
-  endMarker="# END TransformIndividualObjects"
-  language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-  text={TSCodeEduDemo}
-  startMarker="// TransformIndividualObjects"
-  endMarker="// END TransformIndividualObjects"
-  language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# TransformIndividualObjects"
+      endMarker="# END TransformIndividualObjects"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeEduDemo}
+      startMarker="// TransformIndividualObjects"
+      endMarker="// END TransformIndividualObjects"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TransformIndividualObjects"
@@ -265,15 +259,14 @@ As the query was run with a limit of 5, you should see 5 objects returned, inclu
 Here is our generated text for the first object, and the source text:
 
 ```
-
-\===== Generated text =====
+===== Gener =====
 🇺🇸🍷🌿🍑🌼🍯🍊🍮🍽️🌟
 
 Origine : États-Unis
 Titre : Schmitz 24 Brix 2012 Sauvignon Blanc (Sierra Foothills)
 Corps de la critique : Pas du tout un Sauvignon Blanc typique, il sent l'abricot et le chèvrefeuille et a le goût de la marmelade. Il est sec, mais a le goût d'un vin de dessert tardif. Attendez-vous à une petite aventure gustative ici.
 
-\===== Original review =====
+===== Original review =====
 Country: US,
 Title: Schmitz 24 Brix 2012 Sauvignon Blanc (Sierra Foothills)
 Review body Not at all a typical Sauvignon Blanc, this smells like apricot and honeysuckle and tastes like marmalade. It is dry, yet tastes like a late-harvest dessert wine. Expect a little taste adventure here.
@@ -298,7 +291,7 @@ For this example, you will need access to a Weaviate instance that you can write
 
 ### Configure Weaviate for RAG
 
-import MutableGenerativeConfig from '/\_includes/mutable-generative-config.md';
+import MutableGenerativeConfig from "/_includes/mutable-generative-config.md";
 
 <MutableGenerativeConfig />
 
@@ -317,23 +310,23 @@ If you are using WCD, you will not need to do anything to enable modules.
 You can check which modules are enabled by viewing the `meta` information for your Weaviate instance, as shown below:
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# ListModules"
-  endMarker="# END ListModules"
-  language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-  text={TSCodeEduDemo}
-  startMarker="// ListModules"
-  endMarker="// END ListModules"
-  language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ListModules"
+      endMarker="# END ListModules"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeEduDemo}
+      startMarker="// ListModules"
+      endMarker="// END ListModules"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ListModules"
@@ -413,30 +406,30 @@ You can read further discussions in the [Best practices & tips](%23best-practice
 In the following snippet, we download a chapter of the `Pro Git` book, clean it and chunk it.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# ChunkText"
-endMarker="# END ChunkText"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// ChunkText"
-endMarker="// END ChunkText"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START ChunkText"
-endMarker="// END ChunkText"
-language="javaraw"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ChunkText"
+      endMarker="# END ChunkText"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// ChunkText"
+      endMarker="// END ChunkText"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ChunkText"
+      endMarker="// END ChunkText"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 This will download the text from the chapter, and return a list/array of strings of 150 word chunks, with a 25-word overlap added in front.
@@ -448,30 +441,30 @@ We can now create a collection definition for the chunks. To use RAG, your desir
 The below collection definition for the `GitBookChunk` collection specifies `text2vec-openai` as the vectorizer and `generative-openai` as the generative module. Note that the `generative-openai` parameter can have an empty dictionary/object as its value, which will use the default parameters.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# CreateClass"
-endMarker="# END CreateClass"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// CreateClass"
-endMarker="// END CreateClass"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START CreateClass"
-endMarker="// END CreateClass"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CreateClass"
+      endMarker="# END CreateClass"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// CreateClass"
+      endMarker="// END CreateClass"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateClass"
+      endMarker="// END CreateClass"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 #### Import data
@@ -479,59 +472,59 @@ language="java"
 Now, we can import the data into Weaviate.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# ImportData"
-endMarker="# END ImportData"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// ImportData"
-endMarker="// END ImportData"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START ImportData"
-endMarker="// END ImportData"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ImportData"
+      endMarker="# END ImportData"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// ImportData"
+      endMarker="// END ImportData"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ImportData"
+      endMarker="// END ImportData"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 Once this is done, you should have imported a collection of chunks from the chapter into Weaviate. You can check this by running a simple aggregation query:
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# CountObjects"
-endMarker="# END CountObjects"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// CountObjects"
-endMarker="// END CountObjects"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START CountObjects"
-endMarker="// END CountObjects"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CountObjects"
+      endMarker="# END CountObjects"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// CountObjects"
+      endMarker="// END CountObjects"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CountObjects"
+      endMarker="// END CountObjects"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 Which should indicate that there are `10` chunks in the database.
@@ -545,30 +538,30 @@ Now that we have configured Weaviate and populated it with data, we can perform 
 Single prompts tell Weaviate to generate text based on each retrieved object and the user-provided prompt. In this example, we retrieve two objects and prompt the language model to write a haiku based on the text of each chunk.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# SinglePrompt"
-endMarker="# END SinglePrompt"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// SinglePrompt"
-endMarker="// END SinglePrompt"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START SinglePrompt"
-endMarker="// END SinglePrompt"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# SinglePrompt"
+      endMarker="# END SinglePrompt"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// SinglePrompt"
+      endMarker="// END SinglePrompt"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SinglePrompt"
+      endMarker="// END SinglePrompt"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 It should return haiku-like text, such as:
@@ -592,30 +585,30 @@ A grouped task is a prompt that is applied to a group of objects. This allows yo
 In this example, we prompt the language model to write a trivia tweet based on the result.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# GroupedTask"
-endMarker="# END GroupedTask"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// GroupedTask"
-endMarker="// END GroupedTask"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START GroupedTask"
-endMarker="// END GroupedTask"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# GroupedTask"
+      endMarker="# END GroupedTask"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// GroupedTask"
+      endMarker="// END GroupedTask"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GroupedTask"
+      endMarker="// END GroupedTask"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 It should return a factoid written for social media, such as:
@@ -633,30 +626,30 @@ RAG in Weaviate is a two-step process under the hood, involving retrieval of obj
 In this example, we search the chapter for passages that relate to the states of git before generating a tweet as before.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# NearTextGroupedTask"
-endMarker="# END NearTextGroupedTask"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// NearTextGroupedTask"
-endMarker="// END NearTextGroupedTask"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START NearTextGroupedTask"
-endMarker="// END NearTextGroupedTask"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# NearTextGroupedTask"
+      endMarker="# END NearTextGroupedTask"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// NearTextGroupedTask"
+      endMarker="// END NearTextGroupedTask"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START NearTextGroupedTask"
+      endMarker="// END NearTextGroupedTask"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 This should return text like:
@@ -670,30 +663,30 @@ This should return text like:
 Now, simply by changing the search query, we can generate similar content about different topics.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-<FilteredTextBlock
-text={PyCode}
-startMarker="# SecondNearTextGroupedTask"
-endMarker="# END SecondNearTextGroupedTask"
-language="py"
-/>
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-<FilteredTextBlock
-text={TSCodeLocal}
-startMarker="// SecondNearTextGroupedTask"
-endMarker="// END SecondNearTextGroupedTask"
-language="ts"
-/>
-</TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
-<FilteredTextBlock
-text={JavaV6Code}
-startMarker="// START SecondNearTextGroupedTask"
-endMarker="// END SecondNearTextGroupedTask"
-language="java"
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# SecondNearTextGroupedTask"
+      endMarker="# END SecondNearTextGroupedTask"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeLocal}
+      startMarker="// SecondNearTextGroupedTask"
+      endMarker="// END SecondNearTextGroupedTask"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SecondNearTextGroupedTask"
+      endMarker="// END SecondNearTextGroupedTask"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 In this case, the result should be something like:
@@ -760,6 +753,6 @@ To learn more about specific search capabilities, check out the [How-to: search 
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />
