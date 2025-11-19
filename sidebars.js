@@ -23,14 +23,6 @@ const sidebars = {
       href: "https://docs.weaviate.io/deploy",
     },
     {
-      type: "link",
-      label: "Concepts & architecture",
-      href: "https://academy.weaviate.io/courses/wa050-py",
-      customProps: {
-        academyOnly: true,
-      },
-    },
-    {
       type: "category",
       label: "Connect to Weaviate",
       link: {
@@ -56,6 +48,14 @@ const sidebars = {
           },
         },
       ],
+    },
+    {
+      type: "link",
+      label: "Concepts & architecture",
+      href: "https://academy.weaviate.io/courses/wa050-py",
+      customProps: {
+        academyOnly: true,
+      },
     },
     {
       type: "category",
