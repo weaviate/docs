@@ -130,7 +130,7 @@ const sidebars = {
     },
     {
       type: "link",
-      label: "Choosing an embedding model",
+      label: "Embedding model selection",
       href: "https://academy.weaviate.io/courses/wa260-py",
       customProps: {
         academyOnly: true,
