@@ -139,7 +139,7 @@ const sidebars = {
     {
       type: "category",
       label: "API-based",
-      collapsed: false,
+      collapsed: true,
       collapsible: true,
       className: "sidebar-item",
       items: [
