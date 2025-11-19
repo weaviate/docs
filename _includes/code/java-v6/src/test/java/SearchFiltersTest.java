@@ -111,9 +111,7 @@ class SearchFilterTest {
 
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        // Find objects where the `question` property contains all of the strings in
-        // `token_list`
-        // TODO[g-despot] containsAll doesn't accept lists?
+        // Find objects where the `question` property contains all of the strings in `tokens`
         .where(Where.property("question").containsAll(tokens))
         // highlight-end
         .limit(3));
@@ -258,7 +256,6 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
       if (o.references() != null && o.references().get("hasCategory") != null) {
-        // TODO[g-despot] How to get property title here?
         System.out.println(o.references().get("hasCategory").get(0));
       }
     }
@@ -285,30 +282,27 @@ class SearchFilterTest {
   // TODO[g-despot] How to filter by creation time?
   // @Test
   // void testFilterByTimestamp() {
-  // // START FilterByTimestamp
-  // // highlight-start
-  // // Set the timezone for avoidance of doubt
-  // OffsetDateTime filterTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0,
-  // ZoneOffset.UTC);
-  // // highlight-end
+  //   // START FilterByTimestamp
+  //   // highlight-start
+  //   // Set the timezone for avoidance of doubt
+  //   OffsetDateTime filterTime =
+  //       OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+  //   // highlight-end
 
-  // CollectionHandle<Map<String, Object>> collection =
-  // client.collections.use("Article");
-  // var response = collection.query.fetchObjects(
-  // q -> q
-  // .limit(3)
-  // // highlight-start
-  // .where(Where.byCreationTime().gt(filterTime.toInstant()))
-  // .returnMetadata(Metadata.CREATION_TIME_UNIX)
-  // // highlight-end
-  // );
+  //   CollectionHandle<Map<String, Object>> collection =
+  //       client.collections.use("Article");
+  //   var response = collection.query.fetchObjects(q -> q.limit(3)
+  //       // highlight-start
+  //       .where(Where.byCreationTime().gt(filterTime.toInstant()))
+  //       .returnMetadata(Metadata.CREATION_TIME_UNIX)
+  //   // highlight-end
+  //   );
 
-  // for (var o : response.objects()) {
-  // System.out.println(o.properties()); // Inspect returned objects
-  // System.out.println(o.metadata().creationTime()); // Inspect object creation
-  // time
-  // }
-  // // END FilterByTimestamp
+  //   for (var o : response.objects()) {
+  //     System.out.println(o.properties()); // Inspect returned objects
+  //     System.out.println(o.metadata().creationTimeUnix()); // Inspect object creation time
+  //   }
+  //   // END FilterByTimestamp
   // }
 
   @Test
@@ -428,7 +422,6 @@ class SearchFilterTest {
   // // END FilterByPropertyNullState
   // }
 
-  // TODO[g-despot] When geo properties become available
   @Test
   void testFilterByGeolocation() throws Exception {
     String collectionName = "Publication";

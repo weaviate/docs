@@ -155,7 +155,7 @@ class SearchSimilarityTest {
     // END GetWithDistance
   }
 
-  // TODO[g-despot] Should autocut be autolimit?
+  // TODO[g-despot] DX: Should autocut be autolimit?
   @Test
   void testAutocut() {
     // START Autocut
@@ -175,7 +175,7 @@ class SearchSimilarityTest {
   }
 
   @Test
-  // TODO[g-despot] Why isn't UUID available on top-level?
+  // TODO[g-despot] DX: Why aren't UUID and vectors available in top-level of response object?
   void testGetWithGroupby() {
     // START GetWithGroupby
     CollectionHandle<Map<String, Object>> jeopardy =
@@ -189,7 +189,7 @@ class SearchSimilarityTest {
             2 // maximum objects per group
         ));
     // highlight-end
-
+    response.objects().getFirst().metadata().vectors().getSingle("default");
     for (var o : response.objects()) {
       System.out.println(o.metadata().uuid());
       System.out.println(o.belongsToGroup());

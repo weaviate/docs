@@ -1,10 +1,8 @@
 package quickstart;
 
-// TODO[g-despot] Is baseURL == api endpoint for Ollama?
 // START CreateCollection
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.ObjectMetadata;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
@@ -16,7 +14,7 @@ import java.util.Map;
 
 public class QuickstartCreateVectors {
 
-  // TODO[g-despot] Far to complicated vector insertion
+  // TODO[g-despot] DX: Far to complicated vector insertion
   public static void main(String[] args) throws Exception {
     WeaviateClient client = null;
     String collectionName = "Movie";
@@ -25,9 +23,6 @@ public class QuickstartCreateVectors {
       // Best practice: store your credentials in environment variables
       String weaviateUrl = System.getenv("WEAVIATE_URL");
       String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
-      // The old code's header included an Anthropic key, but the schema
-      // specifies generative-ollama, which does not require a header key.
-      // We will follow the schema configuration.
 
       // Step 1.1: Connect to your Weaviate Cloud instance
       client =
@@ -45,11 +40,6 @@ public class QuickstartCreateVectors {
       client.collections.create(collectionName, col -> col
           // No automatic vectorization since we're providing vectors
           .vectorConfig(VectorConfig.selfProvided())
-          .generativeModule(Generative.ollama(g -> g
-              // If using Docker you might need: http://host.docker.internal:11434
-              .baseUrl("http://ollama:11434")
-              .model("llama3.2") // The model to use
-          ))
           // Define properties for the collection
           .properties(Property.text("title"), Property.text("description"),
               Property.text("genre")));
@@ -98,9 +88,6 @@ public class QuickstartCreateVectors {
       }
     } finally {
       if (client != null) {
-        if (client.collections.exists(collectionName)) {
-          client.collections.delete(collectionName);
-        }
         client.close(); // Free up resources
       }
     }

@@ -3,7 +3,6 @@ package quickstart;
 // START CreateCollection
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
@@ -36,11 +35,6 @@ public class QuickstartLocalCreate {
               .baseUrl("http://ollama:11434")
               .model("nomic-embed-text") // The model to use
           ))
-              .generativeModule(Generative.ollama(g -> g
-                  // If using Docker you might need: http://host.docker.internal:11434
-                  .baseUrl("http://ollama:11434")
-                  .model("llama3.2") // The model to use
-              ))
               // Define properties for the collection
               .properties(Property.text("title"), Property.text("description"),
                   Property.text("genre")));
@@ -74,9 +68,6 @@ public class QuickstartLocalCreate {
       }
     } finally {
       if (client != null) {
-        if (client.collections.exists(collectionName)) {
-          client.collections.delete(collectionName);
-        }
         client.close(); // Free up resources
       }
     }

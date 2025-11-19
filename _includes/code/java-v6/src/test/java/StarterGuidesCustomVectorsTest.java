@@ -36,7 +36,6 @@ class StarterGuidesCustomVectorsTest {
     float[] vector;
   }
 
-  //TODO[g-despot] NearVector missing targetVector
   @Test
   void testBringYourOwnVectors() throws Exception {
     WeaviateClient client = null;

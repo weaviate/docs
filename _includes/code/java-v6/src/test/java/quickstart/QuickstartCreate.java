@@ -3,7 +3,6 @@ package quickstart;
 // START CreateCollection
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
@@ -21,12 +20,10 @@ public class QuickstartCreate {
       // Best practice: store your credentials in environment variables
       String weaviateUrl = System.getenv("WEAVIATE_URL");
       String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
-      String anthropicApiKey = System.getenv("ANTHROPIC_API_KEY");
 
       // Step 1.1: Connect to your Weaviate Cloud instance
-      client = WeaviateClient.connectToWeaviateCloud(weaviateUrl,
-          weaviateApiKey, config -> config
-              .setHeaders(Map.of("X-Anthropic-Api-Key", anthropicApiKey)));
+      client =
+          WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey);
       // END CreateCollection
 
       // NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
@@ -39,8 +36,6 @@ public class QuickstartCreate {
       // highlight-start
       client.collections.create(collectionName,
           col -> col.vectorConfig(VectorConfig.text2vecWeaviate())
-              .generativeModule(
-                  Generative.anthropic(p -> p.model("claude-3-5-haiku-latest")))
               // Define properties for the collection
               .properties(Property.text("title"), Property.text("description"),
                   Property.text("genre")));
@@ -74,9 +69,6 @@ public class QuickstartCreate {
       }
     } finally {
       if (client != null) {
-        if (client.collections.exists(collectionName)) {
-          client.collections.delete(collectionName);
-        }
         client.close(); // Free up resources
       }
     }
