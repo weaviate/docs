@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import DocsImage from "../components/DocsImage";
 import SkipValidationLink from "../components/SkipValidationLink";
 import CloudOnlyBadge from "../components/CloudOnlyBadge";
+import AcademyBadge from "../components/AcademyBadge";
 
 export default {
   ...MDXComponents,
@@ -10,4 +11,5 @@ export default {
   Link,
   SkipValidationLink,
   CloudOnlyBadge,
+  AcademyBadge,
 };
