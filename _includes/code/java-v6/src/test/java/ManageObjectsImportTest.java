@@ -23,7 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,11 +55,10 @@ class ManageObjectsImportTest {
     client = WeaviateClient
         .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
-
     // Download data file for streaming tests
-    try (InputStream in = new URL(
+    try (InputStream in = URI.create(
         "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_1k.json")
-            .openStream()) {
+            .toURL().openStream()) {
       Files.copy(in, Paths.get("jeopardy_1k.json"));
     }
   }

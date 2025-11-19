@@ -1,6 +1,5 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.generate.DynamicProvider;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import org.junit.jupiter.api.AfterAll;
@@ -8,12 +7,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 
 class GenerativeSearchTest {

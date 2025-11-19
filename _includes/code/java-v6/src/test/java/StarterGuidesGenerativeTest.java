@@ -1,19 +1,17 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.DataType;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.WeaviateMetadata;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,16 +25,16 @@ class CombinedWorkflowTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
-  // START ChunkText
   private List<String> downloadAndChunk(String srcUrl, int chunkSize,
-      int overlapSize) throws IOException {
+      int overlapSize) throws Exception {
     // Retrieve source text
-    URL url = new URL(srcUrl);
+    URL url = URI.create(srcUrl).toURL();
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestMethod("GET");
-    String sourceText =
-        new BufferedReader(new InputStreamReader(conn.getInputStream())).lines()
-            .reduce("", String::concat);
+    String sourceText;
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+      sourceText = reader.lines().reduce("", String::concat);
+    }
 
     // Remove multiple whitespaces
     sourceText = sourceText.replaceAll("\\s+", " ");
