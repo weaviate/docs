@@ -4,9 +4,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  /* White badge with purple text and border - non-interactive */
+  /* White badge with grey text and border - non-interactive */
   background: white;
-  color: #7c3aed;
+  color: #64748b;
   padding: 0.25rem 0.6rem;
   border-radius: 4px;
   font-weight: 600;
@@ -15,19 +15,19 @@
   letter-spacing: 0.01em;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
-  border: 1px solid #7c3aed;
+  border: 1px solid #64748b;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   .academyIcon {
     width: 0.8rem;
     height: 0.8rem;
-    filter: invert(27%) sepia(93%) saturate(2466%) hue-rotate(256deg) brightness(94%) contrast(91%);
-    // This filter converts black SVG to #7c3aed purple
+    filter: invert(45%) sepia(8%) saturate(897%) hue-rotate(178deg) brightness(93%) contrast(88%);
+    // This filter converts black SVG to #64748b slate grey
   }
 }
 
 /* Compact variant for inline use */
-.compact {
+.academyBadge.compact {
   padding: 0.2rem 0.5rem;
   font-size: 0.7rem;
   margin-bottom: 0;
@@ -43,7 +43,7 @@
 }
 
 /* Icon only variant for sidebar use */
-.iconOnly {
+.academyBadge.iconOnly {
   padding: 0.15rem 0.35rem;
   margin-bottom: 0;
   margin-top: 0;
@@ -60,12 +60,12 @@
 /* Dark theme support */
 [data-theme="dark"] .academyBadge {
   background: #1a1a1a;
-  color: #a78bfa;
-  border-color: #8b5cf6;
+  color: #94a3b8;
+  border-color: #94a3b8;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 
   .academyIcon {
-    filter: invert(73%) sepia(28%) saturate(1270%) hue-rotate(219deg) brightness(102%) contrast(96%);
-    // This filter converts black SVG to #a78bfa light purple
+    filter: invert(69%) sepia(11%) saturate(440%) hue-rotate(179deg) brightness(92%) contrast(88%);
+    // This filter converts black SVG to #94a3b8 light slate grey
   }
 }
