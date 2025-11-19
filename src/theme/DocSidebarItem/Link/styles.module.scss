@@ -2,6 +2,12 @@
 .sidebarLinkWrapper {
   position: relative;
 
+  // Match Docusaurus list item spacing
+  margin-top: 0.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+
   // Override the link to position relatively so badge can be absolute to it
   :global(.menu__link) {
     position: relative;
@@ -10,13 +16,18 @@
 
 .badgeContainer {
   position: absolute;
-  right: 8px; // For doc items without chevron
+  right: 8px; // Default for internal doc links without external icon
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
   pointer-events: none; // Allow clicks to pass through to the link
   z-index: 10; // Higher z-index to stay on top
+
+  // For external links with icon, adjust positioning to avoid overlap
+  &.externalLink {
+    right: 28px; // Make room for external link icon (~20px wide + spacing)
+  }
 }
 
 // Wrapper for category items with badge

@@ -24,7 +24,7 @@ const sidebars = {
     },
     {
       type: "link",
-      label: "Key concepts & architecture",
+      label: "Concepts & architecture",
       href: "https://academy.weaviate.io/courses/wa050-py",
       customProps: {
         academyOnly: true,

@@ -18,10 +18,13 @@ export default function LinkWrapper(props: Props): ReactNode {
     return <Link {...props} />;
   }
 
+  // Check if this is an external link (has href) vs internal doc link (has id)
+  const isExternalLink = 'href' in props.item;
+
   return (
     <div className={styles.sidebarLinkWrapper}>
       <Link {...props} />
-      <div className={styles.badgeContainer}>
+      <div className={`${styles.badgeContainer} ${isExternalLink ? styles.externalLink : ''}`}>
         {cloudOnly && <CloudOnlyBadge iconOnly />}
         {academyOnly && <AcademyBadge iconOnly />}
       </div>
