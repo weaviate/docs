@@ -69,7 +69,7 @@ The CLI will automatically start the Docusaurus site and the serverless function
 
 ### 4. Create the Weaviate Collection
 
-Ensure the `DocFeedback` class exists in your Weaviate instance. It should look like this:
+Ensure the `DocFeedback` class exists in your Weaviate instance. It should look like this :
 
 ```python
 client.collections.create(
