@@ -391,7 +391,7 @@ And the `generative-openai` module may be configured as follows:
     }
 ```
 
-See the [documentation](/model-providers/index.md) for various model provider integrations.
+See the [documentation](../model-providers/index.md) for various model provider integrations.
 
 </details>
 
@@ -399,7 +399,7 @@ See the [documentation](/model-providers/index.md) for various model provider in
 
 Adding data to Weaviate for RAG is similar to adding data for other purposes. However, there are some important considerations to keep in mind, such as chunking and data structure.
 
-You can read further discussions in the [Best practices & tips](%23best-practices--tips) section. Here, we will use a chunk length of 150 words and a 25-word overlap. We will also include the title of the book, the chapter it is from, and the chunk number. This will allow us to search through the chunks, as well as filter it.
+You can read further discussions in the [Best practices & tips](#best-practices--tips) section. Here, we will use a chunk length of 150 words and a 25-word overlap. We will also include the title of the book, the chapter it is from, and the chunk number. This will allow us to search through the chunks, as well as filter it.
 
 #### Download & chunk
 
@@ -749,7 +749,7 @@ Our own [Connor Shorten's podcast](https://weaviate.io/podcast) is a great resou
 
 We've explored the dynamic capabilities of RAG in Weaviate, showcasing how it enhances large language models through retrieval-augmented generation.
 
-To learn more about specific search capabilities, check out the [How-to: search guide](/search/index.mdx). And to learn more about individual modules, check out the [Modules section](/modules/index.md).
+To learn more about specific search capabilities, check out the [How-to: search guide](../search/index.mdx). And to learn more about individual modules, check out the [Model provider integrations](../model-providers/index.md).
 
 ## Questions and feedback
 
