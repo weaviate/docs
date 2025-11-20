@@ -194,7 +194,6 @@ class SearchBasicTest {
     // END MultiTenancy
   }
 
-  // TODO[g-despot] DX: fetchObjectsById missing
   @Test
   void testGetWithConsistencyLevel() {
     // START QueryWithReplication
@@ -202,7 +201,7 @@ class SearchBasicTest {
         client.collections.use("JeopardyQuestion")
             .withConsistencyLevel(ConsistencyLevel.QUORUM);
     // highlight-start
-    var response = jeopardy.query.byId("36ddd591-2dee-4e7e-a3cc-eb86d30a4303");
+    var response = jeopardy.query.fetchObjectById("36ddd591-2dee-4e7e-a3cc-eb86d30a4303");
     // highlight-end
 
     System.out.println(response.get().properties());

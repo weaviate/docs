@@ -41,8 +41,8 @@ public class QuickstartQueryNearVectorRAG {
       // highlight-end
 
       // Inspect the results
-      // Use .generated() to access the generative result
-      System.out.println(response.generated().text());
+      // Use .generative() to access the generative result
+      System.out.println(response.generative().text());
 
     } finally {
       if (client != null) {

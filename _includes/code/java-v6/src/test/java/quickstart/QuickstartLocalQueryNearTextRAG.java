@@ -26,13 +26,13 @@ public class QuickstartLocalQueryNearTextRAG {
           // Generative configuration (RAG task)
           g -> g.groupedTask("Write a tweet with emojis about this movie.",
               p -> p.dynamicProvider(
-                  DynamicProvider.ollama(o -> o.baseUrl("http://ollama:11434")// If using Docker you might need: http://host.docker.internal:11434
+                  DynamicProvider.ollama(o -> o.apiEndpoint("http://ollama:11434")// If using Docker you might need: http://host.docker.internal:11434
                       .model("llama3.2") // The model to use
                   ))));
       // highlight-end
 
       // Inspect the results
-      System.out.println(response.generated().text());
+      System.out.println(response.generative().text());
 
     } finally {
       if (client != null) {

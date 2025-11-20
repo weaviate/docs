@@ -96,7 +96,7 @@ public class ManageCollectionsCrossReferencesTest {
     // END ObjectWithCrossRef
 
     // Test results
-    var fetchedObj = questions.query.byId(
+    var fetchedObj = questions.query.fetchObjectById(
         result.metadata().uuid(),
         opt -> opt.returnReferences(
             QueryReference.single("hasCategory")));
@@ -134,7 +134,7 @@ public class ManageCollectionsCrossReferencesTest {
     // END OneWayCrossReferences
 
     // Test results
-    var result = questions.query.byId(
+    var result = questions.query.fetchObjectById(
         questionObjId,
         opt -> opt.returnReferences(
             QueryReference.single("hasCategory")));
@@ -213,7 +213,7 @@ public class ManageCollectionsCrossReferencesTest {
     // END TwoWayCrossReferences
 
     // Test results
-    var result = categories.query.byId(
+    var result = categories.query.fetchObjectById(
         categoryObjId,
         opt -> opt.returnReferences(
             QueryReference.single("hasQuestion")));
@@ -257,7 +257,7 @@ public class ManageCollectionsCrossReferencesTest {
     // END MultipleCrossReferences
 
     // Test results
-    var result = questions.query.byId(
+    var result = questions.query.fetchObjectById(
         questionObjId,
         opt -> opt.returnReferences(
             QueryReference.single("hasCategory")));
@@ -299,7 +299,7 @@ public class ManageCollectionsCrossReferencesTest {
 
     // Or include cross-references in a single-object retrieval
     // highlight-start
-    var obj = questions.query.byId(
+    var obj = questions.query.fetchObjectById(
         questionObjId,
         opt -> opt.returnReferences(
             QueryReference.single("hasCategory",
@@ -345,7 +345,7 @@ public class ManageCollectionsCrossReferencesTest {
     // END DeleteCrossReference
 
     // Test results
-    var result = questions.query.byId(
+    var result = questions.query.fetchObjectById(
         questionObjId,
         opt -> opt.returnReferences(
             QueryReference.single("hasCategory")));
@@ -389,7 +389,7 @@ public class ManageCollectionsCrossReferencesTest {
     // END UpdateCrossReference
 
     // Test results
-    var result = questions.query.byId(
+    var result = questions.query.fetchObjectById(
         questionObjId,
         opt -> opt.returnReferences(
             QueryReference.single("hasCategory")));

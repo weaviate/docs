@@ -79,7 +79,7 @@ class ManageObjectsCreateTest {
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateSimpleObject
 
-    var result = jeopardy.query.byId(uuid);
+    var result = jeopardy.query.fetchObjectById(uuid);
     assertThat(result).isPresent();
     assertThat(result.get().properties().get("newProperty")).isEqualTo(123.0); // JSON numbers are parsed as Long
   }
@@ -99,7 +99,7 @@ class ManageObjectsCreateTest {
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectWithVector
 
-    var result = jeopardy.query.byId(uuid);
+    var result = jeopardy.query.fetchObjectById(uuid);
     assertThat(result).isPresent();
   }
 
@@ -122,7 +122,7 @@ class ManageObjectsCreateTest {
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectNamedVectors
 
-    var result = reviews.query.byId(uuid,
+    var result = reviews.query.fetchObjectById(uuid,
         q -> q.includeVector(List.of("review_body", "title", "title_country")));
     assertThat(result).isPresent();
     // assertThat(result.get().metadata().vectors().getVectors()).containsOnlyKeys("title",
@@ -173,7 +173,7 @@ class ManageObjectsCreateTest {
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectWithId
 
-    var result = jeopardy.query.byId(uuid);
+    var result = jeopardy.query.fetchObjectById(uuid);
     assertThat(result).isPresent();
     assertThat(result.get().properties().get("question"))
         .isEqualTo(properties.get("question"));

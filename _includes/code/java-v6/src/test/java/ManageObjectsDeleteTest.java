@@ -3,7 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.query.QueryResponse;
-import io.weaviate.client6.v1.api.collections.query.Where;
+import io.weaviate.client6.v1.api.collections.query.Filter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -57,13 +57,13 @@ class ManageObjectsDeleteTest {
         client.collections.use(COLLECTION_NAME);
     String uuidToDelete =
         collection.data.insert(Map.of("name", "EphemeralObjectA")).uuid();
-    assertThat(collection.query.byId(uuidToDelete)).isPresent();
+    assertThat(collection.query.fetchObjectById(uuidToDelete)).isPresent();
 
     // START DeleteObject
     collection.data.delete(uuidToDelete);
     // END DeleteObject
 
-    assertThat(collection.query.byId(uuidToDelete)).isNotPresent();
+    assertThat(collection.query.fetchObjectById(uuidToDelete)).isNotPresent();
   }
 
   @Test
@@ -80,7 +80,7 @@ class ManageObjectsDeleteTest {
     // START DeleteBatch
     collection.data.deleteMany(
         // highlight-start
-        Where.property("name").like("EphemeralObject*")
+        Filter.property("name").like("EphemeralObject*")
     // highlight-end
     );
     // END DeleteBatch
@@ -99,7 +99,7 @@ class ManageObjectsDeleteTest {
 
     collection.data.deleteMany(
         // highlight-start
-        Where.property("name").containsAny("europe", "asia")
+        Filter.property("name").containsAny("europe", "asia")
     // highlight-end
     );
     // END DeleteContains
@@ -116,7 +116,7 @@ class ManageObjectsDeleteTest {
 
     // START DryRun
     var result = collection.data.deleteMany(
-        Where.property("name").like("EphemeralObject*"),
+        Filter.property("name").like("EphemeralObject*"),
         // highlight-start
         c -> c.dryRun(true).verbose(true)
     // highlight-end
@@ -151,7 +151,7 @@ class ManageObjectsDeleteTest {
 
     collection.data.deleteMany(
         // highlight-start
-        Where.uuid().containsAny(ids) // Delete the 3 objects
+        Filter.uuid().containsAny(ids) // Delete the 3 objects
     // highlight-end
     );
     // END DeleteByIDBatch

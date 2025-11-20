@@ -37,7 +37,7 @@ class ManageObjectsReadTest {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
     // highlight-start
-    var dataObjectOpt = jeopardy.query.byId("00ff6900-e64f-5d94-90db-c8cfa3fc851b");
+    var dataObjectOpt = jeopardy.query.fetchObjectById("00ff6900-e64f-5d94-90db-c8cfa3fc851b");
     // highlight-end
 
     dataObjectOpt.ifPresent(dataObject -> System.out.println(dataObject.properties()));
@@ -49,7 +49,7 @@ class ManageObjectsReadTest {
     // START ReadObjectWithVector
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
-    var dataObjectOpt = jeopardy.query.byId("00ff6900-e64f-5d94-90db-c8cfa3fc851b",
+    var dataObjectOpt = jeopardy.query.fetchObjectById("00ff6900-e64f-5d94-90db-c8cfa3fc851b",
         // highlight-start
         q -> q.includeVector()
     // highlight-end
@@ -75,7 +75,7 @@ class ManageObjectsReadTest {
     List<String> vectorNames = List.of("title", "review_body");
 
     // START ReadObjectNamedVectors
-    var dataObjectOpt = reviews.query.byId(objUuid, // Object UUID
+    var dataObjectOpt = reviews.query.fetchObjectById(objUuid, // Object UUID
         // highlight-start
         q -> q.includeVector(vectorNames) // Specify to include vectors
     // highlight-end

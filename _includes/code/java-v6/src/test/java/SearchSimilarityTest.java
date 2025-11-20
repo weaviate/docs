@@ -3,7 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.Target;
-import io.weaviate.client6.v1.api.collections.query.Where;
+import io.weaviate.client6.v1.api.collections.query.Filter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -155,15 +155,14 @@ class SearchSimilarityTest {
     // END GetWithDistance
   }
 
-  // TODO[g-despot] DX: Should autocut be autolimit?
   @Test
-  void testAutocut() {
+  void testAutolimit() {
     // START Autocut
     CollectionHandle<Map<String, Object>> jeopardy =
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("animals in movies", q -> q
         // highlight-start
-        .autocut(1) // number of close groups
+        .autolimit(1) // number of close groups
         // highlight-end
         .returnMetadata(Metadata.DISTANCE));
 
@@ -215,7 +214,7 @@ class SearchSimilarityTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("animals in movies", q -> q
         // highlight-start
-        .where(Where.property("round").eq("Double Jeopardy!"))
+        .filters(Filter.property("round").eq("Double Jeopardy!"))
         // highlight-end
         .limit(2)
         .returnMetadata(Metadata.DISTANCE));

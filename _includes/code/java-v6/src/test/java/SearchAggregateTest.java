@@ -159,7 +159,7 @@ class SearchAggregateTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(a -> a
         // highlight-start
-        // .where(Where.property("round").eq("Final Jeopardy!"))
+        // .filters(Filter.property("round").eq("Final Jeopardy!"))
         // highlight-end
         .includeTotalCount(true));
 

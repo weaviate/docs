@@ -49,9 +49,9 @@ class GenerativeSearchTest {
 
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
     }
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n", response.generative().text());
     // END DynamicRag
   }
 
@@ -72,9 +72,9 @@ class GenerativeSearchTest {
 
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
     }
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n", response.generative().text());
     // END NamedVectorNearTextPython
   }
 
@@ -101,7 +101,7 @@ class GenerativeSearchTest {
       System.out.printf("Property 'question': %s\n",
           o.properties().get("question"));
       // highlight-start
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
       // highlight-end
     }
     // END SingleGenerativePython
@@ -123,7 +123,7 @@ class GenerativeSearchTest {
     // print source properties and generated responses
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
     }
     // END SingleGenerativePropertiesPython
   }
@@ -146,9 +146,9 @@ class GenerativeSearchTest {
     // print source properties and generated responses
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
-      System.out.printf("Debug: %s\n", o.generated().debug());
-      System.out.printf("Metadata: %s\n", o.generated().metadata());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
+      System.out.printf("Debug: %s\n", o.generative().debug());
+      System.out.printf("Metadata: %s\n", o.generative().metadata());
     }
     // END SingleGenerativeParametersPython
   }
@@ -169,7 +169,7 @@ class GenerativeSearchTest {
     );
 
     // print the generated response
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n", response.generative().text());
     // END GroupedGenerativePython
   }
 
@@ -187,8 +187,8 @@ class GenerativeSearchTest {
     );
 
     // print the generated response
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
-    System.out.printf("Metadata: %s\n", response.generated().metadata());
+    System.out.printf("Grouped task result: %s\n", response.generative().text());
+    System.out.printf("Metadata: %s\n", response.generative().metadata());
     // END GroupedGenerativeParametersPython
   }
 
@@ -206,7 +206,7 @@ class GenerativeSearchTest {
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
     }
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n", response.generative().text());
     // highlight-end
     // END GroupedGenerativeProperties Python
   }
@@ -244,7 +244,7 @@ class GenerativeSearchTest {
   //   for (var o : response.objects()) {
   //     System.out.printf("Properties: %s\n", o.properties());
   //   }
-  //   System.out.printf("Grouped task result: %s\n", response.generated().text());
+  //   System.out.printf("Grouped task result: %s\n", response.generative().text());
   //   // END WorkingWithImages
   // }
 }

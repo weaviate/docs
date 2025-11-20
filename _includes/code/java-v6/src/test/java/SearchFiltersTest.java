@@ -4,7 +4,7 @@ import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
-import io.weaviate.client6.v1.api.collections.query.Where;
+import io.weaviate.client6.v1.api.collections.query.Filter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        .where(Where.property("round").eq("Double Jeopardy!"))
+        .filters(Filter.property("round").eq("Double Jeopardy!"))
         // highlight-end
         .limit(3));
 
@@ -63,7 +63,7 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText("fashion icons", q -> q
         // highlight-start
-        .where(Where.property("points").gt(200))
+        .filters(Filter.property("points").gt(200))
         // highlight-end
         .limit(3));
 
@@ -85,7 +85,7 @@ class SearchFilterTest {
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
         // Find objects where the `answer` property contains any of the strings in `token_list`
-        .where(Where.property("answer").containsAny(tokens))
+        .filters(Filter.property("answer").containsAny(tokens))
         // highlight-end
         .limit(3));
 
@@ -109,7 +109,7 @@ class SearchFilterTest {
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
         // Find objects where the `question` property contains all of the strings in `tokens`
-        .where(Where.property("question").containsAll(tokens))
+        .filters(Filter.property("question").containsAll(tokens))
         // highlight-end
         .limit(3));
 
@@ -132,7 +132,7 @@ class SearchFilterTest {
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
         // Find objects where the `question` property contains none of the strings in `token_list`
-        .where(Where.property("question").containsNone(tokens))
+        .filters(Filter.property("question").containsNone(tokens))
         // highlight-end
         .limit(3));
 
@@ -149,7 +149,7 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        .where(Where.property("answer").like("*ala*"))
+        .filters(Filter.property("answer").like("*ala*"))
         // highlight-end
         .limit(3));
 
@@ -166,10 +166,10 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        // Combine filters with Where.and(), Where.or(), and Where.not()
-        .where(Where.and(Where.property("round").eq("Double Jeopardy!"),
-            Where.property("points").lt(600),
-            Where.not(Where.property("answer").eq("Yucatan"))))
+        // Combine filters with Filter.and(), Filter.or(), and Filter.not()
+        .filters(Filter.and(Filter.property("round").eq("Double Jeopardy!"),
+            Filter.property("points").lt(600),
+            Filter.not(Filter.property("answer").eq("Yucatan"))))
         // highlight-end
         .limit(3));
 
@@ -186,9 +186,9 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        .where(Where.or(Where.property("points").gte(700),
-            Where.property("points").lt(500),
-            Where.property("round").eq("Double Jeopardy!")))
+        .filters(Filter.or(Filter.property("points").gte(700),
+            Filter.property("points").lt(500),
+            Filter.property("round").eq("Double Jeopardy!")))
         // highlight-end
         .limit(5));
 
@@ -205,9 +205,9 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        .where(Where.and(Where.property("points").gt(300),
-            Where.property("points").lt(700),
-            Where.property("round").eq("Double Jeopardy!")))
+        .filters(Filter.and(Filter.property("points").gt(300),
+            Filter.property("points").lt(700),
+            Filter.property("round").eq("Double Jeopardy!")))
         // highlight-end
         .limit(5));
 
@@ -224,9 +224,9 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        .where(Where.and(Where.property("answer").like("*bird*"),
-            Where.or(Where.property("points").gt(700),
-                Where.property("points").lt(300))))
+        .filters(Filter.and(Filter.property("answer").like("*bird*"),
+            Filter.or(Filter.property("points").gt(700),
+                Filter.property("points").lt(300))))
         // highlight-end
         .limit(3));
 
@@ -243,7 +243,7 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(q -> q
         // highlight-start
-        .where(Where.reference("hasCategory", "JeopardyQuestion", "title")
+        .filters(Filter.reference("hasCategory", "JeopardyQuestion", "title")
             .eq("Sport"))
         .returnReferences(QueryReference.single("hasCategory",
             r -> r.returnProperties("title")))
@@ -267,7 +267,7 @@ class SearchFilterTest {
 
     String targetId = "00037775-1432-35e5-bc59-443baaef7d80";
     var response =
-        collection.query.fetchObjects(q -> q.where(Where.uuid().eq(targetId)));
+        collection.query.fetchObjects(q -> q.filters(Filter.uuid().eq(targetId)));
 
     for (var o : response.objects()) {
       System.out.println(o.properties()); // Inspect returned objects
@@ -290,7 +290,7 @@ class SearchFilterTest {
   //       client.collections.use("Article");
   //   var response = collection.query.fetchObjects(q -> q.limit(3)
   //       // highlight-start
-  //       .where(Where.byCreationTime().gt(filterTime.toInstant()))
+  //       .filters(Filter.byCreationTime().gt(filterTime.toInstant()))
   //       .returnMetadata(Metadata.CREATION_TIME_UNIX)
   //   // highlight-end
   //   );
@@ -360,7 +360,7 @@ class SearchFilterTest {
       var response = collection.query.fetchObjects(q -> q.limit(3)
           // highlight-start
           // This property (`some_date`) is a `DATE` datatype
-          .where(Where.property("some_date").gt(filterTime))
+          .filters(Filter.property("some_date").gt(filterTime))
       // highlight-end
       );
 
@@ -385,7 +385,7 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = collection.query.fetchObjects(q -> q.limit(3)
         // highlight-start
-        .where(Where.property("answer").gt(lengthThreshold))
+        .filters(Filter.property("answer").gt(lengthThreshold))
     // highlight-end
     );
 
@@ -408,7 +408,7 @@ class SearchFilterTest {
   // // highlight-start
   // // This requires the `country` property to be configured with
   // // `index_null_state=True``
-  // .where(Where.property("country").isNull()) // Find objects where the
+  // .filters(Filter.property("country").isNull()) // Find objects where the
   // `country` property is null
   // // highlight-end
   // );
@@ -433,7 +433,7 @@ class SearchFilterTest {
 
       // START FilterbyGeolocation
       var response = publications.query
-          .fetchObjects(q -> q.where(Where.property("headquartersGeoLocation")
+          .fetchObjects(q -> q.filters(Filter.property("headquartersGeoLocation")
               .withinGeoRange(52.39f, 4.84f, 1000.0f) // In meters
           ));
 

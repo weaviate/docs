@@ -134,7 +134,7 @@ class ManageCollectionsMigrateDataTest {
     System.out.printf("Verifying %d random objects...\n", sampledObjects.size());
     for (var srcObj : sampledObjects) {
       Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> tgtObjOpt =
-          collectionTgt.query.byId(srcObj.uuid());
+          collectionTgt.query.fetchObjectById(srcObj.uuid());
       if (tgtObjOpt.isEmpty()) {
         System.out.printf("Object %s not found in target collection\n", srcObj.uuid());
         return false;

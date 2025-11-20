@@ -205,7 +205,7 @@ class ManageObjectsImportTest {
     }
     // END BatchImportWithRefExample
 
-    var result = collection.query.byId(fromUuid,
+    var result = collection.query.fetchObjectById(fromUuid,
         q -> q.returnReferences(QueryReference.single("writesFor")));
 
     assertThat(result).isPresent();

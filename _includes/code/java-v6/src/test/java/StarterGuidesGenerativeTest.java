@@ -144,9 +144,9 @@ class CombinedWorkflowTest {
           );
 
       System.out.println("\n--- TransformResultSets Result ---");
-      System.out.println(transformResponse.generated().text());
+      System.out.println(transformResponse.generative().text());
       // END TransformResultSets
-      assertThat(transformResponse.generated().text()).isNotEmpty();
+      assertThat(transformResponse.generative().text()).isNotEmpty();
 
       // START SinglePrompt
       var singlePromptResponse =
@@ -157,11 +157,11 @@ class CombinedWorkflowTest {
       for (var o : singlePromptResponse.objects()) {
         System.out.printf("\n===== Object index: [%s] =====\n",
             o.properties().get("chunk_index"));
-        System.out.println(o.generated().text());
+        System.out.println(o.generative().text());
       }
       // END SinglePrompt
       assertThat(singlePromptResponse.objects()).hasSize(2);
-      assertThat(singlePromptResponse.objects().get(0).generated().text())
+      assertThat(singlePromptResponse.objects().get(0).generative().text())
           .isNotEmpty();
 
       // START GroupedTask
@@ -170,9 +170,9 @@ class CombinedWorkflowTest {
               "Write a trivia tweet based on this text. Use emojis and make it succinct and cute."));
 
       System.out.println("\n--- GroupedTask Result ---");
-      System.out.println(groupedTaskResponse.generated().text());
+      System.out.println(groupedTaskResponse.generative().text());
       // END GroupedTask
-      assertThat(groupedTaskResponse.generated().text()).isNotEmpty();
+      assertThat(groupedTaskResponse.generative().text()).isNotEmpty();
 
       // START NearTextGroupedTask
       var nearTextResponse1 = chunks.generate.nearText("states of git",
@@ -181,9 +181,9 @@ class CombinedWorkflowTest {
 
       System.out
           .println("\n--- NearTextGroupedTask (states of git) Result ---");
-      System.out.println(nearTextResponse1.generated().text());
+      System.out.println(nearTextResponse1.generative().text());
       // END NearTextGroupedTask
-      assertThat(nearTextResponse1.generated().text()).isNotEmpty();
+      assertThat(nearTextResponse1.generative().text()).isNotEmpty();
 
       // START SecondNearTextGroupedTask
       var nearTextResponse2 = chunks.generate.nearText("how git saves data",
@@ -192,9 +192,9 @@ class CombinedWorkflowTest {
 
       System.out.println(
           "\n--- SecondNearTextGroupedTask (how git saves data) Result ---");
-      System.out.println(nearTextResponse2.generated().text());
+      System.out.println(nearTextResponse2.generative().text());
       // END SecondNearTextGroupedTask
-      assertThat(nearTextResponse2.generated().text()).isNotEmpty();
+      assertThat(nearTextResponse2.generative().text()).isNotEmpty();
 
       // =================================================================
       // === Setup and Query WineReview Collection =====================
@@ -230,10 +230,10 @@ class CombinedWorkflowTest {
 
       System.out.println("\n--- TransformIndividualObjects Result ---");
       for (var o : wineResponse.objects()) {
-        System.out.println(o.generated().text());
+        System.out.println(o.generative().text());
       }
       assertThat(wineResponse.objects()).hasSize(1);
-      assertThat(wineResponse.objects().get(0).generated().text()).isNotEmpty();
+      assertThat(wineResponse.objects().get(0).generative().text()).isNotEmpty();
 
 
       // =================================================================

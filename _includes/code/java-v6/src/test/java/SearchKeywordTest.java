@@ -3,7 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.SearchOperator;
-import io.weaviate.client6.v1.api.collections.query.Where;
+import io.weaviate.client6.v1.api.collections.query.Filter;
 // import io.weaviate.client6.v1.internal.grpc.protocol.WeaviateProtoBase.Filters.Operator;
 
 import org.junit.jupiter.api.AfterAll;
@@ -119,19 +119,19 @@ class SearchKeywordTest {
 
   @Test
   void testAutocut() {
-    // START autocut
+    // START autolimit
     CollectionHandle<Map<String, Object>> jeopardy =
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25("safety", q -> q
         // highlight-start
-        .autocut(1)
+        .autolimit(1)
     // highlight-end
     );
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END autocut
+    // END autolimit
   }
 
   @Test
@@ -194,7 +194,7 @@ class SearchKeywordTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25("food", q -> q
         // highlight-start
-        .where(Where.property("round").eq("Double Jeopardy!"))
+        .filters(Filter.property("round").eq("Double Jeopardy!"))
         // highlight-end
         .returnProperties("answer", "question", "round") // return these properties
         .limit(3));

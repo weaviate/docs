@@ -210,7 +210,7 @@ class ManageCollectionsMultiTenancyTest {
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateMtObject
 
-    var result = jeopardy.query.byId(uuid.toString());
+    var result = jeopardy.query.fetchObjectById(uuid.toString());
     assertThat(result).isPresent();
     assertThat(result.get().properties().get("newProperty")).isEqualTo(123.0); // JSON numbers are parsed as Long
   }
