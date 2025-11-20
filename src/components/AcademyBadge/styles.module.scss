@@ -1,12 +1,12 @@
-/* src/components/CloudOnlyBadge/styles.module.scss */
+/* src/components/AcademyBadge/styles.module.scss */
 
-.cloudOnlyBadge {
+.academyBadge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  /* White badge with blue text and border - non-interactive */
+  /* White badge with grey text and border - non-interactive */
   background: white;
-  color: #0066cc;
+  color: #64748b;
   padding: 0.25rem 0.6rem;
   border-radius: 4px;
   font-weight: 600;
@@ -15,19 +15,19 @@
   letter-spacing: 0.01em;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
-  border: 1px solid #0066cc;
+  border: 1px solid #64748b;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
-  .cloudIcon {
+  .academyIcon {
     width: 0.8rem;
     height: 0.8rem;
-    filter: invert(29%) sepia(91%) saturate(1771%) hue-rotate(197deg) brightness(95%) contrast(101%);
-    // This filter converts black SVG to #0066cc blue
+    filter: invert(45%) sepia(8%) saturate(897%) hue-rotate(178deg) brightness(93%) contrast(88%);
+    // This filter converts black SVG to #64748b slate grey
   }
 }
 
 /* Compact variant for inline use */
-.cloudOnlyBadge.compact {
+.academyBadge.compact {
   padding: 0.2rem 0.5rem;
   font-size: 0.7rem;
   margin-bottom: 0;
@@ -36,14 +36,14 @@
   vertical-align: middle;
   letter-spacing: 0.02em;
 
-  .cloudIcon {
+  .academyIcon {
     width: 0.7rem;
     height: 0.7rem;
   }
 }
 
 /* Icon only variant for sidebar use */
-.cloudOnlyBadge.iconOnly {
+.academyBadge.iconOnly {
   padding: 0.15rem 0.35rem;
   margin-bottom: 0;
   margin-top: 0;
@@ -51,21 +51,21 @@
   vertical-align: middle;
   gap: 0;
 
-  .cloudIcon {
+  .academyIcon {
     width: 0.75rem;
     height: 0.75rem;
   }
 }
 
 /* Dark theme support */
-[data-theme="dark"] .cloudOnlyBadge {
+[data-theme="dark"] .academyBadge {
   background: #1a1a1a;
-  color: #66b3ff;
-  border-color: #4d94ff;
+  color: #94a3b8;
+  border-color: #94a3b8;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 
-  .cloudIcon {
-    filter: invert(70%) sepia(51%) saturate(494%) hue-rotate(185deg) brightness(103%) contrast(101%);
-    // This filter converts black SVG to #66b3ff light blue
+  .academyIcon {
+    filter: invert(69%) sepia(11%) saturate(440%) hue-rotate(179deg) brightness(92%) contrast(88%);
+    // This filter converts black SVG to #94a3b8 light slate grey
   }
 }

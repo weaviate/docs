@@ -174,7 +174,23 @@
         {
           "name": "enabled",
           "displayName": "Enable CUDA",
-          "description": "Requires NVIDIA drivers on the host machine."
+          "description": "Requires an NVIDIA GPU on the host machine."
+        }
+      ]
+    },
+    {
+      "name": "reranker_transformers_cuda",
+      "displayName": "CUDA for Reranker",
+      "description": "Enable CUDA for the reranker-transformers module.",
+      "type": "checkbox-group",
+      "conditions": {
+        "and": ["local_modules~~reranker-transformers"]
+      },
+      "options": [
+        {
+          "name": "enabled",
+          "displayName": "Enable CUDA",
+          "description": "Requires an NVIDIA GPU on the host machine."
         }
       ]
     },
@@ -241,7 +257,7 @@
         {
           "name": "enabled",
           "displayName": "Enable CUDA",
-          "description": "Requires NVIDIA drivers on the host machine."
+          "description": "Requires an NVIDIA GPU on the host machine."
         }
       ]
     }
