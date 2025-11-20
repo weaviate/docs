@@ -34,7 +34,7 @@ export default function PageRatingWidget() {
     }
 
     try {
-      const response = await fetch('/.netlify/functions/submit-feedback', {
+      const response = await fetch('/netlify/functions/submit-feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
