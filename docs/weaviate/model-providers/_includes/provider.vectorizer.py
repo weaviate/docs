@@ -113,7 +113,7 @@ client.collections.create(
         Configure.Vectors.text2vec_cohere(
             name="title_vector",
             source_properties=["title"],
-            model="embed-v4"
+            model="embed-v4.0"
         )
     ],
     # highlight-end
@@ -135,7 +135,7 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             # Further options
-            # model="embed-v4",
+            # model="embed-v4.0",
             # dimensions=512,
             # truncate="END",  # "NONE", "START" or "END"
             # base_url="<custom_cohere_url>"
