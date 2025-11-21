@@ -136,7 +136,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // highlight-start
-      model: 'embed-multilingual-light-v3.0'
+      model: 'embed-v4.0'
       // highlight-end
     }),
   ],
@@ -162,7 +162,8 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
-      // model: 'embed-multilingual-v3.0',
+      // model: 'embed-v4.0',
+      // dimensions: 1024,
       // truncate: 'END',
       // baseURL: '<custom_cohere_url>',
       // vectorizeClassName: true,
@@ -275,6 +276,7 @@ await client.collections.create({
       }],
       // Further options
       // model: "embed-multilingual-v3.0",
+      // dimensions: 1024,
       // truncate: "END",  // "NONE", "START" or "END"
       // baseURL: "<custom_cohere_url>"
     })],
