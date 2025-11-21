@@ -10,9 +10,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -325,13 +325,13 @@ class SearchFilterTest {
       for (int year = 2020; year <= 2024; year++) {
         for (int month = 1; month <= 12; month += 2) {
           for (int day = 1; day <= 20; day += 5) {
-            Instant date =
-                OffsetDateTime.of(year, month, day, 0, 0, 0, 0, ZoneOffset.UTC)
-                    .toInstant();
-            Map<String, Object> properties =
-                Map.of("title", String.format("Object: yr/month/day:%d/%d/%d",
-                    year, month, day), "some_date", date.toString() // Convert Instant to ISO-8601 string
-                );
+            OffsetDateTime date =
+                OffsetDateTime.of(year, month, day, 0, 0, 0, 0, ZoneOffset.UTC);
+            Map<String, Object> properties = Map.of("title",
+                String.format("Object: yr/month/day:%d/%d/%d", year, month,
+                    day),
+                "some_date",
+                date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
             objects.add(WriteWeaviateObject.<Map<String, Object>>of(
                 builder -> builder.properties(properties)));
           }
@@ -352,12 +352,9 @@ class SearchFilterTest {
 
       // START FilterByDateDatatype
       // highlight-start
-      // Set the timezone for avoidance of doubt
-      Instant filterTime =
-          OffsetDateTime.of(2022, 6, 10, 0, 0, 0, 0, ZoneOffset.UTC)
-              .toInstant();
-      // The filter threshold could also be an RFC 3339 timestamp, e.g.:
-      // String filter_time = "2022-06-10T00:00:00.00Z";
+      // Set the timezone for avoidance of doubt - use string format for filter
+      String filterTime = "2022-06-10T00:00:00Z";
+      // The filter threshold must be an RFC 3339 timestamp string
       // highlight-end
 
       var response = collection.query.fetchObjects(q -> q.limit(3)
@@ -370,7 +367,7 @@ class SearchFilterTest {
       for (var o : response.objects()) {
         System.out.println(o.properties()); // Inspect returned objects
       }
-      // END FilterByDateDatatype
+      // END FilterByDateDatatype    
     } finally {
       if (client.collections.exists(collectionName)) {
         client.collections.delete(collectionName);

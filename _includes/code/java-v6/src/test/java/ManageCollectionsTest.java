@@ -259,6 +259,10 @@ class ManageCollectionsTest {
 
   @Test
   void testUpdateReranker() throws IOException {
+    client.collections.create("Article",
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers())
+            .properties(Property.text("title")));
+
     // START UpdateReranker
     var collection = client.collections.use("Article");
     collection.config.update(col -> col.rerankerModules(Reranker.cohere()));
@@ -285,6 +289,10 @@ class ManageCollectionsTest {
 
   @Test
   void testUpdateGenerative() throws IOException {
+    client.collections.create("Article",
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers())
+            .properties(Property.text("title")));
+
     // START UpdateGenerative
     var collection = client.collections.use("Article");
     collection.config.update(col -> col.generativeModule(Generative.cohere()));
