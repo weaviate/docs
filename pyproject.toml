@@ -17,9 +17,9 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "tqdm>=4.67.1",
     "weaviate-agents>=1.1.0",
-    "weaviate-client",
+    "weaviate-client>=4.18.1",
     "weaviate-demo-datasets>=0.7.0",
 ]
 
 [tool.uv.sources]
-weaviate-client = { git = "https://github.com/weaviate/weaviate-python-client.git", rev = "dev/1.34" }
+

@@ -660,7 +660,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "weaviate-agents", specifier = ">=1.1.0" },
-    { name = "weaviate-client", git = "https://github.com/weaviate/weaviate-python-client.git?rev=dev%2F1.34" },
+    { name = "weaviate-client", specifier = ">=4.18.1" },
     { name = "weaviate-demo-datasets", specifier = ">=0.7.0" },
 ]
 
@@ -3125,8 +3125,8 @@ wheels = [
 
 [[package]]
 name = "weaviate-client"
-version = "4.17.1.dev18+g191416eb2"
-source = { git = "https://github.com/weaviate/weaviate-python-client.git?rev=dev%2F1.34#191416eb2d048f91acbd4e8322c4efda326937f8" }
+version = "4.18.1"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "authlib" },
     { name = "deprecation" },
@@ -3135,6 +3135,10 @@ dependencies = [
     { name = "protobuf" },
     { name = "pydantic" },
     { name = "validators" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7a/18/f37689c69984c426a5ae75a5fefa324654e0cd09be3a15d12b5aa16b4b85/weaviate_client-4.18.1.tar.gz", hash = "sha256:df682f7e91b51ac4428d85a092297203ab688a532851ac11f855a97ea85b7283", size = 780326 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/df/54c14564b96cfc71e41f73fc431fbbce2251374e55eb1d86010d36e811dd/weaviate_client-4.18.1-py3-none-any.whl", hash = "sha256:18929badab8b5c05b8464467029972aabccd19d0bad79624c0067abc2ca3c05e", size = 598077 },
 ]
 
 [[package]]
