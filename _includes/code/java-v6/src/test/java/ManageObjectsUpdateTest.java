@@ -2,9 +2,8 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.Vectors;
-import io.weaviate.client6.v1.api.collections.query.QueryMetadata;
+import io.weaviate.client6.v1.api.collections.query.ReadWeaviateObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -83,7 +82,7 @@ class ManageObjectsUpdateTest {
     CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
 
     // fetch the object to update
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> objectDataOpt =
+    Optional<ReadWeaviateObject<Map<String, Object>>> objectDataOpt =
         collection.query.fetchObjectById(uuidToUpdate);
     if (objectDataOpt.isEmpty()) {
       return;
@@ -116,7 +115,7 @@ class ManageObjectsUpdateTest {
     );
     // END UpdateProps
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result1 =
+    Optional<ReadWeaviateObject<Map<String, Object>>> result1 =
         jeopardy.query.fetchObjectById(uuid);
     assertThat(result1).isPresent();
     assertThat(result1.get().properties().get("points")).isEqualTo(100.0);
@@ -132,7 +131,7 @@ class ManageObjectsUpdateTest {
     );
     // END UpdateVector
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result2 =
+    Optional<ReadWeaviateObject<Map<String, Object>>> result2 =
         jeopardy.query.fetchObjectById(uuid, q -> q.includeVector());
     assertThat(result2).isPresent();
     assertThat(result2.get().metadata().vectors().getSingle("default")).hasSize(384);
@@ -167,7 +166,7 @@ class ManageObjectsUpdateTest {
         )));
     // END Replace
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result3 =
+    Optional<ReadWeaviateObject<Map<String, Object>>> result3 =
         jeopardy.query.fetchObjectById(uuid);
     assertThat(result3).isPresent();
     assertThat(result3.get().properties().get("answer")).isEqualTo("Replaced");
@@ -177,7 +176,7 @@ class ManageObjectsUpdateTest {
     delProps(client, uuid, "JeopardyQuestion", List.of("answer"));
     // END DelProps
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result4 =
+    Optional<ReadWeaviateObject<Map<String, Object>>> result4 =
         jeopardy.query.fetchObjectById(uuid);
     assertThat(result4).isPresent();
     assertThat(result4.get().properties().get("answer")).isNull();

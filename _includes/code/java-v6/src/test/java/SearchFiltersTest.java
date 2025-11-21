@@ -3,7 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
-import io.weaviate.client6.v1.api.collections.query.QueryReference;
+import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
 import io.weaviate.client6.v1.api.collections.query.Filter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -236,28 +236,30 @@ class SearchFilterTest {
     // END MultipleFiltersNested
   }
 
-  @Test
-  void testCrossReference() {
-    // START CrossReference
-    CollectionHandle<Map<String, Object>> jeopardy =
-        client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(q -> q
-        // highlight-start
-        .filters(Filter.reference("hasCategory", "JeopardyQuestion", "title")
-            .eq("Sport"))
-        .returnReferences(QueryReference.single("hasCategory",
-            r -> r.returnProperties("title")))
-        // highlight-end
-        .limit(3));
+  // @Test
+  // void testCrossReference() {
+  //   CollectionHandle<Map<String, Object>> jeopardy =
+  //       client.collections.use("JeopardyQuestion");
+  //   var response = jeopardy.query.fetchObjects(q -> q
+  //       // highlight-start
+  //       .filters(Filter.reference("hasCategory", "JeopardyQuestion", "title")
+  //           .eq("Sport"))
+  //       .returnReferences(QueryReference.single("hasCategory",
+  //           r -> r.returnProperties("title")))
+  //       // highlight-end
+  //       .limit(3));
 
-    for (var o : response.objects()) {
-      System.out.println(o.properties());
-      if (o.references() != null && o.references().get("hasCategory") != null) {
-        System.out.println(o.references().get("hasCategory").get(0));
-      }
-    }
-    // END CrossReference
-  }
+  //   for (var o : response.objects()) {
+  //     System.out.println(o.properties());
+  //     if (o.references() != null && o.references().get("hasCategory") != null) {
+  //       System.out.println(o.references().get("hasCategory").get(0));
+  //     }
+  //   }
+
+  // }
+  // START CrossReference
+  // Coming soon
+  // END CrossReference
 
   @Test
   void testFilterById() {
@@ -266,8 +268,8 @@ class SearchFilterTest {
         client.collections.use("Article");
 
     String targetId = "00037775-1432-35e5-bc59-443baaef7d80";
-    var response =
-        collection.query.fetchObjects(q -> q.filters(Filter.uuid().eq(targetId)));
+    var response = collection.query
+        .fetchObjects(q -> q.filters(Filter.uuid().eq(targetId)));
 
     for (var o : response.objects()) {
       System.out.println(o.properties()); // Inspect returned objects
@@ -316,7 +318,8 @@ class SearchFilterTest {
       var collection = client.collections.use(collectionName);
 
       // 1. Create a list to hold all the objects for insertion.
-      List<Map<String, Object>> objects = new ArrayList<>();
+      List<WriteWeaviateObject<Map<String, Object>>> objects =
+          new ArrayList<>();
 
       // 2. Populate the list with your data.
       for (int year = 2020; year <= 2024; year++) {
@@ -325,18 +328,18 @@ class SearchFilterTest {
             Instant date =
                 OffsetDateTime.of(year, month, day, 0, 0, 0, 0, ZoneOffset.UTC)
                     .toInstant();
-            objects.add(
+            Map<String, Object> properties =
                 Map.of("title", String.format("Object: yr/month/day:%d/%d/%d",
-                    year, month, day), "some_date", date));
+                    year, month, day), "some_date", date.toString() // Convert Instant to ISO-8601 string
+                );
+            objects.add(WriteWeaviateObject.<Map<String, Object>>of(
+                builder -> builder.properties(properties)));
           }
         }
       }
 
       // 3. Call insertMany with the list of objects.
-      // Note: We convert the List to an array to match the method's varargs
-      // signature.
-      InsertManyResponse insertResponse =
-          collection.data.insertMany(objects.toArray(new Map[0]));
+      InsertManyResponse insertResponse = collection.data.insertMany(objects);
 
       // 4. (Optional) Check for errors.
       if (!insertResponse.errors().isEmpty()) {
@@ -385,7 +388,7 @@ class SearchFilterTest {
         client.collections.use("JeopardyQuestion");
     var response = collection.query.fetchObjects(q -> q.limit(3)
         // highlight-start
-        .filters(Filter.property("answer").gt(lengthThreshold))
+        .filters(Filter.propertyLen("answer").gt(lengthThreshold))
     // highlight-end
     );
 
@@ -397,27 +400,23 @@ class SearchFilterTest {
   }
 
   // TODO[g-despot] How to filter for property null state?
-  // @Test
-  // void testFilterByPropertyNullState() {
-  // // START FilterByPropertyNullState
-  // CollectionHandle<Map<String, Object>> collection =
-  // client.collections.use("WineReview");
-  // var response = collection.query.fetchObjects(
-  // q -> q
-  // .limit(3)
-  // // highlight-start
-  // // This requires the `country` property to be configured with
-  // // `index_null_state=True``
-  // .filters(Filter.property("country").isNull()) // Find objects where the
-  // `country` property is null
-  // // highlight-end
-  // );
+  @Test
+  void testFilterByPropertyNullState() {
+    // START FilterByPropertyNullState
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("WineReview");
+    var response = collection.query.fetchObjects(q -> q.limit(3)
+        // highlight-start
+        // This requires the `country` property to be configured with`index_null_state=True``
+        .filters(Filter.property("country").isNull()) // Find objects where the `country` property is null
+    // highlight-end
+    );
 
-  // for (var o : response.objects()) {
-  // System.out.println(o.properties()); // Inspect returned objects
-  // }
-  // // END FilterByPropertyNullState
-  // }
+    for (var o : response.objects()) {
+      System.out.println(o.properties()); // Inspect returned objects
+    }
+    // END FilterByPropertyNullState
+  }
 
   @Test
   void testFilterByGeolocation() throws Exception {
@@ -432,8 +431,8 @@ class SearchFilterTest {
           Map.of("latitude", 52.3932696, "longitude", 4.8374263)));
 
       // START FilterbyGeolocation
-      var response = publications.query
-          .fetchObjects(q -> q.filters(Filter.property("headquartersGeoLocation")
+      var response = publications.query.fetchObjects(
+          q -> q.filters(Filter.property("headquartersGeoLocation")
               .withinGeoRange(52.39f, 4.84f, 1000.0f) // In meters
           ));
 

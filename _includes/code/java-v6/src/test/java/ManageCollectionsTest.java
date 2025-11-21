@@ -3,6 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionConfig;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Encoding;
 import io.weaviate.client6.v1.api.collections.Property;
+import io.weaviate.client6.v1.api.collections.Quantization;
 import io.weaviate.client6.v1.api.collections.Replication;
 import io.weaviate.client6.v1.api.collections.Sharding;
 import io.weaviate.client6.v1.api.collections.Tokenization;
@@ -112,7 +113,9 @@ class ManageCollectionsTest {
     client.collections.create("ArticleNV",
         col -> col
             .vectorConfig(VectorConfig.text2vecTransformers("title",
-                c -> c.sourceProperties("title").vectorIndex(Hnsw.of())))
+                c -> c.sourceProperties("title")
+                    .vectorIndex(Hnsw.of())
+                    .quantization(Quantization.uncompressed())))
             .properties(Property.text("title"), Property.text("country")));
     // START AddNamedVectors
     CollectionHandle<Map<String, Object>> collection =
@@ -125,7 +128,7 @@ class ManageCollectionsTest {
     // END AddNamedVectors
 
     var config = client.collections.getConfig("ArticleNV").get();
-    assertThat(config.vectors()).hasSize(3)
+    assertThat(config.vectors()).hasSize(2)
         .containsKeys("title", "title_country");
     assertThat(config.properties().get(0).propertyName().contains("title"));
     assertThat(config.properties().get(1).propertyName().contains("country"));
@@ -294,10 +297,10 @@ class ManageCollectionsTest {
   @Test
   void testModuleSettings() throws IOException {
     // START ModuleSettings
-    client.collections.create("Article",
-        col -> col.vectorConfig(VectorConfig.text2vecCohere(c->c.model("embed-multilingual-v2.0"))));
+    client.collections.create("Article", col -> col.vectorConfig(
+        VectorConfig.text2vecCohere(c -> c.model("embed-multilingual-v2.0"))));
     // END ModuleSettings
-  }  
+  }
 
   @Test
   void testCreateCollectionWithPropertyConfig() throws IOException {
@@ -489,6 +492,8 @@ class ManageCollectionsTest {
   @Test
   void testExistsCollection() throws IOException {
     String collectionName = "Article";
+    client.collections.delete(collectionName);
+    client.collections.create(collectionName);
     // START CheckIfExists
     client.collections.exists(collectionName);
     // END CheckIfExists

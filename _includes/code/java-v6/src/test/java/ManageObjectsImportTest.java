@@ -1,14 +1,12 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.ObjectMetadata;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.ReferenceProperty;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.data.BatchReference;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
-import io.weaviate.client6.v1.api.collections.data.Reference;
+import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
 
 import org.junit.jupiter.api.AfterAll;
@@ -52,13 +50,14 @@ class ManageObjectsImportTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
     // Download data file for streaming tests
     try (InputStream in = URI.create(
         "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_1k.json")
-            .toURL().openStream()) {
+        .toURL()
+        .openStream()) {
       Files.copy(in, Paths.get("jeopardy_1k.json"));
     }
   }
@@ -77,7 +76,8 @@ class ManageObjectsImportTest {
   @Test
   void testBasicBatchImport() throws IOException {
     // Define and create the class
-    client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BasicBatchImportExample
     List<Map<String, Object>> dataRows = new ArrayList<>();
@@ -95,12 +95,14 @@ class ManageObjectsImportTest {
     // highlight-end
 
     if (!response.errors().isEmpty()) {
-      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err
+          .println("Number of failed imports: " + response.errors().size());
       System.err.println("First failed object: " + response.errors().get(0));
     }
     // END BasicBatchImportExample
 
-    var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
     assertThat(result.totalCount()).isEqualTo(5);
 
     client.collections.delete("MyCollection");
@@ -113,16 +115,17 @@ class ManageObjectsImportTest {
   @Test
   // TODO[g-despot]: DX: Somewhere it's string somewhere it's UUID, can we supply it as a string directly without ObjectMetadata?
   void testBatchImportWithID() throws IOException {
-    client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithIDExample
-    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects =
+    List<WriteWeaviateObject<Map<String, Object>>> dataObjects =
         new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
       UUID objUuid = generateUuid5(dataRow.toString());
-      dataObjects.add(WeaviateObject.of(
-          obj -> obj.properties(dataRow).metadata(ObjectMetadata.of(meta -> meta.uuid(objUuid)))));
+      dataObjects.add(WriteWeaviateObject
+          .of(obj -> obj.properties(dataRow).uuid(objUuid.toString())));
     }
 
     var collection = client.collections.use("MyCollection");
@@ -132,14 +135,16 @@ class ManageObjectsImportTest {
     // highlight-end
 
     if (!response.errors().isEmpty()) {
-      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err
+          .println("Number of failed imports: " + response.errors().size());
       System.err.println("First failed object: " + response.errors().get(0));
     }
     // END BatchImportWithIDExample
 
-    var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
     assertThat(result.totalCount()).isEqualTo(5);
-    String lastUuid = dataObjects.get(4).metadata().uuid();
+    String lastUuid = dataObjects.get(4).uuid();
     assertThat(collection.data.exists(lastUuid)).isTrue();
 
     client.collections.delete("MyCollection");
@@ -147,10 +152,11 @@ class ManageObjectsImportTest {
 
   @Test
   void testBatchImportWithVector() throws IOException {
-    client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithVectorExample
-    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects =
+    List<WriteWeaviateObject<Map<String, Object>>> dataObjects =
         new ArrayList<>();
     float[] vector = new float[10]; // Using a small vector for demonstration
     Arrays.fill(vector, 0.1f);
@@ -158,8 +164,8 @@ class ManageObjectsImportTest {
     for (int i = 0; i < 5; i++) {
       Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
       UUID objUuid = generateUuid5(dataRow.toString());
-      dataObjects.add(WeaviateObject.of(obj -> obj.properties(dataRow)
-          .metadata(ObjectMetadata.of(meta -> meta.uuid(objUuid).vectors(Vectors.of(vector))))));
+      dataObjects.add(WriteWeaviateObject.of(obj -> obj.properties(dataRow)
+          .uuid(objUuid.toString()).vectors(Vectors.of(vector))));
     }
 
     var collection = client.collections.use("MyCollection");
@@ -169,12 +175,14 @@ class ManageObjectsImportTest {
     // highlight-end
 
     if (!response.errors().isEmpty()) {
-      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err
+          .println("Number of failed imports: " + response.errors().size());
       System.err.println("First failed object: " + response.errors().get(0));
     }
     // END BatchImportWithVectorExample
 
-    var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
     assertThat(result.totalCount()).isEqualTo(5);
 
     client.collections.delete("MyCollection");
@@ -182,25 +190,30 @@ class ManageObjectsImportTest {
 
   @Test
   void testBatchImportWithCrossReference() throws IOException {
-    client.collections.create("Publication", col -> col.properties(Property.text("title")));
-    client.collections.create("Author", col -> col.properties(Property.text("name"))
-        .references(new ReferenceProperty("writesFor", List.of("Publication"))));
+    client.collections.create("Publication",
+        col -> col.properties(Property.text("title")));
+    client.collections.create("Author",
+        col -> col.properties(Property.text("name"))
+            .references(
+                new ReferenceProperty("writesFor", List.of("Publication"))));
 
     var authors = client.collections.use("Author");
     var publications = client.collections.use("Publication");
 
     var from = authors.data.insert(Map.of("name", "Jane Austen"));
-    var fromUuid = from.metadata().uuid();
-    var targetUuid = publications.data.insert(Map.of("title", "Ye Olde Times")).metadata().uuid();
+    var fromUuid = from.uuid();
+    var targetUuid =
+        publications.data.insert(Map.of("title", "Ye Olde Times")).uuid();
 
     // START BatchImportWithRefExample
     var collection = client.collections.use("Author");
 
-    var response =
-        collection.data.referenceAddMany(BatchReference.uuids(from, "writesFor", targetUuid));
+    var response = collection.data
+        .referenceAddMany(BatchReference.uuids(from, "writesFor", targetUuid));
 
     if (!response.errors().isEmpty()) {
-      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err
+          .println("Number of failed imports: " + response.errors().size());
       System.err.println("First failed object: " + response.errors().get(0));
     }
     // END BatchImportWithRefExample
@@ -217,7 +230,8 @@ class ManageObjectsImportTest {
     // Define and create the class
     client.collections.create("MyCollection",
         col -> col
-            .vectorConfig(VectorConfig.selfProvided("title"), VectorConfig.selfProvided("body"))
+            .vectorConfig(VectorConfig.selfProvided("title"),
+                VectorConfig.selfProvided("body"))
             .properties(Property.text("title"), Property.text("body")));
     // START BatchImportWithNamedVectors
     // Prepare the data and vectors
@@ -226,7 +240,8 @@ class ManageObjectsImportTest {
     List<float[]> bodyVectors = new ArrayList<>();
 
     for (int i = 0; i < 5; i++) {
-      dataRows.add(Map.of("title", "Object " + (i + 1), "body", "Body " + (i + 1)));
+      dataRows
+          .add(Map.of("title", "Object " + (i + 1), "body", "Body " + (i + 1)));
 
       float[] titleVector = new float[1536];
       Arrays.fill(titleVector, 0.12f);
@@ -237,21 +252,19 @@ class ManageObjectsImportTest {
       bodyVectors.add(bodyVector);
     }
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("MyCollection");
 
-    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> objectsToInsert =
+    List<WriteWeaviateObject<Map<String, Object>>> objectsToInsert =
         new ArrayList<>();
     for (int i = 0; i < dataRows.size(); i++) {
       int index = i;
       objectsToInsert.add(
           // highlight-start
           // Use the Builder with the EXACT matching generic types
-          new WeaviateObject.Builder<Map<String, Object>, Reference, ObjectMetadata>()
-              .properties(dataRows.get(index))
-              .metadata(ObjectMetadata
-                  .of(meta -> meta.vectors(Vectors.of("title", titleVectors.get(index)),
-                      Vectors.of("body", bodyVectors.get(index)))))
-              .build());
+          WriteWeaviateObject.of(v -> v.properties(dataRows.get(index))
+              .vectors(Vectors.of("title", titleVectors.get(index)),
+                  Vectors.of("body", bodyVectors.get(index)))));
       // highlight-end
 
     }
@@ -263,8 +276,10 @@ class ManageObjectsImportTest {
 
     // Check for errors
     if (!response.errors().isEmpty()) {
-      System.err.printf("Number of failed imports: %d\n", response.errors().size());
-      System.err.printf("First failed object error: %s\n", response.errors().get(0));
+      System.err.printf("Number of failed imports: %d\n",
+          response.errors().size());
+      System.err.printf("First failed object error: %s\n",
+          response.errors().get(0));
     }
     // END BatchImportWithNamedVectors
   }
@@ -279,8 +294,10 @@ class ManageObjectsImportTest {
     var collection = client.collections.use("JeopardyQuestion");
     Gson gson = new Gson();
 
-    System.out.println("JSON streaming, to avoid running out of memory on large files...");
-    try (JsonReader reader = new JsonReader(new FileReader("jeopardy_1k.json"))) {
+    System.out.println(
+        "JSON streaming, to avoid running out of memory on large files...");
+    try (JsonReader reader =
+        new JsonReader(new FileReader("jeopardy_1k.json"))) {
       reader.beginArray();
       while (reader.hasNext()) {
         Map<String, String> obj = gson.fromJson(reader, Map.class);
@@ -306,7 +323,8 @@ class ManageObjectsImportTest {
     System.out.println("Finished importing articles.");
     // END JSON streaming
 
-    var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
     assertThat(result.totalCount()).isEqualTo(1000);
 
     client.collections.delete("JeopardyQuestion");
@@ -322,7 +340,8 @@ class ManageObjectsImportTest {
       writer.write("Question,Answer\n");
       while (reader.hasNext()) {
         Map<String, String> obj = gson.fromJson(reader, Map.class);
-        writer.write("\"" + obj.get("Question") + "\",\"" + obj.get("Answer") + "\"\n");
+        writer.write(
+            "\"" + obj.get("Question") + "\",\"" + obj.get("Answer") + "\"\n");
       }
       reader.endArray();
     }
@@ -334,8 +353,10 @@ class ManageObjectsImportTest {
     List<Map<String, Object>> batch = new ArrayList<>(batchSize);
     var collection = client.collections.use("JeopardyQuestion");
 
-    System.out.println("CSV streaming to not load all records in RAM at once...");
-    try (BufferedReader csvReader = new BufferedReader(new FileReader("jeopardy_1k.csv"))) {
+    System.out
+        .println("CSV streaming to not load all records in RAM at once...");
+    try (BufferedReader csvReader =
+        new BufferedReader(new FileReader("jeopardy_1k.csv"))) {
       String line = csvReader.readLine(); // skip header
       while ((line = csvReader.readLine()) != null) {
         String[] data = line.split("\",\"");
@@ -360,7 +381,8 @@ class ManageObjectsImportTest {
     System.out.println("Finished importing articles.");
     // END CSV streaming
 
-    var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
     assertThat(result.totalCount()).isEqualTo(1000);
 
     Files.deleteIfExists(Paths.get("jeopardy_1k.csv"));

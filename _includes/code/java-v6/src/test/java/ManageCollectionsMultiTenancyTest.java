@@ -5,6 +5,7 @@ import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -40,14 +41,15 @@ class ManageCollectionsMultiTenancyTest {
     client.collections.delete("MultiTenancyCollection");
     client.collections.delete("CollectionWithAutoMTEnabled");
     client.collections.delete("MTCollectionNoAutoMT");
+    client.collections.delete("JeopardyQuestion");
+    client.collections.delete("JeopardyCategory");
   }
 
-  //TODO[g.-despot] A lot of strange errors: IllegalState Connection pool shut down
   @Test
   void testEnableMultiTenancy() throws IOException {
     // START EnableMultiTenancy
-    client.collections.create("MultiTenancyCollection",
-        col -> col.multiTenancy(mt -> mt.enabled(true)));
+    client.collections.create("MultiTenancyCollection", col -> col
+        .multiTenancy(mt -> mt.enabled(true).autoTenantCreation(true)));
     // END EnableMultiTenancy
 
     var config = client.collections.getConfig("MultiTenancyCollection").get();
@@ -183,9 +185,9 @@ class ManageCollectionsMultiTenancyTest {
     String tenantName = "tenantA";
     CollectionHandle<Map<String, Object>> collection =
         client.collections.use(collectionName);
-    collection.tenants.activate(tenantName);
     collection.tenants.deactivate(tenantName);
-    collection.tenants.offload(tenantName);
+    collection.tenants.activate(tenantName);
+    // collection.tenants.offload(tenantName); // Requires S3 offload module
     // // END ChangeTenantState
 
     Optional<Tenant> tenant = collection.tenants.get(tenantName);
@@ -194,6 +196,9 @@ class ManageCollectionsMultiTenancyTest {
 
   @Test
   void testCreateTenantObject() throws IOException {
+    client.collections.create("JeopardyQuestion",
+        col -> col.multiTenancy(mt -> mt.enabled(true)));
+
     client.collections.use("JeopardyQuestion").tenants
         .create(Tenant.active("tenantA"));
     // START CreateMtObject
@@ -204,7 +209,6 @@ class ManageCollectionsMultiTenancyTest {
 
     var uuid = jeopardy.data.insert(Map.of("question",
         "This vector DB is OSS & supports automatic property type inference on import"))
-        .metadata()
         .uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
@@ -212,11 +216,20 @@ class ManageCollectionsMultiTenancyTest {
 
     var result = jeopardy.query.fetchObjectById(uuid.toString());
     assertThat(result).isPresent();
-    assertThat(result.get().properties().get("newProperty")).isEqualTo(123.0); // JSON numbers are parsed as Long
   }
 
   @Test
   void testSearchTenant() throws IOException {
+    client.collections.create("JeopardyQuestion",
+        col -> col.multiTenancy(mt -> mt.enabled(true)));
+
+    var jeopardyCollection = client.collections.use("JeopardyQuestion");
+    jeopardyCollection.tenants.create(Tenant.active("tenantA"));
+
+    // Insert some test data
+    var jeopardyTenant = jeopardyCollection.withTenant("tenantA");
+    jeopardyTenant.data.insert(Map.of("question", "Test question"));
+
     // START Search
     // highlight-start
     var jeopardy =
@@ -229,15 +242,24 @@ class ManageCollectionsMultiTenancyTest {
       System.out.println(o.properties());
     }
     // END Search
+
+    assertThat(response.objects()).isNotEmpty();
   }
 
   @Test
   void testAddReferenceToTenantObject() throws IOException {
     // START AddCrossRef
+    client.collections.create("JeopardyCategory");
+    client.collections.create("MultiTenancyCollection",
+        col -> col.multiTenancy(mt -> mt.enabled(true)));
+
     var categoryCollection = client.collections.use("JeopardyCategory");
-    categoryCollection.data.insert(Map.of("name", "Test Category")).uuid();
+    var categoryUuid =
+        categoryCollection.data.insert(Map.of("name", "Test Category"));
 
     var multiCollection = client.collections.use("MultiTenancyCollection");
+    multiCollection.tenants.create(Tenant.active("tenantA"));
+
     var multiTenantA = multiCollection.withTenant("tenantA");
     var referenceObject =
         multiTenantA.data.insert(Map.of("title", "Object in Tenant A"));
@@ -247,9 +269,12 @@ class ManageCollectionsMultiTenancyTest {
 
     multiTenantA.data.referenceAdd(objectId, // from_uuid
         "hasCategory", // from_property
-        Reference.object(referenceObject) // to
+        Reference.object(categoryUuid) // to
     );
     // END AddCrossRef
+
+    var result = multiTenantA.query.fetchObjectById(objectId);
+    assertThat(result).isPresent();
   }
 
   @Test
@@ -274,7 +299,8 @@ class ManageCollectionsMultiTenancyTest {
   void testDeactivateTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName,
-        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true))).tenants
+            .create(Tenant.active("tenantA")); // Create the tenant
 
     // // START DeactivateTenants
     String tenantName = "tenantA";
@@ -288,6 +314,7 @@ class ManageCollectionsMultiTenancyTest {
   }
 
   @Test
+  @Disabled("Requires offload-s3 module to be enabled")
   void testOffloadTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName,

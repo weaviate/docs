@@ -171,7 +171,6 @@ class ConnectionTest {
     // Best practice: store your credentials in environment variables
     final String weaviateApiKey = System.getenv("WEAVIATE_LOCAL_API_KEY");
 
-    // The local() factory doesn't support auth, so we must use custom().
     WeaviateClient client =
         WeaviateClient.connectToCustom(config -> config.httpHost("127.0.0.1")
             .scheme("http")

@@ -60,7 +60,7 @@ class ManageObjectsDeleteTest {
     assertThat(collection.query.fetchObjectById(uuidToDelete)).isPresent();
 
     // START DeleteObject
-    collection.data.delete(uuidToDelete);
+    collection.data.deleteById(uuidToDelete);
     // END DeleteObject
 
     assertThat(collection.query.fetchObjectById(uuidToDelete)).isNotPresent();
@@ -151,7 +151,7 @@ class ManageObjectsDeleteTest {
 
     collection.data.deleteMany(
         // highlight-start
-        Filter.uuid().containsAny(ids) // Delete the 3 objects
+        Filter.uuid().containsAny(ids.toArray(new String[0])) // Delete the 3 objects
     // highlight-end
     );
     // END DeleteByIDBatch

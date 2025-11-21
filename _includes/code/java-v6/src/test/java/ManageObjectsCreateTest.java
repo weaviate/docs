@@ -74,7 +74,7 @@ class ManageObjectsCreateTest {
         "This vector DB is OSS & supports automatic property type inference on import",
         // "answer": "Weaviate", // properties can be omitted
         "newProperty", 123 // will be automatically added as a number property
-    )).metadata().uuid();
+    )).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateSimpleObject
@@ -92,9 +92,9 @@ class ManageObjectsCreateTest {
         "This vector DB is OSS and supports automatic property type inference on import",
         "answer", "Weaviate"),
         // highlight-start
-        meta -> meta.vectors(Vectors.of(new float[300])) // Using a zero vector for demonstration
+        meta -> meta.vectors(Vectors.of(new float[384])) // Using a zero vector for demonstration
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectWithVector
@@ -117,7 +117,7 @@ class ManageObjectsCreateTest {
             Vectors.of("review_body", new float[1536]),
             Vectors.of("title_country", new float[1536]))
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectNamedVectors
@@ -148,11 +148,11 @@ class ManageObjectsCreateTest {
         // highlight-start
         meta -> meta.uuid(generateUuid5(dataObject.toString()).toString())
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
     // END CreateObjectWithDeterministicId
 
     assertThat(uuid).isEqualTo(generateUuid5(dataObject.toString()).toString());
-    jeopardy.data.delete(uuid); // Clean up
+    jeopardy.data.deleteById(uuid); // Clean up
   }
 
   @Test
@@ -168,7 +168,7 @@ class ManageObjectsCreateTest {
         // highlight-start
         meta -> meta.uuid("12345678-e64f-5d94-90db-c8cfa3fc1234")
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectWithId
@@ -187,12 +187,11 @@ class ManageObjectsCreateTest {
     var uuid = publications.data
         .insert(Map.of("headquartersGeoLocation",
             Map.of("latitude", 52.3932696, "longitude", 4.8374263)))
-        .metadata()
         .uuid();
     // END WithGeoCoordinates
 
     assertThat(publications.data.exists(uuid)).isTrue();
-    publications.data.delete(uuid);
+    publications.data.deleteById(uuid);
   }
 
   @Test
@@ -215,7 +214,7 @@ class ManageObjectsCreateTest {
     // END CheckForAnObject
 
     assertThat(authorExists).isTrue();
-    authors.data.delete(objectUuid);
+    authors.data.deleteById(objectUuid);
     assertThat(authors.data.exists(objectUuid)).isFalse();
   }
 

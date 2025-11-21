@@ -195,13 +195,21 @@ class SearchBasicTest {
   }
 
   @Test
-  void testGetWithConsistencyLevel() {
-    // START QueryWithReplication
+  void testGetWithConsistencyLevel() throws IOException {
+    // Insert an object first and get its UUID
     CollectionHandle<Map<String, Object>> jeopardy =
-        client.collections.use("JeopardyQuestion")
-            .withConsistencyLevel(ConsistencyLevel.QUORUM);
+        client.collections.use("JeopardyQuestion");
+
+    String uuid = jeopardy.data
+        .insert(Map.of("question", "This is a test question", "answer",
+            "test answer"))
+        .uuid();
+
+    // START QueryWithReplication
+    var jeopardyWithConsistency = client.collections.use("JeopardyQuestion")
+        .withConsistencyLevel(ConsistencyLevel.QUORUM);
     // highlight-start
-    var response = jeopardy.query.fetchObjectById("36ddd591-2dee-4e7e-a3cc-eb86d30a4303");
+    var response = jeopardyWithConsistency.query.fetchObjectById(uuid);
     // highlight-end
 
     System.out.println(response.get().properties());

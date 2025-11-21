@@ -108,9 +108,10 @@ class SearchAggregateTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.nearText("animals in space", a -> a
         // highlight-start
-        .objectLimit(10)
-        // highlight-end
-        .metrics(Aggregate.number("points", m -> m.sum())));
+        .distance(0)
+    // highlight-end
+        , n -> n.includeTotalCount(false)
+            .metrics(Aggregate.number("points", m -> m.sum())));
 
     System.out.println(response.properties().get("points"));
     // END nearTextWithLimit

@@ -1,12 +1,10 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Generative;
-import io.weaviate.client6.v1.api.collections.ObjectMetadata;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.data.Reference;
-import io.weaviate.client6.v1.api.collections.query.QueryMetadata;
+import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
+import io.weaviate.client6.v1.api.collections.query.ReadWeaviateObject;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -34,10 +32,11 @@ class ManageCollectionsMigrateDataTest {
   public static void beforeAll() throws IOException {
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
     // Connect to the source Weaviate instance
-    clientSrc = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    clientSrc = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // Connect to the target Weaviate instance
-    clientTgt = WeaviateClient.connectToLocal(config -> config.port(8090).grpcPort(50061)
+    clientTgt = WeaviateClient.connectToLocal(config -> config.port(8090)
+        .grpcPort(50061)
         .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
 
 
@@ -54,7 +53,8 @@ class ManageCollectionsMigrateDataTest {
 
     var wineReviewMT = clientSrc.collections.use("WineReviewMT");
     wineReviewMT.tenants.create(List.of(Tenant.active("tenantA")));
-    wineReviewMT.withTenant("tenantA").data.insertMany(wineReviewData.toArray(new Map[0]));
+    wineReviewMT.withTenant("tenantA").data
+        .insertMany(wineReviewData.toArray(new Map[0]));
 
     assertThat(clientSrc.isReady()).isTrue();
   }
@@ -77,39 +77,40 @@ class ManageCollectionsMigrateDataTest {
   }
 
   // START CreateCollectionCollectionToCollection // START CreateCollectionCollectionToTenant // START CreateCollectionTenantToCollection // START CreateCollectionTenantToTenant
-  private static CollectionHandle<Map<String, Object>> createCollection(WeaviateClient clientIn,
-      String collectionName, boolean enableMt) throws IOException {
+  private static CollectionHandle<Map<String, Object>> createCollection(
+      WeaviateClient clientIn, String collectionName, boolean enableMt)
+      throws IOException {
     // END CreateCollectionCollectionToCollection // END CreateCollectionCollectionToTenant // END CreateCollectionTenantToCollection // END CreateCollectionTenantToTenant
     if (clientIn.collections.exists(collectionName)) {
       clientIn.collections.delete(collectionName);
     }
     // START CreateCollectionCollectionToCollection // START CreateCollectionCollectionToTenant // START CreateCollectionTenantToCollection // START CreateCollectionTenantToTenant
-    clientIn.collections.create(collectionName, col -> col.multiTenancy(c -> c.enabled(enableMt))
-        // Additional settings not shown
-        .vectorConfig(VectorConfig.text2vecTransformers()).generativeModule(Generative.cohere())
-        .properties(Property.text("review_body"), Property.text("title"), Property.text("country"),
-            Property.integer("points"), Property.number("price")));
+    clientIn.collections.create(collectionName,
+        col -> col.multiTenancy(c -> c.enabled(enableMt))
+            // Additional settings not shown
+            .vectorConfig(VectorConfig.text2vecTransformers())
+            .generativeModule(Generative.cohere())
+            .properties(Property.text("review_body"), Property.text("title"),
+                Property.text("country"), Property.integer("points"),
+                Property.number("price")));
 
     return clientIn.collections.use(collectionName);
   }
 
   // END CreateCollectionCollectionToCollection // END CreateCollectionCollectionToTenant // END CreateCollectionTenantToCollection // END CreateCollectionTenantToTenant
 
-  // TODO[g-despot] No include vector in paginate
   // START CollectionToCollection // START TenantToCollection // START CollectionToTenant // START TenantToTenant
   private void migrateData(CollectionHandle<Map<String, Object>> collectionSrc,
       CollectionHandle<Map<String, Object>> collectionTgt) {
     System.out.println("Starting data migration...");
-    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> sourceObjects =
-        StreamSupport
-            .stream(collectionSrc.paginate(p -> p.returnMetadata()).spliterator(),
-                false)
-            .map((
-                WeaviateObject<Map<String, Object>, Object, QueryMetadata> obj) -> new WeaviateObject.Builder<Map<String, Object>, Reference, ObjectMetadata>()
-                    .properties(obj.properties())
-                    .metadata(ObjectMetadata.of(m -> m.uuid(obj.uuid()).vectors(obj.vectors())))
-                    .build())
-            .collect(Collectors.toList());
+    List<WriteWeaviateObject<Map<String, Object>>> sourceObjects = StreamSupport
+        .stream(collectionSrc.paginate(p -> p.includeVector()).spliterator(),
+            false)
+        .map(readObj -> WriteWeaviateObject.<Map<String, Object>>of(
+            builder -> builder.properties(readObj.properties())
+                .uuid(readObj.uuid())
+                .vectors(readObj.vectors())))
+        .collect(Collectors.toList());
 
     collectionTgt.data.insertMany(sourceObjects);
 
@@ -118,25 +119,29 @@ class ManageCollectionsMigrateDataTest {
 
   // END CollectionToCollection // END TenantToCollection // END CollectionToTenant // END TenantToTenant
 
-  private boolean verifyMigration(CollectionHandle<Map<String, Object>> collectionSrc,
+  private boolean verifyMigration(
+      CollectionHandle<Map<String, Object>> collectionSrc,
       CollectionHandle<Map<String, Object>> collectionTgt, int numSamples) {
-    List<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> srcObjects = StreamSupport
-        .stream(collectionSrc.paginate().spliterator(), false).collect(Collectors.toList());
+    List<ReadWeaviateObject<Map<String, Object>>> srcObjects =
+        StreamSupport.stream(collectionSrc.paginate().spliterator(), false)
+            .collect(Collectors.toList());
 
     if (srcObjects.isEmpty()) {
       System.out.println("No objects in source collection");
       return false;
     }
     Collections.shuffle(srcObjects);
-    List<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> sampledObjects =
+    List<ReadWeaviateObject<Map<String, Object>>> sampledObjects =
         srcObjects.subList(0, Math.min(numSamples, srcObjects.size()));
 
-    System.out.printf("Verifying %d random objects...\n", sampledObjects.size());
+    System.out.printf("Verifying %d random objects...\n",
+        sampledObjects.size());
     for (var srcObj : sampledObjects) {
-      Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> tgtObjOpt =
+      Optional<ReadWeaviateObject<Map<String, Object>>> tgtObjOpt = // Changed from WriteWeaviateObject
           collectionTgt.query.fetchObjectById(srcObj.uuid());
       if (tgtObjOpt.isEmpty()) {
-        System.out.printf("Object %s not found in target collection\n", srcObj.uuid());
+        System.out.printf("Object %s not found in target collection\n",
+            srcObj.uuid());
         return false;
       }
       if (!srcObj.properties().equals(tgtObjOpt.get().properties())) {
@@ -164,8 +169,8 @@ class ManageCollectionsMigrateDataTest {
     migrateData(reviewsSrc, reviewsTgt);
 
     // END CollectionToCollection
-    assertThat(reviewsTgt.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount())
-        .isEqualTo(DATASET_SIZE);
+    assertThat(reviewsTgt.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isEqualTo(DATASET_SIZE);
     assertThat(verifyMigration(reviewsSrc, reviewsTgt, 5)).isTrue();
     // START CollectionToCollection
   }
@@ -188,8 +193,8 @@ class ManageCollectionsMigrateDataTest {
     migrateData(reviewsSrcTenantA, reviewsTgt);
 
     // END TenantToCollection
-    assertThat(reviewsTgt.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount())
-        .isEqualTo(DATASET_SIZE);
+    assertThat(reviewsTgt.aggregate.overAll(a -> a.includeTotalCount(true))
+        .totalCount()).isEqualTo(DATASET_SIZE);
     assertThat(verifyMigration(reviewsSrcTenantA, reviewsTgt, 5)).isTrue();
     // START TenantToCollection
   }
@@ -205,7 +210,8 @@ class ManageCollectionsMigrateDataTest {
   void createTenants() throws IOException {
     var reviewsMtTgt = clientTgt.collections.use("WineReviewMT");
 
-    var tenantsTgt = List.of(Tenant.active("tenantA"), Tenant.active("tenantB"));
+    var tenantsTgt =
+        List.of(Tenant.active("tenantA"), Tenant.active("tenantB"));
     reviewsMtTgt.tenants.create(tenantsTgt);
   }
   // END CreateTenants // END CreateCollectionTenantToTenant
@@ -224,8 +230,9 @@ class ManageCollectionsMigrateDataTest {
     migrateData(reviewsSrc, reviewsTgtTenantA);
     // END CollectionToTenant
 
-    assertThat(reviewsTgtTenantA.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount())
-        .isEqualTo(DATASET_SIZE);
+    assertThat(
+        reviewsTgtTenantA.aggregate.overAll(a -> a.includeTotalCount(true))
+            .totalCount()).isEqualTo(DATASET_SIZE);
     assertThat(verifyMigration(reviewsSrc, reviewsTgtTenantA, 5)).isTrue();
     // START CollectionToTenant
   }
@@ -251,9 +258,11 @@ class ManageCollectionsMigrateDataTest {
     migrateData(reviewsSrcTenantA, reviewsTgtTenantA);
     // END TenantToTenant
 
-    assertThat(reviewsTgtTenantA.aggregate.overAll(a -> a.includeTotalCount(true)).totalCount())
-        .isEqualTo(DATASET_SIZE);
-    assertThat(verifyMigration(reviewsSrcTenantA, reviewsTgtTenantA, 5)).isTrue();
+    assertThat(
+        reviewsTgtTenantA.aggregate.overAll(a -> a.includeTotalCount(true))
+            .totalCount()).isEqualTo(DATASET_SIZE);
+    assertThat(verifyMigration(reviewsSrcTenantA, reviewsTgtTenantA, 5))
+        .isTrue();
     // START TenantToTenant
 
   }

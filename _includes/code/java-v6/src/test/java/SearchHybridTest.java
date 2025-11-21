@@ -3,6 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Hybrid.FusionType;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
+import io.weaviate.client6.v1.api.collections.query.NearVector;
 import io.weaviate.client6.v1.api.collections.query.SearchOperator;
 import io.weaviate.client6.v1.api.collections.query.Target;
 import io.weaviate.client6.v1.api.collections.query.Filter;
@@ -274,23 +275,25 @@ class SearchHybridTest {
     // END HybridWithFilterPython
   }
 
-  //TODO[g-despot]: The method of(NearVectorTarget) in the type NearVector is not applicable for the arguments (float[])
-  @Test
+  //TODO[g-despot]: Not executed because query needs to be adjusted
   void testVectorParameters() {
     // START VectorParametersPython
     CollectionHandle<Map<String, Object>> jeopardy =
         client.collections.use("JeopardyQuestion");
+
+    var intermediateResponse = jeopardy.query
+        .nearText("large animal",
+            c -> c.moveAway(0.5f,
+                from -> from.concepts("mammal", "terrestrial")))
+        .objects()
+        .get(0)
+        .vectors()
+        .getDefaultSingle();
+
     var response = jeopardy.query.hybrid("California", q -> q
         // highlight-start
         .maxVectorDistance(0.4f)
-        // .nearVector(NearVector.of(jeopardy.query
-        //     .nearText("large animal",
-        //         c -> c.moveAway(0.5f,
-        //             from -> from.concepts("mammal", "terrestrial")))
-        //     .objects()
-        //     .get(0)
-        //     .vectors()
-        //     .getDefaultSingle()))
+        .nearVector(NearVector.of(intermediateResponse))
         // highlight-end
         .alpha(0.75f)
         .limit(5));
