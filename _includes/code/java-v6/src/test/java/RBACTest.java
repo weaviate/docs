@@ -16,7 +16,6 @@ import io.weaviate.client6.v1.api.rbac.UsersPermission;
 import io.weaviate.client6.v1.api.rbac.groups.GroupType;
 import io.weaviate.client6.v1.api.rbac.users.DbUser;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

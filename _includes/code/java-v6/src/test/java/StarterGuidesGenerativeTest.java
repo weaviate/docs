@@ -1,19 +1,16 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.DataType;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.WeaviateMetadata;
-import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
+import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,16 +24,16 @@ class CombinedWorkflowTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
-  // START ChunkText
   private List<String> downloadAndChunk(String srcUrl, int chunkSize,
-      int overlapSize) throws IOException {
+      int overlapSize) throws Exception {
     // Retrieve source text
-    URL url = new URL(srcUrl);
+    URL url = URI.create(srcUrl).toURL();
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestMethod("GET");
-    String sourceText =
-        new BufferedReader(new InputStreamReader(conn.getInputStream())).lines()
-            .reduce("", String::concat);
+    String sourceText;
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+      sourceText = reader.lines().reduce("", String::concat);
+    }
 
     // Remove multiple whitespaces
     sourceText = sourceText.replaceAll("\\s+", " ");
@@ -97,7 +94,7 @@ class CombinedWorkflowTest {
       assertThat(client.collections.exists(gitBookCollectionName)).isTrue();
 
       // START ImportData
-      List<WeaviateObject<Map<String, Object>, Object, WeaviateMetadata>> chunksList =
+      List<WriteWeaviateObject<Map<String, Object>>> chunksList =
           new ArrayList<>();
       for (int i = 0; i < chunkedText.size(); i++) {
         Map<String, Object> dataProperties = new HashMap<>();
@@ -105,9 +102,9 @@ class CombinedWorkflowTest {
         dataProperties.put("chunk", chunkedText.get(i));
         dataProperties.put("chunk_index", (long) i); // Use long for integer
 
-        chunksList.add(WeaviateObject.of(b -> b.properties(dataProperties)));
+        chunksList.add(WriteWeaviateObject.of(b -> b.properties(dataProperties)));
       }
-      chunks.data.insertMany(chunksList.toArray(new WeaviateObject[0]));
+      chunks.data.insertMany(chunksList);
       // END ImportData
 
       // START CountObjects
@@ -146,9 +143,9 @@ class CombinedWorkflowTest {
           );
 
       System.out.println("\n--- TransformResultSets Result ---");
-      System.out.println(transformResponse.generated().text());
+      System.out.println(transformResponse.generative().text());
       // END TransformResultSets
-      assertThat(transformResponse.generated().text()).isNotEmpty();
+      assertThat(transformResponse.generative().text()).isNotEmpty();
 
       // START SinglePrompt
       var singlePromptResponse =
@@ -159,11 +156,11 @@ class CombinedWorkflowTest {
       for (var o : singlePromptResponse.objects()) {
         System.out.printf("\n===== Object index: [%s] =====\n",
             o.properties().get("chunk_index"));
-        System.out.println(o.generated().text());
+        System.out.println(o.generative().text());
       }
       // END SinglePrompt
       assertThat(singlePromptResponse.objects()).hasSize(2);
-      assertThat(singlePromptResponse.objects().get(0).generated().text())
+      assertThat(singlePromptResponse.objects().get(0).generative().text())
           .isNotEmpty();
 
       // START GroupedTask
@@ -172,9 +169,9 @@ class CombinedWorkflowTest {
               "Write a trivia tweet based on this text. Use emojis and make it succinct and cute."));
 
       System.out.println("\n--- GroupedTask Result ---");
-      System.out.println(groupedTaskResponse.generated().text());
+      System.out.println(groupedTaskResponse.generative().text());
       // END GroupedTask
-      assertThat(groupedTaskResponse.generated().text()).isNotEmpty();
+      assertThat(groupedTaskResponse.generative().text()).isNotEmpty();
 
       // START NearTextGroupedTask
       var nearTextResponse1 = chunks.generate.nearText("states of git",
@@ -183,9 +180,9 @@ class CombinedWorkflowTest {
 
       System.out
           .println("\n--- NearTextGroupedTask (states of git) Result ---");
-      System.out.println(nearTextResponse1.generated().text());
+      System.out.println(nearTextResponse1.generative().text());
       // END NearTextGroupedTask
-      assertThat(nearTextResponse1.generated().text()).isNotEmpty();
+      assertThat(nearTextResponse1.generative().text()).isNotEmpty();
 
       // START SecondNearTextGroupedTask
       var nearTextResponse2 = chunks.generate.nearText("how git saves data",
@@ -194,9 +191,9 @@ class CombinedWorkflowTest {
 
       System.out.println(
           "\n--- SecondNearTextGroupedTask (how git saves data) Result ---");
-      System.out.println(nearTextResponse2.generated().text());
+      System.out.println(nearTextResponse2.generative().text());
       // END SecondNearTextGroupedTask
-      assertThat(nearTextResponse2.generated().text()).isNotEmpty();
+      assertThat(nearTextResponse2.generative().text()).isNotEmpty();
 
       // =================================================================
       // === Setup and Query WineReview Collection =====================
@@ -232,10 +229,10 @@ class CombinedWorkflowTest {
 
       System.out.println("\n--- TransformIndividualObjects Result ---");
       for (var o : wineResponse.objects()) {
-        System.out.println(o.generated().text());
+        System.out.println(o.generative().text());
       }
       assertThat(wineResponse.objects()).hasSize(1);
-      assertThat(wineResponse.objects().get(0).generated().text()).isNotEmpty();
+      assertThat(wineResponse.objects().get(0).generative().text()).isNotEmpty();
 
 
       // =================================================================

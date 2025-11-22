@@ -32,7 +32,7 @@ public class QuickstartLocalCreate {
       client.collections.create(collectionName,
           col -> col.vectorConfig(VectorConfig.text2vecOllama(v -> v
               // If using Docker you might need: http://host.docker.internal:11434
-              .baseUrl("http://ollama:11434")
+              .apiEndpoint("http://ollama:11434")
               .model("nomic-embed-text") // The model to use
           ))
               // Define properties for the collection

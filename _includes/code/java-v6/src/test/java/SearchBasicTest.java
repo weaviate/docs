@@ -3,7 +3,6 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.query.ConsistencyLevel;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
-import io.weaviate.client6.v1.api.collections.query.Where;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -195,15 +194,22 @@ class SearchBasicTest {
     // END MultiTenancy
   }
 
-  // TODO[g-despot] DX: fetchObjectsById missing
   @Test
-  void testGetWithConsistencyLevel() {
-    // START QueryWithReplication
+  void testGetWithConsistencyLevel() throws IOException {
+    // Insert an object first and get its UUID
     CollectionHandle<Map<String, Object>> jeopardy =
-        client.collections.use("JeopardyQuestion")
-            .withConsistencyLevel(ConsistencyLevel.QUORUM);
+        client.collections.use("JeopardyQuestion");
+
+    String uuid = jeopardy.data
+        .insert(Map.of("question", "This is a test question", "answer",
+            "test answer"))
+        .uuid();
+
+    // START QueryWithReplication
+    var jeopardyWithConsistency = client.collections.use("JeopardyQuestion")
+        .withConsistencyLevel(ConsistencyLevel.QUORUM);
     // highlight-start
-    var response = jeopardy.query.byId("36ddd591-2dee-4e7e-a3cc-eb86d30a4303");
+    var response = jeopardyWithConsistency.query.fetchObjectById(uuid);
     // highlight-end
 
     System.out.println(response.get().properties());

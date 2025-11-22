@@ -2,7 +2,6 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.aggregate.Aggregate;
 import io.weaviate.client6.v1.api.collections.aggregate.GroupBy;
-import io.weaviate.client6.v1.api.collections.query.Where;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -109,9 +108,10 @@ class SearchAggregateTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.nearText("animals in space", a -> a
         // highlight-start
-        .objectLimit(10)
-        // highlight-end
-        .metrics(Aggregate.number("points", m -> m.sum())));
+        .distance(0)
+    // highlight-end
+        , n -> n.includeTotalCount(false)
+            .metrics(Aggregate.number("points", m -> m.sum())));
 
     System.out.println(response.properties().get("points"));
     // END nearTextWithLimit
@@ -160,7 +160,7 @@ class SearchAggregateTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(a -> a
         // highlight-start
-        // .where(Where.property("round").eq("Final Jeopardy!"))
+        // .filters(Filter.property("round").eq("Final Jeopardy!"))
         // highlight-end
         .includeTotalCount(true));
 

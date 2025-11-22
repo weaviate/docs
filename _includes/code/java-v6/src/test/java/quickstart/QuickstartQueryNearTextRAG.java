@@ -3,7 +3,7 @@ package quickstart;
 // START RAG
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.generate.DynamicProvider;
+import io.weaviate.client6.v1.api.collections.generate.GenerativeProvider;
 import java.util.Map;
 
 public class QuickstartQueryNearTextRAG {
@@ -33,13 +33,13 @@ public class QuickstartQueryNearTextRAG {
           q -> q.limit(1).returnProperties("title", "description", "genre"),
           // Generative configuration (RAG task)
           g -> g.groupedTask("Write a tweet with emojis about this movie.",
-              c -> c.dynamicProvider(DynamicProvider
+              c -> c.generativeProvider(GenerativeProvider
                   .anthropic(o -> o.model("claude-3-5-haiku-latest"))))); // The model to use
       // highlight-end
 
       // Inspect the results
-      // Use .generated() to access the generative result
-      System.out.println(response.generated().text());
+      // Use .generative() to access the generative result
+      System.out.println(response.generative().text());
 
     } finally {
       if (client != null) {

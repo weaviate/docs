@@ -1,19 +1,13 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.Generative;
-import io.weaviate.client6.v1.api.collections.generate.DynamicProvider;
+import io.weaviate.client6.v1.api.collections.generate.GenerativeProvider;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
+import io.weaviate.client6.v1.api.collections.query.Target;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 
 class GenerativeSearchTest {
@@ -40,25 +34,28 @@ class GenerativeSearchTest {
     client.close();
   }
 
+  // TODO[g-despot] Can't use GenerativeProvider without arguments
   @Test
   void testDynamicRag() {
     // START DynamicRag
     CollectionHandle<Map<String, Object>> reviews =
         client.collections.use("WineReviewNV");
-    var response =
-        reviews.generate.nearText("a sweet German white wine", q -> q.limit(2),
-            g -> g.singlePrompt("Translate this into German: {review_body}")
-                .groupedTask("Summarize these reviews", c -> c.dynamicProvider(
-                    DynamicProvider.openai(p -> p.temperature(0.1f))))
-        // highlight-start
-        // highlight-end
-        );
+    var response = reviews.generate.nearText(
+        Target.text("title_country", "a sweet German white wine"),
+        q -> q.limit(2),
+        g -> g.singlePrompt("Translate this into German: {review_body}")
+            .groupedTask("Summarize these reviews", c -> c.generativeProvider(
+                GenerativeProvider.openai(o -> o.temperature(1f))))
+    // highlight-start
+    // highlight-end
+    );
 
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
     }
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n",
+        response.generative().text());
     // END DynamicRag
   }
 
@@ -67,7 +64,8 @@ class GenerativeSearchTest {
     // START NamedVectorNearTextPython
     CollectionHandle<Map<String, Object>> reviews =
         client.collections.use("WineReviewNV");
-    var response = reviews.generate.nearText("a sweet German white wine",
+    var response = reviews.generate.nearText(
+        Target.text("title_country", "a sweet German white wine"),
         q -> q.limit(2)
             // highlight-start
             // .targetVector("title_country") // Specify the target vector for named vector collections
@@ -79,9 +77,10 @@ class GenerativeSearchTest {
 
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
     }
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n",
+        response.generative().text());
     // END NamedVectorNearTextPython
   }
 
@@ -108,7 +107,7 @@ class GenerativeSearchTest {
       System.out.printf("Property 'question': %s\n",
           o.properties().get("question"));
       // highlight-start
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
       // highlight-end
     }
     // END SingleGenerativePython
@@ -130,12 +129,11 @@ class GenerativeSearchTest {
     // print source properties and generated responses
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
     }
     // END SingleGenerativePropertiesPython
   }
 
-  //TODO[g-despot] Metadata missing
   @Test
   void testSingleGenerativeParameters() {
     // START SingleGenerativeParametersPython
@@ -145,17 +143,20 @@ class GenerativeSearchTest {
         // highlight-start
         g -> g.singlePrompt(
             "Convert this quiz question: {question} and answer: {answer} into a trivia tweet.",
-            c -> c.dynamicProvider(DynamicProvider.openai(d -> d.baseUrl(null)))
+            c -> c
+                .generativeProvider(
+                    GenerativeProvider.openai(d -> d.baseUrl(null)))
                 .debug(true)
+                .metadata(true)
         // highlight-end
         ));
 
     // print source properties and generated responses
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
-      System.out.printf("Single prompt result: %s\n", o.generated().text());
-      System.out.printf("Debug: %s\n", o.generated().debug());
-      System.out.printf("Metadata: %s\n", o.generated().metadata());
+      System.out.printf("Single prompt result: %s\n", o.generative().text());
+      System.out.printf("Debug: %s\n", o.generative().debug());
+      System.out.printf("Metadata: %s\n", o.generative().metadata());
     }
     // END SingleGenerativeParametersPython
   }
@@ -176,7 +177,8 @@ class GenerativeSearchTest {
     );
 
     // print the generated response
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n",
+        response.generative().text());
     // END GroupedGenerativePython
   }
 
@@ -188,14 +190,17 @@ class GenerativeSearchTest {
     var response = jeopardy.generate.nearText("Cute animals", q -> q.limit(3),
         // highlight-start
         g -> g.groupedTask("What do these animals have in common, if anything?",
-            c -> c.dynamicProvider(DynamicProvider.openai(d -> d.baseUrl(null)))
+            c -> c
+                .generativeProvider(
+                    GenerativeProvider.openai(d -> d.baseUrl(null)))
                 .debug(true))
     // highlight-end
     );
 
     // print the generated response
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
-    System.out.printf("Metadata: %s\n", response.generated().metadata());
+    System.out.printf("Grouped task result: %s\n",
+        response.generative().text());
+    System.out.printf("Metadata: %s\n", response.generative().metadata());
     // END GroupedGenerativeParametersPython
   }
 
@@ -213,7 +218,8 @@ class GenerativeSearchTest {
     for (var o : response.objects()) {
       System.out.printf("Properties: %s\n", o.properties());
     }
-    System.out.printf("Grouped task result: %s\n", response.generated().text());
+    System.out.printf("Grouped task result: %s\n",
+        response.generative().text());
     // highlight-end
     // END GroupedGenerativeProperties Python
   }
@@ -251,7 +257,7 @@ class GenerativeSearchTest {
   //   for (var o : response.objects()) {
   //     System.out.printf("Properties: %s\n", o.properties());
   //   }
-  //   System.out.printf("Grouped task result: %s\n", response.generated().text());
+  //   System.out.printf("Grouped task result: %s\n", response.generative().text());
   //   // END WorkingWithImages
   // }
 }
