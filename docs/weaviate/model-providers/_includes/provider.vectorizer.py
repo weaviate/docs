@@ -113,7 +113,7 @@ client.collections.create(
         Configure.Vectors.text2vec_cohere(
             name="title_vector",
             source_properties=["title"],
-            model="embed-multilingual-light-v3.0"
+            model="embed-v4.0"
         )
     ],
     # highlight-end
@@ -135,7 +135,8 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             # Further options
-            # model="embed-multilingual-v3.0",
+            # model="embed-v4.0",
+            # dimensions=512,
             # truncate="END",  # "NONE", "START" or "END"
             # base_url="<custom_cohere_url>"
         )
@@ -191,7 +192,8 @@ client.collections.create(
     vector_config=[
         Configure.Vectors.multi2vec_cohere(
             name="title_vector",
-            model="embed-multilingual-v3.0",
+            model="embed-v4.0",
+            dimensions=1024,
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
                 Multi2VecField(name="poster", weight=0.9)
@@ -230,7 +232,8 @@ client.collections.create(
                 Multi2VecField(name="title", weight=0.1)
             ],
             # Further options
-            # model="embed-multilingual-v3.0",
+            # model="embed-v4.0",
+            # dimensions=1024,
             # truncate="END",  # "NONE", "START" or "END"
             # base_url="<custom_cohere_url>"
         )
@@ -1145,9 +1148,10 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             # Further options
-            # model="voyage-large-2"
+            # model="voyage-3.5-lite"
             # base_url="<custom_voyageai_url>",
             # truncate=True,
+            # dimensions=512,
         )
     ],
     # highlight-end
