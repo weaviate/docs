@@ -21,7 +21,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
         var cohereApiKey = Environment.GetEnvironmentVariable("COHERE_APIKEY");
 
-        client = Connect.Cloud(
+        client = await Connect.Cloud(
             weaviateUrl,
             weaviateApiKey
         // additionalHeaders: new Dictionary<string, string>
@@ -122,8 +122,8 @@ public class SearchSimilarityTest : IAsyncLifetime
     public async Task GetNearVector()
     {
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        var initialResponse = await jeopardy.Query.FetchObjects(limit: 1, returnMetadata: MetadataOptions.Vector);
-        if (!initialResponse.Objects.Any()) return; // Skip test if no data
+        var initialResponse = await jeopardy.Query.FetchObjects(limit: 1, includeVectors: true);
+        if (initialResponse.Objects.Count == 0) throw new Exception(); // Skip test if no data
         var queryVector = initialResponse.Objects.First().Vectors["default"];
 
         // START GetNearVector
