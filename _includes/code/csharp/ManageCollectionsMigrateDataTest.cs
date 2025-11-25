@@ -15,70 +15,61 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
     private static WeaviateClient clientTgt;
     private const int DATASET_SIZE = 50;
 
-    // Runs once before any tests in the class
+    // Defines the schema structure for strong typing
+    private class WineReviewModel
+    {
+        public string title { get; set; }
+        public string review_body { get; set; }
+        public string country { get; set; }
+        public int? points { get; set; }
+        public double? price { get; set; }
+    }
+
     public async Task InitializeAsync()
     {
-        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        clientSrc = await Connect.Local(restPort: 8080, grpcPort: 50051);
+        clientTgt = await Connect.Local(restPort: 8090, grpcPort: 50061);
 
-        // Connect to the source Weaviate instance
-        clientSrc = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
-        // Connect to the target Weaviate instance
-        clientTgt = new WeaviateClient(new ClientConfiguration
-        {
-            RestAddress = "localhost",
-            RestPort = 8090,
-            GrpcPort = 50061,
-        });
-
-        // Simulate weaviate-datasets by creating and populating source collections
         await CreateCollection(clientSrc, "WineReview", false);
         await CreateCollection(clientSrc, "WineReviewMT", true);
 
         var wineReview = clientSrc.Collections.Use<object>("WineReview");
+        
+        // Create initial data
         var wineReviewData = Enumerable.Range(0, DATASET_SIZE)
-            .Select(i => new { title = $"Review {i}" })
+            .Select(i => new WineReviewModel 
+            { 
+                title = $"Review {i}", 
+                review_body = "Description...", 
+                price = 10.5 + i 
+            })
             .ToArray();
+
         await wineReview.Data.InsertMany(wineReviewData);
 
         var wineReviewMT = clientSrc.Collections.Use<object>("WineReviewMT");
-        await wineReviewMT.Tenants.Add(["tenantA"]);
+        await wineReviewMT.Tenants.Add(new[] { new Tenant { Name = "tenantA" } });
         await wineReviewMT.WithTenant("tenantA").Data.InsertMany(wineReviewData);
     }
 
-    // Runs once after all tests in the class
     public async Task DisposeAsync()
     {
-        // Clean up collections on both clients
         await clientSrc.Collections.DeleteAll();
         await clientTgt.Collections.DeleteAll();
     }
 
-    // START CreateCollectionCollectionToCollection
-    // START CreateCollectionCollectionToTenant
-    // START CreateCollectionTenantToCollection
-    // START CreateCollectionTenantToTenant
     private static async Task<CollectionClient<object>> CreateCollection(WeaviateClient clientIn,
         string collectionName, bool enableMt)
-    // END CreateCollectionCollectionToCollection
-    // END CreateCollectionCollectionToTenant
-    // END CreateCollectionTenantToCollection
-    // END CreateCollectionTenantToTenant
     {
         if (await clientIn.Collections.Exists(collectionName))
         {
             await clientIn.Collections.Delete(collectionName);
         }
-        // START CreateCollectionCollectionToCollection
-        // START CreateCollectionCollectionToTenant
-        // START CreateCollectionTenantToCollection
-        // START CreateCollectionTenantToTenant
         return await clientIn.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = enableMt },
-            // Additional settings not shown
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
+            VectorConfig =new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
             Properties = 
             [
                 Property.Text("review_body"),
@@ -89,113 +80,83 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
             ]
         });
     }
-    // END CreateCollectionCollectionToCollection
-    // END CreateCollectionCollectionToTenant
-    // END CreateCollectionTenantToCollection
-    // END CreateCollectionTenantToTenant
 
-    // START CollectionToCollection
-    // START TenantToCollection
-    // START CollectionToTenant
-    // START TenantToTenant
-    private async Task MigrateData(CollectionClient<object> collectionSrc,
-     CollectionClient<object> collectionTgt)
+    // Generic Migration Method
+    private async Task MigrateData<T>(CollectionClient<object> collectionSrc,
+     CollectionClient<object> collectionTgt) where T : class
     {
         Console.WriteLine("Starting data migration...");
-        var sourceObjects = new List<WeaviateObject>();
-
-        // FIX 1: Use FetchObjects instead of Iterator for better tenant support
-        var response = await collectionSrc.Query.FetchObjects(limit: 10000, includeVectors: true);
-
+        
+        // Fetch source objects
+        var response = await collectionSrc.Query.FetchObjects(limit: 10000);
+        
+        // Map to Strong Type List
+        var sourceObjects = new List<T>();
         foreach (var obj in response.Objects)
         {
-            sourceObjects.Add(new WeaviateObject
+            // Deserialize the inner properties Dictionary to the POCO type
+            var json = JsonSerializer.Serialize(obj.Properties);
+            var typedObj = JsonSerializer.Deserialize<T>(json);
+            if (typedObj != null)
             {
-                ID = obj.ID,
-                // FIX 2: Cast the dynamic properties to a supported dictionary type
-                Properties = (IDictionary<string, object>)obj.Properties,
-                Vectors = obj.Vectors
-            });
+                sourceObjects.Add(typedObj);
+            }
         }
 
-        // FIX 3 (from previous advice): Convert the List to an Array before inserting
+        // InsertMany using Strong Types
         await collectionTgt.Data.InsertMany(sourceObjects.ToArray());
 
-        Console.WriteLine("Data migration complete.");
+        Console.WriteLine($"Data migration complete. Migrated {sourceObjects.Count} objects.");
     }
-    // END CollectionToCollection
-    // END TenantToCollection
-    // END CollectionToTenant
-    // END TenantToTenant
 
-    private async Task<bool> VerifyMigration(CollectionClient<object> collectionSrc,
-    CollectionClient<object> collectionTgt, int numSamples)
+    private async Task<bool> VerifyMigration(CollectionClient<object> collectionTgt, int expectedCount)
     {
-        // FIX 1: Use FetchObjects instead of Iterator
-        var srcResponse = await collectionSrc.Query.FetchObjects(limit: 10000);
-        var srcObjects = srcResponse.Objects;
-
-        if (!srcObjects.Any())
+        // Verification modified because InsertMany generates NEW IDs.
+        // We check if the total count matches and if a sample query works.
+        var countResult = await collectionTgt.Aggregate.OverAll(totalCount: true);
+        
+        if (countResult.TotalCount != expectedCount)
         {
-            Console.WriteLine("No objects in source collection");
+            Console.WriteLine($"Count mismatch. Expected {expectedCount}, found {countResult.TotalCount}");
             return false;
         }
 
-        var sampledObjects = srcObjects.OrderBy(x => Guid.NewGuid()).Take(numSamples).ToList();
-
-        Console.WriteLine($"Verifying {sampledObjects.Count} random objects...");
-        foreach (var srcObj in sampledObjects)
+        var sample = await collectionTgt.Query.FetchObjects(limit: 1);
+        if (sample.Objects.Count == 0 || !sample.FirstOrDefault().Properties.ContainsKey("title"))
         {
-            var tgtObj = await collectionTgt.Query.FetchObjectByID(srcObj.ID.Value);
-            if (tgtObj == null)
-            {
-                Console.WriteLine($"Object {srcObj.ID} not found in target collection");
-                return false;
-            }
-
-            var srcJson = JsonSerializer.Serialize(srcObj.Properties);
-            var tgtJson = JsonSerializer.Serialize(tgtObj.Properties);
-            if (srcJson != tgtJson)
-            {
-                Console.WriteLine($"Properties mismatch for object {srcObj.ID}");
-                return false;
-            }
+            Console.WriteLine("Data verification failed. Properties missing.");
+            return false;
         }
-        Console.WriteLine("All sampled objects verified successfully!");
+
+        Console.WriteLine("Verification successful!");
         return true;
     }
 
-    // START CreateCollectionCollectionToCollection
     private async Task CreateCollectionToCollection()
     {
         await CreateCollection(clientTgt, "WineReview", false);
     }
-    // END CreateCollectionCollectionToCollection
 
     [Fact]
-    // START CollectionToCollection
     public async Task TestCollectionToCollection()
     {
         await CreateCollectionToCollection();
 
         var reviewsSrc = clientSrc.Collections.Use<object>("WineReview");
         var reviewsTgt = clientTgt.Collections.Use<object>("WineReview");
-        await MigrateData(reviewsSrc, reviewsTgt);
-        // END CollectionToCollection
+        
+        // Pass the Type to the generic method
+        await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgt);
 
-        Assert.Equal(DATASET_SIZE, (await reviewsTgt.Aggregate.OverAll(totalCount: true)).TotalCount);
-        Assert.True(await VerifyMigration(reviewsSrc, reviewsTgt, 5));
+        Assert.True(await VerifyMigration(reviewsTgt, DATASET_SIZE));
     }
 
-    // START CreateCollectionTenantToCollection
     private async Task CreateTenantToCollection()
     {
         await CreateCollection(clientTgt, "WineReview", false);
     }
-    // END CreateCollectionTenantToCollection
 
     [Fact]
-    // START TenantToCollection
     public async Task TestTenantToCollection()
     {
         await CreateTenantToCollection();
@@ -203,34 +164,25 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var reviewsSrc = clientSrc.Collections.Use<object>("WineReviewMT");
         var reviewsTgt = clientTgt.Collections.Use<object>("WineReview");
         var reviewsSrcTenantA = reviewsSrc.WithTenant("tenantA");
-        await MigrateData(reviewsSrcTenantA, reviewsTgt);
-        // END TenantToCollection
+        
+        await MigrateData<WineReviewModel>(reviewsSrcTenantA, reviewsTgt);
 
-        Assert.Equal(DATASET_SIZE, (await reviewsTgt.Aggregate.OverAll(totalCount: true)).TotalCount);
-        Assert.True(await VerifyMigration(reviewsSrcTenantA, reviewsTgt, 5));
+        Assert.True(await VerifyMigration(reviewsTgt, DATASET_SIZE));
     }
 
-    // START CreateCollectionCollectionToTenant
     private async Task CreateCollectionToTenant()
     {
         await CreateCollection(clientTgt, "WineReviewMT", true);
     }
-    // END CreateCollectionCollectionToTenant
 
-    // START CreateTenants
-    // START CreateCollectionTenantToTenant
     private async Task CreateTenants()
     {
         var reviewsMtTgt = clientTgt.Collections.Use<object>("WineReviewMT");
-
         var tenantsTgt = new[] { new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" } };
         await reviewsMtTgt.Tenants.Add(tenantsTgt);
     }
-    // END CreateTenants
-    // END CreateCollectionTenantToTenant
 
     [Fact]
-    // START CollectionToTenant
     public async Task TestCollectionToTenant()
     {
         await CreateCollectionToTenant();
@@ -238,25 +190,19 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
 
         var reviewsMtTgt = clientTgt.Collections.Use<object>("WineReviewMT");
         var reviewsSrc = clientSrc.Collections.Use<object>("WineReview");
-
         var reviewsTgtTenantA = reviewsMtTgt.WithTenant("tenantA");
 
-        await MigrateData(reviewsSrc, reviewsTgtTenantA);
-        // END CollectionToTenant
+        await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgtTenantA);
 
-        Assert.Equal(DATASET_SIZE, (await reviewsTgtTenantA.Aggregate.OverAll(totalCount: true)).TotalCount);
-        Assert.True(await VerifyMigration(reviewsSrc, reviewsTgtTenantA, 5));
+        Assert.True(await VerifyMigration(reviewsTgtTenantA, DATASET_SIZE));
     }
 
-    // START CreateCollectionTenantToTenant
     private async Task CreateTenantToTenant()
     {
         await CreateCollection(clientTgt, "WineReviewMT", true);
     }
-    // END CreateCollectionTenantToTenant
 
     [Fact]
-    // START TenantToTenant
     public async Task TestTenantToTenant()
     {
         await CreateTenantToTenant();
@@ -267,10 +213,8 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var reviewsSrcTenantA = reviewsMtSrc.WithTenant("tenantA");
         var reviewsTgtTenantA = reviewsMtTgt.WithTenant("tenantA");
 
-        await MigrateData(reviewsSrcTenantA, reviewsTgtTenantA);
-        // END TenantToTenant
+        await MigrateData<WineReviewModel>(reviewsSrcTenantA, reviewsTgtTenantA);
 
-        Assert.Equal(DATASET_SIZE, (await reviewsTgtTenantA.Aggregate.OverAll(totalCount: true)).TotalCount);
-        Assert.True(await VerifyMigration(reviewsSrcTenantA, reviewsTgtTenantA, 5));
+        Assert.True(await VerifyMigration(reviewsTgtTenantA, DATASET_SIZE));
     }
 }

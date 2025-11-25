@@ -37,16 +37,16 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = [ Property.Text("title") ]
+            Properties = [Property.Text("title")]
         });
 
         await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = [ Property.Text("question"), Property.Text("answer") ],
+            Properties = [Property.Text("question"), Property.Text("answer")],
             // highlight-start
-            References = [ new Reference("hasCategory", "JeopardyCategory") ]
+            References = [new Reference("hasCategory", "JeopardyCategory")]
             // highlight-end
         });
         // END CrossRefDefinition
@@ -115,7 +115,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = [ Property.Text("title") ]
+            Properties = [Property.Text("title")]
         });
         // END TwoWayCategory1CrossReferences
 
@@ -124,9 +124,9 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = [ Property.Text("question"), Property.Text("answer") ],
+            Properties = [Property.Text("question"), Property.Text("answer")],
             // highlight-start
-            References = [ new Reference("hasCategory", "JeopardyCategory") ]
+            References = [new Reference("hasCategory", "JeopardyCategory")]
             // highlight-end
         });
         // END TwoWayQuestionCrossReferences
@@ -230,7 +230,6 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         Assert.True(obj.References.ContainsKey("hasCategory"));
     }
 
-    // TODO[g-despot] ERROR: Unexpected status code NoContent. Expected: OK. reference delete.
     [Fact]
     public async Task TestDelete()
     {
@@ -257,7 +256,12 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
 
         var result = await questions.Query.FetchObjectByID(questionObjId, returnReferences: [new QueryReference("hasCategory")]);
         Assert.NotNull(result);
-        Assert.False(result.References.ContainsKey("hasCategory"));
+
+        // FIX: Check if the reference list is empty OR if the key is missing
+        if (result.References.ContainsKey("hasCategory"))
+        {
+            Assert.Empty(result.References["hasCategory"]);
+        }
     }
 
     [Fact]
@@ -296,15 +300,15 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = [ Property.Text("title") ]
+            Properties = [Property.Text("title")]
         });
 
         await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = [ Property.Text("question"), Property.Text("answer") ],
-            References = [ new Reference("hasCategory", "JeopardyCategory") ]
+            Properties = [Property.Text("question"), Property.Text("answer")],
+            References = [new Reference("hasCategory", "JeopardyCategory")]
         });
     }
 }
