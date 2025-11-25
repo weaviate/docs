@@ -180,6 +180,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         Assert.Single(results.Objects);
     }
 
+// TODO[g-despot] It's strange that I have to cast into primitive types
     [Fact]
     public async Task TestZeroDowntimeMigration()
     {
@@ -192,10 +193,12 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         });
 
         var productsV1 = client.Collections.Use(ProductsV1);
+
+        // Batch insert works best with anonymous objects here
         await productsV1.Data.InsertMany(
         [
-            new WeaviateObject { Properties = new Dictionary<string, object> { { "name", "Product A" }, { "price", 100 } } },
-            new WeaviateObject { Properties = new Dictionary<string, object> { { "name", "Product B" }, { "price", 200 } } }
+            new { name = "Product A", price = 100 },
+            new { name = "Product B", price = 200 }
         ]);
         // END Step1CreateOriginal
 
@@ -243,11 +246,13 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         foreach (var obj in oldData)
         {
-            await productsV2.Data.Insert(new Dictionary<string, object>
+            // Convert property values to primitives (string, double, etc.) explicitly.
+            await productsV2.Data.Insert(new
             {
-                { "name", obj.Properties["name"] },
-                { "price", obj.Properties["price"] },
-                { "category", "General" } // Default value for new field
+                name = obj.Properties["name"].ToString(),
+                // 'price' comes back as a generic object/JsonElement, convert to a number type
+                price = Convert.ToDouble(obj.Properties["price"].ToString()),
+                category = "General"
             });
         }
         // END Step4MigrateData
@@ -259,10 +264,12 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         // All queries using "Products" alias now use the new collection
         products = client.Collections.Use(ProductsAlias);
         var result = await products.Query.FetchObjects(limit: 1);
-        Console.WriteLine(JsonSerializer.Serialize(result.First().Properties)); // Will include the new "category" field
-                                                                                // END Step5UpdateAlias
+        
+        // Will include the new "category" field
+        Console.WriteLine(JsonSerializer.Serialize(result.Objects.First().Properties)); 
+        // END Step5UpdateAlias
 
-        Assert.True(result.First().Properties.ContainsKey("category"));
+        Assert.True(result.Objects.First().Properties.ContainsKey("category"));
 
         // START Step6Cleanup
         // Clean up old collection after verification

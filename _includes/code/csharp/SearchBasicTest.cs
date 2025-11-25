@@ -9,11 +9,11 @@ using System.Linq;
 
 // Note: This code assumes the existence of a Weaviate instance populated
 // with 'JeopardyQuestion' and 'WineReviewMT' collections
-public class SearchBasicTest : IAsyncLifetime
+public class SearchBasicTest : IDisposable
 {
     private WeaviateClient client;
 
-    public Task InitializeAsync()
+    public async Task<Task> InitializeAsync()
     {
         // ================================
         // ===== INSTANTIATION-COMMON =====
@@ -26,17 +26,11 @@ public class SearchBasicTest : IAsyncLifetime
 
         // The Connect.Cloud helper method is a straightforward way to connect.
         // We add the OpenAI API key to the headers for the text2vec-openai module.
-        client = Connect.Cloud(
+        client = await Connect.Cloud(
             weaviateUrl,
             weaviateApiKey
         );
 
-        return Task.CompletedTask;
-    }
-
-    public Task DisposeAsync()
-    {
-        // The C# client manages its connections automatically and does not require an explicit 'close' method.
         return Task.CompletedTask;
     }
 
@@ -156,7 +150,7 @@ public class SearchBasicTest : IAsyncLifetime
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            returnMetadata: (MetadataOptions.Vector, ["default"]),
+            includeVectors: new[] { "default" },
             // highlight-end
             limit: 1
         );
@@ -302,5 +296,10 @@ public class SearchBasicTest : IAsyncLifetime
 
         Console.WriteLine(response);
         // END QueryWithReplication
+    }
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
     }
 }

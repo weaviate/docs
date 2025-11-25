@@ -193,7 +193,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         Console.WriteLine(uuid); // the return value is the object's UUID
         // END CreateObjectNamedVectors
 
-        var result = await reviews.Query.FetchObjectByID(uuid, returnMetadata: MetadataOptions.Vector);
+        var result = await reviews.Query.FetchObjectByID(uuid, includeVectors: true);
         Assert.NotNull(result);
         Assert.NotNull(result.Vectors);
         Assert.Contains("title", result.Vectors.Keys);

@@ -22,7 +22,7 @@ public class ManageObjectsReadTest : IDisposable
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        client = Connect.Cloud(weaviateUrl, weaviateApiKey);
+        client = Connect.Cloud(weaviateUrl, weaviateApiKey).Result;
         // END INSTANTIATION-COMMON
     }
 
@@ -59,7 +59,7 @@ public class ManageObjectsReadTest : IDisposable
 
         var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"),
             // highlight-start
-            returnMetadata: MetadataOptions.Vector
+            includeVectors: true
         );
         // highlight-end
 
@@ -89,7 +89,7 @@ public class ManageObjectsReadTest : IDisposable
         // START ReadObjectNamedVectors
         var dataObject = await reviews.Query.FetchObjectByID(objUuid.Value, // Object UUID
                                                                             // highlight-start
-            returnMetadata: MetadataOptions.Vector // Specify to include vectors
+            includeVectors: true // Specify to include vectors
         );
         // highlight-end
 

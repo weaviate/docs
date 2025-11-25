@@ -17,7 +17,7 @@ public class QuickstartLocalTest
     public async Task TestConnectionIsReady()
     {
         // START InstantiationExample
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
 
         // highlight-start
         // GetMeta returns server info. A successful call indicates readiness.
@@ -32,7 +32,7 @@ public class QuickstartLocalTest
     [Fact]
     public async Task FullQuickstartWorkflowTest()
     {
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
         string collectionName = "Question";
 
         // Clean up previous runs if they exist

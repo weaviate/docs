@@ -84,7 +84,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
 
         await foreach (var item in collection.Iterator(
             // highlight-start
-            returnMetadata: MetadataOptions.Vector // If using named vectors, you can specify ones to include
+            includeVectors: true // If using named vectors, you can specify ones to include
         ))
         // highlight-end
         {

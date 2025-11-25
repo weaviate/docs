@@ -116,8 +116,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
 
         // START AddTenantsToClass
         await collection.Tenants.Add(
-            new Tenant { Name = "tenantA" },
-            new Tenant { Name = "tenantB" }
+            ["tenantA", "tenantB"]
         );
         // END AddTenantsToClass
 
@@ -136,7 +135,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
         });
-        await collection.Tenants.Add(new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" });
+        await collection.Tenants.Add(["tenantA", "tenantB"]);
 
         // START ListTenants
         var tenants = await collection.Tenants.List();
@@ -155,7 +154,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
         });
-        await collection.Tenants.Add(new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" });
+        await collection.Tenants.Add(["tenantA", "tenantB"]);
 
         // START GetTenantsByName
         var tenantNames = new[] { "tenantA", "tenantB", "nonExistentTenant" };
@@ -175,7 +174,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
         });
-        await collection.Tenants.Add(new Tenant { Name = "tenantA" });
+        await collection.Tenants.Add(["tenantA"]);
 
         // START GetOneTenant
         string tenantName = "tenantA";
@@ -195,14 +194,14 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
         });
-        await collection.Tenants.Add(new Tenant { Name = "tenantA", Status = TenantActivityStatus.Inactive });
+        await collection.Tenants.Add(["tenantA"]);
 
         // START ActivateTenants
-        string tenantName = "tenantA";
+        string[] tenantName = ["tenantA"];
         await collection.Tenants.Activate(tenantName);
         // END ActivateTenants
 
-        var tenant = await collection.Tenants.Get(tenantName);
+        var tenant = await collection.Tenants.Get(tenantName.First());
         Assert.Equal(TenantActivityStatus.Active, tenant?.Status);
     }
 
@@ -215,14 +214,14 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
         });
-        await collection.Tenants.Add(new Tenant { Name = "tenantA" });
+        await collection.Tenants.Add(["tenantA"]);
 
         // START DeactivateTenants
-        string tenantName = "tenantA";
+        string[] tenantName = ["tenantA"];
         await collection.Tenants.Deactivate(tenantName);
         // END DeactivateTenants
 
-        var tenant = await collection.Tenants.Get(tenantName);
+        var tenant = await collection.Tenants.Get(tenantName.First());
         Assert.Equal(TenantActivityStatus.Inactive, tenant?.Status);
     }
 
@@ -240,8 +239,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
         });
-        await collection.Tenants.Add(new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" });
-
+        await collection.Tenants.Add(["tenantA", "tenantB"]);
         // START RemoveTenants
         await collection.Tenants.Delete(new[] { "tenantB", "tenantX" });
         // END RemoveTenants

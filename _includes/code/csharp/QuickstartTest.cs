@@ -21,7 +21,7 @@ public class QuickstartTest
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        WeaviateClient client = Connect.Cloud(
+        WeaviateClient client = await Connect.Cloud(
             weaviateUrl,
             weaviateApiKey
         );
@@ -42,7 +42,7 @@ public class QuickstartTest
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string collectionName = "Question";
 
-        WeaviateClient client = Connect.Cloud(
+        WeaviateClient client = await Connect.Cloud(
             weaviateUrl,
             weaviateApiKey
         );

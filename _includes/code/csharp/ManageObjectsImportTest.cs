@@ -177,27 +177,39 @@ public class ManageObjectsImportTest : IAsyncLifetime
         });
 
         // START BatchImportWithVectorExample
-        var dataToInsert = new List<(object properties, Guid uuid, float[] vector)>();
-        var vector = Enumerable.Repeat(0.1f, 10).ToArray();
+        var dataToInsert = new List<BatchInsertRequest<object>>();
+        var vectorData = Enumerable.Repeat(0.1f, 10).ToArray();
 
         for (int i = 0; i < 5; i++)
         {
             var dataRow = new { title = $"Object {i + 1}" };
             var objUuid = GenerateUuid5(JsonSerializer.Serialize(dataRow));
-            dataToInsert.Add((dataRow, objUuid, vector));
+
+            // 1. Use 'Vector' instead of 'VectorData'
+            // 2. Use dictionary initializer syntax for 'Vectors'
+            var vectors = new Vectors
+        {
+            { "default", vectorData }
+        };
+
+            // 3. Pass arguments to the constructor (Data is required)
+            // Signature: BatchInsertRequest(TData data, Guid? id = null, Vectors? vectors = null, ...)
+            dataToInsert.Add(new BatchInsertRequest<object>(
+                dataRow,
+                objUuid,
+                vectors
+            ));
         }
 
         var collection = client.Collections.Use<object>("MyCollection");
 
-        // highlight-start
         var response = await collection.Data.InsertMany(dataToInsert);
-        // highlight-end
 
-        var failedObjects = response.Where(r => r.Error != null).ToList();
-        if (failedObjects.Any())
+        // Handle errors (response.Errors is a Dictionary<int, string>)
+        if (response.Errors.Any())
         {
-            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
-            Console.WriteLine($"First failed object: {failedObjects.First().Error}");
+            Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
+            Console.WriteLine($"First failed object: {response.Errors.First().Data}");
         }
         // END BatchImportWithVectorExample
 
@@ -226,7 +238,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         // START BatchImportWithRefExample
         var collection = client.Collections.Use<object>("Author");
 
-        var response = await collection.Data.ReferenceAddMany(new DataReference(fromUuid, "writesFor", targetUuid));
+        var response = await collection.Data.ReferenceAddMany([new DataReference(fromUuid, "writesFor", targetUuid)]);
 
         if (response.HasErrors)
         {
@@ -249,27 +261,33 @@ public class ManageObjectsImportTest : IAsyncLifetime
             Name = "MyCollection",
             VectorConfig = new[]
             {
-                new VectorConfig("title", new Vectorizer.SelfProvided()),
-                new VectorConfig("body", new Vectorizer.SelfProvided())
-            },
+            new VectorConfig("title", new Vectorizer.SelfProvided()),
+            new VectorConfig("body", new Vectorizer.SelfProvided())
+        },
             Properties = [Property.Text("title"), Property.Text("body")]
         });
 
         // START BatchImportWithNamedVectors
-        // Prepare the data and vectors
-        var dataToInsert = new List<(object properties, Dictionary<string, float[]> vectors)>();
+        // 1. Change list type to BatchInsertRequest<object>
+        var dataToInsert = new List<BatchInsertRequest<object>>();
+
         for (int i = 0; i < 5; i++)
         {
             var dataRow = new { title = $"Object {i + 1}", body = $"Body {i + 1}" };
             var titleVector = Enumerable.Repeat(0.12f, 1536).ToArray();
             var bodyVector = Enumerable.Repeat(0.34f, 1536).ToArray();
+
             // highlight-start
-            var namedVectors = new Dictionary<string, float[]>
-            {
-                { "title", titleVector },
-                { "body", bodyVector }
-            };
-            dataToInsert.Add((dataRow, namedVectors));
+            // 2. Create the Vectors object mapping names to Vector wrappers
+            var namedVectors = new Vectors
+        {
+            { "title", titleVector },
+            { "body", bodyVector }
+        };
+
+            // 3. Add a specific request object to the list
+            // Constructor signature: (Data, ID?, Vectors?, References?, Tenant?)
+            dataToInsert.Add(new BatchInsertRequest<object>(dataRow, Vectors: namedVectors));
             // highlight-end
         }
 
@@ -280,12 +298,11 @@ public class ManageObjectsImportTest : IAsyncLifetime
         var response = await collection.Data.InsertMany(dataToInsert);
         // highlight-end
 
-        // Check for errors
-        var failedObjects = response.Where(r => r.Error != null).ToList();
-        if (failedObjects.Any())
+        // Check for errors (Access the Errors dictionary)
+        if (response.Errors.Any())
         {
-            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
-            Console.WriteLine($"First failed object error: {failedObjects.First().Error}");
+            Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
+            Console.WriteLine($"First failed object error: {response.Errors.First().Data}");
         }
         // END BatchImportWithNamedVectors
     }

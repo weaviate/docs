@@ -3,7 +3,6 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 
@@ -36,7 +35,7 @@ public class SearchSimilarityTest : IAsyncLifetime
     // DisposeAsync is used for asynchronous teardown after all tests in the class have run.
     public async Task DisposeAsync()
     {
-        await client.Collections.DeleteAll();
+        // await client.Collections.DeleteAll();
         // The C# client, using HttpClient, manages its connections automatically and does not require an explicit 'close' method.
     }
 

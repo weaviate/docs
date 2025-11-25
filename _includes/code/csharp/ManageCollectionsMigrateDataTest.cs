@@ -41,7 +41,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await wineReview.Data.InsertMany(wineReviewData);
 
         var wineReviewMT = clientSrc.Collections.Use<object>("WineReviewMT");
-        await wineReviewMT.Tenants.Add(new Tenant { Name = "tenantA" });
+        await wineReviewMT.Tenants.Add(["tenantA"]);
         await wineReviewMT.WithTenant("tenantA").Data.InsertMany(wineReviewData);
     }
 
@@ -105,7 +105,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var sourceObjects = new List<WeaviateObject>();
 
         // FIX 1: Use FetchObjects instead of Iterator for better tenant support
-        var response = await collectionSrc.Query.FetchObjects(limit: 10000, returnMetadata: MetadataOptions.Vector);
+        var response = await collectionSrc.Query.FetchObjects(limit: 10000, includeVectors: true);
 
         foreach (var obj in response.Objects)
         {

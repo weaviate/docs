@@ -29,7 +29,7 @@ public class StarterGuidesCustomVectorsTest
     [Fact]
     public async Task TestBringYourOwnVectors()
     {
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
         string collectionName = "Question";
 
         try

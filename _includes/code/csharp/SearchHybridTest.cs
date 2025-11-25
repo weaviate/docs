@@ -355,7 +355,7 @@ public class SearchHybridTest : IDisposable
             "large animal",
             moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"]),
             limit: 1,
-            returnMetadata: MetadataOptions.Vector
+            includeVectors: true
         );
         var nearTextVector = nearTextResponse.Objects.First().Vectors["default"];
 

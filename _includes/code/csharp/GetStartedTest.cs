@@ -22,7 +22,7 @@ public class GetStartedTests
     [Fact]
     public async Task GetStarted()
     {
-        var client = Connect.Local();
+        var client = await Connect.Local();
         const string collectionName = "Question";
 
         try
@@ -87,7 +87,7 @@ public class GetStartedTests
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
         // 1. Connect to Weaviate
-        var client = Connect.Cloud(weaviateUrl, weaviateApiKey);
+        var client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
 
         // 2. Prepare data (same as Python data_objects)
         var dataObjects = new List<object>
