@@ -187,6 +187,7 @@ await client.collections.create({
   generative: weaviate.configure.generative.anyscale({
     // These parameters are optional
     // model: 'meta-llama/Llama-2-70b-chat-hf',
+    // baseURL: "<anyscale-custom-endpoint-url>",
     // temperature: 0.7,
   }),
   // highlight-end
@@ -198,15 +199,11 @@ await client.collections.create({
 response = myCollection.generate.nearText("A holiday film", {
   // highlight-start
   groupedTask: "Write a tweet promoting these two movies",
-  config: generativeParameters.anthropic({
+  config: generativeParameters.anyscale({
     // These parameters are optional
-    // baseURL: "https://api.anthropic.com",
-    // model: "claude-3-opus-20240229",
-    // maxTokens: 512,
+    // model: "meta-llama/Llama-2-70b-chat-hf",
+    // baseURL: "<anyscale-custom-endpoint-url>",
     // temperature: 0.7,
-    // stopSequences: ["\n\n"],
-    // topP: 0.9,
-    // topK: 5,
   }),
   // highlight-end
 
@@ -258,6 +255,10 @@ response = await myCollection.generate.nearText("A holiday film", {
     region: 'us-east-1',
     service: 'bedrock', // You can also use sagemaker
     model: 'cohere.command-r-plus-v1:0',
+    // max_tokens: 500,
+    // temperature: 0.7,
+    // target_model: "target-model-name",
+    // target_variant: "target-variant-name"
   }),
   // highlight-end
 }, {

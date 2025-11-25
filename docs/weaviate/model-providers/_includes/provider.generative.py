@@ -207,6 +207,7 @@ client.collections.create(
         # # These parameters are optional
         # model="meta-llama/Llama-2-70b-chat-hf",
         # temperature=0.7,
+        # base_url="<anyscale-custom-endpoint-url>"
     )
     # highlight-end
     # Additional parameters not shown
@@ -291,7 +292,11 @@ response = collection.generate.near_text(
     generative_provider=GenerativeConfig.aws(
         region="us-east-1",
         service="bedrock", # You can also use sagemaker
-        model="cohere.command-r-plus-v1:0"
+        model="cohere.command-r-plus-v1:0",
+        # max_tokens=500,
+        # temperature=0.7,
+        # target_model="target-model-name",
+        # target_variant="target-variant-name"
     ),
     # Additional parameters not shown
     # highlight-end

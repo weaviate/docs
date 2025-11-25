@@ -151,6 +151,13 @@ You can [specify](#generative-parameters) one of the [available models](#availab
 
 ### Generative parameters
 
+In addition to the shown parameters above, the configuration supports:
+
+- `max_tokens`: The maximum number of tokens to generate in the output.
+- `temperature`: A value between 0 and 1 that controls the randomness of the output
+- `target_model`: (SageMaker only) The name of the target model to use in a multi-model endpoint.
+- `target_variant`: (SageMaker only) The variant of the target model to use in a multi-model endpoint.
+
 For further details on model parameters, see the [relevant AWS documentation](#further-resources).
 
 ## Select a model at runtime
@@ -244,7 +251,7 @@ In other words, when you have `n` search results, the generative model generates
 
 ### RAG with images
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
 
 <Tabs className="code" groupId="languages">
 
