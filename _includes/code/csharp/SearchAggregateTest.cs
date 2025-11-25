@@ -4,6 +4,7 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Collections.Generic;
 
 namespace WeaviateProject.Tests;
 
@@ -18,10 +19,15 @@ public class SearchAggregateTest : IDisposable
         // Best practice: store your credentials in environment variables
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
         client = Connect.Cloud(
             weaviateUrl,
-            weaviateApiKey
+            weaviateApiKey,
+            headers: new Dictionary<string, string>()
+            {
+                { "X-OpenAI-Api-Key", openaiApiKey }
+            }
         ).GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }

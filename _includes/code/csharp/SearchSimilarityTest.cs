@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Linq;
+using System.Collections.Generic;
 
 public class SearchSimilarityTest : IAsyncLifetime
 {
@@ -20,23 +21,25 @@ public class SearchSimilarityTest : IAsyncLifetime
         var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
         var cohereApiKey = Environment.GetEnvironmentVariable("COHERE_APIKEY");
 
+        // FIX: Use await instead of .GetAwaiter().GetResult()
         client = await Connect.Cloud(
-            weaviateUrl,
-            weaviateApiKey
-        // additionalHeaders: new Dictionary<string, string>
-        // {
-        //     { "X-OpenAI-Api-Key", openaiApiKey },
-        //     { "X-Cohere-Api-Key", cohereApiKey }
-        // }
-        );
+                    weaviateUrl,
+                    weaviateApiKey,
+                    headers: new Dictionary<string, string>()
+                    {
+                        { "X-OpenAI-Api-Key", openaiApiKey },
+                        { "X-Cohere-Api-Key", cohereApiKey }
+                    }
+                );
         // END INSTANTIATION-COMMON
     }
 
-    // DisposeAsync is used for asynchronous teardown after all tests in the class have run.
-    public async Task DisposeAsync()
+    // FIX: Implement DisposeAsync correctly to avoid NotImplementedException
+    public Task DisposeAsync()
     {
-        // await client.Collections.DeleteAll();
-        // The C# client, using HttpClient, manages its connections automatically and does not require an explicit 'close' method.
+        // The C# client manages connections automatically. 
+        // No specific cleanup is required here, but the method must return a completed task.
+        return Task.CompletedTask;
     }
 
     [Fact]
@@ -48,8 +51,8 @@ public class SearchSimilarityTest : IAsyncLifetime
             "a sweet German white wine",
             limit: 2,
             // highlight-start
-            targetVector: ["title_country"],  // Specify the target vector for named vector collections
-                                              // highlight-end
+            targetVector: ["title_country"],
+            // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -85,6 +88,8 @@ public class SearchSimilarityTest : IAsyncLifetime
             Console.WriteLine(o.Metadata.Distance);
         }
         // END GetNearText
+
+        Assert.NotEmpty(response.Objects);
     }
 
     [Fact]
@@ -92,7 +97,10 @@ public class SearchSimilarityTest : IAsyncLifetime
     {
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var initialResponse = await jeopardy.Query.FetchObjects(limit: 1);
+
         if (!initialResponse.Objects.Any()) return; // Skip test if no data
+
+        // FIX: Handle nullable ID safely
         Guid uuid = (Guid)initialResponse.Objects.First().ID;
 
         // START GetNearObject
@@ -122,13 +130,15 @@ public class SearchSimilarityTest : IAsyncLifetime
     {
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var initialResponse = await jeopardy.Query.FetchObjects(limit: 1, includeVectors: true);
-        if (initialResponse.Objects.Count == 0) throw new Exception(); // Skip test if no data
+
+        if (initialResponse.Objects.Count == 0) return; // Skip test if no data
+
         var queryVector = initialResponse.Objects.First().Vectors["default"];
 
         // START GetNearVector
         // highlight-start
         var response = await jeopardy.Query.NearVector(
-            queryVector, // your query vector goes here
+            vector: queryVector, // your query vector goes here
         // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
@@ -167,6 +177,8 @@ public class SearchSimilarityTest : IAsyncLifetime
             Console.WriteLine(o.Metadata.Distance);
         }
         // END GetLimitOffset
+
+        Assert.Equal(2, response.Objects.Count());
     }
 
     [Fact]

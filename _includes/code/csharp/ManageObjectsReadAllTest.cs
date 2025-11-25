@@ -96,7 +96,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         // END ReadAllVectors
     }
 
-    // TODO[g-despot]  Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="explorer: list class: search: object search at index winereviewmt: class WineReviewMT has multi-tenancy enabled, but request was without tenant")
+    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="explorer: list class: search: object search at index winereviewmt: class WineReviewMT has multi-tenancy enabled, but request was without tenant")
     [Fact]
     public async Task TestReadAllTenants()
     {

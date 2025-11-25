@@ -148,7 +148,7 @@ public class ManageCollectionsTest : IAsyncLifetime
 
         var config = await client.Collections.Export("Article");
         Assert.True(config.VectorConfig.ContainsKey("default"));
-        Assert.Equal("text2vec-contextionary", config.VectorConfig["default"].Vectorizer.Identifier);
+        Assert.Equal("text2vec-transformers", config.VectorConfig["default"].Vectorizer.Identifier);
     }
 
     [Fact]
@@ -217,7 +217,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // Coming soon
     // END AddNamedVectors
 
-    // TODO[g-despot] {"error":[{"message":"parse vector index config: parse vector config for jina_colbert: multi vector index configured but vectorizer: \"text2vec-jinaai\" doesn't support multi vectors"}]}
+    // TODO[g-despot] NEW: Unexpected status code UnprocessableEntity. Expected: OK. collection create. Server replied: {"error":[{"message":"module 'multi2vec-jinaai': textFields or imageFields setting needs to be present"}]}
     [Fact]
     public async Task CreateCollectionWithMultiVectors()
     {
@@ -228,7 +228,7 @@ public class ManageCollectionsTest : IAsyncLifetime
             VectorConfig = new VectorConfigList
         {
             // The factory function will automatically enable multi-vector support for the HNSW index
-            // Configure.MultiVectors.Text2VecJinaAI().New("jina_colbert"),
+            Configure.MultiVectors.Multi2VecJinaAI().New("jina_colbert"),
             // Must explicitly enable multi-vector support for the HNSW index
             Configure.MultiVectors.SelfProvided().New("custom_multi_vector"),
         },

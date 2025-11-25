@@ -311,21 +311,36 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestJsonStreaming()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig { Name = "JeopardyQuestion" });
+        // Ensure using correct Collection creation syntax
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = "JeopardyQuestion",
+            // Optional: Define properties explicitly if needed, but auto-schema usually handles it
+            Properties = [Property.Text("question"), Property.Text("answer")]
+        });
 
         // START JSON streaming
         int batchSize = 100;
         var batch = new List<object>(batchSize);
-        var collection = client.Collections.Use<object>("JeopardyQuestion");
+        var collection = client.Collections.Use("JeopardyQuestion");
 
         Console.WriteLine("JSON streaming, to avoid running out of memory on large files...");
         using var fileStream = File.OpenRead(JsonDataFile);
-        var jsonObjects = JsonSerializer.DeserializeAsyncEnumerable<Dictionary<string, object>>(fileStream);
+
+        // Deserialize as JsonElement to handle types more safely/explicitly than Dictionary<string, object>
+        var jsonObjects = JsonSerializer.DeserializeAsyncEnumerable<JsonElement>(fileStream);
 
         await foreach (var obj in jsonObjects)
         {
-            if (obj == null) continue;
-            var properties = new { question = obj["Question"], answer = obj["Answer"] };
+            // JsonElement is a struct, checking ValueKind is safer than null check
+            if (obj.ValueKind == JsonValueKind.Null || obj.ValueKind == JsonValueKind.Undefined) continue;
+
+            var properties = new
+            {
+                question = obj.GetProperty("Question").ToString(),
+                answer = obj.GetProperty("Answer").ToString()
+            };
+
             batch.Add(properties);
 
             if (batch.Count == batchSize)

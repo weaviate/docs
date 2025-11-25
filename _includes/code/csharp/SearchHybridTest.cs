@@ -22,17 +22,14 @@ public class SearchHybridTest : IDisposable
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        // The C# client uses a configuration object.
-        var config = new ClientConfiguration
-        {
-            GrpcAddress = weaviateUrl,
-            // Headers = new()
-            // {
-            //     { "Authorization", $"Bearer {weaviateApiKey}" },
-            //     { "X-OpenAI-Api-Key", openaiApiKey }
-            // }
-        };
-        client = new WeaviateClient(config);
+        client = Connect.Cloud(
+                    weaviateUrl,
+                    weaviateApiKey,
+                    headers: new Dictionary<string, string>()
+                    {
+                { "X-OpenAI-Api-Key", openaiApiKey }
+                    }
+                ).GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -43,6 +40,7 @@ public class SearchHybridTest : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="extract target vectors: class WineReviewNV has multiple vectors, but no target vectors were provided")
     [Fact]
     public async Task NamedVectorHybrid()
     {
@@ -212,7 +210,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             // highlight-start
             "Australian mammal cute",
-            bm25Operator: new BM25Operator.Or(MinimumMatch: 2),
+            bm25Operator: new BM25Operator.Or(MinimumMatch: 1),
             // highlight-end
             limit: 3
         );

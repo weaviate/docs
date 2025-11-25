@@ -82,13 +82,14 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestSchemaWithMultiTenancy()
     {
+        await client.Collections.Delete("Question");
         // START SchemaWithMultiTenancy
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
             GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
+            Properties =
             [
                 Property.Text("question"),
                 Property.Text("answer")

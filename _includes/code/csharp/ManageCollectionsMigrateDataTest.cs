@@ -34,14 +34,14 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await CreateCollection(clientSrc, "WineReviewMT", true);
 
         var wineReview = clientSrc.Collections.Use<object>("WineReview");
-        
+
         // Create initial data
         var wineReviewData = Enumerable.Range(0, DATASET_SIZE)
-            .Select(i => new WineReviewModel 
-            { 
-                title = $"Review {i}", 
-                review_body = "Description...", 
-                price = 10.5 + i 
+            .Select(i => new WineReviewModel
+            {
+                title = $"Review {i}",
+                review_body = "Description...",
+                price = 10.5 + i
             })
             .ToArray();
 
@@ -69,8 +69,8 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         {
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = enableMt },
-            VectorConfig =new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
-            Properties = 
+            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
+            Properties =
             [
                 Property.Text("review_body"),
                 Property.Text("title"),
@@ -81,15 +81,16 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         });
     }
 
+    // TODO[g-despot] NEW: Why can't I insert many with preserved IDs?
     // Generic Migration Method
     private async Task MigrateData<T>(CollectionClient<object> collectionSrc,
      CollectionClient<object> collectionTgt) where T : class
     {
         Console.WriteLine("Starting data migration...");
-        
+
         // Fetch source objects
         var response = await collectionSrc.Query.FetchObjects(limit: 10000);
-        
+
         // Map to Strong Type List
         var sourceObjects = new List<T>();
         foreach (var obj in response.Objects)
@@ -114,7 +115,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         // Verification modified because InsertMany generates NEW IDs.
         // We check if the total count matches and if a sample query works.
         var countResult = await collectionTgt.Aggregate.OverAll(totalCount: true);
-        
+
         if (countResult.TotalCount != expectedCount)
         {
             Console.WriteLine($"Count mismatch. Expected {expectedCount}, found {countResult.TotalCount}");
@@ -144,7 +145,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
 
         var reviewsSrc = clientSrc.Collections.Use<object>("WineReview");
         var reviewsTgt = clientTgt.Collections.Use<object>("WineReview");
-        
+
         // Pass the Type to the generic method
         await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgt);
 
@@ -164,7 +165,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var reviewsSrc = clientSrc.Collections.Use<object>("WineReviewMT");
         var reviewsTgt = clientTgt.Collections.Use<object>("WineReview");
         var reviewsSrcTenantA = reviewsSrc.WithTenant("tenantA");
-        
+
         await MigrateData<WineReviewModel>(reviewsSrcTenantA, reviewsTgt);
 
         Assert.True(await VerifyMigration(reviewsTgt, DATASET_SIZE));

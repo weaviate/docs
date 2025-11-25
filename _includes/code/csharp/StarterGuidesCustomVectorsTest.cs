@@ -45,12 +45,13 @@ public class StarterGuidesCustomVectorsTest
             await client.Collections.Create(new CollectionConfig
             {
                 Name = collectionName,
-                Properties = 
+                Properties =
                 [
                     Property.Text("answer"),
                     Property.Text("question"),
                     Property.Text("category")
                 ],
+                // Configure the "default" vector to be SelfProvided (BYOV)
                 VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
             });
             // END CreateCollection
@@ -65,36 +66,29 @@ public class StarterGuidesCustomVectorsTest
             var data = JsonSerializer.Deserialize<List<JeopardyQuestionWithVector>>(responseBody);
 
             // Get a handle to the collection
-            var questions = client.Collections.Use<object>(collectionName);
-            var questionObjs = new List<WeaviateObject>();
+            var questions = client.Collections.Use(collectionName);
 
-            foreach (var d in data)
+            // Using Insert in a loop allows explicit vector assignment per object.
+            // Using Task.WhenAll creates a parallel batch-like effect.
+            var insertTasks = data.Select(d =>
             {
                 // highlight-start
-                var properties = new Dictionary<string, object>
-                {
-                    { "answer", d.Answer },
-                    { "question", d.Question },
-                    { "category", d.Category }
-                };
-
-                questionObjs.Add(new WeaviateObject
-                {
-                    Properties = properties,
-                    Vectors = Vectors.Create("default", d.Vector)
-                });
+                return questions.Data.Insert(
+                    // Pass properties as an Anonymous Type
+                    data: new
+                    {
+                        answer = d.Answer,
+                        question = d.Question,
+                        category = d.Category
+                    },
+                    // Explicitly pass the vector
+                    vectors: d.Vector
+                );
                 // highlight-end
-            }
+            });
 
-            var insertManyResponse = await questions.Data.InsertMany(questionObjs.ToArray());
+            await Task.WhenAll(insertTasks);
             // END ImportData
-            // TODO[g-despot] Error handling missing
-            // Pass the list of objects (converted to an array) to InsertMany
-            // if (insertManyResponse.HasErrors)
-            // {
-            //     Console.WriteLine($"Number of failed imports: {insertManyResponse.Errors.Count}");
-            //     Console.WriteLine($"First failed object error: {insertManyResponse.Errors.First()}");
-            // }
 
             // START NearVector
             var queryVector = data[0].Vector; // Use a vector from the dataset for a reliable query
@@ -116,8 +110,8 @@ public class StarterGuidesCustomVectorsTest
             // The first result should be the object we used for the query, with near-perfect certainty
             Assert.NotNull(response.Objects.First().Metadata.Certainty);
             Assert.True(response.Objects.First().Metadata.Certainty > 0.999);
-            var props = response.Objects.First().Properties as IDictionary<string, object>;
-            Assert.NotNull(props);
+
+            var props = response.Objects.First().Properties;
             Assert.Equal(data[0].Question, props["question"].ToString());
         }
         finally
