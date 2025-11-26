@@ -6,6 +6,7 @@ import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.cre
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_1/quickstart.short.create_collection.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartCreate.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartCreate.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/QuickstartCreate.cs";
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -59,5 +60,13 @@ The collection also contains a configuration for the generative (RAG) integratio
   language="javaraw"
 />
 
+</TabItem>
+<TabItem value="csharp" label="C# (Beta)">
+  <FilteredTextBlock
+    text={CSharpCode}
+    startMarker="// START CreateCollection"
+    endMarker="// END CreateCollection"
+    language="csharp"
+  />
 </TabItem>
 </Tabs>
