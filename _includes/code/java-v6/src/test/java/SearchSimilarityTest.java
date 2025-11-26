@@ -46,7 +46,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END NamedVectorNearText
   }
@@ -64,7 +64,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END GetNearText
   }
@@ -86,7 +86,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END GetNearObject
   }
@@ -99,11 +99,8 @@ class SearchSimilarityTest {
         jeopardy.query.fetchObjects(q -> q.limit(1).includeVector());
     if (initialResponse.objects().isEmpty())
       return; // Skip test if no data
-    var queryVector = initialResponse.objects()
-        .get(0)
-        .metadata()
-        .vectors()
-        .getSingle("default");
+    var queryVector =
+        initialResponse.objects().get(0).vectors().getSingle("default");
 
     // START GetNearVector
     // highlight-start
@@ -113,7 +110,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END GetNearVector
   }
@@ -132,7 +129,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END GetLimitOffset
   }
@@ -150,7 +147,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END GetWithDistance
   }
@@ -168,7 +165,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END Autocut
   }
@@ -188,9 +185,9 @@ class SearchSimilarityTest {
             2 // maximum objects per group
         ));
     // highlight-end
-    response.objects().getFirst().metadata().vectors().getSingle("default");
+    // response.objects().getFirst().vectors().getSingle("default");
     for (var o : response.objects()) {
-      System.out.println(o.metadata().uuid());
+      // System.out.println(o.uuid());
       System.out.println(o.belongsToGroup());
       System.out.println(o.metadata().distance());
     }
@@ -221,7 +218,7 @@ class SearchSimilarityTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().distance());
+      System.out.println(o.queryMetadata().distance());
     }
     // END GetWithFilter
   }

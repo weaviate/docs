@@ -1,6 +1,6 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.query.ReadWeaviateObject;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -63,8 +63,7 @@ class ManageObjectsReadAllTest {
         client.collections.use("WineReview");
 
     // highlight-start
-    for (ReadWeaviateObject<Map<String, Object>> item : collection
-        .paginate()) {
+    for (WeaviateObject<Map<String, Object>> item : collection.paginate()) {
       // highlight-end
       System.out.printf("%s %s\n", item.uuid(), item.properties());
     }
@@ -77,12 +76,11 @@ class ManageObjectsReadAllTest {
     CollectionHandle<Map<String, Object>> collection =
         client.collections.use("WineReview");
 
-    for (ReadWeaviateObject<Map<String, Object>> item : collection
-        .paginate(
-            // highlight-start
-            i -> i.returnMetadata() // If using named vectors, you can specify ones to include
-        // highlight-end
-        )) {
+    for (WeaviateObject<Map<String, Object>> item : collection.paginate(
+        // highlight-start
+        i -> i.returnMetadata() // If using named vectors, you can specify ones to include
+    // highlight-end
+    )) {
       System.out.println(item.properties());
       // highlight-start
       System.out.println(item.vectors());
@@ -106,7 +104,7 @@ class ManageObjectsReadAllTest {
     for (Tenant tenant : tenants) {
       // Iterate through objects within each tenant
       // highlight-start
-      for (ReadWeaviateObject<Map<String, Object>> item : multiCollection
+      for (WeaviateObject<Map<String, Object>> item : multiCollection
           .withTenant(tenant.name())
           .paginate()) {
         // highlight-end
