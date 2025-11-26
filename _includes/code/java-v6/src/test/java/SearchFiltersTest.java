@@ -3,7 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.query.Filter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -318,7 +318,7 @@ class SearchFilterTest {
       var collection = client.collections.use(collectionName);
 
       // 1. Create a list to hold all the objects for insertion.
-      List<WriteWeaviateObject<Map<String, Object>>> objects =
+      List<WeaviateObject<Map<String, Object>>> objects =
           new ArrayList<>();
 
       // 2. Populate the list with your data.
@@ -332,7 +332,7 @@ class SearchFilterTest {
                     day),
                 "some_date",
                 date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-            objects.add(WriteWeaviateObject.<Map<String, Object>>of(
+            objects.add(WeaviateObject.<Map<String, Object>>of(
                 builder -> builder.properties(properties)));
           }
         }

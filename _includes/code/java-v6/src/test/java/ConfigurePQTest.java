@@ -6,7 +6,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.Quantization;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -108,12 +108,12 @@ class ConfigurePQTest {
     assertThat(initialConfig).isPresent();
 
     // START LoadData
-    List<WriteWeaviateObject<Map<String, Object>>> objectList =
+    List<WeaviateObject<Map<String, Object>>> objectList =
         data.stream().map(obj -> {
           Map<String, Object> properties = new HashMap<>();
           properties.put("question", obj.get("Question"));
           properties.put("answer", obj.get("Answer"));
-          return WriteWeaviateObject.<Map<String, Object>>of(
+          return WeaviateObject.<Map<String, Object>>of(
               builder -> builder.properties(properties));
         }).collect(Collectors.toList());
 

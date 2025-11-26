@@ -6,7 +6,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Vectors;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import org.junit.jupiter.api.Test;
 
@@ -75,7 +75,7 @@ class StarterGuidesCustomVectorsTest {
       CollectionHandle<Map<String, Object>> questions =
           client.collections.use(collectionName);
       // Declare the list with the specific generic signature required by insertMany
-      List<WriteWeaviateObject<Map<String, Object>>> questionObjs =
+      List<WeaviateObject<Map<String, Object>>> questionObjs =
           new ArrayList<>();
 
       for (JeopardyQuestionWithVector d : data) {
@@ -84,7 +84,7 @@ class StarterGuidesCustomVectorsTest {
             d.question, "category", d.category);
 
         // Use the explicit Builder to construct the object with a custom vector
-        questionObjs.add(WriteWeaviateObject.of(v -> v.properties(properties)
+        questionObjs.add(WeaviateObject.of(v -> v.properties(properties)
             .uuid(UUID.randomUUID().toString())
             .vectors(Vectors.of(d.vector))));
         // highlight-end
@@ -113,7 +113,7 @@ class StarterGuidesCustomVectorsTest {
       // ===== Test query results =====
       assertThat(response.objects()).hasSize(2);
       // The first result should be the object we used for the query, with near-perfect certainty
-      assertThat(response.objects().get(0).metadata().certainty()).isNotNull()
+      assertThat(response.objects().get(0).queryMetadata().certainty()).isNotNull()
           .isGreaterThan(0.999f);
       assertThat(response.objects().get(0).properties()).isNotNull()
           .isInstanceOf(Map.class);

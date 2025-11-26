@@ -3,10 +3,10 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.ReferenceProperty;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.data.BatchReference;
+import io.weaviate.client6.v1.api.collections.Vectors;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
 
 import org.junit.jupiter.api.AfterAll;
@@ -113,19 +113,18 @@ class ManageObjectsImportTest {
   // END ServerSideBatchImportExample
 
   @Test
-  // TODO[g-despot]: DX: Somewhere it's string somewhere it's UUID, can we supply it as a string directly without ObjectMetadata?
   void testBatchImportWithID() throws IOException {
     client.collections.create("MyCollection",
         col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithIDExample
-    List<WriteWeaviateObject<Map<String, Object>>> dataObjects =
-        new ArrayList<>();
+    List<WeaviateObject<Map<String, Object>>> dataObjects = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
       UUID objUuid = generateUuid5(dataRow.toString());
-      dataObjects.add(WriteWeaviateObject
-          .of(obj -> obj.properties(dataRow).uuid(objUuid.toString())));
+
+      dataObjects.add(WeaviateObject.<Map<String, Object>>of(
+          obj -> obj.properties(dataRow).uuid(objUuid.toString())));
     }
 
     var collection = client.collections.use("MyCollection");
@@ -156,16 +155,18 @@ class ManageObjectsImportTest {
         col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithVectorExample
-    List<WriteWeaviateObject<Map<String, Object>>> dataObjects =
-        new ArrayList<>();
+    List<WeaviateObject<Map<String, Object>>> dataObjects = new ArrayList<>();
     float[] vector = new float[10]; // Using a small vector for demonstration
     Arrays.fill(vector, 0.1f);
 
     for (int i = 0; i < 5; i++) {
       Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
       UUID objUuid = generateUuid5(dataRow.toString());
-      dataObjects.add(WriteWeaviateObject.of(obj -> obj.properties(dataRow)
-          .uuid(objUuid.toString()).vectors(Vectors.of(vector))));
+
+      dataObjects.add(
+          WeaviateObject.<Map<String, Object>>of(obj -> obj.properties(dataRow)
+              .uuid(objUuid.toString())
+              .vectors(Vectors.of(vector))));
     }
 
     var collection = client.collections.use("MyCollection");
@@ -192,10 +193,10 @@ class ManageObjectsImportTest {
   void testBatchImportWithCrossReference() throws IOException {
     client.collections.create("Publication",
         col -> col.properties(Property.text("title")));
+
     client.collections.create("Author",
         col -> col.properties(Property.text("name"))
-            .references(
-                new ReferenceProperty("writesFor", List.of("Publication"))));
+            .references(ReferenceProperty.to("writesFor", "Publication")));
 
     var authors = client.collections.use("Author");
     var publications = client.collections.use("Publication");
@@ -233,6 +234,7 @@ class ManageObjectsImportTest {
             .vectorConfig(VectorConfig.selfProvided("title"),
                 VectorConfig.selfProvided("body"))
             .properties(Property.text("title"), Property.text("body")));
+
     // START BatchImportWithNamedVectors
     // Prepare the data and vectors
     List<Map<String, Object>> dataRows = new ArrayList<>();
@@ -255,16 +257,17 @@ class ManageObjectsImportTest {
     CollectionHandle<Map<String, Object>> collection =
         client.collections.use("MyCollection");
 
-    List<WriteWeaviateObject<Map<String, Object>>> objectsToInsert =
+    List<WeaviateObject<Map<String, Object>>> objectsToInsert =
         new ArrayList<>();
     for (int i = 0; i < dataRows.size(); i++) {
       int index = i;
       objectsToInsert.add(
           // highlight-start
           // Use the Builder with the EXACT matching generic types
-          WriteWeaviateObject.of(v -> v.properties(dataRows.get(index))
-              .vectors(Vectors.of("title", titleVectors.get(index)),
-                  Vectors.of("body", bodyVectors.get(index)))));
+          WeaviateObject
+              .<Map<String, Object>>of(v -> v.properties(dataRows.get(index))
+                  .vectors(Vectors.of("title", titleVectors.get(index)))
+                  .vectors(Vectors.of("body", bodyVectors.get(index)))));
       // highlight-end
 
     }

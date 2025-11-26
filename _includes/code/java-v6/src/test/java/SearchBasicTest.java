@@ -110,7 +110,7 @@ class SearchBasicTest {
         .limit(1));
 
     if (!response.objects().isEmpty()) {
-      System.out.println(response.objects().get(0).metadata().vectors());
+      System.out.println(response.objects().get(0).vectors());
     }
     // END GetObjectVector
   }
@@ -167,7 +167,7 @@ class SearchBasicTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties()); // View the returned properties
-      System.out.println(o.metadata().creationTimeUnix()); // View the returned creation time
+      System.out.println(o.createdAt()); // View the returned creation time
     }
     // END GetWithMetadata
   }
