@@ -206,11 +206,6 @@ to   = "/deploy/installation-guides/aws-marketplace"
 status = 301
 
 [[redirects]]
-from = "/weaviate/installation/gc-marketplace"
-to   = "/deploy/installation-guides/gke-marketplace"
-status = 301
-
-[[redirects]]
 from = "/weaviate/installation/spcs-integration"
 to   = "/deploy/installation-guides/spcs-integration"
 status = 301
@@ -868,4 +863,26 @@ status = 301
 [[redirects]]
 from = "/deploy/production/kubernetes/k8s-poc"
 to   = "/deploy/production/kubernetes/get-to-production"
+status = 301
+
+## Removed deployment options
+
+[[redirects]]
+from = "/deploy/installation-guides/eks-marketplace"
+to   = "/deploy/installation-guides/eks"
+status = 301
+
+[[redirects]]
+from = "/deploy/installation-guides/ecs-marketplace"
+to   = "/deploy/installation-guides/aws-marketplace"
+status = 301
+
+[[redirects]]
+from = "/deploy/installation-guides/gke-marketplace"
+to   = "/deploy/installation-guides/gcp-marketplace"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/gc-marketplace"
+to   = "/deploy/installation-guides/gcp-marketplace"
 status = 301
