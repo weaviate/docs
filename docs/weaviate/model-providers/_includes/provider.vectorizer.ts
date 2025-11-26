@@ -866,7 +866,8 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: "nvidia/nv-embed-v1",
-      baseURL: "https://integrate.api.nvidia.com/v1"
+      baseURL: "https://integrate.api.nvidia.com/v1",
+      // truncate: true
     })
   ],
   // Additional parameters not shown

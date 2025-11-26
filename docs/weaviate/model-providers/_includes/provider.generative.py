@@ -826,6 +826,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.mistral(
         # # These parameters are optional
+        # base_url="<custom-mistral-endpoint-url>"
         # model="mistral-large",
         # temperature=0.7,
         # max_tokens=500,

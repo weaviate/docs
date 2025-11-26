@@ -733,6 +733,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.mistral({
     // These parameters are optional
+    // baseURL: '<custom-mistral-endpoint-url>',
     // model: 'mistral-large',
     // temperature: 0.7,
     // maxTokens: 500

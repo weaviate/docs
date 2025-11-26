@@ -253,7 +253,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2vec_palm(
+        Configure.Vectors.text2vec_google(
             name="title_vector",
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
@@ -276,7 +276,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2vec_palm(
+        Configure.Vectors.text2vec_google(
             name="title_vector",
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
@@ -299,7 +299,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2vec_palm(
+        Configure.Vectors.text2vec_google(
             name="title_vector",
             source_properties=["title"],
             project_id="<google-cloud-project-id>",  # Required for Vertex AI
@@ -748,6 +748,7 @@ client.collections.create(
             source_properties=["title"],
             model="nvidia/nv-embed-v1",
             base_url="https://integrate.api.nvidia.com/v1",
+            # truncate=True
         )
     ],
     # highlight-end
