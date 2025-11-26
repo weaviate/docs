@@ -33,9 +33,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await CreateCollection(clientSrc, "WineReview", false);
         await CreateCollection(clientSrc, "WineReviewMT", true);
 
-        var wineReview = clientSrc.Collections.Use<object>("WineReview");
-
-        // Create initial data
+        var wineReview = clientSrc.Collections.Use("WineReview");
         var wineReviewData = Enumerable.Range(0, DATASET_SIZE)
             .Select(i => new WineReviewModel
             {
@@ -47,8 +45,8 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
 
         await wineReview.Data.InsertMany(wineReviewData);
 
-        var wineReviewMT = clientSrc.Collections.Use<object>("WineReviewMT");
-        await wineReviewMT.Tenants.Add(new[] { new Tenant { Name = "tenantA" } });
+        var wineReviewMT = clientSrc.Collections.Use("WineReviewMT");
+        await wineReviewMT.Tenants.Add(["tenantA"]);
         await wineReviewMT.WithTenant("tenantA").Data.InsertMany(wineReviewData);
     }
 
@@ -58,7 +56,11 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await clientTgt.Collections.DeleteAll();
     }
 
-    private static async Task<CollectionClient<object>> CreateCollection(WeaviateClient clientIn,
+    // START CreateCollectionCollectionToCollection
+    // START CreateCollectionCollectionToTenant
+    // START CreateCollectionTenantToCollection
+    // START CreateCollectionTenantToTenant
+    private static async Task<CollectionClient> CreateCollection(WeaviateClient clientIn,
         string collectionName, bool enableMt)
     {
         if (await clientIn.Collections.Exists(collectionName))
@@ -82,14 +84,18 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
     }
 
     // TODO[g-despot] NEW: Why can't I insert many with preserved IDs?
-    // Generic Migration Method
-    private async Task MigrateData<T>(CollectionClient<object> collectionSrc,
-     CollectionClient<object> collectionTgt) where T : class
+
+    // START CollectionToCollection
+    // START TenantToCollection
+    // START CollectionToTenant
+    // START TenantToTenant
+    private async Task MigrateData<T>(CollectionClient collectionSrc,
+     CollectionClient collectionTgt)
     {
         Console.WriteLine("Starting data migration...");
 
         // Fetch source objects
-        var response = await collectionSrc.Query.FetchObjects(limit: 10000);
+        var response = await collectionSrc.Query.FetchObjects(limit: 10000, includeVectors: true);
 
         // Map to Strong Type List
         var sourceObjects = new List<T>();
@@ -110,7 +116,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         Console.WriteLine($"Data migration complete. Migrated {sourceObjects.Count} objects.");
     }
 
-    private async Task<bool> VerifyMigration(CollectionClient<object> collectionTgt, int expectedCount)
+    private async Task<bool> VerifyMigration(CollectionClient collectionTgt, int expectedCount)
     {
         // Verification modified because InsertMany generates NEW IDs.
         // We check if the total count matches and if a sample query works.
@@ -143,8 +149,10 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
     {
         await CreateCollectionToCollection();
 
-        var reviewsSrc = clientSrc.Collections.Use<object>("WineReview");
-        var reviewsTgt = clientTgt.Collections.Use<object>("WineReview");
+        var reviewsSrc = clientSrc.Collections.Use("WineReview");
+        var reviewsTgt = clientTgt.Collections.Use("WineReview");
+        await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgt);
+        // END CollectionToCollection
 
         // Pass the Type to the generic method
         await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgt);
@@ -162,8 +170,8 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
     {
         await CreateTenantToCollection();
 
-        var reviewsSrc = clientSrc.Collections.Use<object>("WineReviewMT");
-        var reviewsTgt = clientTgt.Collections.Use<object>("WineReview");
+        var reviewsSrc = clientSrc.Collections.Use("WineReviewMT");
+        var reviewsTgt = clientTgt.Collections.Use("WineReview");
         var reviewsSrcTenantA = reviewsSrc.WithTenant("tenantA");
 
         await MigrateData<WineReviewModel>(reviewsSrcTenantA, reviewsTgt);
@@ -178,7 +186,8 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
 
     private async Task CreateTenants()
     {
-        var reviewsMtTgt = clientTgt.Collections.Use<object>("WineReviewMT");
+        var reviewsMtTgt = clientTgt.Collections.Use("WineReviewMT");
+
         var tenantsTgt = new[] { new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" } };
         await reviewsMtTgt.Tenants.Add(tenantsTgt);
     }
@@ -189,8 +198,9 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await CreateCollectionToTenant();
         await CreateTenants();
 
-        var reviewsMtTgt = clientTgt.Collections.Use<object>("WineReviewMT");
-        var reviewsSrc = clientSrc.Collections.Use<object>("WineReview");
+        var reviewsMtTgt = clientTgt.Collections.Use("WineReviewMT");
+        var reviewsSrc = clientSrc.Collections.Use("WineReview");
+
         var reviewsTgtTenantA = reviewsMtTgt.WithTenant("tenantA");
 
         await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgtTenantA);
@@ -209,8 +219,8 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await CreateTenantToTenant();
         await CreateTenants();
 
-        var reviewsMtSrc = clientSrc.Collections.Use<object>("WineReviewMT");
-        var reviewsMtTgt = clientTgt.Collections.Use<object>("WineReviewMT");
+        var reviewsMtSrc = clientSrc.Collections.Use("WineReviewMT");
+        var reviewsMtTgt = clientTgt.Collections.Use("WineReviewMT");
         var reviewsSrcTenantA = reviewsMtSrc.WithTenant("tenantA");
         var reviewsTgtTenantA = reviewsMtTgt.WithTenant("tenantA");
 

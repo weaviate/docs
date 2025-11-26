@@ -52,7 +52,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
 
         // highlight-start
         // ===== Add three mock objects to the WineReviewNV collection =====
-        var reviews = client.Collections.Use<object>("WineReviewNV");
+        var reviews = client.Collections.Use("WineReviewNV");
         await reviews.Data.InsertMany(new[]
         {
             new { title = "Mock Wine A", review_body = "A fine mock vintage.", country = "Mocktugal" },
@@ -92,7 +92,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
     private static async Task DelProps(WeaviateClient client, Guid uuidToUpdate, string collectionName,
         IEnumerable<string> propNames)
     {
-        var collection = client.Collections.Use<object>(collectionName);
+        var collection = client.Collections.Use(collectionName);
 
         // fetch the object to update
         var objectData = await collection.Query.FetchObjectByID(uuidToUpdate);
@@ -115,7 +115,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateAndReplaceFlow()
     {
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         var uuid = await jeopardy.Data.Insert(new
         {
@@ -161,7 +161,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         // Coming soon
         // END UpdateNamedVector
 
-        var reviews = client.Collections.Use<object>("WineReviewNV");
+        var reviews = client.Collections.Use("WineReviewNV");
         var reviewResponse = await reviews.Query.FetchObjects(limit: 1);
         var reviewUuid = reviewResponse.Objects.First().ID.Value;
 

@@ -61,12 +61,12 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestObjectWithCrossRef()
     {
         await SetupCollections();
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var categories = client.Collections.Use("JeopardyCategory");
         var categoryUuid = await categories.Data.Insert(new { title = "Weaviate" });
         var properties = new { question = "What tooling helps make Weaviate scalable?", answer = "Sharding, multi-tenancy, and replication" };
 
         // START ObjectWithCrossRef
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
+        var questions = client.Collections.Use("JeopardyQuestion");
 
         var newObject = await questions.Data.Insert(
             properties, // The properties of the object
@@ -86,8 +86,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestOneWay()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var questionObjId = await questions.Data.Insert(new { question = "This city is known for the Golden Gate Bridge", answer = "San Francisco" });
         var categoryObjId = await categories.Data.Insert(new { title = "U.S. CITIES" });
@@ -140,7 +140,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         );
         // END TwoWayCategoryCrossReferences
 
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
+        var questions = client.Collections.Use("JeopardyQuestion");
         var categories = client.Collections.Use("JeopardyCategory");
 
         var questionObjId = await questions.Data.Insert(new { question = "This city is known for the Golden Gate Bridge", answer = "San Francisco" });
@@ -167,8 +167,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestMultiple()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var questionObjId = await questions.Data.Insert(new { question = "This city is known for the Golden Gate Bridge", answer = "San Francisco" });
         var categoryObjId = await categories.Data.Insert(new { title = "U.S. CITIES" });
@@ -198,8 +198,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestReadCrossRef()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var categoryResult = await categories.Data.Insert(new { title = "SCIENCE" });
         var questionObjId = await questions.Data.Insert(
@@ -234,8 +234,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestDelete()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var categoryObjId = await categories.Data.Insert(new { title = "MUSEUMS" });
         var questionObjId = await questions.Data.Insert(
@@ -268,8 +268,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestUpdate()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var categoryObjId = await categories.Data.Insert(new { title = "MUSEUMS" });
         await categories.Data.Insert(new { title = "U.S. CITIES" });

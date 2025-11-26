@@ -124,7 +124,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObject()
     {
         // START CreateSimpleObject
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         // highlight-start
         var uuid = await jeopardy.Data.Insert(new
@@ -148,7 +148,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObjectWithVector()
     {
         // START CreateObjectWithVector
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             new
             {
@@ -171,7 +171,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObjectNamedVectors()
     {
         // START CreateObjectNamedVectors
-        var reviews = client.Collections.Use<object>("WineReviewNV"); // This collection must have named vectors configured
+        var reviews = client.Collections.Use("WineReviewNV"); // This collection must have named vectors configured
         var uuid = await reviews.Data.Insert(
             new
             {
@@ -217,7 +217,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         };
         var dataObjectString = JsonSerializer.Serialize(dataObject);
 
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             dataObject,
             // highlight-start
@@ -234,7 +234,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObjectWithId()
     {
         // START CreateObjectWithId
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             new
             {
@@ -259,7 +259,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestWithGeoCoordinates()
     {
         // START WithGeoCoordinates
-        var publications = client.Collections.Use<object>("Publication");
+        var publications = client.Collections.Use("Publication");
 
         var uuid = await publications.Data.Insert(
             new
@@ -282,7 +282,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         var objectUuid = GenerateUuid5("Author to fetch");
         // END CheckForAnObject
 
-        var authors = client.Collections.Use<object>("Author");
+        var authors = client.Collections.Use("Author");
         await authors.Data.Insert(
             new { name = "Author to fetch" },
             id: objectUuid,

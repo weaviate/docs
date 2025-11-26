@@ -180,7 +180,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         Assert.Single(results.Objects);
     }
 
-// TODO[g-despot] It's strange that I have to cast into primitive types
+    // TODO[g-despot] It's strange that I have to cast into primitive types
     [Fact]
     public async Task TestZeroDowntimeMigration()
     {
@@ -195,11 +195,11 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         var productsV1 = client.Collections.Use(ProductsV1);
 
         // Batch insert works best with anonymous objects here
-        await productsV1.Data.InsertMany(
-        [
+        await productsV1.Data.InsertMany(new[]
+        {
             new { name = "Product A", price = 100 },
             new { name = "Product B", price = 200 }
-        ]);
+        });
         // END Step1CreateOriginal
 
         // START Step2CreateAlias
@@ -264,9 +264,9 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         // All queries using "Products" alias now use the new collection
         products = client.Collections.Use(ProductsAlias);
         var result = await products.Query.FetchObjects(limit: 1);
-        
+
         // Will include the new "category" field
-        Console.WriteLine(JsonSerializer.Serialize(result.Objects.First().Properties)); 
+        Console.WriteLine(JsonSerializer.Serialize(result.Objects.First().Properties));
         // END Step5UpdateAlias
 
         Assert.True(result.Objects.First().Properties.ContainsKey("category"));

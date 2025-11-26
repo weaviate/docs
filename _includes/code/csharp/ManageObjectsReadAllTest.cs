@@ -65,7 +65,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
     public async Task TestReadAllProps()
     {
         // START ReadAllProps
-        var collection = client.Collections.Use<object>("WineReview");
+        var collection = client.Collections.Use("WineReview");
 
         // highlight-start
         await foreach (var item in collection.Iterator())
@@ -80,7 +80,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
     public async Task TestReadAllVectors()
     {
         // START ReadAllVectors
-        var collection = client.Collections.Use<object>("WineReview");
+        var collection = client.Collections.Use("WineReview");
 
         await foreach (var item in collection.Iterator(
             // highlight-start
@@ -101,7 +101,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
     public async Task TestReadAllTenants()
     {
         // START ReadAllTenants
-        var multiCollection = client.Collections.Use<object>("WineReviewMT");
+        var multiCollection = client.Collections.Use("WineReviewMT");
 
         // Get a list of tenants
         // highlight-start

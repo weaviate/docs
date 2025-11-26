@@ -102,7 +102,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         // START BasicBatchImportExample
         var dataRows = Enumerable.Range(0, 5).Select(i => new { title = $"Object {i + 1}" }).ToList();
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
         // The Java client uses insertMany for batching.
         // There is no direct equivalent of the Python client's stateful batch manager.
@@ -146,7 +146,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             dataToInsert.Add((dataRow, objUuid));
         }
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
         // highlight-start
         var response = await collection.Data.InsertMany(dataToInsert);
@@ -177,7 +177,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         });
 
         // START BatchImportWithVectorExample
-        var dataToInsert = new List<BatchInsertRequest<object>>();
+        var dataToInsert = new List<BatchInsertRequest>();
         var vectorData = Enumerable.Repeat(0.1f, 10).ToArray();
 
         for (int i = 0; i < 5; i++)
@@ -194,14 +194,14 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
             // 3. Pass arguments to the constructor (Data is required)
             // Signature: BatchInsertRequest(TData data, Guid? id = null, Vectors? vectors = null, ...)
-            dataToInsert.Add(new BatchInsertRequest<object>(
+            dataToInsert.Add(new BatchInsertRequest(
                 dataRow,
                 objUuid,
                 vectors
             ));
         }
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
         var response = await collection.Data.InsertMany(dataToInsert);
 
@@ -229,14 +229,14 @@ public class ManageObjectsImportTest : IAsyncLifetime
             References = [new Reference("writesFor", "Publication")]
         });
 
-        var authors = client.Collections.Use<object>("Author");
-        var publications = client.Collections.Use<object>("Publication");
+        var authors = client.Collections.Use("Author");
+        var publications = client.Collections.Use("Publication");
 
         var fromUuid = await authors.Data.Insert(new { name = "Jane Austen" });
         var targetUuid = await publications.Data.Insert(new { title = "Ye Olde Times" });
 
         // START BatchImportWithRefExample
-        var collection = client.Collections.Use<object>("Author");
+        var collection = client.Collections.Use("Author");
 
         var response = await collection.Data.ReferenceAddMany([new DataReference(fromUuid, "writesFor", targetUuid)]);
 
@@ -268,8 +268,8 @@ public class ManageObjectsImportTest : IAsyncLifetime
         });
 
         // START BatchImportWithNamedVectors
-        // 1. Change list type to BatchInsertRequest<object>
-        var dataToInsert = new List<BatchInsertRequest<object>>();
+        // 1. Change list type to BatchInsertRequest
+        var dataToInsert = new List<BatchInsertRequest>();
 
         for (int i = 0; i < 5; i++)
         {
@@ -287,11 +287,11 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
             // 3. Add a specific request object to the list
             // Constructor signature: (Data, ID?, Vectors?, References?, Tenant?)
-            dataToInsert.Add(new BatchInsertRequest<object>(dataRow, Vectors: namedVectors));
+            dataToInsert.Add(new BatchInsertRequest(dataRow, Vectors: namedVectors));
             // highlight-end
         }
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
         // Insert the data using InsertMany
         // highlight-start
@@ -391,7 +391,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         // START CSV streaming
         int batchSize = 100;
         var batch = new List<object>(batchSize);
-        var collection = client.Collections.Use<object>("JeopardyQuestion");
+        var collection = client.Collections.Use("JeopardyQuestion");
 
         Console.WriteLine("CSV streaming to not load all records in RAM at once...");
         using (var reader = new StreamReader(CsvDataFile))

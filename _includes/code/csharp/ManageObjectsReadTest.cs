@@ -38,7 +38,7 @@ public class ManageObjectsReadTest : IDisposable
     public async Task TestReadObject()
     {
         // START ReadSimpleObject
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         // highlight-start
         var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"));
@@ -55,7 +55,7 @@ public class ManageObjectsReadTest : IDisposable
     public async Task TestReadObjectWithVector()
     {
         // START ReadObjectWithVector
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"),
             // highlight-start
@@ -75,7 +75,7 @@ public class ManageObjectsReadTest : IDisposable
     public async Task TestReadObjectNamedVectors()
     {
         // START ReadObjectNamedVectors
-        var reviews = client.Collections.Use<object>("WineReviewNV"); // Collection with named
+        var reviews = client.Collections.Use("WineReviewNV"); // Collection with named
         // END ReadObjectNamedVectors                                 // vectors
 
         var someObjResponse = await reviews.Query.FetchObjects(limit: 1);
@@ -111,7 +111,7 @@ public class ManageObjectsReadTest : IDisposable
     public async Task TestCheckObject()
     {
         // START CheckForAnObject
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         // The C# client checks for existence by attempting to fetch an object and checking for null.
         var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"));

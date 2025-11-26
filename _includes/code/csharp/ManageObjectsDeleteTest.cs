@@ -47,7 +47,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestDeleteObject()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var uuidToDelete = await collection.Data.Insert(new { name = "EphemeralObjectA" });
         Assert.NotNull(await collection.Query.FetchObjectByID(uuidToDelete));
 
@@ -61,7 +61,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestBatchDelete()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var objects = Enumerable.Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
@@ -86,7 +86,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     public async Task TestDeleteContains()
     {
         // START DeleteContains
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         await collection.Data.InsertMany(new[]
         {
             new { name = "asia" },
@@ -104,7 +104,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestDryRun()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var objects = Enumerable.Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
@@ -130,7 +130,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestBatchDeleteWithIDs()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var objects = Enumerable.Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]

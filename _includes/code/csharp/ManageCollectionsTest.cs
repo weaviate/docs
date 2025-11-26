@@ -119,7 +119,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         });
 
         // START AddProperty
-        CollectionClient<object> articles = client.Collections.Use<object>("Article");
+        CollectionClient articles = client.Collections.Use("Article");
         await articles.Config.AddProperty(Property.Text("description"));
         // END AddProperty
 
@@ -203,7 +203,7 @@ public class ManageCollectionsTest : IAsyncLifetime
                 Property.Text("body"),
             ]
         });
-        var articles = client.Collections.Use<object>("Article");
+        var articles = client.Collections.Use("Article");
         // START AddNamedVectors
         await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", sourceProperties: "body"));
         // END AddNamedVectors
@@ -362,7 +362,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START UpdateReranker
-        var collection = client.Collections.Use<object>("Article");
+        var collection = client.Collections.Use("Article");
         await collection.Config.Update(c =>
         {
             c.RerankerConfig = new Reranker.Cohere();
@@ -404,7 +404,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START UpdateGenerative
-        var collection = client.Collections.Use<object>("Article");
+        var collection = client.Collections.Use("Article");
         await collection.Config.Update(c =>
         {
             c.GenerativeConfig = new GenerativeConfig.Cohere();
@@ -603,7 +603,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START ReadOneCollection
-        var articles = client.Collections.Use<object>("Article");
+        var articles = client.Collections.Use("Article");
         var articlesConfig = await articles.Config.Get();
 
         Console.WriteLine(articlesConfig);
@@ -646,7 +646,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         });
 
         // START UpdateCollection
-        var articles = client.Collections.Use<object>("Article");
+        var articles = client.Collections.Use("Article");
 
         await articles.Config.Update(c =>
         {
@@ -679,7 +679,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // {
     //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
-    //     var articles = client.Collections.Use<object>("Article");
+    //     var articles = client.Collections.Use("Article");
 
     //     var articleShards = await articles.Shards.Get();
     //     Console.WriteLine(string.Join(", ", articleShards.Select(s => s.Name)));
@@ -695,10 +695,10 @@ public class ManageCollectionsTest : IAsyncLifetime
     // public async Task TestUpdateCollectionShards()
     // {
     //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
-    //     var initialShards = await client.Collections.Use<object>("Article").Shards.Get();
+    //     var initialShards = await client.Collections.Use("Article").Shards.Get();
     //     var shardName = initialShards.First().Name;
 
-    //     var articles = client.Collections.Use<object>("Article");
+    //     var articles = client.Collections.Use("Article");
 
     //     var articleShards = await articles.Shards.Update(shardName, "READONLY");
     //     Console.WriteLine(string.Join(", ", articleShards.Select(s => s.Status)));
