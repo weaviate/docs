@@ -305,6 +305,7 @@ await client.collections.create({
       endpoint: databricksVectorizerEndpoint,  // Required for Databricks
       name: 'title_vector',
       sourceProperties: ['title'],
+      // instruction: 'custom-instruction-text'
     })
   ],
   // highlight-end

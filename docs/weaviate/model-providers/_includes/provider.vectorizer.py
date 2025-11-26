@@ -943,6 +943,7 @@ client.collections.create(
             endpoint=databricks_vectorizer_endpoint,  # Required for Databricks
             name="title_vector",
             source_properties=["title"],
+            # instruction="<optional-instruction-text>"
         )
     ],
     # highlight-end
