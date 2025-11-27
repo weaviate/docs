@@ -148,6 +148,12 @@ The Query Agent can be instantiated with additional options, such as:
 - `system_prompt`: A custom system prompt to replace the default system prompt provided by the Weaviate team (`systemPrompt` for JavaScript).
 - `timeout`: The maximum time the Query Agent will spend on a single query, in seconds (server-side default: 60).
 
+:::tip For long-running queries
+If you're experiencing timeouts or expect complex queries that take a long time, consider using [streaming responses](#stream-responses) as well as increasing the timeout value.
+
+Streaming handles long-running requests better by sending heartbeats to keep the connection alive and providing progress updates as the query processes.
+:::
+
 #### Custom system prompt
 
 You can provide a custom system prompt to guide the Query Agent's behavior:
