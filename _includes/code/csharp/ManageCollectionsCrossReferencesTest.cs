@@ -13,12 +13,9 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     private WeaviateClient client;
 
     // Runs before each test
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
-        return Task.CompletedTask;
+        client = await Connect.Local();
     }
 
     // Runs after each test

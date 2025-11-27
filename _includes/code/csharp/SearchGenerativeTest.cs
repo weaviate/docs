@@ -212,7 +212,7 @@ public class SearchGenerativeTest : IDisposable
             {
                 Task = "What do these animals have in common, if anything?",
                 Debug = true,
-                Provider = new Providers.OpenAI { ReturnMetadata = true }
+                Provider = new Providers.OpenAI { ReturnMetadata = true, Temperature = 1f }
             }
         // highlight-end
         );

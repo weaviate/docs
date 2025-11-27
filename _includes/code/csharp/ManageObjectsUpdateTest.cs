@@ -16,9 +16,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
     static ManageObjectsUpdateTest()
     {
         // START INSTANTIATION-COMMON
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 

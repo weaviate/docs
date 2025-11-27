@@ -13,7 +13,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     private WeaviateClient client;
 
     // Runs before each test (like @BeforeEach)
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
         if (string.IsNullOrWhiteSpace(openaiApiKey))
@@ -21,11 +21,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
             throw new ArgumentException("Please set the OPENAI_API_KEY environment variable.");
         }
 
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
-
-        return Task.CompletedTask;
+        client = await Connect.Local();
     }
 
     // Runs after each test (like @AfterEach)

@@ -30,6 +30,9 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         clientSrc = await Connect.Local(restPort: 8080, grpcPort: 50051);
         clientTgt = await Connect.Local(restPort: 8090, grpcPort: 50061);
 
+        await clientSrc.Collections.Delete("WineReview");
+        await clientSrc.Collections.Delete("WineReviewMT");
+        
         await CreateCollection(clientSrc, "WineReview", false);
         await CreateCollection(clientSrc, "WineReviewMT", true);
 

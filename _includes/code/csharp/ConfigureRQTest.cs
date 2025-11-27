@@ -15,9 +15,7 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task InitializeAsync()
     {
         // START ConnectCode
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = await Connect.Local();
         // END ConnectCode
 
         // Clean slate for each test

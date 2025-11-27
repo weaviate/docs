@@ -32,9 +32,7 @@ public class ConfigurePQTest : IAsyncLifetime
         // END DownloadData
 
         // START ConnectCode
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = await Connect.Local();
 
         var meta = await client.GetMeta();
         Console.WriteLine($"Weaviate info: {meta.Version}");
@@ -59,7 +57,6 @@ public class ConfigurePQTest : IAsyncLifetime
         }
     }
 
-    // TODO[g-despot] Why are properties required? ERROR: didn't find a single property which is of type string or text and is not excluded from indexing
     [Fact]
     public async Task TestCollectionWithAutoPQ()
     {
