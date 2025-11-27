@@ -5,8 +5,9 @@ title: "Multi-vector RAG: Using Weaviate to search a collection of PDF documents
 featured: False
 integration: False
 agent: False
-tags: ['ColPali', 'Named Vectors']
+tags: ["ColPali", "Named Vectors"]
 ---
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb)
 
 # Multimodal RAG over PDFs using ColQwen2, Qwen2.5, and Weaviate
@@ -17,9 +18,9 @@ We will be performing retrieval against a collection of PDF documents by embeddi
 For this purpose, we will use
 
 - **A multimodal [late-interaction model](https://weaviate.io/blog/late-interaction-overview)**, like ColPali and ColQwen2, to generate
-embeddings. This tutorial uses the publicly available model
-[ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) with a permissive Apache 2.0 license.
-- **A Weaviate [vector database](https://weaviate.io/blog/what-is-a-vector-database)**, which  has a [multi-vector feature](https://docs.weaviate.io/weaviate/tutorials/multi-vector-embeddings) to effectively index a collection of PDF documents and support textual queries against the contents of the documents, including both text and figures.
+  embeddings. This tutorial uses the publicly available model
+  [ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) with a permissive Apache 2.0 license.
+- **A Weaviate [vector database](https://weaviate.io/blog/what-is-a-vector-database)**, which has a [multi-vector feature](https://docs.weaviate.io/weaviate/tutorials/multi-vector-embeddings) to effectively index a collection of PDF documents and support textual queries against the contents of the documents, including both text and figures.
 - **A vision language model (VLM)**, specifically [Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct), to support multimodal Retrieval-Augmented Generation (RAG).
 
 Below, you can see the multimodal RAG system overview:
@@ -100,6 +101,7 @@ dataset = load_dataset("weaviate/arXiv-AI-papers-multi-vector", split="train")
 ```
 
 Python output:
+
 ```text
 README.md:   0%|          | 0.00/530 [00:00&lt;?, ?B/s]
 
@@ -107,17 +109,20 @@ n40_p10_images.parquet:   0%|          | 0.00/201M [00:00&lt;?, ?B/s]
 
 Generating train split:   0%|          | 0/399 [00:00&lt;?, ? examples/s]
 ```
+
 ```python
 dataset
 ```
 
 Python output:
+
 ```text
 Dataset({
     features: ['page_id', 'paper_title', 'paper_arxiv_id', 'page_number', 'colqwen_embedding', 'page_image'],
     num_rows: 399
 })
 ```
+
 ```python
 dataset[398]
 ```
@@ -165,10 +170,12 @@ print(f"Using attention implementation: {attn_implementation}")
 ```
 
 Python output:
+
 ```text
 Using device: cuda:0
 Using attention implementation: eager
 ```
+
 ```python
 model_name = "vidore/colqwen2-v1.0"
 
@@ -185,6 +192,7 @@ processor = ColQwen2Processor.from_pretrained(model_name)
 ```
 
 Python output:
+
 ```text
 adapter_config.json:   0%|          | 0.00/728 [00:00&lt;?, ?B/s]
 
@@ -222,6 +230,7 @@ video_preprocessor_config.json:   0%|          | 0.00/54.0 [00:00&lt;?, ?B/s]
 
 chat_template.json: 0.00B [00:00, ?B/s]
 ```
+
 This notebook uses the ColQwen2 model because it has a permissive Apache 2.0 license.
 Alternatively, you can also use [ColPali](https://huggingface.co/vidore/colpali-v1.2), which has a Gemma license, or check out other available [ColVision models](https://github.com/illuin-tech/colpali). For a detailed comparison, you can also refer to [ViDoRe: The Visual Document Retrieval Benchmark](https://huggingface.co/spaces/vidore/vidore-leaderboard)
 
@@ -263,6 +272,7 @@ print(query_embedding.shape)
 ```
 
 Python output:
+
 ```text
 tensor([[[ 2.0630e-02, -8.6426e-02, -7.1289e-02,  ...,  5.1758e-02,
           -3.0365e-03,  1.1084e-01],
@@ -293,6 +303,7 @@ tensor([[[ 2.0630e-02, -8.6426e-02, -7.1289e-02,  ...,  5.1758e-02,
           -1.3828e-04, -5.7617e-02]]], device='cuda:0', dtype=torch.bfloat16)
 torch.Size([2, 755, 128])
 ```
+
 ```python
 # Sample query inputs
 queries = [
@@ -312,6 +323,7 @@ print(query_embedding.shape)
 ```
 
 Python output:
+
 ```text
 tensor([[[ 0.0000, -0.0000, -0.0000,  ..., -0.0000,  0.0000,  0.0000],
          [ 0.0000, -0.0000, -0.0000,  ..., -0.0000,  0.0000,  0.0000],
@@ -331,6 +343,7 @@ tensor([[[ 0.0000, -0.0000, -0.0000,  ..., -0.0000,  0.0000,  0.0000],
        device='cuda:0', dtype=torch.bfloat16)
 torch.Size([2, 22, 128])
 ```
+
 Let's write a class to wrap the multimodal late-interaction model and its embedding functionalities for convenience.
 
 ```python
@@ -382,17 +395,19 @@ print(query_embeddings[0].shape)  # torch.Size([20, 128])
 ```
 
 Python output:
+
 ```text
 torch.Size([755, 128])
 torch.Size([20, 128])
 ```
+
 ## Step 4: Connect to a Weaviate vector database instance
 
 Now, you will need to connect to a running Weaviate vector database cluster.
 
 You can choose one of the following options:
 
-1. **Option 1:** You can create a 14-day free sandbox on the managed service [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
+1. **Option 1:** You can create a 14-day free sandbox on the managed service [Weaviate Cloud (WCD)](/go/console?utm_content=recipe/)
 2. **Option 2:** [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
 3. **Option 3:** [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
 4. [Other options](https://docs.weaviate.io/deploy)
@@ -424,9 +439,11 @@ print(client.is_ready())
 ```
 
 Python output:
+
 ```text
 True
 ```
+
 For this tutorial, you will need the Weaviate `v1.29.0` or higher.
 Let's make sure we have the required version:
 
@@ -435,9 +452,11 @@ client.get_meta()['version']
 ```
 
 Python output:
+
 ```text
 '1.32.4'
 ```
+
 ## Step 5: Create a collection
 
 Next, we will create a collection that will hold the embeddings of the images of the PDF document pages.
@@ -518,6 +537,7 @@ del dataset
 ```
 
 Python output:
+
 ```text
 Added 1/399 Page objects to Weaviate.
 Added 26/399 Page objects to Weaviate.
@@ -536,26 +556,30 @@ Added 326/399 Page objects to Weaviate.
 Added 351/399 Page objects to Weaviate.
 Added 376/399 Page objects to Weaviate.
 ```
+
 ```python
 len(collection)
 ```
 
 Python output:
+
 ```text
 399
 ```
+
 ## Step 7: Multimodal Retrieval Query
 
 As an example of what we are going to build, consider the following actual demo query and resulting PDF page from our collection (nearest neighbor):
 
 - Query: "How does DeepSeek-V2 compare against the LLaMA family of LLMs?"
-- Nearest neighbor:  "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1.
+- Nearest neighbor: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1.
 
 ```python
 query = "How does DeepSeek-V2 compare against the LLaMA family of LLMs?"
 ```
 
 Python output:
+
 ```text
 Running cells with 'Python 3.13.5' requires the ipykernel package.
 
@@ -563,6 +587,7 @@ Install 'ipykernel' into the Python environment.
 
 Command: '/opt/homebrew/bin/python3 -m pip install ipykernel -U --user --force-reinstall'
 ```
+
 By inspecting the first page of the [DeepSeek-V2 paper](https://arxiv.org/abs/2405.04434), we see that it does indeed contain a figure that is relevant for answering our query:
 
 <img src="https://github.com/weaviate/recipes/blob/main/weaviate-features/multi-vector/figures/deepseek_efficiency.jpeg?raw=1" width="700px"/>
@@ -591,11 +616,13 @@ for i, o in enumerate(response.objects):
 ```
 
 Python output:
+
 ```text
 The most relevant documents for the query "How does DeepSeek-V2 compare against the LLaMA family of LLMs?" by order of relevance:
 
 1) MaxSim: 23.12, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1
 ```
+
 The retrieved page with the highest MaxSim score is indeed the page with the figure we mentioned earlier.
 
 ```python
@@ -752,6 +779,7 @@ qwenvl = QwenVL()
 ```
 
 Python output:
+
 ```text
 config.json: 0.00B [00:00, ?B/s]
 
@@ -781,6 +809,7 @@ You have video processor config saved in `preprocessor.json` file which is depre
 
 chat_template.json: 0.00B [00:00, ?B/s]
 ```
+
 The response from `Qwen2.5-VL-3B-Instruct` based on the retrieved PDF pages:
 
 ```python
@@ -788,9 +817,11 @@ qwenvl.query_images(query, result_images)
 ```
 
 Python output:
+
 ```text
 'DeepSeek-V2 achieves significantly stronger performance than the LLaMA family of LLMs, while also saving 42.5% of training costs and boosting the maximum generation throughput to 5.76 times.'
 ```
+
 As you can see, the multimodal RAG pipeline was able to answer the original query: "How does DeepSeek-V2 compare against the LLaMA family of LLMs?". For this, the ColQwen2 retrieval model retrieved the correct PDF page from the
 "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" paper and used both the text and visual from the retrieved PDF page to answer the question.
 

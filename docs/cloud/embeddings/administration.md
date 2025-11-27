@@ -7,7 +7,6 @@ image: og/wcd/user_guides.jpg
 
 import Link from '@docusaurus/Link';
 
-
 :::info
 Weaviate Embeddings is enabled by default at the organization level and is available to all Weaviate Cloud users.
 :::
@@ -22,7 +21,7 @@ import DisableWeaviateEmbeddings from '/docs/cloud/img/weaviate-cloud-disable-em
   <div class="col col--4">
     <ol>
       <li>
-        Open the <Link to="https://weaviate.io/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>.
+        Open the <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
        Click on <code>Weaviate Embeddings</code> in the left sidebar (<span class="callout">1</span>).
@@ -47,6 +46,7 @@ import DisableWeaviateEmbeddings from '/docs/cloud/img/weaviate-cloud-disable-em
 ## Pricing and billing
 
 <!-- TODO[g-despot] Update link -->
+
 If you would like to learn about the pricing model, you can visit the Weaviate Embeddings [product page](https://weaviate.io/product/embeddings).
 The pricing works on a per-token basis. This means that you will only be billed for the tokens that are successfully consumed.
 In other words, only requests that result in valid responses from the API are considered.
@@ -62,6 +62,6 @@ More info about billing in Weaviate Cloud can be found on [this page](/cloud/pla
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from '/\_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />

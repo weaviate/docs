@@ -1,23 +1,23 @@
 ---
 title: Build a recipe recommender with the Personalization Agent
-sidebar_label: 'Tutorial: Recipe recommender'
+sidebar_label: "Tutorial: Recipe recommender"
 description: "Tutorial for creating a recipe recommendation system using the Personalization Agent."
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['personalization', 'recommendation']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent_tutorial_food_recommender.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/docs/agents/_includes/personalization_agent_tutorial_food_recommender.py";
 
 <CloudOnlyBadge />
 
 :::caution Technical Preview
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only 'This Weaviate Agent is in technical preview.')
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only 'This Weaviate Agent is in technical preview.')
+![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
+![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
 
 [Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
 
@@ -38,7 +38,7 @@ It is available on HuggingFace:
 
 The Weaviate Personalization Agent is a pre-built agentic service designed to retrieve objects from a Weaviate collection in a way that is tailored to individual users. It achieves this by considering a user's defined persona (profile) and their history of interactions with items in the collection.
 
-import WeaviateAgentsPersonalizationFoodFlowchart from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_flowchart.png';
+import WeaviateAgentsPersonalizationFoodFlowchart from "/docs/agents/_includes/personalization_agent_tutorial_food_recommender_flowchart.png";
 
 <div class="row">
   <div class="card">
@@ -64,7 +64,7 @@ The Personalization Agent:
 
 ## Prerequisites
 
-To use the Weaviate Agents and Weaviate Embedding service, you need to have a **[Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=agents)** account.
+To use the Weaviate Agents and Weaviate Embedding service, you need to have a **[Weaviate Cloud](/go/console?utm_content=agents)** account.
 
 ## Step 1: Set up Weaviate
 
@@ -106,7 +106,7 @@ pip install datasets
 </TabItem>
 </Tabs>
 
-import ForcePipInstall from '../_includes/_force_pip_install.mdx';
+import ForcePipInstall from "../_includes/_force_pip_install.mdx";
 
 <ForcePipInstall />
 
@@ -135,7 +135,7 @@ In the following code blocks, we will pull our demo recipe dataset from Hugging 
 
 Below you can see what the objects in the `Recipes` dataset look like.
 
-import WeaviateAgentsPersonalizationFoodDataset from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_dataset.png';
+import WeaviateAgentsPersonalizationFoodDataset from "/docs/agents/_includes/personalization_agent_tutorial_food_recommender_dataset.png";
 
 <div class="row">
   <div class="card">
@@ -242,7 +242,7 @@ Feel free to modify the example below to represent your own food preferences\!
 
 Each `PersonaInteraction` links a `persona_id` to an `item_id` (the UUID of an object in the "Recipes" collection) and includes a `weight` from -1.0 (strong dislike) to 1.0 (strong like).
 
-import WeaviateAgentsPersonalizationFoodUser from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_user.png';
+import WeaviateAgentsPersonalizationFoodUser from "/docs/agents/_includes/personalization_agent_tutorial_food_recommender_user.png";
 
 <div class="row">
   <div class="card">
@@ -368,6 +368,6 @@ The Personalization Agent allows you to easily add sophisticated, personalized r
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

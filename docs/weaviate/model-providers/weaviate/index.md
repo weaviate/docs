@@ -33,7 +33,7 @@ In turn, they simplify the process of building AI-driven applications to speed u
 
 ## Get started
 
-You must provide a valid Weaviate Cloud API key to Weaviate for these integrations. Go to [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=howto/) to sign up and obtain an API key.
+You must provide a valid Weaviate Cloud API key to Weaviate for these integrations. Go to [Weaviate Cloud](/go/console?utm_content=howto/) to sign up and obtain an API key.
 
 Then, go to the relevant integration page to learn how to configure Weaviate with the Weaviate Embeddings models and start using them in your applications.
 
@@ -41,6 +41,6 @@ Then, go to the relevant integration page to learn how to configure Weaviate wit
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

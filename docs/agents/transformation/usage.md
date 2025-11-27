@@ -9,8 +9,7 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/transformation_agent.py';
-
+import PyCode from '!!raw-loader!/docs/agents/\_includes/transformation_agent.py';
 
 # Weaviate Transformation Agent: Usage
 
@@ -50,7 +49,7 @@ This Agent is available exclusively for use with a Weaviate Cloud instance.
 
 Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=agents).
+You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](/go/console?utm_content=agents).
 
 ### Client library
 
@@ -233,6 +232,6 @@ This will be addressed in future versions of the Transformation Agent.
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
