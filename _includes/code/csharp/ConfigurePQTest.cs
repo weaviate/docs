@@ -59,7 +59,6 @@ public class ConfigurePQTest : IAsyncLifetime
         }
     }
 
-    // TODO[g-despot] Why is Encoder required?
     // TODO[g-despot] Why are properties required? ERROR: didn't find a single property which is of type string or text and is not excluded from indexing
     [Fact]
     public async Task TestCollectionWithAutoPQ()

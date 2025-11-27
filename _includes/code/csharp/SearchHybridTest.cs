@@ -293,7 +293,6 @@ public class SearchHybridTest : IDisposable
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
-    // TODO[g-despot] Why is name required in VectorData.Create?
     [Fact]
     public async Task TestHybridWithVector()
     {
@@ -304,7 +303,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            vectors: Vectors.Create("default", queryVector),
+            vectors: Vectors.Create(queryVector),
             // highlight-end
             alpha: 0.25f,
             limit: 3

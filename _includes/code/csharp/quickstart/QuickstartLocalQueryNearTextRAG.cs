@@ -2,6 +2,7 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
+using Weaviate.Client.Models.Generative;
 
 namespace WeaviateProject.Examples
 {
@@ -18,20 +19,22 @@ namespace WeaviateProject.Examples
             // highlight-start
             var response = await movies.Generate.NearText(
                 "sci-fi",
-                "Write a tweet with emojis about this movie.",
                 limit: 1,
-                returnProperties: new[] { "title", "description", "genre" },
-                groupedPrompt:
-                generative: new GenerativeConfig.Ollama
+                returnProperties: ["title", "description", "genre"],
+                groupedTask: new GroupedTask
                 {
-                    ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
-                    Model = "llama3.2" // The model to use
+                    Task = "Write a tweet with emojis about this movie.",
+                    Provider = new Providers.Ollama
+                    {
+                        ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
+                        Model = "llama3.2" // The model to use
+                    }
                 }
             );
             // highlight-end
 
             // Inspect the results
-            Console.WriteLine(response.Generated);
+            Console.WriteLine(response.Generative.Values);
         }
     }
 }

@@ -266,3 +266,6 @@ __marimo__/
 _includes/code/csharp/bin
 _includes/code/csharp/obj
 *.sln
+
+# Exclude WCD backups
+tests/backups/

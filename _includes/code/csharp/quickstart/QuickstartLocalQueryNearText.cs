@@ -1,5 +1,4 @@
 using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -20,7 +19,7 @@ namespace WeaviateProject.Examples
             var response = await movies.Query.NearText(
                 "sci-fi",
                 limit: 2,
-                returnProperties: new[] { "title", "description", "genre" }
+                returnProperties: ["title", "description", "genre"]
             );
             // highlight-end
 

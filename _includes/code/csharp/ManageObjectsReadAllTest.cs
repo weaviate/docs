@@ -5,24 +5,18 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Drawing;
 
 namespace WeaviateProject.Tests;
 
 public class ManageObjectsReadAllTest : IAsyncLifetime
 {
-    private static readonly WeaviateClient client;
-
-    // Static constructor for one-time setup (like @BeforeAll)
-    static ManageObjectsReadAllTest()
-    {
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
-    }
+    private WeaviateClient client;
 
     // Runs once before any tests in the class
     public async Task InitializeAsync()
     {
+        client = await Connect.Local(hostname: "localhost", restPort: 8080);
         // Simulate weaviate-datasets by creating and populating collections
         // Create WineReview collection
         if (await client.Collections.Exists("WineReview"))
@@ -96,7 +90,6 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         // END ReadAllVectors
     }
 
-    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="explorer: list class: search: object search at index winereviewmt: class WineReviewMT has multi-tenancy enabled, but request was without tenant")
     [Fact]
     public async Task TestReadAllTenants()
     {

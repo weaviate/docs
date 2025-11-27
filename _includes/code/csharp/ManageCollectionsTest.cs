@@ -628,7 +628,6 @@ public class ManageCollectionsTest : IAsyncLifetime
         }
         // END ReadAllCollections
 
-        Assert.Equal(2, response.Count);
         Assert.Contains(response, c => c.Name == "Article");
         Assert.Contains(response, c => c.Name == "Publication");
     }

@@ -1,3 +1,4 @@
+// START CreateCollection
 using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
@@ -10,27 +11,24 @@ namespace WeaviateProject.Examples
     {
         public static async Task Run()
         {
-            // Best practice: store your credentials in environment variables
             string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
             string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
             string collectionName = "Movie";
 
-            // Connect to your Weaviate Cloud instance
             var client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
-
-            // NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
+            // END CreateCollection
+            
             if (await client.Collections.Exists(collectionName))
             {
                 await client.Collections.Delete(collectionName);
             }
+            // START CreateCollection
 
-            // Create a collection
+            // Step 1.2: Create a collection
             var movies = await client.Collections.Create(new CollectionConfig
             {
                 Name = collectionName,
-                // No automatic vectorization since we're providing vectors
                 VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
-                // Define properties for the collection
                 Properties =
                 [
                     Property.Text("title"),
@@ -39,43 +37,41 @@ namespace WeaviateProject.Examples
                 ]
             });
 
-            // Import three objects
-            var dataObjects = new List<WeaviateObject>
+            // Step 1.3: Import three objects using collection initialization
+            var dataToInsert = new List<BatchInsertRequest>
             {
-                new WeaviateObject
-                {
-                    Properties = new Dictionary<string, object>
-                    {
-                        { "title", "The Matrix" },
-                        { "description", "A computer hacker learns about the true nature of reality and his role in the war against its controllers." },
-                        { "genre", "Science Fiction" }
+                new BatchInsertRequest(
+                    new { 
+                        title = "The Matrix", 
+                        description = "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", 
+                        genre = "Science Fiction" 
                     },
-                    Vectors = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f }
-                },
-                new WeaviateObject
-                {
-                    Properties = new Dictionary<string, object>
-                    {
-                        { "title", "Spirited Away" },
-                        { "description", "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home." },
-                        { "genre", "Animation" }
+                    null, 
+                    new Vectors { { "default", new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f } } }
+                ),
+                new BatchInsertRequest(
+                    new { 
+                        title = "Spirited Away", 
+                        description = "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.", 
+                        genre = "Animation" 
                     },
-                    Vectors = new float[] { 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f }
-                },
-                new WeaviateObject
-                {
-                    Properties = new Dictionary<string, object>
-                    {
-                        { "title", "The Lord of the Rings: The Fellowship of the Ring" },
-                        { "description", "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth." },
-                        { "genre", "Fantasy" }
+                    null,
+                    new Vectors { { "default", new float[] { 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f } } }
+                ),
+                new BatchInsertRequest(
+                    new { 
+                        title = "The Lord of the Rings: The Fellowship of the Ring", 
+                        description = "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.", 
+                        genre = "Fantasy" 
                     },
-                    Vectors = new float[] { 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f }
-                }
+                    null,
+                    new Vectors { { "default", new float[] { 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f } } }
+                )
             };
 
             // Insert the objects with vectors
-            var insertResponse = await movies.Data.InsertMany(dataObjects.ToArray());
+            var insertResponse = await movies.Data.InsertMany(dataToInsert);
+            
             if (insertResponse.HasErrors)
             {
                 Console.WriteLine($"Errors during import: {insertResponse.Errors}");
@@ -87,3 +83,4 @@ namespace WeaviateProject.Examples
         }
     }
 }
+// END CreateCollection

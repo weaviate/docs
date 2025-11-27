@@ -52,7 +52,6 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         // END BasicSchema
     }
 
-    // TODO[g-despot] Missing vectorizePropertyName
     [Fact]
     public async Task TestSchemaWithPropertyOptions()
     {
@@ -67,12 +66,10 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                 Property.Text(
                     "question",
                     tokenization: PropertyTokenization.Lowercase
-                    // vectorizePropertyName: true // Pass as a simple named argument
                 ),
                 Property.Text(
                     "answer",
                     tokenization: PropertyTokenization.Whitespace
-                    // vectorizePropertyName: false // Pass as a simple named argument
                 )
             ]
         });

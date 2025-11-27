@@ -2,8 +2,6 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
 
 namespace WeaviateProject.Examples
@@ -18,27 +16,33 @@ namespace WeaviateProject.Examples
             string anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
 
             // Connect to your Weaviate Cloud instance
-            var client = await Connect.Cloud(weaviateUrl, weaviateApiKey, headers: 
-                new Dictionary<string, string> { { "Anthropic-Api-Key", anthropicApiKey } }
+            var client = await Connect.Cloud(weaviateUrl, weaviateApiKey, headers:
+                new Dictionary<string, string> { { "X-Anthropic-Api-Key", anthropicApiKey } }
             );
 
             // Perform RAG with NearVector results
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
-            float[] queryVector = new float[] { 0.11f, 0.21f, 0.31f, 0.41f, 0.51f, 0.61f, 0.71f, 0.81f };
+            float[] queryVector = [0.11f, 0.21f, 0.31f, 0.41f, 0.51f, 0.61f, 0.71f, 0.81f];
 
             var response = await movies.Generate.NearVector(
                 queryVector,
-                "Write a tweet with emojis about this movie.",
                 limit: 1,
-                returnProperties: new[] { "title", "description", "genre" },
-                generativeConfig: new Generative.Anthropic { Model = "claude-3-5-haiku-latest" }
+                returnProperties: ["title", "description", "genre"],
+                groupedTask: new GroupedTask
+                {
+                    Task = "Write a tweet with emojis about this movie.",
+                    Provider = new Weaviate.Client.Models.Generative.Providers.Anthropic
+                    {
+                        Model = "claude-3-5-haiku-latest" // The model to use
+                    }
+                }
             );
             // highlight-end
 
             // Inspect the results
-            Console.WriteLine(response.Generated);
+            Console.WriteLine(response.Generative.Values);
         }
     }
 }

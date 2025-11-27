@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class QuickstartCreateVectors {
 
-  // TODO[g-despot] DX: Far to complicated vector insertion
   public static void main(String[] args) throws Exception {
     WeaviateClient client = null;
     String collectionName = "Movie";
@@ -47,7 +46,6 @@ public class QuickstartCreateVectors {
       Map<String, Object> props1 = Map.of("title", "The Matrix", "description",
           "A computer hacker learns about the true nature of reality and his role in the war against its controllers.",
           "genre", "Science Fiction");
-      // Use primitive float[] for v6
       float[] vector1 =
           new float[] {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f};
 

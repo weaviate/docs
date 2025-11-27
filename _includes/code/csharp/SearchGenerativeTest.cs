@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Net.Http;
+using Weaviate.Client.Models.Generative;
+using System.Linq;
 
 namespace WeaviateProject.Tests;
 
@@ -13,7 +15,6 @@ public class SearchGenerativeTest : IDisposable
 {
     private static readonly WeaviateClient client;
 
-    // Static constructor for one-time setup (like @BeforeAll)
     static SearchGenerativeTest()
     {
         // START INSTANTIATION-COMMON
@@ -23,17 +24,12 @@ public class SearchGenerativeTest : IDisposable
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
         string anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_APIKEY");
 
-        var config = new ClientConfiguration
-        {
-            GrpcAddress = weaviateUrl,
-            // Headers = new()
-            // {
-            //     { "Authorization", $"Bearer {weaviateApiKey}" },
-            //     { "X-OpenAI-Api-Key", openaiApiKey },
-            //     { "X-Anthropic-Api-Key", anthropicApiKey }
-            // }
-        };
-        client = new WeaviateClient(config);
+        client = Connect.Cloud(
+                weaviateUrl,
+                weaviateApiKey,
+                headers: new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey },
+                    { "Anthropic-Api-Key", anthropicApiKey } }
+            ).GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -54,18 +50,17 @@ public class SearchGenerativeTest : IDisposable
             limit: 2,
             targetVector: ["title_country"],
             prompt: new SinglePrompt { Prompt = "Translate this into German: {review_body}" },
-            groupedPrompt: new GroupedPrompt { Task = "Summarize these reviews" }
             // highlight-start
-            // provider: new GenerativeProvider.(OpenAI) { Temperature = 0.1f }
+            groupedTask: new GroupedTask { Task = "Summarize these reviews", Provider = new Providers.OpenAI { Temperature = 1f } }
             // highlight-end
         );
 
         foreach (var o in response.Objects)
         {
             Console.WriteLine($"Properties: {JsonSerializer.Serialize(o.Properties)}");
-            Console.WriteLine($"Single prompt result: {o.Generative?.Values}");
+            Console.WriteLine($"Single prompt result: {o.Generative?.Values.First()}");
         }
-        Console.WriteLine($"Grouped task result: {response.Generative?.Values}");
+        Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
         // END DynamicRag
     }
 
@@ -81,16 +76,16 @@ public class SearchGenerativeTest : IDisposable
             targetVector: ["title_country"], // Specify the target vector for named vector collections
             returnMetadata: MetadataOptions.Distance,
             prompt: new SinglePrompt { Prompt = "Translate this into German: {review_body}" },
-            groupedPrompt: new GroupedPrompt { Task = "Summarize these reviews" }
+            groupedTask: new GroupedTask { Task = "Summarize these reviews" }
             // highlight-end
         );
 
         foreach (var o in response.Objects)
         {
             Console.WriteLine($"Properties: {JsonSerializer.Serialize(o.Properties)}");
-            Console.WriteLine($"Single prompt result: {o.Generative?.Values}");
+            Console.WriteLine($"Single prompt result: {o.Generative?.Values.First()}");
         }
-        Console.WriteLine($"Grouped task result: {response.Generative?.Values}");
+        Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
         // END NamedVectorNearTextPython
     }
 
@@ -118,7 +113,7 @@ public class SearchGenerativeTest : IDisposable
             var props = o.Properties as IDictionary<string, object>;
             Console.WriteLine($"Property 'question': {props?["question"]}");
             // highlight-start
-            Console.WriteLine($"Single prompt result: {o.Generative?.Values}");
+            Console.WriteLine($"Single prompt result: {o.Generative?.Values.First()}");
             // highlight-end
         }
         // END SingleGenerativePython
@@ -143,7 +138,7 @@ public class SearchGenerativeTest : IDisposable
         foreach (var o in response.Objects)
         {
             Console.WriteLine($"Properties: {JsonSerializer.Serialize(o.Properties)}");
-            Console.WriteLine($"Single prompt result: {o.Generative?.Values}");
+            Console.WriteLine($"Single prompt result: {o.Generative?.Values.First()}");
         }
         // END SingleGenerativePropertiesPython
     }
@@ -175,7 +170,7 @@ public class SearchGenerativeTest : IDisposable
         foreach (var o in response.Objects)
         {
             Console.WriteLine($"Properties: {JsonSerializer.Serialize(o.Properties)}");
-            Console.WriteLine($"Single prompt result: {o.Generative?.Values}");
+            Console.WriteLine($"Single prompt result: {o.Generative?.Values.First()}");
             //Console.WriteLine($"Debug: {o.Generative?}");
             //Console.WriteLine($"Metadata: {JsonSerializer.Serialize(o.Generative?.Metadata)}");
         }
@@ -195,40 +190,35 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedPrompt: new GroupedPrompt { Task = task }
+            groupedTask: new GroupedTask { Task = task }
         );
         // highlight-end
 
         // print the generated response
-        Console.WriteLine($"Grouped task result: {response.Generative?.Values}");
+        Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
         // END GroupedGenerativePython
     }
 
-    // TODO[g-despot] Metadata missing
     [Fact]
     public async Task TestGroupedGenerativeParameters()
     {
         // START GroupedGenerativeParametersPython
-        // highlight-start
-        var groupedTask = new GroupedPrompt
-        {
-            Task = "What do these animals have in common, if anything?",
-            // Metadata = true
-        };
-        // highlight-end
-
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Generate.NearText(
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedPrompt: groupedTask
+            groupedTask: new GroupedTask
+            {
+                Task = "What do these animals have in common, if anything?",
+                Debug = true,
+                Provider = new Providers.OpenAI { ReturnMetadata = true }
+            }
         // highlight-end
-        // provider: new GenerativeProvider.OpenAI()
         );
 
         // print the generated response
-        Console.WriteLine($"Grouped task result: {response.Generative?.Values}");
+        Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
         // Console.WriteLine($"Metadata: {JsonSerializer.Serialize(response.Generative?.Metadata)}");
         // END GroupedGenerativeParametersPython
     }
@@ -243,7 +233,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "Australian animals",
             limit: 3,
-            groupedPrompt: new GroupedPrompt
+            groupedTask: new GroupedTask
             {
                 Task = task,
                 // highlight-start
@@ -258,13 +248,13 @@ public class SearchGenerativeTest : IDisposable
         {
             Console.WriteLine($"Properties: {JsonSerializer.Serialize(o.Properties)}");
         }
-        Console.WriteLine($"Grouped task result: {response.Generative?.Values}");
+        Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
         // highlight-end
         // END GroupedGenerativeProperties Python
     }
 
-    //TODO[g-despot] Missing image processing
-    [Fact]
+    // TODO[g-despot] NEW: Implement testing with images
+    // [Fact]
     public async Task TestWorkingWithImages()
     {
         // START WorkingWithImages
@@ -273,12 +263,16 @@ public class SearchGenerativeTest : IDisposable
         var imageBytes = await httpClient.GetByteArrayAsync(srcImgPath);
         var base64Image = Convert.ToBase64String(imageBytes);
 
-        var groupedTask = new GroupedPrompt
+        var groupedTask = new GroupedTask
         {
             // highlight-start
             Task = "Formulate a Jeopardy!-style question about this image",
-            // Images = [base64Image] // A list of base64 encoded strings of the image bytes
-            // ImageProperties = ["img"] // Properties containing images in Weaviate
+            Provider = new Providers.Anthropic
+            {
+                MaxTokens = 1000,
+                Images = [base64Image], // A list of base64 encoded strings of the image bytes
+                ImageProperties = ["img"], // Properties containing images in Weaviate }
+            }
             // highlight-end
         };
 
@@ -286,10 +280,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "Australian animals",
             limit: 3,
-            groupedPrompt: groupedTask
-        // highlight-start
-        // highlight-end
-        // provider: new GenerativeProvider.Anthropic { MaxTokensToSample = 1000 }
+            groupedTask: groupedTask
         );
 
         // Print the source property and the generated response
@@ -297,7 +288,7 @@ public class SearchGenerativeTest : IDisposable
         {
             Console.WriteLine($"Properties: {JsonSerializer.Serialize(o.Properties)}");
         }
-        Console.WriteLine($"Grouped task result: {response.Generative?.Values}");
+        Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
         // END WorkingWithImages
     }
 }

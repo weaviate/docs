@@ -1,5 +1,4 @@
 using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -17,12 +16,12 @@ namespace WeaviateProject.Examples
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
-            float[] queryVector = new float[] { 0.11f, 0.21f, 0.31f, 0.41f, 0.51f, 0.61f, 0.71f, 0.81f };
+            float[] queryVector = [0.11f, 0.21f, 0.31f, 0.41f, 0.51f, 0.61f, 0.71f, 0.81f];
 
             var response = await movies.Query.NearVector(
                 queryVector,
                 limit: 2,
-                returnProperties: new[] { "title", "description", "genre" }
+                returnProperties: ["title", "description", "genre"]
             );
             // highlight-end
 

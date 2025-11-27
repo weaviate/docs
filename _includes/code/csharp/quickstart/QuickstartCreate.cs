@@ -1,3 +1,4 @@
+// START CreateCollection
 using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
@@ -15,16 +16,16 @@ namespace WeaviateProject.Examples
             string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
             string collectionName = "Movie";
 
-            // TODO[g-despot] Rename connection helpers
             // Connect to your Weaviate Cloud instance
             var client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
-
+            // END CreateCollection
             // NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
             if (await client.Collections.Exists(collectionName))
             {
                 await client.Collections.Delete(collectionName);
             }
-
+            // START CreateCollection
+            
             // Create a collection
             var movies = await client.Collections.Create(new CollectionConfig
             {
@@ -73,3 +74,4 @@ namespace WeaviateProject.Examples
         }
     }
 }
+// END CreateCollection

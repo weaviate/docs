@@ -24,7 +24,7 @@ namespace WeaviateProject.Examples
             var response = await movies.Query.NearText(
                 "sci-fi",
                 limit: 2,
-                returnProperties: new[] { "title", "description", "genre" }
+                returnProperties: ["title", "description", "genre"]
             );
             // highlight-end
 

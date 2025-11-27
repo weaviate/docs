@@ -77,7 +77,6 @@ public class ConfigureSQTest : IAsyncLifetime
         // END UpdateSchema
     }
 
-    // TODO[g-despot] Missing cache
     [Fact]
     public async Task TestSQWithOptions()
     {
@@ -95,7 +94,6 @@ public class ConfigureSQTest : IAsyncLifetime
                     VectorCacheMaxObjects = 100000,
                     Quantizer = new VectorIndex.Quantizers.SQ
                     {
-                        //Cache = true,
                         TrainingLimit = 50000,
                         RescoreLimit = 200
                     }

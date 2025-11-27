@@ -61,7 +61,7 @@ public class SearchBasicTest : IAsyncLifetime
         Assert.True(response.Objects.First().Properties.ContainsKey("question"));
     }
 
-    // TODO[g-despot]: Enable when C# client supports offset
+    // TODO[g-despot]: NEW: Enable when C# client supports offset
     // [Fact]
     // public async Task BasicGetOffset()
     // {
