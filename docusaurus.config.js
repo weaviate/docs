@@ -147,7 +147,7 @@ const config = {
           {
             label: "Weaviate Cloud",
             className: "cloud-button",
-            to: "/go/console?utm_source=docs&utm_content=navbar",
+            to: "/go/console?utm_content=navbar",
             position: "right",
           },
           {

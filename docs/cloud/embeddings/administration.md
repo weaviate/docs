@@ -21,7 +21,7 @@ import DisableWeaviateEmbeddings from '/docs/cloud/img/weaviate-cloud-disable-em
   <div class="col col--4">
     <ol>
       <li>
-        Open the <Link to="/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>.
+        Open the <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
        Click on <code>Weaviate Embeddings</code> in the left sidebar (<span class="callout">1</span>).

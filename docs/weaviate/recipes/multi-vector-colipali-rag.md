@@ -407,7 +407,7 @@ Now, you will need to connect to a running Weaviate vector database cluster.
 
 You can choose one of the following options:
 
-1. **Option 1:** You can create a 14-day free sandbox on the managed service [Weaviate Cloud (WCD)](/go/console?utm_source=docs&utm_content=recipe/)
+1. **Option 1:** You can create a 14-day free sandbox on the managed service [Weaviate Cloud (WCD)](/go/console?utm_content=recipe/)
 2. **Option 2:** [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
 3. **Option 3:** [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
 4. [Other options](https://docs.weaviate.io/deploy)

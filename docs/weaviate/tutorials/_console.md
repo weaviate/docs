@@ -7,15 +7,15 @@ image: og/docs/quickstart-tutorial.jpg
 
 Here you can learn how to use the Weaviate console.
 
-The Weaviate console allows you to connect to Weaviate instances that are running on the [Weaviate Cloud (WCD)](/go/console?utm_source=docs&utm_content=tutorial) (our SaaS solution), on your own cluster, on your local machine, or all the public demo datasets. Note that the console never collects any data from your Weaviate instance; you can safely connect every instance, also over VPN.
+The Weaviate console allows you to connect to Weaviate instances that are running on the [Weaviate Cloud (WCD)](/go/console?utm_content=tutorial) (our SaaS solution), on your own cluster, on your local machine, or all the public demo datasets. Note that the console never collects any data from your Weaviate instance; you can safely connect every instance, also over VPN.
 
 :::tip
-The console is available on: [console.weaviate.cloud](/go/console?utm_source=docs&utm_content=tutorial).
+The console is available on: [console.weaviate.cloud](/go/console?utm_content=tutorial).
 :::
 
 ## Login page
 
-When opening the [Weaviate Console](/go/console?utm_source=docs&utm_content=tutorial), you'll see two options:
+When opening the [Weaviate Console](/go/console?utm_content=tutorial), you'll see two options:
 
 1. ["Sign in with the Weaviate Cloud"](#weaviate-cloud)
 2. ["Self-hosted Weaviate"](#connect-to-a-self-hosted-weaviate)
@@ -45,7 +45,7 @@ When you're connected, you can use the [GraphiQL](#graphiql) interface to intera
 
 ## Try out the console with your own instance
 
-1. Go to: [/go/console?utm_source=docs&utm_content=tutorial](/go/console?utm_source=docs&utm_content=tutorial)
+1. Go to: [/go/console?utm_content=tutorial](/go/console?utm_content=tutorial)
 2. In the Self-hosted Weaviate section, provide the endpoint of you instance. If you run Weaviate locally this will be `http://localhost:8080`.
 3. Click "connect"
 

@@ -131,7 +131,7 @@ This will not result in any user-facing API changes. As of May 2023, gRPC has be
 
 ## Weaviate Console
 
-The [Weaviate Console](/go/console?utm_source=docs&utm_content=others) is a dashboard to manage Weaviate clusters from WCD, and access Weaviate instances running elsewhere. You can use the Query Module to make GraphQL queries.
+The [Weaviate Console](/go/console?utm_content=others) is a dashboard to manage Weaviate clusters from WCD, and access Weaviate instances running elsewhere. You can use the Query Module to make GraphQL queries.
 
 ![GraphQL Query Module in Weaviate Console](./img/console-capture.png)
 

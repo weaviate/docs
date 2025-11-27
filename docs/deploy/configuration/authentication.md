@@ -306,7 +306,7 @@ Configuring the OIDC token issuer is outside the scope of this document, but her
 
 - For simple use-cases such as for a single user, you can use Weaviate Cloud (WCD) as the OIDC token issuer. To do so:
 
-  - Make sure you have a WCD account (you can [sign up here](/go/console?utm_source=docs&utm_content=deploy)).
+  - Make sure you have a WCD account (you can [sign up here](/go/console?utm_content=deploy)).
   - In the Docker Compose file (e.g. `docker-compose.yml`), specify:
     - `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` as the issuer (in `AUTHENTICATION_OIDC_ISSUER`),
     - `wcs` as the client id (in `AUTHENTICATION_OIDC_CLIENT_ID`), and

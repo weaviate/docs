@@ -103,7 +103,7 @@ After you create a Weaviate Cloud instance, you will need the:
 - **REST Endpoint URL** and the
 - **Administrator API Key**.
 
-You can retrieve them both from the [WCD console](/go/console?utm_source=docs&utm_content=quickstart) as shown in the interactive example below.
+You can retrieve them both from the [WCD console](/go/console?utm_content=quickstart) as shown in the interactive example below.
 
 <div
   style={{

@@ -19,7 +19,7 @@ This notebook will show you how to define the Weaviate Query Agent as a tool thr
 
 ### Requirements
 
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](/go/console?utm_source=docs&utm_content=integrations).
+1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](/go/console?utm_content=integrations).
 1. Install Haystack with `pip install haystack-ai`
 1. Install the Weaviate Agents package with `pip install weaviate-agents`
 1. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.

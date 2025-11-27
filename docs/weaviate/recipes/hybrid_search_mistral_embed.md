@@ -18,7 +18,7 @@ This recipe will show you how to run hybrid search with embeddings from Mistral.
 
 1. Weaviate cluster
 
-   1. You can create a 14-day free sandbox on [WCD](/go/console?utm_source=docs&utm_content=recipe/)
+   1. You can create a 14-day free sandbox on [WCD](/go/console?utm_content=recipe/)
    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
    3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
    4. [Other options](https://docs.weaviate.io/deploy)

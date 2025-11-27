@@ -30,7 +30,7 @@ As an example, the snippet below maps `50051` as the host port so that it can be
 
 :::info
 We suggest using the default port `50051` for gRPC calls. It can be modified through the `GRPC_PORT` [environment variable](/deploy/configuration/env-vars/index.md).
-Note that [Weaviate Cloud](/go/console?utm_source=docs&utm_content=api) uses port `443` for gRPC.
+Note that [Weaviate Cloud](/go/console?utm_content=api) uses port `443` for gRPC.
 :::
 
 ````yaml:

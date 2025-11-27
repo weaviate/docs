@@ -19,7 +19,7 @@ This notebook will show you how to define the Weaviate Query Agent as a tool thr
 
 ### Requirements
 
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](/go/console?utm_source=docs&utm_content=integrations).
+1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](/go/console?utm_content=integrations).
 2. Install LlamaIndex with `pip install llama-index` (we used version `0.12.22` for this notebook)
 3. Install the Weaviate Agents package with `pip install weaviate-agents`
 4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.

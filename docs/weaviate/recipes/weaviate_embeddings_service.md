@@ -12,7 +12,7 @@ tags: ["Weaviate Embeddings", "Weaviate Cloud"]
 
 # Weaviate Embedding Service
 
-[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](/go/console?utm_source=docs&utm_content=recipe/) database instance.
+[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](/go/console?utm_content=recipe/) database instance.
 
 _Please note this service is part of Weaviate Cloud and cannot be accessed through open-source. Additionally, this service is currently under technical preview, and you can request access [here](https://events.weaviate.io/embeddings-preview)._
 
@@ -26,7 +26,7 @@ This notebook will show you how to:
 
 ## Requirements
 
-1. Weaviate Cloud (WCD) account: You can register [here](/go/console?utm_source=docs&utm_content=recipe/)
+1. Weaviate Cloud (WCD) account: You can register [here](/go/console?utm_content=recipe/)
 1. Create a cluster on WCD: A sandbox or serverless cluster is fine. You will need to grab the cluster URL and admin API key
 1. OpenAI key to access `GPT-4o mini`
 
