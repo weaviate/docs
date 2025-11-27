@@ -32,6 +32,7 @@ import APITable from '@site/src/components/APITable';
 | --- | --- | --- | --- |
 | `ASYNC_INDEXING` | If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
+| `CLUSTER_ADVERTISE_ADDR` | Manually sets the address used to advertise the node to the cluster. Useful if the system hostname cannot be resolved via DNS (e.g., lookup errors). | `string` | `127.0.0.1` |
 | `DEFAULT_QUANTIZATION` | Default quantization technique - can be overridden by the quantization method specified in the collection definition. Available values: `rq-8`, `rq-1`, `pq`, `bq`, `sq` and `none`. Default: `rq-8`.<br/>Note: Currently only applies for the HNSW vector index type.<br/><br/>Added in `v1.33` | `string` | `rq-8` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - can be overridden by the vectorizer in the collection definition. | `string` | `text2vec-contextionary` |
 | `API_BASED_MODULES_DISABLED` | Weaviate automatically enables the usage of all [API based modules](../../../weaviate/model-providers/index.md#api-based). Set this variable to `true` in order to limit access and only allow specific modules through the [`ENABLE_MODULES`](#ENABLE_MODULES) variable. Default: `false`<br/> Added in `v1.33` | `boolean` | `true` |
