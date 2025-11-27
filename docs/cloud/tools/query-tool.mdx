@@ -13,14 +13,14 @@ You can query your collection using natural language with the [Query Agent](./qu
 
 The Weaviate Cloud (WCD) query tool is a browser-based GraphQL IDE. Use the query tool to work interactively with your Weaviate Cloud clusters.
 
-import QueryToolPreview from '/docs/cloud/img/weaviate-cloud-query-tool-preview.png';
+import QueryToolPreview from "/docs/cloud/img/weaviate-cloud-query-tool-preview.png";
 
 <div class="row">
   <div class="col col--6">
     <p>
       <Link to="https://github.com/graphql/graphiql/tree/main/packages/graphiql">
         GraphiQL
-      </Link>{' '}
+      </Link>{" "}
       is built into the query tool. GraphiQL provides many features that make
       GraphQL easier to use interactively:
     </p>
@@ -48,17 +48,21 @@ import QueryToolPreview from '/docs/cloud/img/weaviate-cloud-query-tool-preview.
 
 To open the query tool for a cluster:
 
-import QueryTool from '/docs/cloud/img/weaviate-cloud-query-tool.png';
+import QueryTool from "/docs/cloud/img/weaviate-cloud-query-tool.png";
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        Open the{' '}
-        <Link to="https://weaviate.io/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>.
+        Open the{" "}
+        <Link to="/go/console?utm_source=docs&utm_content=cloud">
+          Weaviate Cloud console
+        </Link>
+        .
       </li>
       <li>
-        Click on the <code>Query</code> button and choose a cluster from the list.
+        Click on the <code>Query</code> button and choose a cluster from the
+        list.
       </li>
     </ol>
   </div>
@@ -76,7 +80,7 @@ import QueryTool from '/docs/cloud/img/weaviate-cloud-query-tool.png';
 
 The query tool has the following components:
 
-import QueryToolConsole from '/docs/cloud/img/weaviate-cloud-query-tool-console.png';
+import QueryToolConsole from "/docs/cloud/img/weaviate-cloud-query-tool-console.png";
 
 <div class="row">
   <div class="col col--6">
@@ -91,7 +95,7 @@ import QueryToolConsole from '/docs/cloud/img/weaviate-cloud-query-tool-console.
         A panel containing the response (<span class="callout">3</span>).
       </li>
       <li>
-        A panel for{' '}
+        A panel for{" "}
         <Link to="#pass-inference-keys">passing variables and headers</Link> (
         <span class="callout">4</span>).
       </li>
@@ -124,6 +128,6 @@ In this example, the `X-OpenAI-Api-Key` header sets the OpenAI API key. The head
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

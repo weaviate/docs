@@ -7,8 +7,8 @@ image: og/docs/quickstart-tutorial.jpg
 # tags: ['getting started']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <span class="badge badge--secondary">Expected time: 30 minutes</span>
 <br />
@@ -87,7 +87,7 @@ Weaviate offers the following cluster options:
 - **Sandbox clusters**: free short-term cluster for development purposes.
 - **Shared Cloud clusters**: permanent production-ready environment.
 
-Go to the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) and create a free Sandbox instance.
+Go to the [Weaviate Cloud console](/go/console?utm_source=docs&utm_content=cloud) and create a free Sandbox instance.
 
 <div
   style={{
@@ -125,7 +125,7 @@ Go to the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=doc
 
 :::
 
-import LatestWeaviateVersion from '/_includes/latest-weaviate-version.mdx';
+import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
 <LatestWeaviateVersion />
 
@@ -135,7 +135,7 @@ The Weaviate Cloud console includes a query interface, but most interactions rel
 
 To install a client, follow these steps for your language:
 
-import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
+import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
 <CodeClientInstall />
 
@@ -146,7 +146,7 @@ Now you can connect to your Weaviate instance. You will need the:
 - **REST Endpoint URL** and the
 - **Administrator API Key**.
 
-You can retrieve them both from the [WCD console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) as shown in the interactive example below.
+You can retrieve them both from the [WCD console](/go/console?utm_source=docs&utm_content=cloud) as shown in the interactive example below.
 
 :::note
 
@@ -156,8 +156,8 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
 
 <div
   style={{
-    position: 'relative',
-    paddingBottom: 'calc(54.10879629629629% + 50px)',
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
     height: 0,
   }}
 >
@@ -166,7 +166,7 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
     src="https://app.guideflow.com/embed/ok8l954sxr"
     width="100%"
     height="100%"
-    style={{ overflow: 'hidden', position: 'absolute', border: 'none' }}
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
     webKitAllowFullScreen
@@ -192,7 +192,7 @@ Once you have the **REST Endpoint URL** and the **Admin API key**, you can conne
 
 The example below shows how to connect to Weaviate and perform a basic operation, like checking the cluster status.
 
-import ConnectIsReady from '/_includes/code/quickstart/quickstart.is_ready.mdx';
+import ConnectIsReady from "/_includes/code/quickstart/quickstart.is_ready.mdx";
 
 <ConnectIsReady />
 
@@ -208,7 +208,7 @@ The following example creates a _collection_ called `Question` with:
 
 - The [Weaviate Embeddings model integration](/weaviate/model-providers/weaviate/embeddings.md) to create vectors during ingestion & queries.
 
-import CreateCollection from '/_includes/code/quickstart/quickstart.create_collection.mdx';
+import CreateCollection from "/_includes/code/quickstart/quickstart.create_collection.mdx";
 
 <CreateCollection />
 
@@ -229,7 +229,7 @@ The following example:
 
 :::
 
-import ImportObjects from '/_includes/code/quickstart/quickstart.import_objects.mdx';
+import ImportObjects from "/_includes/code/quickstart/quickstart.import_objects.mdx";
 
 <ImportObjects />
 
@@ -247,7 +247,7 @@ Semantic search finds results based on meaning. This is called `nearText` in Wea
 
 The following example searches for 2 objects whose meaning is most similar to that of `biology`.
 
-import QueryNearText from '/_includes/code/quickstart/quickstart.query.neartext.mdx';
+import QueryNearText from "/_includes/code/quickstart/quickstart.query.neartext.mdx";
 
 <QueryNearText />
 
@@ -382,7 +382,7 @@ flowchart LR
 
 The following example combines the same search (for `biology`) with a prompt to generate a tweet.
 
-import QueryRAG from '/_includes/code/quickstart/quickstart.query.rag.mdx';
+import QueryRAG from "/_includes/code/quickstart/quickstart.query.rag.mdx";
 
 <QueryRAG />
 
@@ -415,9 +415,9 @@ import CardsSection from "/src/components/CardsSection";
 export const nextStepsData = [
   {
     title: "Create a cluster",
-    description:(
+    description: (
       <span>
-        If you need a production-ready and persistent instance, create a{' '}
+        If you need a production-ready and persistent instance, create a{" "}
         <b>Shared Cloud cluster</b>.
       </span>
     ),
@@ -437,6 +437,6 @@ export const nextStepsData = [
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

@@ -3,6 +3,7 @@ title: Development setup
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
+
 This page describes how to run Weaviate from source (git checkout / tarball) locally.
 
 :::tip
@@ -10,8 +11,9 @@ You can find the source code at the [Weaviate repo](https://github.com/weaviate/
 :::
 
 Prerequisites:
-* [Go](https://go.dev/dl/) v1.21 or higher
-* (optional) [Docker](https://docs.docker.com/desktop/)
+
+- [Go](https://go.dev/dl/) v1.21 or higher
+- (optional) [Docker](https://docs.docker.com/desktop/)
 
 ## Running from source
 
@@ -22,6 +24,7 @@ tools/dev/run_dev_server.sh <configuration>
 ```
 
 Where `<configuration>` is _one_ of the server configuration (`$CONFIG`) values in [`/tools/dev/run_dev_server.sh`](https://github.com/weaviate/weaviate/blob/master/tools/dev/run_dev_server.sh#L26). For example, you can run:
+
 ```bash
 tools/dev/run_dev_server.sh local-openai
 ```
@@ -43,9 +46,10 @@ tools/dev/restart_dev_environment.sh [additional_services]
 then run the development server as described in the section above.
 
 For example, the setup below uses Docker Compose to spin up Prometheus and Grafana instances. Those are pre-configured to scrape metrics from Weaviate. Using this setup, you can:
+
 - access Weaviate on port `8080`
 - access Grafana on port `3000` (Login: `weaviate`/`weaviate`)
-- if necessary for debugging -  access prometheus directly on port `9090`
+- if necessary for debugging - access prometheus directly on port `9090`
 
 ```bash
 tools/dev/restart_dev_environment.sh --prometheus && tools/dev/run_dev_server.sh local-no-modules
@@ -71,7 +75,7 @@ tools/dev/restart_dev_environment.sh --qna && ./tools/dev/run_dev_server.sh loca
 
 The above commands are subject to change as we add more modules and require specific combinations for local testing. You can always inspect [restart_dev_environment.sh](https://github.com/weaviate/weaviate/blob/master/tools/dev/restart_dev_environment.sh) and [run_dev_server.sh](https://github.com/weaviate/weaviate/blob/master/tools/dev/run_dev_server.sh) to see which options are available. The first option without any arguments is always guaranteed to work.
 
-To make queries from a web interface, use the [WCD console](https://weaviate.io/go/console?utm_source=docs&utm_content=others) to connect to `localhost:8080`.
+To make queries from a web interface, use the [WCD console](/go/console?utm_source=docs&utm_content=others) to connect to `localhost:8080`.
 
 ## Further resources
 
@@ -79,6 +83,6 @@ To make queries from a web interface, use the [WCD console](https://weaviate.io/
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

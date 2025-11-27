@@ -101,6 +101,7 @@ services:
 ```
 
 This configuration:
+
 - Disables anonymous access
 - Enables API key authentication
 - Defines plaintext API keys in `AUTHENTICATION_APIKEY_ALLOWED_KEYS`
@@ -108,13 +109,14 @@ This configuration:
 
 These users can now be assigned permissions based on the authorization settings.
 
-import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
+import DynamicUserManagement from '/\_includes/configuration/dynamic-user-management.mdx';
 
 <DynamicUserManagement />
 
 :::note
 
 Note that you can either:
+
 - Set one user for all API keys, or
 - Define one user per API key (the number of users must match the number of API keys)
 
@@ -267,7 +269,7 @@ authentication:
     # where an example realm 'my-weaviate-usecase' was created. The exact
     # path structure depends on the token issuer. See the token issuer's documentation
     # about which endpoint implements OIDC Discovery.
-    issuer: 'http://my-token-issuer/auth/realms/my-weaviate-usecase'
+    issuer: "http://my-token-issuer/auth/realms/my-weaviate-usecase"
 
     # client_id (required unless skip_client_id_check is set to true) tells
     # Weaviate to check for a particular OAuth 2.0 client_id in the audience claim.
@@ -276,39 +278,40 @@ authentication:
     #
     # For more information on what clients are in OAuth 2.0, see
     # https://tools.ietf.org/html/rfc6749#section-1.1
-    client_id: 'my-weaviate-client'
+    client_id: "my-weaviate-client"
 
     # username_claim (required) tells Weaviate which claim in the token to use for extracting
     # the username. The username will be passed to the authorization plugin.
-    username_claim: 'email'
+    username_claim: "email"
 
     # skip_client_id_check (optional, defaults to false) skips the client_id
     # validation in the audience claim as outlined in the section above.
     # Not recommended to set this option as it reduces security, only set this
     # if your token issuer is unable to provide a correct audience claim
-    skip_client_id_check: 'false'
+    skip_client_id_check: "false"
 
     # scope (optional) these will be used by clients as default scopes for authentication
-    scopes: ''
+    scopes: ""
 
     # groups_claim: ''
 ```
 
 ### Note: Configuring the OIDC token issuer
 
-import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+import WCDOIDCWarning from '/\_includes/wcd-oidc.mdx';
 
 <WCDOIDCWarning/>
 
 Configuring the OIDC token issuer is outside the scope of this document, but here are a few options as a starting point:
 
 - For simple use-cases such as for a single user, you can use Weaviate Cloud (WCD) as the OIDC token issuer. To do so:
-    - Make sure you have a WCD account (you can [sign up here](https://weaviate.io/go/console?utm_source=docs&utm_content=deploy)).
-    - In the Docker Compose file (e.g. `docker-compose.yml`), specify:
-      - `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` as the issuer (in `AUTHENTICATION_OIDC_ISSUER`),
-      - `wcs` as the client id (in `AUTHENTICATION_OIDC_CLIENT_ID`), and
-      - enable the adminlist (`AUTHORIZATION_ADMINLIST_ENABLED: 'true'`) and add your WCD account email as the user (in `AUTHORIZATION_ADMINLIST_USERS`) .
-      - `email` as the username claim (in `AUTHENTICATION_OIDC_USERNAME_CLAIM`).
+
+  - Make sure you have a WCD account (you can [sign up here](/go/console?utm_source=docs&utm_content=deploy)).
+  - In the Docker Compose file (e.g. `docker-compose.yml`), specify:
+    - `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` as the issuer (in `AUTHENTICATION_OIDC_ISSUER`),
+    - `wcs` as the client id (in `AUTHENTICATION_OIDC_CLIENT_ID`), and
+    - enable the adminlist (`AUTHORIZATION_ADMINLIST_ENABLED: 'true'`) and add your WCD account email as the user (in `AUTHORIZATION_ADMINLIST_USERS`) .
+    - `email` as the username claim (in `AUTHENTICATION_OIDC_USERNAME_CLAIM`).
 
 - If you need a more customizable setup you can use commercial OIDC providers like [Okta](https://www.okta.com/).
 - As another alternative, you can run your own OIDC token issuer server, which may be the most complex but also configurable solution. Popular open-source solutions include Java-based [Keycloak](https://www.keycloak.org/) and Golang-based [dex](https://github.com/dexidp/dex).
@@ -355,6 +358,6 @@ authentication:
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

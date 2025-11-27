@@ -5,15 +5,15 @@ description: "Role-Based Access Control (RBAC) configuration guide for Weaviate 
 image: og/wcd/user_guides.jpg
 ---
 
-import Link from '@docusaurus/Link';
-import WCDCreateRole from '/docs/cloud/img/weaviate-cloud-roles-create.png';
-import WCDCreateRoleForm from '/docs/cloud/img/weaviate-cloud-roles-create-form.png';
-import WCDEditRole from '/docs/cloud/img/weaviate-cloud-roles-edit.png';
-import WCDEditRoleForm from '/docs/cloud/img/weaviate-cloud-roles-edit-form.png';
-import WCDDeleteRole from '/docs/cloud/img/weaviate-cloud-roles-delete.png';
-import WCDDeleteRoleForm from '/docs/cloud/img/weaviate-cloud-roles-delete-form.png';
+import Link from "@docusaurus/Link";
+import WCDCreateRole from "/docs/cloud/img/weaviate-cloud-roles-create.png";
+import WCDCreateRoleForm from "/docs/cloud/img/weaviate-cloud-roles-create-form.png";
+import WCDEditRole from "/docs/cloud/img/weaviate-cloud-roles-edit.png";
+import WCDEditRoleForm from "/docs/cloud/img/weaviate-cloud-roles-edit-form.png";
+import WCDDeleteRole from "/docs/cloud/img/weaviate-cloud-roles-delete.png";
+import WCDDeleteRoleForm from "/docs/cloud/img/weaviate-cloud-roles-delete-form.png";
 
-import RestartTheCluster from '/_includes/wcs/restart-warning.mdx';
+import RestartTheCluster from "/_includes/wcs/restart-warning.mdx";
 
 :::info
 
@@ -58,13 +58,13 @@ Custom roles allow you to define specific permissions for different users or app
 
 To create a new role, follow these steps:
 
-1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud).
+1.  Open the [Weaviate Cloud console](/go/console?utm_source=docs&utm_content=cloud).
 2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `Roles` section.
 3.  Click on the `New role` button.
 4.  Enter a descriptive name for your role in the `Role name` field.
 5.  In the sections below, configure the permissions:
-      * Select which resources the permission applies to (for example, to which collections the role has access to)
-      * Choose the appropriate permissions (create, read, update, etc.)
+    - Select which resources the permission applies to (for example, to which collections the role has access to)
+    - Choose the appropriate permissions (create, read, update, etc.)
 6.  Click the `Create` button to save your new role.
 
 </details>
@@ -115,8 +115,8 @@ To edit a role, follow these steps:
 1. From the roles management page, locate the role you want to edit.
 2. Click the `Pencil` button next to the role you want to modify.
 3. In the role editing interface, you can:
-    * Update collection permissions by checking or unchecking the appropriate boxes for Create, Read, Update, and Delete operations
-    * Add or remove additional constraints from the role's scope using the dropdown menus (e.g. which collections the permissions apply to)
+   - Update collection permissions by checking or unchecking the appropriate boxes for Create, Read, Update, and Delete operations
+   - Add or remove additional constraints from the role's scope using the dropdown menus (e.g. which collections the permissions apply to)
 4. After making your changes, click the `Update` button to save the modifications.
 5. Changes to role permissions take effect immediately for all API keys assigned to that role.
 
@@ -185,6 +185,6 @@ You cannot delete the built-in admin and viewer roles, as these are system-defin
 
 ## Support
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

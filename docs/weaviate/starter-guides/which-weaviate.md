@@ -15,6 +15,7 @@ This page helps you to find the right combination for your project.
 ## Deploy Weaviate
 
 Weaviate can be deployed in the following ways:
+
 - [Embedded Weaviate](/deploy/installation-guides/embedded.md)
 - [Docker-Compose](/deploy/installation-guides/docker-installation.md)
 - [Weaviate Cloud (WCD)](/deploy/installation-guides/weaviate-cloud.md)
@@ -24,6 +25,7 @@ Weaviate can be deployed in the following ways:
 ## Vectorization options
 
 When adding data objects to Weaviate, you have two choices:
+
 - Specify the object vector directly.
 - Use a Weaviate vectorizer module to generate the object vector.
 
@@ -44,7 +46,7 @@ If you are evaluating Weaviate, we recommend using one of these instance types t
 - [Weaviate Cloud (WCD)](/cloud) sandbox
 - [Embedded Weaviate](/deploy/installation-guides/embedded)
 
-Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or  `text2vec-google`.
+Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or `text2vec-google`.
 
 The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
 
@@ -52,7 +54,7 @@ The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based
 
 For development, we recommend using
 
-- [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=tutorial) or [Docker Compose](/deploy/installation-guides/docker-installation.md).
+- [Weaviate Cloud (WCD)](/go/console?utm_source=docs&utm_content=tutorial) or [Docker Compose](/deploy/installation-guides/docker-installation.md).
 - A vectorization strategy that matches your production vectorization strategy.
 
 #### Docker-Compose vs. Weaviate Cloud (WCD)
@@ -68,12 +70,14 @@ Note that Embedded Weaviate is currently not recommended for serious development
 For development, we recommend using a vectorizer module that at least approximates your needs.
 
 As a first point, you must choose:
+
 - Whether to vectorize data yourself and import it into Weaviate, or
 - To use a Weaviate vectorizer module.
 
 Then, we recommend choosing a vectorizer module that is as close as possible to your production needs. For example, if search quality is of paramount importance, we suggest using your preferred vectorizer module in development as well.
 
 Keep in mind two other factors, which are cost, and their footprint.
+
 - Vectorization, such as with an API-based vectorizer, can be expensive. This is especially true if you are dealing with very large datasets.
 - Vector lengths can vary by a factor of ~5, which will impact both your storage and memory requirements. This can ultimately impact cost down the line.
 
@@ -99,9 +103,8 @@ Some model types such as Ollama or Transformers models are locally hosted, while
 
 We recommend reviewing from the available [model integrations](../model-providers/index.md) and their availability in different Weaviate setups. Then, choose the one that best fits your needs.
 
-
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

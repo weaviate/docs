@@ -94,6 +94,9 @@ const config = {
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
         },
+         pages: {
+        path: "src/pages",    
+      },
         theme: {
           customCss: [
             require.resolve("./src/css/custom.scss"),
@@ -144,7 +147,7 @@ const config = {
           {
             label: "Weaviate Cloud",
             className: "cloud-button",
-            to: "https://weaviate.io/go/console?utm_source=docs&utm_content=navbar",
+            to: "/go/console?utm_source=docs&utm_content=navbar",
             position: "right",
           },
           {
