@@ -46,7 +46,7 @@ public class QuickstartLocalTest
         var questions = await client.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
-            Properties = 
+            Properties =
             [
                     Property.Text("answer"),
                     Property.Text("question"),
@@ -104,9 +104,23 @@ public class QuickstartLocalTest
             Console.WriteLine(JsonSerializer.Serialize(obj.Properties));
         }
         // END NearText
-    }
 
-    // START RAG
-    // Coming soon
-    // END RAG
+        // START RAG
+        // highlight-start
+        var ragResponse = await questions.Generate.NearText(
+            "biology",
+            limit: 2,
+            groupedTask: new GroupedTask
+            {
+                Task = "Write a tweet with emojis about these facts.",
+                Provider = new Weaviate.Client.Models.Generative.Providers.OpenAI { }
+            }
+        );
+        // highlight-end
+
+        // Inspect the results
+        Console.WriteLine(JsonSerializer.Serialize(ragResponse.Generative.Values));
+        // END RAG
+        await client.Collections.Delete(collectionName);
+    }
 }

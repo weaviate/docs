@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Linq;
 
 public class SearchFilterTest : IAsyncLifetime
 {
@@ -276,9 +277,45 @@ public class SearchFilterTest : IAsyncLifetime
         // END MultipleFiltersNested
     }
 
-    // START CrossReference
-    // Coming soon
-    // END CrossReference
+    [Fact]
+    public async Task TestCrossReferenceQuery()
+    {
+        // CrossReference
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+
+        var response = await jeopardy.Query.FetchObjects(
+            // highlight-start
+            // Filter by property on the referenced object
+            filters: Filter.Reference("hasCategory").Property("title").Like("*TRANSPORTATION*"),
+            // Retrieve the referenced object with specific properties
+            returnReferences: [
+                new QueryReference("hasCategory", fields: ["title"])
+            ],
+            // highlight-end
+            limit: 1
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+
+            // Access the referenced object's property
+            if (o.References != null &&
+                o.References.ContainsKey("hasCategory"))
+            {
+                // Get the first referenced object
+                var refObject = o.References["hasCategory"].First();
+                // Access its 'title' property
+                Console.WriteLine(refObject.Properties["title"]);
+            }
+        }
+        // END CrossReference
+
+        Assert.NotEmpty(response.Objects);
+        // Verify that the filter worked (all returned objects should be linked to 'TRANSPORTATION')
+        var firstRef = response.Objects.First().References["hasCategory"].First();
+        Assert.Contains("TRANSPORTATION", firstRef.Properties["title"].ToString());
+    }
 
     [Fact]
     public async Task TestFilterById()
@@ -301,9 +338,32 @@ public class SearchFilterTest : IAsyncLifetime
         // END FilterById
     }
 
-    // START FilterByTimestamp
-    // Coming soon
-    // END FilterByTimestamp
+    [Fact]
+    public async Task TestFilterByTimestamp()
+    {
+        // START FilterByTimestamp
+        // highlight-start
+        // Set the timezone for avoidance of doubt
+        DateTime filterTime = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        // highlight-end
+
+        var collection = client.Collections.Use("Article");
+
+        var response = await collection.Query.FetchObjects(
+            limit: 3,
+            // highlight-start
+            filters: Filter.CreationTime.GreaterThan(filterTime),
+            returnMetadata: MetadataOptions.CreationTime
+        // highlight-end
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties)); // Inspect returned objects
+            Console.WriteLine(o.Metadata.CreationTime); // Inspect object creation time
+        }
+        // END FilterByTimestamp
+    }
 
     [Fact]
     public async Task TestFilterByDateDatatype()

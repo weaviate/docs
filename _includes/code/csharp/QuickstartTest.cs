@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using Xunit;
+using System.Linq;
 
 namespace WeaviateProject.Examples;
 
@@ -40,11 +41,16 @@ public class QuickstartTest
         // Best practice: store your credentials in environment variables
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
         string collectionName = "Question";
 
         WeaviateClient client = await Connect.Cloud(
             weaviateUrl,
-            weaviateApiKey
+            weaviateApiKey,
+            headers: new Dictionary<string, string>
+            {
+                { "X-OpenAI-Api-Key", openaiApiKey }
+            }
         );
         if (await client.Collections.Exists(collectionName))
         {
@@ -55,7 +61,7 @@ public class QuickstartTest
         var questions = await client.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
-            Properties = 
+            Properties =
             [
                     Property.Text("answer"),
                     Property.Text("question"),
@@ -92,17 +98,16 @@ public class QuickstartTest
         // highlight-end
         // END Import
 
-        // TODO[g-despot] Error handling missing
         // Check for errors
-        // if (insertResponse.HasErrors)
-        // {
-        //     Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count}");
-        //     Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
-        // }
-        // else
-        // {
-        //     Console.WriteLine($"Successfully inserted {insertResponse.Results.Count} objects.");
-        // }
+        if (insertResponse.HasErrors)
+        {
+            Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
+            Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
+        }
+        else
+        {
+            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+        }
 
         // START NearText
         // highlight-start
@@ -115,10 +120,22 @@ public class QuickstartTest
         }
         // END NearText
 
+        // START RAG
+        // highlight-start
+        var ragResponse = await questions.Generate.NearText(
+            "biology",
+            limit: 2,
+            groupedTask: new GroupedTask
+            {
+                Task = "Write a tweet with emojis about these facts.",
+                Provider = new Weaviate.Client.Models.Generative.Providers.OpenAI { }
+            }
+        );
+        // highlight-end
+
+        // Inspect the results
+        Console.WriteLine(JsonSerializer.Serialize(ragResponse.Generative.Values));
+        // END RAG
         await client.Collections.Delete(collectionName);
     }
-
-    // START RAG
-    // Coming soon
-    // END RAG
 }

@@ -57,13 +57,52 @@ public class SearchKeywordTest : IDisposable
         Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
     }
 
-    // START BM25OperatorOrWithMin
-    // Coming soon
-    // END BM25OperatorOrWithMin
+    [Fact]
+    public async Task TestBM25OperatorOrWithMin()
+    {
+        // START BM25OperatorOrWithMin
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.BM25(
+            // highlight-start
+            query: "Australian mammal cute",
+            searchOperator: new BM25Operator.Or(MinimumMatch: 1),
+            // highlight-end
+            limit: 3
+        );
 
-    // START BM25OperatorAnd
-    // Coming soon
-    // END BM25OperatorAnd
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+        }
+        // END BM25OperatorOrWithMin
+
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        var propertiesJson = JsonSerializer.Serialize(response.Objects.First().Properties).ToLower();
+        Assert.True(propertiesJson.Contains("australia") || propertiesJson.Contains("mammal") || propertiesJson.Contains("cute"));
+    }
+
+    // TODO[g-despot] Does the search operator work?
+    [Fact]
+    public async Task TestBM25OperatorAnd()
+    {
+        // START BM25OperatorAnd
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.BM25(
+            // highlight-start
+            query: "Australian mammal cute",
+            searchOperator: new BM25Operator.And(), // Each result must include all tokens (e.g. "australian", "mammal", "cute")
+                                                    // highlight-end
+            limit: 3
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+        }
+        // END BM25OperatorAnd
+
+        Assert.True(response.Objects.Count == 0);
+    }
 
     [Fact]
     public async Task TestBM25WithScore()
