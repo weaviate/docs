@@ -30,9 +30,16 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         clientSrc = await Connect.Local(restPort: 8080, grpcPort: 50051);
         clientTgt = await Connect.Local(restPort: 8090, grpcPort: 50061);
 
-        await clientSrc.Collections.Delete("WineReview");
-        await clientSrc.Collections.Delete("WineReviewMT");
-        
+        // Ensure clean state for source collections
+        if (await clientSrc.Collections.Exists("WineReview"))
+        {
+            await clientSrc.Collections.Delete("WineReview");
+        }
+        if (await clientSrc.Collections.Exists("WineReviewMT"))
+        {
+            await clientSrc.Collections.Delete("WineReviewMT");
+        }
+
         await CreateCollection(clientSrc, "WineReview", false);
         await CreateCollection(clientSrc, "WineReviewMT", true);
 
@@ -59,17 +66,16 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await clientTgt.Collections.DeleteAll();
     }
 
-    // START CreateCollectionCollectionToCollection
-    // START CreateCollectionCollectionToTenant
-    // START CreateCollectionTenantToCollection
-    // START CreateCollectionTenantToTenant
+    // START CreateCollectionCollectionToCollection // START CreateCollectionCollectionToTenant // START CreateCollectionTenantToCollection // START CreateCollectionTenantToTenant
     private static async Task<CollectionClient> CreateCollection(WeaviateClient clientIn,
         string collectionName, bool enableMt)
     {
+        // END CreateCollectionCollectionToCollection // END CreateCollectionCollectionToTenant // END CreateCollectionTenantToCollection // END CreateCollectionTenantToTenant
         if (await clientIn.Collections.Exists(collectionName))
         {
             await clientIn.Collections.Delete(collectionName);
         }
+        // START CreateCollectionCollectionToCollection // START CreateCollectionCollectionToTenant // START CreateCollectionTenantToCollection // START CreateCollectionTenantToTenant
         return await clientIn.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
@@ -85,13 +91,10 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
             ]
         });
     }
-
+    // END CreateCollectionCollectionToCollection // END CreateCollectionCollectionToTenant // END CreateCollectionTenantToCollection // END CreateCollectionTenantToTenant
     // TODO[g-despot] NEW: Why can't I insert many with preserved IDs?
 
-    // START CollectionToCollection
-    // START TenantToCollection
-    // START CollectionToTenant
-    // START TenantToTenant
+    // START CollectionToCollection // START TenantToCollection // START CollectionToTenant // START TenantToTenant
     private async Task MigrateData<T>(CollectionClient collectionSrc,
      CollectionClient collectionTgt)
     {
@@ -118,6 +121,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
 
         Console.WriteLine($"Data migration complete. Migrated {sourceObjects.Count} objects.");
     }
+    // END CollectionToCollection // END TenantToCollection // END CollectionToTenant // END TenantToTenant
 
     private async Task<bool> VerifyMigration(CollectionClient collectionTgt, int expectedCount)
     {
@@ -142,33 +146,40 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         return true;
     }
 
+    // START CreateCollectionCollectionToCollection
     private async Task CreateCollectionToCollection()
     {
         await CreateCollection(clientTgt, "WineReview", false);
     }
+    // END CreateCollectionCollectionToCollection
 
     [Fact]
+    // START CollectionToCollection
     public async Task TestCollectionToCollection()
     {
         await CreateCollectionToCollection();
 
         var reviewsSrc = clientSrc.Collections.Use("WineReview");
         var reviewsTgt = clientTgt.Collections.Use("WineReview");
-        await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgt);
-        // END CollectionToCollection
 
         // Pass the Type to the generic method
+        // END CollectionToCollection
         await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgt);
 
         Assert.True(await VerifyMigration(reviewsTgt, DATASET_SIZE));
+        // START CollectionToCollection
     }
+    // END CollectionToCollection
 
+    // START CreateCollectionTenantToCollection
     private async Task CreateTenantToCollection()
     {
         await CreateCollection(clientTgt, "WineReview", false);
     }
+    // END CreateCollectionTenantToCollection
 
     [Fact]
+    // START TenantToCollection
     public async Task TestTenantToCollection()
     {
         await CreateTenantToCollection();
@@ -179,14 +190,20 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
 
         await MigrateData<WineReviewModel>(reviewsSrcTenantA, reviewsTgt);
 
+        // END TenantToCollection
         Assert.True(await VerifyMigration(reviewsTgt, DATASET_SIZE));
+        // START TenantToCollection
     }
+    // END TenantToCollection
 
+    // START CreateCollectionCollectionToTenant
     private async Task CreateCollectionToTenant()
     {
         await CreateCollection(clientTgt, "WineReviewMT", true);
     }
+    // END CreateCollectionCollectionToTenant
 
+    // START CreateTenants // START CreateCollectionTenantToTenant
     private async Task CreateTenants()
     {
         var reviewsMtTgt = clientTgt.Collections.Use("WineReviewMT");
@@ -194,8 +211,10 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var tenantsTgt = new[] { new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" } };
         await reviewsMtTgt.Tenants.Add(tenantsTgt);
     }
+    // END CreateTenants // END CreateCollectionTenantToTenant
 
     [Fact]
+    // START CollectionToTenant
     public async Task TestCollectionToTenant()
     {
         await CreateCollectionToTenant();
@@ -207,16 +226,22 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var reviewsTgtTenantA = reviewsMtTgt.WithTenant("tenantA");
 
         await MigrateData<WineReviewModel>(reviewsSrc, reviewsTgtTenantA);
+        // END CollectionToTenant
 
         Assert.True(await VerifyMigration(reviewsTgtTenantA, DATASET_SIZE));
+        // START CollectionToTenant
     }
+    // END CollectionToTenant
 
+    // START CreateCollectionTenantToTenant
     private async Task CreateTenantToTenant()
     {
         await CreateCollection(clientTgt, "WineReviewMT", true);
     }
+    // END CreateCollectionTenantToTenant
 
     [Fact]
+    // START TenantToTenant
     public async Task TestTenantToTenant()
     {
         await CreateTenantToTenant();
@@ -228,7 +253,10 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var reviewsTgtTenantA = reviewsMtTgt.WithTenant("tenantA");
 
         await MigrateData<WineReviewModel>(reviewsSrcTenantA, reviewsTgtTenantA);
+        // END TenantToTenant
 
         Assert.True(await VerifyMigration(reviewsTgtTenantA, DATASET_SIZE));
+        // START TenantToTenant
     }
+    // END TenantToTenant
 }

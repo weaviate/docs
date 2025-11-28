@@ -1,7 +1,9 @@
+// START NearText
 using Weaviate.Client;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Threading;
 
 namespace WeaviateProject.Examples
 {
@@ -9,12 +11,11 @@ namespace WeaviateProject.Examples
     {
         public static async Task Run()
         {
-            // Connect to your local Weaviate instance
+            // Step 2.1: Connect to your local Weaviate instance
             var client = await Connect.Local();
 
-            // Perform a semantic search with NearText
+            // Step 2.2: Perform a semantic search with NearText
             var movies = client.Collections.Use("Movie");
-
             // highlight-start
             var response = await movies.Query.NearText(
                 "sci-fi",
@@ -32,3 +33,4 @@ namespace WeaviateProject.Examples
         }
     }
 }
+// END NearText

@@ -1,8 +1,10 @@
+// START RAG
 using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using Weaviate.Client.Models.Generative;
+using System.Text.Json;
 
 namespace WeaviateProject.Examples
 {
@@ -10,10 +12,10 @@ namespace WeaviateProject.Examples
     {
         public static async Task Run()
         {
-            // Connect to your local Weaviate instance
+            // Step 3.1: Connect to your local Weaviate instance
             var client = await Connect.Local();
 
-            // Perform RAG with nearText results
+            // Step 3.2: Perform RAG with nearText results
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
@@ -34,7 +36,8 @@ namespace WeaviateProject.Examples
             // highlight-end
 
             // Inspect the results
-            Console.WriteLine(response.Generative.Values);
+            Console.WriteLine(JsonSerializer.Serialize(response.Generative.Values));
         }
     }
 }
+// END RAG

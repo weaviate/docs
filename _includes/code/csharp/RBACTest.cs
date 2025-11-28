@@ -16,7 +16,6 @@ public class RBACTest : IAsyncLifetime
     {
         // START AdminClient
         // Connect to Weaviate as root user
-        // Use custom port defined in tests/docker-compose-rbac.yml (8580/50551)
         client = await Connect.Local(
             restPort: 8580,
             grpcPort: 50551,

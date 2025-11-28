@@ -22,18 +22,9 @@ public class SearchKeywordTest : IDisposable
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
         // The C# client uses a configuration object.
-        var config = new ClientConfiguration
-        {
-            // For Weaviate Cloud, the URL is the full gRPC address
-            GrpcAddress = weaviateUrl,
-            // Headers are added to the configuration
-            // Headers = new()
-            // {
-            //     { "Authorization", $"Bearer {weaviateApiKey}" },
-            //     { "X-OpenAI-Api-Key", openaiApiKey }
-            // }
-        };
-        client = new WeaviateClient(config);
+        client = Connect.Cloud(restEndpoint: weaviateUrl,
+                               apiKey: weaviateApiKey,
+                               headers: new() { { "X-OpenAI-Api-Key", openaiApiKey } }).GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 

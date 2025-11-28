@@ -83,17 +83,16 @@ public class QuickstartLocalTest
         // highlight-end
         // END Import
 
-        // TODO[g-despot] Error handling missing
         // Check for errors
-        // if (insertResponse.HasErrors)
-        // {
-        //     Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count}");
-        //     Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
-        // }
-        // else
-        // {
-        //     Console.WriteLine($"Successfully inserted {insertResponse.Results.Count} objects.");
-        // }
+        if (insertResponse.HasErrors)
+        {
+            Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
+            Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
+        }
+        else
+        {
+            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+        }
 
         // START NearText
         // highlight-start

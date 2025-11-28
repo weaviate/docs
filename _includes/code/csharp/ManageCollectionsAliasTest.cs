@@ -48,7 +48,6 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         await client.Collections.Delete(ProductsV2);
     }
 
-    // TODO[g-despot] 
     [Fact]
     public async Task TestAliasBasicWorkflow()
     {
@@ -250,7 +249,6 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
             await productsV2.Data.Insert(new
             {
                 name = obj.Properties["name"].ToString(),
-                // 'price' comes back as a generic object/JsonElement, convert to a number type
                 price = Convert.ToDouble(obj.Properties["price"].ToString()),
                 category = "General"
             });

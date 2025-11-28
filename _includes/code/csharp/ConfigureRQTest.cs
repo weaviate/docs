@@ -76,6 +76,7 @@ public class ConfigureRQTest : IAsyncLifetime
         // END 1BitEnableRQ
     }
 
+    // TODO[g-despot] NEW: Needs not compression option
     [Fact]
     public async Task TestUncompressed()
     {

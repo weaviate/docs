@@ -4,6 +4,7 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace WeaviateProject.Examples
 {
@@ -13,16 +14,17 @@ namespace WeaviateProject.Examples
         {
             string collectionName = "Movie";
 
-            // Connect to your local Weaviate instance
+            // Step 1.1: Connect to your local Weaviate instance
             var client = await Connect.Local();
-
+            // END CreateCollection
             // NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
             if (await client.Collections.Exists(collectionName))
             {
                 await client.Collections.Delete(collectionName);
             }
+            // START CreateCollection
 
-            // Create a collection
+            // Step 1.2: Create a collection
             var movies = await client.Collections.Create(new CollectionConfig
             {
                 Name = collectionName,
@@ -40,7 +42,7 @@ namespace WeaviateProject.Examples
                 ]
             });
 
-            // Import three objects
+            // Step 1.3: Import three objects
             var dataObjects = new List<object>
             {
                 new {
@@ -71,6 +73,10 @@ namespace WeaviateProject.Examples
             {
                 Console.WriteLine($"Imported & vectorized {insertResponse.Count} objects into the Movie collection");
             }
+            // END CreateCollection
+            Thread.Sleep(1000);
+            // START CreateCollection
         }
     }
 }
+// END CreateCollection

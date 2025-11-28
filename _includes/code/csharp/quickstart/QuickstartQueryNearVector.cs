@@ -1,5 +1,5 @@
+// START NearText
 using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -14,10 +14,10 @@ namespace WeaviateProject.Examples
             string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
             string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-            // Connect to your Weaviate Cloud instance
+            // Step 2.1: Connect to your Weaviate Cloud instance
             var client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
 
-            // Perform a vector search with NearVector
+            // Step 2.2: Perform a vector search with NearVector
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
@@ -39,3 +39,4 @@ namespace WeaviateProject.Examples
         }
     }
 }
+// END NearText

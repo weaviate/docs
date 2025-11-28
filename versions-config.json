@@ -11,5 +11,5 @@
   "java_new_client_version": "6.0.0-RC1",
   "typescript_client_version": "3.9.0",
   "spark_connector_version": "1.4.0",
-  "csharp_client_version": "0.0.1-beta.4"
+  "csharp_client_version": "0.0.1-beta.5"
 }

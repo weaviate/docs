@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
 
-public class ReplicationWorkflowTest : IAsyncLifetime
+public class ReplicationTest : IAsyncLifetime
 {
     private WeaviateClient client;
     private const string CollectionName = "MyReplicatedDocCollection";

@@ -40,6 +40,7 @@ public class SearchGenerativeTest : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="connection to: OpenAI API failed with status: 400 request-id: req_5abd283f230349a08d87849af0a556ce error: Unsupported parameter: 'top_p' is not supported with this model.")
     [Fact]
     public async Task TestDynamicRag()
     {
@@ -199,6 +200,7 @@ public class SearchGenerativeTest : IDisposable
         // END GroupedGenerativePython
     }
 
+    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="connection to: OpenAI API failed with status: 400 request-id: req_5abd283f230349a08d87849af0a556ce error: Unsupported parameter: 'top_p' is not supported with this model.")
     [Fact]
     public async Task TestGroupedGenerativeParameters()
     {

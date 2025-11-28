@@ -136,53 +136,51 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         Assert.Equal(100d, props1["points"]);
 
 
-        var vector = Enumerable.Repeat(0.12345f, 300).ToArray();
+        var vector = Enumerable.Repeat(0.12345f, 384).ToArray();
 
-        // TODO[g-despot]  Not implemented
         // START UpdateVector        
-        // Coming soon
+        await jeopardy.Data.Replace(uuid,
+            data: new { points = 100 },
+            // highlight-start
+            vectors: vector
+        // highlight-end
+        );
         // END UpdateVector
-        // await jeopardy.Data.Update(uuid,
-        //     properties: new { points = 100 },
-        //     // highlight-start
-        //     vector: vector
-        // // highlight-end
-        // );
 
-        // var result2 = await jeopardy.Query.FetchObjectByID(uuid, returnMetadata: MetadataOptions.Vector);
-        // Assert.NotNull(result2);
-        // Assert.Equal(300, result2.Vectors["default"].Dimensions);
+        var result2 = await jeopardy.Query.FetchObjectByID(uuid, includeVectors: true);
+        Assert.NotNull(result2);
+        Assert.Equal(384, result2.Vectors["default"].Dimensions);
 
-
-        // TODO[g-despot]  Not implemented
         // START UpdateNamedVector
-        // Coming soon
-        // END UpdateNamedVector
-
         var reviews = client.Collections.Use("WineReviewNV");
-        var reviewResponse = await reviews.Query.FetchObjects(limit: 1);
-        var reviewUuid = reviewResponse.Objects.First().ID.Value;
 
-        var titleVector = Enumerable.Repeat(0.12345f, 300).ToArray();
-        var reviewBodyVector = Enumerable.Repeat(0.23456f, 300).ToArray();
-        var titleCountryVector = Enumerable.Repeat(0.34567f, 300).ToArray();
+        // Fetch an object to update
+        var result = await reviews.Query.FetchObjects(limit: 3);
+        var reviewUuid = result.Objects.First().ID.Value;
 
-        // await reviews.Data.Update(reviewUuid,
-        //     data: new
-        //     {
-        //         title = "A delicious wine",
-        //         review_body = "This mystery wine is a delight to the senses.",
-        //         country = "Mordor"
-        //     },
-        //     // highlight-start
-        //     vectors: new Dictionary<string, float[]>
-        //     {
-        //         { "title", titleVector },
-        //         { "review_body", reviewBodyVector },
-        //         { "title_country", titleCountryVector }
-        //     }
-        //     // highlight-end
-        // );
+        // Create vectors
+        float[] titleVector = Enumerable.Repeat(0.12345f, 384).ToArray();
+        float[] reviewBodyVector = Enumerable.Repeat(0.12345f, 384).ToArray();
+        float[] titleCountryVector = Enumerable.Repeat(0.12345f, 384).ToArray();
+
+        await reviews.Data.Replace(
+            id: reviewUuid,
+            data: new
+            {
+                title = "A delicious wine",
+                review_body = "This mystery wine is a delight to the senses.",
+                country = "Mordor"
+            },
+            // highlight-start
+            vectors: new Vectors
+            {
+            { "title", titleVector },
+            { "review_body", reviewBodyVector },
+            { "title_country", titleCountryVector }
+            }
+        // highlight-end
+        );
+        // END UpdateNamedVector
 
 
         // START Replace

@@ -4,7 +4,7 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Collections.Generic;
+using System.Text.Json;
 
 namespace WeaviateProject.Tests;
 
@@ -221,10 +221,24 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
         Assert.Equal(TenantActivityStatus.Inactive, tenant?.Status);
     }
 
-    // START OffloadTenants
-    // Note: 'Offload' is not a current concept in the client. Use 'Deactivate' for similar functionality.
-    // Coming soon
-    // END OffloadTenants
+    [Fact(Skip = "Requires offload-s3 module to be enabled")]
+    public async Task TestOffloadTenants()
+    {
+        string collectionName = "MultiTenancyCollection";
+        var collection = await client.Collections.Create(new CollectionConfig
+        {
+            Name = collectionName,
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
+        });
+        await collection.Tenants.Add(["tenantA"]);
+        // START OffloadTenants
+        await collection.Tenants.Offload(new[] { "tenantA" });
+        // END OffloadTenants
+
+        var tenants = (await collection.Tenants.List()).ToList();
+        Assert.Single(tenants);
+        Assert.Equal("tenantA", tenants.First().Name);
+    }
 
     [Fact]
     public async Task TestRemoveTenants()
@@ -243,5 +257,146 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
         var tenants = (await collection.Tenants.List()).ToList();
         Assert.Single(tenants);
         Assert.Equal("tenantA", tenants.First().Name);
+    }
+
+    [Fact]
+    public async Task TestChangeTenantState()
+    {
+        string collectionName = "MultiTenancyCollection";
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = collectionName,
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
+        });
+
+        var collection = client.Collections.Use(collectionName);
+        await collection.Tenants.Add(["tenantA"]);
+
+        // START ChangeTenantState
+        string tenantName = "tenantA";
+        var multiCollection = client.Collections.Use(collectionName);
+
+        // Deactivate
+        await multiCollection.Tenants.Update([new Tenant
+        {
+            Name = tenantName,
+            Status = TenantActivityStatus.Inactive
+        }]);
+
+        // Activate
+        await multiCollection.Tenants.Update([new Tenant
+        {
+            Name = tenantName,
+            Status = TenantActivityStatus.Active
+        }]);
+
+        // Offloading requires S3/warm/cold configuration
+        // END ChangeTenantState
+
+        var tenants = await multiCollection.Tenants.List();
+        Assert.Contains(tenants, t => t.Name == tenantName && t.Status == TenantActivityStatus.Active);
+    }
+
+    [Fact]
+    public async Task TestCreateTenantObject()
+    {
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = "JeopardyQuestion",
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
+        });
+
+        var collection = client.Collections.Use("JeopardyQuestion");
+        await collection.Tenants.Add(["tenantA"]);
+
+        // START CreateMtObject
+        // highlight-start
+        var jeopardy = client.Collections.Use("JeopardyQuestion").WithTenant("tenantA");
+        // highlight-end
+
+        var uuid = await jeopardy.Data.Insert(new
+        {
+            question = "This vector DB is OSS & supports automatic property type inference on import"
+        });
+
+        Console.WriteLine(uuid); // the return value is the object's UUID
+        // END CreateMtObject
+
+        var result = await jeopardy.Query.FetchObjectByID(uuid);
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task TestSearchTenant()
+    {
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = "JeopardyQuestion",
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
+        });
+
+        var jeopardyCollection = client.Collections.Use("JeopardyQuestion");
+        await jeopardyCollection.Tenants.Add(["tenantA"]);
+
+        // Insert some test data
+        var jeopardyTenant = jeopardyCollection.WithTenant("tenantA");
+        await jeopardyTenant.Data.Insert(new { question = "Test question" });
+
+        // START Search
+        // highlight-start
+        var jeopardy = client.Collections.Use("JeopardyQuestion").WithTenant("tenantA");
+        // highlight-end
+
+        var response = await jeopardy.Query.FetchObjects(limit: 2);
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+        }
+        // END Search
+
+        Assert.NotEmpty(response.Objects);
+    }
+
+    [Fact]
+    public async Task TestAddReferenceToTenantObject()
+    {
+        // START AddCrossRef
+        await client.Collections.Create(new CollectionConfig { Name = "JeopardyCategory" });
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = "MultiTenancyCollection",
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
+        });
+
+        var categoryCollection = client.Collections.Use("JeopardyCategory");
+        var categoryUuid = await categoryCollection.Data.Insert(new { name = "Test Category" });
+
+        var multiCollection = client.Collections.Use("MultiTenancyCollection");
+        await multiCollection.Tenants.Add(["tenantA"]);
+
+        var multiTenantA = multiCollection.WithTenant("tenantA");
+        var objectId = await multiTenantA.Data.Insert(new { title = "Object in Tenant A" });
+
+        // Add the reference property to the schema
+        await multiCollection.Config.AddProperty(Property.Reference("hasCategory", "JeopardyCategory"));
+
+        // Add the cross-reference
+        await multiTenantA.Data.ReferenceAdd(
+            from: objectId,
+            fromProperty: "hasCategory",
+            to: categoryUuid
+        );
+        // END AddCrossRef
+
+        // Verify
+        var result = await multiTenantA.Query.FetchObjectByID(
+            objectId,
+            returnReferences: [new QueryReference("hasCategory")]
+        );
+
+        Assert.NotNull(result);
+        Assert.True(result.References.ContainsKey("hasCategory"));
+        Assert.Single(result.References["hasCategory"]);
     }
 }

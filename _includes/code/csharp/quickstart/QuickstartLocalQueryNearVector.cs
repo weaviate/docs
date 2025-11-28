@@ -1,3 +1,4 @@
+// START NearText
 using Weaviate.Client;
 using System;
 using System.Threading.Tasks;
@@ -9,10 +10,10 @@ namespace WeaviateProject.Examples
     {
         public static async Task Run()
         {
-            // Connect to your local Weaviate instance
+            // Step 2.1: Connect to your local Weaviate instance
             var client = await Connect.Local();
 
-            // Perform a vector search with NearVector
+            // Step 2.2: Perform a vector search with NearVector
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
@@ -34,3 +35,4 @@ namespace WeaviateProject.Examples
         }
     }
 }
+// END NearText

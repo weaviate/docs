@@ -1,3 +1,4 @@
+// START NearText
 using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
@@ -14,10 +15,10 @@ namespace WeaviateProject.Examples
             string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
             string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-            // Connect to your Weaviate Cloud instance
+            // Step 2.1: Connect to your Weaviate Cloud instance
             var client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
 
-            // Perform a semantic search with NearText
+            // Step 2.2: Perform a semantic search with NearText
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
@@ -37,3 +38,4 @@ namespace WeaviateProject.Examples
         }
     }
 }
+// END NearText

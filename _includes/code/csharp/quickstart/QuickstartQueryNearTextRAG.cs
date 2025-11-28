@@ -1,8 +1,10 @@
+// START RAG
 using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace WeaviateProject.Examples
 {
@@ -15,12 +17,12 @@ namespace WeaviateProject.Examples
             string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
             string anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
 
-            // Connect to your Weaviate Cloud instance
+            // Step 3.1: Connect to your Weaviate Cloud instance
             var client = await Connect.Cloud(weaviateUrl, weaviateApiKey, headers:
                 new Dictionary<string, string> { { "X-Anthropic-Api-Key", anthropicApiKey } }
             );
 
-            // Perform RAG with nearText results
+            // Step 3.2: Perform RAG with nearText results
             var movies = client.Collections.Use("Movie");
 
             // highlight-start
@@ -40,7 +42,8 @@ namespace WeaviateProject.Examples
             // highlight-end
 
             // Inspect the results
-            Console.WriteLine(response.Generative.Values);
+            Console.WriteLine(JsonSerializer.Serialize(response.Generative.Values));
         }
     }
 }
+// END RAG

@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using static Weaviate.Client.Models.VectorIndexConfig;
 
 // This attribute ensures that tests in this class do not run in parallel,
 // which is important because they share a client and perform cleanup operations
@@ -24,15 +25,8 @@ public class ManageCollectionsTest : IAsyncLifetime
             throw new ArgumentException("Please set the OPENAI_API_KEY environment variable.");
         }
 
-        // TODO[g-despot] Headers are currently not supported
         var headers = new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey } };
-        var config = new ClientConfiguration
-        {
-            RestAddress = "localhost",
-            RestPort = 8080,
-            //Headers = headers
-        };
-        client = new WeaviateClient(config);
+        client = Connect.Local(hostname: "localhost", restPort: 8080, headers: headers).GetAwaiter().GetResult();
     }
 
     // InitializeAsync is called before each test. We ensure all collections are deleted.
@@ -93,7 +87,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         //     public string Title { get; set; }
         //     public string Body { get; set; }
         // }
-    
+
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
@@ -213,10 +207,6 @@ public class ManageCollectionsTest : IAsyncLifetime
         //Assert.NotNull(config.VectorConfig["body_vector"]);
     }
 
-    // START AddNamedVectors
-    // Coming soon
-    // END AddNamedVectors
-
     // TODO[g-despot] NEW: Unexpected status code UnprocessableEntity. Expected: OK. collection create. Server replied: {"error":[{"message":"module 'multi2vec-jinaai': textFields or imageFields setting needs to be present"}]}
     [Fact]
     public async Task CreateCollectionWithMultiVectors()
@@ -227,12 +217,12 @@ public class ManageCollectionsTest : IAsyncLifetime
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
         {
-            // The factory function will automatically enable multi-vector support for the HNSW index
-            Configure.MultiVectors.Multi2VecJinaAI().New("jina_colbert"),
-            // Must explicitly enable multi-vector support for the HNSW index
+            // Example 1 - Use a model integration
+            Configure.MultiVectors.Multi2VecJinaAI(textFields: ["text"]).New("jina_colbert"),
+            // Example 2 - User-provided multi-vector representations
             Configure.MultiVectors.SelfProvided().New("custom_multi_vector"),
         },
-            Properties = [ Property.Text("text") ],
+            Properties = [Property.Text("text")],
         });
         // END MultiValueVectorCollection
 
@@ -242,9 +232,34 @@ public class ManageCollectionsTest : IAsyncLifetime
         Assert.True(config.VectorConfig.ContainsKey("custom_multi_vector"));
     }
 
-    // START MultiValueVectorCollection
-    // Coming soon
-    // END MultiValueVectorCollection
+    [Fact]
+    public async Task TestMultiValueVectorMuvera()
+    {
+        // START MultiValueVectorMuvera
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = "DemoCollection",
+            VectorConfig = new VectorConfigList
+            {
+                // Example 1 - Use a model integration
+                Configure.MultiVectors.Multi2VecJinaAI(
+                    textFields: ["text"]
+                ).New("jina_colbert", indexConfig: new VectorIndex.HNSW
+                    {
+                        MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
+                    }),
+                // Example 2 - User-provided multi-vector representations
+                Configure.MultiVectors.SelfProvided(
+                ).New("custom_multi_vector", indexConfig: new VectorIndex.HNSW
+                    {
+                        MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
+                    }),
+            }
+        });
+        // END MultiValueVectorMuvera
+
+        Assert.True(await client.Collections.Exists("DemoCollection"));
+    }
 
     [Fact]
     public async Task TestSetVectorIndexType()
@@ -428,7 +443,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            Properties = 
+            Properties =
             [
                 Property.Text(
                     "title",
