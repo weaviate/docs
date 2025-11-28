@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Linq;
 using System.IO;
 using System.Net.Http;
-using System.Collections.Generic;
 
 namespace WeaviateProject.Tests;
 

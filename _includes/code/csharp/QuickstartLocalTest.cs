@@ -17,7 +17,7 @@ public class QuickstartLocalTest
     public async Task TestConnectionIsReady()
     {
         // START InstantiationExample
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
 
         // highlight-start
         // GetMeta returns server info. A successful call indicates readiness.
@@ -32,7 +32,7 @@ public class QuickstartLocalTest
     [Fact]
     public async Task FullQuickstartWorkflowTest()
     {
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
         string collectionName = "Question";
 
         // Clean up previous runs if they exist
@@ -46,7 +46,7 @@ public class QuickstartLocalTest
         var questions = await client.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
-            Properties = 
+            Properties =
             [
                     Property.Text("answer"),
                     Property.Text("question"),
@@ -83,17 +83,16 @@ public class QuickstartLocalTest
         // highlight-end
         // END Import
 
-        // TODO[g-despot] Error handling missing
         // Check for errors
-        // if (insertResponse.HasErrors)
-        // {
-        //     Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count}");
-        //     Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
-        // }
-        // else
-        // {
-        //     Console.WriteLine($"Successfully inserted {insertResponse.Results.Count} objects.");
-        // }
+        if (insertResponse.HasErrors)
+        {
+            Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
+            Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
+        }
+        else
+        {
+            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+        }
 
         // START NearText
         // highlight-start
@@ -105,9 +104,23 @@ public class QuickstartLocalTest
             Console.WriteLine(JsonSerializer.Serialize(obj.Properties));
         }
         // END NearText
-    }
 
-    // START RAG
-    // Coming soon
-    // END RAG
+        // START RAG
+        // highlight-start
+        var ragResponse = await questions.Generate.NearText(
+            "biology",
+            limit: 2,
+            groupedTask: new GroupedTask
+            {
+                Task = "Write a tweet with emojis about these facts.",
+                Provider = new Weaviate.Client.Models.Generative.Providers.OpenAI { }
+            }
+        );
+        // highlight-end
+
+        // Inspect the results
+        Console.WriteLine(JsonSerializer.Serialize(ragResponse.Generative.Values));
+        // END RAG
+        await client.Collections.Delete(collectionName);
+    }
 }

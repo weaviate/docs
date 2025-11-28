@@ -26,13 +26,74 @@ public class ConnectionTest
         // END CustomURL
     }
 
-    // TODO[g-despot] How to add timeout
-    // START TimeoutLocal
-    // Coming soon
-    // END TimeoutLocal
-    // START TimeoutCustom
-    // Coming soon
-    // END TimeoutCustom
+    [Fact]
+    public async Task TestConnectLocalWithTimeouts()
+    {
+        // START TimeoutLocal
+        WeaviateClient client = await Connect.Local(
+            initTimeout: TimeSpan.FromSeconds(30),
+            queryTimeout: TimeSpan.FromSeconds(60),
+            insertTimeout: TimeSpan.FromSeconds(120)
+        );
+
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
+        // END TimeoutLocal
+    }
+
+    [Fact]
+    public async Task TestConnectCloudWithTimeouts()
+    {
+        // START TimeoutWCD
+        // Best practice: store your credentials in environment variables
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+
+        WeaviateClient client = await Connect.Cloud(
+            weaviateUrl,
+            weaviateApiKey,
+            initTimeout: TimeSpan.FromSeconds(30),
+            queryTimeout: TimeSpan.FromSeconds(60),
+            insertTimeout: TimeSpan.FromSeconds(120)
+        );
+
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
+        // END TimeoutWCD
+    }
+
+    [Fact]
+    public async Task TestConnectCustomWithTimeouts()
+    {
+        // START TimeoutCustom
+        // Best practice: store your credentials in environment variables
+        string httpHost = Environment.GetEnvironmentVariable("WEAVIATE_HTTP_HOST");
+        string grpcHost = Environment.GetEnvironmentVariable("WEAVIATE_GRPC_HOST");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
+
+        var config = new ClientConfiguration
+        {
+            UseSsl = true, // Corresponds to scheme("https")
+            RestAddress = httpHost,
+            RestPort = 443,
+            GrpcAddress = grpcHost,
+            GrpcPort = 443,
+            Credentials = Auth.ApiKey(weaviateApiKey),
+            Headers = new Dictionary<string, string>
+            {
+                { "X-Cohere-Api-Key", cohereApiKey }
+            },
+            InitTimeout = TimeSpan.FromSeconds(30),
+            QueryTimeout = TimeSpan.FromSeconds(60),
+            InsertTimeout = TimeSpan.FromSeconds(120)
+        };
+        WeaviateClient client = new WeaviateClient(config);
+
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
+        // END TimeoutCustom
+    }
 
     [Fact]
     public async Task TestConnectWCDWithApiKey()
@@ -42,7 +103,7 @@ public class ConnectionTest
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        WeaviateClient client = Connect.Cloud(
+        WeaviateClient client = await Connect.Cloud(
             weaviateUrl, // Replace with your Weaviate Cloud URL
             weaviateApiKey // Replace with your Weaviate Cloud key
         );
@@ -116,7 +177,7 @@ public class ConnectionTest
     public async Task TestConnectLocalNoAuth()
     {
         // START LocalNoAuth
-        WeaviateClient client = Connect.Local();
+        WeaviateClient client = await Connect.Local();
 
         var isReady = await client.IsReady();
         Console.WriteLine(isReady);
@@ -172,7 +233,7 @@ public class ConnectionTest
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
-        WeaviateClient client = Connect.Cloud(
+        WeaviateClient client = await Connect.Cloud(
             weaviateUrl, // Replace with your Weaviate Cloud URL
             weaviateApiKey, // Replace with your Weaviate Cloud key
             new Dictionary<string, string>
@@ -185,8 +246,4 @@ public class ConnectionTest
         Console.WriteLine(isReady);
         // END ThirdPartyAPIKeys
     }
-
-    // START TimeoutWCD
-    // Coming soon
-    // END TimeoutWCD
 }

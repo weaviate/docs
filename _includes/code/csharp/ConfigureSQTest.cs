@@ -15,9 +15,7 @@ public class ConfigureSQTest : IAsyncLifetime
     public async Task InitializeAsync()
     {
         // START ConnectCode
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = await Connect.Local();
         // END ConnectCode
 
         // Clean slate for each test
@@ -77,7 +75,6 @@ public class ConfigureSQTest : IAsyncLifetime
         // END UpdateSchema
     }
 
-    // TODO[g-despot] Missing cache
     [Fact]
     public async Task TestSQWithOptions()
     {
@@ -95,7 +92,6 @@ public class ConfigureSQTest : IAsyncLifetime
                     VectorCacheMaxObjects = 100000,
                     Quantizer = new VectorIndex.Quantizers.SQ
                     {
-                        //Cache = true,
                         TrainingLimit = 50000,
                         RescoreLimit = 200
                     }
