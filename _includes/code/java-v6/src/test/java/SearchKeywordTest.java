@@ -93,7 +93,7 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
       // highlight-start
-      System.out.println(o.metadata().score());
+      System.out.println(o.queryMetadata().score());
       // highlight-end
     }
     // END BM25WithScore
@@ -148,7 +148,7 @@ class SearchKeywordTest {
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
-      System.out.println(o.metadata().score());
+      System.out.println(o.queryMetadata().score());
     }
     // END BM25WithProperties
   }

@@ -64,7 +64,7 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START EnableMultiTenancy"
@@ -72,7 +72,7 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START EnableMultiTenancy"
@@ -123,7 +123,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="bash"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START EnableAutoMT"
@@ -178,7 +178,7 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       language="bash"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateAutoMT"
@@ -242,7 +242,7 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START AddTenantsToClass"
@@ -250,7 +250,7 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START AddTenantsToClass"
@@ -299,7 +299,7 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ListTenants"
@@ -307,7 +307,7 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START ListTenants"
@@ -348,7 +348,7 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetTenantsByName"
@@ -389,7 +389,7 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetOneTenant"
@@ -440,7 +440,7 @@ Deleting a tenant deletes all associated objects.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START RemoveTenants"
@@ -448,7 +448,7 @@ Deleting a tenant deletes all associated objects.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START RemoveTenants"
@@ -487,7 +487,7 @@ Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ChangeTenantState"
@@ -532,7 +532,7 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateMtObject"
@@ -540,7 +540,7 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START CreateMtObject"
@@ -579,7 +579,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Search"
@@ -587,7 +587,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START Search"
@@ -635,7 +635,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START AddCrossRef"
@@ -643,7 +643,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START AddCrossRef"

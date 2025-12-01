@@ -119,7 +119,7 @@ class MultiTargetSearchTest {
     for (var o : response.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiBasic
     assertThat(response.objects()).hasSize(2);
@@ -135,12 +135,10 @@ class MultiTargetSearchTest {
 
     float[] v1 = someResult.objects()
         .get(0)
-        .metadata()
         .vectors()
         .getSingle("jeopardy_questions_vector");
     float[] v2 = someResult.objects()
         .get(1)
-        .metadata()
         .vectors()
         .getSingle("jeopardy_answers_vector");
     assertThat(v1).isNotEmpty();
@@ -159,7 +157,7 @@ class MultiTargetSearchTest {
     for (var o : response.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiTargetNearVector
     assertThat(response.objects()).hasSize(2);
@@ -175,17 +173,14 @@ class MultiTargetSearchTest {
 
     float[] v1 = someResult.objects()
         .get(0)
-        .metadata()
         .vectors()
         .getSingle("jeopardy_questions_vector");
     float[] v2 = someResult.objects()
         .get(1)
-        .metadata()
         .vectors()
         .getSingle("jeopardy_answers_vector");
     float[] v3 = someResult.objects()
         .get(2)
-        .metadata()
         .vectors()
         .getSingle("jeopardy_answers_vector");
     assertThat(v1).isNotEmpty();
@@ -206,7 +201,7 @@ class MultiTargetSearchTest {
     for (var o : responseV1.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiTargetMultipleNearVectorsV1
     assertThat(responseV1.objects()).hasSize(2);
@@ -227,7 +222,7 @@ class MultiTargetSearchTest {
     for (var o : responseV2.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiTargetMultipleNearVectorsV2
     assertThat(responseV2.objects()).hasSize(2);
@@ -250,7 +245,7 @@ class MultiTargetSearchTest {
     for (var o : response.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiTargetWithSimpleJoin
     assertThat(response.objects()).hasSize(2);
@@ -273,7 +268,7 @@ class MultiTargetSearchTest {
     for (var o : response.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiTargetManualWeights
     assertThat(response.objects()).hasSize(2);
@@ -296,7 +291,7 @@ class MultiTargetSearchTest {
     for (var o : response.objects()) {
       System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
           .writeValueAsString(o.properties()));
-      System.out.println("Distance: " + o.metadata().distance());
+      System.out.println("Distance: " + o.queryMetadata().distance());
     }
     // END MultiTargetRelativeScore
     assertThat(response.objects()).hasSize(2);

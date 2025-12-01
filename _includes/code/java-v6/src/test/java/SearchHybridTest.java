@@ -84,7 +84,7 @@ class SearchHybridTest {
       System.out.println(o.properties());
       // highlight-start
       System.out
-          .println(o.metadata().score() + " " + o.metadata().explainScore());
+          .println(o.queryMetadata().score() + " " + o.queryMetadata().explainScore());
       // highlight-end
     }
     // END HybridWithScorePython

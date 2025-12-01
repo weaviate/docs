@@ -71,7 +71,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
        language="ts"
      />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CollectionWithAutoPQ"
@@ -148,7 +148,7 @@ Follow these steps to manually enable PQ.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START InitialSchema"
@@ -156,7 +156,7 @@ Follow these steps to manually enable PQ.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START InitialSchema"
@@ -217,7 +217,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateSchema"
@@ -225,7 +225,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START UpdateSchema"
@@ -316,7 +316,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetSchema"
@@ -324,7 +324,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START GetSchema"

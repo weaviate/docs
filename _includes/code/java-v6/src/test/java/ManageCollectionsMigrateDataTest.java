@@ -3,8 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
-import io.weaviate.client6.v1.api.collections.query.ReadWeaviateObject;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -103,11 +102,11 @@ class ManageCollectionsMigrateDataTest {
   private void migrateData(CollectionHandle<Map<String, Object>> collectionSrc,
       CollectionHandle<Map<String, Object>> collectionTgt) {
     System.out.println("Starting data migration...");
-    List<WriteWeaviateObject<Map<String, Object>>> sourceObjects = StreamSupport
+    List<WeaviateObject<Map<String, Object>>> sourceObjects = StreamSupport
         .stream(collectionSrc.paginate(p -> p.includeVector()).spliterator(),
             false)
-        .map(readObj -> WriteWeaviateObject.<Map<String, Object>>of(
-            builder -> builder.properties(readObj.properties())
+        .map(readObj -> WeaviateObject
+            .<Map<String, Object>>of(c -> c.properties(readObj.properties())
                 .uuid(readObj.uuid())
                 .vectors(readObj.vectors())))
         .collect(Collectors.toList());
@@ -122,7 +121,8 @@ class ManageCollectionsMigrateDataTest {
   private boolean verifyMigration(
       CollectionHandle<Map<String, Object>> collectionSrc,
       CollectionHandle<Map<String, Object>> collectionTgt, int numSamples) {
-    List<ReadWeaviateObject<Map<String, Object>>> srcObjects =
+
+    List<WeaviateObject<Map<String, Object>>> srcObjects =
         StreamSupport.stream(collectionSrc.paginate().spliterator(), false)
             .collect(Collectors.toList());
 
@@ -131,13 +131,13 @@ class ManageCollectionsMigrateDataTest {
       return false;
     }
     Collections.shuffle(srcObjects);
-    List<ReadWeaviateObject<Map<String, Object>>> sampledObjects =
+    List<WeaviateObject<Map<String, Object>>> sampledObjects =
         srcObjects.subList(0, Math.min(numSamples, srcObjects.size()));
 
     System.out.printf("Verifying %d random objects...\n",
         sampledObjects.size());
     for (var srcObj : sampledObjects) {
-      Optional<ReadWeaviateObject<Map<String, Object>>> tgtObjOpt = // Changed from WriteWeaviateObject
+      Optional<WeaviateObject<Map<String, Object>>> tgtObjOpt =
           collectionTgt.query.fetchObjectById(srcObj.uuid());
       if (tgtObjOpt.isEmpty()) {
         System.out.printf("Object %s not found in target collection\n",

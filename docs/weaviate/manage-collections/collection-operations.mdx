@@ -28,7 +28,7 @@ import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
 ## Create a collection
 
-To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](https://www.google.com/search?q=../config-refs/collections.mdx%23auto-schema) creates them.
+To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/collections.mdx#auto-schema) creates them.
 
 import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
@@ -59,7 +59,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BasicCreateCollection"
@@ -67,7 +67,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START BasicCreateCollection"
@@ -112,11 +112,11 @@ Use properties to configure additional parameters such as data type, index chara
 
 For details, see:
 
-- [References: Configuration: Schema](https://www.google.com/search?q=/weaviate/config-refs/collections.mdx)
+- [References: Configuration: Schema](../config-refs/collections.mdx)
 - <SkipLink href="/weaviate/api/rest\#tag/schema">
     API References: REST: Schema
   </SkipLink>
-- [Available data types](https://www.google.com/search?q=../config-refs/datatypes.md)
+- [Available data types](../config-refs/datatypes.md)
 
 </details>
 
@@ -145,7 +145,7 @@ For details, see:
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateCollectionWithProperties"
@@ -153,7 +153,7 @@ For details, see:
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START CreateCollectionWithProperties"
@@ -168,7 +168,7 @@ For details, see:
       endMarker="// END CreateCollectionWithProperties"
       language="csharp"
     />
-    Or by using the fields from a class: 
+    Or by using the fields from a class:
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START CreateCollectionWithClassProperties"
@@ -207,7 +207,7 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Vectorizer"
@@ -215,7 +215,7 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START CreateCollectionWithVectorizer"
@@ -235,7 +235,7 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
 
 :::info Vectorizer configuration
 
-Find out more about the vectorizer and vector index configuration in [Manage collections: Vectorizer and vector index](https://www.google.com/search?q=./vector-config.mdx).
+Find out more about the vectorizer and vector index configuration in [Manage collections: Vectorizer and vector index](./vector-config.mdx).
 
 :::
 
@@ -243,7 +243,7 @@ Find out more about the vectorizer and vector index configuration in [Manage col
 
 By default, Weaviate creates missing collections and missing properties. When you configure collections manually, you have more precise control of the collection settings.
 
-To disable [`auto-schema`](https://www.google.com/search?q=../config-refs/collections.mdx%23auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
+To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
 
 ## Check if a collection exists
 
@@ -266,7 +266,7 @@ Get a boolean indicating whether a given collection exists.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CheckIfExists"
@@ -305,7 +305,7 @@ Retrieve a collection definition from the schema.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ReadOneCollection"
@@ -313,7 +313,7 @@ Retrieve a collection definition from the schema.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START ReadOneCollection"
@@ -413,7 +413,7 @@ This configuration for nested objects defines the following:
 <details>
 <summary>Sample configuration: Generative search</summary>
 
-This configuration for [retrieval augmented generation](https://www.google.com/search?q=../search/generative.md) defines the following:
+This configuration for [retrieval augmented generation](../search/generative.md) defines the following:
 
 - The collection name (`Article`)
 - The default vectorizer module (`text2vec-openai`)
@@ -478,7 +478,7 @@ This configuration for image search defines the following:
 
 - A set of properties (`image`), with the `image` property set as `blob`.
 
-For image searches, see [Image search](https://www.google.com/search?q=../search/image.md).
+For image searches, see [Image search](../search/image.md).
 
 ```json
 {
@@ -532,7 +532,7 @@ Fetch the database schema to retrieve all of the collection definitions.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ReadAllCollections"
@@ -540,7 +540,7 @@ Fetch the database schema to retrieve all of the collection definitions.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START ReadAllCollections"
@@ -564,7 +564,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-You can update a collection definition to change the [mutable collection settings](https://www.google.com/search?q=../config-refs/collections.mdx%23mutability).
+You can update a collection definition to change the [mutable collection settings](../config-refs/collections.mdx#mutability).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -591,7 +591,7 @@ You can update a collection definition to change the [mutable collection setting
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateCollection"
@@ -599,7 +599,7 @@ You can update a collection definition to change the [mutable collection setting
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaReplicationCode}
       startMarker="// START UpdateCollection"
@@ -651,9 +651,9 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 
 ## Further resources
 
-- [Manage collections: Vectorizer and vector index](https://www.google.com/search?q=./vector-config.mdx)
-- [References: Collection definition](https://www.google.com/search?q=/weaviate/config-refs/collections.mdx)
-- [Concepts: Data structure](https://www.google.com/search?q=../concepts/data.md)
+- [Manage collections: Vectorizer and vector index](./vector-config.mdx)
+- [References: Collection definition](../config-refs/collections.mdx)
+- [Concepts: Data structure](../concepts/data.md)
 - <SkipLink href="/weaviate/api/rest\#tag/schema/post/schema">
     API References: REST: Schema
   </SkipLink>

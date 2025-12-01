@@ -757,14 +757,14 @@ const sidebars = {
         {
           type: "category",
           label: "Java",
-          collapsed: false,
+          collapsed: true,
           className: "sidebar-item",
           link: {
             type: "doc",
             id: "weaviate/client-libraries/java/index",
           },
           items: [
-            "weaviate/client-libraries/java/java-v6",
+            "weaviate/client-libraries/java/java-v5",
           ],
         },
         {
