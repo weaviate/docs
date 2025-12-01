@@ -33,7 +33,7 @@ public class ConnectionTest
         WeaviateClient client = await Connect.Local(
             initTimeout: TimeSpan.FromSeconds(30),
             queryTimeout: TimeSpan.FromSeconds(60),
-            insertTimeout: TimeSpan.FromSeconds(120)
+            dataTimeout: TimeSpan.FromSeconds(120)
         );
 
         var isReady = await client.IsReady();
@@ -54,7 +54,7 @@ public class ConnectionTest
             weaviateApiKey,
             initTimeout: TimeSpan.FromSeconds(30),
             queryTimeout: TimeSpan.FromSeconds(60),
-            insertTimeout: TimeSpan.FromSeconds(120)
+            dataTimeout: TimeSpan.FromSeconds(120)
         );
 
         var isReady = await client.IsReady();
@@ -86,7 +86,7 @@ public class ConnectionTest
             },
             InitTimeout = TimeSpan.FromSeconds(30),
             QueryTimeout = TimeSpan.FromSeconds(60),
-            InsertTimeout = TimeSpan.FromSeconds(120)
+            DataTimeout = TimeSpan.FromSeconds(120)
         };
         WeaviateClient client = new WeaviateClient(config);
 

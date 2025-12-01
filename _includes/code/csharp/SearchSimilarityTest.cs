@@ -218,7 +218,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         var response = await jeopardy.Query.NearText(
             "animals in movies",
             // highlight-start
-            autoCut: 1, // number of close groups
+            autoLimit: 1, // number of close groups
                         // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
