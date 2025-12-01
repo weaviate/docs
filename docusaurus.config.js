@@ -26,6 +26,9 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
+  clientModules: [
+    require.resolve('./src/components/UTM/capture.js'),
+  ],
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: "warn",
