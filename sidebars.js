@@ -942,16 +942,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/installation-guides/eks-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/ecs-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/installation-guides/eks",
           className: "sidebar-item",
         },
@@ -971,11 +961,6 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/installation-guides/gcp-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/gke-marketplace",
           className: "sidebar-item",
         },
       ],
