@@ -4,7 +4,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -94,7 +94,7 @@ class CombinedWorkflowTest {
       assertThat(client.collections.exists(gitBookCollectionName)).isTrue();
 
       // START ImportData
-      List<WriteWeaviateObject<Map<String, Object>>> chunksList =
+      List<WeaviateObject<Map<String, Object>>> chunksList =
           new ArrayList<>();
       for (int i = 0; i < chunkedText.size(); i++) {
         Map<String, Object> dataProperties = new HashMap<>();
@@ -102,7 +102,7 @@ class CombinedWorkflowTest {
         dataProperties.put("chunk", chunkedText.get(i));
         dataProperties.put("chunk_index", (long) i); // Use long for integer
 
-        chunksList.add(WriteWeaviateObject.of(b -> b.properties(dataProperties)));
+        chunksList.add(WeaviateObject.of(b -> b.properties(dataProperties)));
       }
       chunks.data.insertMany(chunksList);
       // END ImportData
