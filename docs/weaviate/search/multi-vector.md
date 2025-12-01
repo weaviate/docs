@@ -76,7 +76,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
       />
     </details>
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiBasic"
@@ -107,7 +107,7 @@ You can specify multiple query vectors in the search query with a `nearVector` s
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTargetNearVector"
@@ -149,7 +149,7 @@ The target vectors can be specified as an array as shown here.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTargetMultipleNearVectorsV1"
@@ -180,7 +180,7 @@ If you want to provide weights for each target vector you can do it as shown her
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTargetMultipleNearVectorsV2"
@@ -213,7 +213,7 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTargetWithSimpleJoin"
@@ -251,7 +251,7 @@ Each distance between the query vector and the target vector is multiplied by th
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTargetManualWeights"
@@ -291,7 +291,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTargetRelativeScore"

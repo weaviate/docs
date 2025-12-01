@@ -86,7 +86,7 @@ Connect to the instance like so, remembering to replace the API key for the LLM 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Instantiation"
@@ -119,7 +119,7 @@ Before we can generate text, we need to retrieve relevant data. Let's retrieve t
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DataRetrieval"
@@ -180,7 +180,7 @@ Run the following code snippet, and inspect the results:
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TransformResultSets"
@@ -244,7 +244,7 @@ Note that in this query, we apply a `single prompt` parameter. This means that t
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TransformIndividualObjects"
@@ -326,7 +326,7 @@ You can check which modules are enabled by viewing the `meta` information for yo
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ListModules"
@@ -422,7 +422,7 @@ In the following snippet, we download a chapter of the `Pro Git` book, clean it 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ChunkText"
@@ -457,7 +457,7 @@ The below collection definition for the `GitBookChunk` collection specifies `tex
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateClass"
@@ -488,7 +488,7 @@ Now, we can import the data into Weaviate.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ImportData"
@@ -517,7 +517,7 @@ Once this is done, you should have imported a collection of chunks from the chap
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CountObjects"
@@ -554,7 +554,7 @@ Single prompts tell Weaviate to generate text based on each retrieved object and
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SinglePrompt"
@@ -601,7 +601,7 @@ In this example, we prompt the language model to write a trivia tweet based on t
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GroupedTask"
@@ -642,7 +642,7 @@ In this example, we search the chapter for passages that relate to the states of
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NearTextGroupedTask"
@@ -679,7 +679,7 @@ Now, simply by changing the search query, we can generate similar content about 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SecondNearTextGroupedTask"

@@ -70,7 +70,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
       startMarker="// START EnableRQ"
@@ -78,7 +78,7 @@ RQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START EnableRQ"
@@ -117,7 +117,7 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="ts"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START UpdateSchema"
@@ -125,7 +125,7 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-    <TabItem value="java6" label="Java v6 (Beta)">
+    <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
       startMarker="// START UpdateSchema"
@@ -198,7 +198,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START 1BitEnableRQ"
@@ -206,7 +206,7 @@ RQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
       startMarker="// START 1BitEnableRQ"
@@ -253,7 +253,7 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
       startMarker="// START 1BitUpdateSchema"
@@ -261,7 +261,7 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START 1BitUpdateSchema"
@@ -312,7 +312,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
       startMarker="// START RQWithOptions"
@@ -320,7 +320,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START RQWithOptions"
