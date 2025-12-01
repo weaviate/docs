@@ -1,18 +1,24 @@
-import React, { useEffect } from "react";
-
 const UTM_KEYS = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_content",
-  "utm_term",
-  "gclid",
-  "fbclid",
-  "msclkid",
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'gclid',
+  'fbclid',
+  'msclkid',
 ];
 
+const DOCS_DEFAULT_UTMS = {
+  utm_source: 'docs',
+  utm_medium: 'docs',
+  utm_campaign: 'docs-to-console',
+};
+
+const PRIMARY_KEYS = ['utm_source', 'utm_medium', 'utm_campaign'];
+
 function getUtmsFromUrl() {
-  if (typeof window === "undefined") return {};
+  if (typeof window === 'undefined') return {};
   const q = new URLSearchParams(window.location.search);
   const out = {};
   UTM_KEYS.forEach((k) => {
@@ -22,45 +28,35 @@ function getUtmsFromUrl() {
   return out;
 }
 
-function getUtmsFromStorage() {
-  if (typeof window === "undefined") return {};
+(function saveLastTouchUtmsSitewide() {
+  if (typeof window === 'undefined') return;
+
   try {
-    const raw = window.localStorage.getItem("first_touch_utms");
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
+    const path = window.location.pathname || '';
+    // 🔴 IMPORTANT: don't touch UTMs on redirect helper pages
+    if (path.startsWith('/go/')) return;
 
-function buildConsoleUrl(utms) {
-  const url = new URL("https://console.weaviate.cloud/signin");
-  Object.entries(utms || {}).forEach(([k, v]) => {
-    if (v != null && v !== "") url.searchParams.set(k, v);
-  });
-  return url.toString();
-}
+    const urlUtms = getUtmsFromUrl();
+    const existingRaw = window.localStorage.getItem('first_touch_utms');
+    const existing = existingRaw ? JSON.parse(existingRaw) : null;
 
-export default function GoConsole() {
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+    const hasPrimary = PRIMARY_KEYS.some((k) => urlUtms[k]);
 
-    const urlUtms = getUtmsFromUrl();        
-    const storedUtms = getUtmsFromStorage(); 
+    let utmsToSave = null;
 
+    if (hasPrimary) {
+      
+      utmsToSave = urlUtms;
+    } else if (!existing) {
     
-    const mergedUtms = {
-      ...(storedUtms || {}),
-      ...(urlUtms || {}),
-    };
+      utmsToSave = DOCS_DEFAULT_UTMS;
+    } else {
+      
+      return;
+    }
 
-    const target = buildConsoleUrl(mergedUtms);
-    window.location.replace(target);
-  }, []);
-
-  return React.createElement(
-    "noscript",
-    null,
-    "Redirecting to Weaviate Console… ",
-    React.createElement("a", { href: "https://console.weaviate.cloud/" }, "Continue")
-  );
-}
+    window.localStorage.setItem('first_touch_utms', JSON.stringify(utmsToSave));
+  } catch {
+   
+  }
+})();
