@@ -3,3 +3,5 @@ The Query Agent performs multiple operations to translate a natural language que
 This typically requires multiple calls to generative models (e.g. LLMs) and multiple queries to Weaviate.
 
 As a result, each Query Agent run may take some time to complete. Depending on the query complexity, it may not be uncommon to see execution times of ~10 seconds.
+
+**For long-running or complex queries**, consider using [streaming responses](/agents/query/usage#stream-responses) rather than non-streaming requests. Streaming provides progress updates and sends heartbeats to maintain the connection, preventing timeout issues that can occur with long-running non-streaming requests.
