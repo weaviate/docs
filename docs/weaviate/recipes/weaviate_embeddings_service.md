@@ -5,17 +5,19 @@ title: "How to Use Weaviate Embedding Service"
 featured: True
 integration: False
 agent: False
-tags: ['Weaviate Embeddings', 'Weaviate Cloud']
+tags: ["Weaviate Embeddings", "Weaviate Cloud"]
 ---
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb)
 
 # Weaviate Embedding Service
 
-[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/) database instance.
+[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](/go/console?utm_content=recipe/) database instance.
 
-*Please note this service is part of Weaviate Cloud and cannot be accessed through open-source. Additionally, this service is currently under technical preview, and you can request access [here](https://events.weaviate.io/embeddings-preview).*
+_Please note this service is part of Weaviate Cloud and cannot be accessed through open-source. Additionally, this service is currently under technical preview, and you can request access [here](https://events.weaviate.io/embeddings-preview)._
 
 This notebook will show you how to:
+
 1. Define a Weaviate Collection
 1. Run a vector search query
 1. Run a hybrid search query
@@ -24,7 +26,7 @@ This notebook will show you how to:
 
 ## Requirements
 
-1. Weaviate Cloud (WCD) account: You can register [here](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
+1. Weaviate Cloud (WCD) account: You can register [here](/go/console?utm_content=recipe/)
 1. Create a cluster on WCD: A sandbox or serverless cluster is fine. You will need to grab the cluster URL and admin API key
 1. OpenAI key to access `GPT-4o mini`
 
@@ -72,9 +74,11 @@ print(client.is_ready())
 ```
 
 Python output:
+
 ```text
 True
 ```
+
 ## Define Collection
 
 ```python
@@ -108,9 +112,11 @@ print("Successfully created collection: JeopardyQuestion.")
 ```
 
 Python output:
+
 ```text
 Successfully created collection: JeopardyQuestion.
 ```
+
 ## Import Data
 
 We will use the small jeopardy dataset as an example. It has 1,000 objects.
@@ -145,9 +151,11 @@ else:
 ```
 
 Python output:
+
 ```text
 Insert complete.
 ```
+
 ```python
 # count the number of objects
 
@@ -158,9 +166,11 @@ print(response.total_count)
 ```
 
 Python output:
+
 ```text
 1000
 ```
+
 ## Query Time
 
 ### Vector Search
@@ -178,6 +188,7 @@ for item in response.objects:
 ```
 
 Python output:
+
 ```text
 Data: {
   "value": "NaN",
@@ -193,6 +204,7 @@ Data: {
   "category": "MAMMALS"
 }
 ```
+
 ### Hybrid Search
 
 The goal of this notebook is to show you how to use the embedding service. For more information on hybrid search, check out [this folder](https://github.com/weaviate/recipes/tree/main/weaviate-features/hybrid-search) and/or the [documentation](https://docs.weaviate.io/weaviate/search/hybrid).
@@ -215,6 +227,7 @@ for item in response.objects:
 ```
 
 Python output:
+
 ```text
 Data: {
   "value": "NaN",
@@ -230,6 +243,7 @@ Data: {
   "category": "MAMMALS"
 }
 ```
+
 ### Fetch Objects with Metadata Filters
 
 Learn more about the different filter operators [here](https://docs.weaviate.io/weaviate/search/filters).
@@ -247,6 +261,7 @@ for item in response.objects:
 ```
 
 Python output:
+
 ```text
 Data: {
   "value": "$200",
@@ -262,6 +277,7 @@ Data: {
   "category": "BUSINESS & INDUSTRY"
 }
 ```
+
 ### Generative Search (RAG)
 
 ```python
@@ -278,6 +294,7 @@ print(f"Generated output: {response.generated}")
 ```
 
 Python output:
+
 ```text
 Generated output: People thought these animals were unicorn-like for a few reasons:
 

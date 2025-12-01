@@ -6,12 +6,11 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'explore{}']
 ---
 
-
 :::note Vector spaces and Explore
 
 The `Explore` function is disabled where multiple inference (e.g. `text2vec-xxx`) modules are enabled.
 
-As a result, `Explore` is not available on [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=api) as its clusters are pre-configured with multiple inference modules for AWS, Cohere, Google, OpenAI and so on.
+As a result, `Explore` is not available on [Weaviate Cloud (WCD)](/go/console?utm_content=api) as its clusters are pre-configured with multiple inference modules for AWS, Cohere, Google, OpenAI and so on.
 
 :::
 
@@ -60,7 +59,7 @@ The `Explore` function has the following syntax:
 
 An example query:
 
-import GraphQLExploreVec from '/_includes/code/graphql.explore.vector.mdx';
+import GraphQLExploreVec from '/\_includes/code/graphql.explore.vector.mdx';
 
 <GraphQLExploreVec/>
 
@@ -85,11 +84,9 @@ The result might look like this:
 
 The `nearText` and `nearVector` operators work in `Explore` as they do in other queries. See [search operators](search-operators.md) for more information.
 
-
 ### Filters
 
 `Explore` queries can be combined with filters. See [filters](filters.md) for more information.
-
 
 ### Pagination
 
@@ -99,9 +96,8 @@ Pagination (i.e. `limit` with `offset`) is not possible in `Explore` queries.
 
 Because pagination is not possible in multidimensional storage, we recommend using `moveTo` and `moveAwayFrom` if further query refinement is sought. They work as they do in other queries. See [search operators#nearText](search-operators.md#neartext) for more information.
 
-
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

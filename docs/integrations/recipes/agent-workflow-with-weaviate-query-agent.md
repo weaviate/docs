@@ -6,8 +6,9 @@ title: "Weaviate Query Agent with LlamaIndex"
 featured: False
 integration: True
 agent: False
-tags: ['Query Agent', 'Integration']
+tags: ["Query Agent", "Integration"]
 ---
+
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-with-weaviate-query-agent.ipynb" target="_blank">
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
@@ -17,12 +18,14 @@ tags: ['Query Agent', 'Integration']
 This notebook will show you how to define the Weaviate Query Agent as a tool through LlamaIndex.
 
 ### Requirements
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://weaviate.io/go/console?utm_source=docs&utm_content=integrations).
+
+1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](/go/console?utm_content=integrations).
 2. Install LlamaIndex with `pip install llama-index` (we used version `0.12.22` for this notebook)
 3. Install the Weaviate Agents package with `pip install weaviate-agents`
 4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
 
 ### Resources on the LlamaIndex Agent Workflow
+
 1. [Getting Started Guide](https://docs.llamaindex.ai/en/latest/getting_started/starter_example/)
 1. [Agent Tutorial](https://docs.llamaindex.ai/en/latest/understanding/agent/)
 1. [Key Features in the Agent Workflow](https://docs.llamaindex.ai/en/latest/examples/agent/agent_workflow_basic/)
@@ -99,7 +102,8 @@ print(response)
 ```
 
 Python output:
-```text
+
+````text
 /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/weaviate/warnings.py:314: ResourceWarning: Con004: The connection to Weaviate was not closed properly. This can lead to memory leaks.
             Please make sure to close the connection using `client.close()`.
   warnings.warn(
@@ -142,4 +146,4 @@ To run Weaviate with Docker, follow these steps:
    curl --fail -s localhost:8080/v1/.well-known/ready
    \```
    This command will confirm if Weaviate is up and ready for use.
-```
+````
