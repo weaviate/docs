@@ -8,7 +8,7 @@
 [functions]
   directory = ".netlify/functions/"
 
-## Remove /current from the path 
+## Remove /current from the path
 [[redirects]]
 from = "/weaviate/current/*"
 to   = "/weaviate/:splat"
@@ -90,6 +90,11 @@ status = 301
 [[redirects]]
 from = "/weaviate/tutorials/console"
 to   = "/cloud/tools/query-tool"
+status = 301
+
+[[redirects]]
+from = "/cloud/platform/support-levels"
+to   = "https://weaviate.io/suport-plans"
 status = 301
 
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
@@ -853,7 +858,7 @@ from = "/academy/*"
 to   = "https://academy.weaviate.io/"
 status = 301
 
-## AWS production guides 
+## AWS production guides
 
 [[redirects]]
 from = "/deploy/aws"

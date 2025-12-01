@@ -1498,7 +1498,6 @@ const sidebars = {
   ],
   cloudAccountManagementSidebar: [
     "cloud/platform/billing",
-    "cloud/platform/support-levels",
     "cloud/platform/version",
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",
