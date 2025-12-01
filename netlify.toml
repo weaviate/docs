@@ -6,9 +6,9 @@
     access-control-allow-origin = "*"
 
 [functions]
-  directory = ".netlify/functions/"
+  directory = "netlify/functions/"
 
-## Remove /current from the path 
+## Remove /current from the path
 [[redirects]]
 from = "/weaviate/current/*"
 to   = "/weaviate/:splat"
@@ -853,7 +853,7 @@ from = "/academy/*"
 to   = "https://academy.weaviate.io/"
 status = 301
 
-## AWS production guides 
+## AWS production guides
 
 [[redirects]]
 from = "/deploy/aws"
