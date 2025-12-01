@@ -1,22 +1,18 @@
+import React, { useEffect } from "react";
+
 const UTM_KEYS = [
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'utm_term',
-  'gclid',
-  'fbclid',
-  'msclkid',
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "gclid",
+  "fbclid",
+  "msclkid",
 ];
 
-const DOCS_DEFAULT_UTMS = {
-  utm_source: 'docs',
-  utm_medium: 'docs',
-  utm_campaign: 'docs-to-console',
-};
-
 function getUtmsFromUrl() {
-  if (typeof window === 'undefined') return {};
+  if (typeof window === "undefined") return {};
   const q = new URLSearchParams(window.location.search);
   const out = {};
   UTM_KEYS.forEach((k) => {
@@ -26,26 +22,45 @@ function getUtmsFromUrl() {
   return out;
 }
 
-(function saveLastTouchUtmsSitewide() {
-  if (typeof window === 'undefined') return;
-
+function getUtmsFromStorage() {
+  if (typeof window === "undefined") return {};
   try {
-    const urlUtms = getUtmsFromUrl();
-    const existingRaw = window.localStorage.getItem('first_touch_utms');
-    const existing = existingRaw ? JSON.parse(existingRaw) : null;
-
-    let utmsToSave = null;
-
-    if (Object.keys(urlUtms).length) {
-      utmsToSave = urlUtms;
-    } else if (!existing) {
-      utmsToSave = DOCS_DEFAULT_UTMS;
-    } else {
-      return;
-    }
-
-    window.localStorage.setItem('first_touch_utms', JSON.stringify(utmsToSave));
+    const raw = window.localStorage.getItem("first_touch_utms");
+    return raw ? JSON.parse(raw) : {};
   } catch {
-    // ignore storage errors
+    return {};
   }
-})();
+}
+
+function buildConsoleUrl(utms) {
+  const url = new URL("https://console.weaviate.cloud/signin");
+  Object.entries(utms || {}).forEach(([k, v]) => {
+    if (v != null && v !== "") url.searchParams.set(k, v);
+  });
+  return url.toString();
+}
+
+export default function GoConsole() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const urlUtms = getUtmsFromUrl();        
+    const storedUtms = getUtmsFromStorage(); 
+
+    
+    const mergedUtms = {
+      ...(storedUtms || {}),
+      ...(urlUtms || {}),
+    };
+
+    const target = buildConsoleUrl(mergedUtms);
+    window.location.replace(target);
+  }, []);
+
+  return React.createElement(
+    "noscript",
+    null,
+    "Redirecting to Weaviate Console… ",
+    React.createElement("a", { href: "https://console.weaviate.cloud/" }, "Continue")
+  );
+}
