@@ -25,21 +25,11 @@ function getUtmsFromUrl() {
 function getUtmsFromStorage() {
   if (typeof window === "undefined") return {};
   try {
-    const raw = localStorage.getItem("first_touch_utms");
+    const raw = window.localStorage.getItem("first_touch_utms");
     return raw ? JSON.parse(raw) : {};
   } catch {
     return {};
   }
-}
-
-function saveFirstTouchUtmsIfMissing() {
-  const existing = getUtmsFromStorage();
-  if (Object.keys(existing).length) return;
-  const now = getUtmsFromUrl();
-  if (!Object.keys(now).length) return;
-  try {
-    localStorage.setItem("first_touch_utms", JSON.stringify(now));
-  } catch {}
 }
 
 function buildConsoleUrl(utms) {
@@ -54,12 +44,15 @@ export default function GoConsole() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    saveFirstTouchUtmsIfMissing();
+    const urlUtms = getUtmsFromUrl();
+    const storedUtms = getUtmsFromStorage();
 
-    const current = getUtmsFromUrl();
-    const utms = Object.keys(current).length ? current : getUtmsFromStorage();
+    const mergedUtms = {
+      ...(storedUtms || {}),
+      ...(urlUtms || {}),
+    };
 
-    const target = buildConsoleUrl(utms);
+    const target = buildConsoleUrl(mergedUtms);
     window.location.replace(target);
   }, []);
 
