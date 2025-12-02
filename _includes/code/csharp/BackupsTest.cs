@@ -3,8 +3,7 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 
 // Run sequentially to prevent backup conflicts on the filesystem backend
 [Collection("Sequential")]
@@ -130,19 +129,20 @@ public class BackupsTest : IAsyncLifetime
         string backupId = "some-unwanted-backup";
 
         // Start a backup to cancel (Async, creates the operation but returns immediately)
+        CancellationToken cancellationToken = new CancellationToken();
         var backupOperation = await client.Backups.Create(
             new BackupCreateRequest(
                 Id: backupId,
                 Backend: _backend,
                 Include: ["Article", "Publication"]
-            )
+            ),
+            cancellationToken
         );
 
         Console.WriteLine($"Backup started with ID: {backupOperation.Current.Id}");
 
         // START CancelBackup
-        // Note: The Cancel() method is called on the client or the operation object
-        await backupOperation.Cancel();
+        await backupOperation.Cancel(cancellationToken);
         // END CancelBackup
 
         // Wait for the cancellation to be processed

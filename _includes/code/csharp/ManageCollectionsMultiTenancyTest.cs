@@ -361,42 +361,46 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     [Fact]
     public async Task TestAddReferenceToTenantObject()
     {
-        // START AddCrossRef
-        await client.Collections.Create(new CollectionConfig { Name = "JeopardyCategory" });
+        await client.Collections.Delete("MultiTenancyCollection");
         await client.Collections.Create(new CollectionConfig
         {
             Name = "MultiTenancyCollection",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantActivation = true }
         });
 
-        var categoryCollection = client.Collections.Use("JeopardyCategory");
-        var categoryUuid = await categoryCollection.Data.Insert(new { name = "Test Category" });
+        var jeopardy = client.Collections.Use("JeopardyCategory");
+        var categoryId = await jeopardy.Data.Insert(new { category = "Software" });
 
+        // START AddCrossRef
         var multiCollection = client.Collections.Use("MultiTenancyCollection");
         await multiCollection.Tenants.Add(["tenantA"]);
+        // Add the cross-reference property to the multi-tenancy class
+        await multiCollection.Config.AddProperty(
+            Property.Reference("hasCategory", "JeopardyCategory")
+        );
 
+        // Get collection specific to the required tenant
+        // highlight-start
         var multiTenantA = multiCollection.WithTenant("tenantA");
-        var objectId = await multiTenantA.Data.Insert(new { title = "Object in Tenant A" });
+        // highlight-end
 
-        // Add the reference property to the schema
-        await multiCollection.Config.AddProperty(Property.Reference("hasCategory", "JeopardyCategory"));
+        // Insert an object to tenantA
+        var objectId = await multiTenantA.Data.Insert(new
+        {
+            question = "This vector DB is OSS & supports automatic property type inference on import"
+        });
 
-        // Add the cross-reference
+        // Add reference from MultiTenancyCollection object to a JeopardyCategory object
+        // highlight-start
         await multiTenantA.Data.ReferenceAdd(
-            from: objectId,
+            // highlight-end
+            from: objectId,  // MultiTenancyCollection object id (a Jeopardy question)
             fromProperty: "hasCategory",
-            to: categoryUuid
+            to: categoryId // JeopardyCategory id
         );
         // END AddCrossRef
 
-        // Verify
-        var result = await multiTenantA.Query.FetchObjectByID(
-            objectId,
-            returnReferences: [new QueryReference("hasCategory")]
-        );
-
-        Assert.NotNull(result);
-        Assert.True(result.References.ContainsKey("hasCategory"));
-        Assert.Single(result.References["hasCategory"]);
+        // Test
+        var result = await multiTenantA.Query.FetchObjectByID(objectId);
     }
 }

@@ -52,7 +52,7 @@ public class SearchGenerativeTest : IDisposable
             targetVector: ["title_country"],
             prompt: new SinglePrompt { Prompt = "Translate this into German: {review_body}" },
             // highlight-start
-            groupedTask: new GroupedTask { Task = "Summarize these reviews", Provider = new Providers.OpenAI { Temperature = 1f } }
+            groupedTask: new GroupedTask { Task = "Summarize these reviews", Provider = new Providers.OpenAI { Model= "gpt-5-mini" } }
             // highlight-end
         );
 
@@ -214,7 +214,7 @@ public class SearchGenerativeTest : IDisposable
             {
                 Task = "What do these animals have in common, if anything?",
                 Debug = true,
-                Provider = new Providers.OpenAI { ReturnMetadata = true, Temperature = 1f }
+                Provider = new Providers.OpenAI { ReturnMetadata = true, Model= "gpt-5-mini" }
             }
         // highlight-end
         );
