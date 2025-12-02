@@ -266,6 +266,21 @@ from = "/weaviate/config-refs/env-vars/runtime-config"
 to   = "/deploy/configuration/env-vars/runtime-config"
 status = 301
 
+[[redirects]]
+from = "/deploy/installation-guides/ecs-marketplace"
+to   = "/deploy/installation-guides/eks"
+status = 301
+
+[[redirects]]
+from = "/deploy/installation-guides/eks-marketplace"
+to   = "/deploy/installation-guides/aws-marketplace"
+status = 301
+
+[[redirects]]
+from = "/deploy/installation-guides/gke-marketplace"
+to   = "/deploy/installation-guides/gcp-marketplace"
+status = 301
+
 # Docs migration redirects
 
 [[redirects]]
