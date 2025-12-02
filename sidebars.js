@@ -757,14 +757,14 @@ const sidebars = {
         {
           type: "category",
           label: "Java",
-          collapsed: false,
+          collapsed: true,
           className: "sidebar-item",
           link: {
             type: "doc",
             id: "weaviate/client-libraries/java/index",
           },
           items: [
-            "weaviate/client-libraries/java/java-v6",
+            "weaviate/client-libraries/java/java-v5",
           ],
         },
         {
@@ -942,16 +942,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/installation-guides/eks-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/ecs-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/installation-guides/eks",
           className: "sidebar-item",
         },
@@ -971,11 +961,6 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/installation-guides/gcp-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/gke-marketplace",
           className: "sidebar-item",
         },
       ],
@@ -1498,7 +1483,6 @@ const sidebars = {
   ],
   cloudAccountManagementSidebar: [
     "cloud/platform/billing",
-    "cloud/platform/support-levels",
     "cloud/platform/version",
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",

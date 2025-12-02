@@ -39,7 +39,7 @@ Compression techniques become especially crucial for multi-vector systems to man
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiValueVectorMuvera"
@@ -47,7 +47,7 @@ Compression techniques become especially crucial for multi-vector systems to man
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
 
 ```java
 // Java support coming soon

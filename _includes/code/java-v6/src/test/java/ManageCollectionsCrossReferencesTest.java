@@ -1,9 +1,9 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.Property;
+import io.weaviate.client6.v1.api.collections.Reference;
 import io.weaviate.client6.v1.api.collections.ReferenceProperty;
-import io.weaviate.client6.v1.api.collections.data.Reference;
+import io.weaviate.client6.v1.api.collections.data.ObjectReference;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
-import io.weaviate.client6.v1.api.collections.query.ReadWeaviateObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,8 @@ public class ManageCollectionsCrossReferencesTest {
   public static void beforeAll() {
     // Instantiate the client anonymously
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient.connectToLocal(config -> config
-        .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
   }
 
   @AfterEach
@@ -44,19 +44,15 @@ public class ManageCollectionsCrossReferencesTest {
   @Test
   void testCrossRefDefinition() throws IOException {
     // START CrossRefDefinition
-    client.collections.create("JeopardyCategory", col -> col
-        .description("A Jeopardy! category")
-        .properties(
-            Property.text("title")));
+    client.collections.create("JeopardyCategory",
+        col -> col.description("A Jeopardy! category")
+            .properties(Property.text("title")));
 
-    client.collections.create("JeopardyQuestion", col -> col
-        .description("A Jeopardy! question")
-        .properties(
-            Property.text("question"),
-            Property.text("answer"))
-        // highlight-start
-        .references(
-            ReferenceProperty.to("hasCategory", "JeopardyCategory"))
+    client.collections.create("JeopardyQuestion",
+        col -> col.description("A Jeopardy! question")
+            .properties(Property.text("question"), Property.text("answer"))
+            // highlight-start
+            .references(ReferenceProperty.to("hasCategory", "JeopardyCategory"))
     // highlight-end
     );
     // END CrossRefDefinition
@@ -64,7 +60,8 @@ public class ManageCollectionsCrossReferencesTest {
     // Verify collections were created properly
     var questionConfig = client.collections.getConfig("JeopardyQuestion").get();
     assertThat(questionConfig.references()).hasSize(1);
-    assertThat(questionConfig.references().get(0).propertyName()).isEqualTo("hasCategory");
+    assertThat(questionConfig.references().get(0).propertyName())
+        .isEqualTo("hasCategory");
   }
 
   @Test
@@ -78,28 +75,25 @@ public class ManageCollectionsCrossReferencesTest {
     var categoryResult = categories.data.insert(categoryProperties);
     var categoryUuid = categoryResult.uuid();
 
-    Map<String, Object> properties = Map.of(
-        "question", "What tooling helps make Weaviate scalable?",
-        "answer", "Sharding, multi-tenancy, and replication");
+    Map<String, Object> properties =
+        Map.of("question", "What tooling helps make Weaviate scalable?",
+            "answer", "Sharding, multi-tenancy, and replication");
 
     // START ObjectWithCrossRef
     var questions = client.collections.use("JeopardyQuestion");
 
-    var result = questions.data.insert(
-        properties, // A map with the properties of the object
+    var result = questions.data.insert(properties, // A map with the properties of the object
         opt -> opt
             // highlight-start
-            .reference("hasCategory", Reference.uuids(categoryUuid)) // e.g. {"hasCategory":
-                                                                     // "583876f3-e293-5b5b-9839-03f455f14575"}
+            .reference("hasCategory", ObjectReference.uuids(categoryUuid)) // e.g. {"hasCategory":
+    // "583876f3-e293-5b5b-9839-03f455f14575"}
     // highlight-end
     );
     // END ObjectWithCrossRef
 
     // Test results
-    var fetchedObj = questions.query.fetchObjectById(
-        result.uuid(),
-        opt -> opt.returnReferences(
-            QueryReference.single("hasCategory")));
+    var fetchedObj = questions.query.fetchObjectById(result.uuid(),
+        opt -> opt.returnReferences(QueryReference.single("hasCategory")));
 
     assertThat(fetchedObj).isPresent();
     assertThat(fetchedObj.get().references()).containsKey("hasCategory");
@@ -113,9 +107,9 @@ public class ManageCollectionsCrossReferencesTest {
     var categories = client.collections.use("JeopardyCategory");
 
     // Insert test data
-    Map<String, Object> questionData = Map.of(
-        "question", "This city is known for the Golden Gate Bridge",
-        "answer", "San Francisco");
+    Map<String, Object> questionData =
+        Map.of("question", "This city is known for the Golden Gate Bridge",
+            "answer", "San Francisco");
     var questionResult = questions.data.insert(questionData);
     var questionObjId = questionResult.uuid();
 
@@ -124,20 +118,16 @@ public class ManageCollectionsCrossReferencesTest {
     var categoryObjId = categoryResult.uuid();
 
     // START OneWayCrossReferences
-    questions.data.referenceAdd(
-        questionObjId,
-        "hasCategory",
+    questions.data.referenceAdd(questionObjId, "hasCategory",
         // highlight-start
-        Reference.uuids(categoryObjId)
+        ObjectReference.uuids(categoryObjId)[0]
     // highlight-end
     );
     // END OneWayCrossReferences
 
     // Test results
-    var result = questions.query.fetchObjectById(
-        questionObjId,
-        opt -> opt.returnReferences(
-            QueryReference.single("hasCategory")));
+    var result = questions.query.fetchObjectById(questionObjId,
+        opt -> opt.returnReferences(QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references()).containsKey("hasCategory");
@@ -150,21 +140,17 @@ public class ManageCollectionsCrossReferencesTest {
     client.collections.delete("JeopardyCategory");
 
     // START TwoWayCategory1CrossReferences
-    client.collections.create("JeopardyCategory", col -> col
-        .description("A Jeopardy! category")
-        .properties(
-            Property.text("title")));
+    client.collections.create("JeopardyCategory",
+        col -> col.description("A Jeopardy! category")
+            .properties(Property.text("title")));
     // END TwoWayCategory1CrossReferences
 
     // START TwoWayQuestionCrossReferences
-    client.collections.create("JeopardyQuestion", col -> col
-        .description("A Jeopardy! question")
-        .properties(
-            Property.text("question"),
-            Property.text("answer"))
-        // highlight-start
-        .references(
-            ReferenceProperty.to("hasCategory", "JeopardyCategory"))
+    client.collections.create("JeopardyQuestion",
+        col -> col.description("A Jeopardy! question")
+            .properties(Property.text("question"), Property.text("answer"))
+            // highlight-start
+            .references(ReferenceProperty.to("hasCategory", "JeopardyCategory"))
     // highlight-end
     );
     // END TwoWayQuestionCrossReferences
@@ -182,9 +168,9 @@ public class ManageCollectionsCrossReferencesTest {
     var questions = client.collections.use("JeopardyQuestion");
     var categories = client.collections.use("JeopardyCategory");
 
-    Map<String, Object> questionData = Map.of(
-        "question", "This city is known for the Golden Gate Bridge",
-        "answer", "San Francisco");
+    Map<String, Object> questionData =
+        Map.of("question", "This city is known for the Golden Gate Bridge",
+            "answer", "San Francisco");
     var questionResult = questions.data.insert(questionData);
     var questionObjId = questionResult.uuid();
 
@@ -196,27 +182,21 @@ public class ManageCollectionsCrossReferencesTest {
     // For the "San Francisco" JeopardyQuestion object, add a cross-reference to the
     // "U.S. CITIES" JeopardyCategory object
     // highlight-start
-    questions.data.referenceAdd(
-        questionObjId,
-        "hasCategory",
-        Reference.uuids(categoryObjId));
+    questions.data.referenceAdd(questionObjId, "hasCategory",
+        ObjectReference.uuids(categoryObjId)[0]);
     // highlight-end
 
     // For the "U.S. CITIES" JeopardyCategory object, add a cross-reference to "San
     // Francisco"
     // highlight-start
-    categories.data.referenceAdd(
-        categoryObjId,
-        "hasQuestion",
-        Reference.uuids(questionObjId));
+    categories.data.referenceAdd(categoryObjId, "hasQuestion",
+        ObjectReference.uuids(questionObjId)[0]);
     // highlight-end
     // END TwoWayCrossReferences
 
     // Test results
-    var result = categories.query.fetchObjectById(
-        categoryObjId,
-        opt -> opt.returnReferences(
-            QueryReference.single("hasQuestion")));
+    var result = categories.query.fetchObjectById(categoryObjId,
+        opt -> opt.returnReferences(QueryReference.single("hasQuestion")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references()).containsKey("hasQuestion");
@@ -230,9 +210,9 @@ public class ManageCollectionsCrossReferencesTest {
     var categories = client.collections.use("JeopardyCategory");
 
     // Insert test data
-    Map<String, Object> questionData = Map.of(
-        "question", "This city is known for the Golden Gate Bridge",
-        "answer", "San Francisco");
+    Map<String, Object> questionData =
+        Map.of("question", "This city is known for the Golden Gate Bridge",
+            "answer", "San Francisco");
     var questionResult = questions.data.insert(questionData);
     var questionObjId = questionResult.uuid();
 
@@ -248,25 +228,20 @@ public class ManageCollectionsCrossReferencesTest {
     // highlight-start
     // Add multiple references - need to add them individually
     for (String tempUuid : List.of(categoryObjId, categoryObjIdAlt)) {
-      questions.data.referenceAdd(
-          questionObjId,
-          "hasCategory",
-          Reference.uuids(tempUuid));
+      questions.data.referenceAdd(questionObjId, "hasCategory",
+          ObjectReference.uuids(tempUuid)[0]);
     }
     // highlight-end
     // END MultipleCrossReferences
 
     // Test results
-    var result = questions.query.fetchObjectById(
-        questionObjId,
-        opt -> opt.returnReferences(
-            QueryReference.single("hasCategory")));
+    var result = questions.query.fetchObjectById(questionObjId,
+        opt -> opt.returnReferences(QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references()).containsKey("hasCategory");
 
-    @SuppressWarnings("unchecked")
-    List<ReadWeaviateObject<Object>> refs = result.get().references().get("hasCategory");
+    var refs = result.get().references().get("hasCategory");
     assertThat(refs).hasSize(2);
   }
 
@@ -280,30 +255,26 @@ public class ManageCollectionsCrossReferencesTest {
     // Insert category and question with reference
     Map<String, Object> categoryData = Map.of("title", "SCIENCE");
     var categoryResult = categories.data.insert(categoryData);
-    Map<String, Object> questionData = Map.of("question", "What is H2O?", "answer", "Water");
-    var questionResult = questions.data.insert(
-        questionData,
-        opt -> opt.reference("hasCategory", Reference.objects(categoryResult)));
+    Map<String, Object> questionData =
+        Map.of("question", "What is H2O?", "answer", "Water");
+    var questionResult = questions.data.insert(questionData, opt -> opt
+        .reference("hasCategory", ObjectReference.objects(categoryResult)));
     var questionObjId = questionResult.uuid();
 
     // START ReadCrossRef
     // Include the cross-references in a query response
     // highlight-start
     var response = questions.query.fetchObjects( // Or `hybrid`, `nearText`, etc.
-        opt -> opt
-            .limit(2)
-            .returnReferences(
-                QueryReference.single("hasCategory",
-                    ref -> ref.returnProperties("title"))));
+        opt -> opt.limit(2)
+            .returnReferences(QueryReference.single("hasCategory",
+                ref -> ref.returnProperties("title"))));
     // highlight-end
 
     // Or include cross-references in a single-object retrieval
     // highlight-start
-    var obj = questions.query.fetchObjectById(
-        questionObjId,
-        opt -> opt.returnReferences(
-            QueryReference.single("hasCategory",
-                ref -> ref.returnProperties("title"))));
+    var obj = questions.query.fetchObjectById(questionObjId,
+        opt -> opt.returnReferences(QueryReference.single("hasCategory",
+            ref -> ref.returnProperties("title"))));
     // highlight-end
     // END ReadCrossRef
 
@@ -325,12 +296,11 @@ public class ManageCollectionsCrossReferencesTest {
     var categoryResult = categories.data.insert(categoryData);
     var categoryObjId = categoryResult.uuid();
 
-    Map<String, Object> questionData = Map.of(
-        "question", "This city is known for the Golden Gate Bridge",
-        "answer", "San Francisco");
-    var questionResult = questions.data.insert(
-        questionData,
-        opt -> opt.reference("hasCategory", Reference.uuids(categoryObjId)));
+    Map<String, Object> questionData =
+        Map.of("question", "This city is known for the Golden Gate Bridge",
+            "answer", "San Francisco");
+    var questionResult = questions.data.insert(questionData, opt -> opt
+        .reference("hasCategory", ObjectReference.uuids(categoryObjId)));
     var questionObjId = questionResult.uuid();
 
     // START DeleteCrossReference
@@ -339,19 +309,15 @@ public class ManageCollectionsCrossReferencesTest {
     // highlight-start
     questions.data.referenceDelete(
         // highlight-end
-        questionObjId,
-        "hasCategory",
-        Reference.uuids(categoryObjId));
+        questionObjId, "hasCategory", ObjectReference.uuids(categoryObjId)[0]);
     // END DeleteCrossReference
 
     // Test results
-    var result = questions.query.fetchObjectById(
-        questionObjId,
-        opt -> opt.returnReferences(
-            QueryReference.single("hasCategory")));
+    var result = questions.query.fetchObjectById(questionObjId,
+        opt -> opt.returnReferences(QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
-    List<ReadWeaviateObject<Object>> refs = result.get().references().get("hasCategory");
+    List<Reference> refs = result.get().references().get("hasCategory");
     assertThat(refs).isEmpty();
   }
 
@@ -370,9 +336,9 @@ public class ManageCollectionsCrossReferencesTest {
     Map<String, Object> categoryData2 = Map.of("title", "U.S. CITIES");
     categories.data.insert(categoryData2); // Secondary category for testing replacement
 
-    Map<String, Object> questionData = Map.of(
-        "question", "This city is known for the Golden Gate Bridge",
-        "answer", "San Francisco");
+    Map<String, Object> questionData =
+        Map.of("question", "This city is known for the Golden Gate Bridge",
+            "answer", "San Francisco");
     var questionResult = questions.data.insert(questionData);
     var questionObjId = questionResult.uuid();
 
@@ -382,40 +348,32 @@ public class ManageCollectionsCrossReferencesTest {
     // highlight-start
     questions.data.referenceReplace(
         // highlight-end
-        questionObjId,
-        "hasCategory",
-        Reference.uuids(categoryObjId));
+        questionObjId, "hasCategory", ObjectReference.uuids(categoryObjId)[0]);
     // END UpdateCrossReference
 
     // Test results
-    var result = questions.query.fetchObjectById(
-        questionObjId,
-        opt -> opt.returnReferences(
-            QueryReference.single("hasCategory")));
+    var result = questions.query.fetchObjectById(questionObjId,
+        opt -> opt.returnReferences(QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
-    List<ReadWeaviateObject<Object>> refs = result.get().references().get("hasCategory");
+    var refs = result.get().references().get("hasCategory");
     assertThat(refs).hasSize(1);
-    System.out.println("Reference UUID: " + refs.get(0));
-    // var refObj = (ObjectMetadata) refs.get(0);
-    // assertThat(refObj.uuid()).isEqualTo(categoryObjId);
+    System.out.println("Reference UUID: " + refs.get(0).uuid());
+    assertThat(refs.get(0).uuid()).isEqualTo(categoryObjId);
   }
 
   // Helper method to set up collections
   private void setupCollections() throws IOException {
     client.collections.delete("JeopardyCategory");
     client.collections.delete("JeopardyQuestion");
-    client.collections.create("JeopardyCategory", col -> col
-        .description("A Jeopardy! category")
-        .properties(
-            Property.text("title")));
+    client.collections.create("JeopardyCategory",
+        col -> col.description("A Jeopardy! category")
+            .properties(Property.text("title")));
 
-    client.collections.create("JeopardyQuestion", col -> col
-        .description("A Jeopardy! question")
-        .properties(
-            Property.text("question"),
-            Property.text("answer"))
-        .references(
-            ReferenceProperty.to("hasCategory", "JeopardyCategory")));
+    client.collections.create("JeopardyQuestion",
+        col -> col.description("A Jeopardy! question")
+            .properties(Property.text("question"), Property.text("answer"))
+            .references(
+                ReferenceProperty.to("hasCategory", "JeopardyCategory")));
   }
 }

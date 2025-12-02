@@ -56,7 +56,7 @@ class ManageObjectsReadTest {
     );
 
     dataObjectOpt.ifPresent(dataObject -> System.out
-        .println(Arrays.toString(dataObject.metadata().vectors().getSingle("default"))));
+        .println(Arrays.toString(dataObject.vectors().getSingle("default"))));
     // END ReadObjectWithVector
   }
 
@@ -84,7 +84,7 @@ class ManageObjectsReadTest {
     // The vectors are returned in the `vectors` property as a dictionary
     dataObjectOpt.ifPresent(dataObject -> {
       for (String n : vectorNames) {
-        float[] vector = dataObject.metadata().vectors().getSingle(n);
+        float[] vector = dataObject.vectors().getSingle(n);
         if (vector != null) {
           System.out.printf("Vector '%s': %s...\n", n, Arrays.toString(Arrays.copyOf(vector, 5)));
         }

@@ -1,507 +1,136 @@
 ---
 title: Java
-description: "Official Java client library documentation for integrating Weaviate with Java applications and services."
+sidebar_label: Java
+description: "Official Java v6 client library documentation for integrating Weaviate with Java applications and services."
 image: og/docs/client-libraries.jpg
-# tags: ['java', 'client library']
+# tags: ['java', 'client library', 'experimental']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/GetStartedTest.java";
 import QuickLinks from "/src/components/QuickLinks";
+
+:::info Java client v6
+
+We have officially released the new `Java v6` client.<br/>
+
+The v6 client introduces fundamental changes compared to the previous [v5 client](./java-v5.mdx) API. We suggest switching to the v6 client as the v5 client won't support new Weaviate features. 
+
+:::
 
 export const javaCardsData = [
   {
     title: "weaviate/java-client",
-    link: "https://github.com/weaviate/java-client",
+    link: "https://github.com/weaviate/java-client/tree/v6",
     icon: "fa-brands fa-github",
+  },
+  {
+    title: "Reference manual",
+    link: "https://javadoc.io/doc/io.weaviate/client/latest/index.html",
+    icon: "fa-solid fa-book",
   },
 ];
 
-:::note Java client (SDK)
+:::note Java v6 client (SDK)
 
-The latest Java client is version `v||site.java_client_version||`.
+The latest Java v6 client is version `v||site.java_new_client_version||`.
 
 <QuickLinks items={javaCardsData} />
 
 :::
 
-:::info New Java client library
+This page broadly covers the Weaviate Java client (`v6` beta release). For usage information not specific to the Java client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
-We are working on a revamped Java client library with a completely new API.  
-Check out the [Java client v6 - Beta release](./java-v6.mdx).
-
-:::
-
-## Installation and setup
-
-To get the latest stable version of the Java client library, add this dependency to your project:
+## Installation
 
 ```xml
 <dependency>
-  <groupId>io.weaviate</groupId>
-  <artifactId>client</artifactId>
-  <version>4.7.0</version>  <!-- Check latest version -->
+    <groupId>io.weaviate</groupId>
+    <artifactId>client6</artifactId>
+    <version>||site.java_new_client_version||</version>
 </dependency>
 ```
 
-This API client is compatible with Java 8 and beyond.
+<details>
+  <summary>Uber JAR🫙</summary>
 
-You can use the client in your project as follows:
+If you're building an uber-JAR with something like `maven-assembly-plugin`, use a shaded version with classifier `all`.
+This ensures that all dynamically-loaded dependencies of `io.grpc` are resolved correctly.
 
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.misc.model.Meta;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("http", "localhost:8080");
-    WeaviateClient client = new WeaviateClient(config);
-    Result<Meta> meta = client.misc().metaGetter().run();
-    if (meta.getError() == null) {
-      System.out.printf("meta.hostname: %s\n", meta.getResult().getHostname());
-      System.out.printf("meta.version: %s\n", meta.getResult().getVersion());
-      System.out.printf("meta.modules: %s\n", meta.getResult().getModules());
-    } else {
-      System.out.printf("Error: %s\n", meta.getError().getMessages());
-    }
-  }
-}
+```xml
+<dependency>
+    <groupId>io.weaviate</groupId>
+    <artifactId>client6</artifactId>
+    <version>||site.java_new_client_version||</version>
+    <classifier>all</classifier>
+</dependency>
 ```
 
-## Authentication
+</details>
 
-import ClientAuthIntro from "/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx";
+<details>
+  <summary>Requirements:  Weaviate version compatibility & gRPC</summary>
 
-<ClientAuthIntro clientName="Java" />
+#### Weaviate version compatibility
 
-### WCD authentication
+The `v6` Java client requires Weaviate `1.33.0` or higher. Generally, we encourage you to use the latest version of the Java client and the Weaviate Database.
 
-import ClientAuthWCD from "/docs/weaviate/client-libraries/_components/client.auth.wcs.mdx";
+#### gRPC
 
-<ClientAuthWCD />
+The `v6` client uses remote procedure calls (RPCs) under-the-hood. Accordingly, a port for gRPC must be open to your Weaviate server.
 
-### API key authentication
+<details>
+  <summary>docker-compose.yml example</summary>
 
-:::info Added in Weaviate Java client version `4.0.2`.
-:::
+If you are running Weaviate with Docker, you can map the default port (`50051`) by adding the following to your `docker-compose.yml` file:
 
-import ClientAuthApiKey from "/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx";
-
-<ClientAuthApiKey />
-
-```java
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateAuthClient;
-
-Config config = new Config("https", "WEAVIATE_INSTANCE_URL");
-WeaviateClient client = WeaviateAuthClient.apiKey(config, "YOUR-WEAVIATE-API-KEY");  // Replace with your Weaviate instance API key
+```yaml
+ports:
+  - 8080:8080
+  - 50051:50051
 ```
 
-### OIDC authentication
+</details>
 
-import ClientAuthOIDCIntro from "/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx";
+</details>
 
-<ClientAuthOIDCIntro />
+## Get started
 
-#### Resource Owner Password Flow
+import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
 
-import ClientAuthFlowResourceOwnerPassword from "/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx";
+<BasicPrereqs />
 
-<ClientAuthFlowResourceOwnerPassword />
+Get started with Weaviate using this Java example. The code walks you through these key steps:
 
-```java
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateAuthClient;
+1. **[Connect to Weaviate](docs/weaviate/connections/index.mdx)**: Establish a connection to a local (or Cloud) Weaviate instance.
+1. **[Create a collection](../../manage-collections/index.mdx)**: Define the data schema for a `Question` collection, using an Ollama model to vectorize the data.
+1. **[Import data](../../manage-objects/import.mdx)**: Fetch sample Jeopardy questions and use Weaviate's batch import for efficient ingestion and automatic vector embedding generation.
+1. **[Search/query the database](../../search/index.mdx)**: Execute a vector search to find questions semantically similar to the query `biology`.
 
-Config config = new Config("http", "weaviate.example.com:8080");
-WeaviateAuthClient.clientPassword(
-    config,
-    "Your user",
-    "Your password",
-    Arrays.asList("scope1", "scope2") // optional, depends on the configuration of your identity provider (not required with WCD)
-);
-```
+<Tabs className="code" groupId="languages">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetStarted"
+      endMarker="// END GetStarted"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
 
-#### Client Credentials flow
+For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section.
 
-import ClientAuthFlowClientCredentials from "/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx";
+## Asynchronous usage
 
-<ClientAuthFlowClientCredentials />
+_Coming soon_
 
-```java
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateAuthClient;
-
-Config config = new Config("http", "weaviate.example.com:8080");
-WeaviateAuthClient.clientCredentials(
-    config,
-    "your_client_secret",
-    Arrays.asList("scope1" ,"scope2") // optional, depends on the configuration of your identity provider
-);
-```
-
-#### Refresh Token flow
-
-import ClientAuthBearerToken from "/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx";
-
-<ClientAuthBearerToken />
-
-```java
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateAuthClient;
-
-Config config = new Config("http", "weaviate.example.com:8080");
-WeaviateAuthClient.bearerToken(
-    config,
-    "Your_access_token",
-    500,  // lifetime in seconds
-    "Your_refresh_token",
-);
-```
-
-## Custom headers
-
-You can pass custom headers to the client, which are added at initialization:
-
-```java
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-
-public class App {
-  public static void main(String[] args) {
-    Map<String, String> headers = new HashMap<String, String>() { {
-      put("header_key", "value");
-    } };
-    Config config = new Config("http", "localhost:8080", headers);
-    WeaviateClient client = new WeaviateClient(config);
-  }
-}
-```
-
-## References
-
-All [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](../../api/graphql/index.md) references covered by the Java client, and explained on those reference pages in the code blocks.
-
-## Typed GraphQL Responses
-
-The Weaviate Java client supports automatic deserialization of GraphQL query responses into Java objects. This eliminates the need for manual JSON parsing and provides compile-time type safety when working with your collection data.
-
-For example, you can define a `Pizzas` class to capture the response from the following query:
-
-```java
-@Getter
-public static class Pizzas {
-  @SerializedName(value = "Pizza")
-  List<Pizza> pizzas;
-
-  @Getter
-  public static class Pizza extends GraphQLGetBaseObject {
-    String name;
-    String description;
-    String bestBefore;
-    Float price;
-  }
-}
-
-try (WeaviateAsyncClient asyncClient = client.async()) {
-  return asyncClient.graphQL().get()
-    .withClassName("Pizza")
-    .withFields(Field.builder().name("name").build(), Field.builder().name("description").build())
-    .run(Pizzas.class)
-    .get();
-}
-```
-
-In return, the response will be a `GraphQLTypedResponse<Pizzas>` object:
-
-```java
-Result<GraphQLTypedResponse<Pizzas>> result = getResults();
-
-List<Pizzas.Pizza> pizzas = result.getResult().getData().getObjects().getPizzas();
-
-Pizzas.Pizza pizza = pizzas.get(0);
-
-// access Pizza specific properties
-Float price = pizza.getPrice();
-
-// access _additional values like vector (and others)
-Float[] vector = pizza.getAdditional().getVector();
-Float certainty = pizza.getAdditional().getCertainty();
-```
-
-## Design
-
-### Builder pattern
-
-The Java client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/weaviate/api/rest) and the [GraphQL reference pages](../../api/graphql/index.md).
-
-The code snippet above shows a simple query similar to `RESTful GET /v1/meta`. The client is initiated by requiring the package and connecting to the running instance. Then, a query is constructed by using the `.metaGetter()` on `.misc()`. The query will be sent with the `.run()` function, this object is thus required for every function you want to build and execute.
-
-## Migration Guides
-
-### From `3.x.x` to `4.0.0`
-
-#### Moved from `technology.semi.weaviate` to `io.weaviate` package
-
-Before:
-
-```java
-package technology.semi.weaviate;
-import technology.semi.weaviate.client.*;
-```
-
-After:
-
-```java
-package io.weaviate;
-import io.weaviate.client.*;
-```
-
-### From `2.4.0` to `3.0.0`
-
-#### Removed @Deprecated method `Aggregate::withFields(Fields fields)`
-
-Before:
-
-```java
-// import io.weaviate.client.v1.graphql.query.fields.Field;
-// import io.weaviate.client.v1.graphql.query.fields.Fields;
-
-Fields fields = Fields.builder().fields(new Field[]{name, description}).build();
-client.graphQL().aggregate().withFields(fields)...
-```
-
-After:
-
-```java
-client.graphQL().aggregate().withFields(name, description)...
-```
-
-#### Removed @Deprecated method `Get::withFields(Fields fields)`
-
-Before:
-
-```java
-// import io.weaviate.client.v1.graphql.query.fields.Field;
-// import io.weaviate.client.v1.graphql.query.fields.Fields;
-
-Fields fields = Fields.builder().fields(new Field[]{name, description}).build();
-client.graphQL().get().withFields(fields)...
-```
-
-After:
-
-```java
-client.graphQL().get().withFields(name, description)...
-```
-
-#### Removed @Deprecated method `Get::withNearVector(Float[] vector)`
-
-Before:
-
-```java
-client.graphQL().get().withNearVector(new Float[]{ 0f, 1f, 0.8f })...
-```
-
-After:
-
-```java
-// import io.weaviate.client.v1.graphql.query.argument.NearVectorArgument;
-
-NearVectorArgument nearVector = NearVectorArgument.builder().vector(new Float[]{ 0f, 1f, 0.8f }).certainty(0.8f).build();
-client.graphQL().get().withNearVector(nearVector)...
-```
-
-#### All `where` filters use the same implementation
-
-With `batch delete` feature, unified `filters.WhereFilter` implementation is introduced, which replaces `classifications.WhereFilter`, `graphql.query.argument.WhereArgument` and `graphql.query.argument.WhereFilter`.
-
-##### GraphQL
-
-Before:
-
-```java
-// import io.weaviate.client.v1.graphql.query.argument.GeoCoordinatesParameter;
-// import io.weaviate.client.v1.graphql.query.argument.WhereArgument;
-// import io.weaviate.client.v1.graphql.query.argument.WhereOperator;
-
-GeoCoordinatesParameter geo = GeoCoordinatesParameter.builder()
-    .latitude(50.51f)
-    .longitude(0.11f)
-    .maxDistance(3000f)
-    .build();
-WhereArgument where = WhereArgument.builder()
-    .valueGeoRange(geo)
-    .operator(WhereOperator.WithinGeoRange)
-    .path(new String[]{ "add "})
-    .build();
-
-client.graphQL().aggregate().withWhere(where)...
-```
-
-After:
-
-```java
-// import io.weaviate.client.v1.filters.Operator;
-// import io.weaviate.client.v1.filters.WhereFilter;
-
-WhereFilter where = WhereFilter.builder()
-    .valueGeoRange(WhereFilter.GeoRange.builder()
-        .geoCoordinates(WhereFilter.GeoCoordinates.builder()
-            .latitude(50.51f)
-            .longitude(0.11f)
-            .build()
-        )
-        .distance(WhereFilter.GeoDistance.builder()
-            .max(3000f)
-            .build()
-        )
-        .build()
-    )
-    .operator(Operator.WithinGeoRange)
-    .path(new String[]{ "add" })
-    .build();
-
-client.graphQL().aggregate().withWhere(where)...
-```
-
-Before:
-
-```java
-// import io.weaviate.client.v1.graphql.query.argument.WhereArgument;
-// import io.weaviate.client.v1.graphql.query.argument.WhereOperator;
-
-WhereArgument where = WhereArgument.builder()
-    .valueText("txt")
-    .operator(WhereOperator.Equal)
-    .path(new String[]{ "add" })
-    .build();
-
-client.graphQL().aggregate().withWhere(where)...
-```
-
-After:
-
-```java
-// import io.weaviate.client.v1.filters.Operator;
-// import io.weaviate.client.v1.filters.WhereFilter;
-
-WhereFilter where = WhereFilter.builder()
-    .valueText("txt")
-    .operator(Operator.Equal)
-    .path(new String[]{ "add" })
-    .build();
-
-client.graphQL().aggregate().withWhere(where)...
-```
-
-Before:
-
-```java
-// import io.weaviate.client.v1.graphql.query.argument.WhereArgument;
-// import io.weaviate.client.v1.graphql.query.argument.WhereFilter;
-// import io.weaviate.client.v1.graphql.query.argument.WhereOperator;
-
-WhereArgument where = WhereArgument.builder()
-    .operands(new WhereFilter[]{
-        WhereFilter.builder()
-            .valueInt(10)
-            .path(new String[]{ "wordCount" })
-            .operator(WhereOperator.LessThanEqual)
-            .build(),
-        WhereFilter.builder()
-            .valueText("word")
-            .path(new String[]{ "word" })
-            .operator(WhereOperator.LessThan)
-            .build()
-    })
-    .operator(WhereOperator.And)
-    .build();
-
-client.graphQL().aggregate().withWhere(where)...
-```
-
-After:
-
-```java
-// import io.weaviate.client.v1.filters.Operator;
-// import io.weaviate.client.v1.filters.WhereFilter;
-
-WhereFilter where = WhereFilter.builder()
-    .operands(new WhereFilter[]{
-        WhereFilter.builder()
-            .valueInt(10)
-            .path(new String[]{ "wordCount" })
-            .operator(Operator.LessThanEqual)
-            .build(),
-        WhereFilter.builder()
-            .valueText("word")
-            .path(new String[]{ "word" })
-            .operator(Operator.LessThan)
-            .build(),
-    })
-    .operator(Operator.And)
-    .build();
-
-client.graphQL().aggregate().withWhere(where)...
-```
-
-##### Classification
-
-Before:
-
-```java
-// import io.weaviate.client.v1.classifications.model.GeoCoordinates;
-// import io.weaviate.client.v1.classifications.model.Operator;
-// import io.weaviate.client.v1.classifications.model.WhereFilter;
-// import io.weaviate.client.v1.classifications.model.WhereFilterGeoRange;
-// import io.weaviate.client.v1.classifications.model.WhereFilterGeoRangeDistance;
-
-WhereFilter where = WhereFilter.builder()
-    .valueGeoRange(WhereFilterGeoRange.builder()
-        .geoCoordinates(GeoCoordinates.builder()
-            .latitude(50.51f)
-            .longitude(0.11f)
-            .build())
-        .distance(WhereFilterGeoRangeDistance.builder()
-            .max(3000d)
-            .build())
-        .build())
-    .operator(Operator.WithinGeoRange)
-    .path(new String[]{ "geo" })
-    .build();
-
-client.classifications().scheduler().withTrainingSetWhereFilter(where)...
-```
-
-After:
-
-```java
-// import io.weaviate.client.v1.filters.Operator;
-// import io.weaviate.client.v1.filters.WhereFilter;
-
-WhereFilter where = WhereFilter.builder()
-    .valueGeoRange(WhereFilter.GeoRange.builder()
-        .geoCoordinates(WhereFilter.GeoCoordinates.builder()
-            .latitude(50.51f)
-            .longitude(0.11f)
-            .build())
-        .distance(WhereFilter.GeoDistance.builder()
-            .max(3000f)
-            .build())
-        .build())
-    .operator(Operator.WithinGeoRange)
-    .path(new String[]{ "geo" })
-    .build();
-
-client.classifications().scheduler().withTrainingSetWhereFilter(where)...
-```
+<!-- TODO[g-despot] Add section -->
 
 ## Releases
 
-Go to the [GitHub releases page](https://github.com/weaviate/java-client/releases) to see the history of the Java client library releases.
+Go to the [GitHub releases page](https://github.com/weaviate/java-client/releases) to see the history of the Java client library releases and change logs.
 
 <details>
   <summary>Click here for a table of Weaviate and corresponding client versions</summary>
@@ -511,6 +140,12 @@ import ReleaseHistory from "/_includes/release-history.md";
 <ReleaseHistory />
 
 </details>
+
+## Code examples & further resources
+
+import CodeExamples from "/_includes/clients/code-examples.mdx";
+
+<CodeExamples />
 
 ## Questions and feedback
 

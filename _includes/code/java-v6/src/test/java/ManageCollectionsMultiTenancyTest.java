@@ -1,6 +1,6 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.data.Reference;
+import io.weaviate.client6.v1.api.collections.data.ObjectReference;
 import io.weaviate.client6.v1.api.collections.tenants.Tenant;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -269,7 +269,7 @@ class ManageCollectionsMultiTenancyTest {
 
     multiTenantA.data.referenceAdd(objectId, // from_uuid
         "hasCategory", // from_property
-        Reference.object(categoryUuid) // to
+        ObjectReference.object(categoryUuid) // to
     );
     // END AddCrossRef
 

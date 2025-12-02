@@ -6,8 +6,8 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Vectors;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
-import io.weaviate.client6.v1.api.collections.data.WriteWeaviateObject;
 import java.util.Map;
 
 public class QuickstartCreateVectors {
@@ -67,11 +67,11 @@ public class QuickstartCreateVectors {
       CollectionHandle<Map<String, Object>> movies =
           client.collections.use(collectionName);
       InsertManyResponse insertResponse = movies.data.insertMany(
-          WriteWeaviateObject.of(v -> v.properties(props1)
+          WeaviateObject.of(v -> v.properties(props1)
               .vectors(Vectors.of(vector1))),
-          WriteWeaviateObject.of(v -> v.properties(props2)
+          WeaviateObject.of(v -> v.properties(props2)
               .vectors(Vectors.of(vector2))),
-          WriteWeaviateObject.of(v -> v.properties(props3)
+          WeaviateObject.of(v -> v.properties(props3)
               .vectors(Vectors.of(vector3))));
       if (!insertResponse.errors().isEmpty()) {
         System.err.println("Errors during import: " + insertResponse.errors());
