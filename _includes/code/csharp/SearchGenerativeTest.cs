@@ -50,9 +50,9 @@ public class SearchGenerativeTest : IDisposable
             "a sweet German white wine",
             limit: 2,
             targetVector: ["title_country"],
-            prompt: new SinglePrompt { Prompt = "Translate this into German: {review_body}" },
+            prompt: new SinglePrompt ("Translate this into German: {review_body}"),
             // highlight-start
-            groupedTask: new GroupedTask { Task = "Summarize these reviews", Provider = new Providers.OpenAI { Model= "gpt-5-mini" } }
+            groupedTask: new GroupedTask ("Summarize these reviews"){ Provider = new Providers.OpenAI { Model= "gpt-5-mini" } }
             // highlight-end
         );
 
@@ -76,8 +76,8 @@ public class SearchGenerativeTest : IDisposable
             // highlight-start
             targetVector: ["title_country"], // Specify the target vector for named vector collections
             returnMetadata: MetadataOptions.Distance,
-            prompt: new SinglePrompt { Prompt = "Translate this into German: {review_body}" },
-            groupedTask: new GroupedTask { Task = "Summarize these reviews" }
+            prompt: new SinglePrompt ("Translate this into German: {review_body}"),
+            groupedTask: new GroupedTask ("Summarize these reviews")
             // highlight-end
         );
 
@@ -105,7 +105,7 @@ public class SearchGenerativeTest : IDisposable
             "World history",
             limit: 2,
             // highlight-start
-            prompt: new SinglePrompt { Prompt = prompt }
+            prompt: new SinglePrompt (prompt)
         );
         // highlight-end
 
@@ -132,7 +132,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "World history",
             limit: 2,
-            prompt: new SinglePrompt { Prompt = prompt }
+            prompt: new SinglePrompt (prompt)
         );
 
         // print source properties and generated responses
@@ -149,9 +149,8 @@ public class SearchGenerativeTest : IDisposable
     {
         // START SingleGenerativeParametersPython
         // highlight-start
-        var singlePrompt = new SinglePrompt
+        var singlePrompt = new SinglePrompt("Convert this quiz question: {question} and answer: {answer} into a trivia tweet.")
         {
-            Prompt = "Convert this quiz question: {question} and answer: {answer} into a trivia tweet.",
             // Metadata = true,
             Debug = true
         };
@@ -191,7 +190,7 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedTask: new GroupedTask { Task = task }
+            groupedTask: new GroupedTask (task)
         );
         // highlight-end
 
@@ -210,9 +209,8 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedTask: new GroupedTask
+            groupedTask: new GroupedTask ("What do these animals have in common, if anything?")
             {
-                Task = "What do these animals have in common, if anything?",
                 Debug = true,
                 Provider = new Providers.OpenAI { ReturnMetadata = true, Model= "gpt-5-mini" }
             }
@@ -235,9 +233,8 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "Australian animals",
             limit: 3,
-            groupedTask: new GroupedTask
+            groupedTask: new GroupedTask (task)
             {
-                Task = task,
                 // highlight-start
                 Properties = ["answer", "question"]
                 // highlight-end
@@ -265,10 +262,9 @@ public class SearchGenerativeTest : IDisposable
         var imageBytes = await httpClient.GetByteArrayAsync(srcImgPath);
         var base64Image = Convert.ToBase64String(imageBytes);
 
-        var groupedTask = new GroupedTask
+        var groupedTask = new GroupedTask("Formulate a Jeopardy!-style question about this image")
         {
             // highlight-start
-            Task = "Formulate a Jeopardy!-style question about this image",
             Provider = new Providers.Anthropic
             {
                 MaxTokens = 1000,

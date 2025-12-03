@@ -279,9 +279,8 @@ public class SearchKeywordTest : IDisposable
 
         var response = await jeopardy.Query.BM25(
             "California",
-            groupBy: new GroupByRequest
+            groupBy: new GroupByRequest("round")  // group by this property
             {
-                PropertyName = "round",       // group by this property
                 NumberOfGroups = 2,           // maximum number of groups
                 ObjectsPerGroup = 3,          // maximum objects per group
             }

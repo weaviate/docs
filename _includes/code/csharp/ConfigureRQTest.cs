@@ -89,8 +89,12 @@ public class ConfigureRQTest : IAsyncLifetime
                 "default",
                 new Vectorizer.Text2VecTransformers(),
                 // highlight-start
-                // Omitting the Quantizer property results in an uncompressed index.
-                new VectorIndex.HNSW()
+                new VectorIndex.HNSW
+                { 
+                    // highlight-start
+                    Quantizer = new VectorIndex.Quantizers.None{}
+                    // highlight-end
+                }
             // highlight-end
             )
         });

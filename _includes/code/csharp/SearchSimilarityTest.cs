@@ -247,9 +247,8 @@ public class SearchSimilarityTest : IAsyncLifetime
             "animals in movies",   // find object based on this query
             limit: 10,             // maximum total objects
             returnMetadata: MetadataOptions.Distance,
-            groupBy: new GroupByRequest
+            groupBy: new GroupByRequest("round")  // group by this property
             {
-                PropertyName = "round",       // group by this property
                 NumberOfGroups = 2,           // maximum number of groups
                 ObjectsPerGroup = 2,          // maximum objects per group
             }

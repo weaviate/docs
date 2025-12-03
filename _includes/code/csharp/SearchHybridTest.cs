@@ -397,9 +397,8 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "California",
             alpha: 0.75f,
-            groupBy: new GroupByRequest
+            groupBy: new GroupByRequest("round")  // group by this property
             {
-                PropertyName = "round",       // group by this property
                 NumberOfGroups = 2,           // maximum number of groups
                 ObjectsPerGroup = 3,          // maximum objects per group
             }

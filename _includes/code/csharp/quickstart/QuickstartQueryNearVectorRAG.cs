@@ -32,9 +32,8 @@ namespace WeaviateProject.Examples
                 queryVector,
                 limit: 1,
                 returnProperties: ["title", "description", "genre"],
-                groupedTask: new GroupedTask
+                groupedTask: new GroupedTask("Write a tweet with emojis about this movie.")
                 {
-                    Task = "Write a tweet with emojis about this movie.",
                     Provider = new Weaviate.Client.Models.Generative.Providers.Anthropic
                     {
                         Model = "claude-3-5-haiku-latest" // The model to use

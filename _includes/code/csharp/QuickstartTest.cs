@@ -125,9 +125,10 @@ public class QuickstartTest
         var ragResponse = await questions.Generate.NearText(
             "biology",
             limit: 2,
-            groupedTask: new GroupedTask
+            groupedTask: new GroupedTask(
+                "Write a tweet with emojis about these facts."
+            )
             {
-                Task = "Write a tweet with emojis about these facts.",
                 Provider = new Weaviate.Client.Models.Generative.Providers.OpenAI { }
             }
         );

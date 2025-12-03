@@ -54,7 +54,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     static ManageObjectsCreateTest()
     {
         // START INSTANTIATION-COMMON
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().Result;
         // END INSTANTIATION-COMMON
     }
 

@@ -32,8 +32,8 @@ public class SearchImageTest : IAsyncLifetime
     // Runs once before any tests in the class (like @BeforeAll)
     public async Task InitializeAsync()
     {
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8280 , GrpcPort = 50251});
-
+        client = await Connect.Local(restPort: 8280, grpcPort: 50251);
+        
         if (await client.Collections.Exists("Dog"))
         {
             await client.Collections.Delete("Dog");

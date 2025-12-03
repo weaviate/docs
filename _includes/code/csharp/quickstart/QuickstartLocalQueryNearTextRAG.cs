@@ -23,9 +23,8 @@ namespace WeaviateProject.Examples
                 "sci-fi",
                 limit: 1,
                 returnProperties: ["title", "description", "genre"],
-                groupedTask: new GroupedTask
+                groupedTask: new GroupedTask("Write a tweet with emojis about this movie.")
                 {
-                    Task = "Write a tweet with emojis about this movie.",
                     Provider = new Providers.Ollama
                     {
                         ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
