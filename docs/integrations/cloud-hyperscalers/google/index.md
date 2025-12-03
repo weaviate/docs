@@ -30,6 +30,8 @@ The resources are broken into two categories:
 | Personalized Product Descriptions with Weaviate and the Gemini API | Learn how to embed your data, run a semantic search, make a generative call to the Gemini API and store the output back in your database. | [Notebook](https://github.com/google-gemini/cookbook/blob/main/examples/weaviate/personalized_description_with_weaviate_and_gemini_api.ipynb) |
 | Similarity search with Gemma Embeddings and Weaviate | This tutorial shows you, how to use the gemma-3-300m-embedding in Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/google/similarity_search_gemma_embeddings_transformers.ipynb) |
 | Local RAG with Gemma 3 270M and Weaviate | This notebook walks you through building a local RAG pipeline using Gemma 3 270M with Ollama and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/google/rag_gemma_3_270M_ollama.ipynb) |
+| Weaviate ADK Agent | This agent provides natural language interaction with Weaviate, enabling full CRUD operations, vector search, collection management, and more through an intelligent conversational interface. | [Notebook](https://github.com/weaviate/recipes/tree/main/integrations/cloud-hyperscalers/google/weaviate_adk_agent) |
+
 
 ### Read and Listen
 | Topic | Description | Resource |

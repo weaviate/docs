@@ -34,7 +34,8 @@ The resources are broken into two categories:
 | Advanced RAG | This notebook walks you through an advanced Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/advanced_rag.ipynb) | 
 | Naive RAG | This notebook walks you through a naive Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/naive_rag.ipynb) |
 | Agent vs No Agent | Learn the difference between naive RAG, and an agent that has RAG tools. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/llama-index-weaviate-assistant-agent.ipynb) |
-| LlamaIndex and Weaviate Query Agent | Use the Query Agent as a tool with the LlamaIndex `AgentWorkflow`. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-with-weaviate-query-agent-.ipynb) | 
+| LlamaIndex and Weaviate Query Agent | Use the Query Agent as a tool with the LlamaIndex `AgentWorkflow`. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-with-weaviate-query-agent-.ipynb) |
+| Memory with LlamaIndex, Weaviate, and Gemini |  This notebook shows you how you can give your AI agent long-term memory with LlamaIndex, Weaviate, and Gemini. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agent-memory/Memory_with_LlamaIndex_Weaviate_and_Gemini.ipynb) | 
 
 
 ### Read and Listen 

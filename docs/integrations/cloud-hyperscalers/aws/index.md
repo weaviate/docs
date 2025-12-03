@@ -28,3 +28,5 @@ The resources are broken into two categories:
 | Topic | Description | Resource |
 | --- | --- | --- |
 | Legacy data to RAG : Modernise Your Apps with Amazon Sagemaker Unified Studio | A guide to seamlessly transform data sitting in lakes and warehouses for GenAI capable applications | [Blog](https://weaviate.io/blog/sagemaker-studio-rag) |
+| Multimodal Search with Nova Embeddings | This notebook demonstrates how to build a multimodal search system using AWS Nova embeddings in Weaviate, enabling image search, hybrid search, and the Weaviate Query Agent. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/aws/multi-modal-search-nova-embeddings.ipynb) | 
+| Nova Customization | This notebook will illustrate how to use the open-source Nova Prompt Optimizer to optimize a RAG system. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/aws/nova-prompt-optimizer.ipynb) | 
