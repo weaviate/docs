@@ -218,7 +218,7 @@ public class ManageCollectionsTest : IAsyncLifetime
             VectorConfig = new VectorConfigList
         {
             // Example 1 - Use a model integration
-            Configure.MultiVectors.Multi2VecJinaAI(textFields: ["text"]).New("jina_colbert"),
+            Configure.MultiVectors.Text2MultiVecJinaAI().New("jina_colbert"),
             // Example 2 - User-provided multi-vector representations
             Configure.MultiVectors.SelfProvided().New("custom_multi_vector"),
         },
@@ -242,9 +242,7 @@ public class ManageCollectionsTest : IAsyncLifetime
             VectorConfig = new VectorConfigList
             {
                 // Example 1 - Use a model integration
-                Configure.MultiVectors.Multi2VecJinaAI(
-                    textFields: ["text"]
-                ).New("jina_colbert", indexConfig: new VectorIndex.HNSW
+                Configure.MultiVectors.Text2MultiVecJinaAI().New("jina_colbert", indexConfig: new VectorIndex.HNSW
                     {
                         MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
                     }),
