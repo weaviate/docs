@@ -17,3 +17,5 @@ Parsed outputs can be stored in Weaviate for vector and hybrid search, metadata 
 | Topic | Description | Resource | 
 | --- | --- | --- |
 | Contextual AI Parser + Weaviate | Learn how to use Contextual AI's Parser with Weaviate to build powerful RAG applications over PDF documents. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/contextual-ai/rag_over_pdfs_contextual_weaviate.ipynb) | 
+| Generative Search with Contextual AI | This notebook demos how to use ContextualAI's generative model (v2) with Weaviate for RAG, combining hybrid search (sparse + dense) with generative search to answer questions based on retrieved Jeopardy data. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/contextual/rag_contextual_v2.ipynb) | 
+| Reranking with Contextual AI | This notebook demonstrates how to use Contextual AI's reranking model (ctxl-rerank-v2-instruct-multilingual) with Weaviate to improve search result quality. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/reranking/contextual-reranking/rerank_contextual.ipynb) | 

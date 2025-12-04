@@ -9,8 +9,7 @@ sidebar_position: 5
 [Use Weaviate to store and retrieve](https://docs.mem0.ai/components/vectordbs/dbs/weaviate) Mem0 memory sessions. Each memory object can be stored as an embedding, enabling semantic search, filtering, and context retrieval for personalized AI interactions.
 
 ## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
 
 ### Hands on Learning
 
