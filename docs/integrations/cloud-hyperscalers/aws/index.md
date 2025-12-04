@@ -23,10 +23,10 @@ The resources are broken into two categories:
 | --- | --- | --- |
 | RAG with Cohere models on Amazon Bedrock and Weaviate | The example use case generates targeted advertisements for vacation stay listings based on a target audience. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/aws/RAG_Cohere_Weaviate_v4_client.ipynb) |
 | RAG with AWS Nova Lite on Bedrock and Weaviate | This notebook will show you how to use the dynamic RAG API to define the model provider at query time. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/aws/rag_nova_lite_bedrock.ipynb) | 
+| Multimodal Search with Nova Embeddings | This notebook demonstrates how to build a multimodal search system using AWS Nova embeddings in Weaviate, enabling image search, hybrid search, and the Weaviate Query Agent. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/aws/multi-modal-search-nova-embeddings.ipynb) | 
+| Nova Customization | This notebook will illustrate how to use the open-source Nova Prompt Optimizer to optimize a RAG system. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/aws/nova-prompt-optimizer.ipynb) | 
 
 ### Read and Listen
 | Topic | Description | Resource |
 | --- | --- | --- |
 | Legacy data to RAG : Modernise Your Apps with Amazon Sagemaker Unified Studio | A guide to seamlessly transform data sitting in lakes and warehouses for GenAI capable applications | [Blog](https://weaviate.io/blog/sagemaker-studio-rag) |
-| Multimodal Search with Nova Embeddings | This notebook demonstrates how to build a multimodal search system using AWS Nova embeddings in Weaviate, enabling image search, hybrid search, and the Weaviate Query Agent. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/aws/multi-modal-search-nova-embeddings.ipynb) | 
-| Nova Customization | This notebook will illustrate how to use the open-source Nova Prompt Optimizer to optimize a RAG system. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/aws/nova-prompt-optimizer.ipynb) | 
