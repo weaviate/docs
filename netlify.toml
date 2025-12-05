@@ -953,6 +953,16 @@ to   = "https://weaviate.io/product/integrations/product/integrations/boomi"
 status = 301
 
 [[redirects]]
+from = "/integrations/data-platforms/chonkie"
+to   = "https://weaviate.io/product/integrations/product/integrations/chonkie
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/parallel"
+to   = "https://weaviate.io/product/integrations/product/integrations/parallel
+status = 301
+
+[[redirects]]
 from = "/integrations/compute-infrastructure/replicate"
 to   = "https://weaviate.io/product/integrations/product/integrations/replicate"
 status = 301
@@ -1023,6 +1033,11 @@ to   = "https://weaviate.io/product/integrations/product/integrations/mem0"
 status = 301
 
 [[redirects]]
+from = "/integrations/llm-agent-frameworks/modaic"
+to   = "https://weaviate.io/product/integrations/product/integrations/modaic"
+status = 301
+
+[[redirects]]
 from = "/integrations/operations/wandb"
 to   = "https://weaviate.io/product/integrations/product/integrations/weights-and-biases"
 status = 301
@@ -1076,4 +1091,7 @@ status = 301
 from = "/integrations/operations/patronusai"
 to   = "https://weaviate.io/product/integrations/product/integrations/patronusai"
 status = 301
+
+
+
 
