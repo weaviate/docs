@@ -11,14 +11,11 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     private WeaviateClient client;
 
     // Runs before each test
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
         // START-ANY
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = await Connect.Local();
         // END-ANY
-        return Task.CompletedTask;
     }
 
     // Runs after each test
@@ -52,7 +49,6 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         // END BasicSchema
     }
 
-    // TODO[g-despot] Missing vectorizePropertyName
     [Fact]
     public async Task TestSchemaWithPropertyOptions()
     {
@@ -67,12 +63,10 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                 Property.Text(
                     "question",
                     tokenization: PropertyTokenization.Lowercase
-                    // vectorizePropertyName: true // Pass as a simple named argument
                 ),
                 Property.Text(
                     "answer",
                     tokenization: PropertyTokenization.Whitespace
-                    // vectorizePropertyName: false // Pass as a simple named argument
                 )
             ]
         });
@@ -82,13 +76,14 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestSchemaWithMultiTenancy()
     {
+        await client.Collections.Delete("Question");
         // START SchemaWithMultiTenancy
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
             GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
+            Properties =
             [
                 Property.Text("question"),
                 Property.Text("answer")

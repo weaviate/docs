@@ -13,12 +13,9 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     private WeaviateClient client;
 
     // Runs before each test
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
-        return Task.CompletedTask;
+        client = await Connect.Local();
     }
 
     // Runs after each test
@@ -37,16 +34,16 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = [ Property.Text("title") ]
+            Properties = [Property.Text("title")]
         });
 
         await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = [ Property.Text("question"), Property.Text("answer") ],
+            Properties = [Property.Text("question"), Property.Text("answer")],
             // highlight-start
-            References = [ new Reference("hasCategory", "JeopardyCategory") ]
+            References = [new Reference("hasCategory", "JeopardyCategory")]
             // highlight-end
         });
         // END CrossRefDefinition
@@ -61,12 +58,12 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestObjectWithCrossRef()
     {
         await SetupCollections();
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var categories = client.Collections.Use("JeopardyCategory");
         var categoryUuid = await categories.Data.Insert(new { title = "Weaviate" });
         var properties = new { question = "What tooling helps make Weaviate scalable?", answer = "Sharding, multi-tenancy, and replication" };
 
         // START ObjectWithCrossRef
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
+        var questions = client.Collections.Use("JeopardyQuestion");
 
         var newObject = await questions.Data.Insert(
             properties, // The properties of the object
@@ -86,8 +83,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestOneWay()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var questionObjId = await questions.Data.Insert(new { question = "This city is known for the Golden Gate Bridge", answer = "San Francisco" });
         var categoryObjId = await categories.Data.Insert(new { title = "U.S. CITIES" });
@@ -115,7 +112,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = [ Property.Text("title") ]
+            Properties = [Property.Text("title")]
         });
         // END TwoWayCategory1CrossReferences
 
@@ -124,9 +121,9 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = [ Property.Text("question"), Property.Text("answer") ],
+            Properties = [Property.Text("question"), Property.Text("answer")],
             // highlight-start
-            References = [ new Reference("hasCategory", "JeopardyCategory") ]
+            References = [new Reference("hasCategory", "JeopardyCategory")]
             // highlight-end
         });
         // END TwoWayQuestionCrossReferences
@@ -140,7 +137,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         );
         // END TwoWayCategoryCrossReferences
 
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
+        var questions = client.Collections.Use("JeopardyQuestion");
         var categories = client.Collections.Use("JeopardyCategory");
 
         var questionObjId = await questions.Data.Insert(new { question = "This city is known for the Golden Gate Bridge", answer = "San Francisco" });
@@ -167,8 +164,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestMultiple()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var questionObjId = await questions.Data.Insert(new { question = "This city is known for the Golden Gate Bridge", answer = "San Francisco" });
         var categoryObjId = await categories.Data.Insert(new { title = "U.S. CITIES" });
@@ -198,8 +195,8 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestReadCrossRef()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var categoryResult = await categories.Data.Insert(new { title = "SCIENCE" });
         var questionObjId = await questions.Data.Insert(
@@ -230,13 +227,12 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         Assert.True(obj.References.ContainsKey("hasCategory"));
     }
 
-    // TODO[g-despot] ERROR: Unexpected status code NoContent. Expected: OK. reference delete.
     [Fact]
     public async Task TestDelete()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var categoryObjId = await categories.Data.Insert(new { title = "MUSEUMS" });
         var questionObjId = await questions.Data.Insert(
@@ -257,15 +253,20 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
 
         var result = await questions.Query.FetchObjectByID(questionObjId, returnReferences: [new QueryReference("hasCategory")]);
         Assert.NotNull(result);
-        Assert.False(result.References.ContainsKey("hasCategory"));
+
+        // FIX: Check if the reference list is empty OR if the key is missing
+        if (result.References.ContainsKey("hasCategory"))
+        {
+            Assert.Empty(result.References["hasCategory"]);
+        }
     }
 
     [Fact]
     public async Task TestUpdate()
     {
         await SetupCollections();
-        var questions = client.Collections.Use<object>("JeopardyQuestion");
-        var categories = client.Collections.Use<object>("JeopardyCategory");
+        var questions = client.Collections.Use("JeopardyQuestion");
+        var categories = client.Collections.Use("JeopardyCategory");
 
         var categoryObjId = await categories.Data.Insert(new { title = "MUSEUMS" });
         await categories.Data.Insert(new { title = "U.S. CITIES" });
@@ -296,15 +297,15 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = [ Property.Text("title") ]
+            Properties = [Property.Text("title")]
         });
 
         await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = [ Property.Text("question"), Property.Text("answer") ],
-            References = [ new Reference("hasCategory", "JeopardyCategory") ]
+            Properties = [Property.Text("question"), Property.Text("answer")],
+            References = [new Reference("hasCategory", "JeopardyCategory")]
         });
     }
 }

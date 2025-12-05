@@ -4,6 +4,7 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Collections.Generic;
 
 namespace WeaviateProject.Tests;
 
@@ -18,11 +19,16 @@ public class SearchAggregateTest : IDisposable
         // Best practice: store your credentials in environment variables
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
         client = Connect.Cloud(
             weaviateUrl,
-            weaviateApiKey
-        );
+            weaviateApiKey,
+            headers: new Dictionary<string, string>()
+            {
+                { "X-OpenAI-Api-Key", openaiApiKey }
+            }
+        ).GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -55,12 +61,12 @@ public class SearchAggregateTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
-            metrics: Metrics.ForProperty("answer")
+            metrics: [Metrics.ForProperty("answer")
                 .Text(
                     topOccurrencesCount: true,
                     topOccurrencesValue: true,
                     minOccurrences: 5 // Corresponds to topOccurrencesCutoff
-                )
+                )]
         // highlight-end
         );
 
@@ -80,12 +86,12 @@ public class SearchAggregateTest : IDisposable
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
             // Use .Number for floats (NUMBER datatype in Weaviate)
-            metrics: Metrics.ForProperty("points")
+            metrics: [Metrics.ForProperty("points")
                 .Integer(
                     sum: true,
                     maximum: true,
                     minimum: true
-                )
+                )]
         // highlight-end
         );
 
@@ -129,7 +135,7 @@ public class SearchAggregateTest : IDisposable
             // highlight-start
             limit: 10,
             // highlight-end
-            metrics: Metrics.ForProperty("points").Number(sum: true)
+            metrics: [Metrics.ForProperty("points").Number(sum: true)]
         );
 
         var pointsMetrics = response.Properties["points"] as Aggregate.Number;
@@ -148,7 +154,7 @@ public class SearchAggregateTest : IDisposable
             // highlight-start
             objectLimit: 10,
             // highlight-end
-            metrics: Metrics.ForProperty("points").Number(sum: true)
+            metrics: [Metrics.ForProperty("points").Number(sum: true)]
         );
 
         var pointsMetrics = response.Properties["points"] as Aggregate.Number;
@@ -167,7 +173,7 @@ public class SearchAggregateTest : IDisposable
             // highlight-start
             distance: 0.19,
             // highlight-end
-            metrics: Metrics.ForProperty("points").Number(sum: true)
+            metrics: [Metrics.ForProperty("points").Number(sum: true)]
         );
 
         var pointsMetrics = response.Properties["points"] as Aggregate.Number;
