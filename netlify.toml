@@ -954,7 +954,7 @@ status = 301
 
 [[redirects]]
 from = "/integrations/data-platforms/parallel"
-to   = "https://weaviate.io/product/integrations/parallel
+to   = "https://weaviate.io/product/integrations/parallel"
 status = 301
 
 [[redirects]]
