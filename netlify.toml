@@ -873,11 +873,6 @@ status = 301
 ## Integration docs
 
 [[redirects]]
-from = "/integrations"
-to   = "https://weaviate.io/product/integrations"
-status = 301
-
-[[redirects]]
 from = "/integrations/cloud-hyperscalers/google"
 to   = "https://weaviate.io/product/integrations/product/integrations/google-cloud-platform"
 status = 301
@@ -1092,6 +1087,9 @@ from = "/integrations/operations/patronusai"
 to   = "https://weaviate.io/product/integrations/product/integrations/patronusai"
 status = 301
 
-
+[[redirects]]
+from = "/integrations"
+to   = "https://weaviate.io/product/integrations"
+status = 301
 
 
