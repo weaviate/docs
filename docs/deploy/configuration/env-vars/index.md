@@ -187,6 +187,7 @@ For more information on authentication and authorization, see the [Authenticatio
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
+| `CLUSTER_ADVERTISE_ADDR` | Manually sets the address used to advertise the node to the cluster. Useful if the system hostname cannot be resolved via DNS (e.g., lookup errors). | `string` | `127.0.0.1` |
 | `CLUSTER_DATA_BIND_PORT` | Port for exchanging data. | `string - number` | `7103` |
 | `CLUSTER_GOSSIP_BIND_PORT` | Port for exchanging network state information. | `string - number` | `7102` |
 | `CLUSTER_HOSTNAME` | Hostname of a node. Always set this value if the default OS hostname might change over time. | `string` | `node1` |
