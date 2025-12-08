@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Xunit;
 using System.Linq;
+using Weaviate.Client.Models.Generative;
 
 namespace WeaviateProject.Examples;
 
@@ -67,7 +68,7 @@ public class QuickstartTest
                     Property.Text("question"),
                     Property.Text("category")
             ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Configure the Weaviate Embeddings integration
+            VectorConfig = Configure.Vectors.Text2VecWeaviate().New("default"),  // Configure the Weaviate Embeddings integration
             GenerativeConfig = new GenerativeConfig.Cohere() // Configure the Cohere generative AI integration
         });
         // highlight-end
@@ -127,10 +128,8 @@ public class QuickstartTest
             limit: 2,
             groupedTask: new GroupedTask(
                 "Write a tweet with emojis about these facts."
-            )
-            {
-                Provider = new Weaviate.Client.Models.Generative.Providers.OpenAI { }
-            }
+            ),
+            provider: new Providers.OpenAI() {}
         );
         // highlight-end
 

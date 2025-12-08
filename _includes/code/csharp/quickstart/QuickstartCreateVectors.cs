@@ -28,7 +28,7 @@ namespace WeaviateProject.Examples
             var movies = await client.Collections.Create(new CollectionConfig
             {
                 Name = collectionName,
-                VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+                VectorConfig = Configure.Vectors.SelfProvided().New(name: "default"),
                 Properties =
                 [
                     Property.Text("title"),

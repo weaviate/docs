@@ -52,7 +52,7 @@ public class StarterGuidesCustomVectorsTest
                     Property.Text("category")
                 ],
                 // Configure the "default" vector to be SelfProvided (BYOV)
-                VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+                VectorConfig = Configure.Vectors.SelfProvided().New("default")
             });
             // END CreateCollection
 

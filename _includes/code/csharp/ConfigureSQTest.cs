@@ -40,9 +40,8 @@ public class ConfigureSQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -63,7 +62,7 @@ public class ConfigureSQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New()
         });
 
         // START UpdateSchema
@@ -83,9 +82,8 @@ public class ConfigureSQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 // highlight-start
                 new VectorIndex.HNSW
                 {

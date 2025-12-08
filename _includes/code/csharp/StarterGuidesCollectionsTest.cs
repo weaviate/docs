@@ -35,7 +35,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         var questionsCollection = await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Set the vectorizer
+            VectorConfig = Configure.Vectors.Text2VecWeaviate().New("default"),
             GenerativeConfig = new GenerativeConfig.Cohere(), // Set the generative module
             Properties = 
             [
@@ -56,7 +56,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
+            VectorConfig = Configure.Vectors.Text2VecWeaviate().New("default"),
             GenerativeConfig = new GenerativeConfig.Cohere(),
             Properties = 
             [
@@ -81,7 +81,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
+            VectorConfig = Configure.Vectors.Text2VecWeaviate().New("default"),
             GenerativeConfig = new GenerativeConfig.Cohere(),
             Properties =
             [
@@ -102,9 +102,8 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecWeaviate().New(
                 "default", // Set the name of the vector configuration
-                new Vectorizer.Text2VecWeaviate(),
                 // highlight-start
                 new VectorIndex.HNSW
                 {

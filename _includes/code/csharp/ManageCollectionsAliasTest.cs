@@ -56,7 +56,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = Articles,
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+            VectorConfig = Configure.Vectors.SelfProvided().New(),
             Properties =
             [
                 Property.Text("title"),
@@ -66,7 +66,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         // Create an alias pointing to the collection
         var alias = new Alias(ArticlesAlias, Articles);
-        await client.Alias.Add(alias);
+        await client.Alias.Create(alias);
         // END CreateAlias
 
         // START ListAllAliases
@@ -75,7 +75,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         foreach (var entry in allAliases)
         {
-            Console.WriteLine($"Alias: {entry.Name} -> Collection: {entry.TargetClass}");
+            Console.WriteLine($"Alias: {entry.Name} -> Collection: {entry.TargetCollection}");
         }
         // END ListAllAliases
 
@@ -96,18 +96,18 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         if (aliasInfo != null)
         {
             Console.WriteLine($"Alias: {aliasInfo.Name}");
-            Console.WriteLine($"Target collection: {aliasInfo.TargetClass}");
+            Console.WriteLine($"Target collection: {aliasInfo.TargetCollection}");
         }
         // END GetAlias
         Assert.NotNull(aliasInfo);
-        Assert.Equal(Articles, aliasInfo.TargetClass);
+        Assert.Equal(Articles, aliasInfo.TargetCollection);
 
         // START UpdateAlias
         // Create a new collection for migration
         await client.Collections.Create(new CollectionConfig
         {
             Name = ArticlesV2,
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(),
             Properties =
             [
                 Property.Text("title"),
@@ -137,7 +137,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
             await client.Collections.Create(new CollectionConfig
             {
                 Name = Articles,
-                VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+                VectorConfig = Configure.Vectors.SelfProvided().New(),
                 Properties =
                [
                    Property.Text("title"),
@@ -155,7 +155,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         // Re-create alias for the usage example below (since we just deleted it)
         alias = new Alias(ArticlesAlias, Articles);
-        await client.Alias.Add(alias);
+        await client.Alias.Create(alias);
 
         // START UseAlias
         // Use the alias just like a collection name
@@ -188,7 +188,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = ProductsV1,
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(),
         });
 
         var productsV1 = client.Collections.Use(ProductsV1);
@@ -204,7 +204,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         // START Step2CreateAlias
         // Create alias pointing to current collection
         var alias = new Alias(ProductsAlias, ProductsV1);
-        await client.Alias.Add(alias);
+        await client.Alias.Create(alias);
         // END Step2CreateAlias
 
         // START MigrationUseAlias
@@ -228,7 +228,7 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = ProductsV2,
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+            VectorConfig = Configure.Vectors.SelfProvided().New(),
             Properties =
             [
                 Property.Text("name"),

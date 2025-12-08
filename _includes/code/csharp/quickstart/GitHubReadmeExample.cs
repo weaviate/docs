@@ -30,8 +30,8 @@ namespace WeaviateProject.Examples
                 [
                     Property.Text("content")
                 ],
-                VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()) // Use a vectorizer to generate embeddings during import
-                                                                                                  // .vectorConfig(VectorConfig.selfProvided()) // If you want to import your own pre-generated embeddings
+                VectorConfig = Configure.Vectors.Text2VecTransformers().New()  // Use a vectorizer to generate embeddings during import
+                // VectorConfig = Configure.Vectors.SelfProvided().New()  // If you want to import your own pre-generated embeddings
             });
 
 

@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
+using Weaviate.Client.Models.Generative;
 using Xunit;
 
 namespace WeaviateProject.Examples;
@@ -52,7 +53,7 @@ public class QuickstartLocalTest
                     Property.Text("question"),
                     Property.Text("category")
             ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()), // Configure the text2vec-contextionary integration
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default"),  // Configure the text2vec-transformers integration
             GenerativeConfig = new GenerativeConfig.Cohere() // Configure the Cohere generative AI integration
         });
         // highlight-end
@@ -110,10 +111,8 @@ public class QuickstartLocalTest
         var ragResponse = await questions.Generate.NearText(
             "biology",
             limit: 2,
-            groupedTask: new GroupedTask("Write a tweet with emojis about these facts.")
-            {
-                Provider = new Weaviate.Client.Models.Generative.Providers.OpenAI { }
-            }
+            groupedTask: new GroupedTask("Write a tweet with emojis about these facts."),
+            provider: new Providers.OpenAI {}
         );
         // highlight-end
 

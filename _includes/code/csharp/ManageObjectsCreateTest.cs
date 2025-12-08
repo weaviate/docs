@@ -71,9 +71,9 @@ public class ManageObjectsCreateTest : IAsyncLifetime
             [
                 Property.Text("title", description: "Question title")
             ],
-            VectorConfig = new VectorConfigList
+            VectorConfig = new []
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New("default")
             }
         });
 
@@ -88,9 +88,9 @@ public class ManageObjectsCreateTest : IAsyncLifetime
             ],
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("title_country", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New("title", sourceProperties: ["title"]),
+                Configure.Vectors.Text2VecTransformers().New("review_body", sourceProperties: ["review_body"]),
+                Configure.Vectors.Text2VecTransformers().New("title_country", sourceProperties: ["title", "country"]),
             }
         });
         // END Define the class
@@ -109,7 +109,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
             Name = "Author",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.SelfProvided())
+                Configure.Vectors.SelfProvided().New("default")
             }
         });
     }

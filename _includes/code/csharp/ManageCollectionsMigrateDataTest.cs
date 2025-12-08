@@ -56,7 +56,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         await wineReview.Data.InsertMany(wineReviewData);
 
         var wineReviewMT = clientSrc.Collections.Use("WineReviewMT");
-        await wineReviewMT.Tenants.Add(["tenantA"]);
+        await wineReviewMT.Tenants.Create(["tenantA"]);
         await wineReviewMT.WithTenant("tenantA").Data.InsertMany(wineReviewData);
     }
 
@@ -80,7 +80,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         {
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = enableMt },
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(),
             Properties =
             [
                 Property.Text("review_body"),
@@ -209,7 +209,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         var reviewsMtTgt = clientTgt.Collections.Use("WineReviewMT");
 
         var tenantsTgt = new[] { new Tenant { Name = "tenantA" }, new Tenant { Name = "tenantB" } };
-        await reviewsMtTgt.Tenants.Add(tenantsTgt);
+        await reviewsMtTgt.Tenants.Create(tenantsTgt);
     }
     // END CreateTenants // END CreateCollectionTenantToTenant
 

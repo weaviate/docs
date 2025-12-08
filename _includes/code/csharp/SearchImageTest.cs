@@ -48,10 +48,7 @@ public class SearchImageTest : IAsyncLifetime
                 Property.Text("breed"),
                 Property.Text("description")
             ],
-            VectorConfig = new VectorConfig(
-                "default",
-                new Vectorizer.Multi2VecClip { ImageFields = new[] { "image" }, TextFields = new[] { "breed", "description" } }
-            )
+            VectorConfig = Configure.Vectors.Multi2VecClip(imageFields: new [] {"image"}, textFields: new[] {"breed", "description"}).New("default")
         });
 
         // Prepare and ingest sample dog images

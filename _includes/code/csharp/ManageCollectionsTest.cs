@@ -130,7 +130,7 @@ public class ManageCollectionsTest : IAsyncLifetime
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New(name: "default")
             },
             Properties =
             [
@@ -154,15 +154,20 @@ public class ManageCollectionsTest : IAsyncLifetime
             Name = "ArticleNV",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers
-                {
-                    SourceProperties = ["title"]
-                }, new VectorIndex.HNSW()),
-                new VectorConfig("title_country", new Vectorizer.Text2VecTransformers
-                {
-                    SourceProperties = ["title", "country"]
-                }, new VectorIndex.HNSW()),
-                new VectorConfig("custom_vector", new Vectorizer.SelfProvided(), new VectorIndex.HNSW())
+                Configure.Vectors.Text2VecTransformers().New(
+                    name: "title",
+                    sourceProperties: ["title"],
+                    indexConfig: new VectorIndex.HNSW()
+                ),
+                Configure.Vectors.Text2VecTransformers().New(
+                    name: "title_country",
+                    sourceProperties: ["title", "country"],
+                    indexConfig: new VectorIndex.HNSW()
+                ),
+                Configure.Vectors.SelfProvided().New(
+                    name: "custom_vector",
+                    indexConfig: new VectorIndex.HNSW()
+                )
             },
             Properties =
             [
@@ -189,7 +194,7 @@ public class ManageCollectionsTest : IAsyncLifetime
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New("default")
             },
             Properties =
                     [
@@ -268,10 +273,7 @@ public class ManageCollectionsTest : IAsyncLifetime
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default",
-                    new Vectorizer.Text2VecTransformers(),
-                    new VectorIndex.HNSW()
-                )
+                Configure.Vectors.Text2VecTransformers().New("default", indexConfig: new VectorIndex.HNSW())
             },
             Properties =
             [
@@ -292,16 +294,15 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new []
             {
-                new VectorConfig("default",
-                    new Vectorizer.Text2VecTransformers(),
-                    new VectorIndex.HNSW
+                Configure.Vectors.Text2VecTransformers().New(
+                    name: "default",
+                    indexConfig: new VectorIndex.HNSW()
                     {
                         EfConstruction = 300,
-                        Distance = VectorIndexConfig.VectorDistance.Cosine
-                    }
-                )
+                        Distance = VectorDistance.Cosine
+                    })
             },
             Properties =
             [
@@ -352,9 +353,9 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new []
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New("default")
             },
             RerankerConfig = new Reranker.Cohere(),
             Properties =
@@ -394,9 +395,9 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new []
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New("default"),
             },
             GenerativeConfig = new GenerativeConfig.Cohere(),
             Properties =
@@ -468,9 +469,9 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new []
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vectors.Text2VecTransformers().New()
             },
             Properties =
             [
@@ -491,13 +492,13 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new []
             {
-                new VectorConfig("default",
-                    new Vectorizer.Text2VecTransformers(),
-                    new VectorIndex.HNSW
+                Configure.Vectors.Text2VecTransformers().New(
+                    name: "default",
+                    indexConfig: new VectorIndex.HNSW()
                     {
-                        Distance = VectorIndexConfig.VectorDistance.Cosine
+                        Distance = VectorDistance.Cosine
                     }
                 )
             },
