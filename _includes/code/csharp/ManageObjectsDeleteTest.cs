@@ -16,9 +16,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     // Static constructor for one-time setup (like @BeforeAll)
     static ManageObjectsDeleteTest()
     {
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().GetAwaiter().GetResult();
     }
 
     // Runs before each test (like @BeforeEach)
@@ -47,7 +45,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestDeleteObject()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var uuidToDelete = await collection.Data.Insert(new { name = "EphemeralObjectA" });
         Assert.NotNull(await collection.Query.FetchObjectByID(uuidToDelete));
 
@@ -61,7 +59,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestBatchDelete()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var objects = Enumerable.Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
@@ -86,7 +84,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     public async Task TestDeleteContains()
     {
         // START DeleteContains
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         await collection.Data.InsertMany(new[]
         {
             new { name = "asia" },
@@ -104,7 +102,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestDryRun()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var objects = Enumerable.Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
@@ -130,7 +128,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestBatchDeleteWithIDs()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var objects = Enumerable.Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]

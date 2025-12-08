@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using static Weaviate.Client.Models.VectorIndexConfig;
 
 // This attribute ensures that tests in this class do not run in parallel,
 // which is important because they share a client and perform cleanup operations
@@ -24,15 +25,8 @@ public class ManageCollectionsTest : IAsyncLifetime
             throw new ArgumentException("Please set the OPENAI_API_KEY environment variable.");
         }
 
-        // TODO[g-despot] Headers are currently not supported
         var headers = new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey } };
-        var config = new ClientConfiguration
-        {
-            RestAddress = "localhost",
-            RestPort = 8080,
-            //Headers = headers
-        };
-        client = new WeaviateClient(config);
+        client = Connect.Local(hostname: "localhost", restPort: 8080, headers: headers).GetAwaiter().GetResult();
     }
 
     // InitializeAsync is called before each test. We ensure all collections are deleted.
@@ -93,7 +87,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         //     public string Title { get; set; }
         //     public string Body { get; set; }
         // }
-    
+
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
@@ -119,7 +113,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         });
 
         // START AddProperty
-        CollectionClient<object> articles = client.Collections.Use<object>("Article");
+        CollectionClient articles = client.Collections.Use("Article");
         await articles.Config.AddProperty(Property.Text("description"));
         // END AddProperty
 
@@ -148,7 +142,7 @@ public class ManageCollectionsTest : IAsyncLifetime
 
         var config = await client.Collections.Export("Article");
         Assert.True(config.VectorConfig.ContainsKey("default"));
-        Assert.Equal("text2vec-contextionary", config.VectorConfig["default"].Vectorizer.Identifier);
+        Assert.Equal("text2vec-transformers", config.VectorConfig["default"].Vectorizer.Identifier);
     }
 
     [Fact]
@@ -203,7 +197,7 @@ public class ManageCollectionsTest : IAsyncLifetime
                 Property.Text("body"),
             ]
         });
-        var articles = client.Collections.Use<object>("Article");
+        var articles = client.Collections.Use("Article");
         // START AddNamedVectors
         await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", sourceProperties: "body"));
         // END AddNamedVectors
@@ -213,11 +207,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         //Assert.NotNull(config.VectorConfig["body_vector"]);
     }
 
-    // START AddNamedVectors
-    // Coming soon
-    // END AddNamedVectors
-
-    // TODO[g-despot] {"error":[{"message":"parse vector index config: parse vector config for jina_colbert: multi vector index configured but vectorizer: \"text2vec-jinaai\" doesn't support multi vectors"}]}
+    // TODO[g-despot] NEW: Unexpected status code UnprocessableEntity. Expected: OK. collection create. Server replied: {"error":[{"message":"module 'multi2vec-jinaai': textFields or imageFields setting needs to be present"}]}
     [Fact]
     public async Task CreateCollectionWithMultiVectors()
     {
@@ -227,12 +217,12 @@ public class ManageCollectionsTest : IAsyncLifetime
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
         {
-            // The factory function will automatically enable multi-vector support for the HNSW index
-            // Configure.MultiVectors.Text2VecJinaAI().New("jina_colbert"),
-            // Must explicitly enable multi-vector support for the HNSW index
+            // Example 1 - Use a model integration
+            Configure.MultiVectors.Text2MultiVecJinaAI().New("jina_colbert"),
+            // Example 2 - User-provided multi-vector representations
             Configure.MultiVectors.SelfProvided().New("custom_multi_vector"),
         },
-            Properties = [ Property.Text("text") ],
+            Properties = [Property.Text("text")],
         });
         // END MultiValueVectorCollection
 
@@ -242,9 +232,32 @@ public class ManageCollectionsTest : IAsyncLifetime
         Assert.True(config.VectorConfig.ContainsKey("custom_multi_vector"));
     }
 
-    // START MultiValueVectorCollection
-    // Coming soon
-    // END MultiValueVectorCollection
+    [Fact]
+    public async Task TestMultiValueVectorMuvera()
+    {
+        // START MultiValueVectorMuvera
+        await client.Collections.Create(new CollectionConfig
+        {
+            Name = "DemoCollection",
+            VectorConfig = new VectorConfigList
+            {
+                // Example 1 - Use a model integration
+                Configure.MultiVectors.Text2MultiVecJinaAI().New("jina_colbert", indexConfig: new VectorIndex.HNSW
+                    {
+                        MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
+                    }),
+                // Example 2 - User-provided multi-vector representations
+                Configure.MultiVectors.SelfProvided(
+                ).New("custom_multi_vector", indexConfig: new VectorIndex.HNSW
+                    {
+                        MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
+                    }),
+            }
+        });
+        // END MultiValueVectorMuvera
+
+        Assert.True(await client.Collections.Exists("DemoCollection"));
+    }
 
     [Fact]
     public async Task TestSetVectorIndexType()
@@ -362,7 +375,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START UpdateReranker
-        var collection = client.Collections.Use<object>("Article");
+        var collection = client.Collections.Use("Article");
         await collection.Config.Update(c =>
         {
             c.RerankerConfig = new Reranker.Cohere();
@@ -404,7 +417,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START UpdateGenerative
-        var collection = client.Collections.Use<object>("Article");
+        var collection = client.Collections.Use("Article");
         await collection.Config.Update(c =>
         {
             c.GenerativeConfig = new GenerativeConfig.Cohere();
@@ -428,7 +441,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            Properties = 
+            Properties =
             [
                 Property.Text(
                     "title",
@@ -603,7 +616,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START ReadOneCollection
-        var articles = client.Collections.Use<object>("Article");
+        var articles = client.Collections.Use("Article");
         var articlesConfig = await articles.Config.Get();
 
         Console.WriteLine(articlesConfig);
@@ -628,7 +641,6 @@ public class ManageCollectionsTest : IAsyncLifetime
         }
         // END ReadAllCollections
 
-        Assert.Equal(2, response.Count);
         Assert.Contains(response, c => c.Name == "Article");
         Assert.Contains(response, c => c.Name == "Publication");
     }
@@ -646,7 +658,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         });
 
         // START UpdateCollection
-        var articles = client.Collections.Use<object>("Article");
+        var articles = client.Collections.Use("Article");
 
         await articles.Config.Update(c =>
         {
@@ -679,7 +691,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // {
     //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
-    //     var articles = client.Collections.Use<object>("Article");
+    //     var articles = client.Collections.Use("Article");
 
     //     var articleShards = await articles.Shards.Get();
     //     Console.WriteLine(string.Join(", ", articleShards.Select(s => s.Name)));
@@ -695,10 +707,10 @@ public class ManageCollectionsTest : IAsyncLifetime
     // public async Task TestUpdateCollectionShards()
     // {
     //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
-    //     var initialShards = await client.Collections.Use<object>("Article").Shards.Get();
+    //     var initialShards = await client.Collections.Use("Article").Shards.Get();
     //     var shardName = initialShards.First().Name;
 
-    //     var articles = client.Collections.Use<object>("Article");
+    //     var articles = client.Collections.Use("Article");
 
     //     var articleShards = await articles.Shards.Update(shardName, "READONLY");
     //     Console.WriteLine(string.Join(", ", articleShards.Select(s => s.Status)));

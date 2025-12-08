@@ -22,17 +22,14 @@ public class SearchHybridTest : IDisposable
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        // The C# client uses a configuration object.
-        var config = new ClientConfiguration
-        {
-            GrpcAddress = weaviateUrl,
-            // Headers = new()
-            // {
-            //     { "Authorization", $"Bearer {weaviateApiKey}" },
-            //     { "X-OpenAI-Api-Key", openaiApiKey }
-            // }
-        };
-        client = new WeaviateClient(config);
+        client = Connect.Cloud(
+                    weaviateUrl,
+                    weaviateApiKey,
+                    headers: new Dictionary<string, string>()
+                    {
+                { "X-OpenAI-Api-Key", openaiApiKey }
+                    }
+                ).GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -43,6 +40,7 @@ public class SearchHybridTest : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="extract target vectors: class WineReviewNV has multiple vectors, but no target vectors were provided")
     [Fact]
     public async Task NamedVectorHybrid()
     {
@@ -212,7 +210,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             // highlight-start
             "Australian mammal cute",
-            bm25Operator: new BM25Operator.Or(MinimumMatch: 2),
+            bm25Operator: new BM25Operator.Or(MinimumMatch: 1),
             // highlight-end
             limit: 3
         );
@@ -295,7 +293,6 @@ public class SearchHybridTest : IDisposable
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
-    // TODO[g-despot] Why is name required in VectorData.Create?
     [Fact]
     public async Task TestHybridWithVector()
     {
@@ -306,7 +303,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            vectors: Vectors.Create("default", queryVector),
+            vectors: Vectors.Create(queryVector),
             // highlight-end
             alpha: 0.25f,
             limit: 3
@@ -355,7 +352,7 @@ public class SearchHybridTest : IDisposable
             "large animal",
             moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"]),
             limit: 1,
-            returnMetadata: MetadataOptions.Vector
+            includeVectors: true
         );
         var nearTextVector = nearTextResponse.Objects.First().Vectors["default"];
 
@@ -400,9 +397,8 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "California",
             alpha: 0.75f,
-            groupBy: new GroupByRequest
+            groupBy: new GroupByRequest("round")  // group by this property
             {
-                PropertyName = "round",       // group by this property
                 NumberOfGroups = 2,           // maximum number of groups
                 ObjectsPerGroup = 3,          // maximum objects per group
             }

@@ -15,16 +15,8 @@ public class ConfigureBQTest : IAsyncLifetime
     public async Task InitializeAsync()
     {
         // START ConnectCode
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = await Connect.Local();
         // END ConnectCode
-
-        // Clean slate for each test
-        if (await client.Collections.Exists(COLLECTION_NAME))
-        {
-            await client.Collections.Delete(COLLECTION_NAME);
-        }
     }
 
     // Runs after each test
@@ -37,6 +29,7 @@ public class ConfigureBQTest : IAsyncLifetime
     [Fact]
     public async Task TestEnableBQ()
     {
+        await client.Collections.Delete(COLLECTION_NAME);
         // START EnableBQ
         await client.Collections.Create(new CollectionConfig
         {
@@ -59,6 +52,7 @@ public class ConfigureBQTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateSchema()
     {
+        await client.Collections.Delete(COLLECTION_NAME);
         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
         var collection = await client.Collections.Create(new CollectionConfig
@@ -80,6 +74,7 @@ public class ConfigureBQTest : IAsyncLifetime
     [Fact]
     public async Task TestBQWithOptions()
     {
+        await client.Collections.Delete(COLLECTION_NAME);
         // START BQWithOptions
         await client.Collections.Create(new CollectionConfig
         {
