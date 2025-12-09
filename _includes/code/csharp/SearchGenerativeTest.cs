@@ -50,11 +50,11 @@ public class SearchGenerativeTest : IDisposable
             "a sweet German white wine",
             limit: 2,
             targetVector: ["title_country"],
-            provider: new Providers.OpenAI { Model= "gpt-5-mini" },
-            singlePrompt: new SinglePrompt ("Translate this into German: {review_body}"),
+            provider: new Providers.OpenAI { Model = "gpt-5-mini" },
+            singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
             // highlight-start
-            groupedTask: new GroupedTask ("Summarize these reviews")
-            // highlight-end
+            groupedTask: new GroupedTask("Summarize these reviews")
+        // highlight-end
         );
 
         foreach (var o in response.Objects)
@@ -77,9 +77,9 @@ public class SearchGenerativeTest : IDisposable
             // highlight-start
             targetVector: ["title_country"], // Specify the target vector for named vector collections
             returnMetadata: MetadataOptions.Distance,
-            singlePrompt: new SinglePrompt ("Translate this into German: {review_body}"),
-            groupedTask: new GroupedTask ("Summarize these reviews")
-            // highlight-end
+            singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
+            groupedTask: new GroupedTask("Summarize these reviews")
+        // highlight-end
         );
 
         foreach (var o in response.Objects)
@@ -106,7 +106,7 @@ public class SearchGenerativeTest : IDisposable
             "World history",
             limit: 2,
             // highlight-start
-            singlePrompt: new SinglePrompt (prompt)
+            singlePrompt: new SinglePrompt(prompt)
         );
         // highlight-end
 
@@ -133,7 +133,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "World history",
             limit: 2,
-            singlePrompt: new SinglePrompt (prompt)
+            singlePrompt: new SinglePrompt(prompt)
         );
 
         // print source properties and generated responses
@@ -191,7 +191,7 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedTask: new GroupedTask (task)
+            groupedTask: new GroupedTask(task)
         );
         // highlight-end
 
@@ -210,11 +210,11 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedTask: new GroupedTask ("What do these animals have in common, if anything?")
+            groupedTask: new GroupedTask("What do these animals have in common, if anything?")
             {
                 Debug = true,
             },
-            provider: new Providers.OpenAI { ReturnMetadata = true, Model= "gpt-5-mini" }
+            provider: new Providers.OpenAI { ReturnMetadata = true, Model = "gpt-5-mini" }
         // highlight-end
         );
 
@@ -234,7 +234,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "Australian animals",
             limit: 3,
-            groupedTask: new GroupedTask (task)
+            groupedTask: new GroupedTask(task)
             {
                 // highlight-start
                 Properties = ["answer", "question"]
@@ -255,6 +255,7 @@ public class SearchGenerativeTest : IDisposable
 
     // TODO[g-despot] NEW: Implement testing with images
     // [Fact]
+    [Fact]
     public async Task TestWorkingWithImages()
     {
         // START WorkingWithImages

@@ -65,7 +65,7 @@ public class GetStartedTests
 
             var importResult = await questions.Data.InsertMany(dataObjects);
             await Task.Delay(2000); // Wait for data to be indexed
-            
+
             var response = await questions.Query.NearText("biology", limit: 2);
             // ... rest of the test
             Assert.Equal(2, response.Objects.Count());

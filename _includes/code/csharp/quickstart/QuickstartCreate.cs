@@ -25,7 +25,7 @@ namespace WeaviateProject.Examples
                 await client.Collections.Delete(collectionName);
             }
             // START CreateCollection
-            
+
             // Create a collection
             var movies = await client.Collections.Create(new CollectionConfig
             {

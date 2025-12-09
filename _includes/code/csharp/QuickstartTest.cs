@@ -129,7 +129,7 @@ public class QuickstartTest
             groupedTask: new GroupedTask(
                 "Write a tweet with emojis about these facts."
             ),
-            provider: new Providers.OpenAI() {}
+            provider: new Providers.OpenAI() { }
         );
         // highlight-end
 

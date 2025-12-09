@@ -37,7 +37,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
             Name = "Question",
             VectorConfig = Configure.Vectors.Text2VecWeaviate().New("default"),
             GenerativeConfig = new GenerativeConfig.Cohere(), // Set the generative module
-            Properties = 
+            Properties =
             [
                 Property.Text("question"),
                 Property.Text("answer"),
@@ -58,7 +58,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
             Name = "Question",
             VectorConfig = Configure.Vectors.Text2VecWeaviate().New("default"),
             GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
+            Properties =
             [
                 Property.Text(
                     "question",
@@ -104,7 +104,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
             Name = "Question",
             VectorConfig = Configure.Vectors.Text2VecWeaviate().New(
                 "default", // Set the name of the vector configuration
-                // highlight-start
+                           // highlight-start
                 new VectorIndex.HNSW
                 {
                     Distance = VectorIndexConfig.VectorDistance.Cosine, // Configure the vector index
@@ -113,7 +113,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                 // highlight-end
             ),
             GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
+            Properties =
             [
                 Property.Text("question"),
                 Property.Text("answer")

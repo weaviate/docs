@@ -219,7 +219,7 @@ public class SearchSimilarityTest : IAsyncLifetime
             "animals in movies",
             // highlight-start
             autoLimit: 1, // number of close groups
-                        // highlight-end
+                          // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
 

@@ -87,9 +87,9 @@ public class ConfigureRQTest : IAsyncLifetime
                 "default",
                 // highlight-start
                 new VectorIndex.HNSW
-                { 
+                {
                     // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.None{}
+                    Quantizer = new VectorIndex.Quantizers.None { }
                     // highlight-end
                 }
             // highlight-end

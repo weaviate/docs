@@ -294,7 +294,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new []
+            VectorConfig = new[]
             {
                 Configure.Vectors.Text2VecTransformers().New(
                     name: "default",
@@ -353,7 +353,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new []
+            VectorConfig = new[]
             {
                 Configure.Vectors.Text2VecTransformers().New("default")
             },
@@ -395,7 +395,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new []
+            VectorConfig = new[]
             {
                 Configure.Vectors.Text2VecTransformers().New("default"),
             },
@@ -469,7 +469,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new []
+            VectorConfig = new[]
             {
                 Configure.Vectors.Text2VecTransformers().New()
             },
@@ -492,7 +492,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            VectorConfig = new []
+            VectorConfig = new[]
             {
                 Configure.Vectors.Text2VecTransformers().New(
                     name: "default",

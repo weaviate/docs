@@ -71,7 +71,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
             [
                 Property.Text("title", description: "Question title")
             ],
-            VectorConfig = new []
+            VectorConfig = new[]
             {
                 Configure.Vectors.Text2VecTransformers().New("default")
             }
