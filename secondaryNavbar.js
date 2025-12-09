@@ -112,19 +112,8 @@ const secondaryNavbarItems = {
     icon: "fa fa-puzzle-piece",
     isSmall: true,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
-    link: "/integrations",
-    links: [
-      {
-        label: "Documentation",
-        link: "/integrations",
-        sidebar: "integrationsSidebar",
-      },
-      {
-        label: "Recipes",
-        link: "/integrations/recipes",
-        sidebar: "integrationsRecipesSidebar",
-      },
-    ],
+    href: "https://weaviate.io/product/integrations",
+    links: [],
   },
   contributor: {
     title: "Contributor guide",

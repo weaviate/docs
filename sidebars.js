@@ -111,6 +111,11 @@ const sidebars = {
         id: "weaviate/best-practices/code-generation",
       },
       items: []
+    },
+    {
+      type: "link",
+      label: "Integration ecosystem",
+      href: "https://weaviate.io/product/integrations",
     }
   ],
   modelProvidersSidebar: [
