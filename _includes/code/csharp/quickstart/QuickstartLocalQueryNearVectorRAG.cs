@@ -4,6 +4,7 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Weaviate.Client.Models.Generative;
 
 namespace WeaviateProject.Examples
 {
@@ -24,13 +25,11 @@ namespace WeaviateProject.Examples
                 queryVector,
                 limit: 1,
                 returnProperties: ["title", "description", "genre"],
-                groupedTask: new GroupedTask("Write a tweet with emojis about this movie.")
+                groupedTask: new GroupedTask("Write a tweet with emojis about this movie."),
+                provider: new Providers.Ollama
                 {
-                    Provider = new Weaviate.Client.Models.Generative.Providers.Ollama
-                    {
-                        ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
-                        Model = "llama3.2" // The model to use
-                    }
+                    ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
+                    Model = "llama3.2" // The model to use
                 }
             );
             // highlight-end

@@ -49,8 +49,8 @@ public class MultiTargetSearchTest : IAsyncLifetime
             Description = "Jeopardy game show questions",
             VectorConfig = new VectorConfigList()
             {
-                new VectorConfig("jeopardy_questions_vector", new Vectorizer.Text2VecOpenAI() { SourceProperties = ["question"] }),
-                new VectorConfig("jeopardy_answers_vector", new Vectorizer.Text2VecOpenAI() { SourceProperties = ["answer"] })
+                Configure.Vectors.Text2VecOpenAI().New("jeopardy_questions_vector", ["question"]),
+                Configure.Vectors.Text2VecOpenAI().New("jeopardy_answers_vector", ["answer"])
             },
             Properties =
             [

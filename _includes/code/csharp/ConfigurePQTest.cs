@@ -66,9 +66,8 @@ public class ConfigurePQTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -111,7 +110,7 @@ public class ConfigurePQTest : IAsyncLifetime
         {
             Name = "Question",
             Description = "A Jeopardy! question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default"),
             Properties =
             [
                 Property.Text("question"),
@@ -170,9 +169,8 @@ public class ConfigurePQTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     Quantizer = new VectorIndex.Quantizers.PQ

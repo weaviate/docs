@@ -40,9 +40,8 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -62,9 +61,8 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -85,14 +83,13 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 // highlight-start
                 new VectorIndex.HNSW
-                { 
+                {
                     // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.None{}
+                    Quantizer = new VectorIndex.Quantizers.None { }
                     // highlight-end
                 }
             // highlight-end
@@ -109,9 +106,8 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
                 "default",
-                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -136,7 +132,7 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default")
         });
 
         // START UpdateSchema
@@ -155,7 +151,7 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default")
         });
 
         // START 1BitUpdateSchema

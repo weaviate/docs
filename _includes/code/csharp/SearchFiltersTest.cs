@@ -384,7 +384,8 @@ public class SearchFilterTest : IAsyncLifetime
                     Property.Text("title"),
                     Property.Date("some_date")
                 ],
-                VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+                // VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+                VectorConfig = Configure.Vectors.SelfProvided().New()
             });
 
             var collection = client.Collections.Use(collectionName);

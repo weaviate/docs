@@ -39,12 +39,9 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
             ],
             VectorConfig = new[]
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig(
-                "title_country",
-                new Vectorizer.Text2VecTransformers { SourceProperties = ["title", "country"] }
-                )
+                Configure.Vectors.Text2VecTransformers().New("title", sourceProperties: ["title"]),
+                Configure.Vectors.Text2VecTransformers().New("review_body", sourceProperties: ["review_body"]),
+                Configure.Vectors.Text2VecTransformers().New("title_country", sourceProperties: ["title", "country"])
             }
         });
 
@@ -74,7 +71,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
                 Property.Text("answer", description: "The answer"),
                 Property.Number("points", description: "The points the question is worth")
             ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default")
         });
         // END Define the class
     }

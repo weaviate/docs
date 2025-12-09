@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
+using Weaviate.Client.Models.Generative;
 
 namespace WeaviateProject.Examples
 {
@@ -30,12 +31,10 @@ namespace WeaviateProject.Examples
                 "sci-fi",
                 limit: 1,
                 returnProperties: ["title", "description", "genre"],
-                groupedTask: new GroupedTask("Write a tweet with emojis about this movie.")
+                groupedTask: new GroupedTask("Write a tweet with emojis about this movie."),
+                provider: new Providers.Anthropic
                 {
-                    Provider = new Weaviate.Client.Models.Generative.Providers.Anthropic
-                    {
-                        Model = "claude-3-5-haiku-latest" // The model to use
-                    }
+                    Model = "claude-3-5-haiku-latest" // The model to use
                 }
             );
             // highlight-end

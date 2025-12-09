@@ -29,7 +29,7 @@ namespace WeaviateProject.Examples
             {
                 Name = collectionName,
                 // No automatic vectorization since we're providing vectors
-                VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+                VectorConfig = Configure.Vectors.SelfProvided().New(),
                 // Define properties for the collection
                 Properties =
                 [

@@ -94,7 +94,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+            VectorConfig = Configure.Vectors.SelfProvided().New("default")
         });
 
         // START BasicBatchImportExample
@@ -132,7 +132,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+            VectorConfig = Configure.Vectors.SelfProvided().New("default")
         });
 
         // START BatchImportWithIDExample
@@ -171,7 +171,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+            VectorConfig = Configure.Vectors.SelfProvided().New("default")
         });
 
         // START BatchImportWithVectorExample
@@ -259,9 +259,9 @@ public class ManageObjectsImportTest : IAsyncLifetime
             Name = "MyCollection",
             VectorConfig = new[]
             {
-            new VectorConfig("title", new Vectorizer.SelfProvided()),
-            new VectorConfig("body", new Vectorizer.SelfProvided())
-        },
+                Configure.Vectors.SelfProvided().New("title"),
+                Configure.Vectors.SelfProvided().New("body"),
+            },
             Properties = [Property.Text("title"), Property.Text("body")]
         });
 

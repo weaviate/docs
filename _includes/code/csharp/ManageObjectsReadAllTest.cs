@@ -43,7 +43,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         });
 
         // Create and populate tenants
-        await wineReviewMT.Tenants.Add(["tenantA", "tenantB"]);
+        await wineReviewMT.Tenants.Create(["tenantA", "tenantB"]);
         await wineReviewMT.WithTenant("tenantA").Data.Insert(new { title = "Tenant A Review 1" });
         await wineReviewMT.WithTenant("tenantB").Data.Insert(new { title = "Tenant B Review 1" });
     }

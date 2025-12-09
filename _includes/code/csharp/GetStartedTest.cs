@@ -35,7 +35,7 @@ public class GetStartedTests
             var questions = await client.Collections.Create(new CollectionConfig()
             {
                 Name = collectionName,
-                VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecOllama { ApiEndpoint = "http://host.docker.internal:11434" }),
+                VectorConfig = Configure.Vectors.Text2VecOllama(apiEndpoint: "http://host.docker.internal:11434").New(),
                 Properties =
                 [
                     Property.Text("answer"),
@@ -65,7 +65,7 @@ public class GetStartedTests
 
             var importResult = await questions.Data.InsertMany(dataObjects);
             await Task.Delay(2000); // Wait for data to be indexed
-            
+
             var response = await questions.Query.NearText("biology", limit: 2);
             // ... rest of the test
             Assert.Equal(2, response.Objects.Count());
@@ -106,7 +106,7 @@ public class GetStartedTests
             Name = CollectionName,
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecWeaviate())
+                Configure.Vectors.Text2VecWeaviate().New("default"),
             },
         });
 

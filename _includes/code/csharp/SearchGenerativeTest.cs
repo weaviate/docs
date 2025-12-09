@@ -50,10 +50,11 @@ public class SearchGenerativeTest : IDisposable
             "a sweet German white wine",
             limit: 2,
             targetVector: ["title_country"],
-            prompt: new SinglePrompt ("Translate this into German: {review_body}"),
+            provider: new Providers.OpenAI { Model = "gpt-5-mini" },
+            singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
             // highlight-start
-            groupedTask: new GroupedTask ("Summarize these reviews"){ Provider = new Providers.OpenAI { Model= "gpt-5-mini" } }
-            // highlight-end
+            groupedTask: new GroupedTask("Summarize these reviews")
+        // highlight-end
         );
 
         foreach (var o in response.Objects)
@@ -76,9 +77,9 @@ public class SearchGenerativeTest : IDisposable
             // highlight-start
             targetVector: ["title_country"], // Specify the target vector for named vector collections
             returnMetadata: MetadataOptions.Distance,
-            prompt: new SinglePrompt ("Translate this into German: {review_body}"),
-            groupedTask: new GroupedTask ("Summarize these reviews")
-            // highlight-end
+            singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
+            groupedTask: new GroupedTask("Summarize these reviews")
+        // highlight-end
         );
 
         foreach (var o in response.Objects)
@@ -105,7 +106,7 @@ public class SearchGenerativeTest : IDisposable
             "World history",
             limit: 2,
             // highlight-start
-            prompt: new SinglePrompt (prompt)
+            singlePrompt: new SinglePrompt(prompt)
         );
         // highlight-end
 
@@ -132,7 +133,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "World history",
             limit: 2,
-            prompt: new SinglePrompt (prompt)
+            singlePrompt: new SinglePrompt(prompt)
         );
 
         // print source properties and generated responses
@@ -161,7 +162,7 @@ public class SearchGenerativeTest : IDisposable
             "World history",
             limit: 2,
             // highlight-start
-            prompt: singlePrompt
+            singlePrompt: singlePrompt
         // highlight-end
         // provider: new GenerativeProvider.OpenAI()
         );
@@ -190,7 +191,7 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedTask: new GroupedTask (task)
+            groupedTask: new GroupedTask(task)
         );
         // highlight-end
 
@@ -209,11 +210,11 @@ public class SearchGenerativeTest : IDisposable
             "Cute animals",
             limit: 3,
             // highlight-start
-            groupedTask: new GroupedTask ("What do these animals have in common, if anything?")
+            groupedTask: new GroupedTask("What do these animals have in common, if anything?")
             {
                 Debug = true,
-                Provider = new Providers.OpenAI { ReturnMetadata = true, Model= "gpt-5-mini" }
-            }
+            },
+            provider: new Providers.OpenAI { ReturnMetadata = true, Model = "gpt-5-mini" }
         // highlight-end
         );
 
@@ -233,7 +234,7 @@ public class SearchGenerativeTest : IDisposable
         var response = await jeopardy.Generate.NearText(
             "Australian animals",
             limit: 3,
-            groupedTask: new GroupedTask (task)
+            groupedTask: new GroupedTask(task)
             {
                 // highlight-start
                 Properties = ["answer", "question"]
@@ -254,6 +255,7 @@ public class SearchGenerativeTest : IDisposable
 
     // TODO[g-despot] NEW: Implement testing with images
     // [Fact]
+    [Fact]
     public async Task TestWorkingWithImages()
     {
         // START WorkingWithImages
@@ -262,23 +264,22 @@ public class SearchGenerativeTest : IDisposable
         var imageBytes = await httpClient.GetByteArrayAsync(srcImgPath);
         var base64Image = Convert.ToBase64String(imageBytes);
 
-        var groupedTask = new GroupedTask("Formulate a Jeopardy!-style question about this image")
+        var groupedTask = new GroupedTask("Formulate a Jeopardy!-style question about this image");
+        // highlight-start
+        var provider = new Providers.Anthropic
         {
-            // highlight-start
-            Provider = new Providers.Anthropic
-            {
-                MaxTokens = 1000,
-                Images = [base64Image], // A list of base64 encoded strings of the image bytes
-                ImageProperties = ["img"], // Properties containing images in Weaviate }
-            }
-            // highlight-end
+            MaxTokens = 1000,
+            Images = [base64Image], // A list of base64 encoded strings of the image bytes
+            ImageProperties = ["img"], // Properties containing images in Weaviate }
         };
+        // highlight-end
 
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Generate.NearText(
             "Australian animals",
             limit: 3,
-            groupedTask: groupedTask
+            groupedTask: groupedTask,
+            provider: provider
         );
 
         // Print the source property and the generated response
