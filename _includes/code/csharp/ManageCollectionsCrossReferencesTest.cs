@@ -130,7 +130,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
 
         // START TwoWayCategoryCrossReferences
         var category = client.Collections.Use("JeopardyCategory");
-        await category.Config.AddProperty(
+        await category.Config.AddReference(
             // highlight-start
             Property.Reference("hasQuestion", "JeopardyQuestion")
         // highlight-end

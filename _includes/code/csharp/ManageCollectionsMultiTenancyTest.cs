@@ -375,7 +375,7 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
         var multiCollection = client.Collections.Use("MultiTenancyCollection");
         await multiCollection.Tenants.Create(["tenantA"]);
         // Add the cross-reference property to the multi-tenancy class
-        await multiCollection.Config.AddProperty(
+        await multiCollection.Config.AddReference(
             Property.Reference("hasCategory", "JeopardyCategory")
         );
 
