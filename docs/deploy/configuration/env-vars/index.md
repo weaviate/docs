@@ -58,6 +58,8 @@ import APITable from '@site/src/components/APITable';
 | `MEMORY_READONLY_PERCENTAGE` | If memory usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. (Default: `0` - i.e. no limit) | `string - number` | `75` |
 | `MEMORY_WARNING_PERCENTAGE` | If memory usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. (Default: `0` - i.e. no limit) | `string - number` | `85` |
 | `MODULES_CLIENT_TIMEOUT` | Timeout for requests to Weaviate modules. Default: `50s` | `string - duration` | `5s`, `10m`, `1h` |
+| `OBJECTS_TTL_ALLOW_SECONDS` | If set, the `OBJECTS_TTL_DELETE_SCHEDULE` is to be a 6-field cron format including seconds. Default: `true` | `boolean` | `false` |
+| `OBJECTS_TTL_DELETE_SCHEDULE` | Schedule for deleting expired objects. Uses standard cron format, or a descriptor (e.g. `@hourly`). Default: `""` | `string - cron format` | `0 */6 * * *` (every 6 hours) |
 | `ORIGIN` | Set the http(s) origin for Weaviate | `string - HTTP origin` | `https://my-weaviate-deployment.com` |
 | `PERSISTENCE_DATA_PATH` | Path to the Weaviate data store.<br/>[Note about file systems and performance](/weaviate/concepts/resources.md#file-system). | `string - file path` | `/var/lib/weaviate` <br/> Starting in v1.24, defaults to `./data`|
 | `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` | If set, [HNSW snapshotting](/weaviate/concepts/storage.md#persistence-and-crash-recovery) will be disabled. Default: `true`<br/>Added in `v1.31` | `boolean` | `false` |

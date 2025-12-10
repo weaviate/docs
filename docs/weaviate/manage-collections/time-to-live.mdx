@@ -1,0 +1,78 @@
+---
+title: Time to live (TTL)
+sidebar_label: Time to live (TTL)
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.ttl.py";
+
+:::info Added in `v1.35.0`
+:::
+
+Time-to-live (TTL) allows you to set an expiration time for objects in a collection.
+
+Expired objects are periodically removed from the collection by Weaviate's background processes, helping you manage data lifecycle and storage.
+
+TTLs are currently defined at the collection level. They can be set [relative to an object's creation time](#relative-to-a-creation-time), [the last update time](#relative-to-a-last-update-time), or [a specific `DATE` property](#relative-to-a-specific-date-property) within the object.
+
+With all TTL definitions, you can optionally set whether to exclude expired, but not yet deleted, objects from query results. This can prevent erroneous data retrieval before the background deletion process runs.
+
+## Relative to a creation time
+
+Set a TTL to count forward from the object's creation time metadata. The value must be positive.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START TTLByCreationTime"
+      endMarker="# END TTLByCreationTime"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## Relative to a last update time
+
+Set a TTL to count forward from the object's last updated time metadata. The value must be positive.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START TTLByUpdateTime"
+      endMarker="# END TTLByUpdateTime"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## Relative to a specific DATE property
+
+Set a TTL to a relative value from a specific `DATE` property within the object. The value can be positive or negative.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START TTLByDateProperty"
+      endMarker="# END TTLByDateProperty"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## Further resources
+
+- [Concepts: Data | Time to live](../concepts/data.md#time-to-live-ttl)
+- [References: Environment variables](docs/deploy/configuration/env-vars/index.md)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
