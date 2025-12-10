@@ -1,0 +1,106 @@
+---
+title: データのインポート
+description: マルチモーダルデータコレクションへのデータ取り込み
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/102_collection.mts';
+
+## <i class="fa-solid fa-code"></i> コード
+
+この例では、映画データをコレクションにインポートします。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// BatchImportData"
+  endMarker="// END BatchImportData"
+  language="ts"
+/>
+
+コードの概要:
+- ソースのテキストと画像データを読み込みます  
+- コレクションを取得します  
+- データをループ処理し、次を行います:  
+    - テキストに対応する画像を探す  
+    - 画像を base64 に変換する  
+    - 20 件ずつオブジェクトを一括挿入する  
+- インポート時のエラーを表示します  
+
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+ネイティブの Node.js `fetch()` を使用して、ソースからデータを読み込みます。ここではテキストデータが入った JSON ファイルとポスターが入った Zip ファイルです。テキストデータは操作しやすいように JSON オブジェクトへ変換し、画像は Zip から展開します。
+
+次に、`client.collections.get` でコレクションオブジェクトを作成し、コレクションとやり取りできるようにします。
+
+### <i class="fa-solid fa-chalkboard"></i> データの反復処理
+
+`for` ループと `Object.keys()` を組み合わせて、JSON ファイル内の要素を反復処理します。反復しながらカウンター変数をインクリメントし、バッチ単位でオブジェクトを一括挿入できるようにします。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Iterate through data"
+  endMarker="// END Iterate through data"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> オブジェクトへのデータ追加
+
+#### データ型の変換とオブジェクト構築
+
+データを文字列から Weaviate 用の正しいデータ型に変換します。たとえば、`release_date` は `Date` オブジェクトへ、`genre_ids` は整数のリストへ変換します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Format genre_ids and release_date"
+  endMarker="// Convert poster to base64"
+  language="ts"
+/>
+
+画像データを `BLOB` (Binary Large Object) 型で保存するために、Weaviate クライアント付属の便利な `toBase64FromMedia` ユーティリティを使って画像を base64 に変換します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Convert poster to base64"
+  endMarker="// Insert"
+  language="ts"
+/>
+
+データを正しい形式に変換した後、プロパティを設定してオブジェクトを構築し、 Weaviate へ挿入できるように準備します。
+
+#### データの一括挿入
+
+`generateUuid5` で生成した uuid と、先ほど定義したプロパティを持つオブジェクトを作成し、これを `itemsToInsert` にプッシュします。バッチが準備できたら `insertMany()` で一括挿入します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Insert"
+  endMarker="// END Insert"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
+
+一括挿入でエラーが発生した場合、問題が起こったことを把握したいものです。たとえば例外を投げるなどの対処が考えられます。この例では、インポートにエラーがあったことを単に出力しています。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Handle Errors"
+  endMarker="// END Handle Errors"
+  language="ts"
+/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルの生成元
+
+ がアイテムを Weaviate に送信すると、オブジェクトはコレクション (ここでは映画コレクション) に追加されます。
+
+コレクションにはベクトライザーモジュールが設定されており、ここではベクトルを指定していません。そのため、 Weaviate は指定されたベクトライザーを使用してデータからベクトル埋め込みを生成します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

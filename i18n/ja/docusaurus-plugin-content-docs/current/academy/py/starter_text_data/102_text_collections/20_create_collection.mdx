@@ -1,0 +1,87 @@
+---
+title: コレクションの作成
+description: テキスト データのためのコレクションの作成
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';
+
+ Weaviate はデータを「コレクション」に保存します。コレクションとは、同じデータ構造を共有するオブジェクトの集合です。映画データベースの場合、映画のコレクション、俳優のコレクション、レビューのコレクションなどを作成できます。
+
+ここでは映画のコレクションを作成します。
+
+## <i class="fa-solid fa-code"></i> コード
+
+次の例では、映画データのコレクションを作成します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# CreateMovieCollection"
+  endMarker="# END CreateMovieCollection"
+  language="py"
+/>
+
+各コレクション定義には名前が必要です。その後、この例で示したように追加のパラメーターを定義できます。
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティ
+
+プロパティとは、コレクションに保存したいオブジェクトの属性です。各プロパティには名前とデータ型があります。
+
+映画データベースでは、`title`、`release_date`、`genre_ids` などのプロパティがあり、データ型としては `TEXT`（文字列）、`DATE`（日付）、`INT`（整数）などがあります。`genre_ids` のように整数の配列を持つことも可能です。
+
+#### 自動スキーマ
+
+ Weaviate はデータから自動的に[スキーマを推論](/weaviate/config-refs/collections.mdx#auto-schema)できます。ただし、制御性を高め予期しない動作を防ぐため、プロパティを明示的に定義することを推奨します。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザー設定
+
+ベクトルを自分で指定しない場合、 Weaviate は指定したベクトライザーを用いてデータからベクトル埋め込みを生成します。
+
+このコード例では、デフォルト設定で `text2vec-openai` モジュールを指定しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Define the vectorizer module"
+  endMarker="# Define the generative module"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 生成モジュール設定
+
+コレクションを生成モデル（例: 大規模言語モデル）と併用する場合は、生成モジュールの指定が必要です。
+
+このコード例では、デフォルト設定で `openai` モジュール（正式名称は `generative-openai`）を指定しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Define the generative module"
+  endMarker="# END generativeDefinition"
+  language="py"
+/>
+
+import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
+
+<MutableGenerativeConfig />
+
+### <i class="fa-solid fa-code"></i> Python クラス
+
+コード例では、`Property`、`DataType`、`Configure` などのクラスを使用しています。これらは `weaviate.classes.config` サブモジュールで定義されており、コレクションを定義する際に利用します。
+
+利便性のため、サブモジュールを `wc` としてインポートし、そのクラスを使用しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# SubmoduleImport"
+  endMarker="# END SubmoduleImport"
+  language="py"
+/>
+
+## ご質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

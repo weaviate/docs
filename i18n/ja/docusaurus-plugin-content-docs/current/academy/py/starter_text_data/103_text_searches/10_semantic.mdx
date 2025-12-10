@@ -1,0 +1,67 @@
+---
+title: セマンティック検索
+description: テキストデータにおけるセマンティック検索
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/103_searches.py';
+
+Weaviate を使用すると、意味に基づいて類似アイテムを検索するセマンティック検索を実行できます。これは、データベース内のアイテムのベクトル埋め込みを比較することで行われます。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、「dystopian future」というクエリとの類似度に基づいて「Movie」のエントリーを検索し、最も一致度の高い 5 件のタイトルと公開年を出力します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MetadataSemanticSearch"
+  endMarker="# END MetadataSemanticSearch"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+結果は、クエリとデータベースオブジェクトのテキスト間のベクトル埋め込みの類似度に基づいています。この例では、埋め込みはベクトライザー モジュールによって生成されます。
+
+`limit` パラメーターは、返される結果の最大件数を設定します。
+
+`return_metadata` パラメーターには `MetadataQuery` クラスのインスタンスを渡し、検索結果として返すメタデータを指定します。現在のクエリでは、クエリとのベクトル距離を返します。
+
+<details>
+  <summary>Example results</summary>
+
+```text
+In Time 2011
+Distance to query: 0.179
+
+Gattaca 1997
+Distance to query: 0.180
+
+I, Robot 2004
+Distance to query: 0.182
+
+Mad Max: Fury Road 2015
+Distance to query: 0.190
+
+The Maze Runner 2014
+Distance to query: 0.193
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+返されるオブジェクトはカスタムクラスのインスタンスです。その `objects` 属性は検索結果のリストで、各要素も別のカスタムクラスのインスタンスです。
+
+各オブジェクトは次のようになります。
+- デフォルトでは、blob データ型を持つものを除き、すべてのプロパティとその UUID を含みます。
+- デフォルトでは、それ以外の情報 (例: references、metadata、vectors) は含みません。
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

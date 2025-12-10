@@ -1,0 +1,154 @@
+---
+title: Explorer ツール
+sidebar_position: 30
+description: "コレクションを閲覧し、オブジェクトを確認し、メタデータとベクトルを調査するためのグラフィカルインターフェース。"
+image: og/wcd/user_guides.jpg
+---
+
+*Explorer* ツールは、Weaviate Cloud に接続された Weaviate インスタンスをグラフィカルに確認できるインターフェースを提供します。コーディングなしでコレクションを閲覧し、オブジェクトを確認し、メタデータやベクトルを調査できます。
+
+## インターフェースのナビゲーション
+
+Explorer ツールは階層構造になっており、クラスターから個々のオブジェクトまで順にたどることができます。以下の手順でデータをナビゲートしてください。
+
+### クラスターの選択
+
+import ExplorerImg1 from '/docs/cloud/img/explorer-1.png';  
+import ExplorerImg2 from '/docs/cloud/img/explorer-2.png';  
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg1} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p>まず、左側メニューから <code>Explorer</code> ツールを選択します（項目 <span class="callout">1</span>）。</p>
+        </div>
+    </div>
+</div>
+<br/>
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg2} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p>利用可能なクラスターの一覧が読み込まれます（項目 <span class="callout">2</span>）。一覧からクラスターを選択すると（項目 <span class="callout">3</span>）、そのクラスター内のコレクションとオブジェクトを閲覧できます。</p>
+        </div>
+    </div>
+</div>
+<br/>
+
+### コレクションとオブジェクトの探索
+
+クラスターを選択したら、[コレクション](/weaviate/concepts/data.md#collections)に入り、その[オブジェクト](/weaviate/concepts/data.md#data-object-concepts)を確認できます。
+
+import ExplorerImg3 from '/docs/cloud/img/explorer-3.png';  
+import ExplorerImg4 from '/docs/cloud/img/explorer-4.png';  
+import ExplorerImg5 from '/docs/cloud/img/explorer-5.png';  
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg3} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p>クラスターを選択すると、利用可能なコレクションが一覧表示されます（項目 <span class="callout">4</span>）。コレクションを選択すると（項目 <span class="callout">5</span>）、そのオブジェクトを閲覧できます。</p>
+        </div>
+    </div>
+</div>
+<br/>
+
+#### オブジェクトの確認
+
+コレクションを選択すると、Explorer はオブジェクトを読みやすい形式で表示します。各オブジェクトには次の情報が示されます。
+
+- 一意の識別子 (UUID)
+- プロパティとその値
+- メタデータ（展開可能）
+- ベクトル埋め込み
+
+一部の詳細は折りたたまれた状態で表示されます。カラーコードされたプロパティグループをクリックして展開し、詳細を確認してください。
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg4} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p>選択したコレクションのオブジェクトが一覧で表示されます（項目 <span class="callout">6</span>）。</p>
+            <br/>
+            <p>各オブジェクトは、そのユニーク ID とプロパティ（項目 <span class="callout">7</span>）が表示されます。プロパティ名にカーソルを合わせると（項目 <span class="callout">7a</span>）、プロパティの型が表示されます。</p>
+        </div>
+    </div>
+</div>
+<br/>
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg5} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p>メタデータ（項目 <span class="callout">8</span>）やベクトル（項目 <span class="callout">9</span>）など、カラーコードされたプロパティグループをクリックして折りたたまれた詳細を展開します。</p>
+            <br/>
+            <p>ベクトルは、<Link to="/weaviate/concepts/data#multiple-vector-embeddings-named-vectors">名前付きベクトル</Link>を使用している場合はベクトル名と次元数のみが最初に表示されます。さらに展開すると一部のベクトル値が表示され、`copy`（項目 <span class="callout">10</span>）をクリックするとベクトル全体をクリップボードにコピーできます。</p>
+        </div>
+    </div>
+</div>
+<br/>
+
+### JSON 形式で表示
+
+Explorer では、構造化ビューと生の JSON フォーマットの両方を提供しています。
+
+任意のオブジェクトで以下の操作が可能です。
+
+- `{}` アイコンをクリックして JSON ビューに切り替える  
+- もう一度クリックしてフォーマットビューに戻る  
+- JSON ビューでは、すべてのネストされたプロパティ、メタデータ、ベクトルを含む完全なオブジェクト構造が表示されます  
+
+import ExplorerImg6 from '/docs/cloud/img/explorer-6.png';  
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg6} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p><code>{}</code> アイコン（項目 <span class="callout">12</span>）をクリックして、オブジェクトを JSON 形式で表示します（項目 <span class="callout">11</span>）。同じアイコンをもう一度クリックすると、元のオブジェクトビューに戻ります。</p>
+        </div>
+    </div>
+</div>
+<br/>
+
+### ページネーション & 更新
+
+オブジェクトが多数あるコレクションを表示していると、リストの下部にページネーション コントロールが表示されます。これらのコントロールを使用してオブジェクトを閲覧してください。
+
+さらに、ページ上部のリフレッシュ ボタンをクリックすると、コレクション内のオブジェクト一覧を更新できます。
+
+import ExplorerImg7 from '/docs/cloud/img/explorer-7.png';
+
+<div class="row">
+    <div class="card">
+        <div class="card__image">
+            <img src={ExplorerImg7} alt="Explorer Tool"/>
+        </div>
+        <div class="card__body">
+            <p>オブジェクトが多数あるコレクションを表示していると、リストの下部にページネーション コントロール (item <span class="callout">13</span>) が表示されます。これらのコントロールを使用してオブジェクトを閲覧してください。</p>
+            <br/>
+            <p>ページあたりのオブジェクト数はドロップダウン (item <span class="callout">14</span>) で変更できます。また、コレクション内の総オブジェクト数もここに表示されます。</p>
+            <br/>
+            <p>ページ右上にある "refresh" ボタン (item <span class="callout">15</span>) をクリックすると、コレクション内のオブジェクト一覧を更新できます。</p>
+        </div>
+    </div>
+</div>
+
+## サポート & フィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+

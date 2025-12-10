@@ -1,0 +1,64 @@
+---
+title: Query App で接続する
+sidebar_position: 60
+image: og/docs/connect.jpg
+# tags: ['getting started', 'connect']
+---
+
+import WCDQueryConsoleLocation from '/docs/cloud/img/wcs-query-console-location.jpg';
+
+[Query アプリケーション（query tool）](/cloud/tools/query-tool) は、ブラウザー ベースの GraphQL IDE です。Query ツールは Weaviate Cloud (WCD) コンソールで利用できます。
+
+Query ツールを使用すると、Weaviate Cloud 上でホストされているクラスターやセルフホスト環境のインスタンスと対話的に作業できます。
+
+## Query ツールの起動
+
+Query ツールを使用するには、[WCD ダッシュボード](https://console.weaviate.cloud) を開きます。
+
+左側のメニューで Query ツールのアイコンをクリックします。
+
+<img src={WCDQueryConsoleLocation} width="25%" alt="WCD Query ツールの場所"/>
+
+## Weaviate インスタンスの選択
+
+Query ツールは WCD クラスターに直接接続します。匿名アクセスが有効になっているか、認証情報がある場合は外部の Weaviate インスタンスにも接続できます。
+
+クラスターを選択するには、`Query` ボタンをクリックし、クラスター一覧から目的のクラスターを選択します。
+
+### 認証情報の指定
+
+import ExternalAuth from '/_includes/wcs/query-auth-details.mdx';
+
+<ExternalAuth/>
+
+### 推論キーの指定
+
+推論モジュール用の API キーを渡すには、リクエストヘッダーを使用します。
+
+1 つのヘッダーで複数のキーを渡せます。
+
+```shell
+{
+ "X-Cohere-Api-key": "replaceWithYourCohereKey",
+ "X-HuggingFace-Api-key": "replaceWithYourHuggingFaceKey",
+ "X-OpenAI-Api-key": "replaceWithYourOpenAIKey",
+}
+```
+
+## クエリ例
+
+この例では、[キーワード検索](/weaviate/search/bm25) を使って映画データベースを検索します。左側には GraphiQL エディター があり、クエリの構築を支援します。クエリを実行すると、右側に結果が表示されます。
+
+import QueryAppExample from '/docs/cloud/img/query-app-example.jpg';
+
+<img src={QueryAppExample} width="85%" alt="Query ツールの例"/>
+
+GraphQL API の詳細は、[GraphQL API](/weaviate/api/graphql) を参照してください。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+
