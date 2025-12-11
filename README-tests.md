@@ -1,6 +1,6 @@
 # Tests for Code Examples
 
-At Weaviate, we maintain automated tests to ensure the accuracy and functionality of our code examples. This testing framework helps us catch issues early and maintain high-quality documentation.
+At Weaviate, we maintain a set of automated tests to ensure the accuracy and functionality of our code examples. This testing framework helps us catch issues early and maintain high-quality documentation.
 
 ## Overview
 
