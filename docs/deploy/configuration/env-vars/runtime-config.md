@@ -8,11 +8,11 @@ image: og/docs/configuration.jpg
 :::info Added in `v1.30`
 :::
 
-Weaviate supports runtime configuration management, allowing certain environment variables to be updated and read by Weaviate on the fly without the need for restarts. This feature helps you adapt settings in real time and fine-tune your instance based on evolving needs.
+Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 
-## Set up runtime configuration
+Each runtime configuration corresponds to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable.
 
-Follow these steps to set up runtime configuration management:
+## How to set up runtime configuration
 
 1.  **Enable the feature**
     Set the environment variable `RUNTIME_OVERRIDES_ENABLED` to `true`.
@@ -20,8 +20,8 @@ Follow these steps to set up runtime configuration management:
 2.  **Provide an overrides file**
     Create a configuration file that contains the runtime overrides and point to it using the `RUNTIME_OVERRIDES_PATH` variable.
 
-    \<details\>
-    \<summary\>Example configuration override file\</summary\>
+    <details>
+    <summary>Example configuration override file</summary>
 
     ```yaml title="overrides.yaml"
     maximum_allowed_collections_count: 8
@@ -29,7 +29,7 @@ Follow these steps to set up runtime configuration management:
     async_replication_disabled: false
     ```
 
-    \</details\>
+    </details>
 
 3.  **Set the update interval**
     Set the `RUNTIME_OVERRIDES_LOAD_INTERVAL` variable to define how often Weaviate should check for configuration changes (default is `2m`).
@@ -45,19 +45,41 @@ The following environment variables are used to control runtime configuration ma
 | :-------------------------------- | :--------------------------------------------------------------------------- | :------------------- |
 | `RUNTIME_OVERRIDES_ENABLED`       | If set, the runtime configuration management is enabled. Default: `false`    | `boolean`            |
 | `RUNTIME_OVERRIDES_PATH`          | Path of the configuration override file.                      | `string - file path` |
-| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Refresh rate for checking if there are configuration changes. Default: `2m`  | `string - duration`  |
+| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | The interval between reading the configuration override file. Default: `2m`  | `string - duration`  |
 
-## Runtime configurable environment variables
+## Available overrides
 
-Below is a list of the environment variables that can be changed at runtime and the names that should be used in the override file:
+The following overrides are currently supported:
 
-| Environment variable name           | Runtime override name               |
+### General
+
+| Runtime override name               | Environment variable name           |
 | :---------------------------------- | :---------------------------------- |
-| `ASYNC_REPLICATION_DISABLED`        | `async_replication_disabled`        |
-| `AUTOSCHEMA_ENABLED`                | `autoschema_enabled`                |
-| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | `maximum_allowed_collections_count` |
+| `async_replication_disabled`        | `ASYNC_REPLICATION_DISABLED`        |
+| `autoschema_enabled`                | `AUTOSCHEMA_ENABLED`                |
+| `maximum_allowed_collections_count` | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` |
 
-For more details about the variables, check out the [Environment variables](./index.md) page.
+### Raft settings
+
+| Runtime override name               | Environment variable name           |
+| :---------------------------------- | :---------------------------------- |
+| `raft_drain_sleep`                | `RAFT_DRAIN_SLEEP`                  |
+| `raft_timeouts_multiplier`        | `RAFT_TIMEOUTS_MULTIPLIER`          |
+
+### Authentication
+
+| Runtime override name               | Environment variable name           |
+| :---------------------------------- | :---------------------------------- |
+| `authentication_oidc_certificate` | `AUTHENTICATION_OIDC_CERTIFICATE` |
+| `authentication_oidc_client_id` | `AUTHENTICATION_OIDC_CLIENT_ID` |
+| `authentication_oidc_groups_claim` | `AUTHENTICATION_OIDC_GROUPS_CLAIM` |
+| `authentication_oidc_issuer` | `AUTHENTICATION_OIDC_ISSUER` |
+| `authentication_oidc_jwks_url` | `AUTHENTICATION_OIDC_JWKS_URL` |
+| `authentication_oidc_scopes` | `AUTHENTICATION_OIDC_SCOPES` |
+| `authentication_oidc_skip_client_id_check` | `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` |
+| `authentication_oidc_username_claim` | `AUTHENTICATION_OIDC_USERNAME_CLAIM` |
+
+Refer to the [Environment variables](./index.md) page for descriptions on each configuration option
 
 ## Operation and monitoring
 

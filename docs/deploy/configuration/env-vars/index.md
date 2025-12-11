@@ -1,6 +1,6 @@
 ---
 title: Environment variables
-sidebar_position: 0
+sidebar_label: References
 image: og/docs/configuration.jpg
 # tags: ['HNSW']
 ---
@@ -153,10 +153,14 @@ For more information on authentication and authorization, see the [Authenticatio
 | `AUTHENTICATION_APIKEY_ENABLED` | Enable API key-based authentication | `boolean` | `false` |
 | `AUTHENTICATION_APIKEY_USERS` | API key-based identities. <br/><br/> Each identity corresponds to a specific key above. | `string - comma-separated list` | `jane@doe.com,ian-smith` |
 | `AUTHENTICATION_DB_USERS_ENABLED` | Allow runtime [user management](/weaviate/configuration/rbac/manage-users.mdx). Default: `false` | `boolean` | `true` |
+| `AUTHENTICATION_OIDC_CERTIFICATE` | OIDC Certificate (PEM format) | `string - PEM` | `-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----` |
 | `AUTHENTICATION_OIDC_CLIENT_ID` | OIDC Client ID | `string` | `my-client-id` |
 | `AUTHENTICATION_OIDC_ENABLED` | Enable OIDC-based authentication | `boolean` | `false` |
 | `AUTHENTICATION_OIDC_GROUPS_CLAIM` | OIDC Groups Claim | `string` | `groups` |
 | `AUTHENTICATION_OIDC_ISSUER` | OIDC Token Issuer | `string - URL` | `https://myissuer.com` |
+| `AUTHENTICATION_OIDC_JWKS_URL` | OIDC JWKS URL | `string - URL` | `https://myissuer.com/.well-known/jwks.json` |
+| `AUTHENTICATION_OIDC_SCOPES` | OIDC scopes to request | `string - comma-separated list` | `openid,email` |
+| `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` | Skip OIDC Client ID check | `boolean` | `false` |
 | `AUTHENTICATION_OIDC_USERNAME_CLAIM` | OIDC Username Claim | `string` | `email` |
 | `AUTHORIZATION_ADMINLIST_ENABLED` | Enable AdminList authorization scheme (mutually exclusive with `AUTHORIZATION_RBAC_ENABLED`) | `boolean` | `true` |
 | `AUTHORIZATION_ADMINLIST_USERS` | Users with admin permission when AdminList scheme used | `string - comma-separated list` | `jane@example.com,john@example.com` |
@@ -198,12 +202,14 @@ For more information on authentication and authorization, see the [Authenticatio
 | `COLLECTION_RETRIEVAL_STRATEGY`| Set collection definition retrieval behavior for a data request. <br/><br/> <ul><li>`LeaderOnly` (default): Always requests the definition from the leader node. </li><li>`LocalOnly`: Always use the local definition</li><li>`LeaderOnMismatch`: Requests the definition if outdated.</li></ul> ([Read more](/weaviate/concepts/replication-architecture/consistency.md#collection-definition-requests-in-queries)) (Added in `v1.27.10`, `v1.28.4`) | `string` | `LeaderOnly` |
 | `RAFT_BOOTSTRAP_EXPECT` | The number of voter notes at bootstrapping time | `string - number` | `1` |
 | `RAFT_BOOTSTRAP_TIMEOUT` | The time in seconds to wait for the cluster to bootstrap | `string - number` | `90` |
+| `RAFT_DRAIN_SLEEP` | Grace period before shutdown to allow ongoing operations to complete. (Default: `200ms`) | `string - number` | `2s` |
 | `RAFT_ENABLE_FQDN_RESOLVER` | If `true`, use DNS lookup instead of memberlist lookup for Raft. Added in `v1.25.15` and removed in `v1.30`. ([Read more](/weaviate/concepts/cluster.md#node-discovery)) | `boolean` | `true` |
 | `RAFT_ENABLE_ONE_NODE_RECOVERY` | Enable running the single node recovery routine on restart. This is useful if the default hostname has changed and a single node cluster believes there are supposed to be two nodes. | `boolean` | `false` |
 | `RAFT_FQDN_RESOLVER_TLD` | The top-level domain to use for DNS lookup, in `[node-id].[tld]` format. Added in `v1.25.15` and removed in `v1.30`. ([Read more](/weaviate/concepts/cluster.md#node-discovery)) | `string` | `example.com` |
 | `RAFT_GRPC_MESSAGE_MAX_SIZE` | The maximum internal raft gRPC message size in bytes. Defaults to 1073741824 | `string - number` | `1073741824` |
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
+| `RAFT_TIMEOUTS_MULTIPLIER` | Multiplier for Raft consensus timeouts and memberlist TCP timeouts. (Default: `5`) | `string - number` | `10` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
 | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
