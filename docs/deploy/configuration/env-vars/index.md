@@ -1,6 +1,6 @@
 ---
 title: Environment variables
-sidebar_position: 0
+sidebar_label: References
 image: og/docs/configuration.jpg
 # tags: ['HNSW']
 ---
@@ -47,6 +47,7 @@ import APITable from '@site/src/components/APITable';
 | `GODEBUG` | Controls debugging variables within the runtime. [See official Go docs](https://pkg.go.dev/runtime). | `string - comma-separated list of name=val pairs` | `gctrace=1` |
 | `GOMAXPROCS` | Set the maximum number of threads that can be executing simultaneously. If this value is set, it be respected by `LIMIT_RESOURCES`. | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `GOMEMLIMIT` | Set the memory limit for the Go runtime. A suggested value is between 80-90% of your total memory for Weaviate. The Go runtime tries to make sure that long-lived and temporary memory allocations do not exceed this value by making the garbage collector more aggressive as the memory usage approaches the limit. [Learn more about GOMEMLIMIT](https://weaviate.io/blog/gomemlimit-a-game-changer-for-high-memory-applications). | `string - memory limit in SI units` | `4096MiB` |
+| `INVERTED_SORTER_DISABLED` | Forces the "objects bucket" strategy and doesn't consider inverted sorting. Most users should never set this flag; it exists for benchmarking and as a safety net. Default: `false` | `boolean` | `false` |
 | `GO_PROFILING_DISABLE` | If `true`, disables Go profiling. Default: `false`. | `boolean` | `false` |
 | `GO_PROFILING_PORT` | Sets the port for the Go profiler. Default: `6060` | `integer` | `6060` |
 | `GRPC_MAX_MESSAGE_SIZE` | Maximum gRPC message size in bytes. (Added in `v1.27.1`) Default: 10MB | `string - number` | `2000000000` |
@@ -54,12 +55,13 @@ import APITable from '@site/src/components/APITable';
 | `LIMIT_RESOURCES` | If `true`, Weaviate will automatically attempt to auto-detect and limit the amount of resources (memory & threads) it uses to (0.8 * total memory) and (number of cores-1). It will override any `GOMEMLIMIT` values, however it will respect `GOMAXPROCS` values. | `boolean` | `false` |
 | `LOG_FORMAT` | Set the Weaviate logging format <br/><br/>Default: Outputs log data to json. e.g.: `{"action":"startup","level":"debug","msg":"finished initializing modules","time":"2023-04-12T05:07:43Z"}` <br/>`text`: Outputs log data to a string. e.g. `time="2023-04-12T04:54:23Z" level=debug msg="finished initializing modules" action=startup` | `string` |  |
 | `LOG_LEVEL` | Sets the Weaviate logging level. Default: `info`<br/><br/>`panic`: Panic entries only. (new in `v1.24`) <br/>`fatal`: Fatal entries only. (new in `v1.24`)  <br/> `error`: Error entries only. (new in `v1.24`) <br/>`warning`: Warning entries only. (new in `v1.24`) <br/>`info`: General operational entries. <br/> `debug`: Very verbose logging. <br/>`trace`: Even finer-grained informational events than `debug`. | `string` | |
-| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | Maximum allowed number of collections in a Weaviate node. A value of `-1` removes the limit. Default: `1000` <br/><br/>Instead of raising the collections count limit, consider [rethinking your architecture](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx).<br/>Added in `v1.30`| `string - number` | `20` |
+| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | Maximum allowed number of collections in a Weaviate node. A value of `-1` removes the limit. Default: `-1` (unlimited) <br/><br/>Instead of raising the collections count limit, consider [rethinking your architecture](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx).<br/>Added in `v1.30`| `string - number` | `20` |
 | `MEMORY_READONLY_PERCENTAGE` | If memory usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. (Default: `0` - i.e. no limit) | `string - number` | `75` |
 | `MEMORY_WARNING_PERCENTAGE` | If memory usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. (Default: `0` - i.e. no limit) | `string - number` | `85` |
 | `MODULES_CLIENT_TIMEOUT` | Timeout for requests to Weaviate modules. Default: `50s` | `string - duration` | `5s`, `10m`, `1h` |
 | `OBJECTS_TTL_ALLOW_SECONDS` | If set, the `OBJECTS_TTL_DELETE_SCHEDULE` is to be a 6-field cron format including seconds. Default: `true` | `boolean` | `false` |
 | `OBJECTS_TTL_DELETE_SCHEDULE` | Schedule for deleting expired objects. Uses standard cron format, or a descriptor (e.g. `@hourly`). Default: `""` | `string - cron format` | `0 */6 * * *` (every 6 hours) |
+| `OPERATIONAL_MODE` | Sets the mode of operation for the instance. Options: `READ_WRITE` (default), `READ_ONLY`, `WRITE_ONLY`, `SCALE_OUT`. Limits read or write operations based on the mode selected. | `string` | `READ_WRITE` |
 | `ORIGIN` | Set the http(s) origin for Weaviate | `string - HTTP origin` | `https://my-weaviate-deployment.com` |
 | `PERSISTENCE_DATA_PATH` | Path to the Weaviate data store.<br/>[Note about file systems and performance](/weaviate/concepts/resources.md#file-system). | `string - file path` | `/var/lib/weaviate` <br/> Starting in v1.24, defaults to `./data`|
 | `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` | If set, [HNSW snapshotting](/weaviate/concepts/storage.md#persistence-and-crash-recovery) will be disabled. Default: `true`<br/>Added in `v1.31` | `boolean` | `false` |
@@ -78,6 +80,9 @@ import APITable from '@site/src/components/APITable';
 | `QUERY_SLOW_LOG_ENABLED` | Log slow queries for debugging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `boolean` | `False` |
 | `QUERY_SLOW_LOG_THRESHOLD` | Set a threshold time for slow query logging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `string` | `2s` <br/> Values are times: `3h`, `2s`, `100ms` |
 | `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to use Roaring Bitmaps. <br/><br/>Available in versions `1.18` and higher. | `boolean` | `true` |
+| `REVECTORIZE_CHECK_DISABLED` | Disables the optimization where Weaviate checks if a vector can be reused from a previous version of the object. When disabled, improves write throughput by eliminating read-before-write patterns for new objects. Default: `false` | `boolean` | `false` |
+| `TENANT_ACTIVITY_READ_LOG_LEVEL` | Sets the log level for tenant read activity. Useful for analysis or debugging purposes. Default: `debug` | `string` | `info` |
+| `TENANT_ACTIVITY_WRITE_LOG_LEVEL` | Sets the log level for tenant write activity. Useful for analysis or debugging purposes. Default: `debug` | `string` | `info` |
 | `TOKENIZER_CONCURRENCY_COUNT` | Limit the combined number of GSE and Kagome tokenizers running at the same time. Default: `GOMAXPROCS` | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `TOMBSTONE_DELETION_CONCURRENCY` | The maximum number of cores to use for tombstone deletion. Set this to limit the number of cores used for cleanup. Default: Half of the available cores. (New in `v1.24.0`) | `string - int` | `4` |
 | `TOMBSTONE_DELETION_MAX_PER_CYCLE` | Maximum number of tombstones to delete per cleanup cycle. Set this to limit cleanup cycles, as they are resource-intensive. As an example, set a maximum of 10000000 (10M) for a cluster with 300 million-object shards. Default: none | `string - int` (New in `v1.24.15` / `v1.25.2`) | `10000000` |
@@ -125,11 +130,11 @@ import APITable from '@site/src/components/APITable';
 | `USAGE_S3_PREFIX` | Optional object prefix for S3 reports | `string` | `usage-reports` |
 | `RUNTIME_OVERRIDES_ENABLED` | Enable runtime override configuration | `boolean` | `true` |
 | `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | `string` | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
-| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config | `duration` | `30s` |
-| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics | `duration` | `2h` |
-| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop, this to avoid overwhelming the filesystem in case there are thousands for shards. | `duration` | `100ms` |
-| `USAGE_POLICY_VERSION` | Optional policy version | `string` | `2025-06-01` |
-| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start, it is opt-n. | `boolean` | `false` |
+| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config. Default: `2m` | `duration` | `2m` |
+| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics. Default: `1h` | `duration` | `1h` |
+| `USAGE_SHARD_JITTER_INTERVAL` | Jitter interval for shard-level operations to avoid overwhelming the filesystem when there are thousands of shards. Default: `100ms` | `duration` | `100ms` |
+| `USAGE_POLICY_VERSION` | Policy version for usage tracking | `string` | `2025-06-01` |
+| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start. Default: `false` | `boolean` | `true` |
 
 
 ```mdx-code-block
@@ -153,10 +158,14 @@ For more information on authentication and authorization, see the [Authenticatio
 | `AUTHENTICATION_APIKEY_ENABLED` | Enable API key-based authentication | `boolean` | `false` |
 | `AUTHENTICATION_APIKEY_USERS` | API key-based identities. <br/><br/> Each identity corresponds to a specific key above. | `string - comma-separated list` | `jane@doe.com,ian-smith` |
 | `AUTHENTICATION_DB_USERS_ENABLED` | Allow runtime [user management](/weaviate/configuration/rbac/manage-users.mdx). Default: `false` | `boolean` | `true` |
+| `AUTHENTICATION_OIDC_CERTIFICATE` | OIDC Certificate (PEM format) | `string - PEM` | `-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----` |
 | `AUTHENTICATION_OIDC_CLIENT_ID` | OIDC Client ID | `string` | `my-client-id` |
 | `AUTHENTICATION_OIDC_ENABLED` | Enable OIDC-based authentication | `boolean` | `false` |
 | `AUTHENTICATION_OIDC_GROUPS_CLAIM` | OIDC Groups Claim | `string` | `groups` |
 | `AUTHENTICATION_OIDC_ISSUER` | OIDC Token Issuer | `string - URL` | `https://myissuer.com` |
+| `AUTHENTICATION_OIDC_JWKS_URL` | OIDC JWKS URL | `string - URL` | `https://myissuer.com/.well-known/jwks.json` |
+| `AUTHENTICATION_OIDC_SCOPES` | OIDC scopes to request | `string - comma-separated list` | `openid,email` |
+| `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` | Skip OIDC Client ID check | `boolean` | `false` |
 | `AUTHENTICATION_OIDC_USERNAME_CLAIM` | OIDC Username Claim | `string` | `email` |
 | `AUTHORIZATION_ADMINLIST_ENABLED` | Enable AdminList authorization scheme (mutually exclusive with `AUTHORIZATION_RBAC_ENABLED`) | `boolean` | `true` |
 | `AUTHORIZATION_ADMINLIST_USERS` | Users with admin permission when AdminList scheme used | `string - comma-separated list` | `jane@example.com,john@example.com` |
@@ -198,15 +207,18 @@ For more information on authentication and authorization, see the [Authenticatio
 | `COLLECTION_RETRIEVAL_STRATEGY`| Set collection definition retrieval behavior for a data request. <br/><br/> <ul><li>`LeaderOnly` (default): Always requests the definition from the leader node. </li><li>`LocalOnly`: Always use the local definition</li><li>`LeaderOnMismatch`: Requests the definition if outdated.</li></ul> ([Read more](/weaviate/concepts/replication-architecture/consistency.md#collection-definition-requests-in-queries)) (Added in `v1.27.10`, `v1.28.4`) | `string` | `LeaderOnly` |
 | `RAFT_BOOTSTRAP_EXPECT` | The number of voter notes at bootstrapping time | `string - number` | `1` |
 | `RAFT_BOOTSTRAP_TIMEOUT` | The time in seconds to wait for the cluster to bootstrap | `string - number` | `90` |
+| `RAFT_DRAIN_SLEEP` | Grace period before shutdown to allow ongoing operations to complete. (Default: `200ms`) | `string - number` | `2s` |
 | `RAFT_ENABLE_FQDN_RESOLVER` | If `true`, use DNS lookup instead of memberlist lookup for Raft. Added in `v1.25.15` and removed in `v1.30`. ([Read more](/weaviate/concepts/cluster.md#node-discovery)) | `boolean` | `true` |
 | `RAFT_ENABLE_ONE_NODE_RECOVERY` | Enable running the single node recovery routine on restart. This is useful if the default hostname has changed and a single node cluster believes there are supposed to be two nodes. | `boolean` | `false` |
 | `RAFT_FQDN_RESOLVER_TLD` | The top-level domain to use for DNS lookup, in `[node-id].[tld]` format. Added in `v1.25.15` and removed in `v1.30`. ([Read more](/weaviate/concepts/cluster.md#node-discovery)) | `string` | `example.com` |
 | `RAFT_GRPC_MESSAGE_MAX_SIZE` | The maximum internal raft gRPC message size in bytes. Defaults to 1073741824 | `string - number` | `1073741824` |
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
+| `RAFT_TIMEOUTS_MULTIPLIER` | Multiplier for Raft consensus timeouts and memberlist TCP timeouts. (Default: `5`) | `string - number` | `10` |
+| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
+| `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | Enable/disable the request queue buffer for replicated indices in multi-node clusters. Can be modified at runtime. Default: `false` | `boolean` | `true` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
-| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 
 ```mdx-code-block
 </APITable>

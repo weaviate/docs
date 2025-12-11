@@ -705,7 +705,7 @@ const sidebars = {
         {
           type: "link",
           label: "Environment variables",
-          href: "https://docs.weaviate.io/deploy/configuration/env-vars",
+          href: "/deploy/configuration/env-vars",
           className: "sidebar-item",
         },
       ],
