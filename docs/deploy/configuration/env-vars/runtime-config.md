@@ -53,31 +53,54 @@ The following overrides are currently supported:
 
 ### General
 
-| Runtime override name               | Environment variable name           |
-| :---------------------------------- | :---------------------------------- |
-| `async_replication_disabled`        | `ASYNC_REPLICATION_DISABLED`        |
-| `autoschema_enabled`                | `AUTOSCHEMA_ENABLED`                |
-| `maximum_allowed_collections_count` | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` |
+| Runtime override name                            | Environment variable name                    |
+| :----------------------------------------------- | :------------------------------------------- |
+| `async_replication_disabled`                     | `ASYNC_REPLICATION_DISABLED`                 |
+| `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
+| `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
+| `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
+| `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
+| `operational_mode`                               | `OPERATIONAL_MODE`                           |
+| `query_slow_log_enabled`                         | `QUERY_SLOW_LOG_ENABLED`                     |
+| `query_slow_log_threshold`                       | `QUERY_SLOW_LOG_THRESHOLD`                   |
+| `replica_movement_minimum_async_wait`            | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT`        |
+| `replicated_indices_request_queue_enabled`       | `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED`   |
+| `revectorize_check_disabled`                     | `REVECTORIZE_CHECK_DISABLED`                 |
+| `tenant_activity_read_log_level`                 | `TENANT_ACTIVITY_READ_LOG_LEVEL`             |
+| `tenant_activity_write_log_level`                | `TENANT_ACTIVITY_WRITE_LOG_LEVEL`            |
 
 ### Raft settings
 
-| Runtime override name               | Environment variable name           |
-| :---------------------------------- | :---------------------------------- |
-| `raft_drain_sleep`                | `RAFT_DRAIN_SLEEP`                  |
-| `raft_timeouts_multiplier`        | `RAFT_TIMEOUTS_MULTIPLIER`          |
+| Runtime override name       | Environment variable name   |
+| :-------------------------- | :-------------------------- |
+| `raft_drain_sleep`          | `RAFT_DRAIN_SLEEP`          |
+| `raft_timeouts_multiplier`  | `RAFT_TIMEOUTS_MULTIPLIER`  |
+
+### Usage tracking
+
+| Runtime override name          | Environment variable name      |
+| :----------------------------- | :----------------------------- |
+| `usage_gcs_bucket`             | `USAGE_GCS_BUCKET`             |
+| `usage_gcs_prefix`             | `USAGE_GCS_PREFIX`             |
+| `usage_policy_version`         | `USAGE_POLICY_VERSION`         |
+| `usage_s3_bucket`              | `USAGE_S3_BUCKET`              |
+| `usage_s3_prefix`              | `USAGE_S3_PREFIX`              |
+| `usage_scrape_interval`        | `USAGE_SCRAPE_INTERVAL`        |
+| `usage_shard_jitter_interval`  | `USAGE_SHARD_JITTER_INTERVAL`  |
+| `usage_verify_permissions`     | `USAGE_VERIFY_PERMISSIONS`     |
 
 ### Authentication
 
-| Runtime override name               | Environment variable name           |
-| :---------------------------------- | :---------------------------------- |
-| `authentication_oidc_certificate` | `AUTHENTICATION_OIDC_CERTIFICATE` |
-| `authentication_oidc_client_id` | `AUTHENTICATION_OIDC_CLIENT_ID` |
-| `authentication_oidc_groups_claim` | `AUTHENTICATION_OIDC_GROUPS_CLAIM` |
-| `authentication_oidc_issuer` | `AUTHENTICATION_OIDC_ISSUER` |
-| `authentication_oidc_jwks_url` | `AUTHENTICATION_OIDC_JWKS_URL` |
-| `authentication_oidc_scopes` | `AUTHENTICATION_OIDC_SCOPES` |
+| Runtime override name                      | Environment variable name              |
+| :----------------------------------------- | :------------------------------------- |
+| `authentication_oidc_certificate`          | `AUTHENTICATION_OIDC_CERTIFICATE`      |
+| `authentication_oidc_client_id`            | `AUTHENTICATION_OIDC_CLIENT_ID`        |
+| `authentication_oidc_groups_claim`         | `AUTHENTICATION_OIDC_GROUPS_CLAIM`     |
+| `authentication_oidc_issuer`               | `AUTHENTICATION_OIDC_ISSUER`           |
+| `authentication_oidc_jwks_url`             | `AUTHENTICATION_OIDC_JWKS_URL`         |
+| `authentication_oidc_scopes`               | `AUTHENTICATION_OIDC_SCOPES`           |
 | `authentication_oidc_skip_client_id_check` | `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` |
-| `authentication_oidc_username_claim` | `AUTHENTICATION_OIDC_USERNAME_CLAIM` |
+| `authentication_oidc_username_claim`       | `AUTHENTICATION_OIDC_USERNAME_CLAIM`   |
 
 Refer to the [Environment variables](./index.md) page for descriptions on each configuration option
 

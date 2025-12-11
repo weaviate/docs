@@ -47,6 +47,7 @@ import APITable from '@site/src/components/APITable';
 | `GODEBUG` | Controls debugging variables within the runtime. [See official Go docs](https://pkg.go.dev/runtime). | `string - comma-separated list of name=val pairs` | `gctrace=1` |
 | `GOMAXPROCS` | Set the maximum number of threads that can be executing simultaneously. If this value is set, it be respected by `LIMIT_RESOURCES`. | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `GOMEMLIMIT` | Set the memory limit for the Go runtime. A suggested value is between 80-90% of your total memory for Weaviate. The Go runtime tries to make sure that long-lived and temporary memory allocations do not exceed this value by making the garbage collector more aggressive as the memory usage approaches the limit. [Learn more about GOMEMLIMIT](https://weaviate.io/blog/gomemlimit-a-game-changer-for-high-memory-applications). | `string - memory limit in SI units` | `4096MiB` |
+| `INVERTED_SORTER_DISABLED` | Forces the "objects bucket" strategy and doesn't consider inverted sorting. Most users should never set this flag; it exists for benchmarking and as a safety net. Default: `false` | `boolean` | `false` |
 | `GO_PROFILING_DISABLE` | If `true`, disables Go profiling. Default: `false`. | `boolean` | `false` |
 | `GO_PROFILING_PORT` | Sets the port for the Go profiler. Default: `6060` | `integer` | `6060` |
 | `GRPC_MAX_MESSAGE_SIZE` | Maximum gRPC message size in bytes. (Added in `v1.27.1`) Default: 10MB | `string - number` | `2000000000` |
@@ -54,12 +55,13 @@ import APITable from '@site/src/components/APITable';
 | `LIMIT_RESOURCES` | If `true`, Weaviate will automatically attempt to auto-detect and limit the amount of resources (memory & threads) it uses to (0.8 * total memory) and (number of cores-1). It will override any `GOMEMLIMIT` values, however it will respect `GOMAXPROCS` values. | `boolean` | `false` |
 | `LOG_FORMAT` | Set the Weaviate logging format <br/><br/>Default: Outputs log data to json. e.g.: `{"action":"startup","level":"debug","msg":"finished initializing modules","time":"2023-04-12T05:07:43Z"}` <br/>`text`: Outputs log data to a string. e.g. `time="2023-04-12T04:54:23Z" level=debug msg="finished initializing modules" action=startup` | `string` |  |
 | `LOG_LEVEL` | Sets the Weaviate logging level. Default: `info`<br/><br/>`panic`: Panic entries only. (new in `v1.24`) <br/>`fatal`: Fatal entries only. (new in `v1.24`)  <br/> `error`: Error entries only. (new in `v1.24`) <br/>`warning`: Warning entries only. (new in `v1.24`) <br/>`info`: General operational entries. <br/> `debug`: Very verbose logging. <br/>`trace`: Even finer-grained informational events than `debug`. | `string` | |
-| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | Maximum allowed number of collections in a Weaviate node. A value of `-1` removes the limit. Default: `1000` <br/><br/>Instead of raising the collections count limit, consider [rethinking your architecture](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx).<br/>Added in `v1.30`| `string - number` | `20` |
+| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | Maximum allowed number of collections in a Weaviate node. A value of `-1` removes the limit. Default: `-1` (unlimited) <br/><br/>Instead of raising the collections count limit, consider [rethinking your architecture](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx).<br/>Added in `v1.30`| `string - number` | `20` |
 | `MEMORY_READONLY_PERCENTAGE` | If memory usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. (Default: `0` - i.e. no limit) | `string - number` | `75` |
 | `MEMORY_WARNING_PERCENTAGE` | If memory usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. (Default: `0` - i.e. no limit) | `string - number` | `85` |
 | `MODULES_CLIENT_TIMEOUT` | Timeout for requests to Weaviate modules. Default: `50s` | `string - duration` | `5s`, `10m`, `1h` |
 | `OBJECTS_TTL_ALLOW_SECONDS` | If set, the `OBJECTS_TTL_DELETE_SCHEDULE` is to be a 6-field cron format including seconds. Default: `true` | `boolean` | `false` |
 | `OBJECTS_TTL_DELETE_SCHEDULE` | Schedule for deleting expired objects. Uses standard cron format, or a descriptor (e.g. `@hourly`). Default: `""` | `string - cron format` | `0 */6 * * *` (every 6 hours) |
+| `OPERATIONAL_MODE` | Sets the mode of operation for the instance. Options: `READ_WRITE` (default), `READ_ONLY`, `WRITE_ONLY`, `SCALE_OUT`. Limits read or write operations based on the mode selected. | `string` | `READ_WRITE` |
 | `ORIGIN` | Set the http(s) origin for Weaviate | `string - HTTP origin` | `https://my-weaviate-deployment.com` |
 | `PERSISTENCE_DATA_PATH` | Path to the Weaviate data store.<br/>[Note about file systems and performance](/weaviate/concepts/resources.md#file-system). | `string - file path` | `/var/lib/weaviate` <br/> Starting in v1.24, defaults to `./data`|
 | `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` | If set, [HNSW snapshotting](/weaviate/concepts/storage.md#persistence-and-crash-recovery) will be disabled. Default: `true`<br/>Added in `v1.31` | `boolean` | `false` |
@@ -78,6 +80,9 @@ import APITable from '@site/src/components/APITable';
 | `QUERY_SLOW_LOG_ENABLED` | Log slow queries for debugging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `boolean` | `False` |
 | `QUERY_SLOW_LOG_THRESHOLD` | Set a threshold time for slow query logging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `string` | `2s` <br/> Values are times: `3h`, `2s`, `100ms` |
 | `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to use Roaring Bitmaps. <br/><br/>Available in versions `1.18` and higher. | `boolean` | `true` |
+| `REVECTORIZE_CHECK_DISABLED` | Disables the optimization where Weaviate checks if a vector can be reused from a previous version of the object. When disabled, improves write throughput by eliminating read-before-write patterns for new objects. Default: `false` | `boolean` | `false` |
+| `TENANT_ACTIVITY_READ_LOG_LEVEL` | Sets the log level for tenant read activity. Useful for analysis or debugging purposes. Default: `debug` | `string` | `info` |
+| `TENANT_ACTIVITY_WRITE_LOG_LEVEL` | Sets the log level for tenant write activity. Useful for analysis or debugging purposes. Default: `debug` | `string` | `info` |
 | `TOKENIZER_CONCURRENCY_COUNT` | Limit the combined number of GSE and Kagome tokenizers running at the same time. Default: `GOMAXPROCS` | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `TOMBSTONE_DELETION_CONCURRENCY` | The maximum number of cores to use for tombstone deletion. Set this to limit the number of cores used for cleanup. Default: Half of the available cores. (New in `v1.24.0`) | `string - int` | `4` |
 | `TOMBSTONE_DELETION_MAX_PER_CYCLE` | Maximum number of tombstones to delete per cleanup cycle. Set this to limit cleanup cycles, as they are resource-intensive. As an example, set a maximum of 10000000 (10M) for a cluster with 300 million-object shards. Default: none | `string - int` (New in `v1.24.15` / `v1.25.2`) | `10000000` |
@@ -125,11 +130,11 @@ import APITable from '@site/src/components/APITable';
 | `USAGE_S3_PREFIX` | Optional object prefix for S3 reports | `string` | `usage-reports` |
 | `RUNTIME_OVERRIDES_ENABLED` | Enable runtime override configuration | `boolean` | `true` |
 | `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | `string` | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
-| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config | `duration` | `30s` |
-| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics | `duration` | `2h` |
-| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop, this to avoid overwhelming the filesystem in case there are thousands for shards. | `duration` | `100ms` |
-| `USAGE_POLICY_VERSION` | Optional policy version | `string` | `2025-06-01` |
-| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start, it is opt-n. | `boolean` | `false` |
+| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config. Default: `2m` | `duration` | `2m` |
+| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics. Default: `1h` | `duration` | `1h` |
+| `USAGE_SHARD_JITTER_INTERVAL` | Jitter interval for shard-level operations to avoid overwhelming the filesystem when there are thousands of shards. Default: `100ms` | `duration` | `100ms` |
+| `USAGE_POLICY_VERSION` | Policy version for usage tracking | `string` | `2025-06-01` |
+| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start. Default: `false` | `boolean` | `true` |
 
 
 ```mdx-code-block
@@ -210,9 +215,10 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
 | `RAFT_TIMEOUTS_MULTIPLIER` | Multiplier for Raft consensus timeouts and memberlist TCP timeouts. (Default: `5`) | `string - number` | `10` |
+| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
+| `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | Enable/disable the request queue buffer for replicated indices in multi-node clusters. Can be modified at runtime. Default: `false` | `boolean` | `true` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
-| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 
 ```mdx-code-block
 </APITable>
