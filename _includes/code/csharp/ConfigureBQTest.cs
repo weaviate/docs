@@ -1,7 +1,6 @@
 using Xunit;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace WeaviateProject.Tests;
@@ -31,19 +30,18 @@ public class ConfigureBQTest : IAsyncLifetime
     {
         await client.Collections.Delete(COLLECTION_NAME);
         // START EnableBQ
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
-                "default",
-                new VectorIndex.HNSW
+            VectorConfig = Configure.Vector("default",
+                v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                 {
                     // highlight-start
                     Quantizer = new VectorIndex.Quantizers.BQ()
                     // highlight-end
-                }
-            )
+                })
         });
         // END EnableBQ
     }
@@ -54,11 +52,11 @@ public class ConfigureBQTest : IAsyncLifetime
         await client.Collections.Delete(COLLECTION_NAME);
         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
-        var collection = await client.Collections.Create(new CollectionConfig
+        var collection = await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default")
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
         });
 
         // START UpdateSchema
@@ -75,24 +73,24 @@ public class ConfigureBQTest : IAsyncLifetime
     {
         await client.Collections.Delete(COLLECTION_NAME);
         // START BQWithOptions
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
+
             Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
-                "default",
-                // highlight-start
-                new VectorIndex.HNSW
-                {
-                    VectorCacheMaxObjects = 100000,
-                    Quantizer = new VectorIndex.Quantizers.BQ
+            VectorConfig = Configure.Vector("default",
+                v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                     {
-                        Cache = true,
-                        RescoreLimit = 200
+                        VectorCacheMaxObjects = 100000,
+                        Quantizer = new VectorIndex.Quantizers.BQ
+                        {
+                            Cache = true,
+                            RescoreLimit = 200
+                        }
                     }
-                }
-                // highlight-end
-            )
+                    // highlight-end
+                )
         });
         // END BQWithOptions
     }

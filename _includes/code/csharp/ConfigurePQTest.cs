@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Net.Http;
 using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace WeaviateProject.Tests;
 
@@ -63,12 +62,12 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // START CollectionWithAutoPQ
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
-                "default",
-                new VectorIndex.HNSW
+            VectorConfig = Configure.Vector("default",
+                v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                 {
                     // highlight-start
                     Quantizer = new VectorIndex.Quantizers.PQ
@@ -81,8 +80,7 @@ public class ConfigurePQTest : IAsyncLifetime
                         },
                     }
                     // highlight-end
-                }
-            ),
+                }),
             Properties =
             [
                 Property.Text("question"),
@@ -106,11 +104,11 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // START InitialSchema
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
             Description = "A Jeopardy! question",
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default"),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
             Properties =
             [
                 Property.Text("question"),
@@ -166,12 +164,11 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // Create a collection with PQ enabled to inspect its schema
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(
-                "default",
-                new VectorIndex.HNSW
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                 {
                     Quantizer = new VectorIndex.Quantizers.PQ
                     {

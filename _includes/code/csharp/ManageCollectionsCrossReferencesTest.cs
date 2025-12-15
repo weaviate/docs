@@ -30,14 +30,14 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestCrossRefDefinition()
     {
         // START CrossRefDefinition
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
             Properties = [Property.Text("title")]
         });
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
@@ -108,7 +108,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestTwoWay()
     {
         // START TwoWayCategory1CrossReferences
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
@@ -117,7 +117,7 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         // END TwoWayCategory1CrossReferences
 
         // START TwoWayQuestionCrossReferences
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
@@ -287,20 +287,20 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
         Assert.NotNull(result);
         Assert.True(result.References.ContainsKey("hasCategory"));
         Assert.Single(result.References["hasCategory"]);
-        Assert.Equal(categoryObjId, result.References["hasCategory"][0].ID);
+        Assert.Equal(categoryObjId, result.References["hasCategory"][0].UUID);
     }
 
     // Helper method to set up collections
     private async Task SetupCollections()
     {
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
             Properties = [Property.Text("title")]
         });
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",

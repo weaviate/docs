@@ -50,7 +50,7 @@ public class SearchFilterTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            filters: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
             // highlight-end
             limit: 3
         );
@@ -72,7 +72,7 @@ public class SearchFilterTest : IAsyncLifetime
         var response = await jeopardy.Query.NearText(
             "fashion icons",
             // highlight-start
-            filters: Filter.Property("points").GreaterThan(200),
+            filters: Filter.Property("points").IsGreaterThan(200),
             // highlight-end
             limit: 3
         );
@@ -170,7 +170,7 @@ public class SearchFilterTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            filters: Filter.Property("answer").Like("*ala*"),
+            filters: Filter.Property("answer").IsLike("*ala*"),
             // highlight-end
             limit: 3
         );
@@ -190,10 +190,10 @@ public class SearchFilterTest : IAsyncLifetime
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
             // Combine filters with Filter.And(), Filter.Or(), and Filter.Not()
-            filters: Filter.And(
-                Filter.Property("round").Equal("Double Jeopardy!"),
-                Filter.Property("points").LessThan(600),
-                Filter.Not(Filter.Property("answer").Equal("Yucatan"))
+            filters: Filter.AllOf(
+                Filter.Property("round").IsEqual("Double Jeopardy!"),
+                Filter.Property("points").IsLessThan(600),
+                Filter.Not(Filter.Property("answer").IsEqual("Yucatan"))
             ),
             // highlight-end
             limit: 3
@@ -213,10 +213,10 @@ public class SearchFilterTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            filters: Filter.Or(
-                Filter.Property("points").GreaterThan(700), // gte/greaterThanOrEqual not always explicitly named in helpers, check impl
-                Filter.Property("points").LessThan(500),
-                Filter.Property("round").Equal("Double Jeopardy!")
+            filters: Filter.AnyOf(
+                Filter.Property("points").IsGreaterThan(700), // gte/greaterThanOrEqual not always explicitly named in helpers, check impl
+                Filter.Property("points").IsLessThan(500),
+                Filter.Property("round").IsEqual("Double Jeopardy!")
             ),
             // highlight-end
             limit: 5
@@ -236,10 +236,10 @@ public class SearchFilterTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            filters: Filter.And(
-                Filter.Property("points").GreaterThan(300),
-                Filter.Property("points").LessThan(700),
-                Filter.Property("round").Equal("Double Jeopardy!")
+            filters: Filter.AllOf(
+                Filter.Property("points").IsGreaterThan(300),
+                Filter.Property("points").IsLessThan(700),
+                Filter.Property("round").IsEqual("Double Jeopardy!")
             ),
             // highlight-end
             limit: 5
@@ -259,11 +259,11 @@ public class SearchFilterTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            filters: Filter.And(
-                Filter.Property("answer").Like("*bird*"),
-                Filter.Or(
-                    Filter.Property("points").GreaterThan(700),
-                    Filter.Property("points").LessThan(300)
+            filters: Filter.AllOf(
+                Filter.Property("answer").IsLike("*bird*"),
+                Filter.AnyOf(
+                    Filter.Property("points").IsGreaterThan(700),
+                    Filter.Property("points").IsLessThan(300)
                 )
             ),
             // highlight-end
@@ -286,7 +286,7 @@ public class SearchFilterTest : IAsyncLifetime
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
             // Filter by property on the referenced object
-            filters: Filter.Reference("hasCategory").Property("title").Like("*TRANSPORTATION*"),
+            filters: Filter.Reference("hasCategory").Property("title").IsLike("*TRANSPORTATION*"),
             // Retrieve the referenced object with specific properties
             returnReferences: [
                 new QueryReference("hasCategory", fields: ["title"])
@@ -327,13 +327,13 @@ public class SearchFilterTest : IAsyncLifetime
         Guid targetId = Guid.Parse("00037775-1432-35e5-bc59-443baaef7d80");
 
         var response = await collection.Query.FetchObjects(
-            filters: Filter.ID.Equal(targetId)
+            filters: Filter.ID.IsEqual(targetId)
         );
 
         foreach (var o in response.Objects)
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties)); // Inspect returned objects
-            Console.WriteLine(o.ID);
+            Console.WriteLine(o.UUID);
         }
         // END FilterById
     }
@@ -352,7 +352,7 @@ public class SearchFilterTest : IAsyncLifetime
         var response = await collection.Query.FetchObjects(
             limit: 3,
             // highlight-start
-            filters: Filter.CreationTime.GreaterThan(filterTime),
+            filters: Filter.CreationTime.IsGreaterThan(filterTime),
             returnMetadata: MetadataOptions.CreationTime
         // highlight-end
         );
@@ -377,7 +377,7 @@ public class SearchFilterTest : IAsyncLifetime
 
         try
         {
-            await client.Collections.Create(new CollectionConfig
+            await client.Collections.Create(new CollectionCreateParams
             {
                 Name = collectionName,
                 Properties = [
@@ -385,7 +385,7 @@ public class SearchFilterTest : IAsyncLifetime
                     Property.Date("some_date")
                 ],
                 // VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
-                VectorConfig = Configure.Vectors.SelfProvided().New()
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided())
             });
 
             var collection = client.Collections.Use(collectionName);
@@ -424,7 +424,7 @@ public class SearchFilterTest : IAsyncLifetime
                 limit: 3,
                 // highlight-start
                 // This property (`some_date`) is a `DATE` datatype
-                filters: Filter.Property("some_date").GreaterThan(filterTime)
+                filters: Filter.Property("some_date").IsGreaterThan(filterTime)
             // highlight-end
             );
 
@@ -452,7 +452,7 @@ public class SearchFilterTest : IAsyncLifetime
         var response = await collection.Query.FetchObjects(
             limit: 3,
             // highlight-start
-            filters: Filter.Property("answer").Length().GreaterThan(lengthThreshold)
+            filters: Filter.Property("answer").HasLength().IsGreaterThan(lengthThreshold)
         // highlight-end
         );
 
@@ -497,7 +497,7 @@ public class SearchFilterTest : IAsyncLifetime
 
         try
         {
-            await localClient.Collections.Create(new CollectionConfig
+            await localClient.Collections.Create(new CollectionCreateParams
             {
                 Name = collectionName,
                 Properties = [
@@ -516,7 +516,7 @@ public class SearchFilterTest : IAsyncLifetime
             // START FilterbyGeolocation
             var response = await publications.Query.FetchObjects(
                 filters: Filter.Property("headquartersGeoLocation")
-                    .WithinGeoRange(new GeoCoordinate(52.39f, 4.84f), 1000.0f) // In meters
+                    .IsWithinGeoRange(new GeoCoordinate(52.39f, 4.84f), 1000.0f) // In meters
             );
 
             foreach (var o in response.Objects)

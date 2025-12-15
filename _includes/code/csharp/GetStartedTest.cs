@@ -32,10 +32,10 @@ public class GetStartedTests
                 await client.Collections.Delete(collectionName);
             }
 
-            var questions = await client.Collections.Create(new CollectionConfig()
+            var questions = await client.Collections.Create(new CollectionCreateParams()
             {
                 Name = collectionName,
-                VectorConfig = Configure.Vectors.Text2VecOllama(apiEndpoint: "http://host.docker.internal:11434").New(),
+                VectorConfig = Configure.Vector("default", v => v.Text2VecOllama(apiEndpoint: "http://host.docker.internal:11434")),
                 Properties =
                 [
                     Property.Text("answer"),
@@ -101,12 +101,12 @@ public class GetStartedTests
 
         await client.Collections.Delete(CollectionName);
         // 3. Create the collection
-        var movies = await client.Collections.Create(new CollectionConfig
+        var movies = await client.Collections.Create(new CollectionCreateParams
         {
             Name = CollectionName,
             VectorConfig = new VectorConfigList
             {
-                Configure.Vectors.Text2VecWeaviate().New("default"),
+                Configure.Vector("default", v => v.Text2VecWeaviate()),
             },
         });
 

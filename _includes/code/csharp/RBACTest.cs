@@ -132,7 +132,7 @@ public class RBACTest : IAsyncLifetime
         // START AddDataObjectPermission
         var dataPermissions = new PermissionScope[]
         {
-            new Permissions.Data("TargetCollection*", null, null) // Applies to all collections starting with "TargetCollection"
+            new Permissions.Data("TargetCollection*", "TargetTenant*") // Applies to all collections starting with "TargetCollection"
             {
                 Create = true, // Allow data inserts
                 Read = true,   // Allow query and fetch operations
@@ -249,7 +249,7 @@ public class RBACTest : IAsyncLifetime
         // START AddRoles
         var additionalPermissions = new PermissionScope[]
         {
-            new Permissions.Data("TargetCollection*", null, null) { Create = true }
+            new Permissions.Data("TargetCollection*", "TargetTenant*") { Create = true }
         };
         await client.Roles.AddPermissions(testRole, additionalPermissions);
         // END AddRoles
@@ -298,7 +298,7 @@ public class RBACTest : IAsyncLifetime
         var permissionsToRemove = new PermissionScope[]
         {
             new Permissions.Collections("TargetCollection*") { Read = true },
-            new Permissions.Data("TargetCollection*", null, null) { Create = true }
+            new Permissions.Data("TargetCollection*", "TargetTenant*") { Create = true }
         };
         await client.Roles.RemovePermissions(testRole, permissionsToRemove);
         // END RemovePermissions
@@ -334,7 +334,7 @@ public class RBACTest : IAsyncLifetime
                 Delete = true  // Allow deleting collections
             },
             // Collection data level permissions
-            new Permissions.Data("TargetCollection*", null, null)
+            new Permissions.Data("TargetCollection*", "TargetTenant*")
             {
                 Create = true, // Allow data inserts
                 Read = true,   // Allow query and fetch operations
@@ -364,7 +364,7 @@ public class RBACTest : IAsyncLifetime
         var viewerPermissions = new PermissionScope[]
         {
             new Permissions.Collections("TargetCollection*") { Read = true },
-            new Permissions.Data("TargetCollection*", null, null) { Read = true }
+            new Permissions.Data("TargetCollection*", "TargetTenant*") { Read = true }
         };
 
         // Create a new role
@@ -390,7 +390,7 @@ public class RBACTest : IAsyncLifetime
                 Update = true, // Allow updating tenant states
                 Delete = true  // Allow deleting tenants
             },
-            new Permissions.Data("TargetCollection*", null, null)
+            new Permissions.Data("TargetCollection*", "TargetTenant*")
             {
                 Create = true, // Allow data inserts
                 Read = true,   // Allow query and fetch operations

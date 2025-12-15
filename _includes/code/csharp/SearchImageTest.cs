@@ -39,7 +39,7 @@ public class SearchImageTest : IAsyncLifetime
             await client.Collections.Delete("Dog");
         }
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Dog",
             Properties =
@@ -48,7 +48,7 @@ public class SearchImageTest : IAsyncLifetime
                 Property.Text("breed"),
                 Property.Text("description")
             ],
-            VectorConfig = Configure.Vectors.Multi2VecClip(imageFields: new[] { "image" }, textFields: new[] { "breed", "description" }).New("default")
+            VectorConfig = Configure.Vector("default", v => v.Multi2VecClip(imageFields: new[] { "image" }, textFields: new[] { "breed", "description" }))
         });
 
         // Prepare and ingest sample dog images

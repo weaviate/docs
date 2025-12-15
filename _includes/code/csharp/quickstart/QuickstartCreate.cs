@@ -27,10 +27,10 @@ namespace WeaviateProject.Examples
             // START CreateCollection
 
             // Create a collection
-            var movies = await client.Collections.Create(new CollectionConfig
+            var movies = await client.Collections.Create(new CollectionCreateParams
             {
                 Name = collectionName,
-                VectorConfig = Configure.Vectors.Text2VecWeaviate().New(),
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
                 // Define properties for the collection
                 Properties =
                 [

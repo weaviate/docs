@@ -61,7 +61,7 @@ public class SearchAggregateTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
-            metrics: [Metrics.ForProperty("answer")
+            returnMetrics: [Metrics.ForProperty("answer")
                 .Text(
                     topOccurrencesCount: true,
                     topOccurrencesValue: true,
@@ -86,7 +86,7 @@ public class SearchAggregateTest : IDisposable
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
             // Use .Number for floats (NUMBER datatype in Weaviate)
-            metrics: [Metrics.ForProperty("points")
+            returnMetrics: [Metrics.ForProperty("points")
                 .Integer(
                     sum: true,
                     maximum: true,
@@ -135,7 +135,7 @@ public class SearchAggregateTest : IDisposable
             // highlight-start
             limit: 10,
             // highlight-end
-            metrics: [Metrics.ForProperty("points").Number(sum: true)]
+            returnMetrics: [Metrics.ForProperty("points").Number(sum: true)]
         );
 
         var pointsMetrics = response.Properties["points"] as Aggregate.Number;
@@ -154,7 +154,7 @@ public class SearchAggregateTest : IDisposable
             // highlight-start
             objectLimit: 10,
             // highlight-end
-            metrics: [Metrics.ForProperty("points").Number(sum: true)]
+            returnMetrics: [Metrics.ForProperty("points").Number(sum: true)]
         );
 
         var pointsMetrics = response.Properties["points"] as Aggregate.Number;
@@ -173,7 +173,7 @@ public class SearchAggregateTest : IDisposable
             // highlight-start
             distance: 0.19,
             // highlight-end
-            metrics: [Metrics.ForProperty("points").Number(sum: true)]
+            returnMetrics: [Metrics.ForProperty("points").Number(sum: true)]
         );
 
         var pointsMetrics = response.Properties["points"] as Aggregate.Number;
@@ -189,7 +189,7 @@ public class SearchAggregateTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
-            filters: Filter.Property("round").Equal("Final Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Final Jeopardy!"),
             // highlight-end
             totalCount: true
         );

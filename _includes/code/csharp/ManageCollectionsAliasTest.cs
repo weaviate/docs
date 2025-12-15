@@ -53,10 +53,10 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
     {
         // START CreateAlias
         // Create a collection first
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = Articles,
-            VectorConfig = Configure.Vectors.SelfProvided().New(),
+            VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
             Properties =
             [
                 Property.Text("title"),
@@ -104,10 +104,10 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         // START UpdateAlias
         // Create a new collection for migration
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = ArticlesV2,
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
             Properties =
             [
                 Property.Text("title"),
@@ -134,10 +134,10 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         // Note: In C# we check existence first to avoid errors if it already exists
         if (!await client.Collections.Exists(Articles))
         {
-            await client.Collections.Create(new CollectionConfig
+            await client.Collections.Create(new CollectionCreateParams
             {
                 Name = Articles,
-                VectorConfig = Configure.Vectors.SelfProvided().New(),
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
                 Properties =
                [
                    Property.Text("title"),
@@ -185,10 +185,10 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
     {
         // START Step1CreateOriginal
         // Create original collection with data
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = ProductsV1,
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
         });
 
         var productsV1 = client.Collections.Use(ProductsV1);
@@ -225,10 +225,10 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         // START Step3NewCollection
         // Create new collection with updated schema
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = ProductsV2,
-            VectorConfig = Configure.Vectors.SelfProvided().New(),
+            VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
             Properties =
             [
                 Property.Text("name"),

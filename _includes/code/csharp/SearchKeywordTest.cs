@@ -254,7 +254,7 @@ public class SearchKeywordTest : IDisposable
         var response = await jeopardy.Query.BM25(
             "food",
             // highlight-start
-            filters: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
             // highlight-end
             returnProperties: ["answer", "question", "round"], // return these properties
             limit: 3
