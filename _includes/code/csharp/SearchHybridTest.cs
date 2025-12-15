@@ -326,7 +326,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            filters: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
             // highlight-end
             limit: 3
         );

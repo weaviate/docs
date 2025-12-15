@@ -83,7 +83,7 @@ public class ManageObjectsReadTest : IDisposable
         {
             return; // Skip if no data
         }
-        var objUuid = someObjResponse.Objects.First().ID;
+        var objUuid = someObjResponse.Objects.First().UUID;
         var vectorNames = new List<string> { "title", "review_body" };
 
         // START ReadObjectNamedVectors

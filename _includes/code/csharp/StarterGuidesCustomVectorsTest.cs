@@ -42,7 +42,7 @@ public class StarterGuidesCustomVectorsTest
 
             // START CreateCollection
             // Create the collection.
-            await client.Collections.Create(new CollectionConfig
+            await client.Collections.Create(new CollectionCreateParams
             {
                 Name = collectionName,
                 Properties =
@@ -52,7 +52,7 @@ public class StarterGuidesCustomVectorsTest
                     Property.Text("category")
                 ],
                 // Configure the "default" vector to be SelfProvided (BYOV)
-                VectorConfig = Configure.Vectors.SelfProvided().New("default")
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided())
             });
             // END CreateCollection
 

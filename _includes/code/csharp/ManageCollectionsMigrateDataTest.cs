@@ -76,11 +76,11 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
             await clientIn.Collections.Delete(collectionName);
         }
         // START CreateCollectionCollectionToCollection // START CreateCollectionCollectionToTenant // START CreateCollectionTenantToCollection // START CreateCollectionTenantToTenant
-        return await clientIn.Collections.Create(new CollectionConfig
+        return await clientIn.Collections.Create(new CollectionCreateParams
         {
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = enableMt },
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
             Properties =
             [
                 Property.Text("review_body"),

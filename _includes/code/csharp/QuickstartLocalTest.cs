@@ -44,7 +44,7 @@ public class QuickstartLocalTest
 
         // START CreateCollection
         // highlight-start
-        var questions = await client.Collections.Create(new CollectionConfig
+        var questions = await client.Collections.Create(new CollectionCreateParams
         {
             Name = collectionName,
             Properties =
@@ -53,8 +53,8 @@ public class QuickstartLocalTest
                     Property.Text("question"),
                     Property.Text("category")
             ],
-            VectorConfig = Configure.Vectors.Text2VecTransformers().New("default"),  // Configure the text2vec-transformers integration
-            GenerativeConfig = new GenerativeConfig.Cohere() // Configure the Cohere generative AI integration
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),  // Configure the text2vec-transformers integration
+            GenerativeConfig =  Configure.Generative.Cohere() // Configure the Cohere generative AI integration
         });
         // highlight-end
         // END CreateCollection
