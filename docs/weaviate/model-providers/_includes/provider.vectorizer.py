@@ -8,8 +8,8 @@ import weaviate
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"],
-        "X-Cohere-Api-Key": os.environ["COHERE_APIKEY"],
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"],
+        "X-Cohere-Api-Key": os.environ["COHERE_API_KEY"],
     }
 )
 
@@ -252,15 +252,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=[
-        Configure.Vectors.text2vec_palm(
-            name="title_vector",
-            source_properties=["title"],
-            project_id="<google-cloud-project-id>",
-            # (Optional) To manually set the model ID
-            model_id="gemini-embedding-001"
-        )
-    ],
+    vector_config=Configure.Vectors.text2vec_google(
+        name="title_vector",
+        source_properties=["title"],
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        # (Optional) To manually set the model ID
+        model="gemini-embedding-001"
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -275,15 +273,12 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=[
-        Configure.Vectors.text2vec_palm(
-            name="title_vector",
-            source_properties=["title"],
-            project_id="<google-cloud-project-id>",
-            # (Optional) To manually set the model ID
-            model_id="gemini-embedding-001"
-        )
-    ],
+    vector_config=Configure.Vectors.text2vec_google_aistudio(
+        name="title_vector",
+        source_properties=["title"],
+        # (Optional) To manually set the model ID
+        model="text-embedding-004"
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -295,19 +290,35 @@ client.collections.delete("DemoCollection")
 # START FullVectorizerGoogle
 from weaviate.classes.config import Configure
 
+# For Vertex AI
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=[
-        Configure.Vectors.text2vec_palm(
-            name="title_vector",
-            source_properties=["title"],
-            project_id="<google-cloud-project-id>",  # Required for Vertex AI
-            # # Further options
-            # model_id="<google-model-id>",
-            # api_endpoint="<google-api-endpoint>",
-        )
-    ],
+    vector_config=Configure.Vectors.text2vec_google(
+        name="title_vector",
+        source_properties=["title"],
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        # Further options
+        # model="<google-model-id>",
+        # api_endpoint="<google-api-endpoint>",
+    ),
+    # highlight-end
+    # Additional parameters not shown
+)
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# For Google AI Studio (Gemini API)
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=Configure.Vectors.text2vec_google_aistudio(
+        name="title_vector",
+        source_properties=["title"],
+        # Further options
+        model_id="text-embedding-004",
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -326,21 +337,19 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vector_config=[
-        Configure.Vectors.multi2vec_palm(
-            name="title_vector",
-            # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
-            image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
-            ],
-            text_fields=[
-                Multi2VecField(name="title", weight=0.1)
-            ],
-            # video_fields=[],
-            project_id="<google-cloud-project-id>",  # Required for Vertex AI
-            location="<google-cloud-location>",  # Required for Vertex AI
-        )
-    ],
+    vector_config=Configure.Vectors.multi2vec_palm(
+        name="title_vector",
+        # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
+        image_fields=[
+            Multi2VecField(name="poster", weight=0.9)
+        ],
+        text_fields=[
+            Multi2VecField(name="title", weight=0.1)
+        ],
+        # video_fields=[],
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        location="<google-cloud-location>",  # Required for Vertex AI
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -360,23 +369,20 @@ client.collections.create(
         Property(name="description", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vector_config=[
-        Configure.Vectors.multi2vec_palm(
-            name="title_vector",
-            project_id="<google-cloud-project-id>",  # Required for Vertex AI
-            location="us-central1",
-            # model_id="<google-model-id>",
-            # dimensions=512,
-            image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
-            ],
-            text_fields=[
-                Multi2VecField(name="title", weight=0.1)
-            ],
-            # video_fields=[]
-            # video_interval_seconds=20
-        )
-    ],
+    vector_config=Configure.Vectors.multi2vec_palm(
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        location="us-central1",
+        # model_id="<google-model-id>",
+        # dimensions=512,
+        image_fields=[
+            Multi2VecField(name="poster", weight=0.9)
+        ],
+        text_fields=[
+            Multi2VecField(name="title", weight=0.1)
+        ],
+        # video_fields=[]
+        # video_interval_seconds=20
+    ),
     # highlight-end
     # Additional parameters not shown
 )

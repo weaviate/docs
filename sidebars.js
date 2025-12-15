@@ -111,6 +111,11 @@ const sidebars = {
         id: "weaviate/best-practices/code-generation",
       },
       items: []
+    },
+    {
+      type: "link",
+      label: "Integration ecosystem",
+      href: "https://weaviate.io/product/integrations",
     }
   ],
   modelProvidersSidebar: [
@@ -942,16 +947,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/installation-guides/eks-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/ecs-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/installation-guides/eks",
           className: "sidebar-item",
         },
@@ -971,11 +966,6 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/installation-guides/gcp-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/gke-marketplace",
           className: "sidebar-item",
         },
       ],
@@ -1498,7 +1488,6 @@ const sidebars = {
   ],
   cloudAccountManagementSidebar: [
     "cloud/platform/billing",
-    "cloud/platform/support-levels",
     "cloud/platform/version",
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",
@@ -1545,12 +1534,14 @@ const sidebars = {
         "integrations/data-platforms/boomi/index",
         "integrations/data-platforms/box/index",
         "integrations/data-platforms/cardinal/index",
+        "integrations/data-platforms/chonkie/index",
         "integrations/data-platforms/confluent/index",
         "integrations/data-platforms/context-data/index",
         "integrations/data-platforms/contextual-ai/index",
         "integrations/data-platforms/databricks/index",
         "integrations/data-platforms/firecrawl/index",
         "integrations/data-platforms/ibm/index",
+        "integrations/data-platforms/parallel/index",
         "integrations/data-platforms/unstructured/index",
       ],
     },
@@ -1571,6 +1562,7 @@ const sidebars = {
         "integrations/llm-agent-frameworks/langchain/index",
         "integrations/llm-agent-frameworks/llamaindex/index",
         "integrations/llm-agent-frameworks/mem0/index",
+        "integrations/llm-agent-frameworks/modaic/index",
         "integrations/llm-agent-frameworks/n8n/index",
         "integrations/llm-agent-frameworks/semantic-kernel/index",
       ],
