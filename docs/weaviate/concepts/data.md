@@ -282,7 +282,7 @@ The ability to add a named vector after collection creation is only available fo
 
 ### Time to live (TTL)
 
-:::info Added in `v1.35.0` as a technical preview
+:::caution Added in `v1.35.0` as a technical preview
 Time to live (TTL) was introduced in Weaviate `v1.35.0` as a technical preview feature, for local / self-hosted Weaviate instances. It is not available in Weaviate Cloud instances at this time.
 :::
 
