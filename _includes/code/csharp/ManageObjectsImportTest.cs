@@ -91,10 +91,10 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBasicBatchImport()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+            VectorConfig = Configure.Vector("default", v => v.SelfProvided())
         });
 
         // START BasicBatchImportExample
@@ -102,9 +102,6 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         var collection = client.Collections.Use("MyCollection");
 
-        // The Java client uses insertMany for batching.
-        // There is no direct equivalent of the Python client's stateful batch manager.
-        // You collect objects and send them in a single request.
         // highlight-start
         var response = await collection.Data.InsertMany(dataRows);
         // highlight-end
@@ -129,10 +126,10 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithID()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+            VectorConfig = Configure.Vector("default", v => v.SelfProvided())
         });
 
         // START BatchImportWithIDExample
@@ -168,10 +165,10 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithVector()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+            VectorConfig = Configure.Vector("default", v => v.SelfProvided())
         });
 
         // START BatchImportWithVectorExample
@@ -183,19 +180,15 @@ public class ManageObjectsImportTest : IAsyncLifetime
             var dataRow = new { title = $"Object {i + 1}" };
             var objUuid = GenerateUuid5(JsonSerializer.Serialize(dataRow));
 
-            // 1. Use 'Vector' instead of 'VectorData'
-            // 2. Use dictionary initializer syntax for 'Vectors'
             var vectors = new Vectors
-        {
-            { "default", vectorData }
-        };
+            {
+                { "default", vectorData }
+            };
 
-            // 3. Pass arguments to the constructor (Data is required)
-            // Signature: BatchInsertRequest(TData data, Guid? id = null, Vectors? vectors = null, ...)
-            dataToInsert.Add(new BatchInsertRequest(
-                dataRow,
-                objUuid,
-                vectors
+            dataToInsert.Add(BatchInsertRequest.Create(
+                data: dataRow,
+                id: objUuid,
+                vectors: vectors
             ));
         }
 
@@ -203,11 +196,11 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         var response = await collection.Data.InsertMany(dataToInsert);
 
-        // Handle errors (response.Errors is a Dictionary<int, string>)
-        if (response.Errors.Any())
+        // Handle errors
+        if (response.HasErrors)
         {
             Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
-            Console.WriteLine($"First failed object: {response.Errors.First().Data}");
+            Console.WriteLine($"First failed object: {response.Errors.First().Message}");
         }
         // END BatchImportWithVectorExample
 
@@ -219,8 +212,8 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithCrossReference()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig { Name = "Publication", Properties = [Property.Text("title")] });
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams { Name = "Publication", Properties = [Property.Text("title")] });
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Author",
             Properties = [Property.Text("name")],
@@ -254,19 +247,18 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestImportWithNamedVectors()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             VectorConfig = new[]
             {
-            new VectorConfig("title", new Vectorizer.SelfProvided()),
-            new VectorConfig("body", new Vectorizer.SelfProvided())
-        },
+                Configure.Vector("title", v => v.SelfProvided()),
+                Configure.Vector("body", v => v.SelfProvided()),
+            },
             Properties = [Property.Text("title"), Property.Text("body")]
         });
 
         // START BatchImportWithNamedVectors
-        // 1. Change list type to BatchInsertRequest
         var dataToInsert = new List<BatchInsertRequest>();
 
         for (int i = 0; i < 5; i++)
@@ -276,16 +268,13 @@ public class ManageObjectsImportTest : IAsyncLifetime
             var bodyVector = Enumerable.Repeat(0.34f, 1536).ToArray();
 
             // highlight-start
-            // 2. Create the Vectors object mapping names to Vector wrappers
             var namedVectors = new Vectors
-        {
-            { "title", titleVector },
-            { "body", bodyVector }
-        };
+            {
+                { "title", titleVector },
+                { "body", bodyVector }
+            };
 
-            // 3. Add a specific request object to the list
-            // Constructor signature: (Data, ID?, Vectors?, References?, Tenant?)
-            dataToInsert.Add(new BatchInsertRequest(dataRow, Vectors: namedVectors));
+            dataToInsert.Add(BatchInsertRequest.Create(dataRow, vectors: namedVectors));
             // highlight-end
         }
 
@@ -296,11 +285,11 @@ public class ManageObjectsImportTest : IAsyncLifetime
         var response = await collection.Data.InsertMany(dataToInsert);
         // highlight-end
 
-        // Check for errors (Access the Errors dictionary)
-        if (response.Errors.Any())
+        // Handle errors
+        if (response.HasErrors)
         {
             Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
-            Console.WriteLine($"First failed object error: {response.Errors.First().Data}");
+            Console.WriteLine($"First failed object error: {response.Errors.First().Message}");
         }
         // END BatchImportWithNamedVectors
     }
@@ -310,7 +299,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     {
         await BeforeEach();
         // Ensure using correct Collection creation syntax
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyQuestion",
             // Optional: Define properties explicitly if needed, but auto-schema usually handles it
@@ -384,7 +373,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             }
         }
 
-        await client.Collections.Create(new CollectionConfig { Name = "JeopardyQuestion" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "JeopardyQuestion" });
 
         // START CSV streaming
         int batchSize = 100;

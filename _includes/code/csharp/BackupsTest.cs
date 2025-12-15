@@ -35,13 +35,13 @@ public class BackupsTest : IAsyncLifetime
     {
         await CleanupCollections();
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             Properties = [Property.Text("title")]
         });
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Publication",
             Properties = [Property.Text("title")]

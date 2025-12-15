@@ -46,7 +46,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestBasicCreateCollection()
     {
         // START BasicCreateCollection
-        await client.Collections.Create(new CollectionConfig { Name = "Article" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
         // END BasicCreateCollection
 
         bool exists = await client.Collections.Exists("Article");
@@ -57,7 +57,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithProperties()
     {
         // START CreateCollectionWithProperties
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             Properties =
@@ -88,7 +88,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         //     public string Body { get; set; }
         // }
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             Properties = [.. Property.FromClass<Article>()],
@@ -102,7 +102,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestAddProperties()
     {
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             Properties =
@@ -125,12 +125,12 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithVectorizer()
     {
         // START Vectorizer
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vector("default", v => v.Text2VecTransformers())
             },
             Properties =
             [
@@ -149,20 +149,14 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithNamedVectors()
     {
         // START BasicNamedVectors
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "ArticleNV",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers
-                {
-                    SourceProperties = ["title"]
-                }, new VectorIndex.HNSW()),
-                new VectorConfig("title_country", new Vectorizer.Text2VecTransformers
-                {
-                    SourceProperties = ["title", "country"]
-                }, new VectorIndex.HNSW()),
-                new VectorConfig("custom_vector", new Vectorizer.SelfProvided(), new VectorIndex.HNSW())
+                Configure.Vector("title", v => v.Text2VecTransformers(), sourceProperties: ["title"], index: new VectorIndex.HNSW()),
+                Configure.Vector("title_country", v => v.Text2VecTransformers(), sourceProperties: ["title", "country"], index: new VectorIndex.HNSW()),
+                Configure.Vector("custom_vector", v => v.SelfProvided(), index: new VectorIndex.HNSW()),
             },
             Properties =
             [
@@ -184,22 +178,19 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task ConfigurePropertyModuleSettings()
     {
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
-            {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
-            },
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
             Properties =
-                    [
-                        Property.Text("title"),
+            [
+                Property.Text("title"),
                 Property.Text("body"),
             ]
         });
         var articles = client.Collections.Use("Article");
         // START AddNamedVectors
-        await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", sourceProperties: "body"));
+        await articles.Config.AddVector(Configure.Vector("body_vector", v => v.Text2VecCohere(), sourceProperties: "body"));
         // END AddNamedVectors
 
         CollectionConfig config = await client.Collections.Export("Article");
@@ -212,15 +203,15 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task CreateCollectionWithMultiVectors()
     {
         // START MultiValueVectorCollection
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
         {
             // Example 1 - Use a model integration
-            Configure.MultiVectors.Text2MultiVecJinaAI().New("jina_colbert"),
+            Configure.MultiVector("jina_colbert", v=>v.Text2MultiVecJinaAI()),
             // Example 2 - User-provided multi-vector representations
-            Configure.MultiVectors.SelfProvided().New("custom_multi_vector"),
+            Configure.MultiVector("custom_multi_vector", v => v.SelfProvided()),
         },
             Properties = [Property.Text("text")],
         });
@@ -236,19 +227,18 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestMultiValueVectorMuvera()
     {
         // START MultiValueVectorMuvera
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
             {
                 // Example 1 - Use a model integration
-                Configure.MultiVectors.Text2MultiVecJinaAI().New("jina_colbert", indexConfig: new VectorIndex.HNSW
+                Configure.MultiVector("jina_colbert", v => v.Text2MultiVecJinaAI(), index: new VectorIndex.HNSW
                     {
                         MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
-                    }),
+                    }), 
                 // Example 2 - User-provided multi-vector representations
-                Configure.MultiVectors.SelfProvided(
-                ).New("custom_multi_vector", indexConfig: new VectorIndex.HNSW
+                Configure.MultiVector("custom_multi_vector", v => v.SelfProvided(), index: new VectorIndex.HNSW
                     {
                         MultiVector = new MultiVectorConfig { Encoding = new MuveraEncoding() }
                     }),
@@ -263,15 +253,12 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetVectorIndexType()
     {
         // START SetVectorIndexType
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default",
-                    new Vectorizer.Text2VecTransformers(),
-                    new VectorIndex.HNSW()
-                )
+                Configure.Vector("default", v => v.Text2VecTransformers(), index: new VectorIndex.HNSW())
             },
             Properties =
             [
@@ -289,19 +276,16 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetVectorIndexParams()
     {
         // START SetVectorIndexParams
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new[]
             {
-                new VectorConfig("default",
-                    new Vectorizer.Text2VecTransformers(),
-                    new VectorIndex.HNSW
+                Configure.Vector("default", v => v.Text2VecTransformers(), index: new VectorIndex.HNSW()
                     {
                         EfConstruction = 300,
-                        Distance = VectorIndexConfig.VectorDistance.Cosine
-                    }
-                )
+                        Distance = VectorDistance.Cosine
+                    })
             },
             Properties =
             [
@@ -320,7 +304,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetInvertedIndexParams()
     {
         // START SetInvertedIndexParams
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             Properties =
@@ -349,14 +333,11 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetReranker()
     {
         // START SetReranker
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
-            {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
-            },
-            RerankerConfig = new Reranker.Cohere(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            RerankerConfig = Configure.Reranker.Cohere(),
             Properties =
             [
                 Property.Text("title")
@@ -372,13 +353,13 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateReranker()
     {
-        await client.Collections.Create(new CollectionConfig { Name = "Article" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
 
         // START UpdateReranker
         var collection = client.Collections.Use("Article");
         await collection.Config.Update(c =>
         {
-            c.RerankerConfig = new Reranker.Cohere();
+            c.RerankerConfig = Configure.Reranker.Cohere();
         });
         // END UpdateReranker
 
@@ -391,14 +372,11 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetGenerative()
     {
         // START SetGenerative
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
-            {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
-            },
-            GenerativeConfig = new GenerativeConfig.Cohere(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            GenerativeConfig = Configure.Generative.Cohere(),
             Properties =
             [
                 Property.Text("title")
@@ -414,13 +392,13 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateGenerative()
     {
-        await client.Collections.Create(new CollectionConfig { Name = "Article" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
 
         // START UpdateGenerative
         var collection = client.Collections.Use("Article");
         await collection.Config.Update(c =>
         {
-            c.GenerativeConfig = new GenerativeConfig.Cohere();
+            c.GenerativeConfig = Configure.Generative.Cohere();
         });
         // END UpdateGenerative
 
@@ -438,7 +416,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithPropertyConfig()
     {
         // START PropModuleSettings
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             Properties =
@@ -465,12 +443,12 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithTrigramTokenization()
     {
         // START TrigramTokenization
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new[]
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vector("default", v => v.Text2VecTransformers())
             },
             Properties =
             [
@@ -488,16 +466,14 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestDistanceMetric()
     {
         // START DistanceMetric
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
-            VectorConfig = new VectorConfigList
+            VectorConfig = new[]
             {
-                new VectorConfig("default",
-                    new Vectorizer.Text2VecTransformers(),
-                    new VectorIndex.HNSW
+                Configure.Vector("default", v => v.Text2VecTransformers(), index: new VectorIndex.HNSW()
                     {
-                        Distance = VectorIndexConfig.VectorDistance.Cosine
+                        Distance = VectorDistance.Cosine
                     }
                 )
             },
@@ -517,7 +493,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestReplicationSettings()
     {
         // START ReplicationSettings
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             ReplicationConfig = new ReplicationConfig { Factor = 1 }
@@ -532,7 +508,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestAsyncRepair()
     {
         // START AsyncRepair
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             ReplicationConfig = new ReplicationConfig
@@ -551,7 +527,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestAllReplicationSettings()
     {
         // START AllReplicationSettings
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             ReplicationConfig = new ReplicationConfig
@@ -572,7 +548,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestShardingSettings()
     {
         // START ShardingSettings
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             ShardingConfig = new ShardingConfig
@@ -594,7 +570,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestMultiTenancy()
     {
         // START Multi-tenancy
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             MultiTenancyConfig = new MultiTenancyConfig
@@ -613,7 +589,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestReadOneCollection()
     {
-        await client.Collections.Create(new CollectionConfig { Name = "Article" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
 
         // START ReadOneCollection
         var articles = client.Collections.Use("Article");
@@ -629,8 +605,8 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestReadAllCollections()
     {
-        await client.Collections.Create(new CollectionConfig { Name = "Article" });
-        await client.Collections.Create(new CollectionConfig { Name = "Publication" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "Publication" });
 
         // START ReadAllCollections
         var response = new List<CollectionConfig>();
@@ -648,7 +624,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateCollection()
     {
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Article",
             InvertedIndexConfig = new InvertedIndexConfig
@@ -676,7 +652,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestDeleteCollection()
     {
         string collectionName = "Article";
-        await client.Collections.Create(new CollectionConfig { Name = collectionName });
+        await client.Collections.Create(new CollectionCreateParams { Name = collectionName });
         Assert.True(await client.Collections.Exists(collectionName));
 
         // START DeleteCollection
@@ -689,7 +665,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // [Fact]
     // public async Task TestInspectCollectionShards()
     // {
-    //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
+    //     await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
 
     //     var articles = client.Collections.Use("Article");
 
@@ -706,7 +682,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // [Fact]
     // public async Task TestUpdateCollectionShards()
     // {
-    //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
+    //     await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
     //     var initialShards = await client.Collections.Use("Article").Shards.Get();
     //     var shardName = initialShards.First().Name;
 

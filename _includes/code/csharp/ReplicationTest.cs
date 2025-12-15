@@ -34,7 +34,7 @@ public class ReplicationTest : IAsyncLifetime
     public async Task TestReplicationWorkflow()
     {
         // Setup: Create collection with Replication Factor = 2
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = CollectionName,
             Properties =

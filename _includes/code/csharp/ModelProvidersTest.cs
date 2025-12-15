@@ -69,12 +69,12 @@ public class ModelProvidersTest : IAsyncLifetime
             await client.Collections.Delete("DemoCollection");
 
         // START BasicVectorizerWeaviate
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
             {
-                Configure.Vectors.Text2VecWeaviate().New("title_vector", sourceProperties: ["title"])
+                Configure.Vector("title_vector", v => v.Text2VecWeaviate(), sourceProperties: ["title"])
             },
             Properties =
             [
@@ -95,14 +95,14 @@ public class ModelProvidersTest : IAsyncLifetime
     public async Task TestWeaviateVectorizerModel()
     {
         // START VectorizerWeaviateCustomModel
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
             {
-                Configure.Vectors.Text2VecWeaviate(
+                Configure.Vector("title_vector", v => v.Text2VecWeaviate(
                     model: "Snowflake/snowflake-arctic-embed-l-v2.0"
-                ).New("title_vector", sourceProperties: ["title"])
+                ), sourceProperties: ["title"])
             },
             Properties =
             [
@@ -123,16 +123,16 @@ public class ModelProvidersTest : IAsyncLifetime
     public async Task TestWeaviateVectorizerParameters()
     {
         // START SnowflakeArcticEmbedMV15
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
             {
-                Configure.Vectors.Text2VecWeaviate(
+                Configure.Vector("title_vector", v => v.Text2VecWeaviate(
                     model: "Snowflake/snowflake-arctic-embed-m-v1.5"
                     // baseURL: null, 
                     // dimensions: 0 
-                ).New("title_vector", sourceProperties: ["title"])
+                ), sourceProperties: ["title"])
             },
             Properties =
             [

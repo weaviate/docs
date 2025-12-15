@@ -64,20 +64,20 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         await client.Collections.DeleteAll(); // Clean slate before tests
 
         // START Define the class
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyQuestion",
             Properties =
             [
                 Property.Text("title", description: "Question title")
             ],
-            VectorConfig = new VectorConfigList
+            VectorConfig = new[]
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Configure.Vector("default", v => v.Text2VecTransformers())
             }
         });
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "WineReviewNV",
             Properties =
@@ -88,15 +88,15 @@ public class ManageObjectsCreateTest : IAsyncLifetime
             ],
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("title_country", new Vectorizer.Text2VecTransformers())
+                Configure.Vector("title", v => v.Text2VecTransformers(), sourceProperties: ["title"]),
+                Configure.Vector("review_body", v => v.Text2VecTransformers(), sourceProperties: ["review_body"]),
+                Configure.Vector("title_country", v => v.Text2VecTransformers(), sourceProperties: ["title", "country"]),
             }
         });
         // END Define the class
 
         // Additional collections for other tests
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Publication",
             Properties =
@@ -104,12 +104,12 @@ public class ManageObjectsCreateTest : IAsyncLifetime
                 Property.GeoCoordinate("headquartersGeoLocation")
             ]
         });
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Author",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.SelfProvided())
+                Configure.Vector("default", v => v.SelfProvided())
             }
         });
     }

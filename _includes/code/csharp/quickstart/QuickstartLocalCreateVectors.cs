@@ -25,11 +25,11 @@ namespace WeaviateProject.Examples
             // START CreateCollection
 
             // Step 1.2: Create a collection
-            var movies = await client.Collections.Create(new CollectionConfig
+            var movies = await client.Collections.Create(new CollectionCreateParams
             {
                 Name = collectionName,
                 // No automatic vectorization since we're providing vectors
-                VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided()),
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
                 // Define properties for the collection
                 Properties =
                 [

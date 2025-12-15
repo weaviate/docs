@@ -25,14 +25,12 @@ namespace WeaviateProject.Examples
             // START CreateCollection
 
             // Step 1.2: Create a collection
-            var movies = await client.Collections.Create(new CollectionConfig
+            var movies = await client.Collections.Create(new CollectionCreateParams
             {
                 Name = collectionName,
-                VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecOllama
-                {
-                    ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
-                    Model = "nomic-embed-text" // The model to use
-                }),
+                VectorConfig = Configure.Vector("default", v => v.Text2VecOllama(
+                    apiEndpoint: "http://ollama:11434", model: "nomic-embed-text"
+                )),
                 // Define properties for the collection
                 Properties =
                 [

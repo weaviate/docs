@@ -28,7 +28,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         {
             await client.Collections.Delete("WineReviewNV");
         }
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "WineReviewNV",
             Properties =
@@ -39,12 +39,9 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
             ],
             VectorConfig = new[]
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig(
-                "title_country",
-                new Vectorizer.Text2VecTransformers { SourceProperties = ["title", "country"] }
-                )
+                Configure.Vector("title", v => v.Text2VecTransformers(), sourceProperties: ["title"]),
+                Configure.Vector("review_body", v => v.Text2VecTransformers(), sourceProperties: ["review_body"]),
+                Configure.Vector("title_country", v => v.Text2VecTransformers(), sourceProperties: ["title", "country"])
             }
         });
 
@@ -64,7 +61,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         {
             await client.Collections.Delete("JeopardyQuestion");
         }
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
@@ -74,7 +71,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
                 Property.Text("answer", description: "The answer"),
                 Property.Number("points", description: "The points the question is worth")
             ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
         });
         // END Define the class
     }
@@ -156,7 +153,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
 
         // Fetch an object to update
         var result = await reviews.Query.FetchObjects(limit: 3);
-        var reviewUuid = result.Objects.First().ID.Value;
+        var reviewUuid = result.Objects.First().UUID.Value;
 
         // Create vectors
         float[] titleVector = Enumerable.Repeat(0.12345f, 384).ToArray();

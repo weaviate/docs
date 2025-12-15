@@ -1,7 +1,6 @@
 using Xunit;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace WeaviateProject.Tests;
@@ -36,14 +35,12 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task TestEnableRQ()
     {
         // START EnableRQ
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
-                "default",
-                new Vectorizer.Text2VecTransformers(),
-                new VectorIndex.HNSW
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                 {
                     // highlight-start
                     Quantizer = new VectorIndex.Quantizers.RQ()
@@ -58,14 +55,12 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task Test1BitEnableRQ()
     {
         // START 1BitEnableRQ
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
-                "default",
-                new Vectorizer.Text2VecTransformers(),
-                new VectorIndex.HNSW
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                 {
                     // highlight-start
                     Quantizer = new VectorIndex.Quantizers.RQ { Bits = 1 }
@@ -81,18 +76,15 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task TestUncompressed()
     {
         // START Uncompressed
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
-                "default",
-                new Vectorizer.Text2VecTransformers(),
-                // highlight-start
-                new VectorIndex.HNSW
-                { 
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
+                {
                     // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.None{}
+                    Quantizer = new VectorIndex.Quantizers.None { }
                     // highlight-end
                 }
             // highlight-end
@@ -105,14 +97,12 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task TestRQWithOptions()
     {
         // START RQWithOptions
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig(
-                "default",
-                new Vectorizer.Text2VecTransformers(),
-                new VectorIndex.HNSW
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
+                index: new VectorIndex.HNSW
                 {
                     // highlight-start
                     Quantizer = new VectorIndex.Quantizers.RQ
@@ -132,11 +122,11 @@ public class ConfigureRQTest : IAsyncLifetime
     {
         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
-        var collection = await client.Collections.Create(new CollectionConfig
+        var collection = await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
         });
 
         // START UpdateSchema
@@ -151,11 +141,11 @@ public class ConfigureRQTest : IAsyncLifetime
     [Fact]
     public async Task Test1BitUpdateSchema()
     {
-        var collection = await client.Collections.Create(new CollectionConfig
+        var collection = await client.Collections.Create(new CollectionCreateParams
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
         });
 
         // START 1BitUpdateSchema

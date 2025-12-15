@@ -24,7 +24,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
             await client.Collections.Delete("WineReview");
         }
 
-        var wineReview = await client.Collections.Create(new CollectionConfig { Name = "WineReview" });
+        var wineReview = await client.Collections.Create(new CollectionCreateParams { Name = "WineReview" });
         await wineReview.Data.InsertMany(new[]
         {
             new { title = "Review A" },
@@ -36,14 +36,14 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         {
             await client.Collections.Delete("WineReviewMT");
         }
-        var wineReviewMT = await client.Collections.Create(new CollectionConfig
+        var wineReviewMT = await client.Collections.Create(new CollectionCreateParams
         {
             Name = "WineReviewMT",
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
         });
 
         // Create and populate tenants
-        await wineReviewMT.Tenants.Add(["tenantA", "tenantB"]);
+        await wineReviewMT.Tenants.Create(["tenantA", "tenantB"]);
         await wineReviewMT.WithTenant("tenantA").Data.Insert(new { title = "Tenant A Review 1" });
         await wineReviewMT.WithTenant("tenantB").Data.Insert(new { title = "Tenant B Review 1" });
     }
@@ -65,7 +65,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         await foreach (var item in collection.Iterator())
         {
             // highlight-end
-            Console.WriteLine($"{item.ID} {JsonSerializer.Serialize(item.Properties)}");
+            Console.WriteLine($"{item.UUID} {JsonSerializer.Serialize(item.Properties)}");
         }
         // END ReadAllProps
     }

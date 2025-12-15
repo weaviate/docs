@@ -33,25 +33,22 @@ public class SearchImageTest : IAsyncLifetime
     public async Task InitializeAsync()
     {
         client = await Connect.Local(restPort: 8280, grpcPort: 50251);
-        
+
         if (await client.Collections.Exists("Dog"))
         {
             await client.Collections.Delete("Dog");
         }
 
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Dog",
-            Properties = 
+            Properties =
             [
                 Property.Blob("image"),
                 Property.Text("breed"),
                 Property.Text("description")
             ],
-            VectorConfig = new VectorConfig(
-                "default",
-                new Vectorizer.Multi2VecClip { ImageFields = new[] { "image" }, TextFields = new[] { "breed", "description" } }
-            )
+            VectorConfig = Configure.Vector("default", v => v.Multi2VecClip(imageFields: new[] { "image" }, textFields: new[] { "breed", "description" }))
         });
 
         // Prepare and ingest sample dog images

@@ -43,14 +43,14 @@ public class MultiTargetSearchTest : IAsyncLifetime
         }
 
         // Define a new schema
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = CollectionName,
             Description = "Jeopardy game show questions",
             VectorConfig = new VectorConfigList()
             {
-                new VectorConfig("jeopardy_questions_vector", new Vectorizer.Text2VecOpenAI() { SourceProperties = ["question"] }),
-                new VectorConfig("jeopardy_answers_vector", new Vectorizer.Text2VecOpenAI() { SourceProperties = ["answer"] })
+                Configure.Vector("jeopardy_questions_vector", v => v.Text2VecOpenAI(), sourceProperties: ["question"]),
+                Configure.Vector("jeopardy_answers_vector", v => v.Text2VecOpenAI(), sourceProperties: ["answer"])
             },
             Properties =
             [

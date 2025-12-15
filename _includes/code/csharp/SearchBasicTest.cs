@@ -183,7 +183,7 @@ public class SearchBasicTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         // Ensure you use a UUID that actually exists in your DB, or fetch one first
         var allObjs = await jeopardy.Query.FetchObjects(limit: 1);
-        var idToFetch = allObjs.Objects.First().ID;
+        var idToFetch = allObjs.Objects.First().UUID;
 
         var response = await jeopardy.Query.FetchObjectByID(
             (Guid)idToFetch
@@ -274,14 +274,9 @@ public class SearchBasicTest : IAsyncLifetime
         // =========================
 
         // START MultiTenancy
-        var mtCollection = client.Collections.Use("WineReviewMT");
+        var mtCollection = client.Collections.Use("WineReviewMT").WithTenant("tenantA");
 
-        // In the C# client, the tenant is specified directly in the query method
-        // rather than creating a separate tenant-specific collection object.
-        // highlight-start
         var response = await mtCollection.Query.FetchObjects(
-            tenant: "tenantA",
-        // highlight-end
             returnProperties: new[] { "review_body", "title" },
             limit: 1
         );
@@ -305,7 +300,7 @@ public class SearchBasicTest : IAsyncLifetime
         var jeopardyInit = client.Collections.Use("JeopardyQuestion");
         var initResp = await jeopardyInit.Query.FetchObjects(limit: 1);
         if (!initResp.Objects.Any()) return;
-        var validId = initResp.Objects.First().ID;
+        var validId = initResp.Objects.First().UUID;
 
         // START QueryWithReplication
         var jeopardy = client.Collections.Use("JeopardyQuestion").WithConsistencyLevel(ConsistencyLevels.Quorum);

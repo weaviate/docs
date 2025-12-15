@@ -32,12 +32,12 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestBasicSchema()
     {
         // START BasicSchema
-        var questionsCollection = await client.Collections.Create(new CollectionConfig
+        var questionsCollection = await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Set the vectorizer
-            GenerativeConfig = new GenerativeConfig.Cohere(), // Set the generative module
-            Properties = 
+            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+            GenerativeConfig = Configure.Generative.Cohere(), // Set the generative module
+            Properties =
             [
                 Property.Text("question"),
                 Property.Text("answer"),
@@ -53,12 +53,12 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestSchemaWithPropertyOptions()
     {
         // START SchemaWithPropertyOptions
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
+            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+            GenerativeConfig = Configure.Generative.Cohere(),
+            Properties =
             [
                 Property.Text(
                     "question",
@@ -78,11 +78,11 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     {
         await client.Collections.Delete("Question");
         // START SchemaWithMultiTenancy
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+            GenerativeConfig = Configure.Generative.Cohere(),
             Properties =
             [
                 Property.Text("question"),
@@ -99,12 +99,10 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestSchemaWithIndexSettings()
     {
         // START SchemaWithIndexSettings
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = "Question",
-            VectorConfig = new VectorConfig(
-                "default", // Set the name of the vector configuration
-                new Vectorizer.Text2VecWeaviate(),
+            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate(),
                 // highlight-start
                 new VectorIndex.HNSW
                 {
@@ -113,8 +111,8 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                 }
                 // highlight-end
             ),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
+            GenerativeConfig = Configure.Generative.Cohere(),
+            Properties =
             [
                 Property.Text("question"),
                 Property.Text("answer")

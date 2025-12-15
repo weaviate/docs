@@ -23,15 +23,15 @@ namespace WeaviateProject.Examples
             }
 
             // Create a collection
-            var articles = await client.Collections.Create(new CollectionConfig
+            var articles = await client.Collections.Create(new CollectionCreateParams
             {
                 Name = "Article",
                 Properties =
                 [
                     Property.Text("content")
                 ],
-                VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()) // Use a vectorizer to generate embeddings during import
-                                                                                                  // .vectorConfig(VectorConfig.selfProvided()) // If you want to import your own pre-generated embeddings
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())  // Use a vectorizer to generate embeddings during import
+                // VectorConfig = Configure.Vector("default", v => v.SelfProvided())  // If you want to import your own pre-generated embeddings
             });
 
 

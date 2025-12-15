@@ -101,7 +101,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         if (!initialResponse.Objects.Any()) return; // Skip test if no data
 
         // FIX: Handle nullable ID safely
-        Guid uuid = (Guid)initialResponse.Objects.First().ID;
+        Guid uuid = (Guid)initialResponse.Objects.First().UUID;
 
         // START GetNearObject
         // highlight-start
@@ -219,7 +219,7 @@ public class SearchSimilarityTest : IAsyncLifetime
             "animals in movies",
             // highlight-start
             autoLimit: 1, // number of close groups
-                        // highlight-end
+                          // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -257,7 +257,7 @@ public class SearchSimilarityTest : IAsyncLifetime
 
         foreach (var o in response.Objects)
         {
-            Console.WriteLine(o.ID);
+            Console.WriteLine(o.UUID);
             Console.WriteLine(o.BelongsToGroup);
             Console.WriteLine(o.Metadata.Distance);
         }
@@ -290,7 +290,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         var response = await jeopardy.Query.NearText(
             "animals in movies",
             // highlight-start
-            filters: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance

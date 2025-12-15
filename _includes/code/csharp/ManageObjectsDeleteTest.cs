@@ -26,10 +26,10 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
         {
             await client.Collections.Delete(COLLECTION_NAME);
         }
-        await client.Collections.Create(new CollectionConfig
+        await client.Collections.Create(new CollectionCreateParams
         {
             Name = COLLECTION_NAME,
-            Properties = [ Property.Text("name") ]
+            Properties = [Property.Text("name")]
         });
     }
 
@@ -71,7 +71,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
         // START DeleteBatch
         await collection.Data.DeleteMany(
             // highlight-start
-            Filter.Property("name").Like("EphemeralObject*")
+            Filter.Property("name").IsLike("EphemeralObject*")
         // highlight-end
         );
         // END DeleteBatch
@@ -111,7 +111,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
 
         // START DryRun
         var result = await collection.Data.DeleteMany(
-            Filter.Property("name").Like("EphemeralObject*"),
+            Filter.Property("name").IsLike("EphemeralObject*"),
             // highlight-start
             dryRun: true
         // highlight-end
@@ -139,7 +139,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
 
         // START DeleteByIDBatch
         var queryResponse = await collection.Query.FetchObjects(limit: 3);
-        var ids = queryResponse.Objects.Select(obj => obj.ID.Value).ToList();
+        var ids = queryResponse.Objects.Select(obj => obj.UUID.Value).ToList();
 
         await collection.Data.DeleteMany(
             // highlight-start
