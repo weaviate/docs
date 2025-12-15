@@ -61,7 +61,7 @@ import APITable from '@site/src/components/APITable';
 | `MODULES_CLIENT_TIMEOUT` | Timeout for requests to Weaviate modules. Default: `50s` | `string - duration` | `5s`, `10m`, `1h` |
 | `OBJECTS_TTL_ALLOW_SECONDS` | If set, the `OBJECTS_TTL_DELETE_SCHEDULE` is to be a 6-field cron format including seconds. Default: `true` | `boolean` | `false` |
 | `OBJECTS_TTL_DELETE_SCHEDULE` | Schedule for deleting expired objects. Uses standard cron format, or a descriptor (e.g. `@hourly`). Default: `""` | `string - cron format` | `0 */6 * * *` (every 6 hours) |
-| `OPERATIONAL_MODE` | Sets the mode of operation for the instance. Options: `READ_WRITE` (default), `READ_ONLY`, `WRITE_ONLY`, `SCALE_OUT`. Limits read or write operations based on the mode selected. | `string` | `READ_WRITE` |
+| `OPERATIONAL_MODE` | Sets the [mode of operation](../status.md#operational-modes) for the instance. Options: `READ_WRITE` (default), `READ_ONLY`, `WRITE_ONLY`, `SCALE_OUT`. Limits available operations based on the mode selected. | `string` | `READ_WRITE` |
 | `ORIGIN` | Set the http(s) origin for Weaviate | `string - HTTP origin` | `https://my-weaviate-deployment.com` |
 | `PERSISTENCE_DATA_PATH` | Path to the Weaviate data store.<br/>[Note about file systems and performance](/weaviate/concepts/resources.md#file-system). | `string - file path` | `/var/lib/weaviate` <br/> Starting in v1.24, defaults to `./data`|
 | `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` | If set, [HNSW snapshotting](/weaviate/concepts/storage.md#persistence-and-crash-recovery) will be disabled. Default: `true`<br/>Added in `v1.31` | `boolean` | `false` |
