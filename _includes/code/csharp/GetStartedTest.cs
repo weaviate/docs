@@ -82,14 +82,15 @@ public class GetStartedTests
     [Fact]
     public async Task CreateCollectionAndRunNearTextQuery()
     {
+        // START GetStarted
         // Best practice: store your credentials in environment variables
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        // 1. Connect to Weaviate
+        // 1. Connect to Weaviate Cloud
         var client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
 
-        // 2. Prepare data (same as Python data_objects)
+        // 2. Prepare data
         var dataObjects = new List<object>
         {
             new {title = "The Matrix", description = "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", genre = "Science Fiction"},
@@ -104,10 +105,7 @@ public class GetStartedTests
         var movies = await client.Collections.Create(new CollectionCreateParams
         {
             Name = CollectionName,
-            VectorConfig = new VectorConfigList
-            {
-                Configure.Vector("default", v => v.Text2VecWeaviate()),
-            },
+            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
         });
 
         // 4. Import the data
@@ -124,6 +122,7 @@ public class GetStartedTests
         {
             Console.WriteLine(JsonSerializer.Serialize(obj.Properties));
         }
+        // END GetStarted
 
         Assert.Equal(2, response.Objects.Count);
         Assert.Contains(response.Objects, o => o.Properties.ContainsKey("title") && o.Properties["title"].ToString() == "The Matrix");
