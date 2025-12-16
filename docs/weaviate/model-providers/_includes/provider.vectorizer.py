@@ -1356,6 +1356,84 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicVectorizerMMWeaviate
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="poster", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="poster",
+            image_field="poster"  # Must provide the image property name here
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerMMWeaviate
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START VectorizerMMWeaviateCustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="poster", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="poster",
+            image_field="poster",  # Must provide the image property name here
+            model="ModernVBERT/colmodernvbert"  # Currently the only supported model
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END VectorizerMMWeaviateCustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerMMWeaviate
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="image", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="title_vector",
+            image_field="image",  # Must provide the image property name here
+            model="ModernVBERT/colmodernvbert",  # Currently the only supported model
+            # base_url="<custom_weaviate_embeddings_url>",
+            # encoding=Configure.VectorIndex.MultiVector.Encoding.muvera()
+            # quantizer=Configure.VectorIndex.Quantizer.rq(),
+            # vector_index_config=Configure.VectorIndex.hnsw()
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerMMWeaviate
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerTransformers
 from weaviate.classes.config import Configure
 
