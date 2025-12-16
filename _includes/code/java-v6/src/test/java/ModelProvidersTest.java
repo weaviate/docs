@@ -115,6 +115,25 @@ class ModelProvidersTest {
   }
 
   @Test
+  void testWeaviateMMVectorizer() throws IOException {
+    client.collections.delete("DemoCollection");
+    // START BasicVectorizerMMWeaviate
+    client.collections.create("DemoCollection",
+        col -> col
+            .vectorConfig(
+                VectorConfig.text2vecWeaviate("title_vector", c -> c.sourceProperties("title")))
+            .properties(Property.text("title"), Property.text("description")));
+    // END BasicVectorizerMMWeaviate
+
+    var config = client.collections.getConfig("DemoCollection").get();
+    assertThat(config.vectors()).containsKey("title_vector");
+    System.out.println("first: " + config.vectors().get("title_vector"));
+    assertThat(config.vectors().get("title_vector").getClass().getSimpleName())
+        .isEqualTo("Text2VecWeaviateVectorizer");
+    client.collections.delete("DemoCollection");
+  }
+
+  @Test
   void testInsertData() {
     // START BatchImportExample
     // Define the source objects
