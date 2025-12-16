@@ -6,7 +6,7 @@ image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
+import UpdateInProgressNote from '/\_includes/update-in-progress.mdx';
 
 <UpdateInProgressNote />
 
@@ -20,7 +20,7 @@ We recommend you complete the [Quickstart tutorial](docs/weaviate/quickstart/ind
 
 Before you start this tutorial, you should follow the steps in the Quickstart to have:
 
-- An instance of Weaviate running (e.g. on the [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=tutorial)),
+- An instance of Weaviate running (e.g. on the [Weaviate Cloud](/go/console?utm_content=tutorial)),
 - An API key for your preferred inference API, such as OpenAI, Cohere, or Hugging Face,
 - Installed your preferred Weaviate client library,
 - Set up a `Question` class in your schema, and
@@ -40,11 +40,11 @@ The Weaviate function for retrieving objects is `Get`.
 
 This might be familiar for some of you. If you have completed our [Imports in detail tutorial](./import.mdx), you may have performed a `Get` query to confirm that the data import was successful. Here is the same code as a reminder:
 
-import CodeImportGet from '/_includes/code/quickstart.import.get.mdx';
+import CodeImportGet from '/\_includes/code/quickstart.import.get.mdx';
 
 <CodeImportGet />
 
-This query simply asks Weaviate for *some* objects of this (`Question`) class.
+This query simply asks Weaviate for _some_ objects of this (`Question`) class.
 
 Of course, in most cases we would want to retrieve information on some criteria. Let's build on this query by adding a vector search.
 
@@ -52,7 +52,7 @@ Of course, in most cases we would want to retrieve information on some criteria.
 
 This is a vector search using a `Get` query.
 
-import CodeAutoschemaNeartext from '/_includes/code/quickstart/neartext.mdx'
+import CodeAutoschemaNeartext from '/\_includes/code/quickstart/neartext.mdx'
 
 <CodeAutoschemaNeartext />
 
@@ -64,7 +64,7 @@ Also note here that we pass the API key in the header. This is required as the i
 
 Additionally, we use the `limit` argument to only fetch a maximum of two (2) objects.
 
-If you run this query, you should see the entries on *"DNA"* and *"species"* returned by Weaviate.
+If you run this query, you should see the entries on _"DNA"_ and _"species"_ returned by Weaviate.
 
 ### `Get` with `nearVector`
 
@@ -105,7 +105,7 @@ You might also have noticed that we have added a `certainty` argument in the `wi
 
 We can ask Weaviate to return `_additional` properties for any returned objects. This allows us to obtain properties such as the `vector` of each returned object as well as the actual `certainty` value, so we can verify how close each object is to our query vector. Here is a query that will return the `certainty` value:
 
-import CodeQueryNeartextAdditional from '/_includes/code/quickstart.query.neartext.additional.mdx'
+import CodeQueryNeartextAdditional from '/\_includes/code/quickstart.query.neartext.additional.mdx'
 
 <CodeQueryNeartextAdditional />
 
@@ -113,28 +113,28 @@ Try it out, and you should see a response like this:
 
 ```json
 {
-    "data": {
-        "Get": {
-            "Question": [
-                {
-                    "_additional": {
-                        "certainty": 0.9030631184577942
-                    },
-                    "answer": "DNA",
-                    "category": "SCIENCE",
-                    "question": "In 1953 Watson & Crick built a model of the molecular structure of this, the gene-carrying substance"
-                },
-                {
-                    "_additional": {
-                        "certainty": 0.900638073682785
-                    },
-                    "answer": "species",
-                    "category": "SCIENCE",
-                    "question": "2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new one of this classification"
-                }
-            ]
+  "data": {
+    "Get": {
+      "Question": [
+        {
+          "_additional": {
+            "certainty": 0.9030631184577942
+          },
+          "answer": "DNA",
+          "category": "SCIENCE",
+          "question": "In 1953 Watson & Crick built a model of the molecular structure of this, the gene-carrying substance"
+        },
+        {
+          "_additional": {
+            "certainty": 0.900638073682785
+          },
+          "answer": "species",
+          "category": "SCIENCE",
+          "question": "2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new one of this classification"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -150,7 +150,7 @@ In these cases, you can use Weaviate's scalar filtering capabilities - either al
 
 Try the following:
 
-import CodeQueryWhere1 from '/_includes/code/quickstart.query.where.1.mdx'
+import CodeQueryWhere1 from '/\_includes/code/quickstart.query.where.1.mdx'
 
 <CodeQueryWhere1 />
 
@@ -158,32 +158,32 @@ This query asks Weaviate for **Question** objects whose category contains the st
 
 ```json
 {
-    "data": {
-        "Get": {
-            "Question": [
-                {
-                    "answer": "the diamondback rattler",
-                    "category": "ANIMALS",
-                    "question": "Heaviest of all poisonous snakes is this North American rattlesnake"
-                },
-                {
-                    "answer": "Elephant",
-                    "category": "ANIMALS",
-                    "question": "It's the only living mammal in the order Proboseidea"
-                },
-                {
-                    "answer": "the nose or snout",
-                    "category": "ANIMALS",
-                    "question": "The gavial looks very much like a crocodile except for this bodily feature"
-                },
-                {
-                    "answer": "Antelope",
-                    "category": "ANIMALS",
-                    "question": "Weighing around a ton, the eland is the largest species of this animal in Africa"
-                }
-            ]
+  "data": {
+    "Get": {
+      "Question": [
+        {
+          "answer": "the diamondback rattler",
+          "category": "ANIMALS",
+          "question": "Heaviest of all poisonous snakes is this North American rattlesnake"
+        },
+        {
+          "answer": "Elephant",
+          "category": "ANIMALS",
+          "question": "It's the only living mammal in the order Proboseidea"
+        },
+        {
+          "answer": "the nose or snout",
+          "category": "ANIMALS",
+          "question": "The gavial looks very much like a crocodile except for this bodily feature"
+        },
+        {
+          "answer": "Antelope",
+          "category": "ANIMALS",
+          "question": "Weighing around a ton, the eland is the largest species of this animal in Africa"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -193,7 +193,7 @@ Now that you've seen a scalar filter, let's see how it can be combined with vect
 
 Combining a filter with a vector search is an additive process. Let us show you what we mean by that.
 
-import CodeQueryWhere2 from '/_includes/code/quickstart.query.where.2.mdx'
+import CodeQueryWhere2 from '/\_includes/code/quickstart.query.where.2.mdx'
 
 <CodeQueryWhere2 />
 
@@ -201,28 +201,28 @@ This query asks Weaviate for **Question** objects that are closest to "biology",
 
 ```json
 {
-    "data": {
-        "Get": {
-            "Question": [
-                {
-                    "_additional": {
-                        "certainty": 0.8918434679508209
-                    },
-                    "answer": "the nose or snout",
-                    "category": "ANIMALS",
-                    "question": "The gavial looks very much like a crocodile except for this bodily feature"
-                },
-                {
-                    "_additional": {
-                        "certainty": 0.8867587149143219
-                    },
-                    "answer": "Elephant",
-                    "category": "ANIMALS",
-                    "question": "It's the only living mammal in the order Proboseidea"
-                }
-            ]
+  "data": {
+    "Get": {
+      "Question": [
+        {
+          "_additional": {
+            "certainty": 0.8918434679508209
+          },
+          "answer": "the nose or snout",
+          "category": "ANIMALS",
+          "question": "The gavial looks very much like a crocodile except for this bodily feature"
+        },
+        {
+          "_additional": {
+            "certainty": 0.8867587149143219
+          },
+          "answer": "Elephant",
+          "category": "ANIMALS",
+          "question": "It's the only living mammal in the order Proboseidea"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -234,13 +234,13 @@ As the name suggests, the `Aggregate` function can be used to show aggregated da
 
 For example, the following query will return the number of data objects in the `Question` class:
 
-import CodeQueryAggregate1 from '/_includes/code/quickstart.query.aggregate.1.mdx'
+import CodeQueryAggregate1 from '/\_includes/code/quickstart.query.aggregate.1.mdx'
 
 <CodeQueryAggregate1 />
 
 And you can also use the `Aggregate` function with filters, just as you saw with the `Get` function above. For example, this query will return the number of **Question** objects with the category "ANIMALS".
 
-import CodeQueryAggregate2 from '/_includes/code/quickstart.query.aggregate.2.mdx'
+import CodeQueryAggregate2 from '/\_includes/code/quickstart.query.aggregate.2.mdx'
 
 <CodeQueryAggregate2 />
 
@@ -248,17 +248,17 @@ And as you saw above, there are four objects that match the query filter.
 
 ```json
 {
-    "data": {
-        "Aggregate": {
-            "Question": [
-                {
-                    "meta": {
-                        "count": 4
-                    }
-                }
-            ]
+  "data": {
+    "Aggregate": {
+      "Question": [
+        {
+          "meta": {
+            "count": 4
+          }
         }
+      ]
     }
+  }
 }
 ```
 
@@ -268,11 +268,11 @@ As you can see, the `Aggregate` function can return handy aggregated, or metadat
 
 ## Recap
 
-* `Get` queries are used for retrieving data objects.
-* `Aggregate` queries can be used to retrieve metadata, or aggregated data.
-* Operators such as `nearText` or `nearVector` can be used for vector queries.
-* Scalar filters can be used for exact filtering, taking advantage of inverted indexes.
-* Vector and scalar filters can be combined, and are available on both `Get` and `Aggregate` queries
+- `Get` queries are used for retrieving data objects.
+- `Aggregate` queries can be used to retrieve metadata, or aggregated data.
+- Operators such as `nearText` or `nearVector` can be used for vector queries.
+- Scalar filters can be used for exact filtering, taking advantage of inverted indexes.
+- Vector and scalar filters can be combined, and are available on both `Get` and `Aggregate` queries
 
 ## Suggested reading
 
@@ -287,9 +287,8 @@ As you can see, the `Aggregate` function can return handy aggregated, or metadat
 
 `certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](/weaviate/config-refs/distances#distance-vs-certainty).
 
-
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

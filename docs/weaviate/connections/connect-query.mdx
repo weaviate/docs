@@ -5,7 +5,7 @@ image: og/docs/connect.jpg
 # tags: ['getting started', 'connect']
 ---
 
-import WCDQueryConsoleLocation from '/docs/cloud/img/wcs-query-console-location.jpg';
+import WCDQueryConsoleLocation from "/docs/cloud/img/wcs-query-console-location.jpg";
 
 <CloudOnlyBadge />
 
@@ -15,11 +15,11 @@ Use the query tool to work interactively with clusters hosted in Weaviate Cloud 
 
 ## Open the query tool
 
-To use the query tool, open your [WCD Dashboard](https://weaviate.io/go/console?utm_source=docs&utm_content=howto).
+To use the query tool, open your [WCD Dashboard](/go/console?utm_content=howto).
 
 In the left-hand menu, click the Query tool icon.
 
-<img src={WCDQueryConsoleLocation} width="25%" alt="WCD query tool location"/>
+<img src={WCDQueryConsoleLocation} width="25%" alt="WCD query tool location" />
 
 ## Select a Weaviate instance
 
@@ -29,9 +29,9 @@ To select a cluster, Click the `Query` button and choose a cluster from the clus
 
 ### Pass authentication details
 
-import ExternalAuth from '/_includes/wcs/query-auth-details.mdx';
+import ExternalAuth from "/_includes/wcs/query-auth-details.mdx";
 
-<ExternalAuth/>
+<ExternalAuth />
 
 ### Pass inference keys
 
@@ -51,14 +51,14 @@ The header can pass multiple keys.
 
 This example uses [keyword search](/weaviate/search/bm25) to query a movie database. The [GraphiQL editor](https://graphqleditor.com/docs/) helps you to build the query on the left hand side of the screen. When you run the query, it displays the results on the right hand side.
 
-import QueryAppExample from '/docs/cloud/img/query-app-example.jpg';
+import QueryAppExample from "/docs/cloud/img/query-app-example.jpg";
 
-<img src={QueryAppExample} width="85%" alt="Query tool example"/>
+<img src={QueryAppExample} width="85%" alt="Query tool example" />
 
 For more information about the GraphQL API, see the [GraphQL API](/weaviate/api/graphql).
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />
