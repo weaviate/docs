@@ -57,10 +57,10 @@ import WellknownReady from '/_includes/code/wellknown.ready.mdx';
 :::
 
 Each Weaviate node can be set to one of the following operational modes, limiting the types of operations it can handle:
-- `ReadWrite`: The node can handle both read and write operations.
-- `WriteOnly`: The node can handle only write operations.
-- `ReadOnly`: The node can handle only read operations.
-- `ScaleOut`: The node can handle only read operations and CUD operations on `/replication` endpoints.
+- `ReadWrite`: (default) There are no restrictions; the node can handle both read and write operations.
+- `WriteOnly`: The node is limited to write operations.
+- `ReadOnly`: The node is limited to read operations and backup creation via the `/backups` endpoints.
+- `ScaleOut`: The same as `ReadOnly`, with additional CUD operations on `/replication` endpoints allowed.
 
 These modes can be configured using the `OPERATIONAL_MODE` [environment variable](./env-vars/index.md), or the equivalent `operational_mode` [runtime configuration](./env-vars/runtime-config.md).
 
