@@ -104,7 +104,6 @@ public class MultiTargetSearchTest : IAsyncLifetime
             "a wild animal",
             limit: 2,
             // highlight-start
-            // Implicit conversion to TargetVectors.Average
             targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"],
             // highlight-end
             returnMetadata: MetadataOptions.Distance
@@ -120,86 +119,99 @@ public class MultiTargetSearchTest : IAsyncLifetime
         Assert.Equal(2, response.Objects.Count());
     }
 
-    // [Fact]
-    // public async Task TestMultiTargetNearVector()
-    // {
-    //     var collection = client.Collections.Use(CollectionName);
-    //     var someResult = await collection.Query.FetchObjects(limit: 2, includeVectors: true);
+    [Fact]
+    public async Task TestMultiTargetNearVector()
+    {
+        var collection = client.Collections.Use(CollectionName);
+        var someResult = await collection.Query.FetchObjects(limit: 2, includeVectors: true);
 
-    //     var v1 = someResult.Objects.ElementAt(0).Vectors["jeopardy_questions_vector"];
-    //     var v2 = someResult.Objects.ElementAt(1).Vectors["jeopardy_answers_vector"];
+        float[] v1 = someResult.Objects.ElementAt(0).Vectors["jeopardy_questions_vector"];
+        float[] v2 = someResult.Objects.ElementAt(1).Vectors["jeopardy_answers_vector"];
 
-    //     // START MultiTargetNearVector
-    //     var response = await collection.Query.NearVector(
-    //         // highlight-start
-    //         // Specify the query vectors for each target vector using the Vectors dictionary
-    //         vector: new Vectors
-    //         {
-    //             { "jeopardy_questions_vector", v1 },
-    //             { "jeopardy_answers_vector", v2 }
-    //         },
-    //         // highlight-end
-    //         limit: 2,
-    //         // targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"], // Optional if keys match
-    //         returnMetadata: MetadataOptions.Distance
-    //     );
+        // START MultiTargetNearVector
+        var response = await collection.Query.NearVector(
+            // highlight-start
+            // Specify the query vectors using the Vectors dictionary.
+            vector: new Vectors
+            {
+                { "jeopardy_questions_vector", v1 },
+                { "jeopardy_answers_vector", v2 }
+            },
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
 
-    //     foreach (var o in response.Objects)
-    //     {
-    //         Console.WriteLine(JsonSerializer.Serialize(o.Properties));
-    //         Console.WriteLine(o.Metadata.Distance);
-    //     }
-    //     // END MultiTargetNearVector
-    //     Assert.Equal(2, response.Objects.Count());
-    // }
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END MultiTargetNearVector
+        Assert.Equal(2, response.Objects.Count());
+    }
 
-    // [Fact]
-    // public async Task TestMultiTargetMultipleNearVectors()
-    // {
-    //     var collection = client.Collections.Use(CollectionName);
-    //     var someResult = await collection.Query.FetchObjects(limit: 3, includeVectors: true);
+    [Fact]
+    public async Task TestMultiTargetMultipleNearVectors()
+    {
+        var collection = client.Collections.Use(CollectionName);
+        var someResult = await collection.Query.FetchObjects(limit: 3, includeVectors: true);
 
-    //     var v1 = someResult.Objects.ElementAt(0).Vectors["jeopardy_questions_vector"];
-    //     var v2 = someResult.Objects.ElementAt(1).Vectors["jeopardy_answers_vector"];
-    //     var v3 = someResult.Objects.ElementAt(2).Vectors["jeopardy_answers_vector"];
+        float[] v1 = someResult.Objects.ElementAt(0).Vectors["jeopardy_questions_vector"];
+        float[] v2 = someResult.Objects.ElementAt(1).Vectors["jeopardy_answers_vector"];
+        float[] v3 = someResult.Objects.ElementAt(2).Vectors["jeopardy_answers_vector"];
 
-    //     // START MultiTargetMultipleNearVectorsV1
-    //     var response = await collection.Query.NearVector(
-    //         // highlight-start
-    //         // Pass multiple vectors for a single target using a multi-dimensional array/list
-    //         vector: new Vectors
-    //         {
-    //             { "jeopardy_questions_vector", v1 },
-    //             { "jeopardy_answers_vector", new[] { v2, v3 } } // List of vectors for this target
-    //         },
-    //         // highlight-end
-    //         limit: 2,
-    //         targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"],
-    //         returnMetadata: MetadataOptions.Distance
-    //     );
-    //     // END MultiTargetMultipleNearVectorsV1
-    //     Assert.Equal(2, response.Objects.Count());
+        // START MultiTargetMultipleNearVectorsV1 // START MultiTargetMultipleNearVectorsV2
+        // Helper method
+        float[,] ToMatrix(params float[][] vectors)
+        {
+            int rows = vectors.Length;
+            int cols = vectors[0].Length;
+            var matrix = new float[rows, cols];
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < cols; j++)
+                    matrix[i, j] = vectors[i][j];
+            return matrix;
+        }
 
-    //     // START MultiTargetMultipleNearVectorsV2
-    //     var responseV2 = await collection.Query.NearVector(
-    //         vector: new Vectors
-    //         {
-    //             { "jeopardy_questions_vector", v1 },
-    //             { "jeopardy_answers_vector", new[] { v2, v3 } }
-    //         },
-    //         // highlight-start
-    //         // Specify weights matching the structure of the input vectors
-    //         targetVector: TargetVectors.ManualWeights(
-    //             ("jeopardy_questions_vector", 10),
-    //             ("jeopardy_answers_vector", [30, 30]) // Array of weights for the array of vectors
-    //         ),
-    //         // highlight-end
-    //         limit: 2,
-    //         returnMetadata: MetadataOptions.Distance
-    //     );
-    //     // END MultiTargetMultipleNearVectorsV2
-    //     Assert.Equal(2, responseV2.Objects.Count());
-    // }
+        // END MultiTargetMultipleNearVectorsV1 // END MultiTargetMultipleNearVectorsV2
+
+        // START MultiTargetMultipleNearVectorsV1
+        var response = await collection.Query.NearVector(
+            // highlight-start
+            vector: new Vectors
+            {
+                { "jeopardy_questions_vector", v1 },
+                { "jeopardy_answers_vector", ToMatrix(v2, v3) } 
+            },
+            // highlight-end
+            limit: 2,
+            targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"],
+            returnMetadata: MetadataOptions.Distance
+        );
+        // END MultiTargetMultipleNearVectorsV1
+        Assert.Equal(2, response.Objects.Count());
+
+        // START MultiTargetMultipleNearVectorsV2
+        var responseV2 = await collection.Query.NearVector(
+            vector: new Vectors
+            {
+                { "jeopardy_questions_vector", v1 },
+                { "jeopardy_answers_vector", ToMatrix(v2, v3) }
+            },
+            // highlight-start
+            // Specify weights for the combined vectors
+            targetVector: TargetVectors.ManualWeights(
+                ("jeopardy_questions_vector", 10.0),
+                ("jeopardy_answers_vector", [30.0, 30.0])
+            ),
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
+        // END MultiTargetMultipleNearVectorsV2
+        Assert.Equal(2, responseV2.Objects.Count());
+    }
 
     [Fact]
     public async Task TestMultiTargetWithSimpleJoin()
