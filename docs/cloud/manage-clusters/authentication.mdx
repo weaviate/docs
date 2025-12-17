@@ -10,14 +10,7 @@ import WCDAddAPIKeys from "/docs/cloud/img/wcs-add-key-details.jpg";
 import WCDDelAPIKeys from "/docs/cloud/img/wcs-delete-api-key.jpg";
 import RestartTheCluster from "/_includes/wcs/restart-warning.mdx";
 
-There are two options for managing cluster authentication depending on [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) being enabled:
-
-- [Authentication with RBAC enabled](#authentication-with-rbac-enabled)
-- [Authentication with RBAC disabled](#authentication-with-rbac-disabled-deprecated) (_deprecated_)
-
-## Authentication with RBAC enabled
-
-This section only applies to clusters that have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled. New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default.
+[Weaviate Cloud (WCD)](/go/console?utm_content=cloud) uses [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) to manage authentication. Below, you can find guides on how to create, edit, rotate and delete API keys for accessing Weaviate Cloud.
 
 ### Create an API key
 
@@ -56,7 +49,7 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 
 To create an API key, follow these steps:
 
-1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
+1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
 2.  Navigate to the `API Keys` section, found in the `Cluster details` panel.
 3.  If you need a new API key, click the `New key` button.
 4.  In the `Create API Key` form, provide a descriptive name for your key.
@@ -103,7 +96,7 @@ Rotating an API key allows you to generate a new key while invalidating the old 
 
 To rotate an API key, follow these steps:
 
-1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud).
+1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
 2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `API Keys` section.
 3.  Locate the API key you want to rotate and click the `Rotate` button next to it.
 4.  A confirmation dialog will appear, explaining that the old key will be invalidated. Click `Rotate key` to proceed.
@@ -148,7 +141,7 @@ Editing an API key allows you to modify its assigned roles. To edit an API key f
 
 To edit an API key's roles and permissions, follow these steps:
 
-1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud).
+1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
 2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `API Keys` section.
 3.  Locate the API key you want to edit and click the `Edit` button next to it.
 4.  In the `Edit API key` form, you can modify the key's description/name.
@@ -194,230 +187,11 @@ To delete an API key, follow these steps:
 
 To delete an API key, follow these steps:
 
-1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud).
+1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
 2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `API Keys` section.
 3.  Locate the API key you want to delete and click the `Trash can` button next to it.
 4.  A confirmation dialog will appear. Enter the necessary text (usually the API key name or a confirmation phrase) to confirm the deletion.
 5.  Click on the `Delete key` button.
-
-</details>
-
-## Authentication with RBAC disabled (deprecated)
-
-If [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) is not enabled, there will be two default API keys, `ReadOnly` and `Admin`:
-
-- `Admin` keys are read-write.
-- `ReadOnly` keys do not grant write access to the database.
-
-If you have a Shared Cloud cluster, you can create, delete, edit, and rotate API keys. You cannot modify the Sandbox cluster keys.
-
-<details>
-    <summary>Steps to retrieve an API key</summary>
-
-#### Retrieve an API key
-
-When connecting to a Weaviate Cloud cluster, you need an API key and the REST endpoint URL for authentication.
-To retrieve your connection details, follow these steps:
-
-import Link from "@docusaurus/Link";
-import Register from "/docs/cloud/img/weaviate-cloud-api-keys.png";
-
-<div class="row">
-  <ol>
-    <li className="inline-content">
-      Open the{" "}
-      <Link to="https://weaviate.io/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>{" "}
-      and{" "}
-      <Link to="/cloud/manage-clusters/status#select-a-cluster">
-        {" "}
-        ssselect your cluster
-      </Link>
-      .
-    </li>
-    <li>
-      On the <code>Cluster details</code> page, find the <code>Admin</code> API
-      key and <code>REST Endpoint</code> URL.
-    </li>
-    <li>Copy the needed key and URL and store them in a safe location.</li>
-  </ol>
-</div>
-
-import WCDClusterURL from "/docs/weaviate/quickstart/img/cluster_url.png";
-import WCDClusterAdminKey from "/docs/weaviate/quickstart/img/cluster_admin_key.png";
-
-<div class="row">
-  <div class="col col--6">
-    <div class="card-demo">
-      <div class="card">
-        <div class="card__image">
-          <img src={WCDClusterURL} alt="Get the (REST) endpoint URL" />
-        </div>
-        <div class="card__body">
-          Grab the <code>REST Endpoint</code> URL.
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col col--6">
-    <div class="card-demo">
-      <div class="card">
-        <div class="card__image">
-          <img src={WCDClusterAdminKey} alt="Get the admin API key" />
-        </div>
-        <div class="card__body">
-          Grab the <code>Admin</code> API key.
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<br />
-
-:::note REST Endpoint vs gRPC Endpoint
-
-When using an official Weaviate [client library](/weaviate/client-libraries), you need to authenticate using the `REST Endpoint`. The client will infer the gRPC endpoint automatically and use the more performant gRPC protocol when available.
-
-:::
-
-</details>
-
-<details>
-    <summary>Steps to create an API key</summary>
-
-#### Create an API key
-
-If you have a Shared Cloud cluster, you can create new API keys. To create a new API key, follow these steps:
-
-import NewAPIKey from "/docs/cloud/img/weaviate-cloud-new-api-key.png";
-
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        Open the{" "}
-        <Link to="https://weaviate.io/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-a-cluster">
-          Select your cluster
-        </Link>{" "}
-        and find the <code>API Keys</code> section.
-      </li>
-      <li>
-        Click on the <code>New Key</code> button (<span class="callout">1</span>
-        ).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={NewAPIKey} alt="Add new API key to a cluster" />
-      </div>
-      <div class="card__body">Add new API key to a cluster.</div>
-    </div>
-  </div>
-</div>
-<br />
-
-import NewAPIKeyConfirm from "/docs/cloud/img/weaviate-cloud-new-api-key-confirm.png";
-
-<div class="row">
-  <div class="col col--4">
-    <ol start="4">
-      <li>
-        Choose if you want an <code>Admin</code> or <code>ReadOnly</code> key.
-      </li>
-      <li>
-        Click on the <code>Create</code> button.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={NewAPIKeyConfirm} alt="Choose a type for the new API key" />
-      </div>
-      <div class="card__body">Choose a type for the new API key.</div>
-    </div>
-  </div>
-</div>
-<br />
-
-:::info
-
-<RestartTheCluster />
-
-:::
-
-</details>
-
-<details>
-    <summary>Steps to delete an API key</summary>
-
-#### Delete an API key
-
-If you have a Shared Cloud cluster, you can delete API keys. To delete an API key, follow these steps:
-
-import DeleteAPIKey from "/docs/cloud/img/weaviate-cloud-delete-api-key.png";
-
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        Open the{" "}
-        <Link to="https://weaviate.io/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-a-cluster">
-          Select your cluster
-        </Link>{" "}
-        and find the <code>API Keys</code> section.
-      </li>
-      <li>
-        Click on the <code>Delete</code> button next to the key you want to
-        delete (<span class="callout">1</span>).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={DeleteAPIKey} alt="Delete an API key in Weaviate Cloud" />
-      </div>
-      <div class="card__body">Delete an API key in Weaviate Cloud.</div>
-    </div>
-  </div>
-</div>
-<br />
-
-import DeleteAPIKeyConfirm from "/docs/cloud/img/weaviate-cloud-delete-api-key-confirm.png";
-
-<div class="row">
-  <div class="col col--4">
-    <ol start="4">
-      <li>Enter the necessary text to confirm the deletion.</li>
-      <li>
-        Click on the <code>Confirm and delete</code> button.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={DeleteAPIKeyConfirm} alt="Confirm API key deletion" />
-      </div>
-      <div class="card__body">Confirm API key deletion.</div>
-    </div>
-  </div>
-</div>
-<br />
-
-:::info
-
-<RestartTheCluster />
-
-:::
 
 </details>
 

@@ -5,13 +5,13 @@ image: og/docs/configuration.jpg
 # tags: ['configuration']
 ---
 
-
 <!-- Hidden for now as no longer used; to be removed in the future. -->
+
 When using Weaviate Enterprise, a proxy service is placed in between the user (or load balancer) and Weaviate. The service measures how Weaviate is used without sending through any sensitive information (e.g., function, durations, payload sizes). Below you can find an outline on how to add the proxy service to your setup.
 
 ## 1. Collect a Weaviate Enterprise Token
 
-- Login into the [Weaviate Console](https://weaviate.io/go/console?utm_source=docs&utm_content=howto).
+- Login into the [Weaviate Console](/go/console?utm_content=howto).
 - Click the profile symbol in the top menu and collect the key, which is shown to you. Note, this key is a secret, and you should not make this available in public repositories.
 
 ## 2. Add the Weaviate Enterprise Usage Collector to your Docker Compose file
@@ -20,21 +20,21 @@ If you are using the Docker Compose file from the installation configurator, you
 
 ```yaml
 services:
-    enterprise-proxy:
-    image: cr.weaviate.io/semitechnologies/weaviate-enterprise-usage-collector:latest
-    environment:
-      - weaviate_enterprise_token=[[ WEAVIATE TOKEN ]]
-      - weaviate_enterprise_project=[[ PROJECT NAME ]]
-    links:
-      - "weaviate:weaviate.com"
-    ports:
-      - "8080:8080"
-    depends_on:
-      - weaviate
+  enterprise-proxy:
+  image: cr.weaviate.io/semitechnologies/weaviate-enterprise-usage-collector:latest
+  environment:
+    - weaviate_enterprise_token=[[ WEAVIATE TOKEN ]]
+    - weaviate_enterprise_project=[[ PROJECT NAME ]]
+  links:
+    - "weaviate:weaviate.com"
+  ports:
+    - "8080:8080"
+  depends_on:
+    - weaviate
 ```
 
-* `weaviate_enterprise_token` = is the token you collected in the previous step.
-* `weaviate_enterprise_project` = can be any identifier picked by you to identify the Weaviate cluster. For example, if you have a development and production setup, you might choose `weaviate_enterprise_project=my-project-dev` and  `weaviate_enterprise_project=my-project-prod`.
+- `weaviate_enterprise_token` = is the token you collected in the previous step.
+- `weaviate_enterprise_project` = can be any identifier picked by you to identify the Weaviate cluster. For example, if you have a development and production setup, you might choose `weaviate_enterprise_project=my-project-dev` and `weaviate_enterprise_project=my-project-prod`.
 
 ## 3. Set the Weaviate ports to redirect to the proxy
 
@@ -44,8 +44,8 @@ Because you will route all traffic through the Enterprise proxy, you have to mak
 services:
   weaviate:
     command:
-    - --port
-    - '4000' # <== SET TO 4000
+      - --port
+      - "4000" # <== SET TO 4000
     # rest of the docker-compose.yml
 ```
 
@@ -60,6 +60,7 @@ Obtain your token as described in step 1.
 Get a Weaviate [helm chart](https://github.com/weaviate/weaviate-helm/releases) of version `||site.helm_version||` or higher.
 
 Enable the proxy and configure the proxy using the `collector_proxy` key from the `values.yaml` like so:
+
 ```
 collector_proxy:
   enabled: true
@@ -74,9 +75,8 @@ collector_proxy:
 
 Deploy the helm chart and make sure to use the proxy service for your requests.
 
-
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
