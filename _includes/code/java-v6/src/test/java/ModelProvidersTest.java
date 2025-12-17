@@ -117,12 +117,13 @@ class ModelProvidersTest {
   @Test
   void testWeaviateMMVectorizer() throws IOException {
     client.collections.delete("DemoCollection");
-    // START BasicVectorizerMMWeaviate
     client.collections.create("DemoCollection",
         col -> col
             .vectorConfig(
                 VectorConfig.text2vecWeaviate("title_vector", c -> c.sourceProperties("title")))
             .properties(Property.text("title"), Property.text("description")));
+    // START BasicVectorizerMMWeaviate
+    // Coming soon
     // END BasicVectorizerMMWeaviate
 
     var config = client.collections.getConfig("DemoCollection").get();

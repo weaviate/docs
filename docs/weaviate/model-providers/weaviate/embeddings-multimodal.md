@@ -1,6 +1,6 @@
 ---
 title: Multimodal Embeddings
-description: "Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance."
+description: "Weaviate Embeddings models can be accessed directly from a Weaviate Cloud instance."
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
@@ -136,12 +136,10 @@ Note currently only one model is available.
     />
   </TabItem>
   <TabItem value="csharp" label="C# (Beta)">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START BasicVectorizerWeaviate"
-      endMarker="// END BasicVectorizerWeaviate"
-      language="csharp"
-    />
+
+```csharp
+// Coming soon
+```
   </TabItem>
 </Tabs>
 
