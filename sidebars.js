@@ -556,6 +556,7 @@ const sidebars = {
           items: ["weaviate/manage-collections/tenant-states"],
         },
         "weaviate/manage-collections/collection-aliases",
+        "weaviate/manage-collections/time-to-live",
         "weaviate/manage-collections/multi-node-setup",
         "weaviate/manage-collections/migrate",
         "weaviate/manage-collections/cross-references",
