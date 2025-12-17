@@ -60,6 +60,7 @@ The following overrides are currently supported:
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
 | `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
+| `objects_ttl_delete_schedule`                    | `OBJECTS_TTL_DELETE_SCHEDULE`                |
 | `operational_mode`                               | `OPERATIONAL_MODE`                           |
 | `query_slow_log_enabled`                         | `QUERY_SLOW_LOG_ENABLED`                     |
 | `query_slow_log_threshold`                       | `QUERY_SLOW_LOG_THRESHOLD`                   |
