@@ -9,7 +9,12 @@ These are the release notes for the last five minor releases:
 
 import QuickLinks from "/src/components/QuickLinks";
 
-export const pythonCardsData = [
+export const versionCardsData = [
+  {
+  title: "v1.35",
+  link: "https://github.com/weaviate/weaviate/releases/tag/v1.35.0",
+  icon: "fa fa-tags",
+  },
   {
   title: "v1.34",
   link: "https://weaviate.io/blog/weaviate-1-34-release",
@@ -37,7 +42,7 @@ export const pythonCardsData = [
   },
 ];
 
-<QuickLinks items={pythonCardsData} />
+<QuickLinks items={versionCardsData} />
 
 This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate Database.
 
