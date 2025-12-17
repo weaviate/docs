@@ -376,7 +376,7 @@ While you are waiting for a backup to complete, [Weaviate stays available](#read
 
 Where [`zstd` compression](https://github.com/facebook/zstd) is available, choose one of: `ZstdDefaultCompression`, `ZstdBestSpeed` and `ZstdBestCompression`.
 
-Otherwise, choose one of the standard [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) compression: `DefaultCompression`, `BestSpeed` and `BestCompression`.
+Otherwise, choose one of the standard [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) options: `DefaultCompression`, `BestSpeed` and `BestCompression`.
 
 You can also explicitly disable compression by setting the level to `NoCompression`.
 
