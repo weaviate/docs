@@ -24,6 +24,7 @@ Weaviate Embeddings' models transform text data into vector embeddings, capturin
 [Weaviate Cloud integrates with Weaviate Embeddings' embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
 
 [Weaviate Embeddings integration page](./embeddings.md)
+[Weaviate multimodal embedding integration page](./embeddings-multimodal.md)
 
 ## Summary
 
@@ -38,6 +39,7 @@ You must provide a valid Weaviate Cloud API key to Weaviate for these integratio
 Then, go to the relevant integration page to learn how to configure Weaviate with the Weaviate Embeddings models and start using them in your applications.
 
 - [Text Embeddings](./embeddings.md)
+- [Multimodal Embeddings](./embeddings-multimodal.md)
 
 ## Questions and feedback
 

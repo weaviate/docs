@@ -147,7 +147,10 @@ const sidebars = {
               customProps: {
                 cloudOnly: true,
               },
-              items: ["weaviate/model-providers/weaviate/embeddings"],
+              items: [
+                "weaviate/model-providers/weaviate/embeddings",
+                "weaviate/model-providers/weaviate/embeddings-multimodal"
+              ],
             },
             {
               type: "category",
