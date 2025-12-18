@@ -280,6 +280,25 @@ If you want to populate the new named vector for existing objects, delete and re
 The ability to add a named vector after collection creation is only available for collections configured with named vectors.
 :::
 
+### Time to live (TTL)
+
+:::caution Added in `v1.35.0` as a technical preview
+Time to live (TTL) was introduced in Weaviate `v1.35.0` as a technical preview feature, for local / self-hosted Weaviate instances. It is not available in Weaviate Cloud instances at this time.
+:::
+
+Objects can be optionally set to expire after a predetermined amount of time using the Time to Live (TTL) feature.
+
+A TTL can be set at the collection level. The expiration time can be defined in relation to:
+- The time of object creation
+- The time of the last object update
+- A Weaviate `DATE` property value (a date & time property)
+
+The TTL value is specified in seconds. The TTL must be positive, except for those relative to a `DATE` property, which can also be negative to allow for expiration before the specified date.
+
+Expired objects are automatically deleted by Weaviate at a set of predetermined intervals. The default value can be overridden using the `OBJECTS_TTL_DELETE_SCHEDULE` environment variable or `objects_ttl_delete_schedule` configuration in the helm chart. Expired, but yet undeleted, objects can optionally be excluded from query results to prevent erroneous data retrieval before the deletion process runs.
+
+Note that for multi-tenant collections, deletions can only occur for active tenants. Deletion operations will be skipped for inactive or offloaded tenants; and the deletion will occur only when the tenant becomes active again.
+
 ## Data Schema
 
 Weaviate requires a data schema before you add data. However, you don't have to create a data schema manually. If you don't provide one, Weaviate generates a schema based on the incoming data.
