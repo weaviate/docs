@@ -1,9 +1,9 @@
 // START NearText
+using System;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
 
 namespace WeaviateProject.Examples
 {
@@ -33,7 +33,12 @@ namespace WeaviateProject.Examples
             Console.WriteLine("--- Query Results ---");
             foreach (var obj in response.Objects)
             {
-                Console.WriteLine(JsonSerializer.Serialize(obj.Properties, new JsonSerializerOptions { WriteIndented = true }));
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                        obj.Properties,
+                        new JsonSerializerOptions { WriteIndented = true }
+                    )
+                );
             }
         }
     }

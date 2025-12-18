@@ -1,11 +1,11 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
-using System.Collections.Generic;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -22,14 +22,14 @@ public class SearchHybridTest : IDisposable
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        client = Connect.Cloud(
-                    weaviateUrl,
-                    weaviateApiKey,
-                    headers: new Dictionary<string, string>()
-                    {
-                { "X-OpenAI-Api-Key", openaiApiKey }
-                    }
-                ).GetAwaiter().GetResult();
+        client = Connect
+            .Cloud(
+                weaviateUrl,
+                weaviateApiKey,
+                headers: new Dictionary<string, string>() { { "X-OpenAI-Api-Key", openaiApiKey } }
+            )
+            .GetAwaiter()
+            .GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -102,7 +102,9 @@ public class SearchHybridTest : IDisposable
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
             // highlight-start
-            Console.WriteLine($"Score: {o.Metadata.Score}, Explain Score: {o.Metadata.ExplainScore}");
+            Console.WriteLine(
+                $"Score: {o.Metadata.Score}, Explain Score: {o.Metadata.ExplainScore}"
+            );
             // highlight-end
         }
         // END HybridWithScore
@@ -115,7 +117,7 @@ public class SearchHybridTest : IDisposable
     [Fact]
     public async Task TestLimit()
     {
-        // START limit 
+        // START limit
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -129,7 +131,7 @@ public class SearchHybridTest : IDisposable
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END limit 
+        // END limit
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.Equal(3, response.Objects.Count());
@@ -138,7 +140,7 @@ public class SearchHybridTest : IDisposable
     [Fact]
     public async Task TestAutocut()
     {
-        // START autocut 
+        // START autocut
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -152,7 +154,7 @@ public class SearchHybridTest : IDisposable
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END autocut 
+        // END autocut
 
         Assert.True(response.Objects.Any());
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
@@ -227,14 +229,13 @@ public class SearchHybridTest : IDisposable
     [Fact]
     public async Task HybridWithBM25OperatorAnd()
     {
-
         // START HybridWithBM25OperatorAnd
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             // highlight-start
             "Australian mammal cute",
-            bm25Operator: new BM25Operator.And(),  // Each result must include all tokens
-                                                   // highlight-end
+            bm25Operator: new BM25Operator.And(), // Each result must include all tokens
+            // highlight-end
             limit: 3
         );
 
@@ -338,7 +339,10 @@ public class SearchHybridTest : IDisposable
         // END HybridWithFilter
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Equal("Double Jeopardy!", (response.Objects.First().Properties as IDictionary<string, object>)["round"].ToString());
+        Assert.Equal(
+            "Double Jeopardy!",
+            (response.Objects.First().Properties as IDictionary<string, object>)["round"].ToString()
+        );
     }
 
     [Fact]
@@ -379,7 +383,7 @@ public class SearchHybridTest : IDisposable
             "California",
             // highlight-start
             maxVectorDistance: 0.4f, // Maximum threshold for the vector search component
-                                     // highlight-end
+            // highlight-end
             alpha: 0.75f,
             limit: 5
         );
@@ -397,10 +401,10 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "California",
             alpha: 0.75f,
-            groupBy: new GroupByRequest("round")  // group by this property
+            groupBy: new GroupByRequest("round") // group by this property
             {
-                NumberOfGroups = 2,           // maximum number of groups
-                ObjectsPerGroup = 3,          // maximum objects per group
+                NumberOfGroups = 2, // maximum number of groups
+                ObjectsPerGroup = 3, // maximum objects per group
             }
         );
 

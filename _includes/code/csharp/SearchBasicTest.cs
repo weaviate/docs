@@ -1,10 +1,10 @@
-using Xunit;
+using System;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
+using Xunit;
 
 // Note: This code assumes the existence of a Weaviate instance populated
 // with 'JeopardyQuestion' and 'WineReviewMT' collections
@@ -24,10 +24,7 @@ public class SearchBasicTest : IAsyncLifetime
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         // var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        client = await Connect.Cloud(
-            weaviateUrl,
-            weaviateApiKey
-        );
+        client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
     }
 
     // Fixed: Implement DisposeAsync from IAsyncLifetime instead of Dispose
@@ -69,7 +66,7 @@ public class SearchBasicTest : IAsyncLifetime
     //     // ===== BASIC GET EXAMPLES =====
     //     // ==============================
 
-    //     // START 
+    //     // START
     //     var jeopardy = client.Collections.Use("JeopardyQuestion");
     //     // highlight-start
     //     var response = await jeopardy.Query.FetchObjects(offset: 1, limit: 1);
@@ -79,7 +76,7 @@ public class SearchBasicTest : IAsyncLifetime
     //     {
     //         Console.WriteLine(JsonSerializer.Serialize(o.Properties));
     //     }
-    //     // END 
+    //     // END
 
     //     Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     //     Assert.True(response.Objects.First().Properties.ContainsKey("question"));
@@ -127,7 +124,7 @@ public class SearchBasicTest : IAsyncLifetime
             // highlight-start
             limit: 1,
             returnProperties: new[] { "question", "answer", "points" }
-            // highlight-end
+        // highlight-end
         );
 
         foreach (var o in response.Objects)
@@ -185,9 +182,7 @@ public class SearchBasicTest : IAsyncLifetime
         var allObjs = await jeopardy.Query.FetchObjects(limit: 1);
         var idToFetch = allObjs.Objects.First().UUID;
 
-        var response = await jeopardy.Query.FetchObjectByID(
-            (Guid)idToFetch
-        );
+        var response = await jeopardy.Query.FetchObjectByID((Guid)idToFetch);
 
         Console.WriteLine(response);
         // END GetObjectId
@@ -204,12 +199,7 @@ public class SearchBasicTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            returnReferences: [
-                new QueryReference(
-                    linkOn: "hasCategory",
-                    fields: ["title"]
-                )
-            ],
+            returnReferences: [new QueryReference(linkOn: "hasCategory", fields: ["title"])],
             // highlight-end
             limit: 2
         );
@@ -257,8 +247,8 @@ public class SearchBasicTest : IAsyncLifetime
 
         foreach (var o in response.Objects)
         {
-            Console.WriteLine(JsonSerializer.Serialize(o.Properties));  // View the returned properties
-            Console.WriteLine(o.Metadata.CreationTime);  // View the returned creation time
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties)); // View the returned properties
+            Console.WriteLine(o.Metadata.CreationTime); // View the returned creation time
         }
         // END GetWithMetadata
 
@@ -299,15 +289,16 @@ public class SearchBasicTest : IAsyncLifetime
         // Fetch a valid ID first to ensure test success
         var jeopardyInit = client.Collections.Use("JeopardyQuestion");
         var initResp = await jeopardyInit.Query.FetchObjects(limit: 1);
-        if (!initResp.Objects.Any()) return;
+        if (!initResp.Objects.Any())
+            return;
         var validId = initResp.Objects.First().UUID;
 
         // START QueryWithReplication
-        var jeopardy = client.Collections.Use("JeopardyQuestion").WithConsistencyLevel(ConsistencyLevels.Quorum);
+        var jeopardy = client
+            .Collections.Use("JeopardyQuestion")
+            .WithConsistencyLevel(ConsistencyLevels.Quorum);
 
-        var response = await jeopardy.Query.FetchObjectByID(
-            (Guid)validId
-        );
+        var response = await jeopardy.Query.FetchObjectByID((Guid)validId);
 
         // The parameter passed to `withConsistencyLevel` can be one of:
         // * 'ALL',

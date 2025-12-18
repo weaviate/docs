@@ -1,10 +1,10 @@
 // START RAG
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
 using Weaviate.Client.Models.Generative;
 
 namespace WeaviateProject.Examples
@@ -19,8 +19,13 @@ namespace WeaviateProject.Examples
             string anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
 
             // Step 3.1: Connect to your Weaviate Cloud instance
-            var client = await Connect.Cloud(weaviateUrl, weaviateApiKey, headers:
-                new Dictionary<string, string> { { "X-Anthropic-Api-Key", anthropicApiKey } }
+            var client = await Connect.Cloud(
+                weaviateUrl,
+                weaviateApiKey,
+                headers: new Dictionary<string, string>
+                {
+                    { "X-Anthropic-Api-Key", anthropicApiKey },
+                }
             );
 
             // Step 3.2: Perform RAG with nearText results
@@ -34,7 +39,7 @@ namespace WeaviateProject.Examples
                 groupedTask: new GroupedTask("Write a tweet with emojis about this movie."),
                 provider: new Providers.Anthropic
                 {
-                    Model = "claude-3-5-haiku-latest" // The model to use
+                    Model = "claude-3-5-haiku-latest", // The model to use
                 }
             );
             // highlight-end

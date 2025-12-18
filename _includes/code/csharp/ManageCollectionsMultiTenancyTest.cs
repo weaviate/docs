@@ -1,10 +1,10 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -35,11 +35,13 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestEnableMultiTenancy()
     {
         // START EnableMultiTenancy
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MultiTenancyCollection",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MultiTenancyCollection",
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         // END EnableMultiTenancy
 
         var config = await client.Collections.Export("MultiTenancyCollection");
@@ -50,11 +52,17 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestEnableAutoActivationMultiTenancy()
     {
         // START EnableAutoActivation
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MultiTenancyCollection",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantActivation = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MultiTenancyCollection",
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantActivation = true,
+                },
+            }
+        );
         // END EnableAutoActivation
 
         var config = await client.Collections.Export("MultiTenancyCollection");
@@ -65,11 +73,17 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestEnableAutoMT()
     {
         // START EnableAutoMT
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "CollectionWithAutoMTEnabled",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "CollectionWithAutoMTEnabled",
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = true,
+                },
+            }
+        );
         // END EnableAutoMT
 
         var config = await client.Collections.Export("CollectionWithAutoMTEnabled");
@@ -80,11 +94,17 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestUpdateAutoMT()
     {
         string collectionName = "MTCollectionNoAutoMT";
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = false }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = false,
+                },
+            }
+        );
 
         // START UpdateAutoMT
         var collection = client.Collections.Use(collectionName);
@@ -102,18 +122,18 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestAddTenantsToClass()
     {
         string collectionName = "MultiTenancyCollection";
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
 
         var collection = client.Collections.Use(collectionName);
 
         // START AddTenantsToClass
-        await collection.Tenants.Create(
-            ["tenantA", "tenantB"]
-        );
+        await collection.Tenants.Create(["tenantA", "tenantB"]);
         // END AddTenantsToClass
 
         var tenants = (await collection.Tenants.List()).ToList();
@@ -126,16 +146,19 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestListTenants()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         await collection.Tenants.Create(["tenantA", "tenantB"]);
 
         // START ListTenants
         var tenants = await collection.Tenants.List();
-        foreach (var t in tenants) Console.WriteLine(t.Name);
+        foreach (var t in tenants)
+            Console.WriteLine(t.Name);
         // END ListTenants
 
         Assert.Equal(2, tenants.Count());
@@ -145,17 +168,20 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestGetTenantsByName()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         await collection.Tenants.Create(["tenantA", "tenantB"]);
 
         // START GetTenantsByName
         var tenantNames = new[] { "tenantA", "tenantB", "nonExistentTenant" };
         var tenants = await collection.Tenants.List(tenantNames);
-        foreach (var t in tenants) Console.WriteLine(t.Name);
+        foreach (var t in tenants)
+            Console.WriteLine(t.Name);
         // END GetTenantsByName
 
         Assert.Equal(2, tenants.Count());
@@ -165,11 +191,13 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestGetOneTenant()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         await collection.Tenants.Create(["tenantA"]);
 
         // START GetOneTenant
@@ -185,11 +213,13 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestActivateTenant()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         await collection.Tenants.Create(["tenantA"]);
 
         // START ActivateTenants
@@ -205,11 +235,17 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestDeactivateTenant()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = true,
+                },
+            }
+        );
         await collection.Tenants.Create(["tenantA"]);
 
         // START DeactivateTenants
@@ -225,11 +261,13 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestOffloadTenants()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         await collection.Tenants.Create(["tenantA"]);
         // START OffloadTenants
         await collection.Tenants.Offload(new[] { "tenantA" });
@@ -244,11 +282,13 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestRemoveTenants()
     {
         string collectionName = "MultiTenancyCollection";
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
         await collection.Tenants.Create(["tenantA", "tenantB"]);
         // START RemoveTenants
         await collection.Tenants.Delete(new[] { "tenantB", "tenantX" });
@@ -263,11 +303,17 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestChangeTenantState()
     {
         string collectionName = "MultiTenancyCollection";
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = true,
+                },
+            }
+        );
 
         var collection = client.Collections.Use(collectionName);
         await collection.Tenants.Create(["tenantA"]);
@@ -277,34 +323,35 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
         var multiCollection = client.Collections.Use(collectionName);
 
         // Deactivate
-        await multiCollection.Tenants.Update([new Tenant
-        {
-            Name = tenantName,
-            Status = TenantActivityStatus.Inactive
-        }]);
+        await multiCollection.Tenants.Update([
+            new Tenant { Name = tenantName, Status = TenantActivityStatus.Inactive },
+        ]);
 
         // Activate
-        await multiCollection.Tenants.Update([new Tenant
-        {
-            Name = tenantName,
-            Status = TenantActivityStatus.Active
-        }]);
+        await multiCollection.Tenants.Update([
+            new Tenant { Name = tenantName, Status = TenantActivityStatus.Active },
+        ]);
 
         // Offloading requires S3/warm/cold configuration
         // END ChangeTenantState
 
         var tenants = await multiCollection.Tenants.List();
-        Assert.Contains(tenants, t => t.Name == tenantName && t.Status == TenantActivityStatus.Active);
+        Assert.Contains(
+            tenants,
+            t => t.Name == tenantName && t.Status == TenantActivityStatus.Active
+        );
     }
 
     [Fact]
     public async Task TestCreateTenantObject()
     {
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "JeopardyQuestion",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "JeopardyQuestion",
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
 
         var collection = client.Collections.Use("JeopardyQuestion");
         await collection.Tenants.Create(["tenantA"]);
@@ -314,10 +361,12 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion").WithTenant("tenantA");
         // highlight-end
 
-        var uuid = await jeopardy.Data.Insert(new
-        {
-            question = "This vector DB is OSS & supports automatic property type inference on import"
-        });
+        var uuid = await jeopardy.Data.Insert(
+            new
+            {
+                question = "This vector DB is OSS & supports automatic property type inference on import",
+            }
+        );
 
         Console.WriteLine(uuid); // the return value is the object's UUID
         // END CreateMtObject
@@ -329,11 +378,13 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     [Fact]
     public async Task TestSearchTenant()
     {
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "JeopardyQuestion",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "JeopardyQuestion",
+                MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
+            }
+        );
 
         var jeopardyCollection = client.Collections.Use("JeopardyQuestion");
         await jeopardyCollection.Tenants.Create(["tenantA"]);
@@ -362,11 +413,17 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
     public async Task TestAddReferenceToTenantObject()
     {
         await client.Collections.Delete("MultiTenancyCollection");
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MultiTenancyCollection",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantActivation = true }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MultiTenancyCollection",
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantActivation = true,
+                },
+            }
+        );
 
         var jeopardy = client.Collections.Use("JeopardyCategory");
         var categoryId = await jeopardy.Data.Insert(new { category = "Software" });
@@ -385,16 +442,18 @@ public class ManageCollectionsMultiTenancyTest : IAsyncLifetime
         // highlight-end
 
         // Insert an object to tenantA
-        var objectId = await multiTenantA.Data.Insert(new
-        {
-            question = "This vector DB is OSS & supports automatic property type inference on import"
-        });
+        var objectId = await multiTenantA.Data.Insert(
+            new
+            {
+                question = "This vector DB is OSS & supports automatic property type inference on import",
+            }
+        );
 
         // Add reference from MultiTenancyCollection object to a JeopardyCategory object
         // highlight-start
         await multiTenantA.Data.ReferenceAdd(
             // highlight-end
-            from: objectId,  // MultiTenancyCollection object id (a Jeopardy question)
+            from: objectId, // MultiTenancyCollection object id (a Jeopardy question)
             fromProperty: "hasCategory",
             to: categoryId // JeopardyCategory id
         );

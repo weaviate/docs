@@ -1,10 +1,10 @@
 // START RAG
+using System;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
 using Weaviate.Client.Models.Generative;
-using System.Text.Json;
 
 namespace WeaviateProject.Examples
 {
@@ -27,7 +27,7 @@ namespace WeaviateProject.Examples
                 provider: new Providers.Ollama
                 {
                     ApiEndpoint = "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
-                    Model = "llama3.2" // The model to use
+                    Model = "llama3.2", // The model to use
                 }
             );
             // highlight-end

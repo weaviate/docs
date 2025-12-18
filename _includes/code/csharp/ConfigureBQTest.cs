@@ -1,7 +1,7 @@
-using Xunit;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System.Threading.Tasks;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -30,19 +30,23 @@ public class ConfigureBQTest : IAsyncLifetime
     {
         await client.Collections.Delete(COLLECTION_NAME);
         // START EnableBQ
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default",
-                v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.BQ()
-                    // highlight-end
-                })
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
+                    {
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.BQ(),
+                        // highlight-end
+                    }
+                ),
+            }
+        );
         // END EnableBQ
     }
 
@@ -52,18 +56,22 @@ public class ConfigureBQTest : IAsyncLifetime
         await client.Collections.Delete(COLLECTION_NAME);
         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            }
+        );
 
         // START UpdateSchema
         await collection.Config.Update(c =>
         {
             var vectorConfig = c.VectorConfig["default"];
-            vectorConfig.VectorIndexConfig.UpdateHNSW(h => h.Quantizer = new VectorIndex.Quantizers.BQ());
+            vectorConfig.VectorIndexConfig.UpdateHNSW(h =>
+                h.Quantizer = new VectorIndex.Quantizers.BQ()
+            );
         });
         // END UpdateSchema
     }
@@ -73,25 +81,28 @@ public class ConfigureBQTest : IAsyncLifetime
     {
         await client.Collections.Delete(COLLECTION_NAME);
         // START BQWithOptions
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
 
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default",
-                v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
                     {
                         VectorCacheMaxObjects = 100000,
                         Quantizer = new VectorIndex.Quantizers.BQ
                         {
                             Cache = true,
-                            RescoreLimit = 200
-                        }
+                            RescoreLimit = 200,
+                        },
                     }
-                    // highlight-end
-                )
-        });
+                // highlight-end
+                ),
+            }
+        );
         // END BQWithOptions
     }
 }

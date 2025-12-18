@@ -1,8 +1,8 @@
-using Weaviate.Client;
 using System;
-using System.Threading.Tasks;
-using Xunit;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Xunit;
 
 namespace WeaviateProject.Examples;
 
@@ -12,7 +12,8 @@ public class ConnectionTest
     public async Task TestConnectLocalWithCustomUrl()
     {
         // START CustomURL
-        WeaviateClient client = await WeaviateClientBuilder.Custom(
+        WeaviateClient client = await WeaviateClientBuilder
+            .Custom(
                 restEndpoint: "127.0.0.1",
                 restPort: "8080",
                 grpcEndpoint: "127.0.0.1",
@@ -72,7 +73,8 @@ public class ConnectionTest
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
-        WeaviateClient client = await WeaviateClientBuilder.Custom(
+        WeaviateClient client = await WeaviateClientBuilder
+            .Custom(
                 restEndpoint: httpHost,
                 restPort: "443",
                 grpcEndpoint: grpcHost,
@@ -80,10 +82,7 @@ public class ConnectionTest
                 useSsl: true
             )
             .WithCredentials(Auth.ApiKey(weaviateApiKey))
-            .WithHeaders(new Dictionary<string, string>
-            {
-                { "X-Cohere-Api-Key", cohereApiKey }
-            })
+            .WithHeaders(new Dictionary<string, string> { { "X-Cohere-Api-Key", cohereApiKey } })
             .WithInitTimeout(TimeSpan.FromSeconds(30))
             .WithQueryTimeout(TimeSpan.FromSeconds(60))
             .WithInsertTimeout(TimeSpan.FromSeconds(120))
@@ -122,7 +121,8 @@ public class ConnectionTest
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
-        WeaviateClient client = await WeaviateClientBuilder.Custom(
+        WeaviateClient client = await WeaviateClientBuilder
+            .Custom(
                 restEndpoint: httpHost,
                 restPort: "443",
                 grpcEndpoint: grpcHost,
@@ -130,10 +130,7 @@ public class ConnectionTest
                 useSsl: true
             )
             .WithCredentials(Auth.ApiKey(weaviateApiKey))
-            .WithHeaders(new Dictionary<string, string>
-            {
-                { "X-Cohere-Api-Key", cohereApiKey }
-            })
+            .WithHeaders(new Dictionary<string, string> { { "X-Cohere-Api-Key", cohereApiKey } })
             .BuildAsync();
 
         var isReady = await client.IsReady();
@@ -151,7 +148,8 @@ public class ConnectionTest
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
-        WeaviateClient client = await WeaviateClientBuilder.Custom(
+        WeaviateClient client = await WeaviateClientBuilder
+            .Custom(
                 restEndpoint: httpHost,
                 restPort: "443",
                 grpcEndpoint: grpcHost,
@@ -159,10 +157,7 @@ public class ConnectionTest
                 useSsl: true
             )
             .WithCredentials(Auth.ApiKey(weaviateApiKey))
-            .WithHeaders(new Dictionary<string, string>
-            {
-                { "X-Cohere-Api-Key", cohereApiKey }
-            })
+            .WithHeaders(new Dictionary<string, string> { { "X-Cohere-Api-Key", cohereApiKey } })
             .BuildAsync();
 
         var isReady = await client.IsReady();
@@ -188,9 +183,7 @@ public class ConnectionTest
         // Best practice: store your credentials in environment variables
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_LOCAL_API_KEY");
 
-        WeaviateClient client = await Connect.Local(
-            credentials: Auth.ApiKey(weaviateApiKey)
-        );
+        WeaviateClient client = await Connect.Local(credentials: Auth.ApiKey(weaviateApiKey));
 
         var isReady = await client.IsReady();
         Console.WriteLine(isReady);
@@ -204,16 +197,9 @@ public class ConnectionTest
         // Best practice: store your credentials in environment variables
         string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
-        WeaviateClient client = await WeaviateClientBuilder.Local(
-                hostname: "localhost",
-                restPort: 8080,
-                grpcPort: 50051,
-                useSsl: false
-            )
-            .WithHeaders(new Dictionary<string, string>
-            {
-                { "X-Cohere-Api-Key", cohereApiKey }
-            })
+        WeaviateClient client = await WeaviateClientBuilder
+            .Local(hostname: "localhost", restPort: 8080, grpcPort: 50051, useSsl: false)
+            .WithHeaders(new Dictionary<string, string> { { "X-Cohere-Api-Key", cohereApiKey } })
             .BuildAsync();
 
         var isReady = await client.IsReady();
@@ -233,10 +219,7 @@ public class ConnectionTest
         WeaviateClient client = await Connect.Cloud(
             weaviateUrl, // Replace with your Weaviate Cloud URL
             weaviateApiKey, // Replace with your Weaviate Cloud key
-            new Dictionary<string, string>
-            {
-                { "X-Cohere-Api-Key", cohereApiKey }
-            }
+            new Dictionary<string, string> { { "X-Cohere-Api-Key", cohereApiKey } }
         );
 
         var isReady = await client.IsReady();

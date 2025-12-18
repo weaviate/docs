@@ -1,9 +1,9 @@
-using Xunit;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
+using Xunit;
 
 public class ModelProvidersTest : IAsyncLifetime
 {
@@ -50,7 +50,7 @@ public class ModelProvidersTest : IAsyncLifetime
 
         // highlight-start
         using var client = await Connect.Cloud(
-            weaviateUrl,   // Replace with your Weaviate Cloud URL
+            weaviateUrl, // Replace with your Weaviate Cloud URL
             weaviateApiKey // Replace with your Weaviate Cloud key
         );
 
@@ -69,24 +69,29 @@ public class ModelProvidersTest : IAsyncLifetime
             await client.Collections.Delete("DemoCollection");
 
         // START BasicVectorizerWeaviate
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "DemoCollection",
-            VectorConfig = new VectorConfigList
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                Configure.Vector("title_vector", v => v.Text2VecWeaviate(), sourceProperties: ["title"])
-            },
-            Properties =
-            [
-                Property.Text("title"),
-                Property.Text("description")
-            ]
-        });
+                Name = "DemoCollection",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title_vector",
+                        v => v.Text2VecWeaviate(),
+                        sourceProperties: ["title"]
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("description")],
+            }
+        );
         // END BasicVectorizerWeaviate
 
         var config = await client.Collections.Export("DemoCollection");
         Assert.True(config.VectorConfig.ContainsKey("title_vector"));
-        Assert.Equal("text2vec-weaviate", config.VectorConfig["title_vector"].Vectorizer.Identifier);
+        Assert.Equal(
+            "text2vec-weaviate",
+            config.VectorConfig["title_vector"].Vectorizer.Identifier
+        );
 
         await client.Collections.Delete("DemoCollection");
     }
@@ -95,26 +100,29 @@ public class ModelProvidersTest : IAsyncLifetime
     public async Task TestWeaviateVectorizerModel()
     {
         // START VectorizerWeaviateCustomModel
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "DemoCollection",
-            VectorConfig = new VectorConfigList
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                Configure.Vector("title_vector", v => v.Text2VecWeaviate(
-                    model: "Snowflake/snowflake-arctic-embed-l-v2.0"
-                ), sourceProperties: ["title"])
-            },
-            Properties =
-            [
-                Property.Text("title"),
-                Property.Text("description")
-            ]
-        });
+                Name = "DemoCollection",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title_vector",
+                        v => v.Text2VecWeaviate(model: "Snowflake/snowflake-arctic-embed-l-v2.0"),
+                        sourceProperties: ["title"]
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("description")],
+            }
+        );
         // END VectorizerWeaviateCustomModel
 
         var config = await client.Collections.Export("DemoCollection");
         Assert.True(config.VectorConfig.ContainsKey("title_vector"));
-        Assert.Equal("text2vec-weaviate", config.VectorConfig["title_vector"].Vectorizer.Identifier);
+        Assert.Equal(
+            "text2vec-weaviate",
+            config.VectorConfig["title_vector"].Vectorizer.Identifier
+        );
 
         await client.Collections.Delete("DemoCollection");
     }
@@ -123,28 +131,34 @@ public class ModelProvidersTest : IAsyncLifetime
     public async Task TestWeaviateVectorizerParameters()
     {
         // START SnowflakeArcticEmbedMV15
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "DemoCollection",
-            VectorConfig = new VectorConfigList
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                Configure.Vector("title_vector", v => v.Text2VecWeaviate(
-                    model: "Snowflake/snowflake-arctic-embed-m-v1.5"
-                    // baseURL: null, 
-                    // dimensions: 0 
-                ), sourceProperties: ["title"])
-            },
-            Properties =
-            [
-                Property.Text("title"),
-                Property.Text("description")
-            ]
-        });
+                Name = "DemoCollection",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title_vector",
+                        v =>
+                            v.Text2VecWeaviate(
+                                model: "Snowflake/snowflake-arctic-embed-m-v1.5"
+                            // baseURL: null,
+                            // dimensions: 0
+                            ),
+                        sourceProperties: ["title"]
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("description")],
+            }
+        );
         // END SnowflakeArcticEmbedMV15
 
         var config = await client.Collections.Export("DemoCollection");
         Assert.True(config.VectorConfig.ContainsKey("title_vector"));
-        Assert.Equal("text2vec-weaviate", config.VectorConfig["title_vector"].Vectorizer.Identifier);
+        Assert.Equal(
+            "text2vec-weaviate",
+            config.VectorConfig["title_vector"].Vectorizer.Identifier
+        );
     }
 
     [Fact]
@@ -160,11 +174,31 @@ public class ModelProvidersTest : IAsyncLifetime
         // Define the source objects
         var sourceObjects = new[]
         {
-            new { title = "The Shawshank Redemption", description = "A wrongfully imprisoned man forms an inspiring friendship while finding hope and redemption in the darkest of places." },
-            new { title = "The Godfather", description = "A powerful mafia family struggles to balance loyalty, power, and betrayal in this iconic crime saga." },
-            new { title = "The Dark Knight", description = "Batman faces his greatest challenge as he battles the chaos unleashed by the Joker in Gotham City." },
-            new { title = "Jingle All the Way", description = "A desperate father goes to hilarious lengths to secure the season's hottest toy for his son on Christmas Eve." },
-            new { title = "A Christmas Carol", description = "A miserly old man is transformed after being visited by three ghosts on Christmas Eve in this timeless tale of redemption." }
+            new
+            {
+                title = "The Shawshank Redemption",
+                description = "A wrongfully imprisoned man forms an inspiring friendship while finding hope and redemption in the darkest of places.",
+            },
+            new
+            {
+                title = "The Godfather",
+                description = "A powerful mafia family struggles to balance loyalty, power, and betrayal in this iconic crime saga.",
+            },
+            new
+            {
+                title = "The Dark Knight",
+                description = "Batman faces his greatest challenge as he battles the chaos unleashed by the Joker in Gotham City.",
+            },
+            new
+            {
+                title = "Jingle All the Way",
+                description = "A desperate father goes to hilarious lengths to secure the season's hottest toy for his son on Christmas Eve.",
+            },
+            new
+            {
+                title = "A Christmas Carol",
+                description = "A miserly old man is transformed after being visited by three ghosts on Christmas Eve in this timeless tale of redemption.",
+            },
         };
 
         // Get a handle to the collection

@@ -16,11 +16,7 @@ public class RBACTest : IAsyncLifetime
     {
         // START AdminClient
         // Connect to Weaviate as root user
-        client = await Connect.Local(
-            restPort: 8580,
-            grpcPort: 50551,
-            credentials: RootUserKey
-        );
+        client = await Connect.Local(restPort: 8580, grpcPort: 50551, credentials: RootUserKey);
         // END AdminClient
 
         await Cleanup();
@@ -66,16 +62,15 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Roles("testRole*", RolesScope.Match) // Only allow role management with the current user's permission level
             {
                 Create = true, // Allow creating roles
-                Read = true,   // Allow reading roles
+                Read = true, // Allow reading roles
                 Update = true, // Allow updating roles
-                Delete = true  // Allow deleting roles
-            }
+                Delete = true, // Allow deleting roles
+            },
         };
 
         await client.Roles.Create("testRole_ManageRoles", rolesPermissions);
         // END AddManageRolesPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageRoles"));
-
 
         // START AddManageUsersPermission
         var usersPermissions = new PermissionScope[]
@@ -83,17 +78,16 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Users("testUser*") // Applies to all users starting with "testUser"
             {
                 Create = true, // Allow creating users
-                Read = true,   // Allow reading user info
+                Read = true, // Allow reading user info
                 Update = true, // Allow rotating user API key
                 Delete = true, // Allow deleting users
-                AssignAndRevoke = true // Allow assigning and revoking roles to and from users
-            }
+                AssignAndRevoke = true, // Allow assigning and revoking roles to and from users
+            },
         };
 
         await client.Roles.Create("testRole_ManageUsers", usersPermissions);
         // END AddManageUsersPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageUsers"));
-
 
         // START AddCollectionsPermission
         var collectionsPermissions = new PermissionScope[]
@@ -101,16 +95,15 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Collections("TargetCollection*") // Applies to all collections starting with "TargetCollection"
             {
                 Create = true, // Allow creating new collections
-                Read = true,   // Allow reading collection info/metadata
+                Read = true, // Allow reading collection info/metadata
                 Update = true, // Allow updating collection configuration
-                Delete = true  // Allow deleting collections
-            }
+                Delete = true, // Allow deleting collections
+            },
         };
 
         await client.Roles.Create("testRole_ManageCollections", collectionsPermissions);
         // END AddCollectionsPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageCollections"));
-
 
         // START AddTenantPermission
         var tenantsPermissions = new PermissionScope[]
@@ -118,16 +111,15 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Tenants("TargetCollection*", "TargetTenant*") // Applies to specified collections/tenants
             {
                 Create = true, // Allow creating new tenants
-                Read = true,   // Allow reading tenant info/metadata
+                Read = true, // Allow reading tenant info/metadata
                 Update = true, // Allow updating tenant states
-                Delete = true  // Allow deleting tenants
-            }
+                Delete = true, // Allow deleting tenants
+            },
         };
 
         await client.Roles.Create("testRole_ManageTenants", tenantsPermissions);
         // END AddTenantPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageTenants"));
-
 
         // START AddDataObjectPermission
         var dataPermissions = new PermissionScope[]
@@ -135,55 +127,51 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Data("TargetCollection*", "TargetTenant*") // Applies to all collections starting with "TargetCollection"
             {
                 Create = true, // Allow data inserts
-                Read = true,   // Allow query and fetch operations
+                Read = true, // Allow query and fetch operations
                 Update = true, // Allow data updates
-                Delete = true  // Allow data deletes
-            }
+                Delete = true, // Allow data deletes
+            },
         };
 
         await client.Roles.Create("testRole_ManageData", dataPermissions);
         // END AddDataObjectPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageData"));
 
-
         // START AddBackupPermission
         var backupPermissions = new PermissionScope[]
         {
             new Permissions.Backups("TargetCollection*") // Applies to all collections starting with "TargetCollection"
             {
-                Manage = true // Allow managing backups
-            }
+                Manage = true, // Allow managing backups
+            },
         };
 
         await client.Roles.Create("testRole_ManageBackups", backupPermissions);
         // END AddBackupPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageBackups"));
 
-
         // START AddClusterPermission
         var clusterPermissions = new PermissionScope[]
         {
-            new Permissions.Cluster { Read = true } // Allow reading cluster data
+            new Permissions.Cluster { Read = true }, // Allow reading cluster data
         };
 
         await client.Roles.Create("testRole_ReadCluster", clusterPermissions);
         // END AddClusterPermission
         Assert.NotNull(await client.Roles.Get("testRole_ReadCluster"));
 
-
         // START AddNodesPermission
         var verbosePermissions = new PermissionScope[]
         {
             new Permissions.Nodes("TargetCollection*", NodeVerbosity.Verbose) // Applies to all collections starting with "TargetCollection"
             {
-                Read = true // Allow reading node metadata
-            }
+                Read = true, // Allow reading node metadata
+            },
         };
 
         await client.Roles.Create("testRole_ReadNodes", verbosePermissions);
         // END AddNodesPermission
         Assert.NotNull(await client.Roles.Get("testRole_ReadNodes"));
-
 
         // START AddAliasPermission
         var aliasPermissions = new PermissionScope[]
@@ -191,16 +179,15 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Alias("TargetCollection*", "TargetAlias*")
             {
                 Create = true, // Allow alias creation
-                Read = true,   // Allow listing aliases
-                Update = true  // Allow updating aliases
+                Read = true, // Allow listing aliases
+                Update = true, // Allow updating aliases
                 // Delete is false by default
-            }
+            },
         };
 
         await client.Roles.Create("testRole_ManageAliases", aliasPermissions);
         // END AddAliasPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageAliases"));
-
 
         // START AddReplicationsPermission
         var replicatePermissions = new PermissionScope[]
@@ -208,16 +195,15 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Replicate("TargetCollection*", "TargetShard*")
             {
                 Create = true, // Allow replica movement operations
-                Read = true,   // Allow retrieving replication status
-                Update = true  // Allow cancelling replication operations
+                Read = true, // Allow retrieving replication status
+                Update = true, // Allow cancelling replication operations
                 // Delete is false by default
-            }
+            },
         };
 
         await client.Roles.Create("testRole_ManageReplicas", replicatePermissions);
         // END AddReplicationsPermission
         Assert.NotNull(await client.Roles.Get("testRole_ManageReplicas"));
-
 
         // START AddGroupsPermission
         var groupsPermissions = new PermissionScope[]
@@ -225,8 +211,8 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Groups("TargetGroup*", RbacGroupType.Oidc)
             {
                 Read = true, // Allow reading group information
-                AssignAndRevoke = true // Allow assigning and revoking group memberships
-            }
+                AssignAndRevoke = true, // Allow assigning and revoking group memberships
+            },
         };
 
         await client.Roles.Create("testRole_ManageGroups", groupsPermissions);
@@ -242,14 +228,14 @@ public class RBACTest : IAsyncLifetime
 
         var initialPermissions = new PermissionScope[]
         {
-            new Permissions.Collections("TargetCollection*") { Read = true }
+            new Permissions.Collections("TargetCollection*") { Read = true },
         };
         await client.Roles.Create(testRole, initialPermissions);
 
         // START AddRoles
         var additionalPermissions = new PermissionScope[]
         {
-            new Permissions.Data("TargetCollection*", "TargetTenant*") { Create = true }
+            new Permissions.Data("TargetCollection*", "TargetTenant*") { Create = true },
         };
         await client.Roles.AddPermissions(testRole, additionalPermissions);
         // END AddRoles
@@ -298,7 +284,7 @@ public class RBACTest : IAsyncLifetime
         var permissionsToRemove = new PermissionScope[]
         {
             new Permissions.Collections("TargetCollection*") { Read = true },
-            new Permissions.Data("TargetCollection*", "TargetTenant*") { Create = true }
+            new Permissions.Data("TargetCollection*", "TargetTenant*") { Create = true },
         };
         await client.Roles.RemovePermissions(testRole, permissionsToRemove);
         // END RemovePermissions
@@ -312,7 +298,9 @@ public class RBACTest : IAsyncLifetime
 
         // Assert role is gone (Get throws NotFound or returns null depending on implementation, assuming similar to Exists check)
         // Based on provided Integration tests, Get throws NotFound when deleted if wrapped, or we check List
-        await Assert.ThrowsAsync<WeaviateNotFoundException>(async () => await client.Roles.Get(testRole));
+        await Assert.ThrowsAsync<WeaviateNotFoundException>(async () =>
+            await client.Roles.Get(testRole)
+        );
     }
 
     [Fact]
@@ -329,21 +317,21 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Collections("TargetCollection*")
             {
                 Create = true, // Allow creating new collections
-                Read = true,   // Allow reading collection info/metadata
+                Read = true, // Allow reading collection info/metadata
                 Update = true, // Allow updating collection configuration
-                Delete = true  // Allow deleting collections
+                Delete = true, // Allow deleting collections
             },
             // Collection data level permissions
             new Permissions.Data("TargetCollection*", "TargetTenant*")
             {
                 Create = true, // Allow data inserts
-                Read = true,   // Allow query and fetch operations
+                Read = true, // Allow query and fetch operations
                 Update = true, // Allow data updates
-                Delete = true  // Allow data deletes
+                Delete = true, // Allow data deletes
             },
             new Permissions.Backups("TargetCollection*") { Manage = true },
             new Permissions.Nodes("TargetCollection*", NodeVerbosity.Verbose) { Read = true },
-            new Permissions.Cluster { Read = true }
+            new Permissions.Cluster { Read = true },
         };
 
         // Create a new role
@@ -364,7 +352,7 @@ public class RBACTest : IAsyncLifetime
         var viewerPermissions = new PermissionScope[]
         {
             new Permissions.Collections("TargetCollection*") { Read = true },
-            new Permissions.Data("TargetCollection*", "TargetTenant*") { Read = true }
+            new Permissions.Data("TargetCollection*", "TargetTenant*") { Read = true },
         };
 
         // Create a new role
@@ -386,17 +374,17 @@ public class RBACTest : IAsyncLifetime
             new Permissions.Tenants("TargetCollection*", "TargetTenant*")
             {
                 Create = true, // Allow creating new tenants
-                Read = true,   // Allow reading tenant info/metadata
+                Read = true, // Allow reading tenant info/metadata
                 Update = true, // Allow updating tenant states
-                Delete = true  // Allow deleting tenants
+                Delete = true, // Allow deleting tenants
             },
             new Permissions.Data("TargetCollection*", "TargetTenant*")
             {
                 Create = true, // Allow data inserts
-                Read = true,   // Allow query and fetch operations
+                Read = true, // Allow query and fetch operations
                 Update = true, // Allow data updates
-                Delete = true  // Allow data deletes
-            }
+                Delete = true, // Allow data deletes
+            },
         };
 
         // Create a new role
@@ -422,7 +410,9 @@ public class RBACTest : IAsyncLifetime
         {
             await client.Users.Db.Delete(testUser);
         }
-        catch { /* ignore if not exists */ }
+        catch
+        { /* ignore if not exists */
+        }
 
         // START CreateUser
         string userApiKey = await client.Users.Db.Create(testUser);
@@ -439,7 +429,7 @@ public class RBACTest : IAsyncLifetime
 
         var permissions = new PermissionScope[]
         {
-            new Permissions.Collections("TargetCollection*") { Read = true }
+            new Permissions.Collections("TargetCollection*") { Read = true },
         };
         await client.Roles.Create(testRole, permissions);
 

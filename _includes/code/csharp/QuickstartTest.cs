@@ -1,13 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.Net.Http;
-using Xunit;
-using System.Linq;
 using Weaviate.Client.Models.Generative;
+using Xunit;
 
 namespace WeaviateProject.Examples;
 
@@ -23,10 +23,7 @@ public class QuickstartTest
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        WeaviateClient client = await Connect.Cloud(
-            weaviateUrl,
-            weaviateApiKey
-        );
+        WeaviateClient client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
 
         // highlight-start
         // GetMeta returns server info. A successful call indicates readiness.
@@ -48,10 +45,7 @@ public class QuickstartTest
         WeaviateClient client = await Connect.Cloud(
             weaviateUrl,
             weaviateApiKey,
-            headers: new Dictionary<string, string>
-            {
-                { "X-OpenAI-Api-Key", openaiApiKey }
-            }
+            headers: new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey } }
         );
         if (await client.Collections.Exists(collectionName))
         {
@@ -59,39 +53,47 @@ public class QuickstartTest
         }
         // START CreateCollection
         // highlight-start
-        var questions = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = collectionName,
-            Properties =
-            [
+        var questions = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                Properties =
+                [
                     Property.Text("answer"),
                     Property.Text("question"),
-                    Property.Text("category")
-            ],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),  // Configure the Weaviate Embeddings integration
-            GenerativeConfig =  Configure.Generative.Cohere() // Configure the Cohere generative AI integration
-        });
+                    Property.Text("category"),
+                ],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()), // Configure the Weaviate Embeddings integration
+                GenerativeConfig = Configure.Generative.Cohere(), // Configure the Cohere generative AI integration
+            }
+        );
         // highlight-end
         // END CreateCollection
 
         // START Import
         // Get JSON data using HttpClient
         using var httpClient = new HttpClient();
-        var jsonData = await httpClient.GetStringAsync("https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json");
+        var jsonData = await httpClient.GetStringAsync(
+            "https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json"
+        );
 
         // highlight-start
         var questionsToInsert = new List<object>();
 
         // Parse and prepare objects using System.Text.Json
-        var jsonObjects = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(jsonData);
+        var jsonObjects = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(
+            jsonData
+        );
         foreach (var jsonObj in jsonObjects)
         {
-            questionsToInsert.Add(new
-            {
-                answer = jsonObj["Answer"].GetString(),
-                question = jsonObj["Question"].GetString(),
-                category = jsonObj["Category"].GetString()
-            });
+            questionsToInsert.Add(
+                new
+                {
+                    answer = jsonObj["Answer"].GetString(),
+                    question = jsonObj["Question"].GetString(),
+                    category = jsonObj["Category"].GetString(),
+                }
+            );
         }
 
         // Call InsertMany with the list of objects converted to an array
@@ -126,9 +128,7 @@ public class QuickstartTest
         var ragResponse = await questions.Generate.NearText(
             "biology",
             limit: 2,
-            groupedTask: new GroupedTask(
-                "Write a tweet with emojis about these facts."
-            ),
+            groupedTask: new GroupedTask("Write a tweet with emojis about these facts."),
             provider: new Providers.OpenAI() { }
         );
         // highlight-end

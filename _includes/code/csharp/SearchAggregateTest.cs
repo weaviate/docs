@@ -1,10 +1,10 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Collections.Generic;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -21,14 +21,14 @@ public class SearchAggregateTest : IDisposable
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
-        client = Connect.Cloud(
-            weaviateUrl,
-            weaviateApiKey,
-            headers: new Dictionary<string, string>()
-            {
-                { "X-OpenAI-Api-Key", openaiApiKey }
-            }
-        ).GetAwaiter().GetResult();
+        client = Connect
+            .Cloud(
+                weaviateUrl,
+                weaviateApiKey,
+                headers: new Dictionary<string, string>() { { "X-OpenAI-Api-Key", openaiApiKey } }
+            )
+            .GetAwaiter()
+            .GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -61,12 +61,16 @@ public class SearchAggregateTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
-            returnMetrics: [Metrics.ForProperty("answer")
-                .Text(
-                    topOccurrencesCount: true,
-                    topOccurrencesValue: true,
-                    minOccurrences: 5 // Corresponds to topOccurrencesCutoff
-                )]
+            returnMetrics:
+            [
+                Metrics
+                    .ForProperty("answer")
+                    .Text(
+                        topOccurrencesCount: true,
+                        topOccurrencesValue: true,
+                        minOccurrences: 5 // Corresponds to topOccurrencesCutoff
+                    ),
+            ]
         // highlight-end
         );
 
@@ -86,12 +90,10 @@ public class SearchAggregateTest : IDisposable
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
             // Use .Number for floats (NUMBER datatype in Weaviate)
-            returnMetrics: [Metrics.ForProperty("points")
-                .Integer(
-                    sum: true,
-                    maximum: true,
-                    minimum: true
-                )]
+            returnMetrics:
+            [
+                Metrics.ForProperty("points").Integer(sum: true, maximum: true, minimum: true),
+            ]
         // highlight-end
         );
 

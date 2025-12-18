@@ -1,12 +1,13 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Linq;
 using System.Threading.Tasks;
-using System;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
+
 // ... other usings
 
 // 1. Define your strongly-typed class
@@ -32,17 +33,22 @@ public class GetStartedTests
                 await client.Collections.Delete(collectionName);
             }
 
-            var questions = await client.Collections.Create(new CollectionCreateParams()
-            {
-                Name = collectionName,
-                VectorConfig = Configure.Vector("default", v => v.Text2VecOllama(apiEndpoint: "http://host.docker.internal:11434")),
-                Properties =
-                [
-                    Property.Text("answer"),
-                    Property.Text("question"),
-                    Property.Text("category"),
-                ]
-            });
+            var questions = await client.Collections.Create(
+                new CollectionCreateParams()
+                {
+                    Name = collectionName,
+                    VectorConfig = Configure.Vector(
+                        "default",
+                        v => v.Text2VecOllama(apiEndpoint: "http://host.docker.internal:11434")
+                    ),
+                    Properties =
+                    [
+                        Property.Text("answer"),
+                        Property.Text("question"),
+                        Property.Text("category"),
+                    ],
+                }
+            );
 
             // Download and parse data as before...
             using var httpClient = new HttpClient();
@@ -56,11 +62,12 @@ public class GetStartedTests
             // ============================= YOUR NEW, CLEAN CODE =============================
             // 2. Prepare the data by mapping it to your new class
             var dataObjects = data.Select(d => new JeopardyQuestion
-            {
-                answer = d.GetProperty("Answer").GetString(),
-                question = d.GetProperty("Question").GetString(),
-                category = d.GetProperty("Category").GetString()
-            }).ToList();
+                {
+                    answer = d.GetProperty("Answer").GetString(),
+                    question = d.GetProperty("Question").GetString(),
+                    category = d.GetProperty("Category").GetString(),
+                })
+                .ToList();
             // ==============================================================================
 
             var importResult = await questions.Data.InsertMany(dataObjects);
@@ -93,29 +100,43 @@ public class GetStartedTests
         // 2. Prepare data
         var dataObjects = new List<object>
         {
-            new {title = "The Matrix", description = "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", genre = "Science Fiction"},
-            new {title = "Spirited Away", description = "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.", genre = "Animation"},
-            new {title = "The Lord of the Rings: The Fellowship of the Ring", description = "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.", genre = "Fantasy"}
+            new
+            {
+                title = "The Matrix",
+                description = "A computer hacker learns about the true nature of reality and his role in the war against its controllers.",
+                genre = "Science Fiction",
+            },
+            new
+            {
+                title = "Spirited Away",
+                description = "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.",
+                genre = "Animation",
+            },
+            new
+            {
+                title = "The Lord of the Rings: The Fellowship of the Ring",
+                description = "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.",
+                genre = "Fantasy",
+            },
         };
 
         var CollectionName = "Movie";
 
         await client.Collections.Delete(CollectionName);
         // 3. Create the collection
-        var movies = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = CollectionName,
-            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
-        });
+        var movies = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = CollectionName,
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+            }
+        );
 
         // 4. Import the data
         var result = await movies.Data.InsertMany(dataObjects);
 
         // 5. Run the query
-        var response = await movies.Query.NearText(
-            "sci-fi",
-            limit: 2
-        );
+        var response = await movies.Query.NearText("sci-fi", limit: 2);
 
         // 6. Inspect the results
         foreach (var obj in response.Objects)
@@ -125,6 +146,11 @@ public class GetStartedTests
         // END GetStarted
 
         Assert.Equal(2, response.Objects.Count);
-        Assert.Contains(response.Objects, o => o.Properties.ContainsKey("title") && o.Properties["title"].ToString() == "The Matrix");
+        Assert.Contains(
+            response.Objects,
+            o =>
+                o.Properties.ContainsKey("title")
+                && o.Properties["title"].ToString() == "The Matrix"
+        );
     }
 }

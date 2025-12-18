@@ -1,10 +1,10 @@
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
-using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
 
 namespace WeaviateProject.Examples
 {
@@ -23,24 +23,22 @@ namespace WeaviateProject.Examples
             }
 
             // Create a collection
-            var articles = await client.Collections.Create(new CollectionCreateParams
-            {
-                Name = "Article",
-                Properties =
-                [
-                    Property.Text("content")
-                ],
-                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())  // Use a vectorizer to generate embeddings during import
-                // VectorConfig = Configure.Vector("default", v => v.SelfProvided())  // If you want to import your own pre-generated embeddings
-            });
-
+            var articles = await client.Collections.Create(
+                new CollectionCreateParams
+                {
+                    Name = "Article",
+                    Properties = [Property.Text("content")],
+                    VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()), // Use a vectorizer to generate embeddings during import
+                    // VectorConfig = Configure.Vector("default", v => v.SelfProvided())  // If you want to import your own pre-generated embeddings
+                }
+            );
 
             // Insert objects and generate embeddings
             var data = new List<object>
             {
                 new { content = "Vector databases enable semantic search" },
                 new { content = "Machine learning models generate embeddings" },
-                new { content = "Weaviate supports hybrid search capabilities" }
+                new { content = "Weaviate supports hybrid search capabilities" },
             };
             await articles.Data.InsertMany(data.ToArray());
 

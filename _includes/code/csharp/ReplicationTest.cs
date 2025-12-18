@@ -1,10 +1,10 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 public class ReplicationTest : IAsyncLifetime
 {
@@ -34,25 +34,25 @@ public class ReplicationTest : IAsyncLifetime
     public async Task TestReplicationWorkflow()
     {
         // Setup: Create collection with Replication Factor = 2
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = CollectionName,
-            Properties =
-            [
-                Property.Text("title"),
-                Property.Text("body")
-            ],
-            ReplicationConfig = new ReplicationConfig { Factor = 2 }
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = CollectionName,
+                Properties = [Property.Text("title"), Property.Text("body")],
+                ReplicationConfig = new ReplicationConfig { Factor = 2 },
+            }
+        );
 
         var replicaCollection = client.Collections.Use(CollectionName);
 
         // Insert dummy data
-        await replicaCollection.Data.Insert(new
-        {
-            title = "Lorem Ipsum",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        });
+        await replicaCollection.Data.Insert(
+            new
+            {
+                title = "Lorem Ipsum",
+                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            }
+        );
 
         // Give the cluster a moment to propagate metadata
         await Task.Delay(1000);
@@ -65,7 +65,9 @@ public class ReplicationTest : IAsyncLifetime
 
         // Find a shard and its current replicas
         // We look for a node that holds a shard for this collection
-        var sourceNodeData = nodes.First(n => n.Shards != null && n.Shards.Any(s => s.Collection == CollectionName));
+        var sourceNodeData = nodes.First(n =>
+            n.Shards != null && n.Shards.Any(s => s.Collection == CollectionName)
+        );
         var shardData = sourceNodeData.Shards!.First(s => s.Collection == CollectionName);
 
         string shardName = shardData.Name;
@@ -74,7 +76,10 @@ public class ReplicationTest : IAsyncLifetime
         // Find all current replicas for this specific shard
         // (Nodes that have a shard with the same name and collection)
         var currentReplicaNodes = nodes
-            .Where(n => n.Shards != null && n.Shards.Any(s => s.Name == shardName && s.Collection == CollectionName))
+            .Where(n =>
+                n.Shards != null
+                && n.Shards.Any(s => s.Name == shardName && s.Collection == CollectionName)
+            )
             .Select(n => n.Name)
             .ToHashSet();
 
@@ -90,7 +95,9 @@ public class ReplicationTest : IAsyncLifetime
             targetNodeName = "node2";
         }
 
-        Console.WriteLine($"Shard: {shardName}, Source: {sourceNodeName}, Target: {targetNodeName}");
+        Console.WriteLine(
+            $"Shard: {shardName}, Source: {sourceNodeName}, Target: {targetNodeName}"
+        );
 
         // 1. Replicate (Copy) a shard
         // START ReplicateShard
@@ -99,8 +106,8 @@ public class ReplicationTest : IAsyncLifetime
             Shard: shardName,
             SourceNode: sourceNodeName,
             TargetNode: targetNodeName,
-            Type: ReplicationType.Copy  // For copying a shard
-                                        // Type: ReplicationType.Move // For moving a shard
+            Type: ReplicationType.Copy // For copying a shard
+        // Type: ReplicationType.Move // For moving a shard
         );
 
         var operation = await client.Cluster.Replicate(replicateRequest);
@@ -118,7 +125,9 @@ public class ReplicationTest : IAsyncLifetime
             collection: CollectionName,
             targetNode: targetNodeName
         );
-        Console.WriteLine($"Filtered operations for collection '{CollectionName}' on '{targetNodeName}': {filteredOps.Count()}");
+        Console.WriteLine(
+            $"Filtered operations for collection '{CollectionName}' on '{targetNodeName}': {filteredOps.Count()}"
+        );
         // END ListReplicationOperations
 
         // Wait for operation to progress slightly
@@ -126,12 +135,11 @@ public class ReplicationTest : IAsyncLifetime
 
         // 3. Get replication operation status
         // START CheckOperationStatus
-        var opStatus = await client.Cluster.Replications.Get(
-            operationId,
-            includeHistory: true
-        );
+        var opStatus = await client.Cluster.Replications.Get(operationId, includeHistory: true);
         Console.WriteLine($"Status for {operationId}: {opStatus.Status.State}");
-        Console.WriteLine($"History for {operationId}: {JsonSerializer.Serialize(opStatus.StatusHistory)}");
+        Console.WriteLine(
+            $"History for {operationId}: {JsonSerializer.Serialize(opStatus.StatusHistory)}"
+        );
         // END CheckOperationStatus
 
         // 4. Cancel a replication operation
@@ -151,9 +159,7 @@ public class ReplicationTest : IAsyncLifetime
 
         // 7. Query Sharding State
         // START CheckShardingState
-        var shardingState = await client.Cluster.Nodes.ListVerbose(
-            collection: CollectionName
-        );
+        var shardingState = await client.Cluster.Nodes.ListVerbose(collection: CollectionName);
 
         Console.WriteLine($"Nodes participating in '{CollectionName}':");
         foreach (var node in shardingState)

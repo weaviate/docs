@@ -1,11 +1,11 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
-using System.Collections.Generic;
+using Xunit;
 
 public class SearchSimilarityTest : IAsyncLifetime
 {
@@ -23,21 +23,21 @@ public class SearchSimilarityTest : IAsyncLifetime
 
         // FIX: Use await instead of .GetAwaiter().GetResult()
         client = await Connect.Cloud(
-                    weaviateUrl,
-                    weaviateApiKey,
-                    headers: new Dictionary<string, string>()
-                    {
-                        { "X-OpenAI-Api-Key", openaiApiKey },
-                        { "X-Cohere-Api-Key", cohereApiKey }
-                    }
-                );
+            weaviateUrl,
+            weaviateApiKey,
+            headers: new Dictionary<string, string>()
+            {
+                { "X-OpenAI-Api-Key", openaiApiKey },
+                { "X-Cohere-Api-Key", cohereApiKey },
+            }
+        );
         // END INSTANTIATION-COMMON
     }
 
     // FIX: Implement DisposeAsync correctly to avoid NotImplementedException
     public Task DisposeAsync()
     {
-        // The C# client manages connections automatically. 
+        // The C# client manages connections automatically.
         // No specific cleanup is required here, but the method must return a completed task.
         return Task.CompletedTask;
     }
@@ -75,9 +75,9 @@ public class SearchSimilarityTest : IAsyncLifetime
         // START GetNearText
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.NearText(
-        // highlight-start
+            // highlight-start
             "animals in movies",
-        // highlight-end
+            // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
@@ -98,7 +98,8 @@ public class SearchSimilarityTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var initialResponse = await jeopardy.Query.FetchObjects(limit: 1);
 
-        if (!initialResponse.Objects.Any()) return; // Skip test if no data
+        if (!initialResponse.Objects.Any())
+            return; // Skip test if no data
 
         // FIX: Handle nullable ID safely
         Guid uuid = (Guid)initialResponse.Objects.First().UUID;
@@ -107,7 +108,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         // highlight-start
         var response = await jeopardy.Query.NearObject(
             uuid, // A UUID of an object
-        // highlight-end
+            // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
@@ -131,7 +132,8 @@ public class SearchSimilarityTest : IAsyncLifetime
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var initialResponse = await jeopardy.Query.FetchObjects(limit: 1, includeVectors: true);
 
-        if (initialResponse.Objects.Count == 0) return; // Skip test if no data
+        if (initialResponse.Objects.Count == 0)
+            return; // Skip test if no data
 
         var queryVector = initialResponse.Objects.First().Vectors["default"];
 
@@ -139,7 +141,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         // highlight-start
         var response = await jeopardy.Query.NearVector(
             vector: queryVector, // your query vector goes here
-        // highlight-end
+            // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
@@ -165,9 +167,9 @@ public class SearchSimilarityTest : IAsyncLifetime
         var response = await jeopardy.Query.NearText(
             "animals in movies",
             // highlight-start
-            limit: 2,   // return 2 objects
-            offset: 1,  // With an offset of 1
-                        // highlight-end
+            limit: 2, // return 2 objects
+            offset: 1, // With an offset of 1
+            // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -190,7 +192,7 @@ public class SearchSimilarityTest : IAsyncLifetime
             "animals in movies",
             // highlight-start
             distance: 0.25f, // max accepted distance
-                             // highlight-end
+            // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -219,7 +221,7 @@ public class SearchSimilarityTest : IAsyncLifetime
             "animals in movies",
             // highlight-start
             autoLimit: 1, // number of close groups
-                          // highlight-end
+            // highlight-end
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -244,13 +246,13 @@ public class SearchSimilarityTest : IAsyncLifetime
 
         // highlight-start
         var response = await jeopardy.Query.NearText(
-            "animals in movies",   // find object based on this query
-            limit: 10,             // maximum total objects
+            "animals in movies", // find object based on this query
+            limit: 10, // maximum total objects
             returnMetadata: MetadataOptions.Distance,
-            groupBy: new GroupByRequest("round")  // group by this property
+            groupBy: new GroupByRequest("round") // group by this property
             {
-                NumberOfGroups = 2,           // maximum number of groups
-                ObjectsPerGroup = 2,          // maximum objects per group
+                NumberOfGroups = 2, // maximum number of groups
+                ObjectsPerGroup = 2, // maximum objects per group
             }
         );
         // highlight-end

@@ -1,11 +1,11 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Drawing;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -24,23 +24,29 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
             await client.Collections.Delete("WineReview");
         }
 
-        var wineReview = await client.Collections.Create(new CollectionCreateParams { Name = "WineReview" });
-        await wineReview.Data.InsertMany(new[]
-        {
-            new { title = "Review A" },
-            new { title = "Review B" }
-        });
+        var wineReview = await client.Collections.Create(
+            new CollectionCreateParams { Name = "WineReview" }
+        );
+        await wineReview.Data.InsertMany(
+            new[] { new { title = "Review A" }, new { title = "Review B" } }
+        );
 
         // Create WineReviewMT collection
         if (await client.Collections.Exists("WineReviewMT"))
         {
             await client.Collections.Delete("WineReviewMT");
         }
-        var wineReviewMT = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "WineReviewMT",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
-        });
+        var wineReviewMT = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "WineReviewMT",
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = true,
+                },
+            }
+        );
 
         // Create and populate tenants
         await wineReviewMT.Tenants.Create(["tenantA", "tenantB"]);
@@ -76,10 +82,12 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         // START ReadAllVectors
         var collection = client.Collections.Use("WineReview");
 
-        await foreach (var item in collection.Iterator(
-            // highlight-start
-            includeVectors: true // If using named vectors, you can specify ones to include
-        ))
+        await foreach (
+            var item in collection.Iterator(
+                // highlight-start
+                includeVectors: true // If using named vectors, you can specify ones to include
+            )
+        )
         // highlight-end
         {
             Console.WriteLine(JsonSerializer.Serialize(item.Properties));

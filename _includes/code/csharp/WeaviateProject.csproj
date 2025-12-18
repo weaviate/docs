@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="quickstart/**/*.cs" />
+    <Compile Include="./*.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../../csharp-client/src/Weaviate.Client/Weaviate.Client.csproj" />
+    <ProjectReference Include="../../../../../csharp-client/src/Weaviate.Client/Weaviate.Client.csproj" />
   </ItemGroup>
 
 </Project>

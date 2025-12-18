@@ -1,11 +1,11 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 using static Weaviate.Client.Auth;
 
 namespace WeaviateProject.Tests;
@@ -41,7 +41,9 @@ public class ManageObjectsReadTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         // highlight-start
-        var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"));
+        var dataObject = await jeopardy.Query.FetchObjectByID(
+            Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b")
+        );
         // highlight-end
 
         if (dataObject != null)
@@ -57,7 +59,8 @@ public class ManageObjectsReadTest : IDisposable
         // START ReadObjectWithVector
         var jeopardy = client.Collections.Use("JeopardyQuestion");
 
-        var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"),
+        var dataObject = await jeopardy.Query.FetchObjectByID(
+            Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"),
             // highlight-start
             includeVectors: true
         );
@@ -87,8 +90,9 @@ public class ManageObjectsReadTest : IDisposable
         var vectorNames = new List<string> { "title", "review_body" };
 
         // START ReadObjectNamedVectors
-        var dataObject = await reviews.Query.FetchObjectByID(objUuid.Value, // Object UUID
-                                                                            // highlight-start
+        var dataObject = await reviews.Query.FetchObjectByID(
+            objUuid.Value, // Object UUID
+            // highlight-start
             includeVectors: true // Specify to include vectors
         );
         // highlight-end
@@ -114,7 +118,9 @@ public class ManageObjectsReadTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         // The C# client checks for existence by attempting to fetch an object and checking for null.
-        var dataObject = await jeopardy.Query.FetchObjectByID(Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b"));
+        var dataObject = await jeopardy.Query.FetchObjectByID(
+            Guid.Parse("00ff6900-e64f-5d94-90db-c8cfa3fc851b")
+        );
         bool exists = dataObject != null;
 
         Console.WriteLine(exists);

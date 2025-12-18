@@ -1,11 +1,10 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 public class ManageCollectionsAliasTest : IAsyncLifetime
 {
@@ -53,20 +52,17 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
     {
         // START CreateAlias
         // Create a collection first
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = Articles,
-            VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
-            Properties =
-            [
-                Property.Text("title"),
-                Property.Text("content"),
-            ]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = Articles,
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+                Properties = [Property.Text("title"), Property.Text("content")],
+            }
+        );
 
         // Create an alias pointing to the collection
-        var alias = new Alias(ArticlesAlias, Articles);
-        await client.Alias.Create(alias);
+        await client.Alias.Create(ArticlesAlias, Articles);
         // END CreateAlias
 
         // START ListAllAliases
@@ -104,20 +100,24 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
 
         // START UpdateAlias
         // Create a new collection for migration
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = ArticlesV2,
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
-            Properties =
-            [
-                Property.Text("title"),
-                Property.Text("content"),
-                Property.Text("author"), // New field
-            ]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = ArticlesV2,
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+                Properties =
+                [
+                    Property.Text("title"),
+                    Property.Text("content"),
+                    Property.Text("author"), // New field
+                ],
+            }
+        );
 
         // Update the alias to point to the new collection
-        bool success = (await client.Alias.Update(aliasName: ArticlesAlias, targetCollection: ArticlesV2)) != null;
+        bool success =
+            (await client.Alias.Update(aliasName: ArticlesAlias, targetCollection: ArticlesV2))
+            != null;
 
         if (success)
         {
@@ -134,16 +134,14 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         // Note: In C# we check existence first to avoid errors if it already exists
         if (!await client.Collections.Exists(Articles))
         {
-            await client.Collections.Create(new CollectionCreateParams
-            {
-                Name = Articles,
-                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
-                Properties =
-               [
-                   Property.Text("title"),
-                    Property.Text("content"),
-                ]
-            });
+            await client.Collections.Create(
+                new CollectionCreateParams
+                {
+                    Name = Articles,
+                    VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+                    Properties = [Property.Text("title"), Property.Text("content")],
+                }
+            );
         }
         // END UseAlias
 
@@ -154,19 +152,20 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         Assert.Null(await client.Alias.Get(ArticlesAlias));
 
         // Re-create alias for the usage example below (since we just deleted it)
-        alias = new Alias(ArticlesAlias, Articles);
-        await client.Alias.Create(alias);
+        await client.Alias.Create(ArticlesAlias, Articles);
 
         // START UseAlias
         // Use the alias just like a collection name
         var articles = client.Collections.Use(ArticlesAlias);
 
         // Insert data using the alias
-        await articles.Data.Insert(new
-        {
-            title = "Using Aliases in Weaviate",
-            content = "Aliases make collection management easier..."
-        });
+        await articles.Data.Insert(
+            new
+            {
+                title = "Using Aliases in Weaviate",
+                content = "Aliases make collection management easier...",
+            }
+        );
 
         // Query using the alias
         var results = await articles.Query.FetchObjects(limit: 5);
@@ -185,26 +184,29 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
     {
         // START Step1CreateOriginal
         // Create original collection with data
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = ProductsV1,
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = ProductsV1,
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            }
+        );
 
         var productsV1 = client.Collections.Use(ProductsV1);
 
         // Batch insert works best with anonymous objects here
-        await productsV1.Data.InsertMany(new[]
-        {
-            new { name = "Product A", price = 100 },
-            new { name = "Product B", price = 200 }
-        });
+        await productsV1.Data.InsertMany(
+            new[]
+            {
+                new { name = "Product A", price = 100 },
+                new { name = "Product B", price = 200 },
+            }
+        );
         // END Step1CreateOriginal
 
         // START Step2CreateAlias
         // Create alias pointing to current collection
-        var alias = new Alias(ProductsAlias, ProductsV1);
-        await client.Alias.Create(alias);
+        await client.Alias.Create(ProductsAlias, ProductsV1);
         // END Step2CreateAlias
 
         // START MigrationUseAlias
@@ -218,24 +220,28 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         var results = await products.Query.FetchObjects(limit: 5);
         foreach (var obj in results.Objects)
         {
-            Console.WriteLine($"Product: {obj.Properties["name"]}, Price: ${obj.Properties["price"]}");
+            Console.WriteLine(
+                $"Product: {obj.Properties["name"]}, Price: ${obj.Properties["price"]}"
+            );
         }
         // END MigrationUseAlias
         Assert.Equal(3, results.Objects.Count);
 
         // START Step3NewCollection
         // Create new collection with updated schema
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = ProductsV2,
-            VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
-            Properties =
-            [
-                Property.Text("name"),
-                Property.Number("price"),
-                Property.Text("category"), // New field
-            ]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = ProductsV2,
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+                Properties =
+                [
+                    Property.Text("name"),
+                    Property.Number("price"),
+                    Property.Text("category"), // New field
+                ],
+            }
+        );
         // END Step3NewCollection
 
         // START Step4MigrateData
@@ -246,12 +252,14 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         foreach (var obj in oldData)
         {
             // Convert property values to primitives (string, double, etc.) explicitly.
-            await productsV2.Data.Insert(new
-            {
-                name = obj.Properties["name"].ToString(),
-                price = Convert.ToDouble(obj.Properties["price"].ToString()),
-                category = "General"
-            });
+            await productsV2.Data.Insert(
+                new
+                {
+                    name = obj.Properties["name"].ToString(),
+                    price = Convert.ToDouble(obj.Properties["price"].ToString()),
+                    category = "General",
+                }
+            );
         }
         // END Step4MigrateData
 

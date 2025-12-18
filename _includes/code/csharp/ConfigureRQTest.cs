@@ -1,7 +1,7 @@
-using Xunit;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System.Threading.Tasks;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -35,19 +35,23 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task TestEnableRQ()
     {
         // START EnableRQ
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.RQ()
-                    // highlight-end
-                }
-            )
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
+                    {
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.RQ(),
+                        // highlight-end
+                    }
+                ),
+            }
+        );
         // END EnableRQ
     }
 
@@ -55,19 +59,23 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task Test1BitEnableRQ()
     {
         // START 1BitEnableRQ
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.RQ { Bits = 1 }
-                    // highlight-end
-                }
-            )
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
+                    {
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.RQ { Bits = 1 },
+                        // highlight-end
+                    }
+                ),
+            }
+        );
         // END 1BitEnableRQ
     }
 
@@ -76,20 +84,24 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task TestUncompressed()
     {
         // START Uncompressed
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.None { }
-                    // highlight-end
-                }
-            // highlight-end
-            )
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
+                    {
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.None { },
+                        // highlight-end
+                    }
+                // highlight-end
+                ),
+            }
+        );
         // END Uncompressed
     }
 
@@ -97,23 +109,27 @@ public class ConfigureRQTest : IAsyncLifetime
     public async Task TestRQWithOptions()
     {
         // START RQWithOptions
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.RQ
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
                     {
-                        Bits = 8,        // Optional: Number of bits
-                        RescoreLimit = 20  // Optional: Number of candidates to fetch before rescoring
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.RQ
+                        {
+                            Bits = 8, // Optional: Number of bits
+                            RescoreLimit = 20, // Optional: Number of candidates to fetch before rescoring
+                        },
+                        // highlight-end
                     }
-                    // highlight-end
-                }
-            )
-        });
+                ),
+            }
+        );
         // END RQWithOptions
     }
 
@@ -122,18 +138,22 @@ public class ConfigureRQTest : IAsyncLifetime
     {
         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            }
+        );
 
         // START UpdateSchema
         await collection.Config.Update(c =>
         {
             var vectorConfig = c.VectorConfig["default"];
-            vectorConfig.VectorIndexConfig.UpdateHNSW(h => h.Quantizer = new VectorIndex.Quantizers.RQ());
+            vectorConfig.VectorIndexConfig.UpdateHNSW(h =>
+                h.Quantizer = new VectorIndex.Quantizers.RQ()
+            );
         });
         // END UpdateSchema
     }
@@ -141,18 +161,22 @@ public class ConfigureRQTest : IAsyncLifetime
     [Fact]
     public async Task Test1BitUpdateSchema()
     {
-        var collection = await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "MyCollection",
-            Properties = [Property.Text("title")],
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers())
-        });
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            }
+        );
 
         // START 1BitUpdateSchema
         await collection.Config.Update(c =>
         {
             var vectorConfig = c.VectorConfig["default"];
-            vectorConfig.VectorIndexConfig.UpdateHNSW(h => h.Quantizer = new VectorIndex.Quantizers.RQ { Bits = 1 });
+            vectorConfig.VectorIndexConfig.UpdateHNSW(h =>
+                h.Quantizer = new VectorIndex.Quantizers.RQ { Bits = 1 }
+            );
         });
         // END 1BitUpdateSchema
     }

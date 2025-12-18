@@ -1,13 +1,13 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json.Serialization;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -18,10 +18,13 @@ public class StarterGuidesCustomVectorsTest
     {
         [JsonPropertyName("Answer")]
         public string Answer { get; init; }
+
         [JsonPropertyName("Question")]
         public string Question { get; init; }
+
         [JsonPropertyName("Category")]
         public string Category { get; init; }
+
         [JsonPropertyName("vector")]
         public float[] Vector { get; init; }
     }
@@ -42,23 +45,26 @@ public class StarterGuidesCustomVectorsTest
 
             // START CreateCollection
             // Create the collection.
-            await client.Collections.Create(new CollectionCreateParams
-            {
-                Name = collectionName,
-                Properties =
-                [
-                    Property.Text("answer"),
-                    Property.Text("question"),
-                    Property.Text("category")
-                ],
-                // Configure the "default" vector to be SelfProvided (BYOV)
-                VectorConfig = Configure.Vector("default", v => v.SelfProvided())
-            });
+            await client.Collections.Create(
+                new CollectionCreateParams
+                {
+                    Name = collectionName,
+                    Properties =
+                    [
+                        Property.Text("answer"),
+                        Property.Text("question"),
+                        Property.Text("category"),
+                    ],
+                    // Configure the "default" vector to be SelfProvided (BYOV)
+                    VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+                }
+            );
             // END CreateCollection
 
             // START ImportData
             var fname = "jeopardy_tiny_with_vectors_all-OpenAI-ada-002.json";
-            var url = $"https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/{fname}";
+            var url =
+                $"https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/{fname}";
 
             using var httpClient = new HttpClient();
             var responseBody = await httpClient.GetStringAsync(url);
@@ -75,11 +81,11 @@ public class StarterGuidesCustomVectorsTest
                 // highlight-start
                 return questions.Data.Insert(
                     // Pass properties as an Anonymous Type
-                    data: new
+                    properties: new
                     {
                         answer = d.Answer,
                         question = d.Question,
-                        category = d.Category
+                        category = d.Category,
                     },
                     // Explicitly pass the vector
                     vectors: d.Vector

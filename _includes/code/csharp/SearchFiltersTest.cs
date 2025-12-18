@@ -1,11 +1,11 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Linq;
+using Xunit;
 
 public class SearchFilterTest : IAsyncLifetime
 {
@@ -288,9 +288,7 @@ public class SearchFilterTest : IAsyncLifetime
             // Filter by property on the referenced object
             filters: Filter.Reference("hasCategory").Property("title").IsLike("*TRANSPORTATION*"),
             // Retrieve the referenced object with specific properties
-            returnReferences: [
-                new QueryReference("hasCategory", fields: ["title"])
-            ],
+            returnReferences: [new QueryReference("hasCategory", fields: ["title"])],
             // highlight-end
             limit: 1
         );
@@ -300,8 +298,7 @@ public class SearchFilterTest : IAsyncLifetime
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
 
             // Access the referenced object's property
-            if (o.References != null &&
-                o.References.ContainsKey("hasCategory"))
+            if (o.References != null && o.References.ContainsKey("hasCategory"))
             {
                 // Get the first referenced object
                 var refObject = o.References["hasCategory"].First();
@@ -326,9 +323,7 @@ public class SearchFilterTest : IAsyncLifetime
         // NOTE: You would typically use a UUID known to exist in your data
         Guid targetId = Guid.Parse("00037775-1432-35e5-bc59-443baaef7d80");
 
-        var response = await collection.Query.FetchObjects(
-            filters: Filter.ID.IsEqual(targetId)
-        );
+        var response = await collection.Query.FetchObjects(filters: Filter.ID.IsEqual(targetId));
 
         foreach (var o in response.Objects)
         {
@@ -377,16 +372,15 @@ public class SearchFilterTest : IAsyncLifetime
 
         try
         {
-            await client.Collections.Create(new CollectionCreateParams
-            {
-                Name = collectionName,
-                Properties = [
-                    Property.Text("title"),
-                    Property.Date("some_date")
-                ],
-                // VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
-                VectorConfig = Configure.Vector("default", v => v.SelfProvided())
-            });
+            await client.Collections.Create(
+                new CollectionCreateParams
+                {
+                    Name = collectionName,
+                    Properties = [Property.Text("title"), Property.Date("some_date")],
+                    // VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
+                    VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+                }
+            );
 
             var collection = client.Collections.Use(collectionName);
 
@@ -401,11 +395,13 @@ public class SearchFilterTest : IAsyncLifetime
                     for (int day = 1; day <= 20; day += 5)
                     {
                         DateTime date = new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
-                        objects.Add(new
-                        {
-                            title = $"Object: yr/month/day:{year}/{month}/{day}",
-                            some_date = date
-                        });
+                        objects.Add(
+                            new
+                            {
+                                title = $"Object: yr/month/day:{year}/{month}/{day}",
+                                some_date = date,
+                            }
+                        );
                     }
                 }
             }
@@ -474,7 +470,7 @@ public class SearchFilterTest : IAsyncLifetime
             // highlight-start
             // This requires the `country` property to be configured with `indexNullState: true` in the schema
             filters: Filter.Property("country").IsNull() // Find objects where the `country` property is null
-                                                         // highlight-end
+        // highlight-end
         );
 
         foreach (var o in response.Objects)
@@ -497,25 +493,31 @@ public class SearchFilterTest : IAsyncLifetime
 
         try
         {
-            await localClient.Collections.Create(new CollectionCreateParams
-            {
-                Name = collectionName,
-                Properties = [
-                    Property.Text("title"),
-                    Property.GeoCoordinate("headquartersGeoLocation")
-                ]
-            });
+            await localClient.Collections.Create(
+                new CollectionCreateParams
+                {
+                    Name = collectionName,
+                    Properties =
+                    [
+                        Property.Text("title"),
+                        Property.GeoCoordinate("headquartersGeoLocation"),
+                    ],
+                }
+            );
 
             var publications = localClient.Collections.Use(collectionName);
-            await publications.Data.Insert(new
-            {
-                title = "Weaviate HQ",
-                headquartersGeoLocation = new GeoCoordinate(52.3932696f, 4.8374263f)
-            });
+            await publications.Data.Insert(
+                new
+                {
+                    title = "Weaviate HQ",
+                    headquartersGeoLocation = new GeoCoordinate(52.3932696f, 4.8374263f),
+                }
+            );
 
             // START FilterbyGeolocation
             var response = await publications.Query.FetchObjects(
-                filters: Filter.Property("headquartersGeoLocation")
+                filters: Filter
+                    .Property("headquartersGeoLocation")
                     .IsWithinGeoRange(new GeoCoordinate(52.39f, 4.84f), 1000.0f) // In meters
             );
 

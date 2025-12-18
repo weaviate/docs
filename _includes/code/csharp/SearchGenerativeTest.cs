@@ -1,13 +1,13 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.Net.Http;
 using Weaviate.Client.Models.Generative;
-using System.Linq;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -24,12 +24,18 @@ public class SearchGenerativeTest : IDisposable
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
         string anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_APIKEY");
 
-        client = Connect.Cloud(
+        client = Connect
+            .Cloud(
                 weaviateUrl,
                 weaviateApiKey,
-                headers: new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey },
-                    { "Anthropic-Api-Key", anthropicApiKey } }
-            ).GetAwaiter().GetResult();
+                headers: new Dictionary<string, string>
+                {
+                    { "X-OpenAI-Api-Key", openaiApiKey },
+                    { "Anthropic-Api-Key", anthropicApiKey },
+                }
+            )
+            .GetAwaiter()
+            .GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -96,7 +102,8 @@ public class SearchGenerativeTest : IDisposable
     {
         // START SingleGenerativePython
         // highlight-start
-        var prompt = "Convert the following into a question for twitter. Include emojis for fun, but do not include the answer: {question}.";
+        var prompt =
+            "Convert the following into a question for twitter. Include emojis for fun, but do not include the answer: {question}.";
         // highlight-end
 
         var jeopardy = client.Collections.Use("JeopardyQuestion");
@@ -126,7 +133,8 @@ public class SearchGenerativeTest : IDisposable
     {
         // START SingleGenerativePropertiesPython
         // highlight-start
-        var prompt = "Convert this quiz question: {question} and answer: {answer} into a trivia tweet.";
+        var prompt =
+            "Convert this quiz question: {question} and answer: {answer} into a trivia tweet.";
         // highlight-end
 
         var jeopardy = client.Collections.Use("JeopardyQuestion");
@@ -150,10 +158,12 @@ public class SearchGenerativeTest : IDisposable
     {
         // START SingleGenerativeParametersPython
         // highlight-start
-        var singlePrompt = new SinglePrompt("Convert this quiz question: {question} and answer: {answer} into a trivia tweet.")
+        var singlePrompt = new SinglePrompt(
+            "Convert this quiz question: {question} and answer: {answer} into a trivia tweet."
+        )
         {
             // Metadata = true,
-            Debug = true
+            Debug = true,
         };
         // highlight-end
 
@@ -237,7 +247,7 @@ public class SearchGenerativeTest : IDisposable
             groupedTask: new GroupedTask(task)
             {
                 // highlight-start
-                Properties = ["answer", "question"]
+                Properties = ["answer", "question"],
                 // highlight-end
             }
         );
@@ -259,7 +269,8 @@ public class SearchGenerativeTest : IDisposable
     public async Task TestWorkingWithImages()
     {
         // START WorkingWithImages
-        var srcImgPath = "https://images.unsplash.com/photo-1459262838948-3e2de6c1ec80?w=500&h=500&fit=crop";
+        var srcImgPath =
+            "https://images.unsplash.com/photo-1459262838948-3e2de6c1ec80?w=500&h=500&fit=crop";
         using var httpClient = new HttpClient();
         var imageBytes = await httpClient.GetByteArrayAsync(srcImgPath);
         var base64Image = Convert.ToBase64String(imageBytes);

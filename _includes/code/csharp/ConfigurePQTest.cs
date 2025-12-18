@@ -1,12 +1,12 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Net.Http;
-using System.Linq;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -22,12 +22,15 @@ public class ConfigurePQTest : IAsyncLifetime
         // START DownloadData
         using var httpClient = new HttpClient();
         var responseBody = await httpClient.GetStringAsync(
-            "https://raw.githubusercontent.com/weaviate-tutorials/intro-workshop/main/data/jeopardy_1k.json");
+            "https://raw.githubusercontent.com/weaviate-tutorials/intro-workshop/main/data/jeopardy_1k.json"
+        );
 
         data = JsonSerializer.Deserialize<List<JsonElement>>(responseBody);
 
         Console.WriteLine($"Data type: {data.GetType().Name}, Length: {data.Count}");
-        Console.WriteLine(JsonSerializer.Serialize(data[1], new JsonSerializerOptions { WriteIndented = true }));
+        Console.WriteLine(
+            JsonSerializer.Serialize(data[1], new JsonSerializerOptions { WriteIndented = true })
+        );
         // END DownloadData
 
         // START ConnectCode
@@ -62,32 +65,36 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // START CollectionWithAutoPQ
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "Question",
-            VectorConfig = Configure.Vector("default",
-                v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    // highlight-start
-                    Quantizer = new VectorIndex.Quantizers.PQ
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Question",
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
                     {
-                        TrainingLimit = 50000, // Set the threshold to begin training
-                        Encoder = new VectorIndex.Quantizers.PQ.EncoderConfig
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.PQ
                         {
-                            Type = VectorIndex.Quantizers.EncoderType.Tile,
-                            Distribution = VectorIndex.Quantizers.DistributionType.Normal,
+                            TrainingLimit = 50000, // Set the threshold to begin training
+                            Encoder = new VectorIndex.Quantizers.PQ.EncoderConfig
+                            {
+                                Type = VectorIndex.Quantizers.EncoderType.Tile,
+                                Distribution = VectorIndex.Quantizers.DistributionType.Normal,
+                            },
                         },
+                        // highlight-end
                     }
-                    // highlight-end
-                }),
-            Properties =
-            [
-                Property.Text("question"),
-                Property.Text("answer"),
-                Property.Text("category")
-            ]
-        });
+                ),
+                Properties =
+                [
+                    Property.Text("question"),
+                    Property.Text("answer"),
+                    Property.Text("category"),
+                ],
+            }
+        );
         // END CollectionWithAutoPQ
 
         // Confirm that the collection has been created with the right settings
@@ -104,18 +111,20 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // START InitialSchema
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "Question",
-            Description = "A Jeopardy! question",
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
-            Properties =
-            [
-                Property.Text("question"),
-                Property.Text("answer"),
-                Property.Text("category")
-            ]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Question",
+                Description = "A Jeopardy! question",
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+                Properties =
+                [
+                    Property.Text("question"),
+                    Property.Text("answer"),
+                    Property.Text("category"),
+                ],
+            }
+        );
         // END InitialSchema
 
         var collection = client.Collections.Use(COLLECTION_NAME);
@@ -124,10 +133,11 @@ public class ConfigurePQTest : IAsyncLifetime
 
         // START LoadData
         var objectList = data.Select(obj => new
-        {
-            question = obj.GetProperty("Question").GetString(),
-            answer = obj.GetProperty("Answer").GetString()
-        }).ToArray();
+            {
+                question = obj.GetProperty("Question").GetString(),
+                answer = obj.GetProperty("Answer").GetString(),
+            })
+            .ToArray();
 
         await collection.Data.InsertMany(objectList);
         // END LoadData
@@ -148,13 +158,15 @@ public class ConfigurePQTest : IAsyncLifetime
                         Type = VectorIndex.Quantizers.EncoderType.Tile,
                         Distribution = VectorIndex.Quantizers.DistributionType.Normal,
                     },
-                });
+                }
+            );
         });
         // END UpdateSchema
 
         var updatedConfig = await collection.Config.Get();
         Assert.NotNull(updatedConfig);
-        var hnswConfig = updatedConfig.VectorConfig["default"].VectorIndexConfig as VectorIndex.HNSW;
+        var hnswConfig =
+            updatedConfig.VectorConfig["default"].VectorIndexConfig as VectorIndex.HNSW;
         Assert.IsType<VectorIndex.Quantizers.PQ>(hnswConfig?.Quantizer);
     }
 
@@ -164,36 +176,42 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // Create a collection with PQ enabled to inspect its schema
-        await client.Collections.Create(new CollectionCreateParams
-        {
-            Name = "Question",
-            VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers(),
-                index: new VectorIndex.HNSW
-                {
-                    Quantizer = new VectorIndex.Quantizers.PQ
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Question",
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
                     {
-                        Encoder = new VectorIndex.Quantizers.PQ.EncoderConfig
+                        Quantizer = new VectorIndex.Quantizers.PQ
                         {
-                            Type = VectorIndex.Quantizers.EncoderType.Tile,
-                            Distribution = VectorIndex.Quantizers.DistributionType.Normal,
+                            Encoder = new VectorIndex.Quantizers.PQ.EncoderConfig
+                            {
+                                Type = VectorIndex.Quantizers.EncoderType.Tile,
+                                Distribution = VectorIndex.Quantizers.DistributionType.Normal,
+                            },
+                            TrainingLimit = 50000,
                         },
-                        TrainingLimit = 50000
                     }
-                }
-            ),
-            Properties =
-            [
-                Property.Text("question"),
-                Property.Text("answer"),
-                Property.Text("category")
-            ]
-        });
+                ),
+                Properties =
+                [
+                    Property.Text("question"),
+                    Property.Text("answer"),
+                    Property.Text("category"),
+                ],
+            }
+        );
 
         // START GetSchema
         var jeopardy = client.Collections.Use("Question");
         var config = await jeopardy.Config.Get();
 
-        Console.WriteLine(JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
+        Console.WriteLine(
+            JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true })
+        );
         // END GetSchema
         Assert.NotNull(config);
 
