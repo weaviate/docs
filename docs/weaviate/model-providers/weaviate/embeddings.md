@@ -90,7 +90,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="javaraw"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START WeaviateInstantiation"
@@ -145,7 +145,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START BasicVectorizerWeaviate"
@@ -200,7 +200,7 @@ You can specify one of the [available models](#available-models) for the vectori
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -271,7 +271,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START BatchImportExample"
@@ -338,7 +338,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START NearTextExample"
@@ -400,7 +400,7 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridExample"

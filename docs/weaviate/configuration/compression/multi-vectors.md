@@ -61,7 +61,7 @@ Compression techniques become especially crucial for multi-vector systems to man
 ```
 
 </TabItem>
-<TabItem value="csharp" label="C# (Beta)">
+<TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiValueVectorMuvera"

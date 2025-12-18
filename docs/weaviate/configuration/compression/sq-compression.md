@@ -60,7 +60,7 @@ SQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START EnableSQ"
@@ -111,7 +111,7 @@ SQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START UpdateSchema"
@@ -162,7 +162,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START SQWithOptions"

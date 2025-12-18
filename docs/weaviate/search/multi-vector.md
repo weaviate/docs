@@ -85,7 +85,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiBasic"
@@ -124,7 +124,7 @@ You can specify multiple query vectors in the search query with a `nearVector` s
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTargetNearVector"
@@ -174,7 +174,7 @@ The target vectors can be specified as an array as shown here.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTargetMultipleNearVectorsV1"
@@ -213,7 +213,7 @@ If you want to provide weights for each target vector you can do it as shown her
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTargetMultipleNearVectorsV2"
@@ -254,7 +254,7 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTargetWithSimpleJoin"
@@ -300,7 +300,7 @@ Each distance between the query vector and the target vector is multiplied by th
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTargetManualWeights"
@@ -348,7 +348,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTargetRelativeScore"

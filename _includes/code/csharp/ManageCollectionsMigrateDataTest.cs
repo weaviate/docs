@@ -99,8 +99,6 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
     }
 
     // END CreateCollectionCollectionToCollection // END CreateCollectionCollectionToTenant // END CreateCollectionTenantToCollection // END CreateCollectionTenantToTenant
-    // TODO[g-despot] NEW: Why can't I insert many with preserved IDs?
-
     // START CollectionToCollection // START TenantToCollection // START CollectionToTenant // START TenantToTenant
     private async Task MigrateData<T>(
         CollectionClient collectionSrc,

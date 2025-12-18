@@ -178,7 +178,6 @@ public class ManageCollectionsAliasTest : IAsyncLifetime
         Assert.Single(results.Objects);
     }
 
-    // TODO[g-despot] It's strange that I have to cast into primitive types
     [Fact]
     public async Task TestZeroDowntimeMigration()
     {
