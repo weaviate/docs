@@ -209,7 +209,6 @@ public class ManageCollectionsTest : IAsyncLifetime
         //Assert.NotNull(config.VectorConfig["body_vector"]);
     }
 
-    // TODO[g-despot] NEW: Unexpected status code UnprocessableEntity. Expected: OK. collection create. Server replied: {"error":[{"message":"module 'multi2vec-jinaai': textFields or imageFields setting needs to be present"}]}
     [Fact]
     public async Task CreateCollectionWithMultiVectors()
     {
@@ -218,13 +217,13 @@ public class ManageCollectionsTest : IAsyncLifetime
             new CollectionCreateParams
             {
                 Name = "DemoCollection",
-                VectorConfig = new VectorConfigList
-                {
+                VectorConfig =
+                [
                     // Example 1 - Use a model integration
                     Configure.MultiVector("jina_colbert", v => v.Text2MultiVecJinaAI()),
                     // Example 2 - User-provided multi-vector representations
                     Configure.MultiVector("custom_multi_vector", v => v.SelfProvided()),
-                },
+                ],
                 Properties = [Property.Text("text")],
             }
         );
@@ -447,7 +446,6 @@ public class ManageCollectionsTest : IAsyncLifetime
     // Coming soon
     // END ModuleSettings
 
-    // TODO[g-despot]: Missing vectorizePropertyName
     [Fact]
     public async Task TestCreateCollectionWithPropertyConfig()
     {
@@ -458,16 +456,8 @@ public class ManageCollectionsTest : IAsyncLifetime
                 Name = "Article",
                 Properties =
                 [
-                    Property.Text(
-                        "title",
-                        // vectorizePropertyName: true,
-                        tokenization: PropertyTokenization.Lowercase
-                    ),
-                    Property.Text(
-                        "body",
-                        // skipVectorization: true,
-                        tokenization: PropertyTokenization.Whitespace
-                    ),
+                    Property.Text("title", tokenization: PropertyTokenization.Lowercase),
+                    Property.Text("body", tokenization: PropertyTokenization.Whitespace),
                 ],
             }
         );

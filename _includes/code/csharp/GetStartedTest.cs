@@ -13,9 +13,9 @@ using Xunit;
 // 1. Define your strongly-typed class
 public class JeopardyQuestion
 {
-    public string? question { get; set; }
-    public string? answer { get; set; }
-    public string? category { get; set; }
+    public string Question { get; set; }
+    public string Answer { get; set; }
+    public string Category { get; set; }
 }
 
 public class GetStartedTests
@@ -63,9 +63,9 @@ public class GetStartedTests
             // 2. Prepare the data by mapping it to your new class
             var dataObjects = data.Select(d => new JeopardyQuestion
                 {
-                    answer = d.GetProperty("Answer").GetString(),
-                    question = d.GetProperty("Question").GetString(),
-                    category = d.GetProperty("Category").GetString(),
+                    Answer = d.GetProperty("Answer").GetString(),
+                    Question = d.GetProperty("Question").GetString(),
+                    Category = d.GetProperty("Category").GetString(),
                 })
                 .ToList();
             // ==============================================================================

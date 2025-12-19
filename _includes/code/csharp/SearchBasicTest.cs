@@ -58,32 +58,28 @@ public class SearchBasicTest : IAsyncLifetime
         Assert.True(response.Objects.First().Properties.ContainsKey("question"));
     }
 
-    // TODO[g-despot]: NEW: Enable when C# client supports offset
-    // [Fact]
-    // public async Task BasicGetOffset()
-    // {
-    //     // ==============================
-    //     // ===== BASIC GET EXAMPLES =====
-    //     // ==============================
+    [Fact]
+    public async Task BasicGetOffset()
+    {
+        // ==============================
+        // ===== BASIC GET EXAMPLES =====
+        // ==============================
 
-    //     // START
-    //     var jeopardy = client.Collections.Use("JeopardyQuestion");
-    //     // highlight-start
-    //     var response = await jeopardy.Query.FetchObjects(offset: 1, limit: 1);
-    //     // highlight-end
+        // START GetWithOffset
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        // highlight-start
+        var response = await jeopardy.Query.FetchObjects(offset: 1, limit: 1);
+        // highlight-end
 
-    //     foreach (var o in response.Objects)
-    //     {
-    //         Console.WriteLine(JsonSerializer.Serialize(o.Properties));
-    //     }
-    //     // END
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+        }
+        // END GetWithOffset
 
-    //     Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-    //     Assert.True(response.Objects.First().Properties.ContainsKey("question"));
-    // }
-    // START GetWithOffset
-    // Coming soon
-    // END GetWithOffset
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+    }
 
     [Fact]
     public async Task GetWithLimit()

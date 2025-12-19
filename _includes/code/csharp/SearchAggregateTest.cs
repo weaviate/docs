@@ -126,14 +126,13 @@ public class SearchAggregateTest : IDisposable
         // END groupBy
     }
 
-    //TODO[g-despot] Why doesn query need to be list?
     [Fact]
     public async Task TestNearTextWithLimit()
     {
         // START nearTextWithLimit
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Aggregate.NearText(
-            ["animals in space"],
+            "animals in space",
             // highlight-start
             limit: 10,
             // highlight-end

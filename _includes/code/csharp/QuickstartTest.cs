@@ -14,7 +14,6 @@ namespace WeaviateProject.Examples;
 [Collection("Sequential")] // Ensures tests in this class run one after another
 public class QuickstartTest
 {
-    // TODO[g-despot] Replace meta with readiness
     [Fact]
     public static async Task TestConnectionIsReady()
     {
@@ -27,7 +26,7 @@ public class QuickstartTest
 
         // highlight-start
         // GetMeta returns server info. A successful call indicates readiness.
-        var meta = await client.GetMeta();
+        var meta = await client.IsReady();
         Console.WriteLine(meta);
         // highlight-end
         // END InstantiationExample

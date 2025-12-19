@@ -444,7 +444,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     // Helper class for CSV parsing
     private class JeopardyQuestion
     {
-        public string? Question { get; set; }
-        public string? Answer { get; set; }
+        public string Question { get; set; }
+        public string Answer { get; set; }
     }
 }
