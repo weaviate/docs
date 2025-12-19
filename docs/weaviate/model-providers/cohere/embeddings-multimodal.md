@@ -169,7 +169,7 @@ For further details on model parameters, see the [Cohere API documentation](http
 
 ## Data import
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for image objects using the specified model.
 
 <Tabs className="code" groupId="languages">
 

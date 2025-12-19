@@ -100,6 +100,13 @@ The two functions reflect different under-the-hood memory management behaviors. 
 
 In general, `mmap` may be a preferred option with memory management benefits. However, if you experience stalling situations under heavy memory load, we suggest trying `pread` instead.
 
+## Object Time-To-Live (TTL)
+
+:::caution Added in `v1.35.0` as a technical preview
+Time to live (TTL) was introduced in Weaviate `v1.35.0` as a technical preview feature, for local / self-hosted Weaviate instances. It is not available in Weaviate Cloud instances at this time.
+:::
+
+You can configure automatic deletion of objects after a specified time period using Time-To-Live (TTL) settings at the collection level. Read more [about it](/weaviate/concepts/data#time-to-live-ttl) or how to [set it up](/weaviate/manage-collections/time-to-live).
 
 ## Related pages
 - [Configuration: Backups](/deploy/configuration/backups.md)

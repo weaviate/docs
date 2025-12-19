@@ -22,44 +22,48 @@ The UX of Weaviate's APIs is designed following the UX Honeycomb usability rules
 
 Weaviate has both a RESTful API and a GraphQL API. Currently, there is no feature parity between both APIs (this will be implemented later, there is an [issue](https://github.com/weaviate/weaviate/issues/1540) on GitHub). The RESTful APIs are mostly used for DB management and CRUD operations. The GraphQL API is mostly used to access data objects in Weaviate, whether it's a simple lookup or a combination of scalar and vector search. The APIs support the following user needs, roughly speaking:
 
-* **Adding, retrieving, updating and deleting data CRUD** -> RESTful API
-* **Weaviate management operations** -> RESTful API
-* **Data search** -> GraphQL API
-* **Explorative data search** -> GraphQL API
-* **Data analysis (meta data)** -> GraphQL API
-* **Near real time on very large datasets in production** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
-* **Easy to integrate in applications** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
+- **Adding, retrieving, updating and deleting data CRUD** -> RESTful API
+- **Weaviate management operations** -> RESTful API
+- **Data search** -> GraphQL API
+- **Explorative data search** -> GraphQL API
+- **Data analysis (meta data)** -> GraphQL API
+- **Near real time on very large datasets in production** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
+- **Easy to integrate in applications** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
 
 ## GraphQL
 
 ### Why GraphQL?
+
 We have chosen to use a GraphQL API, for multiple reasons:
 
-* **Data structure**.
-  * Data in Weaviate follows a class-property structure. Data objects can be queried by their class and properties with GraphQL.
-  * It is possible to link data in Weaviate with cross-references. A Graph query language like GraphQL is very useful here.
-* **Performance**.
-  * With GraphQL, there is no over/under-fetching. You get back exactly the information about data objects that you query, nothing more and nothing less. This is beneficial for performance.
-  * Reducing the number of requests. With GraphQl, you can make highly efficient and precise queries that usually require many more queries with a traditional RESTful API for the same results.
-* **User Experience**
-  * Reducing complexity.
-  * Less error-prone (because of its typed schema)
-  * Custom design
-  * Data exploration and fuzzy search is possible
+- **Data structure**.
+  - Data in Weaviate follows a class-property structure. Data objects can be queried by their class and properties with GraphQL.
+  - It is possible to link data in Weaviate with cross-references. A Graph query language like GraphQL is very useful here.
+- **Performance**.
+  - With GraphQL, there is no over/under-fetching. You get back exactly the information about data objects that you query, nothing more and nothing less. This is beneficial for performance.
+  - Reducing the number of requests. With GraphQl, you can make highly efficient and precise queries that usually require many more queries with a traditional RESTful API for the same results.
+- **User Experience**
+  - Reducing complexity.
+  - Less error-prone (because of its typed schema)
+  - Custom design
+  - Data exploration and fuzzy search is possible
 
 ### GraphQL Design Principles
+
 GraphQL queries are designed to be intuitive and fit Weaviate's features. [This article on Hackernoon](https://hackernoon.com/how-weaviates-graphql-api-was-designed-t93932tl) tells you more about how GraphQL API was designed (note that examples show an older Weaviate and GraphQL API version). The following three points are key in the design:
 
-* **Natural language**. The GraphQL queries follow a natural language pattern as much as possible. The function of a query is easy to understand and queries are easy to write and remember. An example query where you can recognize human language is: "*Get* the *title* of the *Articles* where the *wordcount* is *greater than* *1000*. The most important words in this query are also used in the GraphQL query:
+- **Natural language**. The GraphQL queries follow a natural language pattern as much as possible. The function of a query is easy to understand and queries are easy to write and remember. An example query where you can recognize human language is: "_Get_ the _title_ of the _Articles_ where the _wordcount_ is _greater than_ _1000_. The most important words in this query are also used in the GraphQL query:
 
 ```graphql
 {
   Get {
-    Article(where: {
-        path: ["wordCount"],    # Path to the property that should be used
-        operator: GreaterThan,  # operator
-        valueInt: 1000          # value (which is always = to the type of the path property)
-      }) {
+    Article(
+      where: {
+        path: ["wordCount"] # Path to the property that should be used
+        operator: GreaterThan # operator
+        valueInt: 1000 # value (which is always = to the type of the path property)
+      }
+    ) {
       title
     }
   }
@@ -68,7 +72,7 @@ GraphQL queries are designed to be intuitive and fit Weaviate's features. [This 
 
 There are currently three main functions in a GraphQL request: "Get{}", "Explore{}" and "Aggregate{}".
 
-* **Classes & properties**. Data in Weaviate has a class-property structure, where cross-references may appear between data object. The class name of the data to return is written one layer deeper than the 'main function'. The next layer consists of the properties and cross-reference properties to return per class:
+- **Classes & properties**. Data in Weaviate has a class-property structure, where cross-references may appear between data object. The class name of the data to return is written one layer deeper than the 'main function'. The next layer consists of the properties and cross-reference properties to return per class:
 
 ```graphql
 {
@@ -90,16 +94,16 @@ There are currently three main functions in a GraphQL request: "Get{}", "Explore
 }
 ```
 
-* **Query filters (search arguments) dependent on database setup**. You can add filters on class level to filter objects. Scalar (`where` filters) can be combined with vector (`near<...>`) filters. Depending on your Weaviate setup (which modules you have connected), additional filters may be used. A filter can look like (using the [`qna-transformers` module](/weaviate/modules/qna-transformers.md)):
+- **Query filters (search arguments) dependent on database setup**. You can add filters on class level to filter objects. Scalar (`where` filters) can be combined with vector (`near<...>`) filters. Depending on your Weaviate setup (which modules you have connected), additional filters may be used. A filter can look like (using the [`qna-transformers` module](/weaviate/modules/qna-transformers.md)):
 
 ```graphql
 {
   Get {
     Article(
       ask: {
-        question: "Who is the king of the Netherlands?",
+        question: "Who is the king of the Netherlands?"
         properties: ["summary"]
-      },
+      }
       limit: 1
     ) {
       title
@@ -127,7 +131,7 @@ This will not result in any user-facing API changes. As of May 2023, gRPC has be
 
 ## Weaviate Console
 
-The [Weaviate Console](https://weaviate.io/go/console?utm_source=docs&utm_content=others) is a dashboard to manage Weaviate clusters from WCD, and access Weaviate instances running elsewhere. You can use the Query Module to make GraphQL queries.
+The [Weaviate Console](/go/console?utm_content=others) is a dashboard to manage Weaviate clusters from WCD, and access Weaviate instances running elsewhere. You can use the Query Module to make GraphQL queries.
 
 ![GraphQL Query Module in Weaviate Console](./img/console-capture.png)
 
@@ -136,15 +140,16 @@ The [Weaviate Console](https://weaviate.io/go/console?utm_source=docs&utm_conten
 Weaviate has several client libraries: in [Go](/weaviate/client-libraries/go.md), [Java](/weaviate/client-libraries/java/index.mdx), [Python](/weaviate/client-libraries/python/index.mdx) and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx). The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. The APIs are intuitive to use, so it is easy to integrate Weaviate into your existing data landscape.
 
 ## Further resources
+
 :::info Related pages
+
 - [References: GraphQL API](../api/graphql/index.md)
 - [References: RESTful API](/weaviate/api/rest).
 - [References: Client Libraries](../client-libraries/index.mdx).
-:::
-
+  :::
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

@@ -8,7 +8,7 @@ image: og/wcd/user_guides.jpg
 
 import CompareURLs from "/docs/cloud/img/wcs-console-url-check.jpg";
 
-[Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) offers multiple options on how to connect to your cluster:
+[Weaviate Cloud (WCD)](/go/console?utm_content=cloud) offers multiple options on how to connect to your cluster:
 
 - **[Connect with APIs](#connect-with-an-api-programmatically)**:
   - Use [client libraries](/weaviate/client-libraries) to connect to a Weaviate Cloud instance.
@@ -20,21 +20,6 @@ import CompareURLs from "/docs/cloud/img/wcs-console-url-check.jpg";
 ## Connect with an API programmatically
 
 The guide below applies to clusters that have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled. New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default.
-
-<details>
-    <summary>Connecting with API keys when RBAC is disabled</summary>
-
-The Weaviate client libraries use API keys to authenticate to Weaviate Cloud instances. If RBAC is disabled, two API keys are created by default. Both **Shared Cloud** and **Sandbox** clusters have these two types of keys:
-
-- `Admin key`: An administrator that enables read-write access to the cluster.
-- `ReadOnly key`: A viewer key that only allows read access to the cluster.
-
-The Weaviate server authenticates every request.
-
-- If you use a Weaviate client library, pass the API key when you instantiate the client connection. After the connection is established, you do not have to pass the API key when you make additional requests.
-- If you use a tool like cURL, add your API key to the request header.
-
-</details>
 
 ### Retrieve your API key and REST endpoint
 
@@ -74,7 +59,7 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 
 <summary>Steps to create a new API key</summary>
 
-1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
+1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
 2.  Navigate to the `API Keys` section, found in the `Cluster details` panel.
 3.  If you need a new API key, click the `New key` button.
 4.  In the `Create API Key` form, provide a descriptive name for your key.
@@ -120,7 +105,7 @@ The Weaviate Cloud console uses your email address and password for authenticati
 
 To connect to the console, follow these steps:
 
-1. Open the [Weaviate Cloud login page](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) in a browser.
+1. Open the [Weaviate Cloud login page](/go/console?utm_content=cloud) in a browser.
 1. Enter your email address and click `Continue`.
 1. Enter your password and click `Login`.
 
@@ -161,7 +146,7 @@ This section has solutions for some common problems. For additional help, [conta
 
 To reset your Weaviate Cloud password, follow these steps:
 
-1. Go to the Weaviate Cloud [login page](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud).
+1. Go to the Weaviate Cloud [login page](/go/console?utm_content=cloud).
 1. Click on click the login button.
 1. Click `Forgot Password`.
 1. Check your email account for a password reset email from Weaviate Cloud.

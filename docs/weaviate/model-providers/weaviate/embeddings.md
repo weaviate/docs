@@ -1,6 +1,6 @@
 ---
 title: Text Embeddings
-description: "Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance."
+description: "Weaviate Embeddings models can be accessed directly from a Weaviate Cloud instance."
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
@@ -9,7 +9,7 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 :::info Added in `1.27.10`, `1.28.3`, `1.29.0`
 :::
 
-# Weaviate Embeddings
+# Weaviate Embeddings - Text Embeddings
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -40,13 +40,13 @@ import Requirements from "/\_includes/weaviate-embeddings-requirements.mdx";
 
 <Requirements />
 
-### Weaviate configuration
-
-The Weaviate Embeddings vectorizer is only available for use by Weaviate Cloud instances. At this time, Weaviate Embeddings is not available for self-hosted users.
+:::info Cloud only
+Weaviate Embeddings vectorizers are not available for self-hosted users.
+:::
 
 ### API credentials
 
-Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud instance's access for Weaviate Embeddings.
+Your Weaviate Cloud credentials are automatically used to authorize your access to Weaviate Embeddings.
 
 <Tabs className="code" groupId="languages">
 
