@@ -1,31 +1,65 @@
 #!/bin/bash
-# Find environment variables that exist in code but aren't documented
-# Usage: ./find-undocumented-env-vars.sh path/to/env-vars-list.csv
+# Find environment variables that exist in Weaviate code but aren't documented
+# This script:
+#   1. Extracts env vars from the Weaviate codebase
+#   2. Checks which ones are not documented in this docs repo
+#
+# Usage: ./find-undocumented-env-vars.sh <path-to-weaviate-repo>
+# Example: ./find-undocumented-env-vars.sh ../weaviate
 
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 <path-to-env-vars-list.csv>"
-    echo "Example: $0 ../weaviate/env-vars-list.csv"
+    echo "Usage: $0 <path-to-weaviate-repo>"
+    echo "Example: $0 ../weaviate"
     exit 1
 fi
 
-CSV_FILE="$1"
+WEAVIATE_REPO="$1"
 
-if [ ! -f "$CSV_FILE" ]; then
-    echo "Error: File '$CSV_FILE' not found"
+if [ ! -d "$WEAVIATE_REPO" ]; then
+    echo "Error: Directory '$WEAVIATE_REPO' not found"
     exit 1
 fi
 
-# Directories to search
+# Directories to search in docs repo
 SEARCH_DIRS="docs _includes"
 
-echo "Checking which env vars from $CSV_FILE are not documented..."
+echo "Step 1: Extracting env vars from Weaviate repo..."
+echo "==========================================="
+
+# Extract env vars from Weaviate repo (same logic as env-vars-audit.sh)
+# NOTE: Only catches string literal patterns like os.Getenv("VAR") and os.Getenv(`VAR`)
+# Will NOT catch variables like os.Getenv(varName)
+ENV_VARS=$(cd "$WEAVIATE_REPO" && {
+  # Pattern 1: Double-quoted strings
+  grep -rnoE 'os\.(Getenv|LookupEnv)\("[^"]+"\)' --include="*.go" --exclude-dir={vendor,test,node_modules,.git} . | while IFS=: read -r file line match; do
+    env_var=$(echo "$match" | sed -E 's/os\.(Getenv|LookupEnv)\("([^"]+)"\)/\2/')
+    if [ -n "$env_var" ]; then
+      echo "$env_var"
+    fi
+  done
+
+  # Pattern 2: Backtick/raw strings
+  grep -rnoE 'os\.(Getenv|LookupEnv)\(`[^`]+`\)' --include="*.go" --exclude-dir={vendor,test,node_modules,.git} . | while IFS=: read -r file line match; do
+    env_var=$(echo "$match" | sed -E 's/os\.(Getenv|LookupEnv)\(`([^`]+)`\)/\2/')
+    if [ -n "$env_var" ]; then
+      echo "$env_var"
+    fi
+  done
+} | sort -u)
+
+TOTAL_COUNT=$(echo "$ENV_VARS" | wc -l | tr -d ' ')
+echo "Found $TOTAL_COUNT unique environment variables"
+echo ""
+
+echo "Step 2: Checking which are undocumented..."
+echo "==========================================="
 echo "Searching in: $SEARCH_DIRS"
 echo ""
 echo "UNDOCUMENTED ENV VARS:"
 echo "====================="
 
-# Skip header line, extract env var names, and check if they appear in docs
-tail -n +2 "$CSV_FILE" | cut -d',' -f1 | sort -u | while read -r env_var; do
+UNDOCUMENTED=0
+echo "$ENV_VARS" | while read -r env_var; do
     # Skip empty lines
     [ -z "$env_var" ] && continue
 
@@ -34,6 +68,7 @@ tail -n +2 "$CSV_FILE" | cut -d',' -f1 | sort -u | while read -r env_var; do
     # Use -q for quiet (just exit status), -r for recursive
     if ! grep -rqFw "$env_var" $SEARCH_DIRS 2>/dev/null; then
         echo "$env_var"
+        UNDOCUMENTED=$((UNDOCUMENTED + 1))
     fi
 done
 
