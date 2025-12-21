@@ -147,7 +147,10 @@ const sidebars = {
               customProps: {
                 cloudOnly: true,
               },
-              items: ["weaviate/model-providers/weaviate/embeddings"],
+              items: [
+                "weaviate/model-providers/weaviate/embeddings",
+                "weaviate/model-providers/weaviate/embeddings-multimodal"
+              ],
             },
             {
               type: "category",
@@ -553,6 +556,7 @@ const sidebars = {
           items: ["weaviate/manage-collections/tenant-states"],
         },
         "weaviate/manage-collections/collection-aliases",
+        "weaviate/manage-collections/time-to-live",
         "weaviate/manage-collections/multi-node-setup",
         "weaviate/manage-collections/migrate",
         "weaviate/manage-collections/cross-references",
@@ -705,7 +709,7 @@ const sidebars = {
         {
           type: "link",
           label: "Environment variables",
-          href: "https://docs.weaviate.io/deploy/configuration/env-vars",
+          href: "/deploy/configuration/env-vars",
           className: "sidebar-item",
         },
       ],

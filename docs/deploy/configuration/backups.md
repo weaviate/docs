@@ -314,7 +314,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 | ---- | ---- | ---- | ---- |---- |
 | `CPUPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
 | `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
-| `CompressionLevel`| string | no | `DefaultCompression` | An optional compression level used by compression algorithm from options. (`DefaultCompression`, `BestSpeed`, `BestCompression`) Weaviate uses [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) by default. |
+| `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
 
 <Tabs className="code" groupId="languages">
@@ -368,6 +368,17 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 
 While you are waiting for a backup to complete, [Weaviate stays available](#read--write-requests-while-a-backup-is-running).
 
+#### Compression levels
+
+:::info `zstd` compression availability
+`zstd` compression is only available in Weaviate in `v1.35.0`, `v1.34.1`, `v1.33.6` and `v1.32.18` or higher.
+:::
+
+Where [`zstd` compression](https://github.com/facebook/zstd) is available, choose one of: `ZstdDefaultCompression`, `ZstdBestSpeed` and `ZstdBestCompression`.
+
+Otherwise, choose one of the standard [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) options: `DefaultCompression`, `BestSpeed` and `BestCompression`.
+
+You can also explicitly disable compression by setting the level to `NoCompression`.
 
 #### Asynchronous Status Checking
 

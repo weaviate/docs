@@ -5,8 +5,9 @@ title: "Generate new content with NVIDIA models and RAG"
 featured: False
 integration: False
 agent: False
-tags: ['Generative Search', 'RAG', 'NVIDIA']
+tags: ["Generative Search", "RAG", "NVIDIA"]
 ---
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/nvidia/rag_llama_3.1_nemotron_51b_instruct.ipynb)
 
 # Generative Search with NVIDIA
@@ -16,10 +17,11 @@ In this demo, we will use an embedding and generative model on NVIDIA to generat
 ## Requirements
 
 1. Weaviate cluster
-    1. You can create a 14-day free sandbox on [WCD](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
-    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
-    3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
-    4. [Other options](https://docs.weaviate.io/deploy)
+
+   1. You can create a 14-day free sandbox on [WCD](/go/console?utm_content=recipe/)
+   2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
+   3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
+   4. [Other options](https://docs.weaviate.io/deploy)
 
 2. NVIDIA NIM API key. Grab one [here](https://build.nvidia.com/models).
 3. Weaviate client version `4.11.0` or newer
@@ -61,9 +63,11 @@ print(client.is_ready())
 ```
 
 Python output:
+
 ```text
 True
 ```
+
 **Embedded Weaviate**
 
 ```python
@@ -97,6 +101,7 @@ True
 ```
 
 ## Create a collection
+
 Collection stores your data and vector embeddings.
 
 Full list of [generative models](https://weaviate.io/developers/weaviate/model-providers/octoai/generative#available-models)
@@ -129,9 +134,11 @@ print("Successfully created collection: BlogChunks.")
 ```
 
 Python output:
+
 ```text
 Successfully created collection: BlogChunks.
 ```
+
 ## Chunk and Import Data
 
 We need to break our blog posts into smaller chunks
@@ -172,9 +179,11 @@ blog_chunks[0]
 ```
 
 Python output:
+
 ```text
 '---\ntitle: What is Ref2Vec and why you need it for your recommendation system\nslug: ref2vec-centroid\nauthors: [connor]\ndate: 2022-11-23\ntags: [\'integrations\', \'concepts\']\nimage: ./img/hero.png\ndescription: "Weaviate introduces Ref2Vec, a new module that utilises Cross-References for Recommendation!"\n---\n![Ref2vec-centroid](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/model-providers/nvidia/img/hero.png)\n\n<!-- truncate -->\n\nWeaviate 1.16 introduced the [Ref2Vec](/developers/weaviate/modules/retriever-vectorizer-modules/ref2vec-centroid) module. In this article, we give you an overview of what Ref2Vec is and some examples in which it can add value such as recommendations or representing long objects. ## What is Ref2Vec? The name Ref2Vec is short for reference-to-vector, and it offers the ability to vectorize a data object with its cross-references to other objects. The Ref2Vec module currently holds the name ref2vec-**centroid** because it uses the average, or centroid vector, of the cross-referenced vectors to represent the **referencing** object.'
 ```
+
 ```python
 # Insert the objects (chunks) into the Weaviate cluster
 
@@ -219,6 +228,7 @@ for o in response.objects:
 ```
 
 Python output:
+
 ```text
 {
   "content": "---\ntitle: What is Ref2Vec and why you need it for your recommendation system\nslug: ref2vec-centroid\nauthors: [connor]\ndate: 2022-11-23\ntags: ['integrations', 'concepts']\nimage: ./img/hero.png\ndescription: \"Weaviate introduces Ref2Vec, a new module that utilises Cross-References for Recommendation!\"\n---\n![Ref2vec-centroid](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/model-providers/nvidia/img/hero.png)\n\n<!-- truncate -->\n\nWeaviate 1.16 introduced the [Ref2Vec](/developers/weaviate/modules/retriever-vectorizer-modules/ref2vec-centroid) module. In this article, we give you an overview of what Ref2Vec is and some examples in which it can add value such as recommendations or representing long objects. ## What is Ref2Vec? The name Ref2Vec is short for reference-to-vector, and it offers the ability to vectorize a data object with its cross-references to other objects. The Ref2Vec module currently holds the name ref2vec-**centroid** because it uses the average, or centroid vector, of the cross-referenced vectors to represent the **referencing** object."
@@ -230,9 +240,11 @@ Python output:
   "content": "Although all the query does is provide the ID of the User object, Ref2Vec has done the hard work by inferring a centroid vector from the User's references to other vectors. And as the set of references continues to evolve, the Ref2Vec vectors will continue to evolve also, ensuring that the User vector remains up-to-date with their latest interests. Whether your goal is to construct a Home Feed interface for users or to pair with search queries, Ref2Vec provides a strong foundation to enable Recommendation with fairly low overhead. For example, it can achieve personalized re-ranking, also known as a session-based recommendation, without persisting user data over a long sequence of interactions. A new user could have personalization available after a few interactions on the app which will help them quickly settle in and feel at home, helping to overcome what is known as the cold-start problem."
 }
 ```
+
 ### Generative Search Query
 
 Here is what happens in the below:
+
 1. We will retrieve 3 relevant chunks from our vector database
 2. We will pass the 3 chunks to NVIDIA to generate the short paragraph about Ref2Vec
 
@@ -253,6 +265,7 @@ for o in response.objects:
 ```
 
 Python output:
+
 ```text
 Here is a short paragraph about Ref2Vec:
 

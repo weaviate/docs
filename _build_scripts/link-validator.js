@@ -4,7 +4,7 @@ class Color {
     static #_RED = '\x1b[31m';
     static #_GREEN = '\x1b[32m';
     static #_BLUE = '\x1b[44m';
-    
+
     static get RESET() { return this.#_RESET; }
     static get GRAY() { return this.#_GRAY; }
     static get RED() { return this.#_RED; }
@@ -36,6 +36,7 @@ const domainsToIgnore = [
     'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link
     'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
     'https://instagram.com/',
+    'https://medium.com/', // TODO[g-despot]: started throwing Forbidden 403
     'https://www.npmjs.com',
     'https://openai.com',
     'https://platform.openai.com',
@@ -80,7 +81,7 @@ class LinkValidator {
 
         const LinkChecker = (await import('linkinator')).LinkChecker;
         this.#checker = new LinkChecker();
-        
+
         // Print results for each checked link as we go
         this.#checker.on('link', result => {
             if(result.state == 'BROKEN') {
@@ -109,19 +110,19 @@ class LinkValidator {
 
     validateLinks = async (paths) => {
         await this.#prepareLinkChecker();
-        
+
         // gether results from each starting path validation
         this.#validationResults = [];
         this.#validationSuccess = true;
 
         for(let i=0; i<paths.length; i++) {
             let path = paths[i];
-    
+
             try {
                 // check links and save results for later
                 let result = await this.#startLinkChecking(path);
                 result.startingPath = path;
-        
+
                 this.#validationResults.push(result);
 
                 // If there are any failed links then set the validation to failed
@@ -133,9 +134,9 @@ class LinkValidator {
                 console.error(error);
             }
         }
-    
+
         console.log('>>> FINISHED CHECKING LINKS')
-    
+
         return this.#validationSuccess;
     }
 
@@ -162,7 +163,7 @@ class LinkValidator {
         // SUMMARY
         const skippedLinks = result.links.filter(x => x.state === 'SKIPPED');
         let brokenLinks = result.links.filter(x => x.state === 'BROKEN');
-    
+
         console.log(`\n${Color.BLUE}-----------------------------------------------------------------------
 ${Color.BLUE}SUMMARY FOR:       ${result.startingPath}${Color.RESET}
 ${(result.passed)? Color.GREEN : Color.RED}Validation Passed: ${result.passed}${Color.RESET}
@@ -170,10 +171,10 @@ Links found:       ${result.links.length}
 Broken links:      ${brokenLinks.length}
 Checked links:     ${result.links.length - skippedLinks.length}
 Skipped links:     ${skippedLinks.length}`)
- 
+
         if(brokenLinks.length > 0) {
             brokenLinks = this.#parseBrokenLinks(brokenLinks);
-            
+
             console.log(Color.RED + '----- BROKEN LINKS: -----' + Color.RESET)
             // print links info in red
             console.log(JSON.stringify(brokenLinks, null, 2));
@@ -202,7 +203,7 @@ Skipped links:     ${skippedLinks.length}`)
                 url: link.url,
                 status: link.status,
                 statusText: lastFailureDetails.statusText || lastFailureDetails.message
-            }) 
+            })
         });
 
         return Object.values(result);

@@ -333,6 +333,10 @@ client.batch().objectsBatchDeleter()
 
 Objects must belong to a collection in Weaviate. Accordingly [deleting collections](../manage-collections/collection-operations.mdx#delete-a-collection) will remove all objects within them.
 
+## Delete objects with Time-To-Live (TTL)
+
+You can configure automatic deletion of objects after a specified time period using Time-To-Live (TTL) settings at the collection level. Read how to [set it up](../manage-collections/time-to-live.mdx) or learn more [about it](../concepts/data.md#time-to-live-ttl).
+
 ## Optional parameters
 
 - You can use `dryRun` to check how many objects would be deleted, without actually performing the deletion.

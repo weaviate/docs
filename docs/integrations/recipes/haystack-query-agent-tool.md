@@ -6,8 +6,9 @@ title: "Weaviate Query Agent with Haystack"
 featured: False
 integration: True
 agent: False
-tags: ['Query Agent', 'Integration']
+tags: ["Query Agent", "Integration"]
 ---
+
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/haystack/haystack-query-agent-tool.ipynb" target="_blank">
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
@@ -17,7 +18,8 @@ tags: ['Query Agent', 'Integration']
 This notebook will show you how to define the Weaviate Query Agent as a tool through Haystack.
 
 ### Requirements
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://weaviate.io/go/console?utm_source=docs&utm_content=integrations).
+
+1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](/go/console?utm_content=integrations).
 1. Install Haystack with `pip install haystack-ai`
 1. Install the Weaviate Agents package with `pip install weaviate-agents`
 1. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
@@ -95,6 +97,7 @@ print(query_agent_tool.invoke(query="What are the main topics covered in the blo
 ```
 
 Python output:
+
 ```text
 {'name': 'weaviate_query_agent_tool', 'description': 'This tool queries a database containing blog content about Weaviate and returns relevant information. You can ask any natural language question about the blogs stored in the database.', 'parameters': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'required': ['query']}}
 The main topic covered in the blogs is Docker and Containers, with a focus on their use with Weaviate. The articles provide background information on Docker and containers, explain their importance for Weaviate users, and cover topics such as Docker installation and setup, isolation and predictability of environments, distribution via Docker Hub, and the use of Docker Compose. Additionally, they address questions about Docker's role in the Weaviate stack, outlining reasons such as portability, isolation, and dependency management. There’s also discussion on deploying Weaviate using Kubernetes and Helm for more stable environments.
@@ -103,6 +106,7 @@ The main topic covered in the blogs is Docker and Containers, with a focus on th
             Please make sure to close the connection using `client.close()`.
   warnings.warn(
 ```
+
 ### Chat Conversation with Tool Invocation
 
 ```python
@@ -124,6 +128,7 @@ if replies[0].tool_calls:
 ```
 
 Python output:
+
 ```text
 assistant messages: [ChatMessage(_role=<ChatRole.ASSISTANT: 'assistant'>, _content=[ToolCall(tool_name='weaviate_query_agent_tool', arguments={'query': 'How to run Weaviate with Docker?'}, id='call_fpBdeb9qHLiifdfFZ5OnmPoE')], _name=None, _meta={'model': 'gpt-4o-mini-2024-07-18', 'index': 0, 'finish_reason': 'tool_calls', 'usage': {'completion_tokens': 27, 'prompt_tokens': 83, 'total_tokens': 110, 'completion_tokens_details': CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), 'prompt_tokens_details': PromptTokensDetails(audio_tokens=0, cached_tokens=0)}})]
 

@@ -1538,6 +1538,13 @@ await client.collections.create({
 // Clean up
 await client.collections.delete('DemoCollection');
 
+// START BasicVectorizerMMWeaviate
+// Coming soon
+// END BasicVectorizerMMWeaviate
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
 // START BasicVectorizerTransformers
 await client.collections.create({
   name: 'DemoCollection',
@@ -1885,11 +1892,31 @@ for (let mmSrcObject of mmSrcObjects) {
   });
 }
 
+
+let mmDocObjects = [
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+];
+
+// START MMBatchImportDocsExample
+// Coming soon
+// END MMBatchImportDocsExample
+let multiModalDocObjects = new Array();
+
+for (let mmDocObject of mmDocObjects) {
+  multiModalDocObjects.push({
+    doc_page: mmDocObject.doc_b64image,  // Add the image in base64 encoding
+  });
+}
+
 // The model provider integration will automatically vectorize the object
 const mmInsertResponse = await myCollection.data.insertMany(dataObjects);
 
 console.log(mmInsertResponse);
-// END MMBatchImportExample
+// END MMBatchImportDocsExample
 
 // START NearTextExample
 let result;

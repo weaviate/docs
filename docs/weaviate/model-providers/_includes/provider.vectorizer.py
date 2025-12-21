@@ -1364,6 +1364,59 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicVectorizerMMWeaviate
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="doc_page", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="document",
+            image_field="doc_page"  # Must provide the image property name here
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerMMWeaviate
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerMMWeaviate
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="doc_page", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="document",
+            image_field="doc_page",  # Must provide the image property name here
+            model="ModernVBERT/colmodernvbert",  # Currently the only supported model
+            # base_url="<custom_weaviate_embeddings_url>",
+            # encoding=Configure.VectorIndex.MultiVector.Encoding.muvera()
+            # quantizer=Configure.VectorIndex.Quantizer.rq(),
+            # vector_index_config=Configure.VectorIndex.hnsw()
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerMMWeaviate
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerTransformers
 from weaviate.classes.config import Configure
 
@@ -1735,6 +1788,26 @@ with collection.batch.fixed_size(batch_size=200) as batch:
         )
         # highlight-end
 # END MMBatchImportExample
+
+# START MMBatchImportDocsExample
+collection = client.collections.use("DemoCollection")
+
+with collection.batch.fixed_size(batch_size=200) as batch:
+    for src_obj in source_objects:
+        pages_b64 = url_to_base64(src_obj["page_img_path"])
+        weaviate_obj = {
+            "title": src_obj["title"],
+            "doc_page": pages_b64  # Add the image in base64 encoding
+        }
+
+        # highlight-start
+        # The model provider integration will automatically vectorize the object
+        batch.add_object(
+            properties=weaviate_obj,
+            # vector=vector  # Optionally provide a pre-obtained vector
+        )
+        # highlight-end
+# END MMBatchImportDocsExample
 
 # START NearTextExample
 collection = client.collections.use("DemoCollection")
