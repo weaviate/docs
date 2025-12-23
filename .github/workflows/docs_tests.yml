@@ -59,6 +59,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
           ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # WCD credentials
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
