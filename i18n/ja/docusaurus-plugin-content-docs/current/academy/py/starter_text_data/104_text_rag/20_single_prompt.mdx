@@ -1,0 +1,55 @@
+---
+title: " single prompt 生成"
+description: Text RAG 用 single prompt
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/104_rag.py';
+
+『 single prompt 』生成は、取得された各オブジェクトに対して RAG クエリを実行します。同じ prompt で各オブジェクトを個別に変換したいときに便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、“ Movie ” クラス内でクエリ ベクトル（“ dystopian future ”）と最も類似する ベクトル を持つエントリーを検索します。その後、各映画の title をフランス語に翻訳するよう大規模言語モデルに指示します。生成された各結果はコンソールに出力されます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# SinglePromptGeneration"
+  endMarker="# END SinglePromptGeneration"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+ここでは `"... {title} ..."` のように波かっこで囲んで、 `single_prompt` パラメーターに 1 つ以上のプロパティを渡す必要があります。これにより Weaviate は、取得した各オブジェクトの `title` プロパティを大規模言語モデルへ渡します。
+
+<details>
+  <summary>結果例</summary>
+
+```text
+In Time
+À temps
+Looper
+Boucleur
+I, Robot
+Je, Robot
+The Matrix
+La Matrice
+Children of Men
+Les enfants des hommes
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+各レスポンスオブジェクトは通常の検索クエリの結果とほぼ同じですが、追加で `generated` 属性が含まれます。この属性には、各オブジェクトの生成結果が入ります。
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,138 @@
+---
+title: Weaviate における生成モデルの利用
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!./_snippets/20_generative.ts';
+import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/using-ml-models/_img/generative.jpg';
+import Unimodal from '/docs/academy/js/standalone/using-ml-models/_img/unimodal-gen.jpg';
+import Multimodal from '/docs/academy/js/standalone/using-ml-models/_img/multimodal-gen.jpg';
+
+
+## <i class="fa-solid fa-chalkboard"></i> 生成モデルの概要
+
+生成モデルとは、プロンプトを受け取ると、その指示に従ってテキスト・画像などのオリジナル データを生成できる機械学習モデルです。生成されるデータは学習時のデータに由来しますが、単純にそのまま模倣するわけではありません。  
+
+<img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
+
+生成モデルにはさまざまなタイプがありますが、ここでは特に大規模言語モデル (LLM) に焦点を当てます。
+
+## <i class="fa-solid fa-chalkboard"></i> 生成モデルを使うタイミング
+
+生成モデルは、検索拡張生成 (RAG) や エージェント 指向のワークフローで脚光を浴びています。主な用途は以下のとおりです。
+
+- **翻訳:** モデルはゼロショットで高精度に異なる言語へ翻訳できます。  
+- **コード生成:** 高レベルな instructions を受け取り、機能するカスタム コードへ変換できます。  
+- **画像生成:** プロンプトに含まれるテキスト指示から、高品質な画像を安定して生成できます。  
+
+
+## <i class="fa-solid fa-chalkboard"></i> 生成モデルの応用
+
+Anthropic の [Claude](https://www.anthropic.com/claude) ファミリーや Google の [Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference) などの LLM は、テキスト データに特化した生成モデルです。ほとんどの機械学習モデルと同様に、これらのモデルも 1 種類以上のモダリティに限定されます。  
+
+モダリティとは、モデルが処理・入出力できるデータの種類を指します。生成モデルは一般的に以下の 2 つに分類されます。
+
+- **ユニモーダル生成:** LLM の文脈で言えば、入力も出力も 1 つのモダリティ (通常はテキスト) に限定される生成能力です。  
+
+<img src={Unimodal} alt="Image alt" width="90%" style={{ 
+      marginRight: 0,
+      marginLeft: 'auto',
+      display: 'block'
+    }}/>
+
+- **マルチモーダル生成:** LLM の文脈で言えば、複数のモダリティで入力・出力を扱える生成能力です。テキスト入力から画像生成、あるいは画像入力から音声生成など、さまざまな組み合わせが可能です。  
+
+<img src={Multimodal} alt="Image alt" width="90%" style={{ 
+      marginRight: 0,
+      marginLeft: 'auto',
+      display: 'block'
+    }}/>
+
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate での生成モデル利用
+
+Weaviate は多くの生成モデルおよびプロバイダーをサポートしており、必要に応じて独自モデルを組み込むこともできます。  
+
+Weaviate では、生成モデルが RAG (生成検索) を支えています。ここでは Weaviate で生成モデルを使用する流れを順に見ていきます。まずは [Weaviate Cloud](https://console.weaviate.cloud/) で無料のサンドボックス アカウントを作成しましょう。セットアップがうまくいかない場合は、[こちらのガイド](/cloud/manage-clusters/connect) を参照してください。
+
+## ステップ 1: Weaviate インスタンスへの接続
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Connect"
+      endMarker="// END Connect"
+      language="js"
+    />
+  </TabItem>
+
+まず Weaviate への接続を初期化し、サードパーティの生成モデルへアクセスするために必要な環境変数を設定します。
+
+## ステップ 2: コレクションと生成モデルの定義
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Collection"
+      endMarker="// END Collection"
+      language="js"
+    />
+  </TabItem>
+
+コレクションを作成するときに、使用する生成モデルを指定します。この例では、Cohere のテキスト生成モデルを利用して新しいデータを生成します。デフォルトでは **command-r** です。  
+
+## ステップ 3: データのインポート
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Importing"
+      endMarker="// END Importing"
+      language="js"
+    />
+  </TabItem>
+
+コレクションの作成後、データをインポートします。インポート時にベクトライザーが動作し、コレクション作成時に指定した埋め込みモデルにオブジェクトを送信します。その結果、データ オブジェクトと対応するベクトル表現が ベクトル データベース に保存され、セマンティック検索や RAG が可能になります。
+
+## ステップ 4: シングルタスク生成検索の実行
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SingleGenerative"
+      endMarker="// END SingleGenerative"
+      language="js"
+    />
+  </TabItem>
+
+ここでは `singlePrompt` を使用し、セマンティック検索で取得した件数 `n` 分だけ言語モデルへリクエストします。`limit` を設定することで取得件数を厳密に制御できます。各検索結果から取得した値は `{ answer }` の形式でプロンプトに埋め込めます。たとえば、検索結果の `answer` プロパティをフランス語に翻訳したい場合などに便利です。
+
+## ステップ 5: グループ化生成検索の実行
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START GroupedGenerative"
+      endMarker="// END GroupedGenerative"
+      language="js"
+    />
+  </TabItem>
+
+ここでは `groupedTask` プロンプト形式を使用し、検索結果をまとめて言語モデルへコンテキストとして渡します。`groupedProperties` で `answer` プロパティのみを指定しているため、モデルの出力に影響を与える情報を細かく制御できます。
+## <i class="fa-solid fa-chalkboard"></i> 追加学習
+### プロンプト エンジニアリング & アウトプット 制御
+プロンプト エンジニアリングとは、AI モデルに与える入力、すなわち「プロンプト」を洗練し、望ましい、またはより効果的な出力を得るための技術です。これには..
+
+- **明確な指示:** 具体的かつ明示的に依頼することで、AI がニーズを正確に理解しやすくなります。「これを分析して」ではなく、「主要なテーマと裏付けとなる証拠を詳細に分析してください」のように依頼しましょう。
+
+
+### コンテキスト ウィンドウ
+コンテキスト ウィンドウとは、AI モデルが一度に「見て」処理できる情報量を表します。会話ごとにおけるモデルの作業メモリのようなものです。 
+
+- **トークン制限:** コンテキスト ウィンドウはトークン数（英語でおおよそ 3/4 語に相当）で測定されます。モデルによって数千から数十万トークンまで上限が異なります。
+
+コンテキスト ウィンドウの管理とプロンプト エンジニアリングの双方は、RAG 実装を洗練し始めるための優れた方法です。
+
+生成モデルの性能と能力には大きな幅があります。Weaviate で利用できるオプションを把握するには、[統合ページを閲覧する](/weaviate/model-providers) をご覧ください。

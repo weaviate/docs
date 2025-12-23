@@ -1,0 +1,137 @@
+---
+title: Weaviate における Embedding モデルの利用
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!./_snippets/10_embedding.ts';
+import EmbeddingModelImage from '/docs/academy/js/standalone/using-ml-models/_img/embedding-models.jpg';
+import Unimodal from '/docs/academy/js/standalone/using-ml-models/_img/unimodal.jpg';
+import Multimodal from '/docs/academy/js/standalone/using-ml-models/_img/multimodal.jpg';
+
+
+## <i class="fa-solid fa-chalkboard"></i> Embedding モデル
+
+Embedding モデルとは、情報を数値の配列――しばしば ベクトル 埋め込みと呼ばれるもの――として表現するように学習された機械学習モデルです。 ベクトル または ベクトル 埋め込みは、データの特定の属性や特徴を表す数値表現であり、この表現を用いることで ベクトル 空間内のオブジェクトを効率よく検索できます。 
+
+<img src={EmbeddingModelImage} alt="Image alt" width="100%"/>
+
+
+## <i class="fa-solid fa-chalkboard"></i> Embedding モデルの利用シーン
+
+Embedding は、現代の検索および Retrieval-Augmented Generation (RAG) アプリケーションを支える屋台骨です。主に次の用途に適しています。
+ 
+- **検索:** 検索結果は、入力クエリの ベクトル からの距離でランキングされます。 
+- **分類:** オブジェクトは、その ベクトル 表現が最も近いカテゴリーに分類されます。
+- **レコメンデーション:** 類似した ベクトル 表現を持つアイテムがユーザーに推薦されます。
+
+
+## <i class="fa-solid fa-chalkboard"></i> Embedding モデルの応用
+
+Embedding モデルは、ほとんどの機械学習モデルと同様に、1 つまたは複数のモダリティに限定されます。 
+
+ここでモダリティとは、モデルが入力として処理できる、または出力として扱えるデータの種類を指します。Embedding モデルは大きく分けてユニモーダルとマルチモーダルの 2 つに分類されます。 
+
+
+- **ユニモーダル Embedding:** 単一のモダリティを多次元 ベクトル 空間で表現します。例としては、Cohere のテキスト埋め込みモデル  embed-multilingual-v3.0  や Twelve Labs の動画埋め込みモデル  marengo 2.7  があります。
+
+<img src={Unimodal} alt="Image alt" width="90%" style={{ 
+      marginRight: 0,
+      marginLeft: 'auto',
+      display: 'block'
+    }}/>
+
+
+- **マルチモーダル Embedding:** 複数モダリティを多次元空間で表現し、クロスモーダル検索やクラスタリングを可能にします。 [CLIP](https://openai.com/index/clip/) は、テキスト・音声・動画データの埋め込みを生成できる代表的なマルチモーダルモデルです。
+
+<img src={Multimodal} alt="Image alt" width="90%" style={{ 
+      marginRight: 0,
+      marginLeft: 'auto',
+      display: 'block'
+    }}/>
+
+
+
+## <i class="fa-solid fa-chalkboard"></i> Weaviate での Embedding モデル利用
+
+Weaviate は、Embedding の生成と管理に関する複雑さを大幅に軽減します。Weaviate は多彩な ベクトライザー モデルや ベクトライザー サービスプロバイダーをサポートし、独自に ベクトル を指定することも可能です。
+
+Weaviate では、 ベクトル 埋め込みがハイブリッド検索とセマンティック検索の駆動力となります。 
+
+ここでは、Weaviate で Embedding モデルを設定し、セマンティック検索を実行する手順を説明します。まずは [Weaviate Cloud](https://console.weaviate.cloud/) で無料のサンドボックスアカウントを作成します。セットアップに問題がある場合は、[こちらのガイド](/cloud/manage-clusters/connect) を参照してください。
+
+### Step 1: Weaviate インスタンスへ接続
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Connect"
+      endMarker="// END Connect"
+      language="js"
+    />
+  </TabItem>
+
+Weaviate への接続を初期化し、サードパーティの Embedding モデルにアクセスするために必要な環境変数を設定します。
+
+### Step 2: コレクションと Embedding モデルの定義 
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Collection"
+      endMarker="// END Collection"
+      language="js"
+    />
+  </TabItem>
+
+コレクションを作成するときに、使用する Embedding モデルを定義します。この例では、 `text2vecCohere()` モジュールを用いて Cohere のテキスト埋め込みモデル  embed-multilingual-v3.0  を利用し、データの ベクトル 埋め込みを生成します。 
+
+
+### Step 3: データのインポート 
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Importing"
+      endMarker="// END Importing"
+      language="js"
+    />
+  </TabItem>
+
+コレクションが作成できたら、データをインポートします。インポート時に、定義済みの Embedding モデルと連携します。Weaviate の ベクトライザー は、コレクション作成時に指定した Embedding モデルへオブジェクトを送信します。処理が完了すると、データオブジェクトと対応する ベクトル 表現が ベクトル データベースに保存され、セマンティック検索クエリを実行できるようになります。
+
+
+### Step 4: セマンティック検索の実行
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Search"
+      endMarker="// END Search"
+      language="js"
+    />
+  </TabItem>
+
+
+ここではクエリを実行し、 `return` を true に設定してレスポンスにオブジェクトの ベクトル を含めています。検索の詳細は [こちら](/weaviate/concepts/search) をご覧ください。
+
+
+
+
+## <i class="fa-solid fa-chalkboard"></i> 追加学習
+
+### ベクトル表現
+ベクトル表現は、Embedding モデルの基本的な出力です。複雑なデータ (テキスト、画像など) を、意味を捉えた固定長の数値配列へと変換します。
+
+- **次元数** : 通常はモデルによって 384 から 1536 次元の範囲です。次元数が大きいほど精度は向上しますが、生成されるベクトルのメモリ使用量も増加します。  
+- **フォーマット** : ベクトルは一般的に浮動小数点数で構成され、特定の範囲に正規化されています。
+
+### 距離メトリクス
+
+[距離メトリクス](/weaviate/config-refs/distances) はベクトル埋め込み間の類似度を定量化します。Weaviate は、意味的な類似度を測るためのデフォルトの距離メトリクスとして **[コサイン類似度](https://weaviate.io/blog/distance-metrics-in-vector-search#cosine-similarity)** を使用します。
+
+
+<!-- <img src={EmbeddingModelImage} alt="Image alt" width="90%"/> -->
+
+Embedding モデルは性能や能力がさまざまです。複数のモデルを比較して選択する際のポイントを把握するために、[この記事をお読みください](https://weaviate.io/blog/how-to-choose-an-embedding-model)。

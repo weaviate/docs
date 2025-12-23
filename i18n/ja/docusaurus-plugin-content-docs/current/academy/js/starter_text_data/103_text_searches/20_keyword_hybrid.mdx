@@ -1,0 +1,105 @@
+---
+title: キーワード & ハイブリッド検索
+description: "Weaviate で効率的にデータを取得するために、キーワード検索とハイブリッド検索を組み合わせます。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/103_searches.ts';
+
+キーワード（ BM25 ）検索を実行してキーワード類似度に基づいてアイテムを検索したり、BM25 とセマンティック／ ベクトル 検索を組み合わせたハイブリッド検索を実行したりできます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、"Movie" クラス内で「history」という語に対して最も高いキーワード検索スコアを持つエントリを取得し、上位 5 件のタイトルと公開年を表示します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// MetadataBM25Search"
+  endMarker="// END MetadataBM25Search"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+結果は [BM25f](https://en.wikipedia.org/wiki/Okapi_BM25) アルゴリズムを用いたキーワード検索スコアに基づいています。
+
+`limit` パラメーターは、返される結果の最大件数を指定します。
+
+`returnMetadata` パラメーターには文字列の配列を渡し、検索結果に含めるメタデータを指定します。ここでは BM25 スコアである `score` を返しています。
+
+<details>
+  <summary>例の結果</summary>
+
+```text
+American History X 1998
+BM25 score: 2.707
+
+A Beautiful Mind 2001
+BM25 score: 1.896
+
+Legends of the Fall 1994
+BM25 score: 1.663
+
+Hacksaw Ridge 2016
+BM25 score: 1.554
+
+Night at the Museum 2006
+BM25 score: 1.529
+```
+
+</details>
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、"Movie" クラス内で「history」という語に対して最も高いハイブリッド検索スコアを持つエントリを取得し、上位 5 件のタイトルと公開年を表示します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// MetadataHybridSearch"
+  endMarker="// END MetadataHybridSearch"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+結果はハイブリッド検索スコアに基づいています。ハイブリッド検索は BM25 とセマンティック／ ベクトル 検索の結果を組み合わせます。
+
+`limit` パラメーターは、返される結果の最大件数を指定します。
+
+`returnMetadata` パラメーターには文字列の配列を渡し、検索結果に含めるメタデータを指定します。ここではハイブリッドスコアである `score` を返しています。
+
+<details>
+  <summary>例の結果</summary>
+
+```text
+Legends of the Fall 1994
+Hybrid score: 0.016
+
+Hacksaw Ridge 2016
+Hybrid score: 0.016
+
+A Beautiful Mind 2001
+Hybrid score: 0.015
+
+The Butterfly Effect 2004
+Hybrid score: 0.015
+
+Night at the Museum 2006
+Hybrid score: 0.012
+```
+
+</details>
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

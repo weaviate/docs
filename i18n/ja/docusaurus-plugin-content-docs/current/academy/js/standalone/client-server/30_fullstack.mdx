@@ -1,0 +1,129 @@
+---
+title: フルスタック Web フレームワークの使用
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/_img/fullstack.jpg';
+import TSCode from '!!raw-loader!./_snippets/20_backend.js';
+
+このアプローチでは、サーバーアプリケーションとクライアントアプリケーションの両方を 1 つのツールで構築します。現代の Web 開発の用語では、このようなツールをフルスタック Web フレームワークと呼びます。この例では Next.js を使用します。
+
+<img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
+
+## <i class="fa-solid fa-chalkboard"></i> Next.js での開発
+
+### 1. Next.js アプリケーションの作成
+
+Next.js で新しいアプリケーションを作成するには、ターミナルで次のコマンドを実行します。
+
+```bash
+create-next-app <project-name> –ts –app
+```
+### 2. プロジェクト依存関係のインストール
+
+プロジェクトが初期化できたら、`weaviate-client` をインストールして Weaviate データベースとの通信を管理します。
+
+```bash
+npm install weaviate-client
+```
+
+### 3. Weaviate データベースのセットアップ
+
+まず、Weaviate Cloud で無料のサンドボックスアカウントを作成します。サンドボックスプロジェクトのセットアップに問題がある場合は、[こちらのガイド](/cloud/manage-clusters/connect)を参照してください。
+
+Weaviate クラスターの URL と API キーが必要です。まだお持ちでない場合は、新しい Cohere API キーを作成してください。当社は Cohere を埋め込みモデルとして使用しています。準備ができたら、これら 3 つを `.env` ファイルに追加します。
+
+ <TabItem value="js" label=".env">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START .env"
+      endMarker="// END .env"
+      language="js"
+    />
+  </TabItem>
+
+#### 3.5 Weaviate へのデータ追加
+
+Weaviate にデータをインポートするには、[ロードレシピ](https://github.com/weaviate/recipes-ts/blob/main/similarity-search/cohere/load.ts)を参照してください。
+
+### 4. Weaviate の初期化
+
+`utils/weaviate.ts` にファイルを作成し、次のコードを貼り付けます。このコードは、Weaviate Cloud 上にホストされている Weaviate インスタンスへの接続を作成するのに役立ちます。
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string,{
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
+    headers: {
+      'X-Cohere-Api-Key': process.env.COHERE_API_KEY as string
+    }
+  },
+);
+```
+
+### 4. 検索サーバーアクションの作成
+
+次に、`./utils/action.ts` に次のコードを貼り付けます。これにより、アプリケーションの他の部分から `vectorSearch()` 関数を呼び出すことで、`nearText()` を使ったセマンティック検索を実行できます。
+
+```ts
+"use server";
+
+import { connectToDB } from './weaviate.ts'
+
+export async function vectorSearch(searchTerm: string) {
+
+  const myCollection = client.collections.use('MyCollectionName');
+
+  const response = await myCollection.query.nearText(searchTerm, {
+      limit: 8,
+      returnMetadata: ['distance'],
+    })
+
+  return response
+  }
+```
+
+### 5. クライアントアプリケーションでサーバーからデータを取得する
+
+`./app` フォルダーの `page.tsx` に次のコードを貼り付けます。クライアント側で検索を実行し、結果を Web ページに表示します。
+
+```tsx
+
+import { vectorSearch } from '@/utils/action.ts';
+
+export default async function Home() {
+  const search = "water sports i can win a medal in"
+  const data = await vectorSearch(search);
+
+  return (
+    <html lang="en">
+      <body>
+        <h1>
+          { data }
+          </h1>
+        </body>
+    </html>
+  )
+
+}
+
+```
+#### 6. フルスタックアプリの実行
+
+ターミナルで次のコマンドを実行してアプリケーションを起動します。
+
+```bash
+npm run dev
+```
+
+アプリケーションは `localhost:3000` で実行されているはずです。
+
+## <i class="fa-solid fa-chalkboard"></i> その他のフレームワーク
+
+本ガイドでは Next.js のみを詳しく説明しましたが、Nuxt、Solid、Angular など、さまざまなフルスタックフレームワークを使用して Weaviate と連携した開発が可能です。
+
+試していただける[スターター](https://github.com/topics/weaviate-starter)アプリケーションの一覧も用意しています。
+

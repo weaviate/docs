@@ -1,0 +1,90 @@
+---
+title: "オプション 2: ローカル Docker インスタンス"
+description: "Docker を使用して Weaviate をセットアップし、迅速かつカスタマイズ可能なローカルデプロイを行います。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../../_snippets/101_connect.ts';
+
+:::note すでに Weaviate インスタンスを作成しましたか？
+すでに Weaviate の [クラウドインスタンスを作成](./10_create_wcs.mdx) している場合は、このページをスキップして [Weaviate との通信](../30_communicate.mdx) に進めます。
+:::
+
+ここでは、Docker を使用して Weaviate インスタンスを作成します。
+
+### <i class="fa-solid fa-chalkboard"></i> docker-compose ファイルのダウンロードと実行
+
+お使いのマシンに Docker をインストールしてください。公式の [Docker インストールガイド](https://docs.docker.com/get-docker/) を参照することをおすすめします。
+
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。次に `docker-compose.yml` というファイルを作成し、以下の内容を追加します。
+
+```yaml
+---
+version: '3.4'
+services:
+  weaviate_anon:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    ports:
+    - 8080:8080
+    - 50051:50051
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ENABLE_API_BASED_MODULES: 'true'
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node1'
+...
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
+
+次のコマンドを実行して Weaviate を起動します。
+
+```bash
+docker compose up
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
+
+インスタンスが作成されると、`http://localhost:8080` でアクセスできます。
+
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへの接続
+
+Weaviate インスタンスに接続するには、`connectToLocal()` 関数を使用します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// DockerInstantiation"
+  endMarker="// END DockerInstantiation"
+  language="ts"
+/>
+
+#### 推論 API キーの提供
+
+一部の Weaviate モジュールでは、データのベクトル化や大規模言語モデル統合のために推論 API を使用できます。これらのサービスの API キーは、インスタンス作成時に Weaviate に渡すことができます。
+
+このコースでは OpenAI を使用するため、以下のように `headers: {"X-OpenAI-Api-Key": <YOUR_KEY>}` を通じて OpenAI API キーを Weaviate に提供します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// DockerAPIKeyInstantiation"
+  endMarker="// END DockerAPIKeyInstantiation"
+  language="ts"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

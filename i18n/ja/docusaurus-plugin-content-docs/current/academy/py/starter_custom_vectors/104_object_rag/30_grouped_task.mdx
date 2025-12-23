@@ -1,0 +1,61 @@
+---
+title: "「Grouped task」生成"
+description: "RAG 向け Grouped Task 設定"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/104_rag.py';
+
+「Grouped task」生成では、取得したオブジェクトの集合に対して RAG クエリを実行します。これにより、1 つのプロンプトでオブジェクト全体をまとめて変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、入力ベクトルとの類似度に基づいて「Movie」内のエントリーを検索します。その後、大規模言語モデルに対し、取得したエントリー間の共通点を見つけるよう指示します。
+
+生成されたテキストと、それぞれの検索結果がコンソールに出力されます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GroupedTaskGeneration"
+  endMarker="# END GroupedTaskGeneration"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+`grouped_task` クエリでは、プロンプトを `grouped_task` パラメーターにそのまま渡すだけです。これにより Weaviate は
+
+- 取得したすべてのオブジェクトのテキストプロパティ
+- プロンプト
+
+を大規模言語モデルに渡します。
+
+<details>
+  <summary>Example results</summary>
+
+```text
+In Time
+Gattaca
+I, Robot
+Mad Max: Fury Road
+The Maze Runner
+These movies all take place in a futuristic or dystopian society where the characters must navigate complex systems and face challenges related to technology, society, and survival. They all explore themes of control, power, and the consequences of scientific advancements on humanity.
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> オプションパラメーター
+
+使用するプロパティのリストを `grouped_properties` パラメーターとして渡すこともできます。これにより、大規模言語モデルに渡すデータ量を削減し、不要なプロパティを省くのに役立ちます。
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+`grouped_task` パラメーター付きの RAG クエリは、`generated` という追加属性を持つレスポンスを返します。この属性にはオブジェクト集合に対して生成された出力が含まれます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

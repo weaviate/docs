@@ -1,0 +1,200 @@
+---
+title: チャンク化テクニック - 2
+description: Weaviate で大量データをチャンク化する高度な手法をマスターします。
+---
+
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import CodeFixedSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.1.fixed.size.py';  
+import CodeVariableSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.2.variable.size.py';  
+import CodeMixedStrategyChunking from '!!raw-loader!./_snippets/20_chunking_methods.3.mixed.strategy.py';  
+
+<!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+import PreviewUnit from '../../../_snippets/preview.mdx'  
+
+<PreviewUnit />
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+前回に続き、ここでは **可変サイズ** チャンク化テクニックを取り上げ、いくつかの実装例をご紹介します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 可変サイズ チャンク化
+
+次に可変サイズ チャンク化を見ていきましょう。固定サイズ チャンク化とは異なり、ここでのチャンクサイズは *入力パラメーター* ではなく *結果* として決まります。
+
+可変サイズ チャンク化では、テキストを分割するためのマーカーを利用します。マーカーは文や段落といった構文上のもの、あるいは Markdown ヘッダーのような構造上のものなど、さまざまです。
+
+### <i class="fa-solid fa-chalkboard"></i> 実装
+
+可変サイズ チャンク化の擬似コード実装は次のようになります。
+
+```python
+# Given a text of length L
+# Identify a marker (e.g. full-stop, paragraph marker (two newlines), or a Markdown header
+# Split the text into chunks at each marker
+```
+
+これを Python で実装すると、以下のようになります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeVariableSizeChunking}
+  startMarker="# START Paragraph variable size chunker"
+  endMarker="# END Paragraph variable size chunker"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+あるいは、Markdown ヘッダーのような特別なマーカーを使ってテキストを分割することもできます。
+
+（*Pro Git* 書籍は [Asciidoc](https://asciidoc.org/) で書かれているため、ここでは Asciidoc ヘッダーを使用します。すべて新しい行の先頭に `==` が付いています。）
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeVariableSizeChunking}
+  startMarker="# START Asciidoc section variable size chunker"
+  endMarker="# END Asciidoc section variable size chunker"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+それでは、具体的な例に当てはめてみましょう。
+
+### <i class="fa-solid fa-code"></i> 例
+
+先ほどと同じテキストにこれらのスプリッターを適用します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeVariableSizeChunking}
+  startMarker="# START Get variable-size chunks examples"
+  endMarker="# END Get variable-size chunks examples"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+出力は次のとおりです。何か気づく点はありますか？
+
+<Tabs groupId="languages">
+<TabItem value="para" label="By paragraph">
+<FilteredTextBlock
+  text={CodeVariableSizeChunking}
+  startMarker="# START Chunking by paragraph - outputs"
+  endMarker="# END Chunking by paragraph - outputs"
+  language="text"
+/>
+</TabItem>
+<TabItem value="header" label="By header">
+<FilteredTextBlock
+  text={CodeVariableSizeChunking}
+  startMarker="# START Chunking by header - outputs"
+  endMarker="# END Chunking by header - outputs"
+  language="text"
+/>
+</TabItem>
+</Tabs>
+
+おそらく真っ先に目に付くのは、非常に単純なマーカー ベースのチャンク化では見出しが 1 つのチャンクとして抽出されてしまう点です。これは望ましくない場合があります。
+
+実際には、例えばこのような非常に短いチャンクは次のチャンクに結合するなどの混合戦略を採用することが多いでしょう。見出しやタイトルと思われるテキストを隣接する本文とまとめるイメージです。
+
+それでは、そのような戦略を見てみましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 混合戦略
+
+固定サイズ チャンク化と可変サイズ チャンク化を組み合わせて、両方の長所を活かすことができます。たとえば、段落マーカーで可変サイズ チャンク化を行ったうえで、固定サイズのフィルターを適用する方法です。
+
+具体的には、サイズが小さすぎるチャンクは次のチャンクと結合し、サイズが大きすぎるチャンクは中央や内部の別のマーカーで分割する、などの処理を行います。
+
+### <i class="fa-solid fa-code"></i> 例
+
+実装例は次のようになります。
+
+```python
+# Given a text of length L
+# Identify a marker (e.g. full-stop, paragraph marker (two newlines), or a Markdown header
+# Split the text into chunks at each marker
+# If any of the chunks are too small, merge them with the next chunk
+# If any of the chunks are too large, split them - e.g. at the middle or using another marker within the chunk
+```
+
+これを Python で実装すると、以下のようになります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeMixedStrategyChunking}
+  startMarker="# START Asciidoc and size based chunking"
+  endMarker="# END Asciidoc and size based chunking"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+このコードにより生成されたチャンクは次のとおりです。
+
+<FilteredTextBlock
+  text={CodeMixedStrategyChunking}
+  startMarker="# START Mixed-strategy chunking output"
+  endMarker="# END Mixed-strategy chunking output"
+  language="text"
+/>
+
+この戦略では、チャンクが小さくなりすぎることを防ぎつつ、見出しという構文上の境界も尊重できます。
+
+単一のテキストに対するチャンク化戦略を確認したところで、次は複数のテキストに対してどのように機能するかを見てみましょう。また、異なるチャンク化戦略を用いた場合の検索結果がどのようになるかも確認します。
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
+
+<Quiz questions={varName} />
+
+Any quiz questions -->
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
+
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+試してみてください ...
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 主要ポイント
+
+:::info
+概要を追加
+:::
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+<!-- import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->
