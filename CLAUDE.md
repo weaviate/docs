@@ -206,7 +206,7 @@ Tests ensure documentation code examples work against live Weaviate instances.
 - Add tests in `/tests` for Python examples
 - Ensure examples are self-contained and runnable
 - Use inline assertions in examples for validation
-- Set required API keys as environment variables (OPENAI_APIKEY, COHERE_APIKEY, etc.)
+- Set required API keys as environment variables (OPENAI_API_KEY, COHERE_API_KEY, etc.)
 
 ### Link Validation
 

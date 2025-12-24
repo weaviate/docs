@@ -18,7 +18,7 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
     // Runs once before any tests in the class
     public async Task InitializeAsync()
     {
-        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
         // Connect to the source Weaviate instance
         clientSrc = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });

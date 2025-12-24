@@ -1,5 +1,4 @@
 import time
-
 # START RAG
 import weaviate
 from weaviate.classes.generate import GenerativeConfig

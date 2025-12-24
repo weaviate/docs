@@ -6,7 +6,7 @@ client = weaviate.Client(
     url=os.getenv("WEAVIATE_URL"),
     auth_client_secret=weaviate.auth.AuthApiKey(api_key=os.getenv("WEAVIATE_API_KEY")),
     additional_headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 # END Instantiation
@@ -75,7 +75,7 @@ print(response)
 client = weaviate.Client(
     url="http://localhost:8080",
     additional_headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"]
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]
     }
 )
 

@@ -18,8 +18,8 @@ public class SearchSimilarityTest : IAsyncLifetime
         // Best practice: store your credentials in environment variables
         var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
-        var cohereApiKey = Environment.GetEnvironmentVariable("COHERE_APIKEY");
+        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        var cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
         client = Connect.Cloud(
             weaviateUrl,

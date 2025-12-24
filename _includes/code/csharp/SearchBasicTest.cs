@@ -22,7 +22,7 @@ public class SearchBasicTest : IAsyncLifetime
         // Best practice: store your credentials in environment variables
         var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
         // The Connect.Cloud helper method is a straightforward way to connect.
         // We add the OpenAI API key to the headers for the text2vec-openai module.

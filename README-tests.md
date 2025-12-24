@@ -15,9 +15,9 @@ Before running tests, ensure you have:
 - Docker (required for running Weaviate instances)
 - Rust and Cargo (for some examples)
 - API keys for vectorization services:
-  - `COHERE_APIKEY`
-  - `HUGGINGFACE_APIKEY`
-  - `OPENAI_APIKEY`
+  - `COHERE_API_KEY`
+  - `HUGGINGFACE_API_KEY`
+  - `OPENAI_API_KEY`
 
 ## Setup
 
@@ -60,10 +60,10 @@ cd _includes/code/howto/java
 
 3. Set required environment variables:
 ```bash
-export OPENAI_APIKEY="your-openai-api-key"
+export OPENAI_API_KEY="your-openai-api-key"
 # Optional: Set other API keys if needed
-export COHERE_APIKEY="your-cohere-api-key"
-export HUGGINGFACE_APIKEY="your-huggingface-api-key"
+export COHERE_API_KEY="your-cohere-api-key"
+export HUGGINGFACE_API_KEY="your-huggingface-api-key"
 ```
 
 4. Install dependencies and run tests:

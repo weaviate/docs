@@ -53,12 +53,9 @@ jobs:
           WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           # API Keys
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
-          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
-          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # WCD credentials
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
@@ -110,12 +107,9 @@ jobs:
           WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           # API Keys
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
-          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
-          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # WCD credentials
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
@@ -358,12 +352,9 @@ jobs:
           WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           # API Keys
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
-          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
-          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # WCD credentials
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}

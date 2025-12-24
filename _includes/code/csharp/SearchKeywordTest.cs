@@ -19,7 +19,7 @@ public class SearchKeywordTest : IDisposable
         // Best practice: store your credentials in environment variables
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
         // The C# client uses a configuration object.
         var config = new ClientConfiguration

@@ -42,7 +42,7 @@
       "from weaviate.classes.init import Auth",
       "import os",
       "",
-      "cohere_key = os.getenv(\"COHERE_APIKEY\")",
+      "cohere_key = os.getenv(\"COHERE_API_KEY\")",
       "weaviate_url = os.getenv(\"WEAVIATE_URL\")",
       "weaviate_key = os.getenv(\"WEAVIATE_API_KEY\")",
       "",

@@ -42,16 +42,14 @@ WEAVIATE_LOCAL_API_KEY    # Local Weaviate API key
 
 ```bash
 # OpenAI
-OPENAI_APIKEY             # OpenAI API key (legacy format)
-OPENAI_API_KEY            # OpenAI API key (standard format)
+OPENAI_API_KEY            # OpenAI API key
 
 # Cohere
-COHERE_APIKEY             # Cohere API key (legacy format)
-COHERE_API_KEY            # Cohere API key (standard format)
+COHERE_API_KEY            # Cohere API key
 
 # Other Services
-HUGGINGFACE_APIKEY        # Hugging Face API key
-ANTHROPIC_APIKEY          # Anthropic API key
+HUGGINGFACE_API_KEY        # Hugging Face API key
+ANTHROPIC_API_KEY          # Anthropic API key
 ```
 
 ### Weaviate Cloud (WCD) credentials
