@@ -7,6 +7,8 @@ image: og/wcd/user_guides.jpg
 
 This page describes the default configuration settings applied to Weaviate Cloud clusters. These settings control various aspects of your cluster's behavior, including database limits, authentication, backups, and usage metrics.
 
+The majority of these settings are configured via environment variables. For more details on each environment variable, refer to the [environment variable pages](/deploy/configuration/env-vars) in the [Deployment section](/deploy) of our documentation.
+
 ## Weaviate Database settings
 
 These settings control core database functionality and limits.
@@ -18,45 +20,17 @@ These settings control core database functionality and limits.
 | `ASYNC_REPLICATION_DISABLED` | No | false | No |
 | `ASYNC_INDEXING` | Yes | true | No |
 | `DEFAULT_QUANTIZATION` | No | RQ-8 | No |
-| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes |
-
-### Key settings
-
-- **MAXIMUM_ALLOWED_COLLECTIONS_COUNT**: Sets the maximum number of collections that can be created in your cluster.
-- **AUTOSCHEMA_ENABLED**: When enabled, Weaviate automatically infers and creates schema definitions from incoming data.
-- **ASYNC_REPLICATION_DISABLED**: Controls whether asynchronous replication is disabled for multi-node clusters.
-- **ASYNC_INDEXING**: Enables asynchronous indexing for improved write performance.
-- **DEFAULT_QUANTIZATION**: Sets the default quantization method (RQ-8 - Random Quantization with 8 bits).
-- **CORS_ALLOW_ORIGIN**: Specifies allowed origins for Cross-Origin Resource Sharing (CORS).
+| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
 
 ## User management & permissions
 
-These settings control authentication and authorization for your cluster.
+These settings control authentication and authorization for your cluster. These settings are not user configurable.
 
-| Setting | Configuration Type | Default value | Configurable |
-| --- | --- | --- | --- |
-| `AUTHORIZATION_RBAC_ENABLED` | Static (Configmap) | true | No |
-| `AUTHENTICATION_DB_USERS_ENABLED` | Static (ENV) | true | No |
-| `AUTHORIZATION_ADMINLIST_ENABLED` | Static (Configmap) | false | No |
-| `AUTHENTICATION_OIDC_CLIENT_ID` | Static (Configmap) / Runtime | Descope client ID | No |
-| `AUTHENTICATION_OIDC_ENABLED` | Static (Configmap) / Runtime | true | No |
-| `AUTHENTICATION_OIDC_GROUPS_CLAIM` | Static (Configmap) / Runtime | roles | No |
-| `AUTHENTICATION_OIDC_ISSUER` | Static (Configmap) / Runtime | Descope issuer | No |
-| `AUTHENTICATION_OIDC_USERNAME_CLAIM` | Static (Configmap) / Runtime | email | No |
-| `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` | Static (Configmap) / Runtime | false | No |
-| `root_groups` | Static (Configmap) | \<org-id\>-admin, access-customer-data | No |
-| `root_users` | Static (Configmap) | wcs-team+wcs-cluster-management@weaviate.io | No |
-
-:::info Root users setting
-The `root_users` setting will be deprecated in a future release following the Descope migration.
-:::
-
-### Authentication overview
-
-Weaviate Cloud clusters use a combination of:
-- **RBAC (Role-Based Access Control)**: Enabled by default for fine-grained access control
-- **Database users**: Local user authentication
-- **OIDC (OpenID Connect)**: Integration with Descope for identity management
+| Setting | Default value |
+| --- | --- |
+| `AUTHORIZATION_RBAC_ENABLED` | true |
+| `AUTHENTICATION_DB_USERS_ENABLED` | true |
+| `AUTHENTICATION_OIDC_ENABLED` | true |
 
 For more information on authentication and authorization, see:
 - [Authentication](/cloud/manage-clusters/authentication)
