@@ -38,7 +38,22 @@ For more information on authentication and authorization, see:
 
 ## Backups
 
-Each Weaviate Cloud instance is automatically backed up by default.
+Each Weaviate Cloud instance is automatically backed up by default. To restore a backup, [contact Weaviate Cloud support](https://console.weaviate.cloud/support).
+
+## Query settings
+
+These settings control default query behavior.
+
+| Setting | Default value |
+| --- | --- |
+| `QUERY_DEFAULTS_LIMIT` | 10 |
+| `QUERY_MAXIMUM_RESULTS` | 100000 |
+
+## Modules
+
+Weaviate Cloud clusters do not have a default vectorizer module configured. As a result, you must specify a vectorizer integration when creating collections, or import your own vectors.
+
+To view the list of enabled modules on your cluster, see [Cluster Status: Enabled Modules](/cloud/manage-clusters/status#enabled-modules).
 
 ## Support & feedback
 
