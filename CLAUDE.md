@@ -92,7 +92,7 @@ yarn validate-links-dev
   - `weaviate/` - Database documentation (26 subdirectories: API, concepts, guides, search, etc.)
   - `cloud/` - Weaviate Cloud Services docs
   - `agents/` - AI agents framework docs
-  - `integrations/` - Integration guides
+  - Note: `/integrations` was deleted in Dec 2025, in favor of integration pages on the main Weaviate site (https://weaviate.io/product/integrations).
 
 - **`/_includes`** - Reusable content fragments (code snippets, configurations, images)
   - Used via imports in MDX files to avoid duplication
