@@ -38,7 +38,11 @@ For more information on authentication and authorization, see:
 
 ## Backups
 
-Each Weaviate Cloud instance is automatically backed up by default. To restore a backup, [contact Weaviate Cloud support](https://console.weaviate.cloud/support).
+Each Weaviate Cloud instance is automatically backed up by default. Additional backups can be triggered manually via the API.
+
+Backups are retained per the applicable backup retention period of that cluster, such as 7 days for Shared Cloud clusters. All (manual and scheduled) backups are deleted according to the relevant's cloud provider's lifecycle policy (e.g. 90 days).
+
+To restore a backup, [contact Weaviate Cloud support](https://console.weaviate.cloud/support).
 
 ## Query settings
 
