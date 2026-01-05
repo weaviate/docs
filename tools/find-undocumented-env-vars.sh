@@ -4,8 +4,8 @@
 #   1. Extracts env vars from the Weaviate codebase
 #   2. Checks which ones are not documented in this docs repo
 #
-# Usage: ./find-undocumented-env-vars.sh <path-to-weaviate-repo>
-# Example: ./find-undocumented-env-vars.sh ../weaviate
+# Usage: ./tools/find-undocumented-env-vars.sh <path-to-weaviate-repo>
+# Example: ./tools/find-undocumented-env-vars.sh ../weaviate
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <path-to-weaviate-repo>"
@@ -20,8 +20,12 @@ if [ ! -d "$WEAVIATE_REPO" ]; then
     exit 1
 fi
 
-# Directories to search in docs repo
-SEARCH_DIRS="docs _includes"
+# Get the script's directory and navigate to repo root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Directories to search in docs repo (relative to repo root)
+SEARCH_DIRS="$REPO_ROOT/docs $REPO_ROOT/_includes"
 
 echo "Step 1: Extracting env vars from Weaviate repo..."
 echo "==========================================="
