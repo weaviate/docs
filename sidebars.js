@@ -1003,6 +1003,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "deploy/configuration/logging",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "deploy/configuration/persistence",
           className: "sidebar-item",
         },
