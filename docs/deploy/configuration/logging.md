@@ -57,6 +57,11 @@ JSON format produces structured logs that are ideal for parsing by log aggregati
 {"action":"authorize","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","component":"RBAC","level":"info","msg":"","permissions":[{"resource":"[Domain: collections, Collection: TempCollection]","results":"success"}],"rbac_log_version":2,"request_action":"D","source_ip":"192.168.65.1","time":"2026-01-06T15:51:36Z","user":"user-a"}
 ```
 
+**Use JSON format when:**
+- Using log aggregation tools (Elasticsearch, Loki, CloudWatch, etc.)
+- Automating log analysis or alerting
+- Running in production environments
+
 #### Text format
 
 Text format produces human-readable logs suitable for direct viewing:
@@ -65,6 +70,37 @@ Text format produces human-readable logs suitable for direct viewing:
 time="2026-01-06T15:54:58Z" level=info msg="the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer" action=startup build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1 default_vectorizer_module=none
 time="2026-01-06T15:55:01Z" level=info action=authorize build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1 component=RBAC permissions="[map[resource:[Domain: collections, Collection: TempCollection] results:success]]" rbac_log_version=2 request_action=D source_ip=192.168.65.1 user=user-a
 ```
+
+**Use text format when:**
+- Viewing logs directly in the terminal during development
+- Debugging issues locally
+- Easier visual scanning is preferred over machine parsing
+
+## Accessing Logs
+
+Weaviate logs can be accessed using standard container logging commands. For example:
+
+**Docker:**
+```bash
+# View logs
+docker logs <container-name>
+
+# Follow logs in real-time
+docker logs -f <container-name>
+```
+
+For more Docker logging options, see the [Docker logs documentation](https://docs.docker.com/reference/cli/docker/container/logs/).
+
+**Kubernetes:**
+```bash
+# View logs
+kubectl logs <pod-name>
+
+# Follow logs in real-time
+kubectl logs -f <pod-name>
+```
+
+For more Kubernetes logging options, see the [kubectl logs documentation](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_logs/).
 
 ## Special-Purpose Logging
 
