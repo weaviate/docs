@@ -8,17 +8,23 @@ Weaviate produces structured logs that provide visibility into system operations
 
 Logs can be used to debug issues, monitor operational health, track authorization decisions, identify slow queries, and understand system behavior.
 
+For example, the following logs showing system initialization:
+
+```json
+{"action":"startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","default_vectorizer_module":"none","level":"info","msg":"the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer","time":"2026-01-06T15:51:32Z"}
+{"action":"grpc_startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"grpc server listening at [::]:50051","time":"2026-01-06T15:51:34Z"}
+{"action":"restapi_management","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"Serving weaviate at http://[::]:8080","time":"2026-01-06T15:51:34Z","version":"1.35.1"}
+```
+
+The "Serving weaviate at" message indicates the server is ready to accept requests. If there were issues during startup, error logs would provide details to help diagnose the problem.
+
 ## Configure Logging
+
+Logging can be configured using [environment variables](./env-vars/index.md). Many of these environment variables can also be configured with [runtime configuration overrides](./env-vars/runtime-config.md), which allow you to change settings without restarting Weaviate.
 
 ### Log Level
 
-The `LOG_LEVEL` [environment variable](./env-vars/index.md#LOG_LEVEL) controls the verbosity of Weaviate's logging output. Set this variable based on your operational needs:
-
-```sh
-LOG_LEVEL=info
-```
-
-Available log levels (from least to most verbose):
+The `LOG_LEVEL` [environment variable](./env-vars/index.md#LOG_LEVEL) controls the verbosity of Weaviate's logging output. The following log levels are available (from least to most verbose):
 
 | Level | Description |
 | --- | --- |
@@ -66,7 +72,7 @@ time="2026-01-06T15:55:01Z" level=info action=authorize build_git_commit=5f0048c
 
 Weaviate can log queries that exceed a specified duration threshold. This is useful for identifying performance bottlenecks.
 
-To enable slow query logging, set these [environment variables](./env-vars/index.md) (or [runtime overrides](./env-vars/runtime-config.md)):
+To enable slow query logging, set these [environment variables](./env-vars/index.md):
 
 ```sh
 QUERY_SLOW_LOG_ENABLED=true
@@ -183,20 +189,6 @@ Example role deletion:
 ```
 
 These audit logs are automatically generated when RBAC is enabled - no additional configuration is required.
-
-## Log Examples
-
-### Startup logs
-
-During Weaviate startup, you'll see logs showing system initialization:
-
-```json
-{"action":"startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","default_vectorizer_module":"none","level":"info","msg":"the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer","time":"2026-01-06T15:51:32Z"}
-{"action":"grpc_startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"grpc server listening at [::]:50051","time":"2026-01-06T15:51:34Z"}
-{"action":"restapi_management","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"Serving weaviate at http://[::]:8080","time":"2026-01-06T15:51:34Z","version":"1.35.1"}
-```
-
-When Weaviate completes startup, look for the "Serving weaviate at" message indicating the server is ready to accept requests.
 
 ## Further resources
 
