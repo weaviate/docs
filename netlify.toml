@@ -6,7 +6,7 @@
     access-control-allow-origin = "*"
 
 [functions]
-  directory = ".netlify/functions/"
+  directory = "netlify/functions/"
 
 ## Remove /current from the path
 [[redirects]]
