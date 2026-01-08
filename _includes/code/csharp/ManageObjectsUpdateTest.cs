@@ -187,7 +187,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
 
         var result2 = await jeopardy.Query.FetchObjectByID(uuid, includeVectors: true);
         Assert.NotNull(result2);
-        Assert.Equal(384, result2.Vectors["default"].Dimensions);
+        Assert.Equal(384, result2.Vectors["default"].Dimensions.cols);
 
         // START UpdateNamedVector
         var reviews = client.Collections.Use("WineReviewNV");

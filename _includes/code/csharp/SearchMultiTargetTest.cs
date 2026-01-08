@@ -116,11 +116,12 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var collection = client.Collections.Use(CollectionName);
 
         var response = await collection.Query.NearText(
-            "a wild animal",
-            limit: 2,
-            // highlight-start
-            targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"], // Specify the target vectors
+            query =>
+                query(["a wild animal"])
+                    // highlight-start
+                    .Minimum("jeopardy_questions_vector", "jeopardy_answers_vector"), // Specify the target vectors
             // highlight-end
+            limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -150,14 +151,13 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var response = await collection.Query.NearVector(
             // highlight-start
             // Specify the query vectors for each target vector
-            vector: new Vectors
+            vectors: new Vectors
             {
                 { "jeopardy_questions_vector", v1 },
                 { "jeopardy_answers_vector", v2 },
             },
             // highlight-end
             limit: 2,
-            targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"], // Optional if keys match input
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -185,38 +185,34 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var response = await collection.Query.NearVector(
             // highlight-start
             // Use NearVectorInput to pass multiple vectors naturally
-            vector: new NearVectorInput
-            {
-                { "jeopardy_questions_vector", v1 },
-                { "jeopardy_answers_vector", v2, v3 },
-            },
+            vectors: v =>
+                v.Sum(
+                    ("jeopardy_questions_vector", v1),
+                    ("jeopardy_answers_vector", v2),
+                    ("jeopardy_answers_vector", v3)
+                ),
             // highlight-end
             limit: 2,
-            targetVector: ["jeopardy_questions_vector", "jeopardy_answers_vector"],
             returnMetadata: MetadataOptions.Distance
         );
         // END MultiTargetMultipleNearVectorsV1
-        Assert.Equal(2, response.Objects.Count());
+        Assert.Equal(2, response.Objects.Count);
 
         // START MultiTargetMultipleNearVectorsV2
         var responseV2 = await collection.Query.NearVector(
-            vector: new NearVectorInput
-            {
-                { "jeopardy_questions_vector", v1 },
-                { "jeopardy_answers_vector", v2, v3 },
-            },
             // highlight-start
-            // Specify weights matching the structure of the input vectors
-            targetVector: TargetVectors.ManualWeights(
-                ("jeopardy_questions_vector", 10.0),
-                ("jeopardy_answers_vector", new double[] { 30.0, 30.0 })
-            ),
+            vectors: v =>
+                v.ManualWeights(
+                    ("jeopardy_questions_vector", 10, v1),
+                    ("jeopardy_answers_vector", 30, v2),
+                    ("jeopardy_answers_vector", 30, v3)
+                ),
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
         // END MultiTargetMultipleNearVectorsV2
-        Assert.Equal(2, responseV2.Objects.Count());
+        Assert.Equal(2, responseV2.Objects.Count);
     }
 
     [Fact]
@@ -226,16 +222,14 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var collection = client.Collections.Use(CollectionName);
 
         var response = await collection.Query.NearText(
-            "a wild animal",
-            limit: 2,
-            // highlight-start
-            // Specify the target vectors and the join strategy
-            // Available: Sum, Minimum, Average, ManualWeights, RelativeScore
-            targetVector: TargetVectors.Average([
-                "jeopardy_questions_vector",
-                "jeopardy_answers_vector",
-            ]),
+            query =>
+                query(["a wild animal"])
+                    // highlight-start
+                    // Specify the target vectors and the join strategy
+                    // Available: Sum, Minimum, Average, ManualWeights, RelativeScore
+                    .Average("jeopardy_questions_vector", "jeopardy_answers_vector"),
             // highlight-end
+            limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -256,14 +250,15 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var collection = client.Collections.Use(CollectionName);
 
         var response = await collection.Query.NearText(
-            "a wild animal",
-            limit: 2,
-            // highlight-start
-            targetVector: TargetVectors.ManualWeights(
-                ("jeopardy_questions_vector", 10),
-                ("jeopardy_answers_vector", 50)
-            ),
+            query =>
+                query(["a wild animal"])
+                    // highlight-start
+                    .ManualWeights(
+                        ("jeopardy_questions_vector", 10),
+                        ("jeopardy_answers_vector", 50)
+                    ),
             // highlight-end
+            limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -284,13 +279,13 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var collection = client.Collections.Use(CollectionName);
 
         var response = await collection.Query.NearText(
-            "a wild animal",
-            limit: 2,
-            // highlight-start
-            targetVector: TargetVectors.RelativeScore(
-                ("jeopardy_questions_vector", 10),
-                ("jeopardy_answers_vector", 10)
-            ),
+            query =>
+                query(["a wild animal"])
+                    // highlight-start
+                    .RelativeScore(
+                        ("jeopardy_questions_vector", 10),
+                        ("jeopardy_answers_vector", 10)
+                    ),
             // highlight-end
             returnMetadata: MetadataOptions.Distance
         );

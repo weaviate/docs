@@ -52,9 +52,8 @@ public class SearchGenerativeTest : IDisposable
         // START DynamicRag
         var reviews = client.Collections.Use("WineReviewNV");
         var response = await reviews.Generate.NearText(
-            "a sweet German white wine",
+            query => query("a sweet German white wine").Average("title_country"),
             limit: 2,
-            targetVector: ["title_country"],
             provider: new Providers.OpenAI { Model = "gpt-5-mini" },
             singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
             // highlight-start
@@ -77,10 +76,9 @@ public class SearchGenerativeTest : IDisposable
         // START NamedVectorNearTextPython
         var reviews = client.Collections.Use("WineReviewNV");
         var response = await reviews.Generate.NearText(
-            "a sweet German white wine",
+            query => query("a sweet German white wine").Average("title_country"),
             limit: 2,
             // highlight-start
-            targetVector: ["title_country"], // Specify the target vector for named vector collections
             returnMetadata: MetadataOptions.Distance,
             singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
             groupedTask: new GroupedTask("Summarize these reviews")
@@ -263,7 +261,9 @@ public class SearchGenerativeTest : IDisposable
 
     // TODO[g-despot] NEW: Implement testing with images
     // [Fact]
+#pragma warning disable xUnit1013 // Public method should be marked as test
     public async Task TestWorkingWithImages()
+#pragma warning restore xUnit1013 // Public method should be marked as test
     {
         // START WorkingWithImages
         var srcImgPath =

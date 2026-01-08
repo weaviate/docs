@@ -48,8 +48,7 @@ public class SearchHybridTest : IDisposable
         var reviews = client.Collections.Use("WineReviewNV");
         // highlight-start
         var response = await reviews.Query.Hybrid(
-            "A French Riesling",
-            targetVector: ["title_country"],
+            vectors: v => v.NearText(["A French Riesling"]).Sum("title_country"),
             limit: 3
         );
         // highlight-end
@@ -304,7 +303,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            vectors: Vectors.Create(queryVector),
+            vectors: queryVector,
             // highlight-end
             alpha: 0.25f,
             limit: 3

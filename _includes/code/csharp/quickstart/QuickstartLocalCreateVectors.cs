@@ -52,7 +52,7 @@ namespace WeaviateProject.Examples
                         genre = "Science Fiction",
                     },
                     null,
-                    new Vectors { { "default", [0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f] } }
+                    new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f }
                 ),
                 new(
                     new
@@ -62,7 +62,7 @@ namespace WeaviateProject.Examples
                         genre = "Animation",
                     },
                     null,
-                    new Vectors { { "default", [0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f] } }
+                    new float[] { 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f }
                 ),
                 new(
                     new
@@ -72,7 +72,7 @@ namespace WeaviateProject.Examples
                         genre = "Fantasy",
                     },
                     null,
-                    new Vectors { { "default", [0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f] } }
+                    new float[] { 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f }
                 ),
             };
 

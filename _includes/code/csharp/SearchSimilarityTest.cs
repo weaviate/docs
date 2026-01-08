@@ -48,11 +48,12 @@ public class SearchSimilarityTest : IAsyncLifetime
         // START NamedVectorNearText
         var reviews = client.Collections.Use("WineReviewNV");
         var response = await reviews.Query.NearText(
-            "a sweet German white wine",
-            limit: 2,
-            // highlight-start
-            targetVector: ["title_country"],
+            query =>
+                query(["a sweet German white wine"])
+                    // highlight-start
+                    .Minimum("title_country"),
             // highlight-end
+            limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
 
@@ -140,7 +141,7 @@ public class SearchSimilarityTest : IAsyncLifetime
         // START GetNearVector
         // highlight-start
         var response = await jeopardy.Query.NearVector(
-            vector: queryVector, // your query vector goes here
+            vectors: queryVector, // your query vector goes here
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance

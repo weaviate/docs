@@ -141,13 +141,10 @@ public class SearchImageTest : IAsyncLifetime
         var dogs = client.Collections.Use("Dog");
 
         // Perform query
-        // highlight-start
-        var response = await dogs.Query.NearImage(
-            imageBytes,
-            // highlight-end
+        var response = await dogs.Query.NearMedia(
+            query => query.Image(imageBytes).Build(),
             returnProperties: ["breed"],
             limit: 1
-        // targetVector: "vector_name" // required when using multiple named vectors
         );
 
         if (response.Objects.Any())
@@ -168,12 +165,9 @@ public class SearchImageTest : IAsyncLifetime
         var dogs = client.Collections.Use("Dog");
         var imageBytes = await FileToByteArray(QUERY_IMAGE_PATH);
 
-        var response = await dogs.Query.NearImage(
-            imageBytes,
-            // highlight-start
-            distance: 0.8f, // Maximum accepted distance
+        var response = await dogs.Query.NearMedia(
+            query => query.Image(imageBytes, distance: 0.8f).Build(),
             returnMetadata: MetadataOptions.Distance, // return distance from the source image
-            // highlight-end
             returnProperties: "breed",
             limit: 5
         );

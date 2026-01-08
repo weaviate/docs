@@ -22,7 +22,7 @@ namespace WeaviateProject.Examples
             float[] queryVector = [0.11f, 0.21f, 0.31f, 0.41f, 0.51f, 0.61f, 0.71f, 0.81f];
 
             var response = await movies.Generate.NearVector(
-                vector: queryVector,
+                vectors: queryVector,
                 limit: 1,
                 returnProperties: ["title", "description", "genre"],
                 groupedTask: new GroupedTask("Write a tweet with emojis about this movie."),
