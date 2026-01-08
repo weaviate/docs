@@ -68,7 +68,7 @@ public class SearchAggregateTest : IDisposable
                     .Text(
                         topOccurrencesCount: true,
                         topOccurrencesValue: true,
-                        minOccurrences: 5 // Corresponds to topOccurrencesCutoff
+                        minOccurrences: 5 // Threshold minimum count
                     ),
             ]
         // highlight-end

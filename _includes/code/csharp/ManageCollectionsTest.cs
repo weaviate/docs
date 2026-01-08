@@ -52,7 +52,9 @@ public class ManageCollectionsTest : IAsyncLifetime
         await client.Collections.Create(new CollectionCreateParams { Name = "Article" });
         // END BasicCreateCollection
 
+        // START CheckIfExists
         bool exists = await client.Collections.Exists("Article");
+        // END CheckIfExists
         Assert.True(exists);
     }
 
@@ -442,9 +444,35 @@ public class ManageCollectionsTest : IAsyncLifetime
         );
     }
 
-    // START ModuleSettings
-    // Coming soon
-    // END ModuleSettings
+    [Fact]
+    public async Task TestCreateCollectionWithVectorizerSettings()
+    {
+        // START ModuleSettings
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Article",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "default",
+                        v =>
+                            v.Text2VecTransformers( 
+                            // The available settings depend on the module
+                            // inferenceUrl: "http://custom-inference:8080",
+                            // vectorizeCollectionName: false
+                            )
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("body")],
+            }
+        );
+        // END ModuleSettings
+
+        var config = await client.Collections.Export("Article");
+        Assert.True(config.VectorConfig.ContainsKey("default"));
+        Assert.Equal("text2vec-transformers", config.VectorConfig["default"].Vectorizer.Identifier);
+    }
 
     [Fact]
     public async Task TestCreateCollectionWithPropertyConfig()

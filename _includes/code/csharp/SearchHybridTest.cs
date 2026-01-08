@@ -48,7 +48,7 @@ public class SearchHybridTest : IDisposable
         var reviews = client.Collections.Use("WineReviewNV");
         // highlight-start
         var response = await reviews.Query.Hybrid(
-            vectors: v => v.NearText(["A French Riesling"]).Sum("title_country"),
+            vectors: v => v.NearText(["A French Riesling"]).Minimum("title_country"),
             limit: 3
         );
         // highlight-end
