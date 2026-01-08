@@ -146,7 +146,7 @@ Authorization decision logs are generated for RBAC-based authorization evaluatio
 - `request_action` - The action being attempted (see action codes below)
 - `permissions.resource` - The resource being accessed
 - `permissions.results` - Authorization outcome (`success` or `denied`)
-- `source_ip` - IP address of the client (if available)
+- `source_ip` - IP address of the client (if available, configurable via `AUTHORIZATION_RBAC_IP_IN_AUDIT_LOG_DISABLED` env var)
 
 **Example successful authorization:**
 
