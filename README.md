@@ -4,6 +4,64 @@
   </a>
 </div>
 
+## Contributor QuickStart
+
+This repository contains the documentation for Weaviate (vector database), Weaviate Cloud Services, AI agents framework, and integrations. It's built with Docusaurus 3.
+
+### Quick Setup
+
+```bash
+# Install Node.js 22 and yarn
+nvm install 22 && nvm use 22
+npm install --global yarn
+
+# Install dependencies and start dev server
+yarn install
+yarn start  # Opens http://localhost:3000
+```
+
+### Site Structure
+
+Documentation lives in the `/docs` directory and maps directly to site URLs:
+
+- **`/docs/weaviate/`** → Main database documentation
+  - Example: `/docs/weaviate/concepts/data.mdx` → `docs.weaviate.io/weaviate/concepts/data`
+- **`/docs/cloud/`** → Weaviate Cloud Services docs
+- **`/docs/agents/`** → AI agents framework docs
+- **`/docs/integrations/`** → Integration guides
+- **`/_includes/`** → Reusable content and code snippets (not directly accessible as pages)
+- **`sidebars.js`** → Navigation structure (add new pages here to appear in sidebar)
+
+### Working with Code Snippets
+
+Code examples use the `FilteredTextBlock` component to extract sections from full, runnable code files:
+
+1. **Code files** live in `_includes/code/` or nested within doc directories (e.g., `docs/weaviate/tutorials/_includes/`)
+2. **Mark sections** in code files with comments:
+   ```python
+   # START SectionName
+   # Your code here
+   # END SectionName
+   ```
+3. **Import and display** in MDX files:
+   ```jsx
+   import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+   import PyCode from "!!raw-loader!/_includes/code/example.py";
+
+   <FilteredTextBlock
+     text={PyCode}
+     startMarker="# START SectionName"
+     endMarker="# END SectionName"
+     language="py"
+   />
+   ```
+
+This keeps code DRY and ensures examples are tested as complete, runnable scripts.
+
+### Learn More
+
+See [CLAUDE.md](./CLAUDE.md) for comprehensive guidance on architecture, testing, custom components, and deployment.
+
 ## How to build this website
 
 Weaviate uses [Docusaurus 3](https://docusaurus.io/) to build our
