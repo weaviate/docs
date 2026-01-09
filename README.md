@@ -4,9 +4,11 @@
   </a>
 </div>
 
+This repository contains the documentation for Weaviate (vector database), Weaviate Cloud, and Weaviate Agents. It's built with Docusaurus 3.
+
 ## Contributor QuickStart
 
-This repository contains the documentation for Weaviate (vector database), Weaviate Cloud Services, AI agents framework, and integrations. It's built with Docusaurus 3.
+If you want to contribute to the documentation, follow these steps to get your local development environment set up.
 
 ### Quick Setup
 
@@ -25,10 +27,9 @@ yarn start  # Opens http://localhost:3000
 Documentation lives in the `/docs` directory and maps directly to site URLs:
 
 - **`/docs/weaviate/`** → Main database documentation
-  - Example: `/docs/weaviate/concepts/data.mdx` → `docs.weaviate.io/weaviate/concepts/data`
-- **`/docs/cloud/`** → Weaviate Cloud Services docs
-- **`/docs/agents/`** → AI agents framework docs
-- **`/docs/integrations/`** → Integration guides
+- **`/docs/deploy/`** → Deployment documentation
+- **`/docs/cloud/`** → Weaviate Cloud docs
+- **`/docs/agents/`** → Weaviate Agents docs
 - **`/_includes/`** → Reusable content and code snippets (not directly accessible as pages)
 - **`sidebars.js`** → Navigation structure (add new pages here to appear in sidebar)
 
