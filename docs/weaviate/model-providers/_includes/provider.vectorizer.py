@@ -1207,17 +1207,21 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
+        Property(name="trailer", data_type=DataType.BLOB),
     ],
     vector_config=[
         Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
-            model="voyage-multimodal-3",
-            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            model="voyage-multimodal-3.5",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
+                Multi2VecField(name="poster", weight=0.7)
             ],
             text_fields=[
                 Multi2VecField(name="title", weight=0.1)
+            ],
+            video_fields=[
+                Multi2VecField(name="trailer", weight=0.2)
             ],
         )
     ],
@@ -1238,19 +1242,23 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
+        Property(name="trailer", data_type=DataType.BLOB),
     ],
     vector_config=[
         Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
-            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
+                Multi2VecField(name="poster", weight=0.7)
             ],
             text_fields=[
                 Multi2VecField(name="title", weight=0.1)
             ],
+            video_fields=[
+                Multi2VecField(name="trailer", weight=0.2)
+            ],
             # Further options
-            # model="voyage-multimodal-3",
+            # model="voyage-multimodal-3.5",
             # truncation="true",  # or "false",
             # output_encoding="base64", # or "null"
             # base_url="<custom_voyageai_url>"
