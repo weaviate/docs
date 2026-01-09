@@ -6,11 +6,11 @@
 
 This repository contains the documentation for Weaviate (vector database), Weaviate Cloud, and Weaviate Agents. It's built with Docusaurus 3.
 
-## Contributor QuickStart
+# Contributor QuickStart
 
 If you want to contribute to the documentation, follow these steps to get your local development environment set up.
 
-### Quick Setup
+## Quick Setup
 
 ```bash
 # Install Node.js 22 and yarn
@@ -22,15 +22,22 @@ yarn install
 yarn start  # Opens http://localhost:3000
 ```
 
+## Making changes
+
+To make any changes to the documentation, edit the files in the `/docs` directory. The documentation is written in MDX, which allows you to use React components within markdown files.
+
 ### Site Structure
 
 Documentation lives in the `/docs` directory and maps directly to site URLs:
 
+The docs are in the following directories:
 - **`/docs/weaviate/`** → Main database documentation
 - **`/docs/deploy/`** → Deployment documentation
 - **`/docs/cloud/`** → Weaviate Cloud docs
 - **`/docs/agents/`** → Weaviate Agents docs
-- **`/_includes/`** → Reusable content and code snippets (not directly accessible as pages)
+
+They are rendered using the following mapping files:
+- **`secondaryNavbar.js`** → Top navigation bar (add new sections here)
 - **`sidebars.js`** → Navigation structure (add new pages here to appear in sidebar)
 
 ### Working with Code Snippets
@@ -59,9 +66,17 @@ Code examples use the `FilteredTextBlock` component to extract sections from ful
 
 This keeps code DRY and ensures examples are tested as complete, runnable scripts.
 
+### Pushing changes
+
+To get your changes merged, create a PR against the `main` branch. The repo requires a review from at least one maintainer before merging.
+
+The documentation site is automatically rebuilt and deployed on every push to `main` using GitHub Actions.
+
 ### Learn More
 
 See [CLAUDE.md](./CLAUDE.md) for comprehensive guidance on architecture, testing, custom components, and deployment.
+
+# Comprehensive Setup Guide
 
 ## How to build this website
 
