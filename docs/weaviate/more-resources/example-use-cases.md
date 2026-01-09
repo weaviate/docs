@@ -19,7 +19,7 @@ A vector databases enables fast, efficient similarity searches on and across any
 | --- | --- | --- | --- |
 | Plant search | Semantic search over plants.  | Text | [JavaScript](https://github.com/weaviate-tutorials/DEMO-text-search-plants) |
 | Wine search | Semantic search over wines. | Text | [Python](https://github.com/weaviate-tutorials/DEMO-text-search-wines) |
-| Book recommender system ([Video](https://www.youtube.com/watch?v=SF1ZlRjVsxw), [Demo](https://bookrecs.weaviate.io/)) | Find book recommendations based on search query. | Text | [TypeScript](https://github.com/weaviate/BookRecs) |
+| Book recommender system ([Video](https://www.youtube.com/watch?v=SF1ZlRjVsxw)) | Find book recommendations based on search query. | Text | [TypeScript](https://github.com/weaviate/BookRecs) |
 | Movie recommender system ([Blog](https://medium.com/towards-data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4)) | Find similar movies. | Text | [JavaScript](https://github.com/weaviate-tutorials/awesome-moviate) |
 | Multilingual Wikipedia Search | Search through Wikipedia in multiple languages. | Text | [TypeScript](https://github.com/weaviate/weaviate-examples/tree/main/cohere-multilingual-wikipedia-search/frontend) |
 | Podcast search | Semantic search over podcast episodes. | Text | [Python](https://github.com/weaviate-tutorials/DEMO-semantic-search-podcast) |
