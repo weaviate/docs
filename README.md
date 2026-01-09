@@ -149,3 +149,171 @@ The `build` command is useful when you are finished editing. If you ran
 see you changes while you are editing.
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+## Site Architecture & Directory Structure
+
+Understanding the repository structure will help you navigate and contribute effectively:
+
+### Core Directories
+
+- **`/docs`** - Main documentation content (MDX files)
+  - `weaviate/` - Database documentation with 26+ subdirectories (API, concepts, guides, search, etc.)
+  - `cloud/` - Weaviate Cloud Services documentation
+  - `agents/` - AI agents framework documentation
+  - `deploy/` - Deployment guides
+  - Note: `/integrations` was removed in Dec 2025; integration pages now live on the main Weaviate site
+
+- **`/_includes`** - Reusable content fragments
+  - Code snippets organized by language
+  - Configuration files
+  - Images and other shared assets
+  - Used via imports in MDX files to avoid duplication
+
+- **`/src`** - Custom React components and theme customizations
+  - `components/` - 16+ custom components (Feedback, InPageAskAI, APITable, FilteredTextBlock, etc.)
+  - `theme/` - Docusaurus swizzled components (Navbar, Footer, SearchBar, etc.)
+  - `css/` - SCSS stylesheets (~2,900 lines in custom.scss)
+  - `remark/` - Custom remark plugins for markdown processing
+
+- **`/_build_scripts`** - Build automation and validation
+  - `update-config-versions.js` - Fetches latest versions from GitHub
+  - `validate-links-*.js` - Link validation for PRs
+  - `publish-*.sh` - Netlify deployment scripts
+  - `slack-*.sh` - Slack notification scripts
+
+- **`/tests`** - Python test suite with Docker Compose configs
+- **`/tools`** - Python utilities for content validation and transformation
+- **`/static`** - Static assets (images, fonts, JavaScript files)
+
+### Key Configuration Files
+
+- **`docusaurus.config.js`** - Main Docusaurus configuration
+- **`docusaurus.dev.config.js`** - Dev config (removes redirects, adds trailing slashes for link validation)
+- **`sidebars.js`** - Sidebar navigation structure (~1000 lines defining doc hierarchy)
+- **`secondaryNavbar.js`** - Multi-level secondary navigation configuration
+- **`versions-config.json`** - Dynamic version references for Weaviate ecosystem
+- **`netlify.toml`** - Deployment config with 100+ URL redirects
+
+## Navigation System
+
+The site uses a multi-level navigation architecture:
+
+1. **Primary Navigation** - Top navbar with main sections (Build/Database, Cloud, Agents, Integrations)
+2. **Secondary Navigation** (`secondaryNavbar.js`) - Dropdown menus that swap the active sidebar
+3. **Sidebars** (`sidebars.js`) - Multiple named sidebars for different documentation sections
+
+The custom navbar (`src/theme/Navbar/NavbarWrapper.js`) provides:
+- Sticky positioning
+- Modal navigation for quick section switching
+- Keyboard shortcuts (Cmd+U on Mac)
+- State management via custom hooks
+
+To add new pages to navigation:
+1. Add the page to the appropriate sidebar in `sidebars.js`
+2. If creating a new section, update `secondaryNavbar.js`
+
+## Dynamic Version Management
+
+Version numbers are maintained in `versions-config.json` and automatically updated at build time via `_build_scripts/update-config-versions.js` (fetches from GitHub releases).
+
+Use version variables in MDX files instead of hardcoding:
+```markdown
+Install version ||site.weaviate_version||
+```
+
+This prevents version numbers from becoming stale across the documentation.
+
+## Custom React Components
+
+Custom components are located in `src/components/`. Key components include:
+
+- **FilteredTextBlock** - Extracts and displays sections from code files (most commonly used)
+- **Feedback** - Expandable feedback widget linking to GitHub issues
+- **InPageAskAI** - LLM-powered question component
+- **APITable** - Structured API parameter tables
+- **DockerConfigGen** - Interactive Docker configuration generator
+- **DocsImage** - Enhanced image component with validation
+- **SkipValidationLink** - Links exempt from validation
+
+To use a component in MDX:
+```jsx
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/example.py";
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SectionName"
+  endMarker="# END SectionName"
+  language="py"
+/>
+```
+
+Register new MDX components in `src/theme/MDXComponents.js`.
+
+## Testing Code Examples
+
+Code examples in `_includes/code/` are validated via automated tests to ensure they work correctly. This includes:
+
+- **Python tests** via pytest
+- **Java tests** via Maven
+- **Go tests** via go test
+- **Docker Compose configs** for spinning up Weaviate test instances
+
+For complete testing documentation, see [README-tests.md](README-tests.md).
+
+### Quick Testing Commands
+
+```bash
+# Python tests
+pytest
+pytest tests/test_quickstart.py  # Specific file
+
+# Start/stop Weaviate test instances
+tests/start-weaviate.sh
+tests/stop-weaviate.sh
+```
+
+## Link Validation
+
+Before PRs are merged, internal links are validated to prevent broken links:
+
+```bash
+# Build dev site (with trailing slashes for validation)
+yarn build-dev
+
+# Validate links
+yarn validate-links-dev
+```
+
+Use the `<SkipValidationLink>` component for intentionally external or placeholder links.
+
+## Deployment
+
+- **Production**: Deployed to docs.weaviate.io via Netlify
+- **PR Previews**: Automatic preview builds for all pull requests
+- **Redirects**: Managed in `netlify.toml` (100+ legacy URL mappings)
+- **Auto-deployment**: Site automatically rebuilds and deploys on every push to `main`
+
+## Plugins and Integrations
+
+The site uses several plugins and integrations:
+
+- **Kapa.ai** - AI chatbot widget (configured in `Root.js`)
+- **Scalar** - Interactive REST API documentation at `/weaviate/api/rest`
+- **Algolia** - Search functionality
+- **Google Tag Manager** - Analytics
+- **LLMs.txt plugin** - Generates LLM-friendly content dump
+- **Mermaid** - Diagram support in markdown
+
+## Theme Customizations
+
+Swizzled Docusaurus components in `src/theme/`:
+- `Root.js` - App-level wrapper (manages Kapa.ai widget, first-visit modal)
+- `Navbar/` - Custom navbar with secondary nav and modal
+- `DocItem/` - Document page customizations
+- `SearchBar/` - Custom search implementation
+
+Styling in `src/css/`:
+- `custom.scss` - Main styles (~2,900 lines)
+- Theme variables for light/dark mode
+- Component-specific styles
