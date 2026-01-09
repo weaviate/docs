@@ -48,7 +48,7 @@ services:
       KC_HOSTNAME_STRICT_HTTPS: 'false'
       KC_HOSTNAME_PORT: 8081
       KC_FRONTEND_URL: 'http://localhost:8081'
-      KC_HOSTNAME_STRICT_BACKCHANNEL: 'false'  # Add this line
+      KC_HOSTNAME_STRICT_BACKCHANNEL: 'false'
     command:
       - start-dev
       - --http-relative-path=/
