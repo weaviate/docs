@@ -34,17 +34,17 @@ const runBranchValidationOnNetlify = async () => {
             'github.com/weaviate/docs',
         ]
     }, Verbosity.ERROR)
-    
+
     const paths = [
         `${netlifyPath}/agents`,
         `${netlifyPath}/cloud`,
-        `${netlifyPath}/integrations/`,
+        `${netlifyPath}/deploy`,
         `${netlifyPath}/weaviate`,
     ]
-    
+
     const success = await validator.validateLinks(paths);
     validator.printSummary();
-    
+
     return success;
 }
 
@@ -56,7 +56,7 @@ try {
                 // Force exit, as sometimes linkinator doesn't quit the process and it hangs
                 process.exit(0)
             }
-    
+
             // Throw an error if any of the links are broken
             process.exit(1)
         }
