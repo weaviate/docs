@@ -72,10 +72,6 @@ To get your changes merged, create a PR against the `main` branch. The repo requ
 
 The documentation site is automatically rebuilt and deployed on every push to `main` using GitHub Actions.
 
-### Learn More
-
-See [CLAUDE.md](./CLAUDE.md) for comprehensive guidance on architecture, testing, custom components, and deployment.
-
 # Comprehensive Setup Guide
 
 ## How to build this website
