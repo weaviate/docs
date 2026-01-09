@@ -1,7 +1,7 @@
 ---
 title: Default cluster settings
 sidebar_position: 7
-description: "Default configuration settings for Weaviate Cloud clusters"
+description: "Default configuration settings for Weaviate Cloud clusters."
 image: og/wcd/user_guides.jpg
 ---
 
@@ -15,11 +15,11 @@ These settings control core database functionality and limits.
 
 | Setting | Requires restart | Default value | User configurable |
 | --- | --- | --- | --- |
-| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | No | 1000 | No |
-| `AUTOSCHEMA_ENABLED` | No | true | Yes |
-| `ASYNC_REPLICATION_DISABLED` | No | false | No |
-| `ASYNC_INDEXING` | Yes | true | No |
-| `DEFAULT_QUANTIZATION` | No | RQ-8 | No |
+| [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 | No |
+| [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes |
+| [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
+| [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
+| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | No |
 | `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
 
 ## User management & permissions
@@ -28,9 +28,9 @@ These settings control authentication and authorization for your cluster. These 
 
 | Setting | Default value |
 | --- | --- |
-| `AUTHORIZATION_RBAC_ENABLED` | true |
-| `AUTHENTICATION_DB_USERS_ENABLED` | true |
-| `AUTHENTICATION_OIDC_ENABLED` | true |
+| [`AUTHORIZATION_RBAC_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHORIZATION_RBAC_ENABLED) | true |
+| [`AUTHENTICATION_DB_USERS_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHENTICATION_DB_USERS_ENABLED) | true |
+| [`AUTHENTICATION_OIDC_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHENTICATION_OIDC_ENABLED) | true |
 
 For more information on authentication and authorization, see:
 - [Authentication](/cloud/manage-clusters/authentication)
@@ -50,8 +50,8 @@ These settings control default query behavior.
 
 | Setting | Default value |
 | --- | --- |
-| `QUERY_DEFAULTS_LIMIT` | 10 |
-| `QUERY_MAXIMUM_RESULTS` | 100000 |
+| [`QUERY_DEFAULTS_LIMIT`](/deploy/configuration/env-vars/index.md#QUERY_DEFAULTS_LIMIT) | 10 |
+| [`QUERY_MAXIMUM_RESULTS`](/deploy/configuration/env-vars/index.md#QUERY_MAXIMUM_RESULTS) | 100000 |
 
 ## Modules
 
