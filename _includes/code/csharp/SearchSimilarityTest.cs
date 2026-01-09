@@ -51,7 +51,7 @@ public class SearchSimilarityTest : IAsyncLifetime
             query =>
                 query(["a sweet German white wine"])
                     // highlight-start
-                    .Minimum("title_country"),
+                    .TargetVectorsMinimum("title_country"),
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance

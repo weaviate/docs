@@ -119,7 +119,7 @@ public class MultiTargetVectorsTest : IAsyncLifetime
             query =>
                 query(["a wild animal"])
                     // highlight-start
-                    .Minimum("jeopardy_questions_vector", "jeopardy_answers_vector"), // Specify the target vectors
+                    .TargetVectorsMinimum("jeopardy_questions_vector", "jeopardy_answers_vector"), // Specify the target vectors
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
@@ -186,7 +186,7 @@ public class MultiTargetVectorsTest : IAsyncLifetime
             // highlight-start
             // Use NearVectorInput to pass multiple vectors naturally
             vectors: v =>
-                v.Sum(
+                v.TargetVectorsSum(
                     ("jeopardy_questions_vector", v1),
                     ("jeopardy_answers_vector", v2),
                     ("jeopardy_answers_vector", v3)
@@ -202,7 +202,7 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         var responseV2 = await collection.Query.NearVector(
             // highlight-start
             vectors: v =>
-                v.ManualWeights(
+                v.TargetVectorsManualWeights(
                     ("jeopardy_questions_vector", 10, v1),
                     ("jeopardy_answers_vector", 30, v2),
                     ("jeopardy_answers_vector", 30, v3)
@@ -227,7 +227,7 @@ public class MultiTargetVectorsTest : IAsyncLifetime
                     // highlight-start
                     // Specify the target vectors and the join strategy
                     // Available: Sum, Minimum, Average, ManualWeights, RelativeScore
-                    .Average("jeopardy_questions_vector", "jeopardy_answers_vector"),
+                    .TargetVectorsAverage("jeopardy_questions_vector", "jeopardy_answers_vector"),
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
@@ -253,7 +253,7 @@ public class MultiTargetVectorsTest : IAsyncLifetime
             query =>
                 query(["a wild animal"])
                     // highlight-start
-                    .ManualWeights(
+                    .TargetVectorsManualWeights(
                         ("jeopardy_questions_vector", 10),
                         ("jeopardy_answers_vector", 50)
                     ),
@@ -282,7 +282,7 @@ public class MultiTargetVectorsTest : IAsyncLifetime
             query =>
                 query(["a wild animal"])
                     // highlight-start
-                    .RelativeScore(
+                    .TargetVectorsRelativeScore(
                         ("jeopardy_questions_vector", 10),
                         ("jeopardy_answers_vector", 10)
                     ),

@@ -52,7 +52,7 @@ public class SearchGenerativeTest : IDisposable
         // START DynamicRag
         var reviews = client.Collections.Use("WineReviewNV");
         var response = await reviews.Generate.NearText(
-            query => query("a sweet German white wine").Minimum("title_country"),
+            query => query("a sweet German white wine").TargetVectorsMinimum("title_country"),
             limit: 2,
             provider: new Providers.OpenAI { Model = "gpt-5-mini" },
             singlePrompt: new SinglePrompt("Translate this into German: {review_body}"),
@@ -76,7 +76,7 @@ public class SearchGenerativeTest : IDisposable
         // START NamedVectorNearText
         var reviews = client.Collections.Use("WineReviewNV");
         var response = await reviews.Generate.NearText(
-            query => query("a sweet German white wine").Minimum("title_country"),
+            query => query("a sweet German white wine").TargetVectorsMinimum("title_country"),
             limit: 2,
             // highlight-start
             returnMetadata: MetadataOptions.Distance,

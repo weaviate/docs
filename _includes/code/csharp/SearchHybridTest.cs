@@ -47,7 +47,7 @@ public class SearchHybridTest : IDisposable
         var reviews = client.Collections.Use("WineReviewNV");
         // highlight-start
         var response = await reviews.Query.Hybrid(
-            vectors: v => v.NearText(["A French Riesling"]).Minimum("title_country"),
+            vectors: v => v.NearText(["A French Riesling"]).TargetVectorsMinimum("title_country"),
             limit: 3
         );
         // highlight-end
@@ -348,27 +348,23 @@ public class SearchHybridTest : IDisposable
     {
         // START VectorParameters
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // This query is complex and depends on a previous nearText query to get a vector.
-        // We simulate this by fetching a vector first.
-        var nearTextResponse = await jeopardy.Query.NearText(
-            "large animal",
-            moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"]),
-            limit: 1,
-            includeVectors: true
-        );
-        var nearTextVector = nearTextResponse.Objects.First().Vectors["default"];
 
         var response = await jeopardy.Query.Hybrid(
             "California",
             // highlight-start
             maxVectorDistance: 0.4f,
-            vectors: nearTextVector,
+            vectors: v =>
+                v.NearText(
+                    "large animal",
+                    moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"])
+                ),
             // highlight-end
             alpha: 0.75f,
             limit: 5
         );
         // END VectorParameters
-
+        System.Console.WriteLine("despot");
+        System.Console.WriteLine(JsonSerializer.Serialize(response));
         Assert.True(response.Objects.Any() && response.Objects.Count() <= 5);
     }
 

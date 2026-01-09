@@ -143,12 +143,19 @@ public class ManageObjectsImportTest : IAsyncLifetime
         );
 
         // START BatchImportWithIDExample
-        var dataToInsert = new List<(object properties, Guid uuid)>();
+        var dataToInsert = new List<BatchInsertRequest>();
+        var vectorData = Enumerable.Repeat(0.1f, 10).ToArray();
+
         for (int i = 0; i < 5; i++)
         {
             var dataRow = new { title = $"Object {i + 1}" };
             var objUuid = GenerateUuid5(JsonSerializer.Serialize(dataRow));
-            dataToInsert.Add((dataRow, objUuid));
+
+            var vectors = new Vectors { { "default", vectorData } };
+
+            dataToInsert.Add(
+                BatchInsertRequest.Create(data: dataRow, id: objUuid, vectors: vectors)
+            );
         }
 
         var collection = client.Collections.Use("MyCollection");
@@ -165,10 +172,13 @@ public class ManageObjectsImportTest : IAsyncLifetime
         }
         // END BatchImportWithIDExample
 
+        Assert.Empty(failedObjects);
+
         var result = await collection.Aggregate.OverAll(totalCount: true);
         Assert.Equal(5, result.TotalCount);
-        var lastUuid = dataToInsert[4].uuid;
-        Assert.NotNull(await collection.Query.FetchObjectByID(lastUuid));
+
+        var lastUuid = dataToInsert[4].ID;
+        Assert.NotNull(await collection.Query.FetchObjectByID((Guid)lastUuid));
     }
 
     [Fact]
