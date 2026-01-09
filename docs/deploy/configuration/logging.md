@@ -24,17 +24,17 @@ Logging can be configured using [environment variables](./env-vars/index.md). Ma
 
 ### Log Level
 
-The `LOG_LEVEL` [environment variable](./env-vars/index.md#LOG_LEVEL) controls the verbosity of Weaviate's logging output. The following log levels are available (from least to most verbose):
+The `LOG_LEVEL` [environment variable](./env-vars/index.md#LOG_LEVEL) controls the verbosity of Weaviate's logging output. The following log levels are available (from least to most verbose), corresponding to levels defined by the [logrus](https://github.com/sirupsen/logrus/tree/master) logging library:
 
 | Level | Description |
 | --- | --- |
-| `panic` | Panic entries only |
-| `fatal` | Fatal entries only |
-| `error` | Error entries only |
-| `warning` | Warning and error entries |
-| `info` | Informational, warning, and error entries |
-| `debug` | Detailed debugging information |
-| `trace` | Extremely detailed trace information |
+| `panic` | Highest level of severity. Logs and then calls panic with the message passed to Debug, Info, ... |
+| `fatal` | Logs and then calls `logger.Exit(1)`. It will exit even if the logging level is set to Panic. |
+| `error` | Used for errors that should definitely be noted. Commonly used for hooks to send errors to an error tracking service. |
+| `warning` | Non-critical entries that deserve eyes. |
+| `info` | General operational entries about what's going on inside the application. |
+| `debug` | Usually only enabled when debugging. Very verbose logging. |
+| `trace` | Designates finer-grained informational events than the Debug. |
 
 :::warning Performance impact
 The `trace` and `debug` log levels can generate significant log volume and may impact performance. Use them judiciously in production environments.
@@ -177,6 +177,8 @@ In this example, user `root-user` successfully deleted the `TempCollection`:
 ```
 
 The `request_action: "D"` indicates a Delete operation, and `results: "success"` confirms the user had the necessary permissions.
+
+See [this page more information on how to manage RBAC permissions](/docs/weaviate/configuration/rbac/manage-roles.mdx#role-management).
 
 **Example denied authorization:**
 

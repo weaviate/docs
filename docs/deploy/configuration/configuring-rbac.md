@@ -114,6 +114,7 @@ When RBAC is enabled, Weaviate automatically logs all authorization decisions fo
 - Authorization decision (allowed or denied)
 - User groups (if applicable)
 - Source IP address (optional)
+- Resource being accessed
 
 Audit logs are written at the `info` level for successful authorizations and `error` level for denials. No additional configuration is required - audit logging is automatic when RBAC is enabled.
 
