@@ -68,9 +68,36 @@ This keeps code DRY and ensures examples are tested as complete, runnable script
 
 ### Pushing changes
 
-To get your changes merged, create a PR against the `main` branch. The repo requires a review from at least one maintainer before merging.
+#### Before Submitting a PR
 
-The documentation site is automatically rebuilt and deployed on every push to `main` using GitHub Actions.
+Run these checks locally to ensure your changes are ready:
+
+```bash
+# 1. Validate internal links
+yarn build-dev
+yarn validate-links-dev
+
+# 2. Optional: Test affected code examples (if you modified code snippets)
+# See README-tests.md for language-specific test commands
+pytest tests/test_your_changes.py  # Python examples
+```
+
+**Pre-submission checklist:**
+- [ ] Links validated (no broken internal links)
+- [ ] Code examples tested (if applicable)
+- [ ] Changes preview correctly in local dev server (`yarn start`)
+- [ ] No merge conflicts with `main`
+
+#### Submitting Your PR
+
+- Create a PR against the `main` branch
+- At least one maintainer review is required before merging
+- The documentation site automatically rebuilds and deploys on every push to `main`
+
+#### Getting Help
+
+- **Questions or stuck?** Open a GitHub issue or discussion
+- **Found a bug?** Check existing issues first, then create a new one with details
 
 # Comprehensive Setup Guide
 
