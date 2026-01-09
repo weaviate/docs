@@ -1103,4 +1103,7 @@ from = "/integrations"
 to   = "https://weaviate.io/product/integrations"
 status = 301
 
-
+[[redirects]]
+from = "/integrations/*"
+to   = "https://weaviate.io/product/integrations"
+status = 301
