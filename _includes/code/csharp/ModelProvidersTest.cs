@@ -54,8 +54,6 @@ public class ModelProvidersTest : IAsyncLifetime
             weaviateApiKey // Replace with your Weaviate Cloud key
         );
 
-        // Verify connection (GetMeta is a quick way to check connectivity)
-        // Note: C# client constructor doesn't block, so we make a call to verify.
         var meta = await client.GetMeta();
         Console.WriteLine(meta.Version);
         // highlight-end

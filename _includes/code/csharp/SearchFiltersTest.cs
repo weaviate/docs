@@ -320,7 +320,6 @@ public class SearchFilterTest : IAsyncLifetime
         // START FilterById
         var collection = client.Collections.Use("Article");
 
-        // NOTE: You would typically use a UUID known to exist in your data
         Guid targetId = Guid.Parse("00037775-1432-35e5-bc59-443baaef7d80");
 
         var response = await collection.Query.FetchObjects(filters: Filter.ID.IsEqual(targetId));

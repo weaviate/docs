@@ -107,10 +107,6 @@ public class BackupsTest : IAsyncLifetime
         Assert.False(await client.Collections.Exists("Article"));
 
         // START StatusRestoreBackup
-        // Note: In C#, restore status is often tracked via the returned operation or by polling if async.
-        // GetRestoreStatus checks the status of a specific restore job.
-        // Since we ran RestoreSync, we know it is done.
-        // We can inspect the result returned from RestoreSync directly.
         Console.WriteLine($"Restore ID: {restoreResult.Id}, Status: {restoreResult.Status}");
         // END StatusRestoreBackup
 

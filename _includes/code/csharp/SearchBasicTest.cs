@@ -152,8 +152,6 @@ public class SearchBasicTest : IAsyncLifetime
             limit: 1
         );
 
-        // Note: The C# client returns a dictionary of named vectors.
-        // We assume the default vector name is 'default'.
         Console.WriteLine("Vector for 'default':");
         if (response.Objects.Any())
         {

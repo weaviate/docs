@@ -40,7 +40,6 @@ public class SearchHybridTest : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    // TODO[g-despot] NEW: Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="extract target vectors: class WineReviewNV has multiple vectors, but no target vectors were provided")
     [Fact]
     public async Task NamedVectorHybrid()
     {
