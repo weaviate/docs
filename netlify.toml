@@ -288,20 +288,6 @@ from = "/weaviate/client-libraries/typescript/typescript-v3"
 to   = "/weaviate/client-libraries/typescript"
 status = 301
 
-
-# Integrations
-
-[[redirects]]
-from = "/integrations/llm-frameworks/*"
-to   = "/integrations/llm-agent-frameworks/:splat"
-status = 301
-
-
-[[redirects]]
-from = "/weaviate/more-resources/dspy"
-to   = "/integrations/llm-agent-frameworks/dspy"
-status = 301
-
 # Modules
 
 ## Text2vec redirects
@@ -1108,8 +1094,16 @@ to   = "https://weaviate.io/product/integrations/patronusai"
 status = 301
 
 [[redirects]]
+from = "/weaviate/more-resources/dspy"
+to   = "/integrations/llm-agent-frameworks/dspy"
+status = 301
+
+[[redirects]]
 from = "/integrations"
 to   = "https://weaviate.io/product/integrations"
 status = 301
 
-
+[[redirects]]
+from = "/integrations/*"
+to   = "https://weaviate.io/product/integrations"
+status = 301
