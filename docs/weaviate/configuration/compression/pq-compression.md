@@ -79,7 +79,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START CollectionWithAutoPQ"
@@ -164,7 +164,7 @@ Follow these steps to manually enable PQ.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START InitialSchema"
@@ -233,7 +233,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START UpdateSchema"
@@ -332,7 +332,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetSchema"

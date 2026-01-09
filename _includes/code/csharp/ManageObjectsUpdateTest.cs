@@ -1,11 +1,10 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -17,9 +16,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
     static ManageObjectsUpdateTest()
     {
         // START INSTANTIATION-COMMON
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -31,35 +28,63 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         {
             await client.Collections.Delete("WineReviewNV");
         }
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "WineReviewNV",
-            Properties =
-            [
-                Property.Text("review_body", description: "Review body"),
-                Property.Text("title", description: "Name of the wine"),
-                Property.Text("country", description: "Originating country")
-            ],
-            VectorConfig = new[]
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig(
-                "title_country",
-                new Vectorizer.Text2VecTransformers { SourceProperties = ["title", "country"] }
-                )
+                Name = "WineReviewNV",
+                Properties =
+                [
+                    Property.Text("review_body", description: "Review body"),
+                    Property.Text("title", description: "Name of the wine"),
+                    Property.Text("country", description: "Originating country"),
+                ],
+                VectorConfig = new[]
+                {
+                    Configure.Vector(
+                        "title",
+                        v => v.Text2VecTransformers(),
+                        sourceProperties: ["title"]
+                    ),
+                    Configure.Vector(
+                        "review_body",
+                        v => v.Text2VecTransformers(),
+                        sourceProperties: ["review_body"]
+                    ),
+                    Configure.Vector(
+                        "title_country",
+                        v => v.Text2VecTransformers(),
+                        sourceProperties: ["title", "country"]
+                    ),
+                },
             }
-        });
+        );
 
         // highlight-start
         // ===== Add three mock objects to the WineReviewNV collection =====
-        var reviews = client.Collections.Use<object>("WineReviewNV");
-        await reviews.Data.InsertMany(new[]
-        {
-            new { title = "Mock Wine A", review_body = "A fine mock vintage.", country = "Mocktugal" },
-            new { title = "Mock Wine B", review_body = "Notes of mockberry.", country = "Mockstralia" },
-            new { title = "Mock Wine C", review_body = "Pairs well with mock turtle soup.", country = "Republic of Mockdova" }
-        });
+        var reviews = client.Collections.Use("WineReviewNV");
+        await reviews.Data.InsertMany(
+            new[]
+            {
+                new
+                {
+                    title = "Mock Wine A",
+                    review_body = "A fine mock vintage.",
+                    country = "Mocktugal",
+                },
+                new
+                {
+                    title = "Mock Wine B",
+                    review_body = "Notes of mockberry.",
+                    country = "Mockstralia",
+                },
+                new
+                {
+                    title = "Mock Wine C",
+                    review_body = "Pairs well with mock turtle soup.",
+                    country = "Republic of Mockdova",
+                },
+            }
+        );
         // highlight-end
 
         // START Define the class
@@ -67,18 +92,20 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         {
             await client.Collections.Delete("JeopardyQuestion");
         }
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "JeopardyQuestion",
-            Description = "A Jeopardy! question",
-            Properties =
-            [
-                Property.Text("question", description: "The question"),
-                Property.Text("answer", description: "The answer"),
-                Property.Number("points", description: "The points the question is worth")
-            ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "JeopardyQuestion",
+                Description = "A Jeopardy! question",
+                Properties =
+                [
+                    Property.Text("question", description: "The question"),
+                    Property.Text("answer", description: "The answer"),
+                    Property.Number("points", description: "The points the question is worth"),
+                ],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            }
+        );
         // END Define the class
     }
 
@@ -90,10 +117,14 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
     }
 
     // START DelProps
-    private static async Task DelProps(WeaviateClient client, Guid uuidToUpdate, string collectionName,
-        IEnumerable<string> propNames)
+    private static async Task DelProps(
+        WeaviateClient client,
+        Guid uuidToUpdate,
+        string collectionName,
+        IEnumerable<string> propNames
+    )
     {
-        var collection = client.Collections.Use<object>(collectionName);
+        var collection = client.Collections.Use(collectionName);
 
         // fetch the object to update
         var objectData = await collection.Query.FetchObjectByID(uuidToUpdate);
@@ -111,24 +142,28 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         // replace the properties
         await collection.Data.Replace(uuidToUpdate, propertiesToUpdate);
     }
+
     // END DelProps
 
     [Fact]
     public async Task TestUpdateAndReplaceFlow()
     {
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
-        var uuid = await jeopardy.Data.Insert(new
-        {
-            question = "Test question",
-            answer = "Test answer",
-            points = -1
-        });
+        var uuid = await jeopardy.Data.Insert(
+            new
+            {
+                question = "Test question",
+                answer = "Test answer",
+                points = -1,
+            }
+        );
 
         // START UpdateProps
-        await jeopardy.Data.Replace(uuid,
-        // highlight-start
-         data: new { points = 100 }
+        await jeopardy.Data.Replace(
+            uuid,
+            // highlight-start
+            properties: new { points = 100 }
         // highlight-end
         );
         // END UpdateProps
@@ -138,62 +173,59 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         var props1 = result1.Properties as IDictionary<string, object>;
         Assert.Equal(100d, props1["points"]);
 
+        var vector = Enumerable.Repeat(0.12345f, 384).ToArray();
 
-        var vector = Enumerable.Repeat(0.12345f, 300).ToArray();
-
-        // TODO[g-despot]  Not implemented
-        // START UpdateVector        
-        // Coming soon
+        // START UpdateVector
+        await jeopardy.Data.Replace(
+            uuid,
+            properties: new { points = 100 },
+            // highlight-start
+            vectors: vector
+        // highlight-end
+        );
         // END UpdateVector
-        // await jeopardy.Data.Update(uuid,
-        //     properties: new { points = 100 },
-        //     // highlight-start
-        //     vector: vector
-        // // highlight-end
-        // );
 
-        // var result2 = await jeopardy.Query.FetchObjectByID(uuid, returnMetadata: MetadataOptions.Vector);
-        // Assert.NotNull(result2);
-        // Assert.Equal(300, result2.Vectors["default"].Dimensions);
+        var result2 = await jeopardy.Query.FetchObjectByID(uuid, includeVectors: true);
+        Assert.NotNull(result2);
+        Assert.Equal(384, result2.Vectors["default"].Dimensions.cols);
 
-
-        // TODO[g-despot]  Not implemented
         // START UpdateNamedVector
-        // Coming soon
+        var reviews = client.Collections.Use("WineReviewNV");
+
+        // Fetch an object to update
+        var result = await reviews.Query.FetchObjects(limit: 3);
+        var reviewUuid = result.Objects.First().UUID.Value;
+
+        // Create vectors
+        float[] titleVector = Enumerable.Repeat(0.12345f, 384).ToArray();
+        float[] reviewBodyVector = Enumerable.Repeat(0.12345f, 384).ToArray();
+        float[] titleCountryVector = Enumerable.Repeat(0.12345f, 384).ToArray();
+
+        await reviews.Data.Replace(
+            uuid: reviewUuid,
+            properties: new
+            {
+                title = "A delicious wine",
+                review_body = "This mystery wine is a delight to the senses.",
+                country = "Mordor",
+            },
+            // highlight-start
+            vectors: new Vectors
+            {
+                { "title", titleVector },
+                { "review_body", reviewBodyVector },
+                { "title_country", titleCountryVector },
+            }
+        // highlight-end
+        );
         // END UpdateNamedVector
-
-        var reviews = client.Collections.Use<object>("WineReviewNV");
-        var reviewResponse = await reviews.Query.FetchObjects(limit: 1);
-        var reviewUuid = reviewResponse.Objects.First().ID.Value;
-
-        var titleVector = Enumerable.Repeat(0.12345f, 300).ToArray();
-        var reviewBodyVector = Enumerable.Repeat(0.23456f, 300).ToArray();
-        var titleCountryVector = Enumerable.Repeat(0.34567f, 300).ToArray();
-
-        // await reviews.Data.Update(reviewUuid,
-        //     data: new
-        //     {
-        //         title = "A delicious wine",
-        //         review_body = "This mystery wine is a delight to the senses.",
-        //         country = "Mordor"
-        //     },
-        //     // highlight-start
-        //     vectors: new Dictionary<string, float[]>
-        //     {
-        //         { "title", titleVector },
-        //         { "review_body", reviewBodyVector },
-        //         { "title_country", titleCountryVector }
-        //     }
-        //     // highlight-end
-        // );
-
 
         // START Replace
         // highlight-start
         await jeopardy.Data.Replace(
             // highlight-end
             uuid,
-            data: new { answer = "Replaced" }
+            properties: new { answer = "Replaced" }
         // The other properties will be deleted
         );
         // END Replace

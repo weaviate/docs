@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/_ManageCollectionsMultiTenancyTest.cs";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMultiTenancyTest.cs";
 
 ![Storage Tiers](./img/storage-tiers.jpg)
 
@@ -122,7 +122,7 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ActivateTenants"
@@ -164,7 +164,7 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DeactivateTenants"
@@ -206,7 +206,7 @@ To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START OffloadTenants"
@@ -254,7 +254,7 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START EnableAutoActivation"

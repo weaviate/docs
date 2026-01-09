@@ -74,7 +74,7 @@ Return the number of objects matched by the query.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MetaCount"
@@ -143,7 +143,7 @@ This example counts occurrence frequencies:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START TextProp"
@@ -212,7 +212,7 @@ This example shows aggregation with integers.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START IntProp"
@@ -283,7 +283,7 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START groupBy"
@@ -360,7 +360,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START nearTextWithLimit"
@@ -435,7 +435,7 @@ Use `distance` to specify how similar the objects should be.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START nearTextWithDistance"
@@ -504,7 +504,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridExample"
@@ -573,7 +573,7 @@ For more specific results, use a `filter` to narrow your search.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START whereFilter"

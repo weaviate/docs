@@ -13,6 +13,7 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.generative-v3.py
 import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchGenerativeTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchGenerativeTest.cs";
 
 Retrieval Augmented Generation (RAG) combines information retrieval with generative AI models.
 
@@ -63,12 +64,13 @@ To use RAG with a [generative model integration](../model-providers/index.md):
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-```ts
-// Java support coming soon
-```
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DynamicRag"
+      endMarker="// END DynamicRag"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -126,6 +128,14 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
       startMarker="// START NamedVectorNearTextPython"
       endMarker="// END NamedVectorNearTextPython"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NamedVectorNearText"
+      endMarker="// END NamedVectorNearText"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -196,6 +206,14 @@ The properties you use in the prompt do not have to be among the properties you 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SingleGenerativeProperties"
+      endMarker="// END SingleGenerativeProperties"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -258,12 +276,13 @@ You can use *generative parameters* to specify additional options when performin
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-// Java support coming soon
-```
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SingleGenerativeParameters"
+      endMarker="// END SingleGenerativeParameters"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -335,6 +354,14 @@ Grouped task search returns one response that includes all of the query results.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GroupedGenerative"
+      endMarker="// END GroupedGenerative"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -389,6 +416,14 @@ Define object `properties` to use in the prompt. This limits the information in 
       startMarker="// START GroupedGenerativeProperties"
       endMarker="// END GroupedGenerativeProperties"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GroupedGenerativeProperties"
+      endMarker="// END GroupedGenerativeProperties"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -449,12 +484,13 @@ You can use *generative parameters* to specify additional options when performin
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-// Java support coming soon
-```
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GroupedGenerativeParameters"
+      endMarker="// END GroupedGenerativeParameters"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -511,12 +547,13 @@ The following fields are available for generative search with images:
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-// Java support coming soon
-```
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START WorkingWithImages"
+      endMarker="// END WorkingWithImages"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 

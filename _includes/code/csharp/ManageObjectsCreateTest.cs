@@ -1,12 +1,12 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -54,7 +54,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     static ManageObjectsCreateTest()
     {
         // START INSTANTIATION-COMMON
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().Result;
         // END INSTANTIATION-COMMON
     }
 
@@ -64,54 +64,65 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         await client.Collections.DeleteAll(); // Clean slate before tests
 
         // START Define the class
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "JeopardyQuestion",
-            Properties =
-            [
-                Property.Text("title", description: "Question title")
-            ],
-            VectorConfig = new VectorConfigList
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
+                Name = "JeopardyQuestion",
+                Properties = [Property.Text("title", description: "Question title")],
+                VectorConfig = new[] { Configure.Vector("default", v => v.Text2VecTransformers()) },
             }
-        });
+        );
 
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "WineReviewNV",
-            Properties =
-            [
-                Property.Text("review_body", description: "Review body"),
-                Property.Text("title", description: "Name of the wine"),
-                Property.Text("country", description: "Originating country")
-            ],
-            VectorConfig = new VectorConfigList
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
-                new VectorConfig("title_country", new Vectorizer.Text2VecTransformers())
+                Name = "WineReviewNV",
+                Properties =
+                [
+                    Property.Text("review_body", description: "Review body"),
+                    Property.Text("title", description: "Name of the wine"),
+                    Property.Text("country", description: "Originating country"),
+                ],
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title",
+                        v => v.Text2VecTransformers(),
+                        sourceProperties: ["title"]
+                    ),
+                    Configure.Vector(
+                        "review_body",
+                        v => v.Text2VecTransformers(),
+                        sourceProperties: ["review_body"]
+                    ),
+                    Configure.Vector(
+                        "title_country",
+                        v => v.Text2VecTransformers(),
+                        sourceProperties: ["title", "country"]
+                    ),
+                },
             }
-        });
+        );
         // END Define the class
 
         // Additional collections for other tests
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Publication",
-            Properties =
-            [
-                Property.GeoCoordinate("headquartersGeoLocation")
-            ]
-        });
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Author",
-            VectorConfig = new VectorConfigList
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                new VectorConfig("default", new Vectorizer.SelfProvided())
+                Name = "Publication",
+                Properties = [Property.GeoCoordinate("headquartersGeoLocation")],
             }
-        });
+        );
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Author",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector("default", v => v.SelfProvided()),
+                },
+            }
+        );
     }
 
     // DisposeAsync acts like JUnit's @AfterAll for one-time teardown.
@@ -124,16 +135,18 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObject()
     {
         // START CreateSimpleObject
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
 
         // highlight-start
-        var uuid = await jeopardy.Data.Insert(new
-        {
-            // highlight-end
-            question = "This vector DB is OSS & supports automatic property type inference on import",
-            // answer = "Weaviate", // properties can be omitted
-            newProperty = 123 // will be automatically added as a number property
-        });
+        var uuid = await jeopardy.Data.Insert(
+            new
+            {
+                // highlight-end
+                question = "This vector DB is OSS & supports automatic property type inference on import",
+                // answer = "Weaviate", // properties can be omitted
+                newProperty = 123, // will be automatically added as a number property
+            }
+        );
 
         Console.WriteLine(uuid); // the return value is the object's UUID
         // END CreateSimpleObject
@@ -148,12 +161,12 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObjectWithVector()
     {
         // START CreateObjectWithVector
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             new
             {
                 question = "This vector DB is OSS and supports automatic property type inference on import",
-                answer = "Weaviate"
+                answer = "Weaviate",
             },
             // highlight-start
             vectors: new float[300] // Using a zero vector for demonstration
@@ -171,13 +184,13 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObjectNamedVectors()
     {
         // START CreateObjectNamedVectors
-        var reviews = client.Collections.Use<object>("WineReviewNV"); // This collection must have named vectors configured
+        var reviews = client.Collections.Use("WineReviewNV"); // This collection must have named vectors configured
         var uuid = await reviews.Data.Insert(
             new
             {
                 title = "A delicious Riesling",
                 review_body = "This wine is a delicious Riesling which pairs well with seafood.",
-                country = "Germany"
+                country = "Germany",
             },
             // highlight-start
             // Specify the named vectors, following the collection definition
@@ -185,7 +198,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
             {
                 { "title", new float[1536] },
                 { "review_body", new float[1536] },
-                { "title_country", new float[1536] }
+                { "title_country", new float[1536] },
             }
         );
         // highlight-end
@@ -193,7 +206,7 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         Console.WriteLine(uuid); // the return value is the object's UUID
         // END CreateObjectNamedVectors
 
-        var result = await reviews.Query.FetchObjectByID(uuid, returnMetadata: MetadataOptions.Vector);
+        var result = await reviews.Query.FetchObjectByID(uuid, includeVectors: true);
         Assert.NotNull(result);
         Assert.NotNull(result.Vectors);
         Assert.Contains("title", result.Vectors.Keys);
@@ -213,15 +226,15 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         var dataObject = new
         {
             question = "This vector DB is OSS and supports automatic property type inference on import",
-            answer = "Weaviate"
+            answer = "Weaviate",
         };
         var dataObjectString = JsonSerializer.Serialize(dataObject);
 
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             dataObject,
             // highlight-start
-            id: GenerateUuid5(dataObjectString)
+            uuid: GenerateUuid5(dataObjectString)
         );
         // highlight-end
         // END CreateObjectWithDeterministicId
@@ -234,15 +247,15 @@ public class ManageObjectsCreateTest : IAsyncLifetime
     public async Task TestCreateObjectWithId()
     {
         // START CreateObjectWithId
-        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             new
             {
                 question = "This vector DB is OSS and supports automatic property type inference on import",
-                answer = "Weaviate"
+                answer = "Weaviate",
             },
             // highlight-start
-            id: Guid.Parse("12345678-e64f-5d94-90db-c8cfa3fc1234")
+            uuid: Guid.Parse("12345678-e64f-5d94-90db-c8cfa3fc1234")
         );
         // highlight-end
 
@@ -252,20 +265,20 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         var result = await jeopardy.Query.FetchObjectByID(uuid);
         Assert.NotNull(result);
         var props = result.Properties as IDictionary<string, object>;
-        Assert.Equal("This vector DB is OSS and supports automatic property type inference on import", props["question"]);
+        Assert.Equal(
+            "This vector DB is OSS and supports automatic property type inference on import",
+            props["question"]
+        );
     }
 
     [Fact]
     public async Task TestWithGeoCoordinates()
     {
         // START WithGeoCoordinates
-        var publications = client.Collections.Use<object>("Publication");
+        var publications = client.Collections.Use("Publication");
 
         var uuid = await publications.Data.Insert(
-            new
-            {
-                headquartersGeoLocation = new GeoCoordinate(52.3932696f, 4.8374263f)
-            }
+            new { headquartersGeoLocation = new GeoCoordinate(52.3932696f, 4.8374263f) }
         );
         // END WithGeoCoordinates
 
@@ -282,11 +295,12 @@ public class ManageObjectsCreateTest : IAsyncLifetime
         var objectUuid = GenerateUuid5("Author to fetch");
         // END CheckForAnObject
 
-        var authors = client.Collections.Use<object>("Author");
+        var authors = client.Collections.Use("Author");
         await authors.Data.Insert(
             new { name = "Author to fetch" },
-            id: objectUuid,
-            vectors: new float[1536]);
+            uuid: objectUuid,
+            vectors: new float[1536]
+        );
 
         // START CheckForAnObject
         // highlight-start

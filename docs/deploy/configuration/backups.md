@@ -1,5 +1,6 @@
 ---
 title: Backups
+description: Configure and manage backups for Weaviate instances with cloud storage integration.
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'backups']
 ---

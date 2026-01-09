@@ -1,17 +1,17 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.IO;
-using System.Text.Json;
+using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
-using System.Net.Http;
-using System.Globalization;
+using System.Text.Json;
+using System.Threading.Tasks;
 using CsvHelper;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -32,9 +32,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             throw new ArgumentException("Please set the OPENAI_API_KEY environment variable.");
         }
 
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().GetAwaiter().GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -71,7 +69,9 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task InitializeAsync()
     {
         using var httpClient = new HttpClient();
-        var jsonData = await httpClient.GetStreamAsync("https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_1k.json");
+        var jsonData = await httpClient.GetStreamAsync(
+            "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_1k.json"
+        );
         using var fileStream = new FileStream(JsonDataFile, FileMode.Create, FileAccess.Write);
         await jsonData.CopyToAsync(fileStream);
     }
@@ -81,7 +81,8 @@ public class ManageObjectsImportTest : IAsyncLifetime
     {
         await client.Collections.DeleteAll();
         File.Delete(JsonDataFile);
-        if (File.Exists(CsvDataFile)) File.Delete(CsvDataFile);
+        if (File.Exists(CsvDataFile))
+            File.Delete(CsvDataFile);
     }
 
     private async Task BeforeEach()
@@ -93,20 +94,22 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBasicBatchImport()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+            }
+        );
 
         // START BasicBatchImportExample
-        var dataRows = Enumerable.Range(0, 5).Select(i => new { title = $"Object {i + 1}" }).ToList();
+        var dataRows = Enumerable
+            .Range(0, 5)
+            .Select(i => new { title = $"Object {i + 1}" })
+            .ToList();
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
-        // The Java client uses insertMany for batching.
-        // There is no direct equivalent of the Python client's stateful batch manager.
-        // You collect objects and send them in a single request.
         // highlight-start
         var response = await collection.Data.InsertMany(dataRows);
         // highlight-end
@@ -131,22 +134,31 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithID()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+            }
+        );
 
         // START BatchImportWithIDExample
-        var dataToInsert = new List<(object properties, Guid uuid)>();
+        var dataToInsert = new List<BatchInsertRequest>();
+        var vectorData = Enumerable.Repeat(0.1f, 10).ToArray();
+
         for (int i = 0; i < 5; i++)
         {
             var dataRow = new { title = $"Object {i + 1}" };
             var objUuid = GenerateUuid5(JsonSerializer.Serialize(dataRow));
-            dataToInsert.Add((dataRow, objUuid));
+
+            var vectors = new Vectors { { "default", vectorData } };
+
+            dataToInsert.Add(
+                BatchInsertRequest.Create(data: dataRow, id: objUuid, vectors: vectors)
+            );
         }
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
         // highlight-start
         var response = await collection.Data.InsertMany(dataToInsert);
@@ -160,44 +172,52 @@ public class ManageObjectsImportTest : IAsyncLifetime
         }
         // END BatchImportWithIDExample
 
+        Assert.Empty(failedObjects);
+
         var result = await collection.Aggregate.OverAll(totalCount: true);
         Assert.Equal(5, result.TotalCount);
-        var lastUuid = dataToInsert[4].uuid;
-        Assert.NotNull(await collection.Query.FetchObjectByID(lastUuid));
+
+        var lastUuid = dataToInsert[4].ID;
+        Assert.NotNull(await collection.Query.FetchObjectByID((Guid)lastUuid));
     }
 
     [Fact]
     public async Task TestBatchImportWithVector()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "MyCollection",
-            VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+            }
+        );
 
         // START BatchImportWithVectorExample
-        var dataToInsert = new List<(object properties, Guid uuid, float[] vector)>();
-        var vector = Enumerable.Repeat(0.1f, 10).ToArray();
+        var dataToInsert = new List<BatchInsertRequest>();
+        var vectorData = Enumerable.Repeat(0.1f, 10).ToArray();
 
         for (int i = 0; i < 5; i++)
         {
             var dataRow = new { title = $"Object {i + 1}" };
             var objUuid = GenerateUuid5(JsonSerializer.Serialize(dataRow));
-            dataToInsert.Add((dataRow, objUuid, vector));
+
+            var vectors = new Vectors { { "default", vectorData } };
+
+            dataToInsert.Add(
+                BatchInsertRequest.Create(data: dataRow, id: objUuid, vectors: vectors)
+            );
         }
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
-        // highlight-start
         var response = await collection.Data.InsertMany(dataToInsert);
-        // highlight-end
 
-        var failedObjects = response.Where(r => r.Error != null).ToList();
-        if (failedObjects.Any())
+        // Handle errors
+        if (response.HasErrors)
         {
-            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
-            Console.WriteLine($"First failed object: {failedObjects.First().Error}");
+            Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
+            Console.WriteLine($"First failed object: {response.Errors.First().Message}");
         }
         // END BatchImportWithVectorExample
 
@@ -209,24 +229,34 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithCrossReference()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig { Name = "Publication", Properties = [Property.Text("title")] });
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Author",
-            Properties = [Property.Text("name")],
-            References = [new Reference("writesFor", "Publication")]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Publication",
+                Properties = [Property.Text("title")],
+            }
+        );
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Author",
+                Properties = [Property.Text("name")],
+                References = [new Reference("writesFor", "Publication")],
+            }
+        );
 
-        var authors = client.Collections.Use<object>("Author");
-        var publications = client.Collections.Use<object>("Publication");
+        var authors = client.Collections.Use("Author");
+        var publications = client.Collections.Use("Publication");
 
         var fromUuid = await authors.Data.Insert(new { name = "Jane Austen" });
         var targetUuid = await publications.Data.Insert(new { title = "Ye Olde Times" });
 
         // START BatchImportWithRefExample
-        var collection = client.Collections.Use<object>("Author");
+        var collection = client.Collections.Use("Author");
 
-        var response = await collection.Data.ReferenceAddMany(new DataReference(fromUuid, "writesFor", targetUuid));
+        var response = await collection.Data.ReferenceAddMany([
+            new DataReference(fromUuid, "writesFor", targetUuid),
+        ]);
 
         if (response.HasErrors)
         {
@@ -235,7 +265,10 @@ public class ManageObjectsImportTest : IAsyncLifetime
         }
         // END BatchImportWithRefExample
 
-        var result = await collection.Query.FetchObjectByID(fromUuid, returnReferences: [new QueryReference("writesFor")]);
+        var result = await collection.Query.FetchObjectByID(
+            fromUuid,
+            returnReferences: [new QueryReference("writesFor")]
+        );
         Assert.NotNull(result);
         Assert.True(result.References.ContainsKey("writesFor"));
     }
@@ -244,48 +277,47 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestImportWithNamedVectors()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "MyCollection",
-            VectorConfig = new[]
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                new VectorConfig("title", new Vectorizer.SelfProvided()),
-                new VectorConfig("body", new Vectorizer.SelfProvided())
-            },
-            Properties = [Property.Text("title"), Property.Text("body")]
-        });
+                Name = "MyCollection",
+                VectorConfig = new[]
+                {
+                    Configure.Vector("title", v => v.SelfProvided()),
+                    Configure.Vector("body", v => v.SelfProvided()),
+                },
+                Properties = [Property.Text("title"), Property.Text("body")],
+            }
+        );
 
         // START BatchImportWithNamedVectors
-        // Prepare the data and vectors
-        var dataToInsert = new List<(object properties, Dictionary<string, float[]> vectors)>();
+        var dataToInsert = new List<BatchInsertRequest>();
+
         for (int i = 0; i < 5; i++)
         {
             var dataRow = new { title = $"Object {i + 1}", body = $"Body {i + 1}" };
             var titleVector = Enumerable.Repeat(0.12f, 1536).ToArray();
             var bodyVector = Enumerable.Repeat(0.34f, 1536).ToArray();
+
             // highlight-start
-            var namedVectors = new Dictionary<string, float[]>
-            {
-                { "title", titleVector },
-                { "body", bodyVector }
-            };
-            dataToInsert.Add((dataRow, namedVectors));
+            var namedVectors = new Vectors { { "title", titleVector }, { "body", bodyVector } };
+
+            dataToInsert.Add(BatchInsertRequest.Create(dataRow, vectors: namedVectors));
             // highlight-end
         }
 
-        var collection = client.Collections.Use<object>("MyCollection");
+        var collection = client.Collections.Use("MyCollection");
 
         // Insert the data using InsertMany
         // highlight-start
         var response = await collection.Data.InsertMany(dataToInsert);
         // highlight-end
 
-        // Check for errors
-        var failedObjects = response.Where(r => r.Error != null).ToList();
-        if (failedObjects.Any())
+        // Handle errors
+        if (response.HasErrors)
         {
-            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
-            Console.WriteLine($"First failed object error: {failedObjects.First().Error}");
+            Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
+            Console.WriteLine($"First failed object error: {response.Errors.First().Message}");
         }
         // END BatchImportWithNamedVectors
     }
@@ -294,21 +326,39 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestJsonStreaming()
     {
         await BeforeEach();
-        await client.Collections.Create(new CollectionConfig { Name = "JeopardyQuestion" });
+        // Ensure using correct Collection creation syntax
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "JeopardyQuestion",
+                // Optional: Define properties explicitly if needed, but auto-schema usually handles it
+                Properties = [Property.Text("question"), Property.Text("answer")],
+            }
+        );
 
         // START JSON streaming
         int batchSize = 100;
         var batch = new List<object>(batchSize);
-        var collection = client.Collections.Use<object>("JeopardyQuestion");
+        var collection = client.Collections.Use("JeopardyQuestion");
 
         Console.WriteLine("JSON streaming, to avoid running out of memory on large files...");
         using var fileStream = File.OpenRead(JsonDataFile);
-        var jsonObjects = JsonSerializer.DeserializeAsyncEnumerable<Dictionary<string, object>>(fileStream);
+
+        // Deserialize as JsonElement to handle types more safely/explicitly than Dictionary<string, object>
+        var jsonObjects = JsonSerializer.DeserializeAsyncEnumerable<JsonElement>(fileStream);
 
         await foreach (var obj in jsonObjects)
         {
-            if (obj == null) continue;
-            var properties = new { question = obj["Question"], answer = obj["Answer"] };
+            // JsonElement is a struct, checking ValueKind is safer than null check
+            if (obj.ValueKind == JsonValueKind.Null || obj.ValueKind == JsonValueKind.Undefined)
+                continue;
+
+            var properties = new
+            {
+                question = obj.GetProperty("Question").ToString(),
+                answer = obj.GetProperty("Answer").ToString(),
+            };
+
             batch.Add(properties);
 
             if (batch.Count == batchSize)
@@ -341,25 +391,33 @@ public class ManageObjectsImportTest : IAsyncLifetime
         using (var writer = new StreamWriter(CsvDataFile))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            var jsonObjects = JsonSerializer.DeserializeAsyncEnumerable<Dictionary<string, object>>(fileStream);
+            var jsonObjects = JsonSerializer.DeserializeAsyncEnumerable<Dictionary<string, object>>(
+                fileStream
+            );
             csv.WriteHeader<JeopardyQuestion>();
             await csv.NextRecordAsync();
             await foreach (var obj in jsonObjects)
             {
                 if (obj != null)
                 {
-                    csv.WriteRecord(new JeopardyQuestion { Question = obj["Question"]?.ToString(), Answer = obj["Answer"]?.ToString() });
+                    csv.WriteRecord(
+                        new JeopardyQuestion
+                        {
+                            Question = obj["Question"]?.ToString(),
+                            Answer = obj["Answer"]?.ToString(),
+                        }
+                    );
                     await csv.NextRecordAsync();
                 }
             }
         }
 
-        await client.Collections.Create(new CollectionConfig { Name = "JeopardyQuestion" });
+        await client.Collections.Create(new CollectionCreateParams { Name = "JeopardyQuestion" });
 
         // START CSV streaming
         int batchSize = 100;
         var batch = new List<object>(batchSize);
-        var collection = client.Collections.Use<object>("JeopardyQuestion");
+        var collection = client.Collections.Use("JeopardyQuestion");
 
         Console.WriteLine("CSV streaming to not load all records in RAM at once...");
         using (var reader = new StreamReader(CsvDataFile))
@@ -396,7 +454,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     // Helper class for CSV parsing
     private class JeopardyQuestion
     {
-        public string? Question { get; set; }
-        public string? Answer { get; set; }
+        public string Question { get; set; }
+        public string Answer { get; set; }
     }
 }

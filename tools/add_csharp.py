@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Template for the new C# TabItem
 CSHARP_TAB_TEMPLATE = """
-<TabItem value="csharp" label="C# (Beta)">
+<TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={{CSharpCode}}
       startMarker="{start_marker}"

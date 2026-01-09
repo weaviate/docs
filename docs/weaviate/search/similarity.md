@@ -75,7 +75,7 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       language="graphql"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetNearText"
@@ -143,7 +143,7 @@ This example uses a base64 representation of an image.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={ImgSrchCSharpCode}
       startMarker="// START search with base64"
@@ -200,7 +200,7 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetNearObject"
@@ -282,7 +282,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetNearVector"
@@ -348,7 +348,7 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START NamedVectorNearText"
@@ -425,7 +425,7 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithDistance"
@@ -499,7 +499,7 @@ Optionally, use `offset` to paginate the results.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetLimitOffset"
@@ -562,7 +562,7 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START Autocut"
@@ -639,7 +639,7 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithGroupby"
@@ -716,7 +716,7 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithFilter"

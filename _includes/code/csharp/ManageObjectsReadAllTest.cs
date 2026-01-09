@@ -1,28 +1,22 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.Json;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
 public class ManageObjectsReadAllTest : IAsyncLifetime
 {
-    private static readonly WeaviateClient client;
-
-    // Static constructor for one-time setup (like @BeforeAll)
-    static ManageObjectsReadAllTest()
-    {
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
-    }
+    private WeaviateClient client;
 
     // Runs once before any tests in the class
     public async Task InitializeAsync()
     {
+        client = await Connect.Local(hostname: "localhost", restPort: 8080);
         // Simulate weaviate-datasets by creating and populating collections
         // Create WineReview collection
         if (await client.Collections.Exists("WineReview"))
@@ -30,26 +24,32 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
             await client.Collections.Delete("WineReview");
         }
 
-        var wineReview = await client.Collections.Create(new CollectionConfig { Name = "WineReview" });
-        await wineReview.Data.InsertMany(new[]
-        {
-            new { title = "Review A" },
-            new { title = "Review B" }
-        });
+        var wineReview = await client.Collections.Create(
+            new CollectionCreateParams { Name = "WineReview" }
+        );
+        await wineReview.Data.InsertMany(
+            new[] { new { title = "Review A" }, new { title = "Review B" } }
+        );
 
         // Create WineReviewMT collection
         if (await client.Collections.Exists("WineReviewMT"))
         {
             await client.Collections.Delete("WineReviewMT");
         }
-        var wineReviewMT = await client.Collections.Create(new CollectionConfig
-        {
-            Name = "WineReviewMT",
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }
-        });
+        var wineReviewMT = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "WineReviewMT",
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = true,
+                },
+            }
+        );
 
         // Create and populate tenants
-        await wineReviewMT.Tenants.Add(["tenantA", "tenantB"]);
+        await wineReviewMT.Tenants.Create(["tenantA", "tenantB"]);
         await wineReviewMT.WithTenant("tenantA").Data.Insert(new { title = "Tenant A Review 1" });
         await wineReviewMT.WithTenant("tenantB").Data.Insert(new { title = "Tenant B Review 1" });
     }
@@ -65,13 +65,13 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
     public async Task TestReadAllProps()
     {
         // START ReadAllProps
-        var collection = client.Collections.Use<object>("WineReview");
+        var collection = client.Collections.Use("WineReview");
 
         // highlight-start
         await foreach (var item in collection.Iterator())
         {
             // highlight-end
-            Console.WriteLine($"{item.ID} {JsonSerializer.Serialize(item.Properties)}");
+            Console.WriteLine($"{item.UUID} {JsonSerializer.Serialize(item.Properties)}");
         }
         // END ReadAllProps
     }
@@ -80,12 +80,14 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
     public async Task TestReadAllVectors()
     {
         // START ReadAllVectors
-        var collection = client.Collections.Use<object>("WineReview");
+        var collection = client.Collections.Use("WineReview");
 
-        await foreach (var item in collection.Iterator(
-            // highlight-start
-            returnMetadata: MetadataOptions.Vector // If using named vectors, you can specify ones to include
-        ))
+        await foreach (
+            var item in collection.Iterator(
+                // highlight-start
+                includeVectors: true // If using named vectors, you can specify ones to include
+            )
+        )
         // highlight-end
         {
             Console.WriteLine(JsonSerializer.Serialize(item.Properties));
@@ -96,12 +98,11 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         // END ReadAllVectors
     }
 
-    // TODO[g-despot]  Grpc.Core.RpcException : Status(StatusCode="Unknown", Detail="explorer: list class: search: object search at index winereviewmt: class WineReviewMT has multi-tenancy enabled, but request was without tenant")
     [Fact]
     public async Task TestReadAllTenants()
     {
         // START ReadAllTenants
-        var multiCollection = client.Collections.Use<object>("WineReviewMT");
+        var multiCollection = client.Collections.Use("WineReviewMT");
 
         // Get a list of tenants
         // highlight-start

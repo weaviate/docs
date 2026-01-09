@@ -1,8 +1,8 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -11,14 +11,11 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     private WeaviateClient client;
 
     // Runs before each test
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
         // START-ANY
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor for local connections.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = await Connect.Local();
         // END-ANY
-        return Task.CompletedTask;
     }
 
     // Runs after each test
@@ -35,68 +32,66 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestBasicSchema()
     {
         // START BasicSchema
-        var questionsCollection = await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Set the vectorizer
-            GenerativeConfig = new GenerativeConfig.Cohere(), // Set the generative module
-            Properties = 
-            [
-                Property.Text("question"),
-                Property.Text("answer"),
-                Property.Text("category")
-            ]
-        });
+        var questionsCollection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Question",
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+                GenerativeConfig = Configure.Generative.Cohere(), // Set the generative module
+                Properties =
+                [
+                    Property.Text("question"),
+                    Property.Text("answer"),
+                    Property.Text("category"),
+                ],
+            }
+        );
 
         Console.WriteLine(questionsCollection);
         // END BasicSchema
     }
 
-    // TODO[g-despot] Missing vectorizePropertyName
     [Fact]
     public async Task TestSchemaWithPropertyOptions()
     {
         // START SchemaWithPropertyOptions
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
-            [
-                Property.Text(
-                    "question",
-                    tokenization: PropertyTokenization.Lowercase
-                    // vectorizePropertyName: true // Pass as a simple named argument
-                ),
-                Property.Text(
-                    "answer",
-                    tokenization: PropertyTokenization.Whitespace
-                    // vectorizePropertyName: false // Pass as a simple named argument
-                )
-            ]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Question",
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+                GenerativeConfig = Configure.Generative.Cohere(),
+                Properties =
+                [
+                    Property.Text("question", tokenization: PropertyTokenization.Lowercase),
+                    Property.Text("answer", tokenization: PropertyTokenization.Whitespace),
+                ],
+            }
+        );
         // END SchemaWithPropertyOptions
     }
 
     [Fact]
     public async Task TestSchemaWithMultiTenancy()
     {
+        await client.Collections.Delete("Question");
         // START SchemaWithMultiTenancy
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
-            [
-                Property.Text("question"),
-                Property.Text("answer")
-            ],
-            // highlight-start
-            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true } // Enable multi-tenancy
-            // highlight-end
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "Question",
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
+                GenerativeConfig = Configure.Generative.Cohere(),
+                Properties = [Property.Text("question"), Property.Text("answer")],
+                // highlight-start
+                MultiTenancyConfig = new MultiTenancyConfig
+                {
+                    Enabled = true,
+                    AutoTenantCreation = true,
+                }, // Enable multi-tenancy
+                // highlight-end
+            }
+        );
         // END SchemaWithMultiTenancy
     }
 
@@ -104,36 +99,34 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestSchemaWithIndexSettings()
     {
         // START SchemaWithIndexSettings
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = "Question",
-            VectorConfig = new VectorConfig(
-                "default", // Set the name of the vector configuration
-                new Vectorizer.Text2VecWeaviate(),
-                // highlight-start
-                new VectorIndex.HNSW
-                {
-                    Distance = VectorIndexConfig.VectorDistance.Cosine, // Configure the vector index
-                    Quantizer = new VectorIndex.Quantizers.BQ() // Enable vector compression (quantization)
-                }
-                // highlight-end
-            ),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
-            Properties = 
-            [
-                Property.Text("question"),
-                Property.Text("answer")
-            ],
-            // highlight-start
-            // Configure the inverted index
-            InvertedIndexConfig = new InvertedIndexConfig
+        await client.Collections.Create(
+            new CollectionCreateParams
             {
-                IndexNullState = true,
-                IndexPropertyLength = true,
-                IndexTimestamps = true
+                Name = "Question",
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecWeaviate(),
+                    // highlight-start
+                    new VectorIndex.HNSW
+                    {
+                        Distance = VectorIndexConfig.VectorDistance.Cosine, // Configure the vector index
+                        Quantizer = new VectorIndex.Quantizers.BQ(), // Enable vector compression (quantization)
+                    }
+                // highlight-end
+                ),
+                GenerativeConfig = Configure.Generative.Cohere(),
+                Properties = [Property.Text("question"), Property.Text("answer")],
+                // highlight-start
+                // Configure the inverted index
+                InvertedIndexConfig = new InvertedIndexConfig
+                {
+                    IndexNullState = true,
+                    IndexPropertyLength = true,
+                    IndexTimestamps = true,
+                },
+                // highlight-end
             }
-            // highlight-end
-        });
+        );
         // END SchemaWithIndexSettings
     }
 }
