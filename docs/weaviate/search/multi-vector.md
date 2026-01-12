@@ -12,6 +12,7 @@ import PyCodeV4 from "!!raw-loader!/\_includes/code/howto/search.multi-target-v4
 import TSCodeV3 from "!!raw-loader!/\_includes/code/howto/search.multi-target-v3.ts";
 import GoCode from "!!raw-loader!/\_includes/code/howto/search.multi-target.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchMultiTargetTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchMultiTargetTest.cs";
 
 :::info Added in `v1.26`
 :::
@@ -84,6 +85,14 @@ As a minimum, specify the target vector names as an array of named vectors. This
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiBasic"
+      endMarker="// END MultiBasic"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Specify query vectors
@@ -113,6 +122,14 @@ You can specify multiple query vectors in the search query with a `nearVector` s
       startMarker="// START MultiTargetNearVector"
       endMarker="// END MultiTargetNearVector"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTargetNearVector"
+      endMarker="// END MultiTargetNearVector"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -157,6 +174,14 @@ The target vectors can be specified as an array as shown here.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTargetMultipleNearVectorsV1"
+      endMarker="// END MultiTargetMultipleNearVectorsV1"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Target vectors and weights
@@ -186,6 +211,14 @@ If you want to provide weights for each target vector you can do it as shown her
       startMarker="// START MultiTargetMultipleNearVectorsV2"
       endMarker="// END MultiTargetMultipleNearVectorsV2"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTargetMultipleNearVectorsV2"
+      endMarker="// END MultiTargetMultipleNearVectorsV2"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -219,6 +252,14 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
       startMarker="// START MultiTargetWithSimpleJoin"
       endMarker="// END MultiTargetWithSimpleJoin"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTargetWithSimpleJoin"
+      endMarker="// END MultiTargetWithSimpleJoin"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -259,6 +300,14 @@ Each distance between the query vector and the target vector is multiplied by th
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTargetManualWeights"
+      endMarker="// END MultiTargetManualWeights"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Weight normalized vector distances
@@ -297,6 +346,14 @@ For a more detailed explanation of how scores are normalized, see the blog post 
       startMarker="// START MultiTargetRelativeScore"
       endMarker="// END MultiTargetRelativeScore"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTargetRelativeScore"
+      endMarker="// END MultiTargetRelativeScore"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

@@ -538,9 +538,9 @@ response = collection.query.fetch_objects(
     filters=Filter.by_property("country").is_none(True)  # Find objects where the `country` property is null
     # highlight-end
 )
-
+print("despot. othing") 
 for o in response.objects:
-    print(o.properties)  # Inspect returned objects
+    print("despot"+o.properties)  # Inspect returned objects
 # END FilterByPropertyNullState
 
 

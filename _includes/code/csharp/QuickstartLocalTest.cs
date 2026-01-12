@@ -1,11 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.Http;
+using Weaviate.Client.Models.Generative;
 using Xunit;
 
 namespace WeaviateProject.Examples;
@@ -17,7 +18,7 @@ public class QuickstartLocalTest
     public async Task TestConnectionIsReady()
     {
         // START InstantiationExample
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
 
         // highlight-start
         // GetMeta returns server info. A successful call indicates readiness.
@@ -32,7 +33,7 @@ public class QuickstartLocalTest
     [Fact]
     public async Task FullQuickstartWorkflowTest()
     {
-        using var client = Connect.Local();
+        using var client = await Connect.Local();
         string collectionName = "Question";
 
         // Clean up previous runs if they exist
@@ -43,39 +44,47 @@ public class QuickstartLocalTest
 
         // START CreateCollection
         // highlight-start
-        var questions = await client.Collections.Create(new CollectionConfig
-        {
-            Name = collectionName,
-            Properties = 
-            [
+        var questions = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = collectionName,
+                Properties =
+                [
                     Property.Text("answer"),
                     Property.Text("question"),
-                    Property.Text("category")
-            ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()), // Configure the text2vec-contextionary integration
-            GenerativeConfig = new GenerativeConfig.Cohere() // Configure the Cohere generative AI integration
-        });
+                    Property.Text("category"),
+                ],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()), // Configure the text2vec-transformers integration
+                GenerativeConfig = Configure.Generative.Cohere(), // Configure the Cohere generative AI integration
+            }
+        );
         // highlight-end
         // END CreateCollection
 
         // START Import
         // Get JSON data using HttpClient
         using var httpClient = new HttpClient();
-        var jsonData = await httpClient.GetStringAsync("https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json");
+        var jsonData = await httpClient.GetStringAsync(
+            "https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json"
+        );
 
         // highlight-start
         var questionsToInsert = new List<object>();
 
         // Parse and prepare objects using System.Text.Json
-        var jsonObjects = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(jsonData);
+        var jsonObjects = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(
+            jsonData
+        );
         foreach (var jsonObj in jsonObjects)
         {
-            questionsToInsert.Add(new
-            {
-                answer = jsonObj["Answer"].GetString(),
-                question = jsonObj["Question"].GetString(),
-                category = jsonObj["Category"].GetString()
-            });
+            questionsToInsert.Add(
+                new
+                {
+                    answer = jsonObj["Answer"].GetString(),
+                    question = jsonObj["Question"].GetString(),
+                    category = jsonObj["Category"].GetString(),
+                }
+            );
         }
 
         // Call InsertMany with the list of objects converted to an array
@@ -83,17 +92,16 @@ public class QuickstartLocalTest
         // highlight-end
         // END Import
 
-        // TODO[g-despot] Error handling missing
         // Check for errors
-        // if (insertResponse.HasErrors)
-        // {
-        //     Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count}");
-        //     Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
-        // }
-        // else
-        // {
-        //     Console.WriteLine($"Successfully inserted {insertResponse.Results.Count} objects.");
-        // }
+        if (insertResponse.HasErrors)
+        {
+            Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
+            Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
+        }
+        else
+        {
+            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+        }
 
         // START NearText
         // highlight-start
@@ -105,9 +113,20 @@ public class QuickstartLocalTest
             Console.WriteLine(JsonSerializer.Serialize(obj.Properties));
         }
         // END NearText
-    }
 
-    // START RAG
-    // Coming soon
-    // END RAG
+        // START RAG
+        // highlight-start
+        var ragResponse = await questions.Generate.NearText(
+            "biology",
+            limit: 2,
+            groupedTask: new GroupedTask("Write a tweet with emojis about these facts."),
+            provider: new Providers.OpenAI { }
+        );
+        // highlight-end
+
+        // Inspect the results
+        Console.WriteLine(JsonSerializer.Serialize(ragResponse.Generative.Values));
+        // END RAG
+        await client.Collections.Delete(collectionName);
+    }
 }
