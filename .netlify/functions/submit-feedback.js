@@ -25,8 +25,8 @@ exports.handler = async (event) => {
       statusCode: 403,
       body: JSON.stringify({ error: 'Origin not allowed' }),
       headers: {
-        'Access-Control-Allow-Origin': allowedOriginPattern.startsWith('*')
-          ? null
+        'Access-Control-Allow-Origin': allowedOriginPattern === '*'
+          ? '*'
           : allowedOriginPattern,
       },
     };
@@ -62,7 +62,7 @@ exports.handler = async (event) => {
 
   try {
     const data = JSON.parse(event.body);
-    const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
+    const { WEAVIATE_DOCFEEDBACK_URL2, WEAVIATE_DOCFEEDBACK_APIKEY2 } =
       process.env;
 
     // Basic server-side validation
@@ -76,11 +76,32 @@ exports.handler = async (event) => {
       };
     }
 
-    if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
-      console.error('Missing Weaviate environment variables.');
+    if (!WEAVIATE_DOCFEEDBACK_URL2 || !WEAVIATE_DOCFEEDBACK_APIKEY2) {
+      const relevantKeys = Object.keys(process.env).filter(
+        k => k.includes('WEAVIATE') || k.includes('FEEDBACK') || k === 'CONTEXT' || k === 'ALLOWED_ORIGIN' || k.startsWith('DEPLOY_')
+      );
+      console.error('Missing Weaviate environment variables.', {
+        hasUrl: !!WEAVIATE_DOCFEEDBACK_URL2,
+        hasKey: !!WEAVIATE_DOCFEEDBACK_APIKEY2,
+        context: process.env.CONTEXT,
+        weaviateRelatedKeyNames: relevantKeys,
+        weaviateRelatedKeyCount: relevantKeys.length,
+      });
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'Server configuration error.' }),
+        body: JSON.stringify({
+          error: 'Server configuration error.',
+          // debug: {
+          //   hasUrl: !!WEAVIATE_DOCFEEDBACK_URL2,
+          //   hasKey: !!WEAVIATE_DOCFEEDBACK_APIKEY2,
+          //   context: process.env.CONTEXT,
+          //   availableWeaviateVars: relevantKeys,
+          //   availableWeaviateVarCount: relevantKeys.length,
+          //   siteId: process.env.SITE_ID,
+          //   siteName: process.env.SITE_NAME,
+          //   timestamp: new Date().toISOString(),
+          // },
+        }),
         headers,
       };
     }
@@ -100,23 +121,48 @@ exports.handler = async (event) => {
       },
     };
 
-    const weaviateUrl = `${WEAVIATE_DOCFEEDBACK_URL}/v1/objects`;
+    const weaviateUrl = `${WEAVIATE_DOCFEEDBACK_URL2}/v1/objects`;
 
     const response = await fetch(weaviateUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${WEAVIATE_DOCFEEDBACK_API_KEY}`,
+        Authorization: `Bearer ${WEAVIATE_DOCFEEDBACK_APIKEY2}`,
       },
       body: JSON.stringify(weaviatePayload),
     });
 
     if (!response.ok) {
-      const errorBody = await response.json();
-      console.error('Failed to send data to Weaviate:', errorBody);
+      let errorBody;
+      try {
+        errorBody = await response.json();
+      } catch (jsonError) {
+        // If response is not JSON, get it as text
+        try {
+          errorBody = await response.text();
+        } catch (textError) {
+          errorBody = 'Unable to parse error response';
+        }
+      }
+      console.error('Failed to send data to Weaviate:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorBody,
+      });
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: 'Failed to store feedback.' }),
+        body: JSON.stringify({
+          error: 'Failed to store feedback.',
+          debug: {
+            weaviateStatus: response.status,
+            weaviateStatusText: response.statusText,
+            weaviateUrl: WEAVIATE_DOCFEEDBACK_URL2,
+            // TODO: Remove errorBody from production after debugging
+            weaviateError: errorBody,
+            timestamp: new Date().toISOString(),
+            context: process.env.CONTEXT,
+          },
+        }),
         headers,
       };
     }
@@ -132,6 +178,14 @@ exports.handler = async (event) => {
       statusCode: 500,
       body: JSON.stringify({
         error: 'There was an error processing your feedback.',
+        debug: {
+          errorType: error.name,
+          errorMessage: error.message,
+          timestamp: new Date().toISOString(),
+          // TODO: Remove stack trace from production after debugging
+          stack: error.stack,
+          context: process.env.CONTEXT,
+        },
       }),
       headers,
     };

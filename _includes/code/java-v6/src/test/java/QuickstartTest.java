@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,9 +63,9 @@ class QuickstartTest {
     CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);
     // highlight-end
     // END CreateCollection
+    System.out.println("Collection created: " + questions.toString());
     client.collections.delete(collectionName);
     // START CreateCollection
-
     client.close(); // Free up resources
 
     // END CreateCollection
@@ -90,12 +91,13 @@ class QuickstartTest {
             Property.text("question"),
             Property.text("category"))
         .vectorConfig(VectorConfig.text2vecWeaviate())); // Configure the Weaviate Embeddings integration;
-
     // Get JSON data using HttpURLConnection
-    URL url = new URL("https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json");
-    String jsonData = new BufferedReader(
-        new InputStreamReader(((HttpURLConnection) url.openConnection()).getInputStream()))
-        .lines().reduce("", String::concat);
+    URL url = URI.create("https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json").toURL();
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    String jsonData;
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+      jsonData = reader.lines().reduce("", String::concat);
+    }
 
     // highlight-start
     CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);

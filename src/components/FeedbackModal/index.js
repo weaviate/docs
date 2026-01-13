@@ -24,19 +24,6 @@ export default function FeedbackModal({ voteType, onSubmit, onClose, isOpen }) {
     return null;
   }
 
-  const openGithubFeedback = () => {
-    const currentUrl =
-      typeof window !== "undefined" ? window.location.href : "";
-    const params = new URLSearchParams({
-      template: "doc_feedback.yml",
-      title: "[Documentation Feedback]: ",
-      labels: "user-feedback",
-      "page-url": currentUrl,
-    });
-    const githubUrl = `https://github.com/weaviate/docs/issues/new?${params.toString()}`;
-    window.open(githubUrl, "_blank", "noopener,noreferrer");
-  };
-
   const options =
     voteType === "up" ? positiveFeedbackOptions : negativeFeedbackOptions;
   const title = voteType === "up" ? "What helped?" : "What went wrong?";
@@ -94,16 +81,6 @@ export default function FeedbackModal({ voteType, onSubmit, onClose, isOpen }) {
             Cancel
           </button>
         </div>
-        {voteType !== "up" && (
-          <div className={styles.githubContainer}>
-            <button
-              className={`button button--secondary ${styles.githubButton}`}
-              onClick={openGithubFeedback}
-            >
-              Other - create a GitHub issue
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.import_vectors.create_collection.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.import_vectors.create_collection.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_vectors_1/quickstart.short.import_vectors.create_collection.go";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartCreateVectors.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartCreateVectors.java";
 
 <Tabs className="code" groupId="languages">
@@ -37,8 +38,15 @@ The collection also contains a configuration for the generative (RAG) integratio
   language="goraw"
 />
 </TabItem>
-
-<TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START CreateCollection"
+    endMarker="// END CreateCollection"
+    language="javaraw"
+  />
+</TabItem>
+<TabItem value="java" label="Java v5 (Deprecated)">
 
 The collection also contains a configuration for the generative (RAG) integration:
 

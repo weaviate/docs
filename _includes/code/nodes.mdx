@@ -2,8 +2,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-
 import PyCode from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -27,23 +27,6 @@ const response = await client.cluster.nodes({
 })
 
 console.log(response)
-```
-
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.cluster
-  .nodesStatusGetter()
-  .do();
-console.log(response);
 ```
 
 </TabItem>
@@ -81,7 +64,15 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetNodes"
+      endMarker="// END GetNodes"
+      language="java"
+    />
+  </TabItem>
+<TabItem value="java" label="Java v5 (Deprecated)">
 
 ```java
 package io.weaviate;

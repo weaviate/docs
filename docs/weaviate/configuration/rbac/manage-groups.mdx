@@ -11,7 +11,7 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import OidcGroupPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.groups.py";
 import OidcGroupTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.groups.ts";
-
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
 
 
 :::info Added in `v1.33`
@@ -55,7 +55,15 @@ This example assigns the `testRole` and `viewer` roles to the `/admin-group`.
 ```
 
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AssignOidcGroupRoles"
+      endMarker="// END AssignOidcGroupRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
 
 ```java
 // Java support coming soon
@@ -94,7 +102,15 @@ This example removes the `testRole` and `viewer` roles from the `/admin-group`.
 ```
 
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RevokeOidcGroupRoles"
+      endMarker="// END RevokeOidcGroupRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     
 ```java 
 // Java support coming soon 
@@ -131,7 +147,15 @@ Retrieve a list of all roles that have been assigned to a specific OIDC group.
 ```
 
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetOidcGroupRoles"
+      endMarker="// END GetOidcGroupRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     
 ```java 
 // Java support coming soon 
@@ -177,7 +201,15 @@ This example shows how to get a list of all OIDC groups that Weaviate is aware o
 ```
 
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetKnownOidcGroups"
+      endMarker="// END GetKnownOidcGroups"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     
 ```java 
 // Java support coming soon 
@@ -225,7 +257,15 @@ This example shows which groups have the `testRole` assigned to them.
 ```
 
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetGroupAssignments"
+      endMarker="// END GetGroupAssignments"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     
 ```java 
 // Java support coming soon 

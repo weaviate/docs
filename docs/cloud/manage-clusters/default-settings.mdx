@@ -1,0 +1,67 @@
+---
+title: Default cluster settings
+sidebar_position: 7
+description: "Default configuration settings for Weaviate Cloud clusters."
+image: og/wcd/user_guides.jpg
+---
+
+This page describes the default configuration settings applied to Weaviate Cloud clusters. These settings control various aspects of your cluster's behavior, including database limits, authentication, backups, and usage metrics.
+
+The majority of these settings are configured via environment variables. For more details on each environment variable, refer to the [environment variable pages](/deploy/configuration/env-vars) in the [Deployment section](/deploy) of our documentation.
+
+## Weaviate Database settings
+
+These settings control core database functionality and limits.
+
+| Setting | Requires restart | Default value | User configurable |
+| --- | --- | --- | --- |
+| [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 | No |
+| [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes |
+| [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
+| [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
+| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | No |
+| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
+| [`REPLICATION_MINIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MINIMUM_FACTOR) | Yes | 3 (for HA clusters) | No |
+
+## User management & permissions
+
+These settings control authentication and authorization for your cluster. These settings are not user configurable.
+
+| Setting | Default value |
+| --- | --- |
+| [`AUTHORIZATION_RBAC_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHORIZATION_RBAC_ENABLED) | true |
+| [`AUTHENTICATION_DB_USERS_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHENTICATION_DB_USERS_ENABLED) | true |
+| [`AUTHENTICATION_OIDC_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHENTICATION_OIDC_ENABLED) | true |
+
+For more information on authentication and authorization, see:
+- [Authentication](/cloud/manage-clusters/authentication)
+- [Authorization](/cloud/manage-clusters/authorization)
+
+## Backups
+
+Each Weaviate Cloud instance is automatically backed up daily by default. Additional backups can be triggered manually via the API.
+
+Backups are retained per the applicable backup retention period of that cluster, such as 7 days for Flex Shared Cloud clusters.
+
+To restore a backup, [contact Weaviate Cloud support](https://console.weaviate.cloud/support).
+
+## Query settings
+
+These settings control default query behavior.
+
+| Setting | Default value |
+| --- | --- |
+| [`QUERY_DEFAULTS_LIMIT`](/deploy/configuration/env-vars/index.md#QUERY_DEFAULTS_LIMIT) | 10 |
+| [`QUERY_MAXIMUM_RESULTS`](/deploy/configuration/env-vars/index.md#QUERY_MAXIMUM_RESULTS) | 100000 |
+
+## Modules
+
+Weaviate Cloud clusters do not have a default vectorizer module configured. As a result, you must specify a vectorizer integration when creating collections, or import your own vectors.
+
+To view the list of enabled modules on your cluster, see [Cluster Status: Enabled Modules](/cloud/manage-clusters/status#enabled-modules).
+
+## Support & feedback
+
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
+
+<SupportAndTrouble />

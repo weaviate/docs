@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
 import styles from "./styles.module.scss";
 import FeedbackModal from "../FeedbackModal";
+import ThankYouModal from "../ThankYouModal";
 import ThumbsUp from "../Icons/ThumbsUp";
 import ThumbsDown from "../Icons/ThumbsDown";
 
@@ -9,6 +10,8 @@ export default function PageRatingWidget() {
   const [vote, setVote] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHasOpened, setModalHasOpened] = useState(false);
+  const [thankYouModalOpen, setThankYouModalOpen] = useState(false);
+  const [lastFeedback, setLastFeedback] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -16,6 +19,8 @@ export default function PageRatingWidget() {
     setVote(null);
     setModalOpen(false);
     setModalHasOpened(false);
+    setThankYouModalOpen(false);
+    setLastFeedback(null);
   }, [location.pathname]);
 
   const submitFeedback = async (payload) => {
@@ -43,15 +48,40 @@ export default function PageRatingWidget() {
       });
 
       if (!response.ok) {
-        // Log the error response text for debugging
-        const errorText = await response.text();
-        console.error('Feedback submission failed:', errorText);
+        // Read response text first, then try to parse as JSON
+        const responseText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(responseText);
+        } catch {
+          errorData = { error: responseText };
+        }
+
+        // Log comprehensive error details for debugging
+        console.error('Feedback submission failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          serverError: errorData.error,
+          serverDebug: errorData.debug,
+          url: response.url,
+          payload: finalPayload,
+        });
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      console.log('Feedback submitted successfully.');
+      console.log('Feedback submitted successfully:', {
+        status: response.status,
+        payload: finalPayload,
+      });
     } catch (error) {
-      console.error('Failed to submit feedback:', error);
+      console.error('Failed to submit feedback:', {
+        error: error.message,
+        stack: error.stack,
+        name: error.name,
+        payload: finalPayload,
+        timestamp: new Date().toISOString(),
+      });
     }
   };
 
@@ -75,6 +105,12 @@ export default function PageRatingWidget() {
     };
     submitFeedback(feedbackPayload);
     setModalOpen(false);
+
+    // If negative feedback, show thank you modal with option to create GitHub issue
+    if (vote === 'down') {
+      setLastFeedback(feedback);
+      setThankYouModalOpen(true);
+    }
   };
 
   return (
@@ -109,6 +145,12 @@ export default function PageRatingWidget() {
         onClose={() => setModalOpen(false)}
         onSubmit={handleModalSubmit}
         voteType={vote}
+      />
+      <ThankYouModal
+        isOpen={thankYouModalOpen}
+        onClose={() => setThankYouModalOpen(false)}
+        selectedOptions={lastFeedback?.options}
+        pageUrl={typeof window !== "undefined" ? window.location.href : ""}
       />
     </>
   );

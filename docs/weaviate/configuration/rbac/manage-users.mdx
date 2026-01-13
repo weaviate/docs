@@ -19,6 +19,7 @@ import UserPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac
 import UserTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.users.ts";
 import OidcUserPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.users.py";
 import OidcUserTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.users.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-users.java";
 import OidcUserJavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-oidc-users.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.users_test.go";
@@ -76,7 +77,15 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START ListAllUsers"
@@ -127,7 +136,15 @@ This example creates a user called `custom-user`.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START CreateUser"
@@ -175,7 +192,15 @@ This example deletes a user called `custom-user`.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DeleteUser"
+      endMarker="// END DeleteUser"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START DeleteUser"
@@ -214,7 +239,15 @@ This example updates (rotates) the API key for `custom-user`.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START RotateApiKey"
@@ -266,7 +299,15 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AssignRole"
+      endMarker="// END AssignRole"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START AssignRole"
@@ -307,7 +348,15 @@ This example removes the role `testRole` from the user `custom-user`.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START RevokeRoles"
@@ -346,7 +395,15 @@ Retrieve the role information for any user.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START ListUserRoles"
@@ -401,7 +458,15 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={OidcUserJavaCode}
       startMarker="// START AssignOidcUserRole"
@@ -442,7 +507,15 @@ This example removes the role `testRole` from the user `custom-user`.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={OidcUserJavaCode}
       startMarker="// START RevokeOidcUserRoles"
@@ -481,7 +554,15 @@ Retrieve the role information for an OIDC user.
       language="go"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={OidcUserJavaCode}
       startMarker="// START ListOidcUserRoles"

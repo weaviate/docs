@@ -11,19 +11,15 @@ Weaviate has multiple pathways to deploy on AWS, each suited to different use ca
 
 ### Marketplace offerings
 
-#### [AWS marketplace - Serverless Cloud](../../installation-guides/aws-marketplace.md)
+#### [AWS marketplace - Shared Cloud](../../installation-guides/aws-marketplace.md)
 
-Deploy Weaviate Serverless Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration.
+Deploy Weaviate Shared Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration.
 
 This SaaS solution is specifically built for AWS customers who need:
 
 - AWS billing integration
 - Regulatory requirements with specific regional deployments
 - Quick setup without infrastructure management
-
-#### [AWS marketplace - Kubernetes cluster](../../installation-guides/eks-marketplace.md)
-
-Deploys Weaviate on Amazon EKS through the AWS Marketplace using AWS CloudFormation templates. This sets up an EKS cluster with a single node group, load balancer controller, and EBS CSI driver via a CloudFormation template.
 
 #### Resources Created:
 
@@ -33,10 +29,6 @@ Deploys Weaviate on Amazon EKS through the AWS Marketplace using AWS CloudFormat
 - Latest selected version of Weaviate via official Helm chart
 
 **Best for**: Production environments, teams wanting managed Kubernetes without setup complexity, enterprise-grade deployments.
-
-#### [AWS marketplace - EC2 instance](../../installation-guides/ecs-marketplace.md)
-
-Deploys a fully operational Weaviate instance on a single EC2 instance using Docker through the AWS Marketplace. This option also uses CloudFormation templates and is perfect for developers who want to prototype and test Weaviate quickly.
 
 #### Specifications:
 
@@ -66,7 +58,7 @@ Create and manage your own EKS cluster using the `eksctl` command-line tool, pro
 
 Each deployment option offers different levels of management and control:
 
-- **Serverless Cloud:** Fully managed SaaS with automatic scaling and zero infrastructure management.
+- **Shared Cloud:** Fully managed SaaS with automatic scaling and zero infrastructure management.
 - **Marketplace EKS:** Managed Kubernetes control plane with pre-configured infrastructure via CloudFormation.
 - **Marketplace EC2:** Single-instance Docker deployment with monthly billing, ideal for development.
 - **Self-Managed EKS:** Complete control over EKS cluster configuration and management.

@@ -8,7 +8,7 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.34.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.35.0
     ports:
     - 8090:8080
     - 50061:50051
@@ -18,10 +18,13 @@ services:
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ASYNC_INDEXING: 'true'
-      ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,text2vec-contextionary'
+      ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,text2vec-contextionary,text2vec-transformers'
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       CLUSTER_HOSTNAME: 'node1'
       CONTEXTIONARY_URL: contextionary:9999
+      TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'
+  text2vec-transformers:
+    image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
   contextionary:
     environment:
       OCCURRENCE_WEIGHT_LINEAR_FACTOR: 0.75

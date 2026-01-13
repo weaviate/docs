@@ -5,8 +5,9 @@ title: "Hybrid Search with Mistral"
 featured: False
 integration: False
 agent: False
-tags: ['Hybrid Search', 'Mistral']
+tags: ["Hybrid Search", "Mistral"]
 ---
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/mistral/hybrid_search_mistral_embed.ipynb)
 
 # Hybrid Search with Mistral
@@ -16,10 +17,11 @@ This recipe will show you how to run hybrid search with embeddings from Mistral.
 ## Requirements
 
 1. Weaviate cluster
-    1. You can create a 14-day free sandbox on [WCD](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
-    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
-    3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
-    4. [Other options](https://docs.weaviate.io/deploy)
+
+   1. You can create a 14-day free sandbox on [WCD](/go/console?utm_content=recipe/)
+   2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
+   3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
+   4. [Other options](https://docs.weaviate.io/deploy)
 
 2. Mistral API key. Grab one [here](https://docs.mistral.ai/api/).
 
@@ -86,6 +88,7 @@ print(client.is_ready())
 ```
 
 ## Create a collection
+
 > Collection stores your data and vector embeddings.
 
 ```python

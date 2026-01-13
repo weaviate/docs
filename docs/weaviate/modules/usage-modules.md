@@ -4,7 +4,7 @@ description: Add the usage module to collect and upload usage analytics data to 
 ---
 
 :::info Added in `v1.32`
-The usage module collects and uploads usage anaytics data to Google Cloud Storage (GCS) or AWS S3. The modules help to track Weaviate instance usage for analytics and monitoring for the purposes of **billing**.
+The usage module collects and uploads usage analytics data to Google Cloud Storage (GCS) or AWS S3. The modules help to track Weaviate instance usage for analytics and monitoring for the purposes of **billing**.
 :::
 
 :::danger

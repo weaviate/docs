@@ -4,7 +4,9 @@ import io.weaviate.client6.v1.api.collections.query.GroupBy;
 import io.weaviate.client6.v1.api.collections.query.Hybrid.FusionType;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.NearVector;
-import io.weaviate.client6.v1.api.collections.query.Where;
+import io.weaviate.client6.v1.api.collections.query.SearchOperator;
+import io.weaviate.client6.v1.api.collections.query.Target;
+import io.weaviate.client6.v1.api.collections.query.Filter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,27 +37,20 @@ class SearchHybridTest {
     client.close();
   }
 
-  // TODO[g-despot] Why isn't targetVector available?
-  // @Test
-  // void testNamedVectorHybrid() {
-  //   CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
-  //   var response = reviews.query.hybrid(
-  //       // highlight-start
-  //       "A French Riesling", q -> q
-  //           // .targetVector("title_country")
-  //           .limit(3)
+  @Test
+  void testNamedVectorHybrid() {
+    CollectionHandle<Map<String, Object>> reviews =
+        client.collections.use("WineReviewNV");
+    var response = reviews.query.hybrid(
+        // highlight-start
+        Target.text("title_country", "A French Riesling"), q -> q.limit(3)
+    // highlight-end
+    );
 
-  //   // highlight-end
-  //   );
-
-  //   for (var o : response.objects()) {
-  //     System.out.println(o.properties());
-  //   }
-  // }
-  // START NamedVectorHybridPython
-  // Coming soon
-  // END NamedVectorHybridPython
-
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+    }
+  }
 
   @Test
   void testHybridBasic() {
@@ -89,7 +84,7 @@ class SearchHybridTest {
       System.out.println(o.properties());
       // highlight-start
       System.out
-          .println(o.metadata().score() + " " + o.metadata().explainScore());
+          .println(o.queryMetadata().score() + " " + o.queryMetadata().explainScore());
       // highlight-end
     }
     // END HybridWithScorePython
@@ -115,20 +110,20 @@ class SearchHybridTest {
 
   @Test
   void testAutocut() {
-    // START autocut Python
+    // START autolimit Python
     CollectionHandle<Map<String, Object>> jeopardy =
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.hybrid("food", q -> q
         // highlight-start
         .fusionType(FusionType.RELATIVE_SCORE)
-        .autocut(1)
+        .autolimit(1)
     // highlight-end
     );
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END autocut Python
+    // END autolimit Python
   }
 
   @Test
@@ -165,7 +160,6 @@ class SearchHybridTest {
     // END HybridWithFusionTypePython
   }
 
-  // TODO Why isn't bm25Operator available?
   @Test
   void testHybridWithBM25OperatorOrWithMin() {
     // START HybridWithBM25OperatorOrWithMin
@@ -173,11 +167,9 @@ class SearchHybridTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.hybrid(
         // highlight-start
-        "Australian mammal cute"
-    // .bm25Operator(BM25Operator.or(2))
-    // highlight-end
-    // .limit(3)
-    );
+        "Australian mammal cute", c -> c.searchOperator(SearchOperator.or(2))
+            // highlight-end
+            .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -243,26 +235,28 @@ class SearchHybridTest {
   }
 
   //TODO[g-despot]: The method of(NearVectorTarget) in the type NearVector is not applicable for the arguments (float[])
-  // @Test
-  // void testHybridWithVector() {
-  //   // START HybridWithVectorPython
-  //   float[] queryVector = new float[1536]; // Some vector that is compatible with object vectors
-  //   for (int i = 0; i < queryVector.length; i++) {
-  //     queryVector[i] = -0.02f;
-  //   }
+  @Test
+  void testHybridWithVector() {
+    // START HybridWithVectorPython
+    float[] queryVector = new float[1536]; // Some vector that is compatible with object vectors
+    for (int i = 0; i < queryVector.length; i++) {
+      queryVector[i] = -0.02f;
+    }
 
-  //   CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-  //   var response = jeopardy.query.hybrid("food", q -> q
-  //       // highlight-start
-  //       .nearVector(NearVector.of(queryVector))
-  //       // highlight-end
-  //       .alpha(0.25f).limit(3));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        // .nearVector(NearVector.of(queryVector))
+        // highlight-end
+        .alpha(0.25f)
+        .limit(3));
 
-  //   for (var o : response.objects()) {
-  //     System.out.println(o.properties());
-  //   }
-  //   // END HybridWithVectorPython
-  // }
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+    }
+    // END HybridWithVectorPython
+  }
 
   @Test
   void testHybridWithFilter() {
@@ -271,7 +265,7 @@ class SearchHybridTest {
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.hybrid("food", q -> q
         // highlight-start
-        .where(Where.property("round").eq("Double Jeopardy!"))
+        .filters(Filter.property("round").eq("Double Jeopardy!"))
         // highlight-end
         .limit(3));
 
@@ -281,29 +275,31 @@ class SearchHybridTest {
     // END HybridWithFilterPython
   }
 
-  //TODO[g-despot]: The method of(NearVectorTarget) in the type NearVector is not applicable for the arguments (float[])
-  // @Test
-  // void testVectorParameters() {
-  //   // START VectorParametersPython
-  //   CollectionHandle<Map<String, Object>> jeopardy =
-  //       client.collections.use("JeopardyQuestion");
-  //   var response = jeopardy.query.hybrid("California", q -> q
-  //       // highlight-start
-  //       .maxVectorDistance(0.4f)
-  //       .nearVector(NearVector.of(jeopardy.query
-  //           .nearText("large animal",
-  //               c -> c.moveAway(0.5f,
-  //                   from -> from.concepts("mammal", "terrestrial")))
-  //           .objects()
-  //           .get(0)
-  //           .vectors()
-  //           .getDefaultSingle()))
-  //       // highlight-end
-  //       .alpha(0.75f)
-  //       .limit(5));
-  //   // END VectorParametersPython
-  //   assertThat(response.objects().size() <= 5 && response.objects().size() > 0);
-  // }
+  //TODO[g-despot]: Not executed because query needs to be adjusted
+  void testVectorParameters() {
+    // START VectorParametersPython
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+
+    var intermediateResponse = jeopardy.query
+        .nearText("large animal",
+            c -> c.moveAway(0.5f,
+                from -> from.concepts("mammal", "terrestrial")))
+        .objects()
+        .get(0)
+        .vectors()
+        .getDefaultSingle();
+
+    var response = jeopardy.query.hybrid("California", q -> q
+        // highlight-start
+        .maxVectorDistance(0.4f)
+        .nearVector(NearVector.of(intermediateResponse))
+        // highlight-end
+        .alpha(0.75f)
+        .limit(5));
+    // END VectorParametersPython
+    assertThat(response.objects().size() <= 5 && response.objects().size() > 0);
+  }
 
   @Test
   void testVectorSimilarity() {

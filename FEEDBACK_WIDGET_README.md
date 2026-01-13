@@ -8,6 +8,27 @@ The feedback widget is a component that appears on documentation pages, allowing
 
 When a user clicks "Yes" or "No", a modal opens for optional, detailed feedback. Upon submission, a single data object is sent to a Netlify serverless function, which then stores it in a dedicated Weaviate instance.
 
+For negative feedback, after submitting the initial feedback, users are shown a "Thank You" modal with an optional step to create a GitHub issue. This allows users to provide more detailed feedback without the security concerns of free-text input, as the GitHub issue form handles input sanitization.
+
+## User Flow
+
+### Positive Feedback
+1. User clicks "Yes" (thumbs up)
+2. Modal opens with positive feedback options
+3. User selects options (optional) and clicks "Submit"
+4. Feedback is sent to Weaviate instance
+5. Modal closes
+
+### Negative Feedback
+1. User clicks "No" (thumbs down)
+2. Modal opens with negative feedback options
+3. User selects options (optional) and clicks "Submit"
+4. Feedback is sent to Weaviate instance
+5. "Thank You" modal appears with option to create GitHub issue
+6. User can either:
+   - Click "Create GitHub Issue" (opens pre-populated GitHub issue form in new tab with selected feedback options)
+   - Click "Skip" to close the modal
+
 ## Data Payload
 
 The JSON payload sent to the Weaviate instance has the following structure:
@@ -47,9 +68,11 @@ See `.env.example` for an example of the required environment variables.
 
 Add the credentials to your `.env` file like this:
 
+Note: The variables have `2` suffixes as a result of debugging process. In case of any errors, check with folks with access to the Weaviate instance for the correct keys. The keys need to be scoped to "Functions" in Netlify so that the function can access them.
+
 ```
-WEAVIATE_DOCFEEDBACK_URL="https://your-weaviate-instance.weaviate.cloud"
-WEAVIATE_DOCFEEDBACK_API_KEY="YourSecretWeaviateApiKey"
+WEAVIATE_DOCFEEDBACK_URL2="https://your-weaviate-instance.weaviate.cloud"
+WEAVIATE_DOCFEEDBACK_APIKEY2="YourSecretWeaviateApiKey"
 ALLOWED_ORIGIN="http://localhost:8888"  # Set "https://docs.weaviate.io" for prod, "*.netlify.app" for staging and "http://localhost:8888" for local testing
 ```
 
@@ -67,7 +90,7 @@ The CLI will automatically start the Docusaurus site and the serverless function
 
 ### 4. Create the Weaviate Collection
 
-Ensure the `DocFeedback` class exists in your Weaviate instance. It should look like this:
+Ensure the `DocFeedback` class exists in your Weaviate instance. It should look like this :
 
 ```python
 client.collections.create(

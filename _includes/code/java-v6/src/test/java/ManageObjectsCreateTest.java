@@ -2,14 +2,12 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Vectors;
-import io.weaviate.client6.v1.api.collections.query.Metadata;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,29 +31,30 @@ class ManageObjectsCreateTest {
     client = WeaviateClient.connectToLocal();
     // END INSTANTIATION-COMMON
 
-    // TODO[g-despot]: Wasn't able to create collection with vectorizer but without
-    // properties
     // START Define the class
     client.collections.create("JeopardyQuestion",
-        col -> col.properties(Property.text("title", p -> p.description("Name of the wine")))
+        col -> col
+            .properties(
+                Property.text("title", p -> p.description("Name of the wine")))
             .vectorConfig(VectorConfig.text2vecTransformers()));
 
-    // TODO[g-despot]: Add source properties
     client.collections.create("WineReviewNV",
         col -> col
-            .properties(Property.text("review_body", p -> p.description("Review body")),
+            .properties(
+                Property.text("review_body", p -> p.description("Review body")),
                 Property.text("title", p -> p.description("Name of the wine")),
-                Property.text("country", p -> p.description("Originating country")))
+                Property.text("country",
+                    p -> p.description("Originating country")))
             .vectorConfig(VectorConfig.text2vecTransformers("title"),
                 VectorConfig.text2vecTransformers("review_body"),
                 VectorConfig.text2vecTransformers("title_country")));
     // END Define the class
 
     // Additional collections for other tests
-    // TODO[g-despot]: Uncomment once GEO type added
-    // client.collections.create("Publication", col -> col
-    // .properties(Property.geo("headquartersGeoLocation")));
-    client.collections.create("Author", col -> col.vectorConfig(VectorConfig.selfProvided()));
+    client.collections.create("Publication", col -> col
+        .properties(Property.geoCoordinates("headquartersGeoLocation")));
+    client.collections.create("Author",
+        col -> col.vectorConfig(VectorConfig.selfProvided()));
   }
 
   @AfterAll
@@ -71,15 +70,16 @@ class ManageObjectsCreateTest {
     // highlight-start
     var uuid = jeopardy.data.insert(Map.of(
         // highlight-end
-        "question", "This vector DB is OSS & supports automatic property type inference on import",
+        "question",
+        "This vector DB is OSS & supports automatic property type inference on import",
         // "answer": "Weaviate", // properties can be omitted
         "newProperty", 123 // will be automatically added as a number property
-    )).metadata().uuid();
+    )).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateSimpleObject
 
-    var result = jeopardy.query.byId(uuid);
+    var result = jeopardy.query.fetchObjectById(uuid);
     assertThat(result).isPresent();
     assertThat(result.get().properties().get("newProperty")).isEqualTo(123.0); // JSON numbers are parsed as Long
   }
@@ -88,19 +88,18 @@ class ManageObjectsCreateTest {
   void testCreateObjectWithVector() throws IOException {
     // START CreateObjectWithVector
     var jeopardy = client.collections.use("JeopardyQuestion");
-    var uuid = jeopardy.data.insert(
-        Map.of("question",
-            "This vector DB is OSS and supports automatic property type inference on import",
-            "answer", "Weaviate"),
+    var uuid = jeopardy.data.insert(Map.of("question",
+        "This vector DB is OSS and supports automatic property type inference on import",
+        "answer", "Weaviate"),
         // highlight-start
-        meta -> meta.vectors(Vectors.of(new float[300])) // Using a zero vector for demonstration
+        meta -> meta.vectors(Vectors.of(new float[384])) // Using a zero vector for demonstration
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectWithVector
 
-    var result = jeopardy.query.byId(uuid);
+    var result = jeopardy.query.fetchObjectById(uuid);
     assertThat(result).isPresent();
   }
 
@@ -108,20 +107,23 @@ class ManageObjectsCreateTest {
   void testCreateObjectNamedVectors() throws IOException {
     // START CreateObjectNamedVectors
     var reviews = client.collections.use("WineReviewNV"); // This collection must have named vectors configured
-    var uuid = reviews.data.insert(Map.of("title", "A delicious Riesling", "review_body",
-        "This wine is a delicious Riesling which pairs well with seafood.", "country", "Germany"),
+    var uuid = reviews.data.insert(
+        Map.of("title", "A delicious Riesling", "review_body",
+            "This wine is a delicious Riesling which pairs well with seafood.",
+            "country", "Germany"),
         // highlight-start
         // Specify the named vectors, following the collection definition
         meta -> meta.vectors(Vectors.of("title", new float[1536]),
             Vectors.of("review_body", new float[1536]),
             Vectors.of("title_country", new float[1536]))
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectNamedVectors
 
-    var result = reviews.query.byId(uuid, q -> q.includeVector(List.of("review_body", "title", "title_country")));
+    var result = reviews.query.fetchObjectById(uuid,
+        q -> q.includeVector(List.of("review_body", "title", "title_country")));
     assertThat(result).isPresent();
     // assertThat(result.get().metadata().vectors().getVectors()).containsOnlyKeys("title",
     // "review_body",
@@ -146,11 +148,11 @@ class ManageObjectsCreateTest {
         // highlight-start
         meta -> meta.uuid(generateUuid5(dataObject.toString()).toString())
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
     // END CreateObjectWithDeterministicId
 
     assertThat(uuid).isEqualTo(generateUuid5(dataObject.toString()).toString());
-    jeopardy.data.delete(uuid); // Clean up
+    jeopardy.data.deleteById(uuid); // Clean up
   }
 
   @Test
@@ -166,29 +168,30 @@ class ManageObjectsCreateTest {
         // highlight-start
         meta -> meta.uuid("12345678-e64f-5d94-90db-c8cfa3fc1234")
     // highlight-end
-    ).metadata().uuid();
+    ).uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectWithId
 
-    var result = jeopardy.query.byId(uuid);
+    var result = jeopardy.query.fetchObjectById(uuid);
     assertThat(result).isPresent();
-    assertThat(result.get().properties().get("question")).isEqualTo(properties.get("question"));
+    assertThat(result.get().properties().get("question"))
+        .isEqualTo(properties.get("question"));
   }
 
-  // TODO[g-despot]: Uncomment once GEO type added
-  // @Test
+  @Test
   void testWithGeoCoordinates() throws IOException {
     // START WithGeoCoordinates
     var publications = client.collections.use("Publication");
 
-    var uuid = publications.data.insert(
-        Map.of("headquartersGeoLocation", Map.of("latitude", 52.3932696, "longitude", 4.8374263)))
-        .metadata().uuid();
+    var uuid = publications.data
+        .insert(Map.of("headquartersGeoLocation",
+            Map.of("latitude", 52.3932696, "longitude", 4.8374263)))
+        .uuid();
     // END WithGeoCoordinates
 
     assertThat(publications.data.exists(uuid)).isTrue();
-    publications.data.delete(uuid);
+    publications.data.deleteById(uuid);
   }
 
   @Test
@@ -211,7 +214,7 @@ class ManageObjectsCreateTest {
     // END CheckForAnObject
 
     assertThat(authorExists).isTrue();
-    authors.data.delete(objectUuid);
+    authors.data.deleteById(objectUuid);
     assertThat(authors.data.exists(objectUuid)).isFalse();
   }
 
