@@ -1,5 +1,6 @@
 ---
 title: AI-based Weaviate code generation
+sidebar_label: AI-based code generation
 sidebar_position: 50
 description: "Tips and techniques for using generative AI models to write better Weaviate-related code."
 image: og/docs/howto.jpg

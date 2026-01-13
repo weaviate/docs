@@ -101,16 +101,14 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/index",
       },
-      items: []
+      items: [],
     },
     {
       type: "category",
-      label: "AI-based code generation",
-      link: {
-        type: "doc",
-        id: "weaviate/best-practices/code-generation",
-      },
-      items: []
+      label: "AI assistance (Vibe coding)",
+      collapsed: false,
+      collapsible: false,
+      items: ["weaviate/best-practices/code-generation", "weaviate/mcp/index"],
     },
     {
       type: "link",
