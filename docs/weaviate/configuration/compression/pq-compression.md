@@ -48,7 +48,7 @@ For new collections, use AutoPQ. AutoPQ automates triggering of the PQ training 
 AutoPQ requires asynchronous indexing.
 
 - **Open-source Weaviate users**: To enable AutoPQ, set the environment variable `ASYNC_INDEXING=true` and restart your Weaviate instance.
-- [**Weaviate Cloud (WCD)**](https://weaviate.io/go/console?utm_source=docs&utm_content=howto/) users: Enable async indexing through the WCD Console and restart your Weaviate instance.
+- [**Weaviate Cloud (WCD)**](/go/console?utm_content=howto/) users: Enable async indexing through the WCD Console and restart your Weaviate instance.
 
 ### 2. Configure PQ
 
@@ -71,7 +71,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
        language="ts"
      />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CollectionWithAutoPQ"
@@ -79,7 +79,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START CollectionWithAutoPQ"
@@ -148,7 +148,7 @@ Follow these steps to manually enable PQ.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START InitialSchema"
@@ -156,7 +156,7 @@ Follow these steps to manually enable PQ.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START InitialSchema"
@@ -164,7 +164,7 @@ Follow these steps to manually enable PQ.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START InitialSchema"
@@ -217,7 +217,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateSchema"
@@ -225,7 +225,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START UpdateSchema"
@@ -233,7 +233,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START UpdateSchema"
@@ -316,7 +316,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetSchema"
@@ -324,7 +324,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START GetSchema"
@@ -332,7 +332,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetSchema"

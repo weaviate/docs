@@ -44,7 +44,7 @@ SQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START EnableSQ"
@@ -52,7 +52,7 @@ SQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START EnableSQ"
@@ -60,7 +60,7 @@ SQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START EnableSQ"
@@ -95,7 +95,7 @@ SQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateSchema"
@@ -103,7 +103,7 @@ SQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START UpdateSchema"
@@ -111,7 +111,7 @@ SQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START UpdateSchema"
@@ -146,7 +146,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SQWithOptions"
@@ -154,7 +154,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START SQWithOptions"
@@ -162,7 +162,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START SQWithOptions"

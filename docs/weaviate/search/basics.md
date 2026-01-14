@@ -53,7 +53,7 @@ You can get objects without specifying any parameters. This returns objects in a
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BasicGet"
@@ -61,7 +61,7 @@ You can get objects without specifying any parameters. This returns objects in a
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START BasicGet"
@@ -69,7 +69,7 @@ You can get objects without specifying any parameters. This returns objects in a
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START BasicGet"
@@ -137,7 +137,7 @@ Use `limit` to set a fixed maximum number of objects to return.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithLimit"
@@ -145,7 +145,7 @@ Use `limit` to set a fixed maximum number of objects to return.
       language="java"
     />
   </TabItem> 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START GetWithLimit"
@@ -153,7 +153,7 @@ Use `limit` to set a fixed maximum number of objects to return.
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithLimit"
@@ -214,7 +214,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithOffset"
@@ -222,7 +222,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START GetWithOffset"
@@ -230,7 +230,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithOffset"
@@ -293,7 +293,7 @@ You can specify which object properties to return.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetProperties"
@@ -301,7 +301,7 @@ You can specify which object properties to return.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START GetProperties"
@@ -309,7 +309,7 @@ You can specify which object properties to return.
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetProperties"
@@ -370,7 +370,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetObjectVector"
@@ -378,7 +378,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START GetObjectVector"
@@ -386,7 +386,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetObjectVector"
@@ -447,7 +447,7 @@ You can retrieve the object `id` (uuid).
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetObjectId"
@@ -455,7 +455,7 @@ You can retrieve the object `id` (uuid).
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START GetObjectId"
@@ -463,7 +463,7 @@ You can retrieve the object `id` (uuid).
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetObjectId"
@@ -532,7 +532,7 @@ To retrieve properties from cross-referenced objects, specify:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithCrossRefs"
@@ -540,7 +540,7 @@ To retrieve properties from cross-referenced objects, specify:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithCrossRefs"
@@ -601,7 +601,7 @@ You can specify metadata fields to be returned.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithMetadata"
@@ -609,7 +609,7 @@ You can specify metadata fields to be returned.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START GetWithMetadata"
@@ -617,7 +617,7 @@ You can specify metadata fields to be returned.
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithMetadata"
@@ -666,7 +666,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTenancy"
@@ -674,7 +674,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
   <FilteredTextBlock
     text={JavaCode}
     startMarker="// START MultiTenancy"
@@ -682,7 +682,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTenancy"

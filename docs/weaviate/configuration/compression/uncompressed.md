@@ -42,7 +42,7 @@ When creating the collection, you can choose not to use quantization through the
         language="ts"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Uncompressed"
@@ -50,7 +50,7 @@ When creating the collection, you can choose not to use quantization through the
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START Uncompressed"

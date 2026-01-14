@@ -91,6 +91,17 @@ npm install weaviate-client
 ```
 
 </TabItem>
+<TabItem value="java6" label="Java v6">
+
+```xml
+<dependency>
+  <groupId>io.weaviate</groupId>
+  <artifactId>client6</artifactId>
+  <version>||site.java_new_client_version||</version> <!-- Check latest version: https://github.com/weaviate/java-client  -->
+</dependency>
+```
+
+</TabItem>
 </Tabs>
 
 ## Connect to Weaviate
@@ -173,7 +184,7 @@ This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supp
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NearVector"
@@ -181,7 +192,7 @@ This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supp
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START NearVector"

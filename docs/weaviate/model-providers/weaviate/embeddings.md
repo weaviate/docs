@@ -1,6 +1,6 @@
 ---
 title: Text Embeddings
-description: "Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance."
+description: "Weaviate Embeddings models can be accessed directly from a Weaviate Cloud instance."
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
@@ -9,7 +9,7 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 :::info Added in `1.27.10`, `1.28.3`, `1.29.0`
 :::
 
-# Weaviate Embeddings
+# Weaviate Embeddings - Text Embeddings
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -40,13 +40,13 @@ import Requirements from "/\_includes/weaviate-embeddings-requirements.mdx";
 
 <Requirements />
 
-### Weaviate configuration
-
-The Weaviate Embeddings vectorizer is only available for use by Weaviate Cloud instances. At this time, Weaviate Embeddings is not available for self-hosted users.
+:::info Cloud only
+Weaviate Embeddings vectorizers are not available for self-hosted users.
+:::
 
 ### API credentials
 
-Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud instance's access for Weaviate Embeddings.
+Your Weaviate Cloud credentials are automatically used to authorize your access to Weaviate Embeddings.
 
 <Tabs className="code" groupId="languages">
 
@@ -74,7 +74,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START WeaviateInstantiation"
@@ -82,7 +82,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaConnect}
       startMarker="// START WeaviateInstantiation"
@@ -90,7 +90,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="javaraw"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START WeaviateInstantiation"
@@ -129,7 +129,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BasicVectorizerWeaviate"
@@ -137,7 +137,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START BasicVectorizerWeaviate"
@@ -145,7 +145,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START BasicVectorizerWeaviate"
@@ -184,7 +184,7 @@ You can specify one of the [available models](#available-models) for the vectori
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -192,7 +192,7 @@ You can specify one of the [available models](#available-models) for the vectori
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -200,7 +200,7 @@ You can specify one of the [available models](#available-models) for the vectori
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -255,7 +255,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="goraw"
     />
   </TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+<TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BatchImportExample"
@@ -263,7 +263,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START BatchImportExample"
@@ -271,7 +271,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START BatchImportExample"
@@ -322,7 +322,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NearTextExample"
@@ -330,7 +330,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START NearTextExample"
@@ -338,7 +338,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START NearTextExample"
@@ -384,7 +384,7 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-<TabItem value="java6" label="Java v6 (Beta)">
+<TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridExample"
@@ -392,7 +392,7 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START HybridExample"
@@ -400,7 +400,7 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridExample"

@@ -33,7 +33,7 @@ Your Weaviate instance must be configured with the ImageBind multimodal vectoriz
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the ImageBind model.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires spinning up a container with the ImageBind model.
 
 </details>
 

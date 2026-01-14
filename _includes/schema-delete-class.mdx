@@ -63,7 +63,7 @@ if err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Bac
 
 </TabItem>
 
- <TabItem value="java" label="Java">
+ <TabItem value="java" label="Java v5 (Deprecated)">
      <FilteredTextBlock
        text={JavaCode}
        startMarker="// DeleteCollection START"
@@ -72,7 +72,7 @@ if err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Bac
      />
   </TabItem>
 
-   <TabItem value="java6" label="Java v6 (Beta)">
+   <TabItem value="java6" label="Java v6">
      <FilteredTextBlock
        text={JavaV6Code}
        startMarker="// START DeleteCollection"
@@ -90,7 +90,7 @@ curl \
 ```
 
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DeleteCollection"

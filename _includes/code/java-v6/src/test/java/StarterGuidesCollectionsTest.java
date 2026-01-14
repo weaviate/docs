@@ -8,7 +8,6 @@ import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.vectorindex.Distance;
 import io.weaviate.client6.v1.api.collections.vectorindex.Hnsw;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -34,11 +33,6 @@ class StarterGuidesCollectionsTest {
     client.close();
   }
 
-  @AfterEach
-  public static void afterEach() throws Exception {
-    client.collections.delete("Question");
-  }
-
   @Test
   void testBasicSchema() throws IOException {
     // START BasicSchema
@@ -51,7 +45,7 @@ class StarterGuidesCollectionsTest {
 
     System.out.println(questionsConfig);
     // END BasicSchema
-
+    client.collections.delete("Question");
   }
 
   @Test
@@ -72,6 +66,7 @@ class StarterGuidesCollectionsTest {
             // highlight-end
             )));
     // END SchemaWithPropertyOptions
+    client.collections.delete("Question");
   }
 
   @Test
@@ -86,7 +81,7 @@ class StarterGuidesCollectionsTest {
     // highlight-end
     );
     // END SchemaWithMultiTenancy
-
+    client.collections.delete("Question");
   }
 
   @Test
@@ -110,5 +105,6 @@ class StarterGuidesCollectionsTest {
     // highlight-end
     );
     // END SchemaWithIndexSettings
+    client.collections.delete("Question");
   }
 }

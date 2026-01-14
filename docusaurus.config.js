@@ -26,7 +26,15 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
+  clientModules: [
+    require.resolve('./src/components/UTM/capture.js'),
+  ],
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+      onBrokenMarkdownImages: "throw",
+    },
+  },
 
   i18n: {
     defaultLocale: "en",
@@ -89,6 +97,9 @@ const config = {
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
         },
+         pages: {
+        path: "src/pages",    
+      },
         theme: {
           customCss: [
             require.resolve("./src/css/custom.scss"),
@@ -139,7 +150,7 @@ const config = {
           {
             label: "Weaviate Cloud",
             className: "cloud-button",
-            to: "https://weaviate.io/go/console?utm_source=docs&utm_content=navbar",
+            to: "/go/console?utm_content=navbar",
             position: "right",
           },
           {

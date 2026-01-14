@@ -61,7 +61,7 @@ To delete by id, specify the collection name and the object id.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DeleteObject"
@@ -69,7 +69,7 @@ To delete by id, specify the collection name and the object id.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START DeleteObject"
@@ -77,7 +77,7 @@ To delete by id, specify the collection name and the object id.
       language="java"
         />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DeleteObject"
@@ -134,7 +134,7 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DeleteBatch"
@@ -142,7 +142,7 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START DeleteBatch"
@@ -150,7 +150,7 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DeleteBatch"
@@ -206,7 +206,7 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DeleteContains"
@@ -214,7 +214,7 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
 
 ```java
 client.batch().objectsBatchDeleter()
@@ -230,7 +230,7 @@ client.batch().objectsBatchDeleter()
 ```
 
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DeleteContains"
@@ -295,7 +295,7 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DeleteByIDBatch"
@@ -303,7 +303,7 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
 
 ```java
 client.batch().objectsBatchDeleter()
@@ -319,7 +319,7 @@ client.batch().objectsBatchDeleter()
 ```
 
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DeleteByIDBatch"
@@ -332,6 +332,10 @@ client.batch().objectsBatchDeleter()
 ## Delete all objects
 
 Objects must belong to a collection in Weaviate. Accordingly [deleting collections](../manage-collections/collection-operations.mdx#delete-a-collection) will remove all objects within them.
+
+## Delete objects with Time-To-Live (TTL)
+
+You can configure automatic deletion of objects after a specified time period using Time-To-Live (TTL) settings at the collection level. Read how to [set it up](../manage-collections/time-to-live.mdx) or learn more [about it](../concepts/data.md#time-to-live-ttl).
 
 ## Optional parameters
 
@@ -363,7 +367,7 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DryRun"
@@ -371,7 +375,7 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START DryRun"
@@ -379,7 +383,7 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START DryRun"

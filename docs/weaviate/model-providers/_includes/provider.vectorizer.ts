@@ -136,7 +136,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // highlight-start
-      model: 'embed-multilingual-light-v3.0'
+      model: 'embed-v4.0'
       // highlight-end
     }),
   ],
@@ -162,7 +162,8 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
-      // model: 'embed-multilingual-v3.0',
+      // model: 'embed-v4.0',
+      // dimensions: 1024,
       // truncate: 'END',
       // baseURL: '<custom_cohere_url>',
       // vectorizeClassName: true,
@@ -275,6 +276,7 @@ await client.collections.create({
       }],
       // Further options
       // model: "embed-multilingual-v3.0",
+      // dimensions: 1024,
       // truncate: "END",  // "NONE", "START" or "END"
       // baseURL: "<custom_cohere_url>"
     })],
@@ -1285,9 +1287,10 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
-      // model: 'voyage-large-2',
+      // model: 'voyage-3.5-lite',
       // baseURL: '<custom_voyageai_url>',
       // truncate: true
+      // dimensions: 512
     },
     ),
   ],
@@ -1515,6 +1518,13 @@ await client.collections.create({
   // Additional parameters not shown
 });
 // END SnowflakeArcticEmbedLV20
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START BasicVectorizerMMWeaviate
+// Coming soon
+// END BasicVectorizerMMWeaviate
 
 // Clean up
 await client.collections.delete('DemoCollection');
@@ -1866,11 +1876,31 @@ for (let mmSrcObject of mmSrcObjects) {
   });
 }
 
+
+let mmDocObjects = [
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+  { doc_b64image: "<base64 encoded image>" },
+];
+
+// START MMBatchImportDocsExample
+// Coming soon
+// END MMBatchImportDocsExample
+let multiModalDocObjects = new Array();
+
+for (let mmDocObject of mmDocObjects) {
+  multiModalDocObjects.push({
+    doc_page: mmDocObject.doc_b64image,  // Add the image in base64 encoding
+  });
+}
+
 // The model provider integration will automatically vectorize the object
 const mmInsertResponse = await myCollection.data.insertMany(dataObjects);
 
 console.log(mmInsertResponse);
-// END MMBatchImportExample
+// END MMBatchImportDocsExample
 
 // START NearTextExample
 let result;

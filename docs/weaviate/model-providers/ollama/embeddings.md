@@ -38,7 +38,7 @@ Your Weaviate instance must be configured with the Ollama vectorizer integration
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <br/>
 
 To use Ollama with Weaviate Cloud, make sure your Ollama server is running and accessible from the Weaviate Cloud instance. If you are running Ollama on your own machine, you may need to expose it to the internet. Carefully consider the security implications of exposing your Ollama server to the internet.

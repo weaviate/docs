@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Deploying Weaviate
 description: Deployment overview page
 sidebar_position: 0
 ---
@@ -8,17 +8,9 @@ import CardsSection from "/src/components/CardsSection";
 import DeploymentCards from "/src/components/DeploymentCards";
 import styles from "/src/components/CardsSection/styles.module.scss";
 
-# Deploying Weaviate
+Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](/go/console?utm_content=deploy), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
 
-:::info[Section under construction!]
-
-This is a new section being created, please bear with us as we add in new content!
-
-:::
-
-Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=deploy), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
-
-If you are upgrading from a previous version of Weaviate, see the [Migration Guide](docs/deploy/migration/index.md) for any changes that may affect your installation.
+If you are upgrading from a previous version of Weaviate, see the [Migration guide](docs/deploy/migration/index.md) for any changes that may affect your installation.
 
 Weaviate offers multiple deployment options to satisfy your specific use case in production.
 
@@ -29,7 +21,6 @@ Weaviate is designed for:
 - **High-Performance Search** – Power AI applications with real-time vector retrieval.
 - **Flexible Integrations** – Connect with various machine learning models and data sources.
 - **Cloud & On-Prem Deployment** – Deploy on Weaviate Cloud, Kubernetes, or managed cloud services.
-
 
 ## Deployment Options
 
@@ -47,7 +38,7 @@ export const deploymentCardsData = [
     bgImageLight: "/img/site/hex-weaviate-light.svg",
     listItems: [
       "From evaluation (sandbox) to production",
-      "Serverless (infrastructure managed by Weaviate)",
+      "Shared Cloud (infrastructure managed by Weaviate)",
       "(Optional) Data replication (high-availability)",
       "(Optional) Zero-downtime updates",
     ],
@@ -76,7 +67,7 @@ export const deploymentCardsData = [
       link: "/deploy/installation-guides/docker-installation",
     },
   },
-    {
+  {
     tabs: [
       { label: "Evaluation", active: false },
       { label: "Development", active: true },
@@ -109,7 +100,7 @@ export const deploymentCardsData = [
     bgImageLight: "/img/site/aws-marketplace-2.svg",
     listItems: [
       "From evaluation (sandbox) to production",
-      "Serverless (bill through AWS)",
+      "Shared Cloud (bill through AWS)",
       "Kubernetes (billed through AWS)",
       "Self-hosted on EKS",
     ],
@@ -129,7 +120,7 @@ export const deploymentCardsData = [
     bgImageLight: "/img/site/gcp-marketplace.svg",
     listItems: [
       "From evaluation (sandbox) to production",
-      "Serverless (bill through GCP)",
+      "Shared Cloud (bill through GCP)",
       "Kubernetes (billed through GCP)",
     ],
     button: {
@@ -161,9 +152,7 @@ Docker Compose and Kubernetes use `yaml` files to configure Weaviate instances. 
 
 If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
 
-
 ## Versions
-
 
 :::tip Version availability across deployment options:
 
@@ -171,21 +160,19 @@ Weaviate version availability may differ across deployment options, Weaviate Clo
 
 :::
 
-import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
+import RunUnreleasedImages from "/_includes/configuration/run-unreleased.mdx";
 
 <RunUnreleasedImages />
 
 When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
 
+## Further resources
 
-## Related pages
 - [Connect to Weaviate](docs/weaviate/connections/index.mdx)
 - [Weaviate Quickstart](docs/weaviate/quickstart/index.md)
-- [Weaviate Cloud Quickstart](docs/cloud/quickstart.mdx)
-- [References: Configuration](docs/weaviate/configuration/index.mdx)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />
