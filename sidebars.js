@@ -110,9 +110,12 @@ const sidebars = {
     {
       type: "category",
       label: "AI-assisted (vibe) coding",
-      collapsed: false,
-      collapsible: false,
-      items: ["weaviate/mcp/docs-mcp-server", "weaviate/best-practices/code-generation"],
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "weaviate/best-practices/code-generation",
+      },
+      items: ["weaviate/mcp/docs-mcp-server"],
     },
     {
       type: "link",
