@@ -4,6 +4,9 @@ sidebar_label: Docs MCP Server
 # tags: ["mcp"]
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 The **Weaviate Docs MCP Server** brings instant access to Weaviate's documentation directly into your AI development environment. Built on the Model Context Protocol (MCP), this server integrates seamlessly with tools like Claude Desktop and Cursor, allowing you to query Weaviate's documentation without leaving your IDE.
 
 The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate under the hood) as its knowledge engine, which powers the search and retrieval of Weaviate documentation. The server offers:
@@ -12,55 +15,106 @@ The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate unde
 - **Multi-source knowledge base**: Queries across docs, tutorials, API references, GitHub issues and community content.
 - **Always up-to-date**: Automatically syncs with the latest Weaviate documentation.
 
-## How-to setup Docs MCP Server
+## How to setup MCP Server
 
-Here you can find instructions on how to connect to the Docs MCP Server from Claude Desktop and Cursor. For other platforms, consult their respective documentation (for example, [ChatGPT](https://platform.openai.com/docs/mcp), [Claude Code](https://code.claude.com/docs/en/mcp)).
+**URL**: https://weaviate-docs.mcp.kapa.ai
 
-### Claude Desktop
+Setup steps vary depending on which AI assistant you're using.
 
-1. Locate your Claude Desktop configuration file, usually located here:
-
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
-
-2. Add the Weaviate MCP server configuration:
+<Tabs groupId="platform">
+<TabItem value="cursor" label="Cursor">
+Add the following to your `.cursor/mcp.json` file:
 
 ```json
 {
-  "mcpServers": {
-    "weaviate-docs": {
-      "url": "https://weaviate-docs-mcp.netlify.app/mcp-server"
+  "weaviate-docs": {
+    "kapa": {
+      "type": "http",
+      "url": "https://weaviate-docs.mcp.kapa.ai"
     }
   }
 }
 ```
 
-3. Restart Claude Desktop.
+</TabItem>
+<TabItem value="vsc" label="VS Code">
+Prerequisites: VS Code 1.102+ with GitHub Copilot enabled.
 
-4. Look for the **Weaviate Docs** option under the _Search and tools_ section in Claude Desktop to confirm the server is connected.
+Create an `mcp.json` file in your workspace `.vscode` folder:
 
-### Cursor
-
-1. Open Cursor settings (Cmd/Ctrl + ,).
-
-2. Navigate to **Features** → **Model Context Protocol**,
-
-3. Add the server URL:
-
+```json
+{
+  "servers": {
+    "weaviate-docs": {
+      "type": "http",
+      "url": "https://weaviate-docs.mcp.kapa.ai"
+    }
+  }
+}
 ```
-https://weaviate-docs-mcp.netlify.app/mcp-server
+
+</TabItem>
+<TabItem value="claude_code" label="Claude Code">
+Run the following command in your terminal:
+```bash
+claude mcp add --transport http kapa-ai-docs https://kapa-docs.mcp.kapa.ai
+```
+Then run the `/mcp` command in Claude Code and follow the steps in your browser to authenticate.
+
+For more information, see the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp).
+
+</TabItem>
+<TabItem value="chatgpt_desktop" label="ChatGPT Desktop">
+ChatGPT Desktop supports MCP servers in developer mode:
+
+1. Open ChatGPT Desktop.
+2. Go to **Settings** > **Features**.
+3. Enable **Developer mode**.
+4. Navigate to **Settings** > **MCP Servers**.
+5. Click **Add Server** and enter:
+
+- **Name**: Weaviate Docs
+- **URL**: https://kapa-docs.mcp.kapa.ai
+
+For more information, see the [ChatGPT Desktop MCP documentation](https://platform.openai.com/docs/guides/developer-mode).
+
+  </TabItem>
+<TabItem value="claude_desktop" label="Claude Desktop">
+Claude Desktop supports MCP servers:
+
+1. Open Claude Desktop.
+2. Go to **Settings** > **Connectors**.
+3. Click **Add custom connector** and enter:
+
+- **Name**: Weaviate Docs
+- **URL**: https://kapa-docs.mcp.kapa.ai
+
+Restart Claude Desktop for changes to take effect.
+
+For more details, see the [Claude Desktop documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
+
+</TabItem>
+<TabItem value="other" label="Other">
+MCP is an open protocol supported by many clients. Use the server URL https://kapa-docs.mcp.kapa.ai and refer to your client's documentation for setup instructions.
+
+Most clients accept the standard MCP JSON configuration format:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-docs": {
+      "url": "https://weaviate-docs.mcp.kapa.ai"
+    }
+  }
+}
 ```
 
-4. Restart Cursor.
+</TabItem>
+</Tabs>
 
 ## Using the MCP Server
 
-### In Claude Desktop
-
-Once configured, you can interact with Weaviate documentation naturally:
-
-**Example queries:**
+Once configured, you can ask context-aware questions about Weaviate from within your editor. For example:
 
 ```
 "How do I set up a hybrid search in Weaviate?"
@@ -72,69 +126,15 @@ Once configured, you can interact with Weaviate documentation naturally:
 "What's the difference between vector and keyword search in Weaviate?"
 ```
 
-Claude will automatically use the MCP server to search the documentation and provide cited answers.
-
-### In Cursor
-
-While coding, you can ask Cursor to reference Weaviate documentation. Here's a typical workflow using the MCP server:
-
-1. **You're coding a Weaviate integration in Cursor**
-
-   ```python
-   import weaviate
-
-   # How do I set up authentication?
-   ```
-
-2. **Ask Cursor**: "Search Weaviate docs for authentication setup with Python client".
-
-3. **MCP Server queries kapa.ai**, which searches the Weaviate documentation using semantic search.
-
-4. **You receive** a detailed answer with code examples and links to relevant docs.
-
-## Technical details
-
-### API endpoint
-
-The server exposes a single endpoint:
-
-```
-GET  /mcp-server - SSE connection for MCP protocol
-POST /mcp-server - MCP JSON-RPC requests
-```
-
-### Available tools
-
-The server provides one tool to AI assistants:
-
-**`search_weaviate_docs`**
-
-- **Description**: Search Weaviate documentation, tutorials, API references, and community content
-- **Input**: `query` (string) - Your question or search query
-- **Output**: Answers with citations and source links
-
-### Protocol support
-
-- **MCP Version**: 2024-11-05
-- **Protocol**: JSON-RPC 2.0
-- **Transport**: Server-Sent Events (SSE)
-
 ## Troubleshooting
 
 <details>
   <summary>Server not showing up</summary>
 
-**Claude Desktop:**
-
-- Verify the config file syntax is valid JSON
 - Check that the file path is correct for your OS
-- Restart Claude Desktop completely (quit and reopen)
-
-**Cursor:**
-
+- Restart the app completely
 - Ensure the URL is entered correctly with `/mcp-server` path
-- Check Cursor's MCP settings are enabled
-- Restart Cursor
+- Verify the config file syntax is valid JSON
 
 </details>
 
@@ -146,7 +146,7 @@ If you see connection errors:
 1. Verify the server URL is accessible:
 
    ```bash
-   curl https://weaviate-docs-mcp.netlify.app/mcp-server
+   curl https://weaviate-docs.mcp.kapa.ai
    ```
 
 2. Check your internet connection
@@ -175,44 +175,6 @@ If queries return empty results:
 The public Weaviate MCP server may have rate limits. If you experience issues:
 
 - Wait a few minutes before trying again
-- Consider deploying your own instance for higher usage
-
-</details>
-
-## FAQ
-
-<details>
-  <summary>Is this official Weaviate infrastructure?</summary>
-
-Yes, the public Weaviate Docs MCP server is maintained by the Weaviate team for community use.
-
-</details>
-
-<details>
-  <summary>Does this work with other AI assistants?</summary>
-
-The MCP protocol is supported by various AI tools. While this guide focuses on Claude Desktop and Cursor, any MCP-compatible client should work.
-
-</details>
-
-<details>
-  <summary>Can I use this for my own documentation?</summary>
-
-Absolutely! The code is open source. Deploy your own instance with your kapa.ai credentials to create an MCP server for any documentation.
-
-</details>
-
-<details>
-  <summary>What's the rate limit?</summary>
-
-The public server has reasonable rate limits for community use. For high-volume usage, consider deploying your own instance.
-
-</details>
-
-<details>
-  <summary>Does this replace the Weaviate documentation site?</summary>
-
-No, this complements the documentation by bringing it into your development workflow. The full documentation site remains the authoritative source with complete content, guides, and resources.
 
 </details>
 
