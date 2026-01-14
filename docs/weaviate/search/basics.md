@@ -264,9 +264,9 @@ The output is like this:
 
 To paginate through the entire database, use a [cursor](../manage-objects/read-all-objects.mdx) instead of offset and limit.
 
-## Specify object `properties`
+## Retrieve object `properties`
 
-You can specify which object properties to return.
+You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise.
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
