@@ -266,7 +266,7 @@ To paginate through the entire database, use a [cursor](../manage-objects/read-a
 
 ## Retrieve object `properties`
 
-You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise.
+You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise (_this does not apply to the Go and Java v5 client libraries)_.
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
