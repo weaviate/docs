@@ -47,6 +47,7 @@ const domainsToIgnore = [
     'https://towardsdatascience.com/',
     'https://voyageai.com/',
     'https://weaviateagents.featurebase.app',
+    'https://weaviate-docs.mcp.kapa.ai/',
     'https://youtu.be/',
     'https://www.youtube.com',
     'https://x.com',

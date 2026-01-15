@@ -24,6 +24,7 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import OidcUserJavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-oidc-users.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.users_test.go";
 import OidcUserGoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.oidc.users_test.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
 :::info Added in `v1.29` and `v1.30`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
@@ -93,6 +94,14 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -152,6 +161,14 @@ This example creates a user called `custom-user`.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -208,6 +225,14 @@ This example deletes a user called `custom-user`.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteUser"
+      endMarker="// END DeleteUser"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Rotate database user API key {#rotate-user-api-key}
@@ -253,6 +278,14 @@ This example updates (rotates) the API key for `custom-user`.
       startMarker="// START RotateApiKey"
       endMarker="// END RotateApiKey"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -315,6 +348,14 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AssignRole"
+      endMarker="// END AssignRole"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Remove a role from a database user
@@ -364,6 +405,14 @@ This example removes the role `testRole` from the user `custom-user`.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Get a database user's roles
@@ -409,6 +458,14 @@ Retrieve the role information for any user.
       startMarker="// START ListUserRoles"
       endMarker="// END ListUserRoles"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -474,6 +531,14 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Remove a role from an OIDC user
@@ -523,6 +588,14 @@ This example removes the role `testRole` from the user `custom-user`.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Get an OIDC user's roles
@@ -568,6 +641,14 @@ Retrieve the role information for an OIDC user.
       startMarker="// START ListOidcUserRoles"
       endMarker="// END ListOidcUserRoles"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

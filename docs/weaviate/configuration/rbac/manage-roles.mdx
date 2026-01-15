@@ -14,9 +14,10 @@ import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.per
 import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts";
 import RolePyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py";
 import RoleTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts";
-import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/RBACTest.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-roles.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
 :::info Added in `v1.29`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
@@ -76,6 +77,14 @@ Role management requires appropriate `role` resource permissions that can be obt
       startMarker="// START AdminClient"
       endMarker="// END AdminClient"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -155,6 +164,14 @@ This example creates a role called `testRole` with permissions to:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddManageRolesPermission"
+      endMarker="// END AddManageRolesPermission"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Create a role with `User Management` permissions {#user-management-permissions}
@@ -174,7 +191,7 @@ This example creates a role called `testRole` with permissions to:
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
+    <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddManageUsersPermission"
       endMarker="// END AddManageUsersPermission"
@@ -183,10 +200,10 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START AddManageUsersPermission"
-    endMarker="// END AddManageUsersPermission"
-    language="go"
+      text={GoCode}
+      startMarker="// START AddManageUsersPermission"
+      endMarker="// END AddManageUsersPermission"
+      language="go"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6">
@@ -199,11 +216,19 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START AddManageUsersPermission"
-    endMarker="// END AddManageUsersPermission"
-    language="java"
-  />
+      text={JavaCode}
+      startMarker="// START AddManageUsersPermission"
+      endMarker="// END AddManageUsersPermission"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddManageUsersPermission"
+      endMarker="// END AddManageUsersPermission"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -252,6 +277,14 @@ This example creates a role called `testRole` with permissions to:
       startMarker="// START AddCollectionsPermission"
       endMarker="// END AddCollectionsPermission"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddCollectionsPermission"
+      endMarker="// END AddCollectionsPermission"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -305,6 +338,14 @@ This example creates a role called `testRole` with permissions to:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddTenantPermission"
+      endMarker="// END AddTenantPermission"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Create a role with `Data Objects` permissions {#data-permissions}
@@ -353,6 +394,14 @@ This example creates a role called `testRole` with permissions to:
       startMarker="// START AddDataObjectPermission"
       endMarker="// END AddDataObjectPermission"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddDataObjectPermission"
+      endMarker="// END AddDataObjectPermission"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -404,6 +453,14 @@ This example creates a role called `testRole` with permissions to:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddBackupPermission"
+      endMarker="// END AddBackupPermission"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Create a role with `Cluster Data Access` permissions {#clusters-permissions}
@@ -451,6 +508,14 @@ This example creates a role called `testRole` with permissions to:
       startMarker="// START AddClusterPermission"
       endMarker="// END AddClusterPermission"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddClusterPermission"
+      endMarker="// END AddClusterPermission"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -502,6 +567,14 @@ This example creates a role called `testRole` with permissions to:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddNodesPermission"
+      endMarker="// END AddNodesPermission"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Create a role with `Collection Alias` permissions {#aliases-permissions}
@@ -529,10 +602,10 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START AddAliasPermission"
-    endMarker="// END AddAliasPermission"
-    language="go"
+      text={GoCode}
+      startMarker="// START AddAliasPermission"
+      endMarker="// END AddAliasPermission"
+      language="go"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6">
@@ -545,10 +618,18 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START AddAliasPermission"
-    endMarker="// END AddAliasPermission"
-    language="java"
+      text={JavaCode}
+      startMarker="// START AddAliasPermission"
+      endMarker="// END AddAliasPermission"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddAliasPermission"
+      endMarker="// END AddAliasPermission"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -599,6 +680,14 @@ endMarker="// END AddReplicationsPermission"
 language="java"
 />
 </TabItem>
+<TabItem value="csharp" label="C#">
+<FilteredTextBlock
+text={CSharpCode}
+startMarker="// START AddReplicationsPermission"
+endMarker="// END AddReplicationsPermission"
+language="csharp"
+/>
+</TabItem>
 </Tabs>
 
 #### Create a role with `Groups` permissions {#groups-permissions}
@@ -645,6 +734,14 @@ text={JavaCode}
 startMarker="// START AddGroupsPermission"
 endMarker="// END AddGroupsPermission"
 language="java"
+/>
+</TabItem>
+<TabItem value="csharp" label="C#">
+<FilteredTextBlock
+text={CSharpCode}
+startMarker="// START AddGroupsPermission"
+endMarker="// END AddGroupsPermission"
+language="csharp"
 />
 </TabItem>
 </Tabs>
@@ -698,6 +795,14 @@ This example grants additional permissions to the role `testRole` to:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddRoles"
+      endMarker="// END AddRoles"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Remove permissions from a role
@@ -719,12 +824,12 @@ This example removes the following permissions from the role `testRole`:
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-        text={RoleTSCode}
-        startMarker="// START RemovePermissions"
-        endMarker="// END RemovePermissions"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={RoleTSCode}
+      startMarker="// START RemovePermissions"
+      endMarker="// END RemovePermissions"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -748,6 +853,14 @@ This example removes the following permissions from the role `testRole`:
       startMarker="// START RemovePermissions"
       endMarker="// END RemovePermissions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RemovePermissions"
+      endMarker="// END RemovePermissions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -797,6 +910,14 @@ Check if the role `testRole` exists:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CheckRoleExists"
+      endMarker="// END CheckRoleExists"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Inspect a role
@@ -842,6 +963,14 @@ View the permissions assigned to a role.
       startMarker="// START InspectRole"
       endMarker="// END InspectRole"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START InspectRole"
+      endMarker="// END InspectRole"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -891,6 +1020,14 @@ View all roles in the system and their permissions.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListAllRoles"
+      endMarker="// END ListAllRoles"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### List users with a role
@@ -907,12 +1044,12 @@ List all users who have the role `testRole`.
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-        text={RoleTSCode}
-        startMarker="// START AssignedUsers"
-        endMarker="// END AssignedUsers"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={RoleTSCode}
+      startMarker="// START AssignedUsers"
+      endMarker="// END AssignedUsers"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -936,6 +1073,14 @@ List all users who have the role `testRole`.
       startMarker="// START AssignedUsers"
       endMarker="// END AssignedUsers"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AssignedUsers"
+      endMarker="// END AssignedUsers"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -954,12 +1099,12 @@ Deleting a role will remove it from the system, and revoke the associated permis
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-        text={RoleTSCode}
-        startMarker="// START DeleteRole"
-        endMarker="// END DeleteRole"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={RoleTSCode}
+      startMarker="// START DeleteRole"
+      endMarker="// END DeleteRole"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -983,6 +1128,14 @@ Deleting a role will remove it from the system, and revoke the associated permis
       startMarker="// START DeleteRole"
       endMarker="// END DeleteRole"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteRole"
+      endMarker="// END DeleteRole"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

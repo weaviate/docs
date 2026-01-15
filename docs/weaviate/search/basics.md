@@ -69,7 +69,7 @@ You can get objects without specifying any parameters. This returns objects in a
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START BasicGet"
@@ -153,7 +153,7 @@ Use `limit` to set a fixed maximum number of objects to return.
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithLimit"
@@ -230,7 +230,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithOffset"
@@ -264,9 +264,9 @@ The output is like this:
 
 To paginate through the entire database, use a [cursor](../manage-objects/read-all-objects.mdx) instead of offset and limit.
 
-## Specify object `properties`
+## Retrieve object `properties`
 
-You can specify which object properties to return.
+You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise (_this does not apply to the Go and Java v5 client libraries)_.
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -309,7 +309,7 @@ You can specify which object properties to return.
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetProperties"
@@ -386,7 +386,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetObjectVector"
@@ -463,7 +463,7 @@ You can retrieve the object `id` (uuid).
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetObjectId"
@@ -540,7 +540,7 @@ To retrieve properties from cross-referenced objects, specify:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithCrossRefs"
@@ -617,7 +617,7 @@ You can specify metadata fields to be returned.
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetWithMetadata"
@@ -682,7 +682,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
     language="java"
   />
 </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MultiTenancy"

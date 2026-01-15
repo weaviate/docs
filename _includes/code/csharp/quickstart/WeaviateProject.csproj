@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="**/*.cs" Exclude="**/*Test.cs;**/AssemblyInfo.cs;**/obj/**;**/bin/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../../../../csharp-client/src/Weaviate.Client/Weaviate.Client.csproj" />
+  </ItemGroup>
+</Project>
