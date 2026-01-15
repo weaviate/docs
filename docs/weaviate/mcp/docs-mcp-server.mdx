@@ -31,8 +31,8 @@ Add the following to your `.cursor/mcp.json` file:
 
 ```json
 {
-  "weaviate-docs": {
-    "kapa": {
+  "mcpServers": {
+    "weaviate-docs": {
       "type": "http",
       "url": "https://weaviate-docs.mcp.kapa.ai"
     }
@@ -61,7 +61,7 @@ Create an `mcp.json` file in your workspace `.vscode` folder:
 <TabItem value="claude_code" label="Claude Code">
 Run the following command in your terminal:
 ```bash
-claude mcp add --transport http kapa-ai-docs https://kapa-docs.mcp.kapa.ai
+claude mcp add --transport http weaviate-docs https://weaviate-docs.mcp.kapa.ai
 ```
 Then run the `/mcp` command in Claude Code and follow the steps in your browser to authenticate.
 
@@ -72,13 +72,13 @@ For more information, see the [Claude Code MCP documentation](https://docs.anthr
 ChatGPT Desktop supports MCP servers in developer mode:
 
 1. Open ChatGPT Desktop.
-2. Go to **Settings** > **Features**.
+2. Go to **Settings** > **Apps** > **Advanced settings**.
 3. Enable **Developer mode**.
-4. Navigate to **Settings** > **MCP Servers**.
-5. Click **Add Server** and enter:
+4. Navigate to **Settings** > **Connectors**.
+5. Click **Create** and enter:
 
 - **Name**: Weaviate Docs
-- **URL**: https://kapa-docs.mcp.kapa.ai
+- **URL**: https://weaviate-docs.mcp.kapa.ai
 
 For more information, see the [ChatGPT Desktop MCP documentation](https://platform.openai.com/docs/guides/developer-mode).
 
@@ -91,7 +91,7 @@ Claude Desktop supports MCP servers:
 3. Click **Add custom connector** and enter:
 
 - **Name**: Weaviate Docs
-- **URL**: https://kapa-docs.mcp.kapa.ai
+- **URL**: https://weaviate-docs.mcp.kapa.ai
 
 4. Click on **Connect** and follow the steps in your browser to authenticate.
 
@@ -101,7 +101,7 @@ For more details, see the [Claude Desktop documentation](https://support.claude.
 
 </TabItem>
 <TabItem value="other" label="Other">
-MCP is an open protocol supported by many clients. Use the server URL https://kapa-docs.mcp.kapa.ai and refer to your client's documentation for setup instructions.
+MCP is an open protocol supported by many clients. Use the server URL https://weaviate-docs.mcp.kapa.ai and refer to your client's documentation for setup instructions.
 
 Most clients accept the standard MCP JSON configuration format:
 
@@ -139,7 +139,7 @@ Once configured, you can ask context-aware questions about Weaviate from within 
 
 - Check that the file path is correct for your OS
 - Restart the app completely
-- Ensure the URL is entered correctly with `/mcp-server` path
+- Ensure the URL is entered correctly
 - Verify the config file syntax is valid JSON
 
 </details>
@@ -188,7 +188,7 @@ The public Weaviate MCP server may have rate limits. If you experience issues:
 
 - [Vibe coding - Best practices](../best-practices/code-generation.md)
 - [MCP documentation](https://modelcontextprotocol.io)
-- [Kapa.ai documentation](https://docs.kapa.ai)
+- [kapa.ai documentation](https://docs.kapa.ai)
 
 ## Questions and feedback
 
