@@ -99,7 +99,7 @@ yarn validate-links-dev
   - Contains multi-language code examples
 
 - **`/src`** - Custom React components and theme customizations
-  - `components/` - 16 custom components (Feedback, InPageAskAI, APITable, etc.)
+  - `components/` - 16 custom components (Feedback, APITable, etc.)
   - `theme/` - Docusaurus swizzled components (Navbar, Footer, SearchBar, etc.)
   - `css/` - SCSS stylesheets
   - `remark/` - Custom remark plugins for markdown processing
@@ -152,7 +152,6 @@ The custom navbar (`src/theme/Navbar/NavbarWrapper.js`) manages:
 
 Located in `src/components/`:
 - **Feedback** - Expandable feedback widget linking to GitHub issues
-- **InPageAskAI** - LLM-powered question component
 - **APITable** - Structured API parameter tables
 - **DockerConfigGen** - Interactive Docker configuration generator
 - **Tooltip**, **CardsSection**, **QuickLinks** - UI components
@@ -206,7 +205,7 @@ Tests ensure documentation code examples work against live Weaviate instances.
 - Add tests in `/tests` for Python examples
 - Ensure examples are self-contained and runnable
 - Use inline assertions in examples for validation
-- Set required API keys as environment variables (OPENAI_APIKEY, COHERE_APIKEY, etc.)
+- Set required API keys as environment variables (OPENAI_API_KEY, COHERE_API_KEY, etc.)
 
 ### Link Validation
 
@@ -233,7 +232,6 @@ Before PR merge:
 
 - **Kapa.ai** - AI chatbot widget (configured in `Root.js`)
 - **Scalar** - Interactive REST API documentation at `/weaviate/api/rest`
-- **Algolia** - Search functionality
 - **Google Tag Manager** - Analytics
 - **LLMs.txt plugin** - Generates LLM-friendly content dump
 - **Mermaid** - Diagram support in markdown
