@@ -64,6 +64,9 @@ export default function Root({ children }) {
           "data-modal-footer",
           "Powered by Weaviate and kapa.ai"
         );
+        script.setAttribute("data-mcp-enabled", "true");
+        script.setAttribute("data-mcp-server-url", "weaviate.mcp.kapa.ai");
+        script.setAttribute("data-mcp-button-text", "Use Docs MCP");
         script.async = true;
         document.body.appendChild(script);
       } else if (!shouldLoadWidget && existingScript) {

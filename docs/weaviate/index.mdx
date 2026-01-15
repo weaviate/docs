@@ -64,6 +64,31 @@ return <CardsSection items={regularItems} className={styles.smallCards} />;
 <br />
 })()}
 
+## AI-assisted coding
+
+Check out our resources on AI-assisted coding (_Vibe coding_) with Weaviate:
+
+export const vibeCodingCardsData = [
+  {
+    id: "new",
+    title: "Weaviate Docs MCP Server",
+    description: "Instant access to Weaviate's documentation directly in your AI development environment. ",
+    link: "/weaviate/mcp/docs-mcp-server",
+    icon: "fas fa-book",
+  },
+  {
+    id: "academy",
+    title: "Best practices for coding with AI",
+    description: "Avoid hallucinations and improve your AI-assisted coding experience.",
+    link: "/weaviate/best-practices/code-generation",
+    icon: "fas fa-lightbulb",
+  },
+];
+
+<CardsSection items={vibeCodingCardsData} className={styles.smallCards} />
+
+<br />
+
 ## What is Weaviate?
 
 Weaviate is an **open-source vector database** designed to store and index both data objects and their vector embeddings. This architecture enables advanced semantic search capabilities by comparing the meaning encoded in vectors rather than relying solely on keyword matching. Key capabilities include:
