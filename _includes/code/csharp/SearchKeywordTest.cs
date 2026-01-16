@@ -1,10 +1,10 @@
-using Xunit;
+using System;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -22,18 +22,14 @@ public class SearchKeywordTest : IDisposable
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
         // The C# client uses a configuration object.
-        var config = new ClientConfiguration
-        {
-            // For Weaviate Cloud, the URL is the full gRPC address
-            GrpcAddress = weaviateUrl,
-            // Headers are added to the configuration
-            // Headers = new()
-            // {
-            //     { "Authorization", $"Bearer {weaviateApiKey}" },
-            //     { "X-OpenAI-Api-Key", openaiApiKey }
-            // }
-        };
-        client = new WeaviateClient(config);
+        client = Connect
+            .Cloud(
+                restEndpoint: weaviateUrl,
+                apiKey: weaviateApiKey,
+                headers: new() { { "X-OpenAI-Api-Key", openaiApiKey } }
+            )
+            .GetAwaiter()
+            .GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -63,16 +59,64 @@ public class SearchKeywordTest : IDisposable
         // END BM25Basic
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
+        Assert.Contains(
+            "food",
+            JsonSerializer.Serialize(response.Objects.First().Properties).ToLower()
+        );
     }
 
-    // START BM25OperatorOrWithMin
-    // Coming soon
-    // END BM25OperatorOrWithMin
+    [Fact]
+    public async Task TestBM25OperatorOrWithMin()
+    {
+        // START BM25OperatorOrWithMin
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.BM25(
+            // highlight-start
+            query: "Australian mammal cute",
+            searchOperator: new BM25Operator.Or(MinimumMatch: 1),
+            // highlight-end
+            limit: 3
+        );
 
-    // START BM25OperatorAnd
-    // Coming soon
-    // END BM25OperatorAnd
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+        }
+        // END BM25OperatorOrWithMin
+
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        var propertiesJson = JsonSerializer
+            .Serialize(response.Objects.First().Properties)
+            .ToLower();
+        Assert.True(
+            propertiesJson.Contains("australia")
+                || propertiesJson.Contains("mammal")
+                || propertiesJson.Contains("cute")
+        );
+    }
+
+    // TODO[g-despot] Does the search operator work?
+    [Fact]
+    public async Task TestBM25OperatorAnd()
+    {
+        // START BM25OperatorAnd
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.BM25(
+            // highlight-start
+            query: "Australian mammal cute",
+            searchOperator: new BM25Operator.And(), // Each result must include all tokens (e.g. "australian", "mammal", "cute")
+            // highlight-end
+            limit: 3
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+        }
+        // END BM25OperatorAnd
+
+        // Assert.True(response.Objects.Count == 0);
+    }
 
     [Fact]
     public async Task TestBM25WithScore()
@@ -94,7 +138,10 @@ public class SearchKeywordTest : IDisposable
         }
         // END BM25WithScore
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
+        Assert.Contains(
+            "food",
+            JsonSerializer.Serialize(response.Objects.First().Properties).ToLower()
+        );
         Assert.NotNull(response.Objects.First().Metadata.Score);
     }
 
@@ -118,7 +165,10 @@ public class SearchKeywordTest : IDisposable
         // END limit
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("safety", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
+        Assert.Contains(
+            "safety",
+            JsonSerializer.Serialize(response.Objects.First().Properties).ToLower()
+        );
         Assert.Equal(3, response.Objects.Count());
     }
 
@@ -130,7 +180,7 @@ public class SearchKeywordTest : IDisposable
         var response = await jeopardy.Query.BM25(
             "safety",
             // highlight-start
-            autoCut: 1
+            autoLimit: 1
         // highlight-end
         );
 
@@ -141,7 +191,10 @@ public class SearchKeywordTest : IDisposable
         // END autocut
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("safety", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
+        Assert.Contains(
+            "safety",
+            JsonSerializer.Serialize(response.Objects.First().Properties).ToLower()
+        );
     }
 
     [Fact]
@@ -166,7 +219,10 @@ public class SearchKeywordTest : IDisposable
         // END BM25WithProperties
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("safety", response.Objects.First().Properties["question"].ToString().ToLower());
+        Assert.Contains(
+            "safety",
+            response.Objects.First().Properties["question"].ToString().ToLower()
+        );
     }
 
     [Fact]
@@ -189,7 +245,10 @@ public class SearchKeywordTest : IDisposable
         // END BM25WithBoostedProperties
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
+        Assert.Contains(
+            "food",
+            JsonSerializer.Serialize(response.Objects.First().Properties).ToLower()
+        );
     }
 
     [Fact]
@@ -200,7 +259,7 @@ public class SearchKeywordTest : IDisposable
         var response = await jeopardy.Query.BM25(
             // highlight-start
             "food wine", // search for food or wine
-                         // highlight-end
+            // highlight-end
             searchFields: ["question"],
             limit: 5
         );
@@ -212,7 +271,9 @@ public class SearchKeywordTest : IDisposable
         // END MultipleKeywords
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        var propertiesJson = JsonSerializer.Serialize(response.Objects.First().Properties).ToLower();
+        var propertiesJson = JsonSerializer
+            .Serialize(response.Objects.First().Properties)
+            .ToLower();
         Assert.True(propertiesJson.Contains("food") || propertiesJson.Contains("wine"));
     }
 
@@ -224,7 +285,7 @@ public class SearchKeywordTest : IDisposable
         var response = await jeopardy.Query.BM25(
             "food",
             // highlight-start
-            filters: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
             // highlight-end
             returnProperties: ["answer", "question", "round"], // return these properties
             limit: 3
@@ -237,7 +298,10 @@ public class SearchKeywordTest : IDisposable
         // END BM25WithFilter
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
+        Assert.Contains(
+            "food",
+            JsonSerializer.Serialize(response.Objects.First().Properties).ToLower()
+        );
         Assert.Equal("Double Jeopardy!", response.Objects.First().Properties["round"].ToString());
     }
 
@@ -249,11 +313,10 @@ public class SearchKeywordTest : IDisposable
 
         var response = await jeopardy.Query.BM25(
             "California",
-            groupBy: new GroupByRequest
+            groupBy: new GroupByRequest("round") // group by this property
             {
-                PropertyName = "round",       // group by this property
-                NumberOfGroups = 2,           // maximum number of groups
-                ObjectsPerGroup = 3,          // maximum objects per group
+                NumberOfGroups = 2, // maximum number of groups
+                ObjectsPerGroup = 3, // maximum objects per group
             }
         );
 

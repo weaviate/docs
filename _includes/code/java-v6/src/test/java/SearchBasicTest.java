@@ -3,7 +3,6 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.query.ConsistencyLevel;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
-import io.weaviate.client6.v1.api.collections.query.Where;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,11 +22,8 @@ class SearchBasicTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
 
-    client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl,
-        weaviateApiKey,
-        config -> config
-            .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
   }
 
@@ -36,13 +32,13 @@ class SearchBasicTest {
     client.close();
   }
 
-  // TODO[g-despot] Why doesn't standalone fetachObjects work?
   @Test
   void testBasicGet() {
     // START BasicGet
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     // highlight-start
-    var response = jeopardy.query.fetchObjects(config -> config.limit(1));
+    var response = jeopardy.query.fetchObjects();
     // highlight-end
 
     for (var o : response.objects()) {
@@ -54,7 +50,8 @@ class SearchBasicTest {
   @Test
   void testGetWithLimit() {
     // START GetWithLimit
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // highlight-start
         q -> q.limit(1)
@@ -70,7 +67,8 @@ class SearchBasicTest {
   @Test
   void testGetWithLimitOffset() {
     // START GetWithOffset
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // highlight-start
         q -> q.limit(1).offset(1)
@@ -86,11 +84,11 @@ class SearchBasicTest {
   @Test
   void testGetProperties() {
     // START GetProperties
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // highlight-start
-        q -> q.limit(1)
-            .returnProperties("question", "answer", "points")
+        q -> q.limit(1).returnProperties("question", "answer", "points")
     // highlight-end
     );
 
@@ -103,16 +101,16 @@ class SearchBasicTest {
   @Test
   void testGetObjectVector() {
     // START GetObjectVector
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .includeVector()
-            // highlight-end
-            .limit(1));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .includeVector()
+        // highlight-end
+        .limit(1));
 
     if (!response.objects().isEmpty()) {
-      System.out.println(response.objects().get(0).metadata().vectors());
+      System.out.println(response.objects().get(0).vectors());
     }
     // END GetObjectVector
   }
@@ -120,7 +118,8 @@ class SearchBasicTest {
   @Test
   void testGetObjectId() {
     // START GetObjectId
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // Object IDs are included by default with the v6 client! :)
         q -> q.limit(1));
@@ -134,14 +133,14 @@ class SearchBasicTest {
   @Test
   void testGetWithCrossRefs() {
     // START GetWithCrossRefs
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            // highlight-start
-            .returnReferences(
-                QueryReference.single("hasCategory", r -> r.returnProperties("title")))
-            // highlight-end
-            .limit(2));
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q
+        // highlight-start
+        .returnReferences(QueryReference.single("hasCategory",
+            r -> r.returnProperties("title")))
+        // highlight-end
+        .limit(2));
 
     for (var o : response.objects()) {
       System.out.println(o.properties().get("question"));
@@ -158,18 +157,17 @@ class SearchBasicTest {
   @Test
   void testGetWithMetadata() {
     // START GetWithMetadata
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.fetchObjects(
-        q -> q
-            .limit(1)
-            // highlight-start
-            .returnMetadata(Metadata.CREATION_TIME_UNIX)
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.fetchObjects(q -> q.limit(1)
+        // highlight-start
+        .returnMetadata(Metadata.CREATION_TIME_UNIX)
     // highlight-end
     );
 
     for (var o : response.objects()) {
       System.out.println(o.properties()); // View the returned properties
-      System.out.println(o.metadata().creationTimeUnix()); // View the returned creation time
+      System.out.println(o.createdAt()); // View the returned creation time
     }
     // END GetWithMetadata
   }
@@ -178,7 +176,8 @@ class SearchBasicTest {
   void testMultiTenancy() {
     // START MultiTenancy
     // Connect to the collection
-    CollectionHandle<Map<String, Object>> mtCollection = client.collections.use("WineReviewMT");
+    CollectionHandle<Map<String, Object>> mtCollection =
+        client.collections.use("WineReviewMT");
 
     // Get the specific tenant's version of the collection
     // highlight-start
@@ -186,10 +185,8 @@ class SearchBasicTest {
     // highlight-end
 
     // Query tenantA's version
-    var response = collectionTenantA.query.fetchObjects(
-        q -> q
-            .returnProperties("review_body", "title")
-            .limit(1));
+    var response = collectionTenantA.query
+        .fetchObjects(q -> q.returnProperties("review_body", "title").limit(1));
 
     if (!response.objects().isEmpty()) {
       System.out.println(response.objects().get(0).properties());
@@ -197,19 +194,25 @@ class SearchBasicTest {
     // END MultiTenancy
   }
 
-  // TODO[g-despot] fetchObjectsById missing
   @Test
-  void testGetWithConsistencyLevel() {
+  void testGetWithConsistencyLevel() throws IOException {
+    // Insert an object first and get its UUID
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("JeopardyQuestion");
+
+    String uuid = jeopardy.data
+        .insert(Map.of("question", "This is a test question", "answer",
+            "test answer"))
+        .uuid();
+
     // START QueryWithReplication
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion")
+    var jeopardyWithConsistency = client.collections.use("JeopardyQuestion")
         .withConsistencyLevel(ConsistencyLevel.QUORUM);
     // highlight-start
-    var response = jeopardy.query.fetchObjects(c -> c.where(Where.uuid().eq("36ddd591-2dee-4e7e-a3cc-eb86d30a4303")));
+    var response = jeopardyWithConsistency.query.fetchObjectById(uuid);
     // highlight-end
 
-    for (var o : response.objects()) {
-      System.out.println(o.properties());
-    }
+    System.out.println(response.get().properties());
     // END QueryWithReplication
   }
 }

@@ -7,7 +7,7 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.34.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.35.0
     ports:
     - 8580:8080
     - 50551:50051
@@ -36,7 +36,7 @@ services:
       AUTHENTICATION_OIDC_CLIENT_ID: 'weaviate'
 
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.3
+    image: quay.io/keycloak/keycloak:23.0.7
     ports:
       - "8081:8081"
     environment:
@@ -46,19 +46,14 @@ services:
       KC_HTTP_PORT: '8081'
       KC_HOSTNAME_STRICT: 'false'
       KC_HOSTNAME_STRICT_HTTPS: 'false'
-      # Use localhost so it works from both inside and outside Docker
-      #KC_HOSTNAME: localhost
       KC_HOSTNAME_PORT: 8081
-      # This makes Keycloak use localhost URLs in OIDC discovery
       KC_FRONTEND_URL: 'http://localhost:8081'
+      KC_HOSTNAME_STRICT_BACKCHANNEL: 'false'
     command:
       - start-dev
+      - --http-relative-path=/
     volumes:
       - keycloak_data:/opt/keycloak/data
-    # Remove health check for now since Keycloak is working
-    # healthcheck:
-    #   test: ["CMD", "echo", "healthy"]
-    #   interval: 10s
 
 volumes:
   keycloak_data:

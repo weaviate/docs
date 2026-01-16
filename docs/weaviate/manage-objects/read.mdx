@@ -53,7 +53,7 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ReadSimpleObject"
@@ -61,7 +61,7 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// ReadObject START"
@@ -69,7 +69,7 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ReadSimpleObject"
@@ -78,6 +78,10 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
     />
   </TabItem>
 </Tabs>
+
+import ReturnedProperties from '/\_includes/returned-properties.mdx';
+
+<ReturnedProperties/>
 
 ## Retrieve the object's vector
 
@@ -108,7 +112,7 @@ Object vectors can be retrieved by specifying its return.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ReadObjectWithVector"
@@ -116,7 +120,7 @@ Object vectors can be retrieved by specifying its return.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// ReadObjectWithVector START"
@@ -124,7 +128,7 @@ Object vectors can be retrieved by specifying its return.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ReadObjectWithVector"
@@ -155,7 +159,7 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ReadObjectNamedVectors"
@@ -163,7 +167,7 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ReadObjectNamedVectors"

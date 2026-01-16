@@ -8,12 +8,13 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.34.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.35.0
     restart: on-failure:0
     ports:
      - "8180:8080"
      - 50151:50051
     environment:
+      REPLICA_MOVEMENT_ENABLED: 'true'
       AUTOSCHEMA_ENABLED: 'false'
       QUERY_DEFAULTS_LIMIT: 25
       QUERY_MAXIMUM_RESULTS: 10000
@@ -35,12 +36,13 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.34.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.35.0
     restart: on-failure:0
     ports:
      - "8181:8080"
      - 50152:50051
     environment:
+      REPLICA_MOVEMENT_ENABLED: 'true'
       AUTOSCHEMA_ENABLED: 'false'
       QUERY_DEFAULTS_LIMIT: 25
       QUERY_MAXIMUM_RESULTS: 10000
@@ -63,12 +65,13 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.34.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.35.0
     restart: on-failure:0
     ports:
      - "8182:8080"
      - 50153:50051
     environment:
+      REPLICA_MOVEMENT_ENABLED: 'true'
       AUTOSCHEMA_ENABLED: 'false'
       QUERY_DEFAULTS_LIMIT: 25
       QUERY_MAXIMUM_RESULTS: 10000

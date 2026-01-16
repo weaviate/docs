@@ -53,7 +53,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridBasic"
@@ -61,7 +61,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridBasic"
@@ -117,7 +117,7 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NamedVectorHybrid"
@@ -125,7 +125,7 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START NamedVectorHybrid"
@@ -186,7 +186,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithScore"
@@ -194,7 +194,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithScore"
@@ -258,7 +258,7 @@ Hybrid search results can favor the keyword component or the vector component. T
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithAlpha"
@@ -266,7 +266,7 @@ Hybrid search results can favor the keyword component or the vector component. T
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithAlpha"
@@ -330,7 +330,7 @@ The output is like this:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithFusionType"
@@ -338,7 +338,7 @@ The output is like this:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithFusionType"
@@ -407,7 +407,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithBM25OperatorOrWithMin"
@@ -415,7 +415,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithBM25OperatorOrWithMin"
@@ -454,7 +454,7 @@ With the `and` operator, the search returns objects that contain all tokens in t
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithBM25OperatorAnd"
@@ -462,7 +462,7 @@ With the `and` operator, the search returns objects that contain all tokens in t
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithBM25OperatorAnd"
@@ -512,7 +512,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithProperties"
@@ -520,7 +520,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithProperties"
@@ -581,7 +581,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithPropertyWeighting"
@@ -589,7 +589,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithPropertyWeighting"
@@ -650,7 +650,7 @@ The vector component of hybrid search can use a query string or a query vector. 
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithVector"
@@ -658,7 +658,7 @@ The vector component of hybrid search can use a query string or a query vector. 
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithVector"
@@ -715,7 +715,7 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START VectorParameters"
@@ -723,7 +723,7 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START VectorParameters"
@@ -771,7 +771,7 @@ The only available search threshold is `max vector distance`, which will set the
       language="ts"
     />
   </TabItem>
-   <TabItem value="java6" label="Java v6 (Beta)">
+   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START VectorSimilarity"
@@ -779,7 +779,7 @@ The only available search threshold is `max vector distance`, which will set the
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START VectorSimilarity"
@@ -813,7 +813,7 @@ Define criteria to group search results.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridGroupBy"
@@ -821,7 +821,7 @@ Define criteria to group search results.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridGroupBy"
@@ -874,7 +874,7 @@ Optionally, use `offset` to paginate the results.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START limit"
@@ -882,7 +882,7 @@ Optionally, use `offset` to paginate the results.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START limit"
@@ -937,7 +937,7 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START autocut"
@@ -945,7 +945,7 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START autocut"
@@ -1006,7 +1006,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithFilter"
@@ -1014,7 +1014,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridWithFilter"

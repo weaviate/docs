@@ -2,11 +2,8 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.Vectors;
-import io.weaviate.client6.v1.api.collections.query.Metadata;
-import io.weaviate.client6.v1.api.collections.query.QueryMetadata;
-
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -85,8 +82,8 @@ class ManageObjectsUpdateTest {
     CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
 
     // fetch the object to update
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> objectDataOpt =
-        collection.query.byId(uuidToUpdate);
+    Optional<WeaviateObject<Map<String, Object>>> objectDataOpt =
+        collection.query.fetchObjectById(uuidToUpdate);
     if (objectDataOpt.isEmpty()) {
       return;
     }
@@ -118,13 +115,13 @@ class ManageObjectsUpdateTest {
     );
     // END UpdateProps
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result1 =
-        jeopardy.query.byId(uuid);
+    Optional<WeaviateObject<Map<String, Object>>> result1 =
+        jeopardy.query.fetchObjectById(uuid);
     assertThat(result1).isPresent();
     assertThat(result1.get().properties().get("points")).isEqualTo(100.0);
 
     // START UpdateVector
-    float[] vector = new float[300];
+    float[] vector = new float[384];
     Arrays.fill(vector, 0.12345f);
 
     jeopardy.data.update(uuid, u -> u.properties(Map.of("points", 100.0))
@@ -134,17 +131,17 @@ class ManageObjectsUpdateTest {
     );
     // END UpdateVector
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result2 =
-        jeopardy.query.byId(uuid, q -> q.includeVector());
+    Optional<WeaviateObject<Map<String, Object>>> result2 =
+        jeopardy.query.fetchObjectById(uuid, q -> q.includeVector());
     assertThat(result2).isPresent();
-    assertThat(result2.get().metadata().vectors().getSingle("default")).hasSize(300);
+    assertThat(result2.get().vectors().getSingle("default")).hasSize(384);
 
     // START UpdateNamedVector
     CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
     String reviewUuid = reviews.query.fetchObjects(q -> q.limit(3)).objects().get(0).uuid();
-    float[] titleVector = new float[300];
-    float[] reviewBodyVector = new float[300];
-    float[] titleCountryVector = new float[300];
+    float[] titleVector = new float[384];
+    float[] reviewBodyVector = new float[384];
+    float[] titleCountryVector = new float[384];
     Arrays.fill(titleVector, 0.12345f);
     Arrays.fill(reviewBodyVector, 0.12345f);
     Arrays.fill(titleCountryVector, 0.12345f);
@@ -169,8 +166,8 @@ class ManageObjectsUpdateTest {
         )));
     // END Replace
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result3 =
-        jeopardy.query.byId(uuid);
+    Optional<WeaviateObject<Map<String, Object>>> result3 =
+        jeopardy.query.fetchObjectById(uuid);
     assertThat(result3).isPresent();
     assertThat(result3.get().properties().get("answer")).isEqualTo("Replaced");
 
@@ -179,8 +176,8 @@ class ManageObjectsUpdateTest {
     delProps(client, uuid, "JeopardyQuestion", List.of("answer"));
     // END DelProps
 
-    Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result4 =
-        jeopardy.query.byId(uuid);
+    Optional<WeaviateObject<Map<String, Object>>> result4 =
+        jeopardy.query.fetchObjectById(uuid);
     assertThat(result4).isPresent();
     assertThat(result4.get().properties().get("answer")).isNull();
   }

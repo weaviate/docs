@@ -3,8 +3,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionConfig;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
+import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.Quantization;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -75,7 +77,7 @@ class ConfigurePQTest {
   void testCollectionWithAutoPQ() throws IOException {
     // START CollectionWithAutoPQ
     client.collections.create("Question",
-        col -> col.vectorConfig(VectorConfig.text2vecWeaviate("default",
+        col -> col.vectorConfig(VectorConfig.text2vecOpenAi("default",
             // highlight-start
             vc -> vc
                 .quantization(Quantization.pq(pq -> pq.trainingLimit(50000))) // Set the threshold to begin training
@@ -96,33 +98,40 @@ class ConfigurePQTest {
     // START InitialSchema
     client.collections.create("Question",
         col -> col.description("A Jeopardy! question")
-            .vectorConfig(VectorConfig.text2vecWeaviate()));
+            .properties(Property.text("question"), Property.text("answer"))
+            .vectorConfig(VectorConfig.text2vecOpenAi(
+                vc -> vc.quantization(Quantization.uncompressed()))));
     // END InitialSchema
 
     var collection = client.collections.use(COLLECTION_NAME);
     var initialConfig = collection.config.get();
     assertThat(initialConfig).isPresent();
-    // BQ is enabled by default with Weaviate Server v1.25+
-    // assertThat(initialConfig.get().getVectorConfig().get("default").getQuantization()).isNull();
 
     // START LoadData
-    List<Map<String, Object>> objectList = data.stream().map(obj -> {
-      Map<String, Object> properties = new HashMap<>();
-      properties.put("question", obj.get("Question"));
-      properties.put("answer", obj.get("Answer"));
-      return properties;
-    }).collect(Collectors.toList());
+    List<WeaviateObject<Map<String, Object>>> objectList =
+        data.stream().map(obj -> {
+          Map<String, Object> properties = new HashMap<>();
+          properties.put("question", obj.get("Question"));
+          properties.put("answer", obj.get("Answer"));
+          return WeaviateObject.<Map<String, Object>>of(
+              builder -> builder.properties(properties));
+        }).collect(Collectors.toList());
 
-    collection.data.insertMany(objectList.toArray(new Map[0]));
+    var response = collection.data.insertMany(objectList);
     // END LoadData
 
-    var aggregateResponse =
-        collection.aggregate.overAll(a -> a.includeTotalCount(true));
-    assertThat(aggregateResponse.totalCount()).isEqualTo(1000);
+    // Debug: Check for errors
+    if (!response.errors().isEmpty()) {
+      System.out.println("Insert errors:");
+      response.errors().forEach((error) -> {
+        System.out.println("  Error: " + error.toString());
+      });
+    }
+    assertThat(response.uuids().size()).isEqualTo(1000);
 
     // START UpdateSchema
     collection.config
-        .update(c -> c.vectorConfig(VectorConfig.text2vecWeaviate(vc -> vc
+        .update(c -> c.vectorConfig(VectorConfig.text2vecOpenAi(vc -> vc
             .quantization(Quantization.pq(pq -> pq.trainingLimit(50000))))));
     // END UpdateSchema
 
@@ -132,12 +141,12 @@ class ConfigurePQTest {
         .isInstanceOf(Quantization.class);
   }
 
-  //TODO[g-despot] How to get quantizer parameters from config?
+  //TODO[g-despot] DX: How to get quantizer parameters from config?
   @Test
   void testGetSchema() throws IOException {
     // Create a collection with PQ enabled to inspect its schema
     client.collections.create("Question",
-        col -> col.vectorConfig(VectorConfig.text2vecWeaviate(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecOpenAi(vc -> vc
             .quantization(Quantization.pq(pq -> pq.trainingLimit(50000))))));
 
     // START GetSchema

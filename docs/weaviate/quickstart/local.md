@@ -1,6 +1,6 @@
 ---
-title: "Quickstart: Locally hosted"
-sidebar_label: Locally hosted
+title: "Quickstart: Locally hosted with Docker"
+sidebar_label: Local Quickstart (self-hosted)
 image: og/docs/quickstart-tutorial.jpg
 # tags: ['getting started']
 ---

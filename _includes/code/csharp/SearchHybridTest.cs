@@ -1,11 +1,11 @@
-using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Weaviate.Client;
 using Weaviate.Client.Models;
-using System;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Linq;
-using System.Collections.Generic;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -22,17 +22,14 @@ public class SearchHybridTest : IDisposable
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        // The C# client uses a configuration object.
-        var config = new ClientConfiguration
-        {
-            GrpcAddress = weaviateUrl,
-            // Headers = new()
-            // {
-            //     { "Authorization", $"Bearer {weaviateApiKey}" },
-            //     { "X-OpenAI-Api-Key", openaiApiKey }
-            // }
-        };
-        client = new WeaviateClient(config);
+        client = Connect
+            .Cloud(
+                weaviateUrl,
+                weaviateApiKey,
+                headers: new Dictionary<string, string>() { { "X-OpenAI-Api-Key", openaiApiKey } }
+            )
+            .GetAwaiter()
+            .GetResult();
         // END INSTANTIATION-COMMON
     }
 
@@ -50,8 +47,7 @@ public class SearchHybridTest : IDisposable
         var reviews = client.Collections.Use("WineReviewNV");
         // highlight-start
         var response = await reviews.Query.Hybrid(
-            "A French Riesling",
-            targetVector: ["title_country"],
+            vectors: v => v.NearText(["A French Riesling"]).TargetVectorsMinimum("title_country"),
             limit: 3
         );
         // highlight-end
@@ -104,7 +100,9 @@ public class SearchHybridTest : IDisposable
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
             // highlight-start
-            Console.WriteLine($"Score: {o.Metadata.Score}, Explain Score: {o.Metadata.ExplainScore}");
+            Console.WriteLine(
+                $"Score: {o.Metadata.Score}, Explain Score: {o.Metadata.ExplainScore}"
+            );
             // highlight-end
         }
         // END HybridWithScore
@@ -117,7 +115,7 @@ public class SearchHybridTest : IDisposable
     [Fact]
     public async Task TestLimit()
     {
-        // START limit 
+        // START limit
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -131,7 +129,7 @@ public class SearchHybridTest : IDisposable
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END limit 
+        // END limit
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.Equal(3, response.Objects.Count());
@@ -140,7 +138,7 @@ public class SearchHybridTest : IDisposable
     [Fact]
     public async Task TestAutocut()
     {
-        // START autocut 
+        // START autocut
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -154,7 +152,7 @@ public class SearchHybridTest : IDisposable
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END autocut 
+        // END autocut
 
         Assert.True(response.Objects.Any());
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
@@ -212,7 +210,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             // highlight-start
             "Australian mammal cute",
-            bm25Operator: new BM25Operator.Or(MinimumMatch: 2),
+            bm25Operator: new BM25Operator.Or(MinimumMatch: 1),
             // highlight-end
             limit: 3
         );
@@ -229,14 +227,13 @@ public class SearchHybridTest : IDisposable
     [Fact]
     public async Task HybridWithBM25OperatorAnd()
     {
-
         // START HybridWithBM25OperatorAnd
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             // highlight-start
             "Australian mammal cute",
-            bm25Operator: new BM25Operator.And(),  // Each result must include all tokens
-                                                   // highlight-end
+            bm25Operator: new BM25Operator.And(), // Each result must include all tokens
+            // highlight-end
             limit: 3
         );
 
@@ -295,7 +292,6 @@ public class SearchHybridTest : IDisposable
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
-    // TODO[g-despot] Why is name required in VectorData.Create?
     [Fact]
     public async Task TestHybridWithVector()
     {
@@ -306,7 +302,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            vectors: Vectors.Create("default", queryVector),
+            vectors: queryVector,
             // highlight-end
             alpha: 0.25f,
             limit: 3
@@ -329,7 +325,7 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            filters: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
             // highlight-end
             limit: 3
         );
@@ -341,7 +337,10 @@ public class SearchHybridTest : IDisposable
         // END HybridWithFilter
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Equal("Double Jeopardy!", (response.Objects.First().Properties as IDictionary<string, object>)["round"].ToString());
+        Assert.Equal(
+            "Double Jeopardy!",
+            (response.Objects.First().Properties as IDictionary<string, object>)["round"].ToString()
+        );
     }
 
     [Fact]
@@ -349,27 +348,23 @@ public class SearchHybridTest : IDisposable
     {
         // START VectorParameters
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // This query is complex and depends on a previous nearText query to get a vector.
-        // We simulate this by fetching a vector first.
-        var nearTextResponse = await jeopardy.Query.NearText(
-            "large animal",
-            moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"]),
-            limit: 1,
-            returnMetadata: MetadataOptions.Vector
-        );
-        var nearTextVector = nearTextResponse.Objects.First().Vectors["default"];
 
         var response = await jeopardy.Query.Hybrid(
             "California",
             // highlight-start
             maxVectorDistance: 0.4f,
-            vectors: nearTextVector,
+            vectors: v =>
+                v.NearText(
+                    "large animal",
+                    moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"])
+                ),
             // highlight-end
             alpha: 0.75f,
             limit: 5
         );
         // END VectorParameters
-
+        System.Console.WriteLine("despot");
+        System.Console.WriteLine(JsonSerializer.Serialize(response));
         Assert.True(response.Objects.Any() && response.Objects.Count() <= 5);
     }
 
@@ -382,7 +377,7 @@ public class SearchHybridTest : IDisposable
             "California",
             // highlight-start
             maxVectorDistance: 0.4f, // Maximum threshold for the vector search component
-                                     // highlight-end
+            // highlight-end
             alpha: 0.75f,
             limit: 5
         );
@@ -400,11 +395,10 @@ public class SearchHybridTest : IDisposable
         var response = await jeopardy.Query.Hybrid(
             "California",
             alpha: 0.75f,
-            groupBy: new GroupByRequest
+            groupBy: new GroupByRequest("round") // group by this property
             {
-                PropertyName = "round",       // group by this property
-                NumberOfGroups = 2,           // maximum number of groups
-                ObjectsPerGroup = 3,          // maximum objects per group
+                NumberOfGroups = 2, // maximum number of groups
+                ObjectsPerGroup = 3, // maximum objects per group
             }
         );
 

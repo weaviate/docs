@@ -188,6 +188,10 @@ The moderate humidity levels make it pleasant for hiking, cycling, or sports.
 
 ## Stream responses
 
+:::tip When to use streaming
+Use streaming for long-running or complex queries. Streaming provides progress updates and maintains the connection through heartbeats, preventing timeouts on difficult queries that take longer to process.
+:::
+
 Stream responses to receive answers as they are generated:
 
 <Tabs className="code" groupId="languages">

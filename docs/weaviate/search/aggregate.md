@@ -66,7 +66,7 @@ Return the number of objects matched by the query.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MetaCount"
@@ -74,7 +74,7 @@ Return the number of objects matched by the query.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START MetaCount"
@@ -135,7 +135,7 @@ This example counts occurrence frequencies:
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TextProp"
@@ -143,7 +143,7 @@ This example counts occurrence frequencies:
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START TextProp"
@@ -204,7 +204,7 @@ This example shows aggregation with integers.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START IntProp"
@@ -212,7 +212,7 @@ This example shows aggregation with integers.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START IntProp"
@@ -275,7 +275,7 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START groupBy"
@@ -283,7 +283,7 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START groupBy"
@@ -352,7 +352,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START nearTextWithLimit"
@@ -360,7 +360,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START nearTextWithLimit"
@@ -427,7 +427,7 @@ Use `distance` to specify how similar the objects should be.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START nearTextWithDistance"
@@ -435,7 +435,7 @@ Use `distance` to specify how similar the objects should be.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START nearTextWithDistance"
@@ -496,7 +496,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridExample"
@@ -504,7 +504,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START HybridExample"
@@ -565,7 +565,7 @@ For more specific results, use a `filter` to narrow your search.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6 (Beta)">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START whereFilter"
@@ -573,7 +573,7 @@ For more specific results, use a `filter` to narrow your search.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START whereFilter"

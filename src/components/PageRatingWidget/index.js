@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
 import styles from "./styles.module.scss";
 import FeedbackModal from "../FeedbackModal";
+import ThankYouModal from "../ThankYouModal";
 import ThumbsUp from "../Icons/ThumbsUp";
 import ThumbsDown from "../Icons/ThumbsDown";
 
@@ -9,6 +10,8 @@ export default function PageRatingWidget() {
   const [vote, setVote] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHasOpened, setModalHasOpened] = useState(false);
+  const [thankYouModalOpen, setThankYouModalOpen] = useState(false);
+  const [lastFeedback, setLastFeedback] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -16,6 +19,8 @@ export default function PageRatingWidget() {
     setVote(null);
     setModalOpen(false);
     setModalHasOpened(false);
+    setThankYouModalOpen(false);
+    setLastFeedback(null);
   }, [location.pathname]);
 
   const submitFeedback = async (payload) => {
@@ -43,12 +48,13 @@ export default function PageRatingWidget() {
       });
 
       if (!response.ok) {
-        // Try to parse JSON error response with debug info
+        // Read response text first, then try to parse as JSON
+        const responseText = await response.text();
         let errorData;
         try {
-          errorData = await response.json();
+          errorData = JSON.parse(responseText);
         } catch {
-          errorData = { error: await response.text() };
+          errorData = { error: responseText };
         }
 
         // Log comprehensive error details for debugging
@@ -99,6 +105,12 @@ export default function PageRatingWidget() {
     };
     submitFeedback(feedbackPayload);
     setModalOpen(false);
+
+    // If negative feedback, show thank you modal with option to create GitHub issue
+    if (vote === 'down') {
+      setLastFeedback(feedback);
+      setThankYouModalOpen(true);
+    }
   };
 
   return (
@@ -133,6 +145,12 @@ export default function PageRatingWidget() {
         onClose={() => setModalOpen(false)}
         onSubmit={handleModalSubmit}
         voteType={vote}
+      />
+      <ThankYouModal
+        isOpen={thankYouModalOpen}
+        onClose={() => setThankYouModalOpen(false)}
+        selectedOptions={lastFeedback?.options}
+        pageUrl={typeof window !== "undefined" ? window.location.href : ""}
       />
     </>
   );

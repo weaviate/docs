@@ -4,7 +4,9 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.local.query.neartext.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.local.query.neartext.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_local_2/quickstart.short.local.query.neartext.go";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartLocalQueryNearText.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartLocalQueryNearText.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/QuickstartLocalQueryNearText.cs";
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -31,12 +33,28 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START NearText"
+      endMarker="// END NearText"
+      language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START NearText"
       endMarker="// END NearText"
       language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearText"
+      endMarker="// END NearText"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

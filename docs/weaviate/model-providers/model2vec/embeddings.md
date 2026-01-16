@@ -36,7 +36,7 @@ Your Weaviate instance must be configured with the Model2Vec vectorizer integrat
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running Model2Vec instance.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires a locally running Model2Vec instance.
 
 </details>
 
