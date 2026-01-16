@@ -312,6 +312,11 @@ The query below returns the `n` most similar objects to the input image from the
 ### Available models
 
 - `voyage-multimodal-3` (Default)
+- `voyage-multimodal-3.5`
+
+:::info Video support
+The `voyage-multimodal-3.5` model supports video embeddings in addition to text and images. Configure `video_fields` (Python) or `videoFields` (TypeScript) to enable video vectorization.
+:::
 
 ## Further resources
 
