@@ -1,0 +1,58 @@
+---
+title: "'Grouped task' 生成"
+description: マルチモーダル RAG 向け Grouped Task
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/104_rag.mts';
+
+'grouped task' 生成では、取得したオブジェクトの集合に対して RAG クエリを実行します。1 つのプロンプトでオブジェクト全体をまとめて変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、「 MovieMM 」から、国際宇宙ステーションの画像と類似するエントリーを検索します。その後、大規模言語モデルに対して、それらのエントリー間の共通点を見つけるよう指示します。
+
+各結果はコンソールに出力されます。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GroupedTaskGeneration"
+  endMarker="// END GroupedTaskGeneration"
+  language="ts"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+`groupedTask` クエリでは、プロンプトをそのまま `groupedTask` パラメーターに渡すだけで構いません。これにより Weaviate は次の情報を大規模言語モデルに渡します。  
+- すべての取得オブジェクトの text プロパティ  
+- プロンプト  
+
+<details>
+  <summary>結果例</summary>
+
+```text
+Interstellar
+Gravity
+Arrival
+Armageddon
+Godzilla
+These movies all involve space exploration, extraterrestrial beings, or catastrophic events threatening Earth. They all deal with themes of survival, human ingenuity, and the unknown mysteries of the universe.
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> オプションパラメーター
+
+使用するプロパティのリストを `groupedProperties` パラメーターとして渡すこともできます。これにより、大規模言語モデルに渡すデータ量を減らし、不要なプロパティを省くことができます。
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+`groupedTask` パラメーター付きの RAG クエリは、追加の `generated` 属性を持つレスポンスを返します。この属性には、オブジェクト集合に対して生成された出力が格納されます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

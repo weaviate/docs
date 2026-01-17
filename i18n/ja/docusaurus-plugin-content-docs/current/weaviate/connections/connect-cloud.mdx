@@ -1,0 +1,183 @@
+---
+title: Weaviate クラウド
+sidebar_position: 10
+image: og/docs/connect.jpg
+# tags: ['getting started', 'connect']
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+
+import PyCodeV3 from '!!raw-loader!/_includes/code/connections/connect-python-v3.py';
+import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
+import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
+import TsCodeV2 from '!!raw-loader!/_includes/code/connections/connect-ts-v2.ts';
+import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
+import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
+import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
+
+以下の手順で Weaviate クラウド (WCD) インスタンスに接続します。
+
+## API キーと REST エンドポイントの取得
+
+import RetrieveAPIKeys from '/_includes/wcs/retrieve-api-keys.mdx';
+
+<RetrieveAPIKeys />
+
+## 接続例
+
+<!-- TODO[g-despot] Refactor into an import and reuse in Cloud docs to avoid duplication -->
+
+接続には、`REST Endpoint` と `Admin` API キーを [環境変数](#environment-variables) に保存して使用します。
+
+import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
+
+<Tabs groupId="languages">
+<TabItem value="py4" label="Python Client v4">
+   <FilteredTextBlock
+     text={PyCodeV4}
+     startMarker="# START APIKeyWCD"
+     endMarker="# END APIKeyWCD"
+     language="py"
+   />
+</TabItem>
+<TabItem value="py3" label="Python Client v3">
+   <FilteredTextBlock
+     text={PyCodeV3}
+     startMarker="# START APIKeyWCD"
+     endMarker="# END APIKeyWCD"
+     language="pyv3"
+   />
+</TabItem>
+<TabItem value="ts3" label="JS/TS Client v3">
+   <FilteredTextBlock
+     text={TsCodeV3}
+     startMarker="// START APIKeyWCD"
+     endMarker="// END APIKeyWCD"
+     language="js"
+   />
+</TabItem>
+<TabItem value="ts2" label="JS/TS Client v2">
+   <FilteredTextBlock
+     text={TsCodeV2}
+     startMarker="// START APIKeyWCD"
+     endMarker="// END APIKeyWCD"
+     language="tsv2"
+   />
+</TabItem>
+<TabItem value="go" label="Go">
+   <FilteredTextBlock
+     text={GoCode}
+     startMarker="// START APIKeyWCD"
+     endMarker="// END APIKeyWCD"
+     language="py"
+   />
+<HostnameWarning />
+</TabItem>
+<TabItem value="java" label="Java">
+   <FilteredTextBlock
+     text={JavaCode}
+     startMarker="// START APIKeyWCD"
+     endMarker="// END APIKeyWCD"
+     language="py"
+   />
+<HostnameWarning />
+</TabItem>
+<TabItem value="shell" label="cURL">
+   <FilteredTextBlock
+     text={ShellCode}
+     startMarker="# START APIKeyWCD"
+     endMarker="# END APIKeyWCD"
+     language="shell"
+   />
+</TabItem>
+</Tabs>
+
+## サードパーティ API キー
+
+ベクトル化や RAG に API ベースのモデルを使用する場合、サービスの API キーが必要です。サードパーティ API キーを追加するには、以下の例に従ってください。
+
+<Tabs groupId="languages">
+  <TabItem value="py4" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCodeV4}
+      startMarker="# START ThirdPartyAPIKeys"
+      endMarker="# END ThirdPartyAPIKeys"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ThirdPartyAPIKeys"
+      endMarker="# END ThirdPartyAPIKeys"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts3" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TsCodeV3}
+      startMarker="// START ThirdPartyAPIKeys"
+      endMarker="// END ThirdPartyAPIKeys"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="ts2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TsCodeV2}
+      startMarker="// START ThirdPartyAPIKeys"
+      endMarker="// END ThirdPartyAPIKeys"
+      language="tsv2"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ThirdPartyAPIKeys"
+      endMarker="// END ThirdPartyAPIKeys"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ThirdPartyAPIKeys"
+      endMarker="// END ThirdPartyAPIKeys"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="shell" label="cURL">
+    <FilteredTextBlock
+      text={ShellCode}
+      startMarker="# START ThirdPartyAPIKeys"
+      endMarker="# END ThirdPartyAPIKeys"
+      language="shell"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+## 環境変数
+
+import EnvVarsHowto from '/_includes/environment-variables.mdx';
+
+<EnvVarsHowto />
+
+## gRPC タイムアウト
+
+import GRPCTimeoutIntro from '/_includes/connect/timeouts-intro.mdx';
+
+<GRPCTimeoutIntro />
+
+import GRPCTimeouts from '/_includes/code/connections/timeouts-cloud.mdx';
+
+<GRPCTimeouts />
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />
+

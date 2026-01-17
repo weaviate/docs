@@ -1,0 +1,281 @@
+---
+title: オブジェクトの更新
+sidebar_position: 30
+image: og/docs/howto.jpg
+---
+
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.update.py';
+import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.update-v3.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.update.ts';
+import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.update-v2.ts';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go';
+import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
+import SkipLink from '/src/components/SkipValidationLink'
+
+Weaviate ではオブジェクトを部分的または完全に更新できます。
+
+<details>
+  <summary>追加情報</summary>
+
+  - 部分更新は、内部的には <SkipLink href="/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D">`PATCH` リクエストを `/v1/objects` REST API エンドポイントに送信</SkipLink> して実行されます。  
+  - 完全更新は、内部的には <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">`PUT` リクエストを `/v1/objects` REST API エンドポイントに送信</SkipLink> して実行されます。  
+  - `vector` プロパティを含む更新では、`text` プロパティがすべて [スキップ](../manage-collections/vector-config.mdx#property-level-settings) されていない限り、ベクトル埋め込みが再計算されます。  
+  - オブジェクトを更新するには、コレクション名、ID、更新するプロパティを指定する必要があります。  
+  - [マルチテナンシー](../concepts/data.md#multi-tenancy) コレクションの場合は、テナント名も指定する必要があります。詳細は [データ管理: マルチテナンシー操作](../manage-collections/multi-tenancy.mdx) を参照してください。  
+  <br/>
+
+  <RestObjectsCRUDClassnameNote/>
+
+</details>
+
+## オブジェクトプロパティの更新
+
+この操作では、指定したプロパティの値をまるごと置き換え、指定していないプロパティはそのまま残します。コレクション名、オブジェクト ID、および更新するプロパティを指定してください。
+
+以前にベクトル化されたプロパティの値を更新した場合、Weaviate はオブジェクトを自動的に再ベクトル化します。これにより更新されたオブジェクトも再インデックスされます。
+
+ただし、新しいプロパティをコレクション定義に追加した場合、Weaviate は新規オブジェクトのみをベクトル化します。新しいプロパティが定義されたときに既存オブジェクトを再ベクトル化および再インデックスすることはなく、既存プロパティが更新されたときのみ行います。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# UpdateProps START"
+      endMarker="# UpdateProps END"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# UpdateProps START"
+      endMarker="# UpdateProps END"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// UpdateProps START"
+      endMarker="// UpdateProps END"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// UpdateProps START"
+      endMarker="// UpdateProps END"
+      language="tsv2"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// UpdateProps START"
+      endMarker="// UpdateProps END"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UpdateProps START"
+      endMarker="// UpdateProps END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## オブジェクト ベクトルの更新
+
+オブジェクト ベクトルもプロパティと同様に更新できます。[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を使用する場合は、[オブジェクト作成](./create.mdx#create-an-object-with-named-vectors) と同様に、データを辞書（マップ）形式で指定してください。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# UpdateVector START"
+      endMarker="# UpdateVector END"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# UpdateVector START"
+      endMarker="# UpdateVector END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// UpdateVector START"
+      endMarker="// UpdateVector END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+
+  > Coming soon (vote for the [機能リクエスト](https://github.com/weaviate/typescript-client/issues/64))
+
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+
+  > 近日公開
+
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+
+  > 近日公開
+
+  </TabItem>
+</Tabs>
+
+
+
+
+## オブジェクト全体の置換
+
+コレクション名、 id 、新しいオブジェクトを指定してオブジェクト全体を置換できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# Replace START"
+      endMarker="# Replace END"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# Replace START"
+      endMarker="# Replace END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// Replace START"
+      endMarker="// Replace END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// Replace START"
+      endMarker="// Replace END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// Replace START"
+      endMarker="// Replace END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// Replace START"
+      endMarker="// Replace END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+
+## プロパティの削除
+
+コレクション定義におけるプロパティの削除や更新は[まだサポートされていません](https://github.com/weaviate/weaviate/issues/2848)。
+
+オブジェクトレベルでは、該当プロパティを削除したコピーと置き換えるか、テキストプロパティの場合は値を `""` に設定することで対応できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# DelProps START"
+      endMarker="# DelProps END"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# DelProps START"
+      endMarker="# DelProps END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// DelProps START"
+      endMarker="// DelProps END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// DelProps START"
+      endMarker="// DelProps END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// DelProps START"
+      endMarker="// DelProps END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// DelProps START"
+      endMarker="// DelProps END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## 関連ページ
+
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">リファレンス: REST - /v1/objects</SkipLink>
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

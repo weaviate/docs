@@ -1,0 +1,131 @@
+---
+title: ユースケース
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/104_usecase.py';
+
+ RAG （ Retrieval augmented generation ）は、 ベクトル 検索と自然言語生成の強みを組み合わせた強力な機能です。 名前付き ベクトル を RAG クエリで使用すると、ワークフローと結果をさらに向上させることができます。
+
+このセクションでは、同じコレクションを使用しながら、 名前付き ベクトル によって異なるユーザーが自身のニーズに合わせて検索と生成を行ういくつかの例を見ていきます。
+
+## <i class="fa-solid fa-chalkboard"></i> デザインエージェンシー：ポスターデザインの評価
+
+新作映画のポスターデザインを委託されたデザインエージェンシー（ *Aesthetico* ）を想像してください。
+
+Aesthetico のデザイナーは [この映画ポスター](https://upload.wikimedia.org/wikipedia/commons/7/78/1927_Boris_Bilinski_%281900-1948%29_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg) を作成しました。彼らは、自分たちのポスターが既存の他の映画ポスターとどのように比較されるのか、またそれらのポスターがどのジャンルの映画に使われているのかを知りたいと考えています。
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/78/1927_Boris_Bilinski_%281900-1948%29_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg" alt="Metropolis poster" width="75%"/>
+
+幸運なことに、`MovieNVDemo` コレクションにはポスターデザインに基づく `poster_title` 名前付き ベクトル が用意されています。そのため Aesthetico のデザイナーは `poster_title` 名前付き ベクトル に対して検索を行い、自分たちのポスターに似た映画を探し出せます。そのうえで RAG を実行し、見つかった映画の概要を要約できます。
+
+### <i class="fa-solid fa-code"></i> コード
+
+次のクエリは、入力画像に似た映画を見つけ、その結果に対して RAG を使って洞察を提供します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# PosterSearchGeneration"
+  endMarker="# END PosterSearchGeneration"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 出力
+
+以下は RAG クエリの例示的な出力です。
+
+> これらの映画はアクション、 サイエンスフィクション、 スリラー、 ドラマに分類できます。観客は、サスペンス、ミステリー、そして幻想的な生物やシナリオが盛り込まれたアクション満載の作品を好む層が中心でしょう。これらの映画は、スーパーヒーロー映画のファン、 サイエンスフィクション 愛好家、緊張感あふれるストーリーラインを楽しむ視聴者など、幅広い層に訴求する可能性があります。
+
+Aesthetico のデザイナーはこの情報を活用し、自身のポスターデザインに似た映画のタイプを理解してデザインの方向性をさらに洗練できます。
+
+<details>
+  <summary>検索結果</summary>
+
+Predator 2<br/>
+Inception<br/>
+Mission: Impossible<br/>
+The Dark Knight<br/>
+Lost in Translation<br/>
+Independence Day<br/>
+Godzilla vs. Kong<br/>
+Fargo<br/>
+The Amazing Spider-Man<br/>
+Godzilla<br/>
+
+</details>
+
+## <i class="fa-solid fa-square-chevron-right"></i> 映画脚本家：アイデアの評価
+
+別のプロジェクトでは、*ScriptManiacs* の脚本家チームが サイエンスフィクション 映画の脚本に取り組んでいます。彼らはいくつかの映画タイトル案を検討しており、それぞれのタイトルにどのようなイメージやテーマが結び付くかを知りたいと考えています。
+
+同じコレクションを使って、彼らの目的も達成できます。実際には、同一のコレクションに対して、`target_vector` パラメーターを変えながら複数回クエリを実行できます。
+
+ScriptManiacs の脚本家は次のような検索が可能です。  
+- `title` 名前付き ベクトル で検索し、*似たタイトル* の映画を見つける  
+- `overview` 名前付き ベクトル で検索し、*プロットが似ている* 映画を見つける  
+
+では、タイトル案「Chrono Tides: The Anomaly Rift」を例に見てみましょう。
+
+### <i class="fa-solid fa-code"></i> コード
+
+次の例では、「Chrono Tides: The Anomaly Rift」との類似度に基づいて "MovieNVDemo" のエントリを検索し、さらに大規模言語モデルに共通点を抽出させています。
+
+`for tgt_vector` ループに注目してください。これにより、同じクエリを異なる 名前付き ベクトル に対して実行できます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# TitleSerachLoop"
+  endMarker="# END TitleSerachLoop"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 出力
+
+２つのクエリはまったく異なる出力を示しました。タイトル「Chrono Tides: The Anomaly Rift」に最も近いタイトルを検索すると、結果はアクション／アドベンチャー映画に偏りました。一方、そのタイトルと最も類似した概要を持つ映画を検索すると、 サイエンスフィクション とアドベンチャー映画が含まれました。
+
+このようにして ScriptManiacs の脚本家は、タイトル案に関連する多様なテーマやジャンルを理解し、執筆に活かすことができます。
+
+たとえば、「Chrono Tides: The Anomaly Rift」をアクション／アドベンチャー寄りの サイエンスフィクション として制作するのであれば、このタイトルは適していると言えるでしょう。一方、よりドラマチックまたはロマンチックなテーマを求めるのであれば、タイトルを再考する必要があるかもしれません。
+
+概要検索の結果には複数の サイエンスフィクション とアドベンチャー映画が含まれており、脚本家たちが サイエンスフィクション 作品の命名として正しい方向に進んでいることを示しています。
+
+#### 類似タイトル
+
+RAG クエリによると、「Chrono Tides: The Anomaly Rift」と類似タイトルを持つ映画には次の共通点があります。
+
+> これらの映画は **アクション／アドベンチャー作品** で、ファンタジー、アドベンチャー、ロマンスを好む幅広い観客を対象としています。『Pirates of the Caribbean』や『Lara Croft』シリーズは海賊の冒険や財宝探索を、『The Croods』は家族向けアニメーションを、『The Twilight Saga』は超自然的ロマンスを、『Meg 2: The Trench』は水中スリラーとアクションを提供しています。総じて、これらの映画は高い緊張感、幻想的要素、ドラマチックなストーリーラインを楽しむ観客に訴求します。
+
+<details>
+  <summary>検索結果</summary>
+
+Pirates of the Caribbean: On Stranger Tides<br/>
+Lara Croft: Tomb Raider<br/>
+The Croods: A New Age<br/>
+The Twilight Saga: Breaking Dawn - Part 1<br/>
+Meg 2: The Trench<br/>
+
+</details>
+
+#### 類似概要
+
+「Chrono Tides: The Anomaly Rift」と最も類似した概要を持つ映画には次の共通点があります。
+
+> これらの映画は ** サイエンスフィクション およびアドベンチャー作品** に分類できます。宇宙探査、古代文明、恐竜、自然災害、神話的冒険をテーマとしており、アクションとビジュアルの豊かな映画を好む観客に向けられています。ファンタジー要素とサスペンスを兼ね備えた作品を楽しむ層に最適です。
+
+<details>
+  <summary>検索結果</summary>
+
+Stargate<br/>
+Interstellar<br/>
+Jurassic Park III<br/>
+2012<br/>
+Moana<br/>
+
+</details>
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

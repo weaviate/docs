@@ -1,0 +1,249 @@
+---
+title: スキーマの定義方法
+description: 構造化され最適化された検索機能のために Weaviate スキーマを設計します
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCodeExample from '!!raw-loader!./_snippets/20_schema.py';
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/WIK6_hGuer0' controls='true' />
+<br/>
+
+Weaviate における `schema` は、各 `class` のデータ構造を定義する設計図です。`class` とは、同じタイプのオブジェクトを集めたコレクションです。
+
+このセクションでは、スキーマの定義方法と、その際に考慮すべき主なポイントについて学びます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> スキーマの定義方法
+
+すでに学んだとおり、スキーマ定義には多くの情報が含まれます。このセクションでは、次のプロパティを中心に説明します。  
+- 名前（`class`）などのメタデータ  
+- データ `properties`  
+- `vectorizer`  
+- モジュール設定（`moduleConfig`）
+
+### <i class="fa-solid fa-code"></i> メタデータ定義
+
+各 class と property には、名前と説明を設定できます。
+
+クラスの場合は次のとおりです。  
+- `class`（必須）  
+- `description`（任意）
+
+プロパティの場合は次のとおりです。  
+- `name`（必須）  
+- `description`（任意）
+
+クラスを定義する際に必須なのは `class` のみで、残りは Weaviate が推測できます。ただし、データ構造を自分や他の利用者が理解しやすくするために、各クラスおよびプロパティに説明を付けることを推奨します。
+
+クラスは次の構文で定義できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Create a class with metadata ====="
+  endMarker="# ===== END Create a class with metadata ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-code"></i> データ型を持つプロパティ
+
+各 `class` には 1 つ以上のプロパティが含まれ、それぞれにデータ型を指定する必要があります。データ型を指定しない場合、 Weaviate がデータに基づいて自動的に割り当てますが、予測可能な結果を得るためには可能な限りスキーマで明示的に指定することを推奨します。
+
+現在、 Weaviate がサポートしているデータ型は次のとおりです。
+
+import DataTypes from '/_includes/datatypes.mdx';
+
+<details>
+  <summary>Weaviate で利用可能なデータ型</summary>
+  <DataTypes />
+</details>
+
+ほとんどのデータ型は `text` や `text[]` のように、単一または配列のどちらでも指定できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Create properties with datatypes ====="
+  endMarker="# ===== END Create properties with datatypes ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+:::tip エラーが発生しましたか？
+最初に示したクラス作成コマンドを実行済みの状態でこのコマンドを実行すると、`Article` クラスがすでに存在するため、 Weaviate はエラーを返します。このセクションを進めるには、次のコマンドでクラスを削除してください。<p><br/></p>
+
+**クラスを削除するとそのクラス内のすべてのオブジェクトも削除されるため、クラスの削除は慎重に行ってください。**
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Delete the class ====="
+  endMarker="# ===== END Delete the class ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+:::
+
+### <i class="fa-solid fa-code"></i> ベクトライザーの設定
+
+`vectorizer` パラメータは、そのクラスのベクトル埋め込みを生成するために使用する Weaviate モジュールを指定します。
+
+テキストオブジェクトの場合は通常、`text2vec-cohere`、`text2vec-huggingface`、`text2vec-openai`、`text2vec-palm` のような `text2vec` モジュールのいずれかを選択します。
+
+モジュールはインスタンスの設定で有効化します。以下のコマンドを実行すると、現在のインスタンスで利用可能なモジュールの一覧を確認できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Get module list ====="
+  endMarker="# ===== END Get module list ====="
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+:::info `module` とは？
+ここまでで Weaviate の `modules` という言葉を何度か目にしたかと思います。モジュールとは、 Weaviate の機能を拡張・カスタマイズするための任意コンポーネントです。<p><br/></p>
+
+Weaviate Academy のユニットでは、モジュールがあらかじめ構成された WCD の利用を前提としています。ローカルインスタンスでのモジュール有効化方法は別のユニットで扱いますが、[Docker インストールガイド](/deploy/installation-guides/docker-installation.md) も参照できます。
+:::
+
+WCD インスタンスには複数のモジュールがプリセットされています。たとえば、以下のレスポンスから `text2vec-openai` モジュールが利用可能であることがわかるため、スキーマで使用できます。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "generative-openai": {
+    "documentationHref": "https://beta.openai.com/docs/api-reference/completions",
+    "name": "Generative Search - OpenAI"
+  },
+  "qna-openai": {
+    "documentationHref": "https://beta.openai.com/docs/api-reference/completions",
+    "name": "OpenAI Question & Answering Module"
+  },
+  "ref2vec-centroid": {},
+  "text2vec-cohere": {
+    "documentationHref": "https://docs.cohere.com/docs/embeddings",
+    "name": "Cohere Module"
+  },
+  "text2vec-huggingface": {
+    "documentationHref": "https://huggingface.co/docs/api-inference/detailed_parameters#feature-extraction-task",
+    "name": "Hugging Face Module"
+  },
+  "text2vec-openai": {
+    "documentationHref": "https://beta.openai.com/docs/guides/embeddings/what-are-embeddings",
+    "name": "OpenAI Module"
+  }
+}
+```
+
+</details>
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Create a class with a vectorizer ====="
+  endMarker="# ===== END Create a class with a vectorizer ====="
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+:::info ベクトライザーとユーザー提供ベクトル
+インポート時に独自のベクトルだけを扱いたい場合は、`vectorizer` を `None` に設定できます。<p><br/></p>
+
+場合によっては、アップロード時にベクトルを渡しつつベクトライザーを使用することも可能です。この場合、互換性を保つために、使用するベクトライザー（例: `text2vec-cohere`）がベクトル生成に用いたモデルと同じであることを確認してください。
+:::
+
+### <i class="fa-solid fa-code"></i> クラス レベル moduleConfig 設定
+
+クラス レベルで `moduleConfig` パラメーターを設定すると、モジュールの動作に関するクラス全体の設定を行えます。たとえば、ベクトライザーでは使用するモデル（`model`）やクラス名をベクトル化するかどうか（`vectorizeClassName`）を指定できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Class-level moduleConfig ====="
+  endMarker="# ===== END Class-level moduleConfig ====="
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-code"></i> プロパティ レベル moduleConfig 設定
+
+プロパティ レベルでも `moduleConfig` パラメーターを設定し、各プロパティごとのモジュール動作を制御できます。たとえば、プロパティ名をベクトル化するか（`vectorizePropertyName`）や、そのプロパティをまったくベクトル化しないか（`skip`）などを指定できます。
+
+次の例では、`url` プロパティに対して `skip` パラメーターを `True` に設定しており、オブジェクトのベクトル埋め込みを生成する際に URL テキストをスキップします。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Property-level moduleConfig ====="
+  endMarker="# ===== END Property-level moduleConfig ====="
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+:::note 他のオプションは？
+まだ触れていない設定もあります。たとえばインデックス設定や、レプリケーションに関連するクラスター設定などです。これらについては後のユニットで説明します。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> オプションが多い理由
+
+Weaviate やデータベースを初めて触る場合、これらのオプションは複雑に感じるかもしれません。しかし、これらの設定はデータの保存方法や、さまざまなクエリに対する応答に直接影響します。
+
+次のセクションでは実際にデータを取り込み、これらのオプションがクエリ結果にどのように影響するかを確認します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習 エクササイズ
+
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+Weaviate に追加したいデータセットはありますか？
+
+ここで学んだ内容を基に、そのデータセットのスキーマを作成してみましょう。
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- Weaviate のスキーマは、各クラスのオブジェクトのデータ構造を定義する設計図として機能します。
+- クラスは同じタイプのオブジェクトの集合を表します。
+- スキーマ定義にはメタデータ、データプロパティ、ベクトライザー、モジュール設定が含まれます。
+- クラス内のデータプロパティには、`text` や `number` などの特定のデータ型を割り当てる必要があります。
+- vectorizer パラメーターは、クラスのベクトル埋め込みを生成する際にどの Weaviate モジュールを使用するかを決定します。
+- クラス レベルとプロパティ レベルのモジュール設定により、モジュールの動作をクラス全体または各プロパティごとにカスタマイズできます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

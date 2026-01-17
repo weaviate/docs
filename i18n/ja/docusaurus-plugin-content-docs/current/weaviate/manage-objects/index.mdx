@@ -1,0 +1,66 @@
+---
+title: オブジェクトの管理
+sidebar_position: 0
+image: og/docs/howto.jpg
+hide_table_of_contents: true
+# tags: ['how to', 'manage data', 'crud']
+---
+
+ Weaviate オブジェクトに対する基本的な CRUD (Create, Read, Update, Delete) 操作を学びます。  
+このガイドでは、単一オブジェクトの作成、バッチインポート、特定オブジェクトの読み取り、すべてのオブジェクトの取得、既存オブジェクトの更新、そしてコレクション内のオブジェクトの削除について、詳細な手順を提供します。
+
+import CardsSection from "/src/components/CardsSection";
+
+export const objectCrudData = [
+  {
+    title: "オブジェクトの作成",
+    description: "個々のデータオブジェクトを Weaviate コレクションに追加します。",
+    link: "/weaviate/manage-objects/create",
+    icon: "fas fa-plus-circle",
+  },
+  {
+    title: "バッチインポート",
+    description:
+      "複数のデータオブジェクトをバッチで効率的にコレクションに追加します。",
+    link: "/weaviate/manage-objects/import",
+    icon: "fas fa-file-import",
+  },
+  {
+    title: "オブジェクトの読み取り",
+    description:
+      "ID や ベクトル で指定したデータオブジェクトをコレクションから取得します。",
+    link: "/weaviate/manage-objects/read",
+    icon: "fas fa-eye",
+  },
+  {
+    title: "すべてのオブジェクトの読み取り",
+    description:
+      "ページネーションを用いて、コレクションから複数またはすべてのオブジェクトを取得します。",
+    link: "/weaviate/manage-objects/read-all-objects", 
+    icon: "fas fa-list",
+  },
+  {
+    title: "オブジェクトの更新",
+    description:
+      "コレクション内の既存データオブジェクトを変更します (フルまたは部分更新)。",
+    link: "/weaviate/manage-objects/update",
+    icon: "fas fa-edit",
+  },
+  {
+    title: "オブジェクトの削除",
+    description: "コレクションから特定のデータオブジェクトを削除します。",
+    link: "/weaviate/manage-objects/delete",
+    icon: "fas fa-trash-alt",
+  },
+];
+
+<br />
+<CardsSection items={objectCrudData} />
+<br />
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+
