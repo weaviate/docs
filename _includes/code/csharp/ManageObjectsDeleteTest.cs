@@ -1,10 +1,10 @@
-using Xunit;
-using Weaviate.Client;
-using Weaviate.Client.Models;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
 
 namespace WeaviateProject.Tests;
 
@@ -16,9 +16,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     // Static constructor for one-time setup (like @BeforeAll)
     static ManageObjectsDeleteTest()
     {
-        // Note: The C# client doesn't support setting headers like 'X-OpenAI-Api-Key' via the constructor.
-        // This must be configured in Weaviate's environment variables.
-        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        client = Connect.Local().GetAwaiter().GetResult();
     }
 
     // Runs before each test (like @BeforeEach)
@@ -28,11 +26,13 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
         {
             await client.Collections.Delete(COLLECTION_NAME);
         }
-        await client.Collections.Create(new CollectionConfig
-        {
-            Name = COLLECTION_NAME,
-            Properties = [ Property.Text("name") ]
-        });
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = COLLECTION_NAME,
+                Properties = [Property.Text("name")],
+            }
+        );
     }
 
     // Runs after each test (like @AfterEach and @AfterAll)
@@ -47,7 +47,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestDeleteObject()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
+        var collection = client.Collections.Use(COLLECTION_NAME);
         var uuidToDelete = await collection.Data.Insert(new { name = "EphemeralObjectA" });
         Assert.NotNull(await collection.Query.FetchObjectByID(uuidToDelete));
 
@@ -61,8 +61,9 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestBatchDelete()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
-        var objects = Enumerable.Range(0, 5)
+        var collection = client.Collections.Use(COLLECTION_NAME);
+        var objects = Enumerable
+            .Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
 
@@ -73,7 +74,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
         // START DeleteBatch
         await collection.Data.DeleteMany(
             // highlight-start
-            Filter.Property("name").Like("EphemeralObject*")
+            Filter.Property("name").IsLike("EphemeralObject*")
         // highlight-end
         );
         // END DeleteBatch
@@ -86,12 +87,8 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     public async Task TestDeleteContains()
     {
         // START DeleteContains
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
-        await collection.Data.InsertMany(new[]
-        {
-            new { name = "asia" },
-            new { name = "europe" }
-        });
+        var collection = client.Collections.Use(COLLECTION_NAME);
+        await collection.Data.InsertMany(new[] { new { name = "asia" }, new { name = "europe" } });
 
         await collection.Data.DeleteMany(
             // highlight-start
@@ -104,8 +101,9 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestDryRun()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
-        var objects = Enumerable.Range(0, 5)
+        var collection = client.Collections.Use(COLLECTION_NAME);
+        var objects = Enumerable
+            .Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
 
@@ -113,7 +111,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
 
         // START DryRun
         var result = await collection.Data.DeleteMany(
-            Filter.Property("name").Like("EphemeralObject*"),
+            Filter.Property("name").IsLike("EphemeralObject*"),
             // highlight-start
             dryRun: true
         // highlight-end
@@ -130,8 +128,9 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
     [Fact]
     public async Task TestBatchDeleteWithIDs()
     {
-        var collection = client.Collections.Use<object>(COLLECTION_NAME);
-        var objects = Enumerable.Range(0, 5)
+        var collection = client.Collections.Use(COLLECTION_NAME);
+        var objects = Enumerable
+            .Range(0, 5)
             .Select(i => new { name = $"EphemeralObject_{i}" })
             .ToArray(); // Creates an array T[]
 
@@ -141,12 +140,12 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
 
         // START DeleteByIDBatch
         var queryResponse = await collection.Query.FetchObjects(limit: 3);
-        var ids = queryResponse.Objects.Select(obj => obj.ID.Value).ToList();
+        var ids = queryResponse.Objects.Select(obj => obj.UUID.Value).ToList();
 
         await collection.Data.DeleteMany(
             // highlight-start
             Filter.ID.ContainsAny(ids) // Delete the 3 objects
-                                       // highlight-end
+        // highlight-end
         );
         // END DeleteByIDBatch
 

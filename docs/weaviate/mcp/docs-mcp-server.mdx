@@ -1,0 +1,197 @@
+---
+title: Weaviate Docs MCP Server
+sidebar_label: Docs MCP Server
+# tags: ["mcp"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The **Weaviate Docs MCP Server** brings instant access to Weaviate's documentation directly into your AI development environment. Built on the Model Context Protocol (MCP), this server integrates seamlessly with tools like Claude Desktop and Cursor, allowing you to query Weaviate's documentation without leaving your IDE.
+
+The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate under the hood) as its knowledge engine, which powers the search and retrieval of Weaviate documentation. The server offers:
+
+- **Instant documentation access**: Search Weaviate docs without context switching.
+- **Multi-source knowledge base**: Queries across docs, tutorials, API references, GitHub issues and community content.
+- **Always up-to-date**: Automatically syncs with the latest Weaviate documentation.
+
+## How to setup MCP Server
+
+:::note MCP server URL
+
+**URL**: **https://weaviate-docs.mcp.kapa.ai**
+
+:::
+
+Setup steps vary depending on which AI assistant you're using.
+
+<Tabs groupId="platform">
+<TabItem value="cursor" label="Cursor">
+Add the following to your `.cursor/mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-docs": {
+      "type": "http",
+      "url": "https://weaviate-docs.mcp.kapa.ai"
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="vsc" label="VS Code">
+Prerequisites: VS Code 1.102+ with GitHub Copilot enabled.
+
+Create an `mcp.json` file in your workspace `.vscode` folder:
+
+```json
+{
+  "servers": {
+    "weaviate-docs": {
+      "type": "http",
+      "url": "https://weaviate-docs.mcp.kapa.ai"
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="claude_code" label="Claude Code">
+Run the following command in your terminal:
+```bash
+claude mcp add --transport http weaviate-docs https://weaviate-docs.mcp.kapa.ai
+```
+Then run the `/mcp` command in Claude Code and follow the steps in your browser to authenticate.
+
+For more information, see the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp).
+
+</TabItem>
+<TabItem value="chatgpt_desktop" label="ChatGPT Desktop">
+ChatGPT Desktop supports MCP servers in developer mode:
+
+1. Open ChatGPT Desktop.
+2. Go to **Settings** > **Apps** > **Advanced settings**.
+3. Enable **Developer mode**.
+4. Navigate to **Settings** > **Connectors**.
+5. Click **Create** and enter:
+
+- **Name**: Weaviate Docs
+- **URL**: https://weaviate-docs.mcp.kapa.ai
+
+For more information, see the [ChatGPT Desktop MCP documentation](https://platform.openai.com/docs/guides/developer-mode).
+
+  </TabItem>
+<TabItem value="claude_desktop" label="Claude Desktop">
+Claude Desktop supports MCP servers:
+
+1. Open Claude Desktop.
+2. Go to **Settings** > **Connectors**.
+3. Click **Add custom connector** and enter:
+
+- **Name**: Weaviate Docs
+- **URL**: https://weaviate-docs.mcp.kapa.ai
+
+4. Click on **Connect** and follow the steps in your browser to authenticate.
+
+Restart Claude Desktop for changes to take effect.
+
+For more details, see the [Claude Desktop documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
+
+</TabItem>
+<TabItem value="other" label="Other">
+MCP is an open protocol supported by many clients. Use the server URL https://weaviate-docs.mcp.kapa.ai and refer to your client's documentation for setup instructions.
+
+Most clients accept the standard MCP JSON configuration format:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-docs": {
+      "url": "https://weaviate-docs.mcp.kapa.ai"
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Using the MCP Server
+
+Once configured, you can ask context-aware questions about Weaviate from within your editor. For example:
+
+```
+"How do I set up a hybrid search in Weaviate?"
+
+"What are the best practices for schema design in Weaviate?"
+
+"Search the Weaviate docs for information about BM25 algorithm"
+
+"What's the difference between vector and keyword search in Weaviate?"
+```
+
+## Troubleshooting
+
+<details>
+  <summary>Server not showing up</summary>
+
+- Check that the file path is correct for your OS
+- Restart the app completely
+- Ensure the URL is entered correctly
+- Verify the config file syntax is valid JSON
+
+</details>
+
+<details>
+  <summary>Connection errors</summary>
+
+If you see connection errors:
+
+1. Verify the server URL is accessible:
+
+   ```bash
+   curl https://weaviate-docs.mcp.kapa.ai
+   ```
+
+2. Check your internet connection
+
+3. Try the MCP Inspector to debug:
+   ```bash
+   npx @modelcontextprotocol/inspector
+   ```
+
+</details>
+
+<details>
+  <summary>No results returned</summary>
+
+If queries return empty results:
+
+- Check that your question is relevant to Weaviate documentation
+- Try rephrasing your query
+- Verify the MCP server is properly configured (test with curl)
+
+</details>
+
+<details>
+  <summary>Rate limiting</summary>
+
+The public Weaviate MCP server may have rate limits. If you experience issues:
+
+- Wait a few minutes before trying again
+
+</details>
+
+## Further resources
+
+- [Vibe coding - Best practices](../best-practices/code-generation.md)
+- [MCP documentation](https://modelcontextprotocol.io)
+- [kapa.ai documentation](https://docs.kapa.ai)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

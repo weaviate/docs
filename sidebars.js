@@ -50,14 +50,6 @@ const sidebars = {
       ],
     },
     {
-      type: "link",
-      label: "Concepts & architecture",
-      href: "https://academy.weaviate.io/courses/wa050-py",
-      customProps: {
-        academyOnly: true,
-      },
-    },
-    {
       type: "category",
       label: "Starter guides",
       link: {
@@ -105,16 +97,31 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "AI assistance (Vibe coding)",
-      collapsed: false,
-      collapsible: false,
-      items: ["weaviate/best-practices/code-generation", "weaviate/mcp/index"],
+      label: "AI-assisted (vibe) coding",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "weaviate/best-practices/code-generation",
+      },
+      items: ["weaviate/mcp/index","weaviate/mcp/docs-mcp-server"],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "link",
       label: "Integration ecosystem",
       href: "https://weaviate.io/product/integrations",
-    }
+    },
+    {
+      type: "link",
+      label: "Concepts & architecture",
+      href: "https://academy.weaviate.io/courses/wa050-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
   ],
   modelProvidersSidebar: [
     {
@@ -147,7 +154,7 @@ const sidebars = {
               },
               items: [
                 "weaviate/model-providers/weaviate/embeddings",
-                "weaviate/model-providers/weaviate/embeddings-multimodal"
+                "weaviate/model-providers/weaviate/embeddings-multimodal",
               ],
             },
             {
@@ -420,7 +427,9 @@ const sidebars = {
                 type: "doc",
                 id: "weaviate/model-providers/imagebind/index",
               },
-              items: ["weaviate/model-providers/imagebind/embeddings-multimodal"],
+              items: [
+                "weaviate/model-providers/imagebind/embeddings-multimodal",
+              ],
             },
             {
               type: "category",
@@ -770,9 +779,7 @@ const sidebars = {
             type: "doc",
             id: "weaviate/client-libraries/java/index",
           },
-          items: [
-            "weaviate/client-libraries/java/java-v5",
-          ],
+          items: ["weaviate/client-libraries/java/java-v5"],
         },
         {
           type: "doc",

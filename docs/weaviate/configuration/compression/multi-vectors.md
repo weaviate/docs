@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.ts';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
-
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ManageCollectionsTest.cs";
 
 Multi-vector embeddings represent a single data object, like a document or image, using a set of multiple vectors rather than a single vector. This approach allows for a more granular capture of semantic information, as each vector can represent different parts of the object. However, this leads to a significant increase in memory consumption, as multiple vectors are stored for each item.
 
@@ -61,6 +61,14 @@ Compression techniques become especially crucial for multi-vector systems to man
 ```
 
 </TabItem>
+<TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiValueVectorMuvera"
+      endMarker="// END MultiValueVectorMuvera"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 The final dimensionality of the MUVERA encoded vector will be

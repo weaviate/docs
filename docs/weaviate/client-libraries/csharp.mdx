@@ -1,6 +1,6 @@
 ---
-title: C# - Beta release
-sidebar_label: C# 🚧
+title: C#
+sidebar_label: C#
 description: "Official C# client library documentation for integrating Weaviate with .NET applications and services."
 image: og/docs/client-libraries.jpg
 # tags: ['c#', 'csharp', 'client library', 'experimental']
@@ -11,15 +11,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/GetStartedTest.cs";
 import QuickLinks from "/src/components/QuickLinks";
-
-:::caution Preview
-
-The `C#` client is available as a beta release.<br/>
-
-This means that the library is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this client library in production environments at this time.**
-
-:::
 
 export const csharpCardsData = [
   {
@@ -46,8 +37,8 @@ This page broadly covers the Weaviate C# (beta release). For usage information n
 
 ## Installation
 
-```xml
-<PackageReference Include="Weaviate.Client" Version="0.0.1-beta.4" />
+```bash
+dotnet add package Weaviate.Client --version ||site.csharp_client_version||
 ```
 
 <details>
@@ -89,7 +80,7 @@ Get started with Weaviate using this C# example. The code walks you through thes
 1. **[Search/query the database](../search/index.mdx)**: Execute a vector search to find questions semantically similar to the query `biology`.
 
 <Tabs className="code" groupId="languages">
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetStarted"
@@ -100,12 +91,6 @@ Get started with Weaviate using this C# example. The code walks you through thes
 </Tabs>
 
 For more code examples, check out the [How-to manuals & Guides](../guides.mdx) section.
-
-## Asynchronous usage
-
-_Coming soon_
-
-<!-- TODO[g-despot] Add section -->
 
 ## Releases
 
