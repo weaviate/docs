@@ -17,6 +17,7 @@ On startup, the Weaviate server generates a unique instance ID. Every 24 ours th
 - Host operating system
 - Modules used
 - Number of objects in the instance
+- Metadata
 
 Weaviate does not collect any other telemetry information.
 
@@ -27,6 +28,11 @@ To disable telemetry data collection, add this line to your [system configuratio
 ```bash
 DISABLE_TELEMETRY=true
 ```
+
+## Metadata
+
+Since Weaviate version `v1.33`, Weaviate will, when available, collect basic metadata from metadata endpoints it has access to on selected cloud providers. More info for: [AWS]
+(https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html), [GCP](https://docs.cloud.google.com/compute/docs/metadata/overview), [Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service).
 
 ## Questions and feedback
 
