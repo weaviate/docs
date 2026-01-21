@@ -1,0 +1,306 @@
+---
+title: Weaviate MCP server
+# tags: ["mcp"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The Weaviate Model Context Protocol (MCP) server is an implementation of the open standard that enables Large Language Models (LLMs) to interact securely with your Weaviate instance.
+
+Instead of pasting context manually, MCP allows compatible clients (like Claude Desktop or IDEs) to directly "see" and interact with your database. Weaviate implements this as a RESTful HTTP server using Server-Sent Events (SSE) that runs alongside the main Weaviate instance. It exposes tools to inspect schemas, search data (vector/hybrid), and modify objects, all governed by strict authentication and authorization layers.
+
+---
+
+## Configuration
+
+The MCP server is built into Weaviate but is **disabled by default** for security. It listens on port **9000**.
+
+### Environment variables
+
+To enable and configure the server, set the following environment variables in your Weaviate configuration (e.g., `docker-compose.yml`):
+
+| Environment Variable               | Default | Description                                                                                                                          |
+| ---------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `MCP_SERVER_ENABLED`               | `false` | **Required.** Set to `true` to start the MCP server.                                                                                 |
+| `MCP_SERVER_WRITE_ACCESS_DISABLED` | `true`  | When `true`, enables **Read-Only** mode. Set to `false` to allow creating, updating, and deleting data.                              |
+| `MCP_SERVER_READ_LOGS_ENABLED`     | `false` | Set to `true` to enable the `weaviate-logs-fetch` diagnostic tool.                                                                   |
+| `MCP_SERVER_CONFIG_PATH`           | `""`    | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). |
+
+### Custom tool descriptions
+
+You can override the default descriptions provided to the LLM by mounting a YAML file at `MCP_SERVER_CONFIG_PATH`.
+
+```yaml
+# mcp-config.yaml
+tools:
+  weaviate-query-hybrid:
+    description: "Perform a vector or keyword search on a collection."
+```
+
+---
+
+## Tools
+
+The server exposes different tools depending on your configuration. These are all the available tools:
+- `weaviate-collections-get-config`
+- `weaviate-tenants-list`
+- `weaviate-objects-get`
+- `weaviate-query-hybrid`
+- `weaviate-collections-create`
+- `weaviate-objects-upsert`
+- `weaviate-objects-delete`
+- `weaviate-logs-fetch`
+
+### Read tools
+
+#### `weaviate-collections-get-config`
+
+Retrieves the schema configuration for collections.
+
+**Arguments:**
+
+- `collection_name` (string, optional): Specific collection to retrieve. If omitted, returns all.
+
+**Returns:** JSON object containing class names, properties, and vectorizer settings.
+
+#### `weaviate-tenants-list`
+
+Lists tenants for multi-tenant collections.
+
+**Arguments:**
+
+- `collection_name` (string, required): The collection to inspect.
+
+**Returns:** List of tenants and their activity status (HOT/COLD).
+
+#### `weaviate-objects-get`
+
+Retrieves objects by UUID or fetches a paginated list.
+
+**Arguments:**
+
+- `collection_name` (string, required)
+- `uuids` (array, optional): Specific IDs to fetch.
+- `limit` (int): Max results (default 25).
+- `offset` (int): Pagination offset.
+- `include_vector` (bool): Include vector embeddings (default `false`).
+- `return_properties` (array): Filter specific fields to reduce context size.
+
+**Returns:** Array of objects with properties and metadata.
+
+### Query tools
+
+#### `weaviate-query-hybrid`
+
+Performs a hybrid search combining vector similarity and keyword matching (BM25).
+
+**Arguments:**
+
+- `query` (string, required): The natural language search text.
+- `collection_name` (string, required).
+- `alpha` (float): Weighting. is pure keyword search; is pure vector search. Default is `0.5`.
+- `filters` (object): A Weaviate `where` filter object ([more info](#filter-syntax)).
+- `limit` (int): Max results.
+
+**Returns:** Ranked objects with similarity scores and distances.
+
+### Write tools
+
+> **Note:** These tools are only available if `MCP_SERVER_WRITE_ACCESS_DISABLED=false`.
+
+#### `weaviate-collections-create`
+
+Creates a new collection (Class) in the database.
+
+**Arguments:**
+
+- `collection_name` (string, required).
+- `properties` (array): Definitions of data types (text, int, ref) and indexing settings.
+- `vectorConfig` (object): Vectorizer and index settings (e.g., HNSW).
+- `multiTenancyConfig` (object): Enable/disable multi-tenancy.
+
+**Returns:** Confirmation of creation.
+
+#### `weaviate-objects-upsert`
+
+Batch inserts or updates objects.
+
+**Arguments:**
+
+- `collection_name` (string, required).
+- `objects` (array, required): List of objects containing `properties` and optional `uuid` or `vectors`.
+
+**Returns:** Array of results containing UUIDs or error messages per object.
+
+#### `weaviate-objects-delete`
+
+Deletes objects based on a filter.
+
+**Arguments:**
+
+- `collection_name` (string, required).
+- `where` (object): Filter criteria (required for safety unless matching all) ([more info](#filter-syntax)).
+- `dry_run` (boolean): **Default `true`.** Must be explicitly set to `false` to actually delete data.
+
+**Returns:** Count of objects matched and deleted.
+
+### Diagnostic tools
+
+#### `weaviate-logs-fetch`
+
+Fetches recent server logs from an in-memory buffer.
+
+- **Requirement:** `MCP_SERVER_READ_LOGS_ENABLED=true`
+  **Arguments:** `limit` (max chars) and `offset`.
+
+---
+
+## Using the Weaviate MCP server
+
+The Weaviate MCP server runs on `http://localhost:9000/mcp` and supports authentication via Bearer tokens (API Keys).
+
+<Tabs groupId="platform">
+<TabItem value="claude_desktop" label="Claude Desktop">
+Add the following to your Claude Desktop configuration file. Since Claude Desktop typically communicates via `stdio`, we use `curl` to bridge to the local HTTP server.
+
+**Config Location:**
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "weaviate-local": {
+      "command": "curl",
+      "args": [
+        "-X",
+        "POST",
+        "-H",
+        "Authorization: Bearer YOUR_API_KEY",
+        "-H",
+        "Content-Type: application/json",
+        "--no-buffer",
+        "http://localhost:9000/mcp"
+      ]
+    }
+  }
+}
+```
+
+_Note: Replace `YOUR_API_KEY` with your actual Weaviate API key. If anonymous access is enabled, you can omit the Authorization header._
+
+</TabItem>
+
+<TabItem value="cursor" label="Cursor">
+Add the following to your `.cursor/mcp.json` file. Cursor supports SSE (HTTP) connections directly.
+
+```json
+{
+  "mcpServers": {
+    "weaviate-local": {
+      "type": "sse",
+      "url": "http://localhost:9000/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="vsc" label="VS Code">
+**Prerequisites:** VS Code 1.102+ with GitHub Copilot enabled.
+
+Create or edit the `mcp.json` file in your workspace `.vscode` folder:
+
+```json
+{
+  "servers": {
+    "weaviate-local": {
+      "type": "sse",
+      "url": "http://localhost:9000/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="claude_code" label="Claude Code">
+Run the following command in your terminal to add the server. Note that you may need to pass headers manually if your client supports it, or rely on anonymous access for local development if secure headers aren't supported in the CLI add command yet.
+
+```bash
+claude mcp add --transport sse weaviate-local http://localhost:9000/mcp
+
+```
+
+</TabItem>
+
+<TabItem value="other" label="Other">
+Most MCP clients support Server-Sent Events (SSE). Use the following connection details:
+
+- **URL:** `http://localhost:9000/mcp`
+- **Transport:** SSE (Server-Sent Events)
+- **Auth Header:** `Authorization: Bearer <your-api-key>`
+
+Standard JSON configuration format:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-local": {
+      "url": "http://localhost:9000/mcp",
+      "type": "sse"
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Advanced guides
+
+### Filter syntax
+
+The `weaviate-query-hybrid` and `weaviate-objects-delete` tools use a specific JSON syntax for filtering.
+
+**Key Rules:**
+
+1. **Path is an array:** Always use `["propertyName"]`, never `"propertyName"`.
+2. **Typed Values:** Use the specific value field for the data type (e.g., `valueText`, `valueNumber`, `valueDate`).
+3. **Dates:** Must be RFC3339 format with time and timezone (e.g., `"2023-01-01T00:00:00Z"`).
+
+**Example Filter:**
+
+```json
+{
+  "operator": "And",
+  "operands": [
+    {
+      "path": ["status"],
+      "operator": "Equal",
+      "valueText": "published"
+    },
+    {
+      "path": ["viewCount"],
+      "operator": "GreaterThan",
+      "valueNumber": 100
+    }
+  ]
+}
+```
+
+## Further resources
+
+- [Vibe coding - Best practices](../best-practices/code-generation.md)
+- [Weaviate Docs MCP server](./weaviate-docs-mcp-server.mdx)
