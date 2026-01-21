@@ -31,8 +31,7 @@ DISABLE_TELEMETRY=true
 
 ## Metadata
 
-Since Weaviate version `v1.33`, Weaviate will, when available, collect basic metadata from metadata endpoints it has access to on selected cloud providers. More info for: [AWS]
-(https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html), [GCP](https://docs.cloud.google.com/compute/docs/metadata/overview), [Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service).
+Since Weaviate version `v1.33`, Weaviate will, when available, collect basic metadata from metadata endpoints it has access to on selected cloud providers. More info for: [AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html), [GCP](https://docs.cloud.google.com/compute/docs/metadata/overview), [Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service).
 
 ## Questions and feedback
 
