@@ -20,6 +20,10 @@ Compression techniques become especially crucial for multi-vector systems to man
 
 **MUVERA**, which stands for _Multi-Vector Retrieval via Fixed Dimensional Encodings_, tackles the higher memory usage and slower processing times of multi-vector embeddings by encoding them into single, fixed-dimensional vectors. This leads to reduced memory usage compared to traditional multi-vector approaches.
 
+:::tip Weaviate Embeddings multimodal model
+The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/embeddings-multimodal) (`ModernVBERT/colmodernvbert`) produces multi-vector embeddings for visual document retrieval. We recommend enabling MUVERA encoding when using this model to optimize memory usage.
+:::
+
 <!-- TODO[g-despot]: Add link to blog post: Read more about it in this blog post. -->
 
 <Tabs className="code" groupId="languages">

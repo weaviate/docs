@@ -32,6 +32,8 @@ At [import time](#data-import), Weaviate generates image embeddings and saves th
 
 :::tip Primary use case: Image-based document retrieval
 This integration is optimized for image-based document retrieval. Embed images of document pages with Weaviate Embeddings' multimodal model, then retrieve relevant pages with text queries.
+
+**No OCR or preprocessing required**: This model embeds document images directly, eliminating the need for OCR pipelines, text extraction, or other preprocessing steps. Simply convert your documents (PDFs, slides, invoices) to images and embed them as-is.
 :::
 
 ![Embedding integration illustration](../_includes/integration_wes_embedding.png)
@@ -45,6 +47,16 @@ import Requirements from "/\_includes/weaviate-embeddings-requirements.mdx";
 :::info Cloud only
 Weaviate Embeddings vectorizers are not available for self-hosted users.
 :::
+
+### Pricing
+
+Weaviate Embeddings multimodal models are charged based on token usage:
+
+| Model | Price per 1M tokens | Query token limit |
+| :-- | :-- | :-- |
+| `ModernVBERT/colmodernvbert` | $0.065 | 8,092 tokens |
+
+For more pricing information, see the [Weaviate Cloud pricing page](https://weaviate.io/pricing).
 
 ### API credentials
 
@@ -100,7 +112,53 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
 
 Configure one `BLOB` type property to hold the image data, and pass its name to the vectorizer configuration.
 
-Note currently only one model is available.
+This model produces **multi-vector embeddings**, which represent each document with multiple vectors for fine-grained semantic matching. To manage memory usage effectively, we recommend enabling **MUVERA encoding** which compresses the multi-vectors into a single fixed-dimensional vector.
+
+:::tip Recommended: Enable MUVERA encoding
+The ColModernVBERT model outputs multi-vector embeddings that can consume significant memory. MUVERA encoding compresses these into efficient single vectors while preserving retrieval quality. For more details on tuning MUVERA parameters, see [Multi-vector encodings](/weaviate/configuration/compression/multi-vectors).
+:::
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START VectorizerMMWeaviateMuvera"
+      endMarker="# END VectorizerMMWeaviateMuvera"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START VectorizerMMWeaviateMuvera"
+      endMarker="// END VectorizerMMWeaviateMuvera"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Coming soon
+```
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+
+```java
+// Coming soon
+```
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+
+```csharp
+// Coming soon
+```
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>Basic configuration (without MUVERA)</summary>
+
+If you prefer to store the raw multi-vector embeddings without MUVERA compression, use this configuration. Note that this will consume more memory.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -120,20 +178,16 @@ Note currently only one model is available.
     />
   </TabItem>
   <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START BasicVectorizerMMWeaviate"
-      endMarker="// END BasicVectorizerMMWeaviate"
-      language="goraw"
-    />
+
+```go
+// Coming soon
+```
   </TabItem>
   <TabItem value="java6" label="Java v6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START BasicVectorizerMMWeaviate"
-      endMarker="// END BasicVectorizerMMWeaviate"
-      language="java"
-    />
+
+```java
+// Coming soon
+```
   </TabItem>
   <TabItem value="csharp" label="C# (Beta)">
 
@@ -142,6 +196,8 @@ Note currently only one model is available.
 ```
   </TabItem>
 </Tabs>
+
+</details>
 
 ### Vectorizer parameters
 
@@ -295,7 +351,12 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 Currently, the only available multimodal model is:
 
-- `ModernVBERT/colmodernvbert`: A late-interaction model fine-tuned for visual document retrieval tasks. ([Hugging Face model card](https://huggingface.co/ModernVBERT/colmodernvbert))
+- `ModernVBERT/colmodernvbert`: A late-interaction model fine-tuned for visual document retrieval tasks.
+  - **Type**: Multi-vector embeddings (ColBERT-style)
+  - **Input**: Document images (PDFs, slides, invoices converted to images) + text queries
+  - **Pricing**: $0.065 per 1M tokens
+  - **Query token limit**: 8,092 tokens
+  - [Hugging Face model card](https://huggingface.co/ModernVBERT/colmodernvbert)
 
 ## Further resources
 
@@ -306,9 +367,15 @@ Once the integrations are configured at the collection, the data management and 
 - The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
 - The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
+### Multi-vector embeddings
+
+- [Multi-vector encodings (MUVERA)](/weaviate/configuration/compression/multi-vectors): Learn how to configure MUVERA parameters to balance memory usage and retrieval accuracy.
+- [Define multi-vector embeddings](/weaviate/manage-collections/vector-config#define-multi-vector-embeddings-eg-colbert-colpali): Configure multi-vector embeddings in your collection.
+
 ### References
 
 - Weaviate Embeddings [Documentation](/cloud/embeddings)
+- Weaviate Embeddings [Models](/cloud/embeddings/models)
 
 ## Questions and feedback
 
