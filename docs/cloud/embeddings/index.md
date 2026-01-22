@@ -36,8 +36,14 @@ Simplified embedding management through:
 
 The following models are available for use with Weaviate Embeddings:
 
+### Text embedding models
+
 - **[`Snowflake/snowflake-arctic-embed-m-v1.5`](/cloud/embeddings/models#snowflake-arctic-embed-m-v1.5)**
 - **[`Snowflake/snowflake-arctic-embed-l-v2.0`](/cloud/embeddings/models#snowflake-arctic-embed-l-v2.0)**
+
+### Multimodal model
+
+- **[`ModernVBERT/colmodernvbert`](/cloud/embeddings/models#colmodernvbert)** - A vision-language model for visual document retrieval. Embed document images (PDFs, slides, invoices) directly without OCR or preprocessing, then search with text queries. Images and text are represented together in the same vector space.
 
 ## Authentication
 
@@ -78,7 +84,8 @@ We may expand the service to other regions in the future.
 - [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
 - [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Multimodal Embeddings](/weaviate/model-providers/weaviate/embeddings-multimodal.md)
 
 ## Support & feedback
 

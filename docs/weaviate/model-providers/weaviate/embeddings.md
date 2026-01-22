@@ -427,6 +427,10 @@ Once the integrations are configured at the collection, the data management and 
 - The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
 - The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
+### Multimodal embeddings
+
+Looking to embed document images instead of text? See [Weaviate Embeddings: Multimodal](./embeddings-multimodal.md) for visual document retrieval without OCR or preprocessing.
+
 ### References
 
 - Weaviate Embeddings [Documentation](/cloud/embeddings)
