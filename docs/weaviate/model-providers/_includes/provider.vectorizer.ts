@@ -1557,10 +1557,11 @@ await client.collections.create({
   ],
   vectorizers: [
     weaviate.configure.multiVectors.multi2VecWeaviate({
-      name: 'document',
+      // name: 'document', // Optional: You can choose to name the vector
       imageField: 'doc_page',
       model: 'ModernVBERT/colmodernvbert',
       encoding: weaviate.configure.vectorIndex.multiVector.encoding.muvera({
+        // Optional parameters for tuning MUVERA
         ksim: 4,
         dprojections: 16,
         repetitions: 20,

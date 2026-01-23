@@ -48,16 +48,6 @@ import Requirements from "/\_includes/weaviate-embeddings-requirements.mdx";
 Weaviate Embeddings vectorizers are not available for self-hosted users.
 :::
 
-### Pricing
-
-Weaviate Embeddings multimodal models are charged based on token usage:
-
-| Model | Price per 1M tokens | Query token limit |
-| :-- | :-- | :-- |
-| `ModernVBERT/colmodernvbert` | $0.065 | 8,092 tokens |
-
-For more pricing information, see the [Weaviate Cloud pricing page](https://weaviate.io/pricing).
-
 ### API credentials
 
 Your Weaviate Cloud credentials are automatically used to authorize your access to Weaviate Embeddings.
@@ -345,18 +335,11 @@ The query below returns the `n` best scoring objects from the database, set by `
   </TabItem>
 </Tabs>
 
-## References
+## Available models
 
-### Available models
+import WeaviateEmbeddingsMultimodalModels from '/_includes/weaviate-embeddings-multimodal-models.mdx';
 
-Currently, the only available multimodal model is:
-
-- `ModernVBERT/colmodernvbert`: A late-interaction model fine-tuned for visual document retrieval tasks.
-  - **Type**: Multi-vector embeddings (ColBERT-style)
-  - **Input**: Document images (PDFs, slides, invoices converted to images) + text queries
-  - **Pricing**: $0.065 per 1M tokens
-  - **Query token limit**: 8,092 tokens
-  - [Hugging Face model card](https://huggingface.co/ModernVBERT/colmodernvbert)
+<WeaviateEmbeddingsMultimodalModels />
 
 ## Further resources
 
@@ -376,6 +359,10 @@ Once the integrations are configured at the collection, the data management and 
 
 - Weaviate Embeddings [Documentation](/cloud/embeddings)
 - Weaviate Embeddings [Models](/cloud/embeddings/models)
+
+### Pricing
+
+Weaviate Embeddings models are charged based on token usage. For more pricing information, see the [Weaviate Cloud pricing page](https://weaviate.io/pricing).
 
 ## Questions and feedback
 

@@ -1420,10 +1420,11 @@ client.collections.create(
     ],
     vector_config=[
         Configure.MultiVectors.multi2vec_weaviate(
-            name="document",
+            # name="document", # Optional: You can choose to name the vector
             image_field="doc_page",
             model="ModernVBERT/colmodernvbert",
             encoding=Configure.VectorIndex.MultiVector.Encoding.muvera(
+                # Optional parameters for tuning MUVERA
                 ksim=4,
                 dprojections=16,
                 repetitions=20,

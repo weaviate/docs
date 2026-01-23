@@ -410,9 +410,7 @@ The query below returns the `n` best scoring objects from the database, set by `
   </TabItem>
 </Tabs>
 
-## References
-
-### Available models
+## Available models
 
 import WeaviateEmbeddingsModels from "/\_includes/weaviate-embeddings-models.mdx";
 
@@ -434,6 +432,11 @@ Looking to embed document images instead of text? See [Weaviate Embeddings: Mult
 ### References
 
 - Weaviate Embeddings [Documentation](/cloud/embeddings)
+- Weaviate Embeddings [Models](/cloud/embeddings/models)
+
+### Pricing
+
+Weaviate Embeddings models are charged based on token usage. For more pricing information, see the [Weaviate Cloud pricing page](https://weaviate.io/pricing).
 
 ## Questions and feedback
 
