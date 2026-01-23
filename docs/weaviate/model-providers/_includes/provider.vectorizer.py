@@ -1409,6 +1409,35 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START VectorizerMMWeaviateMuvera
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="doc_page", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            # name="document", # Optional: You can choose to name the vector
+            image_field="doc_page",
+            model="ModernVBERT/colmodernvbert",
+            encoding=Configure.VectorIndex.MultiVector.Encoding.muvera(
+                # Optional parameters for tuning MUVERA
+                ksim=4,
+                dprojections=16,
+                repetitions=20,
+            ),
+        )
+    ],
+    # highlight-end
+)
+# END VectorizerMMWeaviateMuvera
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerTransformers
 from weaviate.classes.config import Configure
 

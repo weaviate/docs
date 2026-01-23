@@ -1523,8 +1523,54 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicVectorizerMMWeaviate
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  properties: [
+    {
+      name: 'doc_page',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
+  ],
+  vectorizers: [
+    weaviate.configure.multiVectors.multi2VecWeaviate({
+      name: 'document',
+      imageField: 'doc_page',
+    }),
+  ],
+  // highlight-end
+});
 // END BasicVectorizerMMWeaviate
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START VectorizerMMWeaviateMuvera
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  properties: [
+    {
+      name: 'doc_page',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
+  ],
+  vectorizers: [
+    weaviate.configure.multiVectors.multi2VecWeaviate({
+      // name: 'document', // Optional: You can choose to name the vector
+      imageField: 'doc_page',
+      model: 'ModernVBERT/colmodernvbert',
+      encoding: weaviate.configure.vectorIndex.multiVector.encoding.muvera({
+        // Optional parameters for tuning MUVERA
+        ksim: 4,
+        dprojections: 16,
+        repetitions: 20,
+      }),
+    }),
+  ],
+  // highlight-end
+});
+// END VectorizerMMWeaviateMuvera
 
 // Clean up
 await client.collections.delete('DemoCollection');

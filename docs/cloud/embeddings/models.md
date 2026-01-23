@@ -12,10 +12,17 @@ On this page, you can find a list of pre-trained models designed specifically fo
 
 Here are some simple recommendations on when you should use a specific model:
 
-- **[`Snowflake/snowflake-arctic-embed-m-v1.5`](#snowflake-arctic-embed-m-v1.5)**  
+### Text embedding models
+
+- **[`Snowflake/snowflake-arctic-embed-m-v1.5`](#snowflake-arctic-embed-m-v1.5)**
   Best for datasets that are **primarily in English** with text lengths typically **under 512 tokens**.
-- **[`Snowflake/snowflake-arctic-embed-l-v2.0`](#snowflake-arctic-embed-l-v2.0)**  
+- **[`Snowflake/snowflake-arctic-embed-l-v2.0`](#snowflake-arctic-embed-l-v2.0)**
   Ideal for datasets that include **multiple languages** or require **longer context (up to 8192 tokens)**. This model is optimized for robust performance on both English and multilingual retrieval tasks.
+
+### Multimodal model
+
+- **[`ModernVBERT/colmodernvbert`](#colmodernvbert)**
+  Best for **visual document retrieval** where you want to search document images (PDFs, slides, invoices) using text queries. This model embeds documents directly as images, **eliminating the need for OCR or text extraction pipelines**.
 
 Below, you can find a complete list of all available models.
 
@@ -32,9 +39,21 @@ The following models are available for use with Weaviate Embeddings:
 ---
 -->
 
+### Text embedding models
+
 import WeaviateEmbeddingsModels from '/_includes/weaviate-embeddings-models.mdx';
 
 <WeaviateEmbeddingsModels />
+
+### Multimodal embedding models
+
+Weaviate Embeddings also offers multimodal models for visual document retrieval tasks. These models generate embeddings from document images (PDFs, slides, invoices converted to images) that can be searched with text queries.
+
+import WeaviateEmbeddingsMultimodalModels from '/_includes/weaviate-embeddings-multimodal-models.mdx';
+
+<WeaviateEmbeddingsMultimodalModels />
+
+---
 
 ## Vectorizer parameters
 
@@ -47,7 +66,8 @@ import WeaviateEmbeddingsVectorizerParameters from '/_includes/weaviate-embeddin
 - [Weaviate Embeddings: Overview](/cloud/embeddings)
 - [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Multimodal Embeddings](/weaviate/model-providers/weaviate/embeddings-multimodal.md)
 
 ## Support & feedback
 
