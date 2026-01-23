@@ -97,6 +97,11 @@ from = "/cloud/platform/support-levels"
 to   = "https://weaviate.io/suport-plans"
 status = 301
 
+[[redirects]]
+from = "/cloud/tools/import-tool"
+to   = "/cloud/tools/collections-tool"
+status = 301
+
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
 
 [[redirects]]
