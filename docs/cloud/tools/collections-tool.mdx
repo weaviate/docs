@@ -5,21 +5,21 @@ description: "User-friendly interface for creating, managing, and deleting Weavi
 image: og/wcd/user_guides.jpg
 ---
 
-import WCDEdGen from '/docs/cloud/img/wcd-coll-ed-general.jpg';
-import WCDEdProp from '/docs/cloud/img/wcd-coll-ed-props.jpg';
-import WCDEdExProp from '/docs/cloud/img/wcd-coll-ed-extra-props.jpg';
-import WCDEdSelect from '/docs/cloud/img/wcd-coll-select-mod.jpg';
-import WCDEdObj from '/docs/cloud/img/wcd-coll-ed-objs.jpg';
+import WCDEdGen from "/docs/cloud/img/wcd-coll-ed-general.jpg";
+import WCDEdProp from "/docs/cloud/img/wcd-coll-ed-props.jpg";
+import WCDEdExProp from "/docs/cloud/img/wcd-coll-ed-extra-props.jpg";
+import WCDEdSelect from "/docs/cloud/img/wcd-coll-select-mod.jpg";
+import WCDEdObj from "/docs/cloud/img/wcd-coll-ed-objs.jpg";
 
 The Weaviate Cloud (WCD) Collections tool makes it easy for developers and non-technical users to create, manage, and delete collections.
 
-Use the tool to precisely tune a new collection. Specify a vectorizer and an embedding model. Configure collection properties for faster searches and more accurate results.
+Use the tool to configure a new collection, specify a vectorizer module and add collection properties.
 
 ## Open a collection {#collection-details}
 
 The collections tool is available for collections that are hosted in Weaviate Cloud.
 
-import CollectionDetails from '/docs/cloud/img/weaviate-cloud-collection-details.png';
+import CollectionDetails from "/docs/cloud/img/weaviate-cloud-collections-list.png";
 
 <ol>
   <li>
@@ -35,7 +35,9 @@ import CollectionDetails from '/docs/cloud/img/weaviate-cloud-collection-details
     ).
   </li>
   <li>
-    Click on the <code>Details</code> button (<span class="callout">3</span>).
+    Click on the <code>View details</code> button to check the collection config
+    or on the <code>Explore data</code> button to view collection objects (
+    <span class="callout">3</span>).
   </li>
 </ol>
 
@@ -45,7 +47,7 @@ import CollectionDetails from '/docs/cloud/img/weaviate-cloud-collection-details
       <img src={CollectionDetails} alt="Open a collection in Weaviate Cloud" />
     </div>
     <div class="card__body">
-      <p>Open a collection in Weaviate Cloud.</p>
+      <p>Inspect a collection in Weaviate Cloud.</p>
     </div>
   </div>
 </div>
@@ -55,45 +57,148 @@ If you don't see any available clusters, select the `Clusters` option from the l
 
 ## Create a collection
 
-The `Create collection` button opens the collection editor. Click the button to create a new collection.
+### Create collections with sample data
 
-import CreateCollection from '/docs/cloud/img/weaviate-cloud-create-collection.png';
-
-<ol>
-  <li>
-    To begin, select the <code>Collections</code> tool from the left sidebar (
-    <span class="callout">1</span>).
-  </li>
-  <li>
-    The <code>Clusters</code> panel lists the clusters that are available.
-  </li>
-  <li>
-    Select a cluster from the list to create a new collection or to see the
-    collections that are already in the cluster (<span class="callout">2</span>
-    ).
-  </li>
-  <li>
-    Click on the <code>Create collection</code> button (
-    <span class="callout">3</span>).
-  </li>
-</ol>
-
-<div class="row">
-  <div class="card">
-    <div class="card__image">
-      <img
-        src={CreateCollection}
-        alt="Create a new collection in Weaviate Cloud"
-      />
-    </div>
-    <div class="card__body">
-      <p>Create a new collection in Weaviate Cloud.</p>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="1pzd0n2ivr"
+    src="https://app.guideflow.com/embed/1pzd0n2ivr"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="1pzd0n2ivr"
+  ></script>
 </div>
+
 <br />
 
-### Edit the General section
+<details>
+    <summary>Create collections with sample data</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select the `Collections` tool from the left sidebar.
+3. Click on the `New Collection` button.
+4. Click the `Create sample collection` button to configure and create a collection with sample data.
+5. Choose the sample dataset you wish to use.
+6. Finish the collection creation process.
+
+</details>
+
+### Create collections with CSV/Excel data
+
+The Weaviate Cloud (WCD) _Import tool_ allows you to easily upload data from a CSV file into a new Weaviate collection. The tool guides you through selecting your cluster, configuring the collection, mapping CSV columns to Weaviate properties, and then automatically imports the data.
+
+For this guide, we will use the following `import.csv` file:
+
+```csv title="import.csv"
+id,product_name,price,description
+1,"Laptop",1200.00,"High-performance laptop with 16GB RAM and 512GB SSD."
+2,"Mouse",25.00,"Wireless optical mouse with ergonomic design."
+3,"Keyboard",75.00,"Mechanical keyboard with RGB backlighting."
+```
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="gky28m2bdr"
+    src="https://app.guideflow.com/embed/gky28m2bdr"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="gky28m2bdr"
+  ></script>
+</div>
+
+<br />
+
+<details>
+    <summary>Create collections with CSV/Excel data</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select the `Collections` tool from the left sidebar.
+3. Click on the `New Collection` button.
+4. Click on `Create new collection` and select the `Upload CSV or Excel` option.
+5. Click the `Browse files` button to select the CSV/Excel files from your computer.
+6. Choose a name for the collection. Optionally add a description and update the default settings if necessary.
+7. Select which columns to import as object properties into the collection.
+8. Configure property names, descriptions and data types. Also, choose which properties will be vectorized.
+9. Finish the collection creation process.
+
+</details>
+
+### Create a custom collection
+
+This allows you to create an empty collection which can then be populated programmatically.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="0p0d6j0ayk"
+    src="https://app.guideflow.com/embed/0p0d6j0ayk"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="0p0d6j0ayk"
+  ></script>
+</div>
+
+<br />
+
+<details>
+    <summary>Create custom collections</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select the `Collections` tool from the left sidebar.
+3. Click on the `New Collection` button.
+4. Click on `Create new collection` and select the `Configuration for any data format` option.
+
+</details>
+
+<details>
+    <summary> Edit the General section</summary>
 
 <div class="row">
   <div class="col col--6">
@@ -133,9 +238,12 @@ Set a [vectorizer](/weaviate/config-refs/collections.mdx#vector-configuration) f
 
 The `Vectorizer` setting is a drop-down list. After you select a vectorizer, the editor expands to let you configure the model. The tool only shows the configuration options that are relevant for the vectorizer that you select.
 
-Switch the `Vectorize class name` toggle if you don't want to create a vector for the class name.
+Switch the `Vectorize collection name` toggle if you want to include the collection name in the vector embedding.
 
-### Edit the Properties section
+</details>
+
+<details>
+    <summary>Edit the Properties section</summary>
 
 Use the `Properties` section to fine-tune individual properties in your collection.
 
@@ -197,7 +305,7 @@ The `Object` property type can have nested sub-properties. To add nested propert
     <ol>
       <li>Name the property.</li>
       <li>
-        Set the type to <code>Object</code>. The editor displays an{' '}
+        Set the type to <code>Object</code>. The editor displays an{" "}
         <code>Edit</code> button.
       </li>
       <li>
@@ -222,18 +330,14 @@ When you finish adding nested properties, click the collection name to return to
 
 To delete a property, click the trashcan icon next to it.
 
+</details>
+
 ## Modify a collection
 
 To modify a collection, first [select the collection](#collection-details) you want to edit.
 
 <div class="row">
   <div class="col col--4">
-    <p>
-      To add a new top-level property to the collection, enter the name and type
-      in the editor. Update additional configuration details if the property
-      type supports them.
-    </p>
-    <br />
     <p>
       To add a new top-level property to the collection, enter the name and type
       in the editor. Update additional configuration details if the property
@@ -251,13 +355,19 @@ To modify a collection, first [select the collection](#collection-details) you w
 </div>
 <br />
 
+:::note
+
+You can add new properties to an existing collection, but you cannot change the data type or vectorizer configuration of existing properties once they are created.
+
+:::
+
 ## Delete a collection
 
 Once a collection is deleted, it cannot be restored. The collection schema and all of the collection objects are deleted from the cluster. This operation cannot be undone.
 
 To delete a collection:
 
-import DeleteCollection from '/docs/cloud/img/weaviate-cloud-delete-collection.png';
+import DeleteCollection from "/docs/cloud/img/weaviate-cloud-collections-delete.png";
 
 <ol>
   <li>
@@ -276,6 +386,10 @@ import DeleteCollection from '/docs/cloud/img/weaviate-cloud-delete-collection.p
     Click on the trashcan icon to delete the collection (
     <span class="callout">3</span>).
   </li>
+  <li>
+    Enter the collection name in the text box to confirm, then press{" "}
+    <code>Delete</code> to remove the collection.
+  </li>
 </ol>
 
 <div class="row">
@@ -290,39 +404,17 @@ import DeleteCollection from '/docs/cloud/img/weaviate-cloud-delete-collection.p
 </div>
 <br />
 
-import DeleteCollectionConfirm from '/docs/cloud/img/weaviate-cloud-delete-collection-confirm.png';
-
-<div class="row">
-  <div class="col col--6">
-    <ol start="5">
-      <li>
-        Enter the collection name in the text box to confirm, then press{' '}
-        <code>Delete</code> to remove the collection.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={DeleteCollectionConfirm} alt="Confirm collection deletion" />
-      </div>
-      <div class="card__body">Confirm collection deletion.</div>
-    </div>
-  </div>
-</div>
-<br />
-
 ## Additional considerations
 
 Weaviate collection schemas are highly configurable and can be tuned in many ways. Some schema elements are modifiable after you create the collection, but many properties cannot be modified. For additional details, see [Collection definition](/weaviate/config-refs/collections.mdx).
 
-## More resources
+## Further resources
 
 - [Reference: Collection definition](/weaviate/config-refs/collections.mdx)
 - [Starter guide: Collection definitions (schemas)](/weaviate/starter-guides/managing-collections)
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />
