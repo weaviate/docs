@@ -1469,11 +1469,6 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "cloud/tools/import-tool",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "cloud/tools/collections-tool",
           className: "sidebar-item",
         },
