@@ -45,6 +45,9 @@ Weaviate is an open-source vector database built to power AI applications. This 
 4. **Query Agent** - Get answers from you data by using a natural language prompt/question. <CloudOnlyBadge compact />
 
 import KapaAI from "/src/components/KapaAI";
+import PromptStarter from "/src/components/PromptStarter";
+
+<PromptStarter page="quickstart" />
 
 If you encounter any issues along the way or have additional questions, use the <KapaAI>Ask AI</KapaAI> feature.
 

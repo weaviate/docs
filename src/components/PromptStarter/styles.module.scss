@@ -1,0 +1,304 @@
+// PromptStarter component styles
+// Banner component for quickstart page with AI assistant prompts
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+.promptStarterWrapper {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 2px; // This creates the border width
+  border-radius: 0.875rem;
+  background: linear-gradient(
+    135deg,
+    #7c3aed 0%,
+    #a855f7 35%,
+    #f472b6 65%,
+    #fb923c 100%
+  );
+
+  // Subtle glow effect
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 1rem;
+    background: linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.25) 0%,
+      rgba(168, 85, 247, 0.2) 35%,
+      rgba(244, 114, 182, 0.2) 65%,
+      rgba(251, 146, 60, 0.15) 100%
+    );
+    filter: blur(8px);
+    opacity: 0.8;
+    z-index: -1;
+  }
+}
+
+.promptStarter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.75rem;
+  background: var(--docs-cards-bg);
+  position: relative;
+
+  [data-theme="dark"] & {
+    background: var(--docs-cards-bg);
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #f472b6 100%);
+  color: white;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  animation: sparkle 3s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1rem;
+  }
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.4;
+
+  // Gradient text effect
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.description {
+  font-family: Inter, sans-serif;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+  line-height: 1.4;
+
+  [data-theme="dark"] & {
+    color: var(--ifm-color-emphasis-600);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+.languageSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--docs-cards-border-color);
+  border-radius: 0.375rem;
+
+  [data-theme="dark"] & {
+    background: var(--ifm-background-surface-color);
+  }
+}
+
+.languageButton {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: var(--ifm-color-emphasis-700);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: var(--ifm-hover-overlay);
+    color: var(--ifm-heading-color);
+  }
+
+  &:focus {
+    outline: 2px solid #7c3aed;
+    outline-offset: 1px;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    color: white;
+
+    &:hover {
+      background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
+      color: white;
+    }
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  font-family: Inter, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:focus {
+    outline: 2px solid #7c3aed;
+    outline-offset: 2px;
+  }
+
+  i {
+    font-size: 0.875rem;
+  }
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+
+  &:hover {
+    background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+  }
+}
+
+.secondaryButton {
+  background: var(--ifm-background-color);
+  color: var(--ifm-heading-color);
+  border: 1px solid var(--docs-cards-border-color);
+
+  [data-theme="dark"] & {
+    background: var(--ifm-background-surface-color);
+  }
+
+  &:hover {
+    background: var(--ifm-hover-overlay);
+    border-color: #a855f7;
+    color: #7c3aed;
+    transform: translateY(-2px);
+
+    [data-theme="dark"] & {
+      color: #c084fc;
+      border-color: #c084fc;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.copiedButton {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+
+  &:hover {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  }
+}
+
+// Animation for the copied state
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.copiedIcon {
+  animation: checkmark 0.3s ease-out;
+}
