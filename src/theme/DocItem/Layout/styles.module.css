@@ -3,6 +3,36 @@
   margin-top: 0;
 }
 
+.docHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.docHeaderLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.docHeaderRight {
+  flex-shrink: 0;
+  padding-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .docHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .docHeaderRight {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
 @media (min-width: 997px) {
   .docItemCol {
     max-width: 75% !important;
