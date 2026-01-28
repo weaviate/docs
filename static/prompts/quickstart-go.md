@@ -81,4 +81,4 @@ Create an HTML interface served via Gin with 4 sections. Each section has a butt
 
 Create API endpoints with Gin router for each operation.
 
-Full documentation: https://weaviate.io/developers/weaviate/quickstart
+Full documentation: https://docs.weaviate.io/weaviate/quickstart

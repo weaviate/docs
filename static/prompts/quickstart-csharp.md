@@ -90,4 +90,4 @@ Create an HTML interface with 4 sections. Each section has a button that:
 
 Create API controllers with [ApiController] and [Route] attributes for each operation.
 
-Full documentation: https://weaviate.io/developers/weaviate/quickstart
+Full documentation: https://docs.weaviate.io/weaviate/quickstart

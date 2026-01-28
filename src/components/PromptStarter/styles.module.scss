@@ -97,19 +97,13 @@
 }
 
 .title {
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 1.0625rem;
-  font-weight: 700;
+  font-weight: 900;
   margin: 0;
   line-height: 1.4;
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #f472b6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--ifm-font-color-base);
 }
 
 .description {
-  font-family: Inter, sans-serif;
   font-size: 0.875rem;
   color: var(--ifm-color-emphasis-700);
   margin: 0;

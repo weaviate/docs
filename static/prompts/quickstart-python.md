@@ -72,4 +72,4 @@ Create an HTML interface with 4 sections. Each section has a button that:
 - Displays results after execution
 - Has toggles for search modes (section 3) and RAG modes (section 4)
 
-Full documentation: https://weaviate.io/developers/weaviate/quickstart
+Full documentation: https://docs.weaviate.io/weaviate/quickstart

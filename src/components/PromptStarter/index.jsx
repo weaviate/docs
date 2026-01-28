@@ -7,8 +7,13 @@ import { getPromptsForPage, CURSOR_CHAR_LIMIT } from "./prompts";
  *
  * @param {string} page - The page identifier to load prompts for (e.g., "quickstart")
  * @param {string} defaultLanguage - Initial language selection ("python" or "typescript")
+ * @param {string} description - Custom description text for the banner
  */
-const PromptStarter = ({ page = "quickstart", defaultLanguage = "python" }) => {
+const PromptStarter = ({
+  page = "quickstart",
+  defaultLanguage = "python",
+  description = "Use this pre-built prompt with your AI assistant"
+}) => {
   const [language, setLanguage] = useState(defaultLanguage);
   const [copied, setCopied] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
@@ -169,7 +174,7 @@ const PromptStarter = ({ page = "quickstart", defaultLanguage = "python" }) => {
           <div className={styles.textContent}>
             <p className={styles.title}>Get started faster with AI</p>
             <p className={styles.description}>
-              Use this pre-built prompt with your AI assistant
+              {description}
             </p>
           </div>
         </div>
