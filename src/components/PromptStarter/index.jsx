@@ -1,24 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import ContextualMenu from "@site/src/components/ContextualMenu";
+import { getPromptDetails } from "./promptDetails";
 
 /**
  * PromptStarter - A banner component that provides AI-ready prompts for documentation pages
  *
  * @param {string} page - The page identifier (used as promptName, e.g., "quickstart")
  * @param {array} languages - Available languages for prompts (e.g., ["python", "typescript", "go", "java", "csharp"])
- * @param {string} description - Custom description text for the banner
+ * @param {string} promptDetails - The key for prompt details to display (e.g., "quickstart_prompt")
  */
 const PromptStarter = ({
   page = "quickstart",
   languages = ["python", "typescript", "go", "java", "csharp"],
-  description = "Use this pre-built prompt with your AI assistant"
+  promptDetails = null
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Get prompt details if provided
+  const details = promptDetails ? getPromptDetails(promptDetails) : null;
+  const description = details?.description || "Build a working movie search app with vector search and RAG in 4 steps";
 
   return (
     <div className={styles.promptStarterWrapper}>
       <div className={styles.promptStarter}>
-        <div className={styles.content}>
+        <div className={styles.iconColumn}>
           <div className={styles.icon}>
             <svg
               width="20"
@@ -34,21 +40,62 @@ const PromptStarter = ({
               <circle cx="12" cy="12" r="3" fill="currentColor" />
             </svg>
           </div>
-          <div className={styles.textContent}>
-            <div className={styles.title}><strong>Get started faster with AI</strong></div>
-            <p className={styles.description}>
-              {description}
-            </p>
-          </div>
         </div>
 
-        <div className={styles.actions}>
-          <ContextualMenu
-            variant="prompts"
-            languages={languages}
-            promptUrl="https://prompt-starter--docs-weaviate-io.netlify.app/prompts/"
-            promptName={page}
-          />
+        <div className={styles.mainContent}>
+          <div className={styles.topRow}>
+            <div className={styles.textContent}>
+              <div className={styles.title}>Get started faster with AI</div>
+              <p className={styles.description}>
+                {description}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.bottomRow}>
+            {details && (
+              <button
+                className={styles.previewToggle}
+                onClick={() => setIsExpanded(!isExpanded)}
+                aria-expanded={isExpanded}
+              >
+                {isExpanded ? 'Hide prompt details' : 'Show prompt details'}
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`${styles.chevron} ${isExpanded ? styles.chevronOpen : ""}`}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+            )}
+
+            <div className={styles.actions}>
+              <ContextualMenu
+                variant="prompts"
+                languages={languages}
+                promptUrl="https://prompt-starter--docs-weaviate-io.netlify.app/prompts/"
+                promptName={page}
+              />
+            </div>
+          </div>
+
+          {details && isExpanded && details.features && (
+            <div className={styles.previewContent}>
+              <p className={styles.previewDescription}>{details.short}</p>
+              <ul className={styles.featureList}>
+                {details.features.map((feature, idx) => (
+                  <li key={idx}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

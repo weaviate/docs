@@ -50,7 +50,7 @@ If you encounter any issues along the way or have additional questions, use the 
 
 import PromptStarter from "/src/components/PromptStarter";
 
-<PromptStarter page="quickstart" description='Use this prompt to create a simple "Movie catalogue" web application powered by Weaviate, the vector database.' />
+<PromptStarter page="quickstart" promptDetails="quickstart_prompt" />
 
 ## Prerequisites
 
