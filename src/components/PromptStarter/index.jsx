@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import ContextualMenu from "@site/src/components/ContextualMenu";
 import { getPromptDetails } from "./promptDetails";
+import { urls } from "../config";
 
 /**
  * PromptStarter - A banner component that provides AI-ready prompts for documentation pages
@@ -13,13 +14,15 @@ import { getPromptDetails } from "./promptDetails";
 const PromptStarter = ({
   page = "quickstart",
   languages = ["python", "typescript", "go", "java", "csharp"],
-  promptDetails = null
+  promptDetails = null,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Get prompt details if provided
   const details = promptDetails ? getPromptDetails(promptDetails) : null;
-  const description = details?.description || "Build a working movie search app with vector search and RAG in 4 steps";
+  const description =
+    details?.description ||
+    "Build a working movie search app with vector search and RAG in 4 steps";
 
   return (
     <div className={styles.promptStarterWrapper}>
@@ -46,9 +49,7 @@ const PromptStarter = ({
           <div className={styles.topRow}>
             <div className={styles.textContent}>
               <div className={styles.title}>Get started faster with AI</div>
-              <p className={styles.description}>
-                {description}
-              </p>
+              <p className={styles.description}>{description}</p>
             </div>
           </div>
 
@@ -59,7 +60,7 @@ const PromptStarter = ({
                 onClick={() => setIsExpanded(!isExpanded)}
                 aria-expanded={isExpanded}
               >
-                {isExpanded ? 'Hide prompt details' : 'Show prompt details'}
+                {isExpanded ? "Hide prompt details" : "Show prompt details"}
                 <svg
                   width="14"
                   height="14"
@@ -69,7 +70,9 @@ const PromptStarter = ({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={`${styles.chevron} ${isExpanded ? styles.chevronOpen : ""}`}
+                  className={`${styles.chevron} ${
+                    isExpanded ? styles.chevronOpen : ""
+                  }`}
                 >
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
@@ -80,7 +83,7 @@ const PromptStarter = ({
               <ContextualMenu
                 variant="prompts"
                 languages={languages}
-                promptUrl="https://prompt-starter--docs-weaviate-io.netlify.app/prompts/"
+                promptUrl={urls.promptStarter}
                 promptName={page}
               />
             </div>

@@ -113,7 +113,7 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 12px);
   right: 0;
   min-width: 320px;
   background: var(--ifm-background-surface-color);
@@ -121,8 +121,9 @@
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   padding: 8px;
-  z-index: 1000;
+  z-index: 100000;
   animation: slideDown 0.2s ease;
+  pointer-events: auto;
 
   @keyframes slideDown {
     from {
@@ -214,6 +215,16 @@
   font-weight: 400;
   color: var(--ifm-color-emphasis-600);
   line-height: 1.4;
+}
+
+.menuDivider {
+  height: 1px;
+  background: var(--ifm-color-emphasis-200);
+  margin: 8px 4px;
+
+  [data-theme="dark"] & {
+    background: var(--ifm-color-emphasis-300);
+  }
 }
 
 // Dark mode adjustments

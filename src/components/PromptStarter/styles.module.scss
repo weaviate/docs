@@ -3,19 +3,21 @@
 
 .promptStarterWrapper {
   margin: 1.5rem 0;
+  position: relative;
+  z-index: 1;
 }
 
 .promptStarter {
   padding: 1.25rem 1.5rem;
   padding-left: 5.25rem;
+  padding-bottom: 1.5rem;
   border-radius: 0.5rem;
   background: var(--ifm-background-surface-color);
   border: 2px solid var(--ifm-color-emphasis-300);
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
 
   &:hover {
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
