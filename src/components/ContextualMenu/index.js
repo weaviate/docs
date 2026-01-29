@@ -52,7 +52,6 @@ ${content}`;
       setCopyStatus("success");
       setTimeout(() => {
         setCopyStatus("idle");
-        setIsOpen(false);
       }, 1500);
     } catch (error) {
       console.error("Failed to copy page:", error);
@@ -115,6 +114,20 @@ ${content}`;
     setIsOpen(false);
   };
 
+  const handleViewAsMarkdown = () => {
+    // Get the source file path from metadata
+    const sourcePath = metadata.source || "";
+
+    // Construct raw GitHub URL
+    // Source path format: @site/docs/weaviate/quickstart/index.md
+    // Raw URL: https://raw.githubusercontent.com/weaviate/docs/refs/heads/main/docs/weaviate/quickstart/index.md
+    const githubPath = sourcePath.replace("@site/", "");
+    const githubUrl = `https://raw.githubusercontent.com/weaviate/docs/refs/heads/main/${githubPath}`;
+
+    window.open(githubUrl, "_blank");
+    setIsOpen(false);
+  };
+
   return (
     <div className={styles.contextualMenu} ref={menuRef}>
       <div className={styles.triggerButton}>
@@ -171,6 +184,39 @@ ${content}`;
 
       {isOpen && (
         <div className={styles.dropdown}>
+          <button className={styles.menuItem} onClick={handleViewAsMarkdown}>
+            <div className={styles.menuItemIcon}>
+              <img
+                src="/img/site/logo-markdown.svg"
+                alt="Markdown"
+                className={styles.logoImage}
+              />
+            </div>
+            <div className={styles.menuItemContent}>
+              <div className={styles.menuItemTitle}>
+                View as markdown
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={styles.externalIcon}
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </div>
+              <div className={styles.menuItemDescription}>
+                Open source file on GitHub
+              </div>
+            </div>
+          </button>
+
           <button className={styles.menuItem} onClick={handleOpenInChatGPT}>
             <div className={styles.menuItemIcon}>
               <img

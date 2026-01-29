@@ -135,6 +135,26 @@ const PromptStarter = ({
     setIsActionsOpen(false);
   }, [language, prompts]);
 
+  const handleOpenMarkdown = useCallback(() => {
+    const prompt = prompts[language];
+
+    if (!prompt) {
+      console.warn(`No prompt found for language: ${language}`);
+      return;
+    }
+
+    // Extract URL from prompt (format: "Open this site and follow the instructions: URL")
+    const urlMatch = prompt.match(/https:\/\/[^\s]+/);
+    if (!urlMatch) {
+      console.error("Could not extract URL from prompt");
+      return;
+    }
+
+    const markdownUrl = urlMatch[0];
+    window.open(markdownUrl, "_blank");
+    setIsActionsOpen(false);
+  }, [language, prompts]);
+
   // Check which languages are available for this page
   const hasPython = Boolean(prompts?.python);
   const hasTypeScript = Boolean(prompts?.typescript);
@@ -166,13 +186,12 @@ const PromptStarter = ({
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
+              <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+              <circle cx="12" cy="12" r="3" fill="currentColor" />
             </svg>
           </div>
           <div className={styles.textContent}>
-            <p className={styles.title}>Get started faster with AI</p>
+            <div className={styles.title}><strong>Get started faster with AI</strong></div>
             <p className={styles.description}>
               {description}
             </p>
@@ -306,6 +325,21 @@ const PromptStarter = ({
 
             {isActionsOpen && (
               <div className={styles.actionsMenu}>
+                <button
+                  type="button"
+                  className={styles.menuItem}
+                  onClick={handleOpenMarkdown}
+                >
+                  <div className={styles.menuItemIcon}>
+                    <img
+                      src="/img/site/logo-markdown.svg"
+                      alt="Markdown"
+                      className={styles.markdownLogo}
+                    />
+                  </div>
+                  <span>View as markdown</span>
+                </button>
+
                 <button
                   type="button"
                   className={styles.menuItem}

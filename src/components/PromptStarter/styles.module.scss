@@ -2,34 +2,7 @@
 // Banner component for quickstart page with AI assistant prompts
 
 .promptStarterWrapper {
-  position: relative;
   margin: 1.5rem 0;
-  padding: 2px;
-  border-radius: 0.875rem;
-  background: linear-gradient(
-    135deg,
-    #7c3aed 0%,
-    #a855f7 35%,
-    #f472b6 65%,
-    #fb923c 100%
-  );
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 1rem;
-    background: linear-gradient(
-      135deg,
-      rgba(124, 58, 237, 0.25) 0%,
-      rgba(168, 85, 247, 0.2) 35%,
-      rgba(244, 114, 182, 0.2) 65%,
-      rgba(251, 146, 60, 0.15) 100%
-    );
-    filter: blur(8px);
-    opacity: 0.8;
-    z-index: -1;
-  }
 }
 
 .promptStarter {
@@ -38,8 +11,9 @@
   justify-content: space-between;
   gap: 1.5rem;
   padding: 1.25rem 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   background: var(--ifm-background-surface-color);
+  border: 2px solid var(--ifm-color-emphasis-300);
   position: relative;
 
   @media screen and (max-width: 768px) {
@@ -47,6 +21,10 @@
     align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
+  }
+
+  [data-theme="dark"] & {
+    border-color: var(--ifm-color-emphasis-400);
   }
 }
 
@@ -68,11 +46,10 @@
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: 0.625rem;
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #f472b6 100%);
+  border-radius: 0.5rem;
+  background: var(--site-primary);
   color: white;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 
   svg {
     display: block;
@@ -97,10 +74,17 @@
 }
 
 .title {
-  font-weight: 900;
+  font-family: var(--ifm-font-family-base);
+  font-weight: 700;
+  font-size: 1.125rem;
   margin: 0;
   line-height: 1.4;
-  color: var(--ifm-font-color-base);
+  color: var(--site-font-main-color);
+
+  strong {
+    font-weight: 700;
+    color: var(--site-font-main-color);
+  }
 }
 
 .description {
@@ -170,24 +154,12 @@
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   padding: 4px;
   z-index: 1000;
-  animation: slideDown 0.2s ease;
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
   [data-theme="dark"] & {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     border-color: var(--ifm-color-emphasis-400);
   }
 }
@@ -211,11 +183,12 @@
   }
 
   &.active {
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    background: var(--site-primary);
     color: white;
 
     &:hover {
-      background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
+      background: var(--site-primary);
+      opacity: 0.9;
     }
   }
 
@@ -230,26 +203,19 @@
 .actionsButton {
   position: relative;
   display: inline-block;
-
-  @media screen and (max-width: 768px) {
-    flex: 1;
-    min-width: 200px;
-  }
 }
 
 // Split button container
 .splitButtonContainer {
   display: flex;
   align-items: stretch;
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  background: var(--site-primary);
   border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
-    transform: translateY(-1px);
+    opacity: 0.9;
   }
 }
 
@@ -291,6 +257,8 @@
   align-items: center;
   justify-content: center;
   padding: 0 12px;
+  width: 40px;
+  flex-shrink: 0;
   background: transparent;
   border: none;
   color: white;
@@ -319,13 +287,12 @@
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   padding: 4px;
   z-index: 1000;
-  animation: slideDown 0.2s ease;
 
   [data-theme="dark"] & {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     border-color: var(--ifm-color-emphasis-400);
   }
 }
@@ -374,6 +341,12 @@
   .logoImage {
     width: 16px;
     height: 16px;
+    object-fit: contain;
+  }
+
+  .markdownLogo {
+    width: 20px;
+    height: 20px;
     object-fit: contain;
   }
 }
