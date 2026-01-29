@@ -126,6 +126,11 @@ ${content}`;
     setIsOpen(false);
   };
 
+  const handleLearnAboutMCP = () => {
+    window.open("/weaviate/mcp/docs-mcp-server", "_blank");
+    setIsOpen(false);
+  };
+
   const handleViewAsMarkdown = () => {
     if (variant === "prompts") {
       // For prompts variant, open the prompt markdown file
@@ -592,6 +597,39 @@ ${content}`;
                   </div>
                   <div className={styles.menuItemDescription}>
                     Add Docs MCP Server to VS Code
+                  </div>
+                </div>
+              </button>
+
+              <button className={styles.menuItem} onClick={handleLearnAboutMCP}>
+                <div className={styles.menuItemIcon}>
+                  <img
+                    src="/img/site/weaviate-logo-w.png"
+                    alt="Weaviate"
+                    className={styles.logoImage}
+                  />
+                </div>
+                <div className={styles.menuItemContent}>
+                  <div className={styles.menuItemTitle}>
+                    Weaviate Docs MCP
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={styles.externalIcon}
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </div>
+                  <div className={styles.menuItemDescription}>
+                    Learn more about our Docs MCP server
                   </div>
                 </div>
               </button>
