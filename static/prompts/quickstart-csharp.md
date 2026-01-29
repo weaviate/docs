@@ -58,8 +58,9 @@ Add to `appsettings.json`:
 - **Keyword**: Use GraphQL `GetAsync()` with `WithBM25()` query
 
 ### RAG Options
-- **Single Prompt**: Use `WithGenerate()` with `SingleResult = "Explain this movie: {title} - {description}"`
-- **Grouped Task**: Use `WithGenerate()` with `GroupedResult = "Write a short summary comparing these movies"`
+- Provide two input boxes: one for the search query, another for the generative prompt/task
+- **Single Prompt**: Use `WithGenerate()` with `SingleResult =` (user-provided prompt, can use {title}, {description}, {genre})
+- **Grouped Task**: Use `WithGenerate()` with `GroupedResult =` (user-provided task)
 
 ## Connection Setup
 
@@ -87,6 +88,7 @@ Create an HTML interface with 4 sections. Each section has a button that:
 - Shows the data/config being used
 - Displays results after execution
 - Has toggles for search modes (section 3) and RAG modes (section 4)
+- Section 4 has two input boxes: one for search query, one for the generative prompt/task
 
 Create API controllers with [ApiController] and [Route] attributes for each operation.
 

@@ -31,7 +31,7 @@ Create:
 
 ### Collection Configuration
 - Name: "Movie"
-- Vectorizer: text2vec-weaviate
+- Vectorizer: text2vec-weaviate (use `vector_config=Configure.Vectors.text2vec_weaviate()` syntax)
 - Generative: anthropic
 - Properties: title (text), description (text), genre (text)
 
@@ -48,8 +48,9 @@ Create:
 - **Keyword**: Use `movies.query.bm25()` for keyword-only search
 
 ### RAG Options
-- **Single Prompt**: `movies.generate.near_text()` with `single_prompt="Explain this movie: {title} - {description}"`
-- **Grouped Task**: `movies.generate.near_text()` with `grouped_task="Write a short summary comparing these movies"`
+- Provide two input boxes: one for the search query, another for the generative prompt/task
+- **Single Prompt**: `movies.generate.near_text()` with `single_prompt=` (user-provided prompt, can use {title}, {description}, {genre})
+- **Grouped Task**: `movies.generate.near_text()` with `grouped_task=` (user-provided task)
 
 ## Connection Setup
 
@@ -71,5 +72,6 @@ Create an HTML interface with 4 sections. Each section has a button that:
 - Shows the data/config being used
 - Displays results after execution
 - Has toggles for search modes (section 3) and RAG modes (section 4)
+- Section 4 has two input boxes: one for search query, one for the generative prompt/task
 
 Full documentation: https://docs.weaviate.io/weaviate/quickstart

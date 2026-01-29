@@ -48,8 +48,9 @@ Create `.env` with WEAVIATE_URL, WEAVIATE_API_KEY, ANTHROPIC_API_KEY
 - **Keyword**: Use GraphQL with `WithBM25()` query
 
 ### RAG Options
-- **Single Prompt**: Use `WithGenerate()` with `WithSinglePrompt("Explain this movie: {title} - {description}")`
-- **Grouped Task**: Use `WithGenerate()` with `WithGroupedTask("Write a short summary comparing these movies")`
+- Provide two input boxes: one for the search query, another for the generative prompt/task
+- **Single Prompt**: Use `WithGenerate()` with `WithSinglePrompt()` (user-provided prompt, can use {title}, {description}, {genre})
+- **Grouped Task**: Use `WithGenerate()` with `WithGroupedTask()` (user-provided task)
 
 ## Connection Setup
 
@@ -78,6 +79,7 @@ Create an HTML interface served via Gin with 4 sections. Each section has a butt
 - Shows the data/config being used
 - Displays results after execution
 - Has toggles for search modes (section 3) and RAG modes (section 4)
+- Section 4 has two input boxes: one for search query, one for the generative prompt/task
 
 Create API endpoints with Gin router for each operation.
 

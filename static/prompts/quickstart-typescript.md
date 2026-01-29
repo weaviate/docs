@@ -29,7 +29,7 @@ Create `.env.local` with WEAVIATE_URL, WEAVIATE_API_KEY, ANTHROPIC_API_KEY
 
 ### Collection Configuration
 - Name: "Movie"
-- Vectorizer: text2vec-weaviate
+- Vectorizer: text2vec-weaviate (use `vectorizers: configure.vectors.text2VecWeaviate()` syntax)
 - Generative: anthropic
 - Properties: title (text), description (text), genre (text)
 
@@ -46,8 +46,9 @@ Create `.env.local` with WEAVIATE_URL, WEAVIATE_API_KEY, ANTHROPIC_API_KEY
 - **Keyword**: Use `movies.query.bm25()` for keyword-only search
 
 ### RAG Options
-- **Single Prompt**: `movies.generate.nearText()` with `singlePrompt="Explain this movie: {title} - {description}"`
-- **Grouped Task**: `movies.generate.nearText()` with `groupedTask="Write a short summary comparing these movies"`
+- Provide two input boxes: one for the search query, another for the generative prompt/task
+- **Single Prompt**: `movies.generate.nearText()` with `singlePrompt=` (user-provided prompt, can use {title}, {description}, {genre})
+- **Grouped Task**: `movies.generate.nearText()` with `groupedTask=` (user-provided task)
 
 ## Connection Setup
 
@@ -70,6 +71,7 @@ Create a React interface with 4 sections. Each section has a button that:
 - Shows the data/config being used
 - Displays results after execution
 - Has toggles for search modes (section 3) and RAG modes (section 4)
+- Section 4 has two input boxes: one for search query, one for the generative prompt/task
 
 Create API routes under `/app/api/` for each operation.
 
