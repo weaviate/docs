@@ -23,6 +23,10 @@ cd WeaviateDemo
 dotnet add package Weaviate.Client --version 1.0.0
 ```
 
+Required packages:
+- `Weaviate.Client` (version 1.0.0 or higher) - Weaviate C# client for database operations
+- ASP.NET Core MVC - Web framework (installed via dotnet new mvc)
+
 Add to `appsettings.json`:
 
 ```json
@@ -53,14 +57,24 @@ Add to `appsettings.json`:
 5. The Dark Knight - "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham into anarchy." (Action)
 
 ### Search Modes
-- **Vector**: Use GraphQL `GetAsync()` with `WithNearText()` and concepts
-- **Hybrid**: Use GraphQL `GetAsync()` with `WithHybrid()` query
-- **Keyword**: Use GraphQL `GetAsync()` with `WithBM25()` query
+Implement a single slider control (0 to 1) to demonstrate the search continuum:
+- **Slider at 0**: Pure Keyword search using GraphQL `GetAsync()` with `WithBM25(query)`
+- **Slider 0.01-0.99**: Hybrid search using GraphQL `GetAsync()` with `WithHybrid(query).WithAlpha(sliderValue)`
+- **Slider at 1**: Pure Vector search using GraphQL `GetAsync()` with `WithNearText(concepts)`
+
+Display the current mode and alpha value based on slider position (e.g., "Hybrid (α=0.5)" or "Pure Vector")
+
+Search input placeholder: "Enter your search query (e.g., action movies)"
 
 ### RAG Options
 - Provide two input boxes: one for the search query, another for the generative prompt/task
 - **Single Prompt**: Use `WithGenerate()` with `SingleResult =` (user-provided prompt, can use {title}, {description}, {genre})
 - **Grouped Task**: Use `WithGenerate()` with `GroupedResult =` (user-provided task)
+
+Input placeholders:
+- Search query: "Enter your search query (e.g., superhero movies)"
+- Single prompt: "Explain the plot of {title} in one sentence"
+- Grouped task: "Summarize these movies and find common themes"
 
 ## Connection Setup
 
@@ -87,8 +101,8 @@ Create an HTML interface with 4 sections. Each section has a button that:
 - Is disabled until the previous section completes
 - Shows the data/config being used
 - Displays results after execution
-- Has toggles for search modes (section 3) and RAG modes (section 4)
-- Section 4 has two input boxes: one for search query, one for the generative prompt/task
+- Section 3 has a slider (0-1) for search modes with labels "Keyword" (left) and "Vector" (right), showing current mode/alpha
+- Section 4 has toggles for RAG modes (single prompt vs grouped task) and two input boxes: one for search query, one for the generative prompt/task
 
 Create API controllers with [ApiController] and [Route] attributes for each operation.
 

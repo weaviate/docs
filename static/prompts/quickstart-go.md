@@ -21,9 +21,14 @@ Build a web application using Gin (Go web framework) and Weaviate with 4 sequent
 mkdir weaviate-demo && cd weaviate-demo
 go mod init weaviate-demo
 go get github.com/gin-gonic/gin
-go get github.com/weaviate/weaviate-go-client/v5
+go get github.com/weaviate/weaviate-go-client/v5@v5.6.0
 go get github.com/joho/godotenv
 ```
+
+Required packages:
+- `github.com/gin-gonic/gin` - Web framework for building the API
+- `github.com/weaviate/weaviate-go-client/v5@v5.6.0` - Weaviate Go client for database operations (minimum version 5.6.0)
+- `github.com/joho/godotenv` - Load environment variables from .env file
 
 Create `.env` with WEAVIATE_URL, WEAVIATE_API_KEY, ANTHROPIC_API_KEY
 
@@ -43,14 +48,24 @@ Create `.env` with WEAVIATE_URL, WEAVIATE_API_KEY, ANTHROPIC_API_KEY
 5. The Dark Knight - "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham into anarchy." (Action)
 
 ### Search Modes
-- **Vector**: Use GraphQL with `WithNearText()` and concepts
-- **Hybrid**: Use GraphQL with `WithHybrid()` query
-- **Keyword**: Use GraphQL with `WithBM25()` query
+Implement a single slider control (0 to 1) to demonstrate the search continuum:
+- **Slider at 0**: Pure Keyword search using GraphQL with `WithBM25(query)`
+- **Slider 0.01-0.99**: Hybrid search using GraphQL with `WithHybrid(query).WithAlpha(sliderValue)`
+- **Slider at 1**: Pure Vector search using GraphQL with `WithNearText(concepts)`
+
+Display the current mode and alpha value based on slider position (e.g., "Hybrid (α=0.5)" or "Pure Vector")
+
+Search input placeholder: "Enter your search query (e.g., action movies)"
 
 ### RAG Options
 - Provide two input boxes: one for the search query, another for the generative prompt/task
 - **Single Prompt**: Use `WithGenerate()` with `WithSinglePrompt()` (user-provided prompt, can use {title}, {description}, {genre})
 - **Grouped Task**: Use `WithGenerate()` with `WithGroupedTask()` (user-provided task)
+
+Input placeholders:
+- Search query: "Enter your search query (e.g., superhero movies)"
+- Single prompt: "Explain the plot of {title} in one sentence"
+- Grouped task: "Summarize these movies and find common themes"
 
 ## Connection Setup
 
@@ -78,8 +93,8 @@ Create an HTML interface served via Gin with 4 sections. Each section has a butt
 - Is disabled until the previous section completes
 - Shows the data/config being used
 - Displays results after execution
-- Has toggles for search modes (section 3) and RAG modes (section 4)
-- Section 4 has two input boxes: one for search query, one for the generative prompt/task
+- Section 3 has a slider (0-1) for search modes with labels "Keyword" (left) and "Vector" (right), showing current mode/alpha
+- Section 4 has toggles for RAG modes (single prompt vs grouped task) and two input boxes: one for search query, one for the generative prompt/task
 
 Create API endpoints with Gin router for each operation.
 
