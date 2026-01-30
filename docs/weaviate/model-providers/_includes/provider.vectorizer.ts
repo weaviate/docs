@@ -1350,20 +1350,28 @@ await client.collections.create({
       name: 'poster',
       dataType: weaviate.configure.dataType.BLOB,
     },
+    {
+      name: 'trailer',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
   ],
   vectorizers: [
     weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
-      // Define the fields to be used for the vectorization - using imageFields, textFields
+      // Define the fields to be used for the vectorization - using imageFields, textFields, videoFields
       imageFields: [{
         name: "poster",
-        weight: 0.9
+        weight: 0.7
       }],
       textFields: [{
         name: "title",
         weight: 0.1
       }],
-      model: "voyage-multimodal-3",
+      videoFields: [{
+        name: "trailer",
+        weight: 0.2
+      }],
+      model: "voyage-multimodal-3.5",
     })],
     // highlight-end
     // Additional parameters not shown
@@ -1387,21 +1395,29 @@ await client.collections.create({
       name: 'poster',
       dataType: weaviate.configure.dataType.BLOB,
     },
+    {
+      name: 'trailer',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
   ],
   vectorizers: [
     weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
-      // Define the fields to be used for the vectorization - using imageFields, textFields
+      // Define the fields to be used for the vectorization - using imageFields, textFields, videoFields
       imageFields: [{
         name: "poster",
-        weight: 0.9
+        weight: 0.7
       }],
       textFields: [{
         name: "title",
         weight: 0.1
       }],
+      videoFields: [{
+        name: "trailer",
+        weight: 0.2
+      }],
       // Further options
-      model: "voyage-multimodal-3",
+      model: "voyage-multimodal-3.5",
       truncate: true,  // or false
       // outputEncoding: "base64"  // or "null"
       // baseURL: "<custom_voyageai_url>"
