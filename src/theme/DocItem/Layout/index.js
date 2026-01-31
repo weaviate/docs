@@ -16,6 +16,7 @@ import styles from "./styles.module.css";
 /* ---- START: Customizations ---- */
 import FeedbackComponent from "@site/src/components/Feedback";
 import PageRatingWidget from "@site/src/components/PageRatingWidget";
+import ContextualMenu from "@site/src/components/ContextualMenu";
 /* ---- END: Customizations ---- */
 
 /**
@@ -60,7 +61,14 @@ export default function DocItemLayout({ children }) {
           <DocVersionBanner />
           <div className={styles.docItemContainer}>
             <article>
-              <DocBreadcrumbs />
+              <div className={styles.docHeader}>
+                <div className={styles.docHeaderLeft}>
+                  <DocBreadcrumbs />
+                </div>
+                <div className={styles.docHeaderRight}>
+                  <ContextualMenu />
+                </div>
+              </div>
               <DocVersionBadge />
               {docTOC.mobile}
               <DocItemContent>{children}</DocItemContent>

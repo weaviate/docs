@@ -48,6 +48,10 @@ import KapaAI from "/src/components/KapaAI";
 
 If you encounter any issues along the way or have additional questions, use the <KapaAI>Ask AI</KapaAI> feature.
 
+import PromptStarter from "/src/components/PromptStarter";
+
+<PromptStarter page="quickstart" promptDetails="quickstart_prompt" />
+
 ## Prerequisites
 
 A **[Weaviate Cloud](https://console.weaviate.cloud/)** Sandbox instance - you will need an admin **API key** and a **REST endpoint URL** to connect to your instance. See the instructions below for more info. If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
