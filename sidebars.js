@@ -1436,6 +1436,11 @@ const sidebars = {
           id: "cloud/manage-clusters/default-settings",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/enable-compression",
+          className: "sidebar-item",
+        },
       ],
     },
     {

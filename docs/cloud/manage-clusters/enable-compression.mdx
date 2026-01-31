@@ -1,0 +1,170 @@
+---
+title: Enable RQ Compression
+sidebar_position: 8
+image: og/docs/cloud.jpg
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.py';
+import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.ts';
+
+This guide shows you how to enable [RQ 8-bit compression](../../weaviate/configuration/compression/rq-compression.md) on existing collections in your Weaviate Cloud cluster. RQ compression significantly reduces Vector Dimensions costs while maintaining high recall.
+
+:::warning Permanent Change
+Once compression is enabled on a collection, it cannot be disabled. Always test compression on non-production data first.
+:::
+
+## Prerequisites
+
+- A Weaviate Cloud cluster
+- Weaviate client library installed
+- API key with write access to your cluster
+
+## Connect to your cluster
+
+First, establish a connection to your Weaviate Cloud cluster:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START ConnectCode"
+        endMarker="# END ConnectCode"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START ConnectCode"
+        endMarker="// END ConnectCode"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+Replace `YOUR-WEAVIATE-CLOUD-URL` with your cluster URL (e.g., `https://your-cluster.weaviate.network`) and `YOUR-API-KEY` with your authentication key.
+
+## Update a single collection
+
+To enable RQ 8-bit compression on a specific collection:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateSingleCollection"
+        endMarker="# END UpdateSingleCollection"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateSingleCollection"
+        endMarker="// END UpdateSingleCollection"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+:::note Named vectors
+If your collection uses named vectors (not "default"), update the `name` parameter to match your vector name.
+:::
+
+## Update multiple collections
+
+To enable RQ 8-bit compression across all collections in your cluster:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateMultipleCollections"
+        endMarker="# END UpdateMultipleCollections"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateMultipleCollections"
+        endMarker="// END UpdateMultipleCollections"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+This script:
+1. Lists all collections in your cluster
+2. Checks each collection's compression status
+3. Enables RQ 8-bit compression **only on uncompressed collections**
+4. Skips collections that already have any compression (RQ, PQ, BQ, SQ, etc.)
+
+:::tip Dry run
+Consider adding a "dry run" mode that only prints what would change without actually updating collections. Remove the `collection.config.update()` call and test the logic first.
+:::
+
+:::info Existing compression preserved
+This script only applies RQ compression to collections that have **no compression**. If a collection already uses another compression type (PQ, BQ, SQ), it will be skipped.
+:::
+
+## Verify compression status
+
+After enabling compression, verify the configuration:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START CheckCompressionStatus"
+        endMarker="# END CheckCompressionStatus"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START CheckCompressionStatus"
+        endMarker="// END CheckCompressionStatus"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+You should see output confirming the quantizer type is `rq` with `bits: 8`.
+
+## What happens after enabling compression?
+
+When you enable RQ compression on an existing collection:
+
+1. **Existing vectors are re-encoded**: Weaviate automatically converts existing vector data to use RQ compression
+2. **Storage and memory usage are reduced**: Less disk space and RAM are required for vector data
+3. **Query performance**: Query speed remains similar with minimal recall impact (typically 1-2%)
+4. **Irreversible**: The change cannot be undone
+
+:::info Compression timing
+For large collections, the compression process may take some time. Your collection remains queryable during this process, but you may see temporary performance impacts during the conversion.
+:::
+
+## Best practices
+
+- **Test first**: Always test compression on a non-production cluster or collection first
+- **Monitor performance**: Check query recall and latency after enabling compression
+- **Backup data**: Although compression is safe, consider backing up critical data before making changes
+- **Named vectors**: If using multiple named vectors, update each vector configuration separately
+- **Staged rollout**: For production systems, enable compression on a few collections at a time
+
+## Related resources
+
+- [RQ Compression reference](../../weaviate/configuration/compression/rq-compression.md)
+- [Vector quantization concepts](../../weaviate/concepts/vector-quantization.md)
+- [Managing cluster resources](../../weaviate/starter-guides/managing-resources/compression.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
