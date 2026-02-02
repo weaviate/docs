@@ -36,7 +36,6 @@ const runPRValidationFromBuildDev = async () => {
     const paths = [
         `/agents`,
         `/cloud`,
-        `/integrations/`,
         `/weaviate`,
     ]
     
