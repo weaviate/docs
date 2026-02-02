@@ -293,6 +293,11 @@ from = "/weaviate/client-libraries/typescript/typescript-v3"
 to   = "/weaviate/client-libraries/typescript"
 status = 301
 
+[[redirects]]
+from = "/weaviate/client-libraries/python/v3_v4_migration"
+to   = "/weaviate/client-libraries/python"
+status = 301
+
 # Modules
 
 ## Text2vec redirects
