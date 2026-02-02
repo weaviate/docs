@@ -294,7 +294,7 @@ to   = "/weaviate/client-libraries/typescript"
 status = 301
 
 [[redirects]]
-from = "/weaviate/client-libraries/python/v3_v4_migration
+from = "/weaviate/client-libraries/python/v3_v4_migration"
 to   = "/weaviate/client-libraries/python"
 status = 301
 
