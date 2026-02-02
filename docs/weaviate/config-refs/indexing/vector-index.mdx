@@ -4,11 +4,12 @@ description: Reference for vector index types and parameters in Weaviate.
 ---
 
 **[Vector indexes](../../concepts/indexing/vector-index.md)** facilitate efficient, vector-first data storage and retrieval.
-There are three supported vector index types: 
+There are four supported vector index types:
 
 - **[HNSW index](#hnsw-index)**
 - **[Flat index](#flat-index)**
 - **[Dynamic index](#dynamic-index)**
+- **[HFresh index](#hfresh-index)**
 
 ## Index configuration parameters
 
@@ -18,15 +19,17 @@ Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use 
 
 Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-collections/vector-config.mdx#set-vector-index-type).
 
-| Parameter           | Type   | Default | Details                                                              |
-| :------------------ | :----- | :------ | :------------------------------------------------------------------- |
-| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat` or `dynamic`.       |
-| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type. |
+| Parameter           | Type   | Default | Details                                                                        |
+| :------------------ | :----- | :------ | :----------------------------------------------------------------------------- |
+| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat`, `dynamic`, or `hfresh`.      |
+| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type.           |
 
 <details>
   <summary>How to select the index type</summary>
 
 Generally, the `hnsw` index type is recommended for most use cases. The `flat` index type is recommended for use cases where the data the number of objects per index is low, such as in multi-tenancy cases. You can also opt for the `dynamic` index which will initially configure a `flat` index and once the object count exceeds a specified threshold it will automatically convert to an `hnsw` index.
+
+The `hfresh` index is a cluster-based index that uses HNSW for the centroid index. It can provide memory efficiency benefits for large datasets while maintaining good search performance.
 
 See [this section](../../concepts/indexing/vector-index.md#which-vector-index-is-right-for-me) for more information about the different index types and how to choose between them.
 
@@ -166,6 +169,24 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 | `hnsw`      | object  | default HNSW | [HNSW index configuration](#hnsw-index-parameters) to be used.                        |
 | `flat`      | object  | default Flat | [Flat index configuration](#flat-index) to be used.                                   |
 | `threshold` | integer | 10000        | Threshold object count at which `flat` to `hnsw` conversion happens                   |
+
+## HFresh index
+
+:::info Experimental feature
+HFresh indexing is an experimental feature.
+:::
+
+HFresh is a cluster-based vector index that uses HNSW for the centroid index. It is based on the SPFresh algorithm but uses HNSW for the centroid index, providing a balance between memory efficiency and search performance for large datasets.
+
+### HFresh index parameters
+
+| Parameter            | Type    | Default   | Details                                                                                                    |
+| :------------------- | :------ | :-------- | :--------------------------------------------------------------------------------------------------------- |
+| `distance`           | string  | `cosine`  | Distance metric. The metric that measures the distance between two arbitrary vectors.                       |
+| `maxPostingSizeKb`   | integer | dynamic   | Maximum allowed size in KB for a posting list. By default, this is computed dynamically.                    |
+| `replicas`           | integer | `4`       | Number of posting lists in which a vector will be added.                                                    |
+| `rngFactor`          | integer | `10`      | Factor used when adding a vector to a posting list. If too close to a selected posting list, it is skipped. |
+| `searchProbe`        | integer | `64`      | Number of posting lists to search during a query.                                                           |
 
 ## Quantization parameters
 

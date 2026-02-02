@@ -239,7 +239,7 @@ func Test_ManageDataClasses(t *testing.T) {
 				},
 			},
 			Vectorizer:      "text2vec-openai",
-			VectorIndexType: "hnsw", // Or "flat", "dynamic"
+			VectorIndexType: "hnsw", // Or "flat", "dynamic", "hfresh"
 		}
 		// END SetVectorIndexType
 
