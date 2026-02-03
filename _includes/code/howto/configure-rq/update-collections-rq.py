@@ -168,13 +168,26 @@ for entry in hnsw_collections:
 collection = client.collections.get("MyCollection")
 config = collection.config.get()
 
-# vector_config is a dict of named vectors
-for vector_name, vector_config in config.vector_config.items():
-    print(f"\nVector: {vector_name}")
-    if hasattr(vector_config, 'quantizer') and vector_config.quantizer:
-        print(f"  Quantizer type: {vector_config.quantizer.type}")
-        if hasattr(vector_config.quantizer, 'bits'):
-            print(f"  Bits: {vector_config.quantizer.bits}")
+# Check if this is a legacy collection (no named vectors)
+if config.vector_config:
+    # Named vectors - iterate through vector_config
+    for vector_name, vector_config in config.vector_config.items():
+        print(f"\nVector: {vector_name}")
+        quantizer = vector_config.vector_index_config.quantizer
+        if quantizer:
+            print(f"  Quantizer type: {type(quantizer).__name__}")
+            if hasattr(quantizer, 'bits'):
+                print(f"  Bits: {quantizer.bits}")
+        else:
+            print("  No compression enabled")
+else:
+    # Legacy collection - check vector_index_config directly
+    print(f"\nLegacy collection (no named vectors)")
+    quantizer = config.vector_index_config.quantizer
+    if quantizer:
+        print(f"  Quantizer type: {type(quantizer).__name__}")
+        if hasattr(quantizer, 'bits'):
+            print(f"  Bits: {quantizer.bits}")
     else:
         print("  No compression enabled")
 # END CheckCompressionStatus

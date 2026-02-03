@@ -164,13 +164,29 @@ for (const entry of hnswCollections) {
 const collectionToCheck = client.collections.get("MyCollection")
 const configToCheck = await collectionToCheck.config.get()
 
-// vectorConfig is an object of named vectors
-for (const [vectorName, vectorConfig] of Object.entries(configToCheck.vectorConfig)) {
-    console.log(`\nVector: ${vectorName}`)
-    if (vectorConfig && vectorConfig.quantizer) {
-        console.log(`  Quantizer type: ${vectorConfig.quantizer.type}`)
-        if ('bits' in vectorConfig.quantizer) {
-            console.log(`  Bits: ${vectorConfig.quantizer.bits}`)
+// Check if this is a legacy collection (no named vectors)
+if (configToCheck.vectorConfig && Object.keys(configToCheck.vectorConfig).length > 0) {
+    // Named vectors - iterate through vectorConfig
+    for (const [vectorName, vectorConfig] of Object.entries(configToCheck.vectorConfig)) {
+        console.log(`\nVector: ${vectorName}`)
+        const quantizer = vectorConfig.vectorIndexConfig?.quantizer
+        if (quantizer) {
+            console.log(`  Quantizer type: ${quantizer.constructor.name}`)
+            if ('bits' in quantizer) {
+                console.log(`  Bits: ${quantizer.bits}`)
+            }
+        } else {
+            console.log("  No compression enabled")
+        }
+    }
+} else {
+    // Legacy collection - check vectorIndexConfig directly
+    console.log(`\nLegacy collection (no named vectors)`)
+    const quantizer = configToCheck.vectorIndexConfig?.quantizer
+    if (quantizer) {
+        console.log(`  Quantizer type: ${quantizer.constructor.name}`)
+        if ('bits' in quantizer) {
+            console.log(`  Bits: ${quantizer.bits}`)
         }
     } else {
         console.log("  No compression enabled")
