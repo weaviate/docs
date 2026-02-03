@@ -49,22 +49,95 @@ Replace `YOUR-WEAVIATE-CLOUD-URL` with your cluster URL (e.g., `https://your-clu
 
 ## Update a single collection
 
-To enable RQ 8-bit compression on a specific collection:
+The update syntax depends on your collection's **vector index type** (HNSW, flat, or dynamic) and whether it uses **named vectors**.
+
+### HNSW index (default)
+
+Most collections use the HNSW index. To enable RQ 8-bit compression:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
-        startMarker="# START UpdateSingleCollection"
-        endMarker="# END UpdateSingleCollection"
+        startMarker="# START UpdateSingleCollectionHNSW"
+        endMarker="# END UpdateSingleCollectionHNSW"
         language="py"
       />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
-        startMarker="// START UpdateSingleCollection"
-        endMarker="// END UpdateSingleCollection"
+        startMarker="// START UpdateSingleCollectionHNSW"
+        endMarker="// END UpdateSingleCollectionHNSW"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+### Flat index
+
+For collections using the flat index:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateSingleCollectionFlat"
+        endMarker="# END UpdateSingleCollectionFlat"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateSingleCollectionFlat"
+        endMarker="// END UpdateSingleCollectionFlat"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+### Dynamic index
+
+For collections using the dynamic index (which can switch between flat and HNSW), configure compression for both underlying index types:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateSingleCollectionDynamic"
+        endMarker="# END UpdateSingleCollectionDynamic"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateSingleCollectionDynamic"
+        endMarker="// END UpdateSingleCollectionDynamic"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+### Legacy collections (pre-named vectors)
+
+Collections created before Weaviate v1.24 (when named vectors were introduced) use a different schema structure. For these collections, use `vector_index_config` directly instead of `vector_config`:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateLegacyCollection"
+        endMarker="# END UpdateLegacyCollection"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateLegacyCollection"
+        endMarker="// END UpdateLegacyCollection"
         language="ts"
       />
   </TabItem>
@@ -76,7 +149,34 @@ If your collection uses named vectors (not "default"), update the `name` paramet
 
 ## Update multiple collections
 
-To enable RQ 8-bit compression across all collections in your cluster:
+Before updating multiple collections, you should understand the index types in your cluster. Different index types require different update syntax.
+
+### List collections by index type
+
+The following example categorizes your collections by their vector index types:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START ListCollectionsByIndexType"
+        endMarker="# END ListCollectionsByIndexType"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START ListCollectionsByIndexType"
+        endMarker="// END ListCollectionsByIndexType"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
+### Update multiple collections
+
+The following example enables RQ compression on all HNSW collections listed from above:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -97,19 +197,30 @@ To enable RQ 8-bit compression across all collections in your cluster:
   </TabItem>
 </Tabs>
 
-This script:
-1. Lists all collections in your cluster
-2. Checks each collection's compression status
-3. Enables RQ 8-bit compression **only on uncompressed collections**
-4. Skips collections that already have any compression (RQ, PQ, BQ, SQ, etc.)
-
 :::tip Dry run
-Consider adding a "dry run" mode that only prints what would change without actually updating collections. Remove the `collection.config.update()` call and test the logic first.
+Consider adding a "dry run" mode that only prints what would change without actually updating collections. Comment out the `collection.config.update()` call and test the logic first.
 :::
 
-:::info Existing compression preserved
-This script only applies RQ compression to collections that have **no compression**. If a collection already uses another compression type (PQ, BQ, SQ), it will be skipped.
-:::
+## Performance considerations
+
+Enabling compression requires additional memory during the encoding process. Plan your compression rollout carefully to avoid resource exhaustion.
+
+### Memory usage during compression
+
+When compression is enabled on an existing collection, Weaviate re-encodes all vectors. This process temporarily increases memory usage.
+
+**Example**: A collection with 1 million objects and 1,536 dimensions uses approximately 6.5 GB of memory before compression. During the compression process, memory usage increases by approximately 1.5 GB (~23% overhead) before settling to the compressed size.
+
+### Recommended approach for large clusters
+
+If you have many large collections, avoid enabling compression for multiple collections simultaneously. The cumulative memory overhead can exhaust cluster resources.
+
+For clusters with multiple collections or large vector counts:
+
+1. **Assess your cluster**: Use the [list collections script](#list-collections-by-index-type) to understand what you're working with
+2. **Process one at a time**: For large collections, enable compression on one collection (or one named vector) at a time
+3. **Build in buffers**: If using a loop, add sufficient delays between operations to allow each compression to complete before starting the next
+4. **Start with smaller collections**: Test on smaller collections first to understand timing and resource impact before compressing larger ones
 
 ## Verify compression status
 
@@ -152,10 +263,10 @@ For large collections, the compression process may take some time. Your collecti
 ## Best practices
 
 - **Test first**: Always test compression on a non-production cluster or collection first
+- **Avoid bulk updates on large clusters**: Do not loop through many large collections at once; process them individually or with sufficient delays
+- **Allow completion time**: Large collections may take significant time to re-encode all vectors
 - **Monitor performance**: Check query recall and latency after enabling compression
 - **Backup data**: Although compression is safe, consider backing up critical data before making changes
-- **Named vectors**: If using multiple named vectors, update each vector configuration separately
-- **Staged rollout**: For production systems, enable compression on a few collections at a time
 
 ## Related resources
 

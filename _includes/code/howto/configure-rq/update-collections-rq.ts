@@ -4,9 +4,9 @@
 // =====  CONNECT =====
 // ==============================
 
-// START ConnectCode // START UpdateSingleCollection // START UpdateMultipleCollections // START CheckCompressionStatus
+// START ConnectCode // START UpdateSingleCollectionHNSW // START UpdateSingleCollectionFlat // START UpdateSingleCollectionDynamic // START UpdateLegacyCollection // START ListCollectionsByIndexType // START UpdateMultipleCollections // START CheckCompressionStatus
 import weaviate, { reconfigure } from 'weaviate-client';
-// END ConnectCode // END UpdateSingleCollection // END UpdateMultipleCollections // END CheckCompressionStatus
+// END ConnectCode // END UpdateSingleCollectionHNSW // END UpdateSingleCollectionFlat // END UpdateSingleCollectionDynamic // END UpdateLegacyCollection // END ListCollectionsByIndexType // END UpdateMultipleCollections // END CheckCompressionStatus
 
 // START ConnectCode
 const client = await weaviate.connectToWeaviateCloud('YOUR-WEAVIATE-CLOUD-URL', {
@@ -15,10 +15,10 @@ const client = await weaviate.connectToWeaviateCloud('YOUR-WEAVIATE-CLOUD-URL', 
 // END ConnectCode
 
 // ==============================
-// =====  UPDATE SINGLE COLLECTION =====
+// =====  UPDATE SINGLE COLLECTION (HNSW) =====
 // ==============================
 
-// START UpdateSingleCollection
+// START UpdateSingleCollectionHNSW
 
 const collection = client.collections.get("MyCollection")
 await collection.config.update({
@@ -29,7 +29,107 @@ await collection.config.update({
         }),
     })]
 })
-// END UpdateSingleCollection
+// END UpdateSingleCollectionHNSW
+
+// ==============================
+// =====  UPDATE SINGLE COLLECTION (FLAT) =====
+// ==============================
+
+// START UpdateSingleCollectionFlat
+
+const collectionFlat = client.collections.get("MyCollection")
+await collectionFlat.config.update({
+    vectorizers: [ reconfigure.vectors.update({
+        name: "default",
+        vectorIndexConfig: reconfigure.vectorIndex.flat({
+            quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
+        }),
+    })]
+})
+// END UpdateSingleCollectionFlat
+
+// ==============================
+// =====  UPDATE SINGLE COLLECTION (DYNAMIC) =====
+// ==============================
+
+// START UpdateSingleCollectionDynamic
+
+const collectionDynamic = client.collections.get("MyCollection")
+await collectionDynamic.config.update({
+    vectorizers: [ reconfigure.vectors.update({
+        name: "default",
+        vectorIndexConfig: reconfigure.vectorIndex.dynamic({
+            hnsw: reconfigure.vectorIndex.hnsw({
+                quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
+            }),
+            flat: reconfigure.vectorIndex.flat({
+                quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
+            }),
+        }),
+    })]
+})
+// END UpdateSingleCollectionDynamic
+
+// ==============================
+// =====  UPDATE LEGACY COLLECTION (pre-named vectors) =====
+// ==============================
+
+// START UpdateLegacyCollection
+
+// For collections created before named vectors were introduced (pre-v1.24),
+// use vectorIndexConfig directly instead of vectorizers
+const legacyCollection = client.collections.get("MyLegacyCollection")
+await legacyCollection.config.update({
+    vectorIndexConfig: reconfigure.vectorIndex.hnsw({
+        quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
+    })
+})
+// END UpdateLegacyCollection
+
+// ==============================
+// =====  LIST COLLECTIONS BY INDEX TYPE =====
+// ==============================
+
+// START ListCollectionsByIndexType
+
+// Group collections by their vector index type
+const hnswCollections: Array<{collection: string, vector: string}> = []
+const flatCollections: Array<{collection: string, vector: string}> = []
+const dynamicCollections: Array<{collection: string, vector: string}> = []
+const legacyCollections: string[] = []
+
+const allCollections = await client.collections.listAll()
+
+for (const collectionName of Object.keys(allCollections)) {
+    const coll = client.collections.get(collectionName)
+    const config = await coll.config.get()
+
+    // Check if this is a legacy collection (no named vectors)
+    if (!config.vectorConfig || Object.keys(config.vectorConfig).length === 0) {
+        legacyCollections.push(collectionName)
+        continue
+    }
+
+    // For each named vector, determine its index type
+    for (const [vectorName, vectorConfig] of Object.entries(config.vectorConfig)) {
+        const indexType = vectorConfig.vectorIndexType
+        const entry = { collection: collectionName, vector: vectorName }
+
+        if (indexType === 'hnsw') {
+            hnswCollections.push(entry)
+        } else if (indexType === 'flat') {
+            flatCollections.push(entry)
+        } else if (indexType === 'dynamic') {
+            dynamicCollections.push(entry)
+        }
+    }
+}
+
+console.log(`HNSW collections: ${hnswCollections.length}`)
+console.log(`Flat collections: ${flatCollections.length}`)
+console.log(`Dynamic collections: ${dynamicCollections.length}`)
+console.log(`Legacy collections: ${legacyCollections.length}`)
+// END ListCollectionsByIndexType
 
 // ==============================
 // =====  UPDATE MULTIPLE COLLECTIONS =====
@@ -37,39 +137,21 @@ await collection.config.update({
 
 // START UpdateMultipleCollections
 
-// Get all collection names
-const collections = await client.collections.listAll()
+// Loop through HNSW collections identified above
+for (const entry of hnswCollections) {
+    const collectionName = entry.collection
+    const vectorName = entry.vector
 
-// Loop through collections
-for (const collectionName of Object.keys(collections)) {
     const collection = client.collections.get(collectionName)
-    const config = await collection.config.get()
-
-    // vectorConfig is an object of named vectors, e.g. { default: VectorConfig }
-    const vectorConfigs = config.vectorConfig
-
-    // Check each named vector in the collection
-    for (const [vectorName, vectorConfig] of Object.entries(vectorConfigs)) {
-        // Check if this vector has ANY compression enabled
-        const hasCompression = vectorConfig && vectorConfig.quantizer !== null && vectorConfig.quantizer !== undefined
-
-        // Only enable RQ if there's NO compression at all
-        if (!hasCompression) {
-            console.log(`Enabling RQ-8 compression for ${collectionName} (vector: ${vectorName})`)
-            await collection.config.update({
-                vectorizers: [ reconfigure.vectors.update({
-                    name: vectorName,
-                    vectorIndexConfig: reconfigure.vectorIndex.hnsw({
-                        quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
-                    }),
-                })]
-            })
-        } else {
-            // Collection already has some compression (RQ, PQ, BQ, SQ, etc.)
-            const quantizerType = vectorConfig.quantizer.type || String(vectorConfig.quantizer)
-            console.log(`${collectionName} (vector: ${vectorName}) already has compression: ${quantizerType}`)
-        }
-    }
+    console.log(`Enabling RQ-8 compression for ${collectionName} (vector: ${vectorName})`)
+    await collection.config.update({
+        vectorizers: [ reconfigure.vectors.update({
+            name: vectorName,
+            vectorIndexConfig: reconfigure.vectorIndex.hnsw({
+                quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
+            }),
+        })]
+    })
 }
 // END UpdateMultipleCollections
 

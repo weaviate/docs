@@ -14,10 +14,10 @@ client = weaviate.connect_to_weaviate_cloud(
 # END ConnectCode
 
 # ==============================
-# =====  UPDATE SINGLE COLLECTION =====
+# =====  UPDATE SINGLE COLLECTION (HNSW) =====
 # ==============================
 
-# START UpdateSingleCollection
+# START UpdateSingleCollectionHNSW
 from weaviate.classes.config import Reconfigure
 
 collection = client.collections.get("MyCollection")
@@ -29,7 +29,112 @@ collection.config.update(
         ),
     )
 )
-# END UpdateSingleCollection
+# END UpdateSingleCollectionHNSW
+
+# ==============================
+# =====  UPDATE SINGLE COLLECTION (FLAT) =====
+# ==============================
+
+# START UpdateSingleCollectionFlat
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.flat(
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
+        ),
+    )
+)
+# END UpdateSingleCollectionFlat
+
+# ==============================
+# =====  UPDATE SINGLE COLLECTION (DYNAMIC) =====
+# ==============================
+
+# START UpdateSingleCollectionDynamic
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.dynamic(
+            hnsw=Reconfigure.VectorIndex.hnsw(
+                quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
+            ),
+            flat=Reconfigure.VectorIndex.flat(
+                quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
+            ),
+        ),
+    )
+)
+# END UpdateSingleCollectionDynamic
+
+# ==============================
+# =====  UPDATE LEGACY COLLECTION (pre-named vectors) =====
+# ==============================
+
+# START UpdateLegacyCollection
+from weaviate.classes.config import Reconfigure
+
+# For collections created before named vectors were introduced (pre-v1.24),
+# use vector_index_config directly instead of vector_config
+collection = client.collections.get("MyLegacyCollection")
+collection.config.update(
+    vector_index_config=Reconfigure.VectorIndex.hnsw(
+        quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
+    )
+)
+# END UpdateLegacyCollection
+
+# ==============================
+# =====  LIST COLLECTIONS BY INDEX TYPE =====
+# ==============================
+
+# START ListCollectionsByIndexType
+from weaviate.collections.classes.config import (
+    _VectorIndexConfigHNSW,
+    _VectorIndexConfigFlat,
+    _VectorIndexConfigDynamic,
+)
+
+# Group collections by their vector index type
+hnsw_collections = []
+flat_collections = []
+dynamic_collections = []
+legacy_collections = []
+
+collections = client.collections.list_all()
+
+for collection_name in collections:
+    collection = client.collections.get(collection_name)
+    config = collection.config.get()
+
+    # Check if this is a legacy collection (no named vectors)
+    if not config.vector_config:
+        # Legacy collection - check the top-level vector_index_config
+        legacy_collections.append(collection_name)
+        continue
+
+    # For each named vector, determine its index type
+    for vector_name, vector_config in config.vector_config.items():
+        index_config = vector_config.vector_index_config
+        entry = {"collection": collection_name, "vector": vector_name}
+
+        if isinstance(index_config, _VectorIndexConfigHNSW):
+            hnsw_collections.append(entry)
+        elif isinstance(index_config, _VectorIndexConfigFlat):
+            flat_collections.append(entry)
+        elif isinstance(index_config, _VectorIndexConfigDynamic):
+            dynamic_collections.append(entry)
+
+print(f"HNSW collections: {len(hnsw_collections)}")
+print(f"Flat collections: {len(flat_collections)}")
+print(f"Dynamic collections: {len(dynamic_collections)}")
+print(f"Legacy collections: {len(legacy_collections)}")
+# END ListCollectionsByIndexType
 
 # ==============================
 # =====  UPDATE MULTIPLE COLLECTIONS =====
@@ -38,37 +143,21 @@ collection.config.update(
 # START UpdateMultipleCollections
 from weaviate.classes.config import Reconfigure
 
-# Get all collection names
-collections = client.collections.list_all()
+# Loop through HNSW collections identified above
+for entry in hnsw_collections:
+    collection_name = entry["collection"]
+    vector_name = entry["vector"]
 
-# Loop through collections
-for collection_name in collections:
     collection = client.collections.get(collection_name)
-    config = collection.config.get()
-
-    # vector_config is a dict of named vectors, e.g. {"default": VectorConfig}
-    vector_configs = config.vector_config
-
-    # Check each named vector in the collection
-    for vector_name, vector_config in vector_configs.items():
-        # Check if this vector has ANY compression enabled
-        has_compression = hasattr(vector_config, 'quantizer') and vector_config.quantizer is not None
-
-        # Only enable RQ if there's NO compression at all
-        if not has_compression:
-            print(f"Enabling RQ-8 compression for {collection_name} (vector: {vector_name})")
-            collection.config.update(
-                vector_config=Reconfigure.Vectors.update(
-                    name=vector_name,
-                    vector_index_config=Reconfigure.VectorIndex.hnsw(
-                        quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
-                    ),
-                )
-            )
-        else:
-            # Collection already has some compression (RQ, PQ, BQ, SQ, etc.)
-            quantizer_type = vector_config.quantizer.type if hasattr(vector_config.quantizer, 'type') else str(vector_config.quantizer)
-            print(f"{collection_name} (vector: {vector_name}) already has compression: {quantizer_type}")
+    print(f"Enabling RQ-8 compression for {collection_name} (vector: {vector_name})")
+    collection.config.update(
+        vector_config=Reconfigure.Vectors.update(
+            name=vector_name,
+            vector_index_config=Reconfigure.VectorIndex.hnsw(
+                quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
+            ),
+        )
+    )
 # END UpdateMultipleCollections
 
 # ==============================
