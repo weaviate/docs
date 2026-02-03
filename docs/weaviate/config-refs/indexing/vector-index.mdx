@@ -183,10 +183,20 @@ HFresh is a cluster-based vector index that uses HNSW for the centroid index. It
 | Parameter            | Type    | Default   | Details                                                                                                    |
 | :------------------- | :------ | :-------- | :--------------------------------------------------------------------------------------------------------- |
 | `distance`           | string  | `cosine`  | Distance metric. The metric that measures the distance between two arbitrary vectors.                       |
-| `maxPostingSizeKb`   | integer | dynamic   | Maximum allowed size in KB for a posting list. By default, this is computed dynamically.                    |
+| `maxPostingSizeKB`   | integer | `48`      | Maximum allowed size in KB for a posting list. Weaviate uses this value along with the vector size to calculate the maximum posting size. |
 | `replicas`           | integer | `4`       | Number of posting lists in which a vector will be added.                                                    |
-| `rngFactor`          | integer | `10`      | Factor used when adding a vector to a posting list. If too close to a selected posting list, it is skipped. |
 | `searchProbe`        | integer | `64`      | Number of posting lists to search during a query.                                                           |
+| `rq`                 | object  | --        | Rotational quantization (RQ) compression configuration. RQ is enabled by default with `bits: 1`. See [RQ parameters for HFresh](#rq-parameters-for-hfresh). |
+
+### RQ parameters for HFresh
+
+HFresh uses rotational quantization (RQ) compression by default. The following parameters are available under `rq`:
+
+| Parameter      | Type    | Default | Details                                                                                     |
+| :------------- | :------ | :------ | :------------------------------------------------------------------------------------------ |
+| `enabled`      | boolean | `true`  | Enable RQ compression. RQ is mandatory and cannot be disabled for HFresh.                  |
+| `bits`         | integer | `1`     | Number of bits used for quantization of postings. Currently only 1 bit supported. |
+| `rescoreLimit` | integer | `350`   | The minimum number of candidates to fetch before rescoring. Behaves like `rescoreLimit` in other index types. |
 
 ## Quantization parameters
 
