@@ -1,7 +1,7 @@
 // Prompts for all pages
 // Add new page prompts here as they are created
 
-const BASE_URL = 'https://prompt-starter--docs-weaviate-io.netlify.app';
+const BASE_URL = 'https://docs.weaviate.io';
 
 // Quickstart page prompts
 const quickstartPrompts = {

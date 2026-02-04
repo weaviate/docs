@@ -4,7 +4,7 @@ export const urls = {
   gemini: "https://gemini.google.com/app",
   cursor: "https://cursor.com/link/prompt",
   weaviateDocsMcp: "/weaviate/mcp/docs-mcp-server",
-  promptStarter: "https://prompt-starter--docs-weaviate-io.netlify.app/prompts/",
+  promptStarter: "https://docs.weaviate.io/prompts/",
   github: "https://raw.githubusercontent.com/weaviate/docs/refs/heads/main/",
   vsCode: "vscode:mcp/install?",
   cursorDeepLink: "cursor://anysphere.cursor-deeplink/mcp/install?",
