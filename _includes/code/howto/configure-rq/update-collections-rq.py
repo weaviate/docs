@@ -32,39 +32,20 @@ collection.config.update(
 # END UpdateSingleCollectionHNSW
 
 # ==============================
-# =====  UPDATE SINGLE COLLECTION (FLAT) =====
-# ==============================
-
-# START UpdateSingleCollectionFlat
-from weaviate.classes.config import Reconfigure
-
-collection = client.collections.get("MyCollection")
-collection.config.update(
-    vector_config=Reconfigure.Vectors.update(
-        name="default",
-        vector_index_config=Reconfigure.VectorIndex.flat(
-            quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
-        ),
-    )
-)
-# END UpdateSingleCollectionFlat
-
-# ==============================
 # =====  UPDATE SINGLE COLLECTION (DYNAMIC) =====
 # ==============================
 
 # START UpdateSingleCollectionDynamic
 from weaviate.classes.config import Reconfigure
 
+# For dynamic indexes, only the HNSW portion can be updated after creation
+# The flat index compression settings are immutable
 collection = client.collections.get("MyCollection")
 collection.config.update(
     vector_config=Reconfigure.Vectors.update(
         name="default",
         vector_index_config=Reconfigure.VectorIndex.dynamic(
             hnsw=Reconfigure.VectorIndex.hnsw(
-                quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
-            ),
-            flat=Reconfigure.VectorIndex.flat(
                 quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=8),
             ),
         ),
@@ -143,8 +124,13 @@ print(f"Legacy collections: {len(legacy_collections)}")
 # START UpdateMultipleCollections
 from weaviate.classes.config import Reconfigure
 
-# Loop through HNSW collections identified above
-for entry in hnsw_collections:
+# Process collections in batches to avoid cluster instability
+BATCH_SIZE = 100
+
+# Only process the first batch (adjust slice for subsequent batches)
+batch = hnsw_collections[:BATCH_SIZE]
+
+for entry in batch:
     collection_name = entry["collection"]
     vector_name = entry["vector"]
 
@@ -158,6 +144,8 @@ for entry in hnsw_collections:
             ),
         )
     )
+
+print(f"Processed {len(batch)} collections. Remaining: {len(hnsw_collections) - BATCH_SIZE}")
 # END UpdateMultipleCollections
 
 # ==============================

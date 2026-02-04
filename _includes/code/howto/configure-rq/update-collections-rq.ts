@@ -4,9 +4,9 @@
 // =====  CONNECT =====
 // ==============================
 
-// START ConnectCode // START UpdateSingleCollectionHNSW // START UpdateSingleCollectionFlat // START UpdateSingleCollectionDynamic // START UpdateLegacyCollection // START ListCollectionsByIndexType // START UpdateMultipleCollections // START CheckCompressionStatus
+// START ConnectCode // START UpdateSingleCollectionHNSW // START UpdateSingleCollectionDynamic // START UpdateLegacyCollection // START ListCollectionsByIndexType // START UpdateMultipleCollections // START CheckCompressionStatus
 import weaviate, { reconfigure } from 'weaviate-client';
-// END ConnectCode // END UpdateSingleCollectionHNSW // END UpdateSingleCollectionFlat // END UpdateSingleCollectionDynamic // END UpdateLegacyCollection // END ListCollectionsByIndexType // END UpdateMultipleCollections // END CheckCompressionStatus
+// END ConnectCode // END UpdateSingleCollectionHNSW // END UpdateSingleCollectionDynamic // END UpdateLegacyCollection // END ListCollectionsByIndexType // END UpdateMultipleCollections // END CheckCompressionStatus
 
 // START ConnectCode
 const client = await weaviate.connectToWeaviateCloud('YOUR-WEAVIATE-CLOUD-URL', {
@@ -32,37 +32,19 @@ await collection.config.update({
 // END UpdateSingleCollectionHNSW
 
 // ==============================
-// =====  UPDATE SINGLE COLLECTION (FLAT) =====
-// ==============================
-
-// START UpdateSingleCollectionFlat
-
-const collectionFlat = client.collections.get("MyCollection")
-await collectionFlat.config.update({
-    vectorizers: [ reconfigure.vectors.update({
-        name: "default",
-        vectorIndexConfig: reconfigure.vectorIndex.flat({
-            quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
-        }),
-    })]
-})
-// END UpdateSingleCollectionFlat
-
-// ==============================
 // =====  UPDATE SINGLE COLLECTION (DYNAMIC) =====
 // ==============================
 
 // START UpdateSingleCollectionDynamic
 
+// For dynamic indexes, only the HNSW portion can be updated after creation
+// The flat index compression settings are immutable
 const collectionDynamic = client.collections.get("MyCollection")
 await collectionDynamic.config.update({
     vectorizers: [ reconfigure.vectors.update({
         name: "default",
         vectorIndexConfig: reconfigure.vectorIndex.dynamic({
             hnsw: reconfigure.vectorIndex.hnsw({
-                quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
-            }),
-            flat: reconfigure.vectorIndex.flat({
                 quantizer: reconfigure.vectorIndex.quantizer.rq({ bits: 8 }),
             }),
         }),
@@ -137,8 +119,13 @@ console.log(`Legacy collections: ${legacyCollections.length}`)
 
 // START UpdateMultipleCollections
 
-// Loop through HNSW collections identified above
-for (const entry of hnswCollections) {
+// Process collections in batches to avoid cluster instability
+const BATCH_SIZE = 100
+
+// Only process the first batch (adjust slice for subsequent batches)
+const batch = hnswCollections.slice(0, BATCH_SIZE)
+
+for (const entry of batch) {
     const collectionName = entry.collection
     const vectorName = entry.vector
 
@@ -153,6 +140,8 @@ for (const entry of hnswCollections) {
         })]
     })
 }
+
+console.log(`Processed ${batch.length} collections. Remaining: ${hnswCollections.length - BATCH_SIZE}`)
 // END UpdateMultipleCollections
 
 // ==============================

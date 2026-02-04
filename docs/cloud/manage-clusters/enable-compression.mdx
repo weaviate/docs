@@ -76,30 +76,11 @@ Most collections use the HNSW index. To enable RQ 8-bit compression:
 
 ### Flat index
 
-For collections using the flat index:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START UpdateSingleCollectionFlat"
-        endMarker="# END UpdateSingleCollectionFlat"
-        language="py"
-      />
-  </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START UpdateSingleCollectionFlat"
-        endMarker="// END UpdateSingleCollectionFlat"
-        language="ts"
-      />
-  </TabItem>
-</Tabs>
+Compression settings on flat indexes are immutable after collection creation. You cannot enable or change compression on an existing flat index. To use RQ compression with a flat index, you must specify the compression settings when creating the collection.
 
 ### Dynamic index
 
-For collections using the dynamic index (which can switch between flat and HNSW), configure compression for both underlying index types:
+For collections using the dynamic index, you can update the HNSW compression settings. Note that the flat index portion of a dynamic index cannot be modified after creation:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -176,7 +157,7 @@ The following example categorizes your collections by their vector index types:
 
 ### Update multiple collections
 
-The following example enables RQ compression on all HNSW collections listed from above:
+The following example enables RQ compression on HNSW collections in batches. To avoid cluster instability, limit each batch to approximately 100 collections:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -197,6 +178,10 @@ The following example enables RQ compression on all HNSW collections listed from
   </TabItem>
 </Tabs>
 
+:::warning Batch size limits
+Enabling compression on too many collections at once can cause cluster instability or crashes. Process collections in batches of no more than 100, and for very large collections, update them one at a time.
+:::
+
 :::tip Dry run
 Consider adding a "dry run" mode that only prints what would change without actually updating collections. Comment out the `collection.config.update()` call and test the logic first.
 :::
@@ -213,14 +198,15 @@ When compression is enabled on an existing collection, Weaviate re-encodes all v
 
 ### Recommended approach for large clusters
 
-If you have many large collections, avoid enabling compression for multiple collections simultaneously. The cumulative memory overhead can exhaust cluster resources.
+Enabling compression on too many collections simultaneously can cause cluster instability or crashes. Follow these guidelines to safely roll out compression:
 
 For clusters with multiple collections or large vector counts:
 
 1. **Assess your cluster**: Use the [list collections script](#list-collections-by-index-type) to understand what you're working with
-2. **Process one at a time**: For large collections, enable compression on one collection (or one named vector) at a time
-3. **Build in buffers**: If using a loop, add sufficient delays between operations to allow each compression to complete before starting the next
-4. **Start with smaller collections**: Test on smaller collections first to understand timing and resource impact before compressing larger ones
+2. **Process in batches**: Limit each batch to approximately 100 collections to avoid overwhelming cluster resources
+3. **Handle large collections individually**: For very large collections (millions of objects), enable compression one collection at a time
+4. **Build in buffers**: Add sufficient delays between batches to allow compression to complete before starting the next batch
+5. **Start with smaller collections**: Test on smaller collections first to understand timing and resource impact before compressing larger ones
 
 ## Verify compression status
 
