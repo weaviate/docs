@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import styles from "./styles.module.scss";
-import { urls } from "../config";
+import { urls, getPlatformFromUrl } from "../config";
+import { analytics } from "@site/src/utils/analytics";
 
 export default function ContextualMenu({
   variant = "docs",
@@ -64,6 +65,10 @@ Source: ${pageUrl}
 ${content}`;
 
       await navigator.clipboard.writeText(markdown);
+
+      // Track successful copy
+      analytics.contextualMenu.copyPage(pageUrl, title);
+
       setCopyStatus("success");
       setTimeout(() => {
         setCopyStatus("idle");
@@ -75,6 +80,17 @@ ${content}`;
   };
 
   const handleOpenInLLM = (llmUrl) => {
+    // Get platform name from URL using config
+    const platform = getPlatformFromUrl(llmUrl);
+
+    // Prepare additional tracking params
+    const additionalParams = variant === 'prompts'
+      ? { language: selectedLanguage, prompt_name: promptName }
+      : { page_url: getCurrentPageUrl() };
+
+    // Track LLM open
+    analytics.contextualMenu.openLLM(platform, variant, additionalParams);
+
     let prompt = "";
     if (variant === "docs") {
       const pageUrl = getCurrentPageUrl();
@@ -91,6 +107,9 @@ ${content}`;
 
 
   const handleConnectToCursor = () => {
+    // Track MCP connection
+    analytics.contextualMenu.connectMCP('cursor');
+
     const config = {
       name: "Weaviate Docs",
       url: "https://weaviate-docs.mcp.kapa.ai",
@@ -101,6 +120,9 @@ ${content}`;
   };
 
   const handleConnectToVSCode = () => {
+    // Track MCP connection
+    analytics.contextualMenu.connectMCP('vscode');
+
     const config = {
       name: "Weaviate Docs",
       url: "https://weaviate.mcp.kapa.ai",
@@ -111,11 +133,22 @@ ${content}`;
   };
 
   const handleLearnAboutMCP = () => {
+    // Track MCP learn more
+    analytics.contextualMenu.connectMCP('learn_more');
+
     window.open(urls.weaviateDocsMcp, "_blank");
     setIsOpen(false);
   };
 
   const handleViewAsMarkdown = () => {
+    // Prepare tracking params
+    const additionalParams = variant === 'prompts'
+      ? { language: selectedLanguage, prompt_name: promptName }
+      : { page_url: getCurrentPageUrl() };
+
+    // Track view markdown
+    analytics.contextualMenu.viewMarkdown(variant, additionalParams);
+
     if (variant === "prompts") {
       const fullUrl = `${promptUrl}${promptName}-${selectedLanguage}.md`;
       window.open(fullUrl, "_blank");
@@ -139,6 +172,14 @@ ${content}`;
       }
       const markdownContent = await response.text();
       await navigator.clipboard.writeText(markdownContent);
+
+      // Track successful copy
+      analytics.contextualMenu.copyPrompt(
+        promptName,
+        selectedLanguage,
+        `${promptName}-${selectedLanguage}`
+      );
+
       setCopyStatus("success");
       setTimeout(() => {
         setCopyStatus("idle");
@@ -213,8 +254,16 @@ ${content}`;
                     selectedLanguage === lang ? styles.active : ""
                   }`}
                   onClick={() => {
+                    const previousLanguage = selectedLanguage;
                     setSelectedLanguage(lang);
                     setIsLanguageOpen(false);
+
+                    // Track language selection
+                    analytics.contextualMenu.selectLanguage(
+                      previousLanguage,
+                      lang,
+                      promptName
+                    );
                   }}
                 >
                   {languageLabels[lang]}
@@ -368,6 +417,12 @@ ${content}`;
               <button
                 className={styles.menuItem}
                 onClick={() => {
+                  // Track Cursor open
+                  analytics.contextualMenu.openLLM('cursor', 'prompts', {
+                    language: selectedLanguage,
+                    prompt_name: promptName,
+                  });
+
                   const fullUrl = `${promptUrl}${promptName}-${selectedLanguage}.md`;
                   const prompt = `Open this site and follow the instructions: ${fullUrl}`;
                   const url = new URL(urls.cursor);
