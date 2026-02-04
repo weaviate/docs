@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import styles from "./styles.module.scss";
-import { urls } from "../config";
+import { urls, getPlatformFromUrl } from "../config";
 import { analytics } from "@site/src/utils/analytics";
 
 export default function ContextualMenu({
@@ -80,11 +80,8 @@ ${content}`;
   };
 
   const handleOpenInLLM = (llmUrl) => {
-    // Detect LLM platform
-    let platform = 'unknown';
-    if (llmUrl.includes('claude.ai')) platform = 'claude';
-    else if (llmUrl.includes('chatgpt.com')) platform = 'chatgpt';
-    else if (llmUrl.includes('gemini')) platform = 'gemini';
+    // Get platform name from URL using config
+    const platform = getPlatformFromUrl(llmUrl);
 
     // Prepare additional tracking params
     const additionalParams = variant === 'prompts'
