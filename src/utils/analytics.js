@@ -14,8 +14,8 @@ const trackEvent = (eventName, parameters = {}) => {
     window.dataLayer.push({ event: eventName, ...parameters });
   }
 
-  // Development logging
-  if (process.env.NODE_ENV === 'development') {
+  // Development logging (also enabled on staging for testing)
+  if (process.env.NODE_ENV === 'development' || typeof window !== 'undefined' && window.location.hostname.includes('netlify.app')) {
     console.log('📊 [Analytics]', eventName, parameters);
   }
 };
