@@ -1436,9 +1436,18 @@ const sidebars = {
           id: "cloud/manage-clusters/default-settings",
           className: "sidebar-item",
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Manage collections",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
         {
           type: "doc",
-          id: "cloud/manage-clusters/enable-compression",
+          id: "cloud/manage-collections/enable-compression",
           className: "sidebar-item",
         },
       ],
