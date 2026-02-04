@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles.module.scss";
 import ContextualMenu from "@site/src/components/ContextualMenu";
 import { getPromptDetails } from "./promptDetails";
 import { urls } from "../config";
+import { analytics } from "@site/src/utils/analytics";
 
 /**
  * PromptStarter - A banner component that provides AI-ready prompts for documentation pages
@@ -23,6 +24,11 @@ const PromptStarter = ({
   const description =
     details?.description ||
     "Build a working movie search app with vector search and RAG in 4 steps";
+
+  // Track component view on mount
+  useEffect(() => {
+    analytics.promptStarter.view(page, languages, promptDetails);
+  }, [page, languages, promptDetails]);
 
   return (
     <div className={styles.promptStarterWrapper}>
@@ -57,7 +63,13 @@ const PromptStarter = ({
             {details && (
               <button
                 className={styles.previewToggle}
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={() => {
+                  const newState = !isExpanded;
+                  setIsExpanded(newState);
+
+                  // Track expand/collapse
+                  analytics.promptStarter.toggleDetails(newState, page, promptDetails);
+                }}
                 aria-expanded={isExpanded}
               >
                 {isExpanded ? "Hide prompt details" : "Show prompt details"}
