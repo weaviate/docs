@@ -11,7 +11,7 @@ The majority of these settings are configured via environment variables. For mor
 
 ## Weaviate Database settings
 
-These settings control core database functionality and limits.
+These settings control core database functionality and limits. User configurable settings can be viewed and updated in "Show advanced options" in cluster details.
 
 | Setting | Requires restart | Default value | User configurable |
 | --- | --- | --- | --- |
@@ -19,7 +19,7 @@ These settings control core database functionality and limits.
 | [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes |
 | [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
 | [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
-| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | No |
+| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | Yes |
 | `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
 | [`REPLICATION_MINIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MINIMUM_FACTOR) | Yes | 3 (for HA clusters) | No |
 
