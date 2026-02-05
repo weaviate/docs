@@ -15,6 +15,7 @@ Weaviate supports these vector index types:
 * [flat index](#flat-index): a simple, lightweight index that is designed for small datasets.
 * [HNSW index](#hierarchical-navigable-small-world-hnsw-index): a more complex index that is slower to build, but it scales well to large datasets as queries have a logarithmic time complexity.
 * [dynamic index](#dynamic-index): allows you to automatically switch from a flat index to an HNSW index as object count scales
+* [HFresh index](#hfresh-index): a cluster-based index that uses HNSW for the centroid index, providing memory efficiency for large datasets.
 
 This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
@@ -261,6 +262,23 @@ Currently, this is only a one-way upgrade from a flat to an HNSW index, it does 
 
 This is particularly useful in a multi-tenant setup where building an HNSW index per tenant would introduce extra overhead. With a dynamic index, as individual tenants grow their index will switch from flat to HNSW, while smaller tenants' indexes remain flat.
 
+## HFresh index
+
+:::info Experimental feature
+HFresh indexing is an experimental feature.
+:::
+
+The **HFresh index** is a cluster-based vector index that uses HNSW for the centroid index. It is based on the SPFresh algorithm, which organizes vectors into posting lists (clusters) for efficient retrieval.
+
+HFresh works by:
+1. Partitioning vectors into clusters, each with a centroid vector
+2. Using an HNSW index to efficiently search the centroids
+3. Searching only the most relevant posting lists (clusters) for a query
+
+This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (number of posting lists each vector is added to).
+
+For configuration details, see the [HFresh index parameters](../../config-refs/indexing/vector-index.mdx#hfresh-index-parameters).
+
 ## Vector cache considerations
 
 For optimal search and import performance, previously imported vectors need to be in memory. A disk lookup for a vector is orders of magnitudes slower than memory lookup, so the disk cache should be used sparingly. However, Weaviate can limit the number of vectors in memory. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created.
@@ -286,6 +304,7 @@ When choosing an index type, use the following as a guide:
 - **Flat index**: Use for small collections with a known size.
 - **HNSW index**: Use for large collections with a known size.
 - **Dynamic index**: Use for collections with an unknown size or collections that may grow over time.
+- **HFresh index**: Use for very large collections where memory efficiency is a priority.
 
 Note that the vector index type parameter only specifies how the vectors of data objects are *indexed*. The index is used for data retrieval and similarity search.
 

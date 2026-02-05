@@ -226,6 +226,7 @@ await client.collections.create({
     vectorIndexConfig: configure.vectorIndex.hnsw(),  // Use HNSW
     // vectorIndexConfig: configure.vectorIndex.flat(),  // Use Flat
     // vectorIndexConfig: configure.vectorIndex.dynamic(),  // Use Dynamic
+    // vectorIndexConfig: configure.vectorIndex.hfresh(),  // Use HFresh
     // highlight-end
   }),
   properties: [
