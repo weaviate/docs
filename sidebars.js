@@ -1396,7 +1396,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Manage a cluster",
+      label: "Manage clusters",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1444,6 +1444,29 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Manage collections",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "cloud/tools/collections-tool",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-collections/enable-compression",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
       label: "Agents",
       className: "sidebar-main-category",
       collapsible: false,
@@ -1462,16 +1485,10 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Tools",
+      label: "Other tools",
       className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
+      collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "cloud/tools/collections-tool",
-          className: "sidebar-item",
-        },
         {
           type: "doc",
           id: "cloud/tools/explorer-tool",
