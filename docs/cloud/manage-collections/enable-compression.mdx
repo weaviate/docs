@@ -1,6 +1,5 @@
 ---
-title: Enable RQ Compression
-sidebar_position: 1
+title: Enable RQ compression
 image: og/docs/cloud.jpg
 ---
 
@@ -10,7 +9,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.ts';
 
-This guide shows you how to enable [RQ 8-bit compression](../../weaviate/configuration/compression/rq-compression.md) on existing collections in your Weaviate Cloud cluster. RQ compression significantly reduces Vector Dimensions costs while maintaining high recall.
+This guide shows you how to enable [RQ 8-bit compression](../../weaviate/configuration/compression/rq-compression.md) on existing collections in your Weaviate Cloud cluster. RQ compression significantly reduces vector dimensions costs while maintaining high recall.
 
 :::warning Permanent Change
 Once compression is enabled on a collection, it cannot be disabled. Always test compression on non-production data first.
@@ -18,9 +17,8 @@ Once compression is enabled on a collection, it cannot be disabled. Always test 
 
 ## Prerequisites
 
-- A Weaviate Cloud cluster
-- Weaviate client library installed
-- API key with write access to your cluster
+- A Weaviate [client library](/weaviate/client-libraries) installed
+- [API key](../manage-clusters/authentication.mdx) with write access to your Weaviate Cloud cluster
 
 ## Connect to your cluster
 
@@ -74,6 +72,10 @@ Most collections use the HNSW index. To enable RQ 8-bit compression:
   </TabItem>
 </Tabs>
 
+:::note Named vectors
+If your collection uses named vectors (not "default"), update the `name` parameter to match your vector name.
+:::
+
 ### Flat index
 
 Compression settings on flat indexes are immutable after collection creation. You cannot enable or change compression on an existing flat index. To use RQ compression with a flat index, you must specify the compression settings when creating the collection.
@@ -123,10 +125,6 @@ Collections created before Weaviate v1.24 (when named vectors were introduced) u
       />
   </TabItem>
 </Tabs>
-
-:::note Named vectors
-If your collection uses named vectors (not "default"), update the `name` parameter to match your vector name.
-:::
 
 ## Update multiple collections
 
@@ -254,11 +252,11 @@ For large collections, the compression process may take some time. Your collecti
 - **Monitor performance**: Check query recall and latency after enabling compression
 - **Backup data**: Although compression is safe, consider backing up critical data before making changes
 
-## Related resources
+## Further resources
 
-- [RQ Compression reference](../../weaviate/configuration/compression/rq-compression.md)
-- [Vector quantization concepts](../../weaviate/concepts/vector-quantization.md)
-- [Managing cluster resources](../../weaviate/starter-guides/managing-resources/compression.mdx)
+- [How-to configure: Rotational quantization (compression)](../../weaviate/configuration/compression/rq-compression.md)
+- [Concepts: Vector quantization](../../weaviate/concepts/vector-quantization.md)
+- [Starter guides: Managing resources - Compression](../../weaviate/starter-guides/managing-resources/compression.mdx)
 
 ## Questions and feedback
 

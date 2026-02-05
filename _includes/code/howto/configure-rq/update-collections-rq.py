@@ -5,13 +5,32 @@
 # ==============================
 
 # START ConnectCode
-import weaviate
+import os, weaviate
+
+# Best practice: store your credentials in environment variables
+weaviate_url = os.environ["WEAVIATE_URL"]
+weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url="YOUR-WEAVIATE-CLOUD-URL",
-    auth_credentials=weaviate.auth.AuthApiKey("YOUR-API-KEY")
+    cluster_url=weaviate_url, auth_credentials=weaviate_api_key
 )
 # END ConnectCode
+
+from weaviate.classes.config import Configure
+
+client.collections.delete("MyUncompressedCollection")
+client.collections.create(
+    "MyUncompressedCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        quantizer=Configure.VectorIndex.Quantizer.none()
+    ),
+)
+
+client.collections.delete("MyLegacyCollection")
+client.collections.create(
+    "MyLegacyCollection",
+    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+)
 
 # ==============================
 # =====  UPDATE SINGLE COLLECTION (HNSW) =====
@@ -20,7 +39,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # START UpdateSingleCollectionHNSW
 from weaviate.classes.config import Reconfigure
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.get("MyUncompressedCollection")
 collection.config.update(
     vector_config=Reconfigure.Vectors.update(
         name="default",
@@ -31,6 +50,15 @@ collection.config.update(
 )
 # END UpdateSingleCollectionHNSW
 
+"""TODO[g-despot] Can't test until cluster has async indexing.
+client.collections.delete("MyUncompressedCollection")
+client.collections.create(
+    "MyUncompressedCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        vector_index_config=Configure.VectorIndex.dynamic(),
+        quantizer=Configure.VectorIndex.Quantizer.none(),
+    ),
+)
 # ==============================
 # =====  UPDATE SINGLE COLLECTION (DYNAMIC) =====
 # ==============================
@@ -40,7 +68,7 @@ from weaviate.classes.config import Reconfigure
 
 # For dynamic indexes, only the HNSW portion can be updated after creation
 # The flat index compression settings are immutable
-collection = client.collections.get("MyCollection")
+collection = client.collections.get("MyUncompressedCollection")
 collection.config.update(
     vector_config=Reconfigure.Vectors.update(
         name="default",
@@ -52,7 +80,7 @@ collection.config.update(
     )
 )
 # END UpdateSingleCollectionDynamic
-
+"""
 # ==============================
 # =====  UPDATE LEGACY COLLECTION (pre-named vectors) =====
 # ==============================
@@ -136,6 +164,9 @@ for entry in batch:
 
     collection = client.collections.get(collection_name)
     print(f"Enabling RQ-8 compression for {collection_name} (vector: {vector_name})")
+    # END UpdateMultipleCollections
+    """
+    # START UpdateMultipleCollections
     collection.config.update(
         vector_config=Reconfigure.Vectors.update(
             name=vector_name,
@@ -144,8 +175,13 @@ for entry in batch:
             ),
         )
     )
+    # END UpdateMultipleCollections
+    """
+    # START UpdateMultipleCollections
 
-print(f"Processed {len(batch)} collections. Remaining: {len(hnsw_collections) - BATCH_SIZE}")
+print(
+    f"Processed {len(batch)} collections. Remaining: {len(hnsw_collections) - BATCH_SIZE}"
+)
 # END UpdateMultipleCollections
 
 # ==============================
@@ -153,7 +189,7 @@ print(f"Processed {len(batch)} collections. Remaining: {len(hnsw_collections) - 
 # ==============================
 
 # START CheckCompressionStatus
-collection = client.collections.get("MyCollection")
+collection = client.collections.get("MyUncompressedCollection")
 config = collection.config.get()
 
 # Check if this is a legacy collection (no named vectors)
@@ -164,7 +200,7 @@ if config.vector_config:
         quantizer = vector_config.vector_index_config.quantizer
         if quantizer:
             print(f"  Quantizer type: {type(quantizer).__name__}")
-            if hasattr(quantizer, 'bits'):
+            if hasattr(quantizer, "bits"):
                 print(f"  Bits: {quantizer.bits}")
         else:
             print("  No compression enabled")
@@ -174,7 +210,7 @@ else:
     quantizer = config.vector_index_config.quantizer
     if quantizer:
         print(f"  Quantizer type: {type(quantizer).__name__}")
-        if hasattr(quantizer, 'bits'):
+        if hasattr(quantizer, "bits"):
             print(f"  Bits: {quantizer.bits}")
     else:
         print("  No compression enabled")

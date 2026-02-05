@@ -9,10 +9,34 @@ import weaviate, { reconfigure } from 'weaviate-client';
 // END ConnectCode // END UpdateSingleCollectionHNSW // END UpdateSingleCollectionDynamic // END UpdateLegacyCollection // END ListCollectionsByIndexType // END UpdateMultipleCollections // END CheckCompressionStatus
 
 // START ConnectCode
-const client = await weaviate.connectToWeaviateCloud('YOUR-WEAVIATE-CLOUD-URL', {
-    authCredentials: new weaviate.ApiKey('YOUR-API-KEY'),
+// Best practice: store your credentials in environment variables
+const weaviateUrl = process.env.WEAVIATE_URL!
+const weaviateApiKey = process.env.WEAVIATE_API_KEY!
+
+const client = await weaviate.connectToWeaviateCloud(weaviateUrl, {
+    authCredentials: new weaviate.ApiKey(weaviateApiKey),
 })
 // END ConnectCode
+
+import { configure } from 'weaviate-client';
+
+await client.collections.delete("MyUncompressedCollection")
+await client.collections.create({
+    name: "MyUncompressedCollection",
+    vectorizers: configure.vectors.text2VecOpenAI({
+        quantizer: configure.vectorIndex.quantizer.none(),
+    }),
+})
+
+/*TODO[g-despot] TypeScript client v3.x doesn't support creating true legacy collections (pre-v1.24 without named vectors).
+The client internally uses named vectors for all collections. The UpdateLegacyCollection snippet below is still valid
+for actual legacy collections in clusters, it just can't be tested in this file.
+await client.collections.delete("MyLegacyCollection")
+await client.collections.create({
+    name: "MyLegacyCollection",
+    vectorizerConfig: configure.vectorizer.text2VecWeaviate(),
+})
+*///
 
 // ==============================
 // =====  UPDATE SINGLE COLLECTION (HNSW) =====
@@ -20,7 +44,7 @@ const client = await weaviate.connectToWeaviateCloud('YOUR-WEAVIATE-CLOUD-URL', 
 
 // START UpdateSingleCollectionHNSW
 
-const collection = client.collections.get("MyCollection")
+const collection = client.collections.get("MyUncompressedCollection")
 await collection.config.update({
     vectorizers: [ reconfigure.vectors.update({
         name: "default",
@@ -31,6 +55,15 @@ await collection.config.update({
 })
 // END UpdateSingleCollectionHNSW
 
+/*TODO[g-despot] Can't test until cluster has async indexing.
+await client.collections.delete("MyUncompressedCollection")
+await client.collections.create({
+    name: "MyUncompressedCollection",
+    vectorizers: configure.vectors.text2VecOpenAI({
+        vectorIndexConfig: configure.vectorIndex.dynamic(),
+        quantizer: configure.vectorIndex.quantizer.none(),
+    }),
+})
 // ==============================
 // =====  UPDATE SINGLE COLLECTION (DYNAMIC) =====
 // ==============================
@@ -39,7 +72,7 @@ await collection.config.update({
 
 // For dynamic indexes, only the HNSW portion can be updated after creation
 // The flat index compression settings are immutable
-const collectionDynamic = client.collections.get("MyCollection")
+const collectionDynamic = client.collections.get("MyUncompressedCollection")
 await collectionDynamic.config.update({
     vectorizers: [ reconfigure.vectors.update({
         name: "default",
@@ -51,7 +84,7 @@ await collectionDynamic.config.update({
     })]
 })
 // END UpdateSingleCollectionDynamic
-
+*/
 // ==============================
 // =====  UPDATE LEGACY COLLECTION (pre-named vectors) =====
 // ==============================
@@ -82,28 +115,33 @@ const legacyCollections: string[] = []
 
 const allCollections = await client.collections.listAll()
 
-for (const collectionName of Object.keys(allCollections)) {
-    const coll = client.collections.get(collectionName)
-    const config = await coll.config.get()
+for (const collectionConfig of Object.values(allCollections)) {
+    const collectionName = collectionConfig.name
+    try {
+        const coll = client.collections.get(collectionName)
+        const config = await coll.config.get()
 
-    // Check if this is a legacy collection (no named vectors)
-    if (!config.vectorConfig || Object.keys(config.vectorConfig).length === 0) {
-        legacyCollections.push(collectionName)
-        continue
-    }
-
-    // For each named vector, determine its index type
-    for (const [vectorName, vectorConfig] of Object.entries(config.vectorConfig)) {
-        const indexType = vectorConfig.vectorIndexType
-        const entry = { collection: collectionName, vector: vectorName }
-
-        if (indexType === 'hnsw') {
-            hnswCollections.push(entry)
-        } else if (indexType === 'flat') {
-            flatCollections.push(entry)
-        } else if (indexType === 'dynamic') {
-            dynamicCollections.push(entry)
+        // Check if this is a legacy collection (no named vectors)
+        if (!config.vectorizers || Object.keys(config.vectorizers).length === 0) {
+            legacyCollections.push(collectionName)
+            continue
         }
+
+        // For each named vector, determine its index type
+        for (const [vectorName, vectorConfig] of Object.entries(config.vectorizers)) {
+            const indexType = vectorConfig.indexType
+            const entry = { collection: collectionName, vector: vectorName }
+
+            if (indexType === 'hnsw') {
+                hnswCollections.push(entry)
+            } else if (indexType === 'flat') {
+                flatCollections.push(entry)
+            } else if (indexType === 'dynamic') {
+                dynamicCollections.push(entry)
+            }
+        }
+    } catch (error) {
+        console.log(`Skipping collection ${collectionName}: ${error}`)
     }
 }
 
@@ -131,6 +169,9 @@ for (const entry of batch) {
 
     const collection = client.collections.get(collectionName)
     console.log(`Enabling RQ-8 compression for ${collectionName} (vector: ${vectorName})`)
+    // END UpdateMultipleCollections
+    /*
+    // START UpdateMultipleCollections
     await collection.config.update({
         vectorizers: [ reconfigure.vectors.update({
             name: vectorName,
@@ -139,6 +180,9 @@ for (const entry of batch) {
             }),
         })]
     })
+    // END UpdateMultipleCollections
+    */
+    // START UpdateMultipleCollections
 }
 
 console.log(`Processed ${batch.length} collections. Remaining: ${hnswCollections.length - BATCH_SIZE}`)
@@ -150,15 +194,15 @@ console.log(`Processed ${batch.length} collections. Remaining: ${hnswCollections
 
 // START CheckCompressionStatus
 
-const collectionToCheck = client.collections.get("MyCollection")
+const collectionToCheck = client.collections.get("MyUncompressedCollection")
 const configToCheck = await collectionToCheck.config.get()
 
 // Check if this is a legacy collection (no named vectors)
-if (configToCheck.vectorConfig && Object.keys(configToCheck.vectorConfig).length > 0) {
-    // Named vectors - iterate through vectorConfig
-    for (const [vectorName, vectorConfig] of Object.entries(configToCheck.vectorConfig)) {
+if (configToCheck.vectorizers && Object.keys(configToCheck.vectorizers).length > 0) {
+    // Named vectors - iterate through vectorizers
+    for (const [vectorName, vectorConfig] of Object.entries(configToCheck.vectorizers)) {
         console.log(`\nVector: ${vectorName}`)
-        const quantizer = vectorConfig.vectorIndexConfig?.quantizer
+        const quantizer = vectorConfig.indexConfig?.quantizer
         if (quantizer) {
             console.log(`  Quantizer type: ${quantizer.constructor.name}`)
             if ('bits' in quantizer) {

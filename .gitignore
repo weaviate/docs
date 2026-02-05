@@ -271,3 +271,5 @@ _includes/code/csharp/quickstart/obj
 
 # Exclude WCD backups
 tests/backups/
+
+.claude
