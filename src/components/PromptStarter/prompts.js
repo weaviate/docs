@@ -5,7 +5,7 @@ export const promptDetails = Object.fromEntries(
     key,
     {
       description: prompt.description,
-      short: prompt.short,
+      short: prompt.detailedDescription,
       features: prompt.features,
     },
   ])

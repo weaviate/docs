@@ -1,7 +1,7 @@
 {
   "quickstart_prompt": {
     "description": "Build a working movie search app with natural language queries, vector search, and RAG in 5 steps.",
-    "short": "The prompt will guide you to create a movie search demo application that uses natural language queries, vector and hybrid search to browse a movie collection.",
+    "detailedDescription": "The prompt will guide you to create a movie search demo application that uses natural language queries, vector and hybrid search to browse a movie collection.",
     "features": [
       "Create a Movie collection with text2vec-weaviate vectorizer",
       "Import 5 sample movies (The Matrix, Inception, The Godfather, Spirited Away, The Dark Knight)",
@@ -14,46 +14,78 @@
         "file": "quickstart-python.md",
         "title": "Build a Weaviate Web App with FastAPI",
         "framework": "FastAPI + Uvicorn",
-        "sections": ["Create Collection", "Import Data", "Query Agent", "Hybrid Search", "RAG"],
-        "packages": ["fastapi", "uvicorn", "weaviate-client>=4.19.0", "weaviate-agents>=1.2.0", "python-dotenv"],
-        "clientApi": "Weaviate Python client v4 (collection-based API)",
-        "queryAgent": true
+        "sections": [
+          "Create Collection",
+          "Import Data",
+          "Query Agent",
+          "Hybrid Search",
+          "RAG"
+        ],
+        "packages": [
+          "fastapi",
+          "uvicorn",
+          "weaviate-client>=4.19.0",
+          "weaviate-agents>=1.2.0",
+          "python-dotenv"
+        ],
+        "clientApi": "Weaviate Python client v4"
       },
       "typescript": {
         "file": "quickstart-typescript.md",
         "title": "Build a Weaviate Web App with Next.js",
         "framework": "Next.js (App Router) + Tailwind CSS",
-        "sections": ["Create Collection", "Import Data", "Query Agent", "Hybrid Search", "RAG"],
+        "sections": [
+          "Create Collection",
+          "Import Data",
+          "Query Agent",
+          "Hybrid Search",
+          "RAG"
+        ],
         "packages": ["weaviate-client@^3.11.0", "weaviate-agents@^1.1.0"],
-        "clientApi": "Weaviate TypeScript client v3 (collection-based API)",
-        "queryAgent": true
+        "clientApi": "Weaviate TypeScript client v3"
       },
       "go": {
         "file": "quickstart-go.md",
         "title": "Build a Weaviate Web App with Gin",
         "framework": "Gin",
-        "sections": ["Create Collection", "Import Data", "Hybrid Search", "RAG"],
-        "packages": ["github.com/gin-gonic/gin", "github.com/weaviate/weaviate-go-client/v5@v5.6.0", "github.com/joho/godotenv"],
-        "clientApi": "Weaviate Go client v5 (GraphQL-based API)",
-        "queryAgent": false
+        "sections": [
+          "Create Collection",
+          "Import Data",
+          "Hybrid Search",
+          "RAG"
+        ],
+        "packages": [
+          "github.com/gin-gonic/gin",
+          "github.com/weaviate/weaviate-go-client/v5@v5.6.0",
+          "github.com/joho/godotenv"
+        ],
+        "clientApi": "Weaviate Go client v5"
       },
       "java": {
         "file": "quickstart-java.md",
         "title": "Build a Weaviate Web App with Spring Boot",
         "framework": "Spring Boot",
-        "sections": ["Create Collection", "Import Data", "Hybrid Search", "RAG"],
+        "sections": [
+          "Create Collection",
+          "Import Data",
+          "Hybrid Search",
+          "RAG"
+        ],
         "packages": ["io.weaviate:client:6.0.1"],
-        "clientApi": "Weaviate Java client v6 (GraphQL-based API)",
-        "queryAgent": false
+        "clientApi": "Weaviate Java client v6"
       },
       "csharp": {
         "file": "quickstart-csharp.md",
         "title": "Build a Weaviate Web App with ASP.NET Core",
         "framework": "ASP.NET Core MVC",
-        "sections": ["Create Collection", "Import Data", "Hybrid Search", "RAG"],
+        "sections": [
+          "Create Collection",
+          "Import Data",
+          "Hybrid Search",
+          "RAG"
+        ],
         "packages": ["Weaviate.Client >= 1.0.0"],
-        "clientApi": "Weaviate C# client (GraphQL-based API)",
-        "queryAgent": false
+        "clientApi": "Weaviate C# client"
       }
     }
   }
