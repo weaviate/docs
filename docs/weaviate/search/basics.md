@@ -264,6 +264,21 @@ The output is like this:
 
 To paginate through the entire database, use a [cursor](../manage-objects/read-all-objects.mdx) instead of offset and limit.
 
+## Filter results
+
+For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow your search.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GetWithFilter"
+      endMarker="# END GetWithFilter"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
 ## Retrieve object `properties`
 
 You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise (_this does not apply to the Go and Java v5 client libraries)_.
