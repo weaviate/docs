@@ -82,7 +82,7 @@ import APITable from '@site/src/components/APITable';
 | `QUERY_MAXIMUM_RESULTS` | Sets the maximum total number of objects that can be retrieved. | `string - number` | `10000` |
 | `QUERY_SLOW_LOG_ENABLED` | Log slow queries for debugging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `boolean` | `False` |
 | `QUERY_SLOW_LOG_THRESHOLD` | Set a threshold time for slow query logging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `string` | `2s` <br/> Values are times: `3h`, `2s`, `100ms` |
-| `EXPERIMENTAL_SPFRESH_ENABLED` | Enable the SPFresh index. Default: `false` <br/>Added in `v1.34`. | `boolean` | `true` |
+| `EXPERIMENTAL_SPFRESH_ENABLED` | Enable the SPFresh index. Default: `false` <br/>Added in `v1.34`. Deprecated in `v1.36` — HFresh is enabled by default. | `boolean` | `true` |
 | `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to use Roaring Bitmaps. <br/><br/>Available in versions `1.18` and higher. | `boolean` | `true` |
 | `REVECTORIZE_CHECK_DISABLED` | Disables the optimization where Weaviate checks if a vector can be reused from a previous version of the object. When disabled, improves write throughput by eliminating read-before-write patterns for new objects. Default: `false` | `boolean` | `false` |
 | `TENANT_ACTIVITY_READ_LOG_LEVEL` | Sets the log level for tenant read activity. Useful for analysis or debugging purposes. Default: `debug` | `string` | `info` |
