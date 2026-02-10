@@ -220,7 +220,10 @@ The trade-offs can be summarized like this:
 Each tenant is backed by a shard. Therefore, when there is a high number of tenants, the memory consumption of async replication can be significant. (e.g. 1,000 tenants with a hash tree height of 16 will require an extra ~2 GB of memory per node, while a height of 20 will require ~34 GB per node).
 <br/>
 
-To reduce memory consumption, reduce the hash tree height. Keep in mind that this will result in slower hashing and potentially slower replication.
+As of `v1.36`, multi-tenant collections default to a hash tree height of `10` (~16KB per tenant per node), significantly reducing memory overhead compared to the single-tenant default of `16`.
+<br/>
+
+To further reduce memory consumption, reduce the hash tree height. Keep in mind that this will result in slower hashing and potentially slower replication.
 :::
 
 Use the following formulas and examples as a quick reference:
@@ -268,7 +271,9 @@ A larger hash tree means less data for each leaf to hash, leading to faster comp
   - `Number of Leaves = 2^20 = 1,048,576`
 
 :::note Default settings
-The default hash tree height of `16` is chosen to balance memory consumption with replication performance. Adjust this value based on your cluster node’s available resources and performance requirements.
+The default hash tree height is `16` for single-tenant collections and `10` for multi-tenant collections. These defaults balance memory consumption with replication performance. Similarly, the default `maxWorkers` is `3` for single-tenant collections and `30` for multi-tenant collections.
+
+As of `v1.36`, these parameters can be configured per-collection via the [`asyncConfig`](/weaviate/config-refs/collections#async-config) object in `replicationConfig`, overriding the cluster-wide environment variable defaults.
 :::
 
 ### Deletion resolution strategies

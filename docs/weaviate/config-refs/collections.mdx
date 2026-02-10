@@ -725,6 +725,7 @@ More details about the `vectorIndexType` and `vectorIndexConfig` parameters can 
 | `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No in `v1.25+`, Yes in earlier versions |
 | `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                             | `false`                   | Yes                                     |
 | `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`. Added in `v1.27` | `"NoAutomatedResolution"` | Yes                                     |
+| `asyncConfig`      | Object  | Configuration for async replication tuning. See [`asyncConfig` parameters](#async-config) below. Added in `v1.36`                              | See below                 | Yes                                     |
 
 <details>
   <summary>Example replication configuration -  JSON object</summary>
@@ -738,14 +739,46 @@ An example of a complete `replicationConfig` object:
   // highlight-start
   "replicationConfig": {
     "factor": 3,
-    "asyncEnabled": false,
-    "deletionStrategy": "NoAutomatedResolution"
+    "asyncEnabled": true,
+    "deletionStrategy": "NoAutomatedResolution",
+    "asyncConfig": {
+      "maxWorkers": 5,
+      "hashtreeHeight": 16,
+      "frequency": 30
+    }
   }
   // highlight-end
 }
 ```
 
 </details>
+
+#### `asyncConfig` parameters {#async-config}
+
+:::info Added in `v1.36`
+These per-collection parameters override the corresponding [environment variables](/deploy/configuration/async-rep.md) at the collection level. If not set, the collection inherits the cluster-wide environment variable defaults.
+:::
+
+:::note Multi-tenant vs single-tenant defaults
+Some `asyncConfig` parameters have different defaults depending on whether the collection uses multi-tenancy. These differences are noted in the table below.
+:::
+
+| Parameter | Type | Description | Default (single-tenant) | Default (multi-tenant) |
+| :--- | :--- | :--- | :--- | :--- |
+| `maxWorkers` | Integer | Maximum number of concurrent async replication workers for this collection. Min: `1`, Max: `30` | `3` | `30` |
+| `hashtreeHeight` | Integer | Height of the hash tree used for data comparison between nodes. Min: `0`, Max: `20` | `16` | `10` |
+| `frequency` | Integer | Frequency of periodic data comparison between nodes, in seconds. | `30` | `30` |
+| `frequencyWhilePropagating` | Integer | Frequency of data comparison after a propagation cycle did not complete, in milliseconds. | `10` | `10` |
+| `propagationLimit` | Integer | Maximum number of objects propagated in a single iteration. Min: `1`, Max: `1000000` | `10000` | `10000` |
+| `propagationDelay` | Integer | Delay before considering an object for propagation, in seconds. | `30` | `30` |
+| `propagationConcurrency` | Integer | Number of concurrent workers for propagation. Min: `1`, Max: `20` | `5` | `5` |
+| `propagationBatchSize` | Integer | Maximum number of objects per propagation batch. Min: `1`, Max: `1000` | `100` | `100` |
+| `diffBatchSize` | Integer | Number of object metadata fetched per request during comparison. Min: `1`, Max: `10000` | `1000` | `1000` |
+| `diffPerNodeTimeout` | Integer | Timeout for comparison response from a remote node, in seconds. | `10` | `10` |
+| `propagationTimeout` | Integer | Timeout for a propagation request to a remote node, in seconds. | `30` | `30` |
+| `loggingFrequency` | Integer | How often the async replication process logs its activity, in seconds. | `5` | `5` |
+| `aliveNodesCheckingFrequency` | Integer | Frequency of checking node availability changes, in seconds. | `5` | `5` |
+| `initShieldCPUEveryN` | Integer | Controls CPU shielding frequency during hash tree initialization. | `100000` | `100000` |
 
 #### Code example - How to configure replication
 

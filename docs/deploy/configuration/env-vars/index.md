@@ -241,6 +241,7 @@ To learn more about their usage, visit the **[replication how-to guide](/deploy/
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
 | `ASYNC_REPLICATION_DISABLED` | Disable async replication. Default: `false` | `boolean` | `false` |
+| `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` | Maximum concurrent async replication workers across the cluster. Default: `30` | `string - number` | `10` |
 | `ASYNC_REPLICATION_HASHTREE_HEIGHT` | Height of the hash tree used for data comparison between nodes. If the height is `0` each node will store just one digest per shard. Default: `16`, Min: `0`, Max: `20`<br/> [Read more about potentially increased memory consumption.](/weaviate/concepts/replication-architecture/consistency#memory-and-performance-considerations-for-async-replication) | `string - number` | `10` |
 | `ASYNC_REPLICATION_FREQUENCY` |  Frequency of periodic data comparison between nodes in seconds. Default: `30` | `string - number` | `60` |
 | `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING` | Frequency of data comparison between nodes after a node has been synced in milliseconds. Default: `10` | `string - number` | `20` |

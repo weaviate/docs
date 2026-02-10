@@ -447,6 +447,7 @@ These metrics track asynchronous replication operations for maintaining data con
 | `async_replication_iteration_count`                      | Count of async replication comparison iterations                         | None                                  | `Counter`   |
 | `async_replication_iteration_failure_count`              | Count of async replication iteration failures                            | None                                  | `Counter`   |
 | `async_replication_iteration_duration_seconds`           | Duration of async replication comparison iterations in seconds           | None                                  | `Histogram` |
+| `async_replication_iteration_running`                    | Number of currently running async replication iterations                 | None                                  | `Gauge`     |
 | `async_replication_hashtree_diff_duration_seconds`       | Duration of async replication hashtree diff computation in seconds       | None                                  | `Histogram` |
 | `async_replication_object_digests_diff_duration_seconds` | Duration of async replication object digests diff computation in seconds | None                                  | `Histogram` |
 | `async_replication_propagation_count`                    | Count of async replication propagation executions                        | None                                  | `Counter`   |
