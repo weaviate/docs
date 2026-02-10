@@ -1,4 +1,4 @@
-import prompts from "@site/static/prompts/prompts.json";
+import prompts from "@site/static/prompts/index.json";
 
 export const promptDetails = Object.fromEntries(
   Object.entries(prompts).map(([key, prompt]) => [
