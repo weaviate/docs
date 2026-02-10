@@ -18,7 +18,7 @@ This tutorial demonstrates two methods for migrating a Weaviate collection to a 
 
 Before starting this tutorial, ensure you have:
 
-- A [Weaviate Cloud](https://console.weaviate.cloud) instance (version `v1.32` or newer)
+- A [Weaviate Cloud](/go/console?utm_content=tutorial) instance (version `v1.32` or newer)
 - Python 3.8+ installed
 - Required Python packages installed:
   ```bash
@@ -33,7 +33,7 @@ Before starting this tutorial, ensure you have:
 
 :::tip Get started with Weaviate Cloud
 
-Sign up for a free Weaviate Cloud sandbox at [console.weaviate.cloud](https://console.weaviate.cloud)
+Sign up for a free Weaviate Cloud sandbox at [console.weaviate.cloud](/go/console?utm_content=tutorial)
 
 :::
 
@@ -53,7 +53,7 @@ This tutorial demonstrates two approaches for switching vectorizers in your appl
 
 - [**Method A: Collection aliases**](#method-a-collection-aliases-migration)
   This approach uses aliases to instantly switch between separate collections. It's perfect for a complete model replacement, minimizing risk and providing an immediate rollback option.
-- [**Method B: Adding new vectors**](#method-b-add-new-vector)  
+- [**Method B: Adding new vectors**](#method-b-add-new-vector)
   This method allows multiple vectors per data object within a single collection. It's ideal for testing new models alongside existing ones.
 
 :::tip
@@ -226,7 +226,7 @@ import ModelProvider from "/_includes/embedding-model-providers.mdx";
 
 ### Step 2: Trigger vectorization
 
-To trigger vectorization with the new embedding model, you will need to delete and reinsert the objects in question. We are going to delete and insert the whole dataset. 
+To trigger vectorization with the new embedding model, you will need to delete and reinsert the objects in question. We are going to delete and insert the whole dataset.
 
 <FilteredTextBlock
   text={PyCode}
@@ -279,7 +279,7 @@ While both methods achieve the goal of switching vectorizers, **we strongly reco
 
 1. **Test thoroughly**: Always test the new vectorizer with a subset of data first.
 2. **Monitor quality**: Compare search results between old and new models.
-3. **Plan for rollback**: Keep the old setup available until you're confident. The alias method makes it easy to rollback. 
+3. **Plan for rollback**: Keep the old setup available until you're confident. The alias method makes it easy to rollback.
 4. **Consider costs**: Different vectorizers have different pricing models. Remember that adding new vectors will increase your storage costs.
 5. **Document changes**: Track which model versions and configurations you're using.
 

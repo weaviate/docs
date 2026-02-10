@@ -4,6 +4,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/local.quickstart.create_collection.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/local.quickstart.create_collection.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart_local/2_1_create_collection/main.go';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartLocalTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartLocalTest.cs";
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart_local/CreateCollection.java';
 import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
 
@@ -48,7 +50,16 @@ The collection also contains a configuration for the generative (RAG) integratio
 />
 </TabItem>
 
-<TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+<FilteredTextBlock
+  text={JavaV6Code}
+  startMarker="// START CreateCollection"
+  endMarker="// END CreateCollection"
+  language="java"
+/>
+</TabItem>
+
+<TabItem value="java" label="Java v5 (Deprecated)">
 
 The collection also contains a configuration for the generative (RAG) integration:
 - Ollama [generative AI integrations](/weaviate/model-providers/ollama/generative) for retrieval augmented generation (RAG), using the `llama3.2` model.
@@ -62,6 +73,14 @@ The collection also contains a configuration for the generative (RAG) integratio
 />
 
 </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollection"
+      endMarker="// END CreateCollection"
+      language="csharp"
+    />
+  </TabItem>
 
 <TabItem value="curl" label="Curl">
 

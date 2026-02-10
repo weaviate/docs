@@ -1,0 +1,315 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using Xunit;
+
+public class SearchSimilarityTest : IAsyncLifetime
+{
+    private WeaviateClient client;
+
+    // InitializeAsync is used for asynchronous setup before tests in the class run.
+    public async Task InitializeAsync()
+    {
+        // START INSTANTIATION-COMMON
+        // Best practice: store your credentials in environment variables
+        var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        var cohereApiKey = Environment.GetEnvironmentVariable("COHERE_APIKEY");
+
+        // FIX: Use await instead of .GetAwaiter().GetResult()
+        client = await Connect.Cloud(
+            weaviateUrl,
+            weaviateApiKey,
+            headers: new Dictionary<string, string>()
+            {
+                { "X-OpenAI-Api-Key", openaiApiKey },
+                { "X-Cohere-Api-Key", cohereApiKey },
+            }
+        );
+        // END INSTANTIATION-COMMON
+    }
+
+    // FIX: Implement DisposeAsync correctly to avoid NotImplementedException
+    public Task DisposeAsync()
+    {
+        // The C# client manages connections automatically.
+        // No specific cleanup is required here, but the method must return a completed task.
+        return Task.CompletedTask;
+    }
+
+    [Fact]
+    public async Task NamedVectorNearText()
+    {
+        // START NamedVectorNearText
+        var reviews = client.Collections.Use("WineReviewNV");
+        var response = await reviews.Query.NearText(
+            query =>
+                query(["a sweet German white wine"])
+                    // highlight-start
+                    .TargetVectorsMinimum("title_country"),
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END NamedVectorNearText
+
+        Assert.Equal("WineReviewNV", response.Objects.First().Collection);
+        Assert.Equal(2, response.Objects.Count());
+        Assert.True(response.Objects.First().Properties.ContainsKey("title"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+    }
+
+    [Fact]
+    public async Task GetNearText()
+    {
+        // START GetNearText
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.NearText(
+            // highlight-start
+            "animals in movies",
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetNearText
+
+        Assert.NotEmpty(response.Objects);
+    }
+
+    [Fact]
+    public async Task GetNearObject()
+    {
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var initialResponse = await jeopardy.Query.FetchObjects(limit: 1);
+
+        if (!initialResponse.Objects.Any())
+            return; // Skip test if no data
+
+        // FIX: Handle nullable ID safely
+        Guid uuid = (Guid)initialResponse.Objects.First().UUID;
+
+        // START GetNearObject
+        // highlight-start
+        var response = await jeopardy.Query.NearObject(
+            uuid, // A UUID of an object
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetNearObject
+
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.Equal(2, response.Objects.Count());
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+    }
+
+    [Fact]
+    public async Task GetNearVector()
+    {
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var initialResponse = await jeopardy.Query.FetchObjects(limit: 1, includeVectors: true);
+
+        if (initialResponse.Objects.Count == 0)
+            return; // Skip test if no data
+
+        var queryVector = initialResponse.Objects.First().Vectors["default"];
+
+        // START GetNearVector
+        // highlight-start
+        var response = await jeopardy.Query.NearVector(
+            vectors: queryVector, // your query vector goes here
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetNearVector
+
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.Equal(2, response.Objects.Count());
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+    }
+
+    [Fact]
+    public async Task GetLimitOffset()
+    {
+        // START GetLimitOffset
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.NearText(
+            "animals in movies",
+            // highlight-start
+            limit: 2, // return 2 objects
+            offset: 1, // With an offset of 1
+            // highlight-end
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetLimitOffset
+
+        Assert.Equal(2, response.Objects.Count());
+    }
+
+    [Fact]
+    public async Task GetWithDistance()
+    {
+        // START GetWithDistance
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.NearText(
+            "animals in movies",
+            // highlight-start
+            distance: 0.25f, // max accepted distance
+            // highlight-end
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetWithDistance
+
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+        foreach (var o in response.Objects)
+        {
+            Assert.True(o.Metadata.Distance < 0.25f);
+        }
+    }
+
+    [Fact]
+    public async Task GetWithAutocut()
+    {
+        // START Autocut
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.NearText(
+            "animals in movies",
+            // highlight-start
+            autoLimit: 1, // number of close groups
+            // highlight-end
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END Autocut
+
+        Assert.True(response.Objects.Count() > 0);
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+    }
+
+    [Fact]
+    public async Task GetWithGroupBy()
+    {
+        // START GetWithGroupby
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+
+        // highlight-start
+        var response = await jeopardy.Query.NearText(
+            "animals in movies", // find object based on this query
+            limit: 10, // maximum total objects
+            returnMetadata: MetadataOptions.Distance,
+            groupBy: new GroupByRequest("round") // group by this property
+            {
+                NumberOfGroups = 2, // maximum number of groups
+                ObjectsPerGroup = 2, // maximum objects per group
+            }
+        );
+        // highlight-end
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(o.UUID);
+            Console.WriteLine(o.BelongsToGroup);
+            Console.WriteLine(o.Metadata.Distance);
+        }
+
+        foreach (var group in response.Groups.Values)
+        {
+            Console.WriteLine($"=========={group.Name}==========");
+            Console.WriteLine(group.Objects.Count());
+            foreach (var o in group.Objects)
+            {
+                Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+                Console.WriteLine(JsonSerializer.Serialize(o.Metadata));
+            }
+        }
+        // END GetWithGroupby
+
+        Assert.True(response.Objects.Count() > 0);
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+        Assert.True(response.Groups.Count > 0);
+        Assert.True(response.Groups.Count <= 2);
+    }
+
+    [Fact]
+    public async Task GetWithWhere()
+    {
+        // START GetWithFilter
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.NearText(
+            "animals in movies",
+            // highlight-start
+            filters: Filter.Property("round").IsEqual("Double Jeopardy!"),
+            // highlight-end
+            limit: 2,
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetWithFilter
+
+        Assert.True(response.Objects.Count() > 0);
+        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+        Assert.Equal("Double Jeopardy!", response.Objects.First().Properties["round"].ToString());
+        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+        Assert.NotNull(response.Objects.First().Metadata.Distance);
+    }
+}

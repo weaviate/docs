@@ -53,7 +53,8 @@ yarn.lock
 __pycache__
 
 # Local Netlify folder
-.netlify
+.netlify/*
+!.netlify/functions
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -264,3 +265,12 @@ __marimo__/
 # C# code
 _includes/code/csharp/bin
 _includes/code/csharp/obj
+_includes/code/csharp/quickstart/bin
+_includes/code/csharp/quickstart/obj
+*.sln
+
+# Exclude WCD backups
+tests/backups/
+
+# Ignore LLM/agent config files
+.claude/

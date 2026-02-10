@@ -10,7 +10,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
+import Java6Code from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
@@ -21,17 +23,12 @@ import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 - **8-bit RQ**: Up to 4x compression while retaining almost perfect recall (98-99% on most datasets). **Recommended** for most use cases.
 - **1-bit RQ**: Close to 32x compression as dimensionality increases with moderate recall across various datasets.
 
-:::note HNSW only
-
-RQ is currently not supported for the flat index type.
-
-:::
-
 ## 8-bit RQ
 
-:::info Added in `v1.32`
+:::info Added in `v1.32` and `v1.35`
 
-**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+**8-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.32`**.<br/>
+**8-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
 
 :::
 
@@ -66,12 +63,28 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START EnableRQ"
+      endMarker="// END EnableRQ"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START EnableRQ"
       endMarker="// END EnableRQ"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableRQ"
+      endMarker="// END EnableRQ"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -97,7 +110,7 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="ts"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START UpdateSchema"
@@ -105,7 +118,23 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-    <TabItem value="go" label="Go">
+    <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
         startMarker="// START UpdateSchema"
@@ -117,12 +146,10 @@ RQ can also be enabled for an existing collection by updating the collection def
 
 ## 1-bit RQ
 
-:::caution Preview
+:::info Added in `v1.33` and `v1.35`
 
-**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
-
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+**1-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.33`**.<br/>
+**1-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
 
 :::
 
@@ -157,12 +184,28 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START 1BitEnableRQ"
       endMarker="// END 1BitEnableRQ"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START 1BitEnableRQ"
+      endMarker="// END 1BitEnableRQ"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START 1BitEnableRQ"
+      endMarker="// END 1BitEnableRQ"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -180,7 +223,7 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+    <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START 1BitUpdateSchema"
@@ -188,7 +231,23 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="ts"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+      <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START 1BitUpdateSchema"
+        endMarker="// END 1BitUpdateSchema"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START 1BitUpdateSchema"
+      endMarker="// END 1BitUpdateSchema"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START 1BitUpdateSchema"
@@ -196,13 +255,13 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-    <TabItem value="go" label="Go">
-      <FilteredTextBlock
-        text={GoCode}
-        startMarker="// START 1BitUpdateSchema"
-        endMarker="// END 1BitUpdateSchema"
-        language="go"
-      />
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START 1BitUpdateSchema"
+      endMarker="// END 1BitUpdateSchema"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -239,12 +298,28 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         language="go"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START RQWithOptions"
+      endMarker="// END RQWithOptions"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START RQWithOptions"
       endMarker="// END RQWithOptions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RQWithOptions"
+      endMarker="// END RQWithOptions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

@@ -16,8 +16,6 @@ import SimilarityPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.simila
 import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
 
-
-
 Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
 
 <details>
@@ -32,6 +30,10 @@ To rerank search results, enable a reranker [model integration](../model-provide
 A collection can have multiple rerankers. If multiple `reranker` modules are enabled, specify the module you want to use in the `moduleConfig` section of your schema.
 
 </details>
+
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
 
 ## Named vectors
 

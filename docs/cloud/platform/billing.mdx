@@ -1,19 +1,19 @@
 ---
 title: Billing
 sidebar_position: 3
-description: "Billing information for Weaviate Cloud services, including free Sandbox clusters and paid Serverless plans."
+description: "Billing information for Weaviate Cloud services, including free Sandbox clusters and paid Shared Cloud plans."
 image: og/wcd/user_guides.jpg
 ---
 
 Sandbox clusters are free. You do not need a billing account to create a Sandbox cluster.
 
-Serverless clusters are charged for resource usage. The monthly charge is determined by your usage and your support plan. You have to have a billing account to create a serverless cluster.
+Shared Cloud clusters are charged for resource usage. The monthly charge is determined by your usage and your [support plan](https://weaviate.io/support-plans). You have to have a billing account to create a Shared Cloud cluster.
 
-To estimate costs for different combinations of usage levels and support plans, see the [pricing calculator](https://weaviate.io/services/serverless).
+To estimate costs for different usage plans, see the [pricing page](https://weaviate.io/pricing).
 
 :::note
 
-If you have signed up for Weaviate Cloud through an external cloud provider like [AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) or [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA), the billing will be managed through that cloud provider's marketplace. 
+If you have signed up for Weaviate Cloud through an external cloud provider like [AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) or [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA), the billing will be managed through that cloud provider's marketplace.
 
 :::
 
@@ -50,35 +50,25 @@ import BillingSection from '/docs/cloud/img/weaviate-cloud-billing-section.png';
 
 ## Usage charges
 
-Usage charges reflect the number and size of the objects in your collection. Weaviate polls each collection to determine a daily object count.
-
-- If the objects are uncompressed, the billing system multiplies the object count by the number of dimensions to get the `vectorDimensionsSum`.
-- If the objects are compressed, the billing system multiplies the object count by the number of vector segments to get the `vectorSegmentsSum`.
-
-The values are added together and normalized to get a base price. The base price is multiplied by the pricing rate for the cluster's support plan.
-
-If the cluster has **high availability**, the pricing rate is multiplied by three.
-
-:::tip
-
-Significant cost savings can be achieved when **compression** is enabled.
-
-:::
+For details on usage charges, see the [pricing page](https://weaviate.io/pricing).
 
 ## Support & feedback levels
 
-Weaviate offers three levels of support, [Standard](/cloud/platform/support-levels#standard-support), [Professional](/cloud/platform/support-levels#professional-support), and [Business Critical](/cloud/platform/support-levels#business-critical-support). Each support plan has a billing rate for usage and a minimum cost per month.
-
-- If the usage cost is less than the monthly minimum charge for the support plan, Weaviate bills the monthly minimum.
-- If the usage cost exceeds the monthly minimum, Weaviate bills the minimum amount plus any additional charges.
+Weaviate offers [multiple support plans at multiple levels](https://weaviate.io/support-plans) with specific support options. Refer to the page for further details.
 
 ## High availability
 
-If you have a high availability (HA) cluster, Weaviate Cloud multiples the minimum charge and the usage charges by three to account for the additional resources.
+All paid plans include highly available (HA) clusters by default.
 
 ## Billing cycles
 
 Charges are calculated and invoiced for active clusters on the 1st day of each month.
+
+## Stop billing & service
+
+To stop billing for your Weaviate Cloud account, delete all active cluster(s). Billing continues for each active cluster until deletion. Each cluster generates a final invoice with your latest usage charges upon deletion.
+
+Once all cluster(s) are deleted and invoices are settled, your subscription will end.
 
 ## Support & feedback
 

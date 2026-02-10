@@ -22,6 +22,7 @@ This enables an enhanced developed experience, such as the ability to:
 | [Anyscale](./anyscale/index.md) | - | [Text](./anyscale/generative.md) | - |
 | [AWS](./aws/index.md) | [Text](./aws/embeddings.md) | [Text](./aws/generative.md) |
 | [Cohere](./cohere/index.md) | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md) | [Text](./cohere/generative.md) | [Reranker](./cohere/reranker.md) |
+| [Contextual AI](./contextualai/index.md) | - | [Text](./contextualai/generative.md) | [Reranker](./contextualai/reranker.md) |
 | [Databricks](./databricks/index.md) | [Text](./databricks/embeddings.md) | [Text](./databricks/generative.md) | - |
 | [FriendliAI](./friendliai/index.md) | - | [Text](./friendliai/generative.md) | - |
 | [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
@@ -33,12 +34,12 @@ This enables an enhanced developed experience, such as the ability to:
 | [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
 | [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
 | [Voyage AI](./voyageai/index.md) | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | - | [Reranker](./voyageai/reranker.md) |
-| [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md) | - | - |
+| [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md), [Multimodal](./weaviate/embeddings-multimodal.md) | - | - |
 | [xAI](./xai/index.md) | - | [Text](./xai/generative.md) | - |
 
 #### Enable all API-based modules
 
-All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`. 
+All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`.
 
 ### Locally hosted
 
@@ -53,7 +54,7 @@ All API-based model integrations are available by default starting with Weaviate
 
 import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
 
-<AcademyAdmonition 
+<AcademyAdmonition
   courseId="embedding-model-evaluation"
 />
 

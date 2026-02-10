@@ -34,7 +34,7 @@ Your Weaviate instance must be configured with the CLIP multimodal vectorizer in
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the Hugging Face model.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires spinning up a container with the Hugging Face model.
 
 </details>
 
@@ -49,7 +49,7 @@ To use this integration, configure the container image of the CLIP model and the
 
 The following example shows how to configure the CLIP integration in Weaviate:
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="deployments">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file

@@ -4,6 +4,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/quickstart.import_objects.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.import_objects.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/2_2_add_objects/main.go';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/Import.java';
 
 
@@ -45,7 +47,16 @@ During a batch import, any failed objects can be obtained through `batch.failed_
 />
 </TabItem>
 
-<TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+<FilteredTextBlock
+  text={JavaV6Code}
+  startMarker="// START Import"
+  endMarker="// END Import"
+  language="java"
+/>
+</TabItem>
+
+<TabItem value="java" label="Java v5 (Deprecated)">
 <FilteredTextBlock
   text={JavaCode}
   startMarker="// START Import"
@@ -54,6 +65,14 @@ During a batch import, any failed objects can be obtained through `batch.failed_
   title="quickstart/Import.java"
 />
 </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START Import"
+      endMarker="// END Import"
+      language="csharp"
+    />
+  </TabItem>
 
 <TabItem value="curl" label="Curl">
 

@@ -1,7 +1,7 @@
 ---
 title: Weaviate Database
 sidebar_position: 0
-description: "Complete documentation for Weaviate, the open-source AI-native vector database."
+description: "Complete documentation for Weaviate, the open-source vector database for AI applications."
 image: og/docs/home.jpg
 hide_table_of_contents: false
 # tags: []
@@ -32,7 +32,7 @@ export const welcomeCardsData = [
     description: (
       <>
         Check out <span className={styles.highlight}>Weaviate Academy</span> – a
-        learning platform entered around AI-native development.
+        learning platform centered around AI-native development.
       </>
     ),
     link: "https://academy.weaviate.io/",
@@ -40,7 +40,7 @@ export const welcomeCardsData = [
   },
 ];
 
-Weaviate _(we-vee-eight)_ is an open-source, AI-native vector database. Use
+Weaviate _(we-vee-eight)_ is an open-source, AI vector database. Use
 this documentation to get started with Weaviate and learn how to get the
 most out of Weaviate's features.
 
@@ -63,6 +63,31 @@ Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
 return <CardsSection items={regularItems} className={styles.smallCards} />;
 <br />
 })()}
+
+## AI-assisted coding
+
+Check out our resources on AI-assisted coding (_Vibe coding_) with Weaviate:
+
+export const vibeCodingCardsData = [
+  {
+    id: "new",
+    title: "Weaviate Docs MCP Server",
+    description: "Instant access to Weaviate's documentation directly in your AI development environment. ",
+    link: "/weaviate/mcp/docs-mcp-server",
+    icon: "fas fa-book",
+  },
+  {
+    id: "academy",
+    title: "Best practices for coding with AI",
+    description: "Avoid hallucinations and improve your AI-assisted coding experience.",
+    link: "/weaviate/best-practices/code-generation",
+    icon: "fas fa-lightbulb",
+  },
+];
+
+<CardsSection items={vibeCodingCardsData} className={styles.smallCards} />
+
+<br />
 
 ## What is Weaviate?
 
@@ -118,7 +143,7 @@ export const deploymentCardsData = [
     bgImageLight: "/img/site/hex-weaviate-light.svg",
     listItems: [
       "From evaluation (sandbox) to production",
-      "Serverless (infrastructure managed by Weaviate)",
+      "Shared Cloud (infrastructure managed by Weaviate)",
       "(Optional) Data replication (high-availability)",
       "(Optional) Zero-downtime updates",
     ],

@@ -1,11 +1,13 @@
 <!-- Quickstart - Bring Your Own Vectors - Schema - /docs/weaviate/quickstart/custom-vectors#schema -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
-import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
-import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import ByovAllPyCode from "!!raw-loader!/_includes/code/quickstart.byov.all.py";
+import ByovAllTsCode from "!!raw-loader!/_includes/code/quickstart.byov.all.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/StarterGuidesCustomVectorsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/StarterGuidesCustomVectorsTest.cs";
+import ByovAllShCode from "!!raw-loader!/_includes/code/quickstart.byov.all.sh";
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -17,12 +19,28 @@ import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-     <FilteredTextBlock
-       text={ByovAllTsCode}
-       startMarker="// Collection definition"
-       endMarker="// Import data"
-       language="ts"
-     />
+    <FilteredTextBlock
+      text={ByovAllTsCode}
+      startMarker="// Collection definition"
+      endMarker="// Import data"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateCollection"
+      endMarker="// END CreateCollection"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollection"
+      endMarker="// END CreateCollection"
+      language="csharp"
+    />
   </TabItem>
   <TabItem value="curl" label="Curl">
     <FilteredTextBlock

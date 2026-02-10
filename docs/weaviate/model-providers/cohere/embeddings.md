@@ -39,7 +39,7 @@ Your Weaviate instance must be configured with the Cohere vectorizer integration
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
@@ -97,7 +97,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaConnect}
       startMarker="// START CohereInstantiation"
@@ -140,7 +140,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START BasicVectorizerCohere"
@@ -183,7 +183,7 @@ You can specify one of the [available models](#available-models) for the vectori
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START VectorizerCohereCustomModel"
@@ -237,7 +237,7 @@ The following examples show how to configure Cohere-specific options.
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START FullVectorizerCohere"
@@ -294,7 +294,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START BatchImportExample"
@@ -350,7 +350,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START NearTextExample"
@@ -400,7 +400,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START HybridExample"

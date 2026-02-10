@@ -11,6 +11,8 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.ts';
 import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureBQTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureBQTest.cs";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -41,8 +43,6 @@ BQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
@@ -51,8 +51,6 @@ BQ can be enabled at collection creation time through the collection definition:
         language="ts"
       />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -61,13 +59,28 @@ BQ can be enabled at collection creation time through the collection definition:
       language="go"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableBQ"
+      endMarker="// END EnableBQ"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START EnableBQ"
       endMarker="// END EnableBQ"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableBQ"
+      endMarker="// END EnableBQ"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -97,12 +110,28 @@ BQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -126,8 +155,6 @@ For example:
         language="py"
       />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCodeBQOptions}
@@ -136,8 +163,6 @@ For example:
         language="ts"
       />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -146,13 +171,28 @@ For example:
       language="go"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BQWithOptions"
+      endMarker="// END BQWithOptions"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START BQWithOptions"
       endMarker="// END BQWithOptions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BQWithOptions"
+      endMarker="// END BQWithOptions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

@@ -3,6 +3,8 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import ManageCollectionsCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java';
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
 You can delete any unwanted collection(s), along with the data that they contain.
 
@@ -61,11 +63,20 @@ if err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Bac
 
 </TabItem>
 
- <TabItem value="java" label="Java">
+ <TabItem value="java" label="Java v5 (Deprecated)">
      <FilteredTextBlock
        text={JavaCode}
        startMarker="// DeleteCollection START"
        endMarker="// DeleteCollection END"
+       language="java"
+     />
+  </TabItem>
+
+   <TabItem value="java6" label="Java v6">
+     <FilteredTextBlock
+       text={JavaV6Code}
+       startMarker="// START DeleteCollection"
+       endMarker="// END DeleteCollection"
        language="java"
      />
   </TabItem>
@@ -79,4 +90,12 @@ curl \
 ```
 
 </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteCollection"
+      endMarker="// END DeleteCollection"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>

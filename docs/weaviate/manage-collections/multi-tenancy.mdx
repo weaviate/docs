@@ -9,6 +9,8 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMultiTenancyTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
 import CurlCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh";
@@ -54,7 +56,23 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START EnableMultiTenancy"
@@ -62,12 +80,12 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
-      language="go"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -103,6 +121,22 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       startMarker="// START enable autoMT"
       endMarker="// END enable autoMT"
       language="bash"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableAutoMT"
+      endMarker="// END EnableAutoMT"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableAutoMT"
+      endMarker="// END EnableAutoMT"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">
@@ -144,6 +178,22 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       language="bash"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateAutoMT"
+      endMarker="// END UpdateAutoMT"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateAutoMT"
+      endMarker="// END UpdateAutoMT"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Add new tenants manually
@@ -176,32 +226,44 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START AddTenantsToClass"
-    endMarker="// END AddTenantsToClass"
-    language="tsindent"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START AddTenantsToClass"
-    endMarker="// END AddTenantsToClass"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START AddTenantsToClass"
+      endMarker="// END AddTenantsToClass"
+      language="tsindent"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START AddTenantsToClass"
       endMarker="// END AddTenantsToClass"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddTenantsToClass"
+      endMarker="// END AddTenantsToClass"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddTenantsToClass"
+      endMarker="// END AddTenantsToClass"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddTenantsToClass"
+      endMarker="// END AddTenantsToClass"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -221,32 +283,44 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START ListTenants"
-    endMarker="// END ListTenants"
-    language="tsindent"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START ListTenants"
-    endMarker="// END ListTenants"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ListTenants"
+      endMarker="// END ListTenants"
+      language="tsindent"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START ListTenants"
       endMarker="// END ListTenants"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListTenants"
+      endMarker="// END ListTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListTenants"
+      endMarker="// END ListTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListTenants"
+      endMarker="// END ListTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -266,16 +340,30 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START GetTenantsByName"
-    endMarker="// END GetTenantsByName"
-    language="tsindent"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START GetTenantsByName"
+      endMarker="// END GetTenantsByName"
+      language="tsindent"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetTenantsByName"
+      endMarker="// END GetTenantsByName"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetTenantsByName"
+      endMarker="// END GetTenantsByName"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Get one tenant
@@ -293,16 +381,30 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START GetOneTenant"
-    endMarker="// END GetOneTenant"
-    language="tsindent"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START GetOneTenant"
+      endMarker="// END GetOneTenant"
+      language="tsindent"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetOneTenant"
+      endMarker="// END GetOneTenant"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetOneTenant"
+      endMarker="// END GetOneTenant"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Delete tenants
@@ -322,32 +424,44 @@ Deleting a tenant deletes all associated objects.
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START RemoveTenants"
-    endMarker="// END RemoveTenants"
-    language="tsindent"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START RemoveTenants"
-    endMarker="// END RemoveTenants"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START RemoveTenants"
+      endMarker="// END RemoveTenants"
+      language="tsindent"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START RemoveTenants"
       endMarker="// END RemoveTenants"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RemoveTenants"
+      endMarker="// END RemoveTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START RemoveTenants"
+      endMarker="// END RemoveTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RemoveTenants"
+      endMarker="// END RemoveTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -365,13 +479,28 @@ Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ChangeTenantState"
       endMarker="// END ChangeTenantState"
       language="tsindent"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ChangeTenantState"
+      endMarker="// END ChangeTenantState"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ChangeTenantState"
+      endMarker="// END ChangeTenantState"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -395,32 +524,44 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START CreateMtObject"
-    endMarker="// END CreateMtObject"
-    language="tsindent"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START CreateMtObject"
-    endMarker="// END CreateMtObject"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateMtObject"
+      endMarker="// END CreateMtObject"
+      language="tsindent"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START CreateMtObject"
       endMarker="// END CreateMtObject"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateMtObject"
+      endMarker="// END CreateMtObject"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateMtObject"
+      endMarker="// END CreateMtObject"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateMtObject"
+      endMarker="// END CreateMtObject"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -438,32 +579,44 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START Search"
-    endMarker="// END Search"
-    language="tsindent"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START Search"
-    endMarker="// END Search"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Search"
+      endMarker="// END Search"
+      language="tsindent"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START Search"
       endMarker="// END Search"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START Search"
+      endMarker="// END Search"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START Search"
+      endMarker="// END Search"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START Search"
+      endMarker="// END Search"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -490,32 +643,44 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START AddCrossRef"
-    endMarker="// END AddCrossRef"
-    language="tsindent"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START AddCrossRef"
-    endMarker="// END AddCrossRef"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START AddCrossRef"
+      endMarker="// END AddCrossRef"
+      language="tsindent"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START AddCrossRef"
       endMarker="// END AddCrossRef"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddCrossRef"
+      endMarker="// END AddCrossRef"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddCrossRef"
+      endMarker="// END AddCrossRef"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddCrossRef"
+      endMarker="// END AddCrossRef"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -530,7 +695,9 @@ Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will on
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How to: Manage collections](../manage-collections/index.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema">
+    References: REST API: Schema
+  </SkipLink>
 - [Concepts: Data Structure: Multi-tenancy](../concepts/data.md#multi-tenancy)
 
 ## Questions and feedback

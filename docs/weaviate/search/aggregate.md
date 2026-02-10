@@ -8,11 +8,12 @@ image: og/docs/howto.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/search.aggregate.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.aggregate-v3.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
-
+import PyCode from '!!raw-loader!/\_includes/code/howto/search.aggregate.py';
+import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.aggregate-v3.py';
+import TSCode from '!!raw-loader!/\_includes/code/howto/search.aggregate.ts';
+import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchAggregateTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchAggregateTest.cs";
 
 `Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
 
@@ -26,9 +27,9 @@ To run an `Aggregate` query, specify the following:
 - A target collection to search
 - One or more aggregated properties, such as:
 
-   - A meta property
-   - An object property
-   - The `groupedBy` property
+  - A meta property
+  - An object property
+  - The `groupedBy` property
 
 - Select at least one sub-property for each selected property
 
@@ -38,7 +39,7 @@ For details, see [Aggregate](/weaviate/api/graphql/aggregate).
 
 ## Retrieve the `count` meta property
 
-Return the number  of objects matched by the query.
+Return the number of objects matched by the query.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -49,8 +50,6 @@ Return the number  of objects matched by the query.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -59,8 +58,6 @@ Return the number  of objects matched by the query.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -69,7 +66,22 @@ Return the number  of objects matched by the query.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START MetaCount"
+      endMarker="// END MetaCount"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MetaCount"
+      endMarker="// END MetaCount"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -83,19 +95,20 @@ Return the number  of objects matched by the query.
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# MetaCount Expected Results"
     endMarker="# END MetaCount Expected Results"
     language="json"
   />
+
 </details>
 
 ## Aggregate `text` properties
 
-This example counts occurrence frequencies in the `question` property:
+This example counts occurrence frequencies:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -106,8 +119,6 @@ This example counts occurrence frequencies in the `question` property:
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -116,8 +127,6 @@ This example counts occurrence frequencies in the `question` property:
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -126,7 +135,22 @@ This example counts occurrence frequencies in the `question` property:
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TextProp"
+      endMarker="// END TextProp"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TextProp"
+      endMarker="// END TextProp"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -140,19 +164,20 @@ This example counts occurrence frequencies in the `question` property:
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# TextProp Expected Results"
     endMarker="# END TextProp Expected Results"
     language="json"
   />
+
 </details>
 
 ## Aggregate `int` properties
 
-This  example sums the `points` property.
+This example shows aggregation with integers.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -163,8 +188,6 @@ This  example sums the `points` property.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -173,8 +196,6 @@ This  example sums the `points` property.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -183,7 +204,22 @@ This  example sums the `points` property.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START IntProp"
+      endMarker="// END IntProp"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START IntProp"
+      endMarker="// END IntProp"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -197,14 +233,15 @@ This  example sums the `points` property.
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# IntProp Expected Results"
     endMarker="# END IntProp Expected Results"
     language="json"
   />
+
 </details>
 
 ## Aggregate `groupedBy` properties
@@ -222,8 +259,6 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -232,8 +267,6 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -242,7 +275,22 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START groupBy"
+      endMarker="// END groupBy"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START groupBy"
+      endMarker="// END groupBy"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -253,21 +301,21 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
   </TabItem>
 </Tabs>
 
-
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# groupBy Expected Results"
     endMarker="# END groupBy Expected Results"
     language="json"
   />
+
 </details>
 
-import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
+import GroupbyLimitations from '/\_includes/groupby-limitations.mdx';
 
 <GroupbyLimitations />
 
@@ -276,6 +324,7 @@ import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
 You can use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `Near` operators).
 
 <!-- Make sure to [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space).<br/> -->
+
 Use `objectLimit` to specify the maximum number of objects to aggregate.
 
 <Tabs className="code" groupId="languages">
@@ -287,8 +336,6 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -297,8 +344,6 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -307,7 +352,22 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START nearTextWithLimit"
+      endMarker="// END nearTextWithLimit"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START nearTextWithLimit"
+      endMarker="// END nearTextWithLimit"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -321,14 +381,15 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# nearTextWithLimit Expected Results"
     endMarker="# END nearTextWithLimit Expected Results"
     language="json"
   />
+
 </details>
 
 ### Set a similarity `distance`
@@ -336,6 +397,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
 You can use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `Near` operators).
 
 <!-- Make sure to [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space).<br/> -->
+
 Use `distance` to specify how similar the objects should be.
 
 <!-- If you use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `nearXXX` operators), [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space). To specify how similar the objects should be, use the `distance` operator. -->
@@ -349,8 +411,6 @@ Use `distance` to specify how similar the objects should be.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -359,8 +419,6 @@ Use `distance` to specify how similar the objects should be.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -369,7 +427,22 @@ Use `distance` to specify how similar the objects should be.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START nearTextWithDistance"
+      endMarker="// END nearTextWithDistance"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START nearTextWithDistance"
+      endMarker="// END nearTextWithDistance"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -383,14 +456,15 @@ Use `distance` to specify how similar the objects should be.
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# nearTextWithDistance Expected Results"
     endMarker="# END nearTextWithDistance Expected Results"
     language="json"
   />
+
 </details>
 
 ## Aggregate with a `hybrid search`
@@ -406,8 +480,6 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -416,8 +488,6 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -426,7 +496,22 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridExample"
+      endMarker="// END HybridExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridExample"
+      endMarker="// END HybridExample"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -440,14 +525,15 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# ResultsHybridExample"
     endMarker="# END ResultsHybridExample"
     language="json"
   />
+
 </details>
 
 ## Filter results
@@ -463,8 +549,6 @@ For more specific results, use a `filter` to narrow your search.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -473,8 +557,6 @@ For more specific results, use a `filter` to narrow your search.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -483,7 +565,22 @@ For more specific results, use a `filter` to narrow your search.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START whereFilter"
+      endMarker="// END whereFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START whereFilter"
+      endMarker="// END whereFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -497,9 +594,9 @@ For more specific results, use a `filter` to narrow your search.
 <details>
   <summary>Example response</summary>
 
-  The output is like this:
+The output is like this:
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCodeV3}
     startMarker="# whereFilter Expected Results"
     endMarker="# END whereFilter Expected Results"
@@ -515,6 +612,6 @@ For more specific results, use a `filter` to narrow your search.
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

@@ -1,9 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadTest.cs";
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -82,7 +82,15 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CheckForAnObject"
+      endMarker="// END CheckForAnObject"
+      language="java"
+    />
+</TabItem>
+<TabItem value="java" label="Java v5 (Deprecated)">
 
 ```java
 package io.weaviate;
@@ -122,5 +130,13 @@ public class App {
 ```
 
 </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CheckForAnObject"
+      endMarker="// END CheckForAnObject"
+      language="csharp"
+    />
+  </TabItem>
 
 </Tabs>

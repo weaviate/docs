@@ -5,8 +5,8 @@ description: "Organization-based account structure and organization user managem
 image: og/wcd/user_guides.jpg
 ---
 
-import OrgUpdateName from '/docs/cloud/img/orgs-update-name-before.jpg';
-import OrgUpdateCheckMark from '/docs/cloud/img/orgs-update-name-confirm.jpg';
+import OrgUpdateName from "/docs/cloud/img/orgs-update-name-before.jpg";
+import OrgUpdateCheckMark from "/docs/cloud/img/orgs-update-name-confirm.jpg";
 
 Accounts in Weaviate Cloud (WCD) are based on organizations. There is an organization for each user account. Users can belong to more than one organization.
 
@@ -34,42 +34,44 @@ Be cautious when you add users to your organization, especially in production. E
 
 User-editable configuration settings are on the **Organization settings** page:
 
-import EditOrganization from '/_includes/wcs/weaviate-cloud-edit-organization.mdx'
+import EditOrganization from "/_includes/wcs/weaviate-cloud-edit-organization.mdx";
 
-<EditOrganization/>
+<EditOrganization />
 
 ### Create an organization
 
 To create a new organization, follow these steps:
 
-import AddOrganization from '/docs/cloud/img/weaviate-cloud-add-organization.png';
+import AddOrganization from "/docs/cloud/img/weaviate-cloud-add-organization.png";
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
+        Open the{" "}
+        <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-         Open the organization dropdown menu (<span class="callout">1</span>).
+        Open the organization dropdown menu (<span class="callout">1</span>).
       </li>
       <li>
-        Click on <code>Add new organization</code> (<span class="callout">2</span>).
+        Click on <code>Add new organization</code> (
+        <span class="callout">2</span>).
       </li>
       <li>
-    Enter the organization name ad click on the <code>Create</code> button.
-  </li>
+        Enter the organization name ad click on the <code>Create</code> button.
+      </li>
     </ol>
   </div>
   <div class="col col--6">
     <div class="card">
       <div class="card__image">
-        <img src={AddOrganization} alt="Add a new organization in Weaviate Cloud" />
+        <img
+          src={AddOrganization}
+          alt="Add a new organization in Weaviate Cloud"
+        />
       </div>
-      <div class="card__body">
-        Add a new organization in Weaviate Cloud.
-      </div>
+      <div class="card__body">Add a new organization in Weaviate Cloud.</div>
     </div>
   </div>
 </div>
@@ -89,7 +91,7 @@ To edit an organization name, follow these steps:
   <div class="col col--6">
     <ol>
       <li>
-        Open the <Link to="#organization-settings">Organization settings</Link>{' '}
+        Open the <Link to="#organization-settings">Organization settings</Link>{" "}
         page.
       </li>
       <li>
@@ -100,9 +102,14 @@ To edit an organization name, follow these steps:
   <div class="col col--6">
     <div class="card">
       <div class="card__image">
-        <img src={OrgUpdateName} alt="Update an organization name in Weaviate Cloud" />
+        <img
+          src={OrgUpdateName}
+          alt="Update an organization name in Weaviate Cloud"
+        />
       </div>
-      <div class="card__body">Update an organization name in Weaviate Cloud.</div>
+      <div class="card__body">
+        Update an organization name in Weaviate Cloud.
+      </div>
     </div>
   </div>
 </div>
@@ -117,7 +124,10 @@ To edit an organization name, follow these steps:
   <div class="col col--6">
     <div class="card">
       <div class="card__image">
-        <img src={OrgUpdateCheckMark} alt="Submit the organization name change" />
+        <img
+          src={OrgUpdateCheckMark}
+          alt="Submit the organization name change"
+        />
       </div>
       <div class="card__body">Submit the organization name change.</div>
     </div>
@@ -126,34 +136,37 @@ To edit an organization name, follow these steps:
 
 ### Delete an organization
 
-import DeleteOrganization from '/docs/cloud/img/weaviate-cloud-delete-organization.png';
+import DeleteOrganization from "/docs/cloud/img/weaviate-cloud-delete-organization.png";
 
 <div class="row">
   <div class="col col--4">
     <ol>
       <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
+        Open the{" "}
+        <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-         Open the organization dropdown menu (<span class="callout">1</span>).
+        Open the organization dropdown menu (<span class="callout">1</span>).
       </li>
       <li>
-        Click on <code>Organization settings</code> (<span class="callout">2</span>).
+        Click on <code>Organization settings</code> (
+        <span class="callout">2</span>).
       </li>
       <li>
-        Click on the <code>Delete</code> button (<span class="callout">3</span>).
+        Click on the <code>Delete</code> button (<span class="callout">3</span>
+        ).
       </li>
     </ol>
   </div>
   <div class="col col--8">
     <div class="card">
       <div class="card__image">
-        <img src={DeleteOrganization} alt="Delete an organization in Weaviate Cloud" />
+        <img
+          src={DeleteOrganization}
+          alt="Delete an organization in Weaviate Cloud"
+        />
       </div>
-      <div class="card__body">
-        Delete an organization in Weaviate Cloud.
-      </div>
+      <div class="card__body">Delete an organization in Weaviate Cloud.</div>
     </div>
   </div>
 </div>
@@ -200,6 +213,6 @@ The account gets an invoice for each cluster. Clusters are billed on the 1st day
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

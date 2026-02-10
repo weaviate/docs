@@ -1213,6 +1213,28 @@ func main() {
 	// highlight-end
 	// END SnowflakeArcticEmbedLV20
 
+	// START BasicVectorizerMMWeaviate
+	// highlight-start
+	// Define the collection
+	basicWeaviateMMVectorizerDef := &models.Class{
+		Class: "DemoCollection",
+		VectorConfig: map[string]models.VectorConfig{
+			"poster": {
+				Vectorizer: map[string]interface{}{
+					"multi2multivec-weaviate": map[string]interface{}{},
+				},
+			},
+		},
+	}
+
+	// add the collection
+	err = client.Schema().ClassCreator().WithClass(basicWeaviateMMVectorizerDef).Do(ctx)
+	if err != nil {
+		panic(err)
+	}
+	// highlight-end
+	// END BasicVectorizerMMWeaviate
+
 	// START BatchImportExample
 	var sourceObjects = []map[string]string{
 		{"title": "The Shawshank Redemption", "description": "A wrongfully imprisoned man forms an inspiring friendship while finding hope and redemption in the darkest of places."},

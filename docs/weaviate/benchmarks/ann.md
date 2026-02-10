@@ -269,7 +269,7 @@ Each language has its own performance characteristics.
 You may get different results if you use a different language to send your queries.
 
 For maximum throughput, we recommend using the [Go](/weaviate/client-libraries/go.md) or
-[Java](/weaviate/client-libraries/java.md) client libraries.
+[Java](/weaviate/client-libraries/java/index.mdx) client libraries.
 
 The complete import and test scripts are available [here](https://github.com/weaviate/weaviate-benchmarking).
 
@@ -346,7 +346,7 @@ rough estimation of how the throughput would vary on smaller or larger
 machines. If you do not need the stated throughput, you can run with fewer CPU
 cores. If you need more throughput, you can run with more CPU cores.
 
-Adding more CPUs reaches a point of diminishing returns because of synchronization mechanisms, disk, and memory bottlenecks. Beyond that point, you  should scale horizontally instead of vertically. Horizontal scaling with replication is also available. 
+Adding more CPUs reaches a point of diminishing returns because of synchronization mechanisms, disk, and memory bottlenecks. Beyond that point, you  should scale horizontally instead of vertically. Horizontal scaling with replication is also available.
 
 ### What are `ef`, `efConstruction`, and `maxConnections`?
 

@@ -26,7 +26,15 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
+  clientModules: [
+    require.resolve('./src/components/UTM/capture.js'),
+  ],
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+      onBrokenMarkdownImages: "throw",
+    },
+  },
 
   i18n: {
     defaultLocale: "en",
@@ -45,14 +53,9 @@ const config = {
         route: "/weaviate/api/rest",
         configuration: {
           spec: {
-            // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
-          // hiddenClients: [...],
-          showAuthentication: false,
-          showRequestSamples: false,
         },
       },
     ],
@@ -94,6 +97,9 @@ const config = {
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
         },
+         pages: {
+        path: "src/pages",    
+      },
         theme: {
           customCss: [
             require.resolve("./src/css/custom.scss"),
@@ -136,7 +142,7 @@ const config = {
             position: "right",
           },
           {
-            label: "Weaviate Academy",
+            label: "Academy",
             className: "academy-button",
             to: "https://academy.weaviate.io",
             position: "right",
@@ -144,7 +150,7 @@ const config = {
           {
             label: "Weaviate Cloud",
             className: "cloud-button",
-            to: "https://console.weaviate.cloud",
+            to: "/go/console?utm_content=navbar",
             position: "right",
           },
           {
@@ -157,7 +163,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ["java"],
+        additionalLanguages: ["java", "csharp"],
       },
       docs: {
         sidebar: {

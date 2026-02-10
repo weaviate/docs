@@ -14,6 +14,8 @@ import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
 
 # Weaviate Query Agent: Usage
 
+<CloudOnlyBadge />
+
 The Weaviate Query Agent is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
 
 The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
@@ -29,7 +31,7 @@ This page describes how to use the Query Agent to answer natural language querie
 
 This Agent is available exclusively for use with a Weaviate Cloud instance. Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
+You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](/go/console?utm_content=agents).
 
 ### Client library
 
@@ -145,6 +147,12 @@ The Query Agent can be instantiated with additional options, such as:
 
 - `system_prompt`: A custom system prompt to replace the default system prompt provided by the Weaviate team (`systemPrompt` for JavaScript).
 - `timeout`: The maximum time the Query Agent will spend on a single query, in seconds (server-side default: 60).
+
+:::tip For long-running queries
+If you're experiencing timeouts or expect complex queries that take a long time, consider using [streaming responses](#stream-responses) as well as increasing the timeout value.
+
+Streaming handles long-running requests better by sending heartbeats to keep the connection alive and providing progress updates as the query processes.
+:::
 
 #### Custom system prompt
 

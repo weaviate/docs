@@ -52,7 +52,43 @@ You might be also interested in our blog post [Vector search explained](https://
 
 :::
 
-Let's explore how to index a vector using different approaches supported by Weaviate. The first method is the HNSW index.
+Let's explore how to index a vector using different approaches supported by Weaviate.
+
+## Vector index types
+
+Many different types of vector indexes exist. A majority of them are designed to speed up searches by reducing the number of vectors that need to be compared. However, they do this in different ways, and each has its own strengths and weaknesses.
+
+### Graph indexes
+
+Graph indexes form a network of vectors, such that similar vectors are connected to each other. This allows for fast "traversal" of the graph to find similar vectors to a query vector.
+
+HNSW, or "Hierarchical Navigable Small World", is the most common graph index type. It creates a set of "layers" of vectors, to enable fast traversal of the graph.
+
+They are very scalable, allow incremental updates, and efficient for high-dimensional vectors.
+
+This is the default index type in Weaviate.
+
+### Tree-based indexes
+
+Tree-based indexes divide the vectors into a tree structure.
+
+ANNOY, or "Approximate Nearest Neighbors Oh Yeah", is a well-known tree-based index. It divides the vectors into a binary tree structure.
+
+They can be memory-efficient, and are good for low-dimensional vectors. However, it may be costly to update the index over time, as the tree may need to be rebuilt.
+
+### Cluster-based indexes
+
+Cluster-based indexes group vectors based on their similarity. As a result, the search space is reduced to only the cluster(s) that is most likely to contain the nearest neighbors.
+
+Their search accuracy (recall and precision) may generally be lower than graph-based indexes, but they can be more memory-efficient.
+
+### Flat index
+
+A flat index is the simplest type of index. It stores all vectors in a single list, and searches through all of them to find the nearest neighbors.
+
+This is extremely memory-efficient, but does not scale well, as the search time grows linearly with the number of vectors.
+
+The first method is the HNSW index.
 
 ## Hierarchical Navigable Small World (HNSW) index
 
@@ -73,6 +109,21 @@ An individual object can exist in more than one layer, but every object in the d
 When a search query comes in, the HNSW algorithm finds the closest matching data points in the highest layer. Then, HNSW goes one layer deeper, and finds the closest data points in that layer to the ones in the higher layer. These are the nearest neighbors. The algorithm searches the lower layer to create a new list of nearest neighbors. Then, HNSW uses the new list and repeats the process on the next layer down. When it gets to the deepest layer, the HNSW algorithm returns the data objects closest to the search query.
 
 Since there are relatively few data objects on the higher layers, HNSW has to search fewer objects. This means HNSW 'jumps' over large amounts of data that it doesn't need to search. When a data store has only one layer, the search algorithm can't skip unrelated objects. It has to search significantly more data objects even though they are unlikely to match.
+
+### Resource requirements
+
+HNSW is an in-memory index, where each node in the graph as well as each edge between nodes are stored in memory.
+
+This means that the size of the index in memory is directly proportional to the number of vectors in the index, as well as the number of connections between vectors.
+
+The size of an HNSW index is dominated by the number of vectors; take a look at the table below for an example:
+
+| Component | Size derivation | Typical size | Size @1M vectors | Size @100M vectors |
+| --- | --- | --- | --- | --- |
+| Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
+| Edge | 10B x 20 connections | 200B | 200MB | 20GB |
+
+As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory.
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
@@ -107,6 +158,14 @@ The length of the list is determined by the query response limit that you set in
 - `dynamicEfMin` sets a lower bound on the list length.
 - `dynamicEfMax` sets an upper bound on the list length.
 - `dynamicEfFactor` sets a range for the list.
+
+The dynamic list size will be set as the query limit multiplied by `dynamicEfFactor`, modified by a minimum of `dynamicEfMin` and a maximum of `dynamicEfMax`.
+
+In code, this can be expressed as:
+
+```python
+ef = min(max(dynamicEfMin, queryLimit * dynamicEfFactor), dynamicEfMax)
+```
 
 To keep search recall high, the actual dynamic `ef` value stays above `dynamicEfMin` even if the query limit is small enough to suggest a lower value.
 
@@ -262,7 +321,7 @@ Yes, you can read more about it in [vector quantization (compression)](../vector
 
 Here's a quick guide to choosing the right index:
 
-- **Flat index**: Best for SaaS products where each end user (tenant) has their own isolated, small dataset. Fast for small collections with minimal memory overhead.
+- **Flat index**: Best for SaaS products where each end user (tenant) has their own isolated, small dataset. Fast for small collections with a known size for minimal memory overhead.
 
 - **HNSW index**: Best for large collections requiring high query throughput and low latency. Requires more memory but provides excellent search performance.
 

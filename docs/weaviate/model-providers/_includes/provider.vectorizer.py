@@ -8,8 +8,8 @@ import weaviate
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"],
-        "X-Cohere-Api-Key": os.environ["COHERE_APIKEY"],
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"],
+        "X-Cohere-Api-Key": os.environ["COHERE_API_KEY"],
     }
 )
 
@@ -113,7 +113,7 @@ client.collections.create(
         Configure.Vectors.text2vec_cohere(
             name="title_vector",
             source_properties=["title"],
-            model="embed-multilingual-light-v3.0"
+            model="embed-v4.0"
         )
     ],
     # highlight-end
@@ -135,7 +135,8 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             # Further options
-            # model="embed-multilingual-v3.0",
+            # model="embed-v4.0",
+            # dimensions=512,
             # truncate="END",  # "NONE", "START" or "END"
             # base_url="<custom_cohere_url>"
         )
@@ -191,7 +192,8 @@ client.collections.create(
     vector_config=[
         Configure.Vectors.multi2vec_cohere(
             name="title_vector",
-            model="embed-multilingual-v3.0",
+            model="embed-v4.0",
+            dimensions=1024,
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
                 Multi2VecField(name="poster", weight=0.9)
@@ -230,7 +232,8 @@ client.collections.create(
                 Multi2VecField(name="title", weight=0.1)
             ],
             # Further options
-            # model="embed-multilingual-v3.0",
+            # model="embed-v4.0",
+            # dimensions=1024,
             # truncate="END",  # "NONE", "START" or "END"
             # base_url="<custom_cohere_url>"
         )
@@ -249,15 +252,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=[
-        Configure.Vectors.text2vec_palm(
-            name="title_vector",
-            source_properties=["title"],
-            project_id="<google-cloud-project-id>",
-            # (Optional) To manually set the model ID
-            model_id="gemini-embedding-001"
-        )
-    ],
+    vector_config=Configure.Vectors.text2vec_google(
+        name="title_vector",
+        source_properties=["title"],
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        # (Optional) To manually set the model ID
+        model="gemini-embedding-001"
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -272,15 +273,12 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=[
-        Configure.Vectors.text2vec_palm(
-            name="title_vector",
-            source_properties=["title"],
-            project_id="<google-cloud-project-id>",
-            # (Optional) To manually set the model ID
-            model_id="gemini-embedding-001"
-        )
-    ],
+    vector_config=Configure.Vectors.text2vec_google_aistudio(
+        name="title_vector",
+        source_properties=["title"],
+        # (Optional) To manually set the model ID
+        model="text-embedding-004"
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -292,19 +290,35 @@ client.collections.delete("DemoCollection")
 # START FullVectorizerGoogle
 from weaviate.classes.config import Configure
 
+# For Vertex AI
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=[
-        Configure.Vectors.text2vec_palm(
-            name="title_vector",
-            source_properties=["title"],
-            project_id="<google-cloud-project-id>",  # Required for Vertex AI
-            # # Further options
-            # model_id="<google-model-id>",
-            # api_endpoint="<google-api-endpoint>",
-        )
-    ],
+    vector_config=Configure.Vectors.text2vec_google(
+        name="title_vector",
+        source_properties=["title"],
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        # Further options
+        # model="<google-model-id>",
+        # api_endpoint="<google-api-endpoint>",
+    ),
+    # highlight-end
+    # Additional parameters not shown
+)
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# For Google AI Studio (Gemini API)
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=Configure.Vectors.text2vec_google_aistudio(
+        name="title_vector",
+        source_properties=["title"],
+        # Further options
+        model_id="text-embedding-004",
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -323,21 +337,19 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vector_config=[
-        Configure.Vectors.multi2vec_palm(
-            name="title_vector",
-            # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
-            image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
-            ],
-            text_fields=[
-                Multi2VecField(name="title", weight=0.1)
-            ],
-            # video_fields=[],
-            project_id="<google-cloud-project-id>",  # Required for Vertex AI
-            location="<google-cloud-location>",  # Required for Vertex AI
-        )
-    ],
+    vector_config=Configure.Vectors.multi2vec_palm(
+        name="title_vector",
+        # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
+        image_fields=[
+            Multi2VecField(name="poster", weight=0.9)
+        ],
+        text_fields=[
+            Multi2VecField(name="title", weight=0.1)
+        ],
+        # video_fields=[],
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        location="<google-cloud-location>",  # Required for Vertex AI
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -357,23 +369,20 @@ client.collections.create(
         Property(name="description", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vector_config=[
-        Configure.Vectors.multi2vec_palm(
-            name="title_vector",
-            project_id="<google-cloud-project-id>",  # Required for Vertex AI
-            location="us-central1",
-            # model_id="<google-model-id>",
-            # dimensions=512,
-            image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
-            ],
-            text_fields=[
-                Multi2VecField(name="title", weight=0.1)
-            ],
-            # video_fields=[]
-            # video_interval_seconds=20
-        )
-    ],
+    vector_config=Configure.Vectors.multi2vec_palm(
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        location="us-central1",
+        # model_id="<google-model-id>",
+        # dimensions=512,
+        image_fields=[
+            Multi2VecField(name="poster", weight=0.9)
+        ],
+        text_fields=[
+            Multi2VecField(name="title", weight=0.1)
+        ],
+        # video_fields=[]
+        # video_interval_seconds=20
+    ),
     # highlight-end
     # Additional parameters not shown
 )
@@ -1145,9 +1154,10 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             # Further options
-            # model="voyage-large-2"
+            # model="voyage-3.5-lite"
             # base_url="<custom_voyageai_url>",
             # truncate=True,
+            # dimensions=512,
         )
     ],
     # highlight-end
@@ -1197,17 +1207,21 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
+        Property(name="trailer", data_type=DataType.BLOB),
     ],
     vector_config=[
         Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
-            model="voyage-multimodal-3",
-            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            model="voyage-multimodal-3.5",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
+                Multi2VecField(name="poster", weight=0.7)
             ],
             text_fields=[
                 Multi2VecField(name="title", weight=0.1)
+            ],
+            video_fields=[
+                Multi2VecField(name="trailer", weight=0.2)
             ],
         )
     ],
@@ -1228,19 +1242,23 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
+        Property(name="trailer", data_type=DataType.BLOB),
     ],
     vector_config=[
         Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
-            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
-                Multi2VecField(name="poster", weight=0.9)
+                Multi2VecField(name="poster", weight=0.7)
             ],
             text_fields=[
                 Multi2VecField(name="title", weight=0.1)
             ],
+            video_fields=[
+                Multi2VecField(name="trailer", weight=0.2)
+            ],
             # Further options
-            # model="voyage-multimodal-3",
+            # model="voyage-multimodal-3.5",
             # truncation="true",  # or "false",
             # output_encoding="base64", # or "null"
             # base_url="<custom_voyageai_url>"
@@ -1342,6 +1360,88 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END SnowflakeArcticEmbedLV20
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicVectorizerMMWeaviate
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="doc_page", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="document",
+            image_field="doc_page"  # Must provide the image property name here
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerMMWeaviate
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerMMWeaviate
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="doc_page", data_type=DataType.BLOB),  # Define an image property
+        # Any other properties can be defined here
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            name="document",
+            image_field="doc_page",  # Must provide the image property name here
+            model="ModernVBERT/colmodernvbert",  # Currently the only supported model
+            # base_url="<custom_weaviate_embeddings_url>",
+            # encoding=Configure.VectorIndex.MultiVector.Encoding.muvera()
+            # quantizer=Configure.VectorIndex.Quantizer.rq(),
+            # vector_index_config=Configure.VectorIndex.hnsw()
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerMMWeaviate
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START VectorizerMMWeaviateMuvera
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="doc_page", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.MultiVectors.multi2vec_weaviate(
+            # name="document", # Optional: You can choose to name the vector
+            image_field="doc_page",
+            model="ModernVBERT/colmodernvbert",
+            encoding=Configure.VectorIndex.MultiVector.Encoding.muvera(
+                # Optional parameters for tuning MUVERA
+                ksim=4,
+                dprojections=16,
+                repetitions=20,
+            ),
+        )
+    ],
+    # highlight-end
+)
+# END VectorizerMMWeaviateMuvera
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -1717,6 +1817,26 @@ with collection.batch.fixed_size(batch_size=200) as batch:
         )
         # highlight-end
 # END MMBatchImportExample
+
+# START MMBatchImportDocsExample
+collection = client.collections.use("DemoCollection")
+
+with collection.batch.fixed_size(batch_size=200) as batch:
+    for src_obj in source_objects:
+        pages_b64 = url_to_base64(src_obj["page_img_path"])
+        weaviate_obj = {
+            "title": src_obj["title"],
+            "doc_page": pages_b64  # Add the image in base64 encoding
+        }
+
+        # highlight-start
+        # The model provider integration will automatically vectorize the object
+        batch.add_object(
+            properties=weaviate_obj,
+            # vector=vector  # Optionally provide a pre-obtained vector
+        )
+        # highlight-end
+# END MMBatchImportDocsExample
 
 # START NearTextExample
 collection = client.collections.use("DemoCollection")

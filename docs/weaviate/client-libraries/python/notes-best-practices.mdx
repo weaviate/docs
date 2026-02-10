@@ -5,11 +5,11 @@ description: "Python client best practices, optimization tips, and recommended i
 image: og/docs/client-libraries.jpg
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
-import BatchVectorCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PythonCode from "!!raw-loader!/_includes/code/client-libraries/python_v4.py";
+import BatchVectorCode from "!!raw-loader!/_includes/code/howto/manage-data.import.py";
 
 ## Instantiate a client
 
@@ -21,52 +21,44 @@ There are multiple ways to connect to your Weaviate instance. To instantiate a c
 ### Connection helper functions
 
 - `weaviate.connect_to_weaviate_cloud()`
-    - Previously `connect_to_wcs()`
+  - Previously `connect_to_wcs()`
 - `weaviate.connect_to_local()`
 - `weaviate.connect_to_embedded()`
 - `weaviate.connect_to_custom()`
 
-<Tabs groupId="languages">
-<TabItem value="wcd" label="WCD">
-
-<FilteredTextBlock
-  text={PythonCode}
-  startMarker="# WCDInstantiation"
-  endMarker="# END WCDInstantiation"
-  language="py"
-/>
-
-</TabItem>
-<TabItem value="local" label="Local">
-
-  <FilteredTextBlock
-    text={PythonCode}
-    startMarker="# LocalInstantiationBasic"
-    endMarker="# END LocalInstantiationBasic"
-    language="py"
-  />
-
-</TabItem>
-<TabItem value="embedded" label="Embedded">
-
-<FilteredTextBlock
-  text={PythonCode}
-  startMarker="# EmbeddedInstantiationBasic"
-  endMarker="# END EmbeddedInstantiationBasic"
-  language="py"
-/>
-
-</TabItem>
-<TabItem value="custom" label="Custom">
-
-<FilteredTextBlock
-  text={PythonCode}
-  startMarker="# CustomInstantiationBasic"
-  endMarker="# END CustomInstantiationBasic"
-  language="py"
-/>
-
-</TabItem>
+<Tabs groupId="deployment">
+  <TabItem value="wcd" label="WCD">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# WCDInstantiation"
+      endMarker="# END WCDInstantiation"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="local" label="Local">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# LocalInstantiationBasic"
+      endMarker="# END LocalInstantiationBasic"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="embedded" label="Embedded">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# EmbeddedInstantiationBasic"
+      endMarker="# END EmbeddedInstantiationBasic"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="custom" label="Custom">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# CustomInstantiationBasic"
+      endMarker="# END CustomInstantiationBasic"
+      language="py"
+    />
+  </TabItem>
 </Tabs>
 
 The `v4` client helper functions provide some optional parameters to customize your client.
@@ -106,31 +98,28 @@ If you see errors while using the `generate` submodule, try increasing the query
 
 Some of the `connect` helper functions take authentication credentials. For example, `connect_to_weaviate_cloud` accepts a WCD API key or OIDC authentication credentials.
 
-<Tabs groupId="languages">
-<TabItem value="api_key" label="API Key">
+<Tabs groupId="authentication">
+  <TabItem value="api_key" label="API Key">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# WCDInstantiation"
+      endMarker="# END WCDInstantiation"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="oidc" label="OIDC Credentials">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# WCDwOIDCInstantiation"
+      endMarker="# END WCDwOIDCInstantiation"
+      language="py"
+    />
 
-  <FilteredTextBlock
-    text={PythonCode}
-    startMarker="# WCDInstantiation"
-    endMarker="# END WCDInstantiation"
-    language="py"
-  />
+import WCDOIDCWarning from "/_includes/wcd-oidc.mdx";
 
-</TabItem>
-<TabItem value="oidc" label="OIDC Credentials">
+<WCDOIDCWarning />
 
-<FilteredTextBlock
-  text={PythonCode}
-  startMarker="# WCDwOIDCInstantiation"
-  endMarker="# END WCDwOIDCInstantiation"
-  language="py"
-/>
-
-import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
-
-<WCDOIDCWarning/>
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 For OIDC authentication with the Client Credentials flow, use the `AuthClientCredentials` class.
@@ -204,13 +193,14 @@ We recommend using the collection object to perform batch imports of single coll
 
 ### Batch sizing
 
-There are three methods to configure the batching behavior. They are `dynamic`, `fixed_size` and `rate_limit`.
+There are three methods to configure the batching behavior. They are `dynamic`, `experimental`, `fixed_size` and `rate_limit`.
 
-| Method | Description | When to use |
-| :-- | :-- | :-- |
-| `dynamic` | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import, depending on the server load. | Recommended starting point. |
-| `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user. | When you want to specify fixed parameters. |
-| `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute). | When you want to avoid hitting third-party vectorization API rate limits. |
+| Method         | Description                                                                                                                                                                                                                    | When to use                                                                                               |
+| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------- |
+| `dynamic`      | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import by the client.                                                                                                          | Recommended starting point.                                                                               |
+| `experimental` | Also known as **server-side batching**. The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import. The server provides info to the client on how to adjust the import parameters. | Currently in **preview**. We do not recommend using this feature in production environments at this time. |
+| `fixed_size`   | The batch size and number of concurrent requests are fixed to sizes specified by the user.                                                                                                                                     | When you want to specify fixed parameters.                                                                |
+| `rate_limit`   | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute).                                                                                                                                    | When you want to avoid hitting third-party vectorization API rate limits.                                 |
 
 #### Usage
 
@@ -218,37 +208,39 @@ We recommend using a context manager as shown below.
 
 These methods return a new context manager for each batch. Attributes that are returned from one batch, such as `failed_objects` or `failed_references`, are not included in any subsequent calls.
 
-<Tabs groupId="languages">
-<TabItem value="dynamic" label="Dynamic">
-
-  <FilteredTextBlock
-    text={PythonCode}
-    startMarker="# START BatchDynamic"
-    endMarker="# END BatchDynamic"
-    language="py"
-  />
-
-</TabItem>
-<TabItem value="fixedSize" label="Fixed Size">
-
-  <FilteredTextBlock
-    text={PythonCode}
-    startMarker="# START BatchFixedSize"
-    endMarker="# END BatchFixedSize"
-    language="py"
-  />
-
-</TabItem>
-<TabItem value="rateLimit" label="Rate limited">
-
-<FilteredTextBlock
-  text={PythonCode}
-  startMarker="# START BatchRateLimit"
-  endMarker="# END BatchRateLimit"
-  language="py"
-/>
-
-</TabItem>
+<Tabs groupId="batch">
+  <TabItem value="dynamic" label="Dynamic">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# START BatchDynamic"
+      endMarker="# END BatchDynamic"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="experimental" label="Server-side batching">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# START BatchExperimental"
+      endMarker="# END BatchExperimental"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="fixedSize" label="Fixed Size">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# START BatchFixedSize"
+      endMarker="# END BatchFixedSize"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="rateLimit" label="Rate limited">
+    <FilteredTextBlock
+      text={PythonCode}
+      startMarker="# START BatchRateLimit"
+      endMarker="# END BatchRateLimit"
+      language="py"
+    />
+  </TabItem>
 </Tabs>
 
 If the background thread that is responsible for sending the batches raises an exception during batch processing, the error is raised to the main thread.
@@ -275,7 +267,7 @@ Note that these lists are reset when a batching process is initialized. So make 
 :::info Added in `v1.25`.
 :::
 
-import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
+import BatchVectorizationOverview from "/_includes/code/client-libraries/batch-import.mdx";
 
 <BatchVectorizationOverview />
 
@@ -298,7 +290,7 @@ To modify the vectorization settings, update the client object. This example add
 - **OpenAI**. Set the service API key. Set the base URL.
 - **VoyageAI**. Set the service API key.
 
- <Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Modify the client">
     <FilteredTextBlock
       text={BatchVectorCode}
@@ -381,10 +373,10 @@ The client library raises exceptions for various error conditions. These include
 Each of these exceptions inherit from `weaviate.exceptions.WeaviateBaseError`, and can be caught using this base class, as shown below.
 
 <FilteredTextBlock
-    text={PythonCode}
-    startMarker="# START BrokenQueryExample"
-    endMarker="# END BrokenQueryExample"
-    language="py"
+  text={PythonCode}
+  startMarker="# START BrokenQueryExample"
+  endMarker="# END BrokenQueryExample"
+  language="py"
 />
 
 You can review [this module](https://github.com/weaviate/weaviate-python-client/blob/main/weaviate/exceptions.py) which defines the exceptions that can be raised by the client library.

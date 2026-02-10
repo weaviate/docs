@@ -9,9 +9,11 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent.py';
+import PyCode from '!!raw-loader!/docs/agents/\_includes/personalization_agent.py';
 
 # Weaviate Personalization Agent: Usage
+
+<CloudOnlyBadge />
 
 :::caution Technical Preview
 
@@ -21,7 +23,6 @@ import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent.py
 [Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
 
 :::
-
 
 The Weaviate Personalization Agent is an agentic service designed to return personalized recommendations tailored to each user. The Personalization Agent uses data from the associated Weaviate Cloud instance to provide these recommendations.
 
@@ -48,7 +49,7 @@ This Agent is available exclusively for use with a Weaviate Cloud instance.
 
 Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
+You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](/go/console?utm_content=agents).
 
 ### Client library
 
@@ -95,6 +96,7 @@ To use the Personalization Agent, follow the below high-level steps:
 - Obtain personalized recommendations
 
 Optionally, the personalization agent can:
+
 - Perform reranking of the results
 - With a further option of custom instructions for the reranking
 
@@ -164,14 +166,14 @@ You can delete or update an existing user persona, as well as to check if a user
 
 To delete a user persona, specify the user ID of the persona to be deleted.
 <Tabs className="code" groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
+<TabItem value="py_agents" label="Python">
+<FilteredTextBlock
             text={PyCode}
             startMarker="# START DeletePersona"
             endMarker="# END DeletePersona"
             language="py"
         />
-    </TabItem>
+</TabItem>
 </Tabs>
 
 #### Update a user persona
@@ -306,8 +308,8 @@ In addition to the response objects, the response may include the following info
 
 - Rationale for the recommendations
 - For each object:
-    - Original rank of the item
-    - Personalized rank of the item
+  - Original rank of the item
+  - Personalized rank of the item
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -393,7 +395,6 @@ The combined Weaviate query and personalization agent query is not available for
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

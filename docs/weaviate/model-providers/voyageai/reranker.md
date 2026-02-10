@@ -34,7 +34,7 @@ Your Weaviate instance must be configured with the Voyage AI reranker integratio
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
@@ -157,6 +157,8 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
+- rerank-2.5
+- rerank-2.5-lite
 - rerank-2
 - rerank-2-lite
 - rerank-1
@@ -167,6 +169,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
     Model support history
   </summary>
 
+- Added `rerank-2.5`, `rerank-2.5-lite`
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
     - Added `rerank-2`, `rerank-2-lite`
 - `v1.24.18`, `v1.25.3`:

@@ -93,8 +93,6 @@ const Tooltip = ({
   // Run position calculation after the tooltip becomes visible
   useEffect(() => {
     if (isVisible) {
-      // We need a minimal delay to allow the tooltip to render with its actual content and size
-      // before we can measure it accurately.
       const timer = setTimeout(calculatePosition, 0);
       window.addEventListener("resize", calculatePosition);
       window.addEventListener("scroll", calculatePosition);
@@ -104,10 +102,8 @@ const Tooltip = ({
         window.removeEventListener("resize", calculatePosition);
         window.removeEventListener("scroll", calculatePosition);
       };
-    } else {
-      // Reset styles when hidden to prevent stale positions
-      setDynamicStyles({});
     }
+    // Remove the else block entirely - no need to reset styles
   }, [isVisible, calculatePosition]);
 
   const handleMouseEnter = () => {
@@ -135,7 +131,9 @@ const Tooltip = ({
           isVisible ? styles.visible : ""
         }`}
         style={dynamicStyles}
-        data-position={position} // Keep data-position for arrow styling
+        data-position={position}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         {content}
       </span>

@@ -1,22 +1,22 @@
 ---
-title: Create account and sign in
+title: Manage user accounts
 sidebar_position: 20
-description: "Account creation process for accessing Weaviate Cloud console."
+description: "How to create and delete user accounts in the Weaviate Cloud console."
 image: og/wcd/user_guides.jpg
 ---
 
-import LandingRegister from '/docs/cloud/img/wcs-landing-page-register.jpg';
+import LandingRegister from "/docs/cloud/img/wcs-landing-page-register.jpg";
 
-Weaviate Cloud (WCD) has an interactive console. Create a user account, then login to manage WCD clusters, run queries, and configure your organization details.
+Weaviate Cloud (WCD) offers an interactive console. Create a user account, then login to manage WCD clusters, run queries, and configure your organization details.
 
 ## Create a new user account and sign in {#create-a-new-user-account}
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and follow the steps below to create a new account and log in.
+Go to the [Weaviate Cloud console](/go/console?utm_content=cloud) and follow the steps below to create a new account and log in.
 
 <div
   style={{
-    position: 'relative',
-    paddingBottom: 'calc(54.10879629629629% + 50px)',
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
     height: 0,
   }}
 >
@@ -25,7 +25,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and follow th
     src="https://app.guideflow.com/embed/er5mg78u6k"
     width="100%"
     height="100%"
-    style={{ overflow: 'hidden', position: 'absolute', border: 'none' }}
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
     webKitAllowFullScreen
@@ -45,12 +45,22 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and follow th
 
 Sandbox instances are free, short-term instances that expire after 14 days. If you are using a Sandbox instance to try out Weaviate, you don't have to set up billing.
 
-Serverless clusters are persistent instances that are suitable for production, development, and testing. Serverless clusters are paid instances. The cost of each instance depends on the instance type and the support plan you choose. You must configure billing before you can create a Serverless instance. Follow [this guide](/cloud/platform/billing) to set up a billing account.
+Shared Cloud clusters are persistent instances that are suitable for production, development, and testing. Shared Cloud clusters are paid instances. The cost of each instance depends on the instance type and the [support plan](https://weaviate.io/support-plans) you choose. You must configure billing before you can create a Shared Cloud instance. Follow [this guide](/cloud/platform/billing) to set up a billing account.
 
 If you register through a cloud marketplace like [AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) or [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA), billing will be consolidated through that cloud provider.
 
+## Delete user account
+
+To delete your account from Weaviate Cloud:
+
+1. Delete all cluster(s) associated with your Weaviate email account.
+2. Settle any remaining invoices.
+3. Contact Weaviate Support Team with your email to request account deletion.
+
+Our support team will process your request.
+
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

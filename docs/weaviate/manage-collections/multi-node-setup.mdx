@@ -9,7 +9,9 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
+import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 ## Replication settings
@@ -32,8 +34,6 @@ Configure replication settings, such as [async replication](/deploy/configuratio
       ]}
     />
   </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
@@ -42,25 +42,38 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     language="ts"
   />
 </TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaReplicationCode}
-    startMarker="// START AllReplicationSettings"
-    endMarker="// END AllReplicationSettings"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START AllReplicationSettings"
-    endMarker="// END AllReplicationSettings"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaReplicationCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="curl" label="cURL">
 
 ```bash
@@ -87,7 +100,7 @@ curl \
 http://localhost:8080/v1/schema
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 <details>
@@ -116,36 +129,46 @@ Configure sharding per collection.
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaReplicationCode}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
+    <FilteredTextBlock
+      text={JavaReplicationCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -177,7 +200,9 @@ import CodeSchemaShardsUpdate from "/_includes/code/howto/manage-data.shards.upd
 
 ## Further resources
 
-- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
+    API References: REST: Schema
+  </SkipLink>
 - [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 

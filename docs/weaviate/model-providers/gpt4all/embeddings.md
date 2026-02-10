@@ -43,7 +43,7 @@ Your Weaviate instance must be configured with the GPT4All vectorizer integratio
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running GPT4All instance.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires a locally running GPT4All instance.
 
 </details>
 
@@ -61,7 +61,7 @@ To use this integration, you must configure the container image of the GPT4All m
 
 The following example shows how to configure the GPT4All integration in Weaviate:
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="deployments">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file

@@ -36,7 +36,7 @@ Your Weaviate instance must be configured with the Voyage AI vectorizer integrat
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
@@ -341,8 +341,12 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
+- voyage-4
+- voyage-4-lite
+- voyage-4-large
 - voyage-3.5
 - voyage-3.5-lite
+- voyage-context-3 (contextual embeddings)
 - voyage-3-large
 - voyage-3 (default)
 - voyage-3-lite
@@ -354,11 +358,17 @@ The query below returns the `n` best scoring objects from the database, set by `
 - voyage-finance-2
 - voyage-multilingual-2
 
+:::note Contextual embeddings
+The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https://docs.voyageai.com/docs/contextualized-chunk-embeddings). When you configure this model, Weaviate automatically routes requests to the `/contextualizedembeddings` endpoint. This model is optimized for retrieval-augmented generation (RAG) use cases where document context improves retrieval quality.
+:::
+
 <details>
   <summary>
     Model support history
   </summary>
 
+- Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
+- Added `voyage-3.5`, `voyage-3.5-lite`, `voyage-context-3`
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
     - Added `voyage-3`, `voyage-3-lite`
     - Default model changed to `voyage-3` from `voyage-large-2`

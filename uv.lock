@@ -659,8 +659,8 @@ requires-dist = [
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "tqdm", specifier = ">=4.67.1" },
-    { name = "weaviate-agents", specifier = ">=0.12.0" },
-    { name = "weaviate-client", specifier = ">=4.16.6" },
+    { name = "weaviate-agents", specifier = ">=1.1.0" },
+    { name = "weaviate-client", specifier = ">=4.18.1" },
     { name = "weaviate-demo-datasets", specifier = ">=0.7.0" },
 ]
 
@@ -917,19 +917,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/84/35/9f6b2503c1fd86d068b46818bbd7329db26a87cdd8c01e0d1a9abea1104c/grpcio-1.74.0-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:3b03d8f2a07f0fea8c8f74deb59f8352b770e3900d143b3d1475effcb08eec20", size = 6491489 },
     { url = "https://files.pythonhosted.org/packages/75/33/a04e99be2a82c4cbc4039eb3a76f6c3632932b9d5d295221389d10ac9ca7/grpcio-1.74.0-cp313-cp313-win32.whl", hash = "sha256:b6a73b2ba83e663b2480a90b82fdae6a7aa6427f62bf43b29912c0cfd1aa2bfa", size = 3805811 },
     { url = "https://files.pythonhosted.org/packages/34/80/de3eb55eb581815342d097214bed4c59e806b05f1b3110df03b2280d6dfd/grpcio-1.74.0-cp313-cp313-win_amd64.whl", hash = "sha256:fd3c71aeee838299c5887230b8a1822795325ddfea635edd82954c1eaa831e24", size = 4489214 },
-]
-
-[[package]]
-name = "grpcio-health-checking"
-version = "1.74.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "grpcio" },
-    { name = "protobuf" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/82/69/87ad1cd826a9f06567bccb66f0c3228a0758ea47a1d35eef15db36b2f492/grpcio_health_checking-1.74.0.tar.gz", hash = "sha256:d6749451d4cef543c3f6260ae9a86c84b9ab02a92421cecae73a632e7fe920bf", size = 16770 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7e/62/2fd797be7514855a0b28f946f57b9a134bba25a9873c269fa730d8fd49d8/grpcio_health_checking-1.74.0-py3-none-any.whl", hash = "sha256:9a6e7bcdf16395105425753d6e3fe31f57cb6ab3f232282254b50f02cc63d9c7", size = 18921 },
 ]
 
 [[package]]
@@ -3124,34 +3111,34 @@ wheels = [
 
 [[package]]
 name = "weaviate-agents"
-version = "0.12.0"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx-sse" },
     { name = "rich" },
     { name = "weaviate-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/28/ffab64f98310b4d67ad91fb239a78930ca7b640caadca22aecd31f691672/weaviate_agents-0.12.0.tar.gz", hash = "sha256:a0a6765c7c7b502823c9113400d71b1fa536bfd06f68ba2bc183ba87add11461", size = 91087 }
+sdist = { url = "https://files.pythonhosted.org/packages/de/ee/d6bdfb66593cd9fcf7efe9c2278539c3d8aa2bc9bee5f6bdf80673196751/weaviate_agents-1.1.0.tar.gz", hash = "sha256:09a09a4e0d1a5039034a54212b7edd87b8b1d2adc8541d59e6d59a63f2aa4a2a", size = 106707 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fb/18/50dde36abb0bf6beed640fc03469401175513fc37a7e0409fe1b3fa3f9f2/weaviate_agents-0.12.0-py3-none-any.whl", hash = "sha256:f8150d1b7126e06276e8aa8605826ceb34787177bd4eb4bff6c0581fb9220e20", size = 36571 },
+    { url = "https://files.pythonhosted.org/packages/82/bd/b43e20642d7b432604e614ee503c5fc9017abc7ca1a4d4cd64ab23738d76/weaviate_agents-1.1.0-py3-none-any.whl", hash = "sha256:1184a04ca3119c4a23ab11a1cd512eae8bf23c46db4f32765d8b16a5b8f28aac", size = 44817 },
 ]
 
 [[package]]
 name = "weaviate-client"
-version = "4.16.6"
+version = "4.18.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "authlib" },
     { name = "deprecation" },
     { name = "grpcio" },
-    { name = "grpcio-health-checking" },
     { name = "httpx" },
+    { name = "protobuf" },
     { name = "pydantic" },
     { name = "validators" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/1e/b44262cd9edff939f7a6e40b6134d737a28bcdb0445cbdf2af9544953658/weaviate_client-4.16.6.tar.gz", hash = "sha256:79064bd976b0ec6bee09507f74481711bcbc861bcc097ca37db22bcf948771e6", size = 779904 }
+sdist = { url = "https://files.pythonhosted.org/packages/7a/18/f37689c69984c426a5ae75a5fefa324654e0cd09be3a15d12b5aa16b4b85/weaviate_client-4.18.1.tar.gz", hash = "sha256:df682f7e91b51ac4428d85a092297203ab688a532851ac11f855a97ea85b7283", size = 780326 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/d2/7cf098b1d14dd237a81b84012f0c4cdea355d2312b10410148384fa8b39a/weaviate_client-4.16.6-py3-none-any.whl", hash = "sha256:8eafcac785876bc731b7dedd7272a93b530fc5ed807ab54b6d74f9493a014dec", size = 597469 },
+    { url = "https://files.pythonhosted.org/packages/de/df/54c14564b96cfc71e41f73fc431fbbce2251374e55eb1d86010d36e811dd/weaviate_client-4.18.1-py3-none-any.whl", hash = "sha256:18929badab8b5c05b8464467029972aabccd19d0bad79624c0067abc2ca3c05e", size = 598077 },
 ]
 
 [[package]]

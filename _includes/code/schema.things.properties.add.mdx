@@ -1,9 +1,11 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -22,9 +24,9 @@ let articles = client.collections.use('Article')
 
 // highlight-start
 articles.config.addProperty({
-  name: 'onHomepage',
-  dataType: 'boolean'
-})
+  name: "onHomepage",
+  dataType: "boolean",
+});
 // highlight-end
 ```
 
@@ -67,9 +69,16 @@ func main() {
 }
 ```
 
-</TabItem>
-
- <TabItem value="java" label="Java">
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddProperty"
+      endMarker="// END AddProperty"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
      <FilteredTextBlock
        text={JavaCode}
        startMarker="// AddProperty START"
@@ -77,5 +86,12 @@ func main() {
        language="java"
      />
   </TabItem>
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddProperty"
+      endMarker="// END AddProperty"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>

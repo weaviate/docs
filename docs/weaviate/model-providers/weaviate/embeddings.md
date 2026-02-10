@@ -1,6 +1,6 @@
 ---
 title: Text Embeddings
-description: "Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance."
+description: "Weaviate Embeddings models can be accessed directly from a Weaviate Cloud instance."
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
@@ -9,24 +9,26 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 :::info Added in `1.27.10`, `1.28.3`, `1.29.0`
 :::
 
-# Weaviate Embeddings
+# Weaviate Embeddings - Text Embeddings
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyConnect from '!!raw-loader!../_includes/provider.connect.weaviate.py';
-import TSConnect from '!!raw-loader!../_includes/provider.connect.weaviate.ts';
-import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go';
-import JavaConnect from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddingsTest.java';
-import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
-import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java';
-import JavaImportQueries from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyConnect from "!!raw-loader!../\_includes/provider.connect.weaviate.py";
+import TSConnect from "!!raw-loader!../\_includes/provider.connect.weaviate.ts";
+import GoConnect from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go";
+import JavaConnect from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddingsTest.java";
+import PyCode from "!!raw-loader!../\_includes/provider.vectorizer.py";
+import TSCode from "!!raw-loader!../\_includes/provider.vectorizer.ts";
+import GoCode from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.cs";
+import JavaCode from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java";
+import JavaImportQueries from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java";
 
-Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance.
+<CloudOnlyBadge />
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a Weaviate Embeddings model, and Weaviate will generate embeddings for various operations using the specified model and your Weaviate API key. This feature is called the *vectorizer*.
+[Configure a Weaviate vector index](#configure-the-vectorizer) to use a Weaviate Embeddings model, and Weaviate will generate embeddings for various operations using the specified model and your Weaviate API key. This feature is called the _vectorizer_.
 
 At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
 
@@ -34,17 +36,17 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 
 ## Requirements
 
-import Requirements from '/_includes/weaviate-embeddings-requirements.mdx';
+import Requirements from "/\_includes/weaviate-embeddings-requirements.mdx";
 
 <Requirements />
 
-### Weaviate configuration
-
-The Weaviate Embeddings vectorizer is only available for use by Weaviate Cloud instances. At this time, Weaviate Embeddings is not available for self-hosted users.
+:::info Cloud only
+Weaviate Embeddings vectorizers are not available for self-hosted users.
+:::
 
 ### API credentials
 
-Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud instance's access for Weaviate Embeddings.
+Your Weaviate Cloud credentials are automatically used to authorize your access to Weaviate Embeddings.
 
 <Tabs className="code" groupId="languages">
 
@@ -56,7 +58,6 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="py"
     />
   </TabItem>
-
  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
@@ -65,7 +66,6 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="ts"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoConnect}
@@ -74,8 +74,15 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="goraw"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START WeaviateInstantiation"
+      endMarker="// END WeaviateInstantiation"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaConnect}
       startMarker="// START WeaviateInstantiation"
@@ -83,7 +90,14 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="javaraw"
     />
   </TabItem>
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START WeaviateInstantiation"
+      endMarker="// END WeaviateInstantiation"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Configure the vectorizer
@@ -99,7 +113,6 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -108,7 +121,6 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="ts"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -117,8 +129,15 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="goraw"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BasicVectorizerWeaviate"
+      endMarker="// END BasicVectorizerWeaviate"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START BasicVectorizerWeaviate"
@@ -126,7 +145,14 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="java"
     />
   </TabItem>
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BasicVectorizerWeaviate"
+      endMarker="// END BasicVectorizerWeaviate"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Select a model
@@ -142,7 +168,6 @@ You can specify one of the [available models](#available-models) for the vectori
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -151,7 +176,6 @@ You can specify one of the [available models](#available-models) for the vectori
       language="ts"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -160,8 +184,15 @@ You can specify one of the [available models](#available-models) for the vectori
       language="goraw"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START VectorizerWeaviateCustomModel"
+      endMarker="// END VectorizerWeaviateCustomModel"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -169,23 +200,28 @@ You can specify one of the [available models](#available-models) for the vectori
       language="java"
     />
   </TabItem>
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START VectorizerWeaviateCustomModel"
+      endMarker="// END VectorizerWeaviateCustomModel"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
 
-import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
+import VectorizationBehavior from "/\_includes/vectorization.behavior.mdx";
 
 <details>
   <summary>Vectorization behavior</summary>
-
-<VectorizationBehavior/>
-
+  <VectorizationBehavior />
 </details>
 
 ### Vectorizer parameters
 
-import WeaviateEmbeddingsVectorizerParameters from '/_includes/weaviate-embeddings-vectorizer-parameters.mdx';
+import WeaviateEmbeddingsVectorizerParameters from "/\_includes/weaviate-embeddings-vectorizer-parameters.mdx";
 
 <WeaviateEmbeddingsVectorizerParameters />
 
@@ -203,7 +239,6 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -212,7 +247,6 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="ts"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -221,8 +255,15 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="goraw"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportExample"
+      endMarker="// END BatchImportExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START BatchImportExample"
@@ -230,7 +271,14 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="java"
     />
   </TabItem>
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportExample"
+      endMarker="// END BatchImportExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Re-use existing vectors
@@ -250,7 +298,6 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
 <Tabs className="code" groupId="languages">
-
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -259,7 +306,6 @@ The query below returns the `n` most similar objects from the database, set by `
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -268,8 +314,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="ts"
     />
   </TabItem>
-
- <TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START NearTextExample"
@@ -277,8 +322,15 @@ The query below returns the `n` most similar objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START NearTextExample"
+      endMarker="// END NearTextExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START NearTextExample"
@@ -286,7 +338,14 @@ The query below returns the `n` most similar objects from the database, set by `
       language="java"
     />
   </TabItem>
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearTextExample"
+      endMarker="// END NearTextExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Hybrid search
@@ -309,7 +368,6 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="py"
     />
   </TabItem>
-
  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -318,7 +376,6 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="ts"
     />
   </TabItem>
-
  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -327,8 +384,15 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-
-  <TabItem value="java" label="Java">
+<TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridExample"
+      endMarker="// END HybridExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START HybridExample"
@@ -336,13 +400,19 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridExample"
+      endMarker="// END HybridExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
-## References
+## Available models
 
-### Available models
-
-import WeaviateEmbeddingsModels from '/_includes/weaviate-embeddings-models.mdx';
+import WeaviateEmbeddingsModels from "/\_includes/weaviate-embeddings-models.mdx";
 
 <WeaviateEmbeddingsModels />
 
@@ -355,12 +425,21 @@ Once the integrations are configured at the collection, the data management and 
 - The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
 - The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
+### Multimodal embeddings
+
+Looking to embed document images instead of text? See [Weaviate Embeddings: Multimodal](./embeddings-multimodal.md) for visual document retrieval without OCR or preprocessing.
+
 ### References
 
 - Weaviate Embeddings [Documentation](/cloud/embeddings)
+- Weaviate Embeddings [Models](/cloud/embeddings/models)
+
+### Pricing
+
+Weaviate Embeddings models are charged based on token usage. For more pricing information, see the [Weaviate Cloud pricing page](https://weaviate.io/pricing).
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/\_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

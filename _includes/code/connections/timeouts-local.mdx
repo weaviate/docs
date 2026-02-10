@@ -1,26 +1,43 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 
-import PyV4Code from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
-import TsV3Code from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
-
+import PyV4Code from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
+import TsV3Code from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 
 <Tabs className="code" groupId="languages">
-    <TabItem value="py" label="Python">
-         <FilteredTextBlock
-         text={PyV4Code}
-         startMarker="# START TimeoutLocal"
-         endMarker="# END TimeoutLocal"
-         language="py"
-         />
-    </TabItem>
-    <TabItem value="ts" label="JavaScript/TypeScript">
-         <FilteredTextBlock
-         text={TsV3Code}
-         startMarker="// START TimeoutLocal"
-         endMarker="// END TimeoutLocal"
-         language="ts"
-         />
-    </TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyV4Code}
+      startMarker="# START TimeoutLocal"
+      endMarker="# END TimeoutLocal"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsV3Code}
+      startMarker="// START TimeoutLocal"
+      endMarker="// END TimeoutLocal"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TimeoutLocal"
+      endMarker="// END TimeoutLocal"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TimeoutLocal"
+      endMarker="// END TimeoutLocal"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>

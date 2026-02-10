@@ -8,7 +8,7 @@
 [functions]
   directory = ".netlify/functions/"
 
-## Remove /current from the path 
+## Remove /current from the path
 [[redirects]]
 from = "/weaviate/current/*"
 to   = "/weaviate/:splat"
@@ -90,6 +90,16 @@ status = 301
 [[redirects]]
 from = "/weaviate/tutorials/console"
 to   = "/cloud/tools/query-tool"
+status = 301
+
+[[redirects]]
+from = "/cloud/platform/support-levels"
+to   = "https://weaviate.io/suport-plans"
+status = 301
+
+[[redirects]]
+from = "/cloud/tools/import-tool"
+to   = "/cloud/tools/collections-tool"
 status = 301
 
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
@@ -247,8 +257,8 @@ to   = "/deploy/migration/weaviate-1-30"
 status = 301
 
 [[redirects]]
-from = "/weaviate/tutorials/rbac"
-to   = "/deploy/tutorials/rbac"
+from = "/deploy/tutorials/rbac"
+to   = "/weaviate/tutorials/rbac"
 status = 301
 
 [[redirects]]
@@ -261,6 +271,21 @@ from = "/weaviate/config-refs/env-vars/runtime-config"
 to   = "/deploy/configuration/env-vars/runtime-config"
 status = 301
 
+[[redirects]]
+from = "/deploy/installation-guides/ecs-marketplace"
+to   = "/deploy/installation-guides/eks"
+status = 301
+
+[[redirects]]
+from = "/deploy/installation-guides/eks-marketplace"
+to   = "/deploy/installation-guides/aws-marketplace"
+status = 301
+
+[[redirects]]
+from = "/deploy/installation-guides/gke-marketplace"
+to   = "/deploy/installation-guides/gcp-marketplace"
+status = 301
+
 # Docs migration redirects
 
 [[redirects]]
@@ -268,18 +293,9 @@ from = "/weaviate/client-libraries/typescript/typescript-v3"
 to   = "/weaviate/client-libraries/typescript"
 status = 301
 
-
-# Integrations
-
 [[redirects]]
-from = "/integrations/llm-frameworks/*"
-to   = "/integrations/llm-agent-frameworks/:splat"
-status = 301
-
-
-[[redirects]]
-from = "/weaviate/more-resources/dspy"
-to   = "/integrations/llm-agent-frameworks/dspy"
+from = "/weaviate/client-libraries/python/v3_v4_migration"
+to   = "/weaviate/client-libraries/python"
 status = 301
 
 # Modules
@@ -778,7 +794,7 @@ status = 301
 
 [[redirects]]
 from = "/academy/theory/embedding_model_selection/*"
-to   = "https://academy.weaviate.io/courses/wa150-py"
+to   = "https://academy.weaviate.io/courses/wa260-py"
 status = 301
 
 [[redirects]]
@@ -796,6 +812,53 @@ from = "/academy/js/*"
 to   = "/weaviate/guides"
 status = 301
 
+### Python redirects
+
+[[redirects]]
+from = "/academy/py/starter_text_data/text_searches/*"
+to   = "/weaviate/search"
+status = 301
+
+[[redirects]]
+from = "/academy/py/starter_text_data/text_rag/*"
+to   = "/weaviate/search"
+status = 301
+
+[[redirects]]
+from = "/academy/py/starter_custom_vectors/*"
+to   = "/weaviate/starter-guides/custom-vectors"
+status = 301
+
+[[redirects]]
+from = "/academy/py/named_vectors/*"
+to   = "/weaviate/manage-collections/vector-config"
+status = 301
+
+[[redirects]]
+from = "/academy/py/vector_index/*"
+to   = "/weaviate/config-refs/indexing/vector-index"
+status = 301
+
+[[redirects]]
+from = "/academy/py/compression/*"
+to   = "/weaviate/configuration/compression"
+status = 301
+
+[[redirects]]
+from = "/academy/py/tokenization/*"
+to   = "/weaviate/concepts/indexing/inverted-index#tokenization"
+status = 301
+
+[[redirects]]
+from = "/academy/py/multitenancy/*"
+to   = "/weaviate/manage-collections/multi-tenancy"
+status = 301
+
+[[redirects]]
+from = "/academy/py/standalone/which_search"
+to   = "/weaviate/search"
+status = 301
+
 [[redirects]]
 from = "/academy/py/*"
 to   = "https://academy.weaviate.io/courses/wa101t-py"
@@ -804,4 +867,253 @@ status = 301
 [[redirects]]
 from = "/academy/*"
 to   = "https://academy.weaviate.io/"
+status = 301
+
+## AWS production guides
+
+[[redirects]]
+from = "/deploy/aws"
+to   = "/deploy/production/aws"
+status = 301
+
+[[redirects]]
+from = "/deploy/aws/net-security-bp"
+to   = "/deploy/production/aws"
+status = 301
+
+[[redirects]]
+from = "/deploy/production/kubernetes/k8s-poc"
+to   = "/deploy/production/kubernetes/get-to-production"
+status = 301
+
+## Integration docs
+
+[[redirects]]
+from = "/integrations/cloud-hyperscalers/google"
+to   = "https://weaviate.io/product/integrations/google-cloud-platform"
+status = 301
+
+[[redirects]]
+from = "/integrations/cloud-hyperscalers/aws"
+to   = "https://weaviate.io/product/integrations/amazon-web-services"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/firecrawl"
+to   = "https://weaviate.io/product/integrations/firecrawl"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/context-data"
+to   = "https://weaviate.io/product/integrations/context-data"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/contextual-ai"
+to   = "https://weaviate.io/product/integrations/contextual-ai"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/aryn"
+to   = "https://weaviate.io/product/integrations/aryn"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/airbyte"
+to   = "https://weaviate.io/product/integrations/airbyte"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/box"
+to   = "https://weaviate.io/product/integrations/box"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/cardinal"
+to   = "https://weaviate.io/product/integrations/cardinal"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/confluent"
+to   = "https://weaviate.io/product/integrations/confluent"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/astronomer"
+to   = "https://weaviate.io/product/integrations/astronomer"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/databricks"
+to   = "https://weaviate.io/product/integrations/databricks"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/unstructured"
+to   = "https://weaviate.io/product/integrations/unstructured"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/ibm"
+to   = "https://weaviate.io/product/integrations/ibm"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/boomi"
+to   = "https://weaviate.io/product/integrations/boomi"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/chonkie"
+to   = "https://weaviate.io/product/integrations/chonkie"
+status = 301
+
+[[redirects]]
+from = "/integrations/data-platforms/parallel"
+to   = "https://weaviate.io/product/integrations/parallel"
+status = 301
+
+[[redirects]]
+from = "/integrations/compute-infrastructure/replicate"
+to   = "https://weaviate.io/product/integrations/replicate"
+status = 301
+
+[[redirects]]
+from = "/integrations/compute-infrastructure/modal"
+to   = "https://weaviate.io/product/integrations/modal"
+status = 301
+
+[[redirects]]
+from = "/integrations/compute-infrastructure/replicated"
+to   = "https://weaviate.io/product/integrations/replicated"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/agno"
+to   = "https://weaviate.io/product/integrations/agno"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/n8n"
+to   = "https://weaviate.io/product/integrations/n8n"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/composio"
+to   = "https://weaviate.io/product/integrations/composio"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/dynamiq"
+to   = "https://weaviate.io/product/integrations/dynamiq"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/crewai"
+to   = "https://weaviate.io/product/integrations/crewai"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/semantic-kernel"
+to   = "https://weaviate.io/product/integrations/semantic-kernel"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/haystack"
+to   = "https://weaviate.io/product/integrations/haystack"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/llamaindex"
+to   = "https://weaviate.io/product/integrations/llamaindex"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/langchain"
+to   = "https://weaviate.io/product/integrations/langchain"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/dspy"
+to   = "https://weaviate.io/product/integrations/dspy"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/mem0"
+to   = "https://weaviate.io/product/integrations/mem0"
+status = 301
+
+[[redirects]]
+from = "/integrations/llm-agent-frameworks/modaic"
+to   = "https://weaviate.io/product/integrations/modaic"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/wandb"
+to   = "https://weaviate.io/product/integrations/weights-and-biases"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/ragas"
+to   = "https://weaviate.io/product/integrations/ragas"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/nomic"
+to   = "https://weaviate.io/product/integrations/nomic"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/langwatch"
+to   = "https://weaviate.io/product/integrations/langwatch"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/langtrace"
+to   = "https://weaviate.io/product/integrations/langtrace"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/arize"
+to   = "https://weaviate.io/product/integrations/arize"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/deepeval"
+to   = "https://weaviate.io/product/integrations/deepeval"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/trulens"
+to   = "https://weaviate.io/product/integrations/trulens"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/aimon"
+to   = "https://weaviate.io/product/integrations/aimon"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/cleanlab"
+to   = "https://weaviate.io/product/integrations/cleanlab"
+status = 301
+
+[[redirects]]
+from = "/integrations/operations/patronusai"
+to   = "https://weaviate.io/product/integrations/patronusai"
+status = 301
+
+[[redirects]]
+from = "/weaviate/more-resources/dspy"
+to   = "/integrations/llm-agent-frameworks/dspy"
+status = 301
+
+[[redirects]]
+from = "/integrations"
+to   = "https://weaviate.io/product/integrations"
+status = 301
+
+[[redirects]]
+from = "/integrations/*"
+to   = "https://weaviate.io/product/integrations"
 status = 301

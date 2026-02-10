@@ -29,11 +29,11 @@ This directory contains the following files:
 As an example, the snippet below maps `50051` as the host port so that it can be accessed from outside the container. The `50051` port is mapped to the `50051` port inside the container for gRPC calls, and the `8080` port is mapped to the `8080` port inside the container for REST calls.
 
 :::info
-We suggest using the default port `50051` for gRPC calls. It can be modified through the `GRPC_PORT` [environment variable](/deploy/configuration/env-vars/index.md).  
-Note that [Weaviate Cloud](https://console.weaviate.cloud/) uses port `443` for gRPC.
+We suggest using the default port `50051` for gRPC calls. It can be modified through the `GRPC_PORT` [environment variable](/deploy/configuration/env-vars/index.md).
+Note that [Weaviate Cloud](/go/console?utm_content=api) uses port `443` for gRPC.
 :::
 
-```yaml:
+````yaml:
 
 ```yaml
 ---
@@ -44,7 +44,7 @@ services:
      - "8080:8080"  # REST calls
      - "50051:50051"  # gRPC calls
   # ... Other settings
-```
+````
 
 ### Client-side
 
@@ -57,6 +57,6 @@ Alternatively, you can use other tools, such as the `grpcurl` command-line tool,
 
 ## Questions and feedback
 
-import DocsFeedback from "/_includes/docs-feedback.mdx";
+import DocsFeedback from "/\_includes/docs-feedback.mdx";
 
 <DocsFeedback />

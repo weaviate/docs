@@ -1,43 +1,98 @@
 ---
-title: Cluster status
+title: Cluster status and metrics
 sidebar_position: 3
 description: "Monitor and check the operational status of your Weaviate Cloud clusters through multiple methods."
 image: og/wcd/user_guides.jpg
 ---
 
-[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) exposes two ways of checking the cluster status:
+[Weaviate Cloud (WCD)](/go/console?utm_content=cloud) exposes two ways of checking the cluster status:
 
 - A **[web interface](#select-a-cluster)** in the Weaviate Cloud console.
 - An **[API endpoint](#api-endpoint)** that provides information about your Weaviate instance.
 
 ## Select a cluster
 
-<div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
-  <iframe 
-    id="qp7x9q6fjr" 
-    src="https://app.guideflow.com/embed/qp7x9q6fjr" 
-    width="100%" 
-    height="100%" 
-    style={{overflow: "hidden", position: "absolute", border: "none"}} 
-    scrolling="no" 
-    allow="clipboard-read; clipboard-write" 
-    webKitAllowFullScreen 
-    mozAllowFullScreen 
-    allowFullScreen 
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="qp7x9q6fjr"
+    src="https://app.guideflow.com/embed/qp7x9q6fjr"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="qp7x9q6fjr"></script>
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="qp7x9q6fjr"
+  ></script>
 </div>
 
-<br/>
+<br />
 
 <details>
     <summary>Select your cluster</summary>
 
-1. Open the [Weaviate Cloud console](https://console.weaviate.cloud).
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
 2. Open the `Clusters` list from the left sidebar.
 3. Select the cluster you want to inspect.
 4. The cluster details panel will open to the right.
+
+</details>
+
+## Cluster metrics
+
+Depending on the data available for your cluster, the following metrics dashboards are available:
+- `Query Latency`
+- `Ingestion Throughput`
+- `Average Batch Size`
+- `Object Count`
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="zkj3n21hep"
+    src="https://app.guideflow.com/embed/zkj3n21hep"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="zkj3n21hep"
+  ></script>
+</div>
+
+<br />
+
+<details>
+    <summary>Explore cluster metrics</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select the cluster you want to inspect from the left sidebar.
+3. Locate the cluster `Metrics` section on the `Cluster details` page.
+4. Click the `View all Metrics` button to find all the available metrics for your cluster.
 
 </details>
 
@@ -60,15 +115,13 @@ You can find the following information on the cluster details page:
 - `Cloud provider`
 - `Cloud region`
 - `Created at`
-- `Type` (Serverless or Sandbox)
-- `Backup retention days` (only for Serverless cluster)
-- `Availability SLA` (only for Serverless cluster)
+- `Type` (Shared Cloud or Sandbox)
+- `Backup retention days` (only for Shared Cloud cluster)
+- `Availability SLA` (only for Shared Cloud cluster)
 
 Clusters also have an `Advanced configuration` section to configure or check the status of these additional settings:
 
 - `Enable auto schema generation`
-- `Enable async indexing`
-- `Enable async replication`
 - `Allow all CORS origins`
 
 ## API Endpoint {#api-endpoint}
@@ -98,9 +151,7 @@ import ClusterStatusModules from "/docs/cloud/img/weaviate-cloud-available-modul
         Scroll to the <code>Available modules</code> section under{" "}
         <code>Advanced options</code>.
       </li>
-      <li>
-        You can click on a module to open its documentation.
-      </li>
+      <li>You can click on a module to open its documentation.</li>
     </ol>
   </div>
   <div class="col col--8">

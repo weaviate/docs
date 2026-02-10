@@ -118,24 +118,16 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ## Rotational quantization
 
-:::info Added in `v1.32`
-
-**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
-
-:::
-
-:::caution Preview
-
-**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
-
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
-:::
-
-**Rotational quantization (RQ)** is a quantization technique that provides significant compression while maintaining high recall in internal testing. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in two variants: **8-bit RQ** and **1-bit RQ**.
+**Rotational quantization (RQ)** provides significant compression while maintaining high recall. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in: **8-bit** and **1-bit** variants.
 
 ### 8-bit RQ
+
+:::info Added in `v1.32` and `v1.35`
+
+**8-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.32`**.<br/>
+**8-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
+
+:::
 
 8-bit RQ provides 4x compression while maintaining 98-99% recall in internal testing. The method works as follows:
 
@@ -144,6 +136,13 @@ This means that the feature is still under development and may change in future 
 2. **Scalar quantization**: Each entry of the rotated vector is quantized to an 8-bit integer. The minimum and maximum values of each individual rotated vector define the quantization interval.
 
 ### 1-bit RQ
+
+:::info Added in `v1.33` and `v1.35`
+
+**1-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.33`**.<br/>
+**1-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
+
+:::
 
 1-bit RQ is an asymmetric quantization method that provides close to 32x compression as dimensionality increases. **1-bit RQ serves as a more robust and accurate alternative to BQ** with only a slight performance trade-off (approximately 10% decrease in throughput in internal testing compared to BQ). While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned PQ.
 
@@ -203,7 +202,7 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 ### With a flat index
 
-[BQ](#binary-quantization) can use a [flat index](./indexing/inverted-index.md). A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
+[RQ](#rotational-quantization) and [BQ](#binary-quantization) can be applied to a [flat index](./indexing/inverted-index.md). As a flat index search is a brute-force method, compression reduces the amount of data Weaviate has to read and increases speed.
 
 ## Rescoring
 

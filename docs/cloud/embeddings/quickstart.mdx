@@ -75,6 +75,10 @@ Notes:
 
 :::
 
+import PromptStarter from "/src/components/PromptStarter";
+
+<PromptStarter page="quickstart" promptDetails="quickstart_prompt" />
+
 ## Requirements
 
 To use Weaviate Embeddings, you will need:
@@ -134,7 +138,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaConnect}
       startMarker="// START WeaviateInstantiation"
@@ -175,7 +179,7 @@ Now we can define a collection that will store our data. When creating a collect
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START SnowflakeArcticEmbedLV20"
@@ -216,7 +220,7 @@ After configuring the vectorizer, [import data](/weaviate/manage-objects/import.
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START BatchImportExample"
@@ -261,7 +265,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
+  <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaImportQueries}
       startMarker="// START NearTextExample"

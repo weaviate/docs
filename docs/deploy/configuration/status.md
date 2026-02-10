@@ -51,9 +51,22 @@ import WellknownReady from '/_includes/code/wellknown.ready.mdx';
 
 <WellknownReady/>
 
+## Operational modes
+
+:::info Added in `v1.35.0`
+:::
+
+Each Weaviate node can be set to one of the following operational modes, limiting the types of operations it can handle:
+- `ReadWrite`: (default) There are no restrictions; the node can handle both read and write operations.
+- `WriteOnly`: The node is limited to write operations.
+- `ReadOnly`: The node is limited to read operations and backup creation via the `/backups` endpoints.
+- `ScaleOut`: The same as `ReadOnly`, with additional CUD operations on `/replication` endpoints allowed.
+
+These modes can be configured using the `OPERATIONAL_MODE` [environment variable](./env-vars/index.md), or the equivalent `operational_mode` [runtime configuration](./env-vars/runtime-config.md).
+
 ## Schema synchronization
 
-The `v1//schema/cluster-status` endpoint displays the status of the schema synchronization. The endpoint returns the following fields:
+The `v1/schema/cluster-status` endpoint displays the status of the schema synchronization. The endpoint returns the following fields:
 
 - `healthy`: The status of the schema synchronization.
 - `hostname`: The hostname of the Weaviate instance.
