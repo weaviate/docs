@@ -17,7 +17,7 @@ In this tutorial, we will explore how to efficiently import large datasets into 
 
 Before starting this tutorial, ensure you have:
 
-- An instance of Weaviate (e.g. on [Weaviate Cloud](/go/console?utm_content=tutorial), or locally), version `v1.33` or newer for server-side batching
+- An instance of Weaviate (e.g. on [Weaviate Cloud](/go/console?utm_content=tutorial), or locally), version `v1.36` or newer for server-side batching
 - Your preferred Weaviate [client library](../client-libraries/index.mdx) installed
 - An API key for your inference API (OpenAI, Cohere, etc.) if using vectorization
 - A dataset to import (we'll provide a sample)
@@ -92,13 +92,9 @@ Load the data from the JSON file.
 
 ### Option A: Server-side batching
 
-:::caution Preview
+import SsbStatus from '/_includes/ssb-status.mdx';
 
-Server-side batching was added in **`v1.34`** as a **preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
-:::
+<SsbStatus/>
 
 Server-side batching automatically manages the import flow using a feedback loop between client and server. The server monitors its workload and tells the client how much data to send next.
 

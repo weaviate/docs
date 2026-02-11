@@ -310,13 +310,13 @@ finally:
     client.close()
 # END BatchDynamic
 
-# START BatchExperimental
+# START BatchStream
 import weaviate
 
 client = weaviate.connect_to_local()
 
 try:
-    with client.batch.experimental() as batch:  # or <collection>.batch.experimental()
+    with client.batch.stream() as batch:  # or <collection>.batch.stream()
         # Batch import objects/references - e.g.:
         batch.add_object(properties={"title": "Multitenancy"}, collection="WikiArticle", uuid=src_uuid)
         batch.add_object(properties={"title": "Database schema"}, collection="WikiArticle", uuid=tgt_uuid)
@@ -324,7 +324,7 @@ try:
 
 finally:
     client.close()
-# END BatchExperimental
+# END BatchStream
 
 # START BatchFixedSize
 import weaviate
