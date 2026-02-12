@@ -1,0 +1,928 @@
+{
+  "components": {
+    "schemas": {
+      "CommittedOperationDTO": {
+        "additionalProperties": false,
+        "properties": {
+          "committed_at": {
+            "description": "When this operation was committed (RFC 3339).",
+            "type": "string"
+          },
+          "memory_id": {
+            "description": "The ID of the affected memory.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "memory_id",
+          "committed_at"
+        ],
+        "type": "object"
+      },
+      "CommittedOperationsDTO": {
+        "additionalProperties": false,
+        "properties": {
+          "created": {
+            "description": "Memories that were created by this run.",
+            "items": {
+              "$ref": "#/components/schemas/CommittedOperationDTO"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "deleted": {
+            "description": "Memories that were deleted by this run.",
+            "items": {
+              "$ref": "#/components/schemas/CommittedOperationDTO"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "updated": {
+            "description": "Memories that were updated by this run.",
+            "items": {
+              "$ref": "#/components/schemas/CommittedOperationDTO"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "ConversationInput": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "description": "When the conversation started (RFC 3339). Defaults to now.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "Conversation ID. Auto-generated if not provided.",
+            "type": "string"
+          },
+          "messages": {
+            "description": "The messages in this conversation. Must contain at least one message.",
+            "items": {
+              "$ref": "#/components/schemas/MessageInput"
+            },
+            "minItems": 1,
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "metadata": {
+            "additionalProperties": {},
+            "description": "Arbitrary key-value metadata to attach to the conversation.",
+            "type": "object"
+          },
+          "updated_at": {
+            "description": "When the conversation was last updated (RFC 3339). Defaults to now.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "User ID associated with this conversation.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "messages"
+        ],
+        "type": "object"
+      },
+      "CreateMemoryRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/CreateMemoryRequest.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "content": {
+            "$ref": "#/components/schemas/InputContent",
+            "description": "The content to process. Accepts raw text, pre-extracted facts, or a multi-turn conversation."
+          },
+          "conversation_id": {
+            "description": "Conversation ID to scope this memory to. Required when the topic is conversation-scoped.",
+            "type": "string"
+          },
+          "group": {
+            "description": "Pipeline group name. Defaults to 'default'.",
+            "type": "string"
+          },
+          "root": {
+            "description": "Pipeline entry point. Overrides the default starting step.",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "User ID to scope this memory to. Required when the topic is user-scoped.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "location": {
+            "description": "Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'",
+            "type": "string"
+          },
+          "message": {
+            "description": "Error message text",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value at the given location"
+          }
+        },
+        "type": "object"
+      },
+      "ErrorModel": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/ErrorModel.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "detail": {
+            "description": "A human-readable explanation specific to this occurrence of the problem.",
+            "examples": [
+              "Property foo is required but is missing."
+            ],
+            "type": "string"
+          },
+          "errors": {
+            "description": "Optional list of individual error details",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetail"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "instance": {
+            "description": "A URI reference that identifies the specific occurrence of the problem.",
+            "examples": [
+              "https://example.com/error-log/abc123"
+            ],
+            "format": "uri",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status code",
+            "examples": [
+              400
+            ],
+            "format": "int64",
+            "type": "integer"
+          },
+          "title": {
+            "description": "A short, human-readable summary of the problem type. This value should not change between occurrences of the error.",
+            "examples": [
+              "Bad Request"
+            ],
+            "type": "string"
+          },
+          "type": {
+            "default": "about:blank",
+            "description": "A URI reference to human-readable documentation for the error.",
+            "examples": [
+              "https://example.com/errors/example"
+            ],
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "InputContent": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "description": "The text content. Required for 'string' and 'pre_extracted' types.",
+            "type": "string"
+          },
+          "conversation": {
+            "$ref": "#/components/schemas/ConversationInput",
+            "description": "Conversation payload. Required for 'conversation' type."
+          },
+          "tags": {
+            "description": "Tags to attach to the memory. Only used with 'pre_extracted' type.",
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "type": {
+            "description": "The input format: 'string' for raw text, 'pre_extracted' for pre-processed facts, or 'conversation' for multi-turn messages.",
+            "enum": [
+              "string",
+              "pre_extracted",
+              "conversation"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "MemoriesListResponseBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/MemoriesListResponseBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "memories": {
+            "description": "The list of memories.",
+            "items": {
+              "$ref": "#/components/schemas/MemoryResponse"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "total": {
+            "description": "Total number of memories returned.",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "memories",
+          "total"
+        ],
+        "type": "object"
+      },
+      "MemoryResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/MemoryResponseBody"
+          }
+        },
+        "required": [
+          "Body"
+        ],
+        "type": "object"
+      },
+      "MemoryResponseBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/MemoryResponseBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "content": {
+            "description": "The stored memory content.",
+            "type": "string"
+          },
+          "conversation_id": {
+            "description": "Conversation ID this memory is scoped to, if any.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "When this memory was created (RFC 3339).",
+            "format": "date-time",
+            "type": "string"
+          },
+          "group": {
+            "description": "The pipeline group this memory was created in.",
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier for this memory.",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "The project this memory belongs to.",
+            "type": "string"
+          },
+          "score": {
+            "description": "Relevance score. Only present in search results.",
+            "format": "double",
+            "type": "number"
+          },
+          "tags": {
+            "description": "Optional tags associated with this memory.",
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "topic": {
+            "description": "The topic this memory belongs to.",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "When this memory was last updated (RFC 3339).",
+            "format": "date-time",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "User ID this memory is scoped to, if any.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "content",
+          "topic",
+          "group",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "MessageInput": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "description": "The message text.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "created_at": {
+            "description": "When this message was sent (RFC 3339). Defaults to now.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "role": {
+            "description": "The role of the message sender: 'user', 'assistant', or 'system'.",
+            "enum": [
+              "user",
+              "assistant",
+              "system"
+            ],
+            "type": "string"
+          },
+          "tool_call_metadata": {
+            "$ref": "#/components/schemas/ToolCallMetaInput",
+            "description": "Tool call metadata, if this message is related to a tool invocation."
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "type": "object"
+      },
+      "RetrievalConfigDTO": {
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 10,
+            "description": "Maximum number of results to return (1–100). Defaults to 10.",
+            "format": "int64",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "retrieval_type": {
+            "description": "The search method: 'vector' for semantic similarity, 'bm25' for keyword matching, or 'hybrid' for a combination of both.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "retrieval_type",
+          "limit"
+        ],
+        "type": "object"
+      },
+      "RunOutputResponseBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/RunOutputResponseBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "error": {
+            "description": "Error details, present only when status is 'failed'.",
+            "type": "string"
+          },
+          "run_id": {
+            "description": "Unique identifier for the pipeline run. Use this to poll the run status.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Current run status: 'running', 'completed', 'failed', or 'in_buffer'.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "RunStatusResponseBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/RunStatusResponseBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "committed_operations": {
+            "$ref": "#/components/schemas/CommittedOperationsDTO",
+            "description": "Memory operations committed by this run. Present once the run completes."
+          },
+          "created_at": {
+            "description": "When this run was created (RFC 3339).",
+            "format": "date-time",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error details, present only when status is 'failed'.",
+            "type": "string"
+          },
+          "group_id": {
+            "description": "The pipeline group this run belongs to.",
+            "type": "string"
+          },
+          "input_type": {
+            "description": "The type of input that was submitted: 'string', 'pre_extracted', or 'conversation'.",
+            "type": "string"
+          },
+          "run_id": {
+            "description": "Unique identifier for this pipeline run.",
+            "type": "string"
+          },
+          "starting_step": {
+            "description": "The pipeline step index where processing began.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "status": {
+            "description": "Current run status: 'running', 'completed', 'failed', or 'in_buffer'.",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "When this run was last updated (RFC 3339).",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "status",
+          "group_id",
+          "starting_step",
+          "input_type",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "SearchMemoriesRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/schemas/SearchMemoriesRequest.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "conversation_id": {
+            "description": "Conversation ID to filter results by. Required when searching conversation-scoped topics.",
+            "type": "string"
+          },
+          "group": {
+            "description": "Pipeline group name. Defaults to 'default'.",
+            "type": "string"
+          },
+          "query": {
+            "description": "The search query text.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "retrieval_config": {
+            "$ref": "#/components/schemas/RetrievalConfigDTO",
+            "description": "Controls the search method and result limit."
+          },
+          "topics": {
+            "description": "Topic names to search. Defaults to all topics in the group.",
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "user_id": {
+            "description": "User ID to filter results by. Required when searching user-scoped topics.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query",
+          "retrieval_config"
+        ],
+        "type": "object"
+      },
+      "ToolCallMetaInput": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "description": "Unique identifier for this tool call.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the tool or function that was called.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.",
+    "title": "Engram API",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/memories": {
+      "get": {
+        "description": "Returns all memories in the project. Results are scoped to the API key's project.",
+        "operationId": "list-memories",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoriesListResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "List memories",
+        "tags": [
+          "Memories"
+        ]
+      },
+      "post": {
+        "description": "Send content to be processed through the memory pipeline. Accepts raw text, pre-extracted facts, or a multi-turn conversation. Processing is asynchronous — use the returned `run_id` to track progress.",
+        "operationId": "create-memory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMemoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOutputResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Store a memory",
+        "tags": [
+          "Memories"
+        ]
+      }
+    },
+    "/v1/memories/search": {
+      "post": {
+        "description": "Find relevant memories using vector similarity, BM25 keyword matching, or hybrid search. Filter results by topic and scope them to a specific user or conversation.",
+        "operationId": "search-memories",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchMemoriesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoriesListResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Search memories",
+        "tags": [
+          "Memories"
+        ]
+      }
+    },
+    "/v1/memories/{id}": {
+      "delete": {
+        "description": "Permanently remove a memory by its ID. You must provide the correct scoping parameters (`user_id`, `conversation_id`) if the topic requires them.",
+        "operationId": "delete-memory",
+        "parameters": [
+          {
+            "description": "Memory ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "description": "Memory ID",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "User UUID",
+            "explode": false,
+            "in": "query",
+            "name": "user_id",
+            "schema": {
+              "description": "User UUID",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Conversation UUID",
+            "explode": false,
+            "in": "query",
+            "name": "conversation_id",
+            "schema": {
+              "description": "Conversation UUID",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Topic name",
+            "explode": false,
+            "in": "query",
+            "name": "topic",
+            "required": true,
+            "schema": {
+              "description": "Topic name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Group name (defaults to 'default')",
+            "explode": false,
+            "in": "query",
+            "name": "group",
+            "schema": {
+              "description": "Group name (defaults to 'default')",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Delete a memory",
+        "tags": [
+          "Memories"
+        ]
+      },
+      "get": {
+        "description": "Retrieve a single memory by its ID. You must provide the correct scoping parameters (`user_id`, `conversation_id`) if the topic requires them.",
+        "operationId": "get-memory",
+        "parameters": [
+          {
+            "description": "Memory ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "description": "Memory ID",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "User UUID",
+            "explode": false,
+            "in": "query",
+            "name": "user_id",
+            "schema": {
+              "description": "User UUID",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Conversation UUID",
+            "explode": false,
+            "in": "query",
+            "name": "conversation_id",
+            "schema": {
+              "description": "Conversation UUID",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Topic name",
+            "explode": false,
+            "in": "query",
+            "name": "topic",
+            "required": true,
+            "schema": {
+              "description": "Topic name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Group name (defaults to 'default')",
+            "explode": false,
+            "in": "query",
+            "name": "group",
+            "schema": {
+              "description": "Group name (defaults to 'default')",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoryResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get a memory",
+        "tags": [
+          "Memories"
+        ]
+      }
+    },
+    "/v1/runs/{run_id}": {
+      "get": {
+        "description": "Check the status of an asynchronous pipeline run. Returns the current state and, once completed, the list of memory operations that were committed (created, updated, or deleted).",
+        "operationId": "get-run-status",
+        "parameters": [
+          {
+            "description": "The UUID of the pipeline run to check",
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "description": "The UUID of the pipeline run to check",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get a run",
+        "tags": [
+          "Runs"
+        ]
+      }
+    }
+  }
+}

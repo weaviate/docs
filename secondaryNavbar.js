@@ -107,6 +107,15 @@ const secondaryNavbarItems = {
       },
     ],
   },
+  engram: {
+    title: "Engram",
+    icon: "fa fa-brain",
+    description: "Persistent memory for LLM agents and applications",
+    link: "/engram",
+    links: [
+      { label: "Documentation", link: "/engram", sidebar: "engramSidebar" },
+    ],
+  },
   integrations: {
     title: "Integrations",
     icon: "fa fa-puzzle-piece",

@@ -1524,6 +1524,36 @@ const sidebars = {
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
   ],
+  engramSidebar: [
+    { type: "doc", id: "engram/index", label: "Introduction" },
+    "engram/quickstart",
+    "engram/concepts",
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/guides/index" },
+      items: [
+        "engram/guides/store-memories",
+        "engram/guides/search-memories",
+        "engram/guides/manage-memories",
+        "engram/guides/check-run-status",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "doc",
+      id: "engram/api-reference/index",
+      label: "API reference",
+    },
+    {
+      type: "link",
+      label: "Interactive API reference",
+      href: "/engram/api-reference/rest",
+    },
+  ],
 };
 
 module.exports = sidebars;
