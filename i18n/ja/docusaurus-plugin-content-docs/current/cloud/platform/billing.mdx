@@ -1,0 +1,88 @@
+---
+title: 請求
+sidebar_position: 3
+description: "無料の Sandbox クラスターと有料の Serverless プランを含む Weaviate Cloud サービスの請求情報です。"
+image: og/wcd/user_guides.jpg
+---
+
+Sandbox クラスターは無料です。Sandbox クラスターを作成するために請求アカウントは必要ありません。
+
+Serverless クラスターはリソース使用量に応じて課金されます。月額料金は、使用量とサポートプランによって決まります。Serverless クラスターを作成するには請求アカウントが必要です。
+
+さまざまな使用量レベルとサポートプランの組み合わせによる費用を見積もるには、[料金計算ツール](https://weaviate.io/services/serverless)をご覧ください。
+
+:::note
+
+[AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) や [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA) などの外部クラウドプロバイダー経由で Weaviate Cloud に登録した場合、請求はそのクラウドプロバイダーのマーケットプレイスを通じて行われます。 
+
+:::
+
+## アカウント作成
+
+Weaviate Cloud ( WCD ) では請求に [Stripe](https://stripe.com/) を使用しています。Stripe アカウントを作成する手順は以下のとおりです。
+
+import EditOrganization from '/_includes/wcs/weaviate-cloud-edit-organization.mdx'
+
+<EditOrganization/>
+
+import BillingSection from '/docs/cloud/img/weaviate-cloud-billing-section.png';
+
+<ol start="4">
+  <li>
+    <code>Billing</code> セクションで <code>Add payment method</code> ボタン (<span class="callout">3</span>) をクリックします。
+  </li>
+  <li>必要な個人情報を入力します。</li>
+  <li>Stripe アカウントを作成します。</li>
+</ol>
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={BillingSection} alt="Add payment method to Weaviate Cloud" />
+    </div>
+    <div class="card__body">
+      <p>Weaviate Cloud に支払い方法を追加します。</p>
+    </div>
+  </div>
+</div>
+<br />
+
+## 使用料金
+
+使用料金は、コレクション内のオブジェクトの数とサイズを反映したものです。Weaviate は各コレクションをポーリングして、日次でオブジェクト数を取得します。
+
+- オブジェクトが非圧縮の場合、請求システムはオブジェクト数に次元数を掛けて `vectorDimensionsSum` を算出します。
+- オブジェクトが圧縮されている場合、請求システムはオブジェクト数にベクトルセグメント数を掛けて `vectorSegmentsSum` を算出します。
+
+これらの値を合算して正規化し、基本料金を求めます。基本料金にクラスターのサポートプランの料金率を掛けて請求額を算出します。
+
+クラスターが **高可用性** の場合、料金率は 3 倍になります。
+
+:::tip
+
+**圧縮** を有効にすると大幅なコスト削減が期待できます。
+
+:::
+
+## サポート & フィードバック レベル
+
+Weaviate では、[Standard](/cloud/platform/support-levels#standard-support)、[Professional](/cloud/platform/support-levels#professional-support)、[Business Critical](/cloud/platform/support-levels#business-critical-support) の 3 つのサポートレベルを提供しています。各サポートプランには使用料金に対する課金率と月額最低料金が設定されています。
+
+- 使用料金がサポートプランの月額最低料金を下回る場合、Weaviate は月額最低料金を請求します。
+- 使用料金が月額最低料金を超えた場合、Weaviate は最低料金に追加料金を加えて請求します。
+
+## 高可用性
+
+高可用性 ( HA ) クラスターの場合、Weaviate Cloud は最低料金と使用料金を 3 倍にして、追加リソース分を考慮します。
+
+## 請求サイクル
+
+アクティブなクラスターの料金は毎月 1 日に計算され、請求書が発行されます。
+
+## サポート & フィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+
+

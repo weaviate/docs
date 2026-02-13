@@ -1,0 +1,141 @@
+---
+title: 利用可能なトークナイゼーションオプション
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Weaviate では、さまざまなトークナイゼーションオプションを選択できます。これらのオプションにより、各プロパティでのキーワード検索やフィルターの方法を設定できます。
+
+主なオプションは次のとおりです。
+
+- `word`: 英数字のみ・小文字化されたトークン
+- `lowercase`: 小文字化されたトークン
+- `whitespace`: 空白区切り・大文字小文字を区別するトークン
+- `field`: プロパティの値全体を 1 つのトークンとして扱う
+
+それぞれのオプションについて、動作と利用シーンを詳しく見ていきましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> トークナイゼーション手法
+
+### <i class="fa-solid fa-chalkboard"></i> `word`
+
+`word` トークナイゼーションは、英数字以外の文字でテキストを分割し、その後すべてのトークンを小文字化します。
+
+`word` トークナイゼーションの例は次のとおりです。
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["why", "hello", "there"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["lois", "clark", "the", "new", "adventures", "of", "superman"]` |
+| `"variable_name"` | `["variable", "name"]` |
+| `"Email: john.doe@example.com"` | `["email", "john", "doe", "example", "com"]` |
+
+#### `word` トークナイゼーションを使う場合
+
+`word` トークナイゼーションは Weaviate のデフォルト手法です。
+
+一般的なテキストデータを検索またはフィルターする場合、まずは `word` を検討するとよいでしょう。
+
+ただし、`&`、`@`、`_` などの記号が重要であったり、大文字小文字の区別が必要な場合には、`lowercase` や `whitespace` など別の手法を検討してください。
+
+### <i class="fa-solid fa-chalkboard"></i> `lowercase`
+
+`lowercase` トークナイゼーションは、空白でテキストを分割し、その後すべてのトークンを小文字化します。
+
+`lowercase` トークナイゼーションの例は次のとおりです。
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["why,", "hello", "there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["lois", "&", "clark:", "the", "new", "adventures", "of", "superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["email:", "john.doe@example.com"]` |
+
+#### `lowercase` トークナイゼーションを使う場合
+
+`lowercase` は `word` に記号を含めたイメージです。`&`、`@`、`_` などの記号が意味を持つデータを扱う場合に適しています。
+
+たとえば、データベースにコードスニペット、メールアドレス、その他の記号を含む表記があるケースなどです。
+
+例として、`"database_address"` を含むオブジェクトをフィルターする場合を考えます。
+
+| Text | Tokenization | `"database_address"` でマッチ |
+| ---- | ------------ | --------------------- |
+| `"database_address"` | `word` | ✅ |
+| `"database_address"` | `lowercase` | ✅ |
+| `"database_company_address"` | `word` | ✅ |
+| `"database_company_address"` | `lowercase` | ❌ |
+
+フィルタリング動作がどのように変わるかに注目してください。適切なトークナイゼーションを選択することで、検索結果が自身やユーザーの期待に沿うように調整できます。
+
+### <i class="fa-solid fa-chalkboard"></i> `whitespace`
+
+`whitespace` トークナイゼーションは、空白でテキストを分割します。
+
+`whitespace` トークナイゼーションの例は次のとおりです。
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["Why,", "hello", "there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["Lois", "&", "Clark:", "The", "New", "Adventures", "of", "Superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["Email:", "john.doe@example.com"]` |
+
+#### `whitespace` トークナイゼーションを使う場合
+
+`whitespace` は `lowercase` に大文字小文字の区別を加えたものです。固有名詞や略語など、大小文字の違いが重要なデータに適しています。
+
+一方で、`whitespace` は厳格すぎる場合があります。たとえば `"superman"` という検索語では `"Superman"` にマッチしません。
+
+ただし、クエリ側で小文字と大文字の 2 つのバージョンを生成するなど、ケースバイケースで対処は可能です。
+
+逆に、`word` や `lowercase` では大文字小文字を区別した検索は不可能です。
+
+### <i class="fa-solid fa-chalkboard"></i> `field`
+
+`field` トークナイゼーションは、プロパティの値全体を 1 つのトークンとして扱います。
+
+`field` トークナイゼーションの例は次のとおりです。
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["Why, hello there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["Lois & Clark: The New Adventures of Superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["Email: john.doe@example.com"]` |
+
+#### `field` トークナイゼーションを使う場合
+
+`field` は、文字列を正確に同じ順序で一致させる必要がある場合に有用です。一般的には、メールアドレス、URL、その他一意な文字列など、ユニーク ID を含むプロパティに適しています。
+
+非常に厳格なため、慎重に利用してください。
+
+キーワード検索において `field` の用途は限定的です。たとえば `"computer mouse"` という検索では `"mouse for a computer"`、 `"computer mouse pad"`、 `"a computer mouse"` などにはマッチしません。
+
+## <i class="fa-solid fa-square-chevron-right"></i> ストップワード
+
+Weaviate は [ストップワード](https://en.wikipedia.org/wiki/Stop_word) をサポートしています。ストップワードとは、出現頻度が高く意味を持たないため、検索クエリから除外されることが多い一般的な単語です。
+
+デフォルトでは、Weaviate は [英語のストップワードリスト](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go) を使用します。スキーマ定義で [独自のストップワードリストを設定](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords) することも可能です。
+
+トークナイゼーション後、ストップワードは存在しないものとして扱われます。たとえば `"a computer mouse"` をフィルターしても `"computer mouse"` と同じ結果になります。
+## <i class="fa-solid fa-square-chevron-right"></i> 言語固有のトークン化
+
+上記のトークン化方式は、英語のように単語間をスペースで区切る言語ではうまく機能します。
+
+しかし、すべての言語がスペースを自然な意味境界として利用するとは限りません。日本語、中国語、韓国語のように単語がスペースで区切られない言語では、別のトークン化方式を使用する必要があります。
+
+Weaviate では、この目的のために `gse` と `trigram`（`v1.24` から）および `kagome_kr`（`v1.25.7` から）のトークン化方式を提供しています。
+
+`gse` は、中国語テキスト分割で広く使われている「Jieba」アルゴリズムを実装しています。`trigram` はテキストを可能なかぎりすべてのトライグラムに分割する方式で、日本語のような言語に有用です。
+
+`kagome_ja` は、[`Kagome` トークナイザー](https://github.com/ikawaha/kagome?tab=readme-ov-file) と日本語 [MeCab IPA 辞書](https://github.com/ikawaha/kagome-dict/) を用いて、日本語プロパティテキストを分割します。
+
+`kagome_kr` は、[`Kagome` トークナイザー](https://github.com/ikawaha/kagome?tab=readme-ov-file) と韓国語 MeCab（[mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)）辞書を用いて、韓国語プロパティテキストを分割します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

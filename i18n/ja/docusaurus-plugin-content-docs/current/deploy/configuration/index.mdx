@@ -1,0 +1,159 @@
+---
+title: 構成ガイド
+sidebar_position: 0
+---
+
+Weaviate を正常にデプロイするためには、堅牢で慎重に検討された構成が不可欠です。  
+このセクションでは、本番環境でのデプロイにおける主な構成要件とベストプラクティスを説明します。  
+新しい環境をセットアップする場合でも、既存の環境を最適化する場合でも、構成の選択はセキュリティ、スケーラビリティ、信頼性に影響します。
+
+import CardsSection from "/src/components/CardsSection";
+
+### 構成
+
+export const configurationData = [
+  {
+    title: "バックアップ",
+    description:
+      "Weaviate インスタンスのバックアップおよびリストア手順を構成します。",
+    link: "/deploy/configuration/backups",
+    icon: "fas fa-save",
+  },
+  {
+    title: "環境変数",
+    description:
+      "接続文字列、ポート、セキュリティ資格情報のための環境変数を構成します。",
+    link: "/deploy/configuration/env-vars",
+    icon: "fas fa-cog",
+  },
+  {
+    title: "水平スケーリング",
+    description: "高可用性のためにデプロイをスケールします。",
+    link: "/deploy/configuration/horizontal-scaling",
+    icon: "fas fa-arrow-up-right-dots",
+  },
+  {
+    title: "永続化",
+    description: "バックアップを有効化し、保持ポリシーを構成します。",
+    link: "/deploy/configuration/persistence",
+    icon: "fas fa-floppy-disk",
+  },
+  {
+    title: "テナントオフロード",
+    description:
+      "マルチテナント環境で非アクティブなテナントをオフロードしてリソース使用量を管理します。",
+    link: "/deploy/configuration/tenant-offloading",
+    icon: "fas fa-pause-circle",
+  },
+];
+
+<br />
+<CardsSection items={configurationData} />
+<br />
+
+### 認可と認証
+
+export const authData = [
+  {
+    title: "認証",
+    description: "デプロイのアクセス管理を構成します。",
+    link: "/deploy/configuration/authentication",
+    icon: "fas fa-shield-halved",
+  },
+  {
+    title: "認可",
+    description: "ユーザーロールと権限を定義および管理します。",
+    link: "/deploy/configuration/authorization",
+    icon: "fas fa-user-shield",
+  },
+  {
+    title: "RBAC の設定",
+    description:
+      "きめ細かな権限のために Role-Based Access Control を設定します。",
+    link: "/deploy/configuration/configuring-rbac",
+    icon: "fas fa-users-cog",
+  },
+  {
+    title: "OIDC 構成",
+    description:
+      "Weaviate と安全に認証するために OpenID Connect を構成します。",
+    link: "/deploy/configuration/oidc",
+    icon: "fas fa-lock",
+  },
+];
+
+<br />
+<CardsSection items={authData} />
+<br />
+
+### レプリケーション
+
+export const replicationData = [
+  {
+    title: "レプリケーション",
+    description:
+      "高可用性とフォールトトレランスのためにノード間でデータをレプリケートします。",
+    link: "/deploy/configuration/replication",
+    icon: "fas fa-copy",
+  },
+  {
+    title: "非同期レプリケーション",
+    description:
+      "分散クラスタ内のノード間で最終的な一貫性を確保します。",
+    link: "/deploy/configuration/async-rep",
+    icon: "fas fa-clone",
+  },
+];
+
+<br />
+<CardsSection items={replicationData} />
+<br />
+
+### クラスタ情報
+
+export const clusterInfoData = [
+  {
+    title: "クラスタメタデータ",
+    description: "Weaviate クラスタに関するメタデータへアクセスし管理します。",
+    link: "/deploy/configuration/meta",
+    icon: "fas fa-info-circle",
+  },
+  {
+    title: "モニタリング、メトリクス、ログ",
+    description: "Weaviate インスタンスの状態とヘルスを監視します。",
+    link: "/deploy/configuration/monitoring",
+    icon: "fas fa-chart-bar",
+  },
+  {
+    title: "クラスタノードデータ",
+    description: "クラスタ内の各ノードに関するデータを表示および管理します。",
+    link: "/deploy/configuration/nodes",
+    icon: "fas fa-server",
+  },
+  {
+    title: "ステータス",
+    description: "Weaviate インスタンスの状態とヘルスを監視します。",
+    link: "/deploy/configuration/status",
+    icon: "fas fa-heartbeat",
+  },
+  {
+    title: "テレメトリー",
+    description:
+      "Weaviate のテレメトリーがどのように機能するかと、その構成方法を理解します。",
+    link: "/deploy/configuration/telemetry",
+    icon: "fas fa-chart-line",
+  },
+];
+
+<br />
+<CardsSection items={clusterInfoData} />
+<br />
+
+
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

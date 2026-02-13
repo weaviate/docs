@@ -1,0 +1,289 @@
+---
+title: Weaviate 入門
+description: Weaviate 入門
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate とは
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/MQgm126pKkU' controls='true' />
+<br/>
+
+Weaviate はオープンソースの [ベクトル データベース](https://weaviate.io/blog/what-is-a-vector-database) です。とはいえ、これはどういう意味でしょうか？ここで詳しく見ていきましょう。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル データベース
+
+Weaviate は、必要な情報をすばやく正確に取得するための優れたツールです。その理由は、Weaviate が優秀な **ベクトル データベース** であるからです。
+
+皆さんは SQL を使うリレーショナル データベースなど、従来のデータベースに慣れているかもしれません。データベースは情報を分類・保存・取得できます。**ベクトル** データベースもこれらを行えますが、決定的な違いは「類似度」に基づいて操作できる点です。
+
+#### <i class="fa-solid fa-memo-pad"></i> 従来の検索の仕組み
+
+たとえば、ヨーロッパの「主要」都市に関する記事を収めたリレーショナル データベースを検索するとします。SQL を使用して、次のようなクエリを作成するかもしれません。
+
+```sql
+SELECT city_name wiki_summary
+FROM wiki_city
+WHERE (wiki_summary LIKE '%major European city%' OR
+       wiki_summary LIKE '%important European city%' OR
+       wiki_summary LIKE '%prominent European city%' OR
+       wiki_summary LIKE '%leading European city%' OR
+       wiki_summary LIKE '%significant European city%' OR
+       wiki_summary LIKE '%top European city%' OR
+       wiki_summary LIKE '%influential European city%' OR
+       wiki_summary LIKE '%notable European city%')
+    (… and so on)
+```
+
+このクエリは、`wiki_summary` 列に `major`、`important`、`prominent` などの文字列が含まれる都市を返します。
+
+多くの場合、これはうまく機能します。しかし、この方法には 2 つの大きな制約があります。
+
+#### <i class="fa-solid fa-memo-pad"></i> 従来検索の制約
+
+まず、この手法では、その概念を表す可能性のある語句を自分で洗い出す必要がありますが、これは簡単ではありません。
+
+さらに、結果として得られるオブジェクトをどのように順位付けするかという問題も解決しません。
+
+上記の検索では、ほとんど関連性のない「別のヨーロッパ都市」について言及しているだけのエントリでも、パリやローマのように高い関連性を持つエントリと同じ重み付けになってしまいます。
+
+ベクトル データベースは、類似度に基づく検索を可能にすることで、この課題をシンプルにします。
+
+#### <i class="fa-solid fa-memo-pad"></i> ベクトル検索の例
+
+たとえば、Weaviate では次のようなクエリを実行できます。
+
+```graphql
+{
+  Get {
+    WikiCity (
+      nearText: { concepts: ["Major European city"] }
+    ) { city_name wiki_summary }
+  }
+}
+```
+
+すると、クエリ「Major European city」の概念との **類似度でランク付けされた** エントリ一覧が返ってきます。
+
+さらに Weaviate は、データを類似度に基づいて「インデックス化」するため、この種のデータ取得が驚くほど高速です。
+
+Weaviate はこれらを実現するだけでなく、実際にはもっと多くのことができます。別の言い方をすれば、Weaviate は情報活用を強力に後押しします。
+
+:::info ベクトル検索とセマンティック検索
+ベクトル検索は「セマンティック検索」とも呼ばれます。意味 (semantic) の類似度に基づいて結果を返すためです。
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> オープンソース
+
+Weaviate はオープンソースです。つまり、その [コードベースがオンライン](https://github.com/weaviate/weaviate) で誰でも閲覧・利用できます<sup>[(1)](#-notes)</sup>。
+
+そして、それが *唯一の* コードベースです。ローカル マシン、クラウド環境、あるいはマネージド サービスである [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) のいずれで実行しても、まったく同じ技術を使っています。
+
+したがって、自分のデバイスで無料で Weaviate を動かすことも、利便性のためにマネージド サービスを利用することもできます。また、自分が何を動かしているかを正確に把握でき、オープンソース コミュニティの一員として開発に貢献できるという安心感も得られます。
+
+さらに、Weaviate に関する知識はローカル・クラウド・マネージドのどのインスタンスでも共通して役立ちます。WCD で学んだことはローカル実行にもそのまま適用でき、その逆も同様です。😉
+
+### <i class="fa-solid fa-chalkboard"></i> 動的な情報
+
+私たちは情報を本のような静的なものと考えがちです。しかし Weaviate と最新の AI 駆動型言語モデルを組み合わせれば、静的情報を取得するだけでなく、その上に簡単に新しい価値を構築できます。以下の例をご覧ください。
+
+#### <i class="fa-solid fa-memo-pad"></i> 質問応答
+
+Wikipedia エントリ一覧を登録しておけば、Weaviate に次のように尋ねられます。
+
+:::note 私たちが Weaviate に質問しました:
+Lewis Hamilton はいつ生まれましたか？
+:::
+
+すると Weaviate は次のように答えます。
+
+:::note Weaviate の回答:
+Lewis Hamilton は 1985 年 1 月 7 日に生まれました。([ご自身で確認](https://en.wikipedia.org/wiki/Lewis_Hamilton))
+:::
+
+<details>
+  <summary><i class="fa-solid fa-code"></i> クエリとレスポンスを表示</summary>
+
+#### <i class="fa-solid fa-memo-pad"></i> クエリ
+
+```graphql
+{
+  Get {
+    WikiArticle (
+      ask: {
+        question: "When was Lewis Hamilton born?",
+        properties: ["wiki_summary"]
+      },
+      limit: 1
+    ) {
+      title
+      _additional {
+        answer {
+          result
+        }
+      }
+    }
+  }
+}
+```
+
+#### <i class="fa-solid fa-memo-pad"></i> レスポンス
+
+```json
+{
+  "data": {
+    "Get": {
+      "WikiArticle": [
+        {
+          "_additional": {
+            "answer": {
+              "result": " Lewis Hamilton was born on January 7, 1985."
+            }
+          },
+          "title": "Lewis Hamilton"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+#### <i class="fa-solid fa-memo-pad"></i> 生成検索
+
+あるいは Weaviate を使って、取得した情報から文章を生成 (synthesize) することもできます。
+
+次の例では、「レーシング ドライバー」を検索し、結果を以下のフォーマットで出力しました。
+
+:::note 私たちが Weaviate に依頼しました:
+次を読むよう楽しく勧めるツイートを書いてください: ## \{title} （以下のハイライトをまとめて）: ## \{wiki_summary}
+:::
+
+その結果は次のとおりです。
+
+:::note Weaviate の回答:
+Lewis Hamilton、7 回の Formula One World Drivers' Championship 勝者の驚くべきストーリーをチェックしよう！謙虚な始まりから世界で最も影響力のある人物の 1 人になるまで、その旅はインスピレーションに満ちています。#LewisHamilton #FormulaOne #Motorsport #Racing
+:::
+
+<details>
+  <summary><i class="fa-solid fa-code"></i> クエリとレスポンスを表示</summary>
+
+#### <i class="fa-solid fa-memo-pad"></i> クエリ
+
+```graphql
+{
+  Get {
+    WikiArticle(
+      nearText: {
+        concepts: ["Racing Driver"]
+      }
+      limit: 1
+    ) {
+      title
+      wiki_summary
+      _additional {
+        generate(
+          singleResult: {
+            prompt: """
+              Write a fun tweet encouraging people to read about this: ## {title}
+              by summarizing highlights from: ## {wiki_summary}
+            """
+          }
+        ) {
+          singleResult
+          error
+        }
+      }
+    }
+  }
+}
+```
+#### <i class="fa-solid fa-memo-pad"></i> 回答
+
+```json
+{
+  "data": {
+    "Get": {
+      "WikiArticle": [
+        {
+          "_additional": {
+            "generate": {
+              "error": null,
+              "singleResult": "Check out the amazing story of Lewis Hamilton, the 7-time Formula One World Drivers' Championship winner! From his humble beginnings to becoming a global icon, his journey is an inspiring one. #LewisHamilton #FormulaOne #Motorsport #Racing #Inspiration"
+            }
+          },
+          "title": "Lewis Hamilton",
+          "wiki_summary": "Sir Lewis Carl Davidson Hamilton   (born 7 January 1985) is a British racing driver currently competing in Formula One, driving for Mercedes-AMG Petronas Formula One Team. In Formula One, Hamilton has won a joint-record seven World Drivers' Championship titles (tied with Michael Schumacher), and holds the records for the most wins (103), pole positions (103), and podium finishes (191), among others.\nBorn and raised in Stevenage, Hertfordshire, Hamilton joined the McLaren young driver programme in 1998 at the age of 13, becoming the youngest racing driver ever to be contracted by a Formula One team. This led to a Formula One drive with McLaren for six years from 2007 to 2012, making Hamilton the first black driver to race in the series. In his inaugural season, Hamilton set numerous records as he finished runner-up to Kimi R\u00e4ikk\u00f6nen by one point. The following season, he won his maiden title in dramatic fashion\u2014making a crucial overtake at the last corner on the last lap of the last race of the season\u2014to become the then-youngest Formula One World Champion in history.  After six years with McLaren, Hamilton signed with Mercedes in 2013.\nChanges to the regulations for 2014 mandating the use of turbo-hybrid engines saw the start of a highly successful period for Hamilton, during which he won six further drivers' titles. Consecutive titles came in 2014 and 2015 during an intense rivalry with teammate Nico Rosberg. Following Rosberg's retirement in 2016, Ferrari's Sebastian Vettel became Hamilton's closest rival in two championship battles, in which Hamilton twice overturned mid-season point deficits to claim consecutive titles again in 2017 and 2018. His third and fourth consecutive titles followed in 2019 and 2020 to equal Schumacher's record of seven drivers' titles. Hamilton achieved his 100th pole position and race win during the 2021 season. \nHamilton has been credited with furthering Formula One's global following by appealing to a broader audience outside the sport, in part due to his high-profile lifestyle, environmental and social activism, and exploits in music and fashion. He has also become a prominent advocate in support of activism to combat racism and push for increased diversity in motorsport. Hamilton was the highest-paid Formula One driver from 2013 to 2021, and was ranked as one of the world's highest-paid athletes by Forbes of twenty-tens decade and 2021. He was also listed in the 2020 issue of Time as one of the 100 most influential people globally, and was knighted in the 2021 New Year Honours. Hamilton was granted honorary Brazilian citizenship in 2022.\n\n"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+
+これらに加え、ベクトル化、要約、分類など多くの機能を今後のユニットで扱います。
+
+まずは、Weaviate が本質的には ベクトル データベースであり、取得した情報に対して AI ツールを活用してさらなる処理ができるという点を覚えておいてください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+このセクションでは、Weaviate が何であり、そして高いレベルでどのように動作するのかを学びました。また、 ベクトル 検索が類似度ベースの検索手法であるという概要もご紹介しました。
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
+
+<Quiz questions={weaviateOpenSource} />
+
+<Quiz questions={vectorSearchDefinition} />
+
+<!-- Can you describe, in your own sentence, what vector search is?
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+- What is a vector search
+- What is Weaviate
+::: -->
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+- Weaviate はオープンソースの ベクトル データベースです。  
+- Weaviate のコアライブラリは、ローカル、クラウド、 WCD のいずれで実行しても同じです。  
+- ベクトル 検索は類似度ベースの検索です。  
+- Weaviate は検索後にデータを取得したあと、それを変換してから返すこともできます。  
+
+## <i class="fa-solid fa-square-chevron-right"></i> 注意事項
+
+<a name="1"></a>(1) もちろん、ライセンス条項が適用されます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const weaviateOpenSource = [
+  {
+    questionText: 'ローカル デプロイメントとクラウド デプロイメントにおける Weaviate のコードベースの違いは何ですか？',
+    answerOptions: [
+      { answerText: 'クラウド デプロイメントには常に追加モジュールが含まれている。', isCorrect: false, feedback: 'Weaviate のクラウド デプロイメントには特別なモジュールや追加モジュールは含まれていません。'},
+      { answerText: 'ローカル デプロイメントは GPU 利用向けに最適化されている。', isCorrect: false, feedback: 'GPU の利用はローカルでもリモートでも推論時に有効化できます。'},
+      { answerText: 'クラウド デプロイメントはスケーラビリティに最適化されている。', isCorrect: false, feedback: 'クラウド デプロイメントがスケーラビリティに最適化されるべきだという点には同意しますが、Weaviate のコードベースは配置場所に関係なくスケーラブルになるよう設計されています。'},
+      { answerText: '違いはない。同じコードベースである。', isCorrect: true, feedback: 'そのとおりです。GitHub で公開されている同じオープンソースのコードベースです。'},
+    ],
+  },
+];
+export const vectorSearchDefinition = [
+  {
+    questionText: 'ベストなベクトル 検索の説明はどれですか？',
+    answerOptions: [
+      { answerText: 'ベクトル 検索は方向検索である。', isCorrect: false, feedback: 'この文脈での "vector" の定義は方向とは関係ありません。'},
+      { answerText: 'ベクトル 検索は類似度ベースの検索である。', isCorrect: true, feedback: 'データ コレクションやデータベースを「意味」の近さで検索します。'},
+      { answerText: 'ベクトル 検索は数値ベースの検索である。', isCorrect: false, feedback: '部分的には正しいですが最適な回答ではありません。数値は関わりますが、ベクトル 検索の重要な概念を十分に捉えていません。'},
+    ],
+  },
+];

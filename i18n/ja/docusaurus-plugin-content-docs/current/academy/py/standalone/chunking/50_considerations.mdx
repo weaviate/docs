@@ -1,0 +1,153 @@
+---
+title: 考慮事項と提案
+description: 大規模データセットを効果的にチャンク化する際の主な考慮事項を学びます。
+---
+
+<!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+import PreviewUnit from '../../../_snippets/preview.mdx'
+
+<PreviewUnit />
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+このユニットでは、チャンク化について多くを学習してきました。
+
+チャンク化とは何かを確認し、さまざまなチャンク化手法を学び、その影響を理解できるように実装例も掘り下げました。
+
+このセクションでは、これまでの詳細なミクロ視点から一歩引き、学んだ内容を文脈に当てはめながらマクロ視点で考えていきます。具体的には、データをチャンク化する際に検討すべきポイントと、それが Weaviate 実装にどのように影響するかを見ていきます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 考慮事項
+
+ご覧いただいたとおり、データをチャンク化する方法は多数あります。では、どれが最適なのでしょうか。
+
+答えはいつものように「ケース・バイ・ケース」です。ただし、チャンク化手法を選ぶ際に考慮すべき事項を以下に示します。
+
+#### 検索結果あたりのテキスト量
+
+検索結果の各「ヒット」にどれだけのテキストを含めるべきでしょうか。1 文なのか 1 段落なのか、それとも別の単位なのか。
+
+自然な考え方としては、取得したい検索結果と同じサイズでデータをチャンク化することです。
+
+#### 入力クエリの長さ
+
+一般的な入力クエリがどのようなものかを検討してください。短い検索文字列でしょうか。それとも文書から抽出したような長いテキストでしょうか。
+
+クエリの ベクトル はチャンクの ベクトル と比較されることを念頭に置いてください。したがって、短いクエリには短いチャンク、長いクエリには長いチャンクが役立つ場合があります。
+
+短いチャンクを使用していて追加のコンテキストが必要な場合は、検索語を含むチャンクとその前後のチャンクをまとめて返すようにアプリを設計すると良いでしょう。
+
+#### データベースサイズ
+
+チャンクが大きいほどチャンク数は減り、データベース自体は小さくなります。大規模データセットを扱う場合は重要な観点です。
+
+#### モデルの制約
+
+チャンクサイズがモデルの最大許容サイズ（コンテキストウィンドウ）以内に収まるようにする必要があります。これは埋め込みの生成にも RAG にも当てはまります。
+
+#### RAG ワークフロー
+
+前述のとおり、短いチャンクは多様なソースから多数のチャンクを取り込むのに適しますが、コンテキストが不足する可能性があります。長いチャンクはより多くのコンテキストを提供できますが、取り込めるチャンク数が限られるかもしれません。
+
+### <i class="fa-solid fa-chalkboard"></i> 経験則
+
+とはいえ、出発点としての経験則があると便利です。まずは 100〜150 語程度のチャンクサイズから始めることをお勧めします。
+
+その後、上記の考慮事項やアプリのパフォーマンス観察結果に基づき、チャンクサイズを調整してください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> データモデリング
+
+定義上、ソースデータをチャンク化すると 1 つのソースから複数のオブジェクトが生成されます。
+
+したがって、チャンクとソースデータ間、さらにはチャンク同士の関係をどのようにモデル化するかを検討する必要があります。これにより、ソースに関するメタデータや周辺チャンクなど、必要な情報を効率的に取得できるようになります。
+
+### <i class="fa-solid fa-code"></i> コレクション定義の例
+
+参考書ライブラリのデータを保存するよう設計された Weaviate データベースを考えてみましょう。
+
+各書籍を 1 つの ベクトル として保存すると依然としてサイズが大き過ぎるかもしれません。そのため、書籍を段落単位にチャンク化したうえで `Book` コレクションと `Paragraph` コレクションを作成し、`Paragraph` コレクションにクロスリファレンスプロパティ `fromBook` を持たせる方法が考えられます。これにより、書籍のメタデータは `Book` コレクションから、周辺の段落は `Paragraph` コレクションから取得できます。
+
+たとえば、次のように `Book` コレクションを構築できます。
+
+```json
+{
+    "class": "Book",
+    "properties": [
+        ...  // other class properties
+        // highlight-start
+        {
+            "name": "title",
+            "dataType": ["text"],
+        },
+        {
+            "name": "text",
+            "dataType": ["text"],
+        },
+        // highlight-end
+    ],
+    "vectorIndexConfig": {
+        "skip": true
+    }
+    ...  // other class attributes
+}
+```
+
+そして `Book` コレクションを参照する `Paragraph` コレクションを次のように追加します。
+
+```json
+{
+    "class": "Paragraph",
+    "properties": [
+        ...  // other class properties
+        // highlight-start
+        {
+            "name": "body",
+            "dataType": ["Text"]
+        },
+        {
+            "name": "chunk_number",
+            "dataType": ["int"]
+        },
+        {
+            "name": "fromBook",
+            "dataType": ["Book"]
+        },
+        // highlight-end
+    ],
+    ...  // other class attributes (e.g. vectorizer)
+}
+```
+
+この構成では、`Book` コレクションはベクトル化されておらず、`Paragraph` コレクションのみがベクトル化されている点に注意してください。これにより、`Book` コレクションはメタデータの保存・取得に、`Paragraph` コレクションは検索にそれぞれ活用できます。
+
+これはデータをモデル化する方法の一例に過ぎません。ユースケースに最適な構成を見つけるために、さまざまな設定を試してみてください。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+<!-- import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->

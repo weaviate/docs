@@ -1,0 +1,192 @@
+---
+title: HNSW インデックスの詳細
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/100_config.py';
+
+HNSW（「Hierarchical Navigable Small World」）は、高次元の ベクトル を高速かつ高精度に検索できる強力で柔軟な ベクトル インデックス タイプです。
+
+検索速度・精度・リソース要件のトレードオフを調整できる一方で、高いスケーラビリティを備えている点も大きな利点です。
+
+HNSW は Weaviate のデフォルト インデックス タイプで、どのインデックス タイプを使用するか迷った場合は、まず HNSW から始めることをおすすめします。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 主なアイデア
+
+HNSW は、グラフを高速に大域的トラバーサルしつつ類似 ベクトル を正確に検索できるよう、 ベクトル 間に接続を作成することに主眼を置いています。
+
+具体的には複数のレイヤーを作成し、上位レイヤーほど下位レイヤーの ベクトル をサブセットとして保持します。レイヤーを上がるにつれグラフの大まかな位置を特定する処理が高速になり、位置が定まった後は下位レイヤーへ下りながらよりローカルな検索を行います。
+
+最終的には、すべての ベクトル が含まれる最下層に到達します。
+
+import HNSWDiagram from './_snippets/hnsw_diagram.png';
+
+<div class="academy-img-md">
+  <img src={HNSWDiagram} alt="Outline of HNSW graph, showing nodes connected in multiple layers"/>
+</div>
+
+この方法により、検索はまずグラフの適切な領域を素早く特定し、その後最下層で網羅的な検索を実行できます。
+
+直感的には、HNSW グラフは高次元版のスキップリストのように捉えられます。上位レイヤーで大域検索を、下位レイヤーでローカル検索を行うイメージです。
+
+### <i class="fa-solid fa-chalkboard"></i> トレードオフ
+
+HNSW は非常に柔軟で、幅広いトレードオフを実現できます。
+
+検索速度・精度・リソース要件のバランスは、HNSW のパラメーター調整や [ ベクトル の量子化](../compression/index.md) によって最適化できます。
+
+### <i class="fa-solid fa-chalkboard"></i> リソース要件
+
+HNSW はインメモリ インデックスであり、グラフ内の各ノードとエッジはすべてメモリに保持されます。
+
+したがって、インデックスのメモリサイズは ベクトル 数と ベクトル 間の接続数にほぼ比例します。
+
+HNSW インデックスのサイズは ベクトル 数が支配的です。以下の表は一例です。
+
+| コンポーネント | サイズ算出 | 典型的サイズ | サイズ @1M ベクトル | サイズ @100M ベクトル |
+| --- | --- | --- | --- | --- |
+| Node | 4B (float) × N dimensions | 2-12 kB | 2-12 GB | 200-1200 GB |
+| Edge | 10B × 20 connections | 200 B | 200 MB | 20 GB |
+
+ご覧のように、HNSW インデックスのメモリ要件は急速にボトルネックになり得ます。その際は [量子化](../compression/index.md) を用いてメモリサイズを削減できます。
+
+### <i class="fa-solid fa-chalkboard"></i> 距離メトリック
+
+![Vector Distance Calculations](./img/vector_distance.png)
+
+インデックスで使用する距離メトリックは、 ベクトル 間の距離計算方法を決定します。HNSW では、これが各 ベクトル のグラフ上の配置に影響します。
+
+コレクション内の ベクトル に適したメトリックを選択してください。判断には、 ベクトル を生成したモデルのドキュメントを参照します。
+
+Weaviate のデフォルトは cosine ですが、[他にも多数のメトリック](/weaviate/config-refs/distances.md) が利用可能です。
+
+迷った場合は、多くのモデルで採用されている cosine 距離が堅牢なデフォルトとして推奨されます。
+
+### <i class="fa-solid fa-code"></i> HNSW をインデックス タイプとして指定
+
+HNSW は Weaviate のデフォルト ベクトル インデックス タイプです。そのため、コレクションで特定のインデックス タイプを指定しなければ HNSW が使用されます。
+
+明示的に指定したい場合は、以下のように設定します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ConfigHNSW"
+  endMarker="# END ConfigHNSW"
+  language="py"
+/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> HNSW のチューニング
+
+HNSW インデックスは、検索速度・精度・リソース要件のトレードオフを調整するためにチューニングできます。
+
+主に調整する項目は次のとおりです。
+- ノード間の接続数
+- 「ダイナミックリスト」のサイズ
+- 量子化
+
+### <i class="fa-solid fa-chalkboard"></i> 接続数
+
+import maxConnectionsDiagram from './_snippets/maxConnections.png';
+
+<div class="academy-img-md">
+  <img src={maxConnectionsDiagram} alt="Outline of HNSW graph, highlighting connections"/>
+</div>
+
+ノード間の最大接続数（`maxConnections`）は、グラフの密結合度を決定します。
+
+接続数が多いほど検索精度は向上しますが、検索速度が低下し、メモリ使用量も増加します。
+
+デフォルト値は `32` です。最下層では各ノードが最大で `2 * maxConnections` 本の接続を持つ点に注意してください。
+
+### <i class="fa-solid fa-chalkboard"></i> ダイナミックリストのサイズ
+
+HNSW における「ダイナミックリスト」とは、アルゴリズムが検討対象とするノードの一覧を指します。ダイナミックリストは二つの場面で使用されます。
+
+検索時には、リストで検討中のノードを追跡し、検索が網羅的になるようにします。
+
+インデックス構築時には、接続候補となるノードを保持し、HNSW アルゴリズムが `maxConnections` 本の最適な接続を選定します。この際は近接度だけでなく、グラフ全体の接続性も考慮されます。
+
+#### 検索用ダイナミックリストサイズ
+
+import EfDiagram from './_snippets/ef.png';
+
+<div class="academy-img-md">
+  <img src={EfDiagram} alt="Outline of HNSW graph, with a hypothetical dynamic list"/>
+</div>
+
+検索時のダイナミックリストサイズは、静的または動的に設定できます。
+
+静的に設定する場合は、コレクション作成時に `ef` パラメーターを指定します。デフォルトは `-1` で、この値は動的設定に委ねることを意味します。
+
+動的に設定する場合は、`dynamicEfMin`、`dynamicEfMax`、`dynamicEfFactor` を組み合わせて指定します。
+
+ダイナミックリストサイズは、クエリの limit × `dynamicEfFactor` を基準として、最小値 `dynamicEfMin`、最大値 `dynamicEfMax` によって制限されます。
+
+コードで表すと次のようになります。
+
+```python
+ef = min(max(dynamicEfMin, queryLimit * dynamicEfFactor), dynamicEfMax)
+```
+
+デフォルト値は `dynamicEfMin = 100`、`dynamicEfMax = 500`、`dynamicEfFactor = 8` です。
+#### インデックス構築時の動的リストサイズ
+
+import EfConstructionDiagram from './_snippets/efConstruction.png';
+
+<div class="academy-img-md">
+  <img src={EfConstructionDiagram} alt="Outline of HNSW graph, with a note for Ef"/>
+</div>
+
+インデックス構築時の動的リストサイズを設定するには、コレクション作成時に `efConstruction` パラメーターを指定します。
+
+これにより検索パフォーマンスが向上しますが、インデックス構築処理に負荷がかかります。デフォルト値は `128` です。
+
+### <i class="fa-solid fa-chalkboard"></i> 量子化
+
+HNSW で量子化を有効にすると、圧縮された ベクトル を使用することでメモリ上のインデックスサイズを削減できます。なお、完全な ベクトル はディスクに保存されており、インデックスから取得後の再スコアリングに使用されます。
+
+これは特に大量の ベクトル を扱う場合、Weaviate インスタンスのメモリ要件を大幅に削減する強力な方法となります。
+
+量子化の詳細は [Weaviate Academy のコース](../compression/index.md) で学習できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate で HNSW を設定する
+
+これらの各パラメーターは、Weaviate でコレクションを作成する際に指定できます。なお、ここで取り上げたパラメーターのうち、変更可能なのは `dynamicEf` 関連のパラメーターのみです。
+
+### <i class="fa-solid fa-code"></i> コード例
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CustomConfigHNSW"
+  endMarker="# END CustomConfigHNSW"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 追加オプション
+
+Weaviate では、さらに高度な HNSW パラメーターを設定できます。一般的なユースケースでは不要ですが、特定の状況で役立つ場合があります。
+
+#### コレクションレベルのパラメーター
+
+- `cleanup_interval_seconds`: 削除済みノードのクリーンアップ処理を実行する間隔を設定します。
+- `flat_search_cutoff`: この数値より小さい場合は HNSW インデックスではなく総当たり検索を使用します。
+- `vector_cache_max_objects`: メモリにキャッシュできる ベクトル の最大数を設定します。
+
+#### 環境変数
+
+- `PERSISTENCE_HNSW_MAX_LOG_SIZE`: HNSW の [write-ahead-log](/weaviate/concepts/storage.md#hnsw-vector-index-storage) の最大サイズです。値を大きくするとログ圧縮の効率が向上し、小さくするとメモリ要件を削減できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 追加リソース
+
+- [コンセプト: ベクトルインデックス](/weaviate/concepts/indexing/vector-index.md)
+- [リファレンス: ベクトルインデックスのパラメーター](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コレクションを管理する方法](../../../weaviate/manage-collections/index.mdx)
+- [Weaviate Academy: 圧縮](../compression/index.md)
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

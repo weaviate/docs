@@ -1,0 +1,143 @@
+---
+title: 10 Weaviate 用 Python のセットアップ
+sidebar_position: 10
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PythonCodeExample from '!!raw-loader!./_snippets/10_setup_python.py';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import WeaviatePythonImgUrl from './img/Weaviate-release-1-22-python.png';
+
+この短いガイドに従い、 Weaviate を Python クライアントと共に使用できるよう準備を行いましょう。
+
+<img src={WeaviatePythonImgUrl} alt="Image alt" width="75%"/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> Python のインストール
+
+### <i class="fa-solid fa-code"></i> Python はインストールされていますか？
+
+ターミナル ウィンドウ（例: bash、 zsh、 Windows PowerShell、 Windows Terminal）を開き、次を実行します:
+
+```shell
+python --version
+```
+
+うまくいかない場合は、 `python` の代わりに `python3` を使用してください:
+
+```shell
+python3 --version
+```
+
+Python がインストールされている場合、 `Python 3.11.8` のような出力が表示されます。 Python 3.8 以上がインストールされている場合は、このセクションの残りをスキップできます。
+
+### <i class="fa-solid fa-code"></i> Python のインストール
+
+インストールするには、 [Python.org](https://www.python.org/downloads/) にあるお使いのシステム向け手順に従ってください。
+
+Python をインストールしたら、もう一度バージョンを確認し、推奨バージョンが入っていることを確認してください。
+
+:::tip Advanced option: `pyenv`
+別の方法として `pyenv` を使用して Python をインストールすることもできます。 `pyenv` を使うと、システム上で複数バージョンの Python を管理できます。 `pyenv` のインストール方法は [こちら](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) を参照してください。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> 仮想環境のセットアップ
+
+仮想環境を使うと、複数の Python プロジェクトを互いに分離できます。各プロジェクトごとに依存関係をインストールしても、他のプロジェクトには影響しません。
+
+### <i class="fa-solid fa-code"></i> 仮想環境の作成
+
+仮想環境の作成には `venv` を使用することを推奨します。プロジェクト ディレクトリへ移動（例: `cd PATH/TO/PROJECT`）し、次を実行します:
+
+```shell
+python -m venv .venv
+```
+
+`python3` が Python コマンドの場合は、次を実行してください:
+
+```shell
+python3 -m venv .venv
+```
+
+これにより、プロジェクト ディレクトリに `.venv` というディレクトリが作成され、その中に仮想環境が構築されます。
+
+### <i class="fa-solid fa-code"></i> 仮想環境のアクティブ化
+
+各仮想環境は「アクティブ化」と「非アクティブ化」ができます。アクティブ化されている間、実行する Python コマンドはその仮想環境内の Python バージョンとライブラリを使用します。
+
+仮想環境をアクティブ化するには、プロジェクト ディレクトリで次を実行します:
+
+```shell
+source .venv/bin/activate
+```
+
+Windows を使用している場合は以下を実行してください:
+
+<Tabs groupId="languages">
+<TabItem value="command" label="Command Prompt">
+
+```shell
+.venv\Scripts\activate.bat
+```
+
+</TabItem>
+<TabItem value="powershell" label="PowerShell">
+
+```shell
+.venv\Scripts\Activate.ps1
+```
+
+</TabItem>
+</Tabs>
+
+仮想環境がアクティブ化されているかどうかは、次を実行して確認できます:
+
+```shell
+which python
+```
+
+または Windows では、 PowerShell で `Get-Command python`、 Command Prompt で `where python` を実行します。
+
+仮想環境がアクティブ化されている場合、 `.venv` ディレクトリを指すパスが表示されます。
+
+:::tip Virtual environments
+仮想環境は非常に便利です。詳しく知りたい場合は、 [FreeCodeCamp](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/) のチュートリアルや、より深く解説している [RealPython](https://realpython.com/python-virtual-environments-a-primer/) の記事を参照してください。
+<br/>
+
+さらに、 `conda`、 `pipenv`、 `poetry` など他にも多くの環境管理ツールがあります。すでにこれらのツールを使用している場合は、 `venv` の代わりにそれらを使っても構いません。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate クライアントのインストール
+
+これで、 Weaviate と Python でのやり取りを簡単にしてくれる [Weaviate クライアント ライブラリ](../../weaviate/client-libraries/index.mdx) をインストールできます。
+
+[仮想環境をアクティブ化](#-activate-the-virtual-environment) したら、次のコマンドで Weaviate クライアントをインストールします:
+
+```shell
+pip install weaviate-client
+```
+
+### <i class="fa-solid fa-code"></i> インストールの確認
+
+Weaviate クライアントがインストールされているか確認するには、次の Python コードを実行してください:
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# CheckClientLibInstall"
+  endMarker="# END CheckClientLibInstall"
+  language="py"
+/>
+
+次のような出力が表示されれば成功です:
+
+```text
+Your Weaviate client library version is: 4.5.4.
+```
+
+これで、 Python と Weaviate Python クライアント ライブラリを使う準備が整いました。おめでとうございます！
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

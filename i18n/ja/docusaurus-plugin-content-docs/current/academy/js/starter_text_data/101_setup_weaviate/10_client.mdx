@@ -1,0 +1,36 @@
+---
+title: Weaviate JavaScript/TypeScript クライアント
+description: "効率的なデータアクセスと管理のために Weaviate JavaScript クライアントを設定します。"
+---
+
+## <i class="fa-solid fa-code"></i> インストール
+
+最新の Weaviate TypeScript クライアントライブラリーは npm でインストールできます。クライアントライブラリーは Node v18 以降でテストされています。次のコマンドでインストールしてください:
+
+```bash
+npm install weaviate-client
+```
+
+最新のメジャーバージョンは `v3` (例: `3.x.x`) です。バージョンは次のように確認できます:
+
+```bash
+npm view weaviate-client version
+```
+
+## <i class="fa-solid fa-code"></i> 基本的な使用方法
+
+Weaviate クライアントライブラリーは次のようにインポートできます:
+
+```typescript
+import weaviate, { generateUuid5, ApiKey } from "weaviate-client"
+```
+
+クライアントには、Weaviate とのやり取りを容易にするための補助関数 (例: `generateUuid5`, `ApiKey`) が用意されています。
+
+次に、Weaviate インスタンスを作成して接続する方法を示します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

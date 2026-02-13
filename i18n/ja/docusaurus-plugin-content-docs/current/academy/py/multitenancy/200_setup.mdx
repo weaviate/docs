@@ -1,0 +1,307 @@
+---
+title: データベースのセットアップ
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/100_config.py';
+
+`MyPrivateJournal` の要件を満たす Weaviate インスタンスを構築できるか見てみましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> プロジェクト要件
+
+SaaS アプリケーションである `MyPrivateJournal` は、次の機能が必要だと判断しました。
+
+- **データの分離**: 各ユーザーのデータはプライベートであること。
+- **効率的なスケーラビリティ**:
+    - `MyPrivateJournal` が成長しても、数万〜数十万ユーザーを扱えること。
+    - アクティブユーザーに対しては高速であり、非アクティブユーザーはリソースを消費しないこと。
+- **管理の容易さ**:
+    - 新しいユーザーの追加が簡単かつ高速であること。
+    - ユーザーの削除が容易であること。
+- **柔軟性**:
+    - 低トラフィックのユーザーにも高トラフィックのユーザーにも効率的であること。
+- **フォールトトレランス**:
+    - ノード障害が発生しても、そのユーザーが完全にダウンしないこと。
+- **開発者体験**:
+    - これらの機能が実装・保守しやすいこと。
+
+検討の結果、マルチテナントコレクションを備えた Weaviate がこれらの課題を解決できると判断しました。ここでは `MyPrivateJournal` 向け PoC を実装してみましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate の設定
+
+開発環境として、Docker を使ったローカル Weaviate インスタンスを利用します。これにより、開発とテスト用の Weaviate を素早く立ち上げられます。
+
+こちらが `docker-compose.yml` ファイルです。
+
+```yaml
+---
+services:
+  weaviate_anon:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    ports:
+    - 8080:8080
+    - 50051:50051
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ENABLE_API_BASED_MODULES: 'true'
+      # highlight-start
+      ASYNC_INDEXING: 'true'
+      ENABLE_MODULES: 'backup-filesystem,offload-s3'
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY:-}
+      OFFLOAD_S3_BUCKET_AUTO_CREATE: 'true'
+      # highlight-end
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node1'
+...
+```
+
+<details>
+  <summary>マルチノード構成の場合は？</summary>
+
+良い質問です！ご覧のとおり、簡潔さのためにここではシングルノード構成を使用しています。
+<br/>
+
+しかし、サービスを追加することで簡単にマルチノード構成へ拡張できます。これにより、水平方向のスケーリングやレプリケーションによるフォールトトレランスが可能になります。
+<br/>
+
+例として、3 ノード構成は次のとおりです。
+
+```yaml
+---
+services:
+  weaviate-node-1:  # Founding member service name
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    restart: on-failure:0
+    ports:
+     - "8180:8080"
+     - 50151:50051
+    environment:
+      AUTOSCHEMA_ENABLED: 'false'
+      QUERY_DEFAULTS_LIMIT: 25
+      QUERY_MAXIMUM_RESULTS: 10000
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ASYNC_INDEXING: 'true'
+      ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,offload-s3'
+      ENABLE_API_BASED_MODULES: 'true'
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY:-}
+      OFFLOAD_S3_BUCKET_AUTO_CREATE: 'true'
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node1'
+      CLUSTER_GOSSIP_BIND_PORT: '7100'
+      CLUSTER_DATA_BIND_PORT: '7101'
+  weaviate-node-2:  # Founding member service name
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    restart: on-failure:0
+    ports:
+     - "8181:8080"
+     - 50152:50051
+    environment:
+      AUTOSCHEMA_ENABLED: 'false'
+      QUERY_DEFAULTS_LIMIT: 25
+      QUERY_MAXIMUM_RESULTS: 10000
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ASYNC_INDEXING: 'true'
+      ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,offload-s3'
+      ENABLE_API_BASED_MODULES: 'true'
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY:-}
+      OFFLOAD_S3_BUCKET_AUTO_CREATE: 'true'
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node2'
+      CLUSTER_GOSSIP_BIND_PORT: '7102'
+      CLUSTER_DATA_BIND_PORT: '7103'
+      CLUSTER_JOIN: 'weaviate-node-1:7100'
+  weaviate-node-3:  # Founding member service name
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    restart: on-failure:0
+    ports:
+     - "8182:8080"
+     - 50153:50051
+    environment:
+      AUTOSCHEMA_ENABLED: 'false'
+      QUERY_DEFAULTS_LIMIT: 25
+      QUERY_MAXIMUM_RESULTS: 10000
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ASYNC_INDEXING: 'true'
+      image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+      ENABLE_API_BASED_MODULES: 'true'
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY:-}
+      OFFLOAD_S3_BUCKET_AUTO_CREATE: 'true'
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node3'
+      CLUSTER_GOSSIP_BIND_PORT: '7104'
+      CLUSTER_DATA_BIND_PORT: '7105'
+      CLUSTER_JOIN: 'weaviate-node-1:7100'
+...
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> 設定のハイライト
+
+他の Docker 設定 ([例: Docs](/deploy/installation-guides/docker-installation.md), [Academy](../starter_text_data/101_setup_weaviate/20_create_instance/20_create_docker.mdx)) に見覚えがあるかもしれませんが、以下の設定は新しいかもしれません。
+
+- `ASYNC_INDEXING`: 非同期インデックス作成を有効にします。大量データ挿入に便利で、後ほど学ぶ `dynamic` インデックスタイプを使用できます。
+- `ENABLE_MODULES`: 今回は `offload-s3` を有効にし、後でテナントオフロードを実演します。オフロードは非アクティブユーザーのデータ管理に役立ちます。
+- `AWS_ACCESS_KEY_ID` と `AWS_SECRET_ACCESS_KEY`: Weaviate が S3 バケットへアクセスするための AWS 資格情報です。
+- `OFFLOAD_S3_BUCKET_AUTO_CREATE`: 該当バケットが存在しない場合に自動で作成します。
+
+ファイルを `docker-compose.yaml` として保存し、次のコマンドで Weaviate を起動します。
+
+```bash
+docker compose up
+```
+
+import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
+
+<OffloadingLimitation/>
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
+
+インスタンスが作成されたら、`http://localhost:8080` でアクセスできます。
+
+では、`MyPrivateJournal` 用のコレクションを作成しましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> コレクションの作成
+
+### <i class="fa-solid fa-code"></i> マルチテナンシーの有効化
+
+コレクションは作成時にマルチテナントとして指定する必要があります。そのため、コレクション設定でマルチテナンシーを有効にします。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MTConfig"
+  endMarker="# END MTConfig"
+  language="py"
+/>
+
+ここでは `auto_tenant_creation` と `auto_tenant_activation` を `true` に設定しています。詳細は後ほど説明しますが、簡単に概要を示します。
+
+- `auto_tenant_activation`: `true` の場合、非アクティブ (`INACTIVE` または `OFFLOADED`) なテナントがアクセスされた際に自動的にアクティブ化されます。
+- `auto_tenant_creation`: `true` の場合、存在しないテナントに対してオブジェクトが挿入された際に自動でテナントを作成します。
+
+これらの機能は後ほど実際に確認します。
+
+<details>
+  <summary><code>auto_tenant_creation</code> について詳しく</summary>
+
+:::info `v1.25` で追加
+auto tenant creation 機能は、バッチインポートでは `v1.25.0`、単一オブジェクト挿入では `v1.25.2` から利用できます。
+:::
+
+`auto_tenant_creation` を有効にすると、存在しないテナントに対してオブジェクトが挿入された際に Weaviate が自動でテナントを作成します。
+<br/>
+
+大量データ取り込み時に便利で、事前にテナントを作成する手間が省けます。`auto_tenant_creation` により、インポート処理を中断せずに続行できます。
+<br/>
+
+ただし、ソースデータの誤りがインポート中に検知されないリスクがあります。例えば、誤って `"TenntOn"` とスペルされたオブジェクトが `"TenantOne"` ではなく `"TenntOne"` という新しいテナントを作成してしまいます。
+<br/>
+
+サーバー側のデフォルト値は `false` です。
+</details>
+
+<details>
+  <summary><code>auto_tenant_activation</code> について詳しく</summary>
+
+:::info `v1.25.2` で追加
+auto tenant activation 機能は `v1.25.2` から利用できます。
+:::
+
+`auto_tenant_activation` を有効にすると、非アクティブ (`INACTIVE` または `OFFLOADED`) なテナントがアクセスされた際に自動でアクティブ化されます。
+<br/>
+
+多数のテナントが存在し、そのうち常に一部のみがアクティブというシナリオに最適です。例えば、SaaS アプリでタイムゾーンや最近のアクティビティによりアクセスが少ないテナントがある場合などです。
+<br/>
+
+`auto_tenant_activation` を有効にすることで、これらのテナントを安心して非アクティブにでき、リクエスト時にメモリへロードされます。
+<br/>
+
+これにより、Weaviate インスタンスのメモリ使用量を削減できます。アクティブなテナントのみがメモリに読み込まれるためです。
+<br/>
+
+サーバー側のデフォルト値は `false` です。
+
+</details>
+### <i class="fa-solid fa-code"></i> ベクトルインデックスの設定
+
+他のジャーナルのユースケースから分かっていることとして、大多数のユーザーはエントリー数が少ない一方で、少数のユーザーは大量のエントリーを持つ場合があります。
+
+これはバランスを取るのが難しい状況です。`hnsw` インデックスを使用すると、多くのエントリーを持つユーザーに対して高速ですが、メモリを多く消費します。`flat` インデックスを使用するとメモリ消費は抑えられますが、多くのエントリーを持つユーザーに対しては速度が遅くなる可能性があります。
+
+そこで選択できるのが `dynamic` インデックスです。`dynamic` インデックスは、エントリー数がしきい値を超えると自動的に `flat` から `hnsw` へ切り替わります。これにより、メモリ使用量と速度のバランスを取ることができます。
+
+以下は、`dynamic` インデックスを使用して "note" という名前のベクトルを設定する例です。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DynamicIndexConfig"
+  endMarker="# END DynamicIndexConfig"
+  language="py"
+/>
+
+ここで（ダジャレではありませんが）注意したいのは、`dynamic` インデックス構成では `flat` と `hnsw` の両方のインデックス設定を受け付ける点です。`dynamic` インデックスがそれぞれの状態にあるときに、該当する設定が使用されます。
+
+### <i class="fa-solid fa-code"></i> 完全なコードスニペット
+
+以下はコレクションを作成する完全なコードスニペットです。設定を確認し、私たちの選択に同意できるか見てみてください。
+
+ PoC  では、シンプルにするために 1 つのコレクション（`"JournalEntry"`）だけを作成し、`"text"`、`"date"`、`"tags"` プロパティを持たせています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MTFullCollectionCreation"
+  endMarker="# END MTFullCollectionCreation"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> まとめ
+
+このセクションでは、マルチテナンシーを有効にした Weaviate インスタンスをセットアップしました。また、マルチテナンシーと dynamic インデックス設定を持つ `MyPrivateJournal` 用のコレクションを作成しました。
+
+これで、`MyPrivateJournal` チームはユーザーのオンボーディングを開始し、ジャーナルエントリーをコレクションに保存できるようになります。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,199 @@
+---
+title: テナントを管理する
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/100_config.py';
+
+## <i class="fa-solid fa-square-chevron-right"></i> テナントのアクティビティステータス
+
+`MyPrivateJournal` が成長するにつれ、チームはリソース要件とそれに伴うコストが増加していることに気付きます。
+
+同時に、チームは次のような利用パターンも確認しています。
+
+- 多くのユーザーは 1 日のうち短時間だけアプリを使い、その後ログオフします。
+- まれにしかアクセスしないユーザーもいます。
+- しばらくすると離脱し、長期間データにアクセスしなくなるユーザーもいます。
+
+Weaviate のマルチテナンシー機能を利用すると、`MyPrivateJournal` はこれらの利用パターンをより効率的に管理できます。以下で詳しく見てみましょう。
+
+### <i class="fa-solid fa-code"></i> テナントのアクティビティステータスの概要
+
+まず、テナントのアクティビティステータスについて少し説明します。これまではステータスを指定せずにテナントを作成してきましたが、その場合、デフォルトで `ACTIVE` になります。
+
+テナントのステータスには `ACTIVE`、`INACTIVE`、`OFFLOADED` の 3 種類があります。
+
+| テナント状態 | CRUD とクエリ | ベクトルインデックス | 転置インデックス | オブジェクトデータ | アクティブ化までの時間 | テナントの説明 |
+|-------------|--------------|---------------------|-----------------|-------------------|------------------------|----------------|
+| Active (デフォルト) | **はい** | Hot/Warm | Warm | Warm | なし | 使用可能 |
+| Inactive | **いいえ** | Warm | Warm | Warm | 高速 | 使用不可 (ローカル保存) |
+| Offloaded | **いいえ** | Cold | Cold | Cold | 低速 | 使用不可 (クラウド保存) |
+
+これらのステータスは変更可能で、コスト・可用性・パフォーマンスのバランスを取りながらテナントを柔軟に管理できます。
+
+### <i class="fa-solid fa-code"></i> テナントのアクティビティステータスを管理する
+
+ここまでで、`MyPrivateJournal` がテナントのアクティビティステータスを活用し、運用効率を向上できることがわかってきました。
+
+#### テナントを非アクティブ化する
+
+`INACTIVE` テナントは `ACTIVE` テナントよりも少ないリソースで済むため、`MyPrivateJournal` は直ちにアクセスされる可能性が低いテナントを非アクティブ化できます。
+
+例として、ユーザーがアプリからログアウトしたタイミングで、そのテナントを `INACTIVE` に設定できます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# UpdateOneTenantStatus"
+  endMarker="# END UpdateOneTenantStatus"
+  language="py"
+/>
+
+#### 複数のテナントを非アクティブ化する
+
+`MyPrivateJournal` は複数のテナントをまとめて非アクティブ化することもできます。たとえば、ローカルの夜間に全テナントを非アクティブ化したり、7 日以上ログインしていないテナントを非アクティブ化したりできます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# UpdateMultipleTenantStatuses"
+  endMarker="# END UpdateMultipleTenantStatuses"
+  language="py"
+/>
+
+#### テナントをオフロードする
+
+`MyPrivateJournal` はテナントをクラウドへオフロードすることもできます。近い将来アクセスされる可能性が低いテナントに有効です。
+
+たとえば、30 日以上アクセスされていないテナントをオフロードできます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# OffloadMultipleTenants"
+  endMarker="# END OffloadMultipleTenants"
+  language="py"
+/>
+
+これにより、テナントのデータがコールドストレージへ移動し、Hot および Warm リソースが解放されます。結果として、システム全体の要件とコストを削減できます。
+
+<details>
+  <summary>オフロードの設定方法</summary>
+
+import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
+
+<OffloadingLimitation/>
+
+テナントをコールドストレージへオフロードできる機能は、Weaviate インスタンスのリソース使用量を管理する強力な手段です。
+<br/>
+
+Weaviate でテナントオフロードを利用するには、対応するオフロード [module](../../../weaviate/configuration/modules.md) を有効にする必要があります。デプロイ方法が Docker か Kubernetes かに応じて、以下のように `offload-s3` モジュールを有効化できます。
+
+<Tabs groupId="languages">
+<TabItem value="docker" label="Docker">
+
+```yaml
+services:
+  weaviate:
+    environment:
+      # highlight-start
+      ENABLE_MODULES: 'offload-s3' # plus other modules you may need
+      OFFLOAD_S3_BUCKET: 'weaviate-offload' # the name of the S3 bucket
+      OFFLOAD_S3_BUCKET_AUTO_CREATE: 'true' # create the bucket if it does not exist
+      # highlight-end
+```
+
+</TabItem>
+<TabItem value="kubernetes" label="Kubernetes">
+
+```yaml
+offload:
+  s3:
+    enabled: true  # Set this value to true to enable the offload-s3 module
+    envconfig:
+      OFFLOAD_S3_BUCKET: weaviate-offload  # the name of the S3 bucket
+      OFFLOAD_S3_BUCKET_AUTO_CREATE: true  # create the bucket if it does not exist
+```
+
+</TabItem>
+</Tabs>
+
+対象の S3 バケットが存在しない場合、`OFFLOAD_S3_BUCKET_AUTO_CREATE` 変数を `true` に設定すると、Weaviate がバケットを自動作成します。
+<br/>
+
+#### AWS パーミッション
+
+Weaviate には AWS 認証情報を提供する必要があります。アクセスキー方式と ARN 方式のいずれかを選択できます。
+<br/>
+
+:::tip Requirements
+Weaviate インスタンスには [S3 バケットへアクセスするための必要なパーミッション](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html) が必要です。
+- 指定した AWS アイデンティティにはバケットへの書き込み権限が必要です。
+- `OFFLOAD_S3_BUCKET_AUTO_CREATE` を `true` にする場合、バケット作成権限も必要です。
+:::
+
+**Option 1: With IAM and ARN roles**
+<br/>
+
+バックアップモジュールはまず AWS IAM での認証を試みます。失敗した場合は `Option 2` の方法で認証を試みます。
+<br/>
+
+**Option 2: With access key and secret access key**
+<br/>
+
+| 環境変数 | 説明 |
+| --- | --- |
+| `AWS_ACCESS_KEY_ID` | 対象アカウントの AWS アクセスキー ID。 |
+| `AWS_SECRET_ACCESS_KEY` | 対象アカウントの AWS シークレットアクセスキー。 |
+| `AWS_REGION` | (任意) AWS リージョン。設定しない場合、モジュールは `AWS_DEFAULT_REGION` を参照します。 |
+
+`offload-s3` モジュールを有効化した後は、テナントのアクティビティステータスを `OFFLOADED` に設定して S3 バケットへオフロードしたり、`ACTIVE` または `INACTIVE` に設定してローカルストレージへ戻したりできます。
+
+</details>
+#### ユーザーのアクティベーション
+
+そして、 `MyPrivateJournal` は必要に応じてテナントをアクティベートできます。たとえば、ユーザーがログインしたときや、非アクティベーションとは逆のパターンでユーザーのローカル時間に基づいてテナントをアクティベートすることが可能です。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# ActivateMultipleTenants"
+  endMarker="# END ActivateMultipleTenants"
+  language="py"
+/>
+
+#### 自動アクティベーションの活用
+
+ユーザーが `INACTIVE` テナントに対してクエリを実行しようとする場合もあります。
+
+これは問題のように思えるかもしれませんが、コレクションを `auto_tenant_activation` を有効にして作成していれば（[前のステップで設定しました](./200_setup.mdx#-create-a-collection)）、 Weaviate はクエリに合わせてテナントを自動的にアクティベートできます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> ユーザーのオフボーディング
+
+すべての SaaS アプリケーションと同様に、 `MyPrivateJournal` でもユーザーを随時オフボーディングする必要があります。これはユーザーからの要請やアカウント削除のほか、さまざまな理由によるものです。
+
+マルチテナント コレクションでは、ユーザーをオフボーディングするにはそのテナントを削除するだけで済みます。これによりテナントとそのデータがすべて削除されます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# RemoveTenants"
+  endMarker="# END RemoveTenants"
+  language="py"
+/>
+
+`MyPrivateJournal` のエンジニアは、ユーザーがアカウントを削除したりデータ削除を要求したりした際に、そのユーザーのテナントを削除するオフボーディング システムを構築できます。これにより、ユーザーデータがシステムから確実に削除されます。
+
+### <i class="fa-solid fa-chalkboard"></i> まとめ
+
+このセクションでは、マルチテナント コレクションにおけるテナント管理方法について学びました。以下の操作方法をご紹介しました。
+
+- テナントのアクティビティ ステータスを更新する
+- テナントをコールドストレージへオフロードする
+- 必要に応じてテナントをアクティベートする
+- テナントをシステムから削除する
+
+これらの機能により、 `MyPrivateJournal` はリソース使用量をより効果的に管理し、ユーザーにより良い体験を提供できます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,51 @@
+---
+title: 設定ガイド
+sidebar_position: 0
+---
+
+このセクションでは、認証と認可の主要な設定オプションを説明します。 
+
+import CardsSection from "/src/components/CardsSection";
+
+export const mainReferencesData = [
+  {
+    title: "認証",
+    description:
+      "Weaviate インスタンスのユーザー認証を設定および管理します。",
+    link: "/deploy/configuration/authentication", 
+    icon: "fas fa-shield-halved",
+  },
+  {
+    title: "認可", // New card
+    description:
+      "Weaviate デプロイメント内の権限とアクセス権を定義および管理します。",
+    link: "/deploy/configuration/authorization", 
+    icon: "fas fa-user-shield",
+  },
+  {
+    title: "ロールベースアクセス制御 (RBAC)", 
+    description:
+      "ロールと権限を使用してきめ細かなアクセス制御を実装します。",
+    link: "/deploy/configuration/configuring-rbac",
+    icon: "fas fa-users-cog",
+  },
+  {
+    title: "OIDC 設定",
+    description:
+      "Weaviate で安全な認証を行うために OpenID Connect を設定します。",
+    link: "/deploy/configuration/oidc",
+    icon: "fas fa-lock",
+  },
+];
+
+<br />
+<CardsSection items={mainReferencesData} />
+<br />
+
+## 質問およびフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+
+

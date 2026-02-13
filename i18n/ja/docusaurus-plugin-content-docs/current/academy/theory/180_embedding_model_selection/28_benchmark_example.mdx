@@ -1,0 +1,266 @@
+---
+title: "カスタム ベンチマークの例"
+description: 埋め込みモデル評価のために独自ベンチマークを実行する例
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+## <i class="fa-solid fa-chalkboard-user"></i> カスタム ベンチマークの例
+
+ここでは、カスタム ベンチマークを実行する方法を示します。
+
+最終的な目的として、会社の技術ドキュメント（製品ドキュメント、コード例、サポートフォーラムのログなど）に対して [RAG（検索拡張生成）](https://weaviate.io/blog/introduction-to-rag) システムを実装すると想像してください。
+
+MTEB スコアと実用面を考慮して、埋め込みモデルを 2 つ（Model A と Model B）候補に挙げました。ここでは前述した手順を追っていきます。
+
+### <i class="fa-solid fa-chalkboard"></i> ベンチマーク目標の設定
+
+データが複数のソースから来ているため、ターゲットの多様性が気になるかもしれません。たとえば、文体（カジュアルなフォーラム投稿 vs 公式ドキュメント）、テキスト長（詳細なスニペット vs 短い回答）、言語（コード vs 英語）などです。
+
+そこで、*各モデルが文体・長さ・言語のばらつきにどのように対処するか* をテストすることを目標に設定できます。
+
+### <i class="fa-solid fa-code"></i> 使用するメトリクスの決定
+
+これは古典的な検索問題であり、結果には関連度の高低があります。そのため、NDCG@k メトリックを使用できます。NDCG@k は次のように計算されます。
+
+```python
+def calculate_dcg(relevance_scores: list[int], k: Optional[int] = None) -> float:
+    """
+    Args:
+        relevance_scores: List of relevance scores (0, 1, or 2)
+        k: Number of results to consider. If None, uses all results.
+    """
+    if k is not None:
+        relevance_scores = relevance_scores[:k]
+
+    gains = [2**score - 1 for score in relevance_scores]
+    dcg = 0
+    for i, gain in enumerate(gains):
+        dcg += gain / np.log2(i + 2) if i > 0 else gain
+
+    return dcg
+
+def calculate_ndcg(
+    actual_scores: list[int], ideal_scores: list[int], k: Optional[int] = None
+) -> float:
+    """
+    Args:
+        actual_scores: List of relevance scores in predicted order
+        ideal_scores: List of relevance scores in ideal order
+        k: Number of results to consider
+    """
+    dcg = calculate_dcg(actual_scores, k)
+    idcg = calculate_dcg(ideal_scores, k)
+    return dcg / idcg if idcg > 0 else 0.0
+```
+
+注: [scikit-learn には組み込み実装](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.ndcg_score.html) の NDCG が用意されています。
+
+### <i class="fa-solid fa-code"></i> ベンチマーク データセットの作成
+
+ベンチマーク データセットは、設定した目的を達成できるものであるべきです。*各モデルが文体・長さ・言語のばらつきにどのように対処するか* を評価したいので、データセットは次のようになるかもしれません。
+
+```python
+dataset = {
+	# Search query
+	"query": "How to set up a vector index with binary quantization",
+	# Candidate document set, with scores on a scale of 0-3
+	"documents": [
+		{
+			"id": "doc001",
+			# Highly relevant documentation text
+			"text": "Each collection can be configured to use BQ compression. BQ can enabled at collection creation time, before data is added to it. This can be done by setting the vector_index_config of the collection to enable BQ compression.",
+			"score": 3
+		},
+		{
+			"id": "doc002",
+			# Highly relevant, long code example
+			"text": "from weaviate.classes.config import Configure, Property, DataType, VectorDistances, VectorFilterStrateg\n\nclient.collections.create(\n    'Article',\n    # Additional configuration not shown\n    vector_index_config=Configure.VectorIndex.hnsw(\n        quantizer=Configure.VectorIndex.Quantizer.bq(\n            cache=True,\n            rescore_limit=1000\n        ),\n        ef_construction=300,\n        distance_metric=VectorDistances.COSINE,\n        filter_strategy=VectorFilterStrategy.SWEEPING  # or ACORN (Available from Weaviate v1.27.0)\n    ),)",
+			"score": 3
+		},
+		{
+			"id": "doc003",
+			# Highly relevant, short code example
+			"text": "client.collections.create(\nname='Movie',\nvector_index_config=wc.Configure.VectorIndex.flat(\nquantizer=wc.Configure.VectorIndex.Quantizer.bq()\n))",
+			"score": 3
+		},
+		{
+			"id": "doc004",
+			# Less relevant forum post, even though the right words appear
+			"text": "No change in vector size after I set up Binary Quantization\nHello! I was curious to try out how binary quantization works. To embed data I use gtr-t5-large model, which creates 768-dimensional vectors. My database stores around 2k of vectors. My python code to turn PQ on is following: client.schema.update_config(\n    'Document',\n    {\n        'vectorIndexConfig': {\n            'bq': {\n                'enabled': True, \n            }\n        }\n    },\n)",
+			"score": 1
+		},
+		# And so on ...
+		{
+			"id": "doc030",
+			# Irrrelevant documentation text
+			"text": "Weaviate stores data objects in collections. Data objects are represented as JSON-documents. Objects normally include a vector that is derived from a machine learning model. The vector is also called an embedding or a vector embedding.",
+			"score": 0
+		},
+	]
+}
+```
+
+この例のデータセットには、さまざまな関連スコアを持つドキュメントが混在しています。同じくらい重要なのは、ドキュメントの種類・長さ・言語も混在している点です。理想的には各変数が十分に表現されており、検索性能の差異が顕在化するようになっています。
+
+### <i class="fa-solid fa-code"></i> ベンチマークの実行
+
+各埋め込みモデルについて、次の手順を実行します。
+
+1. 各ドキュメントとクエリの埋め込みを作成  
+2. これらの埋め込みを使って上位 `k` 件を検索  
+3. 定量的メトリクス（例: NDCG@k）を計算  
+4. 定性的分析のために結果（上位 k 件と真のラベル）をまとめる  
+
+擬似コードで表すと、次のようになります。
+
+```python
+import numpy as np
+from typing import List, Dict, Any
+
+class Document:
+    """Document with text and relevance score"""
+    def __init__(self, id, text, relevance_score):
+        self.id = id
+        self.text = text
+        self.relevance_score = relevance_score
+
+class EmbeddingModel:
+    """Abstract embedding model interface"""
+    def __init__(self, name):
+        self.name = name
+
+    def embed(self, text):
+        """Generate embedding for text"""
+        return embedding
+
+class BenchmarkRunner:
+    """Runs embedding model benchmarks"""
+    def __init__(self, queries, documents, models):
+        self.queries = queries
+        self.documents = documents
+        self.models = models
+
+    def run(self, k=10):
+        """Run benchmark for all models
+
+        Returns: Dict mapping model names to metrics
+        """
+        results = {}
+
+        for model in self.models:
+            # Get embeddings for all texts
+            query_embeddings = {q: model.embed(q) for q in self.queries}
+            doc_embeddings = {doc.id: model.embed(doc.text) for doc in self.documents}
+
+            # Calculate metrics for each query
+            ndcg_scores = []
+            for query, query_emb in query_embeddings.items():
+                # Get top k documents by similarity
+                top_docs = self._retrieve_top_k(query_emb, doc_embeddings, k)
+
+                # Calculate NDCG
+                ndcg = self._calculate_ndcg(top_docs, query, k)
+                ndcg_scores.append(ndcg)
+
+            # Store results
+            results[model.name] = {
+                'avg_ndcg': np.mean(ndcg_scores),
+                'all_scores': ndcg_scores
+            }
+
+        return results
+
+    def _retrieve_top_k(self, query_emb, doc_embeddings, k):
+        """Retrieve top k docs by similarity"""
+        # Implementation: calculate similarities and return top k
+        pass
+
+    def _calculate_ndcg(self, retrieved_docs, query, k):
+        """Calculate NDCG@k for retrieved documents"""
+        # Implementation: calculate DCG and IDCG
+        pass
+
+# Example usage
+def run_benchmark_example():
+    # 1. Initialize data
+    queries = ["How to set up binary quantization"]
+    documents = [
+        Document("doc1", "BQ can be enabled at collection creation...", 3),
+        # other documents ...
+        Document("doc2", "Weaviate stores data objects in collections...", 0)
+    ]
+
+    # 2. Initialize models
+    models = [
+        # Model implementations...
+    ]
+
+    # 3. Run benchmark
+    runner = BenchmarkRunner(queries, documents, models)
+    results = runner.run(k=5)
+
+    # 4. Print results
+    for model_name, metrics in results.items():
+        print(f"{model_name}: NDCG@5 = {metrics['avg_ndcg']:.4f}")
+```
+
+### <i class="fa-solid fa-code"></i> 結果の評価
+
+ベンチマークを実行すると、一連の結果が得られます。定量的メトリクスと定性的な観察を組み合わせて、モデル性能を総合的に把握しましょう。
+
+#### 定量的分析
+
+まず、各モデルの全体的なメトリクスを比較します。
+
+```python
+# Example benchmark results
+results = {
+    'Model A': {'avg_ndcg': 0.87, 'all_scores': [0.92, 0.85, 0.84]},
+    'Model B': {'avg_ndcg': 0.79, 'all_scores': [0.95, 0.72, 0.70]}
+}
+
+# Print summary
+for model_name, metrics in results.items():
+    print(f"{model_name}: NDCG@10 = {metrics['avg_ndcg']:.4f}")
+```
+
+平均値だけでなく、次の点にも目を向けます。
+
+- **スコア分布**: モデルは一貫して高性能なのか、一部の領域だけ優れているのか  
+- **クエリタイプ別の性能**: クエリの特徴（長さ、複雑さ、ドメイン）ごとにスコアを分類  
+- **統計的有意性**: ベンチマークが大規模な場合、違いが統計的に有意かどうか  
+
+#### 定性的分析
+
+実際の検索結果を確認すると、より実践的な洞察が得られます。
+
+1. **成功と失敗のパターンを特定**  
+    - あるモデルは特定のドキュメントタイプで苦戦しているか？（コード、長文テキスト など）  
+    - クエリと取得ドキュメントの間に一貫したミスマッチがあるか？  
+2. **モデル間で結果を比較**  
+    - モデルごとに関連度の判断基準が異なるか？  
+    - モデル間で大きく意見が分かれる部分はどこか？  
+3. **ドメイン固有の観点**  
+    - 専門用語や業界用語は適切に扱われているか？  
+    - モデルはドメイン文脈をどれだけ理解しているか？  
+
+### <i class="fa-solid fa-chalkboard"></i> 最終決定
+
+定量的・定性的な洞察を組み合わせて、次のバランスを取りながら判断します。
+
+- **純粋な性能**: どのモデルが最も高いメトリクスを達成しているか  
+- **特定の強み**: アプリケーションで特に重要な領域で優れているモデルはどれか  
+- **実用面**: コスト、レイテンシ、デプロイ要件などの要素  
+
+標準ベンチマークの結果も、この評価プロセスに組み込むことを忘れないでください。
+
+理想のモデルは、必ずしも平均スコアが最も高いモデルとは限りません。特定の要件を最もよく満たし、アプリケーションにとって重要なクエリとドキュメントタイプで良好に機能するモデルが最適です。
+
+この評価プロセスは、モデルを選定するだけでなく、その強みと限界を理解するためのものでもあります。この知識は、埋め込みモデルを中心としたより効果的なシステム設計や、適切な性能期待の設定に役立ちます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,192 @@
+---
+title: トークン化と検索
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PySearches from '!!raw-loader!./_snippets/400_searches.py';
+
+前のセクションでは、[トークン化がフィルターに与える影響](./300_filters.mdx)をご覧いただきました。トークン化はキーワード検索にも似たように、しかし同一ではない形で影響します。このセクションでは、異なるトークン化方式が検索結果にどのような影響を及ぼすかを見ていきます。
+
+:::info ハイブリッド検索の場合は？
+ハイブリッド検索は、キーワード検索と ベクトル 検索の結果を組み合わせます。そのため、トークン化はハイブリッド検索のキーワード検索部分にのみ影響し、 ベクトル 検索部分には影響しません。
+
+本コースではハイブリッド検索を個別には扱いませんが、ここで説明するキーワード検索への影響は、ハイブリッド検索のキーワード検索部分にも当てはまります。  
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索への影響
+
+### <i class="fa-solid fa-chalkboard"></i> キーワード検索におけるトークン化の影響
+
+前のセクションと同様の方法を使いますが、今回はフィルターではなくキーワード検索を実行します。
+
+キーワード検索は [BM25f アルゴリズム](https://en.wikipedia.org/wiki/Okapi_BM25)で結果を順位付けします。そのため、トークン化がキーワード検索に与える影響は二重です。
+
+1. まず、トークン化は結果が検索結果に含まれるかどうかを決定します。検索クエリ内のトークンがオブジェクト内のトークンとまったく一致しない場合、そのオブジェクトは検索結果に含まれません。  
+2. 次に、トークン化は検索結果の順位に影響します。BM25f アルゴリズムは一致するトークンの数を考慮するため、どのトークンが一致対象となるかを決めるトークン化方式がランキングに影響します。
+
+### <i class="fa-solid fa-code"></i> 検索セットアップ
+
+各キーワードクエリは以下のようになります。
+
+再利用可能な関数を作成し、キーワード検索を実行してスコア付きの上位結果を表示します。
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# FilterExampleBasic"
+  endMarker="# END FilterExampleBasic"
+  language="py"
+/>
+
+### <i class="fa-solid fa-code"></i> 例
+
+#### 「**Clark:**」 vs 「**clark**」 - 不揃いなテキスト
+
+キーワード検索もフィルターと同様にトークン化の影響を受けますが、微妙な違いがあります。
+
+ここでは、TV 番組タイトル「Lois & Clark: The New Adventures of Superman」からさまざまな部分文字列を検索した例を示します。
+
+以下の表は、クエリがタイトルに一致したかどうかと、そのスコアを示しています。
+
+|               | `word` | `lowercase` | `whitespace` | `field` |
+|---------------|--------|-------------|--------------|---------|
+| `"clark"`       | 0.613     | ❌           | ❌          | ❌     |
+| `"Clark"`       | 0.613     | ❌           | ❌          | ❌     |
+| `"clark:" `     | 0.613     | 0.48         | ❌          | ❌     |
+| `"Clark:" `     | 0.613     | 0.48         | 0.48        | ❌     |
+| `"lois clark"`  | 1.226     | 0.48         | ❌          | ❌     |
+| `"clark lois"`  | 1.226     | 0.48         | ❌          | ❌     |
+
+<details>
+  <summary>Python query & output</summary>
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# ClarkExample"
+  endMarker="# END ClarkExample"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# ClarkResults"
+  endMarker="# END ClarkResults"
+  language="text"
+/>
+
+</details>
+
+ここではフィルターの例と同じオブジェクトが返されていますが、スコアに違いがある点に注目してください。
+
+たとえば、`"lois clark"` の検索は `"clark"` の検索よりも高いスコアを返します。これは BM25f アルゴリズムが一致トークンの数を考慮するためであり、検索クエリにできるだけ多くの一致トークンを含めると有利になるためです。
+
+もう一つの違いは、キーワード検索ではクエリ内のトークンのいずれかが一致すればオブジェクトが返されることです。フィルターの場合は演算子によって挙動が変わり、たとえば `"Equal"`、`"ContainsAny"`、`"ContainsAll"` などを使い分ける必要があります。
+
+次のセクションではこれを示し、ストップワードがどのように扱われるかも説明します。
+
+#### 「**A mouse**」 vs 「**mouse**」 - ストップワード
+
+ここでは、「computer mouse」というフレーズの変形を検索し、一部のクエリに追加の単語を含めています。
+
+では、結果を見てみましょう。
+
+**`"computer mouse"` に対するマッチ**
+
+|                              | `word`    | `lowercase` | `whitespace` | `field` |
+|------------------------------|-----------|-------------|--------------|---------|
+| `"computer mouse"`           | 0.889     | 0.819       | 1.01         | 0.982   |
+| `"Computer Mouse"`           | 0.889     | 0.819       | ❌            | ❌      |
+| `"a computer mouse"`         | 0.764     | 0.764       | 0.849        | ❌      |
+| `"computer mouse pad" `      | 0.764     | 0.764       | 0.849        | ❌      |
+
+**`"a computer mouse"` に対するマッチ**
+
+|                              | `word`    | `lowercase` | `whitespace` | `field` |
+|------------------------------|-----------|-------------|--------------|---------|
+| `"computer mouse"`           | 0.889     | 0.819       | 1.01         | ❌      |
+| `"Computer Mouse"`           | 0.889     | 0.819       | ❌           | ❌      |
+| `"a computer mouse"`         | 0.764     | 1.552       | 1.712        | 0.982   |
+| `"computer mouse pad" `      | 0.764     | 0.688       | 0.849        | ❌      |
+
+<details>
+  <summary>Python query & output</summary>
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# MouseExample"
+  endMarker="# END MouseExample"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# MouseResults"
+  endMarker="# END MouseResults"
+  language="text"
+/>
+
+</details>
+
+結果はフィルターの例と似ていますが、より微妙で興味深い違いがあります。
+
+`word` トークン化では、`computer mouse` の検索結果は `a computer mouse` の検索結果と同一になります。これはストップワード `a` が検索では考慮されないためです。
+
+しかし、`"computer mouse"` と `"a computer mouse"` のようにストップワードだけが異なるオブジェクトでもスコアが異なる点に注目してください。これは BM25f アルゴリズムが[ストップワードをインデックスする](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords)ためで、スコアには影響があります。
+
+ユーザーとしてはこの点を念頭に置き、コレクション定義でストップワードを設定して希望の挙動に合わせることが可能です。
+
+また、`lowercase` と `whitespace` のトークン化方式では、クエリ内のストップワードは削除されません。
+
+この挙動により、ストップワードを明示的に検索クエリに含めたいユーザーも対応可能です。
+#### 「**variable_name**」と「**variable name**」 − 記号
+
+以下のテーブルは、文字列 `variable_name` を使用した keyword 検索の結果と、それに対応するスコアを示しています。
+
+|                              | `word`    | `lowercase` | `whitespace` | `field` |
+|------------------------------|-----------|-------------|--------------|---------|
+| `"variable_name"`            | 0.716     | 0.97        | 1.27         | 0.982   |
+| `"Variable_Name:" `          | 0.716     | 0.97        | ❌            | ❌      |
+| `"Variable Name:" `          | 0.716     | ❌           | ❌            | ❌      |
+| `"a_variable_name"`          | 0.615     | ❌           | ❌           | ❌      |
+| `"the_variable_name"`        | 0.615     | ❌           | ❌           | ❌      |
+| `"variable_new_name" `       | 0.615     | ❌           | ❌           | ❌      |
+
+<details>
+  <summary>Python query & output</summary>
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# UnderscoreExample"
+  endMarker="# END UnderscoreExample"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PySearches}
+  startMarker="# UnderscoreResults"
+  endMarker="# END UnderscoreResults"
+  language="text"
+/>
+
+</details>
+
+これらの結果は、フィルターの例と同様です。検索で重要となる記号がデータに含まれている場合は、`lowercase` や `whitespace` など、記号を保持する tokenization 方法の使用を検討してください。
+
+### <i class="fa-solid fa-chalkboard"></i> 議論
+
+keyword 検索と tokenization については以上です。フィルターの場合と同様に、どの tokenization 方法を選択するかは、検索戦略全体の大きな要素となります。
+
+keyword 検索における tokenization の一般的なアドバイスは、[フィルターの場合](./300_filters.mdx#-discussions)と似ています。まずは `word` を使用し、データ内で記号や大文字・小文字が重要な情報を持つ場合は `lowercase` や `whitespace` などを検討してください。
+
+`field` tokenization は非常に厳格で、完全に一致する文字列が同じ順序で存在しないオブジェクトはヒットしないため、keyword 検索には適さない場合があります。
+
+また、keyword 検索は順位付きの結果を返します。そのため、tokenization は結果の集合だけでなく、その集合内での順位にも影響します。
+
+これらの点を踏まえ、データとユーザーのニーズに最適な tokenization 戦略を設定してください。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

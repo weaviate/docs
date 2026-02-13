@@ -1,0 +1,105 @@
+---
+title: 適切な検索タイプの選択
+description: 最適な結果を得るために Weaviate の検索戦略を選択します。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/20_selection.py';
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+適切な検索タイプを選択することは、効果的な検索タスクの鍵です。ニーズに合った検索タイプの選び方を見ていきましょう。
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> 指針
+
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル検索の利用タイミング
+
+ベクトル検索は最も堅牢で多用途な検索タイプです。そのため、意味、すなわちベクトル表現が最も重要となる状況に適しています。
+
+クロスモーダル、オブジェクトベース、または多言語検索では、ベクトル検索が唯一の実用的な選択肢となる場合があります。
+
+ベクトル検索から始めるべきケース:
+
+- **非テキストまたはクロスモーダル検索**: テキストで画像を探す、あるいはその逆など、異なるメディア間で検索する際に必須です。
+- **オブジェクトベースの検索**: 抽出したテキストチャンク、画像、動画に似たオブジェクトを探す場合、ベクトル検索がおそらく唯一の実用的な解決策です。
+- **多言語コンテキスト**: 従来のキーワード検索では不十分な多言語検索における定番の選択肢です。
+- **複雑なクエリ理解**: 文脈や言語のニュアンスを理解する必要がある複雑なクエリに対して、ベクトル検索は優れた性能を発揮します。
+
+### <i class="fa-solid fa-chalkboard"></i> キーワード検索の利用タイミング
+
+キーワード検索は、検索語を正確に一致させることが期待・要求される場合に有用です。法律、医療、技術分野など、正確な用語が重要な特定ドメインが該当します。
+
+また、ユーザーが入力ミスをしにくく、サニタイズされたフォームやドロップダウンメニューを通じて予測可能な語を入力する場合にも効果的です。
+
+まとめると、キーワード検索から始めるべきケース:
+
+**正確な用語の一致**: 法律・医療・技術分野など、特定の用語が重要な領域に最適です。  
+**予測可能なユーザー入力**: フォームやドロップダウンなど、定義済みの語を入力する状況で効果的です。  
+**シンプルで直接的なクエリ**: 自然言語処理の複雑さが不要な、単純な検索ニーズに適しています。  
+**高速かつ特定の結果**: 特定のキーワードやフレーズに基づく情報を素早く取得するのに向いています。
+
+### <i class="fa-solid fa-chalkboard"></i> ハイブリッド検索の利用タイミング
+
+ハイブリッド検索は「扱いづらい」状況に最適な選択です。
+
+ハイブリッド検索はベクトル検索とキーワード検索の結果セットを組み合わせるため、ベクトル検索の堅牢さとキーワード検索の精度の両方をバランス良く提供できます。
+
+その結果、ベクトル検索やキーワード検索の特定のユースケースに当てはまらないほとんどの検索ニーズに対して、ハイブリッド検索は一般的に優れた選択肢となります。
+
+まとめると、ハイブリッド検索を検討すべきケース:
+
+- **幅広いトピック範囲**: 対象コーパスが多岐にわたるテーマを含む場合に効果的です。
+- **多様な検索シナリオ**: 現実のシナリオでは、ベクトルとキーワードの両検索結果を組み合わせる必要があることが多く、そのような場面で役立ちます。
+- **予測不能なユーザー入力**: ユーザーが自由にクエリを入力できる実際の多くのシーンに最適です。あるユーザーは直接一致を求める一方、別のユーザーは全体的な意味を重視する場合があります。
+
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
+
+<Quiz questions={varName} />
+
+Any quiz questions
+
+### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+Try out ...
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+
+:::info
+Add summary
+:::
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->

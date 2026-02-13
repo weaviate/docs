@@ -1,0 +1,496 @@
+---
+title: ユーザー管理
+sidebar_label: ユーザー管理
+sidebar_position: 1
+image: og/docs/configuration.jpg
+# tags: ['rbac', 'roles', 'configuration', 'authorization']
+---
+
+import Link from '@docusaurus/Link';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py';
+import TSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts';
+import UserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.users.py';
+import UserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.users.ts';
+import OidcUserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.users.py';
+import OidcUserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.users.ts';
+
+
+:::info `v1.29` と `v1.30` で追加
+ロールベースアクセス制御 ( RBAC ) は Weaviate `v1.29` から一般提供されています。  
+ユーザー管理機能は `v1.30` から利用可能です。
+:::
+
+Weaviate では、ロールベースアクセス制御 ( RBAC ) により、ロールを定義し、それぞれに権限を割り当てられます。ユーザーはロールに紐付けられ、そのロールに設定された権限を継承します。
+
+Weaviate には複数種類のユーザーが存在します。**データベースユーザー** は Weaviate インスタンスによって完全に管理され、**OIDC** ユーザーは外部アイデンティティプロバイダーによって管理されます。どちらのタイプも RBAC と併用できます。 
+
+このページでは、Weaviate クライアントライブラリーを使用して **ユーザー** とそのロールをプログラムで管理する方法を示します。
+
+:::note Weaviate におけるユーザータイプ
+
+<!-- NOTE: left out AUTHORIZATION_ADMINLIST_USERS to dissuade usage -->
+
+内部的には、Weaviate は次の 3 種類のユーザーを区別します。
+
+- `db_user`: API を通じて完全に管理できるデータベースユーザー
+- `db_env_user`: `AUTHENTICATION_APIKEY_USERS` 環境変数で定義され、変数の変更と Weaviate 再起動によってのみ更新可能なデータベースユーザー
+- `oidc`: 外部 OIDC サービスでのみ作成/削除できるユーザー
+
+:::
+
+## ユーザー管理 <i class="fas fa-user-edit"></i> {#user-management}
+
+### ユーザー一覧
+
+この例では、Weaviate 内のすべてのユーザー (`db_user`, `db_env_user`, `oidc`) を取得する方法を示します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START ListAllUsers"
+    endMarker="# END ListAllUsers"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={UserTSCode}
+    startMarker="// START ListAllUsers"
+    endMarker="// END ListAllUsers"
+    language="ts"
+  />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>結果例</summary>
+
+```text
+[
+  UserDB(user_id='custom-user', role_names=['viewer', 'testRole'], user_type=<UserTypes.DB_DYNAMIC: 'db_user'>, active=True),
+  UserDB(user_id='root-user', role_names=['root'], user_type=<UserTypes.DB_STATIC: 'db_env_user'>, active=True)
+]
+```
+
+</details>
+
+### データベースユーザーの作成 {#create-a-user}
+
+この例では `custom-user` というユーザーを作成します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START CreateUser"
+    endMarker="# END CreateUser"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={UserTSCode}
+    startMarker="// START CreateUser"
+    endMarker="// END CreateUser"
+    language="ts"
+  />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>結果例</summary>
+
+```text
+RXF1dU1VcWM1Q3hvVndYT0F1OTBOTDZLZWx0ME5kbWVJRVdPL25EVW12QT1fMXlDUEhUNjhSMlNtazdHcV92MjAw
+```
+
+</details>
+
+
+
+### データベースユーザーの削除
+
+この例では `custom-user` というユーザーを削除します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START DeleteUser"
+    endMarker="# END DeleteUser"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={UserTSCode}
+    startMarker="// START DeleteUser"
+    endMarker="// END DeleteUser"
+    language="ts"
+  />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### データベースユーザー API キーのローテーション {#rotate-user-api-key}
+
+この例では `custom-user` の API キーを更新（ローテーション）します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START RotateApiKey"
+    endMarker="# END RotateApiKey"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={UserTSCode}
+    startMarker="// START RotateApiKey"
+    endMarker="// END RotateApiKey"
+    language="ts"
+  />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>実行結果の例</summary>
+
+```text
+SSs3WGVFbUxMVFhlOEsxVVMrQVBzM1VhQTJIM2xXWngwY01HaXFYVnM1az1fMXlDUEhUNjhSMlNtazdHcV92MjAw
+```
+
+</details>
+
+## データベースユーザー：権限管理 <i class="fas fa-user-lock"></i> {#user-permissions-management}
+
+### データベースユーザーへのロール割り当て
+
+カスタムユーザーには、ゼロ個を含む任意の数のロールを割り当てることができます。ロールはあらかじめ定義されたロール（例： `viewer`）でも、カスタムロールでもかまいません。
+
+この例では、カスタムロール `testRole` と、事前定義済みロール `viewer` を `custom-user` に割り当てます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START AssignRole"
+    endMarker="# END AssignRole"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={UserTSCode}
+    startMarker="// START AssignRole"
+    endMarker="// END AssignRole"
+    language="ts"
+  />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### データベースユーザーからのロール削除
+
+特定のユーザーから 1 つ以上のロールを取り消すことができます。
+
+この例では、ユーザー `custom-user` からロール `testRole` を削除します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START RevokeRoles"
+    endMarker="# END RevokeRoles"
+    language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+      text={UserTSCode}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="ts"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+
+### データベース ユーザーのロール取得
+
+任意のユーザーのロール情報を取得します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START ListUserRoles"
+    endMarker="# END ListUserRoles"
+    language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={UserTSCode}
+    startMarker="// START ListUserRoles"
+    endMarker="// END ListUserRoles"
+    language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>結果例</summary>
+
+```text
+testRole
+viewer
+```
+
+</details>
+
+## OIDC ユーザー: 権限管理 <i class="fas fa-user-lock"></i> {#oidc-user-permissions-management}
+
+[OIDC](/deploy/configuration/oidc.md) を使用すると、アイデンティティ プロバイダーがユーザーを認証してトークンを発行し、それを Weaviate が検証します。これらのユーザーには RBAC を用いてカスタム権限を持つロールを割り当てられます。
+
+### OIDC ユーザーへのロール割り当て
+
+OIDC ユーザーには、ロールを 0 個以上割り当てることができます。ロールはあらかじめ定義されたロール（例: `viewer`）でも、カスタム ロールでも構いません。
+
+この例では、カスタム ロール `testRole` と、定義済みロール `viewer` を `custom-user` に割り当てます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={OidcUserPyCode}
+    startMarker="# START AssignOidcUserRole"
+    endMarker="# END AssignOidcUserRole"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={OidcUserTSCode}
+    startMarker="// START AssignOidcUserRole"
+    endMarker="// END AssignOidcUserRole"
+    language="ts"
+  />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### OIDC ユーザーからのロール削除
+
+特定の OIDC ユーザーから 1 つ以上のロールを取り消すことができます。
+
+この例では、ユーザー `custom-user` からロール `testRole` を削除します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={OidcUserPyCode}
+    startMarker="# START RevokeOidcUserRoles"
+    endMarker="# END RevokeOidcUserRoles"
+    language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={OidcUserTSCode}
+    startMarker="// START RevokeOidcUserRoles"
+    endMarker="// END RevokeOidcUserRoles"
+    language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### OIDC ユーザーのロール取得
+
+OIDC ユーザーのロール情報を取得します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={OidcUserPyCode}
+    startMarker="# START ListOidcUserRoles"
+    endMarker="# END ListOidcUserRoles"
+    language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+    text={OidcUserTSCode}
+    startMarker="// START ListOidcUserRoles"
+    endMarker="// END ListOidcUserRoles"
+    language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>結果例</summary>
+
+```text
+testRole
+viewer
+```
+
+</details>
+
+
+
+## 追加リソース
+
+-  RBAC ：概要](./index.mdx)
+-  RBAC ：設定](/deploy/configuration/configuring-rbac.md)
+-  RBAC ：ロールの管理](./manage-roles.mdx)
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />
+

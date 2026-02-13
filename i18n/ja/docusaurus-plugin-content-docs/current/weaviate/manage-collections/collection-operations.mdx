@@ -1,0 +1,734 @@
+---
+title: 基本的なコレクション操作
+sidebar_label: Collection operations (CRUD)
+sidebar_position: 1
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+Weaviate のすべてのオブジェクトは、必ず 1 つのコレクションに属します。ここに示す例を参考に、コレクションを管理してください。
+
+:::note Terminology
+新しい Weaviate のドキュメントでは「コレクション」と呼称しますが、古いドキュメントでは「クラス」と表記されています。両方の用語がドキュメント中に登場することがあります。
+:::
+
+import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
+
+<VectorConfigSyntax />
+
+## コレクションの作成
+
+コレクションを作成するには、少なくともコレクション名を指定します。プロパティを指定しない場合、[`auto-schema`](../config-refs/collections.mdx#auto-schema) が自動でプロパティを作成します。
+
+import InitialCaps from "/_includes/schemas/initial-capitalization.md";
+
+<InitialCaps />
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BasicCreateCollection"
+      endMarker="# END BasicCreateCollection"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START BasicCreateCollection"
+    endMarker="# END BasicCreateCollection"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BasicCreateCollection"
+      endMarker="// END BasicCreateCollection"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Production ready collections
+
+-  **データスキーマを手動で定義**:  
+  [`auto-schema`](../config-refs/collections.mdx#auto-schema) 機能を使用せず、[コレクションのプロパティを手動で定義](#create-a-collection-and-define-properties)してください。
+-  **コレクションを作り過ぎない**:  
+  コレクションが多すぎると、メモリ使用量の増加やクエリ性能の低下など、スケーラビリティの問題が発生する可能性があります。代わりに、1 つのコレクションを複数のテナントに分割する [マルチテナンシー](/weaviate/manage-collections/multi-tenancy) の利用を検討してください。詳細は [スターターガイド: コレクションのスケーリング制限](/weaviate/starter-guides/managing-collections/collections-scaling-limits) を参照してください。
+:::
+
+<!--
+import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
+
+<CollectionsCountLimit />
+-->
+
+## コレクションの作成とプロパティの定義
+
+プロパティとは、コレクション内のデータフィールドです。各プロパティには名前とデータ型があります。
+
+<details>
+  <summary>
+    追加情報
+  </summary>
+
+プロパティを使用して、データ型、インデックス特性、トークナイゼーションなどの追加パラメーターを設定できます。
+
+詳細は以下を参照してください。
+
+- [リファレンス: 設定: スキーマ](/weaviate/config-refs/collections.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/schema">
+    API リファレンス: REST: スキーマ
+  </SkipLink>
+- [利用可能なデータ型](../config-refs/datatypes.md)
+
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateCollectionWithProperties"
+      endMarker="# END CreateCollectionWithProperties"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START CreateCollectionWithProperties"
+    endMarker="# END CreateCollectionWithProperties"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+
+
+## ベクトライザー付きコレクションの作成
+
+オブジェクトを作成したり ベクトル 検索クエリを実行したりする際に ベクトル 埋め込みを生成するため、コレクションに `vectorizer` を指定します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START Vectorizer"
+      endMarker="# END Vectorizer"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START Vectorizer"
+    endMarker="# END Vectorizer"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+:::info ベクトライザー設定
+
+ベクトライザーおよび ベクトル インデックス設定の詳細は、[コレクションの管理: Vectorizer and vector index](./vector-config.mdx) をご覧ください。
+
+:::
+
+## Auto-schema の無効化
+
+デフォルトでは、Weaviate は存在しないコレクションやプロパティを自動で作成します。コレクションを手動で設定すると、設定をより細かく制御できます。
+
+[`auto-schema`](../config-refs/collections.mdx#auto-schema) を無効化するには、システム設定ファイルで `AUTOSCHEMA_ENABLED: 'false'` を設定してください。
+
+## コレクションが存在するかの確認
+
+指定したコレクションが存在するかどうかを示す boolean 値を取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckIfExists"
+      endMarker="# END CheckIfExists"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CheckIfExists"
+      endMarker="// END CheckIfExists"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+## 単一コレクション定義の取得
+
+スキーマからコレクション定義を取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadOneCollection"
+      endMarker="# END ReadOneCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ReadOneCollection"
+      endMarker="# END ReadOneCollection"
+      language="pyv3"
+    />
+  </TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ReadOneCollection"
+    endMarker="// END ReadOneCollection"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ReadOneCollection"
+    endMarker="// END ReadOneCollection"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ReadOneCollection"
+    endMarker="// END ReadOneCollection"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ReadOneCollection"
+      endMarker="// END ReadOneCollection"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>サンプル設定: Text objects</summary>
+
+この Text objects 向け設定では、以下を定義しています。
+
+- コレクション名 ( `Article` )
+- ベクトライザー モジュール ( `text2vec-cohere` ) とモデル ( `embed-multilingual-v2.0` )
+- プロパティ セット ( `title` 、 `body` ) のデータ型は `text`
+
+```json
+{
+  "class": "Article",
+  "vectorizer": "text2vec-cohere",
+  "moduleConfig": {
+    "text2vec-cohere": {
+      "model": "embed-multilingual-v2.0"
+    }
+  },
+  "properties": [
+    {
+      "name": "title",
+      "dataType": ["text"]
+    },
+    {
+      "name": "body",
+      "dataType": ["text"]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>サンプル設定: Nested objects</summary>
+
+:::info `v1.22` で追加
+:::
+
+この Nested objects 向け設定では、以下を定義しています。
+
+- コレクション名 ( `Person` )
+- ベクトライザー モジュール ( `text2vec-huggingface` )
+- プロパティ セット ( `last_name` 、 `address` )
+  - `last_name` は `text` データ型
+  - `address` は `object` データ型
+- `address` プロパティには 2 つのネストされたプロパティ ( `street` と `city` ) がある
+
+```json
+{
+  "class": "Person",
+  "vectorizer": "text2vec-huggingface",
+  "properties": [
+    {
+      "dataType": ["text"],
+      "name": "last_name"
+    },
+    {
+      "dataType": ["object"],
+      "name": "address",
+      "nestedProperties": [
+        { "dataType": ["text"], "name": "street" },
+        { "dataType": ["text"], "name": "city" }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>サンプル設定: Generative search</summary>
+
+この [検索拡張生成](../search/generative.md) 向け設定では、以下を定義しています。
+
+- コレクション名 ( `Article` )
+- デフォルト ベクトライザー モジュール ( `text2vec-openai` )
+- 生成モジュール ( `generative-openai` )
+- プロパティ セット ( `title` 、 `chunk` 、 `chunk_no` 、 `url` )
+- `url` プロパティのトークナイズ オプション
+- `url` プロパティの ベクトル 化オプション (skip ベクトル 化)
+
+```json
+{
+  "class": "Article",
+  "vectorizer": "text2vec-openai",
+  "vectorIndexConfig": {
+    "distance": "cosine"
+  },
+  "moduleConfig": {
+    "generative-openai": {}
+  },
+  "properties": [
+    {
+      "name": "title",
+      "dataType": ["text"]
+    },
+    {
+      "name": "chunk",
+      "dataType": ["text"]
+    },
+    {
+      "name": "chunk_no",
+      "dataType": ["int"]
+    },
+    {
+      "name": "url",
+      "dataType": ["text"],
+      "tokenization": "field",
+      "moduleConfig": {
+        "text2vec-openai": {
+          "skip": true
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>サンプル設定: Images</summary>
+
+この Image search 向け設定では、以下を定義しています。
+
+- コレクション名 ( `Image` )
+- ベクトライザー モジュール ( `img2vec-neural` )
+  - `image` プロパティで画像データを保存するようコレクションを設定
+- ベクトル インデックス距離指標 ( `cosine` )
+- プロパティ セット ( `image` ) で、 `image` プロパティを `blob` に設定
+
+画像検索については、[Image search](../search/image.md) を参照してください。
+
+```json
+{
+  "class": "Image",
+  "vectorizer": "img2vec-neural",
+  "vectorIndexConfig": {
+    "distance": "cosine"
+  },
+  "moduleConfig": {
+    "img2vec-neural": {
+      "imageFields": ["image"]
+    }
+  },
+  "properties": [
+    {
+      "name": "image",
+      "dataType": ["blob"]
+    }
+  ]
+}
+```
+
+</details>
+
+
+
+## すべてのコレクション定義の読み取り
+
+データベースのスキーマを取得して、すべてのコレクション定義を取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadAllCollections"
+      endMarker="# END ReadAllCollections"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START ReadAllCollections"
+    endMarker="# END ReadAllCollections"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ReadAllCollections"
+    endMarker="// END ReadAllCollections"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ReadAllCollections"
+    endMarker="// END ReadAllCollections"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ReadAllCollections"
+    endMarker="// END ReadAllCollections"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ReadAllCollections"
+      endMarker="// END ReadAllCollections"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## コレクション定義の更新
+
+import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
+
+<RaftRFChangeWarning />
+
+コレクション定義を更新して、[変更可能なコレクション設定](../config-refs/collections.mdx#mutability) を変更できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateCollection"
+      endMarker="# END UpdateCollection"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START UpdateCollection"
+    endMarker="# END UpdateCollection"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START UpdateCollection"
+      endMarker="// END UpdateCollection"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+
+## コレクションの削除
+
+import CautionSchemaDeleteClass from "/_includes/schema-delete-class.mdx";
+
+<CautionSchemaDeleteClass />
+
+## プロパティの追加
+
+<details>
+  <summary>
+    データインポート後のインデックス制限
+  </summary>
+
+データをインポートする前にコレクションのプロパティを追加する場合、インデックスの制限はありません。<br/><br/>
+
+新しいプロパティをデータ インポート後に追加すると、インデックスに影響があります。<br/><br/>
+
+プロパティ インデックスはインポート時に構築されます。データをインポートした後に新しいプロパティを追加した場合、既存オブジェクトのインデックスは自動的に更新されず、新しいプロパティ インデックスに追加されません。つまり、インデックスには新しいオブジェクトしか含まれないため、クエリ結果が期待どおりにならない可能性があります。<br/><br/>
+
+コレクション内のすべてのオブジェクトを含むインデックスを作成するには、次のいずれかを行ってください。
+
+- 新規コレクション: オブジェクトをインポートする前に、コレクションのすべてのプロパティを追加します。
+- 既存コレクション: コレクションから既存データをエクスポートし、新しいプロパティを含めて再作成し、データを更新済みコレクションにインポートします。
+
+現在、プロパティ追加後にデータを再インデックスできるようにする再インデックス API を開発中です。今後のリリースで利用可能になる予定です。
+
+</details>
+
+import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.add.mdx";
+
+<CodeSchemaAddProperties />
+
+## 転置インデックスパラメーターの設定
+
+各コレクションでは、さまざまな [転置インデックスパラメーター](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) を設定できます。パラメーターにはコレクション レベルで設定するものと、プロパティ レベルで設定するものがあります。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetInvertedIndexParams"
+    endMarker="# END SetInvertedIndexParams"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## 追加リソース
+
+- [コレクション管理: ベクトライザーとベクトルインデックス](./vector-config.mdx)
+- [参照: コレクション定義](/weaviate/config-refs/collections.mdx)
+- [コンセプト: データ構造](../concepts/data.md)
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
+    API リファレンス: REST: スキーマ
+  </SkipLink>
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

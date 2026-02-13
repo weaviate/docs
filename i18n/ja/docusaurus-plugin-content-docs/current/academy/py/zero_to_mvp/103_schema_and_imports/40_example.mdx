@@ -1,0 +1,288 @@
+---
+title: Weaviate インスタンスをデータで満たしましょう！
+description: 効率的なデータ設定のための Weaviate スキーマ作成例をご覧ください。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCodeExample from '!!raw-loader!./_snippets/40_import_example_1.py';
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/ukhCSeuVJGY' controls='true' />
+<br/>
+
+ここまで学んだことを実践するときです！このセクションでは次を行います。
+
+- 小さなデータセットをダウンロード
+- データセットに対応するスキーマを構築
+- それをあなたの WCD インスタンスへインポート
+
+### <i class="fa-solid fa-chalkboard"></i> 使用データセット
+
+今回は人気クイズ番組 *Jeopardy!* のデータを使用します。
+
+元のデータセットは [Kaggle 上](https://www.kaggle.com/datasets/tunguz/200000-jeopardy-questions) にありますが、ここでは [100 行だけの小さなサブセット](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_100.json) を利用します。
+
+以下はデータの数行をプレビューしたものです。
+
+|    | 放送日        | ラウンド            |   金額 | カテゴリ           | 問題文                                                                                                            | 解答                                      |
+|---:|:--------------|:--------------------|-------:|:-------------------|:------------------------------------------------------------------------------------------------------------------|:------------------------------------------|
+|  0 | 2006-11-08    | Double Jeopardy!    |     800 | AMERICAN HISTORY   | Abraham Lincoln died across the street from this theatre on April 15, 1865                                        | Ford's Theatre (the Ford Theatre accepted)|
+|  1 | 2005-11-18    | Jeopardy!           |     200 | RHYME TIME         | Any pigment on the wall so faded you can barely see it                                                            | faint paint                               |
+|  2 | 1987-06-23    | Double Jeopardy!    |     600 | AMERICAN HISTORY   | After the original 13, this was the 1st state admitted to the union                                               | Vermont                                   |
+
+今回はシンプルに、`Round`、`Value`、`Question`、`Answer` 列のみを Weaviate に投入します。
+
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+次のステップは何だったか思い出せますか？
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> スキーマの構築
+
+次のステップはスキーマを作成し、データを Weaviate にどう表現するかを決定することです。
+
+### <i class="fa-solid fa-code"></i> クラス名とプロパティの追加
+
+まずは名前が必要です。名前は各行（単数形）を表すので、`JeopardyQuestion` としました。次にプロパティと型を定義します。
+
+先ほど述べたように、`Round`、`Value`、`Question`、`Answer` 列を Weaviate に投入します。Weaviate の `properties` 用の名前が必要ですが、GraphQL の慣例に従いクラスは大文字で、プロパティは小文字にするので、名前は `round`、`value`、`question`、`answer` になります。
+
+次にデータ型を選択します。`round`、`question`、`answer` はすべてテキストなので `text` を選びます。`value` は数値ですが、*Jeopardy!* の金額は常に整数なので `int` を使用します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Class & property definitions"
+  endMarker="# Specify a vectorizer"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-code"></i> ベクトライザーの設定と構成
+
+この例では、推論サービスを使用してオブジェクトベクトルを取得します。そのため、クラスの `vectorizer` を設定する必要があります。今回は `text2vec-openai` を使用し、モジュールの設定もクラスレベルで行います。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Specify a vectorizer"
+  endMarker="# Module settings"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティをベクトル化から除外
+
+ここでプロパティレベルのモジュール設定に気付いたかもしれません。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Property-level module configuration for `round`"
+  endMarker="# End of property-level module configuration"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+この設定により `round` プロパティはベクトル化対象から除外されます。では、なぜそうするのでしょうか？
+
+その理由は、問題が "Jeopardy!" ラウンドか "Double Jeopardy!" ラウンドかは、意味に大きな影響を与えないからです。ベクトライザーはオブジェクトのベクトル表現を作成します。テキストオブジェクトの場合、Weaviate は内部規則と設定に従ってテキストを結合し、その結合テキストをベクトル化します。
+
+したがって `round` プロパティをベクトル化する場合と除外する場合では、例えば次のような違いになります。
+
+```json
+// If the property is vectorized
+answer {answer_text} question {question_text} category {category_text}
+```
+
+対して:
+
+```json
+// If the property is skipped
+answer {answer_text} question {question_text}
+```
+
+より具体的には、次のような違いです。
+
+```json
+// If the property is vectorized
+answer faint paint question any pigment on the wall so faded you can barely see it category double jeopardy!
+```
+
+対して:
+
+```json
+// If the property is skipped
+answer faint paint question any pigment on the wall so faded you can barely see it
+```
+
+追加情報はクイズ項目の意味を捉える上でそれほど重要ではありません。主要な情報は問題文と解答、場合によってはカテゴリにあるからです（カテゴリはまだ使用していません）。
+
+:::tip ベクトル化をスキップしてもフィルタリングには影響なし
+重要な点として、`round` 列をベクトル化から除外しても、`round` の値で結果をフィルタリングする能力には影響しません。たとえば `Double Jeopardy!` の問題だけを検索したい場合でも可能です。
+:::
+### <i class="fa-solid fa-code"></i> クラスの作成
+
+これでスキーマにクラスを追加できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Define the class"
+  endMarker='# Finished creating the class'
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+次に、そのクラスのスキーマを取得して、正常に作成されたかどうかを確認できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker='# Retrieve "JeopardyQuestion" class schema'
+  endMarker='# END Retrieve "JeopardyQuestion" class schema'
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> スキーマレスポンス全文を表示</summary>
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="// RETRIEVED CLASS SCHEMA"
+  endMarker="// END RETRIEVED CLASS SCHEMA"
+  language="json"
+/>
+
+</details>
+
+:::note 取得したスキーマはさらに長い！
+ここで多くの詳細を定義しましたが、取得したスキーマはさらに長くなっています。追加されているのは、 ベクトル インデックス、 転置インデックス、シャーディング、トークン化に関する情報です。これらの多くについては後ほど説明します。
+:::
+
+例のレスポンスに近いスキーマが表示されたら、素晴らしいです。データのインポート準備が整いました。
+
+## <i class="fa-solid fa-square-chevron-right"></i> データのインポート
+
+ここでは、必要なデータをインポートする方法と、バッチを設定して使用する方法を説明します。
+
+### <i class="fa-solid fa-code"></i> データの読み込み
+
+データはオンラインで公開されていますので、次のように取得して読み込んでください。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Load data"
+  endMarker="# Finished loading data"
+  language="py"
+/>
+
+### <i class="fa-solid fa-code"></i> バッチ設定とデータのインポート
+
+続いて、バッチインポートプロセスを設定しましょう。前述のとおり、 Weaviate のバッチインポートプロセスではデータを一括かつ並列で送信できます。
+
+Python では、次のようなコンテキストマネージャーを使用することをおすすめします。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Context manager for batch import"
+  endMarker="# Build data objects & add to batch"
+  language="py"
+/>
+
+ここで `batch_size` と `num_workers` パラメーターを使用している点に注目してください。`batch_size` は 1 バッチあたりに送信するオブジェクト数を、`num_workers` は並列化に使用するプロセス数を指定します。
+
+次のステップはデータオブジェクトを作成し、それらをバッチプロセスに追加することです。対応する列のデータを適切な Weaviate プロパティに渡して、Python の辞書としてオブジェクトを構築し、送信タイミングはクライアントが処理します。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Import data - simple version"
+  endMarker="# END Import data - simple version"
+  language="py"
+/>
+
+最後に、正しい数のオブジェクトがインポートされているか確認しましょう。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Check object count"
+  endMarker="# END Check object count"
+  language="py"
+/>
+
+`True` が返れば、 Weaviate インスタンスへのデータ投入に成功しています。
+
+### <i class="fa-solid fa-chalkboard"></i> 再実行時の挙動
+
+先へ進む前に質問です。上記のインポートスクリプトをもう一度実行するとどうなると思いますか？
+
+<details>
+  <summary><i class="fa-solid fa-face-thinking"></i> 答えは… </summary>
+
+重複したアイテムが作成されてしまいます！<p><br/></p>
+
+Weaviate は、既に存在するものと同じプロパティを持つアイテムをアップロードしているかどうかをチェックしません。また、インポートスクリプトでは ID を指定していないため、 Weaviate は新しいランダムな ID を割り当て、新しいオブジェクトを作成します。
+
+</details>
+
+### <i class="fa-solid fa-code"></i> オブジェクト UUID の指定
+
+インポート時にオブジェクトの識別子として UUID を指定することもできます。たとえば、 Weaviate の Python クライアントには、オブジェクトに基づいて決定論的な UUID を生成する関数があります。次のように、これをインポートスクリプトに追加できます。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Import data with deterministic UUIDs"
+  endMarker="# END Import data with deterministic UUIDs"
+  language="py"
+/>
+
+これにより、 UUID がオブジェクトのプロパティに基づいて生成されるオブジェクトが作成されます。したがって、オブジェクトのプロパティが同じであれば、 UUID も同じになります。
+
+そのため、上記のスクリプトを複数回実行してもオブジェクト数は増えません。
+
+:::tip 望ましい挙動は？
+UUID がオブジェクトのプロパティに基づいているため、いずれかのプロパティが変更された場合には新しいオブジェクトが作成されます。そのため、インポートプロセスを設計する際には、どのプロパティが変更される可能性があるか、またその場合に Weaviate にどう動作してほしいかを検討してください。<p><br/></p>
+
+たとえば、ユニークなプロパティのサブセットを基に UUID を生成してオブジェクトを上書きさせたり、すべてのプロパティを基に UUID を生成して重複のみを防いだりといった設計が考えられます。
+:::
+
+### <i class="fa-solid fa-code"></i> 完全なインポートスクリプト
+
+すべてを組み合わせると、次のインポートスクリプトになります。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Full code snippet"
+  endMarker="# END Full code snippet"
+  language="py"
+/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+次のことを行いました。
+-  `Jeopardy!` の問題と回答の小さなデータセットをダウンロードしました。
+- スキーマを構築し、データをインポートしました。
+-  `Weaviate` 内のオブジェクト数を確認して、インポートが成功したことを検証しました。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,152 @@
+---
+title: 質問応答 (QnA)
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCodeExample from '!!raw-loader!./_snippets/40_qna.py';
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+[//]: # (<img src={imageUrl} alt="Image alt" width="75%"/>)
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+質問応答 ( QnA ) モジュールは、その名前が示すとおりの働きをします。検索結果に含まれるデータを基に、あなたの質問に回答します。
+
+これは生成モジュールが行うデータ変換よりもさらに特化した処理です。 QnA モジュールは、検索データから質問への答えを抽出しようとします。
+
+そのため、場合によっては QnA モジュールが回答を返さないこともあります。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 設定
+
+### <i class="fa-solid fa-code"></i> モジュールを有効化する
+
+QnA 機能を使用するには、 Weaviate インスタンスで `qna-xxx` モジュールを有効にする必要があります。
+
+WCD を使用している場合、`qna` モジュールはデフォルトで有効になっています（[ドキュメント](/cloud) を参照）。それ以外の場合は、`qna-xxx` モジュールが有効になるように Weaviate インスタンスを設定してください。
+
+設定方法は本ユニットの範囲外ですが、各モジュールの設定方法については [モジュール設定](/weaviate/modules/reader-generator-modules/index.md) を参照してください。
+
+### <i class="fa-solid fa-code"></i> クラスを設定する
+
+Weaviate インスタンスで 1 つだけ qna モジュールが有効になっている場合、すべての QnA タスクで自動的にそのモジュールが使用されます。
+
+一方、複数の qna モジュールが構成されている場合は、下記のようにクラスごとに使用する qna モデルを指定しなければなりません。
+
+```json
+{
+  "classes": [
+    {
+      "class": "JeopardyQuestion",
+      "moduleConfig": {
+        "qna-openai": {
+          "model": "gpt-3.5-turbo-instruct"
+        }
+      }
+    }
+  ]
+}
+```
+
+QnA 機能を使用するには、対象クラスに ベクトライザー (`text2vec`) モジュールが設定されていることも必要です。
+
+## <i class="fa-solid fa-square-chevron-right"></i> QnA クエリについて
+
+### <i class="fa-solid fa-chalkboard"></i> 仕組み
+
+生成モジュールと同様に、 QnA 検索は次の 2 段階で行われます。  
+1. 検索を実行する  
+1. 検索結果と質問を用いて回答を抽出する
+
+適切な回答が見つかったかどうかに応じて、`_additional` プロパティ配下の `answer` サブプロパティに回答が格納されます。モデルによっては、テキスト内での回答の位置も返します。
+
+回答が見つからなかった場合は、その旨が `answer` サブプロパティに示されます。
+
+### <i class="fa-solid fa-code"></i> QnA 構文
+
+生成検索では、同じ質問文が  
+- 検索の実行  
+- 回答の抽出  
+の両方に使用されます。
+
+したがって、下記の例では `"How many championships does Lewis Hamilton have?"` というクエリを用いて最も近いオブジェクトを検索し、そこから Weaviate が質問への回答を抽出しようとします。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# SimpleAskQuery"
+  endMarker="# END SimpleAskQuery"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+このクエリでは、記事に回答が含まれており、モデルによって正しく抽出されていることが確認できます。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Expected SimpleAskQuery results"
+  endMarker="# END Expected SimpleAskQuery results"
+  language="py"
+/>
+
+</details>
+
+### <i class="fa-solid fa-code"></i> プロパティの指定方法
+
+QnA モジュールが回答を探す際に対象とするオブジェクトのプロパティを指定できます。生成クエリの場合と同様、入力の長さを短縮したい場合や、情報源を明確に限定したい場合に便利です。
+
+:::note `nearText` search unaffected
+Specifying properties to search only affects the answer extraction part of the query, as the underlying object vectors do not change.
+:::
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# AskQueryWithProperties"
+  endMarker="# END AskQueryWithProperties"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+このクエリでは、必要な情報が `title` フィールドに存在しないため、 Weaviate は質問に答えることができません。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Expected AskQueryWithProperties results"
+  endMarker="# END AskQueryWithProperties results"
+  language="py"
+/>
+
+</details>
+
+### <i class="fa-solid fa-code"></i> オブジェクト数の制限
+
+これも 2 段階検索であるため、回答抽出を行う前に Weaviate が最初に取得するオブジェクト数を指定できます。
+
+オブジェクト数を増やすことで、質問の答えを含むオブジェクトを取得できる可能性を高められます。
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- Question and Answer (QnA) 検索は、別の 2 ステップ検索であり、配信前に取得したデータから特定の質問への回答を抽出しようとします。  
+- QnA 検索を実行するには、Weaviate インスタンスで `qna-xxx` モジュールを有効にする必要があります。`qna-openai` モジュールは WCD ではデフォルトで有効になっています。  
+- QnA モジュールは、取得した各オブジェクト内から回答を探し、追加プロパティとして返します。  
+- QnA モジュールが回答を特定できない場合は、その旨をレスポンスで示します。  
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

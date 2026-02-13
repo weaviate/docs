@@ -1,0 +1,191 @@
+---
+title: 概要
+description: デプロイ概要ページ
+sidebar_position: 0
+---
+
+import CardsSection from "/src/components/CardsSection";
+import DeploymentCards from "/src/components/DeploymentCards";
+import styles from "/src/components/CardsSection/styles.module.scss";
+
+# Weaviate のデプロイ
+
+:::info[作成中のセクションです！]
+
+こちらは新しく作成中のセクションです。順次コンテンツを追加していきますので、しばらくお待ちください。
+
+:::
+
+Weaviate はホステッド サービスである [Weaviate Cloud ( WCD )](https://console.weaviate.cloud/) と、セルフ マネージドの 2 つの形態でご利用いただけます。セルフ マネージドの場合、ローカル環境またはクラウド プロバイダー上でホストできます。セルフ マネージド インスタンスは WCD と同じ Weaviate Database を使用します。
+
+以前のバージョンからアップグレードする場合は、インストールに影響する変更点について [Migration Guide](docs/deploy/migration/index.md) をご覧ください。
+
+Weaviate では、プロダクション環境でのユース ケースに合わせて複数のデプロイ オプションを提供しています。 
+
+このセクションでは、Kubernetes やクラウド プロバイダー、ベスト プラクティスなどの共通トピックに加え、詳細なチュートリアルやハウツー ガイドを掲載しています。  
+Weaviate は以下の特徴を備えています:
+
+- **スケーラビリティ** – 数十億件のベクトル データを効率的に処理  
+- **高パフォーマンス検索** – リアルタイム ベクトル検索で AI アプリケーションを強化  
+- **柔軟な統合** – さまざまな機械学習モデルやデータ ソースと接続  
+- **クラウド & オンプレミス デプロイ** – Weaviate Cloud、Kubernetes、マネージド クラウド サービスに対応  
+
+
+## デプロイ オプション
+
+ニーズに合わせて最適なデプロイ方法をお選びください:
+
+export const deploymentCardsData = [
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
+    ],
+    header: "Weaviate Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "評価 ( サンドボックス ) から本番まで対応",
+      "サーバーレス ( インフラストラクチャは Weaviate が管理 )",
+      " (オプション) データ レプリケーション ( 高可用性 )",
+      " (オプション) ゼロダウンタイム アップデート",
+    ],
+    button: {
+      text: "WCD インスタンスをセットアップ",
+      link: "/cloud/manage-clusters/create",
+    },
+  },
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: false },
+    ],
+    header: "Docker",
+    bgImage: "/img/site/docker-doc-icon.svg",
+    bgImageLight: "/img/site/docker-doc-icon-light.svg",
+    listItems: [
+      "ローカルでの評価 & 開発向け",
+      "ローカル推論コンテナ",
+      "マルチモーダル モデル",
+      "カスタマイズ可能な構成",
+    ],
+    button: {
+      text: "Docker で Weaviate をデプロイ",
+      link: "/deploy/installation-guides/docker-installation",
+    },
+  },
+    {
+    tabs: [
+      { label: "評価", active: false },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
+    ],
+    header: "Kubernetes",
+    bgImage: "/img/site/kubernetes-doc-icon.svg",
+    bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
+    listItems: [
+      "開発から本番まで対応",
+      "ローカル推論コンテナ",
+      "マルチモーダル モデル",
+      "カスタマイズ可能な構成",
+      "セルフ デプロイまたは Marketplace でのデプロイ",
+      " (オプション) ゼロダウンタイム アップデート",
+    ],
+    button: {
+      text: "Kubernetes で Weaviate をデプロイ",
+      link: "/deploy/installation-guides/k8s-installation",
+    },
+  },
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
+    ],
+    header: "AWS",
+    bgImage: "/img/site/aws-marketplace-2.svg",
+    bgImageLight: "/img/site/aws-marketplace-2.svg", 
+    listItems: [
+      "評価 ( サンドボックス ) から本番まで対応",
+      "サーバーレス ( AWS での課金 )",
+      "Kubernetes ( AWS での課金 )",
+      "EKS へのセルフ ホスト",
+    ],
+    button: {
+      text: "AWS で Weaviate をデプロイ",
+      link: "/deploy/installation-guides/aws-marketplace",
+    },
+  },
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
+    ],
+    header: "GCP Marketplace",
+    bgImage: "/img/site/gcp-marketplace.svg",
+    bgImageLight: "/img/site/gcp-marketplace.svg",
+    listItems: [
+      "評価 ( サンドボックス ) から本番まで対応",
+      "サーバーレス ( GCP での課金 )",
+      "Kubernetes ( GCP での課金 )",
+    ],
+    button: {
+      text: "GCP で Weaviate をデプロイ",
+      link: "/deploy/installation-guides/gcp-marketplace",
+    },
+  },
+];
+
+<DeploymentCards items={deploymentCardsData} />
+
+
+
+### 方法
+
+上記のデプロイ方法に加えて、次のオプションもあります:
+
+- **[Weaviate Cloud](docs/cloud/quickstart.mdx)**: 開発および本番環境向けのマネージドサービスです。
+- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Snowflake の Snowpark 環境に Weaviate をデプロイします。
+- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: 実験的機能です。Embedded Weaviate はクライアントベースのツールです。
+
+:::caution Windows のネイティブサポート
+
+Weaviate は [Docker](docs/deploy/installation-guides/docker-installation.md) や [WSL](https://learn.microsoft.com/en-us/windows/wsl/) などのコンテナ化された環境を介して Windows でも利用できますが、現時点では Windows 向けのネイティブサポートは提供していません。
+
+:::
+
+## 設定ファイル
+
+Docker Compose と Kubernetes は `yaml` ファイルを使用して Weaviate インスタンスを構成します。Docker は [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) ファイルを使用し、Kubernetes は [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) と `values.yaml` ファイルに依存します。Weaviate のドキュメントでは、これらのファイルを `configuration yaml files` とも呼びます。
+
+セルフホストの場合は、まず小規模に Docker で試し、その後 Weaviate に慣れてきたら設定を Kubernetes の Helm chart に移行することを検討してください。
+
+## バージョン
+
+:::tip デプロイオプションごとのバージョン提供状況:
+
+Weaviate のバージョン提供状況はデプロイオプションによって異なる場合がありますが、一般的に Weaviate Cloud がすべてのデプロイ方法の中で最新バージョンを提供しています。
+
+:::
+
+import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
+
+<RunUnreleasedImages />
+
+今後の機能をお試しいただいた際には、ぜひ [フィードバック](https://github.com/weaviate/weaviate/issues/new/choose) をお寄せください。皆さまのご意見は Weaviate をより便利にするうえで大変参考になります。
+
+## 関連ページ
+- [Weaviate への接続](docs/weaviate/connections/index.mdx)
+- [Weaviate クイックスタート](docs/weaviate/quickstart/index.md)
+- [Weaviate Cloud クイックスタート](docs/cloud/quickstart.mdx)
+- [リファレンス: 設定](docs/weaviate/configuration/index.mdx)
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

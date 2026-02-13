@@ -1,0 +1,219 @@
+---
+title: トークナイゼーションとフィルター
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCreateCollection from '!!raw-loader!./_snippets/310_create_collection.py';
+import PyAddObjects from '!!raw-loader!./_snippets/315_add_objects.py';
+import PyFilters from '!!raw-loader!./_snippets/320_filters.py';
+
+さまざまなトークナイゼーション方式について学んだので、実際に試してみましょう。このセクションでは、トークナイゼーションがフィルターにどのような影響を与えるかを確認します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 準備
+
+このセクションでは、実際の Weaviate インスタンスを使い、異なるトークナイゼーション方式がフィルタリング結果に与える影響を確認します。
+
+デモ用に非常に小さなカスタムデータセットを使用します。
+
+<FilteredTextBlock
+  text={PyAddObjects}
+  startMarker="# StringsToAdd"
+  endMarker="# END StringsToAdd"
+  language="py"
+/>
+
+以下の Python コードを使用して、同じデータをお手元の Weaviate インスタンスに追加できます。
+
+<details>
+  <summary>コレクション作成手順</summary>
+
+複数のプロパティを持つシンプルなオブジェクトコレクションを作成します。各プロパティには同じテキストを格納しますが、トークナイゼーション方式を変えます。
+
+<FilteredTextBlock
+  text={PyCreateCollection}
+  startMarker="# CreateDemoCollection"
+  endMarker="# END CreateDemoCollection"
+  language="py"
+/>
+
+ここではトークナイゼーションとフィルター（およびキーワード検索）への影響のみを確認するため、オブジェクトのベクトルは追加していません。
+
+</details>
+
+<details>
+  <summary>オブジェクト追加手順</summary>
+
+次に、テキストオブジェクトをプロパティとして繰り返し追加します。
+
+<FilteredTextBlock
+  text={PyAddObjects}
+  startMarker="# AddObjects"
+  endMarker="# END AddObjects"
+  language="py"
+/>
+
+</details>
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> フィルターへの影響
+
+オブジェクトを Weaviate に追加したので、異なるトークナイゼーション方式がフィルタリングされた取得にどのような影響を与えるかを見てみましょう。
+
+各フィルタークエリは次のようになります。オブジェクトを一連のクエリ文字列でフィルタリングします。
+
+再利用可能な関数を用意し、クエリ文字列のセットに基づいてオブジェクトをフィルタリングします。フィルターはバイナリであり、マッチするかしないかのいずれかです。
+
+関数はマッチしたオブジェクトのリストを返し、さらに結果を表示します。
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# FilterExampleBasic"
+  endMarker="# END FilterExampleBasic"
+  language="py"
+/>
+
+### <i class="fa-solid fa-code"></i> 「**Clark:**」と「**clark**」の比較 - 雑多なテキスト
+
+実際のテキストは句読点や大小文字の混在など、しばしば雑多です。ここでは、テレビ番組タイトル `"Lois & Clark: The New Adventures of Superman"` からさまざまな部分文字列を使ってフィルターした例を見てみましょう。
+
+次の表は、クエリがタイトルにマッチしたかどうかを示しています。
+
+|               | `word` | `lowercase` | `whitespace` | `field` |
+|---------------|--------|-------------|--------------|---------|
+| `"clark"`       | ✅     | ❌         | ❌          | ❌     |
+| `"Clark"`       | ✅     | ❌         | ❌          | ❌     |
+| `"clark:" `     | ✅     | ✅         | ❌          | ❌     |
+| `"Clark:" `     | ✅     | ✅         | ✅          | ❌     |
+| `"lois clark"`  | ✅     | ❌         | ❌          | ❌     |
+| `"clark lois"`  | ✅     | ❌         | ❌          | ❌     |
+
+<details>
+  <summary>Python クエリ & 出力</summary>
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# ClarkExample"
+  endMarker="# END ClarkExample"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# ClarkResults"
+  endMarker="# END ClarkResults"
+  language="text"
+/>
+
+</details>
+
+コロン (`:`) を含めない限り、`word` トークナイゼーションのみが一貫してタイトルにマッチしている点に注目してください。これは `word` トークナイゼーションがコロンをセパレーターとして扱うためです。
+
+ユーザーはクエリに句読点や正確な大文字小文字を含めるとは限りません。そのため、一般的なテキストフィルター用途では `word` トークナイゼーション方式が良い出発点になります。
+
+### <i class="fa-solid fa-code"></i> 「**A mouse**」と「**mouse**」の比較 - ストップワード
+
+ここでは、「computer mouse」というフレーズのバリエーションをフィルタリングし、いくつかのクエリには余分な単語を含めます。
+
+結果を確認しましょう。
+
+**`"computer mouse"` のマッチ結果**
+
+|                              | `word`    | `lowercase` | `whitespace` | `field` |
+|------------------------------|-----------|-------------|--------------|---------|
+| `"computer mouse"`           | ✅        | ✅           | ✅           | ✅     |
+| `"a computer mouse"`         | ✅        | ✅           | ✅           | ❌     |
+| `"the computer mouse:" `     | ✅        | ✅           | ✅           | ❌     |
+| `"blue computer mouse" `     | ❌        | ❌           | ❌           | ❌     |
+
+**`"a computer mouse"` のマッチ結果**
+
+|                              | `word`    | `lowercase` | `whitespace` | `field` |
+|------------------------------|-----------|-------------|--------------|---------|
+| `"computer mouse"`           | ✅        | ✅           | ✅           | ❌     |
+| `"a computer mouse"`         | ✅        | ✅           | ✅           | ✅     |
+| `"the computer mouse:" `     | ✅        | ✅           | ✅           | ❌     |
+| `"blue computer mouse" `     | ❌        | ❌           | ❌           | ❌     |
+
+<details>
+  <summary>Python クエリ & 出力</summary>
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# MouseExample"
+  endMarker="# END MouseExample"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# MouseResults"
+  endMarker="# END MouseResults"
+  language="text"
+/>
+
+</details>
+
+結果からわかるように、クエリに "a" や "the" を追加しても、`field` 方式以外ではフィルター結果に影響しません。これは、各トークナイゼーション方式において "a" や "the" がストップワードとして無視されるためです。
+
+`field` 方式では、"a" や "the" のようなストップワードのトークン自体が生成されません。入力 `"a computer mouse"` は `["a computer mouse"]` という 1 つのトークンにトークナイズされます。
+
+ストップワードでない "blue" のような単語を追加すると、クエリはどのオブジェクトにもマッチしなくなります。
+### <i class="fa-solid fa-code"></i> "**variable_name**" と "**variable name**" - 記号
+
+`word` トークン化はデフォルトとしては優れています。ただし、常に最適とは限りません。ここでは `"variable_name"` のさまざまな表記でフィルターを行い、完全一致 (`"variable_name"`) のオブジェクトにマッチするかどうかを確認する例を見てみましょう。
+
+|                              | `word`    | `lowercase` | `whitespace` | `field` |
+|------------------------------|-----------|-------------|--------------|---------|
+| `"variable_name"`            | ✅        | ✅           | ✅           | ✅     |
+| `"Variable_Name:" `          | ✅        | ✅           | ❌           | ❌     |
+| `"Variable Name:" `          | ✅        | ❌           | ❌           | ❌     |
+| `"a_variable_name"`          | ✅        | ❌           | ❌           | ❌     |
+| `"the_variable_name"`        | ✅        | ❌           | ❌           | ❌     |
+| `"variable_new_name" `       | ✅        | ❌           | ❌           | ❌     |
+
+<details>
+  <summary>Python クエリ & 出力</summary>
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# UnderscoreExample"
+  endMarker="# END UnderscoreExample"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PyFilters}
+  startMarker="# UnderscoreResults"
+  endMarker="# END UnderscoreResults"
+  language="text"
+/>
+
+</details>
+
+ここで期待される挙動は何でしょうか。`"variable name"` でフィルターしたとき、プロパティが `"variable_name"` であるオブジェクトにマッチすべきでしょうか。
+
+では `"variable_new_name"` でフィルターした場合はどうでしょう。たとえばコードベースを検索する場合、ユーザーは `"variable_new_name"` のフィルターが `"variable_name"` にマッチするとは想定していないかもしれません。
+
+このように、データにとって記号が重要な場合は、`lowercase` や `whitespace` など、記号を保持するトークン化方法の使用を検討してください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> ディスカッション
+
+ここまでで、異なるトークン化方法がフィルターにどのように影響するかを説明しました。
+
+ほとんどのフィルタリング用途では、`word` トークン化が出発点として適しています。これは大文字・小文字を区別せず、ほとんどの記号を区切り文字として扱います。
+
+しかし、記号がデータにとって重要な場合や、大文字・小文字を区別する必要がある場合には、別のトークン化方法を検討すると良いでしょう。
+
+それでは `field` トークン化はどうでしょうか。この方法は、テキスト全体を 1 つのトークンとして扱う必要がある場合に最も有用です。メールアドレス、 URL、識別子などのプロパティに適しています。
+
+`field` トークン化を用いた典型的なフィルタリング戦略には、完全一致やワイルドカードを用いた部分一致があります。ただし、ワイルドカードベースのフィルターは計算コストが高い（遅い）場合があるため、慎重に使用してください。
+
+次に、トークン化がキーワード検索にどのように影響するかについて説明します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

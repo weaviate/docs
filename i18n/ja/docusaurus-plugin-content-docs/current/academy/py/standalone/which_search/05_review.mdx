@@ -1,0 +1,119 @@
+---
+title: 検索タイプのレビュー
+description: データ クエリを洗練するための Weaviate における検索戦略のレビュー。
+---
+
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyCode from '!!raw-loader!./_snippets/05_review.py';  
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+Weaviate は主に 3 つの検索タイプ、つまり ** ベクトル **、** キーワード **、そして ** ハイブリッド ** 検索を提供します。ここでは、それぞれの概要と動作を簡単に振り返ります。
+
+### <i class="fa-solid fa-code"></i> コード例
+
+これらのコード例は、[`v4` Weaviate Python client](/weaviate/client-libraries/python/index.mdx) を用いて実行できます。以下のコードで事前構成済みのデモ インスタンスへ接続し、続く例を試してみてください。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START connectionCode"
+      endMarker="# END connectionCode"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索
+
+ベクトル検索では、クエリ ベクトル に最も類似した ベクトル を持つオブジェクトを見つけます。
+
+各 ベクトル は基になるオブジェクトを数値で表現しているため、ベクトル類似度は「意味的な類似度」と捉えられます。そのため、ベクトル検索は「セマンティック検索」とも呼ばれます。
+
+Weaviate では、次のいずれかの方法で類似 ベクトル を持つオブジェクトを検索できます。
+
+ソース メディア（例: テキストや画像）を指定:
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START nearTextExample"
+      endMarker="# END nearTextExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+ベクトル を直接指定:
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START nearVectorExample"
+      endMarker="# END nearVectorExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+既存の Weaviate オブジェクトを指定:
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START nearObjectExample"
+      endMarker="# END nearObjectExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
+
+キーワード検索では、クエリのキーワード（トークン）と最も関連性の高いキーワードを持つオブジェクトを見つけます。関連性は BM25F アルゴリズムにより決定されます。
+
+直感的には、BM25F アルゴリズムは、特定のキーワードがデータセット全体でどれだけ一般的かと比較しながら、各オブジェクトのフィールドごとにそのキーワードが出現する頻度を考慮して「関連性」を算出します。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START bm25Example"
+      endMarker="# END bm25Example"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
+
+ハイブリッド検索は、ベクトル検索とキーワード検索の結果を組み合わせます。両方の検索を実行した後、「fusion」アルゴリズムで 2 つの検索結果を結合します。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START hybridExample"
+      endMarker="# END hybridExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>

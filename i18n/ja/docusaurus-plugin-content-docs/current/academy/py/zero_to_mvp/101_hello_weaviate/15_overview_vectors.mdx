@@ -1,0 +1,110 @@
+---
+title: ベクトル – 概要
+description: Weaviate における ベクトル の概要
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/iFUeV3aYynI' controls='true' />
+<br/>
+
+すでに学んだように、Weaviate は ベクトル データベースであり、ベクトル 検索は類似度ベースです。では、ベクトル とは何でしょうか。
+
+ここでのベクトル は、`[1, 0]` や `[0.513, 0.155, 0.983, ..., 0.001, 0.932]` のように数字を並べたものにすぎません。こうしたベクトル は「意味」を表現するために使われます。
+
+これは少し奇妙に感じるかもしれません。しかし実は、知らないうちに意味を捉えるためにベクトル を使ったことがあるかもしれません。たとえば写真編集や MS Paint で使われる RGB カラー システムがそうです。
+
+### <i class="fa-solid fa-chalkboard"></i> 数値での意味表現
+
+RGB システムでは、3 つの数字の組み合わせで色を表します。例:
+
+- (255, 0, 0) = 赤
+- (80, 200, 120) = エメラルド
+
+ここで各数字は、赤・緑・青それぞれの強さを示すダイヤルのようなものと考えられます。
+
+では、こうしたダイヤルが何百、何千とあると想像してください。これが、ベクトル が意味を表現する方法です。GPT-x や Weaviate と組み合わせて使う最新の機械学習モデルは、テキスト・コード・画像・動画などあらゆるオブジェクトの「本質」や「意味」をベクトル で表現します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate における ベクトル 埋め込み
+
+<!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+オブジェクトの意味をベクトル で表したものを「ベクトル 埋め込み」と呼びます。
+
+Weaviate はデータオブジェクトとそれに対応するベクトル 埋め込みをインデックス化し保存することで、ベクトル 検索を可能にします。これらのベクトル 埋め込みは機械学習モデルから得られます。
+
+要するに、Weaviate はデータを処理・整理し、クエリに似たオブジェクトを取り出せるようにします。これを高速に行うため、従来型データベースにはない 2 つのことを行います。Weaviate は次を行います。
+
+- 類似度を定量化する
+- ベクトル データをインデックスする
+
+これらの処理によって、Weaviate は高いパフォーマンスを実現しています。
+
+### <i class="fa-solid fa-chalkboard"></i> 類似度の定量化
+
+すでに述べたように、ベクトル 検索は類似度ベースですが、実際にはどう判定するのでしょうか。2 つのデータが「似ている」とはどういうことでしょうか。テキストや画像、一般的なオブジェクトどうしの類似性をどう測るのでしょうか。
+
+これは一見シンプルですが、掘り下げると非常に奥深いテーマです。
+
+ここでは概念だけを押さえましょう。機械学習 (ML) モデルがこのプロセスの鍵です。ベクトル 検索を支える ML モデルは、プロンプトからテキストを生成するモデルと共通点があります。新しいテキストを生成する代わりに、これらの ベクトライザー モデルはテキストや他のメディアの「意味」を捉えます。詳細は後ほど扱います。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル データのインデックス化
+
+ベクトル 検索は計算負荷が非常に高くなりがちです。
+
+この問題を解決するため、Weaviate は approximate nearest neighbor (ANN) インデックスと 転置インデックス を組み合わせて使用します。ANN インデックスにより Weaviate は非常に高速なベクトル 検索を実現し、転置インデックスによりブール条件でのフィルタリングが可能になります。
+
+詳細は後ほど説明しますが、ここでは Weaviate が高速なベクトル 検索とフィルタリングを両立させていることを覚えておいてください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+このセクションでは、ベクトル が何か、そして Weaviate がそれらをどのように活用するかを大まかに学びました。また、Weaviate が高速なベクトル 検索を実現する 2 つの主要機能についても紹介しました。
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
+
+:::tip Self-reflection
+ベクトル とは何かを、自分の言葉で説明できますか？
+:::
+
+<Quiz questions={howWeaviateWorks} />
+
+### <i class="fa-solid fa-lightbulb-on"></i> 要点
+
+- ベクトル は、オブジェクトの意味や本質を捉える一連の数字です。
+- 機械学習モデルは、異なるオブジェクト間の類似度を定量化するうえで不可欠です。
+- Weaviate は approximate nearest neighbor (ANN) インデックスと 転置インデックス を組み合わせることで、高速なベクトル 検索とフィルタリングを実現します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const howWeaviateWorks = [{
+  questionText: 'Which of these statements are true?',
+  answerOptions: [
+    {
+      answerText: 'Weaviate has no way of quantifying similarity between objects.',
+      isCorrect: false,
+      feedback: 'Weaviate performs vector searches, which is similarity-based.',
+    },
+    {
+      answerText: 'The only type of index in Weaviate is the vector index.',
+      isCorrect: false,
+      feedback: 'In addition to the vector index, Weaviate uses an inverted index.',
+    },
+    {
+      answerText: 'Weaviate is a machine learning model.',
+      isCorrect: false,
+      feedback: 'While Weaviate can be used with a variety of different models which help it determine object similarity, it is itself not a machine learning model. Weaviate is a vector database.',
+    },
+    {
+      answerText: 'None of the above',
+      isCorrect: true,
+      feedback: 'All of these are false!',
+    },
+  ]
+}];

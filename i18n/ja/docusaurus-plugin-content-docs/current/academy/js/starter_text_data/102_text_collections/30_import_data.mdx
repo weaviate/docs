@@ -1,0 +1,94 @@
+---
+title: データのインポート
+description: "Weaviate のテキストコレクションへデータをインポートして、データ処理を効率化します。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/102_collection.ts';
+
+## <i class="fa-solid fa-code"></i> コード
+
+この例では、映画データをコレクションにインポートします。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// BatchImportData"
+  endMarker="// END BatchImportData"
+  language="ts"
+/>
+
+コードの概要:
+- ソースデータを読み込み、コレクションを取得
+- データをループ処理してバッチャーにオブジェクトを追加
+- インポートエラーを出力
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+requests ライブラリを使用して、今回の場合は JSON ファイルからデータを読み込みます。
+
+その後 `client.collections.get` でコレクションオブジェクトを作成し、コレクションとやり取りできるようにします。
+
+### <i class="fa-solid fa-chalkboard"></i> データの反復処理
+
+`for` ループと `Object.keys()` を組み合わせて、JSON 内の要素を反復処理します。反復中はカウンター変数を増やし、オブジェクトをバッチ単位で一括挿入できるようにします。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Iterate through data"
+  endMarker="// END Iterate through data"
+  language="ts"
+/>
+
+
+### <i class="fa-solid fa-chalkboard"></i> オブジェクトへのデータ追加
+
+#### データ型の変換とオブジェクト構築
+
+データを文字列から Weaviate に適した型へ変換します。たとえば `release_date` は `Date` オブジェクトに、`genre_ids` は整数のリストに変換します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Format genre_ids and release_date"
+  endMarker="// Insert"
+  language="ts"
+/>
+
+正しい形式に変換した後、プロパティをまとめてオブジェクトを構築し、Weaviate への挿入に備えます。 
+
+#### データのバルク挿入
+
+次に、Weaviate の `generateUuid5` で生成した uuid と、先ほど定義したプロパティを含むオブジェクトを作成します。このオブジェクトを `itemsToInsert` にプッシュし、バッチが準備できたら `insertMany()` でまとめて挿入します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Insert"
+  endMarker="// END Insert"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
+
+バルク挿入でエラーが発生した場合、その原因を把握する必要があります。対処方法としては例外を発生させるなどがありますが、この例では単にインポート時のエラーを出力しています。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Handle Errors"
+  endMarker="// END Handle Errors"
+  language="ts"
+/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル生成元
+
+バッチャーがキューを Weaviate に送信すると、オブジェクトがコレクション（今回は映画コレクション）に追加されます。
+
+このコレクションにはベクトライザーモジュールが設定されており、ここではベクトルを明示的に指定していません。そのため、Weaviate は指定されたベクトライザーを使ってデータからベクトル埋め込みを生成します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

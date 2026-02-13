@@ -1,0 +1,57 @@
+---
+title: "'シングルプロンプト' 生成"
+description: "Weaviate で text RAG を使用し、シングルプロンプトで直接的な質問応答を行います。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/104_rag.ts';
+
+「シングルプロンプト」生成では、取得された各オブジェクトに対して RAG クエリを実行します。同じプロンプトで各オブジェクトを個別に変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、「dystopian future」に対するクエリ ベクトルと最も一致する「Movie」のエントリーを検索します。続いて、大規模言語モデルに各映画のタイトルをフランス語へ翻訳するよう指示します。
+
+その後、各結果がコンソールに出力されます。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// SinglePromptGeneration"
+  endMarker="// END SinglePromptGeneration"
+  language="ts"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+`"... {title} ..."` のように中かっこを使って、`singlePrompt` パラメーターに 1 つ以上のプロパティを渡す必要があります。これにより、Weaviate は取得した各オブジェクトの `title` プロパティを大規模言語モデルへ渡します。
+
+<details>
+  <summary>例: 結果</summary>
+
+```text
+In Time
+À temps
+Looper
+Boucleur
+I, Robot
+Je, Robot
+The Matrix
+La Matrice
+Children of Men
+Les enfants des hommes
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+各レスポンスオブジェクトは通常の検索クエリとほぼ同じですが、追加で `generated` 属性が含まれます。この属性には、各オブジェクトに対して生成された出力が格納されます。
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

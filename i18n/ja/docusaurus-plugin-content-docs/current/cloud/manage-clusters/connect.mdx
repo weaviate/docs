@@ -1,0 +1,209 @@
+---
+title: Weaviate Cloud への接続
+sidebar_label: Connect to a cluster
+sidebar_position: 1
+description: "Weaviate Cloud クラスター インスタンスへアクセスする複数の接続オプションと方法を紹介します。"
+image: og/wcd/user_guides.jpg
+---
+
+import CompareURLs from '/docs/cloud/img/wcs-console-url-check.jpg';
+
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) には、クラスターへ接続するための複数のオプションがあります。
+
+- **[API で接続](#connect-with-an-api)**:
+
+  - [クライアントライブラリ](/weaviate/client-libraries) を使用して Weaviate Cloud インスタンスへ接続します。  
+  - cURL のようなツールを用いて [REST API](/weaviate/api/rest) に接続します。
+
+- **[Weaviate Cloud コンソール経由で接続](#connect-to-the-weaviate-cloud-console)**:
+
+  - ログインしてクラスター、ユーザー、請求を管理します。  
+  - 組み込みツールを使用してデータを操作します。
+
+## API で接続
+
+以下のガイドは、[RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) が有効なクラスターに適用されます。Weaviate バージョン `v1.30` 以降で作成された新規クラスターでは、デフォルトで RBAC が有効です。 
+
+<details>
+    <summary>RBAC が無効な場合の API キー接続</summary>
+
+Weaviate クライアントライブラリは API キーを使って Weaviate Cloud インスタンスへ認証します。RBAC が無効な場合、デフォルトで 2 種類の API キーが作成されます。**Serverless** と **Sandbox** の両クラスターには次のキーがあります。
+
+- `Admin key`: クラスターへの読み書きアクセスを許可する管理者キー  
+- `ReadOnly key`: クラスターへの読み取りのみを許可するビューアーキー  
+
+Weaviate サーバーはすべてのリクエストを認証します。
+
+- Weaviate クライアントライブラリを使用する場合、クライアントをインスタンス化するときに API キーを渡します。接続が確立された後は、追加のリクエストで API キーを再度渡す必要はありません。  
+- cURL などのツールを使用する場合、リクエストヘッダーに API キーを追加してください。
+
+</details>
+
+### API キーと REST エンドポイントの取得
+
+import CreateAPIKeys from '/_includes/wcs/create-api-keys.mdx';
+
+<CreateAPIKeys />
+
+import RetrieveRESTEndpoint from '/_includes/wcs/retrieve-rest-endpoint.mdx';
+
+<RetrieveRESTEndpoint />
+
+### 環境変数
+
+クライアントコードに API キーや Weaviate URL をハードコードしないでください。環境変数を渡す、あるいは同様の安全なコーディング手法を検討してください。
+
+```bash
+export WEAVIATE_URL="replaceThisWithYourRESTEndpointURL"
+export WEAVIATE_API_KEY="replaceThisWithYourAPIKey"
+```
+
+### 接続例
+
+接続には `REST Endpoint` の URL と `Admin` API キーを使用します。
+
+import ConnectIsReady from '/_includes/code/quickstart/quickstart.is_ready.mdx';
+
+<ConnectIsReady />
+
+## Weaviate Cloud コンソールへの接続
+
+Weaviate Cloud コンソールは、メールアドレスとパスワードで認証します。パスワードは Weaviate Cloud アカウント作成時に設定します。
+
+コンソールへ接続する手順は次のとおりです。
+
+1. ブラウザーで [Weaviate Cloud ログインページ](https://console.weaviate.cloud/) を開きます。  
+1. メールアドレスとパスワードを入力して認証します。  
+1. `Login` をクリックします。
+
+## Query Tool でインスタンスに接続
+
+組み込みの [Query tool](/cloud/tools/query-tool) は、追加の認証なしで Weaviate Cloud 組織内のクラスターへ直接接続します。
+
+import APIKeyInHeader from '/docs/cloud/img/wcs-auth-header.jpg';
+
+<div class="row">
+  <div class="col col--6">
+    <p>
+      Query tool から組織外の Weaviate インスタンスへ接続する場合は、
+      リモートインスタンス用の API キーを入力してください。 <br />
+      <br />
+      API キーは Query tool タブ下部の <code>Headers</code> に追加します。
+    </p>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={APIKeyInHeader} alt="クラスターを作成" />
+      </div>
+      <div class="card__body">
+        クラスターに適した API キーをコピーしてください。
+      </div>
+    </div>
+  </div>
+</div>
+
+## トラブルシューティング
+
+ここでは一般的な問題に対する解決策を紹介します。さらにサポートが必要な場合は、[サポートへ連絡](#support--feedback) してください。
+
+### パスワードをリセットする
+
+Weaviate Cloud のパスワードをリセットするには、次の手順に従ってください。
+
+1. Weaviate Cloud の [ログインページ](https://console.weaviate.cloud) にアクセスします。  
+1. ログインボタンをクリックします。  
+1. `Forgot Password` をクリックします。  
+1. Weaviate Cloud から送信されるパスワードリセットメールを確認します。  
+1. メール内のリンクをクリックし、表示される手順に従ってパスワードをリセットします。リンクは 5 分間のみ有効です。
+
+### 接続タイムアウト
+
+新しい Python クライアントは gRPC プロトコルを使用して Weaviate Cloud に接続します。gRPC はクエリ性能を向上させますが、ネットワーク速度の影響を受けやすくなります。タイムアウトエラーが発生した場合は、接続コード内でタイムアウト値を増やしてください。
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCodeSupp from '!!raw-loader!/_includes/code/client-libraries/python_slow_connection.py';
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCodeSupp}
+      startMarker="# START ConnectWithLongTimeOut"
+      endMarker="# END ConnectWithLongTimeOut"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+あるいは、デフォルトのタイムアウト値を保持し、初期接続チェックをスキップすることもできます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCodeSupp}
+      startMarker="# START ConnectWithSkipChecks"
+      endMarker="# END ConnectWithSkipChecks"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+### gRPC ヘルスチェック エラー
+
+**問題**:  Serverless クラスターを更新した後に  gRPC がヘルスチェック エラーを返します。
+
+```
+weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be completed.
+```
+
+**解決策**:  クラスター  URL が正しいことを確認し、必要に応じて  URL を更新してください。
+
+ Serverless クラスターを更新すると、クラスター  URL がわずかに変更される場合があります。 Weaviate Cloud は旧  URL へのルーティングを引き続き行うため一部の接続は機能しますが、新しい  gRPC  URL と旧  HTTP  URL は異なるため、 gRPC を必要とする接続は失敗します。
+
+ URL を確認するには、 Weaviate Cloud Console を開き、クラスターの詳細パネルを確認します。クラスター  URL の前に `grpc-` を付けた場合、クラスター  URL とクラスター  gRPC  URL が一致している必要があります。
+
+import EndpointURLs from '/docs/cloud/img/weaviate-cloud-endpoint-urls.png';
+
+<div class="row">
+  <div class="col col--4">
+    <p>
+      クラスター  URL とアプリケーションで使用している接続  URL を比較してください。旧  URL と新  URL は似ていますが、新しいものには <code>.c0.region</code> などのサブドメインが追加されている場合があります。
+    </p>
+    <br />
+    <p>
+      もし  URL が異なる場合は、アプリケーションの接続コードを更新し、新しいクラスター  URL を使用してください。
+    </p>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={EndpointURLs} alt="Cluster URLs" />
+      </div>
+      <div class="card__body">クラスター URL。</div>
+    </div>
+  </div>
+</div>
+
+## 追加リソース
+
+ Weaviate クライアントライブラリで認証を行う方法については、以下をご覧ください。
+
+- [Python](/weaviate/client-libraries/python/index.mdx)
+- [TypeScript/JavaScript](../../weaviate/client-libraries/typescript/index.mdx)
+- [Go](/weaviate/client-libraries/go.md#authentication)
+- [Java](/weaviate/client-libraries/java.md#authentication)
+
+## サポート & フィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+
+import CustomScriptLoader from '/src/components/scriptSwitch';
+
+<CustomScriptLoader />
+

@@ -1,0 +1,58 @@
+---
+title: "「グループ化タスク」生成"
+description: マルチモーダル RAG 用の Grouped Task
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/104_rag.py';
+
+「グループ化タスク」生成では、取得したオブジェクトの集合に対して RAG クエリを実行します。1 つのプロンプトでオブジェクト全体を変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、「MovieMM」内から [国際宇宙ステーションの画像](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg) に類似したエントリーを検索し、その後、大規模言語モデルに各エントリー間の共通点を見つけるよう指示します。
+
+各結果はコンソールに出力されます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GroupedTaskGeneration"
+  endMarker="# END GroupedTaskGeneration"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+`grouped_task` クエリでは、プロンプトをそのまま `grouped_task` パラメーターに渡すだけです。これにより Weaviate は以下を大規模言語モデルに渡します。
+- 取得したすべてのオブジェクトの text プロパティ
+- プロンプト
+
+<details>
+  <summary>結果例</summary>
+
+```text
+Interstellar
+Gravity
+Arrival
+Armageddon
+Godzilla
+These movies all involve space exploration, extraterrestrial beings, or catastrophic events threatening Earth. They all deal with themes of survival, human ingenuity, and the unknown mysteries of the universe.
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> 追加パラメーター
+
+使用するプロパティのリストを `grouped_properties` パラメーターとして渡すこともできます。大規模言語モデルに渡すデータ量を減らし、不要なプロパティを省く際に便利です。
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+`grouped_task` パラメーターを使った RAG クエリは、追加で `generated` 属性を含むレスポンスを返します。この属性には、オブジェクト集合に対して生成された出力が格納されます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,347 @@
+---
+title: 認証
+sidebar_position: 5
+description: "API キーの追加、更新、削除によって Weaviate Cloud クラスターの認証オプションを設定します。"
+image: og/wcd/user_guides.jpg
+---
+
+import WCDAPIKeys from '/docs/cloud/img/wcs-api-keys.jpg';
+import WCDAddAPIKeys from '/docs/cloud/img/wcs-add-key-details.jpg';
+import WCDDelAPIKeys from '/docs/cloud/img/wcs-delete-api-key.jpg';
+import RestartTheCluster from '/_includes/wcs/restart-warning.mdx';
+
+RBAC（Role-Based Access Control）の有効／無効に応じて、クラスター認証を管理する方法は 2 つあります。  
+- [RBAC 有効時の認証](#authentication-with-rbac-enabled)  
+- [RBAC 無効時の認証](#authentication-with-rbac-disabled)
+
+## RBAC 有効時の認証
+
+このセクションは、[RBAC（Role-Based Access Control）](/weaviate/configuration/rbac/index.mdx) が有効になっているクラスターにのみ適用されます。Weaviate バージョン `v1.30` 以降で作成された新規クラスターでは、RBAC はデフォルトで有効になっています。
+
+### API キーの作成
+
+import CreateAPIKeys from '/_includes/wcs/create-api-keys.mdx';
+
+<CreateAPIKeys />
+
+### API キーのローテーション
+
+API キーをローテーションすると、古いキーを無効化しつつ新しいキーを生成できるため、セキュリティが向上します。
+
+import RotateAPIKey from '/docs/cloud/img/weaviate-cloud-api-key-management.png';
+import RotateAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-api-key-rotate.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>
+        {' '}<Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link> を開きます。
+      </li>
+      <li>
+        {' '}<Link to="/cloud/manage-clusters/status#select-your-cluster">クラスターを選択</Link>し、<code>API Keys</code> セクションへ移動します。
+      </li>
+      <li>
+        ローテーションしたい API キーを見つけ、隣の <code>Rotate</code> ボタン（画像の <span class="callout">1</span>）をクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={RotateAPIKey} alt="Rotate an API key in Weaviate Cloud" />
+      </div>
+      <div class="card__body">Weaviate Cloud で API キーをローテーションします。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="row">
+  <div class="col col--4">
+    <ol start="4">
+      <li>
+        古いキーが無効化される旨の確認ダイアログが表示されます。<code>Rotate key</code> をクリックして続行します（画像の <span class="callout">1</span>）。
+      </li>
+      <li>
+        新しい API キーが生成されます。<span class="callout">2</span> 新しいキーは再表示できないため、必ず直ちにコピーして安全な場所に保存してください。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={RotateAPIKeyConfirm} alt="Confirm API key rotation" />
+      </div>
+      <div class="card__body">API キーのローテーションを確認します。</div>
+    </div>
+  </div>
+</div>
+
+### API キーの編集
+
+API キーを編集すると、その名前や関連付けられているロールを変更できます。クラスターの API キーを編集する手順は以下のとおりです。
+
+import EditAPIKey from '/docs/cloud/img/weaviate-cloud-api-key-management.png';
+import EditAPIKeyForm from '/docs/cloud/img/weaviate-cloud-api-key-edit.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>
+        {' '}<Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link> を開きます。
+      </li>
+      <li>
+        {' '}<Link to="/cloud/manage-clusters/status#select-your-cluster">クラスターを選択</Link>し、<code>API Keys</code> セクションへ移動します。
+      </li>
+      <li>
+        編集したい API キーを見つけ、隣の <code>Edit</code> ボタン（画像の <span class="callout">1</span>）をクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={EditAPIKey} alt="Edit an API key in Weaviate Cloud" />
+      </div>
+      <div class="card__body">Weaviate Cloud で API キーを編集します。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="row">
+  <div class="col col--4">
+    <ol start="4">
+      <li>
+        <code>Edit API key</code> フォームで、キーの説明／名前（<span class="callout">1</span>）を変更できます。
+      </li>
+      <li>
+        この API キーに関連付けるロールも更新できます。既存のロールから選択するか、{' '}<Link to="/cloud/manage-clusters/authorization">別のロールを割り当て</Link>てください（<span class="callout">2</span>）。
+      </li>
+      <li>
+        <code>Save</code> ボタン（<span class="callout">3</span>）をクリックして変更を適用します。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={EditAPIKeyForm} alt="Edit API key details" />
+      </div>
+      <div class="card__body">API キーの詳細を編集します。</div>
+    </div>
+  </div>
+</div>
+
+
+
+### API キーの削除
+
+API キーを削除するには、次の手順に従います:
+
+import DeleteAPIKeyRBAC from '/docs/cloud/img/weaviate-cloud-delete-api-key.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link>を開きます。
+      </li>
+      <li>
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
+          クラスターを選択
+        </Link>{' '}
+        し、<code>API Keys</code> セクションに移動します。
+      </li>
+      <li>
+        削除したい API キーを探し、その横にある <code>Delete</code> ボタンをクリックします (<span class="callout">1</span>)。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={DeleteAPIKeyRBAC} alt="Weaviate Cloud で API キーを削除" />
+      </div>
+      <div class="card__body">Weaviate Cloud で API キーを削除します。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+import DeleteAPIKeyConfirmRBAC from '/docs/cloud/img/weaviate-cloud-delete-api-key-confirm.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol start="4">
+      <li>
+        確認ダイアログが表示されます。削除を確定するために必要なテキスト（通常は API キー名または確認用フレーズ）を入力します (<span class="callout">1</span>)。
+      </li>
+      <li>
+        <code>Confirm and delete</code> ボタンをクリックします (<span class="callout">2</span>)。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={DeleteAPIKeyConfirmRBAC} alt="API キーの削除を確認" />
+      </div>
+      <div class="card__body">API キーの削除を確認します。</div>
+    </div>
+  </div>
+</div>
+
+## RBAC 無効時の認証
+
+[RBAC（Role-Based Access Control）](/weaviate/configuration/rbac/index.mdx) が有効になっていない場合、デフォルトで `ReadOnly` と `Admin` の 2 つの API キーが存在します。
+
+- `Admin` キーは読み書きが可能です。
+- `ReadOnly` キーにはデータベースへの書き込み権限がありません。
+
+Serverless クラスターをお持ちの場合、API キーの作成、削除、編集、およびローテーションが可能です。Sandbox クラスターのキーは変更できません。
+
+### API キーの取得
+
+import RetrieveAPIKeys from '/_includes/wcs/retrieve-api-keys.mdx';
+
+<RetrieveAPIKeys />
+
+### API キーの作成
+
+Serverless クラスターをお持ちの場合、新しい API キーを作成できます。新しい API キーを作成するには、次の手順に従ってください:
+
+import Link from '@docusaurus/Link';
+import NewAPIKey from '/docs/cloud/img/weaviate-cloud-new-api-key.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link>を開きます。
+      </li>
+      <li>
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
+          クラスターを選択
+        </Link>{' '}
+        し、<code>API Keys</code> セクションを探します。
+      </li>
+      <li>
+        <code>New Key</code> ボタンをクリックします (<span class="callout">1</span>)。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={NewAPIKey} alt="クラスターに新しい API キーを追加" />
+      </div>
+      <div class="card__body">クラスターに新しい API キーを追加します。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+import NewAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-new-api-key-confirm.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol start="4">
+      <li>
+        <code>Admin</code> キーにするか <code>ReadOnly</code> キーにするかを選択します。
+      </li>
+      <li>
+        <code>Create</code> ボタンをクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={NewAPIKeyConfirm} alt="新しい API キーの種類を選択" />
+      </div>
+      <div class="card__body">新しい API キーの種類を選択します。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+:::info
+
+<RestartTheCluster />
+
+:::
+
+### API キーの削除
+
+Serverless クラスターをお使いの場合、API キーを削除できます。API キーを削除するには、次の手順に従ってください。  
+
+import DeleteAPIKey from '/docs/cloud/img/weaviate-cloud-delete-api-key.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link>を開きます。
+      </li>
+      <li>
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
+          クラスターを選択
+        </Link>
+        し、<code>API Keys</code> セクションを探します。
+      </li>
+      <li>
+        削除したいキーの横にある <code>Delete</code> ボタンをクリックします (<span class="callout">1</span>)。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={DeleteAPIKey} alt="Delete an API key in Weaviate Cloud" />
+      </div>
+      <div class="card__body">Weaviate Cloud で API キーを削除します。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+import DeleteAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-delete-api-key-confirm.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol start="4">
+      <li>削除を確認するために必要なテキストを入力します。</li>
+      <li>
+        <code>Confirm and delete</code> ボタンをクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={DeleteAPIKeyConfirm} alt="Confirm API key deletion" />
+      </div>
+      <div class="card__body">API キーの削除を確認します。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+:::info
+
+<RestartTheCluster />
+
+:::
+
+## さらなるリソース
+
+- [WCD で認可を管理する](./authorization.mdx)
+- [RBAC ドキュメント](/weaviate/configuration/rbac/index.mdx)
+
+## サポート
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+

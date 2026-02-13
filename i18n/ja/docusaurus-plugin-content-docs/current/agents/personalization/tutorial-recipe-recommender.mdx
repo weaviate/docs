@@ -1,0 +1,369 @@
+---
+title: Personalization Agent で作るレシピレコメンダー
+sidebar_label: 'Tutorial: Recipe recommender'
+description: "Personalization Agent を使用してレシピ推薦システムを作成するチュートリアル。"
+sidebar_position: 40
+image: og/docs/tutorials.jpg
+# tags: ['personalization', 'recommendation']
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent_tutorial_food_recommender.py';
+
+:::caution Technical Preview
+
+![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only 'This Weaviate Agent is in technical preview.')
+![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only 'This Weaviate Agent is in technical preview.')
+
+[こちらから登録](https://events.weaviate.io/weaviate-agents)して Weaviate Agents の最新情報を受け取るか、[このページ](https://weaviateagents.featurebase.app/)で最新のアップデートとフィードバックを確認してください。
+
+:::
+
+:::info Data Storage Note
+Weaviate Personalization Agent は、ユーザーパ ーソナプロファイルとインタラクションデータをメインのデータコレクションと同じくお客様の Weaviate インスタンス内に保存します。エージェントを実装する際は、データプライバシー規制にご注意ください。
+:::
+
+このチュートリアルでは、**[Weaviate Personalization Agent](./index.md)** を使用してシンプルなフードレコメンダーサービスを構築します。このエージェントは、ユーザーが定義したプロフィール（パーソナ）と過去のインタラクション（例: レシピのレビュー）を学習し、レシピコレクションからパーソナライズされた推薦を行います。
+
+Personalization Agent を試すための公開データセットを用意しています。  
+HuggingFace で入手可能です:
+
+- [**レシピ:**](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes) レシピ名、短い説明、料理の種類を含むデータセット。
+
+## 導入: Personalization Agent とは
+
+Weaviate Personalization Agent は、Weaviate コレクションからユーザーごとに最適化されたオブジェクトを取得するための、あらかじめ構築されたエージェントサービスです。ユーザーが定義したパーソナ（プロフィール）と、コレクション内アイテムとのインタラクション履歴を考慮して動作します。
+
+import WeaviateAgentsPersonalizationFoodFlowchart from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_flowchart.png';
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img
+        src={WeaviateAgentsPersonalizationFoodFlowchart}
+        alt="Weaviate Personalization Agent flowchart"
+      />
+    </div>
+  </div>
+</div>
+<br />
+
+Personalization Agent の処理フロー:
+
+1.  **リクエストを受信** — 特定ユーザー（パーソナ）への推薦要求を受け取ります。  
+2.  **ユーザーのパーソナプロファイル**（例: 好み、苦手、好きな料理）と **インタラクション履歴**（例: 好き／嫌いなレシピと重み付け）を取得します。  
+3.  **参照コレクションを検索**（例: 「Recipes」）し、候補アイテムを取得します。  
+4.  **（オプション）生成モデルを使用** — 大規模言語モデルなど適切な生成モデルで、パーソナ・インタラクション・指示に基づき候補を再ランク付けし、その理由を生成します。  
+5.  **パーソナライズされた順位付きリスト** をユーザーへ返します。
+
+<hr />
+
+## 前提条件
+
+Weaviate Agents と Weaviate Embedding サービスを使用するには、**[Weaviate Cloud](https://console.weaviate.cloud)** アカウントが必要です。
+
+## ステップ 1: Weaviate のセットアップ
+
+ここから、チュートリアルで使用する Weaviate Cloud インスタンスを作成し、Python クライアントから接続します。
+
+### 1.1 Weaviate Cloud クラスターの作成
+
+1. Weaviate Cloud で[無料の Sandbox クラスター](/cloud/manage-clusters/create#sandbox-clusters)を作成します。  
+1. クラスターに接続するための `REST Endpoint` と `Admin` API キーを控えておきます。（詳しくは [クイックスタート](/cloud/manage-clusters/connect.mdx) を参照）
+
+:::tip
+このチュートリアルでは、ベクトライザーとして [Weaviate Embeddings](../../weaviate/model-providers/weaviate/index.md) サービスを使用するため、外部の埋め込みプロバイダー用の追加キーは不要です。Weaviate Embeddings では既定で `Snowflake/snowflake-arctic-embed-l-v2.0` モデルが使用されます。<br/><br/>
+別のベクトライザーを使用したい場合は、サポートされている [モデルプロバイダー](../../weaviate/model-providers/index.md) の一覧をご覧ください。
+:::
+
+### 1.2 Python ライブラリのインストール
+
+Weaviate Python クライアントと `agents` コンポーネントをインストールするには、次のコマンドを実行します。
+
+<Tabs groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+```
+pip install "weaviate-client[agents]"
+```
+
+</TabItem>
+</Tabs>
+
+HuggingFace 上の公開データセットにアクセスできる軽量ライブラリ `datasets` も必要です。
+
+<Tabs groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+```
+pip install datasets
+```
+
+</TabItem>
+</Tabs>
+
+import ForcePipInstall from '../_includes/_force_pip_install.mdx';
+
+<ForcePipInstall />
+
+### 1.3 インスタンスへの接続
+
+先ほど取得したパラメータを使って、Weaviate Cloud インスタンスへ接続します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ConnectToWeaviate"
+      endMarker="# END ConnectToWeaviate"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+このスニペットを実行し、`True` と表示されればインスタンスへの接続に成功しています。
+## 手順 2: コレクションの準備
+
+以下のコードブロックでは、デモ用レシピ データセットを Hugging Face から取得し、 Weaviate Sandbox クラスター内の新しいコレクションに書き込みます。データをインポートする前に、コレクションを **定義** し、スキーマを設定してベクトライザーを選択する必要があります。
+
+### 2.1 コレクションの定義
+
+以下は、`Recipes` データセット内のオブジェクトの構造です。
+
+import WeaviateAgentsPersonalizationFoodDataset from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_dataset.png';
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img
+        src={WeaviateAgentsPersonalizationFoodDataset}
+        alt="Recipes データセットの構造"
+      />
+    </div>
+  </div>
+</div>
+<br />
+
+`Recipes` コレクションでは、プロパティを手動で定義し、説明を追加します。[`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) を利用することもできますが、明示的な説明を付けることで Personalization エージェント (特に再ランキングに使用される基盤 LLM) がデータの文脈をよりよく理解できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DefineCollection"
+      endMarker="# END DefineCollection"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+### 2.2 データベースの投入
+
+次に、レシピ データ ([Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes)) を Weaviate Cloud インスタンスにインポートします。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START PopulateDatabase"
+      endMarker="# END PopulateDatabase"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+`len()` をコレクションに対して呼び出すことで、インポートが正常に完了したかを確認し、コレクションのサイズを確認できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckCollectionSize"
+      endMarker="# END CheckCollectionSize"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+```
+Size of the Recipes dataset: 5117
+```
+
+## 手順 3: パーソナライゼーション エージェントのセットアップ
+
+それでは、`PersonalizationAgent` インスタンスを作成し、"Recipes" コレクションに紐付けます。
+
+新しく `PersonalizationAgent` を作成する際には、まず `user_properties` を定義します。これは、各ユーザーのペルソナ プロフィールを構成するフィールドです。今回のフード レコメンダーでは、好みの料理、一般的な好き嫌いなどのプロパティが該当します。
+
+このコレクション用のエージェントが既に存在する場合 (例: 以前の実行で作成済み)、`PersonalizationAgent.connect()` を使用して接続するだけで構いません。以下のコードは両方のケースに対応しています。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateOrConnectAgent"
+      endMarker="# END CreateOrConnectAgent"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+新しいエージェントが作成されたか、既存のエージェントに接続されたかを示すメッセージが表示されます。
+
+## 手順 4: パーソナライゼーション エージェントの使用
+
+エージェントの準備ができたので、ユーザー データを追加し、レコメンデーションを取得できます。
+
+### 4.1 新しいペルソナの追加
+
+「ペルソナ」はユーザー プロフィールを表します。`agent.add_persona()` メソッドを使用し、一意の `persona_id` (UUID を推奨) と、エージェント作成時に定義した `properties` を渡します。
+
+以下の例はご自身の食の好みに合わせて自由に変更してください\!
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddPersona"
+      endMarker="# END AddPersona"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+### 4.2 インタラクションの追加
+
+「インタラクション」は、ユーザーがコレクション内のアイテムとどのように関わったかを表します。今回のレコメンダーでは、明示的なレビューや評価、レシピ ページを閲覧したといった暗黙的なシグナルなどが該当します。
+
+`PersonaInteraction` では、`persona_id` と `item_id` (「Recipes」コレクション内オブジェクトの UUID) を関連付け、さらに -1.0 (強い嫌い) から 1.0 (強い好み) の範囲で `weight` を指定します。
+
+import WeaviateAgentsPersonalizationFoodUser from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_user.png';
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img
+        src={WeaviateAgentsPersonalizationFoodUser}
+        alt="Weaviate Personalization Agent User"
+      />
+    </div>
+  </div>
+</div>
+<br />
+
+まず、ユーザーがインタラクトした特定のレシピの UUID を取得します。次に、適切な `weight` を設定してインタラクションを定義します。最後に、`agent.add_interactions()` を使用してエージェントに追加します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddInteractions"
+      endMarker="# END AddInteractions"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+このブロックはインタラクション データを準備し、エージェントに送信します。
+### 4.3 レコメンデーションの取得
+
+ここからは核心機能です。`agent.get_objects()` を使用してパーソナライズされたレコメンデーションを取得します。取得したい対象の `persona_id` を指定します。
+
+`use_agent_ranking=True` を設定すると、LLM ベースのリランキングが有効になります。これにより、ペルソナのプロファイルとインタラクション履歴を活用して、よりきめ細かなランキングを提供し、さらにアイテムが推奨された _なぜ_ を説明する `ranking_rationale` も生成されます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GetRecommendations"
+      endMarker="# END GetRecommendations"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+出力にはまず、エージェントの LLM が生成した `ranking_rationale` が表示され、その後にタイトル、説明、料理のラベルを含む推奨レシピの一覧が続きます。
+
+<details>
+  <summary>例のレスポンス (persona / interactions と LLM によって変わります):</summary>
+
+```
+Getting recommendations for persona e7239e3f-97f5-41b3-939a-5fbf3e0c7f16...
+
+Ranking Rationale:
+Because you love Italian dishes and have shown an interest in different cuisines, we've prioritized dishes with Italian, Japanese, and Indian labels, reflecting your preferences for Italian and Thai cuisines and prior positive interactions. We avoided items with mushroom content.
+
+Recommended Recipes:
+----- Recommendation 1 -----
+Title: Chicken Tikka Masala
+Cuisine: Indian
+UUID: 5785f023-5ab2-49d8-bb43-0ab047083e16
+----- Recommendation 2 -----
+Title: Spicy Indian Tikka Masala
+Cuisine: Indian
+UUID: 753a036f-ec83-4efa-8a1a-5afa021acbc2
+----- Recommendation 3 -----
+Title: Paneer Tikka
+Cuisine: Indian
+UUID: 323b6f11-c026-4367-801b-b21f40e6591b
+----- Recommendation 4 -----
+Title: Paneer Butter Masala
+Cuisine: Indian
+UUID: 3bd11bc9-d329-4039-9f4a-205f1719048d
+----- Recommendation 5 -----
+Title: Butter Chicken
+Cuisine: Indian
+UUID: 4e056c59-e843-419a-8129-b6633fb8c2d3
+----- Recommendation 6 -----
+Title: Shabu-Shabu
+Cuisine: Japanese
+UUID: df0ae465-f724-42ed-9876-2c9b91516c13
+----- Recommendation 7 -----
+Title: Oden
+Cuisine: Japanese
+UUID: eb6088c1-05a6-46ed-9adc-477313c051d2
+----- Recommendation 8 -----
+Title: Tempura
+Cuisine: Japanese
+UUID: 625a5164-e150-4966-a3c6-0aed406db416
+----- Recommendation 9 -----
+Title: Ramen
+Cuisine: Japanese
+UUID: 708824b3-fc4a-4927-82bb-a8a4dbd5ee89
+----- Recommendation 10 -----
+Title: Udon Noodles
+Cuisine: Japanese
+UUID: 8d6a94b7-c9ae-4d1c-b29a-885717b9a55a
+```
+
+</details>
+
+## 概要
+
+本ガイドでは、 Weaviate の Personalization Agent を使用して、パーソナライズされたフードレコメンデーションサービスを構築する方法を示しました。以下を取り上げました:
+
+- Python クライアントを使用して Weaviate Cloud インスタンスをセットアップする方法。  
+- 説明的プロパティを持つ「Recipes」コレクションを定義すること。  
+- コレクションにデータをインポートすること。  
+- コレクションにリンクした Personalization Agent を作成し、ユーザー プロファイルのプロパティ (`user_properties`) を定義すること。  
+- 特定の好みを持つユーザー プロファイル (`personas`) を追加すること。  
+- 重み付きスコアを使用してアイテムとのユーザー インタラクションを記録すること。  
+- `get_objects` を使用してパーソナライズされたレコメンデーションを取得し、LLM ベースのリランキング (`use_agent_ranking=True`) を利用してカスタマイズされた結果と説明 (`ranking_rationale`) を得ること。  
+
+Personalization Agent を使用すると、 Weaviate 上で構築したアプリケーションに高度でパーソナライズされた取得機能を簡単に追加できます。
+
+## 追加リソース
+
+- [Weaviate Agents - Personalization Agent](./index.md)
+
+## 質問とフィードバック
+
+:::info Changelog and feedback
+Weaviate Agents の公式変更履歴は [こちら](https://weaviateagents.featurebase.app/changelog) でご覧いただけます。機能リクエスト、バグ報告、質問などのフィードバックがありましたら、[こちら](https://weaviateagents.featurebase.app/) からお送りください。フィードバックの状況を確認したり、他のフィードバックに投票したりできます。
+:::
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />

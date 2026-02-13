@@ -1,0 +1,55 @@
+---
+title: フィルター
+description: テキスト検索のフィルター
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/103_searches.py';
+
+フィルターを使用すると、検索結果をより正確に絞り込むことができます。プロパティだけでなくメタデータでもフィルターでき、複数のフィルターを `and` や `or` 条件で組み合わせることで、さらに結果を絞り込めます。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、クエリ "dystopian future" との類似度に基づいて "Movie" 内のエントリーを検索し、かつ 2020 年以降に公開されたものだけを対象としています。上位 5 件について、タイトルと公開年を出力します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# FilteredSemanticSearch"
+  endMarker="# END FilteredSemanticSearch"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+このクエリは、[前章](./10_semantic.mdx) で示した セマンティック検索 の例と同じですが、フィルターが追加されています。ここでは `filters` パラメーターに `Filter` クラスのインスタンスを渡し、フィルター条件を設定しています。現在のクエリでは、公開年が 2010 年より後の結果のみを返すようにフィルターしています。
+
+<details>
+  <summary>例: 結果</summary>
+
+```text
+Dune 2021
+Distance to query: 0.199
+
+Tenet 2020
+Distance to query: 0.200
+
+Mission: Impossible - Dead Reckoning Part One 2023
+Distance to query: 0.207
+
+Onward 2020
+Distance to query: 0.214
+
+Jurassic World Dominion 2022
+Distance to query: 0.216
+```
+
+</details>
+
+
+## ご質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

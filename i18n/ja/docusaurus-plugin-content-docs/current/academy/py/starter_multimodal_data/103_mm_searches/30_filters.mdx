@@ -1,0 +1,55 @@
+---
+title: フィルター
+description: マルチモーダル検索のフィルター
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/103_searches.py';
+
+検索結果を正確に絞り込むためにフィルターを使用できます。プロパティだけでなくメタデータでもフィルタリングでき、`and` や `or` 条件で複数のフィルターを組み合わせてさらに結果を絞り込むことも可能です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、クエリ「dystopian future」との類似度に基づいて「MovieMM」内のエントリーを検索し、2010 年以降に公開されたものだけから上位 5 件のタイトルと公開年を出力します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# FilteredSemanticSearch"
+  endMarker="# END FilteredSemanticSearch"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+このクエリは検索用に前述したもの（[こちら](./10_multimodal.mdx)）と同じですが、フィルターが追加されています。ここでの `filters` パラメーターには、`Filter` クラスのインスタンスを渡してフィルター条件を設定します。現在のクエリでは、公開年が 2010 年より後の結果のみを取得するようにフィルタリングしています。
+
+<details>
+  <summary>例の結果</summary>
+
+```text
+Dune 2021
+Distance to query: 0.199
+
+Tenet 2020
+Distance to query: 0.200
+
+Mission: Impossible - Dead Reckoning Part One 2023
+Distance to query: 0.207
+
+Onward 2020
+Distance to query: 0.214
+
+Jurassic World Dominion 2022
+Distance to query: 0.216
+```
+
+</details>
+
+
+## ご質問やフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

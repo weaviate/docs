@@ -1,0 +1,57 @@
+---
+title: "'シングル プロンプト' 生成"
+description: マルチモーダル RAG 用シングル プロンプト
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/104_rag.py';
+
+「シングル プロンプト」生成では、取得した各オブジェクトに対して RAG クエリを実行します。同じプロンプトで各オブジェクトを個別に変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、[国際宇宙ステーションのこの画像](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg) に類似した 「 MovieMM 」 内のエントリーを検索します。次に、大規模言語モデルに各映画のタイトルをフランス語へ翻訳するよう指示します。
+
+得られた各結果はコンソールに出力されます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# SinglePromptGeneration"
+  endMarker="# END SinglePromptGeneration"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+波括弧を使って `single_prompt` パラメータに 1 つ以上のプロパティを渡す必要があります。ここでは `"... {title} ..."` として渡しています。これにより、 Weaviate は取得した各オブジェクトの `title` プロパティを大規模言語モデルへ渡します。
+
+<details>
+  <summary>結果例</summary>
+
+```text
+Interstellar
+Interstellaire
+Gravity
+Gravité
+Arrival
+Arrivée
+Armageddon
+Armageddon
+Godzilla
+Godzilla
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンス オブジェクト
+
+レスポンス オブジェクトは通常の検索クエリのものとほぼ同じですが、`generated` 属性が追加されています。この属性には、各オブジェクトに対して生成された出力が格納されます。
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

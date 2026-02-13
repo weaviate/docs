@@ -1,0 +1,70 @@
+---
+title: （ボーナス） ベクトルを生成する
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';
+
+カスタム ベクトル を使用しているため、自分で生成する必要があります。
+
+この手順は任意です。次のセクションでは、あらかじめ生成された ベクトル をダウンロードして使用する方法を説明します。ベクトル の生成方法に興味がある場合は、引き続きお読みください。
+
+### <i class="fa-solid fa-code"></i> コード
+
+次の例では、映画データセットの埋め込みを生成します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# ManuallyGenerateEmbeddings"
+  endMarker="# END ManuallyGenerateEmbeddings"
+  language="py"
+/>
+
+これにより、データセット内の各映画に対して ベクトル が生成され、映画を Weaviate に追加するときに利用できます。
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+### <i class="fa-solid fa-chalkboard"></i> モデル
+
+ベクトル 埋め込みの生成には `embed-multilingual-v3.0` Cohere モデルを使用します。ローカルで生成したい場合は `transformers` ライブラリを使用することも可能です。
+
+### <i class="fa-solid fa-code"></i> ソース テキスト
+
+映画のタイトルと概要を結合して、モデル用のソース文字列を作成します。モデルはこのテキストを「翻訳」して ベクトル に変換します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Concatenate text to create a source string"
+  endMarker="# Add to the buffer"
+  language="py"
+/>
+
+### <i class="fa-solid fa-code"></i> バッチで埋め込みを取得する
+
+連結した文字列をバッファに保存し、バッチで埋め込みを取得します。これにより、モデルへのリクエスト回数を抑え、タイムアウトを防げます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Get a batch of embeddings"
+  endMarker="# Reset the buffer"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 埋め込みをエクスポートする
+
+生成した埋め込みをファイルに保存し、映画を Weaviate に追加する際に利用できるようにします。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Save the data as a CSV"
+  endMarker="# END ManuallyGenerateEmbeddings"
+  language="py"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,341 @@
+---
+title: コレクション エイリアス
+sidebar_label: Collection aliases
+sidebar_position: 2
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
+
+:::caution Technical preview
+
+コレクション エイリアスは **`v1.32`** で **技術プレビュー** として追加されました。<br/><br/>
+この機能は現在も開発中であり、将来のリリースで変更される可能性があります。互換性が失われる変更が入ることもあります。  
+**現時点では、本番環境での使用はおすすめしません。**
+
+:::
+
+コレクション エイリアスを使用すると、コレクションに別名を設定できます。これにより、ダウンタイムなしでのコレクション定義の変更、A/B テスト、あるいはより分かりやすい名前の提供などが可能になります。エイリアスはコレクションへの参照として機能し、エイリアス名でクエリを実行すると、 Weaviate が自動的に対象コレクションへリクエストをルーティングします。
+
+## エイリアスの作成
+
+エイリアスを作成するには、エイリアス名と、それが参照する対象コレクションを指定します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateAlias"
+      endMarker="# END CreateAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// CreateAlias START"
+      endMarker="// CreateAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+:::note
+
+- エイリアス名は一意でなければならず、既存のコレクション名またはエイリアス名と重複できません  
+- 複数のエイリアスを同じコレクションに向けることができます  
+- コレクションを削除する場合を除き、ほとんどの操作でコレクション名の代わりにエイリアスを使用できます  
+:::
+
+## すべてのエイリアスの一覧
+
+ Weaviate インスタンス内のすべてのエイリアスを取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ListAllAliases"
+      endMarker="# END ListAllAliases"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ListAllAliases START"
+      endMarker="// ListAllAliases END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## 特定のコレクションのエイリアス一覧
+
+特定のコレクションを参照しているすべてのエイリアスを取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ListCollectionAliases"
+      endMarker="# END ListCollectionAliases"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ListCollectionAliases START"
+      endMarker="// ListCollectionAliases END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+## エイリアス詳細の取得
+
+特定のエイリアスに関する情報を取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GetAlias"
+      endMarker="# END GetAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// GetAlias START"
+      endMarker="// GetAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## エイリアスの更新
+
+エイリアスが参照するターゲット コレクションを変更します。この操作はアトミックで、コレクション間を即座に切り替えられます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateAlias"
+      endMarker="# END UpdateAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UpdateAlias START"
+      endMarker="// UpdateAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip ユースケース: ゼロダウンタイム マイグレーション
+
+エイリアスを更新することで、マイグレーションをシームレスに行えます。
+
+1. 更新したコレクション定義で新しいコレクションを作成  
+2. 新しいコレクションにデータをインポート  
+3. エイリアスを新しいコレクションへ向けて更新  
+4. エイリアスを引き続き使用 — これ以降、そのエイリアスへのクエリはすべて新しいコレクションへ転送されます  
+
+マイグレーションを実行するコード例については、[スターター ガイド: コレクション管理](../starter-guides/managing-collections/index.mdx#collection-aliases) を参照してください。
+:::
+
+## エイリアスの削除
+
+エイリアスを削除します。これはエイリアス ポインターのみを削除し、基盤となるコレクションは削除しません。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DeleteAlias"
+      endMarker="# END DeleteAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// DeleteAlias START"
+      endMarker="// DeleteAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+:::note
+
+- コレクションを削除しても、それを参照するエイリアスは自動で削除されません
+
+:::
+
+
+## 操作でのエイリアスの使用
+
+エイリアスを作成すると、ほとんどの操作でコレクション名の代わりに使用できます（コレクションを削除する場合を除く）:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UseAlias"
+      endMarker="# END UseAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UseAlias START"
+      endMarker="// UseAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## 参考リソース
+
+- [コレクションの管理：基本操作](./collection-operations.mdx)
+- [リファレンス：コレクション定義](/weaviate/config-refs/collections.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/aliases">
+    API リファレンス：REST：エイリアス
+  </SkipLink>
+
+## ご質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

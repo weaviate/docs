@@ -1,0 +1,57 @@
+---
+title: "「シングルプロンプト」生成"
+description: "マルチモーダル RAG のシングルプロンプト"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/104_rag.mts';
+
+「シングルプロンプト」生成では、取得した各オブジェクトに対して RAG クエリを実行します。これは、同じプロンプトを用いて各オブジェクトを個別に変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、[国際宇宙ステーションの画像](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg)との類似度に基づいて「 Movie 」内のエントリーを検索します。その後、大規模言語モデルに各映画のタイトルをフランス語へ翻訳するよう指示します。
+
+結果はそれぞれコンソールに出力されます。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// SinglePromptGeneration"
+  endMarker="// END SinglePromptGeneration"
+  language="ts"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+`singlePrompt` パラメーターには、中括弧を用いて 1 つ以上のプロパティを渡す必要があります。ここでは `"... {title} ..."` として `title` プロパティを各取得オブジェクトから大規模言語モデルへ渡すように指定しています。
+
+<details>
+  <summary>例の結果</summary>
+
+```text
+Interstellar
+Interstellaire
+Gravity
+Gravité
+Arrival
+Arrivée
+Armageddon
+Armageddon
+Godzilla
+Godzilla
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+各レスポンスオブジェクトは通常の検索クエリの結果と似ていますが、追加で `generated` 属性が含まれます。この属性には、各オブジェクトに対して生成された出力が格納されます。
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

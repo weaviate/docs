@@ -1,0 +1,51 @@
+---
+title: P3_104 クエリ 2 (Python)
+description: 高度な手法とカスタムフィルターで Weaviate のクエリをさらに探究する。
+sidebar_position: 104
+---
+
+import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/deprecation.md';
+
+<ZeroToMvpDeprecationNote/>
+
+## <i class="fa-solid fa-chalkboard-user"></i> ユニット概要
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+[//]: # (<img src={imageUrl} alt="Image alt" width="75%"/>)
+
+<!-- Provide context for this course, in addition to the concrete learning goals and outcomes. Why would someone want to do this unit? -->
+
+このユニットでは、Weaviate で実行できるさらに多くのクエリの種類について学びます。
+
+まず、BM25F ランキングアルゴリズムを用いたキーワード検索の方法と、キーワード検索と ベクトル 検索を組み合わせたハイブリッド検索を見ていきます。
+
+次に、生成検索と質問応答 (QnA) 検索を取り上げます。これらの検索では、データオブジェクトを取得するだけでなく、返す前に結果を変換することができます。
+
+このユニットを終える頃には、目的に応じて選択できる複数のクエリタイプを習得し、望む形式で適切な情報を取得できるようになります。
+
+それでは始めましょう。
+
+### <i class="fa-solid fa-clipboard-list-check"></i> 前提条件
+
+- (**Required**) `weaviate-client` がインストールされた Python (3) 環境。
+- (**Required**) [101A Weaviate Academy 準備](../setup.mdx) を完了してください。
+- (*Recommended*) [Hello, Weaviate](../101_hello_weaviate/index.mdx) を完了してください。
+- (*Recommended*) [クエリ 1](../102_queries_1/index.mdx) を完了してください。
+- (*Recommended*) [スキーマとインポート](../103_schema_and_imports/index.mdx) を完了してください。
+
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
+
+import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
+
+<LearningGoalsExp />
+
+import LearningGoals from '/src/components/Academy/learningGoals.jsx';
+
+<LearningGoals unitName="queries_2"/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,226 @@
+---
+title: 例 1 - クエリ
+description: Hello Weaviate - 例 パート 1
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルの活用
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/zC0CpBiLC3g' controls='true' />
+<br/>
+
+Weaviate でできることの例をもう少し見てみましょう。
+
+まず、デモデータベースを検索して ベクトル検索 を試します。入力テキスト、 ベクトル、オブジェクトなど、さまざまなクエリタイプを使用して、類似度に基づいてオブジェクトを取得する方法を学びます。
+
+ベクトル検索 とキーワード検索を比較し、両者の違いを確認したあと、フィルターを用いてこれら 2 つの手法を組み合わせる方法を学びます。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル検索デモ
+
+最初の例として、デモデータセットを検索してみましょう。これはクイズ番組 * Jeopardy!* の質問を少しだけ収録したものです。
+
+あなたがクイズ ナイトを開催していて、「動物が出てくる映画」に関する質問を取得したいと想像してください。従来のデータベースであれば、単語の一致を探す必要があり、例えば次のようなクエリになるでしょう。
+
+```sql
+SELECT question, answer
+FROM jeopardy_questions
+WHERE (
+         question LIKE '%animal%'
+         OR question LIKE '%creature%'
+         OR question LIKE '%beast%'
+      )
+AND (
+       question LIKE '%movie%'
+       OR question LIKE '%film%'
+       OR question LIKE '%picture%'
+       OR question LIKE '%cinema%'
+    )
+
+```
+
+これは書くのが難しいクエリです。さらに悪いことに、特定の動物名もクエリに追加しなければならないかもしれません。
+
+Weaviate のクエリはずっと直感的です。次のクエリを実行するとどうなるか見てみましょう。
+
+:::note Weaviate で検索した内容:
+animals in movies
+:::
+
+<details>
+  <summary><i class="fa-solid fa-code"></i> 完全なクエリを見る</summary>
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["animals in movies"]
+      }
+      limit: 3
+    ) {
+      question
+      answer
+    }
+  }
+}
+```
+
+</details>
+
+Weaviate は次のような回答を上位に返しました。
+
+:::note Weaviate が取得した結果:
+- **ミーアキャット**：こちらに見られる哺乳類の群れで、* The Lion King* の ティモン のような動物
+- **犬**：Scooby-Doo、Goofy、Pluto はアニメ版
+- **The Call of the Wild Thornberrys**：動物と話せる Eliza が登場する Nick のアニメに、犬 Buck が加わる Jack London の物語
+:::
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "meerkats",
+          "question": "Group of mammals seen <a href=\"http://www.j-archive.com/media/1998-06-01_J_28.jpg\" target=\"_blank\">here</a>:  [like Timon in <i>The Lion King</i>]"
+        },
+        {
+          "answer": "dogs",
+          "question": "Scooby-Doo, Goofy & Pluto are cartoon versions"
+        },
+        {
+          "answer": "The Call of the Wild Thornberrys",
+          "question": "Jack London story about the dog Buck who joins a Nick cartoon about Eliza, who can talk to animals"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+いずれの結果にも「animal」や「movie」という語、ましてや両方が含まれていないにもかかわらず、非常に関連性が高いことに注目してください。
+
+これこそが ベクトル検索 が便利な理由です。完全一致のテキストがなくても関連するオブジェクトを見つけられます。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル類似度デモ
+
+このクエリを実行すると、先ほどと同じような回答が返ってくると期待するかもしれません。
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["European geography"]
+      }
+      limit: 3
+    ) {
+      question
+      answer
+      _additional {
+        distance
+      }
+    }
+  }
+}
+```
+
+しかし、このレスポンスを見てください。追加情報に気付きますか？
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.15916324
+          },
+          "answer": "Bulgaria",
+          "question": "A European republic: Sofia"
+        },
+        ...
+      ]
+    }
+  }
+}
+
+```
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> Weaviate からの完全な JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.15916324
+          },
+          "answer": "Bulgaria",
+          "question": "A European republic: Sofia"
+        },
+        {
+          "_additional": {
+            "distance": 0.16247147
+          },
+          "answer": "Balkan Peninsula",
+          "question": "The European part of Turkey lies entirely on this peninsula"
+        },
+        {
+          "_additional": {
+            "distance": 0.16832423
+          },
+          "answer": "Mediterranean Sea",
+          "question": "It's the only body of water with shores on the continents of Asia, Africa & Europe"
+        }
+      ]
+    }
+  }
+}
+
+```
+
+</details>
+
+違いは、レスポンスに `distance` 値が含まれていることです。
+
+`distance` は、返されたオブジェクトとクエリとの類似度を示します。
+
+それが具体的に何を意味するのか、また 2 つのオブジェクトや概念の類似度がどのように決定されるのか疑問に思ったなら、良い質問です！ これについては後ほど詳しく説明します。
+
+ここでは、距離が小さいほど 2 つのオブジェクトがより似ていると覚えておいてください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+<!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+<!-- ### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+Can you describe, in your own sentence, XXX?
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+??
+::: -->
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- ベクトル検索 は、完全一致のテキストがなくても関連オブジェクトを見つけられます。
+- ベクトル検索 では、distance 値が返されたオブジェクトとクエリの類似度を示します。
+- distance が小さいほど類似度が高いことを示します。
+- ベクトル検索 は、キーワード検索やフィルタリングと組み合わせることで、より洗練された検索結果を得られます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,42 @@
+---
+title: まとめ / 次のステップ
+---
+
+おめでとうございます！マルチテナンシーに関するこのコースを修了しました。役立つ内容であったことを願っています。
+
+## マルチテナントコレクション
+
+マルチテナントコレクションは、単一の Weaviate インスタンスで複数のテナントを管理できる強力な機能です。各テナントは独立したデータを持ちながら、同じスキーマと設定を共有します。
+
+マルチテナントコレクションは複数の Weaviate コレクションを作成する場合に比べ、はるかに効率的です。これにより、アプリケーションをより簡単かつコスト効率良くスケールできます。
+
+## マルチテナンシーとリソース管理
+
+各テナントはコレクションに属しており同じ設定を共有しますが、テナントごとにリソースを個別に管理できます。
+
+これはテナントの state を `ACTIVE`、`INACTIVE`、`OFFLOADED` のいずれかに設定する、あるいはインデックスタイプを `dynamic` に設定することで実現できます。`dynamic` を使用すると、各テナントはオブジェクト数が一定のしきい値を超えた後にのみ HNSW を使用します。
+
+テナントごとのリソースを慎重に管理する戦略を構築することで、アプリケーションのパフォーマンスとコスト効率を最適化できます。
+
+## さらなるリソース
+
+学習を続ける際は、以下のリソースをご活用ください。
+
+- [スターターガイド: リソース管理](/weaviate/starter-guides/managing-resources/index.md)
+- [コンセプト: マルチテナンシー](/weaviate/concepts/data.md#multi-tenancy)
+- [ハウツー: コレクションの管理](../../../weaviate/manage-collections/index.mdx)
+- [ハウツー: マルチテナント操作](/weaviate/manage-collections/multi-tenancy.mdx)
+- [ハウツー: テナント state の管理](/weaviate/manage-collections/tenant-states.mdx)
+- [Weaviate Academy: ベクトルインデックス](../vector_index/index.md)
+
+import CTASocials from '../_snippets/cta_socials.mdx';
+
+<CTASocials />
+
+またお会いしましょう！ 👋
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

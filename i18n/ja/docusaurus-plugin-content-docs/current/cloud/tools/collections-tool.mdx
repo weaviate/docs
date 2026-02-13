@@ -1,0 +1,327 @@
+---
+title: Collections ツール
+sidebar_position: 15
+description: "コード不要で Weaviate コレクションを作成・管理・削除できるユーザーフレンドリーなインターフェイス。"
+image: og/wcd/user_guides.jpg
+---
+
+import WCDEdGen from '/docs/cloud/img/wcd-coll-ed-general.jpg';
+import WCDEdProp from '/docs/cloud/img/wcd-coll-ed-props.jpg';
+import WCDEdExProp from '/docs/cloud/img/wcd-coll-ed-extra-props.jpg';
+import WCDEdSelect from '/docs/cloud/img/wcd-coll-select-mod.jpg';
+import WCDEdObj from '/docs/cloud/img/wcd-coll-ed-objs.jpg';
+
+ Weaviate Cloud ( WCD ) の Collections ツールを使用すると、開発者だけでなく非技術者でもコレクションを簡単に作成・管理・削除できます。
+
+このツールで新しいコレクションを細かく調整しましょう。ベクトライザーと埋め込みモデルを指定し、検索を高速化し精度を高めるためのコレクションプロパティを設定できます。
+
+## コレクションの表示 {#collection-details}
+
+この Collections ツールは、 Weaviate Cloud にホストされているコレクションで利用できます。
+
+import CollectionDetails from '/docs/cloud/img/weaviate-cloud-collection-details.png';
+
+<ol>
+  <li>
+    まず左サイドバーから <code>Collections</code> ツール
+    (<span class="callout">1</span>) を選択します。
+  </li>
+  <li>
+    <code>Clusters</code> パネルには利用可能なクラスターが一覧表示されます。
+  </li>
+  <li>
+    新しいコレクションを作成する、または既存のコレクションを確認するために
+    一覧からクラスターを選択します (
+    <span class="callout">2</span>)。
+  </li>
+  <li>
+    <code>Details</code> ボタンをクリックします (
+    <span class="callout">3</span>)。
+  </li>
+</ol>
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={CollectionDetails} alt="Open a collection in Weaviate Cloud" />
+    </div>
+    <div class="card__body">
+      <p> Weaviate Cloud でコレクションを開く。</p>
+    </div>
+  </div>
+</div>
+<br />
+
+利用可能なクラスターが表示されない場合は、左メニューの `Clusters` を選択し、[新しいクラスターを作成する](/cloud/manage-clusters/create) 手順に従ってください。
+
+## コレクションの作成
+
+`Create collection` ボタンをクリックすると、コレクションエディターが開きます。新しいコレクションを作成するにはこのボタンをクリックします。
+
+import CreateCollection from '/docs/cloud/img/weaviate-cloud-create-collection.png';
+
+<ol>
+  <li>
+    まず左サイドバーから <code>Collections</code> ツール
+    (<span class="callout">1</span>) を選択します。
+  </li>
+  <li>
+    <code>Clusters</code> パネルには利用可能なクラスターが一覧表示されます。
+  </li>
+  <li>
+    新しいコレクションを作成する、または既存のコレクションを確認するために
+    一覧からクラスターを選択します (
+    <span class="callout">2</span>)。
+  </li>
+  <li>
+    <code>Create collection</code> ボタンをクリックします (
+    <span class="callout">3</span>)。
+  </li>
+</ol>
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img
+        src={CreateCollection}
+        alt="Create a new collection in Weaviate Cloud"
+      />
+    </div>
+    <div class="card__body">
+      <p> Weaviate Cloud で新しいコレクションを作成。</p>
+    </div>
+  </div>
+</div>
+<br />
+
+### General セクションの編集
+
+<div class="row">
+  <div class="col col--6">
+    <p>
+      <code>General</code> セクションでは、コレクション全体の設定を行います:
+    </p>
+    <ol>
+      <li>コレクション名を設定</li>
+      <li>マルチテナンシーを有効化</li>
+      <li>デフォルトのベクトライザーを設定</li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={WCDEdGen} alt="General collection settings" />
+      </div>
+      <div class="card__body">General コレクション設定。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+#### コレクション名の設定
+
+コレクション名は大文字で始める必要があります。
+
+使用できる文字は英字・数字・アンダースコア ( _ ) のみです。スペースは使用できません。
+
+
+
+#### マルチテナンシーの有効化
+
+[マルチテナント コレクション](/weaviate/manage-collections/multi-tenancy) は、複数のユーザーがいる場合やデータを分離する必要がある場合に便利です。デフォルトでは、コレクションはシングルテナントです。マルチテナンシーを有効にするには、`Multi-tenancy` トグルをオンにします。
+
+#### デフォルト ベクトライザーの設定
+
+コレクションに [ベクトライザー](/weaviate/config-refs/collections.mdx#vector-configuration) を設定します。Weaviate は、ベクトル化されていないデータをインポートする場合や、ベクトル化された入力を必要とする外部 API を呼び出す際に、デフォルト ベクトライザーを使用します。
+
+`Vectorizer` 設定はドロップダウン リストです。ベクトライザーを選択すると、エディターが展開され、モデルを設定できるようになります。ツールは、選択したベクトライザーに関連する設定オプションのみを表示します。
+
+クラス名のベクトルを作成したくない場合は、`Vectorize class name` トグルをオフにしてください。
+
+### Properties セクションの編集
+
+`Properties` セクションを使用して、コレクション内の各プロパティを詳細設定できます。
+
+#### コレクションへのプロパティ追加
+
+プロパティ エディターにプロパティ名を入力します。
+
+<div class="row">
+  <div class="col col--4">
+    <p>プロパティ名は小文字で始める必要があります。</p>
+    <br />
+    <p>
+      名前に使用できる文字は、英字、数字、およびアンダースコア (`_`)
+      のみです。スペースは使用できません。
+    </p>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={WCDEdProp} alt="プロパティ編集セクション" />
+      </div>
+      <div class="card__body">プロパティ編集セクション。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+#### 追加詳細設定
+
+一部のプロパティタイプはさらに詳細設定が可能です。追加設定が可能な場合、エディターは `Filterable` トグルの横に歯車アイコンを表示します。
+
+<div class="row">
+  <div class="col col--6">
+    <p>
+      これらの追加設定を更新するには、歯車アイコンをクリックし、ポップアップ
+      ウィンドウで設定オプションを選択してください。
+    </p>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={WCDEdExProp}
+          alt="プロパティ追加詳細編集セクション"
+        />
+      </div>
+      <div class="card__body">プロパティ追加詳細編集セクション。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+#### ネストされたプロパティの設定
+
+`Object` プロパティタイプは、ネストされたサブプロパティを持つことができます。ネストされたプロパティを追加するには、次の手順に従います。
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>プロパティに名前を付けます。</li>
+      <li>
+        タイプを <code>Object</code> に設定します。エディターに
+        <code>Edit</code> ボタンが表示されます。
+      </li>
+      <li>
+        <code>Edit</code> ボタンをクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={WCDEdObj} alt="プロパティ追加詳細編集セクション" />
+      </div>
+      <div class="card__body">プロパティ追加詳細編集セクション。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+ネストされたプロパティの追加が完了したら、コレクション名をクリックしてコレクション エディターに戻ります。
+
+#### プロパティの削除
+
+プロパティを削除するには、プロパティの横にあるゴミ箱アイコンをクリックします。
+
+## コレクションの変更
+
+コレクションを変更するには、まず編集したい [コレクション](#collection-details) を選択します。
+
+<div class="row">
+  <div class="col col--4">
+    <p>
+      コレクションに新しいトップレベル プロパティを追加するには、エディターで名前とタイプを入力します。プロパティタイプが追加設定をサポートしている場合は、それらも更新してください。
+    </p>
+    <br />
+    <p>
+      コレクションに新しいトップレベル プロパティを追加するには、エディターで名前とタイプを入力します。プロパティタイプが追加設定をサポートしている場合は、それらも更新してください。
+    </p>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={WCDEdSelect} alt="Weaviate Cloud でコレクションを変更" />
+      </div>
+      <div class="card__body">Weaviate Cloud でコレクションを変更。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+## コレクションの削除
+
+一度 コレクション を削除すると、復元することはできません。コレクションスキーマとコレクション内のすべてのオブジェクトはクラスタから削除されます。この操作は取り消せません。
+
+コレクションを削除するには:
+
+import DeleteCollection from '/docs/cloud/img/weaviate-cloud-delete-collection.png';
+
+<ol>
+  <li>
+    まず、左サイドバーから <code>Collections</code> ツール
+    (<span class="callout">1</span>) を選択します。
+  </li>
+  <li>
+    <code>Clusters</code> パネルには利用可能なクラスターが一覧表示されます。
+  </li>
+  <li>
+    一覧からクラスターを選択すると、新しいコレクションを作成するか、すでに
+    そのクラスターに存在するコレクションを確認できます
+    (<span class="callout">2</span>)。
+  </li>
+  <li>
+    ごみ箱アイコンをクリックしてコレクションを削除します
+    (<span class="callout">3</span>)。
+  </li>
+</ol>
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={DeleteCollection} alt="Weaviate Cloud でコレクションを削除" />
+    </div>
+    <div class="card__body">
+      <p>Weaviate Cloud でコレクションを削除します。</p>
+    </div>
+  </div>
+</div>
+<br />
+
+import DeleteCollectionConfirm from '/docs/cloud/img/weaviate-cloud-delete-collection-confirm.png';
+
+<div class="row">
+  <div class="col col--6">
+    <ol start="5">
+      <li>
+        確認のためテキストボックスにコレクション名を入力し、<code>Delete</code> を押してコレクションを削除します。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={DeleteCollectionConfirm} alt="コレクション削除の確認" />
+      </div>
+      <div class="card__body">コレクション削除の確認。</div>
+    </div>
+  </div>
+</div>
+<br />
+
+## 追加の考慮事項
+
+Weaviate のコレクションスキーマは高度に設定可能で、多数の方法でチューニングできます。コレクション作成後に変更可能なスキーマ要素もありますが、多くのプロパティは変更できません。詳細は [Collection definition](/weaviate/config-refs/collections.mdx) を参照してください。
+
+## 参考リソース
+
+- [リファレンス: Collection definition](/weaviate/config-refs/collections.mdx)
+- [スターターガイド: コレクション定義 (スキーマ)](/weaviate/starter-guides/managing-collections)
+
+## サポート & フィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+

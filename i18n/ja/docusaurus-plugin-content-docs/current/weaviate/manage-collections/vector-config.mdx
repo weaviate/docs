@@ -1,0 +1,599 @@
+---
+title: ベクトライザー と ベクトル インデックス の設定
+sidebar_label: Vectorizer and vector index
+sidebar_position: 2
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
+
+<VectorConfigSyntax />
+
+## ベクトライザーを指定する
+
+コレクションに対して `vectorizer` を指定します。
+
+<details>
+  <summary>追加情報</summary>
+
+コレクションレベルの設定は、デフォルト値および [環境変数](/deploy/configuration/env-vars/index.md) などの一般的な設定パラメーターよりも優先されます。
+
+- [利用可能なモデル統合](../model-providers/index.md)
+- [ベクトライザー設定リファレンス](/weaviate/config-refs/collections.mdx#vector-configuration)
+
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START Vectorizer"
+      endMarker="# END Vectorizer"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START Vectorizer"
+    endMarker="# END Vectorizer"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+## ベクトライザーの設定を指定する
+
+import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
+
+<VectorsAutoSchemaError />
+
+特定のコレクションでベクトライザーの動作（使用するモデルなど）を設定するには、ベクトライザーのパラメーターを指定します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ModuleSettings"
+      endMarker="# END ModuleSettings"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START ModuleSettings"
+    endMarker="# END ModuleSettings"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+
+
+## 名前付き ベクトルの定義
+
+:::info `v1.24` で追加
+:::
+
+各コレクションに複数の [名前付き ベクトル](../concepts/data.md#multiple-vector-embeddings-named-vectors) を定義できます。これにより、各オブジェクトを複数のベクトル埋め込みで表現でき、それぞれに独自のベクトル インデックスを持たせることが可能です。
+
+そのため、各名前付き ベクトルの設定では、個別のベクトライザーとベクトル インデックス設定を指定できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BasicNamedVectors"
+      endMarker="# END BasicNamedVectors"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START BasicNamedVectors"
+    endMarker="# END BasicNamedVectors"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START BasicNamedVectors"
+    endMarker="// END BasicNamedVectors"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START BasicNamedVectors"
+    endMarker="// END BasicNamedVectors"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithNamedVectors"
+    endMarker="// END CreateCollectionWithNamedVectors"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithNamedVectors"
+    endMarker="// END CreateCollectionWithNamedVectors"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+## 新しい名前付き ベクトルの追加
+
+:::info `v1.31` で追加
+:::
+
+名前付き ベクトルは、すでに名前付き ベクトルを含むコレクション定義に追加できます。（名前付き ベクトルを持たないコレクションには追加できません。）
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddNamedVectors"
+      endMarker="# END AddNamedVectors"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+<FilteredTextBlock
+      text={TSCode}
+      startMarker="// START AddNamedVectors"
+      endMarker="// END AddNamedVectors"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+:::caution オブジェクトは自動的に再ベクトル化されません
+コレクション定義に新しい名前付き ベクトルを追加しても、既存オブジェクトのベクトル化は実行されません。新規または更新済みのオブジェクトのみが、追加された名前付き ベクトル定義に対する埋め込みを取得します。
+:::
+
+## マルチ ベクトル埋め込みの定義 (例: ColBERT, ColPali)
+
+:::info `v1.29`, `v1.30` で追加
+:::
+
+マルチ ベクトル埋め込み（マルチ ベクトルとも呼ばれます）は、1 つのオブジェクトを複数のベクトル、つまり 2 次元行列で表現します。現在、マルチ ベクトルは名前付き ベクトル用の HNSW インデックスでのみ利用できます。マルチ ベクトルを使用するには、該当する名前付き ベクトルで有効化してください。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START MultiValueVectorCollection"
+      endMarker="# END MultiValueVectorCollection"
+      language="py"
+    />
+  </TabItem>
+    <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START MultiValueVectorCollection"
+        endMarker="// END MultiValueVectorCollection"
+        language="js"
+      />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START MultiValueVectorCollection"
+      endMarker="// END MultiValueVectorCollection"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip ベクトルを圧縮するために量子化とエンコーディングを使用する
+マルチ ベクトル埋め込みは単一 ベクトル埋め込みよりも多くのメモリを消費します。[ベクトル量子化](../configuration/compression/index.md) と [エンコーディング](../configuration/compression/multi-vectors.md#muvera-encoding) を使用して圧縮し、メモリ使用量を削減できます。
+:::
+
+
+
+## ベクトル インデックス タイプの設定
+
+ベクトル インデックス タイプは、コレクション作成時に `hnsw`、`flat`、`dynamic` から選択して設定できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetVectorIndexType"
+      endMarker="# END SetVectorIndexType"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetVectorIndexType"
+    endMarker="# END SetVectorIndexType"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetVectorIndexType"
+    endMarker="// END SetVectorIndexType"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetVectorIndexType"
+    endMarker="// END SetVectorIndexType"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetVectorIndexType"
+    endMarker="// END SetVectorIndexType"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>Additional information</summary>
+
+- インデックス タイプと圧縮の詳細については、[概念: ベクトル インデックス](../concepts/indexing/vector-index.md) を参照してください。
+
+</details>
+
+## ベクトル インデックス パラメーターの設定
+
+[圧縮](../configuration/compression/index.md) や [フィルター ストラテジ](../concepts/filtering.md#filter-strategy) などのベクトル インデックス パラメーターは、コレクション設定を通じて指定できます。いくつかのパラメーターは、コレクション作成後に[更新](collection-operations.mdx#update-a-collection-definition)することも可能です。
+
+:::info Filter strategy parameter
+Was added in `v1.27`
+:::
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetVectorIndexParams"
+      endMarker="# END SetVectorIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetVectorIndexParams"
+    endMarker="# END SetVectorIndexParams"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetVectorIndexParams"
+    endMarker="// END SetVectorIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetVectorIndexParams"
+    endMarker="// END SetVectorIndexParams"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetVectorIndexParams"
+    endMarker="// END SetVectorIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>Additional information</summary>
+
+- インデックス タイプと圧縮の詳細については、[概念: ベクトル インデックス](../concepts/indexing/vector-index.md) を参照してください。
+
+</details>
+
+
+
+## プロパティレベルの設定
+
+コレクション内の個々のプロパティを設定します。各プロパティは独自の設定を持つことができます。一般的な設定例を次に示します。
+
+- プロパティをベクトル化する
+- プロパティ名をベクトル化する
+- [トークナイゼーションタイプ](../config-refs/collections.mdx#tokenization) を設定する
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START PropModuleSettings"
+      endMarker="# END PropModuleSettings"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START PropModuleSettings"
+    endMarker="# END PropModuleSettings"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START PropModuleSettings"
+    endMarker="// END PropModuleSettings"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START PropModuleSettings"
+    endMarker="// END PropModuleSettings"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START PropModuleSettings"
+    endMarker="// END PropModuleSettings"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## 距離メトリックの指定
+
+独自にベクトルを用意する場合は、`distance metric` を指定する必要があります。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DistanceMetric"
+      endMarker="# END DistanceMetric"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START DistanceMetric"
+    endMarker="# END DistanceMetric"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START DistanceMetric"
+    endMarker="// END DistanceMetric"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START DistanceMetric"
+    endMarker="// END DistanceMetric"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START DistanceMetric"
+    endMarker="// END DistanceMetric"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>
+     追加情報
+  </summary>
+
+設定パラメーターの詳細については、次を参照してください。
+
+- [距離](../config-refs/distances.md)
+- [ベクトルインデックス](../config-refs/indexing/vector-index.mdx)
+
+</details>
+
+
+## 追加リソース
+
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API リファレンス: REST: スキーマ</SkipLink>
+- [リファレンス: 設定: スキーマ](/weaviate/config-refs/collections.mdx)
+- [コンセプト: データ構造](../concepts/data.md)
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

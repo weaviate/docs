@@ -1,0 +1,66 @@
+---
+title: クライアント ライブラリ / SDK
+sidebar_position: 0
+description: "複数のプログラミング言語でシームレスに統合できる Weaviate クライアント ライブラリと SDK の概要。"
+image: og/docs/client-libraries.jpg
+# hide_table_of_contents: true
+# tags: ['client libraries', 'cli']
+---
+
+Weaviate には  GraphQL 、 gRPC 、 RESTful API を直接使用するか、利用可能なクライアント ライブラリを使用してアクセスできます。現在、Weaviate がサポートしているのは次のとおりです:
+
+import CardsSection from "/src/components/CardsSection";
+
+export const clientLibrariesData = [
+  {
+    title: "Python Client",
+    description:
+      "Install and use the official Python client (v4) to interact with Weaviate.",
+    link: "/weaviate/client-libraries/python/",
+    icon: "fab fa-python",
+  },
+  {
+    title: "TypeScript / JavaScript Client",
+    description:
+      "Use the official client (v3) with Node.js.",
+    link: "/weaviate/client-libraries/typescript/",
+    icon: "fab fa-js",
+  },
+  {
+    title: "Go Client",
+    description:
+      "Install and use the official Go client library to integrate Weaviate into Go applications.",
+    link: "/weaviate/client-libraries/go",
+    icon: "fab fa-golang",
+  },
+  {
+    title: "Java Client",
+    description:
+      "Install and use the official Java client library for interacting with Weaviate.",
+    link: "/weaviate/client-libraries/java",
+    icon: "fab fa-java",
+  },
+];
+
+<br />
+<CardsSection items={clientLibrariesData} />
+<br />
+
+import ClientCapabilitiesOverview from "/_includes/client.capabilities.mdx";
+
+<ClientCapabilitiesOverview />
+
+### コミュニティ製クライアント
+
+素晴らしいコミュニティ メンバーによって作成された [community clients](./community.md) も存在します。これらのクライアントはコア Weaviate チームではなく、コミュニティ メンバー自身によって保守されています。貢献したい場合は、メンテナーへ直接ご連絡ください。
+
+:::note ご希望の言語が見つかりませんか？
+クライアントを提供したい、または特定のクライアントをリクエストしたい場合は、[フォーラム](https://forum.weaviate.io/) でお知らせください。
+:::
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

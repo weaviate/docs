@@ -1,0 +1,58 @@
+---
+title: "「Grouped task」生成"
+description: "Weaviate でのテキスト RAG を通じて応答生成を洗練するためにタスクをグループ化します。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/104_rag.ts';
+
+「grouped task」生成では、取得したオブジェクトの集合に対して RAG クエリを実行します。これは、1 つのプロンプトでオブジェクト集合全体を変換したい場合に便利です。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、「dystopian future」に対するクエリ ベクトルと最も一致する「Movie」のエントリーを検索します。その後、大規模言語モデルに対して、それらのエントリー間の共通点を見つけるよう指示します。
+
+各結果はコンソールに出力されます。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GroupedTaskGeneration"
+  endMarker="// END GroupedTaskGeneration"
+  language="ts"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+`groupedTask` クエリでは、プロンプトをそのまま `groupedTask` パラメーターに渡すだけです。これにより Weaviate は以下を大規模言語モデルに渡します。
+- 取得したすべてのオブジェクトからのテキストプロパティ
+- プロンプト
+
+<details>
+  <summary>例の結果</summary>
+
+```text
+In Time
+Looper
+I, Robot
+The Matrix
+Children of Men
+These movies all involve futuristic settings and explore themes related to the manipulation of time, technology, and the potential consequences of advancements in society. They also touch on issues such as inequality, control, and the impact of human actions on the future of humanity.
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> 追加パラメーター（任意）
+
+`groupedProperties` パラメーターとして使用するプロパティのリストを渡すこともできます。これにより、大規模言語モデルに渡すデータ量を削減し、不必要なプロパティを省くことができます。
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+`groupedTask` パラメーターを含む RAG クエリは、追加の `generated` 属性を持つレスポンスを返します。この属性には、オブジェクト集合に対して生成された出力が含まれます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

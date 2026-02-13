@@ -1,0 +1,530 @@
+## 102
+
+---
+title: クエリの概要
+sidebar_position: 10
+---
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate クエリの実行
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+このユニットでは、情報を取得するために Weaviate でクエリを実行するさまざまな方法に焦点を当てます。
+
+### <i class="fa-solid fa-code"></i> Python クライアントを使用する
+
+Weaviate は内部的にはクエリに GraphQL を使用しますが、このユニットで直接 GraphQL を入力する必要はありません。代わりに、Python クライアントを使ってクエリを実行し、その仕組みを学びます。
+
+ただし、基礎となるクエリ構造を理解しやすくするため、このユニットでは Python コードとともに生の GraphQL クエリも示します。
+
+したがって、次のようなクエリを示したときには、
+
+```python
+response = client.query.get(
+    "JeopardyQuestion",
+    ["question", "answer"]
+).with_near_text(
+    {"concepts": ["intergalactic travel"]}
+).with_limit(2).do()
+
+print(json.dumps(response, indent=2))
+```
+
+内部的にはこのように動作しています。
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["intergalactic travel"]
+        }
+      limit: 2
+    ) {
+      question
+      answer
+    }
+  }
+}
+```
+
+今後は、該当する場合は次のようにタブで分けて表示します。
+
+<!-- Delete these imports if already imported in the file -->
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+This tab will show Python code.
+```
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+```graphql
+This tab will show GraphQL code.
+```
+
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-code"></i> 生の GraphQL クエリ
+
+Weaviate の Python クライアントは、生の GraphQL クエリを実行できます。また、[Weaviate Query app](/cloud/tools/query-tool) を使用することも可能です。
+
+Python では、次のようにして GraphQL クエリを直接実行できます。
+
+```python
+query = '''
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["intergalactic travel"]
+        }
+      limit: 2
+    ) {
+      question
+      answer
+    }
+  }
+}
+'''
+
+response = client.query.raw(query)
+print(json.dumps(response, indent=2))
+```
+
+あるいは、Weaviate Console というグラフィカルインターフェースを使用して Weaviate インスタンスに接続し、クエリを実行することもできます。
+
+<!-- TODO - show specific steps to do this when WCD launches -->
+
+### <i class="fa-solid fa-chalkboard"></i> GraphQL 構文
+
+このユニットでは `Function`、`Class`、`properties`、`Argument` などの用語が登場します。これらは Weaviate の GraphQL 構文に由来し、次の形式を取ります。
+
+```graphql
+{
+  <Function> {
+    <Class> (<Arguments>) {
+      <properties>
+    }
+  }
+}
+```
+
+ここで  
+- `<Function>` はアクション、  
+- `<Class>` は対象データコレクション、  
+- `<Arguments>` はオプションを指定し、  
+- `<properties>` は取得するデータを表します。
+
+これらの用語を覚えておいてください。
+
+<Quiz questions={queryMethods} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> クエリ関数
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+Weaviate の主なクエリ関数は `Get`、`Aggregate`、`Explore` です。
+
+これら 3 つの関数は、それぞれオブジェクトを `Get` し、情報を `Aggregate` し、ベクトル空間を `Explore` します。
+
+以下では詳細を学ぶ前に、それぞれを簡単に確認しましょう。
+
+### <i class="fa-solid fa-chalkboard"></i> `Get` オブジェクト
+
+`Get` 関数は Weaviate でデータオブジェクトを取得するために使用します。多くのユースケースでは、`Get` が最も一般的に利用されるクエリ関数となります。
+
+次をご覧ください。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+response = client.query.get(
+    "JeopardyQuestion",
+    ["question", "answer"]
+).with_limit(1).do()
+
+print(json.dumps(response, indent=2))
+```
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (limit: 1) {
+      question
+      answer
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+これは `JeopardyQuestion` クラスに対する `Get` クエリで、最大 `1` 件のオブジェクトを返し、そのオブジェクトの `["question", "answer"]` プロパティを取得します。
+
+結果は次のようなレスポンスになります。
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "Amazon.com",
+          "question": "On July 16, 1995 this company made its first sale, a science textbook"
+        }
+      ]
+    }
+  }
+}
+```
+
+レスポンスには `JeopardyQuestion` クラスから取得したデータオブジェクトと、その `question` および `answer` プロパティの値が含まれていることが確認できます。
+
+
+=================
+
+`groupBy` 引数があることに注目してください。
+
+`groupBy` はクエリ結果をグループ化するための任意引数です。`Aggregate` 関数は、各グループの結果数などのメタデータも返すことができます。
+
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+response = client.query.aggregate(
+    <CLASS>,
+).with_group_by_filter(
+    <property>
+).with_fields(
+    "groupedBy {path value}"  # requires `groupBy` argument
+    <properties>
+).with_meta_count(  # optional
+).<arguments>.do()
+```
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+```graphql
+{
+  Aggregate (groupBy:[<property>]) {  # `groupBy`: optional argument
+    groupedBy {  # requires `groupBy` argument
+        path
+        value
+    }
+    meta {  # optional
+      count
+    }
+    <Class> (
+      <arguments>
+    ) {
+      <properties>
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+### <i class="fa-solid fa-chalkboard"></i> `Aggregate` 情報
+
+`Get` がオブジェクトを返すのに対し、 `Aggregate` は結果セットの要約統計量、つまり集計値を返します。
+
+このため、 `Aggregate` を使用すると、オブジェクトのグループから件数、合計、平均などの要約値を取得できます。次の例をご覧ください。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+response = client.query.aggregate(
+    "JeopardyQuestion",
+).with_near_text(
+    {"concepts": ["Animals in movies"]}
+).with_object_limit(
+    10
+).with_meta_count().with_fields("value {maximum minimum mean}").do()
+
+print(json.dumps(response, indent=2))
+```
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+```graphql
+{
+  Aggregate {
+    JeopardyQuestion (
+      objectLimit: 10
+      nearText: {
+        concepts: ["Animals in movies"]
+      }
+    ) {
+      meta {
+        count
+      }
+      points {
+        maximum
+        minimum
+        mean
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+先ほどのクエリは、 `JeopardyQuestion` クラスからクエリテキストに最も近い 10 件 のオブジェクトを取得し、 `value` の最大値・最小値・平均値と件数を返します。
+
+結果は次のようになります。
+
+```json
+{
+  "data": {
+    "Aggregate": {
+      "JeopardyQuestion": [
+        {
+          "meta": {
+            "count": 10
+          },
+          "points": {
+            "maximum": 1000,
+            "mean": 320,
+            "minimum": 0
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+最大で 10 件 のオブジェクトを対象にしたクエリであっても、返されるのは 1 つの集計結果セットである点に注目してください。
+
+### <i class="fa-solid fa-chalkboard"></i> `Explore` ベクトル空間
+
+`Explore` を使うと、 Weaviate に保存されているオブジェクトの ベクトル 空間全体を探索できます。
+
+つまり、 `Explore` を使用すれば、対象のクラスに関係なく、指定したオブジェクトまたは ベクトル に類似するオブジェクトを検索できます。したがって、検索すべきクラスがはっきりしていない場合に `Explore` は非常に便利です。
+
+本データセットに当てはめると、 `Explore` 関数によるクエリは `JeopardyQuestion` クラスと `Category` クラスの両方からオブジェクトを返します。
+
+`Explore` 関数については、後続のユニットでさらに詳しく学習します。
+
+<Quiz questions={functionExplanations} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+### <i class="fa-solid fa-pen-to-square"></i> レビュー演習
+
+あなた自身の言葉で XXX を説明できますか？
+
+:::warning TODO
+ユーザーが回答を入力し、類似度スコアと私たちの定義を受け取る入力ボックス？
+??
+:::
+
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> `Aggregate` のサブプロパティ
+
+これまでに見たように、すべてのデータ型で `meta` プロパティが使用でき、 `count` サブプロパティと組み合わせて取得したオブジェクト数を返せます。
+
+これに加えて、 `Aggregate` クエリで使用できるサブプロパティはいくつもあります。ただし、それらが利用できるかどうかは、集計対象のデータ型によって異なります。
+
+`Question` クラスを例に、これらのサブプロパティの一部を見てみましょう。
+
+### <i class="fa-solid fa-code"></i> 例
+
+次のクエリを試してみてください。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+response = client.query.aggregate(
+    "JeopardyQuestion",
+).with_fields(
+    "round {type topOccurrences {value occurs}}"
+).with_near_text(
+    {"concepts": ["Intergalactic travel"]}
+).with_object_limit(10).with_meta_count().do()
+
+print(json.dumps(response, indent=2))
+```
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+```graphql
+{
+  Aggregate {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["Intergalactic travel"],
+        distance: 0.2
+      }
+      ) {
+      meta {
+        count
+      }
+      round {
+        type
+        topOccurrences {
+          value
+          occurs
+        }
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+GraphQL クエリで要求しているプロパティに注目し、それぞれがどのような値を返すのか考えてみましょう。ソースデータの性質によって、これらのプロパティはどのように変化するでしょうか。
+
+では実際に実行してみましょう。クエリは次のような結果を返すはずです。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Aggregate": {
+      "JeopardyQuestion": [
+        {
+          "meta": {
+            "count": 10
+          },
+          "round": {
+            "topOccurrences": [
+              {
+                "occurs": 5,
+                "value": "Double Jeopardy!"
+              },
+              {
+                "occurs": 4,
+                "value": "Jeopardy!"
+              },
+              {
+                "occurs": 1,
+                "value": "Final Jeopardy!"
+              }
+            ],
+            "type": "text"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+このクエリでは、 `round` の下にサブプロパティを指定して追加の集計を行い、最も頻出する回答とその件数を取得しています。
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> 利用可能なサブプロパティ
+
+サブプロパティを使用すると、 Weaviate のデータをより細かく集計できます。クエリで指定できるサブプロパティは、集計対象のデータ型によって異なります。
+
+`string` データ型と同様に、 `text` プロパティでは次のいずれか、または複数を取得できます。
+
+- count
+- type
+- topOccurrences
+
+一方、たとえば `int` データ型の場合は、次の情報を集計できます。
+
+- count
+- type
+- minimum
+- maximum
+- mean
+- median
+- mode
+- sum
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+上記のクエリを次のように変更して再度試してみてください。
+- `answer` プロパティのデータを基に集計できますか？
+- 結果を `round` でグループ化し、 `answer` から topOccurrences を集計してみましょう。
+:::
+
+:::info
+サマリーを追加
+:::
+
+import Quiz from '/src/components/Academy/quiz.js'
+const queryMethods = [{
+  questionText: 'Which of these is not a valid way of running queries with Weaviate?',
+  answerOptions: [
+    {
+      answerText: 'Sending a HTTP GET request.',
+      isCorrect: true,
+      feedback: 'In Weaviate, the REST interface is not used for queries.',
+    },
+    {
+      answerText: 'Using the Weaviate Console.',
+      isCorrect: false,
+      feedback: 'You can use the Weaviate Console to directly enter GraphQL queries',
+    },
+    {
+      answerText: 'With the Weaviate Python client.',
+      isCorrect: false,
+      feedback: 'In fact, you can send raw GraphQL queries or use native Python methods to perform queries with the Python client.',
+    },
+  ]
+}];
+const functionExplanations = [{
+  questionText: 'Which of the following are correct?',
+  answerOptions: [
+    {
+      answerText: 'You can use the Get function to retrieve summary information about a group of objects.',
+      isCorrect: false,
+      feedback: 'The Get function is used to retrieve individual objects.',
+    },
+    {
+      answerText: 'The Aggregate function will return objects from Weaviate.',
+      isCorrect: false,
+      feedback: 'The Aggregate function will return summary, or aggregated, information about retrieved objects.',
+    },
+    {
+      answerText: 'The Get function can retrieve objects from multiple classes in one query.',
+      isCorrect: false,
+      feedback: 'Each Get query can only search one class of objects.',
+    },
+    {
+      answerText: 'None of the above.',
+      isCorrect: true,
+      feedback: 'All of the above are false!',
+    },
+  ]
+}];

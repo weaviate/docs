@@ -1,0 +1,159 @@
+---
+title: コレクションの管理
+sidebar_position: 0
+image: og/docs/howto.jpg
+hide_table_of_contents: true
+---
+
+次のガイドでは、特定の Weaviate 機能に関する詳細な手順と概念を解説しています。基本的なコレクション操作、ベクトライザーの設定、モデルの統合、マルチテナンシーやマルチノード構成の実装、データ移行、クロスリファレンスの管理方法を学べます。
+
+import CardsSection from "/src/components/CardsSection";
+
+export const specificGuidesData = [
+  {
+    title: "基本的なコレクション操作（CRUD）",
+    description: "コレクションを作成・参照・更新・削除する方法を学びます。",
+    link: "/weaviate/manage-collections/collection-operations",
+    icon: "fas fa-database", // Icon representing data management
+  },
+  {
+    title: "ベクトライザーとベクトル設定",
+    description:
+      "ベクトライザー（埋め込みモデル）、ベクトルインデックスのパラメーター、および関連設定を構成します。",
+    link: "/weaviate/manage-collections/vector-config",
+    icon: "fas fa-project-diagram", // Icon representing vector relationships/structure
+  },
+  {
+    title: "モデルプロバイダーの統合",
+    description:
+      "OpenAI、Hugging Face、Cohere など、さまざまなモデルプロバイダーと Weaviate を統合します。",
+    link: "/weaviate/manage-collections/generative-reranker-models",
+    icon: "fas fa-plug", // Icon representing integrations/plugins
+  },
+  {
+    title: "マルチテナンシー",
+    description:
+      "1 つの Weaviate インスタンス内で異なるテナントのデータを分離します。",
+    link: "/weaviate/manage-collections/multi-tenancy",
+    icon: "fas fa-users", // Icon representing multiple users/tenants
+  },
+  {
+    title: "マルチノード構成",
+    description:
+      "高可用性とスケーラビリティを実現するため、複数ノードにわたって Weaviate をセットアップ・構成します。",
+    link: "/weaviate/manage-collections/multi-node-setup",
+    icon: "fas fa-network-wired", // Icon representing clustering/networking
+  },
+  {
+    title: "コレクションの移行",
+    description:
+      "データスキーマとオブジェクトを移行するための戦略と手順を学びます。",
+    link: "/weaviate/manage-collections/migrate",
+    icon: "fas fa-exchange-alt", // Icon representing migration/transfer
+  },
+  {
+    title: "クロスリファレンス",
+    description: "オブジェクト間の関係を定義、管理、クエリします。",
+    link: "/weaviate/manage-collections/cross-references",
+    icon: "fas fa-link", // Icon representing links/relationships
+  },
+];
+
+<br />
+<CardsSection items={specificGuidesData} />
+<br />
+
+## コレクションの仕組み
+
+Weaviate のコレクションは、データ保存とベクトル検索を可能にする複数の主要コンポーネントと設定によって定義されます。  
+主な要素は次のとおりです:
+
+import CollectionsSimplified from "/docs/weaviate/manage-collections/img/weaviate-collections-simplified.png";
+import Link from "@docusaurus/Link";
+
+export const textColumnContent = (
+  <ul>
+    <li>
+      <b>オブジェクト</b>:
+      <ul>
+        <li>
+          コレクションに保存される基本単位です。各オブジェクトはデータプロパティを持ち、その意味を表すベクトル埋め込みを含みます。（詳細は{" "}
+          <Link to="/weaviate/manage-objects">
+            'How-to: オブジェクト管理' ガイド
+          </Link>{" "}
+          をご覧ください）。
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>AI モデル統合</b>:
+      <ul>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/vector-config">
+              ベクトライザー（埋め込みモデル）
+            </Link>
+          </b>
+          : オブジェクトのプロパティからベクトル埋め込みを生成し、セマンティック検索を可能にします。
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/generative-reranker-models">
+              生成モデル
+            </Link>
+          </b>
+          : 取得したデータと生成 AI の機能を組み合わせて RAG（検索拡張生成）を実行するために使用します。
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/generative-reranker-models">
+              リランカーモデル
+            </Link>
+          </b>
+          : 検索クエリの初期結果を再順位付けして検索の関連度を高めます。
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>設定項目</b>:{" "}
+      {/* Changed heading from "Other settings" */}
+      <ul>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/collection-operations#set-inverted-index-parameters">
+              転置インデックス
+            </Link>
+          </b>
+          : キーワード検索を最適化し、テキスト オブジェクト プロパティをインデックス化して高速なルックアップを実現します。
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/multi-tenancy">
+              マルチテナンシー
+            </Link>
+          </b>
+          : 同じコレクション インスタンス内で、複数の異なるテナント（ユーザーやグループ）のデータを安全に保存できるようにします。
+        </li>
+      </ul>
+    </li>
+  </ul>
+);
+
+<DocsImage
+  image={CollectionsSimplified}
+  alt="Weaviate におけるコレクション"
+  layout="right"
+  contentColumns={6}
+  imageColumns={6}
+>
+  {textColumnContent}
+</DocsImage>
+
+
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

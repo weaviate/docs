@@ -1,0 +1,56 @@
+---
+title: 組み込み Weaviate
+sidebar_position: 30
+image: og/docs/connect.jpg
+# tags: ['getting started', 'connect']
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+
+import PyCodeV3 from '!!raw-loader!/_includes/code/connections/connect-python-v3.py';
+import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
+import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
+import TsCodeV2 from '!!raw-loader!/_includes/code/connections/connect-ts-v2.ts';
+
+import EMBDIntro from '/_includes/embedded-intro.mdx';
+
+<EMBDIntro />
+
+組み込み Weaviate の使用方法の詳細については、[組み込み Weaviate](/deploy/installation-guides/embedded) を参照してください。
+
+## Embedded Weaviate インスタンスの起動
+
+<Tabs groupId="languages">
+<TabItem value="py4" label="Python クライアント v4">
+   <FilteredTextBlock
+     text={PyCodeV4}
+     startMarker="# START Embedded"
+     endMarker="# END Embedded"
+     language="py"
+   />
+</TabItem>
+<TabItem value="py3" label="Python クライアント v3">
+   <FilteredTextBlock
+     text={PyCodeV3}
+     startMarker="# START Embedded"
+     endMarker="# END Embedded"
+     language="pyv3"
+   />
+</TabItem>
+<TabItem value="ts2" label="JS/TS クライアント v2">
+   <FilteredTextBlock
+     text={TsCodeV2}
+     startMarker="// START Embedded"
+     endMarker="// END Embedded"
+     language="tsv2"
+   />
+</TabItem>
+</Tabs>
+
+## ご質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

@@ -1,0 +1,117 @@
+---
+title: クラスター ステータス
+sidebar_position: 3
+description: "複数の方法で Weaviate Cloud クラスターの運用状況を監視および確認します。"
+image: og/wcd/user_guides.jpg
+---
+
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) では、クラスターのステータスを確認するために次の 2 つの方法を提供しています。  
+- **[ウェブ インターフェース](#cluster-details)** : Weaviate Cloud コンソール内  
+- **[API エンドポイント](#api-endpoint)** : Weaviate インスタンスに関する情報を取得
+
+## Weaviate Cloud コンソールでのクラスター ステータス {#cluster-details}
+
+### クラスターの選択 {#select-your-cluster}
+
+import ClusterDetails from '/docs/cloud/img/weaviate-cloud-cluster-details.png';
+
+<ol>
+  <li>
+    <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link> を開きます。
+  </li>
+  <li>
+    左サイドバーの <code>Clusters</code> リスト (
+    <span class="callout">1</span>) を開きます。
+  </li>
+  <li>
+    確認したいクラスターを選択します (
+    <span class="callout">2</span>)。
+  </li>
+  <li>右側にクラスター詳細パネルが表示されます。</li>
+</ol>
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={ClusterDetails} alt="View cluster status in Weaviate Cloud" />
+    </div>
+    <div class="card__body">
+      <p>Weaviate Cloud でクラスター ステータスを表示します。</p>
+    </div>
+  </div>
+</div>
+<br />
+
+## クラスター ステータス情報
+
+ページ上部では、以下のクラスター統計情報を確認できます。
+
+- `Dimensions stored`
+- `Dimensions queried`
+- `Object count`
+- `Running costs`
+
+`Information` セクションには次の項目が含まれます。
+
+- `Name`
+- `REST Endpoint`
+- `gRPC Endpoint`
+- `Weaviate Database version`
+- `Cloud region`
+- `Created at`
+- `Type`: Serverless または Sandbox
+- `Support Plan`
+- `High Availability`
+
+Serverless クラスターには `Advanced configuration` セクションがあり、以下の追加設定の有効化状況を確認または変更できます。
+
+- `Enable auto schema generation`
+- `Enable async indexing`
+- `Enable async replication`
+- `Allow all CORS origins`
+
+## API エンドポイント {#api-endpoint}
+
+プログラムからクラスター詳細を取得するには、[`nodes`](/deploy/configuration/nodes.md) REST エンドポイントを使用します。
+
+import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
+
+<APIOutputs />
+
+## 有効なモジュール
+
+各 Weaviate インスタンスには有効化されているモジュールのセットがあります。利用可能なモジュールは、使用している Weaviate のバージョンや Weaviate Cloud のポリシーによって異なります。
+
+Weaviate Cloud インスタンスで有効なモジュール一覧を確認するには、次の手順を実行してください。
+
+import ClusterStatusModules from '/docs/cloud/img/cluster-status.modules.png';
+
+<div class="row">
+  <div class="col col--4">
+    <ol>
+      <li>Weaviate Cloud コンソールを開きます。</li>
+      <li>
+        <code>Clusters</code> をクリックし、確認したいクラスターを選択します。
+      </li>
+      <li>
+        <code>modules active</code> セクションまでスクロールします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img src={ClusterStatusModules} alt="Create a cluster" />
+      </div>
+      <div class="card__body">クラスターで利用可能なモジュール。</div>
+    </div>
+  </div>
+</div>
+
+## サポート & フィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+
+

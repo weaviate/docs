@@ -1,0 +1,274 @@
+---
+title: 生成モデルとリランカー モデル
+sidebar_position: 3
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+:::tip Embedding models / Vectorizers
+
+コレクション用に埋め込みモデルを設定したり、ベクトル インデックス設定を微調整したりする方法については、[ベクトライザーとベクトル設定](./vector-config.mdx) ガイドをご覧ください。
+
+:::
+
+## リランカー モデル インテグレーションの指定
+
+[取得結果をリランキング](../search/rerank.md) するために、[`reranker`](../concepts/search/index.md#rerank) モデル インテグレーションを設定します。
+
+:::info 関連ページ
+
+- [利用可能なリランカー モデル インテグレーション](../model-providers/index.md)
+  :::
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetReranker"
+      endMarker="# END SetReranker"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetReranker"
+    endMarker="# END SetReranker"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetReranker"
+    endMarker="// END SetReranker"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetReranker"
+    endMarker="// END SetReranker"
+    language="tsv2"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## リランカー モデル インテグレーションの更新
+
+:::info `v1.25.23` 、 `v1.26.8` 、および `v1.27.1` から利用可能
+`reranker` と `generative` の設定は `v1.25.23` 、 `v1.26.8` 、および `v1.27.1` から変更可能です。
+:::
+
+[取得結果をリランキング](../search/rerank.md) するために、[`reranker`](../concepts/search/index.md#rerank) モデル インテグレーションを更新します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateReranker"
+      endMarker="# END UpdateReranker"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START UpdateReranker"
+    endMarker="# END UpdateReranker"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START UpdateReranker"
+    endMarker="// END UpdateReranker"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START UpdateReranker"
+    endMarker="// END UpdateReranker"
+    language="tsv2"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START UpdateReranker"
+      endMarker="// END UpdateReranker"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+## 生成モデル統合の指定
+
+コレクションに対して `generative` モデル統合を指定します (RAG 用)。
+
+:::info 関連ページ
+
+- [利用可能な生成モデル統合](../model-providers/index.md)
+:::
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetGenerative"
+      endMarker="# END SetGenerative"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetGenerative"
+    endMarker="# END SetGenerative"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetGenerative"
+    endMarker="// END SetGenerative"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetGenerative"
+    endMarker="// END SetGenerative"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START SetGenerative"
+    endMarker="// END SetGenerative"
+    language="gonew"
+  />
+</TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetGenModel"
+      endMarker="// END SetGenModel"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
+## 生成モデル統合の更新
+
+:::info `v1.25.23`、`v1.26.8`、`v1.27.1` から利用可能
+`reranker` と `generative` の構成は `v1.25.23`、`v1.26.8`、`v1.27.1` から変更可能です。
+:::
+
+[`generative`](../concepts/search/index.md#retrieval-augmented-generation-rag) モデル統合を更新します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateGenerative"
+      endMarker="# END UpdateGenerative"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START UpdateGenerative"
+    endMarker="# END UpdateGenerative"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START UpdateGenerative"
+    endMarker="// END UpdateGenerative"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START UpdateGenerative"
+    endMarker="// END UpdateGenerative"
+    language="tsv2"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START UpdateGenerative"
+      endMarker="// END UpdateGenerative"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+import RuntimeGenerative from "/_includes/runtime-generative.mdx";
+
+<RuntimeGenerative />
+
+## 追加リソース
+
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
+    API リファレンス: REST: スキーマ
+  </SkipLink>
+- [リファレンス: 設定: スキーマ](/weaviate/config-refs/collections.mdx)
+- [概念: データ構造](../concepts/data.md)
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

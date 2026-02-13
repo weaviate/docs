@@ -1,0 +1,83 @@
+---
+title: アカデミーのメインボディ例
+---
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> トップレベル見出し
+
+テキスト
+
+### <i class="fa-solid fa-chalkboard"></i> 理論サブヘッド
+### <i class="fa-solid fa-code"></i> 実践サブヘッド
+
+テキスト
+
+### <i class="fa-solid fa-chalkboard"></i> 理論サブヘッド
+### <i class="fa-solid fa-code"></i> 実践サブヘッド
+
+テキスト
+
+## <i class="fa-solid fa-square-chevron-right"></i> トップレベル見出し
+
+テキスト
+
+### <i class="fa-solid fa-chalkboard"></i> 理論サブヘッド
+### <i class="fa-solid fa-code"></i> 実践サブヘッド
+
+テキスト
+
+### <i class="fa-solid fa-chalkboard"></i> 理論サブヘッド
+### <i class="fa-solid fa-code"></i> 実践サブヘッド
+
+テキスト
+
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+<Quiz questions={varName} />
+
+クイズの質問
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+Try out ...
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+:::info
+要約を追加してください
+:::
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}];

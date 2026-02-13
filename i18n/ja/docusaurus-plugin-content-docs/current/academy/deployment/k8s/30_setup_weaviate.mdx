@@ -1,0 +1,149 @@
+---
+title: Kubernetes で Weaviate を実行する
+---
+
+Kubernetes クラスターが用意できたので、Weaviate をデプロイできます。ここでは Helm を使って Kubernetes 上に Weaviate をデプロイする方法を説明します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Helm チャート
+
+前述のとおり、**Helm** は Kubernetes 用のパッケージマネージャーで、**チャート** と呼ばれるパッケージ形式を使用します。
+
+**Helm チャート** とは、複数の Kubernetes リソースを記述したファイル群であり、pip や npm など他のパッケージマネージャーにおける **パッケージ** に相当します。
+
+Weaviate では、Kubernetes へのデプロイに利用できる [Helm チャート](https://github.com/weaviate/weaviate-helm) を提供しています。本ガイドでは、この Helm チャートを用いて Kubernetes クラスターに Weaviate をデプロイします。
+
+## <i class="fa-solid fa-square-chevron-right"></i> デプロイ
+
+まず、[Weaviate Helm リポジトリ](https://weaviate.github.io/weaviate-helm) を Helm に追加します。これにより Weaviate の Helm チャートを利用できるようになります。
+
+```bash
+helm repo add weaviate https://weaviate.github.io/weaviate-helm
+```
+
+:::tip Tip: Helm リポジトリを更新する
+
+すでに `weaviate` Helm リポジトリを追加済みの場合、次のコマンドで最新版へ更新してください。
+
+```bash
+helm repo update weaviate
+```
+
+定期的に [Helm リポジトリを更新](https://helm.sh/docs/helm/helm_repo_update/) し、最新のチャート情報を取得することをおすすめします。
+
+:::
+
+次に、Weaviate Helm チャート用の設定ファイル（`values.yaml`）を生成します。
+
+```bash
+helm show values weaviate/weaviate > values.yaml
+```
+
+このコマンドは Weaviate Helm チャートのデフォルト値を取得し、`values.yaml` という名前で保存します。このファイルを編集してデプロイ設定をカスタマイズできます。
+
+設定できる項目は多数あります。`values.yaml` 内のインラインコメントや [公式 Weaviate ドキュメント](/weaviate/index.mdx) を参考に、必要に応じて調整してください。
+
+ここではデプロイ前に重要な設定をいくつか行います。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 設定
+
+以下の設定を更新します。
+
+- gRPC サービスを有効化
+- Cohere 連携を有効化
+
+テキストエディターで `values.yaml` を開き、次のセクションを更新してください。
+
+#### gRPC サービスを有効化
+
+:::info デフォルト設定
+Helm チャートバージョン `17.0.0` 以降では、gRPC サービスはデフォルトで有効化されています。以前のバージョンを使用している場合は、gRPC を利用するために手動で有効化が必要です。
+:::
+
+サービスの `enabled` フィールドが `true`、`type` フィールドが `LoadBalancer` になっていることを確認してください。これにより gRPC サービスが外部に公開され、[gRPC API](https://weaviate.io/blog/grpc-performance-improvements) を利用できるようになります。
+
+```yaml
+grpcService:
+  enabled: true  # ⬅️ Make sure this is set to true
+  name: weaviate-grpc
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: 50051
+  type: LoadBalancer  # ⬅️ Set this to LoadBalancer (from NodePort) for this example
+```
+
+#### Cohere 連携を有効化
+
+```yaml
+  text2vec-cohere:
+
+    enabled: true  # ⬅️ Make sure this is set to true
+
+  # ... settings not shown ...
+  generative-cohere:
+
+    enabled: true  # ⬅️ Make sure this is set to true
+```
+
+変更を保存したら、Kubernetes クラスターに Weaviate をデプロイする準備が整いました。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate を実行する
+
+Kubernetes クラスターが起動していること（例: `minikube start`）と、`kubectl` の接続設定が済んでいることを確認してください。
+
+まず、Weaviate 用のネームスペースを作成します。
+
+```bash
+kubectl create namespace weaviate
+```
+
+これにより、[別のネームスペース](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/#when-to-use-multiple-namespaces) に Weaviate をデプロイできます。必須ではありませんが、リソースの整理がしやすくなるため推奨されます。
+
+続いて、次のコマンドを実行します。
+
+```bash
+helm upgrade --install \
+  "weaviate" \
+  weaviate/weaviate \
+  --namespace "weaviate" \
+  --values ./values.yaml
+```
+
+`values.yaml` に記載した設定を用いて、Kubernetes クラスターの `weaviate` ネームスペースに Weaviate がデプロイされます。
+
+次のコマンドで状態を確認してみましょう。
+
+```bash
+kubectl get pods -n weaviate
+```
+
+`weaviate` ネームスペースで Weaviate の Pod が稼働しているはずです。
+
+Pod の起動には少し時間がかかる場合があります。以下のコマンドを複数回実行してステータスを確認できます。
+
+```bash
+❯ kubectl get pods -n weaviate
+NAME         READY   STATUS    RESTARTS   AGE
+weaviate-0   0/1     Pending   0          15s
+
+❯ kubectl get pods -n weaviate
+NAME         READY   STATUS    RESTARTS   AGE
+weaviate-0   1/1     Running   0          59s
+```
+
+上記の例では、`weaviate-0` Pod が `Pending` から `Running` へ移行していることが分かります。
+
+おめでとうございます！ ローカルの Kubernetes クラスターに Weaviate を正常にデプロイできました。次は、Weaviate と基本的なやり取りを確認しましょう。
+
+:::tip `1.25` 以上へのアップグレード
+
+`1.25` 未満のバージョンから `1.25` 以上へアップグレードする場合、デプロイ済みの `StatefulSet` を削除し、Helm チャートをバージョン `17.0.0` 以上に更新してから Weaviate を再デプロイする必要があります。
+
+詳細は [Kubernetes 向け 1.25 移行ガイド](/deploy/migration/weaviate-1-25.md) を参照してください。
+:::
+
+## 質問やフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

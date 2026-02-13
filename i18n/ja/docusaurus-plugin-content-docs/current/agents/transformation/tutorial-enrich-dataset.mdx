@@ -1,0 +1,401 @@
+---
+title: Transformation エージェントによるデータセット拡張
+sidebar_label: "チュートリアル: データセットを拡張する"
+description: "Transformation エージェントを使用して Weaviate のコレクションに新しいプロパティを追加し、既存のプロパティを更新する方法を示すチュートリアルです。"
+sidebar_position: 40
+image: og/docs/tutorials.jpg
+# tags: ['basics']
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/docs/agents/_includes/transformation_agent_tutorial_enrich_dataset.py";
+
+:::caution Technical Preview
+
+![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
+![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+
+[こちらからサインアップ](https://events.weaviate.io/weaviate-agents)して Weaviate エージェントの通知を受け取るか、[このページ](https://weaviateagents.featurebase.app/)で最新情報を確認し、フィードバックをお寄せください。
+
+:::
+
+:::warning 本番環境では使用しないでください
+Weaviate Transformation エージェントは、Weaviate 内のデータを直接変更するよう設計されています。**エージェントがテクニカルプレビューの間は、本番環境で使用しないでください。** エージェントが想定どおりに動作しない可能性があり、Weaviate インスタンス内のデータが予期せぬ形で変更される恐れがあります。
+:::
+
+このチュートリアルでは、**[Transformation エージェント](./index.md)** を使用して Weaviate に保存されたデータを拡張します。論文のタイトルとアブストラクトを含むコレクションにエージェントがアクセスできるようにし、各オブジェクトに追加のプロパティを作成します。
+
+Transformation エージェントを体験できる公開データセットを用意しました。Hugging Face でご利用いただけます。
+
+- [**ArxivPapers:**](https://huggingface.co/datasets/weaviate/agents/viewer/transformation-agent-papers) 研究論文のタイトルとアブストラクトをまとめたデータセット
+
+## 導入: Transformation エージェントの概要
+
+Transformation エージェントは、指定した Weaviate コレクションにアクセスし、その中のオブジェクトに対して操作を行えます。各操作は自然言語で定義でき、エージェントは LLM を用いて指示を実行します。
+
+import WeaviateAgentsArxivFlowchart from "/docs/agents/_includes/transformation_agent_tutorial_arxiv_flowchart.png";
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img
+        src={WeaviateAgentsArxivFlowchart}
+        alt="Weaviate Query Agent flowchart"
+      />
+    </div>
+  </div>
+</div>
+<br />
+
+Transformation エージェントは次のように動作します。
+
+1. **タスクを受け取る** – 新しいプロパティを作成する、または既存プロパティを更新する。
+2. **Weaviate から必要なデータを取得する** – 更新対象、または新規プロパティ作成に使用するデータを取得。
+3. **適切なファウンデーションモデル**（例: 大規模言語モデル）を使用してデータを変換。
+4. **変換後のデータを Weaviate に保存する** – 新しいプロパティを作成するか、既存プロパティを更新。
+
+<hr />
+
+## 前提条件
+
+Weaviate エージェントおよび Weaviate Embedding サービスを使用するには、**[Weaviate Cloud](https://console.weaviate.cloud)** アカウントが必要です。
+
+## ステップ 1: Weaviate のセットアップ
+
+それでは、チュートリアルで使用する Weaviate Cloud インスタンスを作成し、Python クライアントから接続してみましょう。
+
+### 1.1 Weaviate Cloud クラスタの作成
+
+1. Weaviate Cloud で [無料の Sandbox クラスタ](/cloud/manage-clusters/create#sandbox-clusters) を作成します。  
+2. クラスタへの接続に必要な `REST Endpoint` と `Admin` API キーを控えておきます。（詳細は [クイックスタート](/cloud/manage-clusters/connect.mdx) を参照）
+
+:::tip
+本チュートリアルでは、ベクトライザーとして [Weaviate Embeddings](../../weaviate/model-providers/weaviate/index.md) サービスを使用するため、外部埋め込みプロバイダー用の追加キーは不要です。Weaviate Embeddings ではデフォルトで `Snowflake/snowflake-arctic-embed-l-v2.0` モデルを利用します。<br/><br/>
+別のベクトライザーを使用したい場合は、サポートされている [モデルプロバイダー](../../weaviate/model-providers/index.md) の一覧をご覧ください。
+:::
+
+### 1.2 Python ライブラリのインストール
+
+Weaviate Python クライアントと `agents` コンポーネントをインストールします。
+
+<Tabs groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+```
+pip install "weaviate-client[agents]"
+```
+
+</TabItem>
+</Tabs>
+
+公開データセットへ簡単にアクセスできる軽量ライブラリ `datasets` も必要です。
+
+<Tabs groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+```
+pip install datasets
+```
+
+</TabItem>
+</Tabs>
+
+import ForcePipInstall from "../_includes/_force_pip_install.mdx";
+
+<ForcePipInstall />
+
+### 1.3 インスタンスへの接続
+
+それでは、最初のステップで取得したパラメータを使用して Weaviate Cloud インスタンスに接続します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ConnectToWeaviate"
+      endMarker="# END ConnectToWeaviate"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+このスニペットを実行すると `True` と表示され、インスタンスへの接続が成功したことを示します。
+## ステップ 2: コレクションの準備
+
+以下のコードブロックでは、Hugging Face からデモ用データセットを取得し、Weaviate Sandbox クラスター内の新しいコレクションへ書き込んでいます。データを Weaviate にインポートする前に **コレクションを定義** する必要があります。つまり、データスキーマの設定とベクトライザー／埋め込みサービスの選択を行います。
+
+### 2.1 コレクションの定義
+
+import WeaviateAgentsArxivDataset from "/docs/agents/_includes/transformation_agent_tutorial_arxiv_dataset.png";
+
+<div class="row">
+  <div class="col col--3">
+    <br />
+    <p>
+      この画像は、データセット <code>ArxivPapers</code> に含まれるオブジェクトの例です。
+    </p>
+  </div>
+  <div class="col col--9">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={WeaviateAgentsArxivDataset}
+          alt="arXiv.org 論文データセット"
+        />
+      </div>
+      <div class="card__body">arXiv.org 論文データセット</div>
+    </div>
+  </div>
+</div>
+<br />
+
+`ArxivPapers` コレクションには、インポートされるデータに基づいてプロパティを自動生成する [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) オプションを使用します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DefineCollections"
+      endMarker="# END DefineCollections"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+### 2.2 データベースへの投入
+
+あらかじめベクトル化されたデータ [ArxivPapers](https://huggingface.co/datasets/weaviate/agents/viewer/transformation-agent-papers) を、Weaviate Cloud インスタンスへインポートします。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START PopulateDatabase"
+      endMarker="# END PopulateDatabase"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+`len()` を呼び出すことで、インポートが正常に完了したかを確認し、コレクションのサイズを確認できます。
+
+```
+Size of the ArxivPapers dataset: 200
+```
+
+### 2.3 Explorer ツールでコレクションを確認
+
+Transformation エージェントは、進行に合わせてコレクションを更新します。ここで「ArxivPapers」コレクションの内容を確認しておきましょう。正しくインポートされていれば、各オブジェクトに以下の 2 つのプロパティが表示されます。
+
+- `title`: 論文のタイトル  
+- `abstract`: 論文のアブストラクト
+
+さらに、各オブジェクトの `vectors` も確認できます。
+
+## ステップ 3: Transformation エージェントの設定
+
+Transformation エージェントの中心となるのは「オペレーション」です。
+
+これから、コレクションに対して実行したい変換オペレーションを定義します。オペレーションには次の 2 種類があります。
+
+- **[新しいプロパティの追加](#31-新しいプロパティの追加)**
+- **[既存プロパティの更新](#32-既存プロパティの更新)**
+
+### 3.1 新しいプロパティの追加
+
+新しいプロパティを追加するには、次の要素を持つオペレーションを定義します。
+
+- **`instruction`**: 自然言語で新しいプロパティに求める内容を記述します。
+- **`property_name`**: 付与するプロパティ名。
+- **`data_type`**: プロパティのデータ型（`DataType.TEXT`、`DataType.TEXT_ARRAY`、`DataType.BOOL`、`DataType.INT` など）。
+- **`view_properties`**: 既存プロパティの情報を基に新しいプロパティを作成する場合に、参照するプロパティを列挙します。
+
+#### 3.1.1 トピック一覧の作成
+
+まず、`topics` という `TEXT_ARRAY` 型の新しいプロパティを追加します。`abstract` を基に、LLM に最大 5 件までのトピックタグを抽出させましょう。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddListOfTopics"
+      endMarker="# END AddListOfTopics"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+#### 3.1.2 フランス語訳の追加
+
+次に、`abstract` プロパティをフランス語へ翻訳した `french_abstract` プロパティを追加します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddFrenchAbstract"
+      endMarker="# END AddFrenchAbstract"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+#### 3.1.3 NLP 関連度スコアの追加
+
+今回は `INT` 型のプロパティを追加します。LLM に、論文が NLP にどれだけ関連しているかを 0 〜 10 のスコアで評価させます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddNlpRelevance"
+      endMarker="# END AddNlpRelevance"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+#### 3.1.4 サーベイ論文かどうかの判定
+
+最後に、論文がサーベイかどうかを示す `BOOL` プロパティを取得します。LLM は、その論文が新しい手法を提示しているのか、それとも既存手法のサーベイなのかを判断します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START IsSurveyPaper"
+      endMarker="# END IsSurveyPaper"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+### 3.2 既存プロパティの更新
+
+:::caution
+
+他のエージェント操作に含まれるプロパティを更新しないでください。予測不能な動作につながります。
+
+:::
+
+ここでは、これまでの操作で使用していない `title` プロパティを更新してみましょう。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateProperty"
+      endMarker="# END UpdateProperty"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## Step 4: Transformation エージェントの作成と実行
+
+すべてのオペレーションを定義したら、`TransformationAgent` を初期化します。
+
+エージェントを初期化する際には、どのコレクションを変更するかを指定する必要があります。ここでは、以前作成した "ArxivPapers" コレクションへアクセスさせます。
+
+次に、エージェントが実行すべき `operations` のリストを渡します。ここでは、上で定義したすべてのオペレーションを指定します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateTransformationAgent"
+      endMarker="# END CreateTransformationAgent"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+### 4.1 変換処理の実行
+
+`update_all()` を呼び出すことで、各オペレーションごとに個別のワークフローが起動します。各オペレーションは、コレクション内の各オブジェクトに対して実行されます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ExecutingTransformations"
+      endMarker="# END ExecutingTransformations"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+import WeaviateAgentsExplorerTool from "/docs/agents/_includes/transformation_agent_tutorial_explorer_tool.png";
+
+<div class="row">
+  <div class="col col--3">
+    <p>
+      変換結果を確認するには{" "}
+      <a href="https://console.weaviate.cloud/apps/explorer">Explorer tool</a>{" "}
+      を開いてください。
+    </p>
+  </div>
+  <div class="col col--9">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={WeaviateAgentsExplorerTool}
+          alt="Explorer tool in Weaviate Cloud"
+        />
+      </div>
+      <div class="card__body">Weaviate Cloud の Explorer tool</div>
+    </div>
+  </div>
+</div>
+<br />
+
+出力例:
+
+```
+[TransformationResponse(operation_name='topics', workflow_id='TransformationWorkflow-7006854bd90f949b59bb8d88c816bdd6'),
+TransformationResponse(operation_name='french_abstract', workflow_id='TransformationWorkflow-7a025ef11ef8e681adb0c273755d0a2a'),
+TransformationResponse(operation_name='nlp_relevance', workflow_id='TransformationWorkflow-e6db777629ae7b38ca2f8f64df35c305'),
+TransformationResponse(operation_name='is_survey_paper', workflow_id='TransformationWorkflow-e70d29827271f462f2a911ec29c6cb0c'),
+TransformationResponse(operation_name='title', workflow_id='TransformationWorkflow-6b2ff75370e1f80ff537037fde02cb26')]
+```
+
+### 4.2 オペレーションワークフローの確認
+
+非同期変換オペレーションの状態を確認するには、`agent.get_status(workflow_id)` 関数を使用します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GetStatus"
+      endMarker="# END GetStatus"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+出力例:
+
+```
+{'workflow_id': 'TransformationWorkflow-f408a4a0211940525c0e2d45cf46a6c2', 'status': {'batch_count': 1, 'end_time': None, 'start_time': '2025-03-10 13:17:31', 'state': 'running', 'total_duration': None, 'total_items': 200}}
+```
+
+## まとめ
+
+このガイドでは、Weaviate のエージェントサービスを使用して、エンドツーエンドの Transformation エージェントを構築する方法を紹介しました。Weaviate Cloud インスタンスのセットアップから研究論文データセットのインポート、そしてデータを知的に強化する Transformation エージェントの構成までを説明しました。
+
+Transformation エージェントは自然言語の instructions を自動で解釈し、データセット内のプロパティを作成または更新します。トピックタグ、翻訳、関連度スコアなどの新しいプロパティを追加してコレクションを処理し、データを強化してさらなる分析が行える状態にします。
+## 追加リソース
+
+- [Weaviate Agents - Transformation Agent](./index.md)
+
+## 質問とフィードバック
+
+:::info 変更履歴とフィードバック
+Weaviate Agents の公式変更履歴は [こちら](https://weaviateagents.featurebase.app/changelog) でご覧いただけます。フィーチャーリクエストやバグ報告、質問などのフィードバックがある場合は、[こちら](https://weaviateagents.featurebase.app/) からご送信ください。送信後はご自身のフィードバックのステータスを確認したり、他のフィードバックに投票したりできます。
+:::
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

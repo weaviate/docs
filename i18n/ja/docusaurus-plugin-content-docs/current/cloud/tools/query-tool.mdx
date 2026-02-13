@@ -1,0 +1,120 @@
+---
+title: クエリツール
+sidebar_position: 60
+description: Weaviate Cloud クラスターでの対話的なクエリとテストを行うブラウザベースの GraphQL IDE です。
+image: og/wcd/user_guides.jpg
+---
+
+Weaviate Cloud (WCD) のクエリツールは、ブラウザベースの GraphQL IDE です。クエリツールを使用すると、Weaviate Cloud クラスターと対話的に操作できます。
+
+import QueryToolPreview from '/docs/cloud/img/weaviate-cloud-query-tool-preview.png';
+
+<div class="row">
+  <div class="col col--6">
+    <p>
+      <Link to="https://github.com/graphql/graphiql/tree/main/packages/graphiql">
+        GraphiQL
+      </Link>{' '}
+      はクエリツールに組み込まれています。GraphiQL は、GraphQL を対話的に扱いやすくする多くの機能を提供します。
+    </p>
+    <br />
+    <ol>
+      <li>構文ハイライト</li>
+      <li>インテリジェントなタイプアヘッド</li>
+      <li>クエリおよび変数の自動補完</li>
+      <li>クエリおよび変数のリアルタイムエラーハイライトとレポート</li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={QueryToolPreview} alt="Weaviate Cloud のクエリツール。" />
+      </div>
+      <div class="card__body">Weaviate Cloud のクエリツール。</div>
+    </div>
+  </div>
+</div>
+
+## クエリツールの起動
+
+クラスターのクエリツールを開く手順:
+
+import QueryTool from '/docs/cloud/img/weaviate-cloud-query-tool.png';
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link>
+        を開きます。
+      </li>
+      <li>
+        <code>Query</code> ボタンをクリックし、リストからクラスターを選択します。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={QueryTool} alt="Weaviate Cloud のクエリツール。" />
+      </div>
+      <div class="card__body">Weaviate Cloud のクエリツール。</div>
+    </div>
+  </div>
+</div>
+
+## クエリツールコンソール
+
+クエリツールは以下のコンポーネントで構成されています。
+
+import QueryToolConsole from '/docs/cloud/img/weaviate-cloud-query-tool-console.png';
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        GraphQL クエリを記述するためのエディター (<span class="callout">1</span>)。
+      </li>
+      <li>
+        クエリを実行するボタン (<span class="callout">2</span>)。
+      </li>
+      <li>
+        レスポンスを表示するパネル (<span class="callout">3</span>)。
+      </li>
+      <li>
+        <Link to="#pass-inference-keys">変数とヘッダーの設定</Link> のパネル (
+        <span class="callout">4</span>)。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={QueryToolConsole} alt="Weaviate Cloud のクエリツール。" />
+      </div>
+      <div class="card__body">Weaviate Cloud のクエリツール。</div>
+    </div>
+  </div>
+</div>
+
+### 認証
+
+クエリツールは、Weaviate Cloud のサンドボックスおよびサーバーレス クラスターへ追加の認証情報なしで接続します。
+
+### Inference キーの設定 {#pass-inference-keys}
+
+Inference モジュール用の API キーを渡すには、リクエストヘッダーを使用します。`Headers` タブはクエリ画面の下部にあります。サービスの inference キーをクエリのヘッダーに追加してください。
+
+この例では、`X-OpenAI-Api-Key` ヘッダーで OpenAI の API キーを設定しています。このヘッダーには複数のキーを渡すこともできます。
+
+## 参考リソース
+
+- [GraphiQL ライブラリ](https://github.com/graphql/graphiql/tree/main/packages/graphiql)
+- [ベクトライザーインテグレーション](/weaviate/model-providers/)
+
+## サポートとフィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+

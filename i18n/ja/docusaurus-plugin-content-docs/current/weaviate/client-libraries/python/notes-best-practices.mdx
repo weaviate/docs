@@ -1,0 +1,472 @@
+---
+title: メモとベストプラクティス
+sidebar_position: 2
+description: "Python クライアントのベストプラクティス、最適化のヒント、および Weaviate に推奨される実装パターン。"
+image: og/docs/client-libraries.jpg
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
+import BatchVectorCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
+
+## クライアントのインスタンス化
+
+Weaviate インスタンスへ接続する方法はいくつかあります。クライアントを生成するには、次のいずれかのスタイルを使用します。
+
+- [接続ヘルパー関数](#connection-helper-functions)
+- [明示的なインスタンス化](#explicit-instantiation)
+
+### 接続ヘルパー関数
+
+- `weaviate.connect_to_weaviate_cloud()`
+    - 以前は `connect_to_wcs()`
+- `weaviate.connect_to_local()`
+- `weaviate.connect_to_embedded()`
+- `weaviate.connect_to_custom()`
+
+<Tabs groupId="languages">
+<TabItem value="wcd" label="WCD">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# WCDInstantiation"
+  endMarker="# END WCDInstantiation"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="local" label="Local">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# LocalInstantiationBasic"
+    endMarker="# END LocalInstantiationBasic"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="embedded" label="Embedded">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# EmbeddedInstantiationBasic"
+  endMarker="# END EmbeddedInstantiationBasic"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="custom" label="Custom">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# CustomInstantiationBasic"
+  endMarker="# END CustomInstantiationBasic"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+`v4` クライアントのヘルパー関数には、クライアントをカスタマイズするためのオプションパラメーターがあります。
+
+- [外部 API キーの指定](#external-api-keys)
+- [タイムアウト値の指定](#timeout-values)
+- [認証情報の指定](#authentication)
+
+#### 外部 API キー
+
+Cohere や OpenAI などのサービス向け API キーを追加するには、`headers` パラメーターを使用します。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# LocalInstantiationWithHeaders"
+  endMarker="# END LocalInstantiationWithHeaders"
+  language="py"
+/>
+
+#### タイムアウト値
+
+クライアントのタイムアウト値（秒）を設定できます。`Timeout` クラスを使用して、初期化チェック、クエリ、および挿入操作のタイムアウト値を構成します。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# LocalWithTimeout"
+  endMarker="# END LocalWithTimeout"
+  language="py"
+/>
+
+:::tip `generate` クエリのタイムアウト
+
+`generate` サブモジュールを使用している際にエラーが発生する場合は、クエリのタイムアウト値（`Timeout(query=60)`）を増やしてみてください。  
+<br/>`generate` サブモジュールは、大規模言語モデルを使用してテキストを生成します。このサブモジュールは、言語モデルおよびその API の応答速度に依存します。  
+<br/>タイムアウト値を長く設定することで、クライアントが言語モデルの応答をより長く待機できるようになります。
+:::
+
+#### 認証
+
+いくつかの `connect` ヘルパー関数は認証情報を受け取ります。たとえば、`connect_to_weaviate_cloud` は WCD API キーまたは OIDC 認証情報を受け付けます。
+
+<Tabs groupId="languages">
+<TabItem value="api_key" label="API Key">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# WCDInstantiation"
+    endMarker="# END WCDInstantiation"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="oidc" label="OIDC Credentials">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# WCDwOIDCInstantiation"
+  endMarker="# END WCDwOIDCInstantiation"
+  language="py"
+/>
+
+import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+
+<WCDOIDCWarning/>
+
+</TabItem>
+</Tabs>
+
+Client Credentials フローで OIDC 認証を行う場合は、`AuthClientCredentials` クラスを使用します。
+
+Refresh Token フローで OIDC 認証を行う場合は、`AuthBearerToken` クラスを使用します。
+
+ヘルパー関数で必要なカスタマイズが行えない場合は、[`WeaviateClient`](#explicit-instantiation) クラスを使用してクライアントを生成してください。
+
+### 明示的なインスタンス化
+
+カスタムパラメーターを渡す必要がある場合は、`weaviate.WeaviateClient` クラスを使用してクライアントをインスタンス化してください。これがクライアントオブジェクトをインスタンス化する最も柔軟な方法です。
+
+接続を直接インスタンス化した場合は、サーバーへ接続するために `.connect()` メソッドを呼び出す必要があります。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# DirectInstantiationFull"
+  endMarker="# END DirectInstantiationFull"
+  language="py"
+/>
+
+### カスタム SSL 証明書の使用
+
+ Python クライアントは SSL 証明書の受け渡しを直接サポートしていません。自己署名証明書（例: エンタープライズ環境）を使用する必要がある場合、次の 2 つの方法があります。
+
+#### オプション 1: 既存ライブラリーへ証明書を追加
+
+Weaviate クライアントライブラリーが利用している `certifi` などの基盤ライブラリーにカスタム SSL 証明書を追加できます。
+
+#### オプション 2: 環境変数を設定
+
+環境変数 `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` と `SSL_CERT_FILE` を証明書ファイルのパスに設定します。インスタンス化時には `additional_config=AdditionalConfig(trust_env=True)` も設定してください。これを行わないと、クライアントライブラリーは環境変数を使用しません。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START CustomSSLExample"
+  endMarker="# END CustomSSLExample"
+  language="py"
+/>
+
+## 初期接続チェック
+
+Weaviate サーバーへ接続を確立するとき、クライアントはいくつかのチェックを実行します。これにはサーバーバージョンの確認や、REST ポートと gRPC ポートが利用可能かどうかの確認が含まれます。
+
+`skip_init_checks` を `True` に設定すると、これらのチェックをスキップできます。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# LocalInstantiationSkipChecks"
+  endMarker="# END LocalInstantiationSkipChecks"
+  language="py"
+/>
+
+ほとんどの場合、`skip_init_checks` は既定値の `False` のまま使用することを推奨します。ただし、接続に問題がある場合の一時的な対策として `skip_init_checks=True` が役立つことがあります。
+
+追加の接続設定については、[タイムアウト値](#timeout-values) を参照してください。
+
+## `client.collections.use()` と `client.collections.get()` の違い
+
+コレクションオブジェクトを作成する慣用的な方法は `client.collections.use(<COLLECTION_NAME>)` です。`client.collections.get()` と同じ動作ですが、`use()` はネットワークリクエストを行わないことがより明確に示されています。
+
+`client.collections.get()` はコレクションスキーマをサーバーから取得するメソッドと誤解されやすいため、この変更を行いました。
+
+将来的に `client.collections.get()` は非推奨になる可能性があります。
+
+## バッチインポート
+
+ `v4` クライアントでは、バッチインポートを実行する方法が 2 つあります。クライアントオブジェクトから直接行う方法と、コレクションオブジェクトから行う方法です。
+
+単一のコレクションまたはテナントに対してバッチインポートを行う場合は、コレクションオブジェクトを使用することを推奨します。マルチテナンシー構成などで複数コレクションにわたってオブジェクトをインポートする場合は、`client.batch` を使用すると便利です。
+
+### バッチサイズ設定
+
+バッチ動作を構成する方法は `dynamic`、`fixed_size`、`rate_limit` の 3 つがあります。
+
+| Method | Description | When to use |
+| :-- | :-- | :-- |
+| `dynamic` | インポート中にサーバー負荷に応じてバッチサイズと同時リクエスト数が動的に調整されます。 | 推奨される開始ポイントです。 |
+| `fixed_size` | バッチサイズと同時リクエスト数をユーザーが指定した固定値にします。 | 固定パラメーターを指定したい場合。 |
+| `rate_limit` | Weaviate へ送信するオブジェクト数をレート制限します（n_objects / 分で指定）。 | サードパーティのベクトライゼーション API のレート制限を回避したい場合。 |
+
+#### 使用方法
+
+以下のようにコンテキストマネージャーを使用することを推奨します。
+
+これらのメソッドは、バッチごとに新しいコンテキストマネージャーを返します。`failed_objects` や `failed_references` など、あるバッチから返された属性は後続の呼び出しには含まれません。
+
+<Tabs groupId="languages">
+<TabItem value="dynamic" label="Dynamic">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# START BatchDynamic"
+    endMarker="# END BatchDynamic"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="fixedSize" label="Fixed Size">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# START BatchFixedSize"
+    endMarker="# END BatchFixedSize"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="rateLimit" label="Rate limited">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START BatchRateLimit"
+  endMarker="# END BatchRateLimit"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+バッチ送信を担当するバックグラウンドスレッドがバッチ処理中に例外を送出した場合、そのエラーはメインスレッドへ伝搬します。
+
+### エラーハンドリング
+
+バッチインポート中に失敗したオブジェクトやリファレンスは保存され、後で取得できます。また、失敗したオブジェクトとリファレンスの実行中のカウントも保持されます。
+
+コンテキストマネージャー内では `batch.number_errors` でカウンターにアクセスできます。
+
+失敗したオブジェクトの一覧は `batch.failed_objects`、失敗したリファレンスの一覧は `batch.failed_references` から取得できます。
+
+これらのリストは新しいバッチ処理を開始するとリセットされます。したがって、新しいバッチインポートブロックを開始する前に必ず取得してください。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START BatchErrorHandling"
+  endMarker="# END BatchErrorHandling"
+  language="py"
+/>
+
+
+
+### バッチ ベクトル化
+
+:::info `v1.25` で追加されました。
+:::
+
+import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
+
+<BatchVectorizationOverview />
+
+コレクションを作成するときに ベクトライザー を設定すると、クライアントが自動で ベクトル化 を処理します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Create a client">
+    <FilteredTextBlock
+      text={BatchVectorCode}
+      startMarker="# START BatchVectorClient"
+      endMarker="# END BatchVectorClient"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+ベクトル化 の設定を変更するには、クライアント オブジェクトを更新します。次の例では複数の ベクトライザー を追加しています。
+
+- **Cohere**: サービス API キーを設定します。リクエスト レートを設定します。
+- **OpenAI**: サービス API キーを設定します。ベース URL を設定します。
+- **VoyageAI**: サービス API キーを設定します。
+
+ <Tabs groupId="languages">
+  <TabItem value="py" label="Modify the client">
+    <FilteredTextBlock
+      text={BatchVectorCode}
+      startMarker="# START BatchVectorizationClientModify"
+      endMarker="# END BatchVectorizationClientModify"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## ヘルパー クラス
+
+クライアント ライブラリには、IDE 支援と型ヒントを提供する多数の追加 Python クラスがあります。以下のように個別にインポートできます。
+
+```
+from weaviate.classes.config import Property, ConfigFactory
+from weaviate.classes.data import DataObject
+from weaviate.classes.query import Filter
+```
+
+しかし、次のようにクラス全体をまとめてインポートすると便利な場合もあります。ドキュメントでは両方の使用スタイルが登場します。
+
+```
+import weaviate.classes as wvc
+```
+
+探索しやすいように、これらのクラスはサブモジュールに整理されています。
+
+<details>
+  <summary>サブモジュール一覧を見る</summary>
+
+| モジュール                       | 説明                               |
+| ------------------------------- | ---------------------------------- |
+| `weaviate.classes.config`       | コレクションの作成 / 変更          |
+| `weaviate.classes.data`         | CUD 操作                           |
+| `weaviate.classes.query`        | クエリ / 検索操作                  |
+| `weaviate.classes.aggregate`    | 集約操作                           |
+| `weaviate.classes.generic`      | 汎用                               |
+| `weaviate.classes.init`         | 初期化                             |
+| `weaviate.classes.tenants`      | テナント                           |
+| `weaviate.classes.batch`        | バッチ操作                         |
+
+</details>
+
+## 接続の終了
+
+クライアント接続は必ず閉じる必要があります。`client.close()` を使用するか、コンテキスト マネージャを使って自動で接続を閉じることもできます。
+
+### `try` / `finally` を使った `client.close()`
+
+`try` ブロックが完了したとき（または例外が発生したとき）にクライアント接続を閉じます。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# TryFinallyExample"
+  endMarker="# END TryFinallyExample"
+  language="py"
+/>
+
+### コンテキスト マネージャ
+
+`with` ブロックを抜けるとクライアント接続が閉じられます。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# ClientContextManagerExample"
+  endMarker="# END ClientContextManagerExample"
+  language="py"
+/>
+
+## 例外処理
+
+クライアント ライブラリはさまざまなエラー条件で例外を送出します。たとえば次のようなものがあります。
+
+- `weaviate.exceptions.WeaviateConnectionError` : 接続失敗時。
+- `weaviate.exceptions.WeaviateQueryError` : クエリ失敗時。
+- `weaviate.exceptions.WeaviateBatchError` : バッチ操作失敗時。
+- `weaviate.exceptions.WeaviateClosedClientError` : クローズ済みクライアントへの操作時。
+
+これらの例外はすべて `weaviate.exceptions.WeaviateBaseError` を継承しており、以下のようにこの基底クラスで捕捉できます。
+
+<FilteredTextBlock
+    text={PythonCode}
+    startMarker="# START BrokenQueryExample"
+    endMarker="# END BrokenQueryExample"
+    language="py"
+/>
+
+クライアント ライブラリで送出される例外は、[このモジュール](https://github.com/weaviate/weaviate-python-client/blob/main/weaviate/exceptions.py) で確認できます。
+
+各メソッドで送出される可能性のある例外については、クライアント ライブラリの docstring でも確認できます。Python で `help` 関数を使う、Jupyter ノートブックで `?` 演算子を使う、または VSCode のホバー ツールチップなど IDE を利用してください。
+
+## スレッド セーフティ
+
+Python クライアントは基本的にスレッド セーフになるよう設計されていますが、`requests` ライブラリに依存しているため完全なスレッド セーフティは保証されません。
+
+これは今後改善を検討している領域です。
+
+:::warning Thread safety
+クライアント内のバッチング アルゴリズムはスレッド セーフではありません。Python クライアントをマルチスレッド環境で使用する際は、よりスムーズで予測可能な動作となるようご注意ください。
+:::
+
+マルチスレッド シナリオでバッチングを行う場合、任意の時点でバッチング ワークフローを実行するスレッドは 1 つだけにしてください。同時に 2 つのスレッドが同じ `client.batch` オブジェクトを使用することはできません。
+
+## レスポンスオブジェクトの構造
+
+各クエリのレスポンスオブジェクトには、通常複数の属性が含まれます。次のクエリを例に考えてみます。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultDisplayExample"
+  endMarker="# END ResultDisplayExample"
+  language="py"
+/>
+
+各レスポンスには `objects` や `generated` などの属性が含まれます。さらに `objects` 内の各オブジェクトには、`uuid`、`vector`、`properties`、`references`、`metadata`、`generated` などの複数の属性が含まれます。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultDisplayOutput"
+  endMarker="# END ResultDisplayOutput"
+  language="bash"
+/>
+
+レスポンスのペイロードを制限するには、返却するプロパティやメタデータを指定できます。
+
+<!-- Additionally, to view the response object in a more readable format, you can use the `json.dumps()` function as shown below
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultJSONDisplayExample"
+  endMarker="# END ResultJSONDisplayExample"
+  language="bash"
+/>
+
+This is the formatted output.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultJSONDisplayResults"
+  endMarker="# END ResultJSONDisplayResults"
+  language="bash"
+/> -->
+
+## 入力引数のバリデーション
+
+クライアントライブラリはデフォルトで入力引数のバリデーションを実行し、入力の型が期待される型と一致していることを確認します。
+
+パフォーマンスを向上させるために、このバリデーションを無効化することもできます。たとえば コレクション オブジェクトのインスタンス化時や `collections.get`、`collections.create` で `skip_argument_validation` パラメーターを `True` に設定します。
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START SkipValidationExample"
+  endMarker="# END SkipValidationExample"
+  language="bash"
+/>
+
+本番環境でクライアントライブラリを使用し、入力引数の型が確実に正しいと分かっている場合に便利です。
+
+## Jupyter Notebook でのタブ補完
+
+ブラウザで Jupyter Notebook 上の Python クライアントを実行している場合、編集中に `Tab` キーを押すとコード補完が利用できます。VSCode で Jupyter Notebook を実行している場合は、`control` + `space` を押してください。
+
+## 生の GraphQL クエリ
+
+生の GraphQL クエリを送信するには、`client.graphql_raw_query` メソッドを使用します（`v3` クライアントでは以前 `client.query.raw` でした）。このメソッドは文字列を引数に取ります。
+

@@ -1,0 +1,91 @@
+---
+title: コレクションの作成
+description: 多モーダル データ コレクションの作成
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';
+
+Weaviate はデータを「コレクション」に保存します。コレクションとは、同じデータ構造を共有するオブジェクトの集合です。映画データベースでは、映画のコレクション、俳優のコレクション、レビューのコレクションを持つことができます。
+
+ここでは映画のコレクションを作成します。
+
+## <i class="fa-solid fa-code"></i> コード
+
+次の例では映画データ用のコレクションを作成しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# CreateMovieCollection"
+  endMarker="# END CreateMovieCollection"
+  language="py"
+/>
+
+各コレクション定義には名前が必要です。そのうえで、この例のように追加パラメーターを指定できます。
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティ
+
+プロパティは、コレクションに保存したいオブジェクトの属性です。各プロパティには名前とデータ型があります。
+
+映画データベースでは、`title`、`release_date`、`genre_ids` などのプロパティがあり、データ型として `TEXT`（文字列）、`DATE`（日付）、`INT`（整数）などがあります。`genre_ids` のように整数の配列を持つことも可能です。
+
+多モーダル オブジェクトとして、画像データである `poster` プロパティもあり、これは `BLOB`（バイナリ ラージ オブジェクト）データ型で保存されます。
+
+#### 自動スキーマ
+
+Weaviate は [スキーマを自動推論](/weaviate/config-refs/collections.mdx#auto-schema) できます。しかし、より細かく制御し予期しない結果を避けるために、プロパティを明示的に定義することを推奨します。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザー設定
+
+ベクトルを自分で指定しない場合、Weaviate は指定されたベクトライザーを使用してデータからベクトル埋め込みを生成します。
+
+このコード例では `multi2vec-clip` モジュールを指定しています。このモジュールは CLIP モデルを用いてテキストと画像データからベクトル埋め込みを生成します。
+
+テキストおよび画像プロパティを任意の数だけベクトル化対象として指定でき、重み付けも自由です。重みは、各プロパティがベクトル埋め込み生成においてどれだけ重要かを示します。この例では画像である `poster` プロパティを 90% の重みで、文字列である `title` プロパティを 10% の重みでベクトル化しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Define & configure the vectorizer module"
+  endMarker="# Define the generative module"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 生成設定
+
+コレクションを生成モデル（例: 大規模言語モデル）と一緒に使用したい場合は、生成モジュールを指定する必要があります。
+
+このコード例では `openai` モジュール（正式名 `generative-openai`）をデフォルト設定で指定しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Define the generative module"
+  endMarker="# END generativeDefinition"
+  language="py"
+/>
+
+import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
+
+<MutableGenerativeConfig />
+
+### <i class="fa-solid fa-code"></i> Python クラス
+
+コード例では、`Property`、`DataType`、`Configure` などのクラスを使用しています。これらは `weaviate.classes.config` サブモジュールで定義され、コレクションの定義に使用されます。
+
+利便性のため、サブモジュールを `wc` としてインポートし、そのクラスを利用しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# SubmoduleImport"
+  endMarker="# END SubmoduleImport"
+  language="py"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

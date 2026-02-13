@@ -1,0 +1,209 @@
+---
+title: 検索結果を改善するための戦略
+description: データ取得を強化するための Weaviate 検索戦略を探る。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/30_strategies.py';
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+適切な検索タイプを選択することに加えて、検索結果の品質を向上させるために活用できる戦略がいくつかあります。
+
+ここでは、それらの戦略を見ていきます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索の改善
+
+ベクトル検索を向上させる鍵は、オブジェクトのベクトル表現が検索ニーズに合致していること、つまり目的に適したものであることです。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザーの選定
+
+独自のベクトルを挿入しない限り、Weaviate ベクトライザー モジュールと、そのモジュール内のモデルを使用してデータのベクトルを生成します。
+
+ベクトライザー モジュールとモデルの選択は重要です。これにより、データのどの側面がベクトル表現に取り込まれるか、モデルがデータをどの程度「理解」できるかが決まります。
+
+まず第一に、データタイプに最適なベクトライザー モジュールを選択してください。たとえば、テキスト データを扱う場合は `text2vec` モジュールを、画像やマルチモーダル データを扱う場合は `multi2vec` モジュールを使用するのが適切です。
+
+ベクトライザー選択については別のユニットで取り上げますが、迷った場合は以下を試してください。  
+- テキスト データ：`text2vec-cohere` または `text2vec-openai`（API ベース）  
+  - Cohere には 100 以上の言語に対応した多言語モデルがあります。  
+- 画像、または画像とテキスト：`multi2vec-clip`
+
+ローカル推論コンテナでテキストを扱いたい場合は、`text2vec-transformers` を使用し、`sentence-transformers/all-MiniLM-L12-v2` などの一般的なモデルを試してみてください。
+
+### <i class="fa-solid fa-chalkboard"></i> リランカーの利用
+
+リランカー モジュールは検索結果の品質を向上させる優れた方法です。
+
+リランカー モジュールはベクトル検索の結果を受け取り、追加の基準または別のモデルを用いて結果を再ランク付けします。これにより、高品質（ただし遅い）モデルをリランキングに使用しつつ、高速な一次検索の恩恵を受けることができます。
+
+たとえば、`text2vec-cohere` モジュールでベクトル検索を実行し、その結果を `reranker-cohere` モジュールで再ランク付けするといった使い方が可能です。
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティの選定
+
+ベクトル化はオブジェクトの「意味」を捉えます。そのため、検索基準に関連しないプロパティはベクトル化プロセスから除外するべきです。
+
+例として、商品オブジェクトに製造工程や製造場所などのメタデータが含まれている場合、ベクトル検索を商品の特徴に基づいて行いたいのであれば、製造工程や製造場所のプロパティはベクトル化から除外します。
+
+これは、以下のようにベクトル化時にプロパティをスキップするかどうかを指定することで実現できます。コレクション名やプロパティ名についても同様に設定可能です。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START skipVectorizationExample"
+      endMarker="# END skipVectorizationExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> チャンク化
+
+チャンク化とは、テキストを小さなチャンクに分割し、それぞれを個別にベクトル化するプロセスを指します。これは各ベクトルが含む情報量を決定するため非常に重要です。
+
+経験則として、検索ニーズが細かいほどチャンクサイズを小さくする必要があります。たとえば、特定の概念やアイデアを検索する場合は、文章や小さなテキストウィンドウなど、より小さな単位にチャンク化します。逆に、章や書籍などのより大きな概念を検索する場合は、それに応じてチャンク化することが適切です。
+
+詳細は Weaviate Academy の [チャンク化ユニット](../chunking/index.mdx) をご覧ください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索の改善
+
+### <i class="fa-solid fa-chalkboard"></i> トークナイズ
+
+BM25 検索を「キーワード」検索と表現しますが、実際には正確に一致するのは「単語」ではなく「トークン」です。これはベクトル埋め込み生成時に使用されるトークナイズとは異なり、BM25 検索やフィルタリングのために転置インデックスを構築する際に使用されます。
+
+したがって、トークナイズはマッチングに使用されるトークンを決定する重要なプロセスです。
+
+利用可能なオプションは `word`、`lowercase`、`whitespace`、`field` です。デフォルト（`word`）は散文には十分かもしれませんが、大文字小文字や記号を含む厳密な一致が重要なテキストでは `whitespace` などが適している場合があります。
+
+利用可能なトークナイズ オプション:
+
+import TokenizationDefinition from '/_includes/tokenization_definition.mdx';
+
+<TokenizationDefinition/>
+
+トークナイズはコレクション設定で指定できます。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START tokenizationExample"
+      endMarker="# END tokenizationExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティの選択とブースト
+
+特定のプロパティでの一致が検索結果に過度な影響を及ぼしている場合、それらを検索対象から除外したり、特定プロパティの重要度をブーストしたりできます。
+
+たとえば、`description` プロパティでの一致は `notes` プロパティでの一致よりも重要かもしれません。これはクエリ時に指定できます。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START selectAndBoostExample"
+      endMarker="# END selectAndBoostExample"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索の改善
+
+### <i class="fa-solid fa-chalkboard"></i> Alpha パラメータ
+
+alpha パラメータは、ベクトル検索結果とキーワード検索結果のバランスを決定します。
+
+検索をよりベクトルベースにしたい場合は、alpha 値を大きくします。逆に、検索をよりキーワードベースにしたい場合は、alpha 値を小さくします。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START adjustAlpha"
+      endMarker="# END adjustAlpha"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> 融合アルゴリズム
+
+融合アルゴリズムは、ベクトル検索とキーワード検索の結果をどのように統合するかを決定します。
+
+デフォルトでは、各結果セットの順位の逆数を合計する "ranked fusion" アルゴリズムが使用されます。これに対し、各結果セットの正規化されたスコアを合計する "relative score fusion" アルゴリズムを使用することもできます。
+
+一般的に、relative score fusion アルゴリズムの方が良い結果になることが多いですが、ユースケースによって異なるため、両方を試して最適な方を確認してください。
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START changeFusionType"
+      endMarker="# END changeFusionType"
+      language="py"
+    />
+  </TabItem>
+
+</Tabs>
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
+
+<Quiz questions={varName} />
+
+Any quiz questions
+
+### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+Try out ...
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+
+:::info
+Add summary
+:::
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->

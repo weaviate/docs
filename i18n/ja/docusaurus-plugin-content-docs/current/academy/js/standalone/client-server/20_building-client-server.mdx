@@ -1,0 +1,130 @@
+---
+title: バックエンド Web フレームワークの利用
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!./_snippets/20_backend.js';
+import ClientCode from '!!raw-loader!./_snippets/index.html';
+import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/_img/backend.jpg';
+
+
+
+このアプローチでは、ツールを 2 つに分けます。1 つはサーバーアプリケーションを構築するためのバックエンドフレームワーク、もう 1 つはクライアントアプリケーションを構築するためのツールです。ここではバックエンドサーバーを構築するために  Express.js を、クライアントとして  Thunder Client を使用してバックエンドサーバーへ API コールを行います。
+
+<img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
+
+
+## <i class="fa-solid fa-chalkboard"></i> サーバーの構築
+
+このサーバーには、`searchTerm` をクエリパラメーターとして受け取る 1 つのルートを用意します。 
+
+### 1. Node.js アプリケーションの初期化
+
+新しいディレクトリで次のコマンドを実行し、 Node.js プロジェクトを初期化して  Express を使ったサーバーを構築します。
+
+```bash 
+npm init
+```
+### 2. プロジェクト依存関係のインストール
+
+プロジェクトを初期化したら、環境変数を管理するための `dotenv`、サーバーを構築するための `express`、そして  Weaviate データベースとの通信を行う `weaviate-client` をインストールします。 
+
+```bash
+npm install express dotenv weaviate-client
+```
+
+
+### 3. Weaviate データベースのセットアップ
+
+まず [Weaviate Cloud](https://console.weaviate.cloud/) で無料のサンドボックスアカウントを作成します。サンドボックスプロジェクトのセットアップで問題がある場合は、[こちらのガイド](/cloud/manage-clusters/connect) を参照してください。 
+
+Weaviate クラスターの URL と API キーが必要です。まだお持ちでない場合は、Cohere の [API キー](https://dashboard.cohere.com/api-keys) を新規作成してください。Cohere を私たちの埋め込みモデルとして使用します。準備ができたら、これら 3 つを `.env` ファイルに追加します。
+
+
+ <TabItem value="js" label=".env">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START .env"
+      endMarker="// END .env"
+      language="js"
+    />
+  </TabItem>
+
+#### 3.5 Weaviate へのデータ追加
+
+[データのロード](https://github.com/weaviate/recipes-ts/blob/main/similarity-search/cohere/load.ts) レシピに従って、 Weaviate データベースへデータをインポートしてください。 
+
+### 4. Weaviate への接続 
+
+`config/weaviate.js` に次のコードを貼り付けます。 
+
+ <TabItem value="js" label="weaviate.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START weaviate.js"
+      endMarker="// END weaviate.js"
+      language="js"
+    />
+  </TabItem>
+
+上記のコードにより、 Weaviate Cloud 上にホストされている  Weaviate インスタンスへの接続が作成されます。
+
+### 5. Search ルートの作成
+
+プロジェクトルートに `app.js` ファイルを作成し、次のコードを貼り付けます。 
+
+ <TabItem value="js" label="app.js">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START app.js"
+      endMarker="// END app.js"
+      language="js"
+    />
+  </TabItem>
+
+これで `/search` ルートで検索を実行できます。`nearText()` を使用してセマンティック検索を行います。 
+
+#### 6. サーバーの実行 
+ターミナルで次のコマンドを実行してサーバーを起動します。
+
+```bash
+node app.js
+```
+
+サーバーは `localhost:3005` で稼働しているはずです。 
+
+
+
+## <i class="fa-solid fa-chalkboard"></i> クライアントアプリケーションの構築
+
+サーバーが完成したので、クライアントアプリケーションから呼び出しを行えます。ここでは  HTML と JavaScript で基本的なクライアントアプリケーションを作成します。
+
+または [Thunder Client](https://www.thunderclient.com/) で `http://localhost:3005/search?searchTerm=countries in asia` にリクエストを送ってサーバーをクエリすることもできます。
+
+
+### 1. クライアントアプリケーションの作成
+
+ルートフォルダーに `index.html` ファイルを作成し、次のコードを貼り付けます。
+
+<TabItem value="html" label="index.html">
+    <FilteredTextBlock
+      text={ClientCode}
+      startMarker="<!-- client start -->"
+      endMarker="<!-- client stop -->"
+      language="html"
+    />
+  </TabItem>
+
+
+### 2. クライアントアプリケーションの実行 
+
+ルートフォルダーでターミナルから次のコマンドを実行します。
+
+```bash
+npx http-server
+```
+
+
+このクライアントアプリケーションは、先ほど構築した  Express サーバーにリクエストを送り、結果を表示します。

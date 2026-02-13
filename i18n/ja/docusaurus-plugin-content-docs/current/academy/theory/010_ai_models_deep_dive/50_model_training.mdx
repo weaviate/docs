@@ -1,0 +1,94 @@
+---
+title: "概要：モデルの学習"
+description: AI モデルがどのように学習されるかの超簡潔な紹介
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+このセクションでは、AI モデルがどのように学習されるかを非常に簡潔に説明します。これは AI モデルの仕組みや活用方法を理解するうえで重要なポイントです。詳細な学習手順には踏み込みませんが、全体像をつかむためのハイレベルな概要を提供します。
+
+## <i class="fa-solid fa-chalkboard-user"></i> モデルの学習とは
+
+これまでに、AI モデル、より具体的には deep learning モデルは、入力に対して多数の変換を適用して出力を生成することを学びました。これらの変換は主に `weights`、`biases`、`activation functions` を通じて実行され、以下のノード計算例に示されています。
+
+import NNNodeCalcsLight from './_img/nn_explained_20_node_calculation.png';
+import NNNodeCalcsDark from './_img/nn_explained_20_node_calculation_dark.png';
+
+<ThemedImage
+  alt="Neural Network Node Calculations"
+  sources={{
+    light: NNNodeCalcsLight,
+    dark: NNNodeCalcsDark,
+  }}
+  width="450"
+/>
+
+また、`weights` と `biases` をまとめて deep learning モデルの `parameters` と呼ぶことも学びました。名前のとおり、`parameters` は deep learning モデルの挙動を決定するものです（アーキテクチャとは対照的です）。
+
+:::info
+
+*Parameter*: n. システムの要素を特徴付ける任意の定数
+
+<small>出典: Merriam-Webster Dictionary</small>
+
+:::
+
+同じアーキテクチャであっても、parameters が異なれば別の仕事をこなすモデルになります。
+
+これらの models には一般に数百万、あるいは数十億もの parameters が含まれるため、目的の動作を実現するように手動で値を設定するのは事実上不可能です。その代わり、parameters は数値的に “学習” させることで調整されます。これが「deep *learning*」モデルと呼ばれる理由です。
+
+## <i class="fa-solid fa-chalkboard-user"></i> モデルはどのように学習されるか
+
+高いレベルで見ると、学習の流れは他の機械学習モデルと同じです。一般の方には、Microsoft Excel の「ゴール シーク」や、もっと基本的には [“Hot and Cold” ゲーム](https://en.wikipedia.org/wiki/Hunt_the_thimble)に似ているといえます。
+
+deep learning では、各学習 “iteration” でモデルの出力を “理想的な” 出力と比較します（これを “loss function” と呼びます）。そして複雑な数学を駆使して parameters を更新し、モデルが少しずつ上手にタスクをこなせるようにします。
+
+:::note Why gloss over the “fancy math”?
+
+ここで “fancy math” という表現を使ったのは、複雑な数学と計算が関わっていることを軽く示すためです。もちろんこれは AI における非常に興味深く重要な分野です。  
+<br/>
+
+ここで鍵になるのは “gradient descent” で、loss function を数値的に微分し、その勾配を利用して parameters を少しずつ更新していきます。  
+<br/>
+
+ただし本ドキュメントの範囲外であり、モデルを単に利用したい方にとっては必須ではないため、詳細な説明は割愛します。もし詳しく学びたい場合は優れた資料が多数あります。  
+<br/>
+
+いくつかのお気に入りリソースを紹介します:  
+- [動画: Let’s reproduce GPT-2 by Andrej Karpathy](https://www.youtube.com/watch?v=l8pRSuU81PU)  
+- [Fine-tune large language models: Hugging Face](https://huggingface.co/learn/nlp-course/en/chapter11/1)
+
+:::
+
+
+import NNBackpropagation from './_img/nn_explained_55_backprop.png';
+import NNBackpropagationDark from './_img/nn_explained_55_backprop_dark.png';
+
+<ThemedImage
+  alt="Neural Network Back propagation"
+  sources={{
+    light: NNBackpropagation,
+    dark: NNBackpropagationDark,
+  }}
+  width="450"
+/>
+
+このプロセスは出力側から入力側へと学習結果を伝搬させていくため “back propagation”（バックプロパゲーション、略して backprop）と呼ばれます。
+
+モデル学習プロセスにおいて、このような更新が 1 回の “iteration” です。学習期間中に非常に多くの iteration を繰り返します。モデルの巨大さと、必要な iteration 数の多さが、学習にかかるコストと時間を大きくしている要因です。
+
+## <i class="fa-solid fa-chalkboard-user"></i> モデル：構築か購入か
+
+大型言語モデルをゼロから学習させるには数か月、そしてコンピューティング資源に数百万ドルかかることもあります。現代の GPU はこの用途に最適化されているため、近年特に高い需要があります。
+
+現代の AI モデルは複数の段階で学習され、“pre-training” と “fine-tuning” と呼ばれます。簡単に言えば、pre-training でモデルの一般能力を獲得し、fine-tuning で特定のドメインやアプリケーション向けに適応させます。
+
+ほとんどの場合、ユーザーは既製のモデルを選択しますが、適切な専門知識と目的があれば fine-tuning が有効なケースもあります。これについては後の「モデルの評価と選択」のセクションで詳しく扱います。
+
+次に、これらのモデルを実際にどう利用するかを見ていきましょう。商用の推論プロバイダを通じてアクセスする方法やローカルで推論を行う方法、そのメリット・デメリットを確認し、モデルカードを読み解きながら各モデルの詳細を理解していきます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

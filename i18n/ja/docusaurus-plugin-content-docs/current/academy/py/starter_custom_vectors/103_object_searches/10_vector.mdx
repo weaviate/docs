@@ -1,0 +1,76 @@
+---
+title: ベクトル検索
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/103_10_vector.py';
+
+このシナリオでは、データオブジェクトと独自の ベクトル を追加しています。そのため、類似度検索には ベクトル の入力も必要になります。これは `near vector` クエリで実行できます。
+
+### <i class="fa-solid fa-code"></i> コード
+
+この例では、入力 ベクトル との類似度に基づいて "Movie" からエントリーを検索し、上位 5 件のタイトルと公開年を表示します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MetadataSemanticSearch"
+  endMarker="# END MetadataSemanticSearch"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+結果は、クエリとデータベースオブジェクトのテキスト間の ベクトル 埋め込みの類似度に基づいています。この例では、埋め込みはクエリ内で手動入力しています。
+
+`limit` パラメーターは、返す結果の最大件数を設定します。
+
+`return_metadata` パラメーターには `MetadataQuery` クラスのインスタンスを渡し、検索結果に含めるメタデータを指定します。現在のクエリでは、クエリとの ベクトル 距離を返します。
+
+<details>
+  <summary>例: 実行結果</summary>
+
+```text
+In Time 2011
+Distance to query: 0.179
+
+Gattaca 1997
+Distance to query: 0.180
+
+I, Robot 2004
+Distance to query: 0.182
+
+Mad Max: Fury Road 2015
+Distance to query: 0.190
+
+The Maze Runner 2014
+Distance to query: 0.193
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
+
+返されるオブジェクトはカスタムクラスのインスタンスです。その `objects` 属性は検索結果のリストで、各要素は別のカスタムクラスのインスタンスです。
+
+各オブジェクトは以下を満たします。
+- Blob データ型を除き、すべてのプロパティと UUID をデフォルトで含みます。
+- 参照、メタデータ、ベクトル など、それ以外の情報はデフォルトでは含みません。
+
+### <i class="fa-solid fa-code"></i> クエリ ベクトルの取得方法
+
+この例のクエリ ベクトル は、[データ取り込み](../102_object_collections/25_generate_vectors.mdx) で取得した方法と同様に得られます。唯一の違いは、ベクトル をデータベースに保存せず、クエリで直接使用する点です。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetQueryVector"
+  endMarker="# END GetQueryVector"
+  language="py"
+/>
+
+## ご質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,214 @@
+---
+title: オブジェクトの読み取り
+sidebar_position: 20
+image: og/docs/howto.jpg
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.read.py';
+import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.read-v3.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read.ts';
+import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-v2.ts';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read.java';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go';
+import SkipLink from '/src/components/SkipValidationLink'
+
+
+データベースをクエリする代わりに、個々のオブジェクトを取得するには ID を使用できます。
+
+import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
+
+<details>
+  <summary>追加情報</summary>
+  <RestObjectsCRUDClassnameNote/>
+</details>
+
+## ID でオブジェクトを取得
+
+ ID を指定してオブジェクトを取得します。指定した ID が存在しない場合、Weaviate は 404 エラーを返します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ReadObject START"
+      endMarker="# ReadObject END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# ReadObject START"
+      endMarker="# ReadObject END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// ReadObject START"
+      endMarker="// ReadObject END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// ReadObject START"
+      endMarker="// ReadObject END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// ReadObject START"
+      endMarker="// ReadObject END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ReadObject START"
+      endMarker="// ReadObject END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+
+## オブジェクトの ベクトル を取得
+
+オブジェクトの ベクトル は、返却内容として指定することで取得できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ReadObjectWithVector START"
+      endMarker="# ReadObjectWithVector END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# ReadObjectWithVector START"
+      endMarker="# ReadObjectWithVector END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// ReadObjectWithVector START"
+      endMarker="// ReadObjectWithVector END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// ReadObjectWithVector START"
+      endMarker="// ReadObjectWithVector END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// ReadObjectWithVector START"
+      endMarker="// ReadObjectWithVector END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ReadObjectWithVector START"
+      endMarker="// ReadObjectWithVector END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+## 名前付き ベクトルの取得
+
+名前付き ベクトルを使用している場合、ベクトル名を指定することで 1 つ以上を取得できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ReadObjectNamedVectors START"
+      endMarker="# ReadObjectNamedVectors END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# ReadObjectNamedVectors START"
+      endMarker="# ReadObjectNamedVectors END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// ReadObjectNamedVectors START"
+      endMarker="// ReadObjectNamedVectors END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// ReadObjectNamedVectors START"
+      endMarker="// ReadObjectNamedVectors END"
+      language="tsv2"
+    />
+  </TabItem>
+
+</Tabs>
+
+## オブジェクトの存在確認
+
+特定の `id` を持つオブジェクトが存在するかどうかを取得せずに効率的に確認するには、 `HEAD` リクエストを <SkipLink href="/weaviate/api/rest#tag/objects/head/objects/{className}/{id}">`/v1/objects/` REST エンドポイント</SkipLink> に送信するか、以下のクライアントコードを使用します。
+
+import CheckObjectExistence from '/_includes/code/howto/manage-data.read.check.existence.mdx';
+
+<CheckObjectExistence/>
+
+## 関連ページ
+
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [ハウツー: 検索](../search/index.mdx)
+- [ハウツー: すべてのオブジェクトを読み取る](./read-all-objects.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects">参照: REST - /v1/objects</SkipLink>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

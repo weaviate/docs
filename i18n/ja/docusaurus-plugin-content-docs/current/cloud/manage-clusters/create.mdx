@@ -1,0 +1,218 @@
+---
+title: クラスターの作成
+sidebar_position: 2
+description: "新しい Sandbox または Serverless Weaviate Cloud クラスターを作成して設定する手順ガイド。"
+image: og/wcd/user_guides.jpg
+---
+
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) では、2 種類のインスタンスを提供しています。
+
+- **Sandbox クラスター**: 小規模で無料のクラスターです。学習や実験向けに設計されており、スケーラブルではなく 14 日で期限切れになります。  
+- **Serverless クラスター**: 本番環境向けに設計された堅牢な有料クラスターです。
+
+## クラスターの作成
+
+Weaviate Cloud の Web コンソールにログインすると、`Clusters` パネルにクラスター一覧が表示されます (<span class="callout">1</span>)。新しいアカウントでログインした場合は、まだクラスターはありません。
+
+クラスターを作成する手順は次のとおりです。
+
+import CreateCluster from '/docs/cloud/img/weaviate-cloud-create-new-cluster.png';  
+import SandboxCluster from '/docs/cloud/img/weaviate-cloud-sandbox-cluster.png';  
+import ServerlessCluster from '/docs/cloud/img/weaviate-cloud-serverless-cluster.png';  
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        <code>Clusters</code> パネルの ➕ アイコンをクリックします (
+        <span class="callout">2</span>)。
+      </li>
+      <li>
+        <code>Create cluster</code> をクリックします。
+      </li>
+      <li>
+        クラスターのオプションを選択できる新しいパネルが開きます。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={CreateCluster} alt="Create a cluster" />
+      </div>
+      <div class="card__body">このボタンをクリックしてクラスターを作成します。</div>
+    </div>
+  </div>
+</div>
+
+Weaviate では、次のクラスターオプションを提供しています。
+
+- **[Sandbox クラスター](#sandbox-clusters)**: 開発用途向けの無料・短期クラスター  
+- **[Serverless クラスター](#serverless-clusters)**: 永続的で本番使用に適した環境  
+
+### Sandbox クラスター
+
+Sandbox クラスターを作成する手順は次のとおりです。
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        <code>Sandbox</code> タブを選択します (<span class="callout">1</span>)。
+      </li>
+      <li>
+        クラスター名を入力します (<span class="callout">2</span>)。
+      </li>
+      <li>
+        ドロップダウンからクラウドリージョンを選択します (<span class="callout">3</span>)。
+      </li>
+      <li>
+        必要に応じて <code>Advanced configuration</code> を設定します (<span class="callout">4</span>)。
+      </li>
+      <li>
+        <code>Create</code> ボタンをクリックします。
+      </li>
+    </ol>
+    <h4>Serverless クラスターの詳細設定</h4>
+    <p>次の詳細設定が利用できます。</p>
+    <ul>
+      <li>
+        <Link to="/weaviate/config-refs/collections#auto-schema">
+          <code>Enable auto schema generation</code>
+        </Link>
+      </li>
+      <li>
+        <Link to="/weaviate/concepts/vector-index#asynchronous-indexing">
+          <code>Enable async indexing</code>
+        </Link>
+      </li>
+      <li>
+        <Link to="/deploy/configuration/replication#async-replication-settings">
+          <code>Enable async replication</code>
+        </Link>
+      </li>
+      <li>
+        <code>Allow all CORS origins</code>
+      </li>
+    </ul>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={SandboxCluster} alt="Create a sandbox cluster" />
+      </div>
+      <div class="card__body">Sandbox クラスターの設定を行います。</div>
+    </div>
+  </div>
+</div>
+
+### Serverless クラスター
+
+Serverless クラスターには課金情報が必要です。まだ登録していない場合は、Weaviate Cloud から課金情報の追加を求められます。
+
+Serverless クラスターを作成する手順は次のとおりです。
+
+import Link from '@docusaurus/Link';  
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        <code>Serverless</code> タブを選択します (<span class="callout">1</span>)。
+      </li>
+      <li>
+        クラスター名を入力します (<span class="callout">2</span>)。
+      </li>
+      <li>
+        ドロップダウンからクラウドリージョンを選択します (<span class="callout">3</span>)。
+      </li>
+      <li>
+        必要に応じて <code>High Availability</code> を有効にすると、アップグレードやスケーリング時のダウンタイムを削減できます。
+      </li>
+      <li>
+        必要に応じて <code>Advanced configuration</code> を設定します (
+        <span class="callout">4</span>)。
+      </li>
+      <li>
+        <code>Create</code> ボタンをクリックします。
+      </li>
+    </ol>
+    <h4>Serverless クラスターの詳細設定</h4>
+    <p>次の詳細設定が利用できます。</p>
+    <ul>
+      <li>
+        <Link to="/weaviate/config-refs/collections#auto-schema">
+          <code>Enable auto schema generation</code>
+        </Link>
+      </li>
+      <li>
+        <Link to="/weaviate/concepts/vector-index#asynchronous-indexing">
+          <code>Enable async indexing</code>
+        </Link>
+      </li>
+      <li>
+        <Link to="/deploy/configuration/replication#async-replication-settings">
+          <code>Enable async replication</code>
+        </Link>
+      </li>
+      <li>
+        <code>Allow all CORS origins</code>
+      </li>
+    </ul>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={ServerlessCluster} alt="Create a serverless cluster" />
+      </div>
+      <div class="card__body">Serverless クラスターの設定を行います。</div>
+    </div>
+  </div>
+</div>
+
+
+
+## 認証
+
+Weaviate Cloud クラスターは API キー認証を使用します。認証方法は、[RBAC (Role-Based Access Control)](/weaviate/configuration/rbac) が有効かどうかによって異なります。
+
+### RBAC 有効時の認証
+
+新しく作成した Weaviate バージョン `v1.30` 以降のクラスターでは、既定で RBAC が有効になっています。RBAC が有効な場合は、細かなアクセス制御のためにロールを指定した API キーを作成します。
+
+クライアント アプリケーションを開発する際は、API キーを使用してクラスターに接続してください。新しいキーの作成やロール管理を含む API キーの確認・管理方法は、次のガイドをご覧ください。
+
+- **[クラスター管理: 認証](/cloud/manage-clusters/authentication.mdx)**
+
+### RBAC 無効時の認証
+
+RBAC が有効でない場合（`v1.30` 以前）、クラスターは従来の 2 つの既定 API キー方式を使用します。
+
+- **Admin キー**: データベースへの読み書きアクセスを提供  
+- **ReadOnly キー**: データベースへの読み取り専用アクセスを提供  
+
+Serverless クラスターでは API キーの作成、削除、編集、ローテーションが可能ですが、Sandbox クラスターでは既定キーを変更できません。
+
+## Weaviate データベース バージョン
+
+新しいクラスターをプロビジョニングすると、Weaviate Cloud は最新の Weaviate バージョンでクラスターをセットアップします。新しい Weaviate バージョンがリリースされてから Weaviate Cloud で利用可能になるまで、わずかな遅延が生じる場合があります。
+
+Weaviate Cloud は、新しい Weaviate バージョンがリリースされても既存クラスターを自動更新しません。
+
+Weaviate Cloud のバージョニングの詳細は、以下を参照してください。
+
+- **[アカウント管理: サーバーバージョン](/cloud/platform/version)**
+
+## クラスター数
+
+<!-- TODO[g-despot]: Check if this is true.-->
+
+既定では、1 つの組織が同時に持てるクラスターは、Serverless が最大 6 基、Sandbox が最大 2 基です。これらの制限を変更したい場合は、[サポートにお問い合わせ](mailto:support@weaviate.io)ください。
+
+## サポートとフィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+
+

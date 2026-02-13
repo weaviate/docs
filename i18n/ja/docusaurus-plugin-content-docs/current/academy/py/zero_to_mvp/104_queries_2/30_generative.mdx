@@ -1,0 +1,242 @@
+---
+title: 生成検索
+description: Weaviate の Python SDK で高度なクエリを作成するための生成 AI の利用方法を学びます。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCodeExample from '!!raw-loader!./_snippets/30_generative.py';
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+[//]: # (<img src={imageUrl} alt="Image alt" width="75%"/>)
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+生成検索の核心となる概念は、データベースから単にデータを取得するのではなく、 Weaviate がデータを変換してから返せるという点です。
+
+このデータ変換機能により、生成検索は強力なツールとなり、データベースを単なる情報の保管庫ではなく、データと instructions の組み合わせに基づいてアウトプットを生成する存在へと変えてくれます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 設定
+
+### <i class="fa-solid fa-code"></i> モジュールの有効化
+
+生成検索を利用するには、 Weaviate インスタンスで `generative-xxx` モジュールを有効化する必要があります。
+
+WCD をご利用の場合、生成モジュールはデフォルトで有効化されています（[ドキュメントはこちら](/cloud)）。それ以外の場合は、生成モジュールが有効になっていることを確認するよう、 Weaviate インスタンスを設定してください。
+
+### <i class="fa-solid fa-code"></i> クラスの設定
+
+Weaviate インスタンスで生成モジュールが 1 つだけ有効化されている場合、 Weaviate はすべての生成タスクでそのモジュールを自動的に使用します。
+
+一方、複数の生成モジュールが設定されている場合は、各クラスに対して使用する生成モデルを定義する必要があります。下記はその例です。
+
+```json
+{
+  "classes": [
+    {
+      "class": "JeopardyQuestion",
+      "moduleConfig": {
+        "generative-openai": {
+          "model": "gpt-3.5-turbo"
+        }
+      }
+    }
+  ]
+}
+```
+
+## <i class="fa-solid fa-square-chevron-right"></i> 生成検索について
+
+### <i class="fa-solid fa-chalkboard"></i> 仕組み
+
+生成検索は、実質的には 2 つの手順を 1 つのプロセスにまとめたものと考えると分かりやすいです。  
+1. 検索を実行する  
+1. 検索結果とユーザーが提供したプロンプトを用いて生成モデルを呼び出す
+
+生成された出力は検索結果に追加され、ユーザーへ返されます。
+
+生成検索には `single prompt` と `grouped task` の 2 種類があります。
+
+- `single prompt` 検索では、ユーザーが指定したプロンプトと各検索結果を用いて、結果ごとに **1 件の応答** が生成されます。  
+- `grouped task` 検索では、検索結果全体とユーザーが指定したプロンプトをまとめて用い、結果セット全体に対して **1 件の応答** が生成されます。
+
+### <i class="fa-solid fa-code"></i> 生成検索の構文
+
+生成検索では検索プロセスにステップが 1 つ追加されます。そのため、生成検索を行う際は、プロンプトタイプ（`single prompt` または `grouped task`）と検索クエリの両方を指定する必要があります。
+
+#### シングルプロンプト
+
+シングルプロンプト検索を実行するには、少なくとも 1 つのオブジェクトプロパティを含むプロンプトを指定する必要があります。指定したプロパティは検索結果に基づいて Weaviate が自動で置き換えます。
+
+シングルプロンプト検索は次のように実行できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# SinglePromptQuery"
+  endMarker="# END SinglePromptQuery"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+上記のクエリは、`nearText` 類似度検索を使って `Article` オブジェクトを上位 3 件検索します。その後、 Weaviate は各結果と指定したプロンプトを生成モデルへ送り、その出力をユーザーへ返します。
+
+`single prompt` 検索では、検索で見つかったオブジェクトごとに出力が生成されます。そのため、レスポンス内の各オブジェクトには、生成された出力が `_additional` プロパティセットに含まれます。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Expected SinglePromptQuery results"
+  endMarker="# END Expected SinglePromptQuery results"
+  language="py"
+/>
+
+</details>
+
+#### グループタスク
+
+グループタスク検索では、プロパティを指定する必要はありません。次のように実行できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# GroupedTaskQuery"
+  endMarker="# END GroupedTaskQuery"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+上記のクエリは、先ほどと同様に `nearText` 類似度検索を使って `Article` オブジェクトを上位 3 件検索します。ただし今回は、検索結果を連結してユーザーが指定したプロンプトと共に生成モデルへ送ります。
+
+言い換えると、`grouped task` 検索ではタスクごとに 1 度だけ生成モデルが呼び出され、1 件の生成結果が得られます。
+
+そのため、`grouped task` 検索ではタスク全体に対して 1 件の出力のみが生成されます。この生成出力は、レスポンスの最初のオブジェクト内の `_additional` プロパティセットとして返されます。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Expected GroupedTaskQuery results"
+  endMarker="# END Expected GroupedTaskQuery results"
+  language="py"
+/>
+
+</details>
+## <i class="fa-solid fa-square-chevron-right"></i> オブジェクト プロパティ
+
+`single prompt` 形式の生成検索ではプロパティを指定する必要があることはすでに確認しました。  
+また、`grouped task` 検索でも使用するプロパティを個別に指定できます。
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティ指定の理由
+
+`single prompt` の例では、それぞれのプロパティがモデルのプロンプトを構成する役割を果たし、`{summary}` のようなプレースホルダーを取得した summary テキストで置き換えます。
+
+また、各 `grouped task` で使用するプロパティを指定して、生成モデルに渡したいデータだけを送るようにできます。
+
+#### コンテキスト ウィンドウ長
+
+プロパティを指定するもう一つの理由は、モデルのコンテキスト長を超過する可能性を低減することです。生成モデルは通常 transformer ベースで、多くはコンテキスト ウィンドウに制限があります。
+
+そのため、必要なプロパティだけを生成モジュールに渡すことで、コンテキスト ウィンドウの制限を超えずに、より多くのオブジェクトの結果を含められる可能性があります。
+
+### <i class="fa-solid fa-code"></i> プロパティの指定方法
+
+:::tip 返却プロパティと無関係な生成検索用プロパティ
+`single prompt` 検索でも `grouped task` 検索でも、生成検索で使用するプロパティは返却プロパティと同じである必要はありません。
+:::
+
+先ほど見たように、`single prompt` 検索ではプロンプト内で使用するプロパティを指定できます。
+
+`grouped task` 検索では、使用するプロパティを追加パラメーターとして渡す必要があります。  
+次の例では、生成モデルに提供されたプロンプトをそのまま繰り返すように指示しています。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# GroupedTaskWithProperties"
+  endMarker="# END GroupedTaskWithProperties"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Expected GroupedTaskWithProperties results"
+  endMarker="# END Expected GroupedTaskWithProperties results"
+  language="py"
+/>
+
+</details>
+
+## <i class="fa-solid fa-square-chevron-right"></i> 生成検索パラメーター
+
+### <i class="fa-solid fa-code"></i> モデルのオプション パラメーター
+
+生成モジュールは Large Language Model (LLM) と呼ばれるモデルを使用して、検索結果とプロンプトから出力を生成します。
+
+Weaviate は、プロバイダーが提供する追加のオプション パラメーターを通じてこれらのモデルの挙動を調整できるようにしています。
+
+すべてのパラメーターを網羅することはできませんが、よく使われるパラメーター群を以下に示します。
+
+:::tip パラメーター名はモデルによって異なります
+各モデルで使用されるパラメーター名は異なるため、必ず該当モジュールとモデルのドキュメントを参照してください。
+:::
+
+- `model`: 使用する実際の言語モデルを決定します。  
+- `temperature`, `k`, `p`: モデルの「ランダムさ」の度合いを決定します。一方の極端ではモデルは決定論的に動作し、他方の極端ではより予測不可能（時に一貫性のない）出力を生成します。OpenAI など一部のプロバイダーはこれらの設定のうち 1 つだけを使用することを推奨しています。  
+- `max_tokens`: 生成される出力の最大長を決定します。値が大きいほど、入力長との合計でコンテキスト制限を超える可能性が高くなります。  
+- `xxx_penalty`: 同一トークンが再度出現することや出現回数など、特定の要素をどの程度ペナルティするかを決定します。  
+
+次の例では `generative-openai` モジュールに対してさまざまなパラメーターを指定しています:
+
+```json
+{
+  "classes": [
+    {
+      "class": "JeopardyQuestion",
+      "moduleConfig": {
+        "generative-openai": {
+          "model": "gpt-3.5-turbo",
+          "temperatureProperty": 0.3,
+          "maxTokensProperty": 512,
+          "frequencyPenaltyProperty": 0.1,
+          "presencePenaltyProperty": -0.1
+        }
+      }
+    }
+  ]
+}
+```
+
+まずは、可能であればモデルを含むデフォルト設定を試すことをお勧めします。その上で満足のいく結果が得られない場合には、別のモデルやパラメーター、アプローチを試してみてください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> まとめ
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- 生成検索はデータを返す前に変形することで、データベースをデータ処理のより能動的な参加者へと変えます。  
+- 生成検索を使用するには、Weaviate インスタンスで生成モジュールが有効になっている必要があります。WCD では生成モジュールがデフォルトで有効です。  
+- 生成検索は、検索を実行し、その検索結果とユーザーが提供したプロンプトを用いて生成モデルを呼び出すという 2 段階で構成されます。  
+- `single prompt` 検索は各結果に対して応答を生成しますが、`grouped task` 検索は結果セット全体に対して 1 つの応答を生成します。  
+- 生成検索ではオブジェクト プロパティを使用します。`single prompt` の例ではプロパティがモデルのプロンプトを構成し、`grouped task` でも指定できます。  
+- 生成モジュールは LLM を使用しており、Weaviate はその挙動を調整するためのオプション パラメーターを公開しています。  
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

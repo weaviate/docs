@@ -1,0 +1,106 @@
+---
+title: データのインポート
+description: テキストコレクションへのデータインポート
+---
+
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';  
+
+## <i class="fa-solid fa-code"></i> コード
+
+この例では、映画データをコレクションにインポートします。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BatchImportData"
+  endMarker="# END BatchImportData"
+  language="py"
+/>
+
+コードの処理内容:  
+- ソースデータを読み込み、コレクションを取得します  
+- `batch` オブジェクトを用いたコンテキストマネージャーに入ります  
+- データをループし、各オブジェクトをバッチャーに追加します  
+- インポートエラーがあれば表示します  
+
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+`requests` ライブラリを使用してソース (今回は JSON ファイル) からデータを読み込みます。  
+その後、取り扱いやすいように Pandas DataFrame に変換します。
+
+次に、`client.collections.get` を使ってコレクションオブジェクトを作成し、コレクションへアクセスできるようにします。
+
+### <i class="fa-solid fa-chalkboard"></i> バッチコンテキストマネージャー
+
+`batch` オブジェクトはコンテキストマネージャーで、オブジェクトをバッチャーに追加できます。  
+大量のデータをインポートする際、バッチサイズの管理や送信タイミングの調整を抽象化してくれるため便利です。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Enter context manager"
+  endMarker="# Loop through the data"
+  language="py"
+/>
+
+この例では `.fixed_size()` メソッドでバッチャーを作成し、バッチあたりのオブジェクト数を設定しています。  
+他にも `.rate_limit()` (1 分あたりのオブジェクト数を指定) や `.dynamic()` (インポート中にバッチサイズを自動調整) などのバッチャータイプがあります。
+
+### <i class="fa-solid fa-chalkboard"></i> バッチャーへのデータ追加
+
+#### データ型の変換
+
+データは文字列から、 Weaviate に適した型へ変換されます。  
+例として、`release_date` は datetime オブジェクトへ、`genre_ids` は整数のリストへ変換します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Convert data types"
+  endMarker="# Build the object payload"
+  language="py"
+/>
+
+#### オブジェクトをバッチャーに追加
+
+次にデータをループし、各オブジェクトを `batch.add_object` でバッチャーに追加します。  
+バッチャーは指定されたタイプに従い、バッチを送信します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Build the object payload"
+  endMarker="# Batcher automatically sends batches"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
+
+1 つのバッチには複数のオブジェクトが含まれるため、一部のオブジェクトがインポートに失敗する可能性があります。  
+バッチャーはこれらのエラーを保存します。
+
+エラーを出力して原因を確認し、例外を発生させるなど適切に対処してください。  
+この例ではエラーを単に出力しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Check for failed objects"
+  endMarker="finally"
+  language="py"
+/>
+
+新しいコンテキストマネージャーに入るとエラーリストはクリアされるため、新しいバッチャーを初期化する前にエラー処理を行う必要があります。
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルの生成元
+
+バッチャーがキューを Weaviate に送信すると、オブジェクトはコレクション (今回は映画コレクション) に追加されます。
+
+コレクションにはベクトライザー モジュールが設定されており、ここではベクトルを指定していません。  
+そのため、 Weaviate は指定されたベクトライザーを用いてデータからベクトル埋め込みを生成します。
+
+## 質問・フィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

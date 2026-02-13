@@ -1,0 +1,118 @@
+---
+title: 検索タイプの確認
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!./_snippets/05_review.ts';
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+Weaviate は主に 3 種類の検索タイプ、つまり ベクトル 検索、キーワード 検索、ハイブリッド 検索を提供しています。ここでは、それぞれが何であるか、どのように機能するかを簡単に振り返ります。
+
+### <i class="fa-solid fa-code"></i> コード例
+
+以下のコード例は、[`v3` Weaviate Typescript クライアント](../../../../weaviate/client-libraries/typescript/index.mdx)で実行できます。次のコードで事前設定済みのデモインスタンスに接続し、例を試してみてください。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START connectionCode"
+      endMarker="// END connectionCode"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索
+
+ベクトル検索は、クエリ ベクトル に最も近い ベクトル を持つオブジェクトを見つけます。
+
+各 ベクトル は基になるオブジェクトを数値で表現しているため、ベクトル同士の類似度は意味の類似度と捉えられます。そのため、ベクトル検索は「セマンティック検索」とも呼ばれます。
+
+Weaviate では、次のいずれかの方法で類似した ベクトル を持つオブジェクトを検索できます:
+
+ソースメディア (例: テキストや画像) を使用する場合:
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START nearTextExample"
+      endMarker="// END nearTextExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+ベクトル を直接指定する場合:
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START nearVectorExample"
+      endMarker="// END nearVectorExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+既存の Weaviate オブジェクトを使用する場合:
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START nearObjectExample"
+      endMarker="// END nearObjectExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
+
+キーワード検索は、クエリのキーワード (トークン) に最も関連性の高いキーワード (トークン) を含むオブジェクトを見つけます。関連性は [BM25F アルゴリズム](https://en.wikipedia.org/wiki/Okapi_BM25) によって判断されます。
+
+直感的には、BM25F アルゴリズムは、キーワードがオブジェクト内の各フィールドにどれだけ頻繁に出現するかを、キーワードがデータセット全体でどれだけ一般的かと比較して「関連性」を決定します。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START bm25Example"
+      endMarker="// END bm25Example"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
+
+ハイブリッド検索は、ベクトル検索とキーワード検索の結果を組み合わせます。両方の検索を実行し、その 2 つの検索結果を「融合 (fusion)」アルゴリズムで結合します。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START hybridExample"
+      endMarker="// END hybridExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>

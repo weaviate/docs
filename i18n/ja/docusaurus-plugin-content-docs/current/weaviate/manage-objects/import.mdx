@@ -1,0 +1,558 @@
+---
+title: バッチインポート
+sidebar_position: 15
+image: og/docs/howto.jpg
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
+import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.import-v3.py';
+import PySuppCode from '!!raw-loader!/_includes/code/howto/sample-data.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
+import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.import-v2.ts';
+import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.import.java';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
+import SkipLink from '/src/components/SkipValidationLink'
+
+[バッチ インポート](../tutorials/import.md#to-batch-or-not-to-batch)は、複数のデータオブジェクトとクロス リファレンスを効率的に追加する方法です。
+
+<details>
+  <summary>追加情報</summary>
+
+バルクインポートジョブを作成するには、次の手順に従います。
+
+1. バッチオブジェクトを初期化します。
+1. バッチオブジェクトに項目を追加します。
+1. 最後のバッチが送信（フラッシュ）されることを確認します。
+
+</details>
+
+## 基本インポート
+
+次の例では、`MyCollection` コレクションにオブジェクトを追加します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BasicBatchImportExample"
+      endMarker="# END BasicBatchImportExample"
+      language="py"
+    />
+
+### エラー処理
+
+バッチ インポート中に失敗したオブジェクトやリファレンスは保存され、`batch.failed_objects` と `batch.failed_references` から取得できます。  
+さらに、失敗したオブジェクトとリファレンスの累計は、コンテキストマネージャ内で `batch.number_errors` から取得できます。  
+このカウンターを利用して、失敗したオブジェクトやリファレンスを調査するためにインポート処理を停止できます。
+
+Python クライアントのエラー処理についての詳細は、[リファレンスページ](/weaviate/client-libraries/python)をご覧ください。
+
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START BasicBatchImportExample"
+      endMarker="# END BasicBatchImportExample"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## gRPC API の使用
+
+:::info `v1.23` で追加されました。
+:::
+
+[gRPC API](../api/index.mdx) は REST API より高速です。インポート速度を向上させるために gRPC API をご利用ください。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+
+Python クライアントはデフォルトで gRPC を使用します。  
+
+<br/>レガシー Python クライアントは gRPC をサポートしていません。
+
+</TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+TypeScript クライアント v3 はデフォルトで gRPC を使用します。  
+
+<br/>レガシー TypeScript クライアントは gRPC をサポートしていません。
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+Java クライアントで gRPC API を使用するには、クライアント接続コードに `setGRPCHost` フィールドを追加してください。暗号化接続を使用する場合は `setGRPCSecured` を更新します。<br/><br/>
+
+```java
+Config config = new Config("http", "localhost:8080");
+config.setGRPCSecured(false);
+config.setGRPCHost("localhost:50051");
+```
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+Go クライアントで gRPC API を使用するには、クライアント接続コードに `GrpcConfig` フィールドを追加してください。暗号化接続を使用する場合は `Secured` を更新します。<br/><br/>
+
+```java
+cfg := weaviate.Config{
+  Host:   fmt.Sprintf("localhost:%v", "8080"),
+  Scheme: "http",
+  // highlight-start
+	 GrpcConfig: &grpc.Config{
+      Host: "localhost:50051",
+      Secured: false,
+	 },
+  // highlight-end
+}
+
+client, err := weaviate.NewClient(cfg)
+if err != nil {
+  require.Nil(t, err)
+  }
+```
+  </TabItem>
+  <TabItem value="spark" label="Spark">
+
+[Spark コネクター](https://github.com/weaviate/spark-connector) で gRPC API を使用するには、クライアント接続コードに `grpc:host` フィールドを追加してください。暗号化接続を使用する場合は `grpc:secured` を更新します。<br/><br/>
+
+```java
+  df.write
+      .format("io.weaviate.spark.Weaviate")
+      .option("scheme", "http")
+      .option("host", "localhost:8080")
+      // highlight-start
+      .option("grpc:host", "localhost:50051")
+      .option("grpc:secured", "false")
+      // highlight-start
+      .option("className", className)
+      .mode("append")
+      .save()
+```
+
+  </TabItem>
+</Tabs>
+
+
+
+## ID 値の指定
+
+Weaviate は各オブジェクトに対して UUID を生成します。オブジェクト ID は一意である必要があります。オブジェクト ID を自分で設定する場合は、重複 ID を防ぐために次の決定論的 UUID メソッドのいずれかを使用してください:
+
+- `generate_uuid5` (Python)
+- `generateUuid5` (TypeScript)
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BatchImportWithIDExample"
+      endMarker="# END BatchImportWithIDExample"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START BatchImportWithIDExample"
+      endMarker="# END BatchImportWithIDExample"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## ベクトルの指定
+
+`vector` プロパティを使用して、各オブジェクトにベクトルを指定します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BatchImportWithVectorExample"
+      endMarker="# END BatchImportWithVectorExample"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START BatchImportWithVectorExample"
+      endMarker="# END BatchImportWithVectorExample"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+
+## 名前付き ベクトル の指定
+
+:::info `v1.24` で追加
+:::
+
+オブジェクトを作成する際、（[コレクションで設定されている場合](../manage-collections/vector-config.mdx#define-named-vectors)）名前付き ベクトル を指定できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BatchImportWithNamedVectors"
+      endMarker="# END BatchImportWithNamedVectors"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START BatchImportWithNamedVectors"
+      endMarker="# END BatchImportWithNamedVectors"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BatchImportWithNamedVectors"
+      endMarker="// END BatchImportWithNamedVectors"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START BatchImportWithNamedVectors"
+      endMarker="// END BatchImportWithNamedVectors"
+      language="tsv2"
+    />
+  </TabItem>
+
+</Tabs>
+
+## 参照付きインポート
+
+クロスリファレンスを介して、あるオブジェクトから別のオブジェクトへリンクをまとめて作成できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# BatchImportWithRefExample"
+      endMarker="# END BatchImportWithRefExample"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# BatchImportWithRefExample"
+      endMarker="# END BatchImportWithRefExample"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// BatchImportWithRefExample"
+      endMarker="// END BatchImportWithRefExample"
+      language="tsv2"
+    />
+  </TabItem>
+</Tabs>
+
+## Python 固有の考慮事項
+
+Python クライアントには、インポート速度を最適化するための組み込みバッチ処理メソッドがあります。詳細はクライアントドキュメントをご覧ください。
+
+<!-- TODO[g-despot]: Add link to external Python references once created for "Python client `v4`" -->
+- [Python クライアント `v4`](../client-libraries/python/index.mdx)
+
+### 非同期 Python クライアントとバッチ処理
+
+現在、[非同期 Python クライアントはバッチ処理をサポートしていません](../client-libraries/python/async.md#bulk-data-insertion)。バッチ処理を使用する場合は、同期 Python クライアントをご利用ください。
+
+## 大きなファイルからのストリーミング処理
+
+データセットが大きい場合、メモリ不足を避けるためにインポートをストリーミングすることを検討してください。
+
+サンプルコードを試すには、サンプルデータをダウンロードし、サンプル入力ファイルを作成します。
+
+<details>
+  <summary>サンプルデータを取得する</summary>
+
+<Tabs groupId="languages">
+  <TabItem value="pycsv" label="Python">
+  <FilteredTextBlock
+    text={PySuppCode}
+    startMarker="# START GetData"
+    endMarker="# END GetData"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="tscsv" label="TypeScript">
+  <FilteredTextBlock
+    text={TsSuppCode}
+    startMarker="// START GetData"
+    endMarker="// END GetData"
+    language="py"
+  />
+  </TabItem>
+</Tabs>
+
+</details>
+
+<details>
+  <summary>JSON ファイルをストリーミングするサンプルコード</summary>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START JSON streaming"
+    endMarker="# END JSON streaming"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START JSON streaming"
+    endMarker="# END JSON streaming"
+    language="pyv3"
+  />
+  </TabItem>
+  <TabItem value="ts" label="TypeScript">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START JSON streaming"
+    endMarker="// END JSON streaming"
+    language="ts"
+  />
+  </TabItem>
+</Tabs>
+
+</details>
+
+
+<details>
+  <summary>CSV ファイルをストリーミングするサンプルコード</summary>
+
+<Tabs groupId="languages">
+  <TabItem value="pycsv" label="Python Client v4">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START CSV streaming"
+    endMarker="# END CSV streaming"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="py3csv" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START CSV streaming"
+    endMarker="# END CSV streaming"
+    language="pyv3"
+  />
+  </TabItem>
+  <TabItem value="ts" label="TypeScript">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START CSV streaming"
+    endMarker="// END CSV streaming"
+    language="ts"
+  />
+  </TabItem>
+</Tabs>
+
+</details>
+
+
+
+## バッチ ベクトル化
+
+:::info `v1.25` で追加されました。
+:::
+
+import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
+
+<BatchVectorizationOverview />
+
+## モデルプロバイダーの設定
+
+各モデルプロバイダーごとに、1 分あたりのリクエスト数や 1 分あたりのトークン数など、バッチ ベクトル化の設定を行えます。以下の例では、 Cohere と OpenAI の統合に対してレート制限を設定し、両方の API キーを指定しています。
+
+プロバイダーごとに利用できる設定項目が異なる点にご注意ください。
+
+ <Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BatchVectorizationClientModify"
+      endMarker="# END BatchVectorizationClientModify"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## 追加の考慮事項
+
+データのインポートは多くのリソースを消費します。大量のデータをインポートする際は、次の点を考慮してください。
+
+### 非同期インポート
+
+:::caution Experimental
+`v1.22` から利用可能です。これは試験的な機能です。ご注意ください。
+:::
+
+インポート速度を最大化するには、[非同期インデックス作成](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing)を有効化してください。
+
+非同期インデックス作成を有効にするには、 Weaviate の設定ファイルで `ASYNC_INDEXING` 環境変数を `true` に設定します。
+
+```yaml
+weaviate:
+  image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+  ...
+  environment:
+    ASYNC_INDEXING: 'true'
+  ...
+```
+
+### 新しいテナントの自動追加
+
+import AutoTenant from '/_includes/auto-tenant.mdx';
+
+<AutoTenant/>
+
+詳細は [auto-tenant](/weaviate/manage-collections/multi-tenancy#automatically-add-new-tenants) をご覧ください。
+
+
+## 関連ページ
+
+- [Weaviate に接続する](/weaviate/connections/index.mdx)
+- [ハウツー: オブジェクトを作成する](./create.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/batch">参照: REST - /v1/batch</SkipLink>
+- [設定: インデックス](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing)
+
+## ご質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

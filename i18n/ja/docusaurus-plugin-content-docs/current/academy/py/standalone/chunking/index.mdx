@@ -1,0 +1,58 @@
+---
+title: 長文のチャンク化
+description: "Python で Weaviate スタンドアロンを用いたデータのチャンク化によるストレージとパフォーマンスの最適化を探求します。"
+sidebar_position: 101  # Like a subject number (e.g. CS101)
+---
+
+## <i class="fa-solid fa-chalkboard-user"></i> ユニット概要
+
+import PreviewUnit from '../../../_snippets/preview.mdx'
+
+<PreviewUnit />
+
+import ReactPlayer from 'react-player/lazy'
+
+<!-- <ReactPlayer className="react-player" url='https://youtu.be/FU7l5pr2FmU' controls='true'/> -->
+<br/>
+
+<!-- :::warning TODO
+Intro video here
+::: -->
+
+<!-- Provide context for this course, in addition to the concrete learning goals and outcomes. Why would someone want to do this unit? -->
+
+チャンク化は、ベクトル データベースと大型言語モデルの世界において重要な概念です。これまでのユニットでは比較的短いテキストを扱ってきましたが、実際のテキスト データはもっと長い場合が多いです。
+
+記事や書き起こし、さらには書籍の長さを考えてみてください。数語どころか、数千語、数万語、場合によってはそれ以上になることもあります。たとえば *The Lord of the Rings* は 500,000 語以上にもなります。
+
+チャンク化とは、このようなテキストをより小さなテキスト片、すなわち「チャンク」に分割してからベクトル データベースに保存したり、言語モデルへ渡したりすることです。
+
+一見すると、文や段落をどこで分割するか程度の些細な判断に思えるかもしれません。しかし、チャンク化の方法によってベクトル データベースの検索性能・挙動や、言語モデルの出力が大きく変わる可能性があります。本ユニットでは、ユーザーの視点からこの一見シンプルでありながら繊細なトピックを扱います。
+
+まず、チャンク化とは何か、なぜ使用するのかを説明します。その後、さまざまなチャンク化手法を紹介し、チャンク化戦略を決める際の重要な検討事項と、推奨される出発点について議論します。
+
+このユニットを終える頃には、チャンク化の基本を十分に理解し、実際のニーズに基づいて堅実なチャンク化戦略を実装できるようになります。
+
+### <i class="fa-solid fa-clipboard-list-check"></i> 前提条件
+
+- (**Required**) `weaviate-client` がインストールされた Python (3) 環境
+- (**Required**) [101A Weaviate Academy Preparation](../../zero_to_mvp/setup.mdx) を完了していること
+- (*Recommended*) [Hello, Weaviate](../../zero_to_mvp/101_hello_weaviate/index.mdx) を完了していること
+- (*Recommended*) [Queries 1](../../zero_to_mvp/102_queries_1/index.mdx) を完了していること
+- (*Recommended*) [Schema and Imports](../../zero_to_mvp/103_schema_and_imports/index.mdx) を完了していること
+
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
+
+import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
+
+<LearningGoalsExp />
+
+import LearningGoals from '/src/components/Academy/learningGoals.jsx';
+
+<LearningGoals unitName="chunking"/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

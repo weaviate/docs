@@ -1,0 +1,67 @@
+---
+title: バイナリ量子化
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/200_bq.py';
+
+
+[バイナリ量子化](/weaviate/concepts/vector-quantization#binary-quantization) (BQ) は、ベクトルを圧縮するための手法です。Weaviate では、メモリ上の [HNSW インデックス](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) やディスクベースの [flat インデックス](/weaviate/concepts/indexing/vector-index.md#flat-index) のサイズを削減するために利用できます。
+
+HNSW では、BQ によりメモリフットプリントを縮小できるため、パフォーマンス向上とリソース要件およびコスト削減が期待できます。flat インデックスの場合、ディスク上のインデックスサイズを小さくできるため、パフォーマンスが向上する可能性があります。
+
+## <i class="fa-solid fa-chalkboard"></i> バイナリ量子化とは
+
+バイナリ量子化は、各次元を 1 ビット（0 または 1）に縮小することでベクトルを圧縮します。
+
+言い換えると、 n 個の浮動小数点数で構成される n 次元ベクトルを、 n 個のビットで構成される n 次元ベクトルへと圧縮します。
+
+これにより、1 次元あたり 32 ビットから 1 ビットへと 32 倍のサイズ削減が可能になります。
+
+### <i class="fa-solid fa-chalkboard"></i> モデルの適合性
+
+BQ は比較的シンプルなアルゴリズムですが、条件が合えば高い性能を発揮します。特に高次元ベクトルに適しており、BQ を適用しても多くの情報を保持できます。
+
+BQ を使用する際は、バイナリ量子化向けに設計されている、またはパフォーマンスが確認されているベクトルを推奨します。経験的には、Cohere の V3 モデル（例: `embed-multilingual-v3.0` や `embed-english-v3.0`）や、OpenAI の `ada-002`、さらに大規模な `text-embedding-3` モデルで良好なリコールを確認しています。
+
+### <i class="fa-solid fa-chalkboard"></i> 損失性
+
+BQ は損失のある圧縮手法であり、元の浮動小数点数を量子化します。
+
+Weaviate では、インデックスからベクトルをオーバーフェッチし、非圧縮空間で再スコアリングすることでこの損失を補います。実際には、これにより BQ の損失を十分に補正できることを確認しています。
+
+## <i class="fa-solid fa-code"></i> BQ を設定する
+
+以下の例では、デフォルト設定でバイナリ量子化 (BQ) を有効にしたコレクションを作成します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BQBasicConfig"
+  endMarker="# END BQBasicConfig"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+このコードにより、デフォルト設定で BQ を有効にしたコレクションが作成されます。
+
+BQ ではトレーニングセットを用意する必要がないため、圧縮は即座に開始されます。
+
+## <i class="fa-solid fa-code"></i> BQ をカスタマイズする
+
+BQ にはいくつか設定可能なパラメーターがあります。重要なものとして `rescore_limit` があり、リスコアリングフェーズを開始する前にインデックスから取得するベクトルの最小数を指定します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BQCustomConfig"
+  endMarker="# END BQCustomConfig"
+  language="py"
+/>
+
+## ご質問・フィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

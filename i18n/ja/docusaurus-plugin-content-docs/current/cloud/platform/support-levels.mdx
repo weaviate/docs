@@ -1,0 +1,156 @@
+---
+title: サポートプラン
+sidebar_position: 5
+description: "さまざまなサービスレベルに応じた Weaviate Cloud ユーザー向けのサポート階層とプラン。"
+image: og/wcd/user_guides.jpg
+---
+
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) では複数レベルのサポートを提供しています。ニーズに合ったサポートプランを自由に選択できます。
+
+## サポートプランの変更
+
+サポートプランを更新するには、次の手順に従ってください。
+
+import Link from '@docusaurus/Link';  
+import EditSupportPlan from '/docs/cloud/img/weaviate-cloud-edit-support-plan.png';  
+import SelectSupportPlan from '/docs/cloud/img/weaviate-cloud-select-support-plan.png';  
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link> を開きます。
+      </li>
+      <li>
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
+          クラスターを選択
+        </Link>{' '}
+        し、<code>Support Plan</code> フィールドを探します。
+      </li>
+      <li>
+        <code>Edit</code> ボタン (<span class="callout">1</span>) をクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={EditSupportPlan} alt="Edit support plan" />
+      </div>
+      <div class="card__body">Edit support plan</div>
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        <code>dropdown menu</code> (<span class="callout">2</span>) からサポートプランを選択します。
+      </li>
+      <li>
+        <code>Change plan</code> ボタン (<span class="callout">3</span>) をクリックします。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={SelectSupportPlan} alt="Select support plan" />
+      </div>
+      <div class="card__body">Select support plan</div>
+    </div>
+  </div>
+</div>
+<br />
+
+## 利用可能なサポートプラン
+
+Sandbox 環境とセルフホストクラスターは有料サポートの対象外です。
+
+** Serverless Cloud ** および ** Enterprise Cloud ** クラスターでは有料サポートをご利用いただけます。
+
+| Cluster Type                         | Standard | Professional | Business Critical |
+| ------------------------------------ | -------- | ------------ | ----------------- |
+| Serverless _(高可用性)_              | ✅       | ✅           | ✅                |
+| Enterprise _(高可用性)_              | ✅       | ✅           | ✅                |
+| Serverless _(非高可用性)_            | ✅       | ❌           | ❌                |
+| Enterprise _(非高可用性)_            | ✅       | ❌           | ❌                |
+| Sandbox                              | N/A      | N/A          | N/A               |
+
+### Standard サポート
+
+- Standard サポートはメールベースで、営業時間内にご利用いただけます。  
+- 監視: Weaviate Cloud チームがクラスターを監視します。  
+- 重大度に応じてインシデントの対応時間が決まります:
+
+| 重大度        | 基準                                                                                                                       | 対応時間        |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------- | :------------- |
+| 1 - Critical | 重大で即時対応が必要な問題。<br />大規模な障害や停止を引き起こしています。                                                  | 1 営業日        |
+| 2 - High     | サービス機能やパフォーマンスに影響を与える可能性のある高優先度の問題。<br />一部のユーザーに影響します。                      | 2 営業日        |
+| 3 - Medium   | 限定されたユーザーまたはユースケースに影響する中程度の問題。<br />サービス機能やパフォーマンスに影響を与えます。              | 3 営業日        |
+| 4 - Low      | 個々のユーザーに軽微な不便を引き起こす低優先度の問題。                                                                      | 5 営業日        |
+
+### Professional サポート
+
+- Professional サポートはメールベースで、24 時間 365 日ご利用いただけます。  
+- 重大度 1 と 重大度 2 のインシデント対応にはフォローアップの電話連絡が含まれます。  
+- 監視: Weaviate Cloud チームがクラスターを監視します。  
+- 重大度に応じてインシデントの対応時間が決まります:
+
+| 重大度        | 基準                                                                                                                       | 対応時間        |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------- | :-------------- |
+| 1 - Critical | 重大で即時対応が必要な問題。<br />大規模な障害や停止を引き起こしています。                                                  | 4 時間          |
+| 2 - High     | サービス機能やパフォーマンスに影響を与える可能性のある高優先度の問題。<br />一部のユーザーに影響します。                      | 8 時間          |
+| 3 - Medium   | 限定されたユーザーまたはユースケースに影響する中程度の問題。<br />サービス機能やパフォーマンスに影響を与えます。              | 1 営業日        |
+| 4 - Low      | 個々のユーザーに軽微な不便を引き起こす低優先度の問題。                                                                      | 2 営業日        |
+
+詳細については、サポート契約をご参照ください。
+
+### Business Critical サポート
+
+- Business Critical サポートはメールベースで、24 時間 365 日ご利用いただけます。  
+- エスカレーション用の電話ホットラインを 24 時間 365 日ご利用いただけます。  
+- 重大度 1、重大度 2、重大度 3 のインシデント対応にはフォローアップの電話連絡が含まれます。  
+- 監視: Weaviate Cloud チームがクラスターを監視します。  
+- 重大度に応じてインシデントの対応時間が決まります:
+
+| 重大度        | 基準                                                                                                                       | 対応時間        |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------- | :------------- |
+| 1 - Critical | 重大で即時対応が必要な問題。<br />大規模な障害や停止を引き起こしています。                                                  | 1 時間          |
+| 2 - High     | サービス機能やパフォーマンスに影響を与える可能性のある高優先度の問題。<br />一部のユーザーに影響します。                      | 4 時間          |
+| 3 - Medium   | 限定されたユーザーまたはユースケースに影響する中程度の問題。<br />サービス機能やパフォーマンスに影響を与えます。              | 8 時間          |
+| 4 - Low      | 個々のユーザーに軽微な不便を引き起こす低優先度の問題。                                                                      | 1 営業日        |
+
+詳細については、サポート契約をご参照ください。
+
+### サンドボックス
+
+サンドボックス環境は有償サポートの対象外です。サンドボックス インスタンスのサポートが必要な場合は、次のリソースをご利用ください。
+
+- [コミュニティ フォーラム](https://forum.weaviate.io)
+- [Slack](https://weaviate.io/slack)
+
+## 料金
+
+サーバーレス クラスターは月額で課金されます。クラスターの月額料金は、リソース使用量に応じて決まります。ご契約中のサポート プランも月額料金に影響しますが、サポートの問い合わせ件数ごとに課金されることはありません。
+
+各サポート プランには課金レートがあります。 Weaviate Cloud はクラスター内のオブジェクト数をカウントし、その数にプランのレートを掛けます。圧縮が有効な場合は、この数を調整します。この結果が使用量に基づく料金になります。
+
+高可用性クラスター (HA) をご利用の場合は、追加リソースを考慮して使用量料金に 3 倍を掛けた金額になります。
+
+各サポート プランには月額最低料金が設定されています。使用量料金が月額最低料金を下回る場合、 Weaviate は月額最低料金を請求します。使用量料金がプランの最低料金を上回る場合は、クラスターの使用量に応じて請求されます。
+
+使用量とサポート プランの組み合わせごとの料金を見積もるには、[料金計算ツール](https://weaviate.io/services/serverless)をご覧ください。
+
+## サポートとフィードバック
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+
+import CustomScriptLoader from '/src/components/scriptSwitch';
+
+<CustomScriptLoader />
+

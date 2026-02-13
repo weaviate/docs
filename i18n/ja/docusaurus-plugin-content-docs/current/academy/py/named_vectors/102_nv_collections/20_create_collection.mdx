@@ -1,0 +1,64 @@
+---
+title: コレクションの作成
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';
+
+名前付き ベクトル を使用するには、コレクションに名前付き ベクトル 定義を設定する必要があります。
+
+## <i class="fa-solid fa-code"></i> コード
+
+次の例では、複数の名前付き ベクトル 定義を含む映画データ用のコレクションを作成します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# CreateMovieCollection"
+  endMarker="# END CreateMovieCollection"
+  language="py"
+/>
+
+## <i class="fa-solid fa-chalkboard"></i> コード解説
+
+ここでの主な違いは、`NamedVectors` クラスを使用してベクトライザー設定を定義している点です。コードを詳しく見ていきましょう。
+
+:::tip Revision
+このコードは [multimodal](../../starter_multimodal_data/102_mm_collections/20_create_collection.mdx) の例を基にしています。詳細についてはその例を参照してください。
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> 名前付き ベクトル 設定
+
+この定義により、各オブジェクトは `title`、`overview`、`poster_title` の 3 つの ベクトル で表現されます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# NamedVectorConfig"
+  endMarker="# END NamedVectorConfig"
+  language="py"
+/>
+
+#### `title`
+
+この ベクトル 表現は `title` プロパティ（`source_properties`）から生成されます。`text2vec-openai` モジュールを使用してベクトル化します。
+
+これを利用して、タイトルの類似性で映画を検索できます。
+
+#### `overview`
+
+この ベクトル 表現は `overview` プロパティに基づいています。そのため、ストーリーや主要なアイデアの類似性で映画を検索できます。
+
+#### `poster_title`
+
+この ベクトル 表現は `title` と `poster` のプロパティを組み合わせて生成されます。`multi2vec-clip` モジュールを使用してベクトル化します。
+
+ベクトル の重みの大部分（90%）が `poster` プロパティに、残り（10%）が `title` プロパティに割り当てられている点に注意してください。つまり、この ベクトル 表現はタイトルよりポスターの影響を強く受けます。
+
+マルチモーダル ベクトライザー を使用しているため、任意の画像やテキストで、タイトルやポスターとの類似性を基に映画を検索できます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

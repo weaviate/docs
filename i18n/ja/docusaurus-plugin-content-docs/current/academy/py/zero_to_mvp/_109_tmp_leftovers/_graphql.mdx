@@ -1,0 +1,159 @@
+---
+title: GraphQL の詳細
+sidebar_position: 99
+---
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+## <i class="fa-solid fa-square-chevron-right"></i> GraphQL 概要
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+ここでは、なぜ Weaviate で GraphQL を使用するのか、そして GraphQL を使用する際に留意すべき点について少し立ち止まって説明します。
+
+### <i class="fa-solid fa-chalkboard"></i> クエリ構造
+
+GraphQL の大きな利点の 1 つは、取得したいデータをユーザーが正確に指定できる点です。つまり、必要なデータだけをリクエストできるため、データの過剰取得や不足取得を抑えられます。
+
+それでは、Weaviate における GraphQL の基本構文を確認しましょう。
+
+```graphql
+{
+  <Function> {
+    <Class> {
+      <properties>
+    }
+  }
+}
+```
+
+Weaviate の GraphQL クエリには複数のコンポーネントが含まれていることが分かります。Wikipedia 記事オブジェクトのデータベースを問い合わせる場合、上記クエリの各フィールドは次のようになります。
+
+* `<Function>`: 使用したい関数。例: `Get`、`Aggregate`、`Explore`
+* `<Class>`: データを取得したいクラス。例: `WikiArticle`
+* `<properties>`: 取得したいプロパティ。例: `title`、`wiki_summary`
+
+各フィールドには `limit` で返却オブジェクト数を制限したり、`where` でフィルターを適用したりといった引数も渡せます。
+
+GraphQL クエリにおけるデータフローは、次の図のように概念化できます。
+
+![](https://kinsta.com/wp-content/uploads/2022/09/graphql.png)
+
+最初はこの詳細さが難しく感じるかもしれません。しかしこれは強力な機能であり、きわめてカスタマイズ性の高いクエリを構築し、必要なデータだけを取得できます。
+
+さらに、REST API では複数回のリクエストが必要だった処理を、GraphQL では 1 回のクエリで実現できるため、非常に効率的です。
+
+### <i class="fa-solid fa-chalkboard"></i> クエリ構文
+
+ほとんどの場合、GraphQL はフォーマットに関して非常に柔軟で、[空白](https://spec.graphql.org/October2021/#sec-White-Space) や [カンマ](https://spec.graphql.org/October2021/#sec-Insignificant-Commas) は通常無視されます。例えば、次のクエリはすべて同じ意味になります。
+
+このクエリ:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (limit: 1) {
+      question
+      answer
+    }
+  }
+}
+```
+
+次のクエリと同じです:
+
+```graphql
+{Get{JeopardyQuestion(limit:1){question answer}}}
+```
+
+さらに次のようにも書けます（カンマに注目してください）:
+
+```graphql
+{Get{JeopardyQuestion(limit:1){question,answer}}}
+```
+
+ただし重要な点として、GraphQL の名前は [大文字小文字を区別します](https://spec.graphql.org/October2021/#sec-Names)。そのため `Get` や `JeopardyQuestion` は、`get` や `jeopardyquestion` とは別物になります。
+
+<Quiz questions={graphQLSyntax} />
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> GraphQL arguments
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+In GraphQL, we can provide further `arguments` to provide further restrictions to our query. In fact, you have already seen in it action with the `limit` argument above.
+
+### <i class="fa-solid fa-chalkboard"></i> Argument syntax in GraphQL
+
+Arguments are provided in GraphQL as a comma-separated list of key-value pairs, enclosed in parentheses. Recall the following example for the `Get` function:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (limit: 1) {
+      question
+      answer
+    }
+  }
+}
+```
+
+This specifies a key `limit` with value `1` to specify the maximum number of objects to be returned.
+
+### <i class="fa-solid fa-chalkboard"></i> Uses of arguments
+
+Arguments are used in Weaviate to provide additional search operators and filters. It can be used to:
+
+- Limit the number of results
+- Specify a search vector
+- Prompt generative search results
+- Add filters
+- Sort the output
+- And more
+
+We'll take a closer look at the arguments in greater detail in later sections.
+
+<Quiz questions={varName} /> -->
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+各セクションには 1 分程度の短いリキャップ／復習ビデオを用意する予定です。
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
+
+**構想中のセクションです。** ユーザーが自由形式の入力を行い、類似度スコアと当社の定義を返すようにしたいと考えています。
+
+:::info TODO
+あなた自身の文章で XXX を説明できますか？
+
+Input box -> ベクトライザー -> model answer と比較
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+:::info
+要約を追加
+:::
+
+import Quiz from '/src/components/Academy/quiz.js'
+const graphQLSyntax = [{
+  questionText: 'GraphQL について正しいものはどれですか？',
+  answerOptions: [
+    {
+      answerText: '大文字小文字を区別しない。',
+      isCorrect: false,
+      feedback: 'GraphQL は大文字小文字を区別します。',
+    },
+    {
+      answerText: '空白は通常無視される。',
+      isCorrect: true,
+      feedback: 'これはカンマについても同様です。',
+    },
+    {
+      answerText: 'GraphQL は常に同じフィールドをレスポンスに含める。',
+      isCorrect: false,
+      feedback: '以前の Get クエリで確認したとおり、GraphQL では返却フィールドを指定する必要があります。',
+    },
+  ]
+}];

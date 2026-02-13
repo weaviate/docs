@@ -1,0 +1,67 @@
+---
+title: 設定
+description: "コレクション、データタイプ、距離、および最適化設定を網羅した設定リファレンスガイド。"
+image: og/docs/configuration.jpg
+hide_table_of_contents: true
+---
+
+Weaviate の主要な概念と設定を理解するために、以下のリファレンスガイドを参照してください。これらのガイドでは、コレクション定義、データタイプ、距離メトリクス、環境変数などを扱い、Weaviate のデプロイを最適化するのに役立ちます。
+
+import CardsSection from "/src/components/CardsSection";
+
+export const mainReferencesData = [
+  {
+    title: "Collection definition",
+    description:
+      "An overview of all top-level collection parameters and concepts.",
+    link: "/weaviate/config-refs/collections",
+    icon: "fas fa-cube",
+  },
+  {
+    title: "Vector Index",
+    description:
+      "Tune HNSW, Flat, or Dynamic indexes to balance search speed and recall.",
+    link: "/weaviate/config-refs/indexing/vector-index",
+    icon: "fas fa-sitemap",
+  },
+  {
+    title: "Inverted Index",
+    description:
+      "Optimize filtering and keyword search with BM25, stopwords, and other settings.",
+    link: "/weaviate/config-refs/indexing/inverted-index",
+    icon: "fas fa-filter",
+  },
+  {
+    title: "Data Types",
+    description:
+      "Reference for supported data types and their handling in Weaviate.",
+    link: "/weaviate/config-refs/datatypes",
+    icon: "fas fa-list-ul",
+  },
+  {
+    title: "Distance Metrics",
+    description:
+      "Learn about the distance metrics used for similarity calculations.",
+    link: "/weaviate/config-refs/distances",
+    icon: "fas fa-ruler",
+  },
+  {
+    title: "Environment Variables",
+    description:
+      "Learn about the environment variables used for configuration.",
+    link: "/deploy/configuration/env-vars",
+    icon: "fas fa-gear",
+  },
+
+];
+
+<br />
+<CardsSection items={mainReferencesData} />
+<br />
+
+:::info Deployment documentation
+
+セキュリティ、バックアップ、レプリケーション、クラスター情報、詳細設定などのデプロイ関連トピックについては、[デプロイメントドキュメント](/docs/deploy/configuration/index.mdx) を参照してください。
+
+:::
+

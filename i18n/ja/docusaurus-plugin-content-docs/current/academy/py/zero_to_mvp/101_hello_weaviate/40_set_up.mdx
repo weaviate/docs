@@ -1,0 +1,207 @@
+---
+title: データベースとクライアントのセットアップ
+description: 迅速かつ効率的にデータ検索を行うための Weaviate のセットアップ方法を学びます。
+sidebar_position: 40
+---
+
+import registerImg from '../../../../cloud/img/register.png';
+import WCDcreate from '../../../../cloud/img/wcs-create.png';
+import WCDcreationProgress from '../../../../cloud/img/wcs-creation-progress.png';
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/PgHCLcqfe10' controls='true' />
+<br/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate を実行するオプション
+
+[Weaviate Cloud ( WCD )](https://console.weaviate.cloud/) は、Weaviate を代わりに実行してくれるマネージドサービスです。Docker、Kubernetes、または Embedded Weaviate を使用して、ご自身で Weaviate インスタンスを管理することもできます。
+
+どのような方法で Weaviate を実行しても、基盤となるコードは同一です。ただし、運用面でいくつか注意すべき違いがあります。
+
+### <i class="fa-solid fa-chalkboard"></i> WCD ( 推奨 )
+
+[Weaviate Cloud ( WCD )](https://console.weaviate.cloud/) は、ユーザー側で一切のメンテナンスが不要なマネージド SaaS サービスです。Weaviate ( 会社 ) によって管理されています ( ソフトウェア自体が自律的では... *まだ* ありません )。WCD は、新しい Weaviate インスタンスを作成する最速の方法であり、ユーザーの手間が最も少なくて済みます。
+
+WCD の Weaviate インスタンスはあらかじめ設定されており、いくつかの Weaviate モジュールがデフォルトで含まれています。また、ユーザー認証をネイティブにサポートしています。
+
+WCD には無料の「サンドボックス」ティアがあります。WCD サンドボックスは、本コースで推奨する Weaviate の実行方法です。
+
+### <i class="fa-solid fa-chalkboard"></i> Docker と Kubernetes
+
+コンテナ化ソリューションである [Docker](https://docs.docker.com/) や [Kubernetes](https://kubernetes.io/docs/home/) を使用して Weaviate インスタンスを実行することもできます。
+
+自己管理インスタンスでも WCD と同じ Weaviate コードベースが利用できますが、設定やデプロイをすべて自分で管理する必要があります。
+
+本コースでは自己管理インスタンスについては扱いません。Docker と Kubernetes については、今後のコースユニットで取り上げる予定です。
+
+これらのソリューションに詳しく、今すぐ Weaviate をインストールしたい場合は、[Docker-Compose](/deploy/installation-guides/docker-installation.md) または [Kubernetes](/deploy/installation-guides/k8s-installation.md) のドキュメントをご覧ください。
+
+### <i class="fa-solid fa-chalkboard"></i> Embedded Weaviate
+
+実験的機能として [Embedded Weaviate](/deploy/installation-guides/embedded.md) があります。クライアントライブラリから直接 Weaviate データベースをインスタンス化できます。
+
+現在、Embedded Weaviate は評価目的でのみのご利用を推奨しています。
+
+## <i class="fa-solid fa-square-chevron-right"></i> WCD で始める
+
+### <i class="fa-solid fa-code"></i> WCD にサインイン
+
+1. WCD にアクセスするには、[Weaviate Cloud コンソール](https://console.weaviate.cloud) に移動します。  
+1. WCD アカウントをお持ちでない場合は、「Register」ボタンをクリックして新しいアカウントを作成します。  
+1. 「Sign in with the Weaviate Cloud」をクリックし、WCD のユーザー名とパスワードでサインインします。  
+
+### <i class="fa-solid fa-code"></i> Weaviate クラスターを作成
+
+新しい Weaviate クラスターを作成するには、「Create cluster」ボタンをクリックします。
+
+Create a Cluster ページでは、次の設定を行います。
+
+1. **Free sandbox** プランを選択します。  
+1. *cluster name* を入力します。サンドボックスの URL は cluster name を基にして作成され、WCD が一意性を保つためサフィックスを付与します。  
+1. `Enable Authentication?` を `YES` に設定します。  
+1. **Create** を押してサンドボックス インスタンスを作成します。サンドボックスは一定期間後に期限切れになる点にご注意ください。  
+
+<img src={WCDcreate} width="100%" alt="Create instance"/>
+
+これで新しいインスタンスの作成プロセスが始まります。WCD はサンドボックスの構築中、進行状況を表示します。
+
+<img src={WCDcreationProgress} width="100%" alt="Creation in progress"/>
+
+インスタンスの作成には 1～2 分ほどかかります。完了すると、サンドボックスの横にチェックマーク (✔️) が表示されます。
+
+<details>
+  <summary>サンドボックスの有効期限とオプション</summary>
+
+import SandBoxExpiry from '/_includes/sandbox.expiry.mdx';
+
+<SandBoxExpiry/>
+
+</details>
+
+サンドボックスを操作する方法はいくつかあります。
+
+- [クライアントライブラリー](/weaviate/client-libraries/index.mdx)
+- [RESTful API](/weaviate/api/rest)
+- [GraphQL API](/weaviate/api/index.mdx)
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate クライアントのインストール
+
+:::info Academy material in Python
+Weaviate Academy ユニットの初期リリースでは、教材は Python の例を中心に作成されています。<br/><br/>
+現在、TypeScript を皮切りに他のクライアント言語の例を追加中です。教材の充実まで今しばらくお待ちください。
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> 利用可能なクライアント
+
+現在、Weaviate クライアントは次の言語で提供されています。
+
+- <i class="fa-brands fa-python"></i> Python
+- <i class="fa-brands fa-js"></i> TypeScript
+- <i class="fa-brands fa-java"></i> Java
+- <i class="fa-brands fa-golang"></i> Go
+
+### <i class="fa-solid fa-chalkboard"></i> クライアントの機能
+
+import ClientCapabilitiesOverview from '/_includes/client.capabilities.mdx'
+
+<ClientCapabilitiesOverview />
+
+### <i class="fa-solid fa-code"></i> インストール
+
+以下の手順に従って、希望するクライアントをインストールしてください。
+
+import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
+
+<CodeClientInstall />
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
+
+<Quiz questions={instanceOptions} />
+
+<Quiz questions={wcdSetup} />
+
+<Quiz questions={clientCapabilities} />
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+-  Weaviate を実行する方法は複数あります。
+-  最も簡単で推奨される  Weaviate  インスタンスの実行方法は  WCD  です。
+-   Weaviate  クライアントは複数の言語で利用できます。
+-  現在、 Academy の教材は  Python  のみで利用可能です。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const instanceOptions = [{
+  questionText: '次のうち正しくないものはどれですか？',
+  answerOptions: [
+    {
+      answerText: 'Weaviate Academy では WCD の利用を推奨しています。',
+      isCorrect: false,
+      feedback: 'WCD は Weaviate を実行するための推奨オプションです。',
+    },
+    {
+      answerText: 'Weaviate の最新バージョンは WCD とローカルホストのインスタンスの両方で利用できます。',
+      isCorrect: false,
+      feedback: 'Weaviate の最新バージョンは Docker/Kubernetes でも WCD でも実行できます。',
+    },
+    {
+      answerText: 'このユニットでは Docker/Kubernetes デプロイについて扱います。',
+      isCorrect: true,
+      feedback: 'そのトピックは後のユニットで扱います。',
+    },
+  ]
+}];
+export const wcdSetup = [{
+  questionText: 'Weaviate Academy の演習用に Weaviate インスタンスを設定する際に必要なものは次のうちどれですか？',
+  answerOptions: [
+    {
+      answerText: '有料の WCD インスタンス',
+      isCorrect: false,
+      feedback: 'Weaviate Academy には無料（サンドボックス）ティアで十分です。',
+    },
+    {
+      answerText: 'OpenID Connect (OIDC) 認証',
+      isCorrect: false,
+      feedback: 'OIDC を使用しても構いませんが、必須ではありません。',
+    },
+    {
+      answerText: '自己ホストの Docker または Kubernetes インスタンス',
+      isCorrect: false,
+      feedback: '自己ホストのインスタンスを使用しても構いませんが、必須ではありません。',
+    },
+    {
+      answerText: '上記はいずれも必要ありません。',
+      isCorrect: true,
+      feedback: '準備が整ったようですね 😊。',
+    },
+  ]
+}];
+export const clientCapabilities = [{
+  questionText: 'Weaviate クライアントについて正しくないものはどれですか？',
+  answerOptions: [
+    {
+      answerText: 'Weaviate クライアントは Python、TypeScript/JavaScript、Go、Java 向けに提供されています。',
+      isCorrect: false,
+      feedback: '現在、これらの言語向けにクライアントが提供されています。',
+    },
+    {
+      answerText: 'Weaviate クライアントでは実行できない GraphQL クエリはごくわずかです。',
+      isCorrect: false,
+      feedback: 'これらのクライアントはすべての RESTful および GraphQL リクエストを実行できます。',
+    },
+    {
+      answerText: 'Weaviate クライアントは Weaviate に同梱されています。',
+      isCorrect: true,
+      feedback: '各言語用の適切なクライアントを個別にインストールする必要があります。',
+    },
+  ]
+}];

@@ -1,0 +1,206 @@
+---
+title: 注意事項とベストプラクティス
+sidebar_position: 2
+description: TypeScript クライアント最適化ガイドラインと Web 開発向け推奨実装パターン。
+image: og/docs/client-libraries.jpg
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PythonCode from "!!raw-loader!/_includes/code/client-libraries/python_v4.py";
+import BatchVectorCode from "!!raw-loader!/_includes/code/howto/manage-data.import.py";
+
+## クライアントのインスタンス化
+
+v3 クライアントは、アプリケーションを Weaviate インスタンスに接続するためのヘルパー関数を提供します。
+
+v3 クライアントは [Embedded Weaviate](/deploy/installation-guides/embedded) をサポートしていません。  
+v2 クライアントは Embedded Weaviate をサポートしています。
+
+### Weaviate への接続
+
+<Tabs groupId="platforms">
+<TabItem value="wcd" label="WCD">
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToWeaviateCloud("WEAVIATE_INSTANCE_URL", {
+  // Replace WEAVIATE_INSTANCE_URL with your instance URL
+  authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"),
+  headers: {
+    "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY || "", // Replace with your inference API key
+  },
+});
+
+console.log(client);
+```
+
+</TabItem>
+<TabItem value="local" label="Local">
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToLocal();
+
+console.log(client);
+```
+
+</TabItem>
+<TabItem value="custom" label="Custom">
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToCustom({
+  httpHost: "localhost",
+  httpPort: 8080,
+  grpcHost: "localhost",
+  grpcPort: 50051,
+  grpcSecure: true,
+  httpSecure: true,
+  authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"),
+  headers: {
+    "X-Cohere-Api-Key": process.env.COHERE_API_KEY || "", // Replace with your inference API key
+  },
+});
+
+console.log(client);
+```
+
+</TabItem>
+</Tabs>
+
+### クライアントのクローズ メソッド
+
+import TSClientClose from "/_includes/clients/ts-client-close.mdx";
+
+<TSClientClose />
+
+### 認証
+
+import ClientAuthApiKey from "/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx";
+
+<ClientAuthApiKey />
+
+```ts
+import weaviate, { WeaviateClient } from "weaviate-client";
+
+// Instantiate the client with the auth config
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
+  "WEAVIATE_INSTANCE_URL", // Replace WEAVIATE_INSTANCE_URL with your instance URL
+  {
+    authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"), // Add your WCD API KEY here
+  }
+);
+
+console.log(client);
+```
+
+サードパーティーサービスの API キーなど、カスタムヘッダーを含める場合は、クライアントを初期化するときに `headers` セクションへ追加します。
+
+```ts
+import weaviate, { WeaviateClient } from "weaviate-client";
+
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
+  "WEAVIATE_INSTANCE_URL", // Replace WEAVIATE_INSTANCE_URL with your instance URL
+  {
+    authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"), // Add your WCD API KEY here
+    headers: {
+      someHeaderName: "header-value",
+    },
+  }
+);
+```
+
+クライアントは Weaviate インスタンスへリクエストを送るたびに、これらのヘッダーを送信します。
+
+### 初期接続チェック
+
+Weaviate サーバーへ接続を確立する際、クライアントは一連のチェックを行います。これにはサーバーバージョンの確認や、REST ポートと gRPC ポートが利用可能かどうかの確認が含まれます。
+
+これらのチェックをスキップするには、`skipInitChecks` を `true` に設定します。
+
+```js
+import weaviate from 'weaviate-client';
+Add commentMore actions
+const client = await weaviate.connectToLocal({
+  skipInitChecks: true,
+})
+```
+
+ほとんどの場合、`skipInitChecks` はデフォルトの `false` のままにすることを推奨します。ただし接続の問題がある場合、一時的に `skipInitChecks: true` を設定すると役立つことがあります。
+
+追加の接続設定については、[タイムアウト値](#タイムアウト値) をご覧ください。
+
+## ジェネリクス
+
+TypeScript ユーザーはカスタム ジェネリクスを定義できます。ジェネリクスを使用すると、オブジェクトやそのプロパティを扱いやすくなります。コンパイル時の型チェックにより、`insert()` や `create()` などの操作が安全かつエラーなく行えるようになります。
+
+```js
+import weaviate from "weaviate-client";
+
+type Article = {
+  title: string,
+  body: string,
+  wordcount: number,
+};
+
+const collection = client.collections.get < Article > "Article";
+await collection.data.insert({
+  // compiler error since 'body' field is missing in '.insert'
+  title: "TS is awesome!",
+  wordcount: 9001,
+});
+```
+
+## イテレーター メソッド
+
+カーソル API に新しいイテレーター メソッドが追加されました。コレクション全体に対して同じ処理を繰り返す場合は `iterator()` を使用します。
+
+```js
+const articles = client.collections.use("Article");
+
+for await (const article of articles.iterator()) {
+  // do something with article.
+  console.log(article); // we print each object in the collection
+}
+```
+
+## 型安全性
+
+v3 クライアントでは、カスタム TypeScript 型とユーザー定義ジェネリクスにより、強力な型付けが可能です。
+
+型定義は Weaviate クライアントパッケージを格納しているフォルダー内にあります。パッケージは `node/` ディレクトリ配下のフォルダーに格納され、各バンドルごとにサブフォルダー内へカスタム型定義が配置されています。
+
+たとえば、`index.d.ts` ファイルには `cjs` バンドル用の型定義が含まれています。
+
+```bash
+node/cjs/index.d.ts
+```
+
+v3 クライアントは、JavaScript 開発をより型安全にする内部機能も追加しています。
+
+### タイムアウト値
+
+クライアントに対して秒単位のタイムアウト値を設定できます。`timeout` プロパティを使用して、初期化チェック、クエリ、および挿入操作のタイムアウトを設定します。
+
+```js
+import weaviate from 'weaviate-client';
+
+const client = await weaviate.connectToLocal({
+  timeout: {
+      query: 20,
+      insert: 120,
+      init: 10,
+  }
+})
+```
+:::tip `generate` クエリのタイムアウト
+
+`generate` サブモジュールを使用中にエラーが発生する場合は、クエリのタイムアウト値（`query: 60` など）を増やしてみてください。<br/><br/>`generate` サブモジュールは、大規模言語モデルを用いてテキストを生成します。このサブモジュールは、言語モデルおよびそれを提供する API の速度に依存します。<br/><br/>タイムアウト値を増やすことで、クライアントが言語モデルからの応答をより長く待機できるようになります。
+:::
+
+

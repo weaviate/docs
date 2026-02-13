@@ -1,0 +1,336 @@
+---
+title: レプリカ移動
+image: og/docs/configuration.jpg
+---
+
+:::info `v1.32` で追加
+:::
+
+初期のレプリケーションファクターを設定するだけでなく、 Weaviate クラスター内でシャードレプリカの配置を積極的に管理できます。これは、スケーリング後のデータの再バランス、ノードの廃止、またはデータローカリティの最適化に役立ちます。レプリカ移動は、専用の [ RESTful API エンドポイント ] もしくは下記のクライアントライブラリ API を通じて操作できます。
+
+レプリカ移動を開始すると、変更されるのはそのシャードのレプリケーションファクターだけであり、コレクション全体ではありません。コレクションには特定のレプリケーションファクターがありますが、シャード (コレクションのサブセット) は異なるレプリケーションファクターを持つことができます。レプリカを COPY する操作を行うと、この値を増やすことができます。
+
+## シャード状態の確認
+
+移動を開始する前に、現在のレプリカ分布を確認したい場合があります。コレクション全体、または特定のシャードのシャーディング状態を取得できます。
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.replica.movement.py';
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckShardingState"
+      endMarker="# END CheckShardingState"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Shards in 'MyReplicatedDocCollection': ['0QK7V2bbAHQ2', 'arxzWNklLIU7', 'w5OcBGbNvRt4']
+Nodes for shard '0QK7V2bbAHQ2': ['node3', 'node1']
+Nodes for shard 'arxzWNklLIU7': ['node1', 'node2']
+Nodes for shard 'w5OcBGbNvRt4': ['node2', 'node3']
+```
+
+</details>
+
+## レプリカ移動の開始
+
+ソースノード、デスティネーションノード、コレクション名、シャード ID、そして操作タイプ ( `MOVE` または `COPY` ) を指定して、シャードレプリカを COPY または MOVE できます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START ReplicateShard"
+endMarker="# END ReplicateShard"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Replication initiated, ID: 32536c0e-09e1-4ea1-a2c5-e85af10a9d58
+```
+
+</details>
+
+## レプリケーション操作のステータス確認
+
+シャードのレプリケーション操作は非同期で実行されます。操作のステータスを問い合わせることができ、完全な操作履歴を表示するオプションもあります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START CheckOperationStatus"
+endMarker="# END CheckOperationStatus"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Status for f771aae1-f3c4-4fac-bae6-90597e8c70bd: ReplicateOperationStatus(state=<ReplicateOperationState.FINALIZING: 'FINALIZING'>, errors=[])
+History for f771aae1-f3c4-4fac-bae6-90597e8c70bd: [ReplicateOperationStatus(state=<ReplicateOperationState.REGISTERED: 'REGISTERED'>, errors=[]), ReplicateOperationStatus(state=<ReplicateOperationState.HYDRATING: 'HYDRATING'>, errors=[])]
+```
+
+</details>
+
+:::note
+移動操作は次のいずれかの状態になります:
+
+- `REGISTERED`
+- `HYDRATING`
+- `FINALIZING`
+- `DEHYDRATING`
+- `READY`
+- `CANCELLED`
+
+レプリケーション状態について詳しくは、[ 概念: レプリケーションアーキテクチャ ](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement) を参照してください。
+
+:::
+
+## レプリケーション操作の一覧取得
+
+進行中および完了済みのすべての操作を一覧表示します。ノード、コレクション、シャードでフィルタリングできます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START ListReplicationOperations"
+endMarker="# END ListReplicationOperations"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>コード出力</summary>
+
+```
+Total replication operations: 1
+Filtered operations for collection 'MyReplicatedDocCollection' on 'node3': 1
+```
+
+</details>
+
+## レプリケーション操作のキャンセル
+
+可能な場合、操作を停止します。正常にキャンセルされると、その状態は `CANCELLED` に変わります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START CancelOperation"
+endMarker="# END CancelOperation"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+## レプリケーション操作の削除
+
+ログからレプリケーション操作を削除します。操作がアクティブな場合、先にキャンセルされます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START DeleteOperationRecord"
+endMarker="# END DeleteOperationRecord"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+## すべてのレプリケーション操作の削除
+
+ログからすべてのレプリケーション操作を削除します。アクティブな操作がある場合は、先にキャンセルされます。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START DeleteAllOperationRecords"
+endMarker="# END DeleteAllOperationRecords"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+
+## 参考リソース
+
+- [RESTful API：レプリケーションエンドポイント](/docs/weaviate/api/rest.md)
+- [コンセプト：レプリケーションアーキテクチャ](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement)
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />
+

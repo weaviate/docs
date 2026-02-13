@@ -1,0 +1,490 @@
+---
+title: オブジェクトの作成
+sidebar_position: 10
+image: og/docs/howto.jpg
+---
+
+import SkipLink from '/src/components/SkipValidationLink'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
+import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.create-v3.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.create.ts';
+import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.create-v2.ts';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go';
+
+
+このページの例では、Weaviate で個々のオブジェクトを作成する方法を示します。
+
+:::tip 複数オブジェクトにはバッチインポートを使用
+複数のオブジェクトをまとめて作成する場合は、[How-to: Batch Import](./import.mdx) を参照してください。
+:::
+
+## オブジェクトの作成
+
+この例では、`JeopardyQuestion` コレクションにオブジェクトを作成します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CreateObject START"
+      endMarker="# CreateObject END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# CreateObject START"
+      endMarker="# CreateObject END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// CreateObject START"
+      endMarker="// CreateObject END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// CreateObject START"
+      endMarker="// CreateObject END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// CreateObject START"
+      endMarker="// CreateObject END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// CreateObject START"
+      endMarker="// CreateObject END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>
+    追加情報
+  </summary>
+
+オブジェクトを作成するには、次の項目を指定します:
+
+- 追加したいオブジェクトデータ
+- 対象のコレクション
+- [マルチテナンシー](../concepts/data.md#multi-tenancy) が有効な場合は、[テナントを指定]( ../manage-collections/multi-tenancy.mdx) します
+
+デフォルトでは、[auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) により、新しいコレクションの作成とプロパティの追加が行われます。
+
+</details>
+
+## 指定ベクトル付きオブジェクトの作成
+
+オブジェクトを作成する際に、 ベクトル を指定できます。（複数の名前付き ベクトル を指定する方法については[下記](#create-an-object-with-named-vectors)を参照してください。）
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CreateObjectWithVector START"
+      endMarker="# CreateObjectWithVector END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# CreateObjectWithVector START"
+      endMarker="# CreateObjectWithVector END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// CreateObjectWithVector START"
+      endMarker="// CreateObjectWithVector END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// CreateObjectWithVector START"
+      endMarker="// CreateObjectWithVector END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// CreateObjectWithVector START"
+      endMarker="// CreateObjectWithVector END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// CreateObjectWithVector START"
+      endMarker="// CreateObjectWithVector END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+## 名前付き ベクトル を使用したオブジェクト作成
+
+:::info `v1.24` で追加
+:::
+
+オブジェクトを作成する際、（[コレクションで設定されている場合](../manage-collections/vector-config.mdx#define-named-vectors)）名前付き ベクトル を指定できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python クライアント v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CreateObjectNamedVectors START"
+      endMarker="# CreateObjectNamedVectors END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python クライアント v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# CreateObjectNamedVectors START"
+      endMarker="# CreateObjectNamedVectors END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS クライアント v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// CreateObjectNamedVectors START"
+      endMarker="// CreateObjectNamedVectors END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS クライアント v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// CreateObjectNamedVectors START"
+      endMarker="// CreateObjectNamedVectors END"
+      language="tsv2"
+    />
+  </TabItem>
+</Tabs>
+
+## 指定した ID でオブジェクトを作成
+
+オブジェクトを作成する際、[ID](../api/graphql/additional-properties.md#id) を指定できます。
+
+:::info
+ID を指定しない場合、Weaviate はランダムな [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) を生成します。
+:::
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python クライアント v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CreateObjectWithId START"
+      endMarker="# CreateObjectWithId END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python クライアント v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# CreateObjectWithId START"
+      endMarker="# CreateObjectWithId END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS クライアント v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// CreateObjectWithId START"
+      endMarker="// CreateObjectWithId END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS クライアント v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// CreateObjectWithId START"
+      endMarker="// CreateObjectWithId END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// CreateObjectWithId START"
+      endMarker="// CreateObjectWithId END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// CreateObjectWithId START"
+      endMarker="// CreateObjectWithId END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## 決定論的 ID の生成
+
+データオブジェクトに基づいて ID を生成できます。
+
+:::info
+オブジェクト ID はランダムに生成されません。同じ値からは常に同じ ID が生成されます。<br/>重複した ID を指定すると Weaviate はエラーを返します。重複オブジェクトの挿入を避けるために、決定論的 ID を使用してください。
+:::
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python クライアント v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# CreateObjectWithDeterministicId START"
+      endMarker="# CreateObjectWithDeterministicId END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python クライアント v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# CreateObjectWithDeterministicId START"
+      endMarker="# CreateObjectWithDeterministicId END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS クライアント v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// CreateObjectWithDeterministicId START"
+      endMarker="// CreateObjectWithDeterministicId END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS クライアント v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// CreateObjectWithDeterministicId START"
+      endMarker="// CreateObjectWithDeterministicId END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+
+```java
+// This feature is under development
+```
+
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+
+```go
+// This feature is under development
+```
+
+  </TabItem>
+</Tabs>
+
+
+<details>
+  <summary>
+    追加情報
+  </summary>
+決定論的 ID を生成するには、次のメソッドを使用してください:
+
+- `generate_uuid5` (Python)
+- `generateUuid5` (TypeScript)
+
+</details>
+
+
+## クロスリファレンス付きオブジェクトの作成
+
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
+import XrefPyCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
+import XrefPyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v3.py';
+import XrefTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
+import XrefTSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2';
+
+他のオブジェクトへのクロスリファレンスを含むオブジェクトを作成できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={XrefPyCode}
+      startMarker="# START ObjectWithCrossRef"
+      endMarker="# END ObjectWithCrossRef"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={XrefPyCodeV3}
+      startMarker="# START ObjectWithCrossRef"
+      endMarker="# END ObjectWithCrossRef"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={XrefTSCode}
+      startMarker="// START ObjectWithCrossRef"
+      endMarker="// END ObjectWithCrossRef"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={XrefTSCodeLegacy}
+      startMarker="// START ObjectWithCrossRef"
+      endMarker="// END ObjectWithCrossRef"
+      language="tsv2"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Additional information
+クロスリファレンスの詳細については、[How-to: Cross-references](../manage-collections/cross-references.mdx) を参照してください。
+:::
+
+## `geoCoordinates`付きオブジェクトの作成
+
+import GeoLimitations from '/_includes/geo-limitations.mdx';
+
+<GeoLimitations/>
+
+[`geoCoordinates`](/weaviate/config-refs/datatypes.md#geocoordinates) プロパティを指定する場合、`latitude` と `longitude` を浮動小数点の 10 進度で指定する必要があります。
+
+import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx';
+
+<CreateWithGeo/>
+
+## 作成前のオブジェクト検証
+
+オブジェクトを作成する前に、コレクション定義に対して <SkipLink href="/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ValidateObject START"
+      endMarker="# ValidateObject END"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# ValidateObject START"
+      endMarker="# ValidateObject END"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// ValidateObject START"
+      endMarker="// ValidateObject END"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// ValidateObject START"
+      endMarker="// ValidateObject END"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// ValidateObject START"
+      endMarker="// ValidateObject END"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ValidateObject START"
+      endMarker="// ValidateObject END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## 複数ベクトル埋め込み（名前付きベクトル）
+
+import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
+
+<MultiVectorSupport />
+
+## 関連ページ
+
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [方法: ( Batch ) アイテムをインポート](./import.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects">参照： REST - /v1/objects</SkipLink>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

@@ -1,0 +1,32 @@
+---
+title: インデックスオプション
+---
+
+### <i class="fa-solid fa-chalkboard"></i> トークン化オプション
+
+転置インデックスは、テキストをどのようにトークンへ分割するかを決定するトークン化方式を用いて構築されます。主な方式は次のとおりです。
+
+| Tokenization Method | 説明 | 例となる入力 | インデックス化されるトークン |
+|---------------------|------|-------------|------------------------------|
+| `word` (default)    | 英数字を保持して小文字化し、空白で分割します。 | `Conference (Chicago, IL)` | `conference`, `chicago`, `il` |
+| `whitespace`        | テキストを空白文字で分割します。 | `Conference (Chicago, IL)` | `Conference`, `(Chicago,`, `IL)` |
+| `lowercase`         | テキストを小文字化し、空白で分割します。 | `Conference (Chicago, IL)` | `conference`, `(chicago,`, `il)` |
+| `field`             | 空白文字をトリムした後、フィールド全体をインデックス化します。 | `Conference (Chicago, IL)` | `Conference (Chicago, IL)` |
+
+そのため、用語「conference」と一致する (すなわち `Equal` ) フィルターは、`word` トークン化を使用している場合にはオブジェクト ID を返しますが、`whitespace` トークン化を使用している場合には (大文字小文字が一致しないため) 返しません。
+
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+### <i class="fa-solid fa-pen-to-square"></i> レビュー演習
+
+:::caution TODO
+Add review exercises
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

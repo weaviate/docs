@@ -1,0 +1,176 @@
+---
+title: Weaviate へのアクセスと構成
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/connect.py';
+
+これで、Kubernetes クラスター内に Weaviate インスタンスを起動できました。次は何をするのでしょうか。このセクションでは、Weaviate サービスへアクセスする方法と、ニーズに合わせて構成する方法を見ていきます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate へのアクセス
+
+Weaviate サービスは正常に稼働していますが、まだ外部からはアクセスできません。これは、サービスを外部に公開していないためです。ここで公開処理を行いましょう。
+
+### <i class="fa-solid fa-code"></i> サービスの公開
+
+次のコマンドを実行します。
+
+```bash
+minikube tunnel
+```
+
+Helm チャートで `weaviate` サービスを `LoadBalancer` タイプとして設定したことを思い出してください。そのため `minikube tunnel` を実行すると、サービスが外部 ― 少なくともローカルマシン ― からアクセス可能になります。
+
+次のようなメッセージが表示されます。
+
+```bash
+✅  Tunnel successfully started
+
+📌  NOTE: Please do not close this terminal as this process must stay alive for the tunnel to be accessible ...
+
+❗  The service/ingress weaviate requires privileged ports to be exposed: [80]
+🔑  sudo permission will be asked for it.
+🏃  Starting tunnel for service weaviate.
+🏃  Starting tunnel for service weaviate-grpc.
+```
+
+ここでパスワードを求められます。入力するとトンネルが確立されます。ターミナルを閉じる、またはプロセスを停止するとトンネルも閉じ、サービスへ再びアクセスできなくなる点に注意してください。
+
+:::info About `minikube tunnel`
+[`minikube tunnel`](https://minikube.sigs.k8s.io/docs/handbook/accessing/#using-minikube-tunnel) はローカルマシンと Minikube クラスター間にルートを作成します。これにより、Minikube クラスター内で LoadBalancer として公開されたサービスを、開発目的でローカルマシンから利用できます。
+
+ローカルマシンからサービスへアクセスする必要があるときだけトンネルを起動することを推奨します。作業が終わったら `Ctrl+C` でトンネルを停止してください。
+:::
+
+### <i class="fa-solid fa-code"></i> アクセスの確認
+
+次のコマンドを実行すると:
+
+```bash
+kubectl get svc weaviate -n weaviate
+```
+
+サービスの外部 IP アドレスが表示されます。例:
+
+```bash
+NAME       TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+weaviate   LoadBalancer   10.110.44.231   127.0.0.1     80:31230/TCP   61m
+```
+
+ブラウザで `http://<external-ip>:80/v1`（通常は `http://127.0.0.1:80/v1`）へアクセスしてください。Weaviate の REST ルートエンドポイントが表示され、各種エンドポイントへのリンクが確認できます。
+
+また、Kubernetes 設定で gRPC サービスも開放したことを思い出してください。このサービスはポート `50051` で利用できます。次のコマンドで確認できます。
+
+```bash
+kubectl get svc weaviate-grpc -n weaviate
+```
+
+出力例:
+
+```bash
+NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
+weaviate-grpc   LoadBalancer   10.109.237.21   127.0.0.1     50051:32150/TCP   90m
+```
+
+<details>
+  <summary>
+    gRPC サービスへのアクセス確認のもう一つの方法
+  </summary>
+
+`netcat` がインストールされている場合、次のコマンドも試せます。
+
+```bash
+nc -zv 127.0.0.1 50051
+```
+
+出力例:
+
+```bash
+Connection to 127.0.0.1 port 50051 [tcp/*] succeeded!
+```
+
+多くのシステムでは `nc` がデフォルトでインストールされていません。インストールされていなくても問題ありません。`kubectl get svc` の出力で gRPC サービスへのアクセスを十分確認できます。
+</details>
+
+### <i class="fa-solid fa-code"></i> クラスターへの接続
+
+外部 IP アドレスによって、クラスターへの接続方法が異なる場合があります。
+
+2 つのサービスいずれも外部 IP が `127.0.0.1` の場合、Weaviate へは次のように接続します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="START BasicConnect"
+  endMarker="# END BasicConnect"
+  language="py"
+/>
+
+一方、`weaviate` と `weaviate-grpc` サービスで外部 IP が異なる場合は、次のように接続します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="START CustomConnect"
+  endMarker="# END CustomConnect"
+  language="py"
+/>
+
+ここで `WEAVIATE_SVC_EXTERNAL_IP` と `GRPC_SVC_EXTERNAL_IP` は、それぞれ `weaviate` と `weaviate-grpc` サービスの外部 IP アドレスです。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate の構成
+
+Kubernetes の利点の一つは、サービスを簡単に構成できる点です。Weaviate も例外ではありません。`weaviate` ディレクトリ内の `values.yaml` ファイルを更新することで Weaviate を構成できます。
+
+たとえば、`text2vec-openai` や `generative-openai` などの追加モジュールを有効にするには、次のように `true` に設定します。
+
+```yaml
+  text2vec-openai:
+
+    enabled: true  # ⬅️ Set to true
+
+  # ... other settings not shown ...
+
+  generative-openai:
+
+    enabled: true  # ⬅️ Set to true
+```
+
+また、Weaviate ポッドのリソース制限も設定できます。ここでは CPU を 30–50%、メモリを 150–300 Mi 使用するように設定してみましょう。
+
+:::note リソース制限の設定箇所
+`values.yaml` には、ローカル ベクトル化モデルなど各種サービス向けに複数の `requests` と `limits` が存在します。ファイル上部（インデントなし）の Weaviate のスケールレプリカ用 `requests` と `limits` を設定してください。
+:::
+
+```yaml
+# Scale replicas of Weaviate. ...
+requests:
+  cpu: '300m'
+  memory: '150Mi'
+limits:
+  cpu: '500m'
+  memory: '300Mi'
+```
+
+変更を適用するには、`values.yaml` を保存して次のコマンドを実行します。
+
+```bash
+helm upgrade --install \
+  "weaviate" \
+  weaviate/weaviate \
+  --namespace "weaviate" \
+  --values ./values.yaml
+```
+
+このコマンドは Weaviate をデプロイしたときと同じもので、新しい構成で Weaviate デプロイメントを更新します。
+
+`values.yaml` では、認証・認可、バックアップ、モニタリング、リソース割り当てなど、他にも多数の設定が可能です。詳しくは `values.yaml` 内のインラインドキュメントと Weaviate ドキュメントを参照してください。
+
+最後に、Weaviate デプロイメントを拡張し、ノードを追加する方法も確認しておきましょう。これにより、トラフィック増加や将来的な拡張に対応したり、ノード障害時の冗長性を確保したりできます。
+
+次のセクションで詳しく見ていきます。
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

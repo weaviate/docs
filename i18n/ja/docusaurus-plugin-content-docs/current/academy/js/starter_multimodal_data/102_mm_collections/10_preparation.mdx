@@ -1,0 +1,36 @@
+---
+title: 準備
+---
+
+このセクションでは、映画データセットを使用して Weaviate インスタンスにデータを投入し、マルチモーダルの Cohere Embed 3 モデルでテキストおよび画像データをベクトル化します。
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンス
+
+Weaviate インスタンスの準備ができていることを確認してください。[インスタンスを作成](../101_setup_weaviate/20_create_instance/index.mdx)し、接続できる状態になっている必要があります。
+
+### <i class="fa-solid fa-code"></i> ソースデータ
+
+映画データセットとして [TMDB](https://www.themoviedb.org/) から取得したデータを使用します。データセットはこの [GitHub リポジトリ](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024.json) にあり、1990 年から 2024 年に公開された約 700 本の映画に関する書誌情報が含まれています。
+
+マルチモーダルプロジェクトとして、同じリポジトリにある [各映画のポスター](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024_posters.zip) も使用します。
+
+<details>
+  <summary>サンプルテキストデータを見る</summary>
+
+|    | backdrop_path                    | genre_ids       |   id | original_language   | original_title              | overview                                                                                                                                                                                                                                                                                                                                                                                                                        |   popularity | poster_path                      | release_date   | title                       | video   |   vote_average |   vote_count |
+|---:|:---------------------------------|:----------------|-----:|:--------------------|:----------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------:|:---------------------------------|:---------------|:----------------------------|:--------|---------------:|-------------:|
+|  0 | /3Nn5BOM1EVw1IYrv6MsbOS6N1Ol.jpg | [14, 18, 10749] |  162 | en                  | Edward Scissorhands         | A small suburban town receives a visit from a castaway unfinished science experiment named Edward.                                                                                                                                                                                                                                                                                                                              |       45.694 | /1RFIbuW9Z3eN9Oxw2KaQG5DfLmD.jpg | 1990-12-07     | Edward Scissorhands         | False   |            7.7 |        12305 |
+|  1 | /sw7mordbZxgITU877yTpZCud90M.jpg | [18, 80]        |  769 | en                  | GoodFellas                  | The true story of Henry Hill, a half-Irish, half-Sicilian Brooklyn kid who is adopted by neighbourhood gangsters at an early age and climbs the ranks of a Mafia family under the guidance of Jimmy Conway.                                                                                                                                                                                                                     |       57.228 | /aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg | 1990-09-12     | GoodFellas                  | False   |            8.5 |        12106 |
+|  2 | /6uLhSLXzB1ooJ3522ydrBZ2Hh0W.jpg | [35, 10751]     |  771 | en                  | Home Alone                  | Eight-year-old Kevin McCallister makes the most of the situation after his family unwittingly leaves him behind when they go on Christmas vacation. But when a pair of bungling burglars set their sights on Kevin's house, the plucky kid stands ready to defend his territory. By planting booby traps galore, adorably mischievous Kevin stands his ground as his frantic mother attempts to race home before Christmas Day. |        3.538 | /onTSipZ8R3bliBdKfPtsDuHTdlL.jpg | 1990-11-16     | Home Alone                  | False   |            7.4 |        10599 |
+|  3 | /vKp3NvqBkcjHkCHSGi6EbcP7g4J.jpg | [12, 35, 878]   |  196 | en                  | Back to the Future Part III | The final installment of the Back to the Future trilogy finds Marty digging the trusty DeLorean out of a mineshaft and looking for Doc in the Wild West of 1885. But when their time machine breaks down, the travelers are stranded in a land of spurs. More problems arise when Doc falls for pretty schoolteacher Clara Clayton, and Marty tangles with Buford Tannen.                                                       |       28.896 | /crzoVQnMzIrRfHtQw0tLBirNfVg.jpg | 1990-05-25     | Back to the Future Part III | False   |            7.5 |         9918 |
+|  4 | /3tuWpnCTe14zZZPt6sI1W9ByOXx.jpg | [35, 10749]     |  114 | en                  | Pretty Woman                | When a millionaire wheeler-dealer enters a business contract with a Hollywood hooker Vivian Ward, he loses his heart in the bargain.                                                                                                                                                                                                                                                                                            |       97.953 | /hVHUfT801LQATGd26VPzhorIYza.jpg | 1990-03-23     | Pretty Woman                | False   |            7.5 |         7671 |
+
+</details>
+
+次に、対応するオブジェクトコレクションを作成し、データをインポートします。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

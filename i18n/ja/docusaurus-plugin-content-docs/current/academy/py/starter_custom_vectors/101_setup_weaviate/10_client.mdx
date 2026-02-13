@@ -1,0 +1,36 @@
+---
+title: Weaviate Python クライアント
+description: Weaviate におけるカスタム ベクトル 用クライアント設定
+---
+
+## <i class="fa-solid fa-code"></i> インストール
+
+最新の Weaviate Python client ライブラリは pip を使用してインストールできます。クライアントライブラリは Python 3.8 以降でテストされています。以下のコマンドでインストールします:
+
+```bash
+pip install -U weaviate-client
+```
+
+最新のメジャーバージョンは `v4` です (例: `4.x.x`)。以下のようにバージョンを確認できます:
+
+```bash
+pip show weaviate-client
+```
+
+## <i class="fa-solid fa-code"></i> 基本的な使い方
+
+Python から Weaviate client ライブラリを次のように読み込みます:
+
+```python
+import weaviate
+```
+
+client には、Weaviate との連携を容易にする補助クラス (`weaviate.classes` など) や関数が用意されています。
+
+次に、Weaviate インスタンスを作成して接続する方法を示します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

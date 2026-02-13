@@ -1,0 +1,501 @@
+---
+title: AI モデルの利用
+description: 推論のために AI モデルを使用する例
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+このモジュールのここまでの内容では、主に AI モデルの理論的な側面について説明してきました。これによって、これらのモデルに関する基礎的な理解を深め、あるいは確立できたことと思います。
+
+しかし、 AI モデルは単なる素晴らしい科学的成果以上のものです。私たちがより生産的になるためのツールでもあります。では、その理解を踏まえて、実践的な利用へと移っていきましょう。
+
+このセクションでは、 AI モデルの利用例を紹介します。モデルが構築された後、そのモデルを実行して出力を生成するステップは「推論を行う」とも呼ばれます。
+
+## <i class="fa-solid fa-chalkboard-user"></i> 推論の基本
+
+import NNInference from './_img/nn_explained_80_inference.png';  
+import NNInferenceDark from './_img/nn_explained_80_inference_dark.png';  
+
+<ThemedImage
+  alt="Neural Network Node Calculations"
+  sources={{
+    light: NNInference,
+    dark: NNInferenceDark,
+  }}
+  width="450"
+/>
+
+推論の方法には、推論モダリティからモデルプロバイダー、そしてモデルそのものまで、非常に多くの選択肢があります。そのため、組み合わせによっては意思決定が容易に圧倒されてしまうこともあります。
+
+そこで、このセクションでは一般的な選択肢を整理して概観します。
+
+まずは、これらのモデルを利用するさまざまな方法、すなわち推論プロバイダーを利用するかローカルで推論を行うかというモードについて説明します。そして各モード内で、代表的なプロバイダーやソフトウェアライブラリを使った推論例を示します。
+
+これにより、多岐にわたる選択肢への敷居の高さや神秘性を取り除き、後のモデルの評価および選定に関する議論の基礎を築けるはずです。
+
+:::note このセクションでは Weaviate を使用しません
+
+あなたはすでに、 Weaviate がモデルプロバイダーと連携して推論を簡単に行えるようにしていることをご存じかもしれません。しかし、このセクションではモデルへ直接アクセスします。これにより、後で Weaviate があなたに代わって推論を実行するときに、その裏側で何が起こっているのかを理解しやすくなります。
+
+:::
+
+## <i class="fa-solid fa-chalkboard-user"></i> サービスプロバイダー経由の推論
+
+最新の AI モデルへ最も手軽にアクセスする方法は、推論サービスプロバイダーが提供する Web API を利用することです。
+
+特定の種類の AI モデルの人気が急増したおかげで、誰でも登録して使える推論プロバイダー（および API）が数多く存在します。
+
+代表的な推論プロバイダーとしては、 Anthropic、 AWS、 Cohere、 Google、 Microsoft、 OpenAI などが挙げられます。
+
+すべてのモデルがすべての推論プロバイダーで利用できるわけではありません。独自の専用モデルを開発しているプロバイダーもあれば、純粋に推論サービスの提供に特化しているプロバイダーもあります。
+
+Cohere を介して推論を実行する例を見てみましょう。
+
+:::info 費用はかかりますか？
+
+執筆時点では、 Cohere はいくつかの注意事項や制限付きで無償の API アクセスを提供していました。詳細については最新の利用規約を必ずご確認ください。有料サービスを利用する場合でも、ここで行う推論の量は非常に少なく、費用は 1 米ドル未満とごくわずかです。
+
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+このセクションでは Cohere を使用します。 [Cohere](https://cohere.com/) は、生成、埋め込み、再ランカーの各種モデルを開発しています。 Cohere のモデルは他の推論サービスでも、また Cohere 自身でも利用できます。ここでは Cohere API を直接利用します。
+
+:::info
+執筆時点では、 Cohere は無償で利用できるトライアルキーを提供していました。
+:::
+
+Cohere API を利用するには、[アカウントに登録](https://cohere.com/) した後、ダッシュボードに移動します。そこで `API keys` というセクションに進むと、 API キーを管理できます。
+
+本チュートリアルにはトライアルキーで十分ですので作成してください。そして、この API キーを `COHERE_API_KEY` という名前の環境変数に設定します。
+
+お好みのパッケージマネージャーで Cohere SDK をインストールします。例：
+
+```bash
+pip install cohere
+```
+
+### <i class="fa-solid fa-code"></i> 埋め込みモデルの利用
+
+次のスニペットは、一連のテキスト片（ `source_texts` ）を埋め込みに変換します。
+
+```python
+import cohere
+import os
+
+cohere_api_key = os.getenv("COHERE_API_KEY")
+co = cohere.ClientV2(api_key=cohere_api_key)
+
+source_texts = [
+    "You're a wizard, Harry.",
+    "Space, the final frontier.",
+    "I'm going to make him an offer he can't refuse.",
+]
+
+response = co.embed(
+    texts=source_texts,
+    model="embed-english-light-v3.0",
+    input_type="search_document",
+    embedding_types=["float"],
+)
+
+source_embeddings = []
+for e in response.embeddings.float_:
+    print(len(e))                   # This will be the length of the embedding vector
+    print(e[:5])                    # This will print the first 5 elements of the embedding vector
+    source_embeddings.append(e)     # Save the embedding for later use
+```
+
+後で検索できるようにソーステキストを保存するため、ここでは入力タイプとして `search_document` を指定している点に注意してください。
+
+これにより、次のような出力が得られます（数値は多少異なる場合があります）:
+
+```
+384
+[0.024459839, 0.039001465, -0.013053894, 0.016342163, -0.049926758]
+384
+[-0.0051002502, 0.017578125, -0.0256958, 0.023513794, 0.018493652]
+384
+[-0.076660156, 0.04244995, -0.07366943, 0.0019054413, -0.007736206]
+```
+
+各ベクトルについて、その長さ（次元数）と先頭の数次元を表示しています。
+
+次に、クエリ（例： `intergalactic voyage` ）に最も一致するテキストを見つけるには、まずクエリテキストを埋め込みに変換します：
+
+```python
+# Get the query embedding:
+query_text = "Intergalactic voyage"
+
+response = co.embed(
+    texts=[query_text],
+    model="embed-english-light-v3.0",
+    input_type="search_query",
+    embedding_types=["float"],
+)
+
+query_embedding = response.embeddings.float_[0]
+
+print(len(query_embedding))
+print(query_embedding[:5])
+```
+
+これにより、次のような出力が得られます：
+
+```
+384
+[-0.007019043, -0.097839355, 0.023117065, 0.0049324036, 0.047027588]
+```
+
+ここで、クエリ ベクトルがドキュメント ベクトルと同じ次元数であり、各次元が同様の形式であることが確認できます。
+
+ベクトル検索を行うには：
+
+```python
+# Find the most similar source text to the query:
+import numpy as np
+
+# Calculate the dot product between the query embedding and each source embedding
+dot_products = [np.dot(query_embedding, e) for e in source_embeddings]
+
+# Find the index of the maximum dot product
+most_similar_index = np.argmax(dot_products)
+
+# Get the most similar source text
+most_similar_text = source_texts[most_similar_index]
+
+print(f"The most similar text to '{query_text}' is:")
+print(most_similar_text)
+```
+
+次のような出力が得られます：
+
+```
+The most similar text to 'Intergalactic voyage' is:
+Space, the final frontier.
+```
+
+直感的にも納得できる結果になっていると思います。興味があれば、ソーステキストやクエリテキストを変えて試してみてください。
+
+埋め込みモデルは意味をできる限り捉えようとしますが、完全ではありません。特定の埋め込みモデルは、特定のドメインや言語でより良く機能します。
+
+### <i class="fa-solid fa-code"></i> 生成モデルの利用
+
+次に、 Cohere の大規模言語モデルのひとつを使ってみましょう。大規模言語モデルがどのように機能するかを説明するよう依頼します：
+
+```python
+import cohere
+import os
+
+cohere_api_key = os.getenv("COHERE_API_KEY")
+co = cohere.ClientV2(api_key=cohere_api_key)
+
+messages = [
+    {
+        "role": "user",
+        "content": "Hi there. Please explain how language models work, in just a sentence or two.",
+    }
+]
+
+response = co.chat(
+    model="command-r-plus",
+    messages=messages,
+)
+
+print(response.message.content[0].text)
+
+```
+
+レスポンスは次のようになるかもしれません（出力は多少異なる場合があります）:
+
+```
+Language models are artificial intelligence systems that generate and understand human language by analyzing vast amounts of text data and learning patterns, structures, and context to create responses or translations. These models use machine learning algorithms to create statistical representations of language, enabling them to produce human-like text output.
+```
+
+Claude AI や ChatGPT のような Web インターフェースを見たことがあれば、マルチターンの会話に馴染みがあるでしょう。
+
+API では、前の会話履歴を LLM に渡すだけで同じ結果を得ることができます：
+
+```python
+import cohere
+import os
+
+cohere_api_key = os.getenv("COHERE_API_KEY")
+co = cohere.ClientV2(api_key=cohere_api_key)
+
+messages = [
+    {
+        "role": "user",
+        "content": "Hi there. Please explain how language models work, in just a sentence or two.",
+    }
+]
+
+# Initial response from the model
+response = co.chat(
+    model="command-r-plus",
+    messages=messages,
+)
+
+# Append the initial response to the messages
+messages.append(
+    {
+        "role": "assistant",
+        "content": response.message.content[0].text,
+    }
+)
+
+# Provide a follow-up prompt
+messages.append(
+    {
+        "role": "user",
+        "content": "Ah, I see. Now, can you write that in a Haiku?",
+    }
+)
+
+response = co.chat(
+    model="command-r-plus",
+    messages=messages,
+)
+
+# This response will take both the initial and follow-up prompts into account
+print(response.message.content[0].text)
+```
+
+レスポンスは次のようになります：
+
+```
+Language models, oh
+Patterns and words, they dance
+New text, probabilities.
+```
+
+メッセージ履歴全体を含めたことで、言語モデルが履歴を文脈として正しく応答している点に注目してください。
+
+これは Claude AI や ChatGPT といったアプリケーションで起こっていることとほぼ同じです。あなたが入力するたびに、メッセージ履歴全体がモデル推論に利用されています。
+
+ここまでで、 Cohere の Web ベース API を使ったモデル推論の仕組みを確認しました。この方式ではモデルはオンラインでホストされ、リモートで実行されます。次は、これらのモデルをローカルで実行する例を見ていきましょう。
+## <i class="fa-solid fa-chalkboard-user"></i> ローカル推論
+
+多くの場合、AI モデルの推論をローカル（オンプレミス）モデルで実行することが望ましい、あるいは必須となることがあります。
+
+これにはさまざまな理由があります。例えば、データをローカルに保持したい（コンプライアンスやセキュリティのためなど）、独自に学習させた専用モデルを使用したい、あるいは商用の推論 API よりもローカル推論のほうが経済的に有利といったケースです。
+
+推論プロバイダーが提供する選択肢と比べるとローカル推論の選択肢は少ないかもしれませんが、それでも十分に幅広いオプションが存在します。公開されているモデルは多数あり、プロセスを容易にするソフトウェア ライブラリも豊富です。一般的なディープラーニング ライブラリである PyTorch や TensorFlow に加え、Hugging Face Transformers、Ollama、ONNX Runtime などのライブラリを利用するとローカル推論がより簡単になります。特に Ollama と ONNX Runtime を使えば、GPU / TPU などのハードウェア アクセラレーションがなくても実用的な速度で動作します。
+
+それでは、Ollama を用いて推論を実行する例を見ていきましょう。
+
+:::info Model licenses
+
+他の製品と同様に、AI モデルには使用条件を定めたライセンスが付いていることが一般的です。
+
+公開モデルであっても、商用利用が許可されていないものもあります。用途に適しているかどうかを判断するため、必ず各モデルのライセンスを確認してください。
+
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+このセクションでは Ollama を使用します。  
+[Ollama](https://ollama.com/) は、AI モデルをローカルで実行・デプロイするためのオープンソース フレームワークです。Llama、Mistral、Snowflake の埋め込みモデルなど、さまざまなオープンソース モデルを簡単にダウンロード、セットアップ、対話できます。Ollama にはコマンドライン インターフェースと REST API、さらに複数のプログラミング言語向け SDK が用意されています。
+
+:::info System requirements
+
+このセクションではローカル推論を実行します。ここで使用するモデルは比較的小規模ですが、それでも AI モデルにはある程度のシステム リソースが必要です。少なくとも 16 GB の RAM を搭載した最新のコンピューターを推奨します。
+
+GPU は必須ではありません。
+
+:::
+
+Ollama を使用するには、公式サイトにアクセスしてダウンロードとインストール手順に従ってください。
+
+続いて必要なモデルをプルします。ここでは 10 億パラメータの Gemma3 生成モデルと、1 億 1,000 万パラメータの Snowflake Arctic 埋め込みモデルを使用します。
+
+Ollama をインストールしたら、次のコマンドでモデルをプルします。
+
+```bash
+ollama pull gemma3:1b
+ollama pull snowflake-arctic-embed:110m
+```
+
+次に、モデルがロードされているかを確認するために以下を実行します。
+
+```bash
+ollama list
+```
+
+出力結果に `gemma3:1b` と `snowflake-arctic-embed:110m` が含まれていれば成功です。
+
+お好みの環境で、任意のパッケージ マネージャーを使って Ollama の Python ライブラリをインストールします。例:
+
+```bash
+pip install ollama
+```
+
+### <i class="fa-solid fa-code"></i> 埋め込みモデルの使用
+
+次のスニペットは、一連のテキスト (`source_texts`) を埋め込みに変換します。
+
+```python
+import ollama
+
+source_texts = [
+    "You're a wizard, Harry.",
+    "Space, the final frontier.",
+    "I'm going to make him an offer he can't refuse.",
+]
+
+response = ollama.embed(model='snowflake-arctic-embed:110m', input=source_texts)
+
+source_embeddings = []
+for e in response.embeddings:
+    print(len(e))                   # This will be the length of the embedding vector
+    print(e[:5])                    # This will print the first 5 elements of the embedding vector
+    source_embeddings.append(e)     # Save the embedding for later use
+```
+
+出力は次のようになります（数値は環境によって異なります）。
+
+```
+768
+[-0.030614788, 0.01759585, -0.001181114, 0.025152, 0.005875709]
+768
+[-0.039889574, 0.05197108, 0.036466435, 0.012909834, 0.012069418]
+768
+[-0.04942698, 0.05466185, -0.007884168, -0.00252788, -0.0025294009]
+```
+
+各ベクトルについて、その長さ（次元数）と先頭数次元を表示しています。（ここでの次元数は Cohere の例とは異なります。モデルごとに *次元数* が異なるためです。）
+
+同じステップを踏んでみましょう。まずクエリ（ここでは `intergalactic voyage`）に最もよく合致するテキストを見つけるため、クエリ テキストを埋め込みます。
+
+```python
+# Get the query embedding:
+query_text = "Intergalactic voyage"
+
+response = ollama.embed(model='snowflake-arctic-embed:110m', input=query_text)
+
+query_embedding = response.embeddings[0]
+
+print(len(query_embedding))
+print(query_embedding[:5])
+```
+
+結果例:
+
+```
+768
+[-0.043455746, 0.05260946, 0.025877617, -0.017234074, 0.027434561]
+```
+
+ここでも、クエリ ベクトルとドキュメント ベクトルは同じ次元数で、各次元の形式も同様です。
+
+ベクトル検索を実行するには以下のようにします。
+
+```python
+# Find the most similar source text to the query:
+import numpy as np
+
+# Calculate the dot product between the query embedding and each source embedding
+dot_products = [np.dot(query_embedding, e) for e in source_embeddings]
+
+# Find the index of the maximum dot product
+most_similar_index = np.argmax(dot_products)
+
+# Get the most similar source text
+most_similar_text = source_texts[most_similar_index]
+
+print(f"The most similar text to '{query_text}' is:")
+print(most_similar_text)
+```
+
+埋め込みを比較するスニペットは Cohere の例とまったく同じです。実行結果は次のようになります。
+
+```
+The most similar text to 'Intergalactic voyage' is:
+Space, the final frontier.
+```
+
+Snowflake モデルでも、候補の中で宇宙関連の文章が最も近いと判定されました。
+
+### <i class="fa-solid fa-code"></i> 生成モデルの使用
+
+次に、`gemma3:1b` モデルを使って Ollama で大規模言語モデルを試してみましょう。再び「大規模言語モデルはどのように機能するか」を説明させます。
+
+```python
+from ollama import chat
+from ollama import ChatResponse
+
+messages = [
+    {
+        "role": "user",
+        "content": "Hi there. Please explain how language models work, in just a sentence or two.",
+    }
+]
+
+response: ChatResponse = chat(model='gemma3:1b', messages=messages)
+
+print(response.message.content)
+```
+
+応答は次のようになる場合があります（出力は環境により異なります）。
+
+```
+Language models, like me, are trained on massive amounts of text data to predict the next word in a sequence, essentially learning patterns and relationships within language to generate text that seems coherent and relevant.
+```
+
+前回と同様に、マルチターンの会話を行うことも可能です。
+
+```python
+from ollama import chat
+from ollama import ChatResponse
+
+messages = [
+    {
+        "role": "user",
+        "content": "Hi there. Please explain how language models work, in just a sentence or two.",
+    }
+]
+
+# Initial response from the model
+response: ChatResponse = chat(model='gemma3:1b', messages=messages)
+
+# Append the initial response to the messages
+messages.append(
+    {
+        "role": "assistant",
+        "content": response.message.content,
+    }
+)
+
+# Provide a follow-up prompt
+messages.append(
+    {
+        "role": "user",
+        "content": "Ah, I see. Now, can you write that in a Haiku?",
+    }
+)
+
+response: ChatResponse = chat(model='gemma3:1b', messages=messages)
+
+# This response will take both the initial and follow-up prompts into account
+print(response.message.content)
+```
+
+私の場合の応答は次のようでした。
+
+```
+Words flow, patterns bloom,
+Digital mind learns to speak,
+Meaning takes new form.
+```
+
+具体的な応答内容やシンタックスは異なるものの、推論プロバイダーとローカルモデルの間でワークフローと基本原則は同じでした。
+
+では、どのようにしてこれらの選択を行えばよいのでしょうか？
+
+先に触れたように、これは重要かつ広範なテーマであり、後ほど詳しく扱います。次のセクションでは、その第一歩として推論プロバイダーとローカルモデルのどちらを選ぶか、そしてモデルカードを読む際のポイントを取り上げます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

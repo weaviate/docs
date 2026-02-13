@@ -1,0 +1,192 @@
+---
+title: すべてのオブジェクトを読み込む
+sidebar_position: 25
+image: og/docs/howto.jpg
+# tags: ['how-to', 'cursor']
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.py';
+import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects-v3.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.ts';
+import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects-v2.ts';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read-all-objects.java';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go';
+
+Weaviate は、すべてのデータを反復処理するために必要な API を提供します。これは、データ（および ベクトル エンベディング）を別の場所へ手動でコピー／移行したい場合に役立ちます。
+
+これには `after` 演算子、別名 [cursor API](../api/graphql/additional-operators.md#cursor-with-after) を使用します。
+
+:::info Iterator
+新しい API クライアント（現在は Python Client v4 が対応）では、この機能が `Iterator` としてカプセル化されています。
+:::
+
+## オブジェクトのプロパティと ID を読み込む
+
+次のコードは、すべてのオブジェクトを走査し、各オブジェクトのプロパティと ID を取得します。
+
+<Tabs groupId="languages">
+
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadAllProps"
+      endMarker="# END ReadAllProps"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ReadAllProps"
+      endMarker="# END ReadAllProps"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ReadAllProps"
+      endMarker="// END ReadAllProps"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START ReadAllProps"
+      endMarker="// END ReadAllProps"
+      language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// Retrieve data"
+      endMarker="// Use this function to retrieve data"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// Retrieve data"
+      endMarker="// Use this function to retrieve data"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## ベクトルを含むすべてのオブジェクトを読み込む
+
+ベクトル を含むすべてのデータを読み込みます。（[named vectors](../config-refs/collections.mdx#named-vectors) を使用している場合にも適用されます。）
+
+<Tabs groupId="languages">
+
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadAllVectors"
+      endMarker="# END ReadAllVectors"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ReadAllVectors"
+      endMarker="# END ReadAllVectors"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ReadAllVectors"
+      endMarker="// END ReadAllVectors"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START ReadAllVectors"
+      endMarker="// END ReadAllVectors"
+      language="tsv2"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+## 全オブジェクトの読み取り - マルチ テナント コレクション
+
+すべてのテナントを順に処理し、それぞれのデータを読み取ります。
+
+:::tip Multi-tenancy
+[multi-tenancy](../concepts/data.md#multi-tenancy) が有効になっているクラスでは、オブジェクトを読み取る場合や作成する場合にテナント名を指定する必要があります。詳細は [データ管理: マルチ テナンシー操作]( ../manage-collections/multi-tenancy.mdx) をご覧ください。
+:::
+
+<Tabs groupId="languages">
+
+  <TabItem value="py" label="Python クライアント v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadAllTenants"
+      endMarker="# END ReadAllTenants"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python クライアント v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ReadAllTenants"
+      endMarker="# END ReadAllTenants"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS クライアント v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ReadAllTenants"
+      endMarker="// END ReadAllTenants"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS クライアント v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START ReadAllTenants"
+      endMarker="// END ReadAllTenants"
+      language="tsv2"
+    />
+  </TabItem>
+</Tabs>
+
+## 関連ページ
+
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [How-to: オブジェクトの読み取り](./read.mdx)
+- [リファレンス: GraphQL - 追加演算子](../api/graphql/additional-operators.md#cursor-with-after)
+- [データ管理: マルチ テナンシー操作]( ../manage-collections/multi-tenancy.mdx)
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

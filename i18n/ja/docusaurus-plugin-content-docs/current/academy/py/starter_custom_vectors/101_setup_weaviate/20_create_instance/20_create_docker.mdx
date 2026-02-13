@@ -1,0 +1,90 @@
+---
+title: "オプション 2: ローカル Docker インスタンス"
+description: "カスタム ベクトル 用 Weaviate Docker インスタンスの作成"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../../_snippets/101_connect.py';
+
+:::note 既に Weaviate インスタンスを作成しましたか？
+クラウド インスタンスを [作成済み](./10_create_wcs.mdx) の場合は、このページをスキップして、[Weaviate との通信](../30_communicate.mdx) に進んでください。
+:::
+
+ここでは、Docker を使用して Weaviate インスタンスを作成します。
+
+### <i class="fa-solid fa-chalkboard"></i> docker-compose ファイルのダウンロードと実行
+
+お使いのマシンに Docker をインストールしてください。公式の [Docker インストール ガイド](https://docs.docker.com/get-docker/) に従うことを推奨します。
+
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。次に、`docker-compose.yml` という新しいファイルを作成し、以下の内容を追加します。
+
+```yaml
+---
+services:
+  weaviate_anon:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    ports:
+    - 8080:8080
+    - 50051:50051
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ENABLE_API_BASED_MODULES: 'true'
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node1'
+...
+
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
+
+次のコマンドを実行して Weaviate を起動します。
+
+```bash
+docker compose up
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンス情報の取得
+
+インスタンスが作成されると、`http://localhost:8080` でアクセスできます。
+
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへ接続
+
+Weaviate インスタンスへ接続するには、`connect_to_local` 関数を使用します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DockerInstantiation"
+  endMarker="# END DockerInstantiation"
+  language="py"
+/>
+
+#### 推論 API キーの指定
+
+一部の Weaviate モジュールはデータのベクトル化や大規模言語モデル統合のために推論 API を利用できます。これらのサービスの API キーは、インスタンス作成時に Weaviate へ渡すことができます。
+
+このコースでは Cohere を使用するため、以下のように `headers={"X-Cohere-Api-Key": <YOUR_KEY>}` を通じて Cohere API キーを Weaviate に渡します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DockerAPIKeyInstantiation"
+  endMarker="# END DockerAPIKeyInstantiation"
+  language="py"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

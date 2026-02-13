@@ -1,0 +1,33 @@
+:::info Added in
+Weaviate バージョン `1.24.16`, `1.25.3` および `1.26` から追加されました。
+:::
+
+:::info Not available on Weaviate Cloud instances
+この機能は Weaviate Cloud インスタンスでは利用できません。
+:::
+
+Google Vertex AI の認証情報を保存し、Weaviate に必要なトークンを生成させることができます。これにより、Google の認証情報を保持できるプライベート環境で IAM サービス アカウントを使用できます。
+
+手順は次のとおりです。
+
+- `USE_GOOGLE_AUTH` [環境変数](/deploy/configuration/env-vars/index.md#module-specific) を `true` に設定します。
+- 認証情報ファイルを以下のいずれかの場所に配置します。
+
+適切な認証情報が見つかると、Weaviate はそれを使用してアクセストークンを生成し、Vertex AI に対して自身を認証します。トークンが期限切れになると、Weaviate は新しいアクセストークンを生成します。
+
+コンテナ環境では、認証情報ファイルをコンテナにマウントできます。たとえば、認証情報ファイルを `/etc/weaviate/` ディレクトリにマウントし、`GOOGLE_APPLICATION_CREDENTIALS` 環境変数を `/etc/weaviate/google_credentials.json` に設定します。
+
+<details>
+  <summary>
+    Google Vertex AI 認証情報の検索場所
+  </summary>
+
+`USE_GOOGLE_AUTH` を `true` に設定すると、Weaviate は次の場所で認証情報を検索し、最初に見つかった場所を優先します。
+
+1. `GOOGLE_APPLICATION_CREDENTIALS` 環境変数で指定されたパスの JSON ファイル。ワークロード アイデンティティ フェデレーションの場合、オンプレミスや非 Google クラウド プラットフォーム向けの JSON 構成ファイルの生成方法については [こちら](https://cloud.google.com/iam/docs/how-to#using-workload-identity-federation) を参照してください。
+2. `gcloud` コマンドライン ツールが認識する場所にある JSON ファイル。Windows では `%APPDATA%/gcloud/application_default_credentials.json`、その他のシステムでは `$HOME/.config/gcloud/application_default_credentials.json` です。
+3. Google App Engine Standard 第 1 世代ランタイム (&lt;= Go 1.9) では、`appengine.AccessToken` 関数を使用します。
+4. Google Compute Engine、Google App Engine Standard 第 2 世代ランタイム (>= Go 1.11)、および Google App Engine Flexible Environment では、メタデータ サーバーから認証情報を取得します。
+
+</details>
+

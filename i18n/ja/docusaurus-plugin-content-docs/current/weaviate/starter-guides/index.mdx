@@ -1,0 +1,87 @@
+---
+title: スターターガイド
+image: og/docs/tutorials.jpg
+hide_table_of_contents: true
+# tags: ['getting started']
+---
+
+このセクションでは、 Weaviate を使い始めるための手順を説明します。
+
+import CardsSection from "/src/components/CardsSection";
+
+export const starterConceptsData = [
+  {
+    title: "最適な Weaviate セットアップ",
+    description:
+      "用途に合った Weaviate のデプロイ オプション（Cloud、Docker、K8s、Embedded）を見つけます。",
+    link: "/weaviate/starter-guides/which-weaviate",
+    icon: "fas fa-map-signs",
+  },
+  {
+    title: "コレクションの定義とスキーマ",
+    description:
+      "コレクションの設定、プロパティ、およびデータスキーマを効果的に定義する方法を学びます。",
+    link: "/weaviate/starter-guides/managing-collections/",
+    icon: "fas fa-sitemap",
+  },
+  {
+    title: "コレクションのスケーリング制限",
+    description:
+      "多数のコレクションを超えてスケールする際にマルチテナンシーが役立つ理由を学びます。",
+    link: "/weaviate/starter-guides/managing-collections/collections-scaling-limits",
+    icon: "fas fa-expand-arrows-alt",
+  },
+  {
+    title: "検索拡張生成 (RAG)",
+    description:
+      "検索結果を LLM のプロンプトに追加して生成検索 (RAG) を実行します。",
+    link: "/weaviate/starter-guides/generative",
+    icon: "fas fa-robot",
+  },
+  {
+    title: "インデックス作成",
+    description:
+      "Weaviate が高速な検索とフィルタリングのためにデータをインデックス化する方法と、インデックス設定の選択について説明します。",
+    link: "/weaviate/starter-guides/managing-resources/indexing",
+    icon: "fas fa-search-plus",
+  },
+  {
+    title: "リソースの管理",
+    description:
+      "圧縮などの機能を使用して検索速度、リコール、コストのバランスを取ります。",
+    link: "/weaviate/starter-guides/managing-resources/",
+    icon: "fas fa-balance-scale",
+  },
+];
+
+<br />
+<CardsSection items={starterConceptsData} />
+<br />
+
+## その他のガイドとチュートリアル
+
+export const otherGuidesCardsData = [
+  {
+    title: "ハウツーマニュアル",
+    description: "ほとんどの Weaviate 機能の使い方手順です。",
+    link: "/weaviate/guides",
+    icon: "fas fa-compass",
+  },
+  {
+    title: "チュートリアル",
+    description: "ステップバイステップのガイドと実用例です。",
+    link: "/weaviate/tutorials",
+    icon: "fas fa-chalkboard-teacher",
+  },
+  {
+    title: "レシピ",
+    description:
+      "さまざまなユースケースと機能を示す Jupyter Notebook です。",
+    link: "/weaviate/recipes",
+    icon: "fas fa-scroll",
+  },
+];
+
+<br />
+<CardsSection items={otherGuidesCardsData} />
+<br />

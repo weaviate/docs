@@ -1,0 +1,251 @@
+---
+title: 転置インデックス
+description: Weaviate における転置インデックスのパラメーターリファレンスです。
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+**[転置インデックス](../../concepts/indexing/inverted-index.md)** は、値（単語や数値など）をそれを含むオブジェクトへマッピングします。これは、すべての属性ベースフィルタリング（ `where` フィルター）およびキーワード検索（ `bm25` 、 `hybrid` ）の基盤となります。
+
+## 転置インデックスのタイプ
+
+Weaviate では複数の [転置インデックスタイプ](../../concepts/indexing/inverted-index.md) が利用可能です。ただし、すべてのデータ型で利用できるわけではありません。利用可能な転置インデックスタイプは以下のとおりです。
+
+import InvertedIndexTypesSummary from "/_includes/inverted-index-types-summary.mdx";
+
+<InvertedIndexTypesSummary />
+
+- `indexFilterable` と `indexRangeFilters` のいずれか、または両方を有効にしてプロパティをインデックス化すると、フィルタリングが高速化されます。  
+  - どちらか一方のみを有効にした場合、そのインデックスがフィルタリングに使用されます。  
+  - 両方を有効にした場合、比較演算子を含む操作では `indexRangeFilters` が、等価・非等価演算では `indexFilterable` が使用されます。  
+
+## 転置インデックスのパラメーター
+
+これらのパラメーターはコレクション定義内の `invertedIndexConfig` オブジェクトで設定します。
+
+| Parameter                                     | Type    | Default                    | Details                                                                                                                                                                        |
+| :-------------------------------------------- | :------ | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`bm25`](#bm25)                               | Object  | `{ "k1": 1.2, "b": 0.75 }` | BM25 ランキングアルゴリズムの `k1` と `b` を設定します。プロパティ単位で上書き可能です。詳細は [**BM25 の設定**](#bm25) をご覧ください。                   |
+| [`stopwords`](#stopwords)                     | Object  | (Varies)                   | ストップワードリストを定義し、検索クエリから一般的な語を除外します。詳細は [**ストップワードの設定**](#stopwords) をご覧ください。                          |
+| [`indexTimestamps`](#indextimestamps)         | Boolean | `false`                    | `true` にするとオブジェクトの作成・更新タイムスタンプをインデックス化し、 `creationTimeUnix` と `lastUpdateTimeUnix` でフィルタリングできるようになります。 |
+| [`indexNullState`](#indexnullstate)           | Boolean | `false`                    | `true` にすると各プロパティの null / 非 null 状態をインデックス化し、 `null` 値でフィルタリングできるようになります。                                   |
+| [`indexPropertyLength`](#indexpropertylength) | Boolean | `false`                    | `true` にすると各プロパティの長さをインデックス化し、プロパティ長でフィルタリングできるようになります。                                                     |
+
+:::caution パフォーマンスへの影響
+`indexTimestamps` 、 `indexNullState` 、 `indexPropertyLength` を有効にすると、これらの追加インデックスを作成・維持するためのオーバーヘッドが発生します。必要なフィルタリング機能がある場合のみ有効にしてください。
+:::
+
+#### コード例
+
+以下の例は、クライアントライブラリを使用して転置インデックスのパラメーターを設定する方法を示しています。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+---
+
+#### `bm25`
+
+`invertedIndexConfig` の一部です。BM25 の設定項目は [自由パラメーター `k1` と `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) で、指定は任意です。デフォルト値（ `k1` = 1.2、 `b` = 0.75）は多くのケースで良好に機能します。
+
+コレクション単位で設定でき、プロパティ単位で上書きすることも可能です。
+
+<details>
+  <summary>例 `bm25` 設定 - JSON オブジェクト</summary>
+
+`bm25` を設定した完全なコレクションオブジェクトの例:
+
+```json
+{
+  "class": "Article",
+  // Configuration of the sparse index
+  "invertedIndexConfig": {
+    "bm25": {
+      "b": 0.75,
+      "k1": 1.2
+    }
+  },
+  "properties": [
+    {
+      "name": "title",
+      "description": "title of the article",
+      "dataType": ["text"],
+      // Property-level settings override the collection-level settings
+      "invertedIndexConfig": {
+        "bm25": {
+          "b": 0.75,
+          "k1": 1.2
+        }
+      },
+      "indexFilterable": true,
+      "indexSearchable": true
+    }
+  ]
+}
+```
+
+</details>
+
+#### `stopwords`
+
+`invertedIndexConfig` の一部です。`text` プロパティには検索結果に寄与しない非常に一般的な語が含まれる場合があります。それらを無視すると、クエリにストップワードが含まれる場合の検索速度が向上します。特にスコアリング検索（例: ` BM25 `）では顕著です。
+
+ストップワード設定はプリセット方式を採用しています。特定の言語における一般的なストップワードを使用する場合はプリセットを選択します（例: [`"en"` プリセット](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go)）。より詳細に制御したい場合は、追加したい語を `additions` に、除外したい語を `removals` に設定できます。また、空のプリセット（ `"none"` ）から始めて完全にカスタムのストップワードリストを作成することも可能です。
+
+<details>
+  <summary>例 `stopwords` 設定 - JSON オブジェクト</summary>
+
+`stopwords` を設定した完全なコレクションオブジェクトの例:
+
+```json
+  "invertedIndexConfig": {
+    "stopwords": {
+      "preset": "en",
+      "additions": ["star", "nebula"],
+      "removals": ["a", "the"]
+    }
+  }
+```
+
+</details>
+
+この設定により、ストップワードはコレクション単位で設定できます。未設定の場合、以下のデフォルトが適用されます。
+
+| Parameter     | Default value | Acceptable values          |
+| ------------- | ------------- | -------------------------- |
+| `"preset"`    | `"en"`        | `"en"` 、 `"none"`         |
+| `"additions"` | `[]`          | 任意のカスタム語リスト     |
+| `"removals"`  | `[]`          | 任意のカスタム語リスト     |
+
+:::note
+
+- `preset` が `none` の場合、コレクションは `additions` リストのみをストップワードとして使用します。  
+- 同じ語が `additions` と `removals` の両方に含まれている場合、Weaviate はエラーを返します。  
+:::
+
+`v1.18` 以降、ストップワードもインデックス化されます。そのため、ストップワードは転置インデックスに含まれますが、トークン化されたクエリには含まれません。この結果、BM25 アルゴリズム適用時にはストップワードは関連度計算の入力から除外されますが、スコアには影響します。
+
+ストップワードはランタイムに設定変更が可能になりました。データをインデックス化した後でも RESTful API を使用して <SkipLink href="/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">更新</SkipLink> できます。
+
+:::info
+
+ストップワードが除去されるのは [トークン化](../collections.mdx#tokenization) が `word` に設定されている場合のみです。
+
+:::
+
+#### `indexTimestamps`
+
+`invertedIndexConfig` の一部です。タイムスタンプでフィルターするクエリを実行するには、対象コレクションにオブジェクトの内部タイムスタンプに基づく 転置インデックス を維持させます。現在サポートされているタイムスタンプは `creationTimeUnix` と `lastUpdateTimeUnix` です。
+
+タイムスタンプベースのインデックスを有効にするには、`invertedIndexConfig` オブジェクトで `indexTimestamps` を `true` に設定します。
+
+#### `indexNullState`
+
+`invertedIndexConfig` の一部です。`null` でフィルターするクエリを実行するには、対象コレクションに各プロパティの `null` 値を追跡する 転置インデックス を維持させます。
+
+`null` ベースのインデックスを有効にするには、`invertedIndexConfig` オブジェクトで `indexNullState` を `true` に設定します。
+
+#### `indexPropertyLength`
+
+`invertedIndexConfig` の一部です。プロパティの長さでフィルターするクエリを実行するには、対象コレクションにプロパティの長さに基づく 転置インデックス を維持させます。
+
+プロパティ長ベースのインデックスを有効にするには、`invertedIndexConfig` オブジェクトで `indexPropertyLength` を `true` に設定します。
+
+:::note
+これらの機能を使用すると、より多くのリソースが必要になります。追加の 転置インデックス はコレクションの存続期間中、作成および維持されます。
+:::
+
+## Weaviate による転置インデックスの作成方法
+
+Weaviate は **各プロパティと各インデックスタイプごとに個別の 転置インデックス を作成** します。たとえば、`title` プロパティが検索可能かつフィルター可能な場合、Weaviate はそのプロパティに対して検索操作用とフィルター操作用の 2 つの 転置インデックス を作成します。詳細は [概念: 転置インデックス](../../concepts/indexing/inverted-index.md#how-weaviate-creates-inverted-indexes) をご覧ください。
+
+### コレクション作成後にプロパティを追加する場合
+
+オブジェクトをインポートした後にプロパティを追加すると、新しいプロパティの長さや `null` 状態でのフィルタリングなど、 転置インデックス に関連する機能に制限が生じる可能性があります。
+
+これは、 転置インデックス がインポート時に構築されるためです。オブジェクトのインポート後にプロパティを追加しても、長さや `null` 状態といったメタデータ用の 転置インデックス は新しいプロパティを含むよう更新されません。その結果、既存オブジェクトでは新しいプロパティがインデックスされず、クエリ時に予期しない動作が発生する可能性があります。
+
+これを避けるには、以下のいずれかを実施してください。
+
+- オブジェクトをインポートする前にプロパティを追加する  
+- コレクションを削除し、新しいプロパティを含めて再作成した後、データを再インポートする  
+
+プロパティ追加後にデータを再インデックスできる API を開発中です。将来のリリースで提供予定です。
+
+## トークナイゼーションが転置インデックスに与える影響
+
+`text` プロパティでは、Weaviate はまず **[トークナイゼーション](../collections.mdx#tokenization)** を行い、その後 転置インデックス エントリを作成します。トークナイゼーションとは、テキストをインデックスや検索に利用できる個々のトークン（単語、フレーズ、文字など）へ分割するプロセスです。
+
+選択したトークナイゼーション方式は次の点に直接影響します。
+
+- テキストから生成されるトークン
+- それらトークンが 転置インデックス にどのように保存されるか
+- 検索クエリやフィルターがデータにどのようにマッチするか
+
+例として、テキスト `"Hello, (beautiful) world"` では次のようになります。
+
+- **`word` トークナイゼーション**: `["hello", "beautiful", "world"]`
+- **`whitespace` トークナイゼーション**: `["hello", "(beautiful)", "world"]`
+- **`field` トークナイゼーション**: `["Hello, (beautiful) world"]`
+
+各トークンは 転置インデックス の個別エントリとなり、そのトークンを含むオブジェクトを指し示します。
+
+:::tip
+用途によって適切なトークナイゼーション方式は異なります。一般的なテキスト検索にはデフォルトの `word`、完全一致には `field`、アジア言語には `gse` や `kagome_ja` などの特殊なトークナイザーを選択してください。詳しくは [トークナイゼーションオプション](../collections.mdx#tokenization) をご覧ください。
+:::
+
+## 参考リソース
+
+- [概念: 転置インデックス](../../concepts/indexing/inverted-index.md)
+- [ハウツー: 転置インデックスパラメーターの設定](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
+- [リファレンス: トークナイゼーションオプション](../collections.mdx#tokenization) - さまざまなトークナイゼーション方式とテキストインデックスへの影響について
+
+## 質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

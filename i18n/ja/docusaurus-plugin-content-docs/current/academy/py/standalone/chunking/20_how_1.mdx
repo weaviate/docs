@@ -1,0 +1,198 @@
+---
+title: チャンク化手法 - 1
+description: Weaviate でチャンク化手法を実装するステップ 1 を解説します。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import CodeFixedSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.1.fixed.size.py';
+import CodeVariableSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.2.variable.size.py';
+import CodeMixedStrategyChunking from '!!raw-loader!./_snippets/20_chunking_methods.3.mixed.strategy.py';
+
+<!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+import PreviewUnit from '../../../_snippets/preview.mdx'
+
+<PreviewUnit />
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+チャンク化とは何か、そしてそれがなぜ重要なのかを学んだので、ここからは実践的なチャンク化手法を見ていきます。まずは **固定サイズ** のチャンク化手法と、その実装例を紹介します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 固定サイズのチャンク化
+
+名前が示すとおり、固定サイズのチャンク化とは、テキストを一定のサイズ（またはサイズを基準に）で分割する方法です。たとえば、記事を 100 語ごとのチャンクに分割したり、200 文字ごとに分割したりします。
+
+そのシンプルさと効果の高さから、最も一般的なチャンク化手法と言えるでしょう。
+
+### <i class="fa-solid fa-chalkboard"></i> 実装
+
+固定サイズのチャンク化は、テキストを一定数の単位ごとに分割して実装します。ここでの単位は語、文字、あるいは *トークン* である場合もあり、チャンクあたりの単位数は（上限として）固定され、必要に応じて重複（オーバーラップ）を設けます。
+
+:::tip トークンとは？
+ここでの「トークン」とは、モデルが数値に置き換えて処理するテキストの単位です。最新のトランスフォーマーモデルでは、トークンは数文字から成る「サブワード」であることが一般的です。
+:::
+
+固定サイズのチャンク化を行う擬似コードの一例を示します。
+
+```python
+# Given a text of length L
+# Split the text into chunks of size N units (e.g. tokens, characters, words)
+# Optionally, add an overlap of M units at the beginning or end of each chunk (from the previous or next chunk)
+# This should typically result in a list of chunks of length L // N + 1
+```
+
+Python で実装すると、次のようになります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeFixedSizeChunking}
+  startMarker="# START Vanilla fixed size chunker"
+  endMarker="# END Vanilla fixed size chunker"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+さらに、オーバーラップ（ここでは各チャンクの先頭側）を含めるように変更した例です。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeFixedSizeChunking}
+  startMarker="# START Fixed size chunker with overlap"
+  endMarker="# END Fixed size chunker with overlap"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+これは固定サイズのチャンク化を実装する唯一の方法ではありませんが、比較的シンプルな実装例の一つです。
+
+:::note 演習
+あなたなら固定サイズのチャンク化をどのように実装しますか？ 擬似コード（あるいはコード）を書いてみてください。
+:::
+
+### <i class="fa-solid fa-code"></i> 例
+
+具体的な固定サイズチャンク化の例を 3 つ見てみましょう。チャンクサイズはそれぞれ 5 語、25 語、100 語です。
+
+題材として [Pro Git book](https://git-scm.com/book/en/v2) から抜粋し、特に [What is Git?](https://github.com/progit/progit2/blob/main/book/01-introduction/sections/what-is-git.asc) 章のテキストを使用します。
+
+先ほどのチャンク化関数を使った例は次のとおりです。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodeFixedSizeChunking}
+  startMarker="# START Get fixed-size chunks examples"
+  endMarker="# END Get fixed-size chunks examples"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+これにより次のような出力が得られます。各サイズの最初の数チャンクを見て、何に気づくでしょうか？
+
+:::note 演習
+検索用途に最も適切なチャンクサイズはどれだと思いますか？ その理由とトレードオフを考えてみてください。
+:::
+
+<Tabs groupId="languages">
+<TabItem value="5" label="5 語ごと">
+<FilteredTextBlock
+  text={CodeFixedSizeChunking}
+  startMarker="# START Chunking by 5 words - outputs"
+  endMarker="# END Chunking by 5 words - outputs"
+  language="text"
+/>
+</TabItem>
+<TabItem value="25" label="25 語ごと">
+<FilteredTextBlock
+  text={CodeFixedSizeChunking}
+  startMarker="# START Chunking by 25 words - outputs"
+  endMarker="# END Chunking by 25 words - outputs"
+  language="text"
+/>
+</TabItem>
+<TabItem value="100" label="100 語ごと">
+<FilteredTextBlock
+  text={CodeFixedSizeChunking}
+  startMarker="# START Chunking by 100 words - outputs"
+  endMarker="# END Chunking by 100 words - outputs"
+  language="text"
+/>
+</TabItem>
+</Tabs>
+
+これらの具体例を見ると、先に説明した考え方が理解しやすくなるはずです。
+
+まず、小さなチャンクは非常に細かく、検索に有用な情報を含むには不十分に見えます。一方、大きなチャンクは典型的な段落と同程度の長さになり、より多くの情報を保持できるようになります。
+
+さらにチャンクが長くなると、そのベクトル埋め込みはより一般的なものになり、やがて情報検索には使いにくくなるポイントに達します。
+
+:::note 文字やサブワードのトークン分割は？
+この程度のサイズであれば、語を分割する文字ベースやサブワードトークンベースのチャンク化は通常必要ありません。語を途中で分割しても意味がないためです。
+:::
+
+:::tip どこから始める？
+固定サイズチャンクで検索を行う場合、他に指標がなければ 100〜200 語程度、オーバーラップを 20% 程度から試してみてください。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> 補足
+
+:::info Pro Git by Scott Chacon and Ben Straub - 書籍ライセンス
+
+<small>*この書籍は <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Non Commercial-Share Alike 3.0 ライセンス</a> の下で利用できます。*</small>
+
+:::
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
+
+<Quiz questions={varName} />
+
+Any quiz questions
+
+### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+Try out ...
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+
+:::info
+Add summary
+::: -->
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+<!-- import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->

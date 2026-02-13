@@ -1,0 +1,64 @@
+---
+title: Weaviate との通信
+---
+
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import TSCode from '!!raw-loader!../_snippets/101_connect.ts';  
+
+ここでは、 TypeScript クライアント ライブラリを使用して Weaviate と通信する基本的な操作を行います。
+
+### <i class="fa-solid fa-code"></i> Weaviate のステータス確認
+
+`isLive` 関数を使用して、 Weaviate インスタンスが起動しているかどうかを確認できます。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// PollLiveness"
+  endMarker="// END PollLiveness"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-code"></i> サーバーメタ情報の取得
+
+`getMeta` 関数を使用して、 Weaviate インスタンスのメタ情報を取得できます。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetMeta"
+  endMarker="// END GetMeta"
+  language="ts"
+/>
+
+これにより、サーバーのメタ情報がコンソールに出力されます。出力は次のようになります。
+
+<details>
+  <summary>例 <code>getMeta()</code> の出力</summary>
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// OutputGetMeta"
+  endMarker="// END OutputGetMeta"
+  language="ts"
+/>
+</details>
+
+### <i class="fa-solid fa-code"></i> 接続の終了
+
+Weaviate クライアントの使用が終わったら、接続を終了する必要があります。これによりリソースが解放され、接続が正常にクローズされます。
+
+ベスト プラクティスとして `try`-`finally` ブロックの使用を推奨します。簡潔さを保つため、以降のコード スニペットでは `try`-`finally` ブロックを省略します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// TryFinallyCloseDemo"
+  endMarker="// END TryFinallyCloseDemo"
+  language="ts"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

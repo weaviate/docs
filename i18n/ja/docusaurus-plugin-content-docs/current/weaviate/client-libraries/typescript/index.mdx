@@ -1,0 +1,165 @@
+---
+title: JavaScript と TypeScript
+sidebar_position: 10
+description: Web アプリケーションに Weaviate を統合するための公式 TypeScript/JavaScript クライアントライブラリのドキュメント。
+image: og/docs/client-libraries.jpg
+# tags: ['TypeScript', 'client library']
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import QuickLinks from "/src/components/QuickLinks";
+import TSv3Code from "!!raw-loader!/_includes/code/client-libraries/get-started.ts";
+
+export const typescriptCardsData = [
+  {
+    title: "weaviate/typescript-client",
+    link: "https://github.com/weaviate/typescript-client",
+    icon: "fa-brands fa-github",
+  },
+  {
+    title: "Reference manual",
+    link: "https://weaviate.github.io/typescript-client/index.html",
+    icon: "fa-solid fa-book",
+  },
+];
+
+:::note JavaScript/TypeScript クライアント (SDK)
+
+最新の TypeScript クライアントのバージョンは `v||site.typescript_client_version||` です。
+
+<QuickLinks items={typescriptCardsData} />
+
+:::
+
+import TSClientIntro from "/_includes/clients/ts-client-intro.mdx";
+
+<TSClientIntro />
+
+## インストール
+
+このセクションでは、v3 TypeScript クライアントのインストールと設定方法を説明します。
+
+#### パッケージのインストール
+
+v3 クライアントパッケージの名前は `weaviate-client` に変わりました。TypeScript クライアントライブラリは [npm](https://www.npmjs.com/) を使用してインストールします。
+
+```bash
+npm install weaviate-client
+```
+
+#### クライアントのインポート
+
+v3 クライアントは `ES Modules` を使用します。ドキュメントにあるサンプルコードのほとんども `ES Module` 形式を採用しています。
+
+コードが `CommonJS` 互換を必要とする場合は、`CommonJS` のインポート方法を使用してください。
+
+<Tabs groupId="languages">
+<TabItem value="esm" label="ES Modules">
+
+```ts
+import weaviate from "weaviate-client";
+```
+
+</TabItem>
+<TabItem value="cjs" label="CommonJS">
+
+```ts
+const weaviate = require("weaviate-client").default;
+```
+
+</TabItem>
+</Tabs>
+
+#### TypeScript のセットアップ
+
+以下の変更をプロジェクトの設定ファイルに加えてください:
+
+- `package.json` に `"type": "module"` を追加します
+- [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) に次のコードを追加します
+
+<details>
+    <summary>tsconfig.json ファイル</summary>
+
+```json
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true
+  },
+  "include": ["src/index.ts"] // this compiles only src/.index.ts, to compile all .ts files, use ["*.ts"]
+}
+```
+
+</details>
+
+## はじめに
+
+import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
+
+<BasicPrereqs />
+
+次のコードは以下を示します:
+
+1. ローカルの Weaviate インスタンスへ接続する。  
+1. 新しいコレクションを作成する。  
+1. バッチインポートでデータベースにデータを投入し、データをベクトル化する。  
+1. ベクトル検索を実行する。  
+
+<FilteredTextBlock
+  text={TSv3Code}
+  startMarker="// START GetStarted"
+  endMarker="// END GetStarted"
+  language="js"
+/>
+
+## 非同期処理の利用
+
+v3 クライアントのメソッドは `collection.use()` を除き、すべて ES6 の Promise を使用する非同期コードです。そのため、関数呼び出しの後に `.then()` を使用するか、コード全体を `async/await` ブロックでラップする必要があります。
+
+非同期コードでエラーが発生した場合、Promise は該当するエラーメッセージを返します。`async`/`await` を使用している場合、拒否された Promise はスローされた例外として扱われます。
+
+## リリース
+
+[GitHub のリリースページ](https://github.com/weaviate/typescript-client/releases) で、TypeScript クライアントライブラリのリリース履歴と変更ログを確認できます。
+
+<details>
+  <summary>Weaviate と対応するクライアントバージョンの一覧はこちらをクリック</summary>
+
+import ReleaseHistory from "/_includes/release-history.md";
+
+<ReleaseHistory />
+
+</details>
+
+
+
+#### ベクトライザー API の変更点 `v3.8.0` 
+
+Weaviate JS/TS クライアント `v3.8.0` から、コレクションを作成する際のベクトライザー設定 API に複数の変更が加えられました:
+- `configure.vectorizer` は `configure.vectors` に置き換えられました
+- ユーザーが [マルチ ベクトル](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali) を扱えるよう、`configure.multiVectors` が追加されました
+- `configure.vectorizer.none` は `configure.vectors.selfProvided` に置き換えられました 
+
+#### `v2` から `v3` への移行
+
+Weaviate TypeScript クライアント v2 から v3 へプロジェクトを移行する場合は、詳細について [移行ページ](/weaviate/client-libraries/typescript/v2_v3_migration) をご覧ください。
+
+## コード例と追加リソース
+
+import CodeExamples from "/_includes/clients/code-examples.mdx";
+
+<CodeExamples />
+
+## ご質問とフィードバック
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+

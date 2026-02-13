@@ -1,0 +1,133 @@
+---
+title: チャンク化の簡潔な紹介
+description: Weaviate の Python SDK におけるチャンク化の基本を理解します。
+---
+
+<!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+import PreviewUnit from '../../../_snippets/preview.mdx'
+
+<PreviewUnit />
+
+## <i class="fa-solid fa-square-chevron-right"></i> チャンク化とは
+
+チャンク化とは、テキストをより小さな断片 ― すなわち「チャンク」 ― に分割する前処理ステップです。
+
+ベクトル データベースは、オブジェクトを意味を捉えたベクトルと共に格納することをご存じでしょう。しかし、各ベクトルが *どれだけ* のテキストの意味を捉えるのでしょうか？ それを定義するのがチャンク化です。各チャンクこそがベクトル化され、データベースに保存される情報単位となります。
+
+例えば、ソース テキストが複数冊の書籍で構成されている場合を考えてみましょう。チャンク化手法によっては、書籍を章・段落・文、さらには単語レベルまで分割することも可能です。
+
+単純な概念ですが、ベクトル データベースの性能や言語モデルの出力に大きな影響を及ぼします。
+
+## <i class="fa-solid fa-square-chevron-right"></i> データをチャンク化する理由
+
+### <i class="fa-solid fa-chalkboard"></i> 情報検索のため
+
+先ほどの例 ― 書籍セットからベクトル データベースを構築する ― に戻りましょう。
+
+極端なケースとして、各書籍を 1 つのベクトルとして登録する方法があります。これは図書館の蔵書目録のようなデータベースを構築することになります。
+
+この方法はクエリに最も近い書籍を見つけるには有用ですが、ベクトルが書籍全体を対象としているため、書籍内の特定情報を探すといったより細粒度のタスクには適していません。
+
+逆に、各文を 1 つのベクトルとして登録する方法もあります。これは文レベルのシソーラスのようなデータベースを構築するイメージです。筆者が伝えたい特定の概念や情報を見つけるには適していますが、本や章といったより広い情報を探すには不向きかもしれません。
+
+どちらを選ぶか、あるいはその中間の方法を選ぶかはユースケース次第です。指針や考慮点については後ほど詳しく説明します。
+
+ここでの重要ポイントは、チャンク化がデータベースに保存される情報単位、すなわち検索・取得される情報単位を定義するということです。
+
+後述するように、これは検索だけでなく下流の検索拡張生成 (RAG) ユースケースにも影響します。
+
+### <i class="fa-solid fa-chalkboard"></i> モデル要件への適合
+
+チャンク化のもう一つの理由は、使用する言語モデルの要件を満たすためです。
+
+これらのモデルには入力テキスト長に関する有限の「ウィンドウ」があり、ソース テキストがその長さを超えることがよくあります。例えば『ロード・オブ・ザ・リング』は 500,000 語を超えます！
+
+一般的なモデルの「コンテキスト ウィンドウ」は数千トークン（単語、語の一部、句読点など）程度です。そのため、モデルに入力するテキストはこのサイズ以下のチャンクに分割する必要があります。
+
+### <i class="fa-solid fa-chalkboard"></i> 最適な検索拡張生成 (RAG) のため
+
+チャンク化は検索拡張生成 (RAG) を最適化するためにも重要です。（RAG について復習が必要な場合は、[こちらのモジュール](../../zero_to_mvp/104_queries_2/30_generative.mdx) をご覧ください。）
+
+要するに、RAG ではデータベースから取得したデータをプロンプトと一緒に大規模言語モデル (LLM) に渡すことで、モデルを現実の情報に基づかせることができます。これにより、古い情報や欠落した情報による事実誤りを防ぐことができます。
+
+それでは、なぜチャンク化が RAG に影響するのでしょうか？ LLM には入力サイズの上限 ― コンテキスト ウィンドウ ― があるため、チャンク サイズはコンテキスト ウィンドウに含められるチャンク数を決定します。これはつまり、LLM が参照できる情報源の数と、各オブジェクトに含まれる情報量を決めることになります。
+
+チャンク サイズが小さすぎる場合、大きすぎる場合に何が起きるかを考えてみましょう。
+
+#### 小さすぎるチャンク
+
+短いチャンクを使うと、多くのチャンクから情報を LLM に渡すことができます。しかし、各結果に含まれる文脈情報が不足する可能性があります。
+
+次の文をチャンクとして LLM に渡す場合を想像してみてください：  
+`In the dense areas, most of the concentration is via medium- and high-rise buildings.`  
+この文からその地域の性質について多くを語っていますが、さらなる文脈がないと LLM にとっては有用ではありません。この文はどこについて語っているのでしょうか？ なぜ密度について話しているのでしょうか？ 人間にも分かりづらいですし、LLM も同様に推測せざるを得ません。
+
+対照的に、以下のように渡したらどうでしょうか：  
+`Wikipedia: London: Architecture: In the dense areas, most of the concentration is via medium- and high-rise buildings. London's skyscrapers, such as 30 St Mary Axe (dubbed "The Gherkin"), Tower 42, the Broadgate Tower and One Canada Square, are mostly in the two financial districts, the City of London and Canary Wharf.`
+
+ソース、記事タイトル、セクションタイトル、追加の文など、より多くの文脈情報が含まれているため、私たちにも LLM にとってもはるかに明確です。
+
+#### 大きすぎるチャンク
+
+一方で、チャンクが大きすぎると、LLM のコンテキスト ウィンドウに収まるチャンク数が少なくなったり、コストが増加したりします。また、不要な情報が増える可能性もあります。
+
+極端な例として、一続きのテキストしか LLM に渡せないとしたらどうでしょうか。それは、書籍の 1 つのセクションだけを使ってエッセイを書けと言われるようなものです。
+
+どちらの極端も理想的ではなく、バランスを見つけることが重要です。
+
+## <i class="fa-solid fa-square-chevron-right"></i> チャンクサイズの選定
+
+ご覧のように、適切なチャンク サイズを選ぶには複数の要因が絡み合います。
+
+残念ながら、誰にとっても万能なチャンク サイズやチャンク化手法は存在しません。ポイントは、*あなた* に合った ― 小さすぎず大きすぎず、かつ手法も適切な ― サイズを見つけることです。
+
+次のユニットでは、一般的なチャンク化手法からレビューを始め、これらのアイデアを掘り下げていきます。
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
+
+<Quiz questions={varName} />
+
+Any quiz questions
+
+### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+Try out ...
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+
+:::info
+Add summary
+::: -->
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+<!-- import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->

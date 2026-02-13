@@ -1,0 +1,84 @@
+---
+title: 直積量子化
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/100_pq.py';
+
+
+[直積量子化](/weaviate/concepts/vector-quantization#product-quantization) (PQ) は、ベクトルを圧縮するための手法です。Weaviate では、メモリ上の [HNSW インデックス](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) のサイズを削減し、パフォーマンス向上とリソース・コスト削減に役立ちます。
+
+## <i class="fa-solid fa-chalkboard"></i> 直積量子化
+
+直積量子化は、次の 2 つの方法でベクトルを圧縮します。  
+1. ベクトルを「セグメント」に分割する  
+2. 各セグメントを「コードブック」に含まれるセントロイドの 1 つで表現できるよう量子化する  
+
+下図では、各次元が浮動小数点数で表される L 次元のベクトルを示しています。このベクトルは L/x セグメントに分割され、各セグメントは N 個のセントロイドのいずれかで量子化されます。
+
+import PQDiagram from './_snippets/pq_diagram.png';
+
+<img src={PQDiagram} width="80%" alt="Abstracted PQ diagram showing reduction of dimensions and quantization of groups of floats"/>
+
+例えば、768 次元のベクトルは、128 セグメントに量子化された 1 バイト整数のベクトルへ圧縮できます。
+
+これにより、ベクトルの長さは 6 分の 1 になり、各セグメントは浮動小数点数 (4 バイト) から 1 バイトで 256 個のセントロイドのいずれかを表す形式へ縮小されます。
+
+結果として、ベクトルのサイズは 24 倍 (768 × 4 バイト → 128 × 1 バイト) 小さくなります。
+
+その後、HNSW インデックスは PQ 圧縮後のベクトル上に構築されるため、インデックスのメモリサイズも削減されます。
+
+### <i class="fa-solid fa-chalkboard"></i> 損失性
+
+PQ はロスのある圧縮手法です。元の浮動小数点値をより小さな整数集合へ量子化するため、一部情報が失われます。
+
+しかし、Weaviate はインデックスから多めにベクトルを取得し、非圧縮空間で再スコアリングを行うことで、この損失を補っています。実際には、この方法で PQ の損失性を十分に緩和できることが分かっています。
+
+## <i class="fa-solid fa-code"></i> PQ の設定
+
+以下の例は、デフォルト設定で直積量子化 (PQ) を有効にしたコレクションを作成します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# PQBasicConfig"
+  endMarker="# END PQBasicConfig"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+このコードは、PQ を有効にしたコレクションをデフォルト設定で作成します。
+
+ただし、圧縮は直ちには行われません。PQ はベクトルの量子化を行うため、既定では 100,000 個のベクトルが「トレーニングセット」に到達するまで待機します。
+
+トレーニングセットは量子化用のセントロイドを計算するために使用され、到達後に PQ 圧縮が実行されます。
+
+:::note Version and configuration requirements
+この PQ 設定方法は「 AutoPQ 」と呼ばれ、Weaviate `v1.23` 以降で非同期インデックス作成を有効にしている場合に利用できます。  
+<br/>
+
+より古いバージョンの Weaviate を使用している、または非同期インデックス作成を無効にしている場合は、別の設定方法が必要です。詳しくは [PQ 設定ドキュメント](/weaviate/configuration/compression/pq-compression.md#manually-configure-pq) をご覧ください。
+:::
+
+## <i class="fa-solid fa-code"></i> PQ のカスタマイズ
+
+多くの PQ パラメータは変更可能です。デフォルト設定は多くのユースケースで適していますが、要件に合わせて PQ 設定を調整したい場合もあるでしょう。
+
+以下の例では、トレーニングセットのサイズを小さくする、セントロイド数を変更するなど、カスタム設定を行う方法を示しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# PQCustomConfig"
+  endMarker="# END PQCustomConfig"
+  language="py"
+/>
+
+利用可能な設定項目については、[PQ 設定ドキュメント](/weaviate/configuration/compression/pq-compression.md#pq-parameters) を参照してください。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

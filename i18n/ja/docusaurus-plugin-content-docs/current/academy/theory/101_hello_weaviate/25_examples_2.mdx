@@ -1,0 +1,109 @@
+---
+title: 例 2 - 検索を超えて
+description: Hello Weaviate Theory - 例 パート 2
+sidebar_position: 25
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索のその先
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/ezMZKEFteUA' controls='true' />
+<br/>
+
+Weaviate では、静的な情報を取得するだけでなく、さらに多くのことができます。
+
+データベースからオブジェクトを単に取得するだけでなく、さらに活用する例をいくつか見てみましょう。
+
+この Wikipedia エントリから情報を抽出します。
+
+<details>
+  <summary>「シドニー・オペラハウス」Wikipedia サマリー</summary>
+
+シドニー・オペラハウスは、シドニーにある複数会場型の舞台芸術センターです。シドニー湾の海岸沿いに位置し、世界で最も有名かつ独特な建築物の一つであり、20 世紀建築の傑作と広く評価されています。デンマーク人建築家ヨーン・ウツソンが設計し、ピーター・ホール率いるオーストラリアの建築チームが完成させました。1957 年に国際設計コンペでウツソン案が選ばれて以降プロジェクトが始動し、1973 年 10 月 20 日にエリザベス 2 世女王によって正式に開館しました。ニューサウスウェールズ州政府（首相ジョセフ・ケーヒル）が 1958 年に建設を承認し、ウツソンが工事を指揮しました。建設決定後にはコストやスケジュールの超過、そして最終的なウツソンの辞任などの事情がたびたび取り沙汰されています。建物とその周辺は、シドニー湾のベネロン・ポイント全体を占め、シドニー・コーブとファーム・コーブの間、シドニー中心業務地区と王立植物園に隣接し、シドニー・ハーバーブリッジの近くに位置します。
+
+複数の公演会場を備える建物では年間 1,500 件以上の公演が行われ、120 万人以上が来場します。オペラ・オーストラリア、シドニー・シアター・カンパニー、シドニー交響楽団という 3 つの常駐団体を含む多数のアーティストが公演を行います。オーストラリアでも最も人気のある観光名所の一つで、年間 800 万人以上が訪れ、約 35 万人がガイド付きツアーに参加します。建物はニューサウスウェールズ州政府機関のシドニー・オペラハウス・トラストによって管理されています。
+
+2007 年 6 月 28 日、シドニー・オペラハウスはユネスコ世界遺産に登録されました。それ以前にも 1980 年から国定遺産リスト（現在は廃止）、1983 年からオーストラリア国民信託、2000 年からシドニー市ヘリテージ・インベントリ、2003 年からニューサウスウェールズ州ヘリテージ登録、2005 年からオーストラリア国定遺産リストに登録されていました。また、世界新七不思議キャンペーンのファイナリストにも選ばれています。
+
+</details>
+
+Weaviate は、この Wikipedia エントリを処理する際に [データオブジェクト](/weaviate/concepts/data) を生成します。オブジェクトはクラスに保存され、クラスはリレーショナルデータベースにおけるテーブルに概ね相当します。オブジェクトはそのテーブルのエントリに類似しています。
+
+
+### <i class="fa-solid fa-chalkboard"></i> 生成検索
+
+Weaviate はこれらのエントリをさらに活用できます。データストアからオブジェクトを取り出し、そのオブジェクトを使って新しい文章を生成するよう依頼できます。たとえば、シドニー・オペラハウスのエントリを含むオブジェクトを用いて新しいテキストを作成できます。
+
+以下は `GraphQL` クエリによる生成検索の例です。
+
+```graphql
+{
+  Get {
+    WikiArticle(
+      nearText: {
+        concepts: ["Sydney Opera House"]
+      }
+      limit: 1
+    ) {
+      title
+      wiki_summary
+      _additional {
+        generate(
+          singleResult: {
+            prompt: """
+              Write a fun tweet encouraging people to read about this: ## {title}
+              by summarizing highlights from: ## {wiki_summary}
+            """
+          }
+        ) {
+          singleResult
+          error
+        }
+      }
+    }
+  }
+}
+```
+
+このサンプルコードは Wikipedia エントリを基にツイートを生成します。
+
+<details>
+  <summary>レスポンスを見る</summary>
+
+:::note Weaviate の返答:
+Explore the world-famous Sydney Opera House and its incredible architecture! From the iconic design to the amazing performances, there's something for everyone to enjoy. #SydneyOperaHouse #Explore #Architecture #Performances #Experience
+:::
+
+</details>
+
+このプロセスは `generative search`（生成検索）の一例です。生成検索では、Weaviate が情報を取得し、それを大規模言語モデル（LLM）で再構成します。これは情報の取り扱い方を大きく変える強力な機能です。
+
+プロンプトを変えることで、異なる結果を生成できます。
+
+### <i class="fa-solid fa-chalkboard"></i> 次のステップ
+
+Q&A や生成検索のようなツールを使うと、情報がまさに生き生きと活用できるようになります。
+
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+<!-- ### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+Can you describe, in your own sentence, XXX?
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+??
+::: -->
+
+### <i class="fa-solid fa-lightbulb-on"></i> 主なポイント
+
+- Weaviate は質疑応答機能を用いてテキストから知識を抽出し、与えられたテキストに基づいて最も関連性の高いオブジェクトと実際の解答を特定できます。
+- 生成検索を利用すると、情報を取得して内容を再形成・再利用でき、たとえば Wikipedia エントリからツイートを生成できます。
+- Weaviate のこれら高度な機能により、データ内の情報との対話方法や活用方法が大きく変革します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,107 @@
+---
+title: 概要
+description: 埋め込みモデル選択の重要性
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+## <i class="fa-solid fa-chalkboard-user"></i> 埋め込みモデル選択の重要性
+
+Embedding モデルとは、オブジェクトの「意味」を捉える AI モデルです。 この [以前の AI モデルに関するモジュール](../010_ai_models_deep_dive/index.mdx) では、Embedding モデルがテキスト・画像・音声などを数値の列へ変換することで意味を表現できることを紹介しました。
+
+import NNEmbeddingModels from '../010_ai_models_deep_dive/_img/nn_explained_50_embedding_models.png';  
+import NNEmbeddingModelsDark from '../010_ai_models_deep_dive/_img/nn_explained_50_embedding_models_dark.png';  
+
+<ThemedImage
+  alt="ニューラルネットワークの基本図"
+  sources={{
+    light: NNEmbeddingModels,
+    dark: NNEmbeddingModelsDark,
+  }}
+  width="400"
+/>
+
+ご想像のとおり、これは容易なタスクではありません。そして過去 10 年ほどで劇的な進歩がありました。 例として、その期間の両端に位置する 2 つのモデル性能の違いを見てみましょう。
+
+### <i class="fa-solid fa-chalkboard"></i> 評価例
+
+こちらは [サンプルデモアプリ](https://github.com/databyjp/emb_eval_toybox) のスクリーンショットで、Embedding 評価を行っています。
+
+この例では、`“How do I make chocolate chip cookies from scratch”` というクエリに最も一致するドキュメントを、20 件の候補ドキュメントから検索します。
+
+20 件の各ドキュメントには `“score”` 属性があり、値が高いほど関連性が高いことを示しています。
+
+<img
+    src={require('./_img/candidate_documents.png').default}
+    alt="候補ドキュメント"
+/>
+
+では、2 つの異なる Embedding モデルを用いて最適なオブジェクトを取得するとどうなるでしょうか。以下の 2 つのモデルを使用します。
+
+- `FastText (fasttext-en-vectors)`（ 2015 年；[モデルカード](https://huggingface.co/facebook/fasttext-en-vectors)）
+- `snowflake-arctic-embed-l-v2.0`（ 2024 年；[モデルカード](https://huggingface.co/Snowflake/snowflake-arctic-embed-l-v2.0)）
+
+まず、 2015 年の `FastText` モデルで検索した結果の概要です。
+
+<img
+    src={require('./_img/embedding_eval_example_1_fasttext.png').default}
+    alt="FastText の検索結果"
+/>
+
+FastText が特定した最上位の結果は、クッキー作りの問題点を修正する方法を扱っており、ある程度関連しています。しかし理想的なのは手順を示すレシピですので、完全には一致していません。
+
+残り 2 件はクエリと無関係です。レシピではありますがクッキー用ではありません。
+
+改善の余地が大きいと言えるでしょう。
+
+続いて、 2025 年の `snowflake-arctic-embed-l-v2.0` モデルでの結果です。
+
+<img
+    src={require('./_img/embedding_eval_example_2_arctic2.png').default}
+    alt="Snowflake Arctic の検索結果"
+/>
+
+`arctic` の Embedding は理想的な最上位結果を正しく特定しました。実際、期待された上位 2 件が 3 位以内に入っています。残り 1 件もチョコチップクッキーに関連しており、多少トピックがずれている程度です。
+
+### <i class="fa-solid fa-chalkboard"></i> 評価基準
+
+これらのモデルを `nDCG@k` などの標準指標で比較することもできます。
+
+今回のシナリオでは、 2 つのモデルのスコアは以下のとおりです。
+
+| モデル | nDCG@10 |
+| --- | --- |
+| `FastText` | 0.595 |
+| `snowflake-arctic-embed-l-v2.0` | 0.908 |
+
+<details>
+  <summary>nDCG@k とは？</summary>
+
+`nDCG` は情報検索で返された結果を評価する指標です。最も関連性の高い結果をリストの上位に配置するほど高く評価されます。`@k` は上位 `k` 件のみを対象とすることを示します。
+
+[詳しくはこちら](https://weaviate.io/blog/retrieval-evaluation-metrics#normalized-discounted-cumulative-gain-ndcg)
+
+</details>
+
+生成される Embedding のサイズも重要な要素です。
+
+Embedding の次元数はおよそ 300 から数千まで大きく異なります。たとえば、法律事例に関する質問に回答する AI ボットを提供するサービス事業者を考えてみましょう。 100 万件のドキュメントを持つベクトルデータベースでは、`nv-embed-v2` というモデルを使うと 3.3 TB ものメモリが必要になる可能性がありますが、`embed-english-light-v3.0` なら 300 GB で済むかもしれません。 （下図は人気モデルをいくつか取り上げ、それぞれがメモリ要件にどのように影響するかを比較したものです。）
+
+<img
+    src={require('./_img/memory-reqs-1m-docs.png').default}
+    alt="100 万ドキュメントの推定メモリ要件"
+/>
+
+これらの簡単な例からも、Embedding モデル選択が検索品質やリソース要件などに大きな影響を与えることが分かります。
+
+過去 10〜15 年で Embedding モデルの世界は大きく進歩しました。実際、革新は現在も続いています。word2vec、FastText、GloVe、BERT、CLIP、OpenAI ada、Cohere multi-lingual、Snowflake Arctic、ColBERT、ColPali といった名前を聞いたことがあるかもしれません。
+
+各モデル（またはアーキテクチャ）は、モデル構造・学習データ・学習手法・モダリティ・効率性など、何らかの面で改良をもたらします。
+
+それでは次のセクションから、Embedding モデル選定のワークフローを探っていきましょう。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,227 @@
+---
+title: 'クイックスタート: 独自ベクトルを使用する'
+sidebar_label: Bring your own vectors
+sidebar_position: 2
+image: og/docs/tutorials.jpg
+# tags: ['getting started']
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
+import ByovAllPy3Code from '!!raw-loader!/_includes/code/quickstart.byov.all_v3.py';
+import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
+import ByovAllTsCodeLegacy from '!!raw-loader!/_includes/code/quickstart.byov.all.legacy.ts';
+import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
+
+ Weaviate はベクトル データベースです。[ベクトル データベース](https://weaviate.io/blog/what-is-a-vector-database) はデータ オブジェクトと、それらを表すベクトルを保存します。ベクトル埋め込み (embedding) は「埋め込み」とも呼ばれます。
+
+データをインポートする際、既存のベクトルを渡すことも、新しいベクトルを生成することもできます。「独自ベクトルの持ち込み」とは、データをアップロードするときにベクトル埋め込みを自分で指定することを意味します。提供する埋め込みはカスタム ベクトルでも、[model provider](/weaviate/model-providers) を使用して事前生成したベクトルでも構いません。
+
+本ガイドでは、既にベクトルを持つデータのインポート方法を説明します。
+
+## ガイド手順
+
+既存ベクトル付きデータをインポートするには、次の手順に従ってください。
+
+1. [セットアップ手順を確認する](#setup)
+1. [ Weaviate に接続する](#connect-to-weaviate)
+1. [ベクトルを含むデータをインポートする](#import-data-and-vectors)
+1. [ベクトル検索を行う](#query)
+
+## セットアップ
+
+このセクションでは、前提となるセットアップと、本ガイドで使用するサンプル データを紹介します。
+
+### サンプル データ
+
+サンプル データはテレビ番組「Jeopardy!」の 10 問を基にしています。[インポート データ ファイル](https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny_with_vectors_all-OpenAI-ada-002.json) は、ベクトルと元データを含む JSON 形式のドキュメントです。
+
+<details>
+  <summary>サンプル データ</summary>
+
+この JSON ファイルは上記データを基にしています。ベクトル埋め込みは OpenAI API の [`text-embedding-ada-002` model](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings) で生成しました。  
+<br/>
+ベクトルは、独自のベクトライザー モデルや Cohere、Hugging Face など他のモデル プロバイダーなど、任意のソースから取得できます。  
+<br/>
+
+  | Category | Question | Answer | Vector |
+  | :- |:- |:- | :- |
+  | SCIENCE | This organ removes excess glucose from the blood & stores it as glycogen | Liver | [ -0.006632288, -0.0042016874, ..., -0.020163147 ] |
+  | ANIMALS | It's the only living mammal in the order Proboseidea | Elephant | [ -0.0166891, -0.00092290324, ..., -0.032253385 ] |
+  | ANIMALS | The gavial looks very much like a crocodile except for this bodily  feature | the nose or snout | [ -0.015592773, 0.019883318, ..., 0.0033349802 ] |
+  | ANIMALS | Weighing around a ton, the eland is the largest species of this animal in Africa | Antelope | [ 0.014535263, -0.016103541, ..., -0.025882969 ] |
+  | ANIMALS | Heaviest of all poisonous snakes is this North American rattlesnake | the diamondback rattler | [ -0.0030859283, 0.015239313, ..., -0.021798335 ] |
+  | SCIENCE | 2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new one of this classification | species | [ -0.0090561025, 0.011155112, ..., -0.023036297 ] |
+  | SCIENCE | A metal that is "ductile" can be pulled into this while cold & under  pressure | wire  | [ -0.02735741, 0.01199829, ..., 0.010396339 ] |
+  | SCIENCE | In 1953 Watson & Crick built a model of the molecular structure of this, the gene-carrying substance | DNA | [ -0.014227471, 0.020493254, ..., -0.0027445166 ] |
+  | SCIENCE | Changes in the tropospheric layer of this are what gives us weather  | the atmosphere          | [ 0.009625228, 0.027518686, ..., -0.0068922946 ] |
+  | SCIENCE | In 70-degree air, a plane traveling at about 1,130 feet per second breaks it | Sound barrier  | [ -0.0013459147, 0.0018580769, ..., -0.033439033 ] |
+
+</details>
+
+### Weaviate インスタンス
+
+ Weaviate はオープン ソースです。ローカル、クラウド、またはサービスとして[ Weaviate を実行](/deploy/index.mdx)できます。自身でインスタンスを用意せずにガイドを試す場合は、[Weaviate Cloud](/cloud/quickstart) の無償 Sandbox インスタンスの利用を検討してください。
+
+### クライアント ライブラリー
+
+[クライアント ライブラリー](/weaviate/client-libraries) を使用すると Weaviate の操作が簡単になります。複数のプログラミング言語向けに提供されています。本ガイドでは Python、Typescript、cURL の例を示します。
+
+クライアントをインストールするには、使用言語のインストーラーを実行してください。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+v4 クライアントは Weaviate 1.23.7 以上が必要です。<br/><br/>
+
+```bash
+pip install -U weaviate-client
+```
+</TabItem>
+<TabItem value="py3" label="Python Client v3">
+
+```bash
+pip install "weaviate-client==3.*"
+```
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```bash
+npm install weaviate-client
+```
+</TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+
+```bash
+npm install weaviate-ts-client
+```
+</TabItem>
+</Tabs>
+
+## Weaviate への接続
+
+本ガイドでは、コレクションをホストするために Weaviate Cloud インスタンスを使用します。[Weaviate Cloud インスタンスへ接続](/cloud/manage-clusters/connect)するには、次の情報が必要です。
+
+- Weaviate URL
+- Weaviate API キー
+
+Sandbox インスタンスを使用している場合、URL と API キーはインスタンスの[詳細パネル](/cloud/manage-clusters/connect.mdx)に表示されます。
+
+ Weaviate に接続するには、使用言語のコードを実行して client オブジェクトを作成します。後続のステップでも同じ `client` オブジェクトを再利用してインスタンスへ接続し、サンプル コードを実行します。
+
+import ConnectToWeaviate from '/_includes/code/quickstart/connect.partial.mdx'
+
+<ConnectToWeaviate />
+
+## コレクション定義
+
+ Weaviate は[データ](../concepts/data.md)をコレクションに保存します。コレクション内の各データ オブジェクトは、一連のプロパティとベクトル埋め込みを持ちます。データをインポートする前に、コレクションのデータ プロパティを定義する[コレクション定義](/weaviate/config-refs/collections.mdx)を作成する必要があります。
+
+データ プロパティの定義はスキーマと呼ばれます。ベクトライザーはコレクション レベルで定義します。モデルや動作などの詳細は、プロパティ レベルで指定する場合もあります。
+
+本ガイドでは、すでにデータのベクトル埋め込みが存在することを前提としています。インポート ファイルにベクトルが含まれているため、サンプルの設定コードではコレクション レベルで vectorizer を `none` に設定します。
+
+設定の詳細については、[ベクトライザー設定](../manage-collections/vector-config.mdx#specify-vectorizer-settings)を参照してください。
+
+### コレクションの定義
+
+import CreateSchema from '/_includes/code/quickstart.byov.schema.mdx'
+
+<CreateSchema />
+### オプション: 互換ベクトライザー設定
+ご使用のカスタム ベクトルを生成するためのベクトライザーに対して、 Weaviate の[統合](/weaviate/model-providers)が存在する場合は、コレクション定義にそのベクトライザーを追加することをご検討ください。ベクトライザーを指定すると、 Weaviate は必要に応じて新しいベクトルを生成できます。
+
+この例では、ベクトルは OpenAI `ada-002` モデルによって生成されています。 Weaviate の `text2vec-openai` 統合は `ada-002` モデルにアクセスできるため、コレクション定義では `text2vec-openai` を指定します。
+
+インポート時には、コレクションでベクトライザーを指定していても、 Weaviate は提供されたベクトルを使用します。
+
+## データとベクトルのインポート
+
+大規模なデータセットでは、個別にオブジェクトをインポートするよりもバッチ インポートの方が効率的です。次のバッチ インポート コードは、質問オブジェクトとそのベクトルをインポートします。
+
+import ImportQuestionsWithVectors from '/_includes/code/quickstart.import.questions-and-vectors.mdx'
+
+<ImportQuestionsWithVectors />
+
+:::tip ベクトルはオブジェクトのプロパティではありません
+プロパティ セクションにベクトルを記載した場合、 Weaviate はそれをベクトル埋め込みではなく通常のプロパティとして処理します。  
+バッチ インポートの要素を指定する際に、ベクトルを誤ってプロパティとしてラベル付けしないようご注意ください。
+:::
+
+## クエリ
+
+保存済みベクトルを検索するには、 Weaviate にクエリのベクトル埋め込みが必要です。
+
+- コレクション定義でベクトライザーを指定している場合、 Weaviate はそのベクトライザーを使用してベクトル埋め込みを生成します。  
+- コレクションでベクトライザーを指定していない場合は、検索時にクエリ ベクトルを提供してください。
+
+クエリ ベクトルを作成する際は、データの埋め込みを生成するときに使用したものと同じベクトライザーを使用してください。
+
+次の [`nearVector`](/weaviate/search/similarity#search-with-a-vector) クエリでは、クエリ ベクトルを提供しています。このクエリ ベクトルは、クエリ文字列「 biology 」の埋め込みです。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+  text={ByovAllPyCode}
+  startMarker="# ===== Query ====="
+  endMarker="# ===== Test import ====="
+  language="py"
+/>
+</TabItem>
+<TabItem value="py3" label="Python Client v3">
+<FilteredTextBlock
+  text={ByovAllPy3Code}
+  startMarker="# ===== Query ====="
+  endMarker="# ===== Test import ====="
+  language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+<FilteredTextBlock
+  text={ByovAllTsCode}
+  startMarker="// Query using nearVector"
+  endMarker="END-OF-FILE"
+  language="ts"
+/>
+</TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+<FilteredTextBlock
+  text={ByovAllTsCodeLegacy}
+  startMarker="// Query using nearVector"
+  endMarker="END-OF-FILE"
+  language="tsv2"
+/>
+</TabItem>
+<TabItem value="curl" label="Curl">
+<FilteredTextBlock
+  text={ByovAllShCode}
+  startMarker="# Query"
+  endMarker="END-OF-FILE"
+  language="bash"
+/>
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Query response</summary>
+
+レスポンスは次のようになります:
+
+import BiologyQuestionsJson from '/_includes/code/quickstart/response.biology.questions.mdx';
+
+<BiologyQuestionsJson />
+
+</details>
+
+## 関連ページ
+
+- [バッチ インポート](../manage-objects/import.mdx)
+- [コレクションの管理](../manage-collections/index.mdx)
+- [ベクトル類似性検索](../search/similarity.md)
+
+## ご質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,310 @@
+---
+title: Weaviate におけるデータ構造
+description: データを効率的に整理・検索するための Weaviate のデータ構造を確立します。
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/9AmMDDGWC74' controls='true' />
+<br/>
+
+ここまでで、 Weaviate が実現する強力なクエリの一部をご覧いただきました。では、 Weaviate は実際にどのようにデータを保存し、これらのクエリをサポートしているのでしょうか？
+
+このセクションでは、 Weaviate が高速にクエリを実行できるようにする主要コンポーネントを見ていきます。特に、 Weaviate のデータ構造の中核であるインデックスと、データの設計図となるスキーマについて説明します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> インデックス
+
+インデックスとは、データを効率的に検索できるようにするデータ構造です。 Weaviate には、転置インデックスとベクトルインデックスという 2 つの主要なインデックスがあります。
+
+**転置インデックス** は、すでに馴染みのあるタイプのインデックスかもしれません。例えば、ある用語をすばやく検索し、その用語を含むオブジェクトを見つける参照テーブルのようなものだと考えてください。
+
+**ベクトルインデックス** は、類似度に基づいてベクトルを効率的に検索できるインデックスです。これにより、 Weaviate はベクトル検索を高速に実行できます。もう少し詳しく見ていきましょう。
+
+### <i class="fa-solid fa-chalkboard"></i> 転置インデックス
+
+転置インデックスは、テキストを構成要素となる用語に分解し、ハッシュテーブルのようなデータ構造に保存します。たとえば、「Conference (Chicago, IL)」というテキストを含むデータオブジェクトを考えてみましょう。
+
+ユーザーは「conference」「Chicago」「IL」など、含まれる任意の用語でこのオブジェクトを検索したいかもしれません。転置インデックスを使用すると、 Weaviate はその用語を含むオブジェクトの ID をすばやく取得できます。
+
+これは、オブジェクト ID を「トークン」にマッピングすることで実現します。トークンとは、テキストから抽出された用語のことです。デフォルトでは、 Weaviate は `word` トークナイゼーションを使用し、英数字のみを保持して小文字に変換し、空白で区切ってトークンに分割します。
+
+したがって、入力テキスト `Conference (Chicago, IL)` は 3 つのトークン `conference`、`chicago`、`il` でインデックス化されます。
+
+利用可能なトークナイゼーション方法については後ほど詳しく説明します。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトルインデックス
+
+Weaviate の各オブジェクトにはベクトルを関連付けることができます。これらのベクトルが、前述の類似度検索を可能にします。しかし前述のとおり、総当たりによる類似度検索は計算コストが高く、データセットのサイズに線形に比例して増加します。
+
+この問題を解決するために、 Weaviate は Approximate Nearest Neighbor (ANN) アルゴリズムを利用したベクトルインデックスを使用します。 ANN アルゴリズムにより、各ベクトルインデックスはベクトルの集合を組織化し、クエリに類似したベクトルを超高速で取得できます。 Weaviate では現在、 HNSW ベースの ANN インデックスを採用しています。
+
+import HNSWLayersImg from '/docs/weaviate/concepts/img/hnsw-layers.svg';
+
+<HNSWLayersImg/>
+
+各ベクトルの集合は「ベクトル空間」に存在すると言われます。これは、複数次元の「空間」にベクトルが配置されていることを示しています。
+
+## <i class="fa-solid fa-square-chevron-right"></i> クラス
+
+### <i class="fa-solid fa-chalkboard"></i> `class` とは？
+
+Weaviate におけるクラスは、同じタイプのオブジェクトの集合です。 Weaviate の各オブジェクトは必ず 1 つのクラスに属し、複数のクラスに属することはできません。
+
+たとえば、クイズ番組 *Jeopardy!* の問題を Weaviate に保存するとします。各オブジェクトが 1 問を表し、解答、ラウンド、ポイント数、放送日などの属性を持たせると良い構造になります。
+
+このデータを表現するには、`JeopardyQuestion` というクラスを作成し、そのクラス内に各問題をオブジェクトとして格納するのが適切でしょう。
+
+:::note クラス名は慣例的に単数形
+これはクラスが個々のオブジェクトを指すためです。例: `JeopardyQuestion` オブジェクト。
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> クラスには何が含まれるか？
+
+先ほど述べたように、各 Jeopardy! の問題には、問題文、解答、ラウンド、ポイント数など、複数の関連するが異なる属性があります。これらは Weaviate の `class` オブジェクト内で `properties` として表現されます。たとえば、`question` プロパティ、`answer` プロパティなどです。
+
+### <i class="fa-solid fa-chalkboard"></i> オブジェクトあたりのベクトル数
+
+各オブジェクトは 1 つのベクトルで表され、各クラスには 1 つのベクトルインデックスがあります。つまり、そのクラス内のすべてのオブジェクトは同じベクトルインデックスに関連付けられます。
+
+言い換えると、クラス内のすべてのオブジェクトは同じベクトル空間に保存されます。これは Weaviate でスキーマを設計する際に重要なポイントです。ベクトル検索は単一のベクトル空間内でしか実行できません。ベクトルの長さが異なる場合や、同じ長さでも意味が異なる場合は比較できないためです。
+
+以前の [色の例え](../101_hello_weaviate/15_overview_vectors.mdx#-how-do-numbers-represent-meaning) を思い出してください。 RGB 値と CMYK 値を比較することはできませんよね？テキストを表すベクトル埋め込みについても同じことが言えます。
+
+したがって、 Weaviate ではベクトル検索は 1 度に 1 つのクラスのみ対象にできます。つまり、一緒に検索したいオブジェクトは同じクラスに入れるようスキーマを設計する必要があります。
+
+## <i class="fa-solid fa-square-chevron-right"></i> スキーマ
+
+Weaviate における `schema` は、データ構造を定義する設計図です。これは、同じタイプのオブジェクトの集合である各 `class` について定義されます。
+
+以下にスキーマ構造の例を示します。
+
+<details>
+  <summary>スキーマ例</summary>
+
+```json
+{
+  "classes": [
+    {
+      "class": "Article",
+      "invertedIndexConfig": {
+        "bm25": {
+          "b": 0.75,
+          "k1": 1.2
+        },
+        "cleanupIntervalSeconds": 60,
+        "stopwords": {
+          "additions": null,
+          "preset": "en",
+          "removals": null
+        }
+      },
+      "moduleConfig": {
+        "text2vec-openai": {
+          "model": "ada",
+          "modelVersion": "002",
+          "type": "text",
+          "vectorizeClassName": true
+        }
+      },
+      "properties": [
+        {
+          "dataType": [
+            "text"
+          ],
+          "moduleConfig": {
+            "text2vec-openai": {
+              "skip": false,
+              "vectorizePropertyName": false
+            }
+          },
+          "name": "title",
+          "tokenization": "word"
+        },
+        {
+          "dataType": [
+            "text"
+          ],
+          "moduleConfig": {
+            "text2vec-openai": {
+              "skip": false,
+              "vectorizePropertyName": false
+            }
+          },
+          "name": "body",
+          "tokenization": "word"
+        }
+      ],
+      "replicationConfig": {
+        "factor": 1
+      },
+      "shardingConfig": {
+        "virtualPerPhysical": 128,
+        "desiredCount": 1,
+        "actualCount": 1,
+        "desiredVirtualCount": 128,
+        "actualVirtualCount": 128,
+        "key": "_id",
+        "strategy": "hash",
+        "function": "murmur3"
+      },
+      "vectorIndexConfig": {
+        "skip": false,
+        "cleanupIntervalSeconds": 300,
+        "maxConnections": 32,
+        "efConstruction": 128,
+        "ef": -1,
+        "dynamicEfMin": 100,
+        "dynamicEfMax": 500,
+        "dynamicEfFactor": 8,
+        "vectorCacheMaxObjects": 1000000000000,
+        "flatSearchCutoff": 40000,
+        "distance": "cosine",
+        "pq": {
+          "enabled": false,
+          "segments": 0,
+          "centroids": 256,
+          "encoder": {
+            "type": "kmeans",
+            "distribution": "log-normal"
+          }
+        }
+      },
+      "vectorIndexType": "hnsw",
+      "vectorizer": "text2vec-openai"
+    }
+  ]
+}
+```
+
+</details>
+
+情報量が多く、少し圧倒されるかもしれません。順を追って見ていきましょう。
+
+まず、オブジェクトの最上位キーは `classes` で、クラスのリストが含まれています。この例では `Article` という 1 つのクラスだけがあります。
+
+スキーマは各クラスについて次の内容を指定します。
+- 名前 (`class`) などのメタデータ
+- データ `properties`
+- `vectorizer`
+- モジュール設定 (`moduleConfig`)
+- インデックス設定（転置 `invertedIndexConfig` とベクトル `vectorIndexConfig`）
+- など
+
+:::info 自動スキーマ
+スキーマ定義に必要な情報が不足している場合、 Weaviate はデフォルト値とインポートされたデータに基づいて自動的に補完します。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
+
+<Quiz questions={invertedIndex} />
+
+<Quiz questions={vectorIndex} />
+
+<Quiz questions={classDefinition} />
+
+<Quiz questions={schemaRole} />
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+- Weaviate はデータを転置インデックスとベクトルインデックスの 2 つで管理します。
+- Weaviate のクラスは同じタイプのオブジェクトの集合を表し、各オブジェクトは必ず 1 つのクラスに属します。
+- スキーマは Weaviate のデータ構造を定義する設計図です。
+- ベクトル検索は単一のベクトル空間内でのみ実行できます。
+    - そのため、一緒に検索したいオブジェクトは同じクラスに格納する必要があります。
+- スキーマ定義に必要な情報が不足している場合、 Weaviate がデフォルト値とインポートデータを基に自動補完します。
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const invertedIndex = [
+{
+questionText: 'Weaviate における 転置インデックス の機能は何ですか？',
+answerOptions: [
+{
+answerText: 'ベクトル を類似度に基づいて効率的に検索できます。',
+isCorrect: false,
+feedback: 'それは ベクトル インデックス の機能です。',
+},
+{
+answerText: 'テキスト を構成語に分解して保存し、迅速に検索できるようにします。',
+isCorrect: true,
+feedback: 'これにより、その語を含むオブジェクトを素早く取得できます。',
+},
+{
+answerText: 'データの設計図として機能します。',
+isCorrect: false,
+feedback: 'それは スキーマ の機能です。',
+},
+]
+}];
+export const vectorIndex = [
+{
+questionText: 'Weaviate の ベクトル インデックス は何を可能にしますか？',
+answerOptions: [
+{
+answerText: '参照テーブルに基づいてデータを効率的に取得できます。',
+isCorrect: false,
+feedback: 'それは 転置インデックス の機能であり、 ベクトル インデックス の機能ではありません。',
+},
+{
+answerText: '各オブジェクトに ベクトル を関連付けることで類似検索を可能にします。',
+isCorrect: true,
+feedback: '正解です！ ベクトル インデックス は Approximate Nearest Neighbor (ANN) アルゴリズムを使用し、高速な類似検索を実現します。',
+},
+{
+answerText: 'Weaviate のデータ構造を定義します。',
+isCorrect: false,
+feedback: 'それは スキーマ の機能であり、 ベクトル インデックス の機能ではありません。',
+},
+]
+}];
+export const classDefinition = [
+{
+questionText: 'Weaviate における クラス とは何ですか？',
+answerOptions: [
+{
+answerText: '効率的なデータ取得に用いられるインデックスの一種です。',
+isCorrect: false,
+feedback: 'クラス はインデックスの種類ではありません。 Weaviate においては同じタイプのオブジェクトの集合です。',
+},
+{
+answerText: '同じタイプのオブジェクトの集合です。',
+isCorrect: true,
+feedback: '正解です！ Weaviate の クラス は同じタイプのオブジェクトの集合です。',
+},
+{
+answerText: 'コレクション内の特定のオブジェクトです。',
+isCorrect: false,
+feedback: 'クラス は特定のオブジェクトではなく、同じタイプのオブジェクトの集合です。',
+},
+]
+}];
+export const schemaRole = [
+{
+questionText: 'Weaviate における スキーマ の機能は何ですか？',
+answerOptions: [
+{
+answerText: 'ベクトル を類似度に基づいて効率的に取得できます。',
+isCorrect: false,
+feedback: 'それは ベクトル インデックス の機能であり、 スキーマ の機能ではありません。',
+},
+{
+answerText: 'テキスト を構成語に分解してデータ構造に保存します。',
+isCorrect: false,
+feedback: 'それは 転置インデックス の機能であり、 スキーマ の機能ではありません。',
+},
+{
+answerText: 'Weaviate のデータ構造を定義する設計図として機能します。',
+isCorrect: true,
+feedback: 'スキーマ は Weaviate における各 クラス のデータ構造を定義します。',
+},
+]
+},
+]

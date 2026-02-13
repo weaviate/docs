@@ -1,0 +1,357 @@
+---
+title: Aggregate{} による結果セットの集計
+description: Weaviate で aggregate クエリを用いてデータ インサイトを要約します。
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/wi3DG6XJkmA' controls='true' />
+<br/>
+
+`Get` で個別オブジェクトを取得する方法を確認したので、次は `Aggregate` を使って情報をまとめる方法を見ていきましょう。
+
+`Aggregate` は複数オブジェクトから情報をまとめて単一の結果にする強力な機能で、結果の概要を素早く把握できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> `Aggregate` クエリについて
+
+### <i class="fa-solid fa-chalkboard"></i> `Aggregate` 関数の構文
+
+`Aggregate` クエリの全体構造は `Get` クエリに似ていますが、結果セット全体に対するクエリであるため重要な違いがあります。
+
+`Aggregate` クエリの基本構文は次のとおりです。
+
+import AggregateSyntax from './_snippets/academy.queries.aggregate.syntax.mdx';
+
+<AggregateSyntax/>
+
+`Get` クエリとは異なり、`Aggregate` で使用できるプロパティは、クエリ対象プロパティのデータ型によって異なります。
+
+これはデータ型ごとに実行可能な操作が異なるためです。たとえば、`String` プロパティで利用できるプロパティは、`Integer` プロパティやクロスリファレンスの場合とは異なります。
+
+それでは実際に `Aggregate` クエリを試してみましょう。
+
+参考までに、オブジェクトには次のスキーマがあります。
+
+<details>
+  <summary>関連スキーマを表示</summary>
+
+import ShortSchema from './_snippets/academy.queries.schema.short.mdx';
+
+<ShortSchema/>
+
+</details>
+
+## <i class="fa-solid fa-square-chevron-right"></i> 単独の `Aggregate` クエリ
+
+### <i class="fa-solid fa-code"></i> 例 1
+
+次のクエリを見てください。
+
+import AggregateStandalone from './_snippets/academy.queries.aggregate.standalone.mdx';
+
+<AggregateStandalone/>
+
+どのような結果が返ってくると予想しますか？
+
+では実際に試してみましょう。
+
+クエリを実行すると、次のような結果が返ってくるはずです。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Aggregate": {
+      "JeopardyQuestion": [
+        {
+          "meta": {
+            "count": 10000
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate からのレスポンス オブジェクト
+
+このレスポンスには、`JeopardyQuestion` クラスから要求された `meta` 情報を表すオブジェクトが含まれています。`meta` オブジェクトには `count` プロパティがあり、クラス内のオブジェクト総数を示します。
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+このクエリは `JeopardyQuestion` クラスのオブジェクトを集計し、総数を取得します。絞り込みがないため、オブジェクトの総数 10,000 が返されます。
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> `meta` プロパティ
+
+上記の `Aggregate` クエリでは、オブジェクト数を取得するために `meta` プロパティを指定しました。これはオブジェクト クラス自体の利用可能プロパティではない点に注意してください。ここが `Aggregate` と `Get` クエリの大きな違いです。
+
+`Get` クエリは個々の結果セットを取得するため、各結果に適用されるプロパティ（例: `id` やデータ固有の `answer` など）を選択できます。
+
+一方 `Aggregate` クエリは結果の集計を返すため、結果セット全体に適用されるサブプロパティを指定する必要があります。
+
+`meta` プロパティはその一例です。すべてのデータ型で利用でき、`count` サブプロパティと組み合わせて取得オブジェクト数を返せます。
+
+### <i class="fa-solid fa-code"></i> 例 2
+
+次のクエリを見てください。
+
+import AggregateStandalone2 from './_snippets/academy.queries.aggregate.standalone.2.mdx';
+
+<AggregateStandalone2/>
+
+結果にはどのフィールドが返ってくると予想しますか？
+
+では実際に試してみましょう。
+
+クエリを実行すると、次のような結果が返ってくるはずです。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Aggregate": {
+      "JeopardyQuestion": [
+        {
+          "answer": {
+            "count": 10000,
+            "topOccurrences": [
+              {
+                "occurs": 19,
+                "value": "Australia"
+              },
+              {
+                "occurs": 18,
+                "value": "Hawaii"
+              },
+              {
+                "occurs": 16,
+                "value": "Boston"
+              },
+              {
+                "occurs": 15,
+                "value": "French"
+              },
+              {
+                "occurs": 15,
+                "value": "India"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+```
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+このレスポンスには、`JeopardyQuestion` クラスの `answer` プロパティに対する集計結果が含まれています。テキスト情報を含むプロパティのため、`value`（トークン）や `occurs`（出現回数）といった `topOccurrences` 情報を集計できます。
+
+</details>
+
+:::tip 利用可能なプロパティ
+利用可能なプロパティの一覧は、ドキュメントの [こちらのページ](/weaviate/api/graphql/aggregate.md) でご確認いただけます。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> 検索オペレーターを用いた `Aggregate`
+
+`Get` クエリと同様に、`Aggregate` クエリでも `nearText` などの検索オペレーターを使用できます。以下をご覧ください。
+
+### <i class="fa-solid fa-code"></i> 例（`nearText` 使用）
+
+たとえば、個々の質問ではなく回答全体を俯瞰したいとします。たとえば、このクエリに関連する質問が何件あるのか知りたい場合です。
+
+import AggregateWithNearText from './_snippets/academy.queries.aggregate.with.neartext.mdx';
+
+<AggregateWithNearText/>
+
+レスポンスを確認したりクエリを実行したりする前に、次の点を考えてみてください。
+- 何件の結果が返されると予想しますか？
+- `distance` パラメーターを大きくすると、結果数がどのように変化するか予想できますか？
+
+さて、実際に試してみましょう。このクエリは次のような結果を返すはずです:
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Aggregate": {
+      "JeopardyQuestion": [
+        {
+          "meta": {
+            "count": 9
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリを解説</summary>
+
+このクエリは、`distance` 引数によって制限された結果を集計しています。この引数はしきい値となり、入力に関連する結果だけを返します。これがなければ、検索結果にはクラス全体が含まれる可能性があります。
+
+これを「検索空間を制限する」と呼びます。
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> 検索空間の制限
+
+ベクトル 検索で意味のある集計を行うには、検索空間を制限する必要があります。
+
+これは、リレーショナル データベースでの集計とは異なります。リレーショナル データベースでは、`groupby` と SUM、AVG、MIN、MAX などの関数を組み合わせてデータをグループ化または集計できます。この方法では、まず結果セットを取得し、その後で結果を集計します。
+
+しかし、ベクトル 検索は本質的に結果を除外しません。ベクトル 検索は類似度の度合いに基づいて結果を取得するためです。
+
+したがって、関連する結果だけが集計に含まれるように検索空間を制限しなければなりません。そのためには、クエリで明示的な `limit` を設定するか、`distance` または `certainty` といったしきい値を指定します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> `groupBy` を用いた `Aggregate`
+
+これまで、`Aggregate` クエリを使って 1 つの結果セットに関する情報を集約する方法を見てきました。`groupBy` 引数を追加すると、複数のサブセットから情報をまとめることができます。
+
+### <i class="fa-solid fa-code"></i> 例
+
+たとえば、各 `value` プロパティにつき質問が何件あるかを知りたいとします。その場合は、クエリに `groupBy` 引数を追加します:
+
+import AggregateGroupby from './_snippets/academy.queries.aggregate.groupby.mdx';
+
+<AggregateGroupby/>
+
+ここではどのような結果になると予想しますか？`groupBy` 引数を追加したことで結果はどのように変わるでしょうか？さらにクエリの他の変更点に気付きましたか？
+
+では実際に試してみましょう。クエリは次のような結果を返すはずです:
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Aggregate": {
+      "JeopardyQuestion": [
+        {
+          "groupedBy": {
+            "path": [
+              "round"
+            ],
+            "value": "Double Jeopardy!"
+          },
+          "meta": {
+            "count": 5
+          }
+        },
+        {
+          "groupedBy": {
+            "path": [
+              "round"
+            ],
+            "value": "Jeopardy!"
+          },
+          "meta": {
+            "count": 3
+          }
+        },
+        {
+          "groupedBy": {
+            "path": [
+              "round"
+            ],
+            "value": "Final Jeopardy!"
+          },
+          "meta": {
+            "count": 1
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリを解説</summary>
+
+このクエリでは追加で `groupedBy` 引数を指定しており、その結果、`round` ごとの件数が取得されます。また、`groupedBy` プロパティを要求しているため、各件数は `round` グループごとの `value` で識別できます。
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> `groupBy` と `groupedBy`
+
+`Aggregate` クエリで取得した結果は、さらに `groupBy` 引数を使ってグループ化できます。この引数にはプロパティのリストを渡し、そのプロパティの値で結果をグループ化します。
+
+これは、ベクトル 検索の結果サブセットの特徴を把握する際に特に有用なクエリ パターンです。
+
+`groupBy` 引数を使用すると、追加で `groupedBy` プロパティが返されます。このプロパティとそのサブプロパティにより、各結果が属するグループを判別できます。
+
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+上記のクエリを再度試し、次の変更を加えてみましょう。
+- `round` の代わりに `points` プロパティでグループ化してみてください。
+- `distance` の代わりに、メソッドチェーンに `.with_object_limit(9)` を追加してみてください。結果は同じでしょうか？
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
+
+上記の `nearText` クエリを次の変更を加えて再度試してみてください。
+- `distance` を 0.1、0.19、0.21、0.25 など別の値に変更してみましょう。結果はどのように変わりますか？予想どおりでしょうか？
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+- `Aggregate` 関数は複数のオブジェクトから情報をまとめ、概要を提供します。
+- `nearText` などの検索オペレーターは `Aggregate` クエリでも使用できます。
+    - 意味のある集計を得るには、クエリで明示的な `limit` またはしきい値（`distance` や `certainty`）を設定して検索空間を制限する必要があります。
+- `groupBy` 引数を使用すると、結果の複数サブセットから情報をまとめて集計をより細かくできます。
+- `groupBy` 引数を使用すると追加の `groupedBy` プロパティが利用でき、各結果が属するグループを識別できます。
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}];
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

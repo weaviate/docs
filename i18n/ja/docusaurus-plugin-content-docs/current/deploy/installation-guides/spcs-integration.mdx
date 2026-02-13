@@ -1,0 +1,370 @@
+---
+title: Snowpark コンテナサービス (SPCS)
+sidebar_position: 20
+image: og/docs/installation.jpg
+# tags: ['installation', 'Snowpark', 'SPCS']
+---
+
+ Snowflake は、コンテナを Snowflake エコシステム内で実行するホステッドソリューション、[ Snowpark Container Services ( SPCS )](https://docs.snowflake.com/en/developer-guide/snowpark-container-services/overview) を提供しています。SPCS で実行する Weaviate インスタンスを設定するには、このページの手順に従ってください。
+
+このガイドのコードは、サンプルの SPCS インスタンスを構成します。サンプルインスタンスは、 Snowpark で Weaviate を実行する方法を示すものです。独自の SPCS インスタンスを構成する場合は、データベース名、ウェアハウス名、イメージリポジトリ名などの例示値を、ご自身のデプロイに合わせて変更してください。
+
+## インスタンスの構成
+### 1. Snowflake にログインする
+
+[ SnowSQL ](https://docs.snowflake.com/en/user-guide/snowsql) クライアントをダウンロードします。 SnowSQL クライアントを使用して Snowflake に接続します。
+
+```bash
+snowsql -a "YOURINSTANCE" -u "YOURUSER"
+```
+
+### 2. ユーザー環境のセットアップ
+
+ロールとサービスを構成します。
+
+#### OAUTH の構成
+
+OAUTH 統合を設定します。 Snowflake は OAUTH を使用してユーザーをサービスに認証します。
+
+```sql
+USE ROLE ACCOUNTADMIN;
+CREATE SECURITY INTEGRATION SNOWSERVICES_INGRESS_OAUTH
+  TYPE=oauth
+  OAUTH_CLIENT=snowservices_ingress
+  ENABLED=true;
+```
+
+#### SYSADMIN 権限の付与
+
+SYSADMIN は BIND SERVICE ENDPOINT を使用してサービスを作成します。
+
+```sql
+USE ROLE ACCOUNTADMIN;
+GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE SYSADMIN;
+```
+
+#### Weaviate ロールとユーザーの作成
+
+Weaviate インスタンス用のロールとユーザーを作成します。 Jupyter サーバーは Weaviate ユーザーを使用します。
+
+```sql
+USE ROLE SECURITYADMIN;
+CREATE ROLE WEAVIATE_ROLE;
+
+USE ROLE USERADMIN;
+CREATE USER weaviate_user
+  PASSWORD='weaviate123'
+  DEFAULT_ROLE = WEAVIATE_ROLE
+  DEFAULT_SECONDARY_ROLES = ('ALL')
+  MUST_CHANGE_PASSWORD = FALSE;
+
+USE ROLE SECURITYADMIN;
+GRANT ROLE WEAVIATE_ROLE TO USER weaviate_user;
+```
+
+### 3. データストレージの構成
+
+データベース、イメージリポジトリ、およびステージを作成します。イメージリポジトリはコンテナイメージを保持します。ステージはサービス仕様ファイルとサービスが生成するファイルを保持します。
+
+#### ウェアハウスの作成
+
+Weaviate で使用するウェアハウスを作成します。
+
+```sql
+USE ROLE SYSADMIN;
+CREATE OR REPLACE WAREHOUSE WEAVIATE_WAREHOUSE WITH
+  WAREHOUSE_SIZE='X-SMALL'
+  AUTO_SUSPEND = 180
+  AUTO_RESUME = true
+  INITIALLY_SUSPENDED=false;
+```
+
+#### データベースの作成
+
+Weaviate データベースとステージを作成します。
+
+```sql
+USE ROLE SYSADMIN;
+CREATE DATABASE IF NOT EXISTS WEAVIATE_DEMO;
+USE DATABASE WEAVIATE_DEMO;
+CREATE IMAGE REPOSITORY WEAVIATE_DEMO.PUBLIC.WEAVIATE_REPO;
+CREATE OR REPLACE STAGE YAML_STAGE;
+CREATE OR REPLACE STAGE DATA ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
+CREATE OR REPLACE STAGE FILES ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
+```
+
+#### 権限の付与
+
+ WEAVIATE_ROLE に権限を付与します:
+
+```sql
+USE ROLE SECURITYADMIN;
+GRANT ALL PRIVILEGES ON DATABASE WEAVIATE_DEMO TO WEAVIATE_ROLE;
+GRANT ALL PRIVILEGES ON SCHEMA WEAVIATE_DEMO.PUBLIC TO WEAVIATE_ROLE;
+GRANT ALL PRIVILEGES ON WAREHOUSE WEAVIATE_WAREHOUSE TO WEAVIATE_ROLE;
+GRANT ALL PRIVILEGES ON STAGE WEAVIATE_DEMO.PUBLIC.FILES TO WEAVIATE_ROLE;
+```
+
+#### 外部アクセスの許可
+
+:::warning External access
+このページのユーザー認証情報はデモ用です。オープンインターネットに接続する前に、ユーザー名とパスワードを変更してください。
+:::
+
+```sql
+USE ROLE ACCOUNTADMIN;
+USE DATABASE WEAVIATE_DEMO;
+USE SCHEMA PUBLIC;
+CREATE NETWORK RULE allow_all_rule
+  TYPE = 'HOST_PORT'
+  MODE= 'EGRESS'
+  VALUE_LIST = ('0.0.0.0:443','0.0.0.0:80');
+
+CREATE EXTERNAL ACCESS INTEGRATION allow_all_eai
+  ALLOWED_NETWORK_RULES=(allow_all_rule)
+  ENABLED=TRUE;
+
+GRANT USAGE ON INTEGRATION allow_all_eai TO ROLE SYSADMIN;
+```
+
+### 4. コンピュートプールのセットアップ
+
+コンピュートプールを作成します。コンピュートプールはアプリケーションサービスを実行します。
+
+```sql
+USE ROLE SYSADMIN;
+CREATE COMPUTE POOL IF NOT EXISTS WEAVIATE_COMPUTE_POOL
+  MIN_NODES = 1
+  MAX_NODES = 1
+  INSTANCE_FAMILY = CPU_X64_S
+  AUTO_RESUME = true;
+CREATE COMPUTE POOL IF NOT EXISTS TEXT2VEC_COMPUTE_POOL
+  MIN_NODES = 1
+  MAX_NODES = 1
+  INSTANCE_FAMILY = GPU_NV_S
+  AUTO_RESUME = true;
+CREATE COMPUTE POOL IF NOT EXISTS JUPYTER_COMPUTE_POOL
+  MIN_NODES = 1
+  MAX_NODES = 1
+  INSTANCE_FAMILY = CPU_X64_S
+  AUTO_RESUME = true;
+```
+
+独自のインスタンスを構成する場合は、プール名とプールサイズを編集してアプリケーションに合わせてください。
+
+コンピュートプールがアクティブかどうかを確認するには、`DESCRIBE COMPUTE POOL <Pool Name>` を実行します。
+
+```sql
+DESCRIBE COMPUTE POOL WEAVIATE_COMPUTE_POOL;
+DESCRIBE COMPUTE POOL TEXT2VEC_COMPUTE_POOL;
+DESCRIBE COMPUTE POOL JUPYTER_COMPUTE_POOL;
+```
+
+コンピュートプールの初期化には数分かかります。プールが `ACTIVE` または `IDLE` 状態になると使用可能です。
+
+### 5. Docker イメージのビルド
+
+ローカルシェルで Docker イメージをビルドします。イメージは 3 つあります。
+
+- Weaviate イメージはデータベースを実行します。
+- `text2vec` イメージは Snowpark を離れることなくデータを処理できます。
+- Jupyter イメージはノートブックを提供します。
+
+Docker ファイルは [このリポジトリ](https://github.com/Snowflake-Labs/sfguide-getting-started-weaviate-on-spcs/tree/main/images) にあります。リポジトリをクローンし、トップレベルディレクトリに移動します。
+
+このサンプルインスタンスを実行するために Dockerfile を変更する必要はありません。ただし、標準以外のポートを使用する場合や、デプロイに応じて変更が必要な場合は、コンテナを作成する前に Dockerfile を編集してください。
+
+```bash
+docker build --rm --no-cache --platform linux/amd64 -t weaviate ./images/weaviate
+docker build --rm --no-cache --platform linux/amd64 -t jupyter ./images/jupyter
+docker build --rm --no-cache --platform linux/amd64 -t text2vec ./images/text2vec
+```
+
+Docker リポジトリにログインします。 Snowpark のアカウント名、ユーザー名、パスワードは `snowsql` の認証情報と同じです。
+
+```bash
+docker login <YOUR_SNOWACCOUNT>-<SNOWORG>.registry.snowflakecomputing.com  -u YOUR_SNOWFLAKE_USERNAME
+```
+
+Docker リポジトリにログイン後、イメージにタグを付けてリポジトリへプッシュします。
+
+`docker tag` コマンドは次のようになります:
+
+```bash
+docker tag weaviate <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/weaviate
+docker tag jupyter <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/jupyter
+docker tag text2vec <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/text2vec
+```
+
+`docker push` コマンドは次のようになります:
+
+```bash
+docker push <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/weaviate
+docker push <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/jupyter
+docker push <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/text2vec
+```
+
+### 6. サービスのセットアップ
+
+SPCS は `spec files` を使用してサービスを構成します。構成用 spec ファイルも、先ほどクローンした [リポジトリ](https://github.com/Snowflake-Labs/sfguide-getting-started-weaviate-on-spcs/tree/main/specs) にあります。
+
+各サービスのイメージリポジトリを指定するよう `spec files` を編集します。たとえば、`weaviate.yaml` を更新して `weaviate` イメージを参照させます。
+
+```bash
+image: "<SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>.registry.snowflakecomputing.com/weaviate_demo/public/weaviate_repo/weaviate"
+```
+
+`jupyter.yaml` spec ファイルを編集する際は、`SNOW_ACCOUNT` フィールドをお使いの Snowflake アカウント名に更新してください。
+
+```bash
+SNOW_ACCOUNT: <SNOWFLAKE_ORG>-<SNOWFLAKE_ACCOUNT>
+```
+
+spec ファイルを更新したら、`snowsql` クライアントを使用してアップロードします。
+
+```sql
+PUT file:///path/to/jupyter.yaml @yaml_stage overwrite=true auto_compress=false;
+PUT file:///path/to/text2vec.yaml @yaml_stage overwrite=true auto_compress=false;
+PUT file:///path/to/weaviate.yaml @yaml_stage overwrite=true auto_compress=false;
+```
+
+### 7. サービスの作成
+
+`snowsql` クライアントを使用して、各コンポーネント用のサービスを作成します。
+
+```sql
+USE ROLE SYSADMIN;
+USE DATABASE WEAVIATE_DEMO;
+USE SCHEMA PUBLIC;
+
+CREATE SERVICE WEAVIATE
+  IN COMPUTE POOL WEAVIATE_COMPUTE_POOL
+  FROM @YAML_STAGE
+  SPEC='weaviate.yaml'
+  MIN_INSTANCES=1
+  MAX_INSTANCES=1;
+
+CREATE SERVICE JUPYTER
+  IN COMPUTE POOL JUPYTER_COMPUTE_POOL
+  FROM @YAML_STAGE
+  SPEC='jupyter.yaml'
+  MIN_INSTANCES=1
+  MAX_INSTANCES=1;
+
+CREATE SERVICE TEXT2VEC
+  IN COMPUTE POOL TEXT2VEC_COMPUTE_POOL
+  FROM @YAML_STAGE
+  SPEC='text2vec.yaml'
+  MIN_INSTANCES=1
+  MAX_INSTANCES=1;
+
+```
+
+### 8. ユーザー権限の付与
+
+`weaviate_role` にサービスの権限を付与します。
+
+```sql
+USE ROLE SECURITYADMIN;
+GRANT USAGE ON SERVICE WEAVIATE_DEMO.PUBLIC.JUPYTER TO ROLE WEAVIATE_ROLE;
+```
+
+### 9. Jupyter Notebook サーバーへのログイン
+
+Jupyter Notebook サーバーへアクセスするための `ingress_url` を取得します。
+
+```sql
+USE ROLE SYSADMIN;
+SHOW ENDPOINTS IN SERVICE WEAVIATE_DEMO.PUBLIC.JUPYTER;
+```
+
+ブラウザで `ingress_url` を開き、`weaviate_user` の認証情報でログインします。
+
+### 10. Weaviate インスタンスへのデータ読み込み
+
+以下の手順に従ってスキーマを作成し、サンプルデータを Weaviate インスタンスに読み込みます。
+
+1. [Jeopardy のサンプル問題セット](https://github.com/weaviate-tutorials/quickstart/blob/main/data/jeopardy_tiny.json) をダウンロードします。  
+2. ファイル名を `SampleJSON.json` に変更し、デスクトップに保存します。  
+3. ファイルをアップロードします。ブラウザの Jupyter ツリー表示にファイルをドラッグするか、右上の「Upload」ボタンを使用します。  
+4. データを Weaviate にコピーします。`TestWeaviate.ipynb` ノートブックを使用し、`SampleJSON.json` から Weaviate へデータをコピーします。
+
+## データのクエリ
+
+データをクエリするには、Jupyter ノートブックで次のクエリを実行します。
+
+```python
+import weaviate
+import json
+import os
+
+client = weaviate.connect_to_custom(
+    http_host="weaviate",
+    http_port=8080,
+    http_secure=False,
+    grpc_host="weaviate",
+    grpc_port=50051,
+    grpc_secure=False
+)
+
+collection = client.collections.use("Questions")
+
+# Simple search
+response = collection.query.near_text(query="animal",limit=2, include_vector=True)
+#confirm vectors exist
+for o in response.objects:
+    print(o.vector)
+
+# Hybrid search	client.close()
+response = collection.query.hybrid(
+    query="animals",
+    limit=5
+)
+
+client.close()
+```
+
+## サービスの一時停止と再開
+
+サービスを一時停止または再開するには、`snowsql` クライアントで以下のコードを実行します。
+
+### サービスの一時停止
+```sql
+alter service WEAVIATE suspend;
+alter service TEXT2VEC suspend;
+alter service JUPYTER suspend;
+```
+
+### サービスの再開
+```sql
+alter service WEAVIATE resume;
+alter service TEXT2VEC resume;
+alter service JUPYTER resume;
+```
+
+## クリーンアップと削除
+
+サービスを削除するには、`snowsql` クライアントで以下のコードを実行します。
+
+```sql
+USE ROLE ACCOUNTADMIN;
+DROP USER weaviate_user;
+
+USE ROLE SYSADMIN;
+DROP SERVICE WEAVIATE;
+DROP SERVICE JUPYTER;
+DROP SERVICE TEXT2VEC;
+DROP COMPUTE POOL TEXT2VEC_COMPUTE_POOL;
+DROP COMPUTE POOL WEAVIATE_COMPUTE_POOL;
+DROP COMPUTE POOL JUPYTER_COMPUTE_POOL;
+DROP STAGE DATA;
+DROP STAGE FILES;
+DROP IMAGE REPOSITORY WEAVIATE_DEMO.PUBLIC.WEAVIATE_REPO;
+DROP DATABASE WEAVIATE_DEMO;
+DROP WAREHOUSE WEAVIATE_WAREHOUSE;
+
+USE ROLE ACCOUNTADMIN;
+DROP ROLE WEAVIATE_ROLE;
+DROP SECURITY INTEGRATION SNOWSERVICES_INGRESS_OAUTH;
+```
+
