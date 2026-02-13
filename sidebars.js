@@ -1544,13 +1544,8 @@ const sidebars = {
     },
     { type: "html", value: "<hr class='sidebar-divider' />" },
     {
-      type: "doc",
-      id: "engram/api-reference/index",
-      label: "API reference",
-    },
-    {
       type: "link",
-      label: "Interactive API reference",
+      label: "REST API reference",
       href: "/engram/api-reference/rest",
     },
   ],

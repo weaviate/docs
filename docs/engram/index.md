@@ -18,6 +18,8 @@ Use Engram to give your agents persistent memory that they can write to and sear
 
 ## How it works
 
+![Weaviate Engram](./_includes/architecture.png "Weaviate Engram")
+
 1. You send content to the Engram API (text, pre-extracted data, or a conversation).
 2. Engram runs an async pipeline that extracts, transforms, and commits memories to storage.
 3. You search stored memories using vector, BM25, or hybrid retrieval.

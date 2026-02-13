@@ -104,7 +104,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/CreateMemoryRequest.json"
+              "https://your-project.engram.weaviate.cloud/schemas/CreateMemoryRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -159,7 +159,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/ErrorModel.json"
+              "https://your-project.engram.weaviate.cloud/schemas/ErrorModel.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -259,7 +259,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/MemoriesListResponseBody.json"
+              "https://your-project.engram.weaviate.cloud/schemas/MemoriesListResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -305,7 +305,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/MemoryResponseBody.json"
+              "https://your-project.engram.weaviate.cloud/schemas/MemoryResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -437,7 +437,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/RunOutputResponseBody.json"
+              "https://your-project.engram.weaviate.cloud/schemas/RunOutputResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -468,7 +468,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/RunStatusResponseBody.json"
+              "https://your-project.engram.weaviate.cloud/schemas/RunStatusResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -531,7 +531,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://example.com/schemas/SearchMemoriesRequest.json"
+              "https://your-project.engram.weaviate.cloud/schemas/SearchMemoriesRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -596,7 +596,7 @@
     }
   },
   "info": {
-    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.",
+    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nYour project's API URL is available in the [Weaviate Cloud console](https://console.weaviate.cloud). It follows the format:\n\n```\nhttps://your-project.engram.weaviate.cloud\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
     "title": "Engram API",
     "version": "1.0.0"
   },
@@ -924,5 +924,10 @@
         ]
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://your-project.engram.weaviate.cloud"
+    }
+  ]
 }
