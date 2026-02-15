@@ -60,6 +60,20 @@ const config = {
       },
     ],
     [
+      "@scalar/docusaurus",
+      {
+        id: "engram-api",
+        label: "",
+        route: "/engram/api/rest",
+        configuration: {
+          spec: {
+            url: "/specs/engram-openapi.json",
+          },
+          hideModels: true,
+        },
+      },
+    ],
+    [
       "@signalwire/docusaurus-plugin-llms-txt",
       {
         siteTitle: "Weaviate Documentation",
