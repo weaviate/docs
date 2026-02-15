@@ -64,7 +64,7 @@ const config = {
       {
         id: "engram-api",
         label: "",
-        route: "/engram/api-reference/rest",
+        route: "/engram/api/rest",
         configuration: {
           spec: {
             url: "/specs/engram-openapi.json",

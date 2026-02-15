@@ -1546,7 +1546,7 @@ const sidebars = {
     {
       type: "link",
       label: "REST API reference",
-      href: "/engram/api-reference/rest",
+      href: "/engram/api/rest",
     },
   ],
 };
