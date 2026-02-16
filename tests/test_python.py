@@ -41,17 +41,6 @@ def test_api_gql(empty_weaviates, script_loc):
     run_py_script(script_loc)
 
 
-@pytest.mark.pyv3
-@pytest.mark.parametrize(
-    "script_loc",
-    [
-        "./_includes/code/graphql.get.beacon.v3.py",
-    ],
-)
-def test_api_gql_v3(empty_weaviates, script_loc):
-    run_pyv3_script(script_loc)
-
-
 # ========== Client ==========
 
 @pytest.mark.pyv4

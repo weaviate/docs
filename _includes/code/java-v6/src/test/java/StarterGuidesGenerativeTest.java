@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CombinedWorkflowTest {
+class StarterGuidesGenerativeTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
