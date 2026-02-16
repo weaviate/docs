@@ -163,7 +163,6 @@ Tests are organized using pytest markers for different languages and API version
 | Marker | Description                             |
 | ------ | --------------------------------------- |
 | `pyv4` | Python snippets using v4 client library |
-| `pyv3` | Python snippets using v3 client library |
 | `ts`   | JavaScript/TypeScript snippets          |
 | `java` | Java code snippets                      |
 | `go`   | Go code snippets                        |
