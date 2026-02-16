@@ -408,3 +408,260 @@ jobs:
           docker system prune -f --volumes 2>/dev/null || true
 
           echo "✅ Cleanup completed"
+
+  test-java-v6:
+    name: Test Java v6
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
+          sudo rm -rf /usr/local/lib/android &
+          wait
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Clone and build Java client SNAPSHOT
+        run: |
+          echo "📦 Building Java client SNAPSHOT..."
+          git clone --depth 1 https://github.com/weaviate/java-client.git /tmp/java-client
+          cd /tmp/java-client
+          mvn install -DskipTests -Dmaven.javadoc.skip=true -q
+          echo "✅ Java client SNAPSHOT installed"
+
+      - name: Start services
+        run: |
+          echo "🚀 Starting Weaviate and Ollama services..."
+          mkdir -p ~/.ollama
+          ./tests/start-weaviate.sh
+
+          sleep 5
+          echo "✅ Services started:"
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+      - name: Ensure Ollama models are available
+        run: |
+          echo "🤖 Checking Ollama models..."
+          for model in snowflake-arctic-embed nomic-embed-text llama3.2; do
+            if ! docker exec tests-ollama-1 ollama list 2>/dev/null | grep -q "$model"; then
+              echo "⬇️ Pulling model: $model"
+              docker exec tests-ollama-1 ollama pull "$model"
+            fi
+          done
+          echo "✅ All models ready"
+
+      - name: Wait for all services to be ready
+        run: |
+          echo "⏳ Waiting for services to be ready..."
+
+          declare -A services=(
+            ["8099"]="Weaviate Main"
+            ["8580"]="Weaviate RBAC"
+            ["8080"]="Weaviate Instance 1"
+            ["8090"]="Weaviate Instance 2"
+            ["8280"]="Weaviate Instance 3"
+            ["8180"]="Weaviate Instance 4"
+            ["8181"]="Weaviate Instance 5"
+            ["8182"]="Weaviate Instance 6"
+          )
+
+          for port in "${!services[@]}"; do
+            service_name="${services[$port]}"
+            echo -n "Checking $service_name (port $port)... "
+
+            if timeout 60 bash -c "until curl -sf http://localhost:$port/v1/.well-known/ready &>/dev/null; do sleep 2; done"; then
+              echo "✅ Ready"
+            else
+              echo "⚠️ Not responding (may be optional)"
+            fi
+          done
+
+          echo "✅ Service check completed"
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run Java v6 tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+        run: |
+          echo "🧪 Running Java v6 tests..."
+          source .venv/bin/activate
+          pytest -m "java_v6" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Java-v6'
+          languages-tested: 'Java'
+          artifact-name: 'test-results-java-v6'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+      - name: Stop services
+        if: always()
+        run: |
+          echo "🛑 Stopping services..."
+          ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
+
+      - name: Cleanup Docker resources
+        if: always()
+        run: |
+          for compose_file in tests/docker-compose*.yml; do
+            if [[ -f "$compose_file" ]]; then
+              docker compose -f "$compose_file" down -v --remove-orphans 2>/dev/null || true
+            fi
+          done
+          docker system prune -f --volumes 2>/dev/null || true
+
+  test-csharp:
+    name: Test C#
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
+          sudo rm -rf /usr/local/lib/android &
+          wait
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up .NET 9.0
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Clone C# client
+        run: |
+          echo "📦 Cloning C# client..."
+          git clone --depth 1 https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
+          echo "✅ C# client cloned to $(realpath "${{ github.workspace }}/../csharp-client")"
+
+      - name: Start services
+        run: |
+          echo "🚀 Starting Weaviate and Ollama services..."
+          mkdir -p ~/.ollama
+          ./tests/start-weaviate.sh
+
+          sleep 5
+          echo "✅ Services started:"
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+      - name: Ensure Ollama models are available
+        run: |
+          echo "🤖 Checking Ollama models..."
+          for model in snowflake-arctic-embed nomic-embed-text llama3.2; do
+            if ! docker exec tests-ollama-1 ollama list 2>/dev/null | grep -q "$model"; then
+              echo "⬇️ Pulling model: $model"
+              docker exec tests-ollama-1 ollama pull "$model"
+            fi
+          done
+          echo "✅ All models ready"
+
+      - name: Wait for all services to be ready
+        run: |
+          echo "⏳ Waiting for services to be ready..."
+
+          declare -A services=(
+            ["8099"]="Weaviate Main"
+            ["8580"]="Weaviate RBAC"
+            ["8080"]="Weaviate Instance 1"
+            ["8090"]="Weaviate Instance 2"
+            ["8280"]="Weaviate Instance 3"
+            ["8180"]="Weaviate Instance 4"
+            ["8181"]="Weaviate Instance 5"
+            ["8182"]="Weaviate Instance 6"
+          )
+
+          for port in "${!services[@]}"; do
+            service_name="${services[$port]}"
+            echo -n "Checking $service_name (port $port)... "
+
+            if timeout 60 bash -c "until curl -sf http://localhost:$port/v1/.well-known/ready &>/dev/null; do sleep 2; done"; then
+              echo "✅ Ready"
+            else
+              echo "⚠️ Not responding (may be optional)"
+            fi
+          done
+
+          echo "✅ Service check completed"
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run C# tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+        run: |
+          echo "🧪 Running C# tests..."
+          source .venv/bin/activate
+          pytest -m "csharp" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'CSharp'
+          languages-tested: 'C#'
+          artifact-name: 'test-results-csharp'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+      - name: Stop services
+        if: always()
+        run: |
+          echo "🛑 Stopping services..."
+          ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
+
+      - name: Cleanup Docker resources
+        if: always()
+        run: |
+          for compose_file in tests/docker-compose*.yml; do
+            if [[ -f "$compose_file" ]]; then
+              docker compose -f "$compose_file" down -v --remove-orphans 2>/dev/null || true
+            fi
+          done
+          docker system prune -f --volumes 2>/dev/null || true

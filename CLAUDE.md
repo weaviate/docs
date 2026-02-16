@@ -207,6 +207,76 @@ Tests ensure documentation code examples work against live Weaviate instances.
 - Use inline assertions in examples for validation
 - Set required API keys as environment variables (OPENAI_API_KEY, COHERE_API_KEY, etc.)
 
+### Code Snippet Locations and Client Libraries
+
+Code snippets are organized by language under `_includes/code/`:
+
+| Language | Code location | Test framework | Client source | Run command |
+|----------|--------------|----------------|---------------|-------------|
+| Python | `_includes/code/howto/*.py` | pytest (in `/tests`) | `weaviate-client` from PyPI (`tests/requirements.txt`) | `python _includes/code/howto/<file>.py` |
+| TypeScript | `_includes/code/howto/*.ts` | Inline assertions (no test runner) | `weaviate-client` from npm (`package.json`) | `npx tsx _includes/code/howto/<file>.ts` |
+| Java v6 | `_includes/code/java-v6/src/test/java/*.java` | JUnit 5 + AssertJ | `io.weaviate:client6` from Maven/local (`pom.xml`) | `cd _includes/code/java-v6 && mvn test -Dtest=<ClassName>` |
+| C# | `_includes/code/csharp/*.cs` | xunit | Local project ref to `../../csharp-client/` (`WeaviateProject.Tests.csproj`) | `dotnet test _includes/code/csharp/WeaviateProject.Tests.csproj --filter "FullyQualifiedName~<ClassName>"` |
+| Go | `_includes/code/howto/go/docs/*.go` | Go testing | `github.com/weaviate/weaviate-go-client` | `cd _includes/code/howto/go/docs && go test` |
+
+#### Client library dependencies and versioning
+
+- **Python**: Version pinned in `tests/requirements.txt`. Install via `pip install -r tests/requirements.txt`.
+- **TypeScript**: Version in root `package.json` (`devDependencies`). Uses `tsx` to run `.ts` files directly.
+- **Java v6**: Version in `_includes/code/java-v6/pom.xml`. For unreleased features, switch to SNAPSHOT: build the local client at `/Users/ivandespot/dev/java-client` with `mvn install -DskipTests -Dmaven.javadoc.skip=true`, then update the pom.xml version.
+- **C#**: References a local project at `../../../../csharp-client/` (i.e., `/Users/ivandespot/dev/csharp-client`). For unreleased features, checkout the appropriate branch in that repo (e.g., `git checkout v1.0.1`). The .NET 9.0 SDK is required.
+- **Go**: Version in `_includes/code/howto/go/docs/go.mod`.
+
+#### Code snippet markers for MDX inclusion
+
+Code files use `// START <MarkerName>` and `// END <MarkerName>` (or `# START` / `# END` for Python) comments to delimit snippets that get pulled into MDX documentation via `FilteredTextBlock`:
+
+```jsx
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.ttl.py';
+
+<FilteredTextBlock text={PyCode} startMarker="START TTLByCreationTime" endMarker="END TTLByCreationTime" language="python" />
+```
+
+#### Language-specific API patterns
+
+**Python** (`weaviate-client`):
+- `client = weaviate.connect_to_local()`
+- `client.collections.create(name=..., properties=[Property(name=..., data_type=DataType.DATE)], ...)`
+- `collection = client.collections.get("Name")`
+- `collection.aggregate.over_all(total_count=True).total_count`
+- Config access: `collection.config.get()` returns object with typed attributes (e.g., `config.object_ttl_config.time_to_live` returns `datetime.timedelta`)
+
+**TypeScript** (`weaviate-client`):
+- `const client = await weaviate.connectToLocal()`
+- `await client.collections.create({ name: ..., properties: [{ name: ..., dataType: dataType.DATE }], ... })`
+- `const collection = client.collections.use('Name')`
+- `(await collection.aggregate.overAll()).totalCount`
+- Config: `await collection.config.get()` returns object with camelCase fields
+
+**Java v6** (`client6`):
+- `WeaviateClient client = WeaviateClient.connectToLocal()`
+- `client.collections.create("Name", c -> c.properties(Property.date("fieldName")).objectTtl(ttl -> ttl.deleteByCreationTime().defaultTtlSeconds(3600)))`
+- `collection.config.get()` returns `Optional<CollectionConfig>` — must call `.get().get()` to unwrap
+- Builder uses `properties(Property...)` (plural), NOT `property(...)` (singular)
+
+**C#** (`Weaviate.Client`):
+- `WeaviateClient client = Connect.Local(hostname: "localhost", restPort: 8080).GetAwaiter().GetResult()`
+- Collection creation uses `CollectionCreateParams` object initializer: `await client.Collections.Create(new CollectionCreateParams { Name = ..., Properties = [...], ... })`
+- `await collection.Aggregate.OverAll(totalCount: true)` — uses named parameters, NOT lambda builder
+- `await collection.Config.Get()` returns `CollectionConfig` directly (not Optional)
+
+#### Weaviate property name casing
+
+Weaviate lowercases the first character of property names. When defining properties like `ReferenceDate`, Weaviate stores them as `referenceDate`. Always use lowercase-first property names in code examples to avoid errors.
+
+#### Weaviate test instance
+
+Code snippets run against a local Weaviate instance started via Docker Compose. The main anonymous-access config is `tests/docker-compose-anon.yml`. Start it with:
+```bash
+docker compose -f tests/docker-compose-anon.yml up -d
+```
+TTL-related tests require `OBJECTS_TTL_ALLOW_SECONDS=true` and `OBJECTS_TTL_DELETE_SCHEDULE` env vars on the Weaviate container (already configured in docker-compose-anon.yml). Minimum TTL value accepted by Weaviate is 60 seconds.
+
 ### Link Validation
 
 Before PR merge:

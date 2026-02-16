@@ -322,7 +322,7 @@ public class SearchFilterTest : IAsyncLifetime
 
         Guid targetId = Guid.Parse("00037775-1432-35e5-bc59-443baaef7d80");
 
-        var response = await collection.Query.FetchObjects(filters: Filter.ID.IsEqual(targetId));
+        var response = await collection.Query.FetchObjects(filters: Filter.UUID.IsEqual(targetId));
 
         foreach (var o in response.Objects)
         {
