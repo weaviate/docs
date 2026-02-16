@@ -265,6 +265,12 @@ __marimo__/
 # C# code
 _includes/code/csharp/bin
 _includes/code/csharp/obj
+_includes/code/csharp/quickstart/bin
+_includes/code/csharp/quickstart/obj
 *.sln
 
+# Exclude WCD backups
 tests/backups/
+
+# Ignore LLM/agent config files
+.claude/

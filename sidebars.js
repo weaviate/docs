@@ -50,14 +50,6 @@ const sidebars = {
       ],
     },
     {
-      type: "link",
-      label: "Concepts & architecture",
-      href: "https://academy.weaviate.io/courses/wa050-py",
-      customProps: {
-        academyOnly: true,
-      },
-    },
-    {
       type: "category",
       label: "Starter guides",
       link: {
@@ -101,22 +93,35 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/index",
       },
-      items: []
+      items: [],
     },
     {
       type: "category",
-      label: "AI-based code generation",
+      label: "AI-assisted (vibe) coding",
+      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: []
+      items: ["weaviate/mcp/docs-mcp-server"],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "link",
       label: "Integration ecosystem",
       href: "https://weaviate.io/product/integrations",
-    }
+    },
+    {
+      type: "link",
+      label: "Concepts & architecture",
+      href: "https://academy.weaviate.io/courses/wa050-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
   ],
   modelProvidersSidebar: [
     {
@@ -149,7 +154,7 @@ const sidebars = {
               },
               items: [
                 "weaviate/model-providers/weaviate/embeddings",
-                "weaviate/model-providers/weaviate/embeddings-multimodal"
+                "weaviate/model-providers/weaviate/embeddings-multimodal",
               ],
             },
             {
@@ -422,7 +427,9 @@ const sidebars = {
                 type: "doc",
                 id: "weaviate/model-providers/imagebind/index",
               },
-              items: ["weaviate/model-providers/imagebind/embeddings-multimodal"],
+              items: [
+                "weaviate/model-providers/imagebind/embeddings-multimodal",
+              ],
             },
             {
               type: "category",
@@ -772,9 +779,7 @@ const sidebars = {
             type: "doc",
             id: "weaviate/client-libraries/java/index",
           },
-          items: [
-            "weaviate/client-libraries/java/java-v5",
-          ],
+          items: ["weaviate/client-libraries/java/java-v5"],
         },
         {
           type: "doc",
@@ -999,6 +1004,11 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/configuration/monitoring",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/logging",
           className: "sidebar-item",
         },
         {
@@ -1386,7 +1396,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Manage a cluster",
+      label: "Manage clusters",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1421,6 +1431,34 @@ const sidebars = {
           id: "cloud/manage-clusters/authorization",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/default-settings",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Manage collections",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "cloud/tools/collections-tool",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-collections/enable-compression",
+          className: "sidebar-item",
+        },
       ],
     },
     {
@@ -1447,21 +1485,10 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Tools",
+      label: "Other tools",
       className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
+      collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "cloud/tools/import-tool",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "cloud/tools/collections-tool",
-          className: "sidebar-item",
-        },
         {
           type: "doc",
           id: "cloud/tools/explorer-tool",
@@ -1496,114 +1523,6 @@ const sidebars = {
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
-  ],
-  integrationsSidebar: [
-    "integrations/index",
-    {
-      type: "category",
-      label: "Cloud Hyperscalers",
-      link: {
-        type: "doc",
-        id: "integrations/cloud-hyperscalers/index",
-      },
-      items: [
-        "integrations/cloud-hyperscalers/aws/index",
-        "integrations/cloud-hyperscalers/google/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "Compute Infrastructure",
-      link: {
-        type: "doc",
-        id: "integrations/compute-infrastructure/index",
-      },
-      items: [
-        "integrations/compute-infrastructure/modal/index",
-        "integrations/compute-infrastructure/replicate/index",
-        "integrations/compute-infrastructure/replicated/index"
-      ],
-    },
-    {
-      type: "category",
-      label: "Data Platforms",
-      link: {
-        type: "doc",
-        id: "integrations/data-platforms/index",
-      },
-      items: [
-        "integrations/data-platforms/airbyte/index",
-        "integrations/data-platforms/aryn/index",
-        "integrations/data-platforms/astronomer/index",
-        "integrations/data-platforms/boomi/index",
-        "integrations/data-platforms/box/index",
-        "integrations/data-platforms/cardinal/index",
-        "integrations/data-platforms/chonkie/index",
-        "integrations/data-platforms/confluent/index",
-        "integrations/data-platforms/context-data/index",
-        "integrations/data-platforms/contextual-ai/index",
-        "integrations/data-platforms/databricks/index",
-        "integrations/data-platforms/firecrawl/index",
-        "integrations/data-platforms/ibm/index",
-        "integrations/data-platforms/parallel/index",
-        "integrations/data-platforms/unstructured/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "LLM and Agent Frameworks",
-      link: {
-        type: "doc",
-        id: "integrations/llm-agent-frameworks/index",
-      },
-      items: [
-        "integrations/llm-agent-frameworks/agno/index",
-        "integrations/llm-agent-frameworks/composio/index",
-        "integrations/llm-agent-frameworks/crewai/index",
-        "integrations/llm-agent-frameworks/dspy/index",
-        "integrations/llm-agent-frameworks/dynamiq/index",
-        "integrations/llm-agent-frameworks/haystack/index",
-        "integrations/llm-agent-frameworks/langchain/index",
-        "integrations/llm-agent-frameworks/llamaindex/index",
-        "integrations/llm-agent-frameworks/mem0/index",
-        "integrations/llm-agent-frameworks/modaic/index",
-        "integrations/llm-agent-frameworks/n8n/index",
-        "integrations/llm-agent-frameworks/semantic-kernel/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "Operations",
-      link: {
-        type: "doc",
-        id: "integrations/operations/index",
-      },
-      items: [
-        "integrations/operations/arize/index",
-        "integrations/operations/deepeval/index",
-        "integrations/operations/langtrace/index",
-        "integrations/operations/langwatch/index",
-        "integrations/operations/nomic/index",
-        "integrations/operations/ragas/index",
-        "integrations/operations/wandb/index",
-      ],
-    },
-  ],
-  integrationsRecipesSidebar: [
-    {
-      type: "category",
-      label: "Recipes",
-      link: {
-        type: "doc",
-        id: "integrations/recipes",
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "integrations/recipes",
-        },
-      ],
-    },
   ],
 };
 

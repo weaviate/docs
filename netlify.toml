@@ -97,6 +97,11 @@ from = "/cloud/platform/support-levels"
 to   = "https://weaviate.io/suport-plans"
 status = 301
 
+[[redirects]]
+from = "/cloud/tools/import-tool"
+to   = "/cloud/tools/collections-tool"
+status = 301
+
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
 
 [[redirects]]
@@ -288,18 +293,9 @@ from = "/weaviate/client-libraries/typescript/typescript-v3"
 to   = "/weaviate/client-libraries/typescript"
 status = 301
 
-
-# Integrations
-
 [[redirects]]
-from = "/integrations/llm-frameworks/*"
-to   = "/integrations/llm-agent-frameworks/:splat"
-status = 301
-
-
-[[redirects]]
-from = "/weaviate/more-resources/dspy"
-to   = "/integrations/llm-agent-frameworks/dspy"
+from = "/weaviate/client-libraries/python/v3_v4_migration"
+to   = "/weaviate/client-libraries/python"
 status = 301
 
 # Modules
@@ -1108,8 +1104,16 @@ to   = "https://weaviate.io/product/integrations/patronusai"
 status = 301
 
 [[redirects]]
+from = "/weaviate/more-resources/dspy"
+to   = "/integrations/llm-agent-frameworks/dspy"
+status = 301
+
+[[redirects]]
 from = "/integrations"
 to   = "https://weaviate.io/product/integrations"
 status = 301
 
-
+[[redirects]]
+from = "/integrations/*"
+to   = "https://weaviate.io/product/integrations"
+status = 301

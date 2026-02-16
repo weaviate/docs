@@ -1350,20 +1350,28 @@ await client.collections.create({
       name: 'poster',
       dataType: weaviate.configure.dataType.BLOB,
     },
+    {
+      name: 'trailer',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
   ],
   vectorizers: [
     weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
-      // Define the fields to be used for the vectorization - using imageFields, textFields
+      // Define the fields to be used for the vectorization - using imageFields, textFields, videoFields
       imageFields: [{
         name: "poster",
-        weight: 0.9
+        weight: 0.7
       }],
       textFields: [{
         name: "title",
         weight: 0.1
       }],
-      model: "voyage-multimodal-3",
+      videoFields: [{
+        name: "trailer",
+        weight: 0.2
+      }],
+      model: "voyage-multimodal-3.5",
     })],
     // highlight-end
     // Additional parameters not shown
@@ -1387,21 +1395,29 @@ await client.collections.create({
       name: 'poster',
       dataType: weaviate.configure.dataType.BLOB,
     },
+    {
+      name: 'trailer',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
   ],
   vectorizers: [
     weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
-      // Define the fields to be used for the vectorization - using imageFields, textFields
+      // Define the fields to be used for the vectorization - using imageFields, textFields, videoFields
       imageFields: [{
         name: "poster",
-        weight: 0.9
+        weight: 0.7
       }],
       textFields: [{
         name: "title",
         weight: 0.1
       }],
+      videoFields: [{
+        name: "trailer",
+        weight: 0.2
+      }],
       // Further options
-      model: "voyage-multimodal-3",
+      model: "voyage-multimodal-3.5",
       truncate: true,  // or false
       // outputEncoding: "base64"  // or "null"
       // baseURL: "<custom_voyageai_url>"
@@ -1523,8 +1539,54 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicVectorizerMMWeaviate
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  properties: [
+    {
+      name: 'doc_page',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
+  ],
+  vectorizers: [
+    weaviate.configure.multiVectors.multi2VecWeaviate({
+      name: 'document',
+      imageField: 'doc_page',
+    }),
+  ],
+  // highlight-end
+});
 // END BasicVectorizerMMWeaviate
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START VectorizerMMWeaviateMuvera
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  properties: [
+    {
+      name: 'doc_page',
+      dataType: weaviate.configure.dataType.BLOB,
+    },
+  ],
+  vectorizers: [
+    weaviate.configure.multiVectors.multi2VecWeaviate({
+      // name: 'document', // Optional: You can choose to name the vector
+      imageField: 'doc_page',
+      model: 'ModernVBERT/colmodernvbert',
+      encoding: weaviate.configure.vectorIndex.multiVector.encoding.muvera({
+        // Optional parameters for tuning MUVERA
+        ksim: 4,
+        dprojections: 16,
+        repetitions: 20,
+      }),
+    }),
+  ],
+  // highlight-end
+});
+// END VectorizerMMWeaviateMuvera
 
 // Clean up
 await client.collections.delete('DemoCollection');

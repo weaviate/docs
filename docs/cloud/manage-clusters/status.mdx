@@ -1,5 +1,5 @@
 ---
-title: Cluster status
+title: Cluster status and metrics
 sidebar_position: 3
 description: "Monitor and check the operational status of your Weaviate Cloud clusters through multiple methods."
 image: og/wcd/user_guides.jpg
@@ -47,6 +47,52 @@ image: og/wcd/user_guides.jpg
 2. Open the `Clusters` list from the left sidebar.
 3. Select the cluster you want to inspect.
 4. The cluster details panel will open to the right.
+
+</details>
+
+## Cluster metrics
+
+Depending on the data available for your cluster, the following metrics dashboards are available:
+- `Query Latency`
+- `Ingestion Throughput`
+- `Average Batch Size`
+- `Object Count`
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="zkj3n21hep"
+    src="https://app.guideflow.com/embed/zkj3n21hep"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="zkj3n21hep"
+  ></script>
+</div>
+
+<br />
+
+<details>
+    <summary>Explore cluster metrics</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select the cluster you want to inspect from the left sidebar.
+3. Locate the cluster `Metrics` section on the `Cluster details` page.
+4. Click the `View all Metrics` button to find all the available metrics for your cluster.
 
 </details>
 

@@ -7,7 +7,7 @@ image: og/docs/client-libraries.jpg
 # tags: ['client libraries', 'cli']
 ---
 
-You can interact with Weaviate by using the GraphQL, gRPC or RESTful API directly, or with one of the available client libraries. Currently, Weaviate supports:
+You can interact with Weaviate by using the GraphQL, gRPC or RESTful API directly, or with one of the available client libraries. Currently, Weaviate offers these libraries:
 
 import CardsSection from "/src/components/CardsSection";
 
@@ -21,8 +21,7 @@ export const clientLibrariesData = [
   },
   {
     title: "TypeScript / JavaScript Client",
-    description:
-      "Use the official client (v3) with Node.js.",
+    description: "Use the official client (v3) with Node.js.",
     link: "/weaviate/client-libraries/typescript/",
     icon: "fab fa-js",
   },
@@ -51,7 +50,7 @@ export const clientLibrariesData = [
     title: "C# Client",
     description:
       "Install and use the official C# library for interacting with Weaviate.",
-    link: "/weaviate/client-libraries/java",
+    link: "/weaviate/client-libraries/csharp",
     icon: "fab fa-microsoft",
   },
 ];
@@ -64,13 +63,15 @@ import ClientCapabilitiesOverview from "/_includes/client.capabilities.mdx";
 
 <ClientCapabilitiesOverview />
 
+:::info Don't see your preferred language?
+
+If you want to contribute a client, or to request a particular client, let us know in [the community forum](https://forum.weaviate.io/)
+
+:::
+
 ### Community clients
 
 There also exist [community clients](./community.md) that were prepared by our wonderful community members. These clients are not maintained by the core Weaviate team, but by the community members themselves. To contribute to these clients, contact the maintainers directly.
-
-:::note Don't see your preferred language?
-If you want to contribute a client, or to request a particular client, let us know in [the forum](https://forum.weaviate.io/)
-:::
 
 ## Questions and feedback
 

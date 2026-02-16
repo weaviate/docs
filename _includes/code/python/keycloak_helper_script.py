@@ -90,6 +90,7 @@ class KeycloakSetup:
             "realm": self.realm_name,
             "enabled": True,
             "displayName": "Weaviate Test Realm",
+            "sslRequired": "none",
             "registrationAllowed": False,
             "loginWithEmailAllowed": True,
             "duplicateEmailsAllowed": False,

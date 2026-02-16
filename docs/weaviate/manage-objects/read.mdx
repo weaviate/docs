@@ -69,7 +69,7 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ReadSimpleObject"
@@ -78,6 +78,10 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
     />
   </TabItem>
 </Tabs>
+
+import ReturnedProperties from '/\_includes/returned-properties.mdx';
+
+<ReturnedProperties/>
 
 ## Retrieve the object's vector
 
@@ -124,7 +128,7 @@ Object vectors can be retrieved by specifying its return.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ReadObjectWithVector"
@@ -163,7 +167,7 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C# (Beta)">
+  <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ReadObjectNamedVectors"
