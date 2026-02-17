@@ -24,7 +24,6 @@ branch_name=${GITHUB_REF##*/}
 # Message with author mention and languages tested
 MESSAGE="{
   'text': '*Docs Code Tests - $STATUS_TEXT* - $AUTHOR_NAME',
-  'channel': '#docs-workflow-updates',
   'attachments': [
     {
       'color': '$COLOR',

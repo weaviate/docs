@@ -15,7 +15,7 @@ inputs:
     description: 'Name for the test results artifact'
     required: true
   slack-bot-token:
-    description: 'Slack bot token for notifications'
+    description: 'Slack webhook for testing CI channel'
     required: false
 
 runs:
@@ -55,7 +55,7 @@ runs:
       run: |
         source _build_scripts/slack-find-author.sh
 
-    - name: Send Slack notification
+    - name: Send Slack notification (testing CI)
       if: inputs.slack-bot-token != ''
       shell: bash
       env:
