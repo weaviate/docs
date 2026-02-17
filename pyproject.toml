@@ -5,6 +5,7 @@ description = "Weaviate documentation test suite"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "datasets>=4.0.0",
     "ijson>=3.3.0",
     "pandas>=2.2.3",
     "pytest>=8.3.5",

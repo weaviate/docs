@@ -6,7 +6,7 @@ from weaviate.classes.generate import GenerativeConfig
 # Step 2.1: Connect to your local Weaviate instance
 with weaviate.connect_to_local() as client:
     # END RAG
-    time.sleep(0.2)
+    time.sleep(1)
     # START RAG
 
     # Step 2.2: Use this collection

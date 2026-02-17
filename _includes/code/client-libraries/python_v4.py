@@ -1370,9 +1370,8 @@ finally:
 # END AsyncInsertionExample
 
 # Wait for collection to be populated - async indexing is on
-# TODO[g-despot]: Implement better mechanism
 import time
-time.sleep(1)
+time.sleep(5)
 
 # START AsyncSearchExample
 import weaviate

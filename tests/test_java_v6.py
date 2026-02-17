@@ -12,9 +12,17 @@ def run_java_v6_test(test_class, empty_weaviates):
     env = dict(os.environ)
 
     try:
-        subprocess.check_call(command, cwd=JAVA_V6_CWD, env=env)
+        result = subprocess.run(
+            command, cwd=JAVA_V6_CWD, env=env,
+            capture_output=True, text=True, check=True,
+        )
     except subprocess.CalledProcessError as error:
-        pytest.fail(f"Java v6 {test_class} failed with error: {error}")
+        details = [f"Java v6 {test_class} failed (exit code {error.returncode})"]
+        if error.stdout:
+            details.append(f"\n--- STDOUT (last 80 lines) ---\n{chr(10).join(error.stdout.splitlines()[-80:])}")
+        if error.stderr:
+            details.append(f"\n--- STDERR (last 40 lines) ---\n{chr(10).join(error.stderr.splitlines()[-40:])}")
+        pytest.fail("\n".join(details))
 
 
 @pytest.mark.java_v6
@@ -46,12 +54,12 @@ def test_manage_data(empty_weaviates, test_class):
         "SearchSimilarityTest",
         "SearchKeywordTest",
         "SearchHybridTest",
-        "SearchFiltersTest",
+        "SearchFilterTest",
         "SearchAggregateTest",
-        "SearchGenerativeTest",
-        "SearchMultiTargetTest",
+        "GenerativeSearchTest",
+        "MultiTargetSearchTest",
         "SearchImageTest",
-        "RerankerTest",
+        "RerankTest",
     ],
 )
 def test_search(empty_weaviates, test_class):
