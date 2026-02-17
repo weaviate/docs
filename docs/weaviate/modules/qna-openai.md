@@ -51,12 +51,12 @@ For requests that require the OpenAI organization name, you can provide it at qu
 
 You can provide your API key in two ways:
 
-1. During the **configuration** of your Docker instance, by adding `OPENAI_APIKEY` or `AZURE_APIKEY` as appropriate under `environment` to your `Docker Compose` file, like this:
+1. During the **configuration** of your Docker instance, by adding `OPENAI_API_KEY` or `AZURE_API_KEY` as appropriate under `environment` to your `Docker Compose` file, like this:
 
   ```yaml
   environment:
-    OPENAI_APIKEY: 'your-key-goes-here'  # For use with OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
-    AZURE_APIKEY: 'your-key-goes-here'  # For use with Azure OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
+    OPENAI_API_KEY: 'your-key-goes-here'  # For use with OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
+    AZURE_API_KEY: 'your-key-goes-here'  # For use with Azure OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
     ...
   ```
 
@@ -104,9 +104,9 @@ services:
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ENABLE_MODULES: 'text2vec-openai,qna-openai'
-      OPENAI_APIKEY: sk-foobar  # For use with OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
+      OPENAI_API_KEY: sk-foobar  # For use with OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
       OPENAI_ORGANIZATION: your-orgname  # For use with OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
-      AZURE_APIKEY: sk-foobar  # For use with Azure OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
+      AZURE_API_KEY: sk-foobar  # For use with Azure OpenAI. Setting this parameter is optional; you can also provide the key at runtime.
       CLUSTER_HOSTNAME: 'node1'
 ```
 

@@ -41,7 +41,7 @@ class PqCompressionTest {
     String scheme = "http";
     String host = "localhost";
     String port = "8080";
-    String openaiApiKey = EnvHelper.env("OPENAI_APIKEY", "_dummy_");
+    String openaiApiKey = EnvHelper.env("OPENAI_API_KEY", "_dummy_");
 
     Config config = new Config(scheme, host + ":" + port, new HashMap<String, String>() {
       {

@@ -55,7 +55,7 @@ The OpenAI integration requires an API key value. To use KubeAI, provide any val
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `OPENAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

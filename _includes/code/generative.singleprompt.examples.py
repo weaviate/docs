@@ -10,20 +10,20 @@ client = weaviate.connect_to_local(
         "X-AWS-Secret-Key": "YOUR_SECRET_KEY",
         # END GenerativeAWS
         # START GenerativeCohere
-        "X-Cohere-Api-Key": os.getenv("COHERE_APIKEY"),
+        "X-Cohere-Api-Key": os.getenv("COHERE_API_KEY"),
         # END GenerativeCohere
         # START GenerativeOpenAI
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY"),
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY"),
         # END GenerativeOpenAI
         # START GenerativeGoogle
         "X-Goog-Vertex-Api-Key": "YOUR-VERTEX-API-KEY",
         "X-Goog-Studio-Api-Key": "YOUR-AI-STUDIO-API-KEY",
         # END GenerativeGoogle
         # START GenerativeHuggingface
-        "X-HuggingFace-Api-Key": "YOUR_HUGGINGFACE_APIKEY",
+        "X-HuggingFace-Api-Key": "YOUR_HUGGINGFACE_API_KEY",
         # END GenerativeHuggingface
         # START GenerativeJinaai
-        "X-Jinaai-Api-Key": "YOUR_JINAAI_APIKEY",
+        "X-Jinaai-Api-Key": "YOUR_JINAAI_API_KEY",
         # END GenerativeJinaai
         # START-ANY
     }
@@ -37,7 +37,7 @@ from weaviate.classes.init import Auth
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,

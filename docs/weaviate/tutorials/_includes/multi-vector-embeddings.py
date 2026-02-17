@@ -11,7 +11,7 @@ from weaviate.util import generate_uuid5
 
 # START ConnectToWeaviate
 # Recommended: save sensitive data as environment variables
-jinaai_key = os.getenv("JINAAI_APIKEY")
+jinaai_key = os.getenv("JINAAI_API_KEY")
 
 client = weaviate.connect_to_local(
     headers={"X-JinaAI-Api-Key": jinaai_key}
