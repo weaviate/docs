@@ -46,15 +46,13 @@ Code examples are validated via automated tests. See README-tests.md for full de
 #### Python Tests
 ```bash
 # Setup Python environment
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r tests/requirements.txt
+uv sync
 
 # Run all tests
-pytest
+uv run pytest
 
 # Run specific test file
-pytest tests/test_quickstart.py
+uv run pytest tests/test_quickstart.py
 
 # Start/stop Weaviate test instances
 tests/start-weaviate.sh
@@ -213,7 +211,7 @@ Code snippets are organized by language under `_includes/code/`:
 
 | Language | Code location | Test framework | Client source | Run command |
 |----------|--------------|----------------|---------------|-------------|
-| Python | `_includes/code/howto/*.py` | pytest (in `/tests`) | `weaviate-client` from PyPI (`tests/requirements.txt`) | `python _includes/code/howto/<file>.py` |
+| Python | `_includes/code/howto/*.py` | pytest (in `/tests`) | `weaviate-client` from PyPI (`pyproject.toml`) | `uv run python _includes/code/howto/<file>.py` |
 | TypeScript | `_includes/code/howto/*.ts` | Inline assertions (no test runner) | `weaviate-client` from npm (`package.json`) | `npx tsx _includes/code/howto/<file>.ts` |
 | Java v6 | `_includes/code/java-v6/src/test/java/*.java` | JUnit 5 + AssertJ | `io.weaviate:client6` from Maven/local (`pom.xml`) | `cd _includes/code/java-v6 && mvn test -Dtest=<ClassName>` |
 | C# | `_includes/code/csharp/*.cs` | xunit | Local project ref to `../../csharp-client/` (`WeaviateProject.Tests.csproj`) | `dotnet test _includes/code/csharp/WeaviateProject.Tests.csproj --filter "FullyQualifiedName~<ClassName>"` |
@@ -221,7 +219,7 @@ Code snippets are organized by language under `_includes/code/`:
 
 #### Client library dependencies and versioning
 
-- **Python**: Version pinned in `tests/requirements.txt`. Install via `pip install -r tests/requirements.txt`.
+- **Python**: Version pinned in `pyproject.toml`. Install via `uv sync`.
 - **TypeScript**: Version in root `package.json` (`devDependencies`). Uses `tsx` to run `.ts` files directly.
 - **Java v6**: Version in `_includes/code/java-v6/pom.xml`. For unreleased features, switch to SNAPSHOT: build the local client at `/Users/ivandespot/dev/java-client` with `mvn install -DskipTests -Dmaven.javadoc.skip=true`, then update the pom.xml version.
 - **C#**: References a local project at `../../../../csharp-client/` (i.e., `/Users/ivandespot/dev/csharp-client`). For unreleased features, checkout the appropriate branch in that repo (e.g., `git checkout v1.0.1`). The .NET 9.0 SDK is required.

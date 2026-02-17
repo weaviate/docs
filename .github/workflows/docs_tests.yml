@@ -16,7 +16,7 @@ on:
 env:
   # Centralize versions for easier maintenance
   PYTHON_VERSION: "3.10"
-  WEAVIATE_VERSION: "1.33.0"
+  WEAVIATE_VERSION: "1.35.0"
   OLLAMA_VERSION: "0.9.6"
   CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
   KEYCLOAK_VERSION: "24.0.3"
@@ -62,8 +62,7 @@ jobs:
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           echo "🧪 Running agents tests..."
-          source .venv/bin/activate
-          pytest -m "agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          uv run pytest -m "agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -154,10 +153,9 @@ jobs:
       - name: Configure Keycloak
         run: |
           echo "🔧 Configuring Keycloak..."
-          source .venv/bin/activate
 
           sleep 5
-          python _includes/code/python/keycloak_helper_script.py
+          uv run python _includes/code/python/keycloak_helper_script.py
 
           echo "✅ Keycloak configuration completed"
 
@@ -178,15 +176,13 @@ jobs:
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           echo "🧪 Running Python tests..."
-          source .venv/bin/activate
-          pytest -m "(pyv4 or pyv3) and not agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          uv run pytest -m "(pyv4 or pyv3) and not agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -304,15 +300,13 @@ jobs:
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           echo "🧪 Running TypeScript tests..."
-          source .venv/bin/activate
-          pytest -m "ts and not agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          uv run pytest -m "ts and not agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -431,10 +425,9 @@ jobs:
       - name: Configure Keycloak
         run: |
           echo "🔧 Configuring Keycloak..."
-          source .venv/bin/activate
 
           sleep 5
-          python _includes/code/python/keycloak_helper_script.py
+          uv run python _includes/code/python/keycloak_helper_script.py
 
           echo "✅ Keycloak configuration completed"
 
@@ -455,13 +448,11 @@ jobs:
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           echo "🧪 Running Java v6 tests..."
-          source .venv/bin/activate
-          pytest -m "java_v6" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          uv run pytest -m "java_v6" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -575,10 +566,9 @@ jobs:
       - name: Configure Keycloak
         run: |
           echo "🔧 Configuring Keycloak..."
-          source .venv/bin/activate
 
           sleep 5
-          python _includes/code/python/keycloak_helper_script.py
+          uv run python _includes/code/python/keycloak_helper_script.py
 
           echo "✅ Keycloak configuration completed"
 
@@ -599,13 +589,11 @@ jobs:
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           echo "🧪 Running C# tests..."
-          source .venv/bin/activate
-          pytest -m "csharp" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          uv run pytest -m "csharp" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
