@@ -23,6 +23,7 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 * Backup and Restore between different storage providers
 * Single-command backup and restore
 * Choice of backing up an entire instance, or selected collections only
+* [Incremental backups](#incremental-backups) that only store changed data, reducing backup and speeding up backup times
 * Easy migration to new environments
 
 :::caution Important backup considerations
@@ -317,6 +318,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 | `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
+| `incremental_backup_base_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.36.0`. |
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -448,6 +450,70 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 </Tabs>
+
+### Incremental Backups
+
+import IncBackupsStatus from '/_includes/incremental-backups-status.mdx';
+
+<IncBackupsStatus/>
+
+Incremental backups reduce backup size and duration by only storing data that has changed since a previous backup. Instead of copying all files again, an incremental backup references unchanged files from a base backup.
+
+This can result in dramatically smaller backups and much faster backup times.
+
+#### How it works
+
+When creating a backup, Weaviate splits large files into individual chunks. During an incremental backup, Weaviate compares each file against the base backup. Files that haven't changed are stored as pointers to the base backup rather than being copied again. On restore, Weaviate automatically fetches the referenced files from the base backup.
+
+#### Create a full (base) backup
+
+First, create a regular backup that will serve as the base:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateFullBackup"
+  endMarker="# END CreateFullBackup"
+  language="py"
+/>
+
+#### Create an incremental backup
+
+To create an incremental backup, pass the `incremental_backup_base_id` parameter with the ID of the base backup:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateIncrementalBackup"
+  endMarker="# END CreateIncrementalBackup"
+  language="py"
+/>
+
+#### Chained incremental backups
+
+You can chain incremental backups by using a previous incremental backup as the base. Weaviate will walk the chain back to the original full backup to find unchanged files.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateChainedIncrementalBackup"
+  endMarker="# END CreateChainedIncrementalBackup"
+  language="py"
+/>
+
+#### Restore an incremental backup
+
+Restoring an incremental backup works the same as restoring any other backup. Weaviate automatically resolves the chain and fetches files from previous backups as needed.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START RestoreIncrementalBackup"
+  endMarker="# END RestoreIncrementalBackup"
+  language="py"
+/>
+
+:::caution Keep base backups available
+
+Base backups (and any intermediate incremental backups in a chain) must remain available for as long as you need to restore from any incremental backup that depends on them.
+
+:::
 
 ### Cancel Backup
 

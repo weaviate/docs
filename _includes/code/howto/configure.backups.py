@@ -111,6 +111,91 @@ client.collections.delete(["Article", "Publication"])
 
 
 # ==============================================
+# ===== Incremental backup =====
+# ==============================================
+
+# Create the collections for incremental backup tests
+client.collections.delete(["Article", "Publication"])
+articles = client.collections.create(name="Article")
+publications = client.collections.create(name="Publication")
+
+articles.data.insert(properties={"title": "Dummy"})
+publications.data.insert(properties={"title": "Dummy"})
+
+# START CreateFullBackup
+result = client.backup.create(
+    backup_id="base-backup",
+    backend="filesystem",
+    include_collections=["Article", "Publication"],
+    wait_for_completion=True,
+)
+
+print(result)
+# END CreateFullBackup
+
+# Test
+assert result.status == "SUCCESS"
+
+# Add more data before creating an incremental backup
+articles.data.insert(properties={"title": "Another article"})
+
+# START CreateIncrementalBackup
+result = client.backup.create(
+    backup_id="incremental-backup-1",
+    backend="filesystem",
+    include_collections=["Article", "Publication"],
+    wait_for_completion=True,
+    # highlight-start
+    incremental_backup_base_id="base-backup",
+    # highlight-end
+)
+
+print(result)
+# END CreateIncrementalBackup
+
+# Test
+assert result.status == "SUCCESS"
+
+# START CreateChainedIncrementalBackup
+result = client.backup.create(
+    backup_id="incremental-backup-2",
+    backend="filesystem",
+    include_collections=["Article", "Publication"],
+    wait_for_completion=True,
+    # highlight-start
+    incremental_backup_base_id="incremental-backup-1",
+    # highlight-end
+)
+
+print(result)
+# END CreateChainedIncrementalBackup
+
+# Test
+assert result.status == "SUCCESS"
+
+# Delete all collections before restoring
+client.collections.delete_all()
+
+# START RestoreIncrementalBackup
+result = client.backup.restore(
+    backup_id="incremental-backup-2",
+    backend="filesystem",
+    wait_for_completion=True,
+)
+
+print(result)
+# END RestoreIncrementalBackup
+
+# Test
+assert result.status == "SUCCESS"
+assert client.collections.exists("Article")
+assert client.collections.exists("Publication")
+
+# Clean up
+client.collections.delete(["Article", "Publication"])
+
+
+# ==============================================
 # ===== Cancel ongoing backup =====
 # ==============================================
 
