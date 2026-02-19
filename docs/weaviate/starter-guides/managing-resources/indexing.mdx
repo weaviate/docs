@@ -100,7 +100,7 @@ import HFreshStatus from '/_includes/code/hfresh_status.mdx';
 
 [HFresh indexes](/weaviate/concepts/vector-index#hfresh-index) are cluster-based vector indexes that use HNSW for the centroid index. They partition vectors into posting lists (clusters) and search only the most relevant clusters for a query.
 
-HFresh indexes are well-suited for very large collections where memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for compression.
+HFresh indexes are well-suited for very large collections where memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids.
 
 :::note
 HFresh only supports `cosine` and `l2-squared` distance metrics.
