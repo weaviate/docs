@@ -2,6 +2,7 @@
 title: Multiple target vectors
 sidebar_position: 50
 image: og/docs/howto.jpg
+description: "Search with multiple target vectors with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'hybrid search']
 ---
 
