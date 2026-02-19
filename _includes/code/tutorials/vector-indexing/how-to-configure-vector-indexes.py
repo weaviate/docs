@@ -1,10 +1,7 @@
 import weaviate
 import os
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WEAVIATE_URL"),
-    auth_credentials=os.getenv("WEAVIATE_API_KEY"),
-)
+client = weaviate.connect_to_local()
 
 collection_name = "CollectionWithHNSW"
 
@@ -134,6 +131,43 @@ client.collections.create(
     # highlight-end
 )
 # END CustomConfigDynamic
+
+client.collections.delete(name=collection_name)
+
+# START ConfigHFresh
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    name=collection_name,
+    # ... other parameters
+    # highlight-start
+    vector_config=Configure.Vectors.text2vec_weaviate(
+        vector_index_config=Configure.VectorIndex.hfresh()
+    ),
+    # highlight-end
+)
+# END ConfigHFresh
+
+client.collections.delete(name=collection_name)
+
+# START CustomConfigHFresh
+from weaviate.classes.config import Configure, VectorDistances
+
+client.collections.create(
+    name=collection_name,
+    # ... other parameters
+    # highlight-start
+    vector_config=Configure.Vectors.text2vec_weaviate(
+        vector_index_config=Configure.VectorIndex.hfresh(
+            distance_metric=VectorDistances.COSINE,     # Distance metric
+            max_posting_size_kb=1024,                    # Max posting list size in KB
+            replicas=4,                                  # Number of posting lists per vector
+            search_probe=64,                             # Number of posting lists to search
+        )
+    ),
+    # highlight-end
+)
+# END CustomConfigHFresh
 
 client.collections.delete(name=collection_name)
 
