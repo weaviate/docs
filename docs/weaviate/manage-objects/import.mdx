@@ -99,13 +99,9 @@ Find out more about error handling on the Python client [reference page](/weavia
 
 ## Server-side batching
 
-:::caution Preview
+import SsbStatus from '/_includes/ssb-status.mdx';
 
-Server-side batching was added in **`v1.34`** as a **preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
-:::
+<SsbStatus/>
 
 Here's how to import objects into a collection named `MyCollection` using [server-side batch imports](../concepts/data-import.mdx#server-side-batching). The client will send data in batch sizes using feedback from the server.
 
@@ -133,12 +129,11 @@ Here's how to import objects into a collection named `MyCollection` using [serve
 
   </TabItem>
   <TabItem value="java6" label="Java v6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START ServerSideBatchImportExample"
-      endMarker="// END ServerSideBatchImportExample"
-      language="java"
-    />
+
+```java
+// Java support coming soon
+```
+
   </TabItem>
   <TabItem value="java" label="Java v5 (Deprecated)">
 
@@ -158,9 +153,6 @@ Here's how to import objects into a collection named `MyCollection` using [serve
 </Tabs>
 
 ## Use the gRPC API
-
-:::info Added in `v1.23`.
-:::
 
 The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
 
@@ -364,9 +356,6 @@ Use the `vector` property to specify a vector for each object.
 
 ## Specify named vectors
 
-:::info Added in `v1.24`
-:::
-
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
 <Tabs className="code" groupId="languages">
@@ -444,7 +433,7 @@ The Python clients have built-in batching methods to help you optimize import sp
 
 ### Async Python client and batching
 
-Currently, the [async Python client does not support batching](../client-libraries/python/async.md#bulk-data-insertion). To use batching, use the sync Python client.
+The [async Python client](../client-libraries/python/async.md#bulk-data-insertion) supports server-side batching through the `stream()` method. For client-side batching, use the sync Python client.
 
 ## Stream data from large files
 

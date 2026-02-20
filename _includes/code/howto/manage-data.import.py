@@ -577,9 +577,9 @@ data_rows = [
 collection = client.collections.get("MyCollection")
 
 # highlight-start
-# Use `experimental` for server-side batching. The client will send data
+# Use `stream` for server-side batching. The client will send data
 # in batches at a rate specified by the server.
-with collection.batch.experimental() as batch:
+with collection.batch.stream() as batch:
     for data_row in data_rows:
         batch.add_object(
             properties=data_row,
