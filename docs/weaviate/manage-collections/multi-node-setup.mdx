@@ -95,7 +95,12 @@ curl \
     "replicationConfig": {
       "factor": 3,
       "asyncEnabled": true,
-      "deletionStrategy": "TimeBasedResolution"
+      "deletionStrategy": "TimeBasedResolution",
+      "asyncConfig": {
+        "maxWorkers": 5,
+        "hashtreeHeight": 16,
+        "frequency": 30
+      }
     }
 }' \
 http://localhost:8080/v1/schema

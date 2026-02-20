@@ -56,6 +56,7 @@ The following overrides are currently supported:
 | Runtime override name                            | Environment variable name                    |
 | :----------------------------------------------- | :------------------------------------------- |
 | `async_replication_disabled`                     | `ASYNC_REPLICATION_DISABLED`                 |
+| `async_replication_cluster_max_workers`          | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`      |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |

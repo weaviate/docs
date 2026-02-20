@@ -5,6 +5,7 @@ image: og/docs/configuration.jpg
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
+import AsyncReplicationPerCollectionConfig from '/_includes/async-replication-per-collection-config.mdx';
 
 Weaviate instances can be replicated. Replication can improve read throughput, improve availability, and enable zero-downtime upgrades.
 
@@ -59,9 +60,16 @@ import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/rep
 The [environment variables](/deploy/configuration/env-vars/index.md#async-replication) for configuring async replication (`ASYNC_*`) have been introduced in `v1.29`.
 :::
 
+<AsyncReplicationPerCollectionConfig />
+
 Async replication helps achieve consistency for data replicated across multiple nodes.
 
 Update the following [environment variables](/deploy/configuration/env-vars/index.md#async-replication) to configure async replication for your particular use case.
+
+#### Worker limits
+
+- **Set the cluster-wide worker cap:** `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`
+  Set the maximum number of concurrent async replication workers across the entire cluster. Default: `30`. Individual collections can set their own `maxWorkers` via `asyncConfig`, but the total across all collections will not exceed this cluster limit.
 
 #### Logging
 

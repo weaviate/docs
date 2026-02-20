@@ -4,6 +4,8 @@ title: Async Replication
 
 ---
 
+import AsyncReplicationPerCollectionConfig from '/_includes/async-replication-per-collection-config.mdx';
+
 Introduced to GA in the 1.29 release, Async Replication is a mechanism used to ensure eventual consistency across nodes in a distributed cluster. It works as a background process that automatically keeps nodes in sync without requiring user queries. Previously, consistency was achieved through "read repair" which involved nodes comparing data during a read request and exchanging missing or outdated information. This approach guarantees eventual consistency without requiring read operations. 
 
 :::info
@@ -20,9 +22,11 @@ This applies solely to data objects, as metadata consistency is treated differen
 
 These environment variables can be used to fine-tune behavior for your specific use case or deployment environment. 
 
-:::tip 
-The optimal values for these variables will ultimately depend on factors like: data size, network conditions, write patterns, and the desired level of eventual consistency. 
+:::tip
+The optimal values for these variables will ultimately depend on factors like: data size, network conditions, write patterns, and the desired level of eventual consistency.
 :::
+
+<AsyncReplicationPerCollectionConfig />
 
 ## Use Cases
 
@@ -38,6 +42,19 @@ Globally disables the entire async replication feature.
 - **Use case**: This is useful when you have many tenants or collections where a temporary global disable is needed, like during debugging or critical maintenance. 
 - **Special Considerations**:
   - This overrides any collection configuration.
+
+</details>
+
+<details>
+<summary> Cluster Worker Limits </summary>
+
+#### `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`
+Sets the maximum number of concurrent async replication workers across the entire cluster.
+
+- Its default value is `30`.
+- **Use case**: Limits the total number of concurrent replication workers to prevent resource exhaustion in large clusters with many collections or tenants.
+- **Special Considerations**:
+  - This is a cluster-wide cap. Individual collections can set their own `maxWorkers` via the per-collection [`asyncConfig`](/weaviate/config-refs/collections#async-config), but the total across all collections will not exceed this cluster limit.
 
 </details>
 
@@ -75,7 +92,7 @@ Controls how often the background async replication process logs its activity.
 
 #### `ASYNC_REPLICATION_HASHTREE_HEIGHT`
 Customizes the height of the hash tree built by each node to represent its locally stored data. 
-- By default the value is set to 16 which is roughly 2MB of RAM per shard on each node. 
+- By default the value is set to `16` for single-tenant collections (~2MB of RAM per shard on each node) and `10` for multi-tenant collections (~16KB per tenant per node).
 - **Use case(s)**: 
   - In multi-tenant setups with a large number of tenants, reducing the hash tree would minimize the memory footprint. 
   - For very large collections, a larger hash tree could be more beneficial for more efficient identification of differing data ranges. 
