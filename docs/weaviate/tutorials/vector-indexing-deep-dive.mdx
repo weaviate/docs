@@ -10,7 +10,7 @@ Each named vector in a Weaviate collection can have its own index configuration.
 
 This tutorial provides a hands-on guide to configuring and tuning these vector indexes. While the defaults are a great starting point, understanding how to adjust index parameters can help you optimize for search speed, accuracy, and memory usage.
 
-We will cover how to configure the `HNSW`, `Flat`, and `Dynamic` index types.
+We will cover how to configure the `HNSW`, `Flat`, `Dynamic`, and `HFresh` index types.
 
 :::info Prerequisites
 This tutorial assumes you are familiar with the basics of Weaviate. If not, start with the [Quickstart](../quickstart/index.md).
@@ -113,6 +113,41 @@ You can customize both the `HNSW` and `Flat` configurations that the `Dynamic` i
 />
 
 For more details, see the [Dynamic index configuration reference](../config-refs/indexing/vector-index.mdx#dynamic-index).
+
+## The HFresh Index: For High-Throughput Workloads
+
+The `HFresh` index is designed for high-throughput workloads where you need fast approximate nearest neighbor searches with low memory overhead. It uses a posting list structure where each vector is added to multiple posting lists, enabling efficient parallel search.
+
+### Default HFresh Configuration
+
+To create a collection with the `HFresh` index using default settings, simply pass `Configure.VectorIndex.hfresh()` without any arguments. This uses the following defaults:
+
+- `distance_metric`: `cosine`
+- `replicas`: `4` (number of posting lists per vector)
+- `search_probe`: `64` (number of posting lists to search)
+- `max_posting_size_kb`: computed dynamically
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ConfigHFresh"
+  endMarker="# END ConfigHFresh"
+  language="py"
+/>
+
+### Custom HFresh Configuration
+
+You can tune HFresh by adjusting its parameters:
+
+- `max_posting_size_kb`: The maximum allowed size for a posting list in KB. By default, this is computed dynamically.
+- `replicas`: The number of posting lists in which a vector is stored. A higher value increases recall but uses more storage.
+- `search_probe`: The number of posting lists to search during a query. A higher value increases recall but slows down searches.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CustomConfigHFresh"
+  endMarker="# END CustomConfigHFresh"
+  language="py"
+/>
 
 ## Next Steps
 

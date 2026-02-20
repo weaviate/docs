@@ -92,6 +92,7 @@ The choice of vector index type can have a significant impact on performance and
 | HNSW       | 🟥 Hot         | Fast        | Any object count  | A memory-based, fast index ([read more](./indexing.mdx#hnsw-indexes)) |
 | Flat       | 🟨 Warm        | Medium      | &lt;~10k objects    | A disk-based, brute-force index ([read more](./indexing.mdx#flat-indexes)) |
 | Dynamic    | Depends        | Depends     | Any object count  | Transitions from flat to HNSW index at a specified threshold ([read more](./indexing.mdx#dynamic-indexes)) |
+| HFresh     | 🟨 Warm        | Fast        | Large collections | A cluster-based index with memory efficiency for large datasets ([read more](./indexing.mdx#hfresh-indexes)) |
 
 The choice of index type depends on the number of objects and the desired performance. As a rule of thumb, use the following guidelines for a multi-tenant collection:
 

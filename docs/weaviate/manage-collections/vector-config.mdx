@@ -315,7 +315,7 @@ Multi-vector embeddings use up more memory than single vector embeddings. You ca
 
 ## Set vector index type
 
-The vector index type can be set for each collection at creation time, between `hnsw`, `flat` and `dynamic` index types.
+The [vector index type](../config-refs/indexing/vector-index.mdx) can be set for each collection at creation time, between `hnsw`, `flat`, `dynamic`, and `hfresh` index types.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -371,13 +371,15 @@ The vector index type can be set for each collection at creation time, between `
 <details>
   <summary>Additional information</summary>
 
-- Read more about index types & compression in [Concepts: Vector index](../concepts/indexing/vector-index.md).
+Read more about index types & compression in:
+- [References: Vector index](../config-refs/indexing/vector-index.mdx)
+- [Concepts: Vector index](../concepts/indexing/vector-index.md)
 
 </details>
 
 ## Set vector index parameters
 
-Set vector index parameters such as [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy) through collection configuration. Some parameters can be [updated later](collection-operations.mdx#update-a-collection-definition) after collection creation.
+Set [vector index parameters](../config-refs/indexing/vector-index.mdx) such as [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy) through collection configuration. Some parameters can be [updated later](collection-operations.mdx#update-a-collection-definition) after collection creation.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -433,7 +435,9 @@ Set vector index parameters such as [compression](../configuration/compression/i
 <details>
   <summary>Additional information</summary>
 
-- Read more about index types & compression in [Concepts: Vector index](../concepts/indexing/vector-index.md).
+Read more about index types & compression in:
+- [References: Vector index](../config-refs/indexing/vector-index.mdx)
+- [Concepts: Vector index](../concepts/indexing/vector-index.md)
 
 </details>
 

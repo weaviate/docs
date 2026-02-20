@@ -4,11 +4,12 @@ description: Reference for vector index types and parameters in Weaviate.
 ---
 
 **[Vector indexes](../../concepts/indexing/vector-index.md)** facilitate efficient, vector-first data storage and retrieval.
-There are three supported vector index types: 
+There are four supported vector index types:
 
 - **[HNSW index](#hnsw-index)**
 - **[Flat index](#flat-index)**
 - **[Dynamic index](#dynamic-index)**
+- **[HFresh index](#hfresh-index)**
 
 ## Index configuration parameters
 
@@ -18,15 +19,17 @@ Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use 
 
 Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-collections/vector-config.mdx#set-vector-index-type).
 
-| Parameter           | Type   | Default | Details                                                              |
-| :------------------ | :----- | :------ | :------------------------------------------------------------------- |
-| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat` or `dynamic`.       |
-| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type. |
+| Parameter           | Type   | Default | Details                                                                   |
+| :------------------ | :----- | :------ | :------------------------------------------------------------------------ |
+| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat`, `dynamic`, or `hfresh`. |
+| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type.      |
 
 <details>
   <summary>How to select the index type</summary>
 
 Generally, the `hnsw` index type is recommended for most use cases. The `flat` index type is recommended for use cases where the data the number of objects per index is low, such as in multi-tenancy cases. You can also opt for the `dynamic` index which will initially configure a `flat` index and once the object count exceeds a specified threshold it will automatically convert to an `hnsw` index.
+
+The `hfresh` index is a cluster-based index that uses HNSW for the centroid index. It can provide memory efficiency benefits for large datasets while maintaining good search performance.
 
 See [this section](../../concepts/indexing/vector-index.md#which-vector-index-is-right-for-me) for more information about the different index types and how to choose between them.
 
@@ -47,13 +50,13 @@ Some HNSW parameters are mutable, but others cannot be modified after you create
 | `cleanupIntervalSeconds` | integer | Cleanup frequency. This value does not normally need to be adjusted. A higher value means cleanup runs less frequently, but it does more in a single batch. A lower value means cleanup is more frequent, but it may be less efficient on each run.                                                                                                                                                                                                                    | 300      | Yes     |
 | `distance`               | string  | Distance metric. The metric that measures the distance between two arbitrary vectors. For available distance metrics, see [supported distance metrics](/weaviate/config-refs/distances.md).                                                                                                                                                                                                                                                                            | `cosine` | No      |
 | `ef`                     | integer | Balance search speed and recall. `ef` is the size of the dynamic list that the HNSW uses during search. Search is more accurate when `ef` is higher, but it is also slower. `ef` values greater than 512 show diminishing improvements in recall.<br/><br/>Dynamic `ef`. Weaviate automatically adjusts the `ef` value and creates a dynamic `ef` list when `ef` is set to -1. For more details, see [dynamic ef](../../concepts/indexing/vector-index.md#dynamic-ef). | -1       | Yes     |
-| `efConstruction`         | integer | Balance index search speed and build speed. A high `efConstruction` value means you can lower your `ef` settings, but importing is slower.<br/><br/>`efConstruction` must be greater than 0.                                                                                                                                                                                                                                                                          | 128      | No     
-| `HNSWGeoIndexEF`           | integer | Balance geo index search speed and recall. This value controls the search depth for geo-based queries.                                                                                                                                                                                                                                                                     | 800      | Yes     |
+| `efConstruction`         | integer | Balance index search speed and build speed. A high `efConstruction` value means you can lower your `ef` settings, but importing is slower.<br/><br/>`efConstruction` must be greater than 0.                                                                                                                                                                                                                                                                           | 128      | No      |
+| `HNSWGeoIndexEF`         | integer | Balance geo index search speed and recall. This value controls the search depth for geo-based queries.                                                                                                                                                                                                                                                                                                                                                                 | 800      | Yes     |
 | `maxConnections`         | integer | Maximum number of connections per element. `maxConnections` is the connection limit per layer for layers above the zero layer. The zero layer can have (2 \* `maxConnections`) connections. <br/><br/> `maxConnections` must be greater than 0.                                                                                                                                                                                                                        | 32       | No      |
 | `dynamicEfMin`           | integer | Lower bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against a creating search list that is too short.<br/><br/>This setting is only used when `ef` is -1.                                                                                                                                                                                                                                                                     | 100      | Yes     |
 | `dynamicEfMax`           | integer | Upper bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against creating a search list that is too long. <br/><br/>If `dynamicEfMax` is higher than the limit, `dynamicEfMax` does not have any effect. In this case, `ef` is the limit.<br/><br/>This setting is only used when `ef` is -1.                                                                                                                                      | 500      | Yes     |
 | `dynamicEfFactor`        | integer | Multiplier for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Sets the potential length of the search list. <br/><br/>This setting is only used when `ef` is -1.                                                                                                                                                                                                                                                                                  | 8        | Yes     |
-| `filterStrategy`         | string  | The filter strategy to use for filtering the search results. The filter strategy can be set to [`acorn`](../../concepts/filtering.md#acorn) (default as of `v1.34`) or [`sweeping`](../../concepts/filtering.md#sweeping).                                                                                                                                                                                                                                                           | `acorn`  | Yes     |
+| `filterStrategy`         | string  | The filter strategy to use for filtering the search results. The filter strategy can be set to [`acorn`](../../concepts/filtering.md#acorn) (default as of `v1.34`) or [`sweeping`](../../concepts/filtering.md#sweeping).                                                                                                                                                                                                                                             | `acorn`  | Yes     |
 | `flatSearchCutoff`       | integer | Optional. Threshold for the [flat-search cutoff](/weaviate/concepts/filtering.md#flat-search-cutoff). To force a vector index search, set `"flatSearchCutoff": 0`.                                                                                                                                                                                                                                                                                                     | 40000    | Yes     |
 | `skip`                   | boolean | When true, do not index the collection. <br/><br/> Weaviate decouples vector creation and vector storage. If you skip vector indexing, but a vectorizer is configured (or a vector is provided manually), Weaviate logs a warning each import. <br/><br/> To skip indexing and vector generation, set `"vectorizer": "none"` when you set `"skip": true`. <br/><br/> See [When to skip indexing](../../concepts/indexing/vector-index.md#when-to-skip-indexing).       | `false`  | No      |
 | `vectorCacheMaxObjects`  | integer | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations).                                                                                                                                                                                    | `1e12`   | Yes     |
@@ -167,6 +170,28 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 | `flat`      | object  | default Flat | [Flat index configuration](#flat-index) to be used.                                   |
 | `threshold` | integer | 10000        | Threshold object count at which `flat` to `hnsw` conversion happens                   |
 
+## HFresh index
+
+import HFreshStatus from "/_includes/code/hfresh_status.mdx";
+
+<HFreshStatus />
+
+HFresh is a cluster-based vector index based on the SPFresh algorithm. It uses an HNSW index for centroid search, providing a balance between memory efficiency and search performance for large datasets.
+
+:::note Supported distance metrics
+HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is not supported.
+:::
+
+### HFresh index parameters
+
+| Parameter          | Type    | Default  | Mutable | Details                                                                                                                                                                         |
+| :----------------- | :------ | :------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `distance`         | string  | `cosine` | No      | Distance metric. Only `cosine` and `l2-squared` are supported.                                                                                                                  |
+| `maxPostingSizeKB` | integer | `48`     | Yes     | Maximum size in KB for a posting list. Weaviate uses this value along with the vector dimensions to calculate the maximum number of vectors per posting. Min: `8`, Max: `1024`. |
+| `replicas`         | integer | `4`      | No      | Number of posting lists in which a vector is added. Min: `1`, Max: `10`.                                                                                                        |
+| `searchProbe`      | integer | `64`     | Yes     | Number of posting lists to search during a query.                                                                                                                               |
+| `rq`               | object  | --       | No      | Rotational quantization (RQ) compression configuration. RQ is enabled by default and immutable.                                                                                 |
+
 ## Quantization parameters
 
 ### RQ parameters
@@ -206,7 +231,7 @@ import BQParameters from "/_includes/configuration/bq-compression-parameters.mdx
 :::info Added in `v1.33`
 :::
 
-Starting with Weaviate v1.33, you can set a quantization method that will be enabled by default for all new collections**. Existing collections (for example restored from backups) are not affected and retain their original configuration.
+Starting with Weaviate v1.33, you can set a quantization method that will be enabled by default for all new collections\*\*. Existing collections (for example restored from backups) are not affected and retain their original configuration.
 
 Set the [`DEFAULT_QUANTIZATION` environment variable](/docs/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) before starting Weaviate to change the default quantization technique or to disable it.
 

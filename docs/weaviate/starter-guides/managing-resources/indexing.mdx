@@ -30,11 +30,12 @@ Vector indexes can use *hot* or *warm* resources, depending on the index type. I
 
 ## Vector indexes
 
-Weaviate offers three types of vector indexes, [Hierarchical Navigable Small World (HNSW) indexes](#hnsw-indexes), [flat indexes](#flat-indexes) and [dynamic indexes](#dynamic-indexes).
+Weaviate offers four types of vector indexes, [Hierarchical Navigable Small World (HNSW) indexes](#hnsw-indexes), [flat indexes](#flat-indexes), [dynamic indexes](#dynamic-indexes), and [HFresh indexes](#hfresh-indexes).
 
 - HNSW indexes enable fast, scalable vector searching that works well even with very large data sets.
 - Flat indexes are memory-efficient indexes that work best with small data sets.
 - Dynamic indexes switch from a flat index to an HNSW index when a [collection](../../concepts/data.md#collections) or [tenant](../../concepts/data.md#multi-tenancy) reaches a threshold size.
+- HFresh indexes use a cluster-based approach with HNSW for centroids, providing memory efficiency for large datasets.
 
 #### HNSW indexes
 
@@ -90,6 +91,22 @@ This table shows how a dynamic index changes as the number of objects in a colle
 :::info Configure the flat index and the HNSW index
 Configure the flat index and the HNSW index when you define the dynamic index. The dynamic index uses the flat index initially, then switches to the HNSW index. Both indexes should be configured before they are used.
 :::
+
+#### HFresh indexes
+
+import HFreshStatus from '/_includes/code/hfresh_status.mdx';
+
+<HFreshStatus />
+
+[HFresh indexes](/weaviate/concepts/vector-index#hfresh-index) are cluster-based vector indexes that use HNSW for the centroid index. They partition vectors into posting lists (clusters) and search only the most relevant clusters for a query.
+
+HFresh indexes are well-suited for very large collections where memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids.
+
+:::note
+HFresh only supports `cosine` and `l2-squared` distance metrics.
+:::
+
+For configuration details, see [HFresh index parameters](/weaviate/config-refs/indexing/vector-index.mdx#hfresh-index-parameters).
 
 ### Asynchronous vector indexing
 
