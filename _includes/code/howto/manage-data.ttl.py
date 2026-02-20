@@ -16,7 +16,7 @@ client.collections.create(
         Property(name="ReferenceDate", data_type=DataType.DATE),
     ],
     object_ttl_config=Configure.ObjectTTL.delete_by_creation_time(
-        time_to_live=datetime.timedelta(hours=1)  # Or set "3600" for seconds
+        time_to_live=datetime.timedelta(hours=1),  # Or set "3600" for seconds
         filter_expired_objects=True,  # Optional: automatically filter out expired objects from queries
     ),
 )
