@@ -53,7 +53,7 @@ You must provide a valid API key to Weaviate for this integration. Go to [xAI](h
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `XAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `XAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

@@ -23,7 +23,7 @@ func setupClient() *weaviate.Client {
 	// Best practice: store your credentials in environment variables
 	weaviateURL := os.Getenv("WEAVIATE_URL")
 	weaviateAPIKey := os.Getenv("WEAVIATE_API_KEY")
-	//openaiAPIKey := os.Getenv("OPENAI_APIKEY")
+	//openaiAPIKey := os.Getenv("OPENAI_API_KEY")
 	weaviateScheme := os.Getenv("WEAVIATE_SCHEME")
 	if weaviateScheme == "" {
 		weaviateScheme = "https"

@@ -2,7 +2,7 @@
 // Set these environment variables
 // WEAVIATE_HOSTNAME			your Weaviate instance hostname, excluding the scheme (https://)
 // WEAVIATE_API_KEY  		your Weaviate instance API key
-// <PROVIDER>_APIKEY   	your model provider API key (or token)
+// <PROVIDER>_API_KEY   	your model provider API key (or token)
 
 package main
 
@@ -28,35 +28,35 @@ func main() {
 			"X-AWS-Secret-Key": os.Getenv("AWS_SECRET_KEY"),
 			// END AWSInstantiation
 			// START CohereInstantiation
-			"X-Cohere-Api-Key": os.Getenv("COHERE_APIKEY"),
+			"X-Cohere-Api-Key": os.Getenv("COHERE_API_KEY"),
 			// END CohereInstantiation
 			// START DatabricksInstantiation
 			"X-Databricks-Token": os.Getenv("DATABRICKS_TOKEN"),
 			// END DatabricksInstantiation
 			// START GoogleInstantiation
-			"X-Goog-Vertex-Key": os.Getenv("VERTEX_APIKEY"),
-			"X-Goog-Studio-Key": os.Getenv("STUDIO_APIKEY"),
+			"X-Goog-Vertex-Key": os.Getenv("VERTEX_API_KEY"),
+			"X-Goog-Studio-Key": os.Getenv("STUDIO_API_KEY"),
 			// END GoogleInstantiation
 			// START HuggingFaceInstantiation
-			"X-HuggingFace-Api-Key": os.Getenv("HUGGINGFACE_APIKEY"),
+			"X-HuggingFace-Api-Key": os.Getenv("HUGGINGFACE_API_KEY"),
 			// END HuggingFaceInstantiation
 			// START JinaAIInstantiation
-			"X-JinaAI-Api-Key": os.Getenv("JINAAI_APIKEY"),
+			"X-JinaAI-Api-Key": os.Getenv("JINAAI_API_KEY"),
 			// END JinaAIInstantiation
 			// START MistralInstantiation
-			"X-Mistral-Api-Key": os.Getenv("MISTRAL_APIKEY"),
+			"X-Mistral-Api-Key": os.Getenv("MISTRAL_API_KEY"),
 			// END MistralInstantiation
 			// START NVIDIAInstantiation
-			"X-NVIDIA-Api-Key": os.Getenv("NVIDIA_APIKEY"),
+			"X-NVIDIA-Api-Key": os.Getenv("NVIDIA_API_KEY"),
 			// END NVIDIAInstantiation
 			// START OpenAIInstantiation
-			"X-OpenAI-Api-Key": os.Getenv("OPENAI_APIKEY"),
+			"X-OpenAI-Api-Key": os.Getenv("OPENAI_API_KEY"),
 			// END OpenAIInstantiation
 			// START AzureOpenAIInstantiation
-			"X-Azure-Api-Key": os.Getenv("AZURE_APIKEY"),
+			"X-Azure-Api-Key": os.Getenv("AZURE_API_KEY"),
 			// END AzureOpenAIInstantiation
 			// START VoyageAIInstantiation
-			"X-VoyageAI-Api-Key": os.Getenv("VOYAGEAI_APIKEY"),
+			"X-VoyageAI-Api-Key": os.Getenv("VOYAGEAI_API_KEY"),
 			// END VoyageAIInstantiation
 			// START-ANY
 		},

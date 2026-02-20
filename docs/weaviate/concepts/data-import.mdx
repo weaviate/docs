@@ -27,13 +27,9 @@ For **code examples**, check out the [How-to: Batch import](../manage-objects/im
 
 ## Server-side batching
 
-:::caution Preview
+import SsbStatus from '/_includes/ssb-status.mdx';
 
-Server-side batching was added in **`v1.34`** as a **preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
-:::
+<SsbStatus/>
 
 Weaviate's server-side batching, also known as **automatic batching**, aims to provide a closed-loop system for simpler, faster, and more robust data ingestion. Instead of manually tuning batch parameters on the client side, you can let the server manage the data flow rate for optimal performance.
 

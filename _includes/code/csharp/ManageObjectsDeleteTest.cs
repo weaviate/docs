@@ -144,7 +144,7 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
 
         await collection.Data.DeleteMany(
             // highlight-start
-            Filter.ID.ContainsAny(ids) // Delete the 3 objects
+            Filter.UUID.ContainsAny(ids) // Delete the 3 objects
         // highlight-end
         );
         // END DeleteByIDBatch

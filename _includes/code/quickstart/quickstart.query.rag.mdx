@@ -69,7 +69,7 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 # Best practice: store your credentials in environment variables
 # export WEAVIATE_URL="YOUR_INSTANCE_URL"    # Your Weaviate instance URL
 # export WEAVIATE_API_KEY="YOUR_API_KEY"     # Your Weaviate instance API key
-# export COHERE_APIKEY="YOUR_API_KEY"   # Your Cohere API key
+# export COHERE_API_KEY="YOUR_API_KEY"   # Your Cohere API key
 
 echo '{
   "query": "{
@@ -102,7 +102,7 @@ echo '{
     -X POST \
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer $WEAVIATE_API_KEY" \
-    -H "X-Cohere-Api-Key: $COHERE_APIKEY" \
+    -H "X-Cohere-Api-Key: $COHERE_API_KEY" \
     -d @- \
     $WEAVIATE_URL/v1/graphql
 ```

@@ -2,6 +2,7 @@
 title: Retrieval Augmented Generation (RAG)
 sidebar_position: 70
 image: og/docs/howto.jpg
+description: "Retrieval augmented generation (RAG) with single-prompt and grouped-task patterns with code in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'generative']
 ---
 
