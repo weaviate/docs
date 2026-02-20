@@ -2,6 +2,7 @@
 title: Reranking
 sidebar_position: 75
 image: og/docs/howto.jpg
+description: "Rerank search results for improved relevance with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'rank']
 ---
 
