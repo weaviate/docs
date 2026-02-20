@@ -166,6 +166,39 @@ The inverted index in Weaviate can be configured through various parameters at t
   </TabItem>
 </Tabs>
 
+## Drop an inverted index
+
+Drop (delete) an inverted index from a property. This is a destructive operation — the index data is removed from disk. To use the index again, it must be regenerated.
+
+The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DropInvertedIndex"
+      endMarker="# END DropInvertedIndex"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START DropInvertedIndex"
+      endMarker="// END DropInvertedIndex"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DropInvertedIndex"
+      endMarker="// END DropInvertedIndex"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
 ## Set tokenization type for property
 
 Configure a [tokenization method](../config-refs/collections.mdx#tokenization) for each property individually.

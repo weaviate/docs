@@ -556,6 +556,21 @@ await client.collections.create({
 })
 // END EnableInvertedIndex
 
+// START DropInvertedIndex
+const article = client.collections.use('Article')
+
+// highlight-start
+// Drop the searchable inverted index from the "title" property
+await article.config.dropInvertedIndex('title', 'searchable')
+
+// Drop the filterable inverted index from the "title" property
+await article.config.dropInvertedIndex('title', 'filterable')
+
+// Drop the range filter index from the "chunk_no" property
+await article.config.dropInvertedIndex('chunk_no', 'rangeFilters')
+// highlight-end
+// END DropInvertedIndex
+
 
 // ===============================================
 // ===== CREATE A COLLECTION WITH A RERANKER MODULE =====
