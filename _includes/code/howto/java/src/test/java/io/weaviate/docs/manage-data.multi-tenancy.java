@@ -33,7 +33,7 @@ class ManageDataMultiTenancyTest {
     String scheme = EnvHelper.scheme("http");
     String host = EnvHelper.host("localhost");
     String port = EnvHelper.port("8080");
-    String openaiApiKey = EnvHelper.env("OPENAI_APIKEY", "_dummy_");
+    String openaiApiKey = EnvHelper.env("OPENAI_API_KEY", "_dummy_");
 
     Config config = new Config(scheme, host + ":" + port, new HashMap<String, String>() {{
       put("X-Openai-Api-Key", openaiApiKey);

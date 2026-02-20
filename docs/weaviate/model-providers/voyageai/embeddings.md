@@ -54,7 +54,7 @@ You must provide a valid Voyage AI API key to Weaviate for this integration. Go 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `VOYAGEAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

@@ -51,7 +51,7 @@ You must provide a valid Anthropic API key to Weaviate for this integration. Go 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `ANTHROPIC_APIKEY` environment variable that is available to Weaviate.
+- Set the `ANTHROPIC_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
