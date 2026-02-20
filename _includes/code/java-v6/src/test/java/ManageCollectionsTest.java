@@ -241,6 +241,36 @@ class ManageCollectionsTest {
     assertThat(config.properties()).hasSize(3);
   }
 
+  //@Test
+  void testDropInvertedIndex() throws IOException {
+    client.collections.create("Article", col -> col
+        .properties(
+            Property.text("title",
+                p -> p.indexFilterable(true).indexSearchable(true)),
+            Property.integer("chunk_number", p -> p.indexRangeFilters(true))));
+
+    // START DropInvertedIndex
+    var collection = client.collections.use("Article");
+
+    // highlight-start
+    // Drop the searchable inverted index from the "title" property
+    collection.config.dropPropertyIndex("title", PropertyIndexType.SEARCHABLE);
+
+    // Drop the filterable inverted index from the "title" property
+    collection.config.dropPropertyIndex("title", PropertyIndexType.FILTERABLE);
+
+    // Drop the range filter index from the "chunk_number" property
+    collection.config.dropPropertyIndex("chunk_number", PropertyIndexType.RANGE_FILTERS);
+    // highlight-end
+    // END DropInvertedIndex
+
+    var config = client.collections.getConfig("Article").get();
+    var titleProp = config.properties().stream()
+        .filter(p -> p.name().equals("title")).findFirst().get();
+    assertThat(titleProp.indexFilterable()).isFalse();
+    assertThat(titleProp.indexSearchable()).isFalse();
+  }
+
   // TODO[g-despot] IllegalState Not a JSON Object: null
   @Test
   void testSetReranker() throws IOException {

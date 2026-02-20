@@ -288,6 +288,21 @@ client.collections.create(
 )
 # END EnableInvertedIndex
 
+# START DropInvertedIndex
+collection = client.collections.get("Article")
+
+# highlight-start
+# Drop the searchable inverted index from the "title" property
+collection.config.delete_property_index("title", "searchable")
+
+# Drop the filterable inverted index from the "title" property
+collection.config.delete_property_index("title", "filterable")
+
+# Drop the range filter index from the "chunk_number" property
+collection.config.delete_property_index("chunk_number", "rangeFilters")
+# highlight-end
+# END DropInvertedIndex
+
 # Delete the collection to recreate it
 client.collections.delete("Article")
 
