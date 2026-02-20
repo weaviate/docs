@@ -2,6 +2,7 @@
 title: Search patterns and basics
 sidebar_position: 10
 image: og/docs/howto.jpg
+description: "Basic search operations: listing objects, retrieving properties and metadata with code in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'semantic search']
 ---
 

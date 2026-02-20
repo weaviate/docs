@@ -20,7 +20,7 @@ func Test_ManageDataMultiTenancy(t *testing.T) {
 	scheme := helper.EnvScheme("http")
 	host := helper.EnvHost("localhost")
 	port := helper.EnvPort("8080")
-	openaiApiKey := helper.Env("OPENAI_APIKEY", "_dummy_")
+	openaiApiKey := helper.Env("OPENAI_API_KEY", "_dummy_")
 
 	config := weaviate.Config{Scheme: scheme, Host: host + ":" + port, Headers: map[string]string{
 		"X-Openai-Api-Key": openaiApiKey,

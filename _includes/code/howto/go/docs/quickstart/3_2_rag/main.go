@@ -2,7 +2,7 @@
 // Set these environment variables
 // WEAVIATE_HOSTNAME			your Weaviate instance hostname
 // WEAVIATE_API_KEY  		your Weaviate instance API key
-// OPENAI_APIKEY   		your OpenAI API key
+// OPENAI_API_KEY   		your OpenAI API key
 
 package main
 
@@ -23,7 +23,7 @@ func main() {
 		AuthConfig: auth.ApiKey{Value: os.Getenv("WEAVIATE_API_KEY")},
 		// highlight-start
 		Headers: map[string]string{
-			"X-OpenAI-Api-Key": os.Getenv("OPENAI_APIKEY"),
+			"X-OpenAI-Api-Key": os.Getenv("OPENAI_API_KEY"),
 		},
 		// highlight-end
 	}

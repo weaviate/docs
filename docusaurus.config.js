@@ -34,6 +34,7 @@ const config = {
       onBrokenMarkdownLinks: "warn",
       onBrokenMarkdownImages: "throw",
     },
+    mermaid: true,
   },
 
   i18n: {
@@ -64,11 +65,63 @@ const config = {
       {
         siteTitle: "Weaviate Documentation",
         siteDescription:
-          "Comprehensive guides and references for Weaviate, the open-source vector database.",
+          "Comprehensive guides and references for Weaviate, the open-source vector database. " +
+          "Sections labeled [CODE] contain runnable multi-language code examples (Python, TypeScript, Go, Java, C#). " +
+          "Sections labeled [REFERENCE] contain configuration details and API specs. " +
+          "Sections labeled [CONCEPTS] contain theoretical explanations.",
         depth: 3,
+        includeOrder: [
+          "/weaviate/connections/**",
+          "/weaviate/manage-collections/**",
+          "/weaviate/manage-objects/**",
+          "/weaviate/search/**",
+          "/weaviate/configuration/**",
+          "/weaviate/client-libraries/**",
+          "/weaviate/starter-guides/**",
+          "/weaviate/tutorials/**",
+          "/weaviate/quickstart/**",
+          "/weaviate/concepts/**",
+          "/weaviate/config-refs/**",
+          "/weaviate/api/**",
+          "/weaviate/model-providers/**",
+        ],
+        optionalLinks: [
+          {
+            title: "Weaviate Python Client API Reference",
+            url: "https://weaviate.github.io/weaviate-python-client/",
+            description: "Full Python client API reference (external).",
+          },
+          {
+            title: "Weaviate TypeScript Client API Reference",
+            url: "https://weaviate.github.io/typescript-client/",
+            description: "Full TypeScript client API reference (external).",
+          },
+        ],
         content: {
           //excludeRoutes: ["/contributor-guide/**"], // Throwing an error in GitHub Actions
           enableMarkdownFiles: false,
+          routeRules: [
+            // Code-heavy how-to sections
+            { route: "/weaviate/connections/**", categoryName: "[CODE] Connect to Weaviate" },
+            { route: "/weaviate/manage-collections/**", categoryName: "[CODE] Manage Collections" },
+            { route: "/weaviate/manage-objects/**", categoryName: "[CODE] Manage Objects (CRUD)" },
+            { route: "/weaviate/search/**", categoryName: "[CODE] Search and Queries" },
+            { route: "/weaviate/configuration/**", categoryName: "[CODE] Configuration How-Tos" },
+            { route: "/weaviate/client-libraries/**", categoryName: "[CODE] Client Libraries and SDKs" },
+            { route: "/weaviate/starter-guides/**", categoryName: "[CODE] Starter Guides" },
+            { route: "/weaviate/tutorials/**", categoryName: "[CODE] Tutorials" },
+            { route: "/weaviate/quickstart/**", categoryName: "[CODE] Quickstart" },
+            // Reference sections
+            { route: "/weaviate/config-refs/**", categoryName: "[REFERENCE] Configuration Reference" },
+            { route: "/weaviate/api/**", categoryName: "[REFERENCE] API Reference (REST, GraphQL, gRPC)" },
+            // Concepts sections
+            { route: "/weaviate/concepts/**", categoryName: "[CONCEPTS] Architecture and Theory" },
+            { route: "/weaviate/benchmarks/**", categoryName: "[CONCEPTS] Benchmarks" },
+            { route: "/weaviate/best-practices/**", categoryName: "[CONCEPTS] Best Practices" },
+            { route: "/weaviate/more-resources/**", categoryName: "[CONCEPTS] More Resources" },
+            // Other
+            { route: "/weaviate/model-providers/**", categoryName: "Model Provider Integrations" },
+          ],
         },
         //logLevel: 3, // Uncomment to enable debug logging
       },
@@ -80,9 +133,6 @@ const config = {
       },
     ],
   ],
-  markdown: {
-    mermaid: true,
-  },
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
     [
