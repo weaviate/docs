@@ -30,8 +30,8 @@ async function main() {
 
   const client = await weaviate.connectToLocal({
     headers: {
-      'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,
-      'X-Cohere-Api-Key': process.env.COHERE_APIKEY as string,
+      'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY as string,
+      'X-Cohere-Api-Key': process.env.COHERE_API_KEY as string,
     },
   });
 

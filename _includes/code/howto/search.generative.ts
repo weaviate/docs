@@ -10,8 +10,8 @@ import weaviate, { GenerateOptions, WeaviateClient } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string;
 const weaviateKey = process.env.WEAVIATE_API_KEY as string;
-const openaiKey = process.env.OPENAI_APIKEY as string;
-const anthropicKey = process.env.ANTHROPIC_APIKEY as string;
+const openaiKey = process.env.OPENAI_API_KEY as string;
+const anthropicKey = process.env.ANTHROPIC_API_KEY as string;
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL, {
   authCredentials: new weaviate.ApiKey(weaviateKey),

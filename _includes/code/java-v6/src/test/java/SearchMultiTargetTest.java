@@ -33,8 +33,8 @@ class MultiTargetSearchTest {
     // START LoadDataNamedVectors
     String weaviateUrl = System.getenv("WEAVIATE_URL");
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
-    String openaiApiKey = System.getenv("OPENAI_APIKEY");
-    String cohereApiKey = System.getenv("COHERE_APIKEY");
+    String openaiApiKey = System.getenv("OPENAI_API_KEY");
+    String cohereApiKey = System.getenv("COHERE_API_KEY");
 
     client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey,

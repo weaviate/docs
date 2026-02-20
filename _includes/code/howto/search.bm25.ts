@@ -11,7 +11,7 @@ import weaviate from 'weaviate-client';
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {
    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY as string,  // Replace with your inference API key
    }
  }
 )

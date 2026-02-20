@@ -18,9 +18,9 @@ def populate_inference_api_keys(codeblock_in: str) -> str:
 
     codeblock_out = codeblock_in
     for pattern, my_env_var, repl_pattern in [
-        (r'(["\'])X-Cohere-Api-Key\1: \1(.+?)\1', "COHERE_APIKEY", r'\1X-Cohere-Api-Key\1: \1'),
-        (r'(["\'])X-OpenAI-Api-Key\1: \1(.+?)\1', "OPENAI_APIKEY", r'\1X-OpenAI-Api-Key\1: \1'),
-        (r'(["\'])X-HuggingFace-Api-Key\1: \1(.+?)\1', "HUGGINGFACE_APIKEY", r'\1X-HuggingFace-Api-Key\1: \1')
+        (r'(["\'])X-Cohere-Api-Key\1: \1(.+?)\1', "COHERE_API_KEY", r'\1X-Cohere-Api-Key\1: \1'),
+        (r'(["\'])X-OpenAI-Api-Key\1: \1(.+?)\1', "OPENAI_API_KEY", r'\1X-OpenAI-Api-Key\1: \1'),
+        (r'(["\'])X-HuggingFace-Api-Key\1: \1(.+?)\1', "HUGGINGFACE_API_KEY", r'\1X-HuggingFace-Api-Key\1: \1')
     ]:
         my_api_key = os.environ[my_env_var]
         if re.search(pattern, codeblock_out) is not None:

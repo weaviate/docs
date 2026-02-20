@@ -14,7 +14,7 @@ import os
 # Instantiate the client anonymously
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 
