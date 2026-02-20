@@ -193,14 +193,14 @@ We recommend using the collection object to perform batch imports of single coll
 
 ### Batch sizing
 
-There are three methods to configure the batching behavior. They are `dynamic`, `experimental`, `fixed_size` and `rate_limit`.
+There are four methods to configure the batching behavior. They are `stream`, `dynamic`, `fixed_size` and `rate_limit`.
 
-| Method         | Description                                                                                                                                                                                                                    | When to use                                                                                               |
-| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------- |
-| `dynamic`      | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import by the client.                                                                                                          | Recommended starting point.                                                                               |
-| `experimental` | Also known as **server-side batching**. The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import. The server provides info to the client on how to adjust the import parameters. | Currently in **preview**. We do not recommend using this feature in production environments at this time. |
-| `fixed_size`   | The batch size and number of concurrent requests are fixed to sizes specified by the user.                                                                                                                                     | When you want to specify fixed parameters.                                                                |
-| `rate_limit`   | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute).                                                                                                                                    | When you want to avoid hitting third-party vectorization API rate limits.                                 |
+| Method       | Description                                                                                                                                                                                                                    | When to use                                                               |
+| :----------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------ |
+| `stream`     | Also known as **server-side batching**. The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import. The server provides info to the client on how to adjust the import parameters. | Recommended starting point.                                               |
+| `dynamic`    | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import by the client.                                                                                                          | When server-side batching is not available.                               |
+| `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user.                                                                                                                                     | When you want to specify fixed parameters.                                |
+| `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute).                                                                                                                                    | When you want to avoid hitting third-party vectorization API rate limits. |
 
 #### Usage
 
@@ -217,11 +217,11 @@ These methods return a new context manager for each batch. Attributes that are r
       language="py"
     />
   </TabItem>
-  <TabItem value="experimental" label="Server-side batching">
+  <TabItem value="stream" label="Server-side batching">
     <FilteredTextBlock
       text={PythonCode}
-      startMarker="# START BatchExperimental"
-      endMarker="# END BatchExperimental"
+      startMarker="# START BatchStream"
+      endMarker="# END BatchStream"
       language="py"
     />
   </TabItem>
