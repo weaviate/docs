@@ -10,12 +10,13 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.ttl.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.ttl.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageDataTTLTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageDataTTLTest.cs";
 
-:::caution Added in `v1.35.0` as a technical preview
-Time to live (TTL) was introduced in Weaviate `v1.35.0` as a technical preview feature.
+import TtlStatus from '/_includes/ttl-satus.mdx';
 
-TTL is not available in Weaviate Cloud instances at this time.
-:::
+<TtlStatus/>
 
 Time-to-live (TTL) allows you to set an expiration time for objects in a collection.
 
@@ -38,6 +39,30 @@ Set a TTL to count forward from the object's creation time metadata. The value m
       language="py"
     />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START TTLByCreationTime"
+      endMarker="// END TTLByCreationTime"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TTLByCreationTime"
+      endMarker="// END TTLByCreationTime"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TTLByCreationTime"
+      endMarker="// END TTLByCreationTime"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Relative to a last update time
@@ -53,6 +78,30 @@ Set a TTL to count forward from the object's last updated time metadata. The val
       language="py"
     />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START TTLByUpdateTime"
+      endMarker="// END TTLByUpdateTime"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TTLByUpdateTime"
+      endMarker="// END TTLByUpdateTime"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TTLByUpdateTime"
+      endMarker="// END TTLByUpdateTime"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Relative to a specific DATE property
@@ -66,6 +115,30 @@ Set a TTL to a relative value from a specific `DATE` property within the object.
       startMarker="# START TTLByDateProperty"
       endMarker="# END TTLByDateProperty"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START TTLByDateProperty"
+      endMarker="// END TTLByDateProperty"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TTLByDateProperty"
+      endMarker="// END TTLByDateProperty"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TTLByDateProperty"
+      endMarker="// END TTLByDateProperty"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
