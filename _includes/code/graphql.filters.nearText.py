@@ -11,23 +11,23 @@ client = weaviate.connect_to_local(
         "X-AWS-Secret-Key": "YOUR_SECRET_KEY",
         # END NearTextAWS
         # START NearTextCohere
-        "X-Cohere-Api-Key": os.getenv("COHERE_APIKEY"),
+        "X-Cohere-Api-Key": os.getenv("COHERE_API_KEY"),
         # END NearTextCohere
         # START NearTextOpenAI
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY"),
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY"),
         # END NearTextOpenAI
         # START NearTextGoogle
         "X-Goog-Vertex-Api-Key": "YOUR-VERTEX-API-KEY",
         "X-Goog-Studio-Api-Key": "YOUR-AI-STUDIO-API-KEY",
         # END NearTextGoogle
         # START NearTextHuggingface
-        "X-HuggingFace-Api-Key": "YOUR_HUGGINGFACE_APIKEY",
+        "X-HuggingFace-Api-Key": "YOUR_HUGGINGFACE_API_KEY",
         # END NearTextHuggingface
         # START NearTextJinaai
-        "X-Jinaai-Api-Key": "YOUR_JINAAI_APIKEY",
+        "X-Jinaai-Api-Key": "YOUR_JINAAI_API_KEY",
         # END NearTextJinaai
         # START NearTextVoyageAI
-        "X-VoyageAI-Api-Key": "YOUR_VOYAGEAI_APIKEY",
+        "X-VoyageAI-Api-Key": "YOUR_VOYAGEAI_API_KEY",
         # END NearTextVoyageAI
         # START-ANY
     }
@@ -43,7 +43,7 @@ from weaviate.classes.init import Auth
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,

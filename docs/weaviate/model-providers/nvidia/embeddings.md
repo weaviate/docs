@@ -56,7 +56,7 @@ You must provide a valid NVIDIA NIM API key to Weaviate for this integration. Go
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `NVIDIA_APIKEY` environment variable that is available to Weaviate.
+- Set the `NVIDIA_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

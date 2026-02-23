@@ -17,14 +17,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 // Set these environment variables
 // WEAVIATE_HOSTNAME         Your Weaviate instance hostname
 // WEAVIATE_API_KEY          Your Weaviate instance API key
-// <PROVIDER>_APIKEY    Your model provider API key
+// <PROVIDER>_API_KEY    Your model provider API key
 
 public class Connect {
   public static void main(String[] args) throws Exception {
 
     String host = System.getenv("WEAVIATE_HOSTNAME");
     String apiKey = System.getenv("WEAVIATE_API_KEY");
-    String cohereKey = System.getenv("COHERE_APIKEY");
+    String cohereKey = System.getenv("COHERE_API_KEY");
 
     // highlight-start
     Map<String, String> headers = new HashMap<String, String>() { {

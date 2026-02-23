@@ -12,7 +12,7 @@ import weaviate, { WeaviateClient } from 'weaviate-ts-client';
 const client: WeaviateClient = weaviate.client({
   scheme: 'http',
   host: 'localhost:8080',
-  headers: { 'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY },  // Replace with your inference API key
+  headers: { 'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY },  // Replace with your inference API key
 });
 // END Instantiation
 

@@ -14,9 +14,9 @@ import (
 
 func TestBQConfiguration(t *testing.T) {
 	ctx := context.Background()
-	apiKey := os.Getenv("OPENAI_APIKEY")
+	apiKey := os.Getenv("OPENAI_API_KEY")
 	if apiKey == "" {
-		t.Skip("OPENAI_APIKEY environment variable not set")
+		t.Skip("OPENAI_API_KEY environment variable not set")
 	}
 
 	// ==============================

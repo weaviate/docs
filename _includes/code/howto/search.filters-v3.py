@@ -13,7 +13,7 @@ client = weaviate.Client(
     os.getenv("WEAVIATE_URL"),  # Replace with your Weaviate URL
     auth_client_secret=weaviate.auth.AuthApiKey(os.getenv("WEAVIATE_API_KEY")),  # If authentication is on. Replace with your Weaviate instance API key
     additional_headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")  # Replace with your OPENAI API key
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")  # Replace with your OPENAI API key
     }
 )
 

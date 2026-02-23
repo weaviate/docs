@@ -98,9 +98,56 @@ If you don't see any available clusters, select the `Clusters` option from the l
 
 </details>
 
+### Create collections with PDF data
+
+The Weaviate Cloud (WCD) _Collection tool_ allows you to easily upload data from a PDF file into a new Weaviate collection. The tool guides you through selecting your cluster, configuring the collection, and then automatically imports the data and vectorizes the PDF pages.
+
+For this guide, we will use the following file: [NASA's Plan for Sustainable Lunar Exploration (c. 2024)](https://ntrs.nasa.gov/api/citations/20240011013/downloads/Artemis%20Status%202024%20240826.pdf?attachment=true).
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="qp7e477fjk"
+    src="https://app.guideflow.com/embed/qp7e477fjk"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="qp7e477fjk"
+  ></script>
+</div>
+
+<br />
+
+<details>
+    <summary>Create collections with PDF data</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select the `Collections` tool from the left sidebar.
+3. Click on the `New Collection` button.
+4. Click on `Create new collection` and select the `Upload CSV, Excel or PDF` option.
+5. Click the `Browse files` button to select the PDF file from your computer.
+6. Choose a name for the collection. Optionally add a description and update the default settings if necessary.
+7. Finish the collection creation process.
+
+</details>
+
 ### Create collections with CSV/Excel data
 
-The Weaviate Cloud (WCD) _Import tool_ allows you to easily upload data from a CSV file into a new Weaviate collection. The tool guides you through selecting your cluster, configuring the collection, mapping CSV columns to Weaviate properties, and then automatically imports the data.
+The Weaviate Cloud (WCD) _Collection tool_ allows you to easily upload data from a CSV file into a new Weaviate collection. The tool guides you through selecting your cluster, configuring the collection, mapping CSV columns to Weaviate properties, and then automatically imports the data.
 
 For this guide, we will use the following `import.csv` file:
 

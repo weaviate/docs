@@ -8,7 +8,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
  {
    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY,  // Replace with your inference API key
    }
  } 
 )

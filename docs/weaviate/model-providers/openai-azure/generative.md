@@ -52,7 +52,7 @@ You must provide a valid Azure OpenAI API key to Weaviate for this integration. 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `AZURE_APIKEY` environment variable that is available to Weaviate.
+- Set the `AZURE_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

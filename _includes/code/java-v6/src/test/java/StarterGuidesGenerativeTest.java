@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CombinedWorkflowTest {
+class StarterGuidesGenerativeTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -66,7 +66,7 @@ class CombinedWorkflowTest {
 
       // Re-instantiate for writing data (Connect to Local)
       client = WeaviateClient.connectToLocal(config -> config.setHeaders(
-          Map.of("X-OpenAI-Api-Key", System.getenv("OPENAI_APIKEY"))));
+          Map.of("X-OpenAI-Api-Key", System.getenv("OPENAI_API_KEY"))));
       assertThat(client.isReady()).isTrue();
 
       // ChunkText

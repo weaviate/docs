@@ -2,6 +2,7 @@
 title: Hybrid search
 sidebar_position: 40
 image: og/docs/howto.jpg
+description: "Hybrid search combining vector and keyword search with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'hybrid search']
 ---
 

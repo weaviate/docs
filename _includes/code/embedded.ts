@@ -7,7 +7,7 @@ const client = weaviate.client(new EmbeddedOptions(
   // END 10lines  // START TestExample
   {
     env: {
-      'OPENAI_APIKEY': 'YOUR-OPENAI-API-KEY',
+      'OPENAI_API_KEY': 'YOUR-OPENAI-API-KEY',
     },
   }
   // END TestExample  // START 10lines

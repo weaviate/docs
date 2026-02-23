@@ -2,6 +2,7 @@
 title: Image search
 sidebar_position: 25
 image: og/docs/howto.jpg
+description: "Image search using nearImage with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'image']
 ---
 

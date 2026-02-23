@@ -2,6 +2,7 @@
 title: Vector similarity search
 sidebar_position: 20
 image: og/docs/howto.jpg
+description: "Vector similarity search (nearText, nearVector, nearObject) with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'similarity search']
 ---
 

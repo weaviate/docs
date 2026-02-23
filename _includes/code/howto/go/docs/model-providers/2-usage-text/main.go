@@ -31,7 +31,7 @@ func main() {
 		Scheme:     "https",
 		AuthConfig: auth.ApiKey{Value: os.Getenv("WEAVIATE_API_KEY")},
 		Headers: map[string]string{
-			"X-Cohere-Api-Key": os.Getenv("COHERE_APIKEY"),
+			"X-Cohere-Api-Key": os.Getenv("COHERE_API_KEY"),
 		},
 	}
 

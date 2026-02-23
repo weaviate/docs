@@ -36,6 +36,22 @@ We use the [`@signalwire/docusaurus-plugin-llms-txt`](https://www.npmjs.com/pack
 
 When you run `yarn build`, the plugin processes all documentation pages and creates the llms.txt file in the `build/llms.txt` directory, making it available at `https://docs.weaviate.io/llms.txt`. The plugin intelligently organizes documents into categories with configurable depth and provides flexible filtering by content type.
 
+### Section labels and ordering
+
+To help AI agents quickly identify which pages contain runnable code examples versus theoretical explanations, the plugin configuration uses `routeRules` to assign labeled category names to each documentation section. The three labels are:
+
+- **`[CODE]`** — Sections with runnable, multi-language code examples (Python, TypeScript, Go, Java, C#). Includes how-to guides for connections, collections, objects, search, configuration, client libraries, starter guides, tutorials, and quickstarts.
+- **`[REFERENCE]`** — Sections with configuration details and API specs, such as config references and REST/GraphQL/gRPC API docs.
+- **`[CONCEPTS]`** — Sections with theoretical explanations, such as architecture, benchmarks, best practices, and more resources.
+
+The `includeOrder` setting in the plugin config ensures that `[CODE]` sections appear first in the generated file, followed by `[CONCEPTS]` and `[REFERENCE]` sections. This ordering prioritizes actionable content for AI agents looking for code examples.
+
+The `siteDescription` field in the plugin config explains the labeling convention, so an AI agent reading the top of `llms.txt` immediately understands the structure.
+
+### Optional links
+
+The plugin config includes an `optionalLinks` section that adds external API reference links to the bottom of the generated `llms.txt` under an `## Optional` heading. Currently this includes links to the Python and TypeScript client API reference documentation.
+
 ### Best practices for page descriptions
 
 Since our llms.txt generation relies on frontmatter descriptions, follow these guidelines when writing them:
@@ -51,6 +67,7 @@ description: Learn how to configure vector indexing parameters, choose between H
 - **Include key concepts**: Mention important terms and concepts that users might search for.
 - **Keep it concise but comprehensive**: Aim for 1-2 sentences that capture the page's value and scope.
 - **Use consistent terminology**: Match the language and terms used throughout the rest of the documentation.
+- **Mention programming languages on code-heavy pages**: For pages with multi-language code examples, include the available languages in the description (e.g., "with code examples in Python, TypeScript, Go, Java, and C#"). This makes each line item in `llms.txt` informative for agents searching for language-specific examples.
 
 <!-- ## Measuring success
 

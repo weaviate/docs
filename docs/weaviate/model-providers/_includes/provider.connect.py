@@ -10,11 +10,11 @@ weaviate_key = os.getenv("WEAVIATE_API_KEY")
 
 # START AnthropicInstantiation
 # Recommended: save sensitive data as environment variables
-anthropic_key = os.getenv("ANTHROPIC_APIKEY")
+anthropic_key = os.getenv("ANTHROPIC_API_KEY")
 # END AnthropicInstantiation
 # START AnyscaleInstantiation
 # Recommended: save sensitive data as environment variables
-anyscale_key = os.getenv("ANYSCALE_APIKEY")
+anyscale_key = os.getenv("ANYSCALE_API_KEY")
 # END AnyscaleInstantiation
 # START AWSInstantiation
 # Recommended: save sensitive data as environment variables
@@ -23,7 +23,7 @@ aws_secret_key = os.getenv("AWS_SECRET_KEY")
 # END AWSInstantiation
 # START CohereInstantiation
 # Recommended: save sensitive data as environment variables
-cohere_key = os.getenv("COHERE_APIKEY")
+cohere_key = os.getenv("COHERE_API_KEY")
 # END CohereInstantiation
 # START ContextualAIInstantiation
 # Recommended: save sensitive data as environment variables
@@ -43,45 +43,45 @@ friendli_key = os.getenv("FRIENDLI_TOKEN")
 # END FriendliDedicatedInstantiation
 # START GoogleInstantiation  # START GoogleVertexInstantiation
 # Recommended: save sensitive data as environment variables
-vertex_key = os.getenv("VERTEX_APIKEY")
+vertex_key = os.getenv("VERTEX_API_KEY")
 # START GoogleInstantiation  # END GoogleVertexInstantiation
-studio_key = os.getenv("STUDIO_APIKEY")
+studio_key = os.getenv("STUDIO_API_KEY")
 # END GoogleInstantiation
 # START HuggingFaceInstantiation
 # Recommended: save sensitive data as environment variables
-huggingface_key = os.getenv("HUGGINGFACE_APIKEY")
+huggingface_key = os.getenv("HUGGINGFACE_API_KEY")
 # END HuggingFaceInstantiation
 # START JinaAIInstantiation
 # Recommended: save sensitive data as environment variables
-jinaai_key = os.getenv("JINAAI_APIKEY")
+jinaai_key = os.getenv("JINAAI_API_KEY")
 # END JinaAIInstantiation
 # START MistralInstantiation
 # Recommended: save sensitive data as environment variables
-mistral_key = os.getenv("MISTRAL_APIKEY")
+mistral_key = os.getenv("MISTRAL_API_KEY")
 # END MistralInstantiation
 # START NVIDIAInstantiation
 # Recommended: save sensitive data as environment variables
-nvidia_key = os.getenv("NVIDIA_APIKEY")
+nvidia_key = os.getenv("NVIDIA_API_KEY")
 # END NVIDIAInstantiation
 # START OctoAIInstantiation
 # Recommended: save sensitive data as environment variables
-octoai_key = os.getenv("OCTOAI_APIKEY")
+octoai_key = os.getenv("OCTOAI_API_KEY")
 # END OctoAIInstantiation
 # START OpenAIInstantiation
 # Recommended: save sensitive data as environment variables
-openai_key = os.getenv("OPENAI_APIKEY")
+openai_key = os.getenv("OPENAI_API_KEY")
 # END OpenAIInstantiation
 # START AzureOpenAIInstantiation
 # Recommended: save sensitive data as environment variables
-azure_key = os.getenv("AZURE_APIKEY")
+azure_key = os.getenv("AZURE_API_KEY")
 # END AzureOpenAIInstantiation
 # START VoyageAIInstantiation
 # Recommended: save sensitive data as environment variables
-voyageai_key = os.getenv("VOYAGEAI_APIKEY")
+voyageai_key = os.getenv("VOYAGEAI_API_KEY")
 # END VoyageAIInstantiation
 # START XaiInstantiation
 # Recommended: save sensitive data as environment variables
-xai_key = os.getenv("XAI_APIKEY")
+xai_key = os.getenv("XAI_API_KEY")
 # END XaiInstantiation
 
 

@@ -226,7 +226,7 @@ df.limit(1500).withColumnRenamed("id", "uuid").write.format("io.weaviate.spark.W
 
 - Using `.option("timeout", 60)` will set the timeout for a single batch (default 60 seconds).
 
-- Arbitrary headers can be supplied with the option prefix `header:`. For example to provide an `OPENAI_APIKEY` header the following can be used `.option("header:OPENAI_APIKEY", ...)`.
+- Arbitrary headers can be supplied with the option prefix `header:`. For example to provide an `OPENAI_API_KEY` header the following can be used `.option("header:OPENAI_API_KEY", ...)`.
 
 - Additionally OIDC options are supported `.option("oidc:username", ...)`, `.option("oidc:password", ...)`, `.option("oidc:clientSecret", ...)`, `.option("oidc:accessToken", ...)`, `.option("oidc:accessTokenLifetime", ...)`, `.option("oidc:refreshToken", ...)`. For more information on these options See the [Java client documentation](../client-libraries/java/index.mdx).
 
