@@ -4,14 +4,35 @@ sidebar_position: 4
 description: "How to poll pipeline run status and interpret committed operations in Engram."
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_includes/check_run_status.py';
+
 When you store memories, Engram processes them asynchronously through a pipeline. Each request returns a `run_id` that you can use to track progress.
 
 ## Poll a run
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# PollRun"
+  endMarker="# END PollRun"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 curl $ENGRAM_API_URL/v1/runs/{run_id} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
+
+</TabItem>
+</Tabs>
 
 ### Response
 

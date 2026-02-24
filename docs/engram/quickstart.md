@@ -4,12 +4,17 @@ sidebar_position: 1
 description: "Get started with Engram by creating a project, generating an API key, storing a memory, and searching it."
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_includes/quickstart.py';
+
 This guide walks you through the core Engram workflow: create a project, get an API key, store a memory, and search for it.
 
 ## Prerequisites
 
 - A [Weaviate Cloud](https://console.weaviate.cloud) account
-- `curl` or any HTTP client
+- `curl` or the [Python SDK](https://pypi.org/project/weaviate-engram/) (`pip install weaviate-engram`)
 
 ## Step 1: Create a project
 
@@ -36,6 +41,28 @@ export ENGRAM_API_KEY="eng_abcdef123456..."
 
 Send content to Engram using the memory API. This example sends a plain text string.
 
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+Install the SDK: `pip install weaviate-engram`
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# AddMemory"
+  endMarker="# END AddMemory"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
@@ -50,6 +77,9 @@ curl -X POST $ENGRAM_API_URL/v1/memories \
   }'
 ```
 
+</TabItem>
+</Tabs>
+
 Engram processes memories asynchronously. The response includes a `run_id` you can use to check the pipeline status.
 
 ```json
@@ -63,10 +93,26 @@ Engram processes memories asynchronously. The response includes a `run_id` you c
 
 Poll the run endpoint to confirm your memory has been committed.
 
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# CheckRun"
+  endMarker="# END CheckRun"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl $ENGRAM_API_URL/v1/runs/run-uuid \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
+
+</TabItem>
+</Tabs>
 
 ```json
 {
@@ -91,6 +137,19 @@ curl $ENGRAM_API_URL/v1/runs/run-uuid \
 
 Search for relevant memories using a natural language query.
 
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# SearchMemory"
+  endMarker="# END SearchMemory"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories/search \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
@@ -105,6 +164,9 @@ curl -X POST $ENGRAM_API_URL/v1/memories/search \
     }
   }'
 ```
+
+</TabItem>
+</Tabs>
 
 ```json
 {

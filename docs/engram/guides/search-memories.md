@@ -4,6 +4,11 @@ sidebar_position: 2
 description: "How to search memories in Engram using vector, BM25, and hybrid retrieval with filtering and scoping."
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_includes/search_memories.py';
+
 Search stored memories using the search endpoint:
 
 ```
@@ -13,6 +18,19 @@ POST /v1/memories/search
 ## Basic search
 
 Provide a query and Engram returns the most relevant memories.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BasicSearch"
+  endMarker="# END BasicSearch"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories/search \
@@ -28,6 +46,9 @@ curl -X POST $ENGRAM_API_URL/v1/memories/search \
     }
   }'
 ```
+
+</TabItem>
+</Tabs>
 
 ```json
 {
@@ -55,6 +76,19 @@ Specify the retrieval type in `retrieval_config`:
 
 Pure semantic search using embeddings. Finds memories that are conceptually similar to your query, even without matching keywords.
 
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# VectorSearch"
+  endMarker="# END VectorSearch"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```json
 {
   "retrieval_config": {
@@ -64,9 +98,25 @@ Pure semantic search using embeddings. Finds memories that are conceptually simi
 }
 ```
 
+</TabItem>
+</Tabs>
+
 ### BM25 search
 
 Full-text keyword search. Best for finding memories that contain specific terms.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BM25Search"
+  endMarker="# END BM25Search"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```json
 {
@@ -77,9 +127,25 @@ Full-text keyword search. Best for finding memories that contain specific terms.
 }
 ```
 
+</TabItem>
+</Tabs>
+
 ### Hybrid search
 
 Combines vector and BM25 for the best of both approaches. This is the recommended retrieval type for most use cases.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# HybridSearch"
+  endMarker="# END HybridSearch"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```json
 {
@@ -90,9 +156,25 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 }
 ```
 
+</TabItem>
+</Tabs>
+
 ## Filter by topic
 
 Restrict your search to specific topics by providing a `topics` array.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# TopicFilter"
+  endMarker="# END TopicFilter"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories/search \
@@ -109,6 +191,9 @@ curl -X POST $ENGRAM_API_URL/v1/memories/search \
     }
   }'
 ```
+
+</TabItem>
+</Tabs>
 
 If you omit `topics`, Engram searches across all topics in the group.
 

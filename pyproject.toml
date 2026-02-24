@@ -3,7 +3,7 @@ name = "weaviate-docs"
 version = "0.1.0"
 description = "Weaviate documentation test suite"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "datasets>=4.0.0",
     "ijson>=3.3.0",
@@ -15,4 +15,5 @@ dependencies = [
     "weaviate-agents>=1.1.0",
     "weaviate-client>=4.19.0",
     "weaviate-demo-datasets>=0.7.0",
+    "weaviate-engram>=0.1.0",
 ]

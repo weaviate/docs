@@ -4,6 +4,11 @@ sidebar_position: 1
 description: "How to store memories in Engram using string, pre-extracted, or conversation content types."
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_includes/store_memories.py';
+
 Engram supports three content types for storing memories. Each triggers a different extraction pipeline.
 
 All requests go to the same endpoint:
@@ -15,6 +20,19 @@ POST /v1/memories
 ## String content
 
 Send raw text and let Engram extract structured memories from it.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# StoreString"
+  endMarker="# END StoreString"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories \
@@ -30,11 +48,27 @@ curl -X POST $ENGRAM_API_URL/v1/memories \
   }'
 ```
 
+</TabItem>
+</Tabs>
+
 The pipeline extracts individual facts from the text (e.g. "prefers dark mode", "works in Python") and stores them as separate memories.
 
 ## Pre-extracted content
 
 If you've already extracted structured content, send it directly. This skips the LLM extraction step and goes straight to storage.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# StorePreExtracted"
+  endMarker="# END StorePreExtracted"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories \
@@ -51,9 +85,25 @@ curl -X POST $ENGRAM_API_URL/v1/memories \
   }'
 ```
 
+</TabItem>
+</Tabs>
+
 ## Conversation content
 
 Send a multi-turn conversation and let Engram extract memories from the full exchange.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# StoreConversation"
+  endMarker="# END StoreConversation"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST $ENGRAM_API_URL/v1/memories \
@@ -85,6 +135,9 @@ curl -X POST $ENGRAM_API_URL/v1/memories \
     "group": "default"
   }'
 ```
+
+</TabItem>
+</Tabs>
 
 The pipeline analyzes the full conversation and extracts relevant facts (e.g. "lives in Berlin", "prefers specialty coffee").
 

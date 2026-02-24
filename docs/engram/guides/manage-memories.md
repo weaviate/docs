@@ -4,16 +4,37 @@ sidebar_position: 3
 description: "How to get and delete individual memories in Engram by ID."
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_includes/manage_memories.py';
+
 You can retrieve and delete individual memories using their ID.
 
 ## Get a memory
 
 Retrieve a single memory by its ID.
 
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetMemory"
+  endMarker="# END GetMemory"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&topic={topic-name}&group={group-name} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
+
+</TabItem>
+</Tabs>
 
 ### Query parameters
 
@@ -46,10 +67,26 @@ curl $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&topic={topic-name}&gro
 
 Remove a memory permanently by its ID.
 
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DeleteMemory"
+  endMarker="# END DeleteMemory"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl -X DELETE $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&topic={topic-name}&group={group-name} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
+
+</TabItem>
+</Tabs>
 
 The query parameters are the same as for the get request. You must provide the correct scoping parameters to identify the memory.
 
