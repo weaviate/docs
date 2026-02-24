@@ -2,7 +2,9 @@ import os
 from engram import EngramClient
 
 # Connect
-client = EngramClient(api_key=os.environ["ENGRAM_API_KEY"])
+client = EngramClient(
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+)
 # END Connect
 
 # AddMemory
@@ -38,5 +40,13 @@ for memory in results:
 # END SearchMemory
 
 assert len(results) >= 1
+assert any("VS Code" in m.content or "editor" in m.content or "dark mode" in m.content for m in results)
+
+# Cleanup
+for _m in results:
+    try:
+        client.memories.delete(_m.id, topic=_m.topic, user_id="user-uuid")
+    except Exception:
+        pass
 
 client.close()

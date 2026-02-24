@@ -1,7 +1,18 @@
 import os
 from engram import EngramClient, RetrievalConfig
 
-client = EngramClient(api_key=os.environ["ENGRAM_API_KEY"])
+client = EngramClient(
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+)
+
+# Setup: store a memory so we have data to search
+run = client.memories.add(
+    "The user prefers dark mode and works primarily in Python. They are building a RAG application.",
+    user_id="user-uuid",
+    group="default",
+)
+status = client.runs.wait(run.run_id)
+assert status.status == "completed"
 
 # BasicSearch
 results = client.memories.search(
@@ -15,6 +26,8 @@ for memory in results:
     print(memory.content)
 # END BasicSearch
 
+assert len(results) >= 1
+
 # VectorSearch
 results = client.memories.search(
     query="What programming language does the user prefer?",
@@ -23,6 +36,8 @@ results = client.memories.search(
     retrieval_config=RetrievalConfig(retrieval_type="vector", limit=10),
 )
 # END VectorSearch
+
+assert len(results) >= 1
 
 # BM25Search
 results = client.memories.search(
@@ -33,6 +48,8 @@ results = client.memories.search(
 )
 # END BM25Search
 
+assert len(results) >= 1
+
 # HybridSearch
 results = client.memories.search(
     query="What programming language does the user prefer?",
@@ -42,10 +59,15 @@ results = client.memories.search(
 )
 # END HybridSearch
 
+assert len(results) >= 1
+
+# Discover actual topic name from existing results
+topic = results[0].topic
+
 # TopicFilter
 results = client.memories.search(
     query="user preferences",
-    topics=["user_facts", "preferences"],
+    topics=[topic],
     user_id="user-uuid",
     group="default",
     retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=10),
@@ -54,5 +76,13 @@ results = client.memories.search(
 for memory in results:
     print(memory.content)
 # END TopicFilter
+
+assert len(results) >= 1
+assert all(m.topic == topic for m in results)
+
+# Cleanup
+_all = client.memories.search(query="user", user_id="user-uuid", group="default")
+for _m in _all:
+    client.memories.delete(_m.id, topic=_m.topic, user_id="user-uuid")
 
 client.close()

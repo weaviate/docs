@@ -56,7 +56,7 @@ curl -X POST $ENGRAM_API_URL/v1/memories/search \
     {
       "id": "memory-uuid",
       "content": "The user works primarily in Python",
-      "topic": "user_facts",
+      "topic": "default",
       "group": "default",
       "score": 0.89,
       "tags": [],
@@ -182,7 +182,7 @@ curl -X POST $ENGRAM_API_URL/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "user preferences",
-    "topics": ["user_facts", "preferences"],
+    "topics": ["default"],
     "user_id": "user-uuid",
     "group": "default",
     "retrieval_config": {

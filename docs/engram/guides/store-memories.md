@@ -77,8 +77,7 @@ curl -X POST $ENGRAM_API_URL/v1/memories \
   -d '{
     "content": {
       "type": "pre_extracted",
-      "content": "User prefers dark mode",
-      "tags": ["preference", "ui"]
+      "content": "User prefers dark mode"
     },
     "user_id": "user-uuid",
     "group": "default"
@@ -131,7 +130,7 @@ curl -X POST $ENGRAM_API_URL/v1/memories \
       }
     },
     "user_id": "user-uuid",
-    "conversation_id": "conversation-uuid",
+    "conversation_id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
     "group": "default"
   }'
 ```
@@ -159,7 +158,7 @@ Use the `run_id` to [check the pipeline status](check-run-status.md).
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `user_id` | string | Scope the memory to a specific user |
-| `conversation_id` | string | Scope the memory to a specific conversation |
+| `conversation_id` | string (UUID) | Scope the memory to a specific conversation. Must be a valid UUID. |
 | `group` | string | Memory group name (defaults to `default`) |
 | `root` | string | Pipeline root name (for advanced pipeline configurations) |
 
