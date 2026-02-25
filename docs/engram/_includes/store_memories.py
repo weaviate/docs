@@ -20,6 +20,7 @@ print(run.status)
 assert run.run_id is not None
 status = client.runs.wait(run.run_id)
 assert status.status == "completed"
+assert len(status.memories_created) >= 1
 
 results = client.memories.search(query="Python RAG dark mode", user_id="user-uuid", group="default")
 assert len(results) >= 1

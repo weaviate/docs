@@ -1542,6 +1542,18 @@ const sidebars = {
         "engram/guides/check-run-status",
       ],
     },
+    {
+      type: "category",
+      label: "Tutorials",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/tutorials/index" },
+      items: [
+        "engram/tutorials/memory-chat-app",
+        "engram/tutorials/context-window-management",
+        "engram/tutorials/personalized-rag-multi-tenant",
+      ],
+    },
     { type: "html", value: "<hr class='sidebar-divider' />" },
     {
       type: "link",

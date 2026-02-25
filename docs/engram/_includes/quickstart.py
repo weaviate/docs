@@ -27,6 +27,8 @@ print(status.status)
 # END CheckRun
 
 assert status.status == "completed"
+assert status.committed_operations is not None
+assert len(status.memories_created) >= 1
 
 # SearchMemory
 results = client.memories.search(

@@ -21,6 +21,8 @@ print(status.committed_operations)
 # END PollRun
 
 assert status.status == "completed"
+assert status.committed_operations is not None
+assert len(status.memories_created) >= 1
 
 # Cleanup
 _all = client.memories.search(query="dark mode", user_id="user-uuid", group="default")

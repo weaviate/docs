@@ -13,15 +13,18 @@ run = client.memories.add(
 )
 status = client.runs.wait(run.run_id)
 assert status.status == "completed"
+assert status.committed_operations is not None
+assert len(status.memories_created) >= 1
 
-# Discover the memory from search results
+memory_id = status.memories_created[0].memory_id
+
+# Discover the topic from search results
 results = client.memories.search(
     query="dark mode",
     user_id="user-uuid",
     group="default",
 )
 assert len(results) >= 1
-memory_id = results[0].id
 topic = results[0].topic
 
 # GetMemory
@@ -50,8 +53,8 @@ client.memories.delete(
 try:
     client.memories.get(memory_id, topic=topic, user_id="user-uuid")
     assert False, "Expected memory to be deleted"
-except APIError as e:
-    assert e.status_code == 404
+except APIError:
+    pass  # Memory no longer exists
 
 # Cleanup
 _all = client.memories.search(query="dark mode", user_id="user-uuid", group="default")

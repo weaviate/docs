@@ -12,6 +12,9 @@ from pathlib import Path
         "./docs/engram/_includes/search_memories.py",
         "./docs/engram/_includes/manage_memories.py",
         "./docs/engram/_includes/check_run_status.py",
+        "./docs/engram/_includes/tutorial_memory_chat_app.py",
+        "./docs/engram/_includes/tutorial_context_window_mgmt.py",
+        "./docs/engram/_includes/tutorial_personalized_rag.py",
     ],
 )
 def test_engram(script_loc):

@@ -13,6 +13,7 @@ run = client.memories.add(
 )
 status = client.runs.wait(run.run_id)
 assert status.status == "completed"
+assert len(status.memories_created) >= 1
 
 # BasicSearch
 results = client.memories.search(
