@@ -524,14 +524,8 @@ const sidebars = {
         },
         {
           type: "link",
-          label: "Storage & Backups",
-          href: "/deploy/configuration/backups",
-          customProps: { openInNewTab: true },
-        },
-        {
-          type: "link",
-          label: "Replication",
-          href: "/deploy/configuration/replication",
+          label: "Database configuration",
+          href: "/deploy/configuration/env-vars",
           customProps: { openInNewTab: true },
         },
         {
@@ -548,8 +542,14 @@ const sidebars = {
         },
         {
           type: "link",
-          label: "Database configuration",
-          href: "/deploy/configuration/env-vars",
+          label: "Replication and scaling",
+          href: "/deploy/configuration/replication",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "Storage and backups",
+          href: "/deploy/configuration/backups",
           customProps: { openInNewTab: true },
         },
         // {

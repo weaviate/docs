@@ -51,21 +51,14 @@ These guides cover server-level configuration for your Weaviate deployment:
 
 export const deployConfigData = [
   {
-    title: "Storage & Backups",
+    title: "Database configuration",
     description:
-      "Configure backup, restore, and persistence for your Weaviate instance.",
-    link: "/deploy/configuration/backups",
-    icon: "fas fa-save",
+      "Configure environment variables, ports, and runtime settings.",
+    link: "/deploy/configuration/env-vars",
+    icon: "fas fa-cog",
   },
   {
-    title: "Replication",
-    description:
-      "Set up data replication and scaling across nodes for high availability.",
-    link: "/deploy/configuration/replication",
-    icon: "fas fa-copy",
-  },
-  {
-    title: "Monitoring & Logging",
+    title: "Monitoring and logging",
     description:
       "Collect metrics, configure logging, and monitor cluster health.",
     link: "/deploy/configuration/monitoring",
@@ -79,11 +72,18 @@ export const deployConfigData = [
     icon: "fas fa-user-shield",
   },
   {
-    title: "Database configuration",
+    title: "Replication and scaling",
     description:
-      "Configure environment variables, ports, and runtime settings.",
-    link: "/deploy/configuration/env-vars",
-    icon: "fas fa-cog",
+      "Set up data replication and scaling across nodes for high availability.",
+    link: "/deploy/configuration/replication",
+    icon: "fas fa-copy",
+  },
+  {
+    title: "Storage and backups",
+    description:
+      "Configure backup, restore, and persistence for your Weaviate instance.",
+    link: "/deploy/configuration/backups",
+    icon: "fas fa-save",
   },
 ];
 
