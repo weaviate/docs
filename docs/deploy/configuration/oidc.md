@@ -48,7 +48,7 @@ Here are some options to consider:
    - Validated using Okta and Azure as identity providers; GCP does not support client credentials grant flow (as of December 2022).
    - Weaviate's Python client directly supports this method.
    - Client credential flows usually do not come with a refresh token and the credentials are saved in the respective clients to acquire a new access token on expiration of the old one.
-1. Use the `resource owner password flow` for trusted applications like [Weaviate Cloud](/cloud/manage-clusters/connect).
+1. Use the `resource owner password flow` for trusted applications.
 1. Use `hybrid flow` if Azure is your token issuer or if you would like to prevent exposing passwords.
 
 ### Support for Weaviate clients
@@ -175,6 +175,17 @@ print("Set as bearer token in the clients to access Weaviate.")
 The token has a configurable expiry time that is set by the token issuer. We suggest establishing a workflow to periodically obtain a new token before expiry.
 
 </details>
+
+## Configuring the OIDC token issuer
+
+Configuring the OIDC token issuer is outside the scope of Weaviate's configuration, but here are a few options as a starting point:
+
+- You can use commercial OIDC providers like [Okta](https://www.okta.com/).
+- You can run your own OIDC token issuer server. Popular open-source solutions include Java-based [Keycloak](https://www.keycloak.org/) and Golang-based [dex](https://github.com/dexidp/dex).
+
+:::info
+By default, Weaviate validates that the token includes a specified client id in the audience claim. If your token issuer does not support this feature, you can turn it off as outlined in the [authentication configuration](./authentication.md#oidc-docker).
+:::
 
 ## Questions and feedback
 

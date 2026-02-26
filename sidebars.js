@@ -530,14 +530,8 @@ const sidebars = {
         },
         {
           type: "link",
-          label: "Monitoring & Logging",
+          label: "Monitoring and logging",
           href: "/deploy/configuration/monitoring",
-          customProps: { openInNewTab: true },
-        },
-        {
-          type: "link",
-          label: "RBAC",
-          href: "/weaviate/configuration/rbac/index",
           customProps: { openInNewTab: true },
         },
         {
