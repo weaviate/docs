@@ -1,6 +1,6 @@
 ---
 title: Enable and configure RBAC
-sidebar_label: RBAC
+sidebar_label: Enable and configure RBAC
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---

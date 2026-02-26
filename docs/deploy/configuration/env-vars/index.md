@@ -1,6 +1,6 @@
 ---
-title: Environment variables
-sidebar_label: References
+title: Environment variables reference
+sidebar_label: Environment variables reference
 image: og/docs/configuration.jpg
 # tags: ['HNSW']
 ---

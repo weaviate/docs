@@ -519,26 +519,47 @@ const sidebars = {
         "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
         {
-          type: "category",
-          label: "RBAC",
-          link: {
-            type: "doc",
-            id: "weaviate/configuration/rbac/index",
-          },
-          items: [
-            "weaviate/configuration/rbac/manage-roles",
-            "weaviate/configuration/rbac/manage-users",
-            "weaviate/configuration/rbac/manage-groups",
-          ],
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
         },
         {
           type: "link",
-          label: "Architectural decisions guide",
-          href: "https://academy.weaviate.io/courses/wa210-py",
-          customProps: {
-            academyOnly: true,
-          },
+          label: "Storage & Backups",
+          href: "/deploy/configuration/backups",
+          customProps: { openInNewTab: true },
         },
+        {
+          type: "link",
+          label: "Replication",
+          href: "/deploy/configuration/replication",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "Monitoring & Logging",
+          href: "/deploy/configuration/monitoring",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "RBAC",
+          href: "/weaviate/configuration/rbac/index",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "Database configuration",
+          href: "/deploy/configuration/env-vars",
+          customProps: { openInNewTab: true },
+        },
+        // {
+        //   type: "link",
+        //   label: "Architectural decisions guide",
+        //   href: "https://academy.weaviate.io/courses/wa210-py",
+        //   customProps: {
+        //     academyOnly: true,
+        //   },
+        // },
       ],
     },
     {
@@ -982,56 +1003,9 @@ const sidebars = {
   ],
   deployConfigSidebar: [
     {
-      type: "category",
-      label: "Configuration Guides",
-      className: "sidebar-main-category",
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "deploy/configuration/index",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "deploy/configuration/backups",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/horizontal-scaling",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/monitoring",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/logging",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/persistence",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/telemetry",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/tenant-offloading",
-          className: "sidebar-item",
-        },
-      ],
+      type: "doc",
+      id: "deploy/configuration/index",
+      className: "sidebar-item",
     },
     {
       type: "html",
@@ -1041,6 +1015,8 @@ const sidebars = {
       type: "category",
       label: "Authorization and authentication",
       className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
       items: [
         {
           type: "doc",
@@ -1058,9 +1034,36 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "deploy/configuration/configuring-rbac",
+          type: "category",
+          label: "RBAC",
           className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/configuration/rbac/index",
+          },
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy/configuration/configuring-rbac",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/configuration/rbac/manage-roles",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/configuration/rbac/manage-users",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/configuration/rbac/manage-groups",
+              className: "sidebar-item",
+            },
+          ],
         },
       ],
     },
@@ -1070,34 +1073,10 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Replication",
+      label: "Database configuration",
       className: "sidebar-main-category",
-      items: [
-        {
-          type: "doc",
-          id: "deploy/configuration/replication",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/async-rep",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/replica-movement",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Environment variables",
-      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
       items: [
         {
           type: "doc",
@@ -1117,17 +1096,88 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Cluster information",
+      label: "Monitoring and logging",
       className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
       items: [
         {
           type: "doc",
-          id: "deploy/configuration/meta",
+          id: "deploy/configuration/monitoring",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/configuration/nodes",
+          id: "deploy/configuration/logging",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/status",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/telemetry",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Replication and scaling",
+      className: "sidebar-main-category",
+      collapsible: true,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/replication",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/async-rep",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/replica-movement",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/horizontal-scaling",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Storage and backups",
+      className: "sidebar-main-category",
+      collapsible: true,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/persistence",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
       ],
