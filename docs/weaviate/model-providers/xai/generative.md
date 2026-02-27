@@ -7,8 +7,9 @@ sidebar_position: 51
 
 # xAI Generative AI with Weaviate
 
-:::info Added in `v1.30.0`
-:::
+import Xai from '/_includes/feature-notes/xai.mdx';
+
+<Xai/>
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -379,8 +379,9 @@ For a discussion of fusion methods, see [this blog post](https://weaviate.io/blo
 
 ## Keyword search operators
 
-:::info Added in `v1.31`
-:::
+import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
+
+<SearchOperators/>
 
 Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present in the object to be returned. The options are `and`, or `or` (default).
 

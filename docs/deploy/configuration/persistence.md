@@ -99,9 +99,9 @@ In general, `mmap` may be a preferred option with memory management benefits. Ho
 
 ## Object Time-To-Live (TTL)
 
-:::caution Added in `v1.35.0` as a technical preview
-Time to live (TTL) was introduced in Weaviate `v1.35.0` as a technical preview feature, for local / self-hosted Weaviate instances. It is not available in Weaviate Cloud instances at this time.
-:::
+import TtlPreview from '/_includes/feature-notes/ttl-status.mdx';
+
+<TtlPreview/>
 
 You can configure automatic deletion of objects after a specified time period using Time-To-Live (TTL) settings at the collection level. Read more [about it](/weaviate/concepts/data#time-to-live-ttl) or how to [set it up](/weaviate/manage-collections/time-to-live).
 

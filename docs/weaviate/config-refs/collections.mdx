@@ -744,9 +744,9 @@ An example of a complete `replicationConfig` object:
 
 #### `asyncConfig` parameters {#async-config}
 
-:::info Added in `v1.36`
-These per-collection parameters override the corresponding [environment variables](/deploy/configuration/async-rep.md) at the collection level. If not set, the collection inherits the cluster-wide environment variable defaults.
-:::
+import AsyncConfigCollection from '/_includes/feature-notes/async-config-collection.mdx';
+
+<AsyncConfigCollection/>
 
 :::note Multi-tenant vs single-tenant defaults
 Some `asyncConfig` parameters have different defaults depending on whether the collection uses multi-tenancy. These differences are noted in the table below.
@@ -1017,8 +1017,9 @@ The following are not allowed:
 
 ## Collections count limit {#collections-count-limit}
 
-:::info Added in `v1.30`
-:::
+import CollectionsLimit from '/_includes/feature-notes/collections-limit.mdx';
+
+<CollectionsLimit/>
 
 Each collection adds overhead in terms of indexing, definition management, and storage. It is possible to **limit the number of collections per instance**. This helps maintain optimal performance and resource utilization.
 
@@ -1036,8 +1037,9 @@ For more details, see [Starter Guides: Scaling limits with collections](../start
 
 ## Collection aliases
 
-:::info Added in `v1.32`
-:::
+import CollectionAliases from '/_includes/feature-notes/collection-aliases.mdx';
+
+<CollectionAliases/>
 
 Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
 

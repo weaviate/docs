@@ -6,6 +6,8 @@ description: "Configure vectorizers and vector index settings with code examples
 ---
 
 import SkipLink from "/src/components/SkipValidationLink";
+import AddNamedVectors from '/_includes/feature-notes/add-named-vectors.mdx';
+import MultiVector from '/_includes/feature-notes/multi-vector.mdx';
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
@@ -203,8 +205,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 ## Add new named vectors
 
-:::info Added in `v1.31`
-:::
+<AddNamedVectors/>
 
 Named vectors can be added to existing collection definitions with named vectors. (This is not possible for collections without named vectors.)
 
@@ -258,8 +259,7 @@ Adding a new vector to the collection definition [won't trigger vectorization fo
 
 ## Define multi-vector embeddings (e.g. ColBERT, ColPali)
 
-:::info Added in `v1.30`
-:::
+<MultiVector/>
 
 Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
 

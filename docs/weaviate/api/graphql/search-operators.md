@@ -6,6 +6,8 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---
 
+import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
+
 
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
@@ -431,8 +433,7 @@ To mitigate this effect, Weaviate automatically performs a search with a higher 
 
 ### BM25 search operator
 
-:::info Added in `v1.31`
-:::
+<SearchOperators/>
 
 Use `bm25SearchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match in the keyword (bm25) search portion of the hybrid search. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
 
@@ -534,8 +535,7 @@ import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm2
 
 ### Search operator
 
-:::info Added in `v1.31`
-:::
+<SearchOperators/>
 
 Use `searchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
 

@@ -169,7 +169,7 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 
 ## HFresh index
 
-import HFreshStatus from "/_includes/code/hfresh_status.mdx";
+import HFreshStatus from "/_includes/feature-notes/hfresh_status.mdx";
 
 <HFreshStatus />
 
@@ -225,8 +225,9 @@ import BQParameters from "/_includes/configuration/bq-compression-parameters.mdx
 
 ## Default quantization for new collections {#default-quantization}
 
-:::info Added in `v1.33`
-:::
+import DefaultQuantization from '/_includes/feature-notes/default-quantization.mdx';
+
+<DefaultQuantization/>
 
 Starting with Weaviate v1.33, you can set a quantization method that will be enabled by default for all new collections\*\*. Existing collections (for example restored from backups) are not affected and retain their original configuration.
 

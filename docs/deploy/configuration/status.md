@@ -53,8 +53,9 @@ import WellknownReady from '/_includes/code/wellknown.ready.mdx';
 
 ## Operational modes
 
-:::info Added in `v1.35.0`
-:::
+import OperationalModes from '/_includes/feature-notes/operational-modes.mdx';
+
+<OperationalModes/>
 
 Each Weaviate node can be set to one of the following operational modes, limiting the types of operations it can handle:
 - `ReadWrite`: (default) There are no restrictions; the node can handle both read and write operations.

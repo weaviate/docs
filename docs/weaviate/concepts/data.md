@@ -263,8 +263,9 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 #### Adding a named vector after collection creation
 
-:::info Added in `v1.31`
-:::
+import AddNamedVectors from '/_includes/feature-notes/add-named-vectors.mdx';
+
+<AddNamedVectors/>
 
 A named vector can be added to an existing collection definition after collection creation. This allows you to add new vector representations for objects without having to delete and recreate the collection.
 
@@ -282,7 +283,7 @@ The ability to add a named vector after collection creation is only available fo
 
 ### Time to live (TTL)
 
-import TtlStatus from '/_includes/ttl-satus.mdx';
+import TtlStatus from '/_includes/feature-notes/ttl-status.mdx';
 
 <TtlStatus/>
 

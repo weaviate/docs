@@ -327,8 +327,9 @@ Repairs only happen on read, so they do not create a lot of background overhead.
 
 ## Replica movement
 
-:::info Added in `v1.32`
-:::
+import ReplicaMovement from '/_includes/feature-notes/replica-movement.mdx';
+
+<ReplicaMovement/>
 
 A shard represents a part of the collection in a single-tenant collection, or a whole tenant in a multi-tenant collection. Weaviate allows users to manually move or copy individual shard replicas from a source node to a destination node in a Weaviate cluster. This capability addresses operational scenarios such as cluster rebalancing after scaling, node decommissioning, optimizing data locality for improved performance, or increasing data availability.
 

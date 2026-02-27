@@ -72,9 +72,9 @@ SQ can be enabled at collection creation time through the collection definition:
 
 ## Enable compression for existing collection
 
-:::info Added in `v1.31`
-The ability to enable SQ compression after collection creation was added in Weaviate `v1.31`.
-:::
+import SqPostCreation from '/_includes/feature-notes/sq-post-creation.mdx';
+
+<SqPostCreation/>
 
 SQ can also be enabled for an existing collection by updating the collection definition:
 

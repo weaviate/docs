@@ -90,8 +90,9 @@ Note that in a multi-tenant collection, each tenant consists of one shard.
 
 ## Shard replica movement
 
-:::info Added in `v1.32`
-:::
+import ReplicaMovement from '/_includes/feature-notes/replica-movement.mdx';
+
+<ReplicaMovement/>
 
 A shard replica can be moved or copied from one node to another. This is useful when you want to balance the load across nodes or when you want to change the replication factor of a part of a collection.
 

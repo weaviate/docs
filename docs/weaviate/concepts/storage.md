@@ -87,8 +87,9 @@ For very large indexes of tens or hundreds of millions of objects, this can be t
 
 ### HNSW snapshots
 
-:::info Added in `v1.31`
-:::
+import HnswSnapshots from '/_includes/feature-notes/hnsw-snapshots.mdx';
+
+<HnswSnapshots/>
 
 For very large HNSW vector indexes, HNSW snapshots can significantly reduce the startup time.
 
