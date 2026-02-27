@@ -272,7 +272,7 @@ In other words, when you have `n` search results, the generative model generates
 
 You can use any model deployed on Friendli Suite with Weaviate.
 
-FriendliAI's provide a wide range of [available models](https://friendli.ai/models), which can optionally be [fine-tuned](https://docs.friendli.ai/guides/dedicated_endpoints/fine-tuning). See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
+FriendliAI's provide a wide range of [available models](https://friendli.ai/models), which can optionally be fine-tuned. See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
 
 If using a dedicated FriendliAI endpoint with the Weaviate integration, specify it as shown below:
 
