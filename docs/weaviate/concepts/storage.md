@@ -59,9 +59,6 @@ To use multiple CPUs efficiently, create multiple shards for your collection. Fo
 
 ### Lazy shard loading
 
-:::info Added in `v1.23`
-:::
-
 When Weaviate starts, it loads data from all of the shards in your deployment. This process can take a long time. Prior to v1.23, you have to wait until all of the shards are loaded before you can query your data. Since every tenant is a shard, multi-tenant deployments can have reduced availability after a restart.
 
 Lazy shard loading allows you to start working with your data sooner. After a restart, shards load in the background. If the shard you want to query is already loaded, you can get your results sooner. If the shard is not loaded yet, Weaviate prioritizes loading that shard and returns a response when it is ready.

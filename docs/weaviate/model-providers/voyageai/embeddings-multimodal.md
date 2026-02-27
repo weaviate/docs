@@ -16,9 +16,6 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
 # VoyageAI Multimodal Embeddings with Weaviate
 
-:::info Added in `v1.25.28`, `v1.26.12`, `1.27.8`
-:::
-
 Weaviate's integration with VoyageAI's APIs allows you to access their models' capabilities directly from Weaviate.
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use a VoyageAI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your VoyageAI API key. This feature is called the *vectorizer*.

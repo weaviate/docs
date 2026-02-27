@@ -7,9 +7,6 @@ image: og/docs/integrations/provider_integrations_jinaai.jpg
 
 # Jina AI Reranker Models with Weaviate
 
-:::info Added in `v1.26.1`
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';

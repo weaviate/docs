@@ -11,10 +11,6 @@ import OctoAIDeprecationNote from './_includes/octoai_deprecation.md';
 
 # OctoAI Generative AI with Weaviate
 
-
-:::info Added in `v1.25.0`
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';

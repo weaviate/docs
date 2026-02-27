@@ -5,9 +5,6 @@ image: og/docs/integrations/provider_integrations_databricks.jpg
 # tags: ['model providers', 'databricks', 'embeddings']
 ---
 
-:::info Added in `v1.26.3`
-:::
-
 # Databricks Embeddings with Weaviate
 
 import Tabs from '@theme/Tabs';

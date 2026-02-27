@@ -15,9 +15,6 @@ import GoCode from "!!raw-loader!/\_includes/code/howto/search.multi-target.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchMultiTargetTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchMultiTargetTest.cs";
 
-:::info Added in `v1.26`
-:::
-
 In a multi-target vector search, Weaviate searches multiple target vector spaces concurrently. These results are combined using a ["join strategy"](#available-join-strategies) to produce a single set of search results.
 
 There are multiple ways to specify the target vectors and query vectors, such as:
@@ -138,9 +135,6 @@ You can specify multiple query vectors in the search query with a `nearVector` s
 You can also specify the query vectors as an array of vectors. The array will be parsed according to the order of the specified target vectors.
 
 ### Specify array(s) of query vectors
-
-:::info Added in `v1.27`
-:::
 
 You can also specify the same target vector multiple times with different query vectors. In other words, you can use multiple query vectors for the same target vector.
 

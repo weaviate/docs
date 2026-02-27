@@ -38,9 +38,6 @@ PQ is configured at a collection level. There are two ways to enable PQ compress
 
 ## Configure AutoPQ
 
-:::info Added in v1.23.0
-:::
-
 For new collections, use AutoPQ. AutoPQ automates triggering of the PQ training step based on the size of the collection.
 
 ### 1. Set the environment variable

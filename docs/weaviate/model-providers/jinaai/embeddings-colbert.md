@@ -5,9 +5,6 @@ image: og/docs/integrations/provider_integrations_jinaai.jpg
 # tags: ['model providers', 'jinaai', 'embeddings']
 ---
 
-:::info Added in `v1.29`
-:::
-
 # Jina AI ColBERT Embeddings with Weaviate
 
 import Tabs from '@theme/Tabs';

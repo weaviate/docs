@@ -101,9 +101,6 @@ For more information on the available modeld and their additional options, see t
 :::
 ## Named vectors
 
-:::info Added in `v1.24`
-:::
-
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
 <Tabs className="code" groupId="languages">
