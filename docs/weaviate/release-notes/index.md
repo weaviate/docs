@@ -51,6 +51,12 @@ This page lists [developer release notes](https://github.com/weaviate/weaviate/r
 - To see the GitHub release notes for a particular version, click on the version number.
 - For more information on upgrading Weaviate, see the [Migration guide](/deploy/migration/index.md).
 
+:::note Feature version notes
+
+Feature pages in the documentation include notes indicating which version a feature was introduced in. For information on features before `v1.30`, refer to the [documentation archive](https://archive.docs.weaviate.io/). However, we highly recommend upgrading to a newer, supported version of Weaviate.
+
+:::
+
 ## Weaviate Database and client releases
 
 import ReleaseHistory from '/\_includes/release-history.md';

@@ -399,9 +399,6 @@ The standard tokenization methods work well for English and other languages that
 <details>
   <summary>`gse` and `trigram` tokenization methods</summary>
 
-:::info Added in `1.24`
-:::
-
 For Japanese and Chinese text, we recommend use of `gse` or `trigram` tokenization methods. These methods work better with these languages than the other methods as these languages are not easily able to be tokenized using whitespaces.
 
 The `gse` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_GSE` to `true` on the Weaviate instance.
@@ -422,10 +419,6 @@ While originally designed for Asian languages, `trigram` tokenization is also hi
 <details>
   <summary>`kagome_ja` tokenization method</summary>
 
-:::caution Experimental feature
-Available starting in `v1.28.0`. This is an experimental feature. Use with caution.
-:::
-
 For Japanese text, `kagome_ja` tokenization method is also available. This uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Japanese [MeCab IPA](https://github.com/ikawaha/kagome-dict/) dictionary to split the property text.
 
 The `kagome_ja` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_KAGOME_JA` to `true` on the Weaviate instance.
@@ -443,10 +436,6 @@ The `kagome_ja` tokenizer is not loaded by default to save resources. To use it,
 
 <details>
   <summary>`kagome_kr` tokenization method</summary>
-
-:::caution Experimental feature
-Available starting in `v1.25.7`. This is an experimental feature. Use with caution.
-:::
 
 For Korean text, we recommend use of the `kagome_kr` tokenization method. This uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Korean MeCab ([mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)) dictionary to split the property text.
 
@@ -722,9 +711,9 @@ More details about the `vectorIndexType` and `vectorIndexConfig` parameters can 
 
 | Parameter          | Type    | Description                                                                                                                                   | Default                   | Mutable                                 |
 | :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
-| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No in `v1.25+`, Yes in earlier versions |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                             | `false`                   | Yes                                     |
-| `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`. Added in `v1.27` | `"TimeBasedResolution"` | Yes                                     |
+| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No |
+| `asyncEnabled`     | Boolean | Enable asynchronous replication.                                                                                             | `false`                   | Yes                                     |
+| `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`.  | `"TimeBasedResolution"` | Yes                                     |
 | `asyncConfig`      | Object  | Configuration for async replication tuning. See [`asyncConfig` parameters](#async-config) below. Added in `v1.36`                              | See below                 | Yes                                     |
 
 <details>
@@ -755,9 +744,9 @@ An example of a complete `replicationConfig` object:
 
 #### `asyncConfig` parameters {#async-config}
 
-:::info Added in `v1.36`
-These per-collection parameters override the corresponding [environment variables](/deploy/configuration/async-rep.md) at the collection level. If not set, the collection inherits the cluster-wide environment variable defaults.
-:::
+import AsyncConfigCollection from '/_includes/feature-notes/async-config-collection.mdx';
+
+<AsyncConfigCollection/>
 
 :::note Multi-tenant vs single-tenant defaults
 Some `asyncConfig` parameters have different defaults depending on whether the collection uses multi-tenancy. These differences are noted in the table below.
@@ -924,8 +913,8 @@ To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyCon
 | Parameter              | Type    | Description                                                                                                                                                 | Default | Mutable |
 | :--------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
 | `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                        | `false` | No      |
-| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. Added in `v1.25`                                              | `false` | Yes     |
-| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. Added in `v1.25.2` | `false` | Yes     |
+| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant.                                              | `false` | Yes     |
+| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. | `false` | Yes     |
 
 #### Code example - How to configure multi-tenancy
 
@@ -1028,8 +1017,9 @@ The following are not allowed:
 
 ## Collections count limit {#collections-count-limit}
 
-:::info Added in `v1.30`
-:::
+import CollectionsLimit from '/_includes/feature-notes/collections-limit.mdx';
+
+<CollectionsLimit/>
 
 Each collection adds overhead in terms of indexing, definition management, and storage. It is possible to **limit the number of collections per instance**. This helps maintain optimal performance and resource utilization.
 
@@ -1047,8 +1037,9 @@ For more details, see [Starter Guides: Scaling limits with collections](../start
 
 ## Collection aliases
 
-:::info Added in `v1.32`
-:::
+import CollectionAliases from '/_includes/feature-notes/collection-aliases.mdx';
+
+<CollectionAliases/>
 
 Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
 

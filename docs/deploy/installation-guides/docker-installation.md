@@ -13,10 +13,6 @@ You can [run Weaviate with default settings from a command line](#run-weaviate-w
 
 ## Run Weaviate with default settings
 
-:::info Added in v1.24.1
-
-:::
-
 To run Weaviate with Docker using default settings, run this command from from your shell:
 
 ```bash

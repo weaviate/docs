@@ -20,12 +20,6 @@ Weaviate is optimized to run on Kubernetes, especially when operating as a clust
 <details>
   <summary>FQDN for node discovery</summary>
 
-:::caution Added in `v1.25.15` and removed in `v1.30`
-
-This was an experimental feature. Use with caution.
-
-:::
-
 There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](/deploy/configuration/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
 
 If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
@@ -51,9 +45,6 @@ To use this feature, set `RAFT_ENABLE_FQDN_RESOLVER` to `true`.
 </details>
 
 ## Metadata replication: Raft
-
-:::info Added in `v1.25`
-:::
 
 Weaviate uses the [Raft consensus algorithm](https://raft.github.io/) for metadata replication, implemented with Hashicorp's [raft library](https://pkg.go.dev/github.com/hashicorp/raft). Metadata in this context includes collection definition and shard/tenant states.
 

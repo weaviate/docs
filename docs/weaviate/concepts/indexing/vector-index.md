@@ -242,7 +242,7 @@ This is particularly useful in a multi-tenant setup where building an HNSW index
 
 ## HFresh index
 
-import HFreshStatus from '/_includes/code/hfresh_status.mdx';
+import HFreshStatus from '/_includes/feature-notes/hfresh_status.mdx';
 
 <HFreshStatus />
 

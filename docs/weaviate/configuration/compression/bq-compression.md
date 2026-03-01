@@ -87,9 +87,9 @@ BQ can be enabled at collection creation time through the collection definition:
 
 ## Enable compression for existing collection
 
-:::info Added in `v1.31`
-The ability to enable BQ compression after collection creation was added in Weaviate `v1.31`.
-:::
+import BqPostCreation from '/_includes/feature-notes/bq-post-creation.mdx';
+
+<BqPostCreation/>
 
 BQ can also be enabled for an existing collection by updating the collection definition:
 

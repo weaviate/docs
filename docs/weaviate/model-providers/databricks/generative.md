@@ -5,9 +5,6 @@ image: og/docs/integrations/provider_integrations_databricks.jpg
 # tags: ['model providers', 'databricks', 'generative', 'rag']
 ---
 
-:::info Added in `v1.26.3`
-:::
-
 # Databricks Generative AI with Weaviate
 
 import Tabs from '@theme/Tabs';

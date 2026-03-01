@@ -44,8 +44,9 @@ As always, we recommend upgrading to the latest version of Weaviate to benefit f
 
 ## BlockMax WAND algorithm
 
-:::info Added in `v1.30`
-:::
+import BlockmaxWand from '/_includes/feature-notes/blockmax-wand.mdx';
+
+<BlockmaxWand/>
 
 The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
 

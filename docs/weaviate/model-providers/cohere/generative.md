@@ -264,8 +264,8 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-- `command-r-plus`  (Added in `v1.25.0`)
-- `command-r` (default)  (Added in `v1.25.0`)
+- `command-r-plus`
+- `command-r` (default)
 - `command-xlarge`
 - `command-xlarge-beta`
 - `command-xlarge-nightly`

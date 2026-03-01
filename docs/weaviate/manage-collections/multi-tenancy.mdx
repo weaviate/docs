@@ -19,19 +19,6 @@ import SkipLink from "/src/components/SkipValidationLink";
 
 Multi-tenancy provides data isolation. Each tenant is stored on a separate shard. Data stored in one tenant is not visible to another tenant. If your application serves many different users, multi-tenancy keeps their data private and makes database operations more efficient.
 
-<details>
-  <summary>
-    Multi-tenancy availability
-  </summary>
-
-- Multi-tenancy added in `v1.20`
-- Tenant activity status setting added in `v1.21`
-- Auto-tenant creation for batch imports added in `v1.25.0`
-- Auto-tenant creation for single object insertions added in `v1.25.2`
-- Auto-tenant activation added in `v1.25.2`
-
-</details>
-
 :::info Tenant status renamed in `v1.26`
 In `v1.26`, the `HOT` status was renamed to `ACTIVE` and the `COLD` status was renamed to `INACTIVE`.
 :::

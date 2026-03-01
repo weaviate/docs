@@ -8,9 +8,6 @@ image: og/docs/integrations/provider_integrations_cohere.jpg
 
 # Cohere Multimodal Embeddings with Weaviate
 
-:::info Added in `1.25.25`, `1.26.9` and `v1.27.2`
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';

@@ -102,9 +102,6 @@ As of Weaviate `v1.16`, the only supported internal backup provider is the [file
 
 ## Offloading Modules
 
-:::info Added in `v1.26`
-:::
-
 Offloading modules facilitate the offloading of tenant data to external storage. This is useful for managing resources and costs.
 
 See [how to configure: offloading](/deploy/configuration/tenant-offloading.md) for more information on how to configure and use offloading modules.

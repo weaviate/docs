@@ -301,7 +301,7 @@ You can also supply images as a part of the input when performing retrieval augm
 * [gpt-4-1106-preview](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4-32k](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4o](https://platform.openai.com/docs/models#gpt-4o)
-* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini) (Added in v1.26.7)
+* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini)
 
 <details>
   <summary>Older models</summary>

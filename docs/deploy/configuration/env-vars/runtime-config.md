@@ -5,8 +5,9 @@ sidebar_position: 1
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.30`
-:::
+import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
+
+<RuntimeConfig/>
 
 Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 

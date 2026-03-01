@@ -96,9 +96,6 @@ The output is like this:
 
 ## Named vectors
 
-:::info Added in `v1.24`
-:::
-
 A hybrid search on a collection that has [named vectors](../config-refs/collections.mdx#named-vectors) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
 
 <Tabs className="code" groupId="languages">
@@ -382,8 +379,9 @@ For a discussion of fusion methods, see [this blog post](https://weaviate.io/blo
 
 ## Keyword search operators
 
-:::info Added in `v1.31`
-:::
+import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
+
+<SearchOperators/>
 
 Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present in the object to be returned. The options are `and`, or `or` (default).
 
@@ -482,9 +480,6 @@ With the `and` operator, the search returns objects that contain all tokens in t
 </Tabs>
 
 ## Specify keyword search properties
-
-:::info Added in `v1.19.0`
-:::
 
 The keyword search portion of hybrid search can be directed to only search a subset of object properties. This does not affect the vector search portion.
 
@@ -693,10 +688,6 @@ The output is like this:
 
 ## Vector search parameters
 
-:::info Added in `v1.25`
-Note that the hybrid threshold (`max_vector_distance`) was introduced later in `v1.26.3`.
-:::
-
 You can specify [vector similarity search](/weaviate/search/similarity) parameters similar to [near text](/weaviate/search/similarity.md#search-with-text) or [near vector](/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
 
 <Tabs className="code" groupId="languages">
@@ -750,9 +741,6 @@ The output is like this:
 
 ## Hybrid search thresholds
 
-:::info Added in `v1.25`
-:::
-
 The only available search threshold is `max vector distance`, which will set the maximum allowable distance for the vector search component.
 
 <Tabs className="code" groupId="languages">
@@ -791,9 +779,6 @@ The only available search threshold is `max vector distance`, which will set the
 </Tabs>
 
 ## Group results
-
-:::info Added in `v1.25`
-:::
 
 Define criteria to group search results.
 
