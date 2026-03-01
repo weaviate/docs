@@ -499,7 +499,7 @@ your uses perfectly:
 
 ## `nodes` API Endpoint
 
-To get collection details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
+To get collection details programmatically, use the [`nodes`](/deploy/configuration/status.md#cluster-node-data) REST endpoint.
 
 import APIOutputs from '/\_includes/rest/node-endpoint-info.mdx';
 

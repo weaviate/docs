@@ -43,7 +43,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -272,7 +272,7 @@ In other words, when you have `n` search results, the generative model generates
 
 You can use any model deployed on Friendli Suite with Weaviate.
 
-FriendliAI's provide a wide range of [available models](https://friendli.ai/models), which can optionally be [fine-tuned](https://docs.friendli.ai/guides/dedicated_endpoints/fine-tuning). See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
+FriendliAI's provide a wide range of [available models](https://friendli.ai/models). See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
 
 If using a dedicated FriendliAI endpoint with the Weaviate integration, specify it as shown below:
 

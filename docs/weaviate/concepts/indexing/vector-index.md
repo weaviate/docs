@@ -293,7 +293,7 @@ When asynchronous indexing is enabled, all vector indexing operations go through
 
 This means that the object store can be updated quickly to finish performing user requests while the vector index updates in the background. Asynchronous indexing is especially useful for importing large amounts of data.
 
-This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/deploy/configuration/nodes.md).
+This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/deploy/configuration/status.md#cluster-node-data).
 
 :::info Changes in `v1.28`
 

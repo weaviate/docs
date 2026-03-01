@@ -1,11 +1,11 @@
 ---
-title: Status
+title: Cluster status and metadata
 sidebar_position: 70
 image: og/docs/configuration.jpg
-# tags: ['status', 'reference', 'configuration']
+# tags: ['status', 'nodes', 'metadata', 'reference', 'configuration']
 ---
 
-Various cluster statuses are available in Weaviate.
+Monitor the health, status, and metadata of your Weaviate cluster.
 
 ## Liveness
 
@@ -84,10 +84,109 @@ Example response:
 }
 ```
 
+## Cluster node data
+
+You can retrieve information about individual nodes in a Weaviate cluster. The query can be for the entire cluster, or for a particular collection.
+
+### Parameters
+
+| Name | Location | Type | Description |
+| ---- | -------- | ---- | ----------- |
+| `output` | body | string | How much information to include in the output. Options:  `minimal` (default) and `verbose` (includes shard information). |
+
+### Returned data:
+
+import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
+
+<APIOutputs />
+
+### Example
+
+The following command will retrieve summary information about all nodes in the cluster:
+
+import Nodes from '/_includes/code/nodes.mdx';
+
+<Nodes/>
+
+Example output:
+
+```json
+{
+  "nodes": [
+    {
+      "batchStats": {
+        "ratePerSecond": 0
+      },
+      "gitHash": "e6b37ce",
+      "name": "weaviate-0",
+      "stats": {
+        "objectCount": 0,
+        "shardCount": 2
+      },
+      "status": "HEALTHY",
+      "version": "1.22.1"
+    },
+    {
+      "batchStats": {
+        "ratePerSecond": 0
+      },
+      "gitHash": "e6b37ce",
+      "name": "weaviate-1",
+      "stats": {
+        "objectCount": 1,
+        "shardCount": 2
+      },
+      "status": "HEALTHY",
+      "version": "1.22.1"
+    },
+    {
+      "batchStats": {
+        "ratePerSecond": 0
+      },
+      "gitHash": "e6b37ce",
+      "name": "weaviate-2",
+      "stats": {
+        "objectCount": 1,
+        "shardCount": 2
+      },
+      "status": "HEALTHY",
+      "version": "1.22.1"
+    }
+  ]
+}
+```
+
+## Cluster metadata
+
+You can retrieve metadata about the Weaviate instance, such as:
+
+- `hostname`: The location of the Weaviate instance.
+- `version`: The version of Weaviate.
+- `modules`: Module specific info.
+
+### Example
+
+import Meta from '/_includes/code/meta.mdx';
+
+<Meta/>
+
+returns:
+
+```json
+{
+  "hostname": "http://[::]:8080",
+  "modules": {
+    "text2vec-contextionary": {
+      "version": "en0.16.0-v0.4.21",
+      "wordCount": 818072
+    }
+  },
+  "version": "1.0.0"
+}
+```
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-
-
