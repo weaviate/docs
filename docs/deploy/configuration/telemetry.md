@@ -5,11 +5,13 @@ image: og/docs/configuration.jpg
 # tags: ['telemetry', 'reference', 'configuration']
 ---
 
-In order to better understand community needs, Weaviate collects some telemetry data. This data helps Weaviate to identify usage trends and improve our software for our users. Weaviate collects this information by default, but you can disable telemetry at any time.
+To help us improve Weaviate and understand community usage trends, Weaviate collects telemetry data by default. This includes basic information like your server version, operating system, and the number of objects in your instance.
+
+We do **not** collect your data objects, collection names, or any content from your datasets. Only the information listed below is collected.
 
 ## Data collected
 
-On startup, the Weaviate server generates a unique instance ID. Every 24 ours the instance sends this information:
+On startup, the Weaviate server generates a unique instance ID. Every 24 hours the instance sends this information:
 
 - Machine id
 - Payload type
@@ -17,21 +19,33 @@ On startup, the Weaviate server generates a unique instance ID. Every 24 ours th
 - Host operating system
 - Modules used
 - Number of objects in the instance
-- Metadata
+- Cloud Metadata (see below)
 
 Weaviate does not collect any other telemetry information.
 
-## Disabling Telemetry Data
+## Disabling telemetry data
 
-To disable telemetry data collection, add this line to your [system configuration](/deploy/configuration/env-vars/index.md) file:
+To disable telemetry, add this line to your [system configuration](/deploy/configuration/env-vars/index.md) file:
 
 ```bash
 DISABLE_TELEMETRY=true
 ```
 
-## Metadata
+## Cloud metadata
 
-Since Weaviate version `v1.33`, Weaviate will, when available, collect basic metadata from metadata endpoints it has access to on selected cloud providers. More info for: [AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html), [GCP](https://docs.cloud.google.com/compute/docs/metadata/overview), [Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service).
+Since Weaviate version `v1.33`, Weaviate will, when available, collect basic metadata from metadata endpoints it has access to on selected cloud providers (Google Cloud, Amazon Web Services, Azure).
+
+More information about the metadata endpoints:
+
+* [AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html)
+* [GCP](https://docs.cloud.google.com/compute/docs/metadata/overview)
+* [Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service)
+
+The cloud metadata contains:
+
+* AWS: [AWS Account ID](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-identifiers.html)
+* GCP: [Project ID](https://docs.cloud.google.com/resource-manager/docs/creating-managing-projects)
+* Azure: [Subscription ID](https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id)
 
 ## Questions and feedback
 

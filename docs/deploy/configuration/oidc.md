@@ -19,7 +19,7 @@ GET /v1/.well-known/openid-configuration
 
 If there is an OIDC provider, the endpoint returns the following fields:
 - `href`: The reference to the client.
-- `cliendID`: The ID of the client.
+- `clientId`: The ID of the client.
 
 If there is no OIDC provider, the endpoint returns a `404` HTTP status code.
 
@@ -34,7 +34,7 @@ If OIDC is configured, the endpoint returns a document like this:
 ```json
 {
   "href": "http://my-token-issuer/auth/realms/my-weaviate-usecase",
-  "cliendID": "my-weaviate-client"
+  "clientId": "my-weaviate-client"
 }
 ```
 

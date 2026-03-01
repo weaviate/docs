@@ -25,6 +25,10 @@ The command sets the following default [environment variables](#environment-vari
 - `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED` defaults to `true`.
 - `QUERY_DEFAULTS_LIMIT` defaults to `10`.
 
+import TelemetryNotice from '/_includes/telemetry-notice.mdx';
+
+<TelemetryNotice/>
+
 ## Customize your Weaviate configuration
 
 You can customize your Weaviate configuration by creating a `docker-compose.yml` file. Start from our [sample Docker Compose file](#sample-docker-compose-file), or use the interactive [Configurator](#configurator) to generate a `docker-compose.yml` file.
