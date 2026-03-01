@@ -27,7 +27,7 @@ with weaviate.connect_to_weaviate_cloud(
         limit=1,
         grouped_task="Write a tweet with emojis about this movie.",
         generative_provider=GenerativeConfig.anthropic(
-            model="claude-3-5-haiku-latest"
+            model="claude-haiku-4-5"
         ),  # Configure the Anthropic generative integration for RAG
     )
     # highlight-end

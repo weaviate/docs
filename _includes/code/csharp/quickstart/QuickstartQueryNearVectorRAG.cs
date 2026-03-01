@@ -41,7 +41,7 @@ namespace WeaviateProject.Examples
                 groupedTask: new GroupedTask("Write a tweet with emojis about this movie."),
                 provider: new Providers.Anthropic
                 {
-                    Model = "claude-3-5-haiku-latest", // The model to use
+                    Model = "claude-haiku-4-5", // The model to use
                 }
             );
             // highlight-end
