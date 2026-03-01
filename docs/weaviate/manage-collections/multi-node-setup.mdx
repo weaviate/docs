@@ -95,7 +95,12 @@ curl \
     "replicationConfig": {
       "factor": 3,
       "asyncEnabled": true,
-      "deletionStrategy": "TimeBasedResolution"
+      "deletionStrategy": "TimeBasedResolution",
+      "asyncConfig": {
+        "maxWorkers": 5,
+        "hashtreeHeight": 16,
+        "frequency": 30000
+      }
     }
 }' \
 http://localhost:8080/v1/schema
@@ -116,6 +121,43 @@ For details on the configuration parameters, see the following:
 - [Replication](/weaviate/config-refs/collections.mdx#replication)
 
 </details>
+
+## Update replication settings
+
+Update async replication settings for an existing collection. The `asyncConfig` parameters are mutable and can be changed at any time.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateReplicationSettings"
+      endMarker="# END UpdateReplicationSettings"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateReplicationSettings"
+      endMarker="// END UpdateReplicationSettings"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateReplicationSettings"
+      endMarker="// END UpdateReplicationSettings"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
+:::info
+
+Changing the hash tree height invalidates the existing tree and triggers a full rebuild. The rebuild duration scales with the number of objects in the collection, but it runs in the background and does not block reads or writes.
+
+:::
 
 ## Sharding settings
 

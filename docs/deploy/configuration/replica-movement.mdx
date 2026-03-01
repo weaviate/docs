@@ -3,8 +3,9 @@ title: Replica movement
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.32`
-:::
+import ReplicaMovement from '/_includes/feature-notes/replica-movement.mdx';
+
+<ReplicaMovement/>
 
 Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/docs/weaviate/api/rest.md) or through the client library API described below.
 

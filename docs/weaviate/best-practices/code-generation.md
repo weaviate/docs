@@ -18,6 +18,16 @@ Here are some tips for writing Weaviate client library code with generative AI m
 
 The **[Weaviate Docs MCP Server](../mcp/docs-mcp-server.mdx)** brings instant access to Weaviate's documentation directly into your AI development environment. Built on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro), this server integrates seamlessly with tools like Claude Desktop and Cursor, allowing you to query Weaviate's documentation without leaving your IDE.
 
+### Weaviate Agent Skills
+
+**[Weaviate Agent Skills](https://github.com/weaviate/agent-skills)** gives AI coding agents (Claude Code, Cursor, GitHub Copilot, and others) built-in knowledge of Weaviate — covering search, collection management, data import, and complete application blueprints such as RAG, agentic RAG, and chatbots. When the skill is installed, agents can discover and use it automatically, reducing hallucinations and speeding up Weaviate development.
+
+Install with:
+
+```bash
+npx skills add weaviate/agent-skills
+```
+
 ### High-performing models
 
 As of July 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/weaviate/client-libraries/python/index.mdx) code.)

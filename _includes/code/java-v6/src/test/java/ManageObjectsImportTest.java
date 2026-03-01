@@ -108,9 +108,39 @@ class ManageObjectsImportTest {
     client.collections.delete("MyCollection");
   }
 
-  // START ServerSideBatchImportExample
-  // Coming soon
-  // END ServerSideBatchImportExample
+  //@Test
+  void testServerSideBatchImport() throws IOException {
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.selfProvided()));
+
+    // START ServerSideBatchImportExample
+    List<Map<String, Object>> dataRows = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      dataRows.add(Map.of("title", "Object " + (i + 1)));
+    }
+
+    var collection = client.collections.use("MyCollection");
+
+    // highlight-start
+    // Use `batch.start()` for server-side batching. The client sends data
+    // in batches at a rate controlled by the server.
+    try (var batch = collection.batch.start()) {
+      for (var dataRow : dataRows) {
+        batch.add(WeaviateObject.of(
+            obj -> obj.properties(dataRow)));
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+    // highlight-end
+    // END ServerSideBatchImportExample
+
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    assertThat(result.totalCount()).isEqualTo(5);
+
+    client.collections.delete("MyCollection");
+  }
 
   @Test
   void testBatchImportWithID() throws IOException {

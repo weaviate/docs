@@ -6,8 +6,9 @@ image: og/docs/more-resources.jpg
 # tags: ['performance']
 ---
 
-:::info Added in **`v1.30`**
-:::
+import CollectionsLimit from '/_includes/feature-notes/collections-limit.mdx';
+
+<CollectionsLimit/>
 
 :::caution Have you hit the collections count limit?
 If you see an error that the collection count limit has been reached, it means you **can't create any more collections**. This limit aims to ensure Weaviate remains performant. If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.<br /><br />

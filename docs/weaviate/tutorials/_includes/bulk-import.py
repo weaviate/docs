@@ -56,7 +56,7 @@ collection = client.collections.create(
 # START ServerSideBatch
 # Server-side batching (automatic mode)
 # The server manages the import flow automatically
-with collection.batch.experimental() as batch:
+with collection.batch.stream() as batch:
     # Import data
     for data_row in data_rows:
         batch.add_object(

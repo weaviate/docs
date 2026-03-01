@@ -8,7 +8,7 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.35.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.36.0
     ports:
     - 8080:8080
     - 50051:50051
@@ -24,6 +24,8 @@ services:
       OLLAMA_API_ENDPOINT: 'http://ollama:11434'
       CONTEXTIONARY_URL: 'contextionary:9999'
       TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'
+      OBJECTS_TTL_ALLOW_SECONDS: 'true'
+      OBJECTS_TTL_DELETE_SCHEDULE: '*/10 * * * * *'
   text2vec-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
   ollama:

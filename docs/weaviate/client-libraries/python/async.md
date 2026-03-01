@@ -191,9 +191,9 @@ Note the use of a context manager in the async function. The context manager is 
 
 ### Bulk data insertion
 
-For server-side batch operations, we recommend using the synchronous client and its [`batch` operations](../../manage-objects/import.mdx). The batch operations are designed to handle large amounts of data efficiently through concurrent requests already.
+The async client supports server-side batching through the `stream()` method, which uses the same feedback-based flow as the synchronous client. For client-side batching methods (`dynamic`, `fixed_size`, `rate_limit`), use the synchronous client.
 
-The async client still offers `insert` and `insert_many` methods for data insertion, which can be used in an async context.
+The async client also offers `insert` and `insert_many` methods for data insertion, which can be used in an async context.
 
 ### Application-level example
 

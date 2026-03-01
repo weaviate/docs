@@ -42,7 +42,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -329,7 +329,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-- `jina-embeddings-v3` (Added in Weaviate `v1.26.5` and `v1.27`)
+- `jina-embeddings-v3`
     - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
     - By default, Weaviate uses `1024` dimensions
 - `jina-embeddings-v2-base-en` (Default)

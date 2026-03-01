@@ -136,6 +136,7 @@ def test_install(empty_weaviates, script_loc):
         "./_includes/code/howto/manage-data.multi-tenancy.py",
         "./_includes/code/howto/manage-data.migrate.data.v4.py",
         "./_includes/code/config-refs/reference.collections.py",
+        "./_includes/code/howto/manage-data.ttl.py",
     ],
 )
 def test_manage_data(empty_weaviates, script_loc):
