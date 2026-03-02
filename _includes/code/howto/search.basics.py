@@ -17,7 +17,7 @@ client = weaviate.connect_to_weaviate_cloud(
     auth_credentials=Auth.api_key(weaviate_api_key),
     headers={
         "X-OpenAI-Api-Key": openai_api_key,
-    }
+    },
 )
 
 # ==============================
@@ -73,7 +73,7 @@ jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     limit=1,
-    offset=1
+    offset=1,
     # highlight-end
 )
 
@@ -88,6 +88,32 @@ assert len(response.objects) == 1
 # End test
 
 
+# ==========================
+# ===== FILTERED FETCH =====
+# ==========================
+
+# START GetWithFilter
+from weaviate.classes.query import Filter
+
+jeopardy = client.collections.use("JeopardyQuestion")
+response = jeopardy.query.fetch_objects(
+    # highlight-start
+    filters=Filter.by_property("round").equal("Double Jeopardy!"),
+    # highlight-end
+    limit=3,
+)
+
+for o in response.objects:
+    print(o.properties)
+# END GetWithFilter
+
+# Test results
+assert response.objects[0].collection == "JeopardyQuestion"
+assert "question" in response.objects[0].properties.keys()
+assert len(response.objects) == 3
+# End test
+
+
 # ==========================================
 # ===== GET OBJECT PROPERTIES EXAMPLES =====
 # ==========================================
@@ -97,7 +123,7 @@ jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     limit=1,
-    return_properties=["question", "answer", "points"]
+    return_properties=["question", "answer", "points"],
     # highlight-end
 )
 
@@ -122,7 +148,7 @@ response = jeopardy.query.fetch_objects(
     # highlight-start
     include_vector=True,
     # highlight-end
-    limit=1
+    limit=1,
 )
 
 print(response.objects[0].vector["default"])
@@ -170,13 +196,10 @@ jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     return_references=[
-        QueryReference(
-            link_on="hasCategory",
-            return_properties=["title"]
-        ),
+        QueryReference(link_on="hasCategory", return_properties=["title"]),
     ],
     # highlight-end
-    limit=2
+    limit=2,
 )
 
 for o in response.objects:
@@ -203,7 +226,7 @@ jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     limit=1,
     # highlight-start
-    return_metadata=MetadataQuery(creation_time=True)
+    return_metadata=MetadataQuery(creation_time=True),
     # highlight-end
 )
 
