@@ -1,5 +1,5 @@
 // How-to: Manage-collections -> Aliases
-package main
+package docs
 
 import (
 	"context"
