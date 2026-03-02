@@ -27,7 +27,7 @@ Use Engram to give your agents persistent memory that they can write to and sear
 ## Get started
 
 - **[Quickstart](quickstart.md)** — Create a project, get an API key, store your first memory, and search it.
-- **[Concepts](concepts.md)** — Understand memories, topics, groups, scoping, and pipelines.
+- **[Concepts](concepts/index.md)** — Understand memories, topics, groups, scoping, and pipelines.
 - **[Guides](guides/index.md)** — Step-by-step instructions for storing, searching, and managing memories.
 - **[API reference](/engram/api/rest)** — Full endpoint documentation with request and response schemas.
 

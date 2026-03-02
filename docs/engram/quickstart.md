@@ -187,7 +187,7 @@ curl -X POST $ENGRAM_API_URL/v1/memories/search \
 
 ## Next steps
 
-- Learn about [core concepts](concepts.md) like topics, groups, and pipelines.
+- Learn about [core concepts](concepts/index.md) like topics, groups, and pipelines.
 - Explore different ways to [store memories](guides/store-memories.md), including conversations and pre-extracted data.
 - See all [search options](guides/search-memories.md) including vector, BM25, and hybrid retrieval.
 

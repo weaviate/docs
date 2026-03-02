@@ -1569,7 +1569,21 @@ const sidebars = {
   engramSidebar: [
     { type: "doc", id: "engram/index", label: "Introduction" },
     "engram/quickstart",
-    "engram/concepts",
+    {
+      type: "category",
+      label: "Concepts",
+      link: { type: "doc", id: "engram/concepts/index" },
+      collapsed: true,
+      items: [
+        "engram/concepts/memories",
+        "engram/concepts/groups",
+        "engram/concepts/topics",
+        "engram/concepts/scopes",
+        "engram/concepts/input-data-types",
+        "engram/concepts/pipelines",
+        "engram/concepts/retrieval",
+      ],
+    },
     { type: "html", value: "<hr class='sidebar-divider' />" },
     {
       type: "category",

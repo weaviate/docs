@@ -200,7 +200,7 @@ Use `memories.search()` to find all memories for a user, then `memories.delete()
 - **[Memory Chat App](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
 - **[Context Window Management](context-window-management.md)** — Reduce token costs by replacing conversation history with memory.
 - **[Manage memories](../guides/manage-memories.md)** — API reference for get and delete operations.
-- **[Core concepts](../concepts.md)** — Learn about topics, groups, scoping, and pipelines.
+- **[Core concepts](../concepts/index.md)** — Learn about topics, groups, scoping, and pipelines.
 
 ## Questions and feedback
 
