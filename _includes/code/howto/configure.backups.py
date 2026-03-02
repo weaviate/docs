@@ -7,10 +7,10 @@
 import weaviate
 from weaviate.auth import AuthApiKey
 
-# START CreateBackup  # START RestoreBackup  # START StatusCreateBackup  # START StatusRestoreBackup  # START CancelBackup
+# START CreateBackup  # START RestoreBackup  # START StatusCreateBackup  # START StatusRestoreBackup  # START CancelBackup  # START CancelRestore
 from weaviate.classes.backup import BackupLocation
 
-# END CreateBackup  # END RestoreBackup  # END StatusCreateBackup  # END StatusRestoreBackup  # END CancelBackup
+# END CreateBackup  # END RestoreBackup  # END StatusCreateBackup  # END StatusRestoreBackup  # END CancelBackup  # END CancelRestore
 
 client = weaviate.connect_to_local(
     port=8580,
@@ -144,5 +144,21 @@ result = client.backup.cancel(
 
 print(result)
 # END CancelBackup
+
+
+# ==============================================
+# ===== Cancel ongoing restore =====
+# ==============================================
+
+# START CancelRestore
+result = client.backup.cancel(
+    backup_id="my-very-first-backup",
+    backend="filesystem",
+    backup_location=BackupLocation.FileSystem(path="/tmp/weaviate-backups"),  # Required if a non-default location was used at creation
+    operation="restore",
+)
+
+print(result)
+# END CancelRestore
 
 client.close()

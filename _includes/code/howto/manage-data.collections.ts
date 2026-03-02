@@ -226,6 +226,7 @@ await client.collections.create({
     vectorIndexConfig: configure.vectorIndex.hnsw(),  // Use HNSW
     // vectorIndexConfig: configure.vectorIndex.flat(),  // Use Flat
     // vectorIndexConfig: configure.vectorIndex.dynamic(),  // Use Dynamic
+    // vectorIndexConfig: configure.vectorIndex.hfresh(),  // Use HFresh
     // highlight-end
   }),
   properties: [
@@ -546,7 +547,7 @@ await client.collections.create({
       // highlight-end
     },
     {
-      name: 'chunk_no',
+      name: 'chunk_number',
       dataType: dataType.INT,
       // highlight-start
       indexRangeFilters: true,
@@ -555,6 +556,21 @@ await client.collections.create({
   ],
 })
 // END EnableInvertedIndex
+
+// START DropInvertedIndex
+const article = client.collections.use('Article')
+
+// highlight-start
+// Drop the searchable inverted index from the "title" property
+await article.config.dropInvertedIndex('title', 'searchable')
+
+// Drop the filterable inverted index from the "title" property
+await article.config.dropInvertedIndex('title', 'filterable')
+
+// Drop the range filter index from the "chunk_number" property
+await article.config.dropInvertedIndex('chunk_number', 'rangeFilters')
+// highlight-end
+// END DropInvertedIndex
 
 
 // ===============================================
@@ -690,13 +706,33 @@ await client.collections.create({
   name: 'Article',
   // highlight-start
   replication: configure.replication({
-    factor: 1,
+    factor: 3,
     asyncEnabled: true,
-    deletionStrategy: 'TimeBasedResolution'  // Available from Weaviate v1.28.0
+    deletionStrategy: 'TimeBasedResolution',
+    asyncConfig: {
+      maxWorkers: 5,
+      hashtreeHeight: 16,
+      frequency: 30,
+    },
   }),
   // highlight-end
 })
 // END AllReplicationSettings
+
+// START UpdateReplicationSettings
+const article = client.collections.use('Article')
+
+// highlight-start
+await article.config.update({
+  replication: reconfigure.replication({
+    asyncConfig: {
+      maxWorkers: 10,
+      frequency: 60,
+    },
+  }),
+})
+// highlight-end
+// END UpdateReplicationSettings
 
  // Test
  // TODO NEEDS TEST assert.equal(result.replicationConfig.factor, 3);

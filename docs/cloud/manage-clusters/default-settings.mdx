@@ -13,15 +13,29 @@ The majority of these settings are configured via environment variables. For mor
 
 These settings control core database functionality and limits. User configurable settings can be viewed and updated in "Show advanced options" in cluster details.
 
+import AdvancedOptions from "/docs/cloud/img/weaviate-cloud-cluster-advanced-settings.png";
+
 | Setting | Requires restart | Default value | User configurable |
 | --- | --- | --- | --- |
 | [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 | No |
-| [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes |
+| [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes (<span class="callout">2</span>) |
 | [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
 | [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
-| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | Yes |
-| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
+| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | Yes (<span class="callout">1</span>) |
+| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) (<span class="callout">3</span>) |
 | [`REPLICATION_MINIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MINIMUM_FACTOR) | Yes | 3 (for HA clusters) | No |
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={AdvancedOptions} alt="Cluster advanced options" />
+    </div>
+    <div class="card__body">
+      <p>Update advanced options for Weaviate Cloud cluster.</p>
+    </div>
+  </div>
+</div>
+<br />
 
 ## User management & permissions
 

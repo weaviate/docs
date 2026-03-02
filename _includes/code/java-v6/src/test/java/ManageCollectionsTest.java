@@ -9,6 +9,7 @@ import io.weaviate.client6.v1.api.collections.Sharding;
 import io.weaviate.client6.v1.api.collections.Tokenization;
 import io.weaviate.client6.v1.api.collections.vectorindex.Distance;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
+import io.weaviate.client6.v1.api.collections.Replication.AsyncReplicationConfig;
 import io.weaviate.client6.v1.api.collections.Replication.DeletionStrategy;
 import io.weaviate.client6.v1.api.collections.config.Shard;
 import io.weaviate.client6.v1.api.collections.config.ShardStatus;
@@ -241,6 +242,36 @@ class ManageCollectionsTest {
     assertThat(config.properties()).hasSize(3);
   }
 
+  //@Test
+  void testDropInvertedIndex() throws IOException {
+    client.collections.create("Article", col -> col
+        .properties(
+            Property.text("title",
+                p -> p.indexFilterable(true).indexSearchable(true)),
+            Property.integer("chunk_number", p -> p.indexRangeFilters(true))));
+
+    // START DropInvertedIndex
+    var collection = client.collections.use("Article");
+
+    // highlight-start
+    // Drop the searchable inverted index from the "title" property
+    collection.config.dropPropertyIndex("title", PropertyIndexType.SEARCHABLE);
+
+    // Drop the filterable inverted index from the "title" property
+    collection.config.dropPropertyIndex("title", PropertyIndexType.FILTERABLE);
+
+    // Drop the range filter index from the "chunk_number" property
+    collection.config.dropPropertyIndex("chunk_number", PropertyIndexType.RANGE_FILTERS);
+    // highlight-end
+    // END DropInvertedIndex
+
+    var config = client.collections.getConfig("Article").get();
+    var titleProp = config.properties().stream()
+        .filter(p -> p.name().equals("title")).findFirst().get();
+    assertThat(titleProp.indexFilterable()).isFalse();
+    assertThat(titleProp.indexSearchable()).isFalse();
+  }
+
   // TODO[g-despot] IllegalState Not a JSON Object: null
   @Test
   void testSetReranker() throws IOException {
@@ -381,14 +412,29 @@ class ManageCollectionsTest {
   void testAllReplicationSettings() throws IOException {
     // START AllReplicationSettings
     client.collections.create("Article",
-        col -> col.replication(Replication.of(rep -> rep.replicationFactor(1)
+        col -> col.replication(Replication.of(rep -> rep.replicationFactor(3)
             .asyncEnabled(true)
-            .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION))));
+            .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION)
+            .asyncReplication(AsyncReplicationConfig.of(async -> async
+                .replicationConcurrency(5)
+                .hashTreeHeight(16)
+                .replicationFrequencyMillis(30))))));
     // END AllReplicationSettings
 
     var config = client.collections.getConfig("Article").get();
-    assertThat(config.replication().replicationFactor()).isEqualTo(1);
+    assertThat(config.replication().replicationFactor()).isEqualTo(3);
     assertThat(config.replication().asyncEnabled()).isTrue();
+
+    // START UpdateReplicationSettings
+    var collection = client.collections.use("Article");
+
+    // highlight-start
+    collection.config.update(col -> col.replication(Replication.of(
+        rep -> rep.asyncReplication(AsyncReplicationConfig.of(async -> async
+            .replicationConcurrency(10)
+            .replicationFrequencyMillis(60))))));
+    // highlight-end
+    // END UpdateReplicationSettings
   }
 
   @Test

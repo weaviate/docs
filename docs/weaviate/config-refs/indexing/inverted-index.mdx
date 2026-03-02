@@ -195,8 +195,16 @@ Part of `invertedIndexConfig`. To perform queries that filter by the length of a
 To configure indexing based on property length, set `indexPropertyLength` to `true` in the `invertedIndexConfig` object.
 
 :::note
-Using these features requires more resources. The additional inverted indexes must be created and maintained for the lifetime of the collection.
+Using these features requires more resources, as the additional inverted indexes must be created and maintained.
 :::
+
+## Drop an inverted index
+
+You can drop (delete) an inverted index from a property. This is a destructive operation — the index data is removed from disk. To use the index again, it must be regenerated.
+
+The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
+
+See [How-to: Drop an inverted index](../../manage-collections/inverted-index.mdx#drop-an-inverted-index) for code examples.
 
 ## How Weaviate creates inverted indexes
 

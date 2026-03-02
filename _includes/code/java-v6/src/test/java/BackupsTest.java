@@ -147,4 +147,41 @@ class BackupsTest {
     client.collections.delete("Article");
     client.collections.delete("Publication");
   }
+
+  @Test
+  @Order(3)
+  void testCancelRestore() throws IOException, TimeoutException, InterruptedException {
+    setupCollections();
+    String backupId = "backup-to-cancel-restore";
+    String backend = "filesystem";
+
+    // Create a backup first
+    client.backup.create(backupId, backend,
+        backup -> backup.includeCollections("Article", "Publication"))
+        .waitForCompletion(client);
+
+    // Delete collections before restoring
+    client.collections.deleteAll();
+
+    // Start a restore and cancel it
+    var restoreToCancel = client.backup.restore(backupId, backend);
+
+    // START CancelRestore
+    client.backup.cancelRestore(backupId, backend);
+    // END CancelRestore
+
+    // Poll until the restore reaches a terminal state
+    BackupStatus status = BackupStatus.STARTED;
+    for (int i = 0; i < 20; i++) {
+      var s = client.backup.getRestoreStatus(backupId, backend);
+      if (s.isPresent()) {
+        status = s.get().status();
+        if (status != BackupStatus.STARTED && status != BackupStatus.TRANSFERRING) break;
+      }
+      Thread.sleep(500);
+    }
+
+    // The restore may complete before the cancel arrives
+    assertThat(status).isIn(BackupStatus.CANCELED, BackupStatus.SUCCESS);
+  }
 }

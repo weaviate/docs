@@ -316,6 +316,46 @@ console.log(`Finished importing ${counter} articles.`);
 // assert.equal(tokyoRose.data.Get['JeopardyQuestion'].length, 2);
 // End test
 
+// ==================================================
+// ===== Server-side (automatic) batch import =====
+// ==================================================
+/*
+// Clean slate
+try {
+  await client.collections.delete('MyCollection');
+} catch (e) {
+  // ignore error if class doesn't exist
+} finally {
+  await client.collections.create({
+    name: 'MyCollection',
+    vectorizers: weaviate.configure.vectors.selfProvided(),
+  })
+}
+
+{
+// START ServerSideBatchImportExample
+const dataObjects = [
+  { title: 'Object 1' },
+  { title: 'Object 2' },
+  { title: 'Object 3' },
+  { title: 'Object 4' },
+  { title: 'Object 5' },
+]
+
+const myCollection = client.collections.use('MyCollection')
+
+// highlight-start
+// Use `ingest` for server-side batching. The client sends data
+// in batches at a rate controlled by the server.
+const result = await myCollection.data.ingest(dataObjects)
+// highlight-end
+
+console.log(result)
+// END ServerSideBatchImportExample
+}
+
+await client.collections.delete('MyCollection');
+*/
 // ===========================
 // ===== Batch with gRPC =====
 // ===========================

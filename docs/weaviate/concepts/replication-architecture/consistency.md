@@ -37,7 +37,7 @@ The strength of consistency can be determined by applying the following conditio
 
 The cluster metadata in Weaviate makes use of the Raft algorithm.
 
-From `v1.25`, Weaviate uses the [Raft](https://raft.github.io/) consensus algorithm for cluster metadata replication. Raft is a consensus algorithm with an elected leader node that coordinates replication across the cluster using a log-based approach.
+Weaviate uses the [Raft](https://raft.github.io/) consensus algorithm for cluster metadata replication. Raft is a consensus algorithm with an elected leader node that coordinates replication across the cluster using a log-based approach.
 
 As a result, each request that changes the cluster metadata will be sent to the leader node. The leader node will apply the change to its logs, then propagate the changes to the follower nodes. Once a quorum of nodes has acknowledged the cluster metadata change, the leader node will commit the change and confirm it to the client.
 
@@ -55,9 +55,6 @@ A clean (without fails) execution has two phases:
 </details>
 
 ### Collection definition requests in queries
-
-:::info Added in `v1.27.10`, `v1.28.4`
-:::
 
 Some queries require the collection definition. Prior to the introduction of this feature, every such query led to the local (requesting) node to fetch the collection definition from the leader node. This meant that the definition was strongly consistent, but it could lead to additional traffic and load.
 
@@ -192,9 +189,6 @@ Weaviate uses [async replication](#async-replication), [deletion resolution](#de
 
 ### Async replication
 
-:::info Added in `v1.26`
-:::
-
 Async replication is a background synchronization process in Weaviate that ensures eventual consistency across nodes storing the same data. When each shard is replicated across multiple nodes, async replication guarantees that all nodes holding copies of the same data remain in sync by periodically comparing and propagating data.
 
 It uses a Merkle tree (hash tree) algorithm to monitor and compare the state of nodes within a cluster. If the algorithm identifies an inconsistency, it resyncs the data on the inconsistent node.
@@ -207,9 +201,6 @@ To activate async replication, set `asyncEnabled` to true in the [`replicationCo
 
 #### Memory and performance considerations for async replication
 
-:::info Added in `v1.29`
-:::
-
 Async replication uses a hash tree to compare and synchronize data between the database cluster nodes, based on objects' latest update time. The additional memory required for this process is determined by the height of the hash tree (`H`). A higher hash tree uses more memory but allows faster hashing, reducing the time required to detect and repair inconsistencies.
 
 The trade-offs can be summarized like this:
@@ -220,7 +211,10 @@ The trade-offs can be summarized like this:
 Each tenant is backed by a shard. Therefore, when there is a high number of tenants, the memory consumption of async replication can be significant. (e.g. 1,000 tenants with a hash tree height of 16 will require an extra ~2 GB of memory per node, while a height of 20 will require ~34 GB per node).
 <br/>
 
-To reduce memory consumption, reduce the hash tree height. Keep in mind that this will result in slower hashing and potentially slower replication.
+As of `v1.36`, multi-tenant collections default to a hash tree height of `10` (~16KB per tenant per node), significantly reducing memory overhead compared to the single-tenant default of `16`.
+<br/>
+
+To further reduce memory consumption, reduce the hash tree height. Keep in mind that this will result in slower hashing and potentially slower replication.
 :::
 
 Use the following formulas and examples as a quick reference:
@@ -268,13 +262,12 @@ A larger hash tree means less data for each leaf to hash, leading to faster comp
   - `Number of Leaves = 2^20 = 1,048,576`
 
 :::note Default settings
-The default hash tree height of `16` is chosen to balance memory consumption with replication performance. Adjust this value based on your cluster node’s available resources and performance requirements.
+The default hash tree height is `16` for single-tenant collections and `10` for multi-tenant collections. These defaults balance memory consumption with replication performance. Similarly, the default `maxWorkers` is `3` for single-tenant collections and `30` for multi-tenant collections.
+
+As of `v1.36`, these parameters can be configured per-collection via the [`asyncConfig`](/weaviate/config-refs/collections#async-config) object in `replicationConfig`, overriding the cluster-wide environment variable defaults.
 :::
 
 ### Deletion resolution strategies
-
-:::info Added in `v1.28`
-:::
 
 When an object is present on some replicas but not others, this can be because a creation has not yet been propagated to all replicas, or because a deletion has not yet been propagated to all replicas. It is important to distinguish between these two cases.
 
@@ -288,7 +281,7 @@ Deletion resolution strategies are mutable. [Read more about how to update colle
 
 #### `NoAutomatedResolution`
 
-This is the default setting, and the only setting available in Weaviate versions prior to `v1.28`. In this mode, Weaviate does not treat deletion conflicts as a special case. If an object is present on some replicas but not others, Weaviate may potentially restore the object on the replicas where it is missing.
+In this mode, Weaviate does not treat deletion conflicts as a special case. If an object is present on some replicas but not others, Weaviate may potentially restore the object on the replicas where it is missing.
 
 #### `DeleteOnConflict`
 
@@ -298,13 +291,13 @@ To do so, Weaviate updates an object as a deleted object on a replica upon recei
 
 #### `TimeBasedResolution`
 
-A deletion conflict in `timeBasedResolution` is resolved based on the timestamp of the deletion request, in comparison to any subsequent updates to the object such as a creation or an update.
+This is the default setting from `v1.36` onwards. A deletion conflict in `timeBasedResolution` is resolved based on the timestamp of the deletion request, in comparison to any subsequent updates to the object such as a creation or an update.
 
 If the deletion request has a timestamp that is later than the timestamp of any subsequent updates, the object is deleted on all replicas. If the deletion request has a timestamp that is earlier than the timestamp of any subsequent updates, the later updates are applied to all replicas.
 
 For example:
-- If an object is deleted at timestamp 100 and then recreated at timestamp 90, the recreation wins
-- If an object is deleted at timestamp 100 and then recreated at timestamp 110, the deletion wins
+- If an object is deleted at timestamp 100 and then recreated at timestamp 110, the recreation wins
+- If an object is deleted at timestamp 100 and then recreated at timestamp 90, the deletion wins
 
 #### Choosing a strategy
 
@@ -314,16 +307,13 @@ For example:
 
 ### Repair-on-read
 
-:::info Added in `v1.18`
-:::
-
 If your read consistency is set to `All` or `Quorum`, the read coordinator will receive responses from multiple replicas. If these responses differ, the coordinator can attempt to repair the inconsistency, as shown in the examples below. This process is called "repair-on-read", or "read repairs".
 
 | Problem | Action |
 | :- | :- |
 | Object never existed on some replicas. | Propagate the object to the missing replicas. |
 | Object is out of date. | Update the object on stale replicas. |
-| Object was deleted on some replicas. | Returns an error. Deletion may have failed, or the object may have been partially recreated. |
+| Object was deleted on some replicas. | Returns an error. Deletion may have failed, or the object may have been partially recreated. When using the `TimeBasedResolution` deletion strategy, the most recent version wins based on timestamps. |
 
 The read repair process also depends on the read and write consistency levels used.
 
@@ -337,8 +327,9 @@ Repairs only happen on read, so they do not create a lot of background overhead.
 
 ## Replica movement
 
-:::info Added in `v1.32`
-:::
+import ReplicaMovement from '/_includes/feature-notes/replica-movement.mdx';
+
+<ReplicaMovement/>
 
 A shard represents a part of the collection in a single-tenant collection, or a whole tenant in a multi-tenant collection. Weaviate allows users to manually move or copy individual shard replicas from a source node to a destination node in a Weaviate cluster. This capability addresses operational scenarios such as cluster rebalancing after scaling, node decommissioning, optimizing data locality for improved performance, or increasing data availability.
 

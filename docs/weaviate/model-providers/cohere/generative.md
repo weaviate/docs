@@ -41,7 +41,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -264,8 +264,8 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-- `command-r-plus`  (Added in `v1.25.0`)
-- `command-r` (default)  (Added in `v1.25.0`)
+- `command-r-plus`
+- `command-r` (default)
 - `command-xlarge`
 - `command-xlarge-beta`
 - `command-xlarge-nightly`

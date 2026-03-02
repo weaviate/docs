@@ -159,6 +159,7 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.hnsw(),  # Use the HNSW index
         # vector_index_config=Configure.VectorIndex.flat(),  # Use the FLAT index
         # vector_index_config=Configure.VectorIndex.dynamic(),  # Use the DYNAMIC index
+        # vector_index_config=Configure.VectorIndex.hfresh(),  # Use the HFRESH index
         # highlight-end
     ),
     properties=[
@@ -287,6 +288,21 @@ client.collections.create(
     ],
 )
 # END EnableInvertedIndex
+
+# START DropInvertedIndex
+collection = client.collections.get("Article")
+
+# highlight-start
+# Drop the searchable inverted index from the "title" property
+collection.config.delete_property_index("title", "searchable")
+
+# Drop the filterable inverted index from the "title" property
+collection.config.delete_property_index("title", "filterable")
+
+# Drop the range filter index from the "chunk_number" property
+collection.config.delete_property_index("chunk_number", "rangeFilters")
+# highlight-end
+# END DropInvertedIndex
 
 # Delete the collection to recreate it
 client.collections.delete("Article")
@@ -803,12 +819,34 @@ client.collections.create(
     # highlight-start
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,  # Enable asynchronous repair
-        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,  # Added in v1.28; Set the deletion conflict resolution strategy
+        async_enabled=True,
+        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
+        async_config=Configure.Replication.async_config(
+            max_workers=5,
+            hashtree_height=16,
+            frequency=30,
+        ),
     ),
     # highlight-end
 )
 # END AllReplicationSettings
+
+# START UpdateReplicationSettings
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("Article")
+
+# highlight-start
+collection.config.update(
+    replication_config=Reconfigure.replication(
+        async_config=Reconfigure.Replication.async_config(
+            max_workers=10,
+            frequency=60,
+        ),
+    ),
+)
+# highlight-end
+# END UpdateReplicationSettings
 
 # Test
 collection = client.collections.use("Article")

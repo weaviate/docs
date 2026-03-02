@@ -18,6 +18,10 @@ For a tutorial on how to use [minikube](https://minikube.sigs.k8s.io/docs/) to d
 * A file system that can be mounted read-write by a single node to allow Kubernetes' `ReadWriteOnce` access mode.
 * Helm version v3 or higher. The current Helm chart is version `||site.helm_version||`.
 
+import TelemetryNotice from '/_includes/telemetry-notice.mdx';
+
+<TelemetryNotice/>
+
 ## Weaviate Helm chart
 
 :::note Important: Set the correct Weaviate version

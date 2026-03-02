@@ -33,3 +33,13 @@ let cancelStatus = await client.backup.cancel({
 
 console.log(cancelStatus);
 // END CancelBackup
+
+// START CancelRestore
+let cancelRestoreStatus = await client.backup.cancel({
+  backupId: 'my-very-first-backup',
+  backend: 'filesystem',
+  operation: 'restore',
+})
+
+console.log(cancelRestoreStatus);
+// END CancelRestore

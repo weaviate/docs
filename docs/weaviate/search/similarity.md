@@ -303,9 +303,6 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 
 ## Named vectors
 
-:::info Added in `v1.24`
-:::
-
 To search a collection that has [named vectors](../config-refs/collections.mdx#named-vectors), use the `target vector` field to specify which named vector to search.
 
 <Tabs className="code" groupId="languages">

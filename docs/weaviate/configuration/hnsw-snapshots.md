@@ -5,8 +5,9 @@ sidebar_label: HNSW Snapshots
 description: Learn about HNSW snapshots in Weaviate for faster startup times and how to manage them.
 ---
 
-:::info Added in `v1.31`
-:::
+import HnswSnapshots from '/_includes/feature-notes/hnsw-snapshots.mdx';
+
+<HnswSnapshots/>
 
 HNSW (Hierarchical Navigable Small World) snapshots can significantly reduce startup times for instances with large vector indexes.
 

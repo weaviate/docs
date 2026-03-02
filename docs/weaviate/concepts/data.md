@@ -263,8 +263,9 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 #### Adding a named vector after collection creation
 
-:::info Added in `v1.31`
-:::
+import AddNamedVectors from '/_includes/feature-notes/add-named-vectors.mdx';
+
+<AddNamedVectors/>
 
 A named vector can be added to an existing collection definition after collection creation. This allows you to add new vector representations for objects without having to delete and recreate the collection.
 
@@ -282,9 +283,9 @@ The ability to add a named vector after collection creation is only available fo
 
 ### Time to live (TTL)
 
-:::caution Added in `v1.35.0` as a technical preview
-Time to live (TTL) was introduced in Weaviate `v1.35.0` as a technical preview feature, for local / self-hosted Weaviate instances. It is not available in Weaviate Cloud instances at this time.
-:::
+import TtlStatus from '/_includes/feature-notes/ttl-status.mdx';
+
+<TtlStatus/>
 
 Objects can be optionally set to expire after a predetermined amount of time using the Time to Live (TTL) feature.
 
@@ -320,10 +321,6 @@ Schemas fulfill several roles:
 For details on configuring your schema, see the [schema tutorial](../starter-guides/managing-collections/index.mdx) or [How-to: Manage collections](../manage-collections/index.mdx).
 
 ## Multi-tenancy
-
-:::info Multi-tenancy availability
-- Multi-tenancy added in `v1.20`
-:::
 
 To separate data within a cluster, use multi-tenancy. Weaviate partitions the cluster into shards. Each shard holds data for a single tenant.
 
@@ -419,11 +416,6 @@ Deleting a tenant deletes the associated shard. As a result, deleting a tenant a
 
 ### Tenant states
 
-:::info Multi-tenancy availability
-- Tenant activity status setting added in `v1.21`
-- `OFFLOADED` status added in `v1.26`
-:::
-
 Tenants have an activity status (also called a tenant state) that reflects their availability and storage location. A tenant can be `ACTIVE`, `INACTIVE`, `OFFLOADED`, `OFFLOADING`, or `ONLOADING`.
 
 - `ACTIVE` tenants are loaded and available for read and write operations.
@@ -456,9 +448,6 @@ For example, data may not be immediately available after reactivating an offload
 :::
 
 #### Offloaded tenants
-
-:::info Added in `v1.26.0`
-:::
 
 import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 

@@ -6,6 +6,9 @@ image: og/docs/concepts.jpg
 # tags: ['vector compression', 'quantization']
 ---
 
+import Rq8bit from '/_includes/feature-notes/rq-8bit.mdx';
+import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
+
 **Vector quantization** reduces the memory footprint of the [vector index](./indexing/vector-index.md) by compressing the vector embeddings, and thus reduces deployment costs and improves the speed of the vector similarity search process.
 
 Weaviate currently offers four vector quantization techniques:
@@ -122,12 +125,7 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ### 8-bit RQ
 
-:::info Added in `v1.32` and `v1.35`
-
-**8-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.32`**.<br/>
-**8-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
-
-:::
+<Rq8bit/>
 
 8-bit RQ provides 4x compression while maintaining 98-99% recall in internal testing. The method works as follows:
 
@@ -137,12 +135,7 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ### 1-bit RQ
 
-:::info Added in `v1.33` and `v1.35`
-
-**1-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.33`**.<br/>
-**1-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
-
-:::
+<Rq1bit/>
 
 1-bit RQ is an asymmetric quantization method that provides close to 32x compression as dimensionality increases. **1-bit RQ serves as a more robust and accurate alternative to BQ** with only a slight performance trade-off (approximately 10% decrease in throughput in internal testing compared to BQ). While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned PQ.
 

@@ -15,6 +15,7 @@ import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/configure.backups.java';
+import Java6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
 Weaviate's Backup feature is designed to work natively with cloud technology. Most notably, it allows:
@@ -271,7 +272,7 @@ You can also use `X-Azure-Block-Size` and `X-Azure-Concurrency` as a client head
 
 ### Filesystem
 
-- Works with Google Cloud Storage
+- Works with the local filesystem and cloud providers
 - Supports single-node deployments only
 - Not recommended for production use
 
@@ -344,6 +345,15 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
       language="go"
+    />
+  </TabItem>
+
+  <TabItem value="java6" label="Java">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START CreateBackup"
+      endMarker="// END CreateBackup"
+      language="java"
     />
   </TabItem>
 
@@ -430,6 +440,15 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 
+  <TabItem value="java6" label="Java">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START StatusCreateBackup"
+      endMarker="// END StatusCreateBackup"
+      language="java"
+    />
+  </TabItem>
+
   <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
@@ -468,6 +487,14 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       startMarker="// START CancelBackup"
       endMarker="// END CancelBackup"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START CancelBackup"
+      endMarker="// END CancelBackup"
+      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -532,6 +559,15 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
     />
   </TabItem>
 
+  <TabItem value="java6" label="Java">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START RestoreBackup"
+      endMarker="// END RestoreBackup"
+      language="java"
+    />
+  </TabItem>
+
   <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
@@ -589,6 +625,15 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
     />
   </TabItem>
 
+  <TabItem value="java6" label="Java">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START StatusRestoreBackup"
+      endMarker="// END StatusRestoreBackup"
+      language="java"
+    />
+  </TabItem>
+
   <TabItem value="java" label="Java v5 (Deprecated)">
     <FilteredTextBlock
       text={JavaCode}
@@ -603,6 +648,61 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       text={CurlCode}
       startMarker="# START StatusRestoreBackup"
       endMarker="# END StatusRestoreBackup"
+      language="bash"
+    />
+  </TabItem>
+</Tabs>
+
+### Cancel Restore
+
+import CancelRestore from '/_includes/feature-notes/cancel-restore.mdx';
+
+<CancelRestore/>
+
+An ongoing restore operation can be cancelled before it reaches the `FINALIZING` phase. Cancellation is not possible once schema changes are being applied via Raft, as this could leave the cluster in an inconsistent state.
+
+A restore goes through the following phases:
+
+| Status | Meaning | Cancellable |
+| --- | --- | --- |
+| `STARTED` | Restore initiated, preparing to stage files | Yes |
+| `TRANSFERRING` | Files being staged from object storage | Yes |
+| `TRANSFERRED` | File staging complete on all nodes | Yes |
+| `FINALIZING` | Schema changes in progress (Raft commits) | No |
+| `SUCCESS` | Restore complete | N/A |
+| `CANCELLING` | Cancellation claimed, aborting nodes | N/A |
+| `CANCELED` | Restore was cancelled | N/A |
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CancelRestore"
+      endMarker="# END CancelRestore"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCodeStatus}
+      startMarker="// START CancelRestore"
+      endMarker="// END CancelRestore"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START CancelRestore"
+      endMarker="// END CancelRestore"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+    <FilteredTextBlock
+      text={CurlCode}
+      startMarker="# START CancelRestore"
+      endMarker="# END CancelRestore"
       language="bash"
     />
   </TabItem>
