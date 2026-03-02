@@ -111,7 +111,7 @@ The WAL is still used to persist every change immediately, guaranteeing that any
 
 See **[the HNSW snapshots configuration](../configuration/hnsw-snapshots.md)** for more details on how to configure this feature.
 
-As of `v1.31`, HNSW snapshots are disabled by default.
+Starting in `v1.36`, HNSW snapshots are enabled by default. In `v1.31` through `v1.35`, they are disabled by default.
 
 ## Conclusions
 

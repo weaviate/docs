@@ -11,17 +11,15 @@ import HnswSnapshots from '/_includes/feature-notes/hnsw-snapshots.mdx';
 
 HNSW (Hierarchical Navigable Small World) snapshots can significantly reduce startup times for instances with large vector indexes.
 
-By default, HNSW snapshotting is **disabled**. To use this feature, configure the [environment variable](/deploy/configuration/env-vars/index.md) shown below.
+HNSW snapshotting is **enabled by default** starting in `v1.36`. To disable it, set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `true`.
+
+In versions prior to `v1.36`, HNSW snapshotting is disabled by default. Set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `false` to enable it.
 
 :::info Concepts: HNSW snapshots
 See this [concepts page](../concepts/storage.md#hnsw-snapshots) for a detailed description.
 :::
 
-## 1. Enabling HNSW snapshots
-
-Set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `false` to enable HNSW snapshotting. (Default: `true`)
-
-## 2. Configuring snapshot creation
+## Configuring snapshot creation
 
 Set the following optional environment variables to configure the snapshotting behavior.
 
