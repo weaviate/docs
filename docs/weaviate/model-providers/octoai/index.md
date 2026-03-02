@@ -11,9 +11,6 @@ import OctoAIDeprecationNote from './_includes/octoai_deprecation.md';
 
 <OctoAIDeprecationNote/>
 
-:::info Added in `v1.25.0`
-:::
-
 OctoAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with OctoAI's APIs, allowing users to leverage OctoAI's models directly from the Weaviate Database.
 
 These integrations empower developers to build sophisticated AI-driven applications with ease.

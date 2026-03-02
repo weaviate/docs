@@ -1,15 +1,11 @@
 ---
 title: Enable and configure RBAC
-sidebar_label: RBAC
+sidebar_label: Enable and configure RBAC
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
-
-:::info Added in `v1.29`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
-:::
 
 Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to **[define roles and assign permissions](/weaviate/configuration/rbac/manage-roles)** to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
 
@@ -63,12 +59,6 @@ You can connect to your instance with the root user in order to [create new user
 import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
 
 <DynamicUserManagement />
-
-:::caution Changes in environment variables
-As of Weaviate version `v1.29` these environment variables have changed:
-- `AUTHORIZATION_VIEWER_USERS` and `AUTHORIZATION_ADMIN_USERS` were removed
-- `AUTHORIZATION_ADMIN_USERS` has been replaced with `AUTHORIZATION_RBAC_ROOT_USERS`
-:::
 
 ## Kubernetes <i class="fa fa-cubes"></i> {#kubernetes}
 

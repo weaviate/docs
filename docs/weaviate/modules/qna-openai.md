@@ -19,7 +19,6 @@ Additionally, the generative integration is more versatile and can be used for a
 * The module adds an `ask {}` operator to the GraphQL `Get {}` queries
 * The module returns a max. of 1 answer in the GraphQL `_additional {}` field.
 * The answer with the highest `certainty` (confidence level) will be returned.
-* Added in Weaviate `v1.16.6`
 
 import OpenAIOrAzureOpenAI from '/_includes/openai.or.azure.openai.mdx';
 
@@ -40,9 +39,6 @@ You only need to provide one of the two keys, depending on which service (OpenAI
 :::
 
 ## Organization name
-
-:::info Added in `v1.21.1`
-:::
 
 For requests that require the OpenAI organization name, you can provide it at query time by adding it to the HTTP header:
 - `"X-OpenAI-Organization": "YOUR-OPENAI-ORGANIZATION"` for OpenAI

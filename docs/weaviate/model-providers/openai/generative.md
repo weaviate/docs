@@ -44,7 +44,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -301,7 +301,7 @@ You can also supply images as a part of the input when performing retrieval augm
 * [gpt-4-1106-preview](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4-32k](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4o](https://platform.openai.com/docs/models#gpt-4o)
-* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini) (Added in v1.26.7)
+* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini)
 
 <details>
   <summary>Older models</summary>

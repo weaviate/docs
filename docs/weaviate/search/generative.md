@@ -9,6 +9,7 @@ description: "Retrieval augmented generation (RAG) with single-prompt and groupe
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import GenerativeConfig from '/_includes/feature-notes/generative-config.mdx';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.generative.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.generative-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
@@ -26,8 +27,7 @@ import QueryAgentTip from '/_includes/query-agent-tip.mdx';
 
 ## Configure a generative model provider
 
-:::info Added in `v1.30`
-:::
+<GenerativeConfig/>
 
 To use RAG with a [generative model integration](../model-providers/index.md):
 - [set a default configuration for the collection](../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) and/or
@@ -100,9 +100,6 @@ For more information on the available modeld and their additional options, see t
 
 :::
 ## Named vectors
-
-:::info Added in `v1.24`
-:::
 
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
@@ -240,8 +237,7 @@ Single prompt result: Which country in ancient history had more kings than any o
 
 ### Additional parameters
 
-:::info Added in `v1.30`
-:::
+<GenerativeConfig/>
 
 You can use *generative parameters* to specify additional options when performing a single prompt search:
 
@@ -448,8 +444,7 @@ Grouped task result: The commonality among these animals is that they are all na
 
 ### Additional parameters
 
-:::info Added in `v1.30`
-:::
+<GenerativeConfig/>
 
 You can use *generative parameters* to specify additional options when performing grouped tasks:
 

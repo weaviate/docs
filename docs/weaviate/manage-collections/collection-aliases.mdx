@@ -16,8 +16,9 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsAliasTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsAliasTest.cs";
 
-:::info Added in `v1.32`
-:::
+import CollectionAliases from '/_includes/feature-notes/collection-aliases.mdx';
+
+<CollectionAliases/>
 
 Collection aliases allow you to create alternative names for your collections. This is useful for migrating between collections without downtime, A/B testing, or providing more convenient names for collections. An alias acts as a reference to a collection - when you query and manage objects using an alias name, Weaviate automatically routes the request to the target collection.
 

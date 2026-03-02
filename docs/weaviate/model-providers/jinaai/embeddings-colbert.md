@@ -5,9 +5,6 @@ image: og/docs/integrations/provider_integrations_jinaai.jpg
 # tags: ['model providers', 'jinaai', 'embeddings']
 ---
 
-:::info Added in `v1.29`
-:::
-
 # Jina AI ColBERT Embeddings with Weaviate
 
 import Tabs from '@theme/Tabs';
@@ -44,7 +41,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>

@@ -655,8 +655,9 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
 
 ### Cancel Restore
 
-:::info Added in `v1.36`
-:::
+import CancelRestore from '/_includes/feature-notes/cancel-restore.mdx';
+
+<CancelRestore/>
 
 An ongoing restore operation can be cancelled before it reaches the `FINALIZING` phase. Cancellation is not possible once schema changes are being applied via Raft, as this could leave the cluster in an inconsistent state.
 
