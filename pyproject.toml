@@ -15,5 +15,5 @@ dependencies = [
     "weaviate-agents>=1.1.0",
     "weaviate-client>=4.19.0",
     "weaviate-demo-datasets>=0.7.0",
-    "weaviate-engram>=0.1.0",
+    "weaviate-engram>=0.2.0",
 ]

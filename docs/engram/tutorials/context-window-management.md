@@ -33,7 +33,7 @@ The most common pattern is to append every message to a list and send the full l
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# NaiveChatAnthropic"
+  startMarker="# START NaiveChatAnthropic"
   endMarker="# END NaiveChatAnthropic"
   language="py"
 />
@@ -43,7 +43,7 @@ The most common pattern is to append every message to a list and send the full l
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# NaiveChatOpenAI"
+  startMarker="# START NaiveChatOpenAI"
   endMarker="# END NaiveChatOpenAI"
   language="py"
 />
@@ -59,7 +59,7 @@ Token usage grows linearly with the naive approach. Here's a simple approximatio
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# TokenCount"
+  startMarker="# START TokenCount"
   endMarker="# END TokenCount"
   language="py"
 />
@@ -81,7 +81,7 @@ Instead of keeping messages in a growing list, send them to Engram after each ex
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# StoreMemories"
+  startMarker="# START StoreMemories"
   endMarker="# END StoreMemories"
   language="py"
 />
@@ -104,7 +104,7 @@ Instead of sending the full conversation history, search Engram for relevant mem
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# MemoryAugmentedChatAnthropic"
+  startMarker="# START MemoryAugmentedChatAnthropic"
   endMarker="# END MemoryAugmentedChatAnthropic"
   language="py"
 />
@@ -114,7 +114,7 @@ Instead of sending the full conversation history, search Engram for relevant mem
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# MemoryAugmentedChatOpenAI"
+  startMarker="# START MemoryAugmentedChatOpenAI"
   endMarker="# END MemoryAugmentedChatOpenAI"
   language="py"
 />
@@ -133,7 +133,7 @@ Here's a comparison of token usage as conversation length grows:
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# SideBySide"
+  startMarker="# START SideBySide"
   endMarker="# END SideBySide"
   language="py"
 />
@@ -158,7 +158,7 @@ If your project has multiple topics, filter search results to specific topics fo
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# TopicFiltering"
+  startMarker="# START TopicFiltering"
   endMarker="# END TopicFiltering"
   language="py"
 />

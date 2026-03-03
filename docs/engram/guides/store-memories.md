@@ -26,7 +26,7 @@ Send raw text and let Engram extract structured memories from it.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# StoreString"
+  startMarker="# START StoreString"
   endMarker="# END StoreString"
   language="py"
 />
@@ -62,7 +62,7 @@ If you've already extracted structured content, send it directly. This skips the
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# StorePreExtracted"
+  startMarker="# START StorePreExtracted"
   endMarker="# END StorePreExtracted"
   language="py"
 />
@@ -96,7 +96,7 @@ Send a multi-turn conversation and let Engram extract memories from the full exc
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# StoreConversation"
+  startMarker="# START StoreConversation"
   endMarker="# END StoreConversation"
   language="py"
 />

@@ -1,15 +1,18 @@
 import os
+import uuid
 import asyncio
 from engram import EngramClient, AsyncEngramClient, RetrievalConfig, PreExtractedContent
 
-# SetupClients
+# START SetupClients
 engram = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
 )
 # END SetupClients
 
+_test_suffix = uuid.uuid4().hex[:8]
 
-# PopulateKB
+
+# START PopulateKB
 def populate_knowledge_base(weaviate_client):
     """Create a Weaviate collection and insert sample product documentation."""
     collection = weaviate_client.collections.create(
@@ -34,11 +37,11 @@ def populate_knowledge_base(weaviate_client):
 
 # END PopulateKB
 
-# StoreUserContext
+# START StoreUserContext
 # Store preferences for Alice (Python developer)
 run_a = engram.memories.add(
     "I'm a Python developer. I prefer concise code examples. I'm building a FastAPI microservice.",
-    user_id="tutorial-rag-alice",
+    user_id=f"tutorial-rag-alice-{_test_suffix}",
     group="default",
 )
 status_a = engram.runs.wait(run_a.run_id)
@@ -47,7 +50,7 @@ print(f"Alice: {status_a.status}, {len(status_a.memories_created)} memories")
 # Store preferences for Bob (JavaScript developer)
 run_b = engram.memories.add(
     "I'm a JavaScript developer. I prefer detailed explanations with context. I'm building a React dashboard.",
-    user_id="tutorial-rag-bob",
+    user_id=f"tutorial-rag-bob-{_test_suffix}",
     group="default",
 )
 status_b = engram.runs.wait(run_b.run_id)
@@ -58,7 +61,7 @@ assert status_a.status == "completed"
 assert status_b.status == "completed"
 
 
-# DualSearch
+# START DualSearch
 def dual_search(query, user_id, kb_results=None):
     """Search both a knowledge base and Engram user memory."""
     # Search Engram for user-specific memories
@@ -78,11 +81,11 @@ def dual_search(query, user_id, kb_results=None):
 # END DualSearch
 
 # Verify dual search works
-alice_results = dual_search("programming language", "tutorial-rag-alice")
+alice_results = dual_search("programming language", f"tutorial-rag-alice-{_test_suffix}")
 assert len(alice_results["user_memories"]) >= 1
 
 
-# BuildPromptAnthropic
+# START BuildPromptAnthropic
 def build_prompt_anthropic(query, kb_docs, user_memories):
     """Build a personalized prompt combining KB docs and user memory."""
     import anthropic
@@ -112,7 +115,7 @@ Tailor your response to the user's background and preferences."""
 # END BuildPromptAnthropic
 
 
-# BuildPromptOpenAI
+# START BuildPromptOpenAI
 def build_prompt_openai(query, kb_docs, user_memories):
     """Build a personalized prompt combining KB docs and user memory."""
     from openai import OpenAI
@@ -142,13 +145,13 @@ Tailor your response to the user's background and preferences."""
 
 # END BuildPromptOpenAI
 
-# TwoUserDemo
+# START TwoUserDemo
 query = "How do I access the API?"
 
 # Alice's personalized search
 alice_memories = engram.memories.search(
     query=query,
-    user_id="tutorial-rag-alice",
+    user_id=f"tutorial-rag-alice-{_test_suffix}",
     group="default",
     retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
 )
@@ -159,7 +162,7 @@ for m in alice_memories:
 # Bob's personalized search
 bob_memories = engram.memories.search(
     query=query,
-    user_id="tutorial-rag-bob",
+    user_id=f"tutorial-rag-bob-{_test_suffix}",
     group="default",
     retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
 )
@@ -171,11 +174,11 @@ for m in bob_memories:
 assert len(alice_memories) >= 1
 assert len(bob_memories) >= 1
 
-# UserIsolation
+# START UserIsolation
 # Alice searches for Bob's topics — should get no relevant results
 alice_cross_search = engram.memories.search(
     query="React dashboard JavaScript",
-    user_id="tutorial-rag-alice",
+    user_id=f"tutorial-rag-alice-{_test_suffix}",
     group="default",
 )
 print(f"Alice searching for Bob's topics: {len(alice_cross_search)} results")
@@ -183,19 +186,19 @@ print(f"Alice searching for Bob's topics: {len(alice_cross_search)} results")
 # Bob searches for Alice's topics — should get no relevant results
 bob_cross_search = engram.memories.search(
     query="FastAPI Python microservice",
-    user_id="tutorial-rag-bob",
+    user_id=f"tutorial-rag-bob-{_test_suffix}",
     group="default",
 )
 print(f"Bob searching for Alice's topics: {len(bob_cross_search)} results")
 # END UserIsolation
 
-# AsyncSetup
+# START AsyncSetup
 async_client = AsyncEngramClient(
     api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
 )
 # END AsyncSetup
 
-# ConcurrentUsers
+# START ConcurrentUsers
 async def search_for_user(async_engram, user_id, query):
     """Search memories for a single user."""
     results = await async_engram.memories.search(
@@ -210,8 +213,8 @@ async def search_for_user(async_engram, user_id, query):
 async def handle_concurrent_users():
     """Handle multiple users concurrently."""
     tasks = [
-        search_for_user(async_client, "tutorial-rag-alice", "programming preferences"),
-        search_for_user(async_client, "tutorial-rag-bob", "programming preferences"),
+        search_for_user(async_client, f"tutorial-rag-alice-{_test_suffix}", "programming preferences"),
+        search_for_user(async_client, f"tutorial-rag-bob-{_test_suffix}", "programming preferences"),
     ]
     results = await asyncio.gather(*tasks)
 
@@ -229,31 +232,31 @@ concurrent_results = asyncio.run(handle_concurrent_users())
 
 assert len(concurrent_results) == 2
 
-# UserDataManagement
+# START UserDataManagement
 # Retrieve a specific memory by ID
 alice_memories = engram.memories.search(
     query="Python developer",
-    user_id="tutorial-rag-alice",
+    user_id=f"tutorial-rag-alice-{_test_suffix}",
     group="default",
 )
 
 if alice_memories:
     memory = engram.memories.get(
         alice_memories[0].id,
-        topic=alice_memories[0].topic,
-        user_id="tutorial-rag-alice",
+        user_id=f"tutorial-rag-alice-{_test_suffix}",
+        group="default",
     )
     print(f"Retrieved: {memory.content}")
 
 # Delete all of a user's memories (e.g. GDPR right-to-deletion)
 for m in alice_memories:
-    engram.memories.delete(m.id, topic=m.topic, user_id="tutorial-rag-alice")
+    engram.memories.delete(m.id, user_id=f"tutorial-rag-alice-{_test_suffix}", group="default")
     print(f"Deleted: {m.id}")
 
 # Verify deletion
 remaining = engram.memories.search(
     query="Python developer",
-    user_id="tutorial-rag-alice",
+    user_id=f"tutorial-rag-alice-{_test_suffix}",
     group="default",
 )
 print(f"Remaining memories for Alice: {len(remaining)}")
@@ -261,6 +264,6 @@ print(f"Remaining memories for Alice: {len(remaining)}")
 
 # Cleanup: delete Bob's memories
 for _m in bob_memories:
-    engram.memories.delete(_m.id, topic=_m.topic, user_id="tutorial-rag-bob")
+    engram.memories.delete(_m.id, user_id=f"tutorial-rag-bob-{_test_suffix}", group="default")
 
 engram.close()

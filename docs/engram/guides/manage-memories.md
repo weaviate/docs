@@ -20,7 +20,7 @@ Retrieve a single memory by its ID.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# GetMemory"
+  startMarker="# START GetMemory"
   endMarker="# END GetMemory"
   language="py"
 />
@@ -29,7 +29,7 @@ Retrieve a single memory by its ID.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&topic={topic-name}&group={group-name} \
+curl $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 
@@ -42,7 +42,6 @@ curl $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&topic={topic-name}&gro
 |-----------|------|-------------|
 | `user_id` | string | User scope (required if the topic is user-scoped) |
 | `conversation_id` | string | Conversation scope (required if the topic is conversation-scoped) |
-| `topic` | string | The topic the memory belongs to |
 | `group` | string | The memory group name |
 
 ### Response
@@ -72,7 +71,7 @@ Remove a memory permanently by its ID.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# DeleteMemory"
+  startMarker="# START DeleteMemory"
   endMarker="# END DeleteMemory"
   language="py"
 />
@@ -81,7 +80,7 @@ Remove a memory permanently by its ID.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X DELETE $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&topic={topic-name}&group={group-name} \
+curl -X DELETE $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 

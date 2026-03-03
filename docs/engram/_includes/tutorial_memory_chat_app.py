@@ -1,14 +1,15 @@
 import os
+import uuid
 from engram import EngramClient, RetrievalConfig
 
-# Setup
+# START Setup
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
 )
-user_id = "tutorial-chat-user"
+user_id = f"tutorial-chat-{uuid.uuid4().hex[:8]}"
 # END Setup
 
-# ChatFunctionAnthropic
+# START ChatFunctionAnthropic
 def chat_anthropic(user_message, conversation_history, system_prompt="You are a helpful assistant."):
     import anthropic
 
@@ -26,7 +27,7 @@ def chat_anthropic(user_message, conversation_history, system_prompt="You are a 
 
 # END ChatFunctionAnthropic
 
-# ChatFunctionOpenAI
+# START ChatFunctionOpenAI
 def chat_openai(user_message, conversation_history, system_prompt="You are a helpful assistant."):
     from openai import OpenAI
 
@@ -42,7 +43,7 @@ def chat_openai(user_message, conversation_history, system_prompt="You are a hel
 
 # END ChatFunctionOpenAI
 
-# StoreConversation
+# START StoreConversation
 conversation = [
     {"role": "user", "content": "I just moved to Berlin and I'm looking for a good coffee shop."},
     {"role": "assistant", "content": "Welcome to Berlin! Here are some popular coffee shops in the city..."},
@@ -62,7 +63,7 @@ print(f"Memories created: {len(status.memories_created)}")
 
 assert status.status == "completed"
 
-# SearchMemories
+# START SearchMemories
 results = client.memories.search(
     query="What kind of coffee does the user like?",
     user_id=user_id,
@@ -86,7 +87,7 @@ assert len(results) >= 1
 assert any("Berlin" in m.content or "coffee" in m.content or "specialty" in m.content for m in results)
 
 
-# FullLoopAnthropic
+# START FullLoopAnthropic
 def memory_chat_loop_anthropic():
     """Complete chat loop with Engram memory and Anthropic."""
     import anthropic
@@ -148,7 +149,7 @@ if __name__ == "__main__":
     memory_chat_loop_anthropic()
 # END FullLoopAnthropic
 
-# FullLoopOpenAI
+# START FullLoopOpenAI
 def memory_chat_loop_openai():
     """Complete chat loop with Engram memory and OpenAI."""
     from openai import OpenAI
@@ -208,6 +209,6 @@ Use these memories to personalize your responses."""
 
 # Cleanup
 for _m in results:
-    client.memories.delete(_m.id, topic=_m.topic, user_id=user_id)
+    client.memories.delete(_m.id, user_id=user_id, group="default")
 
 client.close()

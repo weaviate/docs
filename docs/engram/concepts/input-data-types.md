@@ -1,5 +1,5 @@
 ---
-title: Input Data Types
+title: Input data types
 sidebar_position: 5
 description: "The three content types Engram accepts: string, pre-extracted, and conversation."
 ---

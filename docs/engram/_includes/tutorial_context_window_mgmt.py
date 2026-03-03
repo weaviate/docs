@@ -1,15 +1,17 @@
 import os
+import time
+import uuid
 from engram import EngramClient, RetrievalConfig
 
-# Setup
+# START Setup
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
 )
-user_id = "tutorial-context-user"
+user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
 # END Setup
 
 
-# NaiveChatAnthropic
+# START NaiveChatAnthropic
 def naive_chat_anthropic():
     """Naive approach: send full conversation history every time."""
     import anthropic
@@ -40,7 +42,7 @@ def naive_chat_anthropic():
 # END NaiveChatAnthropic
 
 
-# NaiveChatOpenAI
+# START NaiveChatOpenAI
 def naive_chat_openai():
     """Naive approach: send full conversation history every time."""
     from openai import OpenAI
@@ -68,7 +70,7 @@ def naive_chat_openai():
 
 # END NaiveChatOpenAI
 
-# TokenCount
+# START TokenCount
 def count_tokens(text):
     """Approximate token count (1 token ~ 4 characters)."""
     return len(text) // 4
@@ -85,7 +87,7 @@ print(f"50-turn conversation: ~{total_tokens:,} tokens per request")
 print(f"At $3/1M input tokens: ~${total_tokens * 3 / 1_000_000:.4f} per request")
 # END TokenCount
 
-# StoreMemories
+# START StoreMemories
 conversation = [
     {"role": "user", "content": "I'm a software engineer working on a Python web app."},
     {"role": "assistant", "content": "That sounds interesting! What framework are you using?"},
@@ -108,8 +110,9 @@ print(f"Memories created: {len(status.memories_created)}")
 
 assert status.status == "completed"
 
+time.sleep(2)  # Allow tenant indexing to complete
 
-# MemoryAugmentedChatAnthropic
+# START MemoryAugmentedChatAnthropic
 def memory_augmented_chat_anthropic():
     """Memory-augmented approach: use Engram instead of full history."""
     import anthropic
@@ -169,7 +172,7 @@ Relevant context from previous conversations:
 # END MemoryAugmentedChatAnthropic
 
 
-# MemoryAugmentedChatOpenAI
+# START MemoryAugmentedChatOpenAI
 def memory_augmented_chat_openai():
     """Memory-augmented approach: use Engram instead of full history."""
     from openai import OpenAI
@@ -229,7 +232,7 @@ Relevant context from previous conversations:
 
 # END MemoryAugmentedChatOpenAI
 
-# SideBySide
+# START SideBySide
 avg_user_tokens = 25
 avg_assistant_tokens = 100
 avg_memory_tokens = 50  # ~5 retrieved memories at ~10 tokens each
@@ -250,7 +253,7 @@ for turn in [1, 5, 10, 20, 50]:
     print(f"{turn:<6} {naive_tokens:<18,} {memory_tokens:<18,} {savings:.0f}%")
 # END SideBySide
 
-# TopicFiltering
+# START TopicFiltering
 results = client.memories.search(
     query="What tech stack does the user prefer?",
     user_id=user_id,
@@ -266,6 +269,6 @@ assert len(results) >= 1
 
 # Cleanup
 for _m in results:
-    client.memories.delete(_m.id, topic=_m.topic, user_id=user_id)
+    client.memories.delete(_m.id, user_id=user_id, group="default")
 
 client.close()

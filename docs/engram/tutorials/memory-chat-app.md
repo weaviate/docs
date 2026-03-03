@@ -36,7 +36,7 @@ Initialize the Engram client with your API key. The `user_id` parameter scopes a
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# Setup"
+  startMarker="# START Setup"
   endMarker="# END Setup"
   language="py"
 />
@@ -50,7 +50,7 @@ Create a helper function that sends messages to your LLM provider and returns th
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# ChatFunctionAnthropic"
+  startMarker="# START ChatFunctionAnthropic"
   endMarker="# END ChatFunctionAnthropic"
   language="py"
 />
@@ -60,7 +60,7 @@ Create a helper function that sends messages to your LLM provider and returns th
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# ChatFunctionOpenAI"
+  startMarker="# START ChatFunctionOpenAI"
   endMarker="# END ChatFunctionOpenAI"
   language="py"
 />
@@ -74,7 +74,7 @@ After each conversation, send the messages to Engram. The pipeline extracts disc
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# StoreConversation"
+  startMarker="# START StoreConversation"
   endMarker="# END StoreConversation"
   language="py"
 />
@@ -87,7 +87,7 @@ Before generating a response, search Engram for memories relevant to the user's 
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# SearchMemories"
+  startMarker="# START SearchMemories"
   endMarker="# END SearchMemories"
   language="py"
 />
@@ -108,7 +108,7 @@ Here's the complete script that ties everything together. Each iteration of the 
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# FullLoopAnthropic"
+  startMarker="# START FullLoopAnthropic"
   endMarker="# END FullLoopAnthropic"
   language="py"
 />
@@ -118,7 +118,7 @@ Here's the complete script that ties everything together. Each iteration of the 
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# FullLoopOpenAI"
+  startMarker="# START FullLoopOpenAI"
   endMarker="# END FullLoopOpenAI"
   language="py"
 />

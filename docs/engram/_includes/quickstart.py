@@ -1,16 +1,20 @@
 import os
+import time
+import uuid
 from engram import EngramClient
 
-# Connect
+# START Connect
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
 )
 # END Connect
 
-# AddMemory
+test_user_id = f"test-{uuid.uuid4().hex[:8]}"
+
+# START AddMemory
 run = client.memories.add(
     "The user prefers dark mode and uses VS Code as their primary editor.",
-    user_id="user-uuid",
+    user_id=test_user_id,
     group="default",
 )
 
@@ -20,7 +24,7 @@ print(run.status)
 
 assert run.run_id is not None
 
-# CheckRun
+# START CheckRun
 status = client.runs.wait(run.run_id)
 
 print(status.status)
@@ -30,10 +34,12 @@ assert status.status == "completed"
 assert status.committed_operations is not None
 assert len(status.memories_created) >= 1
 
-# SearchMemory
+time.sleep(3)
+
+# START SearchMemory
 results = client.memories.search(
     query="What editor does the user prefer?",
-    user_id="user-uuid",
+    user_id=test_user_id,
     group="default",
 )
 
@@ -47,7 +53,7 @@ assert any("VS Code" in m.content or "editor" in m.content or "dark mode" in m.c
 # Cleanup
 for _m in results:
     try:
-        client.memories.delete(_m.id, topic=_m.topic, user_id="user-uuid")
+        client.memories.delete(_m.id, user_id=test_user_id, group="default")
     except Exception:
         pass
 

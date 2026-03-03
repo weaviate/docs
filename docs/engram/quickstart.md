@@ -48,14 +48,14 @@ Install the SDK: `pip install weaviate-engram`
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# Connect"
+  startMarker="# START Connect"
   endMarker="# END Connect"
   language="py"
 />
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# AddMemory"
+  startMarker="# START AddMemory"
   endMarker="# END AddMemory"
   language="py"
 />
@@ -98,7 +98,7 @@ Poll the run endpoint to confirm your memory has been committed.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# CheckRun"
+  startMarker="# START CheckRun"
   endMarker="# END CheckRun"
   language="py"
 />
@@ -142,7 +142,7 @@ Search for relevant memories using a natural language query.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# SearchMemory"
+  startMarker="# START SearchMemory"
   endMarker="# END SearchMemory"
   language="py"
 />

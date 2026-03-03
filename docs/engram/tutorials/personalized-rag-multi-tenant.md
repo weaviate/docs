@@ -33,7 +33,7 @@ Initialize the Engram client for user memory and the Weaviate client for your kn
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# SetupClients"
+  startMarker="# START SetupClients"
   endMarker="# END SetupClients"
   language="py"
 />
@@ -53,7 +53,7 @@ Create a Weaviate collection with sample product documentation. This represents 
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# PopulateKB"
+  startMarker="# START PopulateKB"
   endMarker="# END PopulateKB"
   language="py"
 />
@@ -64,7 +64,7 @@ Store different preferences and facts for different users. Engram extracts discr
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# StoreUserContext"
+  startMarker="# START StoreUserContext"
   endMarker="# END StoreUserContext"
   language="py"
 />
@@ -77,7 +77,7 @@ Create a function that searches both the Weaviate knowledge base and Engram user
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# DualSearch"
+  startMarker="# START DualSearch"
   endMarker="# END DualSearch"
   language="py"
 />
@@ -108,7 +108,7 @@ Merge the knowledge base results and user memories into a single prompt. The LLM
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# BuildPromptAnthropic"
+  startMarker="# START BuildPromptAnthropic"
   endMarker="# END BuildPromptAnthropic"
   language="py"
 />
@@ -118,7 +118,7 @@ Merge the knowledge base results and user memories into a single prompt. The LLM
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# BuildPromptOpenAI"
+  startMarker="# START BuildPromptOpenAI"
   endMarker="# END BuildPromptOpenAI"
   language="py"
 />
@@ -136,7 +136,7 @@ Both users ask the same question, but each gets a personalized response based on
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# TwoUserDemo"
+  startMarker="# START TwoUserDemo"
   endMarker="# END TwoUserDemo"
   language="py"
 />
@@ -149,7 +149,7 @@ Engram's `user_id` scoping ensures strict memory isolation. User A's memories ar
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# UserIsolation"
+  startMarker="# START UserIsolation"
   endMarker="# END UserIsolation"
   language="py"
 />
@@ -166,7 +166,7 @@ For production applications handling multiple concurrent users, switch to `Async
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# AsyncSetup"
+  startMarker="# START AsyncSetup"
   endMarker="# END AsyncSetup"
   language="py"
 />
@@ -175,7 +175,7 @@ Use `asyncio.gather()` to handle multiple user requests concurrently:
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# ConcurrentUsers"
+  startMarker="# START ConcurrentUsers"
   endMarker="# END ConcurrentUsers"
   language="py"
 />
@@ -188,7 +188,7 @@ For privacy compliance (e.g. GDPR right to deletion), you can retrieve and delet
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# UserDataManagement"
+  startMarker="# START UserDataManagement"
   endMarker="# END UserDataManagement"
   language="py"
 />

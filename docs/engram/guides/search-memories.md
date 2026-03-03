@@ -24,7 +24,7 @@ Provide a query and Engram returns the most relevant memories.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# BasicSearch"
+  startMarker="# START BasicSearch"
   endMarker="# END BasicSearch"
   language="py"
 />
@@ -81,7 +81,7 @@ Pure semantic search using embeddings. Finds memories that are conceptually simi
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# VectorSearch"
+  startMarker="# START VectorSearch"
   endMarker="# END VectorSearch"
   language="py"
 />
@@ -110,7 +110,7 @@ Full-text keyword search. Best for finding memories that contain specific terms.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# BM25Search"
+  startMarker="# START BM25Search"
   endMarker="# END BM25Search"
   language="py"
 />
@@ -139,7 +139,7 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# HybridSearch"
+  startMarker="# START HybridSearch"
   endMarker="# END HybridSearch"
   language="py"
 />
@@ -168,7 +168,7 @@ Restrict your search to specific topics by providing a `topics` array.
 
 <FilteredTextBlock
   text={PyCode}
-  startMarker="# TopicFilter"
+  startMarker="# START TopicFilter"
   endMarker="# END TopicFilter"
   language="py"
 />
