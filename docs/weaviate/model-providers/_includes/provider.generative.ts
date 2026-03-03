@@ -597,7 +597,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.google({
     projectId: '<google-cloud-project-id>',  // Required for Vertex AI
-    modelId: 'gemini-1.0-pro'
+    modelId: 'gemini-2.5-flash'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -612,7 +612,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.google({
-    modelId: 'gemini-pro',
+    modelId: 'gemini-2.5-flash',
   }),
   // highlight-end
   // Additional parameters not shown

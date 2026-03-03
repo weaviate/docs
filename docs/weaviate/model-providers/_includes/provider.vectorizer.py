@@ -277,7 +277,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
-        model="text-embedding-004"
+        model="gemini-embedding-001"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -317,7 +317,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="text-embedding-004",
+        model_id="gemini-embedding-001",
     ),
     # highlight-end
     # Additional parameters not shown

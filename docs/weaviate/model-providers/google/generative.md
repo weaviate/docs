@@ -26,7 +26,7 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 ![RAG integration illustration](../_includes/integration_google_rag.png)
 
 :::info Gemini API availability
-At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
+Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
 :::
 
 ## Requirements
@@ -321,22 +321,42 @@ You can also supply images as a part of the input when performing retrieval augm
 ### Available models
 
 Vertex AI:
-- `chat-bison` (default)
-- `chat-bison-32k` (from Weaviate `v1.24.9`)
-- `chat-bison@002` (from Weaviate `v1.24.9`)
-- `chat-bison-32k@002` (from Weaviate `v1.24.9`)
-- `chat-bison@001` (from Weaviate `v1.24.9`)
-- `gemini-1.5-pro-preview-0514` (from Weaviate `v1.25.1`)
-- `gemini-1.5-pro-preview-0409` (from Weaviate `v1.25.1`)
-- `gemini-1.5-flash-preview-0514` (from Weaviate `v1.25.1`)
-- `gemini-1.0-pro-002` (from Weaviate `v1.25.1`)
-- `gemini-1.0-pro-001` (from Weaviate `v1.25.1`)
-- `gemini-1.0-pro` (from Weaviate `v1.25.1`)
+- `gemini-2.5-pro`
+- `gemini-2.5-flash`
+- `gemini-2.0-flash`
+- `gemini-1.5-pro`
+- `gemini-1.5-flash`
 
 Gemini API:
-- `chat-bison-001` (default)
+- `gemini-2.5-flash`
+- `gemini-2.5-pro`
+- `gemini-2.0-flash`
+- `gemini-1.5-pro`
+- `gemini-1.5-flash`
+
+<details>
+  <summary>Deprecated models</summary>
+
+The following models have been deprecated by Google. They may not function as expected.
+
+**Vertex AI:**
+- `chat-bison`
+- `chat-bison-32k`
+- `chat-bison@002`
+- `chat-bison-32k@002`
+- `chat-bison@001`
+- `gemini-1.0-pro-002`
+- `gemini-1.0-pro-001`
+- `gemini-1.0-pro`
+- `gemini-1.5-pro-preview-0514`
+- `gemini-1.5-pro-preview-0409`
+- `gemini-1.5-flash-preview-0514`
+
+**Gemini API:**
+- `chat-bison-001`
 - `gemini-pro`
-<!-- - `gemini-pro-vision` (from Weaviate `v1.24.2`) -->
+
+</details>
 
 ## Further resources
 
