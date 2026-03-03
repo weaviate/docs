@@ -19,7 +19,7 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 Weaviate's integration with [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
 
 :::note Gemini API not available
-Multimodal embeddings are currently not available to Google Gemini API users.
+Multimodal embeddings are currently only available to Google Vertex AI users.
 :::
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use a Google embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Google API key. This feature is called the *vectorizer*.
@@ -138,7 +138,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for the vectorizer to use. Currently, `multimodalembedding@001` is the only available model.
+You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for the vectorizer to use.
 
 <!-- The default model (`textembedding-gecko@001` for Vertex AI, `embedding-001` for Gemini API) is used if no model is specified. -->
 

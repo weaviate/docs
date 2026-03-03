@@ -35,7 +35,7 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 :::
 
 :::info Gemini API availability
-At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
+Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
 :::
 
 ## Requirements
@@ -230,7 +230,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 The following examples show how to configure Google-specific options.
 
 **Google AI Studio (Gemini API) parameters:**
-- `modelId` (Optional): e.g. `text-embedding-004`, `gemini-embedding-001`
+- `modelId` (Optional): e.g. `gemini-embedding-001`
 
 **Vertex AI parameters:**
 - `projectId` (Required): Your Google Cloud project ID, e.g. `cloud-large-language-models`
@@ -395,9 +395,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 **Google AI Studio (Gemini API):**
-- `text-embedding-004` (recommended)
 - `gemini-embedding-001` (default)
-    - `embedding-001` (deprecated name for `gemini-embedding-001`)
 
 **Vertex AI:**
 - `gemini-embedding-001` (default, added in 1.30.11, 1.31.5 and onwards)
@@ -409,6 +407,8 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 The following models have been deprecated by Google and are no longer supported. They may not function as expected.
 
+- `text-embedding-004`
+- `embedding-001`
 - `textembedding-gecko@001`
 - `textembedding-gecko@002`
 - `textembedding-gecko@003`
