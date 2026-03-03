@@ -18,8 +18,8 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
 Weaviate's integration with [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
 
-:::note Gemini API not available
-Multimodal embeddings are currently only available to Google Vertex AI users.
+:::note Gemini API multimodal support
+The `gemini-embedding-2` model supports multimodal embeddings (text, images, and PDFs) and is available via both Vertex AI and Google AI Studio (Gemini API). The `multimodalembedding@001` model remains available for Vertex AI users only.
 :::
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use a Google embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Google API key. This feature is called the *vectorizer*.
@@ -312,7 +312,8 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `multimodalembedding@001` (default)
+- `gemini-embedding-2` (default, Vertex AI and Gemini API) — supports text, images, and PDFs; `3072` dimensions
+- `multimodalembedding@001` (Vertex AI only) — supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
 
 ## Further resources
 
