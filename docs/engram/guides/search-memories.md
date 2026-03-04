@@ -16,7 +16,7 @@ You can retrieve stored memories using different search techniques.
 
 Provide a query and Engram returns the most relevant memories.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -68,7 +68,7 @@ Specify the retrieval type in `retrieval_config`:
 
 Pure semantic search using embeddings. Finds memories that are conceptually similar to your query, even without matching keywords.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -95,7 +95,7 @@ Pure semantic search using embeddings. Finds memories that are conceptually simi
 
 Full-text keyword search. Best for finding memories that contain specific terms.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -122,7 +122,7 @@ Full-text keyword search. Best for finding memories that contain specific terms.
 
 Combines vector and BM25 for the best of both approaches. This is the recommended retrieval type for most use cases.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -149,7 +149,7 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 
 Restrict your search to specific topics by providing a `topics` array.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock

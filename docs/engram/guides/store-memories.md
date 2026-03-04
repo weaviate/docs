@@ -16,7 +16,7 @@ Engram supports three content types for storing memories. Each triggers a differ
 
 Send raw text and let Engram extract structured memories from it.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -45,7 +45,7 @@ The pipeline extracts individual facts from the text (e.g. "prefers dark mode", 
 
 If you've already extracted structured content, send it directly. This skips the LLM extraction step and goes straight to storage.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -72,7 +72,7 @@ If you've already extracted structured content, send it directly. This skips the
 
 Send a multi-turn conversation and let Engram extract memories from the full exchange.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock

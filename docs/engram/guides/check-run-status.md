@@ -14,7 +14,7 @@ When you store memories, Engram processes them asynchronously through a pipeline
 
 ## Poll a run
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock

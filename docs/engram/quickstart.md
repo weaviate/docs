@@ -70,12 +70,13 @@ The console also provides your project's Engram API URL. Set both as environment
 export ENGRAM_API_KEY="eng_abcdef123456..."
 ```
 
-## Step 3: Store a memory
+## Step 3: Connect to Engram
 
-Send content to Engram using the memory API. This example sends a plain text string.
-
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
+
+Initialize the client with your API key.
+
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START Connect"
@@ -83,6 +84,24 @@ Send content to Engram using the memory API. This example sends a plain text str
   language="py"
 />
 
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+Set your API key as an environment variable. All `curl` commands below use `$ENGRAM_API_KEY`.
+
+```bash
+export ENGRAM_API_KEY="eng_abcdef123456..."
+```
+
+</TabItem>
+</Tabs>
+
+## Step 4: Store a memory
+
+Send content to Engram using the memory API. This example sends a plain text string.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START AddMemory"
@@ -118,11 +137,11 @@ Engram processes memories asynchronously. The response includes a `run_id` you c
 
 </details>
 
-## Step 4: Check run status
+## Step 5: Check run status
 
 Poll the run endpoint to confirm your memory has been committed.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -172,11 +191,11 @@ Poll the run endpoint to confirm your memory has been committed.
 
 </details>
 
-## Step 5: Search memories
+## Step 6: Search memories
 
 Search for relevant memories using a natural language query.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock

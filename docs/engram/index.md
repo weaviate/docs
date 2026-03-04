@@ -7,22 +7,30 @@ description: "Engram is a memory server for LLM agents and applications that pro
 
 Engram is a memory server for LLM agents and applications. It provides a REST API and [Python SDK](https://github.com/weaviate/engram-python-sdk) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
-Use Engram to give your agents persistent memory that they can write to and search across conversations, users, and topics.
+Use Engram to give your agents persistent memory that they can write to and search across conversations, users, and [topics](concepts/topics.md).
 
 ## Key capabilities
 
-- **Automatic memory extraction** — Send raw text, pre-extracted facts, or full conversations. Engram's pipeline extracts and stores structured memories automatically.
-- **Semantic search** — Find relevant memories using vector similarity, BM25 keyword search, or hybrid retrieval.
-- **Scoped memory** — Organize memories by project, user, and conversation. Topics let you categorize memories within a group (e.g. `user_facts`, `preferences`).
-- **Async processing** — Memory storage runs asynchronously through a pipeline. Poll run status to track when memories are committed.
+- **Automatic memory extraction** — Send raw text, pre-extracted facts, or full conversations. Engram's [pipeline](concepts/pipelines.md) extracts and stores structured [memories](concepts/memories.md) automatically.
+- **Semantic search** — Find relevant memories using vector similarity, BM25 keyword search, or [hybrid retrieval](concepts/retrieval.md).
+- **Scoped memory** — Organize memories by project, user, and conversation. [Topics](concepts/topics.md) let you categorize memories within a [group](concepts/groups.md) (e.g. `user_facts`, `preferences`).
+- **Async processing** — Memory storage runs asynchronously through a pipeline. Poll [run status](guides/check-run-status.md) to track when memories are committed.
 
 ## How it works
 
 ![Weaviate Engram](./_includes/architecture.png "Weaviate Engram")
 
-1. You send content to the Engram API (text, pre-extracted data, or a conversation).
-2. Engram runs an async pipeline that extracts, transforms, and commits memories to storage.
-3. You search stored memories using vector, BM25, or hybrid retrieval.
+Your app communicates with Engram through the REST API or Python SDK.
+
+**[Storing memories](guides/store-memories.md):** You send content (text, a conversation, or pre-extracted facts) to the API. Engram immediately returns a `run_id` and processes the content asynchronously through a [pipeline](concepts/pipelines.md):
+
+1. **Extract** — Pull individual facts from the input.
+2. **Transform** — Deduplicate and merge with existing [memories](concepts/memories.md).
+3. **Commit** — Persist the results to the memory store.
+
+You can poll the [`run_id`](guides/check-run-status.md) to check when processing is complete.
+
+**[Searching memories](guides/search-memories.md):** You send a query to the API with a [retrieval type](concepts/retrieval.md) (vector, BM25, or hybrid). Engram searches the memory store and returns ranked results.
 
 ## Get started
 

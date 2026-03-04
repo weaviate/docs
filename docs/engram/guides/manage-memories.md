@@ -16,7 +16,7 @@ You can retrieve and delete individual memories using their ID.
 
 Retrieve a single memory by its ID.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -66,7 +66,7 @@ Retrieve a single memory by its ID.
 
 Remove a memory permanently by its ID.
 
-<Tabs className="code" groupId="languages">
+<Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
