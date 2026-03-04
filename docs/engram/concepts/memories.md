@@ -19,7 +19,7 @@ A memory is a discrete piece of information stored in Engram. Each memory has:
 | `updated_at` | When the memory was last updated (RFC 3339) |
 | `score` | Relevance score (only present in search results) |
 
-Memories are automatically embedded as vectors, making them searchable by meaning.
+Memories are automatically embedded as vectors, making them [searchable by meaning](search.md).
 
 ## Questions and feedback
 

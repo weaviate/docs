@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/store_memories.py';
 import CurlCode from '!!raw-loader!../_includes/store_memories.sh';
 
-Engram supports three content types for storing memories. Each triggers a different extraction pipeline.
+Engram supports three [content types](../concepts/input-data-types.md) for storing memories. Each triggers a different extraction [pipeline](../concepts/pipelines.md).
 
 ## String content
 
@@ -114,9 +114,9 @@ Use the `run_id` to [check the pipeline status](check-run-status.md).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `user_id` | string | Scope the memory to a specific user |
-| `conversation_id` | string (UUID) | Scope the memory to a specific conversation. Must be a valid UUID. |
-| `group` | string | Memory group name (defaults to `default`) |
+| `user_id` | string | [Scope](../concepts/scopes.md) the memory to a specific user |
+| `conversation_id` | string (UUID) | [Scope](../concepts/scopes.md) the memory to a specific conversation. Must be a valid UUID. |
+| `group` | string | Memory [group](../concepts/groups.md) name (defaults to `default`) |
 | `root` | string | Pipeline root name (for advanced pipeline configurations) |
 
 :::info

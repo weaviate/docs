@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/manage_memories.py';
 import CurlCode from '!!raw-loader!../_includes/manage_memories.sh';
 
-You can retrieve and delete individual memories using their ID.
+You can retrieve and delete individual [memories](../concepts/memories.md) using their ID.
 
 ## Get a memory
 
@@ -43,9 +43,9 @@ Retrieve a single memory by its ID.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `user_id` | string | User scope (required if the topic is user-scoped) |
-| `conversation_id` | string | Conversation scope (required if the topic is conversation-scoped) |
-| `group` | string | The memory group name |
+| `user_id` | string | User [scope](../concepts/scopes.md) (required if the topic is user-scoped) |
+| `conversation_id` | string | Conversation [scope](../concepts/scopes.md) (required if the topic is conversation-scoped) |
+| `group` | string | The memory [group](../concepts/groups.md) name |
 
 ### Response
 

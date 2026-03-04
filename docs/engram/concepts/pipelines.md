@@ -16,13 +16,13 @@ Pipelines will be configurable in the future.
 
 Each pipeline processes content through a sequence of steps:
 
-1. **Extract** — Pulls structured memories from the input content. The extraction method depends on the input type (`ExtractFromString`, `ExtractFromConversation`, or `ExtractFromPreExtracted`).
+1. **Extract** — Pulls structured memories from the input content. The extraction method depends on the [input type](input-data-types.md) (`ExtractFromString`, `ExtractFromConversation`, or `ExtractFromPreExtracted`).
 2. **Transform** — Refines extracted memories using existing context. Steps like `TransformWithContext` and `TransformOperations` deduplicate, merge, and resolve conflicts with existing memories.
 3. **Commit** — Finalizes the operations (create, update, delete) and persists them to storage.
 
 ## Runs
 
-Each call to store memories creates a **run** — a trackable unit of pipeline execution. Runs have four possible states:
+Each call to [store memories](../guides/store-memories.md) creates a **run** — a trackable unit of pipeline execution. Runs have four possible states:
 
 | Status | Meaning |
 |--------|---------|
@@ -31,7 +31,7 @@ Each call to store memories creates a **run** — a trackable unit of pipeline e
 | `completed` | All operations committed successfully |
 | `failed` | An error occurred during processing |
 
-When a run completes, its `committed_operations` field shows exactly which memories were created, updated, or deleted.
+When a run completes, its [`committed_operations`](../guides/check-run-status.md) field shows exactly which memories were created, updated, or deleted.
 
 ## Questions and feedback
 

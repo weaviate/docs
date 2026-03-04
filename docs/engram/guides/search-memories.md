@@ -62,7 +62,7 @@ Provide a query and Engram returns the most relevant memories.
 
 ## Retrieval types
 
-Specify the retrieval type in `retrieval_config`:
+Specify the [retrieval type](../concepts/search.md) in `retrieval_config`:
 
 ### Vector search
 
@@ -147,7 +147,7 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 
 ## Filter by topic
 
-Restrict your search to specific topics by providing a `topics` array.
+Restrict your search to specific [topics](../concepts/topics.md) by providing a `topics` array.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
@@ -176,7 +176,7 @@ If you omit `topics`, Engram searches across all topics in the group.
 
 ## Scoping
 
-Search results are scoped to match the parameters you provide:
+Search results are [scoped](../concepts/scopes.md) to match the parameters you provide:
 
 - **`user_id`** — Required for user-scoped topics. Only returns memories for this user.
 - **`conversation_id`** — Optional for conversation-scoped topics. Include it to filter to a single conversation, or omit it to search across all conversations.

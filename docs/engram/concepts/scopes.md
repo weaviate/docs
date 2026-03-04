@@ -10,7 +10,7 @@ Engram uses a multi-level scoping system to isolate memories:
 - **User** — Required for user-scoped topics. Memories are strictly isolated between users.
 - **Conversation** — Required when storing to conversation-scoped topics. Optional when searching (see below).
 
-Which scopes are required depends on the topic configuration.
+Which scopes are required depends on the [topic](topics.md) configuration.
 
 ## User-scoped topics
 

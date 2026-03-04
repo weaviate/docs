@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/check_run_status.py';
 import CurlCode from '!!raw-loader!../_includes/check_run_status.sh';
 
-When you store memories, Engram processes them asynchronously through a pipeline. Each request returns a `run_id` that you can use to track progress.
+When you [store memories](store-memories.md), Engram processes them asynchronously through a [pipeline](../concepts/pipelines.md). Each request returns a `run_id` that you can use to track progress.
 
 ## Poll a run
 

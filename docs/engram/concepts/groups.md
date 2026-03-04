@@ -4,7 +4,7 @@ sidebar_position: 2
 description: "Groups in Engram: containers of topics and pipelines that map 1:1 to use cases."
 ---
 
-A group is a container of topics and a pipeline definition — a bundle of configuration that maps 1:1 to a use case. If you have multiple use cases (e.g. personalization and continual learning), create separate groups for each.
+A group is a container of [topics](topics.md) and a [pipeline](pipelines.md) definition — a bundle of configuration that maps 1:1 to a use case. If you have multiple use cases (e.g. personalization and continual learning), create separate groups for each.
 
 Each project can have multiple named groups, but most use cases only need the `default` group.
 
@@ -19,7 +19,7 @@ Each project can have multiple named groups, but most use cases only need the `d
 
 When you create a project, Engram sets up two default groups:
 
-- **`default_personalisation`** — User-scoped. Requires a `user_id` when storing and searching. Use this for per-user preferences, facts, and context.
+- **`default_personalisation`** — [User-scoped](scopes.md). Requires a `user_id` when storing and searching. Use this for per-user preferences, facts, and context.
 - **`default_continual_learning`** — Project-wide. No `user_id` needed. Use this for things an agent learns about how to perform a task, regardless of which user it's working with.
 
 ## When to create additional groups

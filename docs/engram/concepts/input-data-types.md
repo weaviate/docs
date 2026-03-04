@@ -14,7 +14,7 @@ Engram accepts three types of input content when storing memories:
 
 ## String
 
-Send raw text and let Engram's pipeline extract structured memories from it. This is the simplest input type — suitable for free-form notes, agent observations, or any unstructured text.
+Send raw text and let Engram's [pipeline](pipelines.md) extract structured memories from it. This is the simplest input type — suitable for free-form notes, agent observations, or any unstructured text.
 
 ## Pre-extracted
 

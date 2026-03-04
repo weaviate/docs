@@ -1581,7 +1581,7 @@ const sidebars = {
         "engram/concepts/scopes",
         "engram/concepts/input-data-types",
         "engram/concepts/pipelines",
-        "engram/concepts/retrieval",
+        "engram/concepts/search",
       ],
     },
     { type: "html", value: "<hr class='sidebar-divider' />" },
