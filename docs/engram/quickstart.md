@@ -15,13 +15,46 @@ This guide walks you through the core Engram workflow: create a project, get an 
 ## Prerequisites
 
 - A [Weaviate Cloud](https://console.weaviate.cloud) account
-- `curl` or the [Python SDK](https://pypi.org/project/weaviate-engram/) (`pip install weaviate-engram`)
+- `curl` or install the [Python SDK](https://pypi.org/project/weaviate-engram/):
+
+<Tabs groupId="python-install">
+<TabItem value="pip" label="pip">
+
+```bash
+pip install weaviate-engram
+```
+
+</TabItem>
+<TabItem value="uv" label="uv">
+
+```bash
+uv add weaviate-engram
+```
+
+</TabItem>
+</Tabs>
 
 ## Step 1: Create a project
 
 Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud console](https://console.weaviate.cloud).
 
-Creating a project also sets up a default memory group and topic automatically.
+You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
+
+The template provides you with a default [group](concepts/groups.md) called `personalization` and a default [topic](concepts/topics.md) called `preferences` (description: *"Stable user preferences, defaults, and behavioral patterns"*). This is enough to get started — you can customize them later.
+
+<details>
+
+<summary>Concepts to learn</summary>
+
+Here are the key concepts:
+
+- **[Topics](concepts/topics.md)** — Named categories that control what kinds of information Engram extracts. The topic's description guides the LLM during extraction.
+- **[Groups](concepts/groups.md)** — Containers of topics. Each group maps to a use case (e.g. personalization, continual learning).
+- **[Scopes](concepts/scopes.md)** — Control who memories belong to. The default topic `preferences` is user-scoped, meaning you must provide a `user_id` so each user's memories stay separate.
+
+Visit the [concepts section](concepts/index.md) to learn more about how these work together.
+
+</details>
 
 ## Step 2: Create an API key
 
@@ -43,9 +76,6 @@ Send content to Engram using the memory API. This example sends a plain text str
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
-
-Install the SDK: `pip install weaviate-engram`
-
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START Connect"
@@ -75,12 +105,18 @@ Install the SDK: `pip install weaviate-engram`
 
 Engram processes memories asynchronously. The response includes a `run_id` you can use to check the pipeline status.
 
+<details>
+
+<summary>Example response</summary>
+
 ```json
 {
   "run_id": "run-uuid",
   "status": "running"
 }
 ```
+
+</details>
 
 ## Step 4: Check run status
 
@@ -109,6 +145,10 @@ Poll the run endpoint to confirm your memory has been committed.
 </TabItem>
 </Tabs>
 
+<details>
+
+<summary>Example response</summary>
+
 ```json
 {
   "run_id": "run-uuid",
@@ -129,6 +169,8 @@ Poll the run endpoint to confirm your memory has been committed.
   "updated_at": "2025-01-01T00:00:01Z"
 }
 ```
+
+</details>
 
 ## Step 5: Search memories
 
@@ -156,6 +198,10 @@ Search for relevant memories using a natural language query.
 
 </TabItem>
 </Tabs>
+
+<details>
+
+<summary>Example response</summary>
 
 ```json
 {
@@ -190,6 +236,8 @@ Search for relevant memories using a natural language query.
   "total": 2
 }
 ```
+
+</details>
 
 ## Next steps
 

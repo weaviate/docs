@@ -5,7 +5,7 @@ sidebar_position: 0
 description: "Engram is a memory server for LLM agents and applications that provides persistent, semantically searchable memory through a REST API."
 ---
 
-Engram is a memory server for LLM agents and applications. It provides a REST API that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
+Engram is a memory server for LLM agents and applications. It provides a REST API and [Python SDK](https://github.com/weaviate/engram-python-sdk) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
 Use Engram to give your agents persistent memory that they can write to and search across conversations, users, and topics.
 
