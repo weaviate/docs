@@ -21,7 +21,7 @@ Engram organizes and processes memories for your AI applications. Here's how the
 import EngramArchitecture from "/docs/engram/\_includes/concepts.png";
 
 <div class="row">
-  <div class="col col--10">
+  <div class="col col--12">
     <div class="card">
       <div class="card__image">
         <img src={EngramArchitecture} alt="Engram Architecture" />
@@ -34,10 +34,11 @@ import EngramArchitecture from "/docs/engram/\_includes/concepts.png";
 </div>
  <br/>
 
-- A [**Group**](groups.md) bundles a [**Pipeline**](pipelines.md) with one or more [**Topics**](topics.md) — one group per use case.
-- [**Input data**](input-data-types.md) (string, conversation, or pre-extracted) is sent to a group for processing along with the required [**Scope**](scopes.md) information (project, user, conversation).
-- **Topics** guide the pipeline on what to extract and define which **scopes** are required.
-- The pipeline produces [**Memories**](memories.md), which are isolated according to the scope rules.
+- You send [**input data**](input-data-types.md) (text, a conversation, or pre-extracted facts) along with [**scope**](scopes.md) parameters (`user_id`, `conversation_id`) that identify who the memories belong to.
+- The input is routed to a [**group**](groups.md), which bundles [**topics**](topics.md) with a [**pipeline**](pipelines.md) — one group per use case.
+- **Topics** tell the pipeline what kinds of information to extract (e.g. "user preferences", "conversation summaries") and which **scopes** are required.
+- The **pipeline** extracts facts from the input, deduplicates and merges them with existing data, and commits the results to storage.
+- The output is a set of [**memories**](memories.md) — vector-embedded, categorized by topic, and isolated by scope so each user's data stays separate.
 
 ## Questions and feedback
 
