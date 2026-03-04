@@ -5,7 +5,7 @@ from engram import EngramClient
 
 # START Connect
 client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
 )
 # END Connect
 

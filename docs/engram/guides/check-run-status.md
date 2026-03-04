@@ -27,7 +27,7 @@ When you store memories, Engram processes them asynchronously through a pipeline
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl $ENGRAM_API_URL/v1/runs/{run_id} \
+curl https://api.engram.weaviate.io/v1/runs/{run_id} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 

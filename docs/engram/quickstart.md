@@ -33,7 +33,6 @@ Copy and store the API key immediately. You cannot retrieve it again after it is
 The console also provides your project's Engram API URL. Set both as environment variables for the examples below:
 
 ```bash
-export ENGRAM_API_URL="https://your-project.engram.weaviate.cloud"
 export ENGRAM_API_KEY="eng_abcdef123456..."
 ```
 
@@ -64,7 +63,7 @@ Install the SDK: `pip install weaviate-engram`
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories \
+curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -107,7 +106,7 @@ Poll the run endpoint to confirm your memory has been committed.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl $ENGRAM_API_URL/v1/runs/run-uuid \
+curl https://api.engram.weaviate.io/v1/runs/run-uuid \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 
@@ -151,7 +150,7 @@ Search for relevant memories using a natural language query.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories/search \
+curl -X POST https://api.engram.weaviate.io \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

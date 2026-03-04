@@ -5,7 +5,7 @@ from engram import EngramClient, AsyncEngramClient, RetrievalConfig, PreExtracte
 
 # START SetupClients
 engram = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
 )
 # END SetupClients
 
@@ -194,7 +194,7 @@ print(f"Bob searching for Alice's topics: {len(bob_cross_search)} results")
 
 # START AsyncSetup
 async_client = AsyncEngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
 )
 # END AsyncSetup
 

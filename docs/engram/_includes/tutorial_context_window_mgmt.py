@@ -5,7 +5,7 @@ from engram import EngramClient, RetrievalConfig
 
 # START Setup
 client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
 )
 user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
 # END Setup
@@ -70,6 +70,7 @@ def naive_chat_openai():
 
 # END NaiveChatOpenAI
 
+
 # START TokenCount
 def count_tokens(text):
     """Approximate token count (1 token ~ 4 characters)."""
@@ -90,11 +91,26 @@ print(f"At $3/1M input tokens: ~${total_tokens * 3 / 1_000_000:.4f} per request"
 # START StoreMemories
 conversation = [
     {"role": "user", "content": "I'm a software engineer working on a Python web app."},
-    {"role": "assistant", "content": "That sounds interesting! What framework are you using?"},
-    {"role": "user", "content": "I'm using FastAPI with PostgreSQL. I prefer async patterns."},
-    {"role": "assistant", "content": "Great choices! FastAPI's async support works well with PostgreSQL."},
-    {"role": "user", "content": "I also use Redis for caching and Celery for background tasks."},
-    {"role": "assistant", "content": "That's a solid stack. Redis and Celery pair nicely with FastAPI."},
+    {
+        "role": "assistant",
+        "content": "That sounds interesting! What framework are you using?",
+    },
+    {
+        "role": "user",
+        "content": "I'm using FastAPI with PostgreSQL. I prefer async patterns.",
+    },
+    {
+        "role": "assistant",
+        "content": "Great choices! FastAPI's async support works well with PostgreSQL.",
+    },
+    {
+        "role": "user",
+        "content": "I also use Redis for caching and Celery for background tasks.",
+    },
+    {
+        "role": "assistant",
+        "content": "That's a solid stack. Redis and Celery pair nicely with FastAPI.",
+    },
 ]
 
 run = client.memories.add(
@@ -112,6 +128,7 @@ assert status.status == "completed"
 
 time.sleep(2)  # Allow tenant indexing to complete
 
+
 # START MemoryAugmentedChatAnthropic
 def memory_augmented_chat_anthropic():
     """Memory-augmented approach: use Engram instead of full history."""
@@ -119,7 +136,6 @@ def memory_augmented_chat_anthropic():
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
-        base_url=os.environ.get("ENGRAM_API_URL", "https://api.engram.weaviate.io"),
     )
     anthropic_client = anthropic.Anthropic()
     user_id = "user-123"
@@ -179,7 +195,6 @@ def memory_augmented_chat_openai():
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
-        base_url=os.environ.get("ENGRAM_API_URL", "https://api.engram.weaviate.io"),
     )
     openai_client = OpenAI()
     user_id = "user-123"
@@ -247,7 +262,9 @@ for turn in [1, 5, 10, 20, 50]:
 
     # Memory-augmented: fixed recent window + memory search results
     recent_count = min(turn, recent_window // 2)
-    memory_tokens = recent_count * (avg_user_tokens + avg_assistant_tokens) + avg_memory_tokens
+    memory_tokens = (
+        recent_count * (avg_user_tokens + avg_assistant_tokens) + avg_memory_tokens
+    )
 
     savings = (1 - memory_tokens / naive_tokens) * 100 if naive_tokens > 0 else 0
     print(f"{turn:<6} {naive_tokens:<18,} {memory_tokens:<18,} {savings:.0f}%")

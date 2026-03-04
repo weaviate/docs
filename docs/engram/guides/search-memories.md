@@ -33,7 +33,7 @@ Provide a query and Engram returns the most relevant memories.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories/search \
+curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -177,7 +177,7 @@ Restrict your search to specific topics by providing a `topics` array.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories/search \
+curl -X POSThttps://api.engram.weaviate.io/v1/memories/search \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

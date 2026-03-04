@@ -35,7 +35,7 @@ Send raw text and let Engram extract structured memories from it.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories \
+curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -71,7 +71,7 @@ If you've already extracted structured content, send it directly. This skips the
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories \
+curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -105,7 +105,7 @@ Send a multi-turn conversation and let Engram extract memories from the full exc
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST $ENGRAM_API_URL/v1/memories \
+curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

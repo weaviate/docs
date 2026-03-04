@@ -25,7 +25,6 @@ In this tutorial, you'll build a chat app that:
 Set your environment variables:
 
 ```bash
-export ENGRAM_API_URL="https://your-project.engram.weaviate.cloud"
 export ENGRAM_API_KEY="eng_..."
 export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
 ```

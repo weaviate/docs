@@ -4,7 +4,7 @@ from engram import EngramClient, RetrievalConfig
 
 # START Setup
 client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://dev-engram.labs.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
 )
 user_id = f"tutorial-chat-{uuid.uuid4().hex[:8]}"
 # END Setup
@@ -94,7 +94,6 @@ def memory_chat_loop_anthropic():
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
-        base_url=os.environ.get("ENGRAM_API_URL", "https://api.engram.weaviate.io"),
     )
     anthropic_client = anthropic.Anthropic()
     user_id = "user-123"
@@ -156,7 +155,6 @@ def memory_chat_loop_openai():
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
-        base_url=os.environ.get("ENGRAM_API_URL", "https://api.engram.weaviate.io"),
     )
     openai_client = OpenAI()
     user_id = "user-123"

@@ -29,7 +29,7 @@ Retrieve a single memory by its ID.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
+curl https://api.engram.weaviate.io/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 
@@ -80,7 +80,7 @@ Remove a memory permanently by its ID.
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X DELETE $ENGRAM_API_URL/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
+curl -X DELETE https://api.engram.weaviate.io/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 
