@@ -257,7 +257,7 @@ client.collections.create(
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # (Optional) To manually set the model ID
-        model="gemini-embedding-001"
+        model="gemini-embedding-2"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -277,7 +277,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
-        model="gemini-embedding-001"
+        model="gemini-embedding-2"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -317,7 +317,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="gemini-embedding-001",
+        model_id="gemini-embedding-2",
     ),
     # highlight-end
     # Additional parameters not shown
@@ -337,7 +337,7 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vector_config=Configure.Vectors.multi2vec_palm(
+    vector_config=Configure.Vectors.multi2vec_google(
         name="title_vector",
         # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
         image_fields=[
@@ -369,7 +369,7 @@ client.collections.create(
         Property(name="description", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vector_config=Configure.Vectors.multi2vec_palm(
+    vector_config=Configure.Vectors.multi2vec_google(
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         location="us-central1",
         # model_id="<google-model-id>",
