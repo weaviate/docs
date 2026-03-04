@@ -26,6 +26,22 @@ When you create a project, Engram sets up two default groups:
 
 Create additional groups when you have distinct use cases that need different topic definitions or pipeline configurations. For example, a customer support agent might have one group for tracking user preferences and another for learning resolution patterns.
 
+## Examples
+
+A **customer support agent** could use two groups:
+
+- **`default_personalization`** (user-scoped) — Stores per-user facts like "prefers email over phone" or "has a Pro subscription". Requires a `user_id` on every store and search so each user's memories stay separate.
+- **`default_continual_learning`** (project-wide) — Stores knowledge the agent learns about how to do its job, like "always check the billing FAQ before escalating refund requests". No `user_id` needed — these memories are shared across all users.
+
+When the agent handles a support ticket, it searches the personalization group with the user's ID to recall their history, and searches the continual learning group to recall best practices.
+
+A **multi-product company** might create a separate group per product:
+
+- **`product_a_support`** — Topics and pipeline tuned for Product A (e.g. topics like `"known_issues"`, `"feature_requests"`)
+- **`product_b_support`** — Different topics for Product B, possibly with a different pipeline configuration
+
+This keeps topic names isolated — both groups can have a `"known_issues"` topic without collision — and lets each product team configure extraction independently.
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
