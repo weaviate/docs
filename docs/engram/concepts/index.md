@@ -18,21 +18,9 @@ Engram organizes and processes memories for your AI applications. Here's how the
 
 ## How concepts relate
 
-import EngramArchitecture from "/docs/engram/\_includes/concepts.png";
+Below is an overview of Engram's key concepts and how they relate to each other:
 
-<div class="row">
-  <div class="col col--12">
-    <div class="card">
-      <div class="card__image">
-        <img src={EngramArchitecture} alt="Engram Architecture" />
-      </div>
-      <div class="card__body">
-        Overview of Engram's key concepts and how they relate to each other.
-      </div>
-    </div>
-  </div>
-</div>
- <br/>
+![Weaviate Engram Concepts](../_includes/concepts.png "Weaviate Engram Concepts")
 
 - You send [**input data**](input-data-types.md) (text, a conversation, or pre-extracted facts) along with [**scope**](scopes.md) parameters (`user_id`, `conversation_id`) that identify who the memories belong to.
 - The input is routed to a [**group**](groups.md), which bundles [**topics**](topics.md) with a [**pipeline**](pipelines.md) — one group per use case.

@@ -71,7 +71,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "user preferences",
-    "topics": ["default"],
+    "topics": ["preferences"],
     "user_id": "user-uuid",
     "group": "default",
     "retrieval_config": {

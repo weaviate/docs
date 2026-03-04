@@ -43,7 +43,7 @@ The pipeline extracts individual facts from the text (e.g. "prefers dark mode", 
 
 ## Pre-extracted content
 
-If you've already extracted structured content, send it directly. This skips the LLM extraction step and goes straight to storage.
+If you've already extracted structured content, send it directly. This bypasses the LLM extraction step, but the content still passes through the transform and commit pipeline stages.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
 <TabItem value="py" label="Python">
@@ -108,7 +108,7 @@ All three content types return the same response format:
 }
 ```
 
-Use the `run_id` to [check the pipeline status](check-run-status.md).
+A successful response means the pipeline has started, not that the memories have been committed. Use the `run_id` to [check the pipeline status](check-run-status.md) and confirm when processing is complete.
 
 ## Optional parameters
 

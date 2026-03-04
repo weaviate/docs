@@ -40,7 +40,7 @@ Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud c
 
 You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
 
-The template provides you with a default [group](concepts/groups.md) called `personalization` and a default [topic](concepts/topics.md) called `preferences` (description: *"Stable user preferences, defaults, and behavioral patterns"*). This is enough to get started — you can customize them later.
+The template provides you with a default [group](concepts/groups.md) called `personalization` and a default [topic](concepts/topics.md) called `preferences` (description: *"Stable user preferences, defaults, and behavioral patterns"*). This is enough to get started.
 
 <details>
 
@@ -60,15 +60,18 @@ Visit the [concepts section](concepts/index.md) to learn more about how these wo
 
 Generate an API key for your project in the Weaviate Cloud console. The full key is only shown once — save it securely.
 
-:::warning
-Copy and store the API key immediately. You cannot retrieve it again after it is displayed.
-:::
 
-The console also provides your project's Engram API URL. Set both as environment variables for the examples below:
+Set it as an environment variable for the examples below:
 
 ```bash
 export ENGRAM_API_KEY="eng_abcdef123456..."
 ```
+
+:::warning
+
+Copy and store the API key immediately. You cannot retrieve it again after it is displayed.
+
+:::
 
 ## Step 3: Connect to Engram
 
@@ -87,10 +90,10 @@ Initialize the client with your API key.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-Set your API key as an environment variable. All `curl` commands below use `$ENGRAM_API_KEY`.
+All `curl` commands authenticate via the `Authorization` header with a Bearer token:
 
 ```bash
-export ENGRAM_API_KEY="eng_abcdef123456..."
+-H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 
 </TabItem>

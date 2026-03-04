@@ -102,7 +102,7 @@ Instead of sending the full conversation history, search Engram for relevant mem
 
 The context window now contains:
 - **System prompt**: ~5 retrieved memories (~50 tokens)
-- **Recent messages**: Last 3 exchanges (~6 messages, ~750 tokens)
+- **Recent messages**: Last 2-3 exchanges (~4-6 messages, ~500-750 tokens)
 - **Total**: ~800 tokens — flat, regardless of conversation length
 
 ## Step 4: Compare side-by-side

@@ -98,7 +98,7 @@ If a run fails, the `error` field contains a description of what went wrong.
 ```
 
 :::tip
-For production systems, implement a polling loop that checks the run status at regular intervals (e.g. every 1-2 seconds) until the status is `completed` or `failed`.
+For production systems, implement a polling loop that checks the run status at regular intervals (e.g. every 1-2 seconds) until the status is `completed` or `failed`. The Python SDK provides `client.runs.wait(run_id)` which handles polling automatically and blocks until the run completes.
 :::
 
 ## Questions and feedback
