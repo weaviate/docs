@@ -60,6 +60,24 @@ print(f"Bob: {status_b.status}, {len(status_b.memories_created)} memories")
 assert status_a.status == "completed"
 assert status_b.status == "completed"
 
+import time
+from engram.errors import APIError
+
+# Warm up tenants — retry until search succeeds (tenant may still be initializing)
+for _retry in range(5):
+    try:
+        engram.memories.search(query="test", user_id=f"tutorial-rag-alice-{_test_suffix}", group="default")
+        break
+    except APIError:
+        time.sleep(3)
+
+for _retry in range(5):
+    try:
+        engram.memories.search(query="test", user_id=f"tutorial-rag-bob-{_test_suffix}", group="default")
+        break
+    except APIError:
+        time.sleep(3)
+
 
 # START DualSearch
 def dual_search(query, user_id, kb_results=None):
@@ -174,6 +192,28 @@ for m in bob_memories:
 assert len(alice_memories) >= 1
 assert len(bob_memories) >= 1
 
+# Verify personalized RAG produces different answers for each user
+kb_docs = [
+    "Acme API supports REST and GraphQL endpoints for data access.",
+    "Acme's Python SDK supports async operations with asyncio.",
+]
+
+alice_answer = build_prompt_anthropic(query, kb_docs, alice_memories)
+bob_answer = build_prompt_anthropic(query, kb_docs, bob_memories)
+assert isinstance(alice_answer, str) and len(alice_answer) > 0
+assert isinstance(bob_answer, str) and len(bob_answer) > 0
+assert alice_answer != bob_answer, "Personalized answers should differ for Alice and Bob"
+print(f"Alice (Anthropic): {alice_answer[:100]}...")
+print(f"Bob (Anthropic): {bob_answer[:100]}...")
+
+alice_answer_oai = build_prompt_openai(query, kb_docs, alice_memories)
+bob_answer_oai = build_prompt_openai(query, kb_docs, bob_memories)
+assert isinstance(alice_answer_oai, str) and len(alice_answer_oai) > 0
+assert isinstance(bob_answer_oai, str) and len(bob_answer_oai) > 0
+assert alice_answer_oai != bob_answer_oai, "Personalized answers should differ for Alice and Bob"
+print(f"Alice (OpenAI): {alice_answer_oai[:100]}...")
+print(f"Bob (OpenAI): {bob_answer_oai[:100]}...")
+
 # START UserIsolation
 # Alice searches for Bob's topics — should get no relevant results
 alice_cross_search = engram.memories.search(
@@ -191,6 +231,18 @@ bob_cross_search = engram.memories.search(
 )
 print(f"Bob searching for Alice's topics: {len(bob_cross_search)} results")
 # END UserIsolation
+
+# Alice's results should only contain her own memories, not Bob's
+for m in alice_cross_search:
+    assert "JavaScript" not in m.content and "React" not in m.content, (
+        f"Alice should not see Bob's memories, got: {m.content}"
+    )
+
+# Bob's results should only contain his own memories, not Alice's
+for m in bob_cross_search:
+    assert "FastAPI" not in m.content and "Python" not in m.content, (
+        f"Bob should not see Alice's memories, got: {m.content}"
+    )
 
 # START AsyncSetup
 async_client = AsyncEngramClient(
@@ -261,6 +313,8 @@ remaining = engram.memories.search(
 )
 print(f"Remaining memories for Alice: {len(remaining)}")
 # END UserDataManagement
+
+assert len(remaining) == 0, f"All Alice memories should be deleted, got {len(remaining)}"
 
 # Cleanup: delete Bob's memories
 for _m in bob_memories:

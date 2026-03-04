@@ -34,7 +34,15 @@ assert status.status == "completed"
 assert status.committed_operations is not None
 assert len(status.memories_created) >= 1
 
-time.sleep(3)
+from engram.errors import APIError
+
+# Warm up tenant — retry until search succeeds (tenant may still be initializing)
+for _retry in range(5):
+    try:
+        client.memories.search(query="test", user_id=test_user_id, group="default")
+        break
+    except APIError:
+        time.sleep(3)
 
 # START SearchMemory
 results = client.memories.search(

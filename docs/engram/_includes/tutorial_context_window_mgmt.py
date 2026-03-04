@@ -126,7 +126,7 @@ print(f"Memories created: {len(status.memories_created)}")
 
 assert status.status == "completed"
 
-time.sleep(2)  # Allow tenant indexing to complete
+time.sleep(5)  # Allow tenant indexing to complete
 
 
 # START MemoryAugmentedChatAnthropic
@@ -269,6 +269,16 @@ for turn in [1, 5, 10, 20, 50]:
     savings = (1 - memory_tokens / naive_tokens) * 100 if naive_tokens > 0 else 0
     print(f"{turn:<6} {naive_tokens:<18,} {memory_tokens:<18,} {savings:.0f}%")
 # END SideBySide
+
+from engram.errors import APIError
+
+# Warm up tenant — retry until search succeeds (tenant may still be initializing)
+for _retry in range(5):
+    try:
+        client.memories.search(query="test", user_id=user_id, group="default")
+        break
+    except APIError:
+        time.sleep(3)
 
 # START TopicFiltering
 results = client.memories.search(

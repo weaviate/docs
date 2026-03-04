@@ -51,31 +51,9 @@ The most common pattern is to append every message to a list and send the full l
 </TabItem>
 </Tabs>
 
-The `messages` list grows by two entries every turn (user + assistant). By turn 50, you're sending 100 messages in every request.
+The `messages` list grows by two entries every turn (user + assistant). By turn 50, you're sending 100 messages in every request. Token usage grows linearly with the naive approach and you're paying for the same messages over and over. Turn 1's messages are re-sent at turn 2, 3, 4, and every subsequent turn.
 
-## Step 2: Measure the cost
-
-Token usage grows linearly with the naive approach. Here's a simple approximation:
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START TokenCount"
-  endMarker="# END TokenCount"
-  language="py"
-/>
-
-:::tip
-For more accurate token counting, use the `tiktoken` library (`pip install tiktoken`):
-```python
-import tiktoken
-encoder = tiktoken.encoding_for_model("gpt-4o")
-token_count = len(encoder.encode(text))
-```
-:::
-
-The key insight: you're paying for the same messages over and over. Turn 1's messages are re-sent at turn 2, 3, 4, and every subsequent turn.
-
-## Step 3: Store conversations as memories
+## Step 2: Store conversations as memories
 
 Instead of keeping messages in a growing list, send them to Engram after each exchange. Engram extracts discrete facts and stores them as searchable memories.
 
@@ -95,7 +73,7 @@ From a 6-message conversation, Engram might extract memories like:
 
 Each fact is stored once and retrieved only when relevant.
 
-## Step 4: Replace history with memory search
+## Step 3: Replace history with memory search
 
 Instead of sending the full conversation history, search Engram for relevant memories and keep only the last 2-3 exchanges for conversational continuity.
 
@@ -127,16 +105,9 @@ The context window now contains:
 - **Recent messages**: Last 3 exchanges (~6 messages, ~750 tokens)
 - **Total**: ~800 tokens — flat, regardless of conversation length
 
-## Step 5: Compare side-by-side
+## Step 4: Compare side-by-side
 
 Here's a comparison of token usage as conversation length grows:
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START SideBySide"
-  endMarker="# END SideBySide"
-  language="py"
-/>
 
 ```text
 Turn   Naive (tokens)     Memory (tokens)    Savings
@@ -150,7 +121,7 @@ Turn   Naive (tokens)     Memory (tokens)    Savings
 
 At turn 1, the memory approach has slight overhead from the search. By turn 10, it saves 66%. By turn 50, it saves 93% of input tokens.
 
-## Step 6: Advanced patterns
+## Step 5: Advanced patterns
 
 ### Topic filtering
 
@@ -186,15 +157,6 @@ For the best balance of continuity and context, combine both approaches:
 2. **Engram memory search** — Provides relevant historical context
 
 This is the pattern used in Step 4. The recent messages handle references like "that" and "it", while Engram provides the long-term context that makes the assistant feel like it truly remembers.
-
-## Summary
-
-| Approach | Token growth | Cost at 50 turns | Remembers past sessions |
-|----------|-------------|-------------------|------------------------|
-| Full history | Linear (O(n)) | ~$0.019/request | No |
-| Memory search | Constant (O(1)) | ~$0.001/request | Yes |
-
-Memory search reduces token usage by 90%+ for long conversations and adds cross-session persistence — the assistant remembers facts from previous conversations automatically.
 
 ## Next steps
 
