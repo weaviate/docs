@@ -5,7 +5,7 @@ from engram import EngramClient, AsyncEngramClient, RetrievalConfig, PreExtracte
 
 # START SetupClients
 engram = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"]
 )
 # END SetupClients
 
@@ -246,7 +246,7 @@ for m in bob_cross_search:
 
 # START AsyncSetup
 async_client = AsyncEngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"]
 )
 # END AsyncSetup
 

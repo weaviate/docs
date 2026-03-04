@@ -5,7 +5,7 @@ from engram import EngramClient, RetrievalConfig
 
 # START Setup
 client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"]
 )
 user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
 # END Setup

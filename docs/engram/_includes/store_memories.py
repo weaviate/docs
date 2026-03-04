@@ -4,7 +4,7 @@ import uuid
 from engram import EngramClient, PreExtractedContent
 
 client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"], base_url="https://api.engram.weaviate.io"
+    api_key=os.environ["ENGRAM_API_KEY"]
 )
 
 test_user_id = f"test-{uuid.uuid4().hex[:8]}"

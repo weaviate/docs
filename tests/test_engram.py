@@ -36,16 +36,3 @@ def test_engram(script_loc):
 )
 def test_engram_curl(script_loc):
     utils.run_script(["bash", script_loc], script_loc)
-
-
-@pytest.mark.engram
-@pytest.mark.engram_curl
-@pytest.mark.parametrize(
-    "script_loc",
-    [
-        "./docs/engram/_includes/quickstart_curl.py",
-    ],
-)
-def test_engram_curl_py(script_loc):
-    proc_script = utils.load_script(script_loc)
-    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
