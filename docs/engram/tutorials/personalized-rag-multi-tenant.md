@@ -103,7 +103,7 @@ def dual_search(query, user_id, weaviate_collection):
 
 Merge the knowledge base results and user memories into a single prompt. The LLM uses the shared docs for accuracy and the user context for personalization.
 
-<Tabs groupId="providers">
+<Tabs className="code" groupId="providers">
 <TabItem value="anthropic" label="Anthropic">
 
 <FilteredTextBlock

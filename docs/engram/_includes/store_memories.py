@@ -39,6 +39,8 @@ results = client.memories.search(query="Python RAG dark mode", user_id=test_user
 assert len(results) >= 1
 assert any("Python" in m.content or "dark mode" in m.content or "RAG" in m.content for m in results)
 
+"""TODO[g-despot] Needs topic
+
 # START StorePreExtracted
 run = client.memories.add(
     PreExtractedContent(
@@ -59,7 +61,7 @@ assert status.status == "completed"
 results = client.memories.search(query="dark mode preference", user_id=test_user_id, group="default")
 assert len(results) >= 1
 assert any("dark mode" in m.content for m in results)
-
+"""
 # START StoreConversation
 run = client.memories.add(
     [

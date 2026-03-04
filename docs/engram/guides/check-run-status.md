@@ -8,12 +8,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/check_run_status.py';
+import CurlCode from '!!raw-loader!../_includes/check_run_status.sh';
 
 When you store memories, Engram processes them asynchronously through a pipeline. Each request returns a `run_id` that you can use to track progress.
 
 ## Poll a run
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -26,10 +27,12 @@ When you store memories, Engram processes them asynchronously through a pipeline
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl https://api.engram.weaviate.io/v1/runs/{run_id} \
-  -H "Authorization: Bearer $ENGRAM_API_KEY"
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START PollRun"
+  endMarker="# END PollRun"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -41,18 +44,16 @@ curl https://api.engram.weaviate.io/v1/runs/{run_id} \
   "run_id": "run-uuid",
   "status": "completed",
   "group_id": "group-uuid",
-  "starting_step": 0,
+  "user_id": "user-uuid",
+  "starting_step": 1,
   "input_type": "string",
-  "error": null,
   "committed_operations": {
     "created": [
       {
         "memory_id": "memory-uuid-1",
         "committed_at": "2025-01-01T00:00:01Z"
       }
-    ],
-    "updated": [],
-    "deleted": []
+    ]
   },
   "created_at": "2025-01-01T00:00:00Z",
   "updated_at": "2025-01-01T00:00:01Z"
@@ -86,8 +87,11 @@ If a run fails, the `error` field contains a description of what went wrong.
 {
   "run_id": "run-uuid",
   "status": "failed",
+  "group_id": "group-uuid",
+  "user_id": "user-uuid",
+  "starting_step": 1,
+  "input_type": "string",
   "error": "extraction failed: invalid input format",
-  "committed_operations": null,
   "created_at": "2025-01-01T00:00:00Z",
   "updated_at": "2025-01-01T00:00:01Z"
 }

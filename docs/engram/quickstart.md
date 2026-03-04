@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_includes/quickstart.py';
+import CurlCode from '!!raw-loader!./_includes/quickstart.sh';
 
 This guide walks you through the core Engram workflow: create a project, get an API key, store a memory, and search for it.
 
@@ -40,7 +41,7 @@ export ENGRAM_API_KEY="eng_abcdef123456..."
 
 Send content to Engram using the memory API. This example sends a plain text string.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 Install the SDK: `pip install weaviate-engram`
@@ -62,19 +63,12 @@ Install the SDK: `pip install weaviate-engram`
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POST https://api.engram.weaviate.io/v1/memories \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": {
-      "type": "string",
-      "content": "The user prefers dark mode and uses VS Code as their primary editor."
-    },
-    "user_id": "user-uuid",
-    "group": "default"
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START AddMemory"
+  endMarker="# END AddMemory"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -92,7 +86,7 @@ Engram processes memories asynchronously. The response includes a `run_id` you c
 
 Poll the run endpoint to confirm your memory has been committed.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -105,10 +99,12 @@ Poll the run endpoint to confirm your memory has been committed.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl https://api.engram.weaviate.io/v1/runs/run-uuid \
-  -H "Authorization: Bearer $ENGRAM_API_KEY"
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START CheckRun"
+  endMarker="# END CheckRun"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -117,15 +113,17 @@ curl https://api.engram.weaviate.io/v1/runs/run-uuid \
 {
   "run_id": "run-uuid",
   "status": "completed",
+  "group_id": "group-uuid",
+  "user_id": "user-uuid",
+  "starting_step": 1,
+  "input_type": "string",
   "committed_operations": {
     "created": [
       {
         "memory_id": "memory-uuid",
         "committed_at": "2025-01-01T00:00:01Z"
       }
-    ],
-    "updated": [],
-    "deleted": []
+    ]
   },
   "created_at": "2025-01-01T00:00:00Z",
   "updated_at": "2025-01-01T00:00:01Z"
@@ -136,7 +134,7 @@ curl https://api.engram.weaviate.io/v1/runs/run-uuid \
 
 Search for relevant memories using a natural language query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -149,20 +147,12 @@ Search for relevant memories using a natural language query.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POST https://api.engram.weaviate.io \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "What editor does the user prefer?",
-    "user_id": "user-uuid",
-    "group": "default",
-    "retrieval_config": {
-      "retrieval_type": "hybrid",
-      "limit": 5
-    }
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START SearchMemory"
+  endMarker="# END SearchMemory"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -171,16 +161,33 @@ curl -X POST https://api.engram.weaviate.io \
 {
   "memories": [
     {
-      "id": "memory-uuid",
-      "content": "The user prefers dark mode and uses VS Code as their primary editor.",
-      "topic": "default",
-      "group": "default",
-      "score": 0.92,
-      "created_at": "2025-01-01T00:00:01Z",
-      "updated_at": "2025-01-01T00:00:01Z"
+      "Body": {
+        "id": "memory-uuid",
+        "project_id": "project-uuid",
+        "user_id": "user-uuid",
+        "content": "The user prefers dark mode.",
+        "topic": "preferences",
+        "group": "default",
+        "created_at": "2025-01-01T00:00:01Z",
+        "updated_at": "2025-01-01T00:00:01Z",
+        "score": 1
+      }
+    },
+    {
+      "Body": {
+        "id": "memory-uuid-2",
+        "project_id": "project-uuid",
+        "user_id": "user-uuid",
+        "content": "The user uses VS Code as their primary editor.",
+        "topic": "preferences",
+        "group": "default",
+        "created_at": "2025-01-01T00:00:01Z",
+        "updated_at": "2025-01-01T00:00:01Z",
+        "score": 1
+      }
     }
   ],
-  "total": 1
+  "total": 2
 }
 ```
 

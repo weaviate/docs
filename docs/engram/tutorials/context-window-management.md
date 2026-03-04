@@ -28,7 +28,7 @@ This tutorial builds on the [Memory Chat App](memory-chat-app.md) pattern and sh
 
 The most common pattern is to append every message to a list and send the full list with each API call. This works for short conversations but becomes expensive fast.
 
-<Tabs groupId="providers">
+<Tabs className="code" groupId="providers">
 <TabItem value="anthropic" label="Anthropic">
 
 <FilteredTextBlock
@@ -77,7 +77,7 @@ Each fact is stored once and retrieved only when relevant.
 
 Instead of sending the full conversation history, search Engram for relevant memories and keep only the last 2-3 exchanges for conversational continuity.
 
-<Tabs groupId="providers">
+<Tabs className="code" groupId="providers">
 <TabItem value="anthropic" label="Anthropic">
 
 <FilteredTextBlock

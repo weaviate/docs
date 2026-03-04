@@ -8,18 +8,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/search_memories.py';
+import CurlCode from '!!raw-loader!../_includes/search_memories.sh';
 
-Search stored memories using the search endpoint:
-
-```
-POST /v1/memories/search
-```
+You can retrieve stored memories using different search techniques. 
 
 ## Basic search
 
 Provide a query and Engram returns the most relevant memories.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -32,20 +29,12 @@ Provide a query and Engram returns the most relevant memories.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
-    "group": "default",
-    "retrieval_config": {
-      "retrieval_type": "hybrid",
-      "limit": 5
-    }
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START BasicSearch"
+  endMarker="# END BasicSearch"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -54,14 +43,17 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 {
   "memories": [
     {
-      "id": "memory-uuid",
-      "content": "The user works primarily in Python",
-      "topic": "default",
-      "group": "default",
-      "score": 0.89,
-      "tags": [],
-      "created_at": "2025-01-01T00:00:00Z",
-      "updated_at": "2025-01-01T00:00:00Z"
+      "Body": {
+        "id": "memory-uuid",
+        "project_id": "project-uuid",
+        "user_id": "user-uuid",
+        "content": "The user works primarily in Python.",
+        "topic": "preferences",
+        "group": "default",
+        "created_at": "2025-01-01T00:00:00Z",
+        "updated_at": "2025-01-01T00:00:00Z",
+        "score": 0.89
+      }
     }
   ],
   "total": 1
@@ -76,7 +68,7 @@ Specify the retrieval type in `retrieval_config`:
 
 Pure semantic search using embeddings. Finds memories that are conceptually similar to your query, even without matching keywords.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -89,14 +81,12 @@ Pure semantic search using embeddings. Finds memories that are conceptually simi
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```json
-{
-  "retrieval_config": {
-    "retrieval_type": "vector",
-    "limit": 10
-  }
-}
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START VectorSearch"
+  endMarker="# END VectorSearch"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -105,7 +95,7 @@ Pure semantic search using embeddings. Finds memories that are conceptually simi
 
 Full-text keyword search. Best for finding memories that contain specific terms.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -118,14 +108,12 @@ Full-text keyword search. Best for finding memories that contain specific terms.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```json
-{
-  "retrieval_config": {
-    "retrieval_type": "bm25",
-    "limit": 10
-  }
-}
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START BM25Search"
+  endMarker="# END BM25Search"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -134,7 +122,7 @@ Full-text keyword search. Best for finding memories that contain specific terms.
 
 Combines vector and BM25 for the best of both approaches. This is the recommended retrieval type for most use cases.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -147,14 +135,12 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```json
-{
-  "retrieval_config": {
-    "retrieval_type": "hybrid",
-    "limit": 10
-  }
-}
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START HybridSearch"
+  endMarker="# END HybridSearch"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -163,7 +149,7 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 
 Restrict your search to specific topics by providing a `topics` array.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -176,21 +162,12 @@ Restrict your search to specific topics by providing a `topics` array.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POSThttps://api.engram.weaviate.io/v1/memories/search \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "user preferences",
-    "topics": ["default"],
-    "user_id": "user-uuid",
-    "group": "default",
-    "retrieval_config": {
-      "retrieval_type": "hybrid",
-      "limit": 10
-    }
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START TopicFilter"
+  endMarker="# END TopicFilter"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>

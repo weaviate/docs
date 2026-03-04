@@ -5,11 +5,11 @@
         "additionalProperties": false,
         "properties": {
           "committed_at": {
-            "description": "When this operation was committed (RFC 3339).",
+            "description": "RFC3339 timestamp",
             "type": "string"
           },
           "memory_id": {
-            "description": "The ID of the affected memory.",
+            "description": "Memory UUID",
             "type": "string"
           }
         },
@@ -23,7 +23,7 @@
         "additionalProperties": false,
         "properties": {
           "created": {
-            "description": "Memories that were created by this run.",
+            "description": "Created memory operations",
             "items": {
               "$ref": "#/components/schemas/CommittedOperationDTO"
             },
@@ -33,7 +33,7 @@
             ]
           },
           "deleted": {
-            "description": "Memories that were deleted by this run.",
+            "description": "Deleted memory operations",
             "items": {
               "$ref": "#/components/schemas/CommittedOperationDTO"
             },
@@ -43,7 +43,7 @@
             ]
           },
           "updated": {
-            "description": "Memories that were updated by this run.",
+            "description": "Updated memory operations",
             "items": {
               "$ref": "#/components/schemas/CommittedOperationDTO"
             },
@@ -98,13 +98,42 @@
         ],
         "type": "object"
       },
+      "CountRunsResponseBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://api.engram.weaviate.io/schemas/CountRunsResponseBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "count": {
+            "description": "Number of pipeline runs",
+            "format": "int64",
+            "type": "integer"
+          },
+          "hours": {
+            "description": "Time window in hours",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "count",
+          "hours"
+        ],
+        "type": "object"
+      },
       "CreateMemoryRequest": {
         "additionalProperties": false,
         "properties": {
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/CreateMemoryRequest.json"
+              "https://api.engram.weaviate.io/schemas/CreateMemoryRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -159,7 +188,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/ErrorModel.json"
+              "https://api.engram.weaviate.io/schemas/ErrorModel.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -228,15 +257,9 @@
             "$ref": "#/components/schemas/ConversationInput",
             "description": "Conversation payload. Required for 'conversation' type."
           },
-          "tags": {
-            "description": "Tags to attach to the memory. Only used with 'pre_extracted' type.",
-            "items": {
-              "type": "string"
-            },
-            "type": [
-              "array",
-              "null"
-            ]
+          "topic": {
+            "description": "Target topic name. Required for 'pre_extracted' type.",
+            "type": "string"
           },
           "type": {
             "description": "The input format: 'string' for raw text, 'pre_extracted' for pre-processed facts, or 'conversation' for multi-turn messages.",
@@ -259,7 +282,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/MemoriesListResponseBody.json"
+              "https://api.engram.weaviate.io/schemas/MemoriesListResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -305,7 +328,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/MemoryResponseBody.json"
+              "https://api.engram.weaviate.io/schemas/MemoryResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -340,16 +363,6 @@
             "description": "Relevance score. Only present in search results.",
             "format": "double",
             "type": "number"
-          },
-          "tags": {
-            "description": "Optional tags associated with this memory.",
-            "items": {
-              "type": "string"
-            },
-            "type": [
-              "array",
-              "null"
-            ]
           },
           "topic": {
             "description": "The topic this memory belongs to.",
@@ -437,7 +450,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/RunOutputResponseBody.json"
+              "https://api.engram.weaviate.io/schemas/RunOutputResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -468,7 +481,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/RunStatusResponseBody.json"
+              "https://api.engram.weaviate.io/schemas/RunStatusResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -476,41 +489,45 @@
           },
           "committed_operations": {
             "$ref": "#/components/schemas/CommittedOperationsDTO",
-            "description": "Memory operations committed by this run. Present once the run completes."
+            "description": "Committed memory operations"
           },
           "created_at": {
-            "description": "When this run was created (RFC 3339).",
+            "description": "Creation timestamp",
             "format": "date-time",
             "type": "string"
           },
           "error": {
-            "description": "Error details, present only when status is 'failed'.",
+            "description": "Error message if failed",
             "type": "string"
           },
           "group_id": {
-            "description": "The pipeline group this run belongs to.",
+            "description": "Group UUID",
             "type": "string"
           },
           "input_type": {
-            "description": "The type of input that was submitted: 'string', 'pre_extracted', or 'conversation'.",
+            "description": "Input type",
             "type": "string"
           },
           "run_id": {
-            "description": "Unique identifier for this pipeline run.",
+            "description": "Pipeline run UUID",
             "type": "string"
           },
           "starting_step": {
-            "description": "The pipeline step index where processing began.",
+            "description": "Starting step index",
             "format": "int64",
             "type": "integer"
           },
           "status": {
-            "description": "Current run status: 'running', 'completed', 'failed', or 'in_buffer'.",
+            "description": "Current status: running, completed, failed, in_buffer",
             "type": "string"
           },
           "updated_at": {
-            "description": "When this run was last updated (RFC 3339).",
+            "description": "Last update timestamp",
             "format": "date-time",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "User name (if user-scoped run)",
             "type": "string"
           }
         },
@@ -531,7 +548,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://your-project.engram.weaviate.cloud/schemas/SearchMemoriesRequest.json"
+              "https://api.engram.weaviate.io/schemas/SearchMemoriesRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -596,16 +613,73 @@
     }
   },
   "info": {
-    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nYour project's API URL is available in the [Weaviate Cloud console](https://console.weaviate.cloud). It follows the format:\n\n```\nhttps://your-project.engram.weaviate.cloud\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
+    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nYour base URL is always:\n\n```\nhttps://api.engram.weaviate.io\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
     "title": "Engram API",
     "version": "1.0.0"
   },
   "openapi": "3.1.0",
   "paths": {
-    "/v1/memories": {
+    "/memories": {
       "get": {
         "description": "Returns all memories in the project. Results are scoped to the API key's project.",
         "operationId": "list-memories",
+        "parameters": [
+          {
+            "description": "Filter by group name",
+            "explode": false,
+            "in": "query",
+            "name": "group",
+            "schema": {
+              "description": "Filter by group name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by topic name",
+            "explode": false,
+            "in": "query",
+            "name": "topic",
+            "schema": {
+              "description": "Filter by topic name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by user name (enables user-scoped topics)",
+            "explode": false,
+            "in": "query",
+            "name": "user_id",
+            "schema": {
+              "description": "Filter by user name (enables user-scoped topics)",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by conversation UUID",
+            "explode": false,
+            "in": "query",
+            "name": "conversation_id",
+            "schema": {
+              "description": "Filter by conversation UUID",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of results",
+            "explode": false,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "description": "Maximum number of results",
+              "format": "int64",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -674,7 +748,7 @@
         ]
       }
     },
-    "/v1/memories/search": {
+    "/memories/search": {
       "post": {
         "description": "Find relevant memories using vector similarity, BM25 keyword matching, or hybrid search. Filter results by topic and scope them to a specific user or conversation.",
         "operationId": "search-memories",
@@ -716,7 +790,7 @@
         ]
       }
     },
-    "/v1/memories/{id}": {
+    "/memories/{id}": {
       "delete": {
         "description": "Permanently remove a memory by its ID. You must provide the correct scoping parameters (`user_id`, `conversation_id`) if the topic requires them.",
         "operationId": "delete-memory",
@@ -733,33 +807,12 @@
             }
           },
           {
-            "description": "User UUID",
+            "description": "User name (case-insensitive)",
             "explode": false,
             "in": "query",
             "name": "user_id",
             "schema": {
-              "description": "User UUID",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Conversation UUID",
-            "explode": false,
-            "in": "query",
-            "name": "conversation_id",
-            "schema": {
-              "description": "Conversation UUID",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Topic name",
-            "explode": false,
-            "in": "query",
-            "name": "topic",
-            "required": true,
-            "schema": {
-              "description": "Topic name",
+              "description": "User name (case-insensitive)",
               "type": "string"
             }
           },
@@ -810,33 +863,12 @@
             }
           },
           {
-            "description": "User UUID",
+            "description": "User name (case-insensitive)",
             "explode": false,
             "in": "query",
             "name": "user_id",
             "schema": {
-              "description": "User UUID",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Conversation UUID",
-            "explode": false,
-            "in": "query",
-            "name": "conversation_id",
-            "schema": {
-              "description": "Conversation UUID",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Topic name",
-            "explode": false,
-            "in": "query",
-            "name": "topic",
-            "required": true,
-            "schema": {
-              "description": "Topic name",
+              "description": "User name (case-insensitive)",
               "type": "string"
             }
           },
@@ -879,18 +911,65 @@
         ]
       }
     },
-    "/v1/runs/{run_id}": {
+    "/runs/count": {
+      "get": {
+        "operationId": "count-runs",
+        "parameters": [
+          {
+            "description": "Count runs in the last N hours",
+            "explode": false,
+            "in": "query",
+            "name": "hours",
+            "schema": {
+              "default": 24,
+              "description": "Count runs in the last N hours",
+              "format": "int64",
+              "maximum": 720,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountRunsResponseBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Count pipeline runs for a project",
+        "tags": [
+          "Runs"
+        ]
+      }
+    },
+    "/runs/{run_id}": {
       "get": {
         "description": "Check the status of an asynchronous pipeline run. Returns the current state and, once completed, the list of memory operations that were committed (created, updated, or deleted).",
         "operationId": "get-run-status",
         "parameters": [
           {
-            "description": "The UUID of the pipeline run to check",
+            "description": "Pipeline run UUID",
             "in": "path",
             "name": "run_id",
             "required": true,
             "schema": {
-              "description": "The UUID of the pipeline run to check",
+              "description": "Pipeline run UUID",
               "format": "uuid",
               "type": "string"
             }
@@ -918,7 +997,7 @@
             "description": "Error"
           }
         },
-        "summary": "Get a run",
+        "summary": "Get pipeline run status",
         "tags": [
           "Runs"
         ]
@@ -927,7 +1006,7 @@
   },
   "servers": [
     {
-      "url": "https://your-project.engram.weaviate.cloud"
+      "url": "https://api.engram.weaviate.io"
     }
   ]
 }

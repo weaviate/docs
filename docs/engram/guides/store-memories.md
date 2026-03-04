@@ -8,20 +8,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/store_memories.py';
+import CurlCode from '!!raw-loader!../_includes/store_memories.sh';
 
 Engram supports three content types for storing memories. Each triggers a different extraction pipeline.
-
-All requests go to the same endpoint:
-
-```
-POST /v1/memories
-```
 
 ## String content
 
 Send raw text and let Engram extract structured memories from it.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -34,19 +29,12 @@ Send raw text and let Engram extract structured memories from it.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POST https://api.engram.weaviate.io/v1/memories \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": {
-      "type": "string",
-      "content": "The user prefers dark mode and works primarily in Python. They are building a RAG application."
-    },
-    "user_id": "user-uuid",
-    "group": "default"
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START StoreString"
+  endMarker="# END StoreString"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -57,7 +45,7 @@ The pipeline extracts individual facts from the text (e.g. "prefers dark mode", 
 
 If you've already extracted structured content, send it directly. This skips the LLM extraction step and goes straight to storage.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -70,19 +58,12 @@ If you've already extracted structured content, send it directly. This skips the
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POST https://api.engram.weaviate.io/v1/memories \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": {
-      "type": "pre_extracted",
-      "content": "User prefers dark mode"
-    },
-    "user_id": "user-uuid",
-    "group": "default"
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START StorePreExtracted"
+  endMarker="# END StorePreExtracted"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -91,7 +72,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
 
 Send a multi-turn conversation and let Engram extract memories from the full exchange.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -104,36 +85,12 @@ Send a multi-turn conversation and let Engram extract memories from the full exc
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X POST https://api.engram.weaviate.io/v1/memories \
-  -H "Authorization: Bearer $ENGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": {
-      "type": "conversation",
-      "conversation": {
-        "id": "conversation-uuid",
-        "messages": [
-          {
-            "role": "user",
-            "content": "I just moved to Berlin and I am looking for a good coffee shop."
-          },
-          {
-            "role": "assistant",
-            "content": "Welcome to Berlin! Here are some popular coffee shops in the city..."
-          },
-          {
-            "role": "user",
-            "content": "I prefer specialty coffee, not chains."
-          }
-        ]
-      }
-    },
-    "user_id": "user-uuid",
-    "conversation_id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
-    "group": "default"
-  }'
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START StoreConversation"
+  endMarker="# END StoreConversation"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>

@@ -44,7 +44,7 @@ Initialize the Engram client with your API key. The `user_id` parameter scopes a
 
 Create a helper function that sends messages to your LLM provider and returns the response. This function accepts a `system_prompt` parameter — you'll use it later to inject memory context.
 
-<Tabs groupId="providers">
+<Tabs className="code" groupId="providers">
 <TabItem value="anthropic" label="Anthropic">
 
 <FilteredTextBlock
@@ -102,7 +102,7 @@ Here's the complete script that ties everything together. Each iteration of the 
 3. Sends the message to the LLM with memory-augmented context
 4. Stores the new exchange as a memory for future retrieval
 
-<Tabs groupId="providers">
+<Tabs className="code" groupId="providers">
 <TabItem value="anthropic" label="Anthropic">
 
 <FilteredTextBlock

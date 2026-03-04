@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/manage_memories.py';
+import CurlCode from '!!raw-loader!../_includes/manage_memories.sh';
 
 You can retrieve and delete individual memories using their ID.
 
@@ -15,7 +16,7 @@ You can retrieve and delete individual memories using their ID.
 
 Retrieve a single memory by its ID.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -28,10 +29,12 @@ Retrieve a single memory by its ID.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl https://api.engram.weaviate.io/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
-  -H "Authorization: Bearer $ENGRAM_API_KEY"
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START GetMemory"
+  endMarker="# END GetMemory"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>
@@ -51,14 +54,11 @@ curl https://api.engram.weaviate.io/v1/memories/{id}?user_id={user-uuid}&group={
   "id": "memory-uuid",
   "project_id": "project-uuid",
   "user_id": "user-uuid",
-  "conversation_id": null,
-  "content": "The user prefers dark mode",
-  "topic": "user_facts",
+  "content": "The user prefers dark mode.",
+  "topic": "preferences",
   "group": "default",
-  "tags": ["preference", "ui"],
   "created_at": "2025-01-01T00:00:00Z",
-  "updated_at": "2025-01-01T00:00:00Z",
-  "score": null
+  "updated_at": "2025-01-01T00:00:00Z"
 }
 ```
 
@@ -66,7 +66,7 @@ curl https://api.engram.weaviate.io/v1/memories/{id}?user_id={user-uuid}&group={
 
 Remove a memory permanently by its ID.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -79,10 +79,12 @@ Remove a memory permanently by its ID.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash
-curl -X DELETE https://api.engram.weaviate.io/v1/memories/{id}?user_id={user-uuid}&group={group-name} \
-  -H "Authorization: Bearer $ENGRAM_API_KEY"
-```
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START DeleteMemory"
+  endMarker="# END DeleteMemory"
+  language="bash"
+/>
 
 </TabItem>
 </Tabs>

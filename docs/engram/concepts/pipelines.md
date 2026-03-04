@@ -4,7 +4,13 @@ sidebar_position: 6
 description: "Engram's async processing pipelines: extract, transform, and commit steps, plus run tracking."
 ---
 
-When you send content to Engram, it runs through an asynchronous pipeline that extracts, transforms, and commits memories. Pipelines are defined as a directed acyclic graph (DAG) of steps.
+When you send content to Engram, it runs through an asynchronous pipeline that extracts, transforms, and commits memories. Pipelines are defined as a directed acyclic graph (DAG) of steps. 
+
+:::info Pipeline configuration
+
+Pipelines will be configurable in the future.
+
+:::
 
 ## Pipeline steps
 
