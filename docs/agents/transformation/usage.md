@@ -65,7 +65,7 @@ Install the client library using the following command:
 <TabItem value="py_agents" label="Python">
 
 ```shell
-pip install -U weaviate-client[agents]
+pip install -U "weaviate-client[agents]"
 ```
 
 #### Troubleshooting: Force `pip` to install the latest version

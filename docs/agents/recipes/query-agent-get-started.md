@@ -6,8 +6,9 @@ title: "Build A Weaviate Query Agent - The E-Commerce Assistant"
 featured: True
 integration: False
 agent: True
-tags: ['Query Agent']
+tags: ["Query Agent"]
 ---
+
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/query-agent-get-started.ipynb" target="_blank">
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
@@ -29,6 +30,7 @@ Additionally, we also have access to some other unrelated datasets which you can
 ## 1. Setting Up Weaviate & Importing Data
 
 To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
+
 1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters)
 2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
 3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
@@ -36,7 +38,7 @@ To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://weavia
 > Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
 
 ```python
-!pip install weaviate-client[agents] datasets
+!pip install "weaviate-client[agents]" datasets
 ```
 
 ```python
@@ -154,6 +156,7 @@ with financial_collection.batch.dynamic() as batch:
 ## 2. Set Up the Query Agent
 
 When setting up the query agent, we have to provide it a few things:
+
 - The `client`
 - The `collection` which we want the agent to have access to.
 - (Optionally) A `system_prompt` that describes how our agent should behave
@@ -174,10 +177,11 @@ agent = QueryAgent(
 When we run the agent, it will first make a few decisions, depending on the query:
 
 1. The agent will decide which collection or collections to look up an answer in.
-2. The agent will also decide whether to perform a regular ***search query***, what ***filters*** to use, whether to do an ***aggregation query***, or all of them together!
+2. The agent will also decide whether to perform a regular **_search query_**, what **_filters_** to use, whether to do an **_aggregation query_**, or all of them together!
 3. It will then provide a reponse within **`QueryAgentResponse`**. We will use the `print_query_agent_response` function for a nice display of various information provided in the response object.
 
 ### Ask a Question
+
 **Let's start with a simple question: "I like the vintage clothes, can you list me some options that are less than &#36;200?"**
 
 We can then also inspect how the agent responded, what kind of searches it performed on which collections, whether it has identified if the final answer is missing information or not, as well as the final answer 👇
@@ -267,9 +271,6 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-
-
-
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬──────┐
 │ LLM Requests:  │ 3    │
@@ -356,9 +357,6 @@ print_query_agent_response(new_response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-
-
-
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬───────┐
 │ LLM Requests:  │ 4     │
@@ -407,9 +405,6 @@ print_query_agent_response(response)
 │ )                                                                                                               │
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
-
-
-
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬──────┐
@@ -513,9 +508,6 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-
-
-
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬───────┐
 │ LLM Requests:  │ 5     │
@@ -548,9 +540,11 @@ print(response.final_answer)
 ```
 
 Python output:
+
 ```text
 Les vitesses de vent minimales, maximales et moyennes sont respectivement de 8,40 km/h, 94,88 km/h et 49,37 km/h. Ces données offrent une vue d'ensemble des conditions de vent typiques mesurées dans une période ou un lieu donné.
 ```
+
 ### Try More Questions
 
 For example Let's try to find out more about the brans "Eko & Stitch"
@@ -562,9 +556,11 @@ print(response.final_answer)
 ```
 
 Python output:
+
 ```text
 Yes, Eko & Stitch has a branch in the UK. The brand is part of the broader company Nova Nest, which serves as Eko & Stitch's parent brand. Eko & Stitch itself operates in the UK and has its child brands, Eko & Stitch Active and Eko & Stitch Kids, also within the UK.
 ```
+
 Our `multi_lingual_agent` also has access to a collection called "Financial_contracts". Let's try to find out some more information about this dataser.
 
 ```python
@@ -574,6 +570,7 @@ print(response.final_answer)
 ```
 
 Python output:
+
 ```text
 The query seeks to identify the types of contracts listed and determine the most common type. Among the types of contracts provided in the results, the following were identified: employment contracts, sales agreements, invoice contracts, service agreements, and lease agreements. The most common type of contract found in the search results is the employment contract. However, when considering data from both search and aggregation results, the aggregation reveals that the invoice contract is the most common, followed by service agreements and lease agreements. While employment contracts appear frequently in the search results, they rank fourth in the aggregation data in terms of overall occurrences.
 ```

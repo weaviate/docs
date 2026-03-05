@@ -83,7 +83,7 @@ ports:
 You can install the Weaviate client library with the optional agents extras to use [Weaviate Agents](../../../agents/index.md). Install the client library using the following command:
 
 ```bash
-pip install -U weaviate-client[agents]
+pip install -U "weaviate-client[agents]"
 ```
 
 ## Get started
@@ -362,6 +362,7 @@ Use `ReferenceToMulti` for multi-target references.
       # highlight-end
   )
   ```
+
   - `vector_index_type` parameter has been removed.
 - `vectorize_class_name` parameter in the `Property` constructor method is `vectorize_collection_name`.
 - `[collection].data.update()` / `.replace()` \*args order changed, aiming to accommodate not providing properties when updating.
@@ -389,11 +390,9 @@ import CodeExamples from "/_includes/clients/code-examples.mdx";
 
 <CodeExamples />
 
-import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+import AcademyAdmonition from "@site/src/components/AcademyAdmonition";
 
-<AcademyAdmonition 
-  courseId="fast-api-weaviate-rag"
-/>
+<AcademyAdmonition courseId="fast-api-weaviate-rag" />
 
 ## Questions and feedback
 
