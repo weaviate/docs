@@ -151,14 +151,17 @@ print(result)
 # ==============================================
 
 # START CancelRestore
-result = client.backup.cancel(
-    backup_id="my-very-first-backup",
-    backend="filesystem",
-    backup_location=BackupLocation.FileSystem(path="/tmp/weaviate-backups"),  # Required if a non-default location was used at creation
-    operation="restore",
-)
+try:
+    result = client.backup.cancel(
+        backup_id="my-very-first-backup",
+        backend="filesystem",
+        backup_location=BackupLocation.FileSystem(path="/tmp/weaviate-backups"),  # Required if a non-default location was used at creation
+        operation="restore",
+    )
 
-print(result)
+    print(result)
+except Exception:
+    print("Restore already completed, nothing to cancel")
 # END CancelRestore
 
 client.close()

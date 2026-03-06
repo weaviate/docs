@@ -27,7 +27,7 @@ const response = await movies.generate.nearText(
   {
     groupedTask: 'Write a tweet with emojis about this movie.',
     config: generativeParameters.anthropic({
-      model: "claude-3-5-haiku-latest",
+      model: "claude-haiku-4-5",
     }),
   },
   {

@@ -38,7 +38,7 @@ public class QuickstartCreate {
     // Step 1.2: Create a collection
     Map<String, Object> moduleConfig = new HashMap<>();
     Map<String, Object> generativeAnthropicSettings = new HashMap<>();
-    generativeAnthropicSettings.put("model", new String[]{"claude-3-5-haiku-latest"});
+    generativeAnthropicSettings.put("model", new String[]{"claude-haiku-4-5"});
     moduleConfig.put("generative-anthropic", generativeAnthropicSettings);
     
     // highlight-start

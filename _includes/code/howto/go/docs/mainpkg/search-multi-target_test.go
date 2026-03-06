@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/weaviate/weaviate-go-client/v5/weaviate/graphql"
+	"github.com/weaviate/weaviate/entities/models"
 )
 
 // ========================
@@ -82,7 +83,7 @@ func TestMultiTargetNearVector(t *testing.T) {
 				{Name: "distance"},
 			},
 		}).
-		WithNearVector(client.GraphQL().NearVectorArgBuilder().WithVectorPerTarget(map[string][]float32{"jeopardy_questions_vector": v1, "jeopardy_answers_vector": v2})).
+		WithNearVector(client.GraphQL().NearVectorArgBuilder().WithVectorPerTarget(map[string]models.Vector{"jeopardy_questions_vector": v1, "jeopardy_answers_vector": v2})).
 		WithLimit(2).
 		Do(ctx)
 	// END MultiTargetNearVector Go

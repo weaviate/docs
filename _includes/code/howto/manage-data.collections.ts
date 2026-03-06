@@ -720,10 +720,10 @@ await client.collections.create({
 // END AllReplicationSettings
 
 // START UpdateReplicationSettings
-const article = client.collections.use('Article')
+const articleReplication = client.collections.use('Article')
 
 // highlight-start
-await article.config.update({
+await articleReplication.config.update({
   replication: reconfigure.replication({
     asyncConfig: {
       maxWorkers: 10,

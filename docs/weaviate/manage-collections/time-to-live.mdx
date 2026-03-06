@@ -12,8 +12,6 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.ttl.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.ttl.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageDataTTLTest.java";
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageDataTTLTest.cs";
-
 import TtlStatus from '/_includes/feature-notes/ttl-status.mdx';
 
 <TtlStatus/>
@@ -61,14 +59,14 @@ Set a TTL to count forward from the object's creation time metadata. The value m
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C#">
+  <!-- <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START TTLByCreationTime"
       endMarker="// END TTLByCreationTime"
       language="csharp"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 ## Relative to a last update time
@@ -100,14 +98,14 @@ Set a TTL to count forward from the object's last updated time metadata. The val
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C#">
+  <!-- <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START TTLByUpdateTime"
       endMarker="// END TTLByUpdateTime"
       language="csharp"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 ## Relative to a specific DATE property
@@ -139,14 +137,14 @@ Set a TTL to a relative value from a specific `DATE` property within the object.
       language="java"
     />
   </TabItem>
-  <TabItem value="csharp" label="C#">
+  <!-- <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START TTLByDateProperty"
       endMarker="// END TTLByDateProperty"
       language="csharp"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 ## Further resources
