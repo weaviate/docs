@@ -1,0 +1,62 @@
+name: Docs Indexability Tests
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # Run every Sunday at 22:00 UTC
+    - cron: "0 22 * * 0"
+  push:
+    branches:
+      - testing-ci
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: "3.10"
+
+jobs:
+  test-indexability:
+    name: Test Indexability
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run HTML structure tests
+        id: html-tests
+        continue-on-error: true
+        run: |
+          echo "Running HTML indexability tests..."
+          uv run pytest -m "indexability" -v --tb=short --junitxml=pytest-results.xml
+
+      - name: Run agent tests
+        id: agent-tests
+        continue-on-error: true
+        if: env.ANTHROPIC_API_KEY != '' && env.OPENAI_API_KEY != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Running agent indexability tests..."
+          uv run pytest -m "indexability_agents" -v --tb=short --junitxml=pytest-results-agents.xml
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.html-tests.outcome }}
+          test-type: 'Indexability'
+          languages-tested: 'HTML + Claude + ChatGPT'
+          artifact-name: 'test-results-indexability'
+          slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
