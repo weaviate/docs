@@ -61,6 +61,20 @@ const config = {
       },
     ],
     [
+      "@scalar/docusaurus",
+      {
+        id: "engram-api",
+        label: "",
+        route: "/engram/api/rest",
+        configuration: {
+          spec: {
+            url: "/specs/engram-openapi.json",
+          },
+          hideModels: true,
+        },
+      },
+    ],
+    [
       "@signalwire/docusaurus-plugin-llms-txt",
       {
         siteTitle: "Weaviate Documentation",
@@ -213,7 +227,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ["java", "csharp"],
+        additionalLanguages: ["java", "csharp", "bash"],
       },
       docs: {
         sidebar: {

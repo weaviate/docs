@@ -33,6 +33,13 @@ const LANGUAGE_CONFIG = {
   shell: { label: "Shell", icon: null },
 };
 
+// Predefined docs URL overrides by product name
+const DOCS_URL_PRESETS = {
+  engram: {
+    py: "https://github.com/weaviate/engram-python-sdk",
+  },
+};
+
 // Context for sharing selected language across all code dropdowns
 const CodeLanguageContext = React.createContext();
 
@@ -117,6 +124,7 @@ const CodeDropdownTabs = ({
   groupId,
   defaultValue,
   values,
+  docsUrl,
   ...props
 }) => {
   // Get tab values and labels from children
@@ -244,6 +252,8 @@ const CodeDropdownTabs = ({
   }
 
   const docSystem = DOC_SYSTEMS[selectedValue];
+  const resolvedDocsUrl = typeof docsUrl === "string" ? DOCS_URL_PRESETS[docsUrl] : docsUrl;
+  const overrideDocsUrl = resolvedDocsUrl && resolvedDocsUrl[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const params = new URLSearchParams({
     template: "doc_feedback.yml",
@@ -264,10 +274,10 @@ const CodeDropdownTabs = ({
           />
         </div>
 
-        {docSystem?.baseUrl && (
+        {(overrideDocsUrl || docSystem?.baseUrl) && (
           <div className={styles.rightSection}>
             <a
-              href={docSystem.baseUrl}
+              href={overrideDocsUrl || docSystem.baseUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.apiDocsLink}
