@@ -60,7 +60,6 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
       }
     },
     "user_id": "user-uuid",
-    "conversation_id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
     "group": "default"
   }'
 # END StoreConversation
@@ -179,7 +178,7 @@ curl -s -X POST "$BASE_URL/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query": "user", "user_id": "'"$USER_ID"'", "group": "default", "retrieval_config": {"retrieval_type": "hybrid", "limit": 100}}' \
-  | jq -r '.memories[]? | (.Body.id // .id) // empty' | while read -r MID; do
+  | jq -r '.memories[]? | .id // empty' | while read -r MID; do
     curl -s -X DELETE "$BASE_URL/v1/memories/$MID?user_id=$USER_ID&group=default" \
       -H "Authorization: Bearer $ENGRAM_API_KEY" > /dev/null
   done

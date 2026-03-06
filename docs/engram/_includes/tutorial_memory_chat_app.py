@@ -103,14 +103,13 @@ conversation = [
 run = client.memories.add(
     conversation,
     user_id=user_id,
-    group="default",
 )
 
-status = client.runs.wait(run.run_id)
-print(f"Run status: {status.status}")
-print(f"Memories created: {len(status.memories_created)}")
+print(f"Run ID: {run.run_id}")
+print(f"Status: {run.status}")
 # END StoreConversation
 
+status = client.runs.wait(run.run_id)
 assert status.status == "completed"
 
 import time
@@ -198,13 +197,11 @@ Use these memories to personalize your responses."""
         conversation_history.append({"role": "assistant", "content": assistant_message})
         print(f"Assistant: {assistant_message}\n")
 
-        # Store the conversation turn as a memory
-        run = engram.memories.add(
+        # Store the conversation turn as a memory (fire-and-forget)
+        engram.memories.add(
             [conversation_history[-2], conversation_history[-1]],
             user_id=user_id,
-            group="default",
         )
-        engram.runs.wait(run.run_id)
 
     engram.close()
 
@@ -259,13 +256,11 @@ Use these memories to personalize your responses."""
         conversation_history.append({"role": "assistant", "content": assistant_message})
         print(f"Assistant: {assistant_message}\n")
 
-        # Store the conversation turn as a memory
-        run = engram.memories.add(
+        # Store the conversation turn as a memory (fire-and-forget)
+        engram.memories.add(
             [conversation_history[-2], conversation_history[-1]],
             user_id=user_id,
-            group="default",
         )
-        engram.runs.wait(run.run_id)
 
     engram.close()
 
@@ -287,6 +282,9 @@ time.sleep(3)
 with patch("builtins.input", side_effect=["I love hiking in the mountains.", "quit"]):
     memory_chat_loop_anthropic()
 
+# Wait for fire-and-forget memories to be committed
+time.sleep(10)
+
 # Verify the loop stored a memory
 _loop_results = client.memories.search(
     query="hiking mountains",
@@ -307,6 +305,9 @@ with patch(
     "builtins.input", side_effect=["I enjoy reading science fiction books.", "quit"]
 ):
     memory_chat_loop_openai()
+
+# Wait for fire-and-forget memories to be committed
+time.sleep(10)
 
 _loop_results_oai = client.memories.search(
     query="science fiction books",

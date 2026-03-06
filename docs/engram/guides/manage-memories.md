@@ -55,7 +55,7 @@ Retrieve a single memory by its ID.
   "project_id": "project-uuid",
   "user_id": "user-uuid",
   "content": "The user prefers dark mode.",
-  "topic": "preferences",
+  "topic": "UserKnowledge",
   "group": "default",
   "created_at": "2025-01-01T00:00:00Z",
   "updated_at": "2025-01-01T00:00:00Z"

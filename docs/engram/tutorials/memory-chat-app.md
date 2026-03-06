@@ -78,7 +78,9 @@ After each conversation, send the messages to Engram. The pipeline extracts disc
   language="py"
 />
 
-`memories.add()` accepts a list of message dicts with `role` and `content` keys — the same format used by Anthropic and OpenAI. The call returns a `run_id` for tracking the asynchronous pipeline. `runs.wait()` blocks until processing completes.
+`memories.add()` accepts a list of message dicts with `role` and `content` keys — the same format used by Anthropic and OpenAI. The call returns immediately with a `run_id` — there's no need to wait for the pipeline to complete before continuing. Memories are eventually consistent and will be available for search once processing finishes.
+
+This is fine in practice because memories are most useful across sessions or from much earlier in a conversation. The most recent messages are still in the LLM's context window, so you don't need to wait for them to be stored as memories before generating the next response.
 
 ## Step 4: Retrieve relevant memories
 

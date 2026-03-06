@@ -42,7 +42,9 @@ Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud c
 
 You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
 
-The template provides you with a default [group](concepts/groups.md) called `personalization` and a default [topic](concepts/topics.md) called `preferences` (description: *"Stable user preferences, defaults, and behavioral patterns"*). This is enough to get started.
+The template provides you with a default [group](concepts/groups.md) called `personalization` and a default [topic](concepts/topics.md) called `UserKnowledge` (description: *"Anything relating to the user personally: their personal details (name, age, interpersonal relationships, etc.), their preferences, what they've done or plan to do, etc., i.e., any generic information about the user."*). This is enough to get started.
+
+The template also lets you optionally add a `ConversationSummary` topic, which maintains a single summary for each conversation ID containing the entire history of that conversation. Enabling this option makes `conversation_id` required when adding memories, which is why it's disabled by default.
 
 <details>
 
@@ -52,7 +54,7 @@ Here are the key concepts:
 
 - **[Topics](concepts/topics.md)** — Named categories that control what kinds of information Engram extracts. The topic's description guides the LLM during extraction.
 - **[Groups](concepts/groups.md)** — Containers of topics. Each group maps to a use case (e.g. personalization, continual learning).
-- **[Scopes](concepts/scopes.md)** — Control who memories belong to. The default topic `preferences` is user-scoped, meaning you must provide a `user_id` so each user's memories stay separate.
+- **[Scopes](concepts/scopes.md)** — Control who memories belong to. The default topic `UserKnowledge` is user-scoped, meaning you must provide a `user_id` so each user's memories stay separate.
 
 Visit the [concepts section](concepts/index.md) to learn more about how these work together.
 
@@ -231,30 +233,26 @@ Search for relevant memories using a natural language query.
 {
   "memories": [
     {
-      "Body": {
-        "id": "memory-uuid",
-        "project_id": "project-uuid",
-        "user_id": "user-uuid",
-        "content": "The user prefers dark mode.",
-        "topic": "preferences",
-        "group": "default",
-        "created_at": "2025-01-01T00:00:01Z",
-        "updated_at": "2025-01-01T00:00:01Z",
-        "score": 1
-      }
+      "id": "memory-uuid",
+      "project_id": "project-uuid",
+      "user_id": "user-uuid",
+      "content": "The user prefers dark mode.",
+      "topic": "UserKnowledge",
+      "group": "default",
+      "created_at": "2025-01-01T00:00:01Z",
+      "updated_at": "2025-01-01T00:00:01Z",
+      "score": 1
     },
     {
-      "Body": {
-        "id": "memory-uuid-2",
-        "project_id": "project-uuid",
-        "user_id": "user-uuid",
-        "content": "The user uses VS Code as their primary editor.",
-        "topic": "preferences",
-        "group": "default",
-        "created_at": "2025-01-01T00:00:01Z",
-        "updated_at": "2025-01-01T00:00:01Z",
-        "score": 1
-      }
+      "id": "memory-uuid-2",
+      "project_id": "project-uuid",
+      "user_id": "user-uuid",
+      "content": "The user uses VS Code as their primary editor.",
+      "topic": "UserKnowledge",
+      "group": "default",
+      "created_at": "2025-01-01T00:00:01Z",
+      "updated_at": "2025-01-01T00:00:01Z",
+      "score": 1
     }
   ],
   "total": 2

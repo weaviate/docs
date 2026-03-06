@@ -10,7 +10,7 @@ A memory is a discrete piece of information stored in Engram. Each memory has:
 |-------|-------------|
 | `id` | Unique identifier for the memory |
 | `content` | The text of the memory (e.g. "The user prefers dark mode") |
-| [`topic`](topics.md) | The category it belongs to (e.g. `preferences`) |
+| [`topic`](topics.md) | The category it belongs to (e.g. `UserKnowledge`) |
 | [`group`](groups.md) | The memory group that defines how it was processed |
 | `project_id` | The project this memory belongs to |
 | [`user_id`](scopes.md) | The user this memory is scoped to (if user-scoped) |

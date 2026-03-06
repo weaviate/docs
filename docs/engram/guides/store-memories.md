@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/store_memories.py';
 import CurlCode from '!!raw-loader!../_includes/store_memories.sh';
 
-Engram supports three [content types](../concepts/input-data-types.md) for storing memories. Each triggers a different extraction [pipeline](../concepts/pipelines.md).
+Engram supports three [content types](../concepts/input-data-types.md) for storing memories. Each content type is a different entrypoint into the same [pipeline](../concepts/pipelines.md).
 
 ## String content
 
@@ -120,7 +120,7 @@ A successful response means the pipeline has started, not that the memories have
 | `root` | string | Pipeline root name (for advanced pipeline configurations) |
 
 :::info
-Which parameters are required depends on the topic's scoping configuration. If a topic is user-scoped, you must include `user_id`. If a topic is conversation-scoped, you must include `conversation_id` when storing (it is optional when searching).
+Which parameters are required depends on the topic's [scoping](../concepts/scopes.md) configuration, not the content type. If a topic is user-scoped, you must include `user_id`. If a topic is conversation-scoped, you must include `conversation_id` when storing (it is optional when searching). These scoping parameters apply equally to all three content types — for example, you can include `conversation_id` with string content, or omit it with conversation content, depending on the topic configuration.
 :::
 
 ## Questions and feedback

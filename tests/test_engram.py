@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 @pytest.mark.engram
+@pytest.mark.engram_python
 @pytest.mark.parametrize(
     "script_loc",
     [

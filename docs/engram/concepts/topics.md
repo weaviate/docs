@@ -35,10 +35,10 @@ At search time, you can restrict results to specific topics. Searching with `top
 
 A **coding assistant** might use topics differently:
 
-- `"preferences"` — *"The user's editor, theme, and tooling preferences"*
+- `"UserKnowledge"` — *"Anything relating to the user personally: their personal details, preferences, what they've done or plan to do"*
 - `"tech_stack"` — *"Programming languages, frameworks, and libraries the user works with"*
 
-This lets the assistant retrieve just the user's tech stack when helping with a code review, or just their preferences when configuring a new environment.
+This lets the assistant retrieve just the user's tech stack when helping with a code review, or just their personal context when configuring a new environment.
 
 ## Questions and feedback
 

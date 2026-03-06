@@ -71,7 +71,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "user preferences",
-    "topics": ["preferences"],
+    "topics": ["UserKnowledge"],
     "user_id": "user-uuid",
     "group": "default",
     "retrieval_config": {
@@ -168,9 +168,8 @@ COUNT=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
 [ "$COUNT" -ge 1 ] || { echo "FAIL: hybrid search returned 0 results"; exit 1; }
 echo "Hybrid search: $COUNT results"
 
-# Test topic filter search — topic name comes from Engram's extraction (e.g. "preferences")
-# First find what topics exist
-TOPICS=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
+# Test topic filter search — dynamically discover topic name from existing memories
+TOPIC_RESPONSE=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -178,8 +177,8 @@ TOPICS=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
     "user_id": "'"$USER_ID"'",
     "group": "default",
     "retrieval_config": {"retrieval_type": "hybrid", "limit": 5}
-  }' | jq -r '[.memories[].Body.topic] | unique | .[]' 2>/dev/null)
-FIRST_TOPIC=$(echo "$TOPICS" | head -1)
+  }')
+FIRST_TOPIC=$(echo "$TOPIC_RESPONSE" | jq -r '.memories[0].topic // empty' 2>/dev/null)
 if [ -n "$FIRST_TOPIC" ]; then
   COUNT=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
     -H "Authorization: Bearer $ENGRAM_API_KEY" \
@@ -202,7 +201,7 @@ curl -s -X POST "$BASE_URL/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query": "user", "user_id": "'"$USER_ID"'", "group": "default", "retrieval_config": {"retrieval_type": "hybrid", "limit": 100}}' \
-  | jq -r '.memories[]? | (.Body.id // .id) // empty' | while read -r MID; do
+  | jq -r '.memories[]? | .id // empty' | while read -r MID; do
     curl -s -X DELETE "$BASE_URL/v1/memories/$MID?user_id=$USER_ID&group=default" \
       -H "Authorization: Bearer $ENGRAM_API_KEY" > /dev/null
   done

@@ -70,7 +70,6 @@ run = client.memories.add(
         {"role": "user", "content": "I prefer specialty coffee, not chains."},
     ],
     user_id=test_user_id,
-    conversation_id=str(uuid.uuid4()),
     group="default",
 )
 

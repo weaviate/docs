@@ -13,7 +13,7 @@ Use Engram to give your agents persistent memory that they can write to and sear
 
 - **Automatic memory extraction** — Send raw text, pre-extracted facts, or full conversations. Engram's [pipeline](concepts/pipelines.md) extracts and stores structured [memories](concepts/memories.md) automatically.
 - **Semantic search** — Find relevant memories using vector similarity, BM25 keyword search, or [hybrid retrieval](concepts/search.md).
-- **Scoped memory** — Organize memories by project, user, and conversation. [Topics](concepts/topics.md) let you categorize memories within a [group](concepts/groups.md) (e.g. `user_facts`, `preferences`).
+- **Scoped memory** — Organize memories by project, user, and conversation. [Topics](concepts/topics.md) let you categorize memories within a [group](concepts/groups.md) (e.g. `UserKnowledge`, `ConversationSummary`).
 - **Async processing** — Memory storage runs asynchronously through a pipeline. Poll [run status](guides/check-run-status.md) to track when memories are committed.
 
 ## How it works

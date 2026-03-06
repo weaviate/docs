@@ -104,7 +104,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/CountRunsResponseBody.json"
+              "https://api.engram.weaviate.io/v1/schemas/CountRunsResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -133,7 +133,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/CreateMemoryRequest.json"
+              "https://api.engram.weaviate.io/v1/schemas/CreateMemoryRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -144,7 +144,7 @@
             "description": "The content to process. Accepts raw text, pre-extracted facts, or a multi-turn conversation."
           },
           "conversation_id": {
-            "description": "Conversation ID to scope this memory to. Required when the topic is conversation-scoped.",
+            "description": "Conversation ID to scope this memory to. Must be a valid UUID. Required when the topic is conversation-scoped.",
             "type": "string"
           },
           "group": {
@@ -156,7 +156,7 @@
             "type": "string"
           },
           "user_id": {
-            "description": "User ID to scope this memory to. Required when the topic is user-scoped.",
+            "description": "User ID (case-insensitive) to scope this memory to. Required when the topic is user-scoped. A new user is created automatically if the ID does not exist.",
             "type": "string"
           }
         },
@@ -188,7 +188,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/ErrorModel.json"
+              "https://api.engram.weaviate.io/v1/schemas/ErrorModel.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -276,59 +276,13 @@
         ],
         "type": "object"
       },
-      "MemoriesListResponseBody": {
+      "Memory": {
         "additionalProperties": false,
         "properties": {
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/MemoriesListResponseBody.json"
-            ],
-            "format": "uri",
-            "readOnly": true,
-            "type": "string"
-          },
-          "memories": {
-            "description": "The list of memories.",
-            "items": {
-              "$ref": "#/components/schemas/MemoryResponse"
-            },
-            "type": [
-              "array",
-              "null"
-            ]
-          },
-          "total": {
-            "description": "Total number of memories returned.",
-            "format": "int64",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "memories",
-          "total"
-        ],
-        "type": "object"
-      },
-      "MemoryResponse": {
-        "additionalProperties": false,
-        "properties": {
-          "Body": {
-            "$ref": "#/components/schemas/MemoryResponseBody"
-          }
-        },
-        "required": [
-          "Body"
-        ],
-        "type": "object"
-      },
-      "MemoryResponseBody": {
-        "additionalProperties": false,
-        "properties": {
-          "$schema": {
-            "description": "A URL to the JSON Schema for this object.",
-            "examples": [
-              "https://api.engram.weaviate.io/schemas/MemoryResponseBody.json"
+              "https://api.engram.weaviate.io/v1/schemas/Memory.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -389,6 +343,40 @@
         ],
         "type": "object"
       },
+      "MemoryList": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://api.engram.weaviate.io/v1/schemas/MemoryList.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "memories": {
+            "description": "The list of memories.",
+            "items": {
+              "$ref": "#/components/schemas/Memory"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "total": {
+            "description": "Total number of memories returned.",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "memories",
+          "total"
+        ],
+        "type": "object"
+      },
       "MessageInput": {
         "additionalProperties": false,
         "properties": {
@@ -439,18 +427,17 @@
           }
         },
         "required": [
-          "retrieval_type",
-          "limit"
+          "retrieval_type"
         ],
         "type": "object"
       },
-      "RunOutputResponseBody": {
+      "RunOutput": {
         "additionalProperties": false,
         "properties": {
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/RunOutputResponseBody.json"
+              "https://api.engram.weaviate.io/v1/schemas/RunOutput.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -481,7 +468,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/RunStatusResponseBody.json"
+              "https://api.engram.weaviate.io/v1/schemas/RunStatusResponseBody.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -548,14 +535,14 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/schemas/SearchMemoriesRequest.json"
+              "https://api.engram.weaviate.io/v1/schemas/SearchMemoriesRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
             "type": "string"
           },
           "conversation_id": {
-            "description": "Conversation ID to filter results by. Required when searching conversation-scoped topics.",
+            "description": "Conversation ID to filter results by. Must be a valid UUID. Required when searching conversation-scoped topics.",
             "type": "string"
           },
           "group": {
@@ -569,7 +556,7 @@
           },
           "retrieval_config": {
             "$ref": "#/components/schemas/RetrievalConfigDTO",
-            "description": "Controls the search method and result limit."
+            "description": "Controls the search method and result limit. Defaults to hybrid search with a limit of 10."
           },
           "topics": {
             "description": "Topic names to search. Defaults to all topics in the group.",
@@ -582,13 +569,12 @@
             ]
           },
           "user_id": {
-            "description": "User ID to filter results by. Required when searching user-scoped topics.",
+            "description": "User ID (case-insensitive) to filter results by. Required when searching user-scoped topics.",
             "type": "string"
           }
         },
         "required": [
-          "query",
-          "retrieval_config"
+          "query"
         ],
         "type": "object"
       },
@@ -613,7 +599,7 @@
     }
   },
   "info": {
-    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nYour base URL is always:\n\n```\nhttps://api.engram.weaviate.io\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
+    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nThe base URL for all projects is:\n\n```\nhttps://api.engram.weaviate.io/v1/\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
     "title": "Engram API",
     "version": "1.0.0"
   },
@@ -645,22 +631,22 @@
             }
           },
           {
-            "description": "Filter by user name (enables user-scoped topics)",
+            "description": "Filter by user ID (enables user-scoped topics)",
             "explode": false,
             "in": "query",
             "name": "user_id",
             "schema": {
-              "description": "Filter by user name (enables user-scoped topics)",
+              "description": "Filter by user ID (enables user-scoped topics)",
               "type": "string"
             }
           },
           {
-            "description": "Filter by conversation UUID",
+            "description": "Filter by conversation ID. Must be a valid UUID.",
             "explode": false,
             "in": "query",
             "name": "conversation_id",
             "schema": {
-              "description": "Filter by conversation UUID",
+              "description": "Filter by conversation ID. Must be a valid UUID.",
               "format": "uuid",
               "type": "string"
             }
@@ -685,7 +671,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MemoriesListResponseBody"
+                  "$ref": "#/components/schemas/MemoryList"
                 }
               }
             },
@@ -725,7 +711,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RunOutputResponseBody"
+                  "$ref": "#/components/schemas/RunOutput"
                 }
               }
             },
@@ -767,7 +753,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MemoriesListResponseBody"
+                  "$ref": "#/components/schemas/MemoryList"
                 }
               }
             },
@@ -796,12 +782,12 @@
         "operationId": "delete-memory",
         "parameters": [
           {
-            "description": "Memory ID",
+            "description": "Memory ID. Must be a valid UUID.",
             "in": "path",
             "name": "id",
             "required": true,
             "schema": {
-              "description": "Memory ID",
+              "description": "Memory ID. Must be a valid UUID.",
               "format": "uuid",
               "type": "string"
             }
@@ -852,12 +838,12 @@
         "operationId": "get-memory",
         "parameters": [
           {
-            "description": "Memory ID",
+            "description": "Memory ID. Must be a valid UUID.",
             "in": "path",
             "name": "id",
             "required": true,
             "schema": {
-              "description": "Memory ID",
+              "description": "Memory ID. Must be a valid UUID.",
               "format": "uuid",
               "type": "string"
             }
@@ -888,7 +874,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MemoryResponseBody"
+                  "$ref": "#/components/schemas/Memory"
                 }
               }
             },
@@ -964,12 +950,12 @@
         "operationId": "get-run-status",
         "parameters": [
           {
-            "description": "Pipeline run UUID",
+            "description": "The ID of the pipeline run. Must be a valid UUID.",
             "in": "path",
             "name": "run_id",
             "required": true,
             "schema": {
-              "description": "Pipeline run UUID",
+              "description": "The ID of the pipeline run. Must be a valid UUID.",
               "format": "uuid",
               "type": "string"
             }
@@ -1006,7 +992,7 @@
   },
   "servers": [
     {
-      "url": "https://api.engram.weaviate.io"
+      "url": "https://api.engram.weaviate.io/v1"
     }
   ]
 }

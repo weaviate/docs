@@ -15,7 +15,6 @@ test_user_id = f"test-{uuid.uuid4().hex[:8]}"
 run = client.memories.add(
     "The user prefers dark mode and uses VS Code as their primary editor.",
     user_id=test_user_id,
-    group="default",
 )
 
 print(run.run_id)
@@ -48,7 +47,6 @@ for _retry in range(5):
 results = client.memories.search(
     query="What editor does the user prefer?",
     user_id=test_user_id,
-    group="default",
 )
 
 for memory in results:

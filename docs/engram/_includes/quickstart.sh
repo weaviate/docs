@@ -14,8 +14,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
       "type": "string",
       "content": "The user prefers dark mode and uses VS Code as their primary editor."
     },
-    "user_id": "user-uuid",
-    "group": "default"
+    "user_id": "user-uuid"
   }'
 # END AddMemory
 
@@ -31,7 +30,6 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -d '{
     "query": "What editor does the user prefer?",
     "user_id": "user-uuid",
-    "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",
       "limit": 5
@@ -94,7 +92,7 @@ echo "Search returned $COUNT memories"
 [ "$COUNT" -ge 1 ] || { echo "FAIL: expected at least 1 result"; exit 1; }
 
 # Cleanup
-echo "$RESULTS" | jq -r '.memories[]? | (.Body.id // .id) // empty' | while read -r MID; do
+echo "$RESULTS" | jq -r '.memories[]? | .id // empty' | while read -r MID; do
   curl -s -X DELETE "$BASE_URL/v1/memories/$MID?user_id=$USER_ID&group=default" \
     -H "Authorization: Bearer $ENGRAM_API_KEY" > /dev/null
 done

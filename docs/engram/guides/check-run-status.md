@@ -65,7 +65,7 @@ When you [store memories](store-memories.md), Engram processes them asynchronous
 | Status | Meaning |
 |--------|---------|
 | `running` | Pipeline is actively processing the content |
-| `in_buffer` | Run is queued and waiting to start |
+| `in_buffer` | Run is paused at a buffer step, waiting for a trigger to continue |
 | `completed` | All operations have been committed successfully |
 | `failed` | An error occurred during processing |
 
@@ -98,7 +98,7 @@ If a run fails, the `error` field contains a description of what went wrong.
 ```
 
 :::tip
-For production systems, implement a polling loop that checks the run status at regular intervals (e.g. every 1-2 seconds) until the status is `completed` or `failed`. The Python SDK provides `client.runs.wait(run_id)` which handles polling automatically and blocks until the run completes.
+In most cases, you don't need to poll for completion — memories are eventually consistent and will be available for search once the pipeline finishes. Check the initial response from `memories.add` to catch immediate errors. Use `runs.get` only when you need to confirm that a specific run has completed, such as during testing or debugging.
 :::
 
 ## Questions and feedback

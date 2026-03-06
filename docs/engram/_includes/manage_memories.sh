@@ -55,7 +55,7 @@ MEMORY_ID=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query": "dark mode", "user_id": "'"$USER_ID"'", "group": "default", "retrieval_config": {"retrieval_type": "hybrid", "limit": 5}}' \
-  | jq -r '.memories[0].Body.id // .memories[0].id')
+  | jq -r '.memories[0].id')
 
 [ "$MEMORY_ID" != "null" ] || { echo "FAIL: no memory found to manage"; exit 1; }
 echo "Memory ID: $MEMORY_ID"
@@ -82,7 +82,7 @@ curl -s -X POST "$BASE_URL/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query": "user", "user_id": "'"$USER_ID"'", "group": "default", "retrieval_config": {"retrieval_type": "hybrid", "limit": 100}}' \
-  | jq -r '.memories[]? | (.Body.id // .id) // empty' | while read -r MID; do
+  | jq -r '.memories[]? | .id // empty' | while read -r MID; do
     curl -s -X DELETE "$BASE_URL/v1/memories/$MID?user_id=$USER_ID&group=default" \
       -H "Authorization: Bearer $ENGRAM_API_KEY" > /dev/null
   done

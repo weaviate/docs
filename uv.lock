@@ -1786,19 +1786,19 @@ requires-dist = [
     { name = "weaviate-agents", specifier = ">=1.1.0" },
     { name = "weaviate-client", specifier = ">=4.19.0" },
     { name = "weaviate-demo-datasets", specifier = ">=0.7.0" },
-    { name = "weaviate-engram", specifier = ">=0.2.0" },
+    { name = "weaviate-engram", specifier = ">=0.3.0" },
 ]
 
 [[package]]
 name = "weaviate-engram"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/80/79/699aec87ec79bf27bc330c05cb11f4700bdd41558c44bd19569d1ce59875/weaviate_engram-0.2.0.tar.gz", hash = "sha256:5954a479a94a30203718404d9ea417954a11d1923884cfd4ab36292ac7b2fd99", size = 7529, upload-time = "2026-03-02T18:04:16.896Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/eb/b2/7929e35ac1322fb1709dc2df5fb9350eb6c942b2d68929d2749ee290642e/weaviate_engram-0.3.0.tar.gz", hash = "sha256:fbec6aa42652a821a148c68e28821ea0c01c28cdcb18b789ac6b969577c528a9", size = 7954, upload-time = "2026-03-05T11:20:42.329Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/da/c38b5eaa9d64ba3e1280914d21842268291af0b69e1e388dfa6bf774a4e7/weaviate_engram-0.2.0-py3-none-any.whl", hash = "sha256:e208aaea4243e345773a4b7d42b8844e4808eb7cae3391cacfc50447f133edcc", size = 13165, upload-time = "2026-03-02T18:04:17.842Z" },
+    { url = "https://files.pythonhosted.org/packages/2e/80/41667ee6e1a6299d38a68e0e9a7eee4668baaab29427fd3f5f1557fc88dd/weaviate_engram-0.3.0-py3-none-any.whl", hash = "sha256:f73a31cf1effb6d73fbfcf2effa50063c18a469ddd26f7116f7357c9075ee46c", size = 13584, upload-time = "2026-03-05T11:20:43.259Z" },
 ]
 
 [[package]]

@@ -43,17 +43,15 @@ Provide a query and Engram returns the most relevant memories.
 {
   "memories": [
     {
-      "Body": {
-        "id": "memory-uuid",
-        "project_id": "project-uuid",
-        "user_id": "user-uuid",
-        "content": "The user works primarily in Python.",
-        "topic": "preferences",
-        "group": "default",
-        "created_at": "2025-01-01T00:00:00Z",
-        "updated_at": "2025-01-01T00:00:00Z",
-        "score": 0.89
-      }
+      "id": "memory-uuid",
+      "project_id": "project-uuid",
+      "user_id": "user-uuid",
+      "content": "The user works primarily in Python.",
+      "topic": "UserKnowledge",
+      "group": "default",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z",
+      "score": 0.89
     }
   ],
   "total": 1
