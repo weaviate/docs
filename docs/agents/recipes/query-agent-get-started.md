@@ -36,7 +36,7 @@ To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://weavia
 > Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
 
 ```python
-!pip install weaviate-client[agents] datasets
+!pip install "weaviate-client[agents]" datasets
 ```
 
 ```python
