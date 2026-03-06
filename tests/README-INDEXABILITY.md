@@ -21,7 +21,7 @@ Documentation content that is hidden behind JavaScript interactions (tabs, colla
 
 ### HTML structure tests (Part 1)
 
-These tests fetch ~10 representative pages from all doc sections and check:
+These tests fetch ~11 representative pages from all doc sections and check:
 
 | Test | What it checks |
 |------|---------------|
@@ -29,7 +29,7 @@ These tests fetch ~10 representative pages from all doc sections and check:
 | `test_meta_tags` | `<title>`, `<meta description>`, `og:title`, `og:description` present |
 | `test_heading_hierarchy` | Exactly 1 `<h1>`, content pages have `<h2>`s |
 | `test_tabbed_code_blocks_all_present` | ALL tab panels have content in HTML (not just active tab) |
-| `test_code_blocks_present` | Pages with code have non-empty `<pre><code>` blocks |
+| `test_code_blocks_present` | Pages with code have non-empty `<pre><code>` blocks. For the quickstart page, also verifies the exact vectorizer config line for all 5 languages is present in the HTML. |
 | `test_details_content_present` | `<details>` elements have body content (not lazy-loaded) |
 | `test_images_have_alt_text` | Content images have alt text (excludes decorative SVGs/icons) |
 | `test_llms_txt_accessible` | `/llms.txt` returns 200, has substantial content, mentions Weaviate |
@@ -37,19 +37,23 @@ These tests fetch ~10 representative pages from all doc sections and check:
 
 ### Claude agent tests (Part 2)
 
-Uses Claude Haiku with the `web_fetch` tool to verify Claude can:
+Uses Claude Haiku with the `web_fetch` tool:
 
-- **Fetch quickstart code tabs** — fetches `/weaviate/quickstart` and must extract actual code lines for all 5 languages (Python, TypeScript, Go, Java, C#). Asserts on language-specific code tokens like `near_text` (Python), `nearText` (TS), `NearTextArgBuilder` (Go), etc.
-- Fetch a page with collapsible sections and read the content
-- Fetch `/llms.txt` and identify it as Weaviate documentation
+| Test | What it checks |
+|------|---------------|
+| `test_claude_can_fetch_code_tabs` | Fetches `/weaviate/quickstart` and extracts the exact vectorizer config line for all 5 languages (Python, TypeScript, Go, Java, C#) |
+| `test_claude_can_fetch_collapsible_content` | Fetches `/weaviate/config-refs/collections` and finds `text2vec-contextionary` inside a `<details>` block |
+| `test_claude_can_fetch_llms_txt` | Fetches `/llms.txt` and identifies all 3 top-level sections (`agents`, `cloud`, `weaviate`) plus multi-language code examples |
 
 ### ChatGPT agent tests (Part 3)
 
-Uses GPT-4.1 Mini with the `web_search_preview` tool to verify ChatGPT can:
+Uses GPT-4.1 Mini with the `web_search_preview` tool:
 
-- **Search quickstart code tabs** — searches for `/weaviate/quickstart` and must extract actual code lines for all 5 languages. Uses the same language-specific code token assertions as the Claude test.
-- Search for and read Weaviate Cloud quickstart docs
-- Search for and read Weaviate Agents docs
+| Test | What it checks |
+|------|---------------|
+| `test_chatgpt_can_search_code_tabs` | Finds the quickstart URL, identifies 3+ languages, and checks for vectorizer config lines (requires 3/5) |
+| `test_chatgpt_can_search_collapsible_content` | Finds the config-refs URL and `text2vec-contextionary` from the collapsible JSON block |
+| `test_chatgpt_can_search_llms_txt` | Finds `/llms.txt` URL, identifies all 3 top-level sections (`agents`, `cloud`, `weaviate`), and multi-language code examples |
 
 ## Running the tests
 
@@ -77,10 +81,11 @@ HTML structure tests always run. Agent tests only run if `ANTHROPIC_API_KEY` and
 
 ## Test pages
 
-The suite tests ~10 representative URLs covering all doc sections:
+The suite tests 11 representative URLs covering all doc sections:
 
 | Page | Features tested |
 |------|----------------|
+| `/weaviate/quickstart` | tabs, code (with vectorizer line check) |
 | `/weaviate/manage-collections/collection-operations` | tabs, code, details |
 | `/weaviate/search/similarity` | tabs, code |
 | `/weaviate/search/hybrid` | tabs, code |
@@ -91,6 +96,18 @@ The suite tests ~10 representative URLs covering all doc sections:
 | `/cloud/manage-clusters/create` | images |
 | `/agents/query/tutorial-ecommerce` | code |
 | `/weaviate/search` | landing page |
+
+## Quickstart vectorizer lines
+
+The quickstart page has tabbed code for 5 languages. The tests verify these exact lines are present in the HTML and readable by Claude:
+
+| Language | Vectorizer config line |
+|----------|----------------------|
+| Python | `Configure.Vectors.text2vec_weaviate()` |
+| TypeScript | `vectors.text2VecWeaviate()` |
+| Go | `Vectorizer: "text2vec-weaviate"` |
+| Java | `VectorConfig.text2vecWeaviate()` |
+| C# | `v.Text2VecWeaviate()` |
 
 ## Dependencies
 

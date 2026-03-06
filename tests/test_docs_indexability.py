@@ -25,6 +25,7 @@ BASE_URL = "https://docs.weaviate.io"
 
 # Representative pages with expected features
 TEST_PAGES = [
+    ("/weaviate/quickstart", {"tabs", "code"}),
     ("/weaviate/manage-collections/collection-operations", {"tabs", "code", "details"}),
     ("/weaviate/search/similarity", {"tabs", "code"}),
     ("/weaviate/search/hybrid", {"tabs", "code"}),
@@ -169,6 +170,19 @@ def test_code_blocks_present(path):
         if block.get_text(strip=True)
     ]
     assert len(non_empty) > 0, f"{path}: all code blocks are empty"
+
+    # For the quickstart page, verify the actual vectorizer config lines
+    # from all 5 language tabs are present in the rendered HTML code blocks.
+    if path == "/weaviate/quickstart":
+        all_code_text = "\n".join(block.get_text() for block in code_blocks)
+        missing = [
+            lang for lang, line in QUICKSTART_VECTORIZER_LINES.items()
+            if line not in all_code_text
+        ]
+        print(all_code_text)
+        assert len(missing) == 0, (
+            f"Quickstart HTML missing vectorizer config for: {', '.join(missing)}"
+        )
 
 
 @pytest.mark.indexability
@@ -411,9 +425,12 @@ def test_claude_can_fetch_llms_txt():
     client = anthropic.Anthropic()
     url = f"{BASE_URL}/llms.txt"
 
+    # The llms.txt file starts with "# Weaviate Documentation" and contains
+    # section headings like "## agents", "## cloud", "## weaviate".
+    # Ask Claude to quote specific content to prove it fetched the real file.
     response = client.messages.create(
         model="claude-haiku-4-5-20251001",
-        max_tokens=1024,
+        max_tokens=2048,
         tools=[{
             "type": "web_fetch_20250910",
             "name": "web_fetch",
@@ -424,16 +441,30 @@ def test_claude_can_fetch_llms_txt():
             "role": "user",
             "content": (
                 f"Fetch {url} and tell me: "
-                "1) What is this file? "
-                "2) What product/company is it about? "
-                "3) List some of the documentation sections mentioned. Be concise."
+                "1) What is the first heading line of the file (copy it verbatim)? "
+                "2) List ALL the top-level section headings (lines starting with '## '). "
+                "3) Does it mention code examples in multiple languages? Which ones?"
             ),
         }],
     )
 
     text = _extract_text_from_response(response)
-    assert "weaviate" in text.lower(), (
+    text_lower = text.lower()
+
+    # Must identify Weaviate
+    assert "weaviate" in text_lower, (
         f"Claude couldn't identify Weaviate in llms.txt. Response: {text[:500]}"
+    )
+
+    # Must find the key top-level sections from llms.txt
+    for section in ["agents", "cloud", "weaviate"]:
+        assert section in text_lower, (
+            f"Claude didn't find '{section}' section in llms.txt. Response: {text[:1000]}"
+        )
+
+    # Must identify multi-language code examples
+    assert "python" in text_lower, (
+        f"Claude didn't find Python mentioned in llms.txt. Response: {text[:500]}"
     )
 
 
@@ -505,8 +536,8 @@ def test_chatgpt_can_search_code_tabs():
 
 
 @pytest.mark.indexability_agents
-def test_chatgpt_can_search_cloud_docs():
-    """ChatGPT's web_search can find and read Weaviate Cloud docs."""
+def test_chatgpt_can_search_collapsible_content():
+    """ChatGPT's web_search can find content inside collapsible sections."""
     openai = pytest.importorskip("openai")
 
     api_key = os.environ.get("OPENAI_API_KEY")
@@ -519,25 +550,36 @@ def test_chatgpt_can_search_cloud_docs():
         model="gpt-4.1-mini",
         tools=[{
             "type": "web_search_preview",
-            "search_context_size": "medium",
+            "search_context_size": "high",
         }],
         input=(
-            "Search for the Weaviate Cloud quickstart documentation at docs.weaviate.io. "
-            "List: 1) The page title "
-            "2) The main steps described "
-            "3) Any code examples you find. Be concise."
+            "Search for the Weaviate collection configuration reference page at "
+            "docs.weaviate.io/weaviate/config-refs/collections. "
+            "The page has an expandable/collapsible section with a full JSON "
+            "configuration example that includes a vectorizer setting. "
+            "Tell me: 1) The exact URL you found "
+            "2) What vectorizer is configured in the JSON example "
+            "3) Copy the exact line that sets the vectorizer"
         ),
     )
 
     text = response.output_text
-    assert any(kw in text.lower() for kw in ["cloud", "quickstart", "cluster", "weaviate"]), (
-        f"ChatGPT couldn't read cloud docs. Response: {text[:500]}"
+
+    # Must find the correct URL
+    assert "docs.weaviate.io/weaviate/config-refs/collections" in text, (
+        f"ChatGPT didn't find the config-refs URL. Response:\n{text[:1000]}"
+    )
+
+    # Must find text2vec-contextionary from the collapsible JSON block
+    assert "text2vec-contextionary" in text, (
+        f"ChatGPT couldn't find 'text2vec-contextionary' in collapsible content. "
+        f"Response:\n{text[:1000]}"
     )
 
 
 @pytest.mark.indexability_agents
-def test_chatgpt_can_search_agents_docs():
-    """ChatGPT's web_search can find and read Weaviate Agents docs."""
+def test_chatgpt_can_search_llms_txt():
+    """ChatGPT's web_search can find and read /llms.txt."""
     openai = pytest.importorskip("openai")
 
     api_key = os.environ.get("OPENAI_API_KEY")
@@ -550,17 +592,39 @@ def test_chatgpt_can_search_agents_docs():
         model="gpt-4.1-mini",
         tools=[{
             "type": "web_search_preview",
-            "search_context_size": "medium",
+            "search_context_size": "high",
         }],
         input=(
-            "Search for the Weaviate query agent tutorial at docs.weaviate.io/agents. "
-            "List: 1) The page title "
-            "2) What the tutorial covers "
-            "3) Any code snippets you find. Be concise."
+            "Search for the llms.txt file at docs.weaviate.io/llms.txt. "
+            "This is a special file that describes documentation for LLMs. "
+            "Tell me: 1) The exact URL you found "
+            "2) What is the first heading line of the file "
+            "3) List ALL the top-level section headings (lines starting with '## ') "
+            "4) Does it mention code examples in multiple languages? Which ones?"
         ),
     )
 
     text = response.output_text
-    assert any(kw in text.lower() for kw in ["agent", "query", "weaviate"]), (
-        f"ChatGPT couldn't read agents docs. Response: {text[:500]}"
+    text_lower = text.lower()
+
+    # Must find the correct URL
+    assert "docs.weaviate.io/llms.txt" in text, (
+        f"ChatGPT didn't find the llms.txt URL. Response:\n{text[:1000]}"
+    )
+
+    # Must identify Weaviate
+    assert "weaviate" in text_lower, (
+        f"ChatGPT couldn't identify Weaviate in llms.txt. Response:\n{text[:500]}"
+    )
+
+    # Must find the key top-level sections from llms.txt
+    for section in ["agents", "cloud", "weaviate"]:
+        assert section in text_lower, (
+            f"ChatGPT didn't find '{section}' section in llms.txt. "
+            f"Response:\n{text[:1000]}"
+        )
+
+    # Must identify multi-language code examples
+    assert "python" in text_lower, (
+        f"ChatGPT didn't find Python mentioned in llms.txt. Response:\n{text[:500]}"
     )
