@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 # tags: ['telemetry', 'reference', 'configuration']
 ---
 
-To help us improve Weaviate and understand community usage trends, Weaviate collects telemetry data by default. This includes basic information like your server version, operating system, and the number of objects in your instance.
+To help us improve Weaviate and understand community usage trends, Weaviate collects telemetry data by default. This includes basic information like your server version, operating system, the number of objects in your instance, and cloud metadata. We may use this data to identify potential customers for our commercial services and may share it with third parties for this purpose. For full details, see our [privacy policy](https://weaviate.io/privacy).
 
 We do **not** collect your data objects, collection names, or any content from your datasets. Only the information listed below is collected.
 
