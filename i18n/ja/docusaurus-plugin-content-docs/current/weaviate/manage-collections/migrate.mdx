@@ -1,0 +1,400 @@
+---
+title: データ移行
+description: Weaviate 内でデータを移行し、データ操作を容易にする方法を学びます。
+sidebar_position: 6
+image: og/docs/howto.jpg
+# tags: ['how-to', 'cursor']
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v4.py';
+import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v3.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.ts';
+
+
+バックアップが利用できない場合に、手動でデータを移行するための例を示します。ここでは、以下のすべての組み合わせを扱います。
+
+- シングルテナンシーのコレクション (Collection)
+- マルチテナンシーのコレクション内のテナント (Tenant)
+
+<details>
+  <summary>追加情報</summary>
+
+  これらの例では、ポート番号の異なる 2 つの Weaviate インスタンスを使用しています。同じ手順は、別々のインスタンス間でも利用できます。
+
+  Weaviate におけるクロスリファレンスはプロパティです。そのため、オブジェクトの一部として [クロスリファレンスを取得](./cross-references.mdx#read-cross-references) できます。
+
+</details>
+
+<details>
+  <summary>クロスリファレンスはどうなりますか？</summary>
+
+これらのスクリプトはクロスリファレンスも移行します。  
+<br/>
+
+クロスリファレンスはプロパティであるため、カーソルベースのエクスポートに含まれます。  
+リストア時には、参照先 (「to」オブジェクト) を先に復元し、その後でクロスリファレンスを含む (「from」オブジェクト) を復元してください。
+
+</details>
+
+## コレクション → コレクション
+
+#### Step 1: 送信先コレクションの作成
+
+送信先インスタンスに、ソースインスタンスのコレクション (例: `WineReview`) と同じ名前のコレクションを作成します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateCollectionCollectionToCollection"
+      endMarker="# END CreateCollectionCollectionToCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateCollectionCollectionToCollection"
+      endMarker="# END CreateCollectionCollectionToCollection"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateCollectionCollectionToCollection"
+      endMarker="// END CreateCollectionCollectionToCollection"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+#### Step 2: データの移行
+
+以下を移行します。  
+- `client_src` インスタンス内の `source collection` のデータ  
+- `client_tgt` インスタンス内の `target collection` へ
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CollectionToCollection"
+      endMarker="# END CollectionToCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <p><small>
+        <code>migrate_data_from_weaviate_to_weaviate</code> 関数を呼び出してデータを移行します。
+        <br/><br/>
+    </small></p>
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CollectionToCollection"
+      endMarker="# END CollectionToCollection"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CollectionToCollection"
+      endMarker="// END CollectionToCollection"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+## コレクション → テナント
+
+#### Step 1: 送信先コレクションの作成
+
+送信先インスタンスに、ソースインスタンスのコレクション (例: `WineReview`) と同じ名前のコレクションを作成し、マルチテナンシーを有効にします。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateCollectionCollectionToTenant"
+      endMarker="# END CreateCollectionCollectionToTenant"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateCollectionCollectionToTenant"
+      endMarker="# END CreateCollectionCollectionToTenant"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateCollectionCollectionToTenant"
+      endMarker="// END CreateCollectionCollectionToTenant"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+
+
+#### Step 2: テナントの作成
+
+データオブジェクトを追加する前に、ターゲットインスタンスにテナントを追加します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateTenants"
+      endMarker="# END CreateTenants"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateTenants"
+      endMarker="# END CreateTenants"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateTenants"
+      endMarker="// END CreateTenants"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+#### Step 3: データの移行
+
+以下を移行します:
+- `client_src` インスタンス内の `source collection` データ
+- `client_tgt` インスタンス内の `target collection` の `target tenant` データへ
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CollectionToTenant"
+      endMarker="# END CollectionToTenant"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <p><small>
+        <code>migrate_data_from_weaviate_to_weaviate</code> 関数が呼び出され、データを移行します。
+        <br/><br/>
+    </small></p>
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CollectionToTenant"
+      endMarker="# END CollectionToTenant"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CollectionToTenant"
+      endMarker="// END CollectionToTenant"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+## テナント → コレクション
+
+#### Step 1: ターゲットコレクションの作成
+
+ターゲットインスタンスに、ソースインスタンスのコレクション (例: `WineReview`) と一致するコレクション (例: `WineReview`) を作成し、マルチテナンシーを有効にします。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateCollectionTenantToCollection"
+      endMarker="# END CreateCollectionTenantToCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateCollectionTenantToCollection"
+      endMarker="# END CreateCollectionTenantToCollection"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateCollectionTenantToCollection"
+      endMarker="// END CreateCollectionTenantToCollection"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+#### Step 2: データの移行
+
+以下を移行します:
+- `client_src` インスタンス内の `source collection` の `source tenant` データ
+- `client_tgt` インスタンス内の `target collection` へ
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START TenantToCollection"
+      endMarker="# END TenantToCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <p><small>
+        <code>migrate_data_from_weaviate_to_weaviate</code> 関数が呼び出され、データを移行します。
+        <br/><br/>
+    </small></p>
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START TenantToCollection"
+      endMarker="# END TenantToCollection"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START TenantToCollection"
+      endMarker="// END TenantToCollection"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+
+## テナント → テナント
+
+#### ステップ 1: 対象コレクションを作成する
+
+対象インスタンスでコレクション (例: `WineReview`) を作成し、ソースインスタンスのコレクション (例: `WineReview`) と一致させ、マルチテナンシーを有効にします。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateCollectionTenantToTenant"
+      endMarker="# END CreateCollectionTenantToTenant"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateCollectionTenantToTenant"
+      endMarker="# END CreateCollectionTenantToTenant"
+      language="pyv3"
+    />
+  </TabItem>
+
+<TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateCollectionTenantToTenant"
+      endMarker="// END CreateCollectionTenantToTenant"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+#### ステップ 2: テナントを作成する
+
+データオブジェクトを追加する前に、対象インスタンスにテナントを追加します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateTenants"
+      endMarker="# END CreateTenants"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateTenants"
+      endMarker="# END CreateTenants"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateTenants"
+      endMarker="// END CreateTenants"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+#### ステップ 3: データを移行する
+
+移行内容:
+- `client_src` インスタンスの `source collection` にある `source tenant` のデータ
+- を `client_tgt` インスタンスの `target collection` にある `target tenant` のデータへ
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START TenantToTenant"
+      endMarker="# END TenantToTenant"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <p><small>
+        <code>migrate_data_from_weaviate_to_weaviate</code> 関数が呼び出され、データを移行します。
+        <br/><br/>
+    </small></p>
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START TenantToTenant"
+      endMarker="# END TenantToTenant"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START TenantToTenant"
+      endMarker="// END TenantToTenant"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+## 関連ページ
+
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [Cursor API](../manage-objects/read-all-objects.mdx)
+- [マルチテナンシー操作](./multi-tenancy.mdx)
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

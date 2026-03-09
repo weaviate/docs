@@ -1,0 +1,77 @@
+# その他の情報
+
+### クロスリファレンス付き `Get`
+
+このセクションを締めくくる前に、クロスリファレンスを利用した `Get` クエリの実行方法を見てみましょう。本ユニットではまだクロスリファレンスを詳しく扱っていませんが、ここではオブジェクト同士を接続する手段であることだけ理解していれば十分です。
+
+以下の例では、`Question` クラスに対して `Get` クエリを実行しますが、今回は `hasCategory` プロパティもクエリに含めます。このプロパティは `Category` クラスへのクロスリファレンスであり、各質問のカテゴリを返すために使用されます。
+
+```graphql
+{
+  Get {
+    Question (
+      limit: 1
+      nearText: {
+        concepts: ["Seafaring technology from Scandanavia."],
+      }   
+    ) {
+      question 
+      answer 
+      hasCategory {
+        ... on Category {
+          title
+          _additional {
+            id
+          }            
+        }
+      }      
+      _additional {
+        distance
+        id
+      }
+    }
+  }
+}
+```
+
+これにより、次のような結果が得られます。
+
+<details>
+  <summary>Query results</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "Question": [
+        {
+          "_additional": {
+            "distance": 0.14927602,
+            "id": "5d9d5c8d-13e7-5791-b2f9-3724a1a1d301"
+          },
+          "answer": "Oslo",
+          "hasCategory": [
+            {
+              "_additional": {
+                "id": "fec50326-dfa1-53c9-90e8-63d0240bd933"
+              },
+              "title": "MUSEUMS"
+            }
+          ],
+          "question": "1,200-year-old Viking ships are on display at the Vikingskiphuset in this Norwegian capital"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+ここでは、`hasCategory` プロパティがオブジェクトの配列となっており、`Question` が関連付けられている `Category` 型のオブジェクトと、その要求したプロパティが格納されています。また、`Category` クラスの `title` プロパティも返され、`_additional` フィールドにはカテゴリの `id` が含まれます。 
+
+クロスリファレンスを使用すると、データモデルに高い柔軟性と強力な表現力を持たせることができ、オブジェクト同士を接続する優れた方法となります。スキーマに関するユニットで、これらについてさらに詳しく説明します。
+
+:::info `...` pattern
+上記のクエリで `... on Category` というパターンにお気付きかもしれません。この構文は GraphQL の用語で「フラグメント」と呼ばれます。このように記述することで、フラグメントは `hasCategory` プロパティが `Category` 型であることを示し、その形式で結果を返すよう指定しています。
+:::

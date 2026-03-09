@@ -1,0 +1,36 @@
+---
+title: クライアントサーバーアプリケーションとは
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/_img/architecture.jpg';
+
+
+
+### <i class="fa-solid fa-chalkboard"></i> クライアントサーバーアプリケーションとは
+
+クライアントサーバーアプリケーションとは、クライアントデバイス上で動作しながらリモートサーバーから情報を取得するアプリケーションです。  
+
+Weaviate を用いたアプリケーション構築では、クライアントアプリケーションから直接データベースへアクセスするのではなく、すべてのやり取りを仲介するサーバーを設けます。
+
+<img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
+
+本セクションでは、Weaviate Typescript v3 クライアントである [weaviate-client](https://www.npmjs.com/package/weaviate-client) を使用してアプリケーションを構築する方法を解説します。
+
+
+
+### <i class="fa-solid fa-chalkboard"></i> クライアントサーバーアプリケーションでの weaviate-client の使用
+
+v3 クライアントは gRPC を使用してお客様の Weaviate インスタンスに接続します。クライアントは Node.js を用いたサーバーサイド開発をサポートしており、ブラウザベースの Web クライアント開発には対応していません。
+
+クライアントのインストール手順は [こちら](../../../../weaviate/client-libraries/typescript/index.mdx#installation) をご覧ください。新しい v3 クライアントを使用する大きな利点は、gRPC プロトコルの導入です。gRPC は大規模なデータベース操作を高速かつ信頼性高く処理できます。ただし、gRPC はブラウザベースのクライアント開発をサポートしていません。
+
+[weaviate-client](../../../../weaviate/client-libraries/typescript/index.mdx) を実行するための要件に加え、クライアントサーバーアーキテクチャはクライアントから直接やり取りする場合よりも安全性が高いというメリットがあります。
+
+クライアントサーバー方式を採用することで、ロードバランシング、ユーザーおよびセッション管理、ミドルウェアの導入など、さまざまな最適化を行いながら Weaviate を活用できます。 
+
+次のセクションでは、クライアントサーバーアプリケーションの構築方法を紹介します。
+- [バックエンド Web フレームワークの使用](./20_building-client-server.mdx)
+- [フルスタック Web フレームワークの使用](./30_fullstack.mdx)

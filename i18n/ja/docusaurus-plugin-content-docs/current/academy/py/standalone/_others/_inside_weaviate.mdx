@@ -1,0 +1,317 @@
+---
+title: Weaviate の内部を覗く
+sidebar_position: 50
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+:::warning TODO
+Intro video here
+:::
+
+これまでに、セマンティック検索と ベクトル 検索の概念について紹介し、さらに Weaviate を実際に操作していただきました。
+
+ここでは Weaviate の内部動作をより深く理解するため、以下のトピックをハイレベルで解説します。
+
+- Weaviate が ベクトル 検索をどのように行うか  
+- Weaviate におけるデータの保存方法  
+- Weaviate が使用する ベクトル の由来  
+
+これらの情報は、Weaviate の強力な検索機能の仕組みを理解し、開発プロジェクトで最大限に活用するための助けとなります。
+
+
+#### ML モデルとベクトル化
+
+機械学習モデルは、テキスト・画像・音声クリップなどのデータを ベクトル へ変換します。この種のモデルはしばしば「ベクトライザー」とも呼ばれ、類似度の測定方法は使用する機械学習モデルによって異なります。
+
+そのため、目的に合った適切なモデルを選択する、少なくとも不適切なモデルを選ばないことが極めて重要です。コース全体で多様なモデルを取り上げ、経験則から詳細な議論まで、モデル選択について学習します。
+
+Weaviate 自体はデータをベクトル化しませんが、非常に多くのベクトル化モデルやサービスと互換性があります。本コースでは、目的や要件に合った方法でデータをベクトル化するための Weaviate の設定方法も扱います。
+
+### 高速なデータ検索
+
+![](../../tmp_images/orgainized_filing_cabinets_with_many_folders_1.jpg)
+
+データを迅速かつ効率的に取得するため、Weaviate はオブジェクトインデックスに加えて ベクトル インデックスを使用します。 ベクトル インデックスは高速な情報検索を実現しつつ、高いリコール性能も維持します。ただし、データセットの規模が大きくなるにつれて、メモリ要件と検索時間のバランスを取る必要があります。
+
+Weaviate はインデックス作成に「近似最近傍（ANN）」アルゴリズムを採用しており、準線形以下の計算量でスケールします。つまり、検索時間の増加速度はデータセットサイズの増加速度よりも遅く、Weaviate は高いスケーラビリティを実現します。
+
+コースを通じて、Weaviate のインデックスや主要な ベクトル インデックスタイプである HNSW インデックスについて学びます。
+
+### 本番環境への移行
+
+![](../../tmp_images/a_machine_with_a_conveyer_belt_producing_boxes_of_documents.jpg)
+
+ベクトル データベースはしばしば水平・垂直の両方にスケールする必要があります。その規模は数十億のデータオブジェクトへ拡大することもあり、数十億の ベクトル を多くの同時ユーザーが検索できるよう、インデックスと検索が求められます。
+
+これは ベクトル 検索のデータサイエンス的課題とは異なる追加のチャレンジを伴うことを理解しています。そのため、本コースでは Weaviate を本番環境で運用する際の主要事項を専用ユニットで解説します。
+
+認証・認可、バックアップ、モニタリング、レプリケーションなど、Weaviate の本番運用に関わるあらゆる内容を取り上げます。
+
+<Quiz questions={vectorizationAndML} />
+
+<Quiz questions={weaviateIndexing} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> データ構造
+
+:::warning TODO
+Intro video here
+:::
+
+### オブジェクト
+
+![](../../tmp_images/a_beautiful_document_page_with_a_long_number_on_top_and_lots_of_text_underneath_1.jpg)
+
+Weaviate では、各オブジェクトがドキュメントストア内の JSON ドキュメントとして保存され、キーには一意の [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) が使用されます。オブジェクトの構造例は以下のとおりです。
+
+:::note TODO
+Replace object with one from actual edu database
+:::
+
+```json
+{
+  "id": "unique-uuid",  // e.g. "779c8970-0594-301c-bff5-d12907414002"
+  "class": "Name of the class the object belongs to",  // e.g. "Question"
+  "properties": {
+    "property_name_1": "property_value_1",  // e.g. "answer": "Jupiter"
+    "property_name_2": "property_value_1",  // e.g. "question": "This is the largest planet in the solar system."
+    ...
+  },
+  "vector": "Vector representation of the object if available"  // e.g. [-0.16147631, -0.065765485, ... ,-0.06546908]
+}
+```
+
+Weaviate では、リレーショナルデータベースの外部キーに似たクロスリファレンスを使用して、オブジェクト同士をリンクできます。データ全体の構造は `schema` によって定義されます。
+
+### スキーマ
+
+![](../../tmp_images/a_complex_architectural_blueprint_laid_out_on_the_table_0.jpg)
+
+Weaviate における `schema` は、データ構造を定義する設計図です。次にスキーマ構造の例を示します。
+
+<details>
+  <summary>Example schema</summary>
+  TODO: Add actual example schema
+</details>
+
+スキーマは各クラスについて、その名前や説明などのメタデータ、各クラスのプロパティの名前や説明を指定します。さらに、クラス間のクロスリファレンスや、オブジェクトインデックスと ベクトル インデックスを含むインデックス設定も定義します。
+
+また、スキーマはベクトル化プロセスに関する情報、使用するベクトル化モデル、含める／除外するプロパティ、プロパティ見出しを含めるかどうかなどを保持します。
+
+:::info Auto-schema
+スキーマ定義に必要で不足している情報は、Weaviate がデフォルト値とインポートデータに基づき自動推論します。
+:::
+
+#### データ型
+
+各 `class` 定義には 1 つ以上のプロパティが含まれ、それぞれにデータ型を指定します。現在、Weaviate がサポートするデータ型は以下のとおりです。
+
+import DataTypes from '/_includes/datatypes.mdx';
+
+<details>
+  <summary>Available data types in Weaviate</summary>
+  <DataTypes />
+</details>
+
+ほとんどのデータ型では、`string` または `string[]` のように単一値またはリスト値を指定できます。
+
+スキーマ定義とデータ型については、別のユニットで詳しく取り上げます。
+
+<Quiz questions={autoSchema} />
+
+### データインデックス
+
+![](../../tmp_images/robot_arm_picking_up_a_box_from_many_many_orgainized_boxes_with_labels_0.jpg)
+
+効率的な検索を実現するため、Weaviate は複数のインデックスを用いてデータを保存・取得します。
+
+#### オブジェクトインデックス
+
+オブジェクトインデックスは、特定のプロパティに基づくフィルタリングを可能にします。 バージョン 1.18 以降、Weaviate は既存の 転置インデックス に加え、Roaring Bitmap ベースのインデックスをオブジェクトインデックスに追加しました。これにより、大規模データセットや結果セットにおいても取得速度が大幅に向上します。
+#### ベクトル インデックス
+
+Weaviate 内のオブジェクトには ベクトル を関連付けることができ、それらは ベクトル インデックスに収集・保存されます。 ベクトル インデックスは ベクトル 類似度に基づく検索を可能にし、 ANN （ Approximate Nearest Neighbor ）アルゴリズムを用いて構築されます。
+
+従来の k -nearest neighbor （ kNN ）類似検索は、大規模なデータセットでは遅く非効率になる可能性があります。これに対し、 ANN ベースのインデックスを用いることで Weaviate は高い再現率を維持しつつ高速に ベクトル 検索を実行できます。現在 Weaviate では HNSW ベースの ANN インデックスを採用しています。
+
+<Quiz questions={dataStorageComponents} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル 検索プロセスの詳細
+
+:::warning TODO
+Intro video here
+:::
+
+### 検索サブプロセスの順序
+
+![](../../tmp_images/manufacturing_line_with_multiple_factory_robots_for_different_tasks_0.jpg)
+
+Weaviate では、 ベクトル 検索を代数フィルターと組み合わせてより精度の高い結果を得ることができます。たとえば、特定の ベクトル に類似したクイズ問題を "World History" カテゴリの中だけで検索するといったことが可能です。
+
+このような検索を実現するために、Weaviate のさまざまなコンポーネントが連携します。
+
+ベクトル 検索クエリが Weaviate に送られると、まずオブジェクト インデックスを使用してオブジェクト ID の「許可リスト（ allow list ）」を作成します。この許可リストは ベクトル 検索と組み合わせて使用され、結果セットは ベクトル 検索結果と許可リストの積集合となります。
+
+こうして得られたオブジェクト ID の集合を用いてオブジェクト ストアから必要なプロパティを取得し、最終的なレスポンスとしてユーザーに返します。
+
+:::info 事前フィルタリング
+この事前フィルタリングは ベクトル 検索の前段で実行されるため、フィルターが厳しい場合でも Weaviate が期待どおりの結果を返す可能性を最大化できます。
+
+フィルタリングが ベクトル 検索よりも前に行われるため、この方式を事前フィルタリングと呼びます。これにより、フィルターが厳しくても要求された件数の結果を返せる可能性が高まります。
+:::
+
+<Quiz questions={objectIndex} />
+
+### ベクトル の生成元
+
+![](../../tmp_images/a_machine_with_a_conveyer_belt_producing_many_long_numbers_0.jpg)
+
+Weaviate は、オブジェクトに ベクトル 表現を関連付けるための複数の方法を提供しています。一般的には、インポート時に Weaviate の ベクトライザー モジュールを利用して ベクトル 表現を取得するか、ユーザーが独自に生成した ベクトル を提供するかのいずれかです。
+
+#### ベクトライザー モジュールを使用する
+
+インポート時に ベクトル を取得したい場合は、Weaviate の ベクトライザー モジュールを使用できます。これらのモジュールは大きく 2 つに分類されます。外部推論 API を呼び出すもの（ `text2vec-openai` 、 `text2vec-cohere` 、 `text2vec-huggingface` ）と、ローカルでマイクロサービスとして動作しベクトル化を行うもの（例： `text2vec-transformers` ）です。
+
+Weaviate の ベクトライザー モジュールは柔軟かつ拡張可能です。テキストや画像を ベクトル 化するモジュールに加え、テキストと画像の両方を同一 ベクトル 空間にベクトル化できるモジュール（ `multi2vec-clip` ）や、別の ベクトル をもとに新たな ベクトル を生成するモジュール（ `ref2vec-centroid` ）などが含まれています。
+
+必要に応じてカスタム モジュールを作成し、Weaviate の機能を拡張することもできます。
+
+#### ベクトル をアップロードする
+
+別の方法として、 ベクトル を手動でアップロードすることもできます。ドキュメントでは「 Bring Your Own Vector 」オプションと呼ばれることもあり、Weaviate の外部で ベクトル を生成したい場合や、すでに ベクトル 化済みのデータをお持ちの場合に適した方法です。
+
+:::note ベクトル をアップロードしてベクトライザーも使用する
+独自の ベクトル をアップロードすると同時に、Weaviate に ベクトライザー を指定することも可能です。たとえば、大規模なデータセットをインポートする際に、Weaviate が提供する ベクトライザー と同じものを使って事前にデータを ベクトル 化している場合などに有用です。これにより、データセットの更新分やクエリについては Weaviate 側で ベクトル 化を行えます。
+:::
+
+これらのオプションについては、別のユニットで詳しく解説します。
+
+<Quiz questions={vectorizeObject} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> まとめ
+
+:::warning TODO
+Video here
+:::
+
+### <i class="fa-solid fa-pen-to-square"></i> 練習問題
+
+あなた自身の言葉で、 XXX を説明できますか？
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+??
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+:::info
+Add summary
+:::
+
+import Quiz from '/src/components/Academy/quiz.js'
+const vectorizationAndML = [
+  {
+    questionText: 'What does Weaviate use to obtain a vector corresponding to a data object?',
+    answerOptions: [
+      { answerText: 'Weaviate is capable of creating a vector from data objects.', isCorrect: false, feedback: 'Weaviate is not itself a vectorizer.'},
+      { answerText: 'Weaviate uses modules to obtain vectors from machine learning models.', isCorrect: true, feedback: 'You will learn about vectorizer models and corresponding Weaviate modules later on.'},
+      { answerText: 'Weaviate requires a vector to be uploaded at import time.', isCorrect: false, feedback: 'While you can upload a vector, this is not required.'},
+    ],
+  },
+];
+const weaviateIndexing = [
+  {
+    questionText: 'What types of indexes does Weaviate use?',
+    answerOptions: [
+      { answerText: 'Weaviate does not rely on indexing as it relies on a kNN vector search.', isCorrect: false, feedback: 'Weaviate does not use a kNN search as it is computationally very expensive.'},
+      { answerText: 'Weaviate uses a vector index.', isCorrect: false, feedback: 'This is only partially true.'},
+      { answerText: 'Weaviate uses an inverted index.', isCorrect: false, feedback: 'This is only partially true.'},
+      { answerText: 'Weaviate uses a vector index and an inverted index.', isCorrect: true, feedback: 'Both indexes are used for different, and complementary reasons.'},
+    ],
+  },
+];
+const dataStorageComponents = [
+  {
+    questionText: 'What are the key components of data storage and retrieval system in Weaviate?',
+    answerOptions: [
+      { answerText: 'The object store, object index, and vector index.', isCorrect: true, feedback: 'Great job!'},
+      { answerText: 'The object index and vector index.', isCorrect: false, feedback: 'That is partially correct, but missing a component.'},
+      { answerText: 'The object store, vector store, and vector index.', isCorrect: false, feedback: 'There is no separate "vector store" with the "vector index".'},
+    ],
+  },
+];
+const objectIndex = [
+  {
+    questionText: 'How does Weaviate use the object index when a vector search query with a filter is sent?',
+    answerOptions: [
+      {
+        answerText: 'It uses the object index to compare the query vector to objects.',
+        isCorrect: false,
+        feedback: 'Weaviate uses the vector index for this purpose.',
+      },
+      {
+        answerText: 'It uses the object index to create an "allow list" of object IDs.',
+        isCorrect: true,
+        feedback: 'The allow list is then combined with results from the vector search',
+      },
+      {
+        answerText: 'It uses the object index to build an ANN-based index.',
+        isCorrect: false,
+        feedback: 'The ANN-based (i.e. vector) index is built already, and it is not based on the object index.',
+      },
+    ]
+  }
+];
+const autoSchema = [
+  {
+    questionText: 'What happens if required information is unspecified in the user-defined schema?',
+    answerOptions: [
+      {
+        answerText: 'Weaviate will throw an error at import.',
+        isCorrect: false,
+        feedback: 'That is not true. Try again.',
+      },
+      {
+        answerText: 'Data will not be imported due to a lack of schema definition.',
+        isCorrect: false,
+        feedback: 'That is not true. Try again.',
+      },
+      {
+        answerText: 'Weaviate will implicitly use its default values.',
+        isCorrect: false,
+        feedback: 'Weaviate does have default values for it to use in this situation, but it will not be implicit. Please try again..',
+      },
+      {
+        answerText: 'Weaviate will infer required information using the auto-schema function.',
+        isCorrect: true,
+        feedback: 'The inference will be based on the defaults as well as the data being imported.',
+      },
+    ]
+  }
+];
+const vectorizeObject = [{
+  questionText: 'Which of the following is NOT a way to associate vector representations with objects in Weaviate?',
+  answerOptions: [
+    {
+      answerText: 'Upload vectors to Weaviate',
+      isCorrect: false,
+      feedback: 'You can upload vectors to Weaviate.',
+    },
+    {
+      answerText: 'Use an inference API such as OpenAI, Cohere or Hugging Face.',
+      isCorrect: false,
+      feedback: 'You can use Weaviate modules to use these inference APIs.',
+    },
+    {
+      answerText: 'Rely on Weaviate Database to generate vectors.',
+      isCorrect: true,
+      feedback: 'Although it can use modules to do so, Weaviate itself cannot generate vectors.',
+    },
+    {
+      answerText: 'Use a local vectorizer microservice module.',
+      isCorrect: false,
+      feedback: 'Weaviate modules such as text2vec-transformers are examples of local vectorizer microservices that can generate vectors.',
+    },
+  ]
+}];

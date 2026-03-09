@@ -1,0 +1,28 @@
+---
+title: 103 ベクトル化の基本
+sidebar_position: 103
+---
+
+## <i class="fa-solid fa-chalkboard-user"></i> ユニット概要
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+<!-- Provide context for this course, in addition to the concrete learning goals and outcomes. Why would someone want to do this unit? -->
+
+ようこそ！このユニットでは、前回のクエリ入門ユニットを踏まえ、理論的な背景や内部動作についてより詳細なコンテキストを提供します。
+
+まず、ベクトル検索がなぜ機能するのか、そして何がその高い性能を支えているのかを説明します。この議論では、ベクトル検索を支えるディープラーニングモデルにも触れ、それらがなぜ重要なのかを解説します。また、本ユニットでは Weaviate がデータをどのようにベクトルへ変換するか、そしてその挙動をどのように、なぜカスタマイズできるのかを示します。さらに、Weaviate で利用できるベクトライザーのグループと、ベクトライザー選択の経験則についても取り上げ、十分な情報を基にスムーズに始められるよう支援します。
+
+### <i class="fa-solid fa-clipboard-list-check"></i> 前提条件
+
+- (**必須**) 稼働中の Weaviate インスタンス  
+  - [Weaviate Cloud](/cloud) の `sandbox` インスタンスを推奨します  
+  - サンプルデータセット「 JeopardyQuestions 」をインポート済み（[`weaviate-demo-datasets`](https://pypi.org/project/weaviate-demo-datasets/) より）
+- (*推奨*) [Hello, Weaviate](../101_hello_weaviate/index.mdx) を完了している
+- (*推奨*) [Queries 1](../102_queries_1/index.mdx) を完了している
+
+import LearningGoals from '/src/components/Academy/learningGoals.jsx';
+
+<LearningGoals unitName="vectorization_essentials"/>
