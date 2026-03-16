@@ -257,7 +257,7 @@ client.collections.create(
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # (Optional) To manually set the model ID
-        model="gemini-embedding-2"
+        model="gemini-embedding-2-preview"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -277,7 +277,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
-        model="gemini-embedding-2"
+        model="gemini-embedding-2-preview"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -317,7 +317,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="gemini-embedding-2",
+        model_id="gemini-embedding-2-preview",
     ),
     # highlight-end
     # Additional parameters not shown
