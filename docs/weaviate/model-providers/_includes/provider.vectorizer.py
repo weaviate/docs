@@ -273,7 +273,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_google_aistudio(
+    vector_config=Configure.Vectors.text2vec_google_gemini(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
@@ -313,7 +313,7 @@ client.collections.delete("DemoCollection")
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_google_aistudio(
+    vector_config=Configure.Vectors.text2vec_google_gemini(
         name="title_vector",
         source_properties=["title"],
         # Further options

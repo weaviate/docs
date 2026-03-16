@@ -141,7 +141,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 :::info Important: Different vectorizers for different services
 
-- **Google AI Studio (Gemini API)**: Use `text2vec_google_aistudio()` 
+- **Google AI Studio (Gemini API)**: Use `text2vec_google_gemini()` 
 - **Vertex AI**: Use `text2vec_google()`
 
 :::
@@ -150,7 +150,7 @@ You can [specify](#vectorizer-parameters) one of the [available models](#availab
 
 ### Google AI Studio (Gemini API)
 
-For Google AI Studio, use the `text2vec_google_aistudio()` vectorizer. No `project_id` or `api_endpoint` is required.
+For Google AI Studio, use the `text2vec_google_gemini()` vectorizer. No `project_id` or `api_endpoint` is required.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
