@@ -1566,6 +1566,57 @@ const sidebars = {
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
   ],
+  engramSidebar: [
+    { type: "doc", id: "engram/index", label: "Introduction" },
+    "engram/quickstart",
+    {
+      type: "category",
+      label: "Concepts",
+      link: { type: "doc", id: "engram/concepts/index" },
+      collapsed: true,
+      items: [
+        "engram/concepts/memories",
+        "engram/concepts/groups",
+        "engram/concepts/topics",
+        "engram/concepts/scopes",
+        "engram/concepts/input-data-types",
+        "engram/concepts/pipelines",
+        "engram/concepts/search",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/guides/index" },
+      items: [
+        "engram/guides/store-memories",
+        "engram/guides/search-memories",
+        "engram/guides/manage-memories",
+        "engram/guides/check-run-status",
+      ],
+    },
+    {
+      type: "category",
+      label: "Tutorials",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/tutorials/index" },
+      items: [
+        "engram/tutorials/memory-chat-app",
+        "engram/tutorials/context-window-management",
+        "engram/tutorials/personalized-rag-multi-tenant",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "link",
+      label: "REST API reference",
+      href: "/engram/api/rest",
+    },
+  ],
 };
 
 module.exports = sidebars;

@@ -7,6 +7,14 @@ const DEFAULT_OPTION = Object.keys(secondaryNavOptions)[0];
 const sidebars = require("/sidebars.js");
 const routeBasePath = "/docs";
 
+// Fallback: match the URL path prefix against secondary nav option link paths.
+// This handles pages not in any sidebar (e.g. /engram/api/rest).
+function findOptionByPathPrefix(currentPath) {
+  return Object.entries(secondaryNavOptions).find(
+    ([, value]) => value.link && currentPath.startsWith(value.link.slice(1))
+  );
+}
+
 export default function useNavbarState(location) {
   // Compute the initial secondaryNavbar state based on the current location synchronously.
   const initialState = useMemo(() => {
@@ -29,7 +37,10 @@ export default function useNavbarState(location) {
     const matchedOption = Object.entries(secondaryNavOptions).find(
       ([, value]) => value.links.some((link) => link.sidebar === foundSidebar)
     );
-    const selectedOption = matchedOption ? matchedOption[0] : DEFAULT_OPTION;
+    // Fallback to path prefix matching for pages not in any sidebar (e.g. /engram/api/rest).
+    const selectedOption = matchedOption
+      ? matchedOption[0]
+      : (findOptionByPathPrefix(currentPath)?.[0] || DEFAULT_OPTION);
     return { selectedOption, activeLink: foundSidebar };
   }, [location.pathname]);
 
@@ -60,7 +71,10 @@ export default function useNavbarState(location) {
     const matchedOption = Object.entries(secondaryNavOptions).find(
       ([, value]) => value.links.some((link) => link.sidebar === foundSidebar)
     );
-    setSelectedOption(matchedOption ? matchedOption[0] : DEFAULT_OPTION);
+    // Fallback to path prefix matching for pages not in any sidebar (e.g. /engram/api/rest).
+    setSelectedOption(matchedOption
+      ? matchedOption[0]
+      : (findOptionByPathPrefix(currentPath)?.[0] || DEFAULT_OPTION));
     setActiveLink(foundSidebar);
   }, [location.pathname]);
 
