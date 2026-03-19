@@ -44,13 +44,15 @@ client.collections.create(
 collection = client.collections.use("MediaExample")
 
 # Insert test data (vectorized via text_fields)
-collection.data.insert_many([
-    {"title": "A butterfly flying through a garden", "mediaType": "nature"},
-    {"title": "A cat playing with a ball of yarn", "mediaType": "animals"},
-    {"title": "A dog running in the park", "mediaType": "animals"},
-    {"title": "Classical music symphony performance", "mediaType": "music"},
-    {"title": "Documentary about space exploration", "mediaType": "documentary"},
-])
+collection.data.insert_many(
+    [
+        {"title": "A butterfly flying through a garden", "mediaType": "nature"},
+        {"title": "A cat playing with a ball of yarn", "mediaType": "animals"},
+        {"title": "A dog barking", "mediaType": "animals"},
+        {"title": "Classical music symphony performance", "mediaType": "music"},
+        {"title": "Documentary about space exploration", "mediaType": "documentary"},
+    ]
+)
 
 
 # ============================================
@@ -59,8 +61,10 @@ collection.data.insert_many([
 
 # START VideoFileSearch
 from pathlib import Path
+
 # highlight-start
 from weaviate.classes.query import NearMediaType
+
 # highlight-end
 
 collection = client.collections.use("MediaExample")
@@ -143,8 +147,12 @@ for obj in response.objects:
 # END DistanceSearch
 
 assert len(response.objects) > 0, "DistanceSearch: expected results"
-assert response.objects[0].metadata.distance is not None, "DistanceSearch: expected distance metadata"
-print(f"DistanceSearch: OK ({len(response.objects)} results, dist={response.objects[0].metadata.distance:.4f})")
+assert (
+    response.objects[0].metadata.distance is not None
+), "DistanceSearch: expected distance metadata"
+print(
+    f"DistanceSearch: OK ({len(response.objects)} results, dist={response.objects[0].metadata.distance:.4f})"
+)
 
 
 # ============================================
@@ -175,7 +183,9 @@ for obj in response.objects:
     print(obj.properties)
 # END FilteredSearch
 
-assert len(response.objects) == 2, f"FilteredSearch: expected 2 results, got {len(response.objects)}"
+assert (
+    len(response.objects) == 2
+), f"FilteredSearch: expected 2 results, got {len(response.objects)}"
 print(f"FilteredSearch: OK ({len(response.objects)} results)")
 
 
@@ -187,16 +197,11 @@ print(f"FilteredSearch: OK ({len(response.objects)} results)")
 import base64
 from weaviate.classes.query import NearMediaType
 
-# highlight-start
-with open("./audio/dog.wav", "rb") as f:
-    audio_base64 = base64.b64encode(f.read()).decode("utf-8")
-# highlight-end
-
 collection = client.collections.use("MediaExample")
 
 response = collection.query.near_media(
     # highlight-start
-    media=audio_base64,
+    media=Path("./audio/dog.wav"),
     media_type=NearMediaType.AUDIO,
     # highlight-end
     return_properties=["title", "mediaType"],
