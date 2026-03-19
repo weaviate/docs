@@ -137,13 +137,13 @@ The above query will result in something like the following:
 }
 ```
 
+### Get object count in collection
+
+Use `meta { count }` to retrieve the total number of objects in a collection.
+
 import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 
-:::tip `meta { count }` will return the query object count
-As such, this `Aggregate` query will retrieve the total object count in a class.
-
 <HowToGetObjectCount/>
-:::
 
 ### groupBy argument
 
