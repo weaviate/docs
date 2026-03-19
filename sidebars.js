@@ -628,6 +628,7 @@ const sidebars = {
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
         "weaviate/search/image",
+        "weaviate/search/near-media",
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
