@@ -322,13 +322,13 @@ You can also supply images as a part of the input when performing retrieval augm
 
 Vertex AI:
 - `gemini-2.5-pro`
-- `gemini-2.5-flash`
+- `gemini-2.5-flash` (default)
 - `gemini-2.0-flash`
 - `gemini-1.5-pro`
 - `gemini-1.5-flash`
 
 Gemini API:
-- `gemini-2.5-flash`
+- `gemini-2.5-flash` (default)
 - `gemini-2.5-pro`
 - `gemini-2.0-flash`
 - `gemini-1.5-pro`
