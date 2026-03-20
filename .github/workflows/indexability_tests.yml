@@ -56,8 +56,9 @@ jobs:
         if: always()
         uses: ./.github/actions/handle-test-results
         with:
-          test-outcome: ${{ steps.html-tests.outcome }}
+          test-outcome: ${{ (steps.html-tests.outcome == 'success' && (steps.agent-tests.outcome == 'success' || steps.agent-tests.outcome == 'skipped')) && 'success' || 'failure' }}
           test-type: 'Indexability'
-          languages-tested: 'HTML + Claude + ChatGPT'
           artifact-name: 'test-results-indexability'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
+          test-results-xml: 'pytest-results.xml pytest-results-agents.xml'
+          slack-script: '_build_scripts/slack-indexability-results.sh'
