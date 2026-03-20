@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - testing-ci
+      - llm-indexability
   workflow_dispatch:
 
 env:
