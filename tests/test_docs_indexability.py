@@ -488,7 +488,7 @@ def test_chatgpt_can_search_code_tabs():
     # verbatim code. We verify ChatGPT finds the correct URL and identifies
     # the vectorizer configuration from the code tabs.
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5.4-mini",
         tools=[{
             "type": "web_search_preview",
             "search_context_size": "high",
@@ -547,7 +547,7 @@ def test_chatgpt_can_search_collapsible_content():
     client = openai.OpenAI()
 
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5.4-mini",
         tools=[{
             "type": "web_search_preview",
             "search_context_size": "high",
@@ -589,7 +589,7 @@ def test_chatgpt_can_search_llms_txt():
     client = openai.OpenAI()
 
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5.4-mini",
         tools=[{
             "type": "web_search_preview",
             "search_context_size": "high",
