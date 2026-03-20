@@ -523,7 +523,7 @@ def test_claude_can_see_llm_notice():
         f"Claude couldn't find the LLM notice on the quickstart page. "
         f"Response:\n{text[:1000]}"
     )
-    assert "weaviate.io" in text_lower, (
+    assert "weaviate.io/llms.txt" in text_lower, (
         f"Claude didn't find the weaviate.io/llms.txt URL. "
         f"Response:\n{text[:1000]}"
     )
@@ -719,7 +719,7 @@ def test_chatgpt_can_see_llm_notice():
         f"ChatGPT couldn't find the LLM notice on the quickstart page. "
         f"Response:\n{text[:1000]}"
     )
-    assert "weaviate.io" in text_lower, (
+    assert "weaviate.io/llms.txt" in text_lower, (
         f"ChatGPT didn't find the weaviate.io/llms.txt URL. "
         f"Response:\n{text[:1000]}"
     )
