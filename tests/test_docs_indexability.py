@@ -260,6 +260,18 @@ def _is_decorative_image(img) -> bool:
 
 
 @pytest.mark.indexability
+@pytest.mark.parametrize("path", ALL_PATHS)
+def test_llm_notice_present(path):
+    """Pages contain a hidden div directing LLMs to weaviate.io/llms.txt."""
+    soup = _get_soup(path)
+    notice = soup.find(attrs={"data-llm-notice": "true"})
+    assert notice is not None, f"{path}: missing data-llm-notice div"
+    assert "weaviate.io/llms.txt" in notice.get_text(), (
+        f"{path}: llm notice doesn't mention weaviate.io/llms.txt"
+    )
+
+
+@pytest.mark.indexability
 def test_llms_txt_accessible():
     """/llms.txt returns 200, has substantial content, and mentions Weaviate."""
     resp = requests.get(
@@ -474,6 +486,50 @@ def test_claude_can_fetch_llms_txt():
 
 
 @pytest.mark.indexability_agents
+def test_claude_can_see_llm_notice():
+    """Claude's web_fetch tool can see the hidden LLM notice directing to llms.txt."""
+    anthropic = pytest.importorskip("anthropic")
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        pytest.skip("ANTHROPIC_API_KEY not set")
+
+    client = anthropic.Anthropic()
+    url = f"{BASE_URL}/weaviate/quickstart"
+
+    response = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=1024,
+        tools=[{
+            "type": "web_fetch_20250910",
+            "name": "web_fetch",
+            "max_uses": 1,
+            "allowed_domains": ["docs.weaviate.io"],
+        }],
+        messages=[{
+            "role": "user",
+            "content": (
+                f"Fetch {url} and look for any notice or message directed at "
+                "LLMs or AI agents. Is there a reference to an llms.txt file? "
+                "If so, copy the full notice text and the URL it points to."
+            ),
+        }],
+    )
+
+    text = _extract_text_from_response(response)
+    text_lower = text.lower()
+
+    assert "llms.txt" in text_lower, (
+        f"Claude couldn't find the LLM notice on the quickstart page. "
+        f"Response:\n{text[:1000]}"
+    )
+    assert "weaviate.io" in text_lower, (
+        f"Claude didn't find the weaviate.io/llms.txt URL. "
+        f"Response:\n{text[:1000]}"
+    )
+
+
+@pytest.mark.indexability_agents
 def test_chatgpt_can_search_code_tabs():
     """ChatGPT's web_search can find the quickstart and identify vectorizer config."""
     openai = pytest.importorskip("openai")
@@ -556,7 +612,8 @@ def test_chatgpt_can_search_collapsible_content():
             "Search for the Weaviate collection configuration reference page at "
             "docs.weaviate.io/weaviate/config-refs/collections. "
             "The page has an expandable/collapsible section with a full JSON "
-            "configuration example that includes a vectorizer setting. "
+            "configuration example that includes a vectorizer setting named: "
+            "- \"Example collection configuration - JSON object\""
             "Tell me: 1) The exact URL you found "
             "2) What vectorizer is configured in the JSON example "
             "3) Copy the exact line that sets the vectorizer"
@@ -627,4 +684,42 @@ def test_chatgpt_can_search_llms_txt():
     # Must identify multi-language code examples
     assert "python" in text_lower, (
         f"ChatGPT didn't find Python mentioned in llms.txt. Response:\n{text[:500]}"
+    )
+
+
+@pytest.mark.indexability_agents
+def test_chatgpt_can_see_llm_notice():
+    """ChatGPT's web_search can see the hidden LLM notice directing to llms.txt."""
+    openai = pytest.importorskip("openai")
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        pytest.skip("OPENAI_API_KEY not set")
+
+    client = openai.OpenAI()
+
+    response = client.responses.create(
+        model="gpt-5.4-mini",
+        tools=[{
+            "type": "web_search_preview",
+            "search_context_size": "high",
+        }],
+        input=(
+            "Go to docs.weaviate.io/weaviate/quickstart and look for any notice "
+            "or message on the page directed at LLMs or AI agents. "
+            "Is there a reference to an llms.txt file? "
+            "If so, copy the full notice text and the URL it points to."
+        ),
+    )
+
+    text = response.output_text
+    text_lower = text.lower()
+
+    assert "llms.txt" in text_lower, (
+        f"ChatGPT couldn't find the LLM notice on the quickstart page. "
+        f"Response:\n{text[:1000]}"
+    )
+    assert "weaviate.io" in text_lower, (
+        f"ChatGPT didn't find the weaviate.io/llms.txt URL. "
+        f"Response:\n{text[:1000]}"
     )
