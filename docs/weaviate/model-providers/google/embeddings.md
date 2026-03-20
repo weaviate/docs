@@ -141,7 +141,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 :::info Important: Different vectorizers for different services
 
-- **Google AI Studio (Gemini API)**: Use `text2vec_google_aistudio()` 
+- **Google AI Studio (Gemini API)**: Use `text2vec_google_gemini()` 
 - **Vertex AI**: Use `text2vec_google()`
 
 :::
@@ -150,7 +150,7 @@ You can [specify](#vectorizer-parameters) one of the [available models](#availab
 
 ### Google AI Studio (Gemini API)
 
-For Google AI Studio, use the `text2vec_google_aistudio()` vectorizer. No `project_id` or `api_endpoint` is required.
+For Google AI Studio, use the `text2vec_google_gemini()` vectorizer. No `project_id` or `api_endpoint` is required.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -395,9 +395,11 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 **Google AI Studio (Gemini API):**
+- `gemini-embedding-2-preview` (added in 1.36.5)
 - `gemini-embedding-001` (default)
 
 **Vertex AI:**
+- `gemini-embedding-2-preview` (added in 1.36.5)
 - `gemini-embedding-001` (default, added in 1.30.11, 1.31.5 and onwards)
 - `text-embedding-005` (added in 1.30.11, 1.31.5 and onwards)
 - `text-multilingual-embedding-002` (added in 1.30.11, 1.31.5 and onwards)

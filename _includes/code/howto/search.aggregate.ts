@@ -116,6 +116,58 @@ console.log(JSON.stringify(result, null, 2));
 }
 
 // =========================================
+// ===== nearObject EXAMPLES =====
+// =========================================
+{
+// nearObjectAggregate TS
+const collection = client.collections.use('JeopardyQuestion');
+const someObjects = await collection.query.fetchObjects({ limit: 1 });
+const objectId = someObjects.objects[0].uuid;
+
+const result = await collection.aggregate.nearObject(
+  // highlight-start
+  objectId,
+  {
+    objectLimit: 200,
+    distance: 0.6,
+    returnMetrics: collection.metrics.aggregate('points')
+      .integer(['count', 'sum', 'maximum', 'minimum', 'mean', 'median', 'mode']),
+  }
+  // highlight-end
+)
+
+console.log(result.totalCount);
+console.log(JSON.stringify(result.properties, null, 2));
+// END nearObjectAggregate TS
+}
+
+// =========================================
+// ===== nearVector EXAMPLES =====
+// =========================================
+{
+// nearVectorAggregate TS
+const collection = client.collections.use('JeopardyQuestion');
+const someObjects = await collection.query.fetchObjects({ limit: 1, includeVector: true });
+const someVector = someObjects.objects[0].vectors.default;
+
+const result = await collection.aggregate.nearVector(
+  // highlight-start
+  someVector,
+  {
+    objectLimit: 200,
+    distance: 0.7,
+    returnMetrics: collection.metrics.aggregate('points')
+      .integer(['count', 'sum', 'maximum', 'minimum', 'mean', 'median', 'mode']),
+  }
+  // highlight-end
+)
+
+console.log(result.totalCount);
+console.log(JSON.stringify(result.properties, null, 2));
+// END nearVectorAggregate TS
+}
+
+// =========================================
 // ===== nearTextWithLimit EXAMPLES =====
 // =========================================
 {
