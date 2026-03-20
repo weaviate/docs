@@ -666,7 +666,7 @@ The output is like this:
 The `*` wildcard operator matches zero or more characters. The `?` operator matches exactly one character.
 <br/>
 
-Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters ([read more](../api/graphql/filters.md#wildcard-literal-matches-with-like)).
+Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters. For example, it is not possible to match only the string `car*` without also matching `car`, `care`, or `carpet`.
 
 </details>
 
@@ -1085,12 +1085,47 @@ If you encounter slow filter performance, consider adding a `limit` parameter or
 
 ## List of filter operators
 
-For a list of filter operators, see [the reference page](../api/graphql/filters.md#filter-structure).
+The `where` filter supports the following operators:
+
+| Operator | Description |
+| --- | --- |
+| `And` | Combine multiple conditions (all must match). |
+| `Or` | Combine multiple conditions (at least one must match). |
+| `Not` | Negate a condition. |
+| `Equal` | Exact match. |
+| `NotEqual` | Inverse of `Equal`. |
+| `GreaterThan` | Greater than comparison. |
+| `GreaterThanEqual` | Greater than or equal comparison. |
+| `LessThan` | Less than comparison. |
+| `LessThanEqual` | Less than or equal comparison. |
+| `Like` | Partial text match with `?` (one char) and `*` (zero+ chars) wildcards. |
+| `WithinGeoRange` | Geo-coordinate radius search. |
+| `IsNull` | Filter by null/non-null state. |
+| `ContainsAny` | Array/text contains at least one of the values. |
+| `ContainsAll` | Array/text contains all of the values. |
+| `ContainsNone` | Array/text contains none of the values. |
+
+### Value types
+
+When specifying filter values, use the appropriate `valueType` for the property's data type:
+
+| valueType | Data types |
+| --- | --- |
+| `valueInt` | `int` |
+| `valueBoolean` | `boolean` |
+| `valueString` | `string` (deprecated) |
+| `valueText` | `text`, `uuid`, `geoCoordinates`, `phoneNumber` |
+| `valueNumber` | `number` |
+| `valueDate` | `date` (ISO 8601 / [RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) format) |
+
+### Filter path syntax
+
+The `path` is a list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style indicating the property name. For cross-references, follow the path as a list: `["inPublication", "Publication", "name"]`.
 
 ## Related pages
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [API References: Filters](../api/graphql/filters.md)
+- [API reference: Filters](../api/graphql/filters.md)
 
 ## Questions and feedback
 

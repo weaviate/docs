@@ -633,6 +633,7 @@ const sidebars = {
         "weaviate/search/rerank",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        "weaviate/search/sort-and-paginate",
         {
           type: "link",
           label: "Search strategies: In depth",

@@ -701,10 +701,68 @@ import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx'
 
 <QueryReplication/>
 
+## Group results by property
+
+You can group objects that match a query. Groups are defined by a property, and you can limit the number of groups and objects per group. This requires a vector search operator (e.g. `nearText`, `nearVector`, `nearObject`).
+
+import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
+
+<GroupbyLimitations />
+
+The groupBy syntax in GraphQL:
+
+```graphql
+{
+  Get{
+    <Class>(
+      <vectorSearchOperator>
+      groupBy:{
+        path: [<propertyName>]   # Property to group by (one property or cross-reference)
+        groups: <number>         # Max number of groups
+        objectsPerGroup: <number> # Max objects per group
+      }
+    ) {
+      _additional {
+        group {
+          id
+          groupedBy{ value path }
+          count
+          maxDistance
+          minDistance
+          hits {
+            <properties>
+            _additional {
+              id
+              vector
+              distance
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+For client code examples, see [Vector similarity: Group results](./similarity.md#group-results), [Hybrid: Group results](./hybrid.md#group-results), or [BM25: Group results](./bm25.md#group-results).
+
+<details>
+  <summary>Consistency levels</summary>
+
+Where replication is enabled, you can specify a consistency level with queries. The available options are:
+- `ONE`
+- `QUORUM` (Default)
+- `ALL`
+
+Read more about [consistency levels](../concepts/replication-architecture/consistency.md).
+
+</details>
+
 ## Related pages
 
 - [Connect to Weaviate](/weaviate/connections)
-- [API References: GraphQL: Get](../api/graphql/get.md)
+- [API reference: GraphQL: Get](../api/graphql/get.md)
+- [Sort and paginate results](./sort-and-paginate.md)
 - For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md)
 

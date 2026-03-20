@@ -4,6 +4,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 
 import PyCode from '!!raw-loader!/_includes/code/graphql.get.simple.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.beacon.v3.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/search.basics.ts';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/SearchBasicTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/SearchBasicTest.cs';
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -15,6 +18,30 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.beacon.v3.py';
   language="py"
 />
 
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// GetWithCrossRefsJS"
+    endMarker="// END GetWithCrossRefsJS"
+    language="ts"
+  />
+</TabItem>
+<TabItem value="java6" label="Java v6">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START GetWithCrossRefs"
+    endMarker="// END GetWithCrossRefs"
+    language="java"
+  />
+</TabItem>
+<TabItem value="csharp" label="C#">
+  <FilteredTextBlock
+    text={CSharpCode}
+    startMarker="// START GetWithCrossRefs"
+    endMarker="// END GetWithCrossRefs"
+    language="csharp"
+  />
 </TabItem>
 <TabItem value="go" label="Go">
 

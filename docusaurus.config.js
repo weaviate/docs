@@ -213,7 +213,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ["java", "csharp"],
+        additionalLanguages: ["java", "csharp", "bash"],
       },
       docs: {
         sidebar: {

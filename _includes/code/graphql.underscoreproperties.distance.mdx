@@ -3,6 +3,9 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 import PyCode from '!!raw-loader!/_includes/code/graphql.metadata.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/search.basics.ts';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/SearchBasicTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/SearchBasicTest.cs';
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -11,6 +14,30 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.metadata.py';
     startMarker="START MetadataUUIDDistance"
     endMarker="END MetadataUUIDDistance"
     language="py"
+  />
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// GetWithMetadataJS"
+    endMarker="// END GetWithMetadataJS"
+    language="ts"
+  />
+</TabItem>
+<TabItem value="java6" label="Java v6">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START GetWithMetadata"
+    endMarker="// END GetWithMetadata"
+    language="java"
+  />
+</TabItem>
+<TabItem value="csharp" label="C#">
+  <FilteredTextBlock
+    text={CSharpCode}
+    startMarker="// START GetWithMetadata"
+    endMarker="// END GetWithMetadata"
+    language="csharp"
   />
 </TabItem>
 <TabItem value="go" label="Go">

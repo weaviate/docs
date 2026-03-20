@@ -1,24 +1,20 @@
 ---
-title: Search (GraphQL | gRPC)
-sidebar_position: 0
+title: Search API (GraphQL/gRPC)
 description: "GraphQL and gRPC API documentation for flexible querying and data retrieval in Weaviate."
 image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---
 
 
-## API
+## Querying & search API
 
-Weaviate offers [GraphQL](https://graphql.org/) and gRPC APIs for queries.
+Weaviate offers [GraphQL](https://graphql.org/) and [gRPC](https://grpc.io/) APIs for queries.
 
 We recommend using a Weaviate [client library](../../client-libraries/index.mdx), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
 
-However, you can query Weaviate directly using GraphQL with a POST request to the `/graphql` endpoint, or write your own `gRPC` calls based on the [gRPC](../grpc.md) protobuf specification.
+However, you can query Weaviate directly using GraphQL with a POST request to the [`/graphql` endpoint](/weaviate/api/rest/#tag/graphql), or write your own `gRPC` calls based on the [gRPC](../grpc.md) protobuf specification.
 
-
-## All references
-
-All references have their individual subpages. Click on one of the references below for more information.
+Click on one of the references below for more information:
 
 - [Object-level queries](./get.md)
 - [Aggregate](./aggregate.md)
@@ -30,8 +26,6 @@ All references have their individual subpages. Click on one of the references be
 
 
 ## GraphQL API
-
-### Why GraphQL?
 
 GraphQL is a query language built on using graph data structures. It is an efficient method of data retrieval and mutation, since it mitigates the common over-fetching and under-fetching problems of other query languages.
 
@@ -78,8 +72,6 @@ GraphQL _integer_ data currently only supports `int32`, and does not support `in
 GraphQL (`Get`) queries are run with a tunable [consistency level](../../concepts/replication-architecture/consistency.md#tunable-read-consistency).
 
 ## gRPC API
-
-Starting with Weaviate v1.19.0, a gRPC interface is being progressively added to Weaviate.
 
 gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
 

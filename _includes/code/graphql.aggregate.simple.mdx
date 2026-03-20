@@ -3,6 +3,9 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 import PyCode from '!!raw-loader!/_includes/code/graphql.aggregate.simple.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/SearchAggregateTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/SearchAggregateTest.cs';
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -11,6 +14,30 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.aggregate.simple.py';
     startMarker="START GraphQLAggregateSimple"
     endMarker="END GraphQLAggregateSimple"
     language="py"
+  />
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// MetaCount TS"
+    endMarker="// END MetaCount TS"
+    language="ts"
+  />
+</TabItem>
+<TabItem value="java6" label="Java v6">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START MetaCount"
+    endMarker="// END MetaCount"
+    language="java"
+  />
+</TabItem>
+<TabItem value="csharp" label="C#">
+  <FilteredTextBlock
+    text={CSharpCode}
+    startMarker="// START MetaCount"
+    endMarker="// END MetaCount"
+    language="csharp"
   />
 </TabItem>
 <TabItem value="go" label="Go">

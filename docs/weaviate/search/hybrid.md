@@ -894,7 +894,7 @@ To limit results to groups with similar distances from the query, use the [`auto
 
 Autocut requires `Relative Score Fusion` method because it uses actual similarity scores to detect cutoff points. Autocut shouldn't be used with `Ranked Fusion` as this fusion method relies on ranking positions, not similarity scores.
 
-To learn more about the different fusion algorithms, visit the [search operators reference page](/weaviate/api/graphql/search-operators#fusion-algorithms).
+To learn more about the different fusion algorithms, see the [Fusion algorithms](#fusion-algorithms) section below.
 
 :::
 
@@ -1038,10 +1038,126 @@ import TokenizationNote from '/\_includes/tokenization.mdx'
 
 <TokenizationNote />
 
+## Fusion algorithms
+
+Hybrid search uses a fusion algorithm to combine BM25 and vector search results. Two algorithms are available:
+
+### Ranked fusion
+
+The `rankedFusion` algorithm (default) scores each object by its position (rank) in each result set. Top-ranked objects get the highest scores. The total score is the sum of rank-based scores from both searches. This means the original score magnitudes are discarded &mdash; only rank order matters.
+
+### Relative score fusion
+
+The `relativeScoreFusion` algorithm normalizes the raw scores from each search to a 0&ndash;1 range, preserving the relative distribution of scores. The total score is a weighted sum of the normalized vector similarity and BM25 scores.
+
+<details>
+  <summary>Fusion scoring comparison</summary>
+
+This example compares the two algorithms on a small result set:
+
+<table>
+  <tr>
+    <th>Search Type</th>
+    <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
+  </tr>
+  <tr>
+    <td>Keyword</td>
+    <td>(1): 5</td><td>(0): 2.6</td><td>(2): 2.3</td><td>(4): 0.2</td><td>(3): 0.09</td>
+  </tr>
+  <tr>
+    <td>Vector</td>
+    <td>(2): 0.6</td><td>(4): 0.598</td><td>(0): 0.596</td><td>(1): 0.594</td><td>(3): 0.009</td>
+  </tr>
+</table>
+
+**Ranked fusion** &mdash; scores depend only on rank (`1/(RANK + 60)`):
+
+<table>
+  <tr>
+    <th>Search Type</th>
+    <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
+  </tr>
+  <tr>
+    <td>Keyword</td>
+    <td>(1): 0.0154</td><td>(0): 0.0160</td><td>(2): 0.0161</td><td>(4): 0.0167</td><td>(3): 0.0166</td>
+  </tr>
+  <tr>
+    <td>Vector</td>
+    <td>(2): 0.016502</td><td>(4): 0.016502</td><td>(0): 0.016503</td><td>(1): 0.016503</td><td>(3): 0.016666</td>
+  </tr>
+</table>
+
+**Relative score fusion** &mdash; scores normalized to 0&ndash;1 range:
+
+<table>
+  <tr>
+    <th>Search Type</th>
+    <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
+  </tr>
+  <tr>
+    <td>Keyword</td>
+    <td>(1): 1.0</td><td>(0): 0.511</td><td>(2): 0.450</td><td>(4): 0.022</td><td>(3): 0.0</td>
+  </tr>
+  <tr>
+    <td>Vector</td>
+    <td>(2): 1.0</td><td>(4): 0.996</td><td>(0): 0.993</td><td>(1): 0.986</td><td>(3): 0.0</td>
+  </tr>
+</table>
+
+**Final scores** (with `alpha=0.5`):
+
+<table>
+  <tr>
+    <th>Algorithm</th>
+    <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
+  </tr>
+  <tr>
+    <td>Ranked</td>
+    <td>(2): 0.016301</td><td>(1): 0.015952</td><td>(0): 0.015952</td><td>(4): 0.016600</td><td>(3): 0.016630</td>
+  </tr>
+  <tr>
+    <td>Relative</td>
+    <td>(1): 0.993</td><td>(0): 0.752</td><td>(2): 0.725</td><td>(4): 0.509</td><td>(3): 0.0</td>
+  </tr>
+</table>
+
+`relativeScoreFusion` preserves the large gap in keyword scores, identifying ID 1 as the top result. `rankedFusion` only considers rank positions, yielding a flatter score distribution.
+
+</details>
+
+For a fuller discussion, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
+
+:::note Oversearch with `relativeScoreFusion`
+When using `relativeScoreFusion` with a small `limit`, the result set can be sensitive to the limit parameter due to score normalization. Weaviate automatically oversearches (with a higher limit of 100) and trims the results to mitigate this.
+:::
+
+## BM25 search operator for hybrid
+
+<SearchOperators/>
+
+Use `bm25SearchOperator` to control how many query tokens must be present in the target object for it to be a match in the keyword (BM25) portion of the hybrid search. The available options are:
+
+- **`Or`**: At least `minimumOrTokensMatch` tokens must match (default behavior with minimum of 1).
+- **`And`**: All tokens must match.
+
+<details>
+  <summary>Hybrid variable table</summary>
+
+| Variable | Required | Type | Description |
+|---|---|---|---|
+| `query` | yes | `string` | Search query. |
+| `alpha` | no | `float` | Weighting (0 = pure keyword, 1 = pure vector). Default 0.75. |
+| `vector` | no | `[float]` | Optional custom vector. |
+| `properties` | no | `[string]` | Limit BM25 to these properties. |
+| `fusionType` | no | `string` | `rankedFusion` or `relativeScoreFusion` (v1.20.0+). |
+| `bm25SearchOperator` | no | `object` | Token match requirements (v1.31.0+). |
+
+</details>
+
 ## Related pages
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
+- [API reference: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
 - About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
 - For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).

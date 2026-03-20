@@ -8,12 +8,7 @@ image: og/docs/api.jpg
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
-import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
-
-<TryEduDemo />
-
 This page covers object-level query functions. They are collectively referred to as `Get` queries within.
-
 
 ### Parameters
 
@@ -28,22 +23,21 @@ A `Get` query requires the target collection to be specified.
 
 Each `Get` query can include any of the following types of arguments:
 
-| Argument | Description | Required |
-| -------- | ----------- | -------- |
-| Collection | Also called "class". The object collection to be retrieved from. | Yes |
-| Properties | Properties to be retrieved | Yes (GraphQL) <br/> (No if using gRPC API) |
-| Cross-references | Cross-references to be retrieved | No |
-| [Metadata](./additional-properties.md) | Metadata (additional properties) to be retrieved | No |
-| [Conditional filters](./filters.md) | Filter the objects to be retrieved | No |
-| [Search operators](./search-operators.md) | Specify the search strategy (e.g. near text, hybrid, bm25) | No |
-| [Additional operators](./additional-operators.md) | Specify additional operators (e.g. limit, offset, sort) | No |
-| [Tenant name](#multi-tenancy) | Specify the tenant name | Yes, if multi-tenancy enabled. ([Read more: what is multi-tenancy?](../../concepts/data.md#multi-tenancy)) |
-| [Consistency level](#consistency-levels) | Specify the consistency level | No |
-
+| Argument                                          | Description                                                      | Required                                                                                                   |
+| ------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Collection                                        | Also called "class". The object collection to be retrieved from. | Yes                                                                                                        |
+| Properties                                        | Properties to be retrieved                                       | Yes (GraphQL) <br/> (No if using gRPC API)                                                                 |
+| Cross-references                                  | Cross-references to be retrieved                                 | No                                                                                                         |
+| [Metadata](./additional-properties.md)            | Metadata (additional properties) to be retrieved                 | No                                                                                                         |
+| [Conditional filters](./filters.md)               | Filter the objects to be retrieved                               | No                                                                                                         |
+| [Search operators](./search-operators.md)         | Specify the search strategy (e.g. near text, hybrid, bm25)       | No                                                                                                         |
+| [Additional operators](./additional-operators.md) | Specify additional operators (e.g. limit, offset, sort)          | No                                                                                                         |
+| [Tenant name](#multi-tenancy)                     | Specify the tenant name                                          | Yes, if multi-tenancy enabled. ([Read more: what is multi-tenancy?](../../concepts/data.md#multi-tenancy)) |
+| [Consistency level](#consistency-levels)          | Specify the consistency level                                    | No                                                                                                         |
 
 #### Example usage
 
-import GraphQLGetSimple from '/_includes/code/graphql.get.simple.mdx';
+import GraphQLGetSimple from '/\_includes/code/graphql.get.simple.mdx';
 
 <GraphQLGetSimple/>
 
@@ -77,19 +71,17 @@ Accordingly, such a `Get` query is not suitable for a substantive object retriev
 </details>
 
 :::tip Read more
-- [How-to search: Basics](../../search/basics.md)
-:::
+
+- [How-to: Query & Search - Search patterns and basics](../../search/basics.md)
+  :::
 
 ### `Get` groupBy
 
-You can use retrieve groups of objects that match the query.
+You can group objects that match a query by property. The number of groups and objects per group can be limited.
 
-The groups are defined by a property, and the number of groups and objects per group can be limited.
-
-import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
+import GroupbyLimitations from '/\_includes/groupby-limitations.mdx';
 
 <GroupbyLimitations />
-
 
 #### Syntax
 
@@ -126,43 +118,28 @@ import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
 }
 ```
 
-#### Example usage:
-
-
-import GraphQLGroupBy from '/_includes/code/graphql.get.groupby.mdx';
-
-<GraphQLGroupBy/>
-
+For usage examples, see [How-to: Query & Search - Group results by property](../../search/basics.md#group-results-by-property).
 
 ### Consistency levels
 
-Where replication is enabled, you can specify a `consistency` argument with a `Get` query. The available options are:
-- `ONE`
-- `QUORUM` (Default)
-- `ALL`
-
-Read more about consistency levels [here](../../concepts/replication-architecture/consistency.md).
-
-import GraphQLGetConsistency from '/_includes/code/graphql.get.consistency.mdx';
-
-<GraphQLGetConsistency/>
+Where replication is enabled, you can specify a `consistency` argument. Options: `ONE`, `QUORUM` (default), `ALL`. Read more about [consistency levels](../../concepts/replication-architecture/consistency.md).
 
 ### Multi-tenancy
 
 In a multi-tenancy collection, each `Get` query must specify a tenant.
 
-import GraphQLGetMT from '/_includes/code/graphql.get.multitenancy.mdx';
+import GraphQLGetMT from '/\_includes/code/graphql.get.multitenancy.mdx';
 
 <GraphQLGetMT/>
 
-
 :::tip Read more
+
 - [How-to manage data: Multi-tenancy operations](../../manage-collections/multi-tenancy.mdx)
-:::
+  :::
 
 ## Cross-references
 
-import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+import CrossReferencePerformanceNote from '/\_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
@@ -170,11 +147,11 @@ Weaviate supports cross-references between objects. Each cross-reference behaves
 
 You can retrieve cross-referenced properties with a `Get` query.
 
-import GraphQLGetBeacon from '/_includes/code/graphql.get.beacon.mdx';
+import GraphQLGetBeacon from '/\_includes/code/graphql.get.beacon.mdx';
 
 <GraphQLGetBeacon/>
 
-import GraphQLGetBeaconUnfiltered from '!!raw-loader!/_includes/code/graphql.get.beacon.v3.py';
+import GraphQLGetBeaconUnfiltered from '!!raw-loader!/\_includes/code/graphql.get.beacon.v3.py';
 
 <details>
   <summary>Expected response</summary>
@@ -189,60 +166,62 @@ import GraphQLGetBeaconUnfiltered from '!!raw-loader!/_includes/code/graphql.get
 </details>
 
 :::tip Read more
-- [How-to retrieve cross-referenced properties](../../search/basics.md#retrieve-cross-referenced-properties)
-:::
+
+- [How-to: Query & Search - Retrieve cross-referenced properties](../../search/basics.md#retrieve-cross-referenced-properties)
+  :::
 
 ## Additional properties / metadata
 
 Various metadata properties may be retrieved with `Get{}` requests. They include:
 
-Property | Description |
--------- | ----------- |
-`id` | Object id |
-`vector` | Object vector |
-`generate` | Generative module outputs |
-`rerank` | Reranker module outputs |
-`creationTimeUnix` | Object creation time |
-`lastUpdateTimeUnix` | Object last updated time |
-`distance` | Vector distance to query (vector search only) |
-`certainty` | Vector distance to query, normalized to certainty (vector search only) |
-`score` | Search score (BM25 and hybrid only) |
-`explainScore` | Explanation of the score (BM25 and hybrid only) |
-`classification` | Classification outputs |
-`featureProjection` | Feature projection outputs |
+| Property             | Description                                                            |
+| -------------------- | ---------------------------------------------------------------------- |
+| `id`                 | Object id                                                              |
+| `vector`             | Object vector                                                          |
+| `generate`           | Generative module outputs                                              |
+| `rerank`             | Reranker module outputs                                                |
+| `creationTimeUnix`   | Object creation time                                                   |
+| `lastUpdateTimeUnix` | Object last updated time                                               |
+| `distance`           | Vector distance to query (vector search only)                          |
+| `certainty`          | Vector distance to query, normalized to certainty (vector search only) |
+| `score`              | Search score (BM25 and hybrid only)                                    |
+| `explainScore`       | Explanation of the score (BM25 and hybrid only)                        |
+| `classification`     | Classification outputs                                                 |
+| `featureProjection`  | Feature projection outputs                                             |
 
 They are returned through the `_additional` properties in the response.
 
 For further information see:
 
 :::tip Read more
-- [References: GraphQL: Additional properties](./additional-properties.md)
-- [How-to search: Specify fetched properties](../../search/basics.md#retrieve-object-properties)
-:::
 
+- [References: GraphQL: Additional properties](./additional-properties.md)
+- [How-to: Query & Search: Specify fetched properties](../../search/basics.md#retrieve-object-properties)
+  :::
 
 ## Search operators
 
 The following search operators are available.
 
-| Argument | Description | Required integration type | Learn more |
-| --- | --- | --- | --- |
-| `nearObject` | Vector search using a Weaviate object | *none* | [Learn more](./search-operators.md#nearobject) |
-| `nearVector` | Vector search using a raw vector | *none* | [Learn more](./search-operators.md#nearvector) |
-| `nearText` | Vector search using a text query | Text embedding model |  |
-| `nearImage` | Vector search using an image | Multi-modal embedding model |
-| `hybrid` | Combine vector and BM25 search results |  *none* | [Learn more](../graphql/search-operators.md#hybrid) |
-| `bm25`   | Keyword search with BM25F ranking  | *none* | [Learn more](../graphql/search-operators.md#bm25) |
+| Argument     | Description                            | Required integration type   | Learn more                                          |
+| ------------ | -------------------------------------- | --------------------------- | --------------------------------------------------- |
+| `nearObject` | Vector search using a Weaviate object  | _none_                      | [Learn more](./search-operators.md#nearobject)      |
+| `nearVector` | Vector search using a raw vector       | _none_                      | [Learn more](./search-operators.md#nearvector)      |
+| `nearText`   | Vector search using a text query       | Text embedding model        |                                                     |
+| `nearImage`  | Vector search using an image           | Multi-modal embedding model |
+| `hybrid`     | Combine vector and BM25 search results | _none_                      | [Learn more](../graphql/search-operators.md#hybrid) |
+| `bm25`       | Keyword search with BM25F ranking      | _none_                      | [Learn more](../graphql/search-operators.md#bm25)   |
 
 For further information see:
 
 :::tip Read more
+
 - [References: GraphQL: Search operators](./search-operators.md)
-- [How-to search: Similarity search](../../search/similarity.md)
-- [How-to search: Image search](../../search/image.md)
-- [How-to search: BM25 search](../../search/bm25.md)
-- [How-to search: Hybrid search](../../search/hybrid.md)
-:::
+- [How-to: Query & Search: Similarity search](../../search/similarity.md)
+- [How-to: Query & Search: Image search](../../search/image.md)
+- [How-to: Query & Search: BM25 search](../../search/bm25.md)
+- [How-to: Query & Search: Hybrid search](../../search/hybrid.md)
+  :::
 
 ## Conditional filters
 
@@ -251,10 +230,10 @@ For further information see:
 For further information see:
 
 :::tip Read more
-- [References: GraphQL: Conditional Filters](./filters.md)
-- [How-to search: Filters](../../search/filters.md)
-:::
 
+- [References: GraphQL: Conditional Filters](./filters.md)
+- [How-to: Query & Search: Filters](../../search/filters.md)
+  :::
 
 ## Additional operators
 
@@ -263,16 +242,20 @@ For further information see:
 For further information see:
 
 :::tip Read more
+
 - [References: GraphQL: Additional Operators](./additional-operators.md)
-:::
+  :::
 
+## Further resources
 
-##  Related pages
-- [How-to: Search: Basics](../../search/basics.md)
-
+- [How-to: Query & Search - Search patterns and basics](../../search/basics.md)
+- [How-to: Query & Search - Similarity search](../../search/similarity.md)
+- [How-to: Query & Search - Image search](../../search/image.md)
+- [How-to: Query & Search - BM25 search](../../search/bm25.md)
+- [How-to: Query & Search - Hybrid search](../../search/hybrid.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

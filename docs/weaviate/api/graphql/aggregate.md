@@ -8,15 +8,13 @@ image: og/docs/api.jpg
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
-import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
-
-<TryEduDemo />
-
-# Overview
-
 This page covers aggregation queries. They are collectively referred to as `Aggregate` queries within.
 
 An `Aggregate` query can aggregate over an entire collection, or the [results of a search](#aggregating-a-vector-search--faceted-vector-search).
+
+:::tip How-to guide
+For usage examples with multi-language code snippets, see [Aggregation](../../search/aggregate.md).
+:::
 
 
 ### Parameters

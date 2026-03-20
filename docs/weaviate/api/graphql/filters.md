@@ -1,88 +1,59 @@
 ---
 title: Conditional filters
 sidebar_position: 35
-description: "GraphQL filtering documentation for applying conditional logic to refine search results."
+description: "GraphQL filtering reference: operator list, filter structure, path syntax, and value types."
 image: og/docs/api.jpg
 # tags: ['graphql', 'filters']
 ---
 
+Conditional filters may be added to [`Object-level`](./get.md) and [`Aggregate`](./aggregate.md) queries, as well as [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects). The operator used for filtering is called a `where` filter.
 
-import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
-
-<TryEduDemo />
-
-Conditional filters may be added to queries such as [`Object-level`](./get.md) and [`Aggregate`](./aggregate.md) queries, as well as [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects). The operator used for filtering is also called a `where` filter.
-
-A filter may consist of one or more conditions, which are combined using the `And` or `Or` operators. Each condition consists of a property path, an operator, and a value.
-
-
-## Single operand (condition)
-
-Each set of algebraic conditions is called an "operand". For each operand, the required properties are:
-- The operator type,
-- The property path, and
-- The value as well as the value type.
-
-For example, this filter will only allow objects from the class `Article` with a `wordCount` that is `GreaterThan` than `1000`.
-
-import GraphQLFiltersWhereSimple from '/_includes/code/graphql.filters.where.simple.mdx';
-
-<GraphQLFiltersWhereSimple/>
-
-<details>
-  <summary>Expected response</summary>
-
-```
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "Anywhere but Washington: an eye-opening journey in a deeply divided nation"
-        },
-        {
-          "title": "The world is still struggling to implement meaningful climate policy"
-        },
-        ...
-      ]
-    }
-  }
-}
-```
-
-</details>
+:::tip How-to guide
+For usage examples with multi-language code snippets, see [Filters](../../search/filters.md).
+:::
 
 ## Filter structure
 
-The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebraic_structure), which takes the following arguments:
+The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebraic_structure) with the following arguments:
 
-- `Operator` (which takes one of the following values)
-  - `And`
-  - `Or`
-  - `Not`
-  - `Equal`
-  - `NotEqual`
-  - `GreaterThan`
-  - `GreaterThanEqual`
-  - `LessThan`
-  - `LessThanEqual`
-  - `Like`
-  - `WithinGeoRange`
-  - `IsNull`
-  - `ContainsAny`  (*Only for array and text properties)
-  - `ContainsAll`  (*Only for array and text properties)
-  - `ContainsNone` (*Only for array and text properties)
-- `Path`: Is a list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style, indicating the property name of the collection.
-  - If the property is a cross-reference, the path should be followed as a list of strings. For a `inPublication` reference property that refers to `Publication` collection, the path selector for `name` will be `["inPublication", "Publication", "name"]`.
-- `valueType`
-  - `valueInt`: For `int` data type.
-  - `valueBoolean`: For `boolean` data type.
-  - `valueString`: For `string` data type (note: `string` has been deprecated).
-  - `valueText`: For `text`, `uuid`, `geoCoordinates`, `phoneNumber` data types.
-  - `valueNumber`: For `number` data type.
-  - `valueDate`: For `date` (ISO 8601 timestamp, formatted as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/)) data type.
+### Operators
 
-If the operator is `And` or `Or`, the operands are a list of `where` filters.
+| Operator | Description |
+| --- | --- |
+| `And` | All operands must match. |
+| `Or` | At least one operand must match. |
+| `Not` | Negate a condition. |
+| `Equal` | Exact match. |
+| `NotEqual` | Inverse of `Equal`. |
+| `GreaterThan` | Greater than comparison. |
+| `GreaterThanEqual` | Greater than or equal. |
+| `LessThan` | Less than comparison. |
+| `LessThanEqual` | Less than or equal. |
+| `Like` | Partial text match with `?` (one char) and `*` (zero+ chars) wildcards. See [details](#like). |
+| `WithinGeoRange` | Geo-coordinate radius search. |
+| `IsNull` | Filter by null/non-null state. |
+| `ContainsAny` | Array/text contains at least one of the values. See [details](#containsany--containsall--containsnone). |
+| `ContainsAll` | Array/text contains all of the values. See [details](#containsany--containsall--containsnone). |
+| `ContainsNone` | Array/text contains none of the values. See [details](#containsany--containsall--containsnone). |
+
+If the operator is `And` or `Or`, the operands are a list of nested `where` filters.
+
+### Path
+
+A list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style indicating the property name.
+
+For cross-references, follow the path as a list. For example, an `inPublication` reference to a `Publication` collection targeting the `name` property: `["inPublication", "Publication", "name"]`.
+
+### Value types
+
+| valueType | Data types |
+| --- | --- |
+| `valueInt` | `int` |
+| `valueBoolean` | `boolean` |
+| `valueString` | `string` (deprecated) |
+| `valueText` | `text`, `uuid`, `geoCoordinates`, `phoneNumber` |
+| `valueNumber` | `number` |
+| `valueDate` | `date` (ISO 8601 / [RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) format) |
 
 <details>
   <summary>Example filter structure (GraphQL)</summary>
@@ -115,74 +86,15 @@ If the operator is `And` or `Or`, the operands are a list of `where` filters.
 
 </details>
 
-<details>
-  <summary>Example response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "Opinion | John Lennon Told Them ‘Girls Don't Play Guitar.' He Was So Wrong."
-        }
-      ]
-    }
-  },
-  "errors": null
-}
-```
-
-</details>
-
 ### Filter behaviors
 
 #### Multi-word queries in `Equal` filters
 
-The behavior for the `Equal` operator on multi-word textual properties in `where` filters depends on the `tokenization` of the property.
-
-See the [Schema property tokenization section](../../config-refs/collections.mdx#tokenization) for the difference between the available tokenization types.
+The behavior for the `Equal` operator on multi-word textual properties depends on the `tokenization` of the property. See [tokenization](../../config-refs/collections.mdx#tokenization).
 
 #### Stopwords in `text` filters
 
-Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/indexing/inverted-index.mdx#stopwords).
-
-## Multiple operands
-
-You can set multiple operands or [nest conditions](../../search/filters.md#nested-filters).
-
-:::tip
-You can filter datetimes similarly to numbers, with the `valueDate` given as `string` in [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) format.
-:::
-
-import GraphQLFiltersWhereOperands from '/_includes/code/graphql.filters.where.operands.mdx';
-
-<GraphQLFiltersWhereOperands />
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "China\u2019s long-distance lorry drivers are unsung heroes of its economy"
-        },
-        {
-          "title": "\u2018It\u2019s as if there\u2019s no Covid\u2019: Nepal defies pandemic amid a broken economy"
-        },
-        {
-          "title": "A tax hike threatens the health of Japan\u2019s economy"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
+You can configure your own [stopword lists](/weaviate/config-refs/indexing/inverted-index.mdx#stopwords).
 
 ## Filter operators
 
@@ -195,38 +107,6 @@ The `Like` operator filters `text` data based on partial matches. It can be used
 - `*` -> zero, one or more unknown characters
   - `car*` matches `car`, `care`, `carpet`, etc
   - `*car*` matches `car`, `healthcare`, etc.
-
-import GraphQLFiltersWhereLike from '/_includes/code/graphql.filters.where.like.mdx';
-
-<GraphQLFiltersWhereLike/>
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Publication": [
-        {
-          "name": "The New York Times Company"
-        },
-        {
-          "name": "International New York Times"
-        },
-        {
-          "name": "New York Times"
-        },
-        {
-          "name": "New Yorker"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
 
 #### Performance of `Like`
 
@@ -245,9 +125,8 @@ Both operators expect an array of values and return objects that match based on 
 
 :::note `ContainsAny`/`ContainsAll`/`ContainsNone` notes:
 - The `ContainsAny`, `ContainsAll` and `ContainsNone` operators treat texts as an array. The text is split into an array of tokens based on the chosen tokenization scheme, and the search is performed on that array.
-- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the text array must be specified with the `valueTextArray` argument. This is different from the usage in search, where the `valueText` argument that can be used.
+- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the text array must be specified with the `valueTextArray` argument. This is different from the usage in search, where the `valueText` argument can be used.
 :::
-
 
 #### `ContainsAny`
 
@@ -279,90 +158,24 @@ import RangeFilterPerformanceNote from '/_includes/range-filter-performance-note
 
 ### By id
 
-You can filter object by their unique id or uuid, where you give the `id` as `valueText`.
-
-import GraphQLFiltersWhereId from '/_includes/code/graphql.filters.where.id.mdx';
-
-<GraphQLFiltersWhereId/>
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "Backs on the rack - Vast sums are wasted on treatments for back pain that make it worse"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
+You can filter objects by their unique id or uuid, where you give the `id` as `valueText`.
 
 ### By timestamps
 
 Filtering can be performed with internal timestamps as well, such as `creationTimeUnix` and `lastUpdateTimeUnix`. These values can be represented either as Unix epoch milliseconds, or as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) formatted datetimes. Note that epoch milliseconds should be passed in as a `valueText`, and an RFC3339 datetime should be a `valueDate`.
 
 :::info
-Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) for details.
+Filtering by timestamp requires the target class to be configured to index timestamps. See [here](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) for details.
 :::
-
-import GraphQLFiltersWhereTimestamps from '/_includes/code/graphql.filters.where.timestamps.mdx';
-
-<GraphQLFiltersWhereTimestamps />
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "Army builds new body armor 14-times stronger in the face of enemy fire"
-        },
-        ...
-      ]
-    }
-  }
-}
-```
-
-</details>
 
 ### By property length
 
-Filtering can be performed with the length of properties.
+Filter by the length of properties using `path: ["len(<property>)"]`. Supported operators: `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanEqual`, `LessThan`, `LessThanEqual`. Values must be 0 or larger.
 
-The length of properties is calculated differently depending on the type:
-- array types: the number of entries in the array is used, where null (property not present) and empty arrays both have the length 0.
-- strings and texts: the number of characters (unicode characters such as 世 count as one character).
-- numbers, booleans, geo-coordinates, phone-numbers and data-blobs are not supported.
-
-```graphql
-{
-  Get {
-    <Class>(
-      where: {
-        operator: <Operator>,
-        valueInt: <value>,
-        path: ["len(<property>)"]
-      }
-    )
-  }
-}
-```
-Supported operators are `(not) equal` and `greater/less than (equal)` and values need to be 0 or larger.
-
-Note that the `path` value is a string, where the property name is wrapped in `len()`. For example, to filter for objects based on the length of the `title` property, you would use `path: ["len(title)"]`.
-
-To filter for `Article` class objects with `title` length greater than 10, you would use:
+Length calculation:
+- **Array types**: number of entries (null and empty = 0).
+- **Strings/texts**: number of unicode characters.
+- Numbers, booleans, geo-coordinates, phone-numbers, and data-blobs are not supported.
 
 ```graphql
 {
@@ -379,138 +192,20 @@ To filter for `Article` class objects with `title` length greater than 10, you w
 ```
 
 :::note
-Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/indexing/inverted-index.mdx#indexpropertylength).
+Filtering by property length requires [indexing to be enabled](/weaviate/config-refs/indexing/inverted-index.mdx#indexpropertylength).
 :::
 
 ### By cross-references
 
-You can also search for the value of the property of a cross-references, also called beacons.
-
-For example, these filters select based on the class Article but who have `inPublication` set to New Yorker.
-
-import GraphQLFiltersWhereBeacon from '/_includes/code/graphql.filters.where.beacon.mdx';
-
-<GraphQLFiltersWhereBeacon/>
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "inPublication": [
-            {
-              "name": "New Yorker"
-            }
-          ],
-          "title": "The Hidden Costs of Automated Thinking"
-        },
-        {
-          "inPublication": [
-            {
-              "name": "New Yorker"
-            }
-          ],
-          "title": "The Real Deal Behind the U.S.\u2013Iran Prisoner Swap"
-        },
-        ...
-      ]
-    }
-  }
-}
-```
-
-</details>
+You can filter based on the value of a property of a cross-referenced object. The path should follow the cross-reference chain, e.g. `["inPublication", "Publication", "name"]`.
 
 ### By count of reference
 
-Above example shows how filter by reference can solve straightforward questions like "Find all articles that are published by New Yorker". But questions like "Find all articles that are written by authors that wrote at least two articles", cannot be answered by the above query structure. It is however possible to filter by reference count. To do so, simply provide one of the existing compare operators (`Equal`, `LessThan`, `LessThanEqual`, `GreaterThan`, `GreaterThanEqual`) and use it directly on the reference element. For example:
-
-import GraphQLFiltersWhereBeaconCount from '/_includes/code/graphql.filters.where.beacon.count.mdx';
-
-<GraphQLFiltersWhereBeaconCount/>
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Author": [
-        {
-          "name": "Agam Shah",
-          "writesFor": [
-            {
-              "name": "Wall Street Journal"
-            },
-            {
-              "name": "Wall Street Journal"
-            }
-          ]
-        },
-        {
-          "name": "Costas Paris",
-          "writesFor": [
-            {
-              "name": "Wall Street Journal"
-            },
-            {
-              "name": "Wall Street Journal"
-            }
-          ]
-        },
-        ...
-      ]
-    }
-  }
-}
-```
-
-</details>
+You can filter by reference count using comparison operators (`Equal`, `LessThan`, `LessThanEqual`, `GreaterThan`, `GreaterThanEqual`) directly on the reference property. For example, to find all authors who wrote at least two articles, filter `writesFor` with `GreaterThanEqual` and `valueInt: 2`.
 
 ### By geo coordinates
 
-A special case of the `Where` filter is with geoCoordinates. This filter is only supported by the `Get{}` function. If you've set the `geoCoordinates` property type, you can search in an area based on kilometers.
-
-For example, this curious returns all in a radius of 2KM around a specific geo-location:
-
-import GraphQLFiltersWhereGeocoords from '/_includes/code/graphql.filters.where.geocoordinates.mdx';
-
-<GraphQLFiltersWhereGeocoords/>
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Publication": [
-        {
-          "headquartersGeoLocation": {
-            "latitude": 51.512737,
-            "longitude": -0.0962234
-          },
-          "name": "Financial Times"
-        },
-        {
-          "headquartersGeoLocation": {
-            "latitude": 51.512737,
-            "longitude": -0.0962234
-          },
-          "name": "International New York Times"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
+The `WithinGeoRange` operator filters objects within a radius from a point. It requires a `geoCoordinates` property with `latitude` and `longitude`, and a `distance` with `max` in kilometers.
 
 Note that `geoCoordinates` uses a vector index under the hood.
 
@@ -520,7 +215,7 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 
 ### By null state
 
-Using the `IsNull` operator allows you to do filter for objects where given properties are `null` or `not null`. Note that zero-length arrays and empty strings are equivalent to a null value.
+Using the `IsNull` operator allows you to filter for objects where given properties are `null` or `not null`. Note that zero-length arrays and empty strings are equivalent to a null value.
 
 ```graphql
 {
@@ -534,15 +229,12 @@ Using the `IsNull` operator allows you to do filter for objects where given prop
 ```
 
 :::note
-Filtering by null-state requires the target class to be configured to index this. See [here](../../config-refs/indexing/inverted-index.mdx#indexnullstate) for details.
+Filtering by null state requires [indexing to be enabled](../../config-refs/indexing/inverted-index.mdx#indexnullstate).
 :::
 
+## Further resources
 
-## Related pages
-
-- [How-to search: Filters](../../search/filters.md)
-
-
+- [How-to: Filters](../../search/filters.md)
 
 ## Questions and feedback
 

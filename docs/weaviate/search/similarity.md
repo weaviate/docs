@@ -746,9 +746,121 @@ The output is like this:
 
 </details>
 
+## Bias results with `moveTo` / `moveAwayFrom`
+
+When using `nearText`, you can bias the search direction by moving the query vector toward or away from other concepts or objects.
+
+For example, this query searches for "traveling in Asia" and biases results toward an article about food:
+
+import GraphQLFiltersNearText2Obj from '/_includes/code/graphql.filters.nearText.2obj.mdx';
+
+<GraphQLFiltersNearText2Obj/>
+
+<details>
+  <summary>Expected response</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "Article": [
+        {
+          "_additional": {
+            "certainty": 0.9619976580142975
+          },
+          "summary": "We've scoured the planet for what we think are 50 of the most delicious foods ever created...",
+          "title": "World food: 50 best dishes"
+        },
+        {
+          "_additional": {
+            "certainty": 0.9297388792037964
+          },
+          "summary": "The look reflects the elegant ambiance created by interior designer Joyce Wang in Hong Kong...",
+          "title": "20 best new Asia-Pacific restaurants to try in 2020"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+The `moveTo` and `moveAwayFrom` parameters each accept `concepts` (text strings), `objects` (UUIDs), and a `force` (0&ndash;1) controlling the strength of the bias.
+
+<details>
+  <summary>Concept parsing</summary>
+
+A `nearText` query interprets each term in an array input as a distinct string to be vectorized. If multiple strings are passed, the query vector is an average of the individual string vectors.
+
+- `["New York Times"]` &mdash; one vector position based on the whole phrase.
+- `["New", "York", "Times"]` &mdash; all concepts weighted similarly.
+- `["New York", "Times"]` &mdash; a combination of the two above.
+
+A practical example: `concepts: ["beatles", "John Lennon"]`
+
+</details>
+
+<details>
+  <summary>Semantic path (Contextionary only)</summary>
+
+The semantic path returns an array of concepts from the query to the data object, showing the steps Weaviate's Contextionary took to connect them.
+
+| Property | Description |
+| --- | --- |
+| `concept` | The concept found at this step. |
+| `distanceToNext` | Distance to the next step (null for the last step). |
+| `distanceToPrevious` | Distance to the previous step (null for the first step). |
+| `distanceToQuery` | Distance of this step to the query. |
+| `distanceToResult` | Distance of this step to the result. |
+
+Building a semantic path requires a `nearText` operator, so it is only available in GraphQL.
+
+</details>
+
+<details>
+  <summary>Variable tables for vector search operators</summary>
+
+#### `nearVector` variables
+
+| Variable | Required | Type | Description |
+| --- | --- | --- | --- |
+| `vector` | yes | `[float]` | Array of floats matching the collection vector length. |
+| `distance` | no | `float` | Maximum allowed distance. Cannot be used with `certainty`. |
+| `certainty` | no | `float` | Normalized 0&ndash;1 distance. Cannot be used with `distance`. |
+
+#### `nearObject` variables
+
+| Variable | Required | Type | Description |
+| --- | --- | --- | --- |
+| `id` | yes | `UUID` | Object identifier. |
+| `beacon` | no | `url` | Beacon URL format identifier. |
+| `distance` | no | `float` | Maximum allowed distance. Cannot be used with `certainty`. |
+| `certainty` | no | `float` | Normalized 0&ndash;1 distance. Cannot be used with `distance`. |
+
+#### `nearText` variables
+
+| Variable | Required | Type | Description |
+| --- | --- | --- | --- |
+| `concepts` | yes | `[string]` | Natural language queries or single words. |
+| `distance` | no | `float` | Maximum allowed distance. Cannot be used with `certainty`. |
+| `certainty` | no | `float` | Normalized 0&ndash;1 distance. Cannot be used with `distance`. |
+| `autocorrect` | no | `boolean` | Requires the `text-spellcheck` module. |
+| `moveTo` | no | `object{}` | Move search toward another vector. |
+| `moveTo{concepts}` | no | `[string]` | Concepts to move toward. |
+| `moveTo{objects}` | no | `[UUID]` | Object IDs to move toward. |
+| `moveTo{force}` | no | `float` | Movement force (0&ndash;1). |
+| `moveAwayFrom` | no | `object{}` | Move search away from another vector. |
+| `moveAwayFrom{concepts}` | no | `[string]` | Concepts to move away from. |
+| `moveAwayFrom{objects}` | no | `[UUID]` | Object IDs to move away from. |
+| `moveAwayFrom{force}` | no | `float` | Movement force (0&ndash;1). |
+
+</details>
+
 ## Related pages
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [API reference: Search operators](../api/graphql/search-operators.md)
 - For image search, see [Image search](/weaviate/search/image).
 - For tutorials, see [Queries](/weaviate/tutorials/query.md).
 - For search using the GraphQL API, see [GraphQL API](/weaviate/api).

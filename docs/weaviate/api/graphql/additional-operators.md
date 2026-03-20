@@ -5,76 +5,21 @@ description: "Syntax reference for additional operators that extend query functi
 image: og/docs/api.jpg
 # tags: ['graphql', 'additional operators']
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import AutocutPyCode from '!!raw-loader!/_includes/code/howto/search.similarity.py';
-import AutocutPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.similarity-v3.py';
-import AutocutTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
-import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.additional-v3.py';
-import TSCode from '!!raw-loader!/_includes/code/graphql.additional.ts';
-import GoCode from '!!raw-loader!/_includes/code/graphql.additional.go';
-import JavaCode from '!!raw-loader!/_includes/code/graphql.additional.java';
-import CurlCode from '!!raw-loader!/_includes/code/graphql.additional.sh';
-
-<TryEduDemo />
-
-
-## Syntax
 
 Functions such as `limit`, `autocut`, and `sort` modify queries at the class level.
-<!--
-For example:
 
-import GraphQLFiltersExample from '/_includes/code/graphql.filters.example.mdx';
-
-<GraphQLFiltersExample/> -->
-
+:::tip How-to guide
+For sorting, pagination, and cursor usage examples with multi-language code snippets, see [Sort and paginate](../../search/sort-and-paginate.md).
+:::
 
 ## Limit argument
 
-The `limit` argument restricts the number of results. These functions support `limit`:
-
-- `Get`
-- `Explore`
-- `Aggregate`
+The `limit` argument restricts the number of results. Supported by `Get`, `Explore`, and `Aggregate`.
 
 import GraphQLFiltersLimit from '/_includes/code/graphql.filters.limit.mdx';
 
 <GraphQLFiltersLimit/>
 
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "Backs on the rack - Vast sums are wasted on treatments for back pain that make it worse"
-        },
-        {
-          "title": "Graham calls for swift end to impeachment trial, warns Dems against calling witnesses"
-        },
-        {
-          "title": "Through a cloud, brightly - Obituary: Paul Volcker died on December 8th"
-        },
-        {
-          "title": "Google Stadia Reviewed \u2013 Against The Stream"
-        },
-        {
-          "title": "Managing Supply Chain Risk"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
 
 ## Pagination with `offset`
 
@@ -88,37 +33,6 @@ import GraphQLFiltersOffset from '/_includes/code/graphql.filters.offset.mdx';
 
 <GraphQLFiltersOffset/>
 
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "Article": [
-        {
-          "title": "Through a cloud, brightly - Obituary: Paul Volcker died on December 8th"
-        },
-        {
-          "title": "Google Stadia Reviewed \u2013 Against The Stream"
-        },
-        {
-          "title": "Managing Supply Chain Risk"
-        },
-        {
-          "title": "Playing College Football In Madden"
-        },
-        {
-          "title": "The 50 best albums of 2019, No 3: Billie Eilish \u2013 When We All Fall Asleep, Where Do We Go?"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-
 ### Performance considerations
 
 Pagination is not a cursor-based implementation. This has the following implications:
@@ -126,92 +40,38 @@ Pagination is not a cursor-based implementation. This has the following implicat
 - **Response time and system load increase as the number of pages grows**. As the offset grows, each additional page request requires a new, larger call against your collection. For example, if your `offset` and `limit` specify results from 21-30, Weaviate retrieves 30 objects and drops the first 20. On the next call, Weaviate retrieves 40 objects and drops the first 30.
 - **Resource requirements are amplified in multi-shard configurations.** Each shard retrieves a full list of objects. Each shard also drops the objects before the offset. If you have 10 shards configured and ask for results 91-100, Weaviate retrieves 1000 objects (100 per shard) and drops 990 of them.
 - **The number of objects you can retrieve is limited**. A single query returns up to `QUERY_MAXIMUM_RESULTS`. If the sum of `offset` and `limit` exceeds `QUERY_MAXIMUM_RESULTS`, Weaviate returns an error. To change the limit, edit the `QUERY_MAXIMUM_RESULTS` environment variable. If you increase `QUERY_MAXIMUM_RESULTS`, use the lowest value possible to avoid performance problems.
- - **Pagination is not stateful**. If the database state changes between calls, your pages might miss results. An insertion or a deletion will change the object count. An update could change object order. However, if there are no writes the overall results set is the same if you retrieve a large single page or many smaller ones.
+- **Pagination is not stateful**. If the database state changes between calls, your pages might miss results. An insertion or a deletion will change the object count. An update could change object order. However, if there are no writes the overall results set is the same if you retrieve a large single page or many smaller ones.
+
+For large-scale sequential retrieval, use the [cursor API](#cursor-with-after).
 
 
 ## Autocut
 
-The autocut function limits results based on discontinuities in the result set. Specifically, autocut looks for discontinuities, or jumps, in result metrics such as vector distance or search score.
+The autocut function limits results based on discontinuities (jumps) in result metrics such as vector distance or search score.
 
-To use autocut, specify how many jumps there should be in your query. The query stops returning results after the specified number of jumps.
+Specify how many jumps to allow. The query stops returning results after that many jumps.
 
-For example, consider a `nearText` search that returns objects with these distance values:
-
- `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`.
-
-Autocut returns the following:
+For example, with distances `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`:
 
 - `autocut: 1`: `[0.1899, 0.1901, 0.191]`
 - `autocut: 2`:  `[0.1899, 0.1901, 0.191, 0.21, 0.215]`
 - `autocut: 3`:  `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`
 
-Autocut works with these functions:
-
-- `nearXXX`
-- `bm25`
-- `hybrid`
-
-To use autocut with the `hybrid` search, specify the `relativeScoreFusion` ranking method.
-
-Autocut is disabled by default. To explicitly disable autocut, set the number of jumps to `0` or a negative value.
+Works with `nearXXX`, `bm25`, and `hybrid` (requires `relativeScoreFusion` for hybrid). Disabled by default; set to `0` or a negative value to explicitly disable.
 
 If autocut is combined with the limit filter, autocut only considers the first objects returned up to the value of `limit`.
 
-<!-- TODO: Update with link to blog:
-For more `autocut` examples and to learn about the motivation behind this filter, see the [v1.20 release blog post](https://weaviate.io/blog). -->
-
-Sample client code:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={AutocutPyCode}
-      startMarker="# START Autocut Python"
-      endMarker="# END Autocut Python"
-      language="py"
-    />
-  </TabItem>
-
-
-
-  <TabItem value="graphql" label="GraphQL">
-    <FilteredTextBlock
-      text={AutocutPyCodeV3}
-      startMarker="# START Autocut GraphQL"
-      endMarker="# END Autocut GraphQL"
-      language="graphql"
-    />
-  </TabItem>
-</Tabs>
-
-<details>
-  <summary>Example response</summary>
-
-The output is like this:
-
-<FilteredTextBlock
-  text={AutocutPyCodeV3}
-  startMarker="# START AutoCutResults"
-  endMarker="# END AutoCutResults"
-  language="json"
-/>
-
-</details>
-
-For more client code examples for each functional category, see these pages:
-
-- [Autocut with similarity search](../../search/similarity.md#limit-result-groups).
-- [Autocut with `bm25` search](../../search/bm25.md#limit-result-groups).
-- [Autocut with `hybrid` search](../../search/hybrid.md#limit-result-groups).
+For client code examples:
+- [Autocut with similarity search](../../search/similarity.md#limit-result-groups)
+- [Autocut with BM25 search](../../search/bm25.md#limit-result-groups)
+- [Autocut with hybrid search](../../search/hybrid.md#limit-result-groups)
 
 
 ## Cursor with `after`
 
-Starting with version `v1.18`, you can use `after` to retrieve objects sequentially. For example, you can use `after` to retrieve a complete set of objects from a collection.
+The `after` operator retrieves objects sequentially using a cursor based on object IDs. Compatible with single-shard and multi-shard configurations.
 
-`after` creates a cursor that is compatible with single shard and multi-shard configurations.
-
-The `after` function relies on object ids, and thus it only works with list queries. `after` is not compatible with `where`, `near<Media>`, `bm25`, `hybrid`, or similar searches, or in combination with filters. For those use cases, use pagination with `offset` and `limit`.
+`after` only works with list queries. It is **not** compatible with `where`, `near<Media>`, `bm25`, `hybrid`, or similar search operators. For those, use [pagination with `offset`](#pagination-with-offset).
 
 import GraphQLFiltersAfter from '/_includes/code/graphql.filters.after.mdx';
 
@@ -265,7 +125,7 @@ import GraphQLFiltersAfter from '/_includes/code/graphql.filters.after.mdx';
 
 ## Sorting
 
-You can sort results by any primitive property, such as `text`, `number`, or `int`. 
+Sort results by any primitive property (such as `text`, `number`, or `int`). Sorting is **unavailable when using search operators** (which rank by relevance).
 
 ### Sorting considerations
 
@@ -277,13 +137,16 @@ Weaviate does not use any sorting-specific data structures on disk. When objects
 
 ### Sort order
 
-#### boolean values
+#### Boolean values
+
 `false` is considered smaller than `true`. `false` comes before `true` in ascending order and after `true` in descending order.
 
-#### null values
+#### Null values
+
 `null` values are considered smaller than any non-`null` values. `null` values come first in ascending order and last in descending order.
 
-#### arrays
+#### Arrays
+
 Arrays are compared by each element separately. Elements at the same position are compared to each other, starting from the beginning of an array. When Weaviate finds an array element in one array that is smaller than its counterpart in the second array, Weaviate considers the whole first array to be smaller than the second one.
 
 Arrays are equal if they have the same length and all elements are equal. If one array is subset of another array it is considered smaller.
@@ -296,233 +159,40 @@ Examples:
 
 ### Sorting API
 
-Sorting can be performed by one or more properties. If the values for the first property are identical, Weaviate uses the second property to determine the order, and so on.
 
 The sort function takes either an object, or an array of objects, that describe a property and a sort order.
 
 | Parameter | Required | Type            | Description                                               |
 |-----------|----------|-----------------|-----------------------------------------------------------|
-| `path`    | yes      | `text`        | The path to the sort field is an single element array that contains the field name. GraphQL supports specifying the field name directly. |
-| `order`   | varies by client       | `asc` or `desc` | The sort order, ascending (default) or descending.|
+| `path`    | yes      | `text`        | Single-element array containing the field name. GraphQL supports specifying the field name directly. |
+| `order`   | varies by client | `asc` or `desc` | Sort order, ascending (default) or descending. |
 
+Sorting can be performed by one or more properties. If the values for the first property are identical, Weaviate uses the second property to determine the order, and so on. To sort by more than one property, pass an array of `{ path, order }` objects to the sort function.
 
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START Sorting Python"
-      endMarker="# END Sorting Python"
-      language="py"
-    />
-  </TabItem>
-
-
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START Sorting"
-      endMarker="// END Sorting"
-      language="go"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START Sorting"
-      endMarker="// END Sorting"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="curl" label="Curl">
-    <FilteredTextBlock
-      text={CurlCode}
-      startMarker="# START Sorting"
-      endMarker="# END Sorting"
-      language="shell"
-    />
-  </TabItem>
-
-  <TabItem value="graphql" label="GraphQL">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Sorting GraphQL"
-      endMarker="# END Sorting GraphQL"
-      language="graphql"
-    />
-  </TabItem>
-</Tabs>
-
-
-<details>
-  <summary>Expected response</summary>
-
-```json
-{
-  "data": {
-    "Get": {
-      "JeopardyQuestion": [
-        {
-          "answer": "$5 (Lincoln Memorial in the background)",
-          "points": 600,
-          "question": "A sculpture by Daniel Chester French can be seen if you look carefully on the back of this current U.S. bill"
-        },
-        {
-          "answer": "(1 of 2) Juneau, Alaska or Augusta, Maine",
-          "points": 0,
-          "question": "1 of the 2 U.S. state capitals that begin with the names of months"
-        },
-        {
-          "answer": "(1 of 2) Juneau, Alaska or Honolulu, Hawaii",
-          "points": 0,
-          "question": "One of the 2 state capitals whose names end with the letter \"U\""
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-
-#### Sorting by multiple properties
-
-To sort by more than one property, pass an array of { `path`, `order` } objects to the sort function:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START MultiplePropSorting Python"
-      endMarker="# END MultiplePropSorting Python"
-      language="py"
-    />
-  </TabItem>
-
-
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START MultiplePropSorting"
-      endMarker="// END MultiplePropSorting"
-      language="go"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START MultiplePropSorting"
-      endMarker="// END MultiplePropSorting"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="curl" label="Curl">
-    <FilteredTextBlock
-      text={CurlCode}
-      startMarker="# START MultiplePropSorting"
-      endMarker="# END MultiplePropSorting"
-      language="shell"
-    />
-  </TabItem>
-
-  <TabItem value="graphql" label="GraphQL">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START MultiplePropSorting GraphQL"
-      endMarker="# END MultiplePropSorting GraphQL"
-      language="graphql"
-    />
-  </TabItem>
-</Tabs>
-
-
-#### Metadata properties
+### Metadata properties
 
 To sort with metadata, add an underscore to the property name.
 
-| Property Name | Sort Property  Name |
+| Property Name | Sort Property Name |
 | :- | :- |
 | `id` | `_id` |
 | `creationTimeUnix` | `_creationTimeUnix` |
 | `lastUpdateTimeUnix` | `_lastUpdateTimeUnix` |
 
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START AdditionalPropSorting Python"
-      endMarker="# END AdditionalPropSorting Python"
-      language="py"
-    />
-  </TabItem>
-
-
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START AdditionalPropSorting"
-      endMarker="// END AdditionalPropSorting"
-      language="go"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START AdditionalPropSorting"
-      endMarker="// END AdditionalPropSorting"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="curl" label="Curl">
-    <FilteredTextBlock
-      text={CurlCode}
-      startMarker="# START AdditionalPropSorting"
-      endMarker="# END AdditionalPropSorting"
-      language="shell"
-    />
-  </TabItem>
-
-  <TabItem value="graphql" label="GraphQL">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AdditionalPropSorting GraphQL"
-      endMarker="# END AdditionalPropSorting GraphQL"
-      language="graphql"
-    />
-  </TabItem>
-</Tabs>
-
-<details>
-  <summary>Python client v4 property names</summary>
-
-| Property Name | Sort Property  Name |
-| :- | :- |
-| `uuid` |`_id` |
-| `creation_time` | `_creationTimeUnix` |
-| `last_update_time` | `_lastUpdateTimeUnix` |
-
-</details>
+For sorting code examples, see [Sort and paginate: Sorting](../../search/sort-and-paginate.md#sorting).
 
 ## Grouping
 
-You can use a group to combine similar concepts (also known as _entity merging_). There are two ways of grouping semantically similar objects together, `closest` and `merge`. To return the closest concept, set `type: closest`. To combine similar entities into a single string, set `type: merge`
+You can use a group to combine similar concepts (also known as _entity merging_). There are two ways of grouping semantically similar objects together, `closest` and `merge`. To return the closest concept, set `type: closest`. To combine similar entities into a single string, set `type: merge`.
+
+When using `merge`, the central concept in the group leads the group. Related values follow in parentheses.
 
 ### Variables
 
 | Variable | Required | Type | Description |
-| --------- | -------- | ---- | ----------- |
-| `type` | yes | `string` | Either `closest` or `merge` |
-| `force` | yes | `float` | The force to apply for a particular movements.<br/>Must be between `0` and `1`. `0` is no movement. `1` is maximum movement. |
-
-### Example
+| --- | --- | --- | --- |
+| `type` | yes | `string` | Either `closest` or `merge`. |
+| `force` | yes | `float` | The force to apply for a particular movement. Must be between `0` and `1`. `0` is no movement. `1` is maximum movement. |
 
 import GraphQLFiltersGroup from '/_includes/code/graphql.filters.group.mdx';
 
