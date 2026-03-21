@@ -1,0 +1,73 @@
+---
+title: LLM Weaviate Code Generation Benchmark
+sidebar_position: 2
+description: "Benchmark evaluating how well LLMs generate correct Weaviate v4 Python client code across zero-shot and few-shot scenarios."
+---
+
+import VibeEvalDashboard from "@site/src/components/VibeEvalDashboard";
+
+This benchmark evaluates how well large language models (LLMs) generate **working Weaviate v4 Python client code** when given natural language task descriptions. It measures whether an LLM can produce code that actually connects to a Weaviate cluster and performs the requested operation without errors.
+
+## Results
+
+<VibeEvalDashboard />
+
+## What is being tested
+
+Each LLM is prompted to generate Python code for a specific Weaviate operation. The generated code is then executed inside a Docker container against a real Weaviate Cloud cluster. A task **passes** if the code runs with exit code 0, and **fails** otherwise.
+
+The benchmark covers these operations:
+
+| Task                      | What it tests                                                       |
+| ------------------------- | ------------------------------------------------------------------- |
+| **connect**               | Connecting to a Weaviate Cloud instance and verifying readiness     |
+| **create_collection**     | Creating a collection with typed properties (text, number, boolean) |
+| **batch_import**          | Batch importing 50 objects into a collection                        |
+| **basic_semantic_search** | Running a `near_text` semantic search query                         |
+| **complex_hybrid_query**  | Hybrid search with filters, metadata, and multiple conditions       |
+
+### Task variants
+
+Each task is run in multiple variants to measure the effect of providing examples:
+
+- **Zero-shot** — The LLM receives only the task description with no code examples
+- **Simple example** — The LLM receives one concise code example alongside the task
+- **Extensive examples** — The LLM receives full API documentation as in-context examples
+
+This lets you see how much a model improves when given reference code versus relying purely on its training data.
+
+## How to interpret the results
+
+- **Pass rate** is the primary metric — the percentage of tasks where the generated code executed successfully. A higher pass rate means the model produces more reliable Weaviate client code.
+- **Avg duration** includes both the LLM generation time and the Docker execution time. It's useful for comparing relative speed but not absolute latency, since it depends on API response times.
+- **Similarity score** (1–5, when available) is an LLM-judged comparison of the generated code against a canonical implementation, focusing on correct Weaviate API usage rather than general code style.
+
+### What a failure means
+
+A failure means the generated code threw a Python exception or returned a non-zero exit code. Common causes include:
+
+- Using deprecated v3 client syntax instead of the current v4 API
+- Incorrect method names, parameter names, or import paths
+- Missing authentication setup or wrong connection patterns
+- Hallucinated API methods that don't exist in the Weaviate client
+
+The **Task Breakdown** tab shows per-task results. When LLM judge analysis is enabled, you can expand failed tasks to see the diagnosed root cause and suggested fix.
+
+### Limitations
+
+- Results reflect a point in time. LLM providers update their models, and results may change between runs.
+- The benchmark uses `temperature=0.1` for near-deterministic output, but some variance is expected. When multiple repetitions are run, the pass rate accounts for this.
+- Tasks test the Weaviate Python v4 client specifically. Results don't generalize to other Weaviate clients (TypeScript, Go, Java) or other database APIs.
+- Pass/fail is binary based on exit code. A task can pass with suboptimal code or fail due to a minor syntax issue.
+
+## How the benchmark is generated
+
+The benchmark is run monthly via a [GitHub Actions workflow](https://github.com/weaviate-tutorials/weaviate-vibe-eval) and can also be triggered manually. The process is:
+
+1. Each model is prompted with each task variant
+2. Python code is extracted from the LLM response
+3. The code is executed in a sandboxed Docker container with network access to a Weaviate Cloud cluster
+4. Results (pass/fail, duration, generated code, stdout/stderr) are stored in a remote Weaviate cluster
+5. During the docs build, results are fetched and rendered in the dashboard below
+
+The benchmark source code, task definitions, and full methodology are available at [github.com/weaviate-tutorials/weaviate-vibe-eval](https://github.com/weaviate-tutorials/weaviate-vibe-eval).

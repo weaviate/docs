@@ -878,7 +878,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/benchmarks/index",
       },
-      items: ["weaviate/benchmarks/ann"],
+      items: ["weaviate/benchmarks/ann", "weaviate/benchmarks/vibe-coding-evaluation"],
     },
     {
       type: "category",
