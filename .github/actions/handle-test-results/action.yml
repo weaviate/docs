@@ -10,13 +10,21 @@ inputs:
     required: true
   languages-tested:
     description: 'Languages tested (e.g., Python, TypeScript)'
-    required: true
+    required: false
   artifact-name:
     description: 'Name for the test results artifact'
     required: true
   slack-bot-token:
     description: 'Slack webhook for testing CI channel'
     required: false
+  test-results-xml:
+    description: 'Space-separated list of JUnit XML result files to parse for test counts (e.g., "pytest-results.xml pytest-results-agents.xml")'
+    required: false
+    default: 'pytest-results.xml'
+  slack-script:
+    description: 'Path to the Slack notification script (default: _build_scripts/slack-test-results.sh)'
+    required: false
+    default: '_build_scripts/slack-test-results.sh'
 
 runs:
   using: 'composite'
@@ -27,7 +35,7 @@ runs:
         # Calculate duration
         TEST_END_TIME=$(date +%s)
         TEST_DURATION=$((TEST_END_TIME - TEST_START_TIME))
-        
+
         # Format duration
         if [ $TEST_DURATION -ge 60 ]; then
           MINUTES=$((TEST_DURATION / 60))
@@ -36,9 +44,9 @@ runs:
         else
           DURATION_FORMATTED="${TEST_DURATION}s"
         fi
-        
+
         echo "TEST_DURATION=$DURATION_FORMATTED" >> $GITHUB_ENV
-        
+
         # Set test status
         if [ "${{ inputs.test-outcome }}" = "success" ]; then
           echo "TEST_STATUS=success" >> $GITHUB_ENV
@@ -49,6 +57,70 @@ runs:
         # Set test type for notifications
         echo "TEST_TYPE=${{ inputs.test-type }}" >> $GITHUB_ENV
         echo "LANGUAGES_TESTED=${{ inputs.languages-tested }}" >> $GITHUB_ENV
+
+        # Parse JUnit XML files for test counts
+        TOTAL_TESTS=0
+        TOTAL_FAILURES=0
+        TOTAL_ERRORS=0
+        TOTAL_SKIPPED=0
+        for xml_file in ${{ inputs.test-results-xml }}; do
+          if [ -f "$xml_file" ]; then
+            # Extract attributes from the root <testsuite> or <testsuites> element
+            TESTS=$(python3 -c "
+        import xml.etree.ElementTree as ET
+        tree = ET.parse('$xml_file')
+        root = tree.getroot()
+        # Handle both <testsuites> and <testsuite> as root
+        if root.tag == 'testsuites':
+            el = root.find('testsuite') or root
+        else:
+            el = root
+        print(el.get('tests', '0'))
+        " 2>/dev/null || echo "0")
+            FAILURES=$(python3 -c "
+        import xml.etree.ElementTree as ET
+        tree = ET.parse('$xml_file')
+        root = tree.getroot()
+        if root.tag == 'testsuites':
+            el = root.find('testsuite') or root
+        else:
+            el = root
+        print(el.get('failures', '0'))
+        " 2>/dev/null || echo "0")
+            ERRORS=$(python3 -c "
+        import xml.etree.ElementTree as ET
+        tree = ET.parse('$xml_file')
+        root = tree.getroot()
+        if root.tag == 'testsuites':
+            el = root.find('testsuite') or root
+        else:
+            el = root
+        print(el.get('errors', '0'))
+        " 2>/dev/null || echo "0")
+            SKIPPED=$(python3 -c "
+        import xml.etree.ElementTree as ET
+        tree = ET.parse('$xml_file')
+        root = tree.getroot()
+        if root.tag == 'testsuites':
+            el = root.find('testsuite') or root
+        else:
+            el = root
+        print(el.get('skipped', '0'))
+        " 2>/dev/null || echo "0")
+            TOTAL_TESTS=$((TOTAL_TESTS + TESTS))
+            TOTAL_FAILURES=$((TOTAL_FAILURES + FAILURES))
+            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+            TOTAL_SKIPPED=$((TOTAL_SKIPPED + SKIPPED))
+          fi
+        done
+
+        TOTAL_PASSED=$((TOTAL_TESTS - TOTAL_FAILURES - TOTAL_ERRORS - TOTAL_SKIPPED))
+        if [ $TOTAL_PASSED -lt 0 ]; then TOTAL_PASSED=0; fi
+
+        echo "TEST_TOTAL=$TOTAL_TESTS" >> $GITHUB_ENV
+        echo "TEST_PASSED=$TOTAL_PASSED" >> $GITHUB_ENV
+        echo "TEST_FAILED=$((TOTAL_FAILURES + TOTAL_ERRORS))" >> $GITHUB_ENV
+        echo "TEST_SKIPPED=$TOTAL_SKIPPED" >> $GITHUB_ENV
 
     - name: Get commit author
       shell: bash
@@ -61,7 +133,7 @@ runs:
       env:
         SLACK_BOT: ${{ inputs.slack-bot-token }}
       run: |
-        source _build_scripts/slack-test-results.sh
+        source ${{ inputs.slack-script }}
 
     - name: Upload test results
       if: inputs.test-outcome != 'success'
@@ -69,6 +141,6 @@ runs:
       with:
         name: ${{ inputs.artifact-name }}
         path: |
-          pytest-results.xml
+          pytest-results*.xml
           .pytest_cache/
         retention-days: 9
