@@ -1,5 +1,5 @@
 ---
-title: Multi-media search
+title: Multimedia search
 image: og/docs/howto.jpg
 description: "Search using images, video, and audio as query inputs with near_media in Weaviate."
 # tags: ['how to', 'near media', 'video', 'image']
@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/search.near-media.py';
 
-Multi-media search uses **images, video, or audio as a search input** to perform vector similarity search via the `near_media` operator.
+Multimedia search uses **images, video, audio and other multimedia formats as a search input** to perform vector similarity search via the `near_media` operator.
 
 :::tip Image search
 For image-only search using `near_image`, see the dedicated [Image search](./image.md) page. The `near_media` operator shown here provides a unified interface for multiple media types.
@@ -18,10 +18,10 @@ For image-only search using `near_image`, see the dedicated [Image search](./ima
 
 <details>
   <summary>
-    Additional information
+    How to configure Weaviate to use multimedia search?
   </summary>
 
-**Configure multi-media search**
+**Configure multimedia search**
 
 To use images, video, or audio as search inputs, configure a multi-modal vectorizer integration that supports these media types for your collection.
 
@@ -132,12 +132,11 @@ The `NearMediaType` enum supports the following media types. Available types dep
 Not all models support all media types. For example, `gemini-embedding-2-preview` supports image, video, and audio. Check your model provider's documentation for supported modalities.
 :::
 
-## Related pages
+## Further resources
 
-- [Image search](./image.md)
-- [Vector similarity search](./similarity.md)
-- [Google multimodal embeddings](../model-providers/google/embeddings-multimodal.md)
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [How-to: Query & Search - Image search](./image.md)
+- [How-to: Query & Search - Vector similarity search](./similarity.md)
+- [Model provider integrations - Google multimodal embeddings](../model-providers/google/embeddings-multimodal.md)
 
 ## Questions and feedback
 

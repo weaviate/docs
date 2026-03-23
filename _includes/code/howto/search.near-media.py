@@ -219,9 +219,4 @@ print(f"AudioBase64Search: OK ({len(response.objects)} results)")
 # ===== Cleanup =====
 client.collections.delete("MediaExample")
 
-# START-ANY
-
 client.close()
-# END-ANY
-
-print("\nAll tests passed!")
