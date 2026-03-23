@@ -453,6 +453,18 @@ for page_num, page_response in enumerate(
     print()
 # END SearchPagination
 
+# START DiversityRanking
+search_response = qa.search(
+    "summer shoes",
+    limit=10,
+    diversity_weight=0.5,
+)
+
+# Access the search results
+for obj in search_response.search_results.objects:
+    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
+# END DiversityRanking
+
 # START FollowUpQuery
 # Perform a follow-up query and include the answer from the previous query
 from weaviate.agents.classes import ChatMessage
