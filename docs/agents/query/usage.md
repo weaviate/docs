@@ -327,9 +327,9 @@ Page 3:
 
 </details>
 
-#### `Search` with Diversity Ranking
+#### `Search` with diversity ranking
 
-`Search` supports adding diversity weighting to search result rankings using Maximal Marginal Relevance (MMR).
+`Search` supports adding diversity weighting to search result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of 0 to 1. To use diversity ranking with target vectors, set the single target vector that you want to use in the Query Agent's constructor.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
