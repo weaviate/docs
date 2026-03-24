@@ -68,17 +68,23 @@ Lazy shard loading allows you to start working with your data sooner. After a re
 :::info Added in `v1.36.6`
 :::
 
-Starting in v1.36.6, Weaviate automatically decides **per collection** whether to use lazy shard loading based on two thresholds:
+Starting in v1.36.6, Weaviate automatically decides **per collection** whether to use lazy shard loading. Auto-detection only applies to **multi-tenant** collections and is based on two thresholds:
 
 - **Shard count threshold** ([`LAZY_LOAD_SHARD_COUNT_THRESHOLD`](/docs/deploy/configuration/env-vars/index.md#LAZY_LOAD_SHARD_COUNT_THRESHOLD)): Number of shards (tenants) in a collection. Default: `1000`.
 - **Shard size threshold** ([`LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB`](/docs/deploy/configuration/env-vars/index.md#LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB)): Total shard size for a collection. Default: `100` GB.
 
-If either threshold is exceeded, that collection's shards are lazy-loaded at startup. Otherwise, shards are loaded eagerly (synchronously) before Weaviate reports ready.
+If either threshold is exceeded, that collection's shards are lazy-loaded at startup. Otherwise, shards are loaded eagerly (synchronously) before Weaviate reports ready. Single-tenant collections are always eagerly loaded.
 
 This change improves reliability during rolling restarts and upgrades. Eager loading eliminates the increased query and ingestion latency that lazy loading can introduce for smaller deployments during rollouts.
 
+#### Vector cache prefill behavior
+
+The [`HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE`](/deploy/configuration/env-vars#hnsw_startup_wait_for_vector_cache) environment variable controls whether vector cache prefill is synchronous (blocking) or asynchronous (background) at startup. Its default changed to `true` in v1.36.6.
+
+For collections where lazy shard loading is active, vector cache prefill is always **asynchronous** — the `HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE` value is overridden to `false` regardless of the configured value. For eagerly-loaded collections, the configured value applies (default: `true`, meaning synchronous prefill).
+
 :::note Behavior change from v1.36.6
-Prior to v1.36.6, lazy shard loading was enabled by default for all collections. From v1.36.6 onward, shards are **eagerly loaded by default** until a collection crosses the count or size threshold. This may increase startup time for smaller deployments but provides better reliability during rollouts.
+Prior to v1.36.6, lazy shard loading was enabled by default for all collections. From v1.36.6 onward, shards are **eagerly loaded by default** until a multi-tenant collection crosses the count or size threshold. This may increase startup time for smaller deployments but provides better reliability during rollouts.
 :::
 
 ## Persistence and Crash Recovery
