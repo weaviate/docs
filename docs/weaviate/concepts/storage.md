@@ -59,14 +59,26 @@ To use multiple CPUs efficiently, create multiple shards for your collection. Fo
 
 ### Lazy shard loading
 
-When Weaviate starts, it loads data from all of the shards in your deployment. This process can take a long time. Prior to v1.23, you have to wait until all of the shards are loaded before you can query your data. Since every tenant is a shard, multi-tenant deployments can have reduced availability after a restart.
+When Weaviate starts, it loads data from all of the shards in your deployment. This process can take a long time. Since every tenant is a shard, multi-tenant deployments with many tenants can have reduced availability after a restart.
 
 Lazy shard loading allows you to start working with your data sooner. After a restart, shards load in the background. If the shard you want to query is already loaded, you can get your results sooner. If the shard is not loaded yet, Weaviate prioritizes loading that shard and returns a response when it is ready.
 
-To enable lazy shard loading, set the `DISABLE_LAZY_LOAD_SHARDS` environment variable to `false` in your system configuration file.
+#### Dynamic lazy shard loading
 
-:::caution Disable lazy shard loading for single-tenant collections
-For single-tenant collections, lazy loading can cause import operations to slow down or partially fail. In these scenarios, we recommend disabling lazy shard loading.
+:::info Added in `v1.36.6`
+:::
+
+Starting in v1.36.6, Weaviate automatically decides **per collection** whether to use lazy shard loading based on two thresholds:
+
+- **Shard count threshold** ([`LAZY_LOAD_SHARD_COUNT_THRESHOLD`](/docs/deploy/configuration/env-vars/index.md#LAZY_LOAD_SHARD_COUNT_THRESHOLD)): Number of shards (tenants) in a collection. Default: `1000`.
+- **Shard size threshold** ([`LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB`](/docs/deploy/configuration/env-vars/index.md#LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB)): Total shard size for a collection. Default: `100` GB.
+
+If either threshold is exceeded, that collection's shards are lazy-loaded at startup. Otherwise, shards are loaded eagerly (synchronously) before Weaviate reports ready.
+
+This change improves reliability during rolling restarts and upgrades. Eager loading eliminates the increased query and ingestion latency that lazy loading can introduce for smaller deployments during rollouts.
+
+:::note Behavior change from v1.36.6
+Prior to v1.36.6, lazy shard loading was enabled by default for all collections. From v1.36.6 onward, shards are **eagerly loaded by default** until a collection crosses the count or size threshold. This may increase startup time for smaller deployments but provides better reliability during rollouts.
 :::
 
 ## Persistence and Crash Recovery
