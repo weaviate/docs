@@ -73,7 +73,7 @@ Starting in v1.36.6, Weaviate automatically decides **per collection** whether t
 - **Shard count threshold** ([`LAZY_LOAD_SHARD_COUNT_THRESHOLD`](/docs/deploy/configuration/env-vars/index.md#LAZY_LOAD_SHARD_COUNT_THRESHOLD)): Number of shards (tenants) in a collection. Default: `1000`.
 - **Shard size threshold** ([`LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB`](/docs/deploy/configuration/env-vars/index.md#LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB)): Total shard size for a collection. Default: `100` GB.
 
-If either threshold is exceeded, that collection's shards are lazy-loaded at startup. Otherwise, shards are loaded eagerly (synchronously) before Weaviate reports ready. Single-tenant collections are always eagerly loaded.
+If either threshold is exceeded, that collection's shards are lazy-loaded at startup. Otherwise, shards are loaded eagerly (synchronously) before Weaviate reports ready. Single-tenant collections are always eagerly loaded unless `LAZY_LOAD_SHARD_COUNT_THRESHOLD` is set to `0`, which forces lazy loading for all collections.
 
 This change improves reliability during rolling restarts and upgrades. Eager loading eliminates the increased query and ingestion latency that lazy loading can introduce for smaller deployments during rollouts.
 
