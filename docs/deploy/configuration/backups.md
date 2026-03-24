@@ -310,6 +310,15 @@ You can choose to include or exclude specific collections in the backup. If you 
 
 The `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those.
 
+#### Wildcard matching
+
+:::info Available in Weaviate `v1.36.0` and higher
+:::
+
+The `include` and `exclude` options support wildcard patterns to match multiple collections at once. Wildcard matching is **case sensitive**.
+
+The `*` character matches any sequence of characters. For example, `Article*` matches `Article`, `ArticleV1`, and `ArticleV2`, but not `article` or `Publication`.
+
 ##### Available `config` object properties
 
 | name | type | required | default | description |
