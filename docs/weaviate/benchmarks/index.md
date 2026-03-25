@@ -13,7 +13,7 @@ You can find the following benchmarks:
 2. [LLM Weaviate code generation](./vibe-coding-evaluation.mdx) — how well LLMs generate correct Weaviate v4 Python client code
 3. Filtered ANN (benchmark coming soon)
 4. Scalar filters / Inverted Index (benchmark coming soon)
-5. Large-scale ANN (benchmark coming soon) 
+5. Large-scale ANN (benchmark coming soon)
 
 ## Benchmark code
 
