@@ -1,0 +1,141 @@
+---
+title: Style guidelines
+image: og/contributor-guide/welcome.jpg
+# tags: ['contributor-guide', 'clients']
+---
+
+This style guide provides a framework for creating clear, consistent, and user-friendly documentation for Weaviate. It emphasizes practical guidelines to help you write effectively for our audience.
+
+---
+
+## Content guidelines
+
+### Audience
+
+Our documentation serves **AI developers** across various experience levels. When creating quickstart guides, we primarily focus on developers, data scientists, and students, while also considering system evaluators who may be assessing Weaviate for their organizations. We assume readers have **minimal knowledge of vector databases** and provide appropriate context and explanations to help them succeed.
+
+### Voice & tone
+
+Address readers directly using **active voice** and the **second person ("you")** to create a personal, engaging experience. Maintain a **conversational, non-academic, and friendly tone** throughout all documentation. Avoid overly formal language that creates distance, but also steer clear of frivolous content that undermines credibility. **Adjust the assumed level of user knowledge** based on the specific page content, providing more foundational explanations in introductory materials and allowing for greater technical depth in advanced topics.
+
+### Inclusion & accessibility
+
+Follow **[Google's accessibility guidelines](https://developers.google.com/style/accessibility)** to ensure our documentation remains bias-free and respectful of all users, regardless of their background or identity. Prioritize creating **clear and useful documentation** that serves everyone, including users with disabilities.
+
+**Key accessibility requirements:**
+
+- Provide **meaningful alt text** for all images that summarizes their intent (use empty alt text only for purely decorative images)
+- Use **descriptive headings and titles** that clearly indicate content structure and purpose
+
+---
+
+## Types of documentation pages
+
+Categorize content using these types:
+
+- **Concept:** Explains fundamental ideas and principles.
+- **Guides (how-to):** Provides step-by-step instructions to achieve a specific goal.
+- **Reference:** Offers detailed information about APIs, configurations, and technical specifications.
+- **Tutorial:** Guides users through a complete process, often combining concepts and guides.
+
+---
+
+## Documentation directory structure
+
+The documentation is organized into key sections. When contributing, understand where your content fits:
+
+- **Weaviate Database - `/docs/weaviate`:** Contains getting started tutorials, how-to guides for collection management and search operations, integrations with AI model providers, API reference documentation, technical concepts explanations, code examples for common tasks, release notes, performance benchmarks, module documentation, FAQ, glossary, and sample datasets.
+
+- **Deployment docs - `/docs/deploy`:** Documentation for deploying and operating Weaviate instances. Covers installation methods including Docker and Kubernetes, configuration options for authentication and performance, production deployment patterns, scaling and high availability setups, cloud provider-specific guides, troubleshooting information, and version migration procedures.
+
+- **Weaviate Agents - `/docs/agents`:** Documentation for Weaviate's agent framework. Includes setup instructions, usage examples, and implementation patterns for building AI agents that can interact with Weaviate databases.
+
+- **Weaviate Cloud - `/docs/cloud`:** Documentation for Weaviate's managed cloud service. Contains account setup procedures, Weaviate embeddings service documentation, billing and subscription management, service limitations, and cloud-specific configuration options.
+
+- **Academy - `/docs/academy`:** Educational content and learning materials for Weaviate concepts and implementations. Provides structured learning paths and tutorials for different skill levels.
+
+- **Integrations - `/docs/integrations`:** Documentation for third-party tools and frameworks that work with Weaviate. Covers client libraries, data import tools, visualization platforms, and other ecosystem integrations.
+
+- **Contributor guide - `/docs/contributor-guide`:** Documentation for contributing to Weaviate's open source projects. Includes development setup instructions, coding standards, testing procedures, and contribution workflows for the database, modules, client libraries, and contextionary components.
+
+---
+
+## Page layout
+
+- **Frontmatter:** The `title` and [`description`](./llms.mdx#best-practices-for-page-descriptions) fields are required. 
+- **Top-level headings:** Do not include redundant top-level headings like `## Introduction` or `## Overview` within the body content; the page title serves this purpose.
+- **Related pages:** Place links to related pages at the **bottom of the page** within a `## Further resources` section.
+- **QA section:** Most pages should and with a `## Questions and feedback` section.
+
+---
+
+## Formatting & styling rules
+
+- **Capitalization:** Use **sentence case for all headings**.
+  - _Example:_ `## This is a heading about Weaviate`
+- **Lists:**
+  - Transform "cascading sentences disguised as lists" into proper lists.
+  - Use **numbered lists for sequences**.
+  - Use **bulleted lists for most other lists**.
+- **Headings hierarchy:**
+  - Skip the title heading `#`, the title will be derived from the frontmatter field `title:`.
+  - Avoid starting pages with heading such as `## Introduction` or `## Overview` (an exception for this are tutorials).
+  - Use Markdown for headings: `## Section title`, `### Subsection title`, `#### Sub-subsection title`.
+  - Do not skip heading levels (e.g., go directly from `##` to `####`).
+  - Be aware that H4 and lower headings will not appear in the right-hand-side table of contents.
+- **Code elements:**
+  - Use **code font** for all code-related text like method names, environment variables, etc.
+- **Punctuation:** Use [serial commas](https://developers.google.com/style/commas).
+- **American English:** Assume US dialect for English spelling and usage. Write for a global audience.
+
+---
+
+## Terminology
+
+Use clear, direct language. Define acronyms and abbreviations on first use. At least on the **first mention** of a Weaviate method or term on a page, **link to its corresponding reference, concept page or how-to page**.
+
+---
+
+## Visual assets
+
+- **Images**
+  - **Dark/light mode images:** Use the [`ThemedImage` component](./development.mdx#themedimage-component) for specifying both light and dark mode variants of the same image.
+  - **Social/preview images:** Use the `image:` frontmatter for social media previews and images available in `static/og/`.
+  - **Screenshots:** Avoid using too many screenshots due to maintenance challenges. An exception to this rule are the [Weaviate Cloud](/cloud) docs where the WCD console needs to be documented visually as well.
+- **Diagrams:** Diagrams are acceptable where they add clarity. We use [Excalidraw](https://app.excalidraw.com/) and [Mermaid](https://mermaid.js.org/) (legacy).
+- **Videos:** Videos can supplement written documentation but should not replace it. Ensure videos are kept up-to-date as the UI evolves.
+
+:::info
+
+Include meaningful alt text for all assets where applicable (images, videos, etc.).
+
+:::
+
+---
+
+## Versioning
+
+The Weaviate documentation is not versioned, there is only one official version which is live on [docs.weaviate.io](https://docs.weaviate.io/).
+
+We indicate which version the feature was introduced in with admonitions:
+
+- **New generally available (_GA_) features** with a version tag:
+
+:::info Added in version `vX.Y.Z`
+:::
+
+- New features in **technical preview**, use a caution block to warn users:
+
+:::caution Technical preview
+
+`<FEATURE_NAME>` was added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

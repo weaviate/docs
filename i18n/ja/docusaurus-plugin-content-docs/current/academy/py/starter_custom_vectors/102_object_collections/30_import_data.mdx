@@ -1,0 +1,94 @@
+---
+title: データのインポート
+description: カスタム ベクトル オブジェクト コレクションへのデータ インポート
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';
+
+## <i class="fa-solid fa-code"></i> コード
+
+この例では、映画データをコレクションへインポートします。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BatchImportData"
+  endMarker="# END BatchImportData"
+  language="py"
+/>
+
+コードの概要:
+- ソース データを読み込み、コレクションを取得
+- バッチャー (`batch`) オブジェクトを使ったコンテキスト マネージャーに入る
+- データをループし、オブジェクトと対応するベクトルをバッチャーへ追加
+- インポート エラーを出力
+
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
+
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+requests ライブラリを使用して、今回の例では JSON ファイルからデータを読み込みます。その後、操作しやすいように Pandas DataFrame へ変換します。
+
+次に、`client.collections.get` でコレクション オブジェクトを作成し、コレクションと対話できるようにします。
+
+### <i class="fa-solid fa-chalkboard"></i> バッチ コンテキスト マネージャー
+
+`batch` オブジェクトはコンテキスト マネージャーで、オブジェクトをバッチャーへ追加できます。大量のデータをインポートする際、バッチ サイズの管理や送信タイミングの複雑さを抽象化してくれるため便利です。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Enter context manager"
+  endMarker="# Loop through the data"
+  language="py"
+/>
+
+この例では `.fixed_size()` メソッドを使用して、バッチあたりのオブジェクト数を設定しています。他にも、1 分あたりのオブジェクト数を指定する `.rate_limit()` や、インポート中に自動でバッチ サイズを決定・更新する `.dynamic()` などのバッチャー タイプがあります。
+
+### <i class="fa-solid fa-chalkboard"></i> データをバッチャーへ追加
+
+#### データ型の変換
+
+Weaviate 用の正しいデータ型へ変換します。たとえば、`release_date` は datetime オブジェクトに、`genre_ids` は整数のリストに変換します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Convert data types"
+  endMarker="# Build the object payload"
+  language="py"
+/>
+
+#### オブジェクトをバッチャーへ追加
+
+次にデータをループし、各オブジェクトをバッチャーへ追加します。`batch.add_object` メソッドでオブジェクトを追加すると、指定したバッチャー タイプに従ってバッチが送信されます。
+
+ここではベクトル データも併せて渡している点に注意してください。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Build the object payload"
+  endMarker="# Batcher automatically sends batches"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
+
+1 つのバッチには複数のオブジェクトが含まれるため、インポートに失敗するオブジェクトが発生する可能性があります。バッチャーはこれらのエラーを保存します。
+
+エラーを出力して問題を確認し、例外を投げるなどの対応を行うことができます。この例では単にエラーを出力しています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# Check for failed objects"
+  endMarker="finally"
+  language="py"
+/>
+
+新しいコンテキスト マネージャーに入るとエラー リストはクリアされるため、新しいバッチャーを初期化する前にエラーを処理する必要があります。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

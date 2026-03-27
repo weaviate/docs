@@ -1,0 +1,67 @@
+---
+title: Weaviate との通信
+description: マルチモーダルデータの通信設定
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/101_connect.py';
+
+ここでは、Python クライアントライブラリを使用して Weaviate と通信するための基本操作を行います。
+
+### <i class="fa-solid fa-code"></i> Weaviate のステータス確認
+
+Weaviate インスタンスが稼働しているかどうかは `is_live` 関数で確認できます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# PollLiveness"
+  endMarker="# END PollLiveness"
+  language="py"
+/>
+
+### <i class="fa-solid fa-code"></i> サーバー メタ情報の取得
+
+Weaviate インスタンスのメタ情報は `meta` 関数で取得できます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetMeta"
+  endMarker="# END GetMeta"
+  language="py"
+/>
+
+これにより、サーバーのメタ情報がコンソールに出力されます。出力は以下のようになります。
+
+<details>
+  <summary>例 <code>get_meta</code> 出力</summary>
+
+CLIP モデルの追加情報により、出力が少し長くなっています。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# OutputGetMeta"
+  endMarker="# END OutputGetMeta"
+  language="py"
+/>
+</details>
+
+### <i class="fa-solid fa-code"></i> 接続のクローズ
+
+Weaviate クライアントの使用が終わったら、接続をクローズしてください。これによりリソースが解放され、接続が適切に閉じられます。
+
+ベストプラクティスとして `try`-`finally` ブロックの使用を推奨します。簡潔にするため、以降のコードスニペットでは `try`-`finally` ブロックは省略します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# TryFinallyCloseDemo"
+  endMarker="# END TryFinallyCloseDemo"
+  language="py"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

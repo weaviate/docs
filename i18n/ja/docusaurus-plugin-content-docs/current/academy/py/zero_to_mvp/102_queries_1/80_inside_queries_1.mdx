@@ -1,0 +1,221 @@
+---
+title: クエリ内部の詳細
+description: より良いデータ取得のために Weaviate の高度なクエリ手法を理解する。
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/HTCENuuK3FU' controls='true' />
+<br/>
+
+このユニットでは、さまざまな方法でベクトル検索を構築する方法を見てきました。
+
+まず、 `Get` と `Aggregate` のベクトル検索関数の使い方を学び、 `nearVector`、 `nearObject`、 `nearText` などの検索オペレーターを追加し、最後に `where`、 `limit`、 `offset` などの各種フィルターで締めくくりました。
+
+ここで一旦立ち止まり、これらの検索が実際にどのように実行されているのかを見てみましょう。まずはベクトル検索プロセスからです。
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索プロセス
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル検索の舞台裏
+
+名前が示すとおり、ベクトル検索はベクトルを用いて処理を行います。Weaviate でベクトル検索を実行するときは、 `nearVector`、 `nearObject`、 `nearText` のいずれを使う場合でも、入力はベクトルへと変換されます。
+
+入力ベクトルは Weaviate に保存されているベクトルと比較され、最も関連性の高いオブジェクトが返されます。
+
+`nearVector` オペレーターを使ったクエリでは、Weaviate は提供されたベクトルをそのまま使用してベクトル検索を行います。
+
+`nearObject` や `nearText` のようにベクトルが直接提供されないクエリの場合、Weaviate は適切な方法でベクトルを取得します。
+
+#### `nearObject`
+
+`nearObject` オペレーターが使用される場合、Weaviate はそのオブジェクトに紐づくベクトルを取得し、これを入力ベクトルとして使用します。
+
+これを確認するために、 `nearObject` オペレーターを用いたベクトル検索を実行し、同等の `nearVector` オペレーターで再現してみましょう。
+
+以下が `nearObject` クエリです。
+
+import NearobjectExample from './_snippets/academy.queries.nearobject.example.mdx';
+
+<NearobjectExample/>
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 3.5762787e-07,
+            "id": "d53fd7ea-35c1-5f8d-a35a-e53511db1a2a"
+          },
+          "answer": "meerkats",
+          "question": "Group of mammals seen <a href=\"http://www.j-archive.com/media/1998-06-01_J_28.jpg\" target=\"_blank\">here</a>:  [like Timon in <i>The Lion King</i>]"
+        },
+        {
+          "_additional": {
+            "distance": 0.12663543,
+            "id": "9eaf38fe-e7f0-5da3-b703-6b44c49faf7d"
+          },
+          "answer": "hyena",
+          "question": "It's the amused African mammal heard <a href=\"http://www.j-archive.com/media/2006-12-14_J_10.mp3\">here</a>"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+次に、この `nearVector` クエリを実行して結果を比較してみてください。
+
+import NearobjectEquivalentNearvector from './_snippets/academy.queries.nearobject.equivalent.nearvector.mdx';
+
+<NearobjectEquivalentNearvector/>
+
+<details>
+  <summary>`meerkat_vector` 全体を表示</summary>
+
+import MeerkatsVector from './_snippets/meerkats.vector.mdx';
+
+<MeerkatsVector/>
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
+
+2 本目の（ `nearVector` ）クエリを実行すると、 `nearObject` クエリと同じ結果が返されることがわかります。距離も同一です。これは、 `nearObject` クエリで使用されるオブジェクトのベクトルと、 `nearVector` クエリで指定したベクトルがまったく同じだからです。
+
+</details>
+
+#### `nearText`
+
+`nearText` オペレーターが使用される場合、Weaviate は入力テキストをベクトルへ変換して入力として使用します。具体的な方法は、該当クラスに適用されるベクトライザーの設定によって異なります。設定によっては `text2vec-openai` モジュールや `text2vec-transformers` モジュールが使用されます。
+
+:::info Vectorizer setting
+ベクトライザーの設定方法については次のセクションで扱います。
+:::
+
+import NeartextExample from './_snippets/academy.queries.neartext.example.mdx';
+
+<NeartextExample/>
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.1800943,
+            "id": "92710bd6-de3c-5220-a60a-d386b2748e28"
+          },
+          "answer": "Two Guys and a Girl",
+          "question": "In 1999 an ABC sitcom dropped \"a Pizza Place\" from its name, which changed to this"
+        },
+        {
+          "_additional": {
+            "distance": 0.18657643,
+            "id": "7e7a6572-02bd-529f-8943-38ccd4a2a90b"
+          },
+          "answer": "Beavis & Butthead of the Class",
+          "question": "2 MTV cartoon teens join Howard Heh-Heh-Hesseman's honors program on '80's TV"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+次に、この `nearVector` クエリを実行して結果を比較してみてください。
+
+import NeartextEquivalentNearvector from './_snippets/academy.queries.neartext.equivalent.nearvector.mdx';
+
+<NeartextEquivalentNearvector/>
+
+<details>
+  <summary>`popular_90s_comedy_vector` 全体を表示</summary>
+
+import Popular90sComedyVector from './_snippets/popular.90s.comedy.vector.mdx';
+
+<Popular90sComedyVector/>
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
+
+2 本目の（ `nearVector` ）クエリを実行すると、 `nearText` クエリと同じオブジェクトおよび距離が返されることが再び確認できます。
+
+この場合、Weaviate は `text2vec-openai` モジュールを使用して入力テキストをベクトル化します。このモジュールは OpenAI 推論 API を利用して入力をベクトルへ変換します。ベクトル化プロセスは決定論的であり、同じ入力テキストは常に同じベクトルになります。 `nearVector` クエリでは、OpenAI API を直接用いてベクトルを生成し、入力ベクトルとして使用したため、同じ結果が得られました。
+
+</details>
+
+### <i class="fa-solid fa-chalkboard"></i> フィルタリング
+
+結果をさらに絞り込むために、ベクトル検索プロセスにフィルターを適用できます。
+
+内部的には、Weaviate は「事前フィルタリング」を実装しています。これは、データベース全体にフィルターを適用して「許可リスト」を作成し、そのリストからベクトル検索結果を返すという仕組みです。
+
+これに加えて効率的なフィルタリング手法を組み合わせることで、大規模データベースに厳しいフィルターを適用した場合でも、Weaviate は適切な件数の結果を容易に返すことができます。
+### <i class="fa-solid fa-chalkboard"></i> 概念図 (フィルタリング + ベクトル検索)
+
+以下の概念図は、ベクトル検索プロセスがどのように機能するかを示しています。  
+フィルターと検索オペレーターを含む入力が渡されると、 Weaviate はまず事前フィルタリングを実行してオブジェクトの「allow list」を取得します。
+
+入力は入力ベクトルを決定するために使用されます。その際、`nearObject` でオブジェクトのベクトルを取得したり、`nearText` で入力テキストをベクトル化したりする追加ステップが含まれる場合があります。次に、その入力ベクトルと比較を行ってベクトル検索を実行し、 allow list から最も関連性の高いオブジェクトが返されます。
+
+import SearchConceptualImg from './images/search-conceptual-dark.png';
+
+<img src={SearchConceptualImg} alt="検索がどのように機能するかの概念図" width="100%"/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+### <i class="fa-solid fa-pen-to-square"></i> レビュー演習
+
+- `nearVector` クエリを使用して `nearObject` クエリを再現します。  
+- `nearVector` クエリを使用して `nearText` クエリを再現します。
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- `nearObject` オペレーターはオブジェクトに関連付けられたベクトルを取得し、`nearText` は指定された ベクトライザー に基づいて入力テキストをベクトルに変換します。  
+- `nearObject` や `nearText` クエリと同等の `nearVector` クエリを作成する方法を学びました。  
+- Weaviate は「事前フィルタリング」を採用しており、ベクトル検索を実行する前にデータベース全体にフィルターが適用されます。
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}];
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

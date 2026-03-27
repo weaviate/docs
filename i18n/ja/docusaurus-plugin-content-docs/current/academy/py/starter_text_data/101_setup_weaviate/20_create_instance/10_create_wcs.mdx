@@ -1,0 +1,67 @@
+---
+title: "オプション 1: クラウド WCD インスタンス"
+description: テキストデータ用 Weaviate Cloud インスタンスの作成
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../../_snippets/101_connect.py';
+
+ここでは、 Weaviate Cloud ( WCD ) インスタンスを作成します。 WCD はクラウド上で動作するフルマネージドの Weaviate インスタンスで、インストールやメンテナンスが不要なため、 Weaviate を始めるには最適な方法です。
+
+### <i class="fa-solid fa-chalkboard"></i> WCD コンソールへのログイン
+
+[WCD Console](https://console.weaviate.cloud/) にアクセスし、認証情報でログインします。まだアカウントをお持ちでない場合は、ログイン画面の <kbd>Register here</kbd> リンクからサインアップできます。
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
+
+コンソールの Dashboard で <kbd>Create cluster</kbd> ボタンをクリックします。次の画面で以下を設定してください。
+
+- "Free sandbox" タブを選択  
+- クラスタ名を入力  
+- "Enable authentication" を "Yes" に設定  
+
+<kbd>Create</kbd> ボタンをクリックすると、 Weaviate インスタンスの作成が始まります。完了まで数分かかります。
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細取得
+
+インスタンスが作成されると、 <kbd>Details</kbd> ボタンをクリックして詳細を確認できます。クラスタ URL と API キーを控えてください。
+
+これらは Weaviate インスタンスへ接続する際に必要です。
+
+### <i class="fa-solid fa-code"></i> WCD インスタンスへの接続
+
+Weaviate Cloud ( WCD ) インスタンスへ接続するには、クラスタ URL と API キーが必要です。これらは WCD コンソールで確認できます。
+
+`connect_to_weaviate_cloud` 関数を使って WCD インスタンスへ接続します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# WCDInstantiation"
+  endMarker="# END WCDInstantiation"
+  language="py"
+/>
+
+#### 推論 API キーの提供
+
+一部の Weaviate モジュールでは、ベクトル化や大規模言語モデル統合のために推論 API を使用できます。インスタンス作成時にこれらの API キーを Weaviate に渡すことが可能です。
+
+このコースでは OpenAI を使用するため、以下のように `headers={"X-OpenAI-Api-Key": <YOUR_KEY>}` を通じて OpenAI API キーを Weaviate に渡します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# WCDAPIKeyInstantiation"
+  endMarker="# END WCDAPIKeyInstantiation"
+  language="py"
+/>
+
+:::note 次のステップ
+ここまで完了したら、次のページ [オプション 2: ローカル Weaviate インスタンス](./20_create_docker.mdx) はスキップし、[Weaviate と通信する](../30_communicate.mdx) に進んでください。
+:::
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
