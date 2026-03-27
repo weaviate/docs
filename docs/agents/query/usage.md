@@ -327,6 +327,32 @@ Page 3:
 
 </details>
 
+#### `Search` with diversity ranking
+
+`Search` supports adding diversity weighting to search result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of 0 to 1. To use diversity ranking with target vectors, set the single target vector that you want to use in the Query Agent's constructor.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START DiversityRanking"
+            endMarker="# END DiversityRanking"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SearchPagination"
+            endMarker="// END SearchPagination"
+            language="ts"
+        />
+    </TabItem>
+
+</Tabs>
+
+
+
 ### `Ask`
 
 `Ask` the Query Agent a question using natural language. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the answer.
