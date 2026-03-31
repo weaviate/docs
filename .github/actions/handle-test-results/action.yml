@@ -1,5 +1,5 @@
 name: 'Handle Test Results'
-description: 'Calculates test results, sends notifications, and uploads artifacts'
+description: 'Calculates test results and sends notifications'
 
 inputs:
   test-outcome:
@@ -11,9 +11,6 @@ inputs:
   languages-tested:
     description: 'Languages tested (e.g., Python, TypeScript)'
     required: false
-  artifact-name:
-    description: 'Name for the test results artifact'
-    required: true
   slack-bot-token:
     description: 'Slack webhook for testing CI channel'
     required: false
@@ -135,12 +132,3 @@ runs:
       run: |
         source ${{ inputs.slack-script }}
 
-    - name: Upload test results
-      if: inputs.test-outcome != 'success'
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ inputs.artifact-name }}
-        path: |
-          pytest-results*.xml
-          .pytest_cache/
-        retention-days: 9

@@ -72,7 +72,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'Agents'
           languages-tested: 'Python, TypeScript'
-          artifact-name: 'test-results-agents'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
   test-python:
@@ -192,7 +191,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'Python'
           languages-tested: 'Python'
-          artifact-name: 'test-results-python'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
@@ -316,7 +314,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'TypeScript'
           languages-tested: 'TypeScript'
-          artifact-name: 'test-results-typescript'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
@@ -462,7 +459,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'Java-v6'
           languages-tested: 'Java'
-          artifact-name: 'test-results-java-v6'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
@@ -603,7 +599,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'CSharp'
           languages-tested: 'C#'
-          artifact-name: 'test-results-csharp'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
