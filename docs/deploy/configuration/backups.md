@@ -312,7 +312,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 
 #### Wildcard matching
 
-:::info Available in Weaviate `v1.36.0` and higher
+:::info Added in `v1.36.0`
 :::
 
 The `include` and `exclude` options support wildcard patterns to match multiple collections at once. Wildcard matching is **case sensitive**.
