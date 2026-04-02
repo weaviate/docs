@@ -339,6 +339,8 @@ Unlike the static replication factor configured at collection creation, replica 
 
 :::info
 
+Replica movement must be enabled by setting the [`REPLICA_MOVEMENT_ENABLED` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_ENABLED) to `true`. When disabled (the default).
+
 The [`REPLICATION_ENGINE_MAX_WORKERS` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICATION_ENGINE_MAX_WORKERS) can be used to adjust the number of workers that process replica movements in parallel. 
 
 :::

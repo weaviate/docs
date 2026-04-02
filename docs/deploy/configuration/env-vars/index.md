@@ -223,6 +223,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
 | `RAFT_TIMEOUTS_MULTIPLIER` | Multiplier for Raft consensus timeouts and memberlist TCP timeouts. (Default: `5`) | `string - number` | `10` |
+| `REPLICA_MOVEMENT_ENABLED` | Enable replica movement and replication operations. When enabled, the replication engine starts and REST API endpoints for replica operations become available. Default: `false` <br/>Added in `v1.32` | `boolean` | `true` |
 | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 | `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | Enable/disable the request queue buffer for replicated indices in multi-node clusters. Can be modified at runtime. Default: `false` | `boolean` | `true` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
