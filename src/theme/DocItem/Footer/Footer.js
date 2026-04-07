@@ -49,14 +49,6 @@ function Footer() {
                 <i className="fab fa-github" aria-hidden="true"></i>
               </Link>
               <Link
-                to="https://weaviate.io/slack"
-                title="Slack"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="fab fa-slack" aria-hidden="true"></i>
-              </Link>
-              <Link
                 to="https://x.com/weaviate_io"
                 title="X"
                 target="_blank"
@@ -140,15 +132,6 @@ function Footer() {
                     rel="noopener noreferrer"
                   >
                     Forum
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="https://weaviate.io/slack"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Slack
                   </Link>
                 </li>
               </ul>

@@ -27,7 +27,7 @@ Members of the Weaviate community provide client libraries for some additional l
 
 To contribute to these libraries, contact the maintainers directly.
 
-If you have a Weaviate client library you would like to add here, let us know in the [forum](https://forum.weaviate.io/) or on [Slack](https://weaviate.io/slack).
+If you have a Weaviate client library you would like to add here, let us know on the [forum](https://forum.weaviate.io/).
 
 ## Questions and feedback
 

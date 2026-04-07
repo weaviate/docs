@@ -21,7 +21,7 @@ Enable or disable [indexes for each property](#index-types-and-filters) or [inde
 
 Weaviate makes use of indexes to speed up filtering operations.
 
-[Roaring bitmap indexes (`indexFilterable`)](../filtering.md#indexfilterable) were added in `v1.18` to improve the performance of filtering operations. [Range-based indexes (`indexRangeFilters`)](../filtering.md#indexrangefilters) were added in `v1.26` to speed up range-based numerical filtering for `int`, `number`, or `date` properties.
+[Roaring bitmap indexes (`indexFilterable`)](../filtering.md#indexfilterable) were added to improve the performance of filtering operations. [Range-based indexes (`indexRangeFilters`)](../filtering.md#indexrangefilters) were added to speed up range-based numerical filtering for `int`, `number`, or `date` properties.
 
 These indexes can be [enabled or disabled](../../manage-collections/inverted-index.mdx#set-inverted-index-parameters) for each property.
 

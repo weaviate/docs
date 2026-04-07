@@ -2,6 +2,7 @@
 title: Aggregate data
 sidebar_position: 85
 image: og/docs/howto.jpg
+description: "Aggregate data (count, sum, average) with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'aggregate data']
 ---
 

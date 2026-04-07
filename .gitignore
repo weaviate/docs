@@ -271,3 +271,6 @@ _includes/code/csharp/quickstart/obj
 
 # Exclude WCD backups
 tests/backups/
+
+# Ignore LLM/agent config files
+.claude/

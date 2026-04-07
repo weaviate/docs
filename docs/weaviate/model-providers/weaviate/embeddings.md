@@ -6,9 +6,6 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
 ---
 
-:::info Added in `1.27.10`, `1.28.3`, `1.29.0`
-:::
-
 # Weaviate Embeddings - Text Embeddings
 
 import Tabs from "@theme/Tabs";
@@ -410,9 +407,7 @@ The query below returns the `n` best scoring objects from the database, set by `
   </TabItem>
 </Tabs>
 
-## References
-
-### Available models
+## Available models
 
 import WeaviateEmbeddingsModels from "/\_includes/weaviate-embeddings-models.mdx";
 
@@ -427,9 +422,18 @@ Once the integrations are configured at the collection, the data management and 
 - The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
 - The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
+### Multimodal embeddings
+
+Looking to embed document images instead of text? See [Weaviate Embeddings: Multimodal](./embeddings-multimodal.md) for visual document retrieval without OCR or preprocessing.
+
 ### References
 
 - Weaviate Embeddings [Documentation](/cloud/embeddings)
+- Weaviate Embeddings [Models](/cloud/embeddings/models)
+
+### Pricing
+
+Weaviate Embeddings models are charged based on token usage. For more pricing information, see the [Weaviate Cloud pricing page](https://weaviate.io/pricing).
 
 ## Questions and feedback
 

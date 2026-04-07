@@ -36,13 +36,19 @@ Simplified embedding management through:
 
 The following models are available for use with Weaviate Embeddings:
 
+### Text embedding models
+
 - **[`Snowflake/snowflake-arctic-embed-m-v1.5`](/cloud/embeddings/models#snowflake-arctic-embed-m-v1.5)**
 - **[`Snowflake/snowflake-arctic-embed-l-v2.0`](/cloud/embeddings/models#snowflake-arctic-embed-l-v2.0)**
+
+### Multimodal embedding models
+
+- **[`ModernVBERT/colmodernvbert`](/cloud/embeddings/models#colmodernvbert)** - A vision-language model for visual document retrieval. Embed document images (PDFs, slides, invoices) directly without OCR or preprocessing, then search with text queries. Images and text are represented together in the same vector space.
 
 ## Authentication
 
 In order to use Weaviate Embeddings you only need a [connection to your Weaviate Cloud cluster](/cloud/manage-clusters/connect). 
-No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/weaviate/client-libraries) or, for example, via [OIDC](/weaviate/configuration/authz-authn#oidc).
+No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/weaviate/client-libraries) or, for example, via [OIDC](/deploy/configuration/oidc).
 
 ## Usage limits
 
@@ -78,7 +84,8 @@ We may expand the service to other regions in the future.
 - [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
 - [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Multimodal Embeddings](/weaviate/model-providers/weaviate/embeddings-multimodal.md)
 
 ## Support & feedback
 

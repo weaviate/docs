@@ -9,6 +9,7 @@
 @use "variables";
 @use "shared";
 
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-h2-font-size: 2rem;
@@ -933,7 +934,8 @@ button.close {
 
 /*This is because of the secondary navbar taking up space*/
 .theme-doc-sidebar-menu {
-  padding-top: 5px; /* Adjust this value as needed */
+  padding-top: 5px;
+  padding-bottom: 20px;
 }
 
 #kapa-modal-content {
@@ -977,9 +979,12 @@ button.close {
   background-color: var(--docs-sidebar-bg);
 }
 
-.collapseSidebarButton_PEFL {
-  background-color: var(--docs-sidebar-bg) !important;
-}
+// /* Reduce sidebar viewport height to account for the secondary navbar */
+// @media (min-width: 997px) {
+//   .theme-doc-sidebar-container > div {
+//     max-height: calc(100vh - var(--secondary-navbar-height)) !important;
+//   }
+// }
 
 /* Sidebar category chevrons */
 .menu__caret::before,

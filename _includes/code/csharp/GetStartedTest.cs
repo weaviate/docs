@@ -39,7 +39,7 @@ public class GetStartedTests
                     Name = collectionName,
                     VectorConfig = Configure.Vector(
                         "default",
-                        v => v.Text2VecOllama(apiEndpoint: "http://host.docker.internal:11434")
+                        v => v.Text2VecOllama(apiEndpoint: "http://ollama:11434")
                     ),
                     Properties =
                     [

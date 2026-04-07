@@ -2,6 +2,7 @@
 title: Filters
 sidebar_position: 90
 image: og/docs/howto.jpg
+description: "Apply conditional filters to search results with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'apply conditional filters']
 ---
 

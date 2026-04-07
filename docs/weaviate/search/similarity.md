@@ -2,6 +2,7 @@
 title: Vector similarity search
 sidebar_position: 20
 image: og/docs/howto.jpg
+description: "Vector similarity search (nearText, nearVector, nearObject) with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'similarity search']
 ---
 
@@ -301,9 +302,6 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 </Tabs>
 
 ## Named vectors
-
-:::info Added in `v1.24`
-:::
 
 To search a collection that has [named vectors](../config-refs/collections.mdx#named-vectors), use the `target vector` field to specify which named vector to search.
 

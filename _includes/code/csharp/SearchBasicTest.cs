@@ -22,7 +22,6 @@ public class SearchBasicTest : IAsyncLifetime
         // Best practice: store your credentials in environment variables
         var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        // var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
         client = await Connect.Cloud(weaviateUrl, weaviateApiKey);
     }

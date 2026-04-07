@@ -53,6 +53,7 @@ class QuickstartTest {
     );
 
     String collectionName = "Question";
+    try { client.collections.delete(collectionName); } catch (Exception ignored) {} // Clean up from any previous run
     // highlight-start
     client.collections.create(
         collectionName,
@@ -85,6 +86,7 @@ class QuickstartTest {
 
     // Create the collection
     String collectionName = "Question";
+    try { client.collections.delete(collectionName); } catch (Exception ignored) {} // Clean up from any previous run
     client.collections.create(collectionName, col -> col
         .properties(
             Property.text("answer"),

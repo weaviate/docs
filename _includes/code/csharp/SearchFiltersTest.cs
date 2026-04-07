@@ -17,7 +17,7 @@ public class SearchFilterTest : IAsyncLifetime
         // Best practice: store your credentials in environment variables
         var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
         // Fallback to local if env vars are not set (for local testing)
         if (string.IsNullOrEmpty(weaviateUrl))
@@ -322,7 +322,7 @@ public class SearchFilterTest : IAsyncLifetime
 
         Guid targetId = Guid.Parse("00037775-1432-35e5-bc59-443baaef7d80");
 
-        var response = await collection.Query.FetchObjects(filters: Filter.ID.IsEqual(targetId));
+        var response = await collection.Query.FetchObjects(filters: Filter.UUID.IsEqual(targetId));
 
         foreach (var o in response.Objects)
         {

@@ -9,8 +9,8 @@ import os
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
-anthropic_api_key = os.environ["ANTHROPIC_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
+anthropic_api_key = os.environ["ANTHROPIC_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,

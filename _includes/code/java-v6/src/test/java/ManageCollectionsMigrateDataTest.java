@@ -29,7 +29,7 @@ class ManageCollectionsMigrateDataTest {
 
   @BeforeAll
   public static void beforeAll() throws IOException {
-    String openaiApiKey = System.getenv("OPENAI_APIKEY");
+    String openaiApiKey = System.getenv("OPENAI_API_KEY");
     // Connect to the source Weaviate instance
     clientSrc = WeaviateClient.connectToLocal(
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));

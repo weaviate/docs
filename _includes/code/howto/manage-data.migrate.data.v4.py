@@ -14,7 +14,7 @@ import os
 # START CreateCollectionCollectionToCollection  # START CreateCollectionTenantToCollection  # START CreateCollectionCollectionToTenant  # START CreateCollectionTenantToTenant
 client_src = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 
@@ -38,7 +38,7 @@ client_tgt = weaviate.connect_to_local(
     port=8090,
     grpc_port=50061,
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 

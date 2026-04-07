@@ -154,7 +154,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             var vectors = new Vectors { { "default", vectorData } };
 
             dataToInsert.Add(
-                BatchInsertRequest.Create(data: dataRow, id: objUuid, vectors: vectors)
+                BatchInsertRequest.Create(data: dataRow, uuid: objUuid, vectors: vectors)
             );
         }
 
@@ -177,7 +177,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         var result = await collection.Aggregate.OverAll(totalCount: true);
         Assert.Equal(5, result.TotalCount);
 
-        var lastUuid = dataToInsert[4].ID;
+        var lastUuid = dataToInsert[4].UUID;
         Assert.NotNull(await collection.Query.FetchObjectByID((Guid)lastUuid));
     }
 
@@ -205,7 +205,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             var vectors = new Vectors { { "default", vectorData } };
 
             dataToInsert.Add(
-                BatchInsertRequest.Create(data: dataRow, id: objUuid, vectors: vectors)
+                BatchInsertRequest.Create(data: dataRow, uuid: objUuid, vectors: vectors)
             );
         }
 

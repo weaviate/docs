@@ -2,6 +2,7 @@
 title: Search patterns and basics
 sidebar_position: 10
 image: og/docs/howto.jpg
+description: "Basic search operations: listing objects, retrieving properties and metadata with code in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'semantic search']
 ---
 
@@ -16,7 +17,7 @@ import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/Sear
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchBasicTest.cs";
 
-With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#specify-object-properties) and [metadata](#retrieve-metadata-values) to return.
+With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#retrieve-object-properties) and [metadata](#retrieve-metadata-values) to return.
 
 This page provides fundamental search syntax to get you started.
 

@@ -4,17 +4,17 @@ import weaviate from 'weaviate-client'
 // END-ANY
 
 // START AnthropicInstantiation
-const anthropicApiKey = process.env.ANTHROPIC_APIKEY || '';  // Replace with your inference API key
+const anthropicApiKey = process.env.ANTHROPIC_API_KEY || '';  // Replace with your inference API key
 // END AnthropicInstantiation
 // START AnyscaleInstantiation
-const anyscaleApiKey = process.env.ANYSCALE_APIKEY || '';  // Replace with your inference API key
+const anyscaleApiKey = process.env.ANYSCALE_API_KEY || '';  // Replace with your inference API key
 // END AnyscaleInstantiation
 // START AWSInstantiation
 const aws_access_key = process.env.AWS_ACCESS_KEY || '';  // Replace with your AWS access key
 const aws_secret_key = process.env.AWS_SECRET_KEY || '';  // Replace with your AWS secret key
 // END AWSInstantiation
 // START CohereInstantiation
-const cohereApiKey = process.env.COHERE_APIKEY || '';  // Replace with your inference API key
+const cohereApiKey = process.env.COHERE_API_KEY || '';  // Replace with your inference API key
 // END CohereInstantiation
 // START ContextualAIInstantiation
 const contextualApiKey = process.env.CONTEXTUAL_API_KEY || '';  // Replace with your inference API key
@@ -26,36 +26,36 @@ const databricksToken = process.env.DATABRICKS_TOKEN || '';  // Replace with you
 const friendliApiKey = process.env.FRIENDLI_TOKEN || '';  // Replace with your inference API key
 // END FriendliInstantiation
 // START GoogleInstantiation  // START GoogleVertexInstantiation
-const vertexApiKey = process.env.VERTEX_APIKEY || '';  // Replace with your inference API key
+const vertexApiKey = process.env.VERTEX_API_KEY || '';  // Replace with your inference API key
 // START GoogleInstantiation  // END GoogleVertexInstantiation
-const studioApiKey = process.env.STUDIO_APIKEY || '';  // Replace with your inference API key
+const studioApiKey = process.env.STUDIO_API_KEY || '';  // Replace with your inference API key
 // END GoogleInstantiation
 // START HuggingFaceInstantiation
-const huggingFaceApiKey = process.env.HUGGINGFACE_APIKEY || '';  // Replace with your inference API key
+const huggingFaceApiKey = process.env.HUGGINGFACE_API_KEY || '';  // Replace with your inference API key
 // END HuggingFaceInstantiation
 // START JinaAIInstantiation
-const jinaaiApiKey = process.env.JINAAI_APIKEY || '';  // Replace with your inference API key
+const jinaaiApiKey = process.env.JINAAI_API_KEY || '';  // Replace with your inference API key
 // END JinaAIInstantiation
 // START MistralInstantiation
-const mistralApiKey = process.env.MISTRAL_APIKEY || '';  // Replace with your inference API key
+const mistralApiKey = process.env.MISTRAL_API_KEY || '';  // Replace with your inference API key
 // END MistralInstantiation
 // START NVIDIAInstantiation
-const nvidiaApiKey = process.env.NVIDIA_APIKEY || '';  // Replace with your inference API key
+const nvidiaApiKey = process.env.NVIDIA_API_KEY || '';  // Replace with your inference API key
 // END NVIDIAInstantiation
 // START OctoAIInstantiation
-const octoaiApiKey = process.env.OCTOAI_APIKEY || '';  // Replace with your inference API key
+const octoaiApiKey = process.env.OCTOAI_API_KEY || '';  // Replace with your inference API key
 // END OctoAIInstantiation
 // START OpenAIInstantiation
-const openaiApiKey = process.env.OPENAI_APIKEY || '';  // Replace with your inference API key
+const openaiApiKey = process.env.OPENAI_API_KEY || '';  // Replace with your inference API key
 // END OpenAIInstantiation
 // START AzureOpenAIInstantiation
-const azureApiKey = process.env.AZURE_APIKEY || '';  // Replace with your inference API key
+const azureApiKey = process.env.AZURE_API_KEY || '';  // Replace with your inference API key
 // END AzureOpenAIInstantiation
 // START VoyageAIInstantiation
-const voyageaiApiKey = process.env.VOYAGEAI_APIKEY || '';  // Replace with your inference API key
+const voyageaiApiKey = process.env.VOYAGEAI_API_KEY || '';  // Replace with your inference API key
 // END VoyageAIInstantiation
 // START Xainstantiation
-const xaiApiKey = process.env.XAI_APIKEY || '';  // Replace with your inference API key
+const xaiApiKey = process.env.XAI_API_KEY || '';  // Replace with your inference API key
 // END XaiInstantiation
 
 // START-ANY
@@ -63,7 +63,7 @@ const xaiApiKey = process.env.XAI_APIKEY || '';  // Replace with your inference 
 const client = await weaviate.connectToWeaviateCloud(
   'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
   {
-    authCredentials: new weaviate.ApiKey('WEAVIATE_INSTANCE_APIKEY'),
+    authCredentials: new weaviate.ApiKey('WEAVIATE_INSTANCE_API_KEY'),
     // highlight-start
     headers: {
       // END-ANY

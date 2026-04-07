@@ -9,7 +9,9 @@ import io.weaviate.client6.v1.api.collections.Sharding;
 import io.weaviate.client6.v1.api.collections.Tokenization;
 import io.weaviate.client6.v1.api.collections.vectorindex.Distance;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
+import io.weaviate.client6.v1.api.collections.Replication.AsyncReplicationConfig;
 import io.weaviate.client6.v1.api.collections.Replication.DeletionStrategy;
+import io.weaviate.client6.v1.api.collections.config.PropertyIndexType;
 import io.weaviate.client6.v1.api.collections.config.Shard;
 import io.weaviate.client6.v1.api.collections.config.ShardStatus;
 import io.weaviate.client6.v1.api.collections.Reranker;
@@ -29,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ManageCollectionsTest {
 
   private static WeaviateClient client;
+  private static WeaviateClient threeNodeClient;
 
   @BeforeAll
   public static void beforeAll() throws IOException {
@@ -40,6 +43,12 @@ class ManageCollectionsTest {
     client = WeaviateClient.connectToLocal(
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     client.collections.deleteAll();
+
+    // Use three-node cluster (port 8180) since replicationFactor(3) requires 3 nodes
+    threeNodeClient = WeaviateClient.connectToLocal(
+        config -> config.port(8180).setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    threeNodeClient.collections.deleteAll();
+
   }
 
   @AfterEach
@@ -241,6 +250,36 @@ class ManageCollectionsTest {
     assertThat(config.properties()).hasSize(3);
   }
 
+  //@Test
+  void testDropInvertedIndex() throws IOException {
+    client.collections.create("Article", col -> col
+        .properties(
+            Property.text("title",
+                p -> p.indexFilterable(true).indexSearchable(true)),
+            Property.integer("chunk_number", p -> p.indexRangeFilters(true))));
+
+    // START DropInvertedIndex
+    var collection = client.collections.use("Article");
+
+    // highlight-start
+    // Drop the searchable inverted index from the "title" property
+    collection.config.dropPropertyIndex("title", PropertyIndexType.SEARCHABLE);
+
+    // Drop the filterable inverted index from the "title" property
+    collection.config.dropPropertyIndex("title", PropertyIndexType.FILTERABLE);
+
+    // Drop the range filter index from the "chunk_number" property
+    collection.config.dropPropertyIndex("chunk_number", PropertyIndexType.RANGE_FILTERS);
+    // highlight-end
+    // END DropInvertedIndex
+
+    var config = client.collections.getConfig("Article").get();
+    var titleProp = config.properties().stream()
+        .filter(p -> p.propertyName().equals("title")).findFirst().get();
+    assertThat(titleProp.indexFilterable()).isFalse();
+    assertThat(titleProp.indexSearchable()).isFalse();
+  }
+
   // TODO[g-despot] IllegalState Not a JSON Object: null
   @Test
   void testSetReranker() throws IOException {
@@ -380,15 +419,33 @@ class ManageCollectionsTest {
   @Test
   void testAllReplicationSettings() throws IOException {
     // START AllReplicationSettings
-    client.collections.create("Article",
-        col -> col.replication(Replication.of(rep -> rep.replicationFactor(1)
+    threeNodeClient.collections.create("Article",
+        col -> col.replication(Replication.of(rep -> rep.replicationFactor(3)
             .asyncEnabled(true)
-            .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION))));
+            .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION)
+            .asyncReplication(AsyncReplicationConfig.of(async -> async
+                .propagationConcurrency(5)
+                .hashTreeHeight(16)
+                .frequencyMillis(30))))));
     // END AllReplicationSettings
 
-    var config = client.collections.getConfig("Article").get();
-    assertThat(config.replication().replicationFactor()).isEqualTo(1);
+    var config = threeNodeClient.collections.getConfig("Article").get();
+    assertThat(config.replication().replicationFactor()).isEqualTo(3);
     assertThat(config.replication().asyncEnabled()).isTrue();
+
+    // START UpdateReplicationSettings
+    var collection = threeNodeClient.collections.use("Article");
+
+    // highlight-start
+    collection.config.update(col -> col.replication(Replication.of(
+        rep -> rep.asyncReplication(AsyncReplicationConfig.of(async -> async
+            .propagationConcurrency(10)
+            .frequencyMillis(60))))));
+    // highlight-end
+    // END UpdateReplicationSettings
+
+    threeNodeClient.collections.deleteAll();
+    try { threeNodeClient.close(); } catch (Exception ignored) {}
   }
 
   @Test

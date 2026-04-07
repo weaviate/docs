@@ -137,13 +137,13 @@ The above query will result in something like the following:
 }
 ```
 
+### Get object count in collection
+
+Use `meta { count }` to retrieve the total number of objects in a collection.
+
 import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 
-:::tip `meta { count }` will return the query object count
-As such, this `Aggregate` query will retrieve the total object count in a class.
-
 <HowToGetObjectCount/>
-:::
 
 ### groupBy argument
 
@@ -243,9 +243,6 @@ You can optionally specify a `limit` parameter to limit the returned objects. Fo
 
 ### Multi-tenancy
 
-:::info Added in `v1.20`
-:::
-
 Where multi-tenancy is configured, the `Aggregate` function can be configured to aggregate results from a specific tenant.
 
 You can do so by specifying the `tenant` parameter in the query as shown below, or in the client.
@@ -269,10 +266,6 @@ For more information on using multi-tenancy, see the [Multi-tenancy operations g
 :::
 
 ## Aggregating a Vector Search / Faceted Vector Search
-
-:::note
-This feature was added in `v1.13.0`
-:::
 
 You can combine a vector search (e.g. `nearObject`, `nearVector`, `nearText`, `nearImage`, etc.) with an aggregation. Internally, this is a two-step process where the vector search first finds the desired objects, then the results are aggregated.
 

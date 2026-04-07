@@ -395,9 +395,6 @@ Named vector collections support hybrid search, but only for one vector at a tim
 
 ### Query multiple named vectors
 
-:::info Added in `v1.26`
-:::
-
 Where multiple named vectors are defined in a collection, you can query them in a single search. This is useful for comparing the similarity of an object to multiple named vectors.
 
 This is called a "multi-target vector search".

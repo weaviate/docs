@@ -4,6 +4,8 @@ title: Async Replication
 
 ---
 
+import AsyncReplicationPerCollectionConfig from '/_includes/async-replication-per-collection-config.mdx';
+
 Introduced to GA in the 1.29 release, Async Replication is a mechanism used to ensure eventual consistency across nodes in a distributed cluster. It works as a background process that automatically keeps nodes in sync without requiring user queries. Previously, consistency was achieved through "read repair" which involved nodes comparing data during a read request and exchanging missing or outdated information. This approach guarantees eventual consistency without requiring read operations. 
 
 :::info
@@ -20,9 +22,11 @@ This applies solely to data objects, as metadata consistency is treated differen
 
 These environment variables can be used to fine-tune behavior for your specific use case or deployment environment. 
 
-:::tip 
-The optimal values for these variables will ultimately depend on factors like: data size, network conditions, write patterns, and the desired level of eventual consistency. 
+:::tip
+The optimal values for these variables will ultimately depend on factors like: data size, network conditions, write patterns, and the desired level of eventual consistency.
 :::
+
+<AsyncReplicationPerCollectionConfig />
 
 ## Use Cases
 
@@ -42,6 +46,19 @@ Globally disables the entire async replication feature.
 </details>
 
 <details>
+<summary> Cluster Worker Limits </summary>
+
+#### `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`
+Sets the maximum number of concurrent async replication workers across the entire cluster.
+
+- Its default value is `30`.
+- **Use case**: Limits the total number of concurrent replication workers to prevent resource exhaustion in large clusters with many collections or tenants.
+- **Special Considerations**:
+  - This is a cluster-wide cap. Individual collections can set their own `maxWorkers` via the per-collection [`asyncConfig`](/weaviate/config-refs/collections#async-config), but the total across all collections will not exceed this cluster limit.
+
+</details>
+
+<details>
 <summary>Replication Control </summary>
 
 #### `ASYNC_REPLICATION_PROPAGATION_LIMIT`
@@ -53,7 +70,7 @@ Defines the maximum number of objects that will be propagated in a single async 
 
 #### `ASYNC_REPLICATION_PROPAGATION_DELAY`
 Introduces a delay before considering an object for propagation. Only objects older than this delay are considered.
-  - By default it is set to 30 seconds.
+  - Its default value is `30s`. The value requires a time unit suffix (e.g. `30s`, `1m`).
   - **Use Case(s)**: If an object is inserted into one node but the insertion is still in progress, the hash comparison might detect it. This delay prevents the async replication from trying to propagate it before the local write operation is fully complete.
   - **Considerations**: This should be set based on the typical write latency of the system.
 </details>
@@ -63,7 +80,7 @@ Introduces a delay before considering an object for propagation. Only objects ol
 
 #### `ASYNC_REPLICATION_LOGGING_FREQUENCY`
 Controls how often the background async replication process logs its activity.
-  - By default it is set to 5 seconds. 
+  - Its default value is `60s`. The value requires a time unit suffix (e.g. `30s`, `2m`).
   - **Use Case(s)**: Increasing the frequency provides more detailed logs, while decreasing it reduces log verbosity.
 </details>
 
@@ -75,7 +92,7 @@ Controls how often the background async replication process logs its activity.
 
 #### `ASYNC_REPLICATION_HASHTREE_HEIGHT`
 Customizes the height of the hash tree built by each node to represent its locally stored data. 
-- By default the value is set to 16 which is roughly 2MB of RAM per shard on each node. 
+- By default the value is set to `16` for single-tenant collections (~2MB of RAM per shard on each node) and `10` for multi-tenant collections (~16KB per tenant per node).
 - **Use case(s)**: 
   - In multi-tenant setups with a large number of tenants, reducing the hash tree would minimize the memory footprint. 
   - For very large collections, a larger hash tree could be more beneficial for more efficient identification of differing data ranges. 
@@ -121,17 +138,17 @@ Sets the maximum number of objects included in each batch when propagating data 
 <details>
 
 <summary> Synchronization Frequency </summary>
-#### `ASYNC_REPLICATION_FREQUENCY` 
-Defines how often each node initiates the process of comparing its local data (via the hash tree) with other nodes storing the same shard. This regularly checks for inconsistencies, even if no changes have been explicitly triggered. 
-- It's default value is 30 seconds. 
+#### `ASYNC_REPLICATION_FREQUENCY`
+Defines how often each node initiates the process of comparing its local data (via the hash tree) with other nodes storing the same shard. This regularly checks for inconsistencies, even if no changes have been explicitly triggered.
+- Its default value is `30s`. The value requires a time unit suffix (e.g. `30s`, `1m`).
 - **Use Case(s)**
   - Decreasing the frequency can be beneficial for applications that require faster convergence to eventual consistency. 
   - Increasing the frequency can be beneficial for reducing the load on the system by relaxing the eventual consistency. 
 
 #### `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING`
 Defines a shorter frequency for subsequent comparison and propagation attempts when a previous propagation cycle did not complete (i.e., not all detected differences were synchronized).
-  - By default it is set to 20 milliseconds. 
-  -  **Use Case(s)**: When inconsistencies are known to exist, this expedites the synchronization process. 
+  - Its default value is `3s`. The value requires a time unit suffix (e.g. `3s`, `1m`).
+  -  **Use Case(s)**: When inconsistencies are known to exist, this expedites the synchronization process.
   - **Considerations**: This is activated after a propagation cycle detects differences but does not propagate all of them due to limits. 
 
 </details>
@@ -141,7 +158,7 @@ Defines a shorter frequency for subsequent comparison and propagation attempts w
 
 #### `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
 Defines the frequency at which the system checks for changes in the availability of nodes within the cluster.
-  - By default it is set to 5 seconds. 
+  - Its default value is `5s`. The value requires a time unit suffix (e.g. `5s`, `1m`).
   - **Use Case(s)**: When a node rejoins the cluster after a period of downtime, it is highly likely to be out of sync. This setting ensures that the replication process is initiated promptly.
 
 </details>
@@ -151,14 +168,20 @@ Defines the frequency at which the system checks for changes in the availability
 
 #### `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT`
 Defines the maximum time to wait for a response when requesting object metadata from a remote node during the comparison phase, this prevents indefinite blocking if a node is unresponsive.
-  - By default is set to 10 seconds. 
+  - Its default value is `10s`. The value requires a time unit suffix (e.g. `10s`, `1m`).
   - **Use Case(s)**: May need to be increased in environments with high network latency or potentially slow-responding nodes.
+
+#### `ASYNC_REPLICATION_PRE_PROPAGATION_TIMEOUT`
+Sets a delay before propagation begins to allow in-progress write operations to complete across nodes. This prevents propagation from starting before all nodes have finished processing recent writes.
+  - Its default value is `5m`. The value requires a time unit suffix (e.g. `5m`, `10m`).
+  - **Use Case(s)**: May need to be increased in environments with slow write operations or high write latency across nodes.
+  - **Considerations**: This timeout applies before the propagation phase begins. If writes typically take longer to replicate, increasing this value helps avoid premature propagation.
 
 #### `ASYNC_REPLICATION_PROPAGATION_TIMEOUT`
 Sets the maximum time allowed for a single propagation request (sending actual object data) to a remote node.
-  - By default is set to 30 seconds. 
+  - Its default value is `1m`. The value requires a time unit suffix (e.g. `30s`, `2m`).
   - **Use Case(s)**: May need to be increased in scenarios with high network latency, large object sizes (e.g., images, vectors), or when sending large batches of objects.
-  - **Considerations**: Network latency, batch size, and the size of the objects being propagated can all affect timeouts. 
+  - **Considerations**: Network latency, batch size, and the size of the objects being propagated can all affect timeouts.
 
 </details>
 
@@ -166,7 +189,7 @@ Sets the maximum time allowed for a single propagation request (sending actual o
 
 ### Further Resources
 
-- [Concepts: Replication](https://docs.weaviate.io/weaviate/concepts/replication-architecture/consistency)
+- [Concepts: Replication](/weaviate/concepts/replication-architecture/consistency)
 
 - [Replication How-To](/deploy/configuration/replication.md#async-replication-settings)
 

@@ -28,7 +28,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.0.0",
     "@scalar/docusaurus": "^0.7.21",
-    "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
+    "@signalwire/docusaurus-plugin-llms-txt": "1.2.2",
     "clsx": "^2.0.0",
     "docusaurus-plugin-sass": "^0.2.6",
     "dotenv": "^17.2.3",

@@ -501,9 +501,6 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 ## `object`
 
-:::info Added in `v1.22`
-:::
-
 The `object` type allows you to store nested data as a JSON object that can be nested to any depth.
 
 For example, a `Person` collection could have an `address` property as an object. It could in turn include nested properties such as `street` and `city`:

@@ -228,6 +228,9 @@ qa = QueryAgent(
         "Weather",
     ],
     system_prompt=system_prompt,
+    # END SystemPromptExample
+    timeout=120,
+    # START SystemPromptExample
 )
 
 response = qa.ask("What are the most expensive items in the store?")
@@ -278,6 +281,9 @@ qa = QueryAgent(
             ],  # Required target vector name(s) for collections with named vectors
         ),
     ],
+    # END UserDefinedFilters
+    timeout=120,
+    # START UserDefinedFilters
 )
 
 # The agent will automatically combine these filters with any it generates
@@ -309,6 +315,7 @@ qa = QueryAgent(
         QueryAgentCollectionConfig(name="FinancialContracts"),
         QueryAgentCollectionConfig(name="Weather"),
     ],
+    timeout=120,
 )
 
 # START QueryAgentAskBasicCollectionSelection
@@ -579,6 +586,7 @@ async def run_concurrent_queries():
                     # tenant="tenantA"
                 ),
             ],
+            timeout=120,
         )
 
         # Wait for both to complete
@@ -644,6 +652,7 @@ async def run_streaming_query():
                     # tenant="tenantA"
                 ),
             ],
+            timeout=120,
         )
         await stream_query(async_qa)
 
