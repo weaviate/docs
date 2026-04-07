@@ -171,17 +171,21 @@ Learn more about how to [configure rotational quantization](../configuration/com
 
 ## Over-fetching / re-scoring
 
-Weaviate over-fetches results and then re-scores them when you use SQ, RQ, or BQ. This is because the distance calculation on the compressed vectors is not as accurate as the same calculation on the original vector embedding.
+All quantization methods in Weaviate use re-scoring to offset the recall loss caused by compression. The distance calculation on compressed vectors is not as accurate as on the original embeddings, so Weaviate fetches the original, uncompressed vectors for the result candidates and recalculates the distances.
 
-When you run a query, Weaviate compares the query limit against a configurable `rescoreLimit` parameter.
+### SQ, RQ, and BQ
 
-The query retrieves compressed objects until the object count reaches whichever limit is greater. Then, Weaviate fetches the original, uncompressed vector embeddings that correspond to the compressed vectors. The uncompressed vectors are used to recalculate the query distance scores.
+With SQ, RQ, and BQ, you can configure the amount of over-fetching using the `rescoreLimit` parameter. When you run a query, Weaviate compares the query `limit` against `rescoreLimit` and retrieves compressed objects up to whichever is greater. It then re-scores those candidates using the uncompressed vectors.
 
-For example, if a query is made with a limit of 10, and a rescore limit of 200, Weaviate fetches 200 objects. After rescoring, the query returns top 10 objects. This process offsets the loss in search quality (recall) that is caused by compression.
+For example, if a query has a limit of 10 and a rescore limit of 200, Weaviate fetches 200 objects, re-scores them, and returns the top 10.
 
 :::note RQ optimization
 With RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to 0) for maximum query performance with minimal impact on search quality.
 :::
+
+### PQ
+
+PQ also performs over-fetching and re-scoring, but it handles this automatically — there is no `rescoreLimit` parameter to configure. During an HNSW search, PQ uses compressed vectors for the initial graph traversal and then re-scores the result candidates with the original uncompressed vectors stored on disk. For more details, see the [PQ rescoring blog post](https://weaviate.io/blog/pq-rescoring).
 
 ## Vector compression with vector indexing
 
@@ -199,9 +203,9 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 ## Rescoring
 
-Quantization inherently involves some loss information due to the reduction in information precision. To mitigate this, Weaviate uses a technique called rescoring, using the uncompressed vectors that are also stored alongside compressed vectors. Rescoring recalculates the distance between the original vectors of the returned candidates from the initial search. This ensures that the most accurate results are returned to the user.
+Quantization inherently involves some loss of information due to the reduction in precision. To mitigate this, all quantization methods (PQ, SQ, RQ, and BQ) use rescoring: Weaviate stores the original uncompressed vectors alongside the compressed ones and recalculates distances from the uncompressed vectors for the result candidates. This ensures that the most accurate results are returned to the user.
 
-In some cases, rescoring also includes over-fetching, whereby additional candidates are fetched to ensure that the top candidates are not omitted in the initial search.
+With SQ, RQ, and BQ, rescoring also includes configurable over-fetching via the `rescoreLimit` parameter, whereby additional candidates are fetched to ensure that the top results are not missed in the initial compressed search. PQ performs over-fetching and rescoring automatically. See [Over-fetching / re-scoring](#over-fetching--re-scoring) for details.
 
 ## Further resources
 
