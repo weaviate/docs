@@ -343,8 +343,8 @@ Page 3:
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
     <FilteredTextBlock
             text={TSCode}
-            startMarker="// START SearchPagination"
-            endMarker="// END SearchPagination"
+            startMarker="// START DiversityRanking"
+            endMarker="// END DiversityRanking"
             language="ts"
         />
     </TabItem>
