@@ -329,7 +329,7 @@ Page 3:
 
 #### `Search` with diversity ranking
 
-`Search` supports adding diversity weighting to search result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of 0 to 1. To use diversity ranking with target vectors, set the single target vector that you want to use in the Query Agent's constructor.
+`Search` supports adding diversity weighting to search result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of 0.0 to 1.0. To use diversity ranking with target vectors, set the single target vector that you want to use in the Query Agent's constructor. Diversity ranking is not yet supported with collections using multi-vector embeddings. Diversity ranking will work with multiple collections, unless they are using **different** embedding models.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
