@@ -9,7 +9,7 @@ import assert from 'assert';
 const client = weaviate.client(new EmbeddedOptions(
   {
     env: {
-      OPENAI_APIKEY: process.env['OPENAI_API_KEY'],
+      OPENAI_API_KEY: process.env['OPENAI_API_KEY'],
     },
   }
 ));

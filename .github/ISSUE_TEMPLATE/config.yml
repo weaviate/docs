@@ -4,6 +4,6 @@ contact_links:
     url: https://forum.weaviate.io
     about: "Community-powered knowledge repository: search, ask questions, give feedback"
 
-  - name: Community Slack
-    url: https://weaviate.io/slack
-    about: Chat with the community about any issues, questions, or feedback
+  - name: Community Support
+    url: mailto:support@weaviate.io
+    about: Contact us directly for private support inquiries

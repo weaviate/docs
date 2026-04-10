@@ -7,8 +7,9 @@ sidebar_position: 51
 
 # xAI Generative AI with Weaviate
 
-:::info Added in `v1.30.0`
-:::
+import Xai from '/_includes/feature-notes/xai.mdx';
+
+<Xai/>
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -42,7 +43,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -53,7 +54,7 @@ You must provide a valid API key to Weaviate for this integration. Go to [xAI](h
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `XAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `XAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

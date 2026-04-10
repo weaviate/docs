@@ -506,12 +506,22 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/nodes"
-to   = "/deploy/configuration/nodes"
+to   = "/deploy/configuration/status#cluster-node-data"
 status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/meta"
-to   = "/deploy/configuration/meta"
+to   = "/deploy/configuration/status#cluster-metadata"
+status = 301
+
+[[redirects]]
+from = "/deploy/configuration/nodes"
+to   = "/deploy/configuration/status#cluster-node-data"
+status = 301
+
+[[redirects]]
+from = "/deploy/configuration/meta"
+to   = "/deploy/configuration/status#cluster-metadata"
 status = 301
 
 [[redirects]]
@@ -1116,4 +1126,9 @@ status = 301
 [[redirects]]
 from = "/integrations/*"
 to   = "https://weaviate.io/product/integrations"
+status = 301
+
+[[redirects]]
+from = "/llms.txt"
+to   = "https://weaviate.io/llms.txt"
 status = 301

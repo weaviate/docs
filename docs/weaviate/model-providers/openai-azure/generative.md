@@ -41,7 +41,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -52,7 +52,7 @@ You must provide a valid Azure OpenAI API key to Weaviate for this integration. 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `AZURE_APIKEY` environment variable that is available to Weaviate.
+- Set the `AZURE_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

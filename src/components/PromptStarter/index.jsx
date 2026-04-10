@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles.module.scss";
 import ContextualMenu from "@site/src/components/ContextualMenu";
-import { getPromptDetails } from "./promptDetails";
+import { getPromptDetails } from "./prompts";
 import { urls } from "../config";
 import { analytics } from "@site/src/utils/analytics";
 

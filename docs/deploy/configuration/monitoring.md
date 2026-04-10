@@ -366,6 +366,7 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `bucket_pause_durations_ms`       | Bucket pause durations                                    | `bucket_dir`                 | `Summary` |
 | `backup_restore_data_transferred` | Total number of bytes transferred during a backup restore | `backend_name`, `class_name` | `Counter` |
 | `backup_store_data_transferred`   | Total number of bytes transferred during a backup store   | `backend_name`, `class_name` | `Counter` |
+| `weaviate_restore_phase_duration_seconds` | Duration of restore phases (prepare, object_storage_download, schema_apply) | `phase` | `Histogram` |
 
 #### Shard management
 
@@ -447,6 +448,7 @@ These metrics track asynchronous replication operations for maintaining data con
 | `async_replication_iteration_count`                      | Count of async replication comparison iterations                         | None                                  | `Counter`   |
 | `async_replication_iteration_failure_count`              | Count of async replication iteration failures                            | None                                  | `Counter`   |
 | `async_replication_iteration_duration_seconds`           | Duration of async replication comparison iterations in seconds           | None                                  | `Histogram` |
+| `async_replication_iteration_running`                    | Number of currently running async replication iterations                 | None                                  | `Gauge`     |
 | `async_replication_hashtree_diff_duration_seconds`       | Duration of async replication hashtree diff computation in seconds       | None                                  | `Histogram` |
 | `async_replication_object_digests_diff_duration_seconds` | Duration of async replication object digests diff computation in seconds | None                                  | `Histogram` |
 | `async_replication_propagation_count`                    | Count of async replication propagation executions                        | None                                  | `Counter`   |
@@ -497,7 +499,7 @@ your uses perfectly:
 
 ## `nodes` API Endpoint
 
-To get collection details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
+To get collection details programmatically, use the [`nodes`](/deploy/configuration/status.md#cluster-node-data) REST endpoint.
 
 import APIOutputs from '/\_includes/rest/node-endpoint-info.mdx';
 

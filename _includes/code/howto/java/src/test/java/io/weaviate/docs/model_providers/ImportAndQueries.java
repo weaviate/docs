@@ -20,7 +20,7 @@ public class ImportAndQueries {
 
     String host = System.getenv("WEAVIATE_HOSTNAME");
     String apiKey = System.getenv("WEAVIATE_API_KEY");
-    String cohereKey = System.getenv("COHERE_APIKEY");
+    String cohereKey = System.getenv("COHERE_API_KEY");
 
     Map<String, String> headers = new HashMap<String, String>() {
       {

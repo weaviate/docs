@@ -136,9 +136,6 @@ import GraphQLGroupBy from '/_includes/code/graphql.get.groupby.mdx';
 
 ### Consistency levels
 
-:::info Added in `v1.19`
-:::
-
 Where replication is enabled, you can specify a `consistency` argument with a `Get` query. The available options are:
 - `ONE`
 - `QUORUM` (Default)
@@ -151,9 +148,6 @@ import GraphQLGetConsistency from '/_includes/code/graphql.get.consistency.mdx';
 <GraphQLGetConsistency/>
 
 ### Multi-tenancy
-
-:::info Added in `v1.20`
-:::
 
 In a multi-tenancy collection, each `Get` query must specify a tenant.
 

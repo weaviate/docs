@@ -128,8 +128,9 @@ Set custom `k1` and `b` values [for a collection](../../manage-collections/inver
 
 ### Keyword search operators
 
-:::info Added in `v1.31`
-:::
+import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
+
+<SearchOperators/>
 
 Search operators define the minimum number of query [tokens](../../search/bm25.md#set-tokenization) that must be present in the object to be returned.
 

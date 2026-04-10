@@ -128,7 +128,7 @@ public class BackupsTest : IAsyncLifetime
             new BackupCreateRequest(
                 Id: backupId,
                 Backend: _backend,
-                ExcludeCollections: ["Article", "Publication"]
+                IncludeCollections: ["Article", "Publication"]
             ),
             cancellationToken
         );

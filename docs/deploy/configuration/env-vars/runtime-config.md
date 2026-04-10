@@ -5,8 +5,9 @@ sidebar_position: 1
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.30`
-:::
+import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
+
+<RuntimeConfig/>
 
 Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 
@@ -56,11 +57,16 @@ The following overrides are currently supported:
 | Runtime override name                            | Environment variable name                    |
 | :----------------------------------------------- | :------------------------------------------- |
 | `async_replication_disabled`                     | `ASYNC_REPLICATION_DISABLED`                 |
+| `async_replication_cluster_max_workers`          | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`      |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
 | `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
+| `objects_ttl_batch_size`                          | `OBJECTS_TTL_BATCH_SIZE`                     |
+| `objects_ttl_concurrency_factor`                  | `OBJECTS_TTL_CONCURRENCY_FACTOR`             |
 | `objects_ttl_delete_schedule`                    | `OBJECTS_TTL_DELETE_SCHEDULE`                |
+| `objects_ttl_pause_duration`                      | `OBJECTS_TTL_PAUSE_DURATION`                 |
+| `objects_ttl_pause_every_no_batches`              | `OBJECTS_TTL_PAUSE_EVERY_NO_BATCHES`         |
 | `operational_mode`                               | `OPERATIONAL_MODE`                           |
 | `query_slow_log_enabled`                         | `QUERY_SLOW_LOG_ENABLED`                     |
 | `query_slow_log_threshold`                       | `QUERY_SLOW_LOG_THRESHOLD`                   |

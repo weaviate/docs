@@ -15,8 +15,9 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACT
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
 
-:::info Added in `v1.33`
-:::
+import RbacGroups from '/_includes/feature-notes/rbac-groups.mdx';
+
+<RbacGroups/>
 
 When using [OIDC](/deploy/configuration/oidc.md) for authentication, you can leverage user groups defined in your identity provider (like Keycloak, Okta, or Auth0) to manage permissions in Weaviate. The user's group memberships are passed to Weaviate in the OIDC token.
 

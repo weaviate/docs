@@ -37,9 +37,9 @@ def import_data():
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"],
-        "X-Cohere-Api-Key": os.environ["COHERE_APIKEY"],
-        "X-Anthropic-Api-Key": os.environ["ANTHROPIC_APIKEY"],
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"],
+        "X-Cohere-Api-Key": os.environ["COHERE_API_KEY"],
+        "X-Anthropic-Api-Key": os.environ["ANTHROPIC_API_KEY"],
     }
 )
 
@@ -668,7 +668,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.google(
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
-        model_id="gemini-1.0-pro"
+        model_id="gemini-2.5-flash"
     )
     # highlight-end
     # Additional parameters not shown
@@ -685,7 +685,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.google(
-        model_id="gemini-pro"
+        model_id="gemini-2.5-flash"
     )
     # highlight-end
     # Additional parameters not shown

@@ -118,9 +118,6 @@ Use the `distance` or `certainty` field to fetch a vector similarity metric betw
 
 #### Distance
 
-:::info Added in `v1.14.0`
-:::
-
 `Distance` is the raw distance determined as part of the vector search, displayed in the same unit as the distance metric used.
 
 See the full overview of [distance metrics and the expected distance ranges](../../config-refs/distances.md#available-distance-metrics).

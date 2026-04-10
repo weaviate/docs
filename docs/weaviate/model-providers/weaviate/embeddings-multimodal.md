@@ -6,8 +6,9 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
 ---
 
-:::info Added in `1.35.0`
-:::
+import WeaviateMultimodal from '/_includes/feature-notes/weaviate-multimodal.mdx';
+
+<WeaviateMultimodal/>
 
 # Weaviate Embeddings - Multimodal Embeddings
 

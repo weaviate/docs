@@ -37,12 +37,12 @@ Performance and cost are also important considerations. See [Cost, recall, and s
 
 This table shows the compression algorithms that are available for each index type.
 
-| Compression type | HNSW index | Flat index | Dynamic index |
-| :--------------- | :--------- | :--------- | :------------ |
-| PQ               | Yes        | No         | Yes           |
-| SQ               | Yes        | No         | Yes           |
-| RQ               | Yes        | Yes         | Yes           |
-| BQ               | Yes        | Yes        | Yes           |
+| Compression type | HNSW index | Flat index | Dynamic index | HFresh index |
+| :--------------- | :--------- | :--------- | :------------ | :----------- |
+| PQ               | Yes        | No         | Yes           | No           |
+| SQ               | Yes        | No         | Yes           | No           |
+| RQ               | Yes        | Yes        | Yes           | Yes          |
+| BQ               | Yes        | Yes        | Yes           | No           |
 
 The [dynamic index](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) is new in v1.25. This type of index is a [flat index](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
 
@@ -113,7 +113,6 @@ Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/c
 - BQ, SQ, and RQ have to be enabled when you create the collection.
 
 - PQ and SQ both require training data before they begin to compress data.
-
   - PQ's training step defines centroids for each segment.
   - SQ's training step determines the minimum and maximum values for bucket boundaries.
   - PQ and SQ both begin to compress data after you have imported a large enough training set and the training step is complete.

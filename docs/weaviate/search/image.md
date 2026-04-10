@@ -2,6 +2,7 @@
 title: Image search
 sidebar_position: 25
 image: og/docs/howto.jpg
+description: "Image search using nearImage with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'image']
 ---
 
@@ -28,10 +29,7 @@ To use images as search inputs, configure an image vectorizer integration for yo
 
 </details>
 
-<!-- ## Named vectors
-
-:::info Added in `v1.24`
-::: -->
+<!-- ## Named vectors -->
 
 <!-- Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector. -->
 

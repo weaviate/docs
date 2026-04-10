@@ -4,8 +4,9 @@ image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
 
-:::info Added in `v1.30`
-:::
+import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
+
+<RuntimeConfig/>
 
 Weaviate supports runtime configuration management, allowing certain environment variables to be updated and read by Weaviate on the fly without the need for restarts. This feature helps you adapt settings in real time and fine-tune your instance based on evolving needs.
 

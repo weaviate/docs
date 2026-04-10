@@ -13,10 +13,6 @@ You can [run Weaviate with default settings from a command line](#run-weaviate-w
 
 ## Run Weaviate with default settings
 
-:::info Added in v1.24.1
-
-:::
-
 To run Weaviate with Docker using default settings, run this command from from your shell:
 
 ```bash
@@ -28,6 +24,10 @@ The command sets the following default [environment variables](#environment-vari
 - `PERSISTENCE_DATA_PATH` defaults to `./data`
 - `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED` defaults to `true`.
 - `QUERY_DEFAULTS_LIMIT` defaults to `10`.
+
+import TelemetryNotice from '/_includes/telemetry-notice.mdx';
+
+<TelemetryNotice/>
 
 ## Customize your Weaviate configuration
 

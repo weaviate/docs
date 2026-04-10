@@ -6,6 +6,8 @@ image: og/docs/configuration.jpg
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Rq8bit from '/_includes/feature-notes/rq-8bit.mdx';
+import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
@@ -25,12 +27,7 @@ import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
 ## 8-bit RQ
 
-:::info Added in `v1.32` and `v1.35`
-
-**8-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.32`**.<br/>
-**8-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
-
-:::
+<Rq8bit/>
 
 [8-bit RQ](../../concepts/vector-quantization.md#8-bit-rq) provides up-to 4x compression while maintaining 98-99% recall in internal testing. It is generally recommended for most use cases as the default quantization techniques.
 
@@ -146,12 +143,7 @@ RQ can also be enabled for an existing collection by updating the collection def
 
 ## 1-bit RQ
 
-:::info Added in `v1.33` and `v1.35`
-
-**1-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.33`**.<br/>
-**1-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.35`**.
-
-:::
+<Rq1bit/>
 
 [1-bit RQ](../../concepts/vector-quantization.md#1-bit-rq) is an quantization technique that provides close to 32x compression as dimensionality increases. 1-bit RQ serves as a more robust and accurate alternative to [BQ](./bq-compression.md) with only a slight performance trade-off. While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned [PQ](./pq-compression.md).
 

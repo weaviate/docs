@@ -66,7 +66,7 @@ Note that API key and OIDC authentication can be both enabled at the same time.
 The way to configure authentication differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
 
 :::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/cloud/manage-clusters/connect.mdx).
+For Weaviate Cloud (WCD) instances, authentication is pre-configured with API key access. You can [authenticate against Weaviate](/weaviate/connections/connect-cloud.mdx) [with API keys](/cloud/manage-clusters/connect.mdx).
 :::
 
 ## API Key Authentication
@@ -166,11 +166,9 @@ For enhanced security in production environments, you can store API keys in Kube
 
 OIDC authentication requires the resource (Weaviate) to validate tokens issued by an identity provider. The identity provider authenticates the user and issues tokens, which are then validated by Weaviate.
 
-In an example setup, a Weaviate instance acts as the resource, Weaviate Cloud (WCD) acts as the identity provider, and the Weaviate client acts on behalf of the user.
-
 Any "OpenID Connect" compatible token issuer that implements OpenID Connect Discovery is compatible with Weaviate.
 
-This document discusses how to configure Weaviate as the resource.
+This document discusses how to configure Weaviate as the resource. For details on OIDC flows, token handling, and configuring a token issuer, see the [OIDC configuration guide](./oidc.md).
 
 <details>
   <summary>
@@ -295,30 +293,6 @@ authentication:
 
     # groups_claim: ''
 ```
-
-### Note: Configuring the OIDC token issuer
-
-import WCDOIDCWarning from '/\_includes/wcd-oidc.mdx';
-
-<WCDOIDCWarning/>
-
-Configuring the OIDC token issuer is outside the scope of this document, but here are a few options as a starting point:
-
-- For simple use-cases such as for a single user, you can use Weaviate Cloud (WCD) as the OIDC token issuer. To do so:
-
-  - Make sure you have a WCD account (you can [sign up here](/go/console?utm_content=deploy)).
-  - In the Docker Compose file (e.g. `docker-compose.yml`), specify:
-    - `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` as the issuer (in `AUTHENTICATION_OIDC_ISSUER`),
-    - `wcs` as the client id (in `AUTHENTICATION_OIDC_CLIENT_ID`), and
-    - enable the adminlist (`AUTHORIZATION_ADMINLIST_ENABLED: 'true'`) and add your WCD account email as the user (in `AUTHORIZATION_ADMINLIST_USERS`) .
-    - `email` as the username claim (in `AUTHENTICATION_OIDC_USERNAME_CLAIM`).
-
-- If you need a more customizable setup you can use commercial OIDC providers like [Okta](https://www.okta.com/).
-- As another alternative, you can run your own OIDC token issuer server, which may be the most complex but also configurable solution. Popular open-source solutions include Java-based [Keycloak](https://www.keycloak.org/) and Golang-based [dex](https://github.com/dexidp/dex).
-
-:::info
-By default, Weaviate validates that the token includes a specified client id in the audience claim. If your token issuer does not support this feature, you can turn it off as outlined in the configuration section below.
-:::
 
 ## Anonymous Access
 

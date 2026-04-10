@@ -34,7 +34,7 @@ public class QuickstartQueryNearTextRAG {
           // Generative configuration (RAG task)
           g -> g.groupedTask("Write a tweet with emojis about this movie.",
               c -> c.generativeProvider(GenerativeProvider
-                  .anthropic(o -> o.model("claude-3-5-haiku-latest"))))); // The model to use
+                  .anthropic(o -> o.model("claude-haiku-4-5"))))); // The model to use
       // highlight-end
 
       // Inspect the results

@@ -30,3 +30,7 @@ curl \
 # START StatusRestoreBackup
 curl http://localhost:8080/v1/backups/filesystem/my-very-first-backup/restore
 # END StatusRestoreBackup
+
+# START CancelRestore
+curl -X DELETE http://localhost:8080/v1/backups/filesystem/my-very-first-backup/restore
+# END CancelRestore

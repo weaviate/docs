@@ -13,7 +13,7 @@ client = weaviate.Client(
     "https://edu-demo.weaviate.network",  # Replace with your Weaviate URL
     auth_client_secret=weaviate.auth.AuthApiKey("learn-weaviate"),  # If authentication is on. Replace with your Weaviate instance API key
     additional_headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"]  # Replace with your OPENAI API key
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]  # Replace with your OPENAI API key
     }
 )
 

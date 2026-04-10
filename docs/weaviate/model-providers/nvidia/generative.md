@@ -7,9 +7,6 @@ image: og/docs/integrations/provider_integrations_nvidia.jpg
 
 # NVIDIA Generative AI with Weaviate
 
-:::info Added in `v1.28.5`, `v1.29.0`
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
@@ -42,7 +39,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -53,7 +50,7 @@ You must provide a valid API key to Weaviate for this integration. Go to [NVIDIA
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `NVIDIA_APIKEY` environment variable that is available to Weaviate.
+- Set the `NVIDIA_API_KEY` environment variable that is available to Weaviate.
 - Provide the token at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

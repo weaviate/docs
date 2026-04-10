@@ -183,7 +183,12 @@ public class ConnectionTest
         // Best practice: store your credentials in environment variables
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_LOCAL_API_KEY");
 
-        WeaviateClient client = await Connect.Local(credentials: Auth.ApiKey(weaviateApiKey));
+        WeaviateClient client = await Connect.Local(
+            hostname: "127.0.0.1",
+            restPort: 8099,
+            grpcPort: 50052,
+            credentials: Auth.ApiKey(weaviateApiKey)
+        );
 
         var isReady = await client.IsReady();
         Console.WriteLine(isReady);

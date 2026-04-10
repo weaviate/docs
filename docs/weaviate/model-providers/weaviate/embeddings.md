@@ -6,9 +6,6 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
 ---
 
-:::info Added in `1.27.10`, `1.28.3`, `1.29.0`
-:::
-
 # Weaviate Embeddings - Text Embeddings
 
 import Tabs from "@theme/Tabs";

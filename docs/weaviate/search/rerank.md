@@ -2,6 +2,7 @@
 title: Reranking
 sidebar_position: 75
 image: og/docs/howto.jpg
+description: "Rerank search results for improved relevance with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'rank']
 ---
 
@@ -36,9 +37,6 @@ import QueryAgentTip from '/_includes/query-agent-tip.mdx';
 <QueryAgentTip/>
 
 ## Named vectors
-
-:::info Added in `v1.24`
-:::
 
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 

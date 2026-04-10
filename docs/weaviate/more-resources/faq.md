@@ -636,6 +636,17 @@ If you need resources from the previous version of Weaviate Academy, check out t
 
 </details>
 
+#### Q: What happened to the Weaviate Community Slack?
+
+<details>
+  <summary>Answer</summary>
+
+> The Weaviate Community Slack has been decommissioned. We've moved community discussions to the [Weaviate Community Forum](https://forum.weaviate.io/), which offers better long-term discoverability — conversations are indexed and searchable, so valuable answers don't get lost over time.
+>
+> Join us at [forum.weaviate.io](https://forum.weaviate.io/) to ask questions, share ideas, and connect with the community. For private support inquiries, you can reach us at [support@weaviate.io](mailto:support@weaviate.io).
+
+</details>
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';

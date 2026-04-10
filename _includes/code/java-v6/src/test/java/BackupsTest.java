@@ -4,7 +4,10 @@ import io.weaviate.client6.v1.api.backup.Backup;
 import io.weaviate.client6.v1.api.backup.BackupStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,6 +16,7 @@ import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BackupsTest {
 
   private static WeaviateClient client;
@@ -45,6 +49,7 @@ class BackupsTest {
   }
 
   @Test
+  @Order(1)
   void testBackupAndRestoreLifecycle() throws IOException, TimeoutException {
     setupCollections();
     String backupId = "my-very-first-backup";
@@ -105,7 +110,8 @@ class BackupsTest {
   }
 
   @Test
-  void testCancelBackup() throws IOException, TimeoutException {
+  @Order(2)
+  void testCancelBackup() throws IOException, TimeoutException, InterruptedException {
     setupCollections();
     String backupId = "some-unwanted-backup";
     String backend = "filesystem";
@@ -121,17 +127,61 @@ class BackupsTest {
     backupToCancel.cancel(client);
     // END CancelBackup
 
-    // Wait for the cancellation to be processed
-    backupToCancel.waitForStatus(client, BackupStatus.CANCELED,
-        w -> w.interval(500));
+    // Poll until the backup reaches a terminal state.
+    // The cancel is async, so it may still be STARTED briefly after the call.
+    BackupStatus status = BackupStatus.STARTED;
+    for (int i = 0; i < 20; i++) {
+      var s = client.backup.getCreateStatus(backupId, backend);
+      if (s.isPresent()) {
+        status = s.get().status();
+        if (status != BackupStatus.STARTED) break;
+      }
+      Thread.sleep(500);
+    }
 
-    // Verify status
-    var finalStatus = client.backup.getCreateStatus(backupId, backend);
-    assertThat(finalStatus).isPresent();
-    assertThat(finalStatus.get().status()).isEqualTo(BackupStatus.CANCELED);
+    // The backup may complete before the cancel arrives,
+    // so accept either CANCELED or SUCCESS.
+    assertThat(status).isIn(BackupStatus.CANCELED, BackupStatus.SUCCESS);
 
     // Clean up
     client.collections.delete("Article");
     client.collections.delete("Publication");
+  }
+
+  @Test
+  @Order(3)
+  void testCancelRestore() throws IOException, TimeoutException, InterruptedException {
+    setupCollections();
+    String backupId = "backup-to-cancel-restore";
+    String backend = "filesystem";
+
+    // Create a backup first
+    client.backup.create(backupId, backend,
+        backup -> backup.includeCollections("Article", "Publication"))
+        .waitForCompletion(client);
+
+    // Delete collections before restoring
+    client.collections.deleteAll();
+
+    // Start a restore and cancel it
+    var restoreToCancel = client.backup.restore(backupId, backend);
+
+    // START CancelRestore
+    client.backup.cancelRestore(backupId, backend);
+    // END CancelRestore
+
+    // Poll until the restore reaches a terminal state
+    BackupStatus status = BackupStatus.STARTED;
+    for (int i = 0; i < 20; i++) {
+      var s = client.backup.getRestoreStatus(backupId, backend);
+      if (s.isPresent()) {
+        status = s.get().status();
+        if (status != BackupStatus.STARTED && status != BackupStatus.TRANSFERRING) break;
+      }
+      Thread.sleep(500);
+    }
+
+    // The restore may complete before the cancel arrives
+    assertThat(status).isIn(BackupStatus.CANCELED, BackupStatus.SUCCESS);
   }
 }

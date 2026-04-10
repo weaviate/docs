@@ -169,9 +169,6 @@ If using your own model, we recommend explicitly setting the vectorizer as `none
 
 ### Named vectors
 
-:::info Added in `v1.24`
-:::
-
 A collections can be configured to allow each object to be represented by more than one vector embedding.
 
 Each such vector works as its distinct vector space that is independent of each other, referred to as a "named vector".
@@ -206,9 +203,6 @@ As a result, a `nearText` query is only available for collections where a vector
 A `nearImage` or `nearVideo` query works similarly to a `nearText` query, but with an image or video input instead of text.
 
 ## Multi-target vector search
-
-:::info Added in `v1.26`
-:::
 
 In a multi-target vector search, Weaviate performs multiple, concurrent, single-target vector searches.
 

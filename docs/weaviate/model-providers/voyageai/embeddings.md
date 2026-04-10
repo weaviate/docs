@@ -43,7 +43,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -54,7 +54,7 @@ You must provide a valid Voyage AI API key to Weaviate for this integration. Go 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `VOYAGEAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -367,7 +367,8 @@ The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https:
     Model support history
   </summary>
 
-- Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
+- `v1.36`:
+    - Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
 - Added `voyage-3.5`, `voyage-3.5-lite`, `voyage-context-3`
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
     - Added `voyage-3`, `voyage-3-lite`

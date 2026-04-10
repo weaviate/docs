@@ -108,9 +108,12 @@ class ManageObjectsImportTest {
     client.collections.delete("MyCollection");
   }
 
-  // START ServerSideBatchImportExample
-  // Coming soon
-  // END ServerSideBatchImportExample
+  //@Test
+  void testServerSideBatchImport() throws IOException {
+    // START ServerSideBatchImportExample
+    // Coming soon
+    // END ServerSideBatchImportExample
+  }
 
   @Test
   void testBatchImportWithID() throws IOException {

@@ -6,6 +6,8 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---
 
+import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
+
 
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
@@ -284,11 +286,6 @@ In this algorithm, each object is scored according to its position in the result
 
 #### Relative score fusion
 
-:::info Added in `v1.20`
-:::
-:::info Relative Score Fusion is the default in `v1.24` and higher.
-:::
-
 In `relativeScoreFusion` the vector search and keyword search scores are scaled between `0` and `1`. The highest raw score becomes `1` in the scaled scores. The lowest value is assigned `0`. The remaining values are ranked between `0` and `1`. The total score is a scaled sum of the normalized vector similarity and normalized BM25 scores.
 
 <details>
@@ -413,9 +410,6 @@ import GraphQLFiltersHybridVector from '/_includes/code/graphql.filters.hybrid.v
 
 ### Hybrid with a conditional filter
 
-:::info Added in `v1.18.0`
-:::
-
 A [conditional (`where`) filter](../graphql/filters.md) can be used with `hybrid`.
 
 import GraphQLFiltersHybridFilterExample from '/_includes/code/graphql.filters.hybrid.filter.example.mdx';
@@ -425,9 +419,6 @@ import GraphQLFiltersHybridFilterExample from '/_includes/code/graphql.filters.h
 
 ### Specify object properties for BM25 search
 
-:::info Added in `v1.19`
-:::
-
 A `hybrid` operator can accept an array of strings to limit the set of properties for the BM25 component of the search. If unspecified, all text properties will be searched.
 
 import GraphQLFiltersHybridProperties from '/_includes/code/graphql.filters.hybrid.properties.mdx';
@@ -436,17 +427,13 @@ import GraphQLFiltersHybridProperties from '/_includes/code/graphql.filters.hybr
 
 ### Oversearch with `relativeScoreFusion`
 
-:::info Added in `v1.21`
-:::
-
 When `relativeScoreFusion` is used as the `fusionType` with a small search `limit`, a result set can be very sensitive to the limit parameter due to the normalization of the scores.
 
 To mitigate this effect, Weaviate automatically performs a search with a higher limit (100) and then trims the results down to the requested limit.
 
 ### BM25 search operator
 
-:::info Added in `v1.31`
-:::
+<SearchOperators/>
 
 Use `bm25SearchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match in the keyword (bm25) search portion of the hybrid search. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
 
@@ -514,9 +501,6 @@ import GraphQLFiltersBM25 from '/_includes/code/graphql.filters.bm25.mdx';
 
 ### BM25 with a conditional filter
 
-:::info Added in `v1.18`
-:::
-
 A [conditional (`where`) filter](../graphql/filters.md) can be used with `bm25`.
 
 import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm25.filter.example.mdx';
@@ -551,8 +535,7 @@ import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm2
 
 ### Search operator
 
-:::info Added in `v1.31`
-:::
+<SearchOperators/>
 
 Use `searchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
 
