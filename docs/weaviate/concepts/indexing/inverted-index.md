@@ -214,6 +214,47 @@ Weaviate provides several tokenization methods optimized for different data type
 
 See the [tokenization configuration reference](../../config-refs/collections.mdx#tokenization) for detailed specifications and behavior examples.
 
+### Accent folding
+
+import TokenizerPreview from '/_includes/feature-notes/tokenizer-v137-preview.mdx';
+
+<TokenizerPreview/>
+
+Text properties can opt in to **accent folding** via the `textAnalyzer` block. When `asciiFold` is set to `true`, the analyzer normalizes accented Latin characters — and any other character carrying combining marks or diacritics — to their ASCII equivalents during both indexing and querying. A document containing "Café Crème" becomes searchable as "cafe creme", and vice versa. The same normalization is applied to filters (`Equal`, `Like`), so what you can search for is exactly what you can filter on.
+
+```json
+{
+  "name": "description",
+  "dataType": ["text"],
+  "tokenization": "word",
+  "textAnalyzer": { "asciiFold": true }
+}
+```
+
+The implementation uses Unicode NFD decomposition (covering acute, grave, circumflex, tilde, dieresis, caron, cedilla, ogonek, macron, breve, ring, and more) plus an explicit replacement table for single-codepoint letters that do not decompose, such as `ł`, `æ`, `ø`, `ð`, `þ`, `đ`, and `ß`. Together this covers 20+ Latin-script languages, including French, Portuguese, Spanish, German, Polish, Czech, Croatian, and Icelandic.
+
+Accent folding composes with every tokenization method: `word`, `lowercase`, `whitespace`, `field`, and `trigram`.
+
+#### Per-character exceptions
+
+If you want most accents folded but need to preserve specific characters — for example, an `é` that distinguishes two product names — use `asciiFoldIgnore`:
+
+```json
+{
+  "name": "name",
+  "dataType": ["text"],
+  "tokenization": "word",
+  "textAnalyzer": {
+    "asciiFold": true,
+    "asciiFoldIgnore": ["é", "Ł"]
+  }
+}
+```
+
+Because `asciiFoldIgnore` changes which tokens are written to disk, it is **immutable** after the property is created. Schema updates that change the ignore list are rejected. To change it, create a new property and reindex.
+
+See the [accent folding tutorial](../../tutorials/tokenization.md#example-4-accent-folding) for a worked example and the [textAnalyzer configuration reference](../../config-refs/indexing/inverted-index.mdx#textanalyzer) for all options.
+
 ### Impact on search and filtering
 
 #### Filters
@@ -248,6 +289,48 @@ After tokenization, stop words in queries behave as if they're not present for m
 You can [configure custom stop words](../../config-refs/indexing/inverted-index.mdx#stopwords) in your collection definition.
 
 **Note**: With `field` tokenization, stop words don't apply since the entire field is one token.
+
+#### Custom stopword presets
+
+<TokenizerPreview/>
+
+Beyond the built-in `en` and `none` presets, you can declare custom stopword presets on the collection's `invertedIndexConfig.stopwordPresets`. Each preset has a name and either a flat word list or a base preset extended with `additions` and `removals`.
+
+```json
+{
+  "invertedIndexConfig": {
+    "stopwordPresets": {
+      "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"],
+      "en-keep-the": { "preset": "en", "removals": ["the"] }
+    }
+  }
+}
+```
+
+#### Per-property stopword overrides
+
+Each text property can override the collection-level stopword behavior via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections where different properties contain text in different languages.
+
+```json
+"properties": [
+  {
+    "name": "name_en",
+    "dataType": ["text"],
+    "tokenization": "word",
+    "textAnalyzer": { "stopwordPreset": "en" }
+  },
+  {
+    "name": "name_fr",
+    "dataType": ["text"],
+    "tokenization": "word",
+    "textAnalyzer": { "stopwordPreset": "fr" }
+  }
+]
+```
+
+Stopwords are still **indexed** — they are only filtered at query time. Changing the stopword configuration does **not** require reindexing your data.
+
+See the [custom stopwords tutorial](../../tutorials/tokenization.md#example-5-custom-and-per-property-stopword-presets) for a worked example and the [stopwordPresets configuration reference](../../config-refs/indexing/inverted-index.mdx#stopwordpresets) for all options.
 
 ### Choosing a tokenization method
 

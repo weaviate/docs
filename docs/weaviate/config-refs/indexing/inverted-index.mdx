@@ -176,6 +176,72 @@ Stopwords are only removed when [tokenization](../collections.mdx#tokenization) 
 
 :::
 
+#### `stopwordPresets`
+
+import TokenizerPreview from '/_includes/feature-notes/tokenizer-v137-preview.mdx';
+
+<TokenizerPreview/>
+
+Part of `invertedIndexConfig`. Defines named stopword presets at the collection level. Each preset can be a flat list of words, or extend an existing preset with `additions` and `removals`. Properties can then reference a preset by name via [`textAnalyzer.stopwordPreset`](#textanalyzer).
+
+<details>
+  <summary>Example <code>stopwordPresets</code> configuration - JSON object</summary>
+
+```json
+"invertedIndexConfig": {
+  "stopwordPresets": {
+    "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"],
+    "en-keep-the": { "preset": "en", "removals": ["the"] }
+  }
+}
+```
+
+</details>
+
+When defining a preset as an object (instead of a flat list), the following fields are available:
+
+| Parameter   | Type     | Details                                                                 |
+| :---------- | :------- | :---------------------------------------------------------------------- |
+| `preset`    | string   | Name of a base preset to extend (`"en"`, `"none"`, or another custom preset) |
+| `additions` | string[] | Words to add on top of the base preset                                  |
+| `removals`  | string[] | Words to remove from the base preset                                    |
+
+The existing [`stopwords`](#stopwords) configuration remains as the default for properties that do not specify a `textAnalyzer.stopwordPreset` override.
+
+#### `textAnalyzer` {#textanalyzer}
+
+<TokenizerPreview/>
+
+Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties, including accent folding and per-property stopword overrides.
+
+| Parameter        | Type     | Default | Details                                                                                                          |
+| :--------------- | :------- | :------ | :--------------------------------------------------------------------------------------------------------------- |
+| `asciiFold`      | boolean  | `false` | Normalizes accented Latin characters to ASCII equivalents during indexing and querying. Uses Unicode NFD decomposition. |
+| `asciiFoldIgnore`| string[] | `[]`    | Characters exempt from ASCII folding. **Immutable** after property creation.                                     |
+| `stopwordPreset` | string   | (none)  | Name of a collection-level stopword preset to use for this property, overriding the default `stopwords` config.  |
+
+<details>
+  <summary>Example <code>textAnalyzer</code> configuration - JSON object</summary>
+
+```json
+{
+  "name": "description",
+  "dataType": ["text"],
+  "tokenization": "word",
+  "textAnalyzer": {
+    "asciiFold": true,
+    "asciiFoldIgnore": ["é"],
+    "stopwordPreset": "fr"
+  }
+}
+```
+
+</details>
+
+:::note
+`asciiFoldIgnore` changes which tokens are written to disk. It cannot be modified after the property is created — schema updates that change the ignore list are rejected. To change it, create a new property and reindex.
+:::
+
 #### `indexTimestamps`
 
 Part of `invertedIndexConfig`. To perform queries that are filtered by timestamps, configure the target collection to maintain an inverted index based on the objects' internal timestamps. Currently the timestamps include `creationTimeUnix` and `lastUpdateTimeUnix`.
@@ -230,6 +296,61 @@ We are working on a re-indexing API to allow you to re-index the data after addi
 For `text` properties, Weaviate first **[tokenizes](../collections.mdx#tokenization)** the text before creating inverted index entries. Tokenization is the process of breaking text into individual tokens (words, phrases, or characters) that can be indexed and searched.
 
 See the related [concepts page](../../concepts/indexing/inverted-index.md#tokenization) for more details.
+
+## Tokenize endpoint
+
+<TokenizerPreview/>
+
+Two REST endpoints let you test tokenization without modifying your schema.
+
+### Freeform tokenization
+
+`POST /v1/tokenize` tokenizes arbitrary text with an explicit tokenizer and analyzer config.
+
+**Request body:**
+
+| Parameter        | Type    | Required | Details                                                                                           |
+| :--------------- | :------ | :------- | :------------------------------------------------------------------------------------------------ |
+| `text`           | string  | yes      | The text to tokenize                                                                              |
+| `tokenization`   | string  | yes      | Tokenization method (`word`, `lowercase`, `whitespace`, `field`, `gse`, `trigram`, `kagome_ja`, `kagome_kr`) |
+| `analyzerConfig` | object  | no       | Analyzer settings: `asciiFold` (boolean), `asciiFoldIgnore` (string[]), `stopwordPreset` (string) |
+
+**Example:**
+
+```bash
+curl -X POST http://localhost:8080/v1/tokenize -d '{
+  "text": "The organic café crème blend",
+  "tokenization": "word",
+  "analyzerConfig": { "asciiFold": true, "stopwordPreset": "en" }
+}'
+```
+
+**Response:**
+
+```json
+{
+  "tokenization": "word",
+  "indexed": ["the", "organic", "cafe", "creme", "blend"],
+  "query":   ["organic", "cafe", "creme", "blend"]
+}
+```
+
+- `indexed`: tokens as stored in the inverted index
+- `query`: tokens after stopword filtering (what BM25 scores at search time)
+
+### Property-based tokenization
+
+`POST /v1/schema/{className}/properties/{propertyName}/tokenize` resolves the full analyzer config from an existing property.
+
+**Request body:**
+
+| Parameter | Type   | Required | Details            |
+| :-------- | :----- | :------- | :----------------- |
+| `text`    | string | yes      | The text to tokenize |
+
+The response format is the same as freeform tokenization. Class and property names are case-insensitive, and collection aliases are resolved automatically.
+
+See the [tokenization tutorial](../../tutorials/tokenization.md#example-6-inspecting-tokenization-with-the-tokenize-endpoint) for worked examples.
 
 ## Further resources
 
