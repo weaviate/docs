@@ -328,7 +328,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
 | `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
-| `incremental_backup_base_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.36.0`. |
+| `incremental_base_backup_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.37`. |
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -506,7 +506,7 @@ First, create a regular backup that will serve as the base:
 
 #### Create an incremental backup
 
-To create an incremental backup, pass the `incremental_backup_base_id` parameter with the ID of the base backup:
+To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup:
 
 <FilteredTextBlock
   text={PyCode}

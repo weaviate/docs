@@ -146,7 +146,7 @@ result = client.backup.create(
     include_collections=["Article", "Publication"],
     wait_for_completion=True,
     # highlight-start
-    incremental_backup_base_id="base-backup",
+    incremental_base_backup_id="base-backup",
     # highlight-end
 )
 
@@ -163,7 +163,7 @@ result = client.backup.create(
     include_collections=["Article", "Publication"],
     wait_for_completion=True,
     # highlight-start
-    incremental_backup_base_id="incremental-backup-1",
+    incremental_base_backup_id="incremental-backup-1",
     # highlight-end
 )
 
