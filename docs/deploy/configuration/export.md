@@ -1,6 +1,6 @@
 ---
 title: Collection export
-description: Export Weaviate collections to cloud storage in Parquet format.
+description: Export Weaviate collections to cloud or local storage in Parquet format.
 image: og/docs/configuration.jpg
 ---
 
@@ -13,7 +13,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure.export.py';
 This is a preview feature. The API may change in future releases.
 :::
 
-Export collections from Weaviate to cloud storage in [Apache Parquet](https://parquet.apache.org/) format. Exports are point-in-time snapshots, writes that occur during an export do not affect the exported data. Only one export at a time per cluster node is possible.
+Export collections from Weaviate to cloud storage in [Apache Parquet](https://parquet.apache.org/) format. Exports are point-in-time snapshots, writes that occur during an export do not affect the exported data. Only one export at a time per node is possible.
 
 The export feature is **disabled by default**. To use it:
 
@@ -29,7 +29,9 @@ Set these [environment variables](/docs/deploy/configuration/env-vars/index.md) 
 | :---------------------- | :--------------- | :------------------------------------------------------------- |
 | `EXPORT_ENABLED`        | `false`          | Enable the export API.                                         |
 | `EXPORT_DEFAULT_BUCKET` | (empty)          | Storage bucket name. Required for S3, GCS, and Azure backends. |
-| `EXPORT_PARALLELISM`    | `0` (GOMAXPROCS) | Number of concurrent scan workers. Can be modified at runtime. |
+| `EXPORT_PARALLELISM`    | `0` (GOMAXPROCS) | Number of concurrent scan workers.                             |
+
+All three variables are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate.
 
 ## Backend configuration
 
