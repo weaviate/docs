@@ -231,7 +231,7 @@ Text properties can opt in to **accent folding** via the `textAnalyzer` block. W
 }
 ```
 
-The implementation uses Unicode NFD decomposition (covering acute, grave, circumflex, tilde, dieresis, caron, cedilla, ogonek, macron, breve, ring, and more) plus an explicit replacement table for single-codepoint letters that do not decompose, such as `ł`, `æ`, `ø`, `ð`, `þ`, `đ`, and `ß`. Together this covers 20+ Latin-script languages, including French, Portuguese, Spanish, German, Polish, Czech, Croatian, and Icelandic.
+The implementation uses [Unicode NFD decomposition](https://unicode.org/reports/tr15/) (covering acute, grave, circumflex, tilde, dieresis, caron, cedilla, ogonek, macron, breve, ring, and more) plus an explicit replacement table for single-codepoint letters that do not decompose, such as `ł`, `æ`, `ø`, `ð`, `þ`, `đ`, and `ß`. Together this covers 20+ Latin-script languages, including French, Portuguese, Spanish, German, Polish, Czech, Croatian, and Icelandic.
 
 Accent folding composes with every tokenization method: `word`, `lowercase`, `whitespace`, `field`, and `trigram`.
 

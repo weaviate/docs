@@ -5,13 +5,13 @@ title: Configure tokenization for keyword search
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCreateCollection from '!!raw-loader!/_includes/code/tutorials/tokenization/310_create_collection.py';
-import PyAddObjects from '!!raw-loader!/_includes/code/tutorials/tokenization/315_add_objects.py';
-import PyFilters from '!!raw-loader!/_includes/code/tutorials/tokenization/320_filters.py';
-import PySearches from '!!raw-loader!/_includes/code/tutorials/tokenization/400_searches.py';
-import PyAccentFolding from '!!raw-loader!/_includes/code/tutorials/tokenization/330_accent_folding.py';
-import PyCustomStopwords from '!!raw-loader!/_includes/code/tutorials/tokenization/340_custom_stopwords.py';
-import PyTokenizeEndpoint from '!!raw-loader!/_includes/code/tutorials/tokenization/350_tokenize_endpoint.py';
+import PyCreateCollection from '!!raw-loader!/_includes/code/tutorials/tokenization/create_collection.py';
+import PyAddObjects from '!!raw-loader!/_includes/code/tutorials/tokenization/add_objects.py';
+import PyFilters from '!!raw-loader!/_includes/code/tutorials/tokenization/filters.py';
+import PySearches from '!!raw-loader!/_includes/code/tutorials/tokenization/searches.py';
+import PyAccentFolding from '!!raw-loader!/_includes/code/tutorials/tokenization/accent_folding.py';
+import PyCustomStopwords from '!!raw-loader!/_includes/code/tutorials/tokenization/custom_stopwords.py';
+import PyTokenizeEndpoint from '!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.py';
 import TokenizerPreview from '/_includes/feature-notes/tokenizer-v137-preview.mdx';
 
 ## What you'll learn
