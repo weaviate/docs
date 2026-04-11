@@ -438,6 +438,27 @@ Read more about index types & compression in:
 
 </details>
 
+## Drop a vector index
+
+import V137Preview from '/_includes/feature-notes/drop-vector-index.mdx';
+
+<V137Preview/>
+
+Drop (delete) a vector index from a collection. This is a destructive, irreversible operation — the index data is removed from disk and cannot be rebuilt on the same collection. The vector data itself is preserved, but vector searches on the dropped index will no longer work.
+
+Specify the named vector whose index to drop:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DropVectorIndex"
+      endMarker="# END DropVectorIndex"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
 ## Property-level settings
 
 Configure individual properties in a collection. Each property can have it's own configuration. Here are some common settings:

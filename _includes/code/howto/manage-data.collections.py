@@ -1105,4 +1105,15 @@ print(article_shards)
 # END UpdateCollectionShards
 
 
+# START DropVectorIndex
+collection = client.collections.get("Article")
+
+# Drop the vector index for a named vector
+# This is a destructive operation — the index is removed from disk
+result = collection.config.delete_vector_index(vector_name="title")
+
+print(result)  # True if successful
+# END DropVectorIndex
+
+
 client.close()
