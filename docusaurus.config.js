@@ -51,11 +51,13 @@ const config = {
       {
         label: "",
         route: "/weaviate/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
+          // showSidebar: true,
         },
       },
     ],
