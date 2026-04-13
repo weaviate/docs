@@ -368,8 +368,6 @@ import V137Preview from '/_includes/feature-notes/drop-vector-index.mdx';
 
 You can drop (delete) a vector index from a collection. This is a destructive, irreversible operation — the index data is removed from disk and cannot be rebuilt on the same collection. The vector data itself is preserved, but vector searches on the dropped index will no longer work.
 
-**REST endpoint:** `DELETE /v1/schema/{className}/vectors/{vectorName}/index`
-
 See [How-to: Drop a vector index](../../manage-collections/vector-config.mdx#drop-a-vector-index) for code examples.
 
 ## Further resources
