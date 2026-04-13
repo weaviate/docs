@@ -304,6 +304,19 @@ Before PR merge:
 - **LLMs.txt plugin** - Generates LLM-friendly content dump
 - **Mermaid** - Diagram support in markdown
 
+## Package Managers
+
+This repo uses **two package managers** for different purposes:
+
+- **yarn** — for Docusaurus and all frontend dependencies (`package.json`). Always use `yarn install`, `yarn add`, etc. for Docusaurus packages. Never use `npm install` for Docusaurus dependencies — it creates a `package-lock.json` that conflicts with `yarn.lock`.
+- **npm** — only for TypeScript test code execution (e.g., `npx tsx`).
+
+When adding or upgrading a Docusaurus dependency (e.g., `@scalar/docusaurus`), use:
+```bash
+yarn add @scalar/docusaurus@latest
+```
+Not `npm install`.
+
 ## Environment Requirements
 
 - Node.js 18+ (preferably v22)
