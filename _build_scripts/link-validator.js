@@ -43,6 +43,7 @@ const domainsToIgnore = [
     'https://platform.openai.com',
     'https://www.researchgate.net',
     'https://simple/',
+    'https://static.scarf.sh',
     'https://www.snowflake.com',
     'https://stackoverflow.com/',
     'https://towardsdatascience.com/',
