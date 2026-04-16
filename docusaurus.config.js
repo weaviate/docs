@@ -7,6 +7,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import commonRoomScript from "./src/scripts/commonroom.js";
 import hubspotScript from "./src/scripts/hubspot.js";
+import scarfScript from "./src/scripts/scarf.js";
 
 const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
@@ -40,7 +41,7 @@ const config = {
     locales: ["en"],
   },
 
-  headTags: [commonRoomScript, hubspotScript],
+  headTags: [commonRoomScript, hubspotScript, scarfScript],
 
   plugins: [
     "docusaurus-plugin-sass",
@@ -50,11 +51,13 @@ const config = {
       {
         label: "",
         route: "/weaviate/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
+          // showSidebar: true,
         },
       },
     ],
