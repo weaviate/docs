@@ -27,6 +27,7 @@ services:
       OBJECTS_TTL_ALLOW_SECONDS: 'true'
       OBJECTS_TTL_DELETE_SCHEDULE: '*/10 * * * * *'
       EXPORT_ENABLED: 'true'
+      EXPORT_DEFAULT_PATH: '/var/lib/weaviate/exports'
   text2vec-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
   ollama:

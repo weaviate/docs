@@ -61,6 +61,7 @@ The following overrides are currently supported:
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `export_default_bucket`                          | `EXPORT_DEFAULT_BUCKET`                      |
+| `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
 | `export_enabled`                                 | `EXPORT_ENABLED`                             |
 | `export_parallelism`                             | `EXPORT_PARALLELISM`                         |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |

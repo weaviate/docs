@@ -1,37 +1,47 @@
-# START CreateExport
 import weaviate
+from weaviate.classes.config import Property, DataType
 from weaviate.classes.export import ExportStorage, ExportFileFormat
+from weaviate.export.export import ExportStatus
+import uuid
 
 client = weaviate.connect_to_local()
 
-# Create an export of specific collections to the filesystem
+# Setup: create test collections
+for name in ["Articles", "Products", "TempData"]:
+    client.collections.delete(name)
+    col = client.collections.create(name=name, properties=[Property(name="title", data_type=DataType.TEXT)])
+    col.data.insert({"title": f"Test {name} object"})
+
+# START CreateExport
+# Export specific collections
 result = client.export.create(
-    export_id="my-export-2024",
+    export_id="my-export-include",
     backend=ExportStorage.FILESYSTEM,
     file_format=ExportFileFormat.PARQUET,
     include_collections=["Articles", "Products"],
     wait_for_completion=True,
 )
 
-print(result.status)  # ExportStatus.SUCCESS
+print(result.status)       # ExportStatus.SUCCESS
 print(result.collections)  # ['Articles', 'Products']
-# END CreateExport
 
-# START CreateExportExclude
-# Export all collections except the ones listed
+# Or exclude specific collections (exports everything else)
 result = client.export.create(
-    export_id="my-export-all-except",
+    export_id="my-export-exclude",
     backend=ExportStorage.FILESYSTEM,
     file_format=ExportFileFormat.PARQUET,
     exclude_collections=["TempData"],
     wait_for_completion=True,
 )
-# END CreateExportExclude
+# END CreateExport
+
+assert result.status == ExportStatus.SUCCESS
+assert "TempData" not in result.collections
+assert "Articles" in result.collections
 
 # START CreateExportAsync
-# Start an export without waiting
 result = client.export.create(
-    export_id="my-async-export",
+    export_id="my-async-export-" + uuid.uuid4().hex[:8],
     backend=ExportStorage.FILESYSTEM,
     file_format=ExportFileFormat.PARQUET,
     include_collections=["Articles"],
@@ -40,9 +50,12 @@ result = client.export.create(
 print(result.status)  # ExportStatus.STARTED or ExportStatus.TRANSFERRING
 # END CreateExportAsync
 
+assert result.status in [ExportStatus.STARTED, ExportStatus.TRANSFERRING, ExportStatus.SUCCESS]
+async_export_id = result.export_id
+
 # START GetExportStatus
 status = client.export.get_status(
-    export_id="my-async-export",
+    export_id=async_export_id,
     backend=ExportStorage.FILESYSTEM,
 )
 
@@ -51,11 +64,27 @@ print(status.collections)   # ['Articles']
 print(status.shard_status)  # Per-shard progress details
 # END GetExportStatus
 
+assert status.status in [ExportStatus.STARTED, ExportStatus.TRANSFERRING, ExportStatus.SUCCESS]
+assert status.export_id == async_export_id
+
+# Create a new export to test cancellation
+cancel_id = "my-cancel-export-" + uuid.uuid4().hex[:8]
+client.export.create(
+    export_id=cancel_id,
+    backend=ExportStorage.FILESYSTEM,
+    file_format=ExportFileFormat.PARQUET,
+    include_collections=["Articles"],
+)
+
 # START CancelExport
 client.export.cancel(
-    export_id="my-async-export",
+    export_id=cancel_id,
     backend=ExportStorage.FILESYSTEM,
 )
 # END CancelExport
+
+# Cleanup
+for name in ["Articles", "Products", "TempData"]:
+    client.collections.delete(name)
 
 client.close()

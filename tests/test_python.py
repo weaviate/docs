@@ -80,6 +80,7 @@ def test_compression(empty_weaviates, script_loc):
     "script_loc",
     [
         "./_includes/code/howto/configure.backups.py",
+        "./_includes/code/howto/configure.export.py",
         "./_includes/code/python/howto.configure.rbac.permissions.py",
         "./_includes/code/python/howto.configure.rbac.roles.py",
     ],

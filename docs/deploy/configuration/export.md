@@ -25,13 +25,14 @@ The export feature is **disabled by default**. To use it:
 
 Set these [environment variables](/docs/deploy/configuration/env-vars/index.md) to enable and configure exports:
 
-| Environment Variable    | Default          | Description                                                    |
-| :---------------------- | :--------------- | :------------------------------------------------------------- |
-| `EXPORT_ENABLED`        | `false`          | Enable the export API.                                         |
-| `EXPORT_DEFAULT_BUCKET` | (empty)          | Storage bucket name. Required for S3, GCS, and Azure backends. |
-| `EXPORT_PARALLELISM`    | `0` (GOMAXPROCS) | Number of concurrent scan workers.                             |
+| Environment Variable    | Default          | Description                                                                       |
+| :---------------------- | :--------------- | :-------------------------------------------------------------------------------- |
+| `EXPORT_ENABLED`        | `false`          | Enable the export API.                                                            |
+| `EXPORT_DEFAULT_BUCKET` | (empty)          | Storage bucket name. Required for S3, GCS, and Azure backends.                    |
+| `EXPORT_DEFAULT_PATH`   | (empty)          | Base path prefix for exported files within the bucket. Must be explicitly set (an empty value is allowed for no prefix). |
+| `EXPORT_PARALLELISM`    | `0` (GOMAXPROCS) | Number of concurrent scan workers.                                                |
 
-All three variables are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate.
+All four variables are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate.
 
 ## Backend configuration
 
@@ -42,6 +43,12 @@ Exports support three cloud storage backends and the [local filesystem](./backup
 | [Amazon S3](./backups.md#s3-aws-or-s3-compatible)             | `s3`    | `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`                        |
 | [Google Cloud Storage](./backups.md#gcs-google-cloud-storage) | `gcs`   | `GOOGLE_APPLICATION_CREDENTIALS`                                                  |
 | [Azure Blob Storage](./backups.md#azure-storage)              | `azure` | `AZURE_STORAGE_ACCOUNT`, `AZURE_STORAGE_KEY` or `AZURE_STORAGE_CONNECTION_STRING` |
+
+:::warning Use a separate bucket for exports
+
+Do not export to backup buckets. Backup buckets may have immutability policies that cause export operations to fail. Use a dedicated bucket for exports.
+
+:::
 
 ## Create a collection export
 
@@ -71,32 +78,6 @@ curl -X POST http://localhost:8080/v1/export/s3 \
   </TabItem>
 </Tabs>
 
-You can also exclude specific collections instead:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START CreateExportExclude"
-      endMarker="# END CreateExportExclude"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="curl" label="cURL">
-
-```bash
-curl -X POST http://localhost:8080/v1/export/s3 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "my-export-all-except",
-    "file_format": "parquet",
-    "exclude": ["TempData"]
-  }'
-```
-
-  </TabItem>
-</Tabs>
-
 ### Request parameters
 
 | Field         | Required | Description                                                                 |
@@ -105,7 +86,6 @@ curl -X POST http://localhost:8080/v1/export/s3 \
 | `file_format` | Yes      | Output format. Currently only `parquet` is supported.                       |
 | `include`     | No       | Collections to export. Cannot be used together with `exclude`.              |
 | `exclude`     | No       | Collections to exclude from export. Cannot be used together with `include`. |
-| `config.path` | No       | Path prefix within the storage bucket.                                      |
 
 ## Check collection export status
 
