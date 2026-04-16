@@ -273,3 +273,32 @@ def test_quickstart_short_wcd(script_loc):
 )
 def test_quickstart_short_local(empty_weaviates, script_loc):
     run_py_script(script_loc)
+
+
+# ========== Tutorials: Tokenization ==========
+
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/tutorials/tokenization/create_collection.py",
+        "./_includes/code/tutorials/tokenization/add_objects.py",
+        "./_includes/code/tutorials/tokenization/filters.py",
+        "./_includes/code/tutorials/tokenization/searches.py",
+    ],
+)
+def test_tutorial_tokenization(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/tutorials/tokenization/accent_folding.py",
+        "./_includes/code/tutorials/tokenization/custom_stopwords.py",
+        "./_includes/code/tutorials/tokenization/tokenize_endpoint.py",
+    ],
+)
+def test_tutorial_tokenization_v137(empty_weaviates, script_loc):
+    run_py_script(script_loc)

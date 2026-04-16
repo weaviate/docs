@@ -216,11 +216,11 @@ See the [tokenization configuration reference](../../config-refs/collections.mdx
 
 ### Accent folding
 
-import TokenizerPreview from '/_includes/feature-notes/tokenizer-v137-preview.mdx';
+import TokenizerPreview from '/_includes/feature-notes/tokenizer.mdx';
 
 <TokenizerPreview/>
 
-Text properties can opt in to **accent folding** via the `textAnalyzer` block. When `asciiFold` is set to `true`, the analyzer normalizes accented Latin characters — and any other character carrying combining marks or diacritics — to their ASCII equivalents during both indexing and querying. A document containing "Café Crème" becomes searchable as "cafe creme", and vice versa. The same normalization is applied to filters (`Equal`, `Like`), so what you can search for is exactly what you can filter on.
+Text properties can opt in to **accent folding** via the `textAnalyzer` block. When `asciiFold` is set to `true`, the analyzer normalizes accented Latin characters and any other character carrying combining marks or diacritics to their ASCII equivalents during both indexing and querying. A document containing "Café Crème" becomes searchable as "cafe creme", and vice versa. The same normalization is applied to filters (`Equal`, `Like`), so what you can search for is exactly what you can filter on.
 
 ```json
 {
@@ -237,7 +237,7 @@ Accent folding composes with every tokenization method: `word`, `lowercase`, `wh
 
 #### Per-character exceptions
 
-If you want most accents folded but need to preserve specific characters — for example, an `é` that distinguishes two product names — use `asciiFoldIgnore`:
+If you want most accents folded but need to preserve specific characters (for example, an `é` that distinguishes two product names) use `asciiFoldIgnore`:
 
 ```json
 {

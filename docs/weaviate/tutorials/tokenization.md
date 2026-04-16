@@ -12,7 +12,7 @@ import PySearches from '!!raw-loader!/_includes/code/tutorials/tokenization/sear
 import PyAccentFolding from '!!raw-loader!/_includes/code/tutorials/tokenization/accent_folding.py';
 import PyCustomStopwords from '!!raw-loader!/_includes/code/tutorials/tokenization/custom_stopwords.py';
 import PyTokenizeEndpoint from '!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.py';
-import TokenizerPreview from '/_includes/feature-notes/tokenizer-v137-preview.mdx';
+import TokenizerPreview from '/_includes/feature-notes/tokenizer.mdx';
 
 ## What you'll learn
 

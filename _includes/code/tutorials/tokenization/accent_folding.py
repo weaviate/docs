@@ -28,19 +28,19 @@ client.collections.create(
             name="text_folded",
             data_type=DataType.TEXT,
             tokenization=Tokenization.WORD,
-            text_analyzer={"asciiFold": True},
+            text_analyzer=Configure.text_analyzer(ascii_fold=True),
         ),
         Property(
             name="text_folded_keep_e",
             data_type=DataType.TEXT,
             tokenization=Tokenization.WORD,
-            text_analyzer={"asciiFold": True, "asciiFoldIgnore": ["é"]},
+            text_analyzer=Configure.text_analyzer(
+                ascii_fold=True, ascii_fold_ignore=["é"]
+            ),
         ),
     ],
     vector_config=Configure.Vectors.self_provided(),
 )
-
-client.close()
 # END AccentFoldingCreateCollection
 
 # AccentFoldingAddObjects
@@ -78,6 +78,36 @@ for query in queries:
         matches = [o.properties[prop] for o in response.objects]
         print(f"  {prop}: {matches if matches else 'no match'}")
 # END AccentFoldingFilter
+
+# Test: "cafe" matches folded but not default or keep_e
+r = products.query.fetch_objects(filters=Filter.by_property("text_folded").equal("cafe"))
+assert len(r.objects) == 1 and r.objects[0].properties["text_folded"] == "Café Crème Bio"
+r = products.query.fetch_objects(filters=Filter.by_property("text_default").equal("cafe"))
+assert len(r.objects) == 0
+r = products.query.fetch_objects(filters=Filter.by_property("text_folded_keep_e").equal("cafe"))
+assert len(r.objects) == 0  # é is preserved, so "cafe" != "café"
+
+# Test: "Café" matches all three (exact match works everywhere)
+for prop in ["text_default", "text_folded", "text_folded_keep_e"]:
+    r = products.query.fetch_objects(filters=Filter.by_property(prop).equal("Café"))
+    assert len(r.objects) == 1, f"Expected Café to match on {prop}"
+
+# Test: "lodz" matches folded and keep_e but not default
+r = products.query.fetch_objects(filters=Filter.by_property("text_folded").equal("lodz"))
+assert len(r.objects) == 1 and "Łódź" in r.objects[0].properties["text_folded"]
+r = products.query.fetch_objects(filters=Filter.by_property("text_default").equal("lodz"))
+assert len(r.objects) == 0
+r = products.query.fetch_objects(filters=Filter.by_property("text_folded_keep_e").equal("lodz"))
+assert len(r.objects) == 1  # ł/ó/ź are folded, only é is preserved
+
+# Test: "muller" matches folded but not default
+r = products.query.fetch_objects(filters=Filter.by_property("text_folded").equal("muller"))
+assert len(r.objects) == 1 and "Müller" in r.objects[0].properties["text_folded"]
+r = products.query.fetch_objects(filters=Filter.by_property("text_default").equal("muller"))
+assert len(r.objects) == 0
+
+client.collections.delete("AccentFoldingDemo")
+client.close()
 
 # AccentFoldingResults
 """

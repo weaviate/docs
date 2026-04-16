@@ -178,7 +178,7 @@ Stopwords are only removed when [tokenization](../collections.mdx#tokenization) 
 
 #### `stopwordPresets`
 
-import TokenizerPreview from "/_includes/feature-notes/tokenizer-v137-preview.mdx";
+import TokenizerPreview from "/_includes/feature-notes/tokenizer.mdx";
 
 <TokenizerPreview />
 
@@ -313,7 +313,7 @@ Two REST endpoints let you test tokenization without modifying your schema.
 
 | Parameter        | Type      | Required | Details                                                                                                      |
 | :--------------- | :-------- | :------- | :----------------------------------------------------------------------------------------------------------- |
-| `text`           | `string`Ï | yes      | The text to tokenize                                                                                         |
+| `text`           | `string`  | yes      | The text to tokenize                                                                                         |
 | `tokenization`   | `string`  | yes      | Tokenization method (`word`, `lowercase`, `whitespace`, `field`, `gse`, `trigram`, `kagome_ja`, `kagome_kr`) |
 | `analyzerConfig` | `object`  | no       | Analyzer settings: `asciiFold` (`boolean`), `asciiFoldIgnore` (`string[]`), `stopwordPreset` (`string`)      |
 
