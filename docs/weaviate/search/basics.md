@@ -638,6 +638,10 @@ You can specify metadata fields to be returned.
 
 For a comprehensive list of metadata fields, see [GraphQL: Additional properties](../api/graphql/additional-properties.md).
 
+:::tip Debugging query performance
+Use [query profiling](./query-profile.md) to get per-shard timing breakdowns for any search query. Add `query_profile=True` to `MetadataQuery` to see exactly how long each phase takes.
+:::
+
 ## Multi-tenancy
 
 If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the tenant parameter in each query.
