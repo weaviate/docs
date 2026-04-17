@@ -8,7 +8,7 @@ services:
     - '8080'
     - --scheme
     - http
-    image: semitechnologies/weaviate:preview-prepare-release-v1-36-6-a9ad147.arm64
+    image: cr.weaviate.io/semitechnologies/weaviate:1.37.0-rc.0
     ports:
     - 8080:8080
     - 50051:50051
@@ -26,6 +26,8 @@ services:
       TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'
       OBJECTS_TTL_ALLOW_SECONDS: 'true'
       OBJECTS_TTL_DELETE_SCHEDULE: '*/10 * * * * *'
+      EXPORT_ENABLED: 'true'
+      EXPORT_DEFAULT_PATH: '/var/lib/weaviate/exports'
   text2vec-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
   ollama:
