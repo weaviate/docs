@@ -52,10 +52,6 @@ If you have a nested reference filter, Weaviate starts by resolving the deepest 
 
 A tip is to avoid deeply nested filters in the queries. Additionally, try to make your queries as restrictive as possible, because a ten-level deep query would for example not be so expensive if all levels return only a single ID. In that case only ten one ID searches need to be performed, which is a lot of searches in one query, but each search is very cheap.
 
-## Profiling query performance
-
-To diagnose slow queries, use [query profiling](/weaviate/search/query-profile.md) to get per-shard timing breakdowns. This shows exactly how long each phase takes — vector search, keyword scoring, filter evaluation, object retrieval — broken down by shard and cluster node.
-
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
