@@ -34,6 +34,12 @@ Set these [environment variables](/docs/deploy/configuration/env-vars/index.md) 
 
 All four variables are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate.
 
+:::note Weaviate Cloud
+
+Collection export is not enabled by default in Weaviate Cloud. If you want to enable it, contact us via [email](mailto:support@weaviate.io). 
+
+:::
+
 ## Backend configuration
 
 Exports support three cloud storage backends and the [local filesystem](./backups#filesystem). Each cloud storage backend uses the same credential environment variables as [backups](./backups.md#configuration):

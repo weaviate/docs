@@ -44,7 +44,7 @@ import APITable from '@site/src/components/APITable';
 | `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_JA` | Enable the [`Kagome` tokenizer for Japanese](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_KR` | Enable the [`Kagome` tokenizer for Korean](/weaviate/config-refs/collections.mdx#) for use | `boolean` | `true` |
-| `EXPORT_DEFAULT_BUCKET` | Storage bucket name for [collection exports](/docs/deploy/configuration/export.md). Required for S3, GCS, and Azure backends. Default: `""` (none)<br/>Added in `v1.37` | `string` | `my-export-bucket` |
+| `EXPORT_DEFAULT_BUCKET` | Storage bucket name for [collection exports](/docs/deploy/configuration/export.md). Required for S3, GCS, and Azure backends.<br/>Added in `v1.37` | `string` | `my-export-bucket` |
 | `EXPORT_DEFAULT_PATH` | Base path prefix for exported files within the bucket in [collection exports](/docs/deploy/configuration/export.md). Must be explicitly set (an empty value is allowed for no prefix). Default: `""` (none)<br/>Added in `v1.37` | `string` | `exports/my-cluster` |
 | `EXPORT_ENABLED` | Enable the [collection export](/docs/deploy/configuration/export.md) API. Default: `false`<br/>Added in `v1.37` | `boolean` | `true` |
 | `EXPORT_PARALLELISM` | Number of concurrent scan workers for [collection exports](/docs/deploy/configuration/export.md). `0` uses GOMAXPROCS. Default: `0`<br/>Added in `v1.37` | `string - number` | `4` |
