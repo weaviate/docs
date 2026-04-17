@@ -57,6 +57,8 @@ The term "tokenization" is used in other contexts such as vectorization, or lang
 
 :::
 
+Text properties can also enable **accent folding** via `textAnalyzer.asciiFold`, which normalizes accented characters before tokens enter the inverted index. A document containing "Café Crème" becomes searchable as "cafe creme" (and vice versa), and the same rule applies to `Equal` and `Like` filters. See [Inverted index: Accent folding](../indexing/inverted-index.md#accent-folding) for details.
+
 ### Stopwords
 
 Stopwords are words that are filtered out before processing text.
@@ -64,6 +66,8 @@ Stopwords are words that are filtered out before processing text.
 Weaviate uses configurable stopwords in calculating the BM25 score. Any tokens that are contained in the stopword list will be ignored from the BM25 score calculation.
 
 See the [reference page](../../config-refs/indexing/inverted-index.mdx#stopwords) for more details.
+
+Stopword lists are also configurable per collection **and** per property. You can define custom presets on `invertedIndexConfig.stopwordPresets` and assign them to individual text properties via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections — for example, English and French properties using different stopword lists. Stopwords are still indexed and only filtered at query time, so changing your stopword configuration does not require reindexing. See [Inverted index: Custom stopword presets](../indexing/inverted-index.md#custom-stopword-presets) for details.
 
 ### BM25 parameters
 
@@ -201,6 +205,9 @@ Here are some key considerations when using keyword search:
 3. **Query Optimization**
    - Consider boosting properties that are more important for search (e.g. title, category) over others (e.g. description)
    - Only modify `k1` and `b` values if you have a good reason to do so, as the defaults are generally well-suited for most use cases
+
+4. **Debugging Tokenization**
+   - Use the [`/v1/tokenize` endpoint](../../config-refs/indexing/inverted-index.mdx#tokenize-endpoint) to inspect how text is tokenized before committing to a schema configuration. This is useful when experimenting with accent folding or custom stopword presets.
 
 ### Further resources
 
