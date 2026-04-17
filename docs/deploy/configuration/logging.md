@@ -117,8 +117,6 @@ QUERY_SLOW_LOG_THRESHOLD=2s
 
 When enabled, queries exceeding the threshold will be logged at the configured log level, allowing you to identify and optimize slow operations.
 
-For per-query timing breakdowns on demand (without configuring log thresholds), see [Query profiling](/weaviate/search/query-profile.md).
-
 ### Tenant Activity Logging
 
 For multi-tenant collections, you can configure the log level for tenant read and write activity.
