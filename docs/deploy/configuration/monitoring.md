@@ -497,6 +497,10 @@ your uses perfectly:
 | [Usage](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/usage.json)                             | Obtain usage metrics, such as number of objects imported, etc.                                                          | ![Usage](./img/weaviate-sample-dashboard-usage.png "Usage")                                                        |
 | [Aysnc index queue](https://github.com/weaviate/weaviate/blob/main/tools/dev/grafana/dashboards/index_queue.json)             | Observe index queue activity                                                                                            | ![Async index queue](./img/weaviate-sample-dashboard-async-queue.png "Async index queue")                          |
 
+## Query profiling
+
+For per-query performance analysis, Weaviate provides [query profiling](/weaviate/search/query-profile.md). Unlike Prometheus metrics which show aggregate performance, query profiling provides per-shard timing breakdowns for individual queries — useful for diagnosing specific slow queries.
+
 ## `nodes` API Endpoint
 
 To get collection details programmatically, use the [`nodes`](/deploy/configuration/status.md#cluster-node-data) REST endpoint.
