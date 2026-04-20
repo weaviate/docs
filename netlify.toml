@@ -1132,3 +1132,8 @@ status = 301
 from = "/llms.txt"
 to   = "https://weaviate.io/llms.txt"
 status = 301
+
+[[redirects]]
+from = "/weaviate/mcp/docs-mcp-server"
+to   = "/weaviate/mcp/weaviate-docs-mcp-server"
+status = 301
