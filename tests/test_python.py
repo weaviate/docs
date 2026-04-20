@@ -193,6 +193,17 @@ def test_search(empty_weaviates, script_loc):
     run_py_script(script_loc, custom_replace_pairs=utils.edu_readonly_replacements)
 
 
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/howto/search.similarity.mmr.py",
+    ],
+)
+def test_search_mmr(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
 # ========== Starter Guides ==========
 
 @pytest.mark.pyv4
