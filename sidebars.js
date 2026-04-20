@@ -632,6 +632,7 @@ const sidebars = {
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
+        "weaviate/search/query-profile",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
         {
@@ -1161,6 +1162,11 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/configuration/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/export",
           className: "sidebar-item",
         },
         {

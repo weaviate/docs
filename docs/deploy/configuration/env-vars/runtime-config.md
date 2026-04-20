@@ -60,6 +60,10 @@ The following overrides are currently supported:
 | `async_replication_cluster_max_workers`          | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`      |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
+| `export_default_bucket`                          | `EXPORT_DEFAULT_BUCKET`                      |
+| `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
+| `export_enabled`                                 | `EXPORT_ENABLED`                             |
+| `export_parallelism`                             | `EXPORT_PARALLELISM`                         |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
 | `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
 | `objects_ttl_batch_size`                          | `OBJECTS_TTL_BATCH_SIZE`                     |

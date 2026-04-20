@@ -1,6 +1,5 @@
 ---
 title: Release Notes
-sidebar_position: 0
 description: "Changelog and release notes for Weaviate Database stable releases and client libraries. Covers supported versions, latest patch updates, minor version history, and upgrade guidance."
 image: og/docs/more-resources.jpg
 # tags: ['release notes']
@@ -17,6 +16,11 @@ For instructions on upgrading Weaviate one minor version at a time, see the [Mig
 import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
+{
+title: "v1.37",
+link: "https://github.com/weaviate/weaviate/releases/tag/v1.37.0",
+icon: "fa fa-tags",
+},
 {
 title: "v1.36",
 link: "https://github.com/weaviate/weaviate/releases/tag/v1.36.0",
@@ -35,11 +39,6 @@ icon: "fa fa-tags",
 {
 title: "v1.33",
 link: "https://weaviate.io/blog/weaviate-1-33-release",
-icon: "fa fa-tags",
-},
-{
-title: "v1.32",
-link: "https://weaviate.io/blog/weaviate-1-32-release",
 icon: "fa fa-tags",
 },
 ];
