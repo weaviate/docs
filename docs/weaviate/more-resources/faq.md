@@ -654,8 +654,8 @@ If you need resources from the previous version of Weaviate Academy, check out t
 
 > Yes, Weaviate provides two MCP (Model Context Protocol) servers:
 >
-> - **[Weaviate MCP server](/weaviate/mcp/weaviate-mcp-server.mdx)** — Built into Weaviate itself. Exposes tools for inspecting schemas, searching data (vector/hybrid), and modifying objects. Runs on the same port as the REST API at `/v1/mcp`. Disabled by default — enable with `MCP_SERVER_ENABLED=true`.
-> - **[Weaviate Docs MCP server](/weaviate/mcp/weaviate-docs-mcp-server.mdx)** — A standalone server that gives LLMs access to Weaviate's documentation. Useful for AI-assisted development with Weaviate.
+> - **[Weaviate MCP server](/weaviate/mcp/mcp-server.mdx)** — Built into Weaviate itself. Exposes tools for inspecting schemas, searching data (vector/hybrid), and modifying objects. Runs on the same port as the REST API at `/v1/mcp`. Disabled by default — enable with `MCP_SERVER_ENABLED=true`.
+> - **[Weaviate Docs MCP server](/weaviate/mcp/docs-mcp-server.mdx)** — A standalone server that gives LLMs access to Weaviate's documentation. Useful for AI-assisted development with Weaviate.
 >
 > Both servers use the Streamable HTTP transport and work with MCP clients like Claude Code, Claude Desktop, Cursor, and VS Code.
 

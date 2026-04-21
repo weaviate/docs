@@ -19,7 +19,7 @@ The export feature is **disabled by default**. To use it:
 
 1. [Enable the export API](#environment-variables) and configure a storage bucket.
 2. [Configure cloud storage credentials](#backend-configuration) for your backend (S3, GCS, or Azure).
-3. [Create an export](#create-an-export) via the client or REST API.
+3. [Create an export](#create-a-collection-export) via the client or REST API.
 
 ## Environment variables
 
