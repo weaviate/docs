@@ -33,6 +33,7 @@ import APITable from '@site/src/components/APITable';
 | `ASYNC_INDEXING` | If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
 | `DEFAULT_QUANTIZATION` | Default quantization technique - can be overridden by the quantization method specified in the collection definition. Available values: `rq-8`, `rq-1`, `pq`, `bq`, `sq` and `none`. Default: `none`.<br/><br/>Note: If the selected quantization method isn't supported for the index type of a collection (for example PQ & SQ aren't supported for the flat index), the quantization won't be applied to that collection.<br/><br/>Added in `v1.33` | `string` | `rq-8` |
+| `DEFAULT_SHARDING_COUNT` | Default `desiredCount` for new single-tenant collections, used when the collection definition does not specify one. An explicit `desiredCount` in the class creation request still takes precedence. A value of `0` (default) uses the cluster node count. Multi-tenant collections are unaffected. Must be `<= 512`. Runtime-configurable. Default: `0`<br/>Added in `v1.37` | `string - number` | `12` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - can be overridden by the vectorizer in the collection definition. | `string` | `text2vec-contextionary` |
 | `API_BASED_MODULES_DISABLED` | Weaviate automatically enables the usage of all [API based modules](../../../weaviate/model-providers/index.md#api-based). Set this variable to `true` in order to limit access and only allow specific modules through the [`ENABLE_MODULES`](#ENABLE_MODULES) variable. Default: `false`<br/> Added in `v1.33` | `boolean` | `true` |
 | `DISABLE_LAZY_LOAD_SHARDS` | When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. **Deprecated in `v1.36.6`.** Use `LAZY_LOAD_SHARD_COUNT_THRESHOLD` and `LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB` instead. Weaviate now auto-detects when lazy loading is needed per collection. | `string` | `false` |
@@ -45,7 +46,7 @@ import APITable from '@site/src/components/APITable';
 | `ENABLE_TOKENIZER_KAGOME_JA` | Enable the [`Kagome` tokenizer for Japanese](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_KR` | Enable the [`Kagome` tokenizer for Korean](/weaviate/config-refs/collections.mdx#) for use | `boolean` | `true` |
 | `EXPORT_DEFAULT_BUCKET` | Storage bucket name for [collection exports](/docs/deploy/configuration/export.md). Required for S3, GCS, and Azure backends.<br/>Added in `v1.37` | `string` | `my-export-bucket` |
-| `EXPORT_DEFAULT_PATH` | Base path prefix for exported files within the bucket in [collection exports](/docs/deploy/configuration/export.md). Must be explicitly set (an empty value is allowed for no prefix). Default: `""` (none)<br/>Added in `v1.37` | `string` | `exports/my-cluster` |
+| `EXPORT_DEFAULT_PATH` | Optional base path prefix for exported files within the bucket for [collection exports](/docs/deploy/configuration/export.md). Defaults to `""` (no prefix). _Changed in `v1.37.1`: previously required to be explicitly set._<br/>Added in `v1.37` | `string` | `exports/my-cluster` |
 | `EXPORT_ENABLED` | Enable the [collection export](/docs/deploy/configuration/export.md) API. Default: `false`<br/>Added in `v1.37` | `boolean` | `true` |
 | `EXPORT_PARALLELISM` | Number of concurrent scan workers for [collection exports](/docs/deploy/configuration/export.md). `0` uses GOMAXPROCS. Default: `0`<br/>Added in `v1.37` | `string - number` | `4` |
 | `GODEBUG` | Controls debugging variables within the runtime. [See official Go docs](https://pkg.go.dev/runtime). | `string - comma-separated list of name=val pairs` | `gctrace=1` |
@@ -177,6 +178,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `AUTHENTICATION_OIDC_CLIENT_ID` | OIDC Client ID | `string` | `my-client-id` |
 | `AUTHENTICATION_OIDC_ENABLED` | Enable OIDC-based authentication | `boolean` | `false` |
 | `AUTHENTICATION_OIDC_GROUPS_CLAIM` | OIDC Groups Claim | `string` | `groups` |
+| `AUTHENTICATION_OIDC_INSECURE_SKIP_TLS_VERIFY` | **Not recommended for production.** When `true`, skips TLS certificate verification for the OIDC issuer endpoint. Only use when the OIDC issuer uses a self-signed or untrusted certificate in development or testing environments. Default: `false`<br/>Added in `v1.37` | `boolean` | `true` |
 | `AUTHENTICATION_OIDC_ISSUER` | OIDC Token Issuer | `string - URL` | `https://myissuer.com` |
 | `AUTHENTICATION_OIDC_JWKS_URL` | OIDC JWKS URL | `string - URL` | `https://myissuer.com/.well-known/jwks.json` |
 | `AUTHENTICATION_OIDC_SCOPES` | OIDC scopes to request | `string - comma-separated list` | `openid,email` |

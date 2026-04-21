@@ -60,6 +60,7 @@ The following overrides are currently supported:
 | `async_replication_cluster_max_workers`          | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`      |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
+| `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
 | `export_default_bucket`                          | `EXPORT_DEFAULT_BUCKET`                      |
 | `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
 | `export_enabled`                                 | `EXPORT_ENABLED`                             |

@@ -759,8 +759,8 @@ Add the `selection` parameter to any vector search query:
 
 <FilteredTextBlock
   text={MMRPyCode}
-  startMarker="# START MMRNearText"
-  endMarker="# END MMRNearText"
+  startMarker="# START MMRNearVectorExample"
+  endMarker="# END MMRNearVectorExample"
   language="python"
 />
 

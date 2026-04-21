@@ -29,14 +29,14 @@ Set these [environment variables](/docs/deploy/configuration/env-vars/index.md) 
 | :---------------------- | :--------------- | :-------------------------------------------------------------------------------- |
 | `EXPORT_ENABLED`        | `false`          | Enable the export API.                                                            |
 | `EXPORT_DEFAULT_BUCKET` | (empty)          | Storage bucket name. Required for S3, GCS, and Azure backends.                    |
-| `EXPORT_DEFAULT_PATH`   | (empty)          | Base path prefix for exported files within the bucket. Must be explicitly set (an empty value is allowed for no prefix). |
+| `EXPORT_DEFAULT_PATH`   | `""`             | Optional base path prefix for exported files within the bucket. Defaults to an empty string (no prefix). _Changed in `v1.37.1`: previously required to be explicitly set._ |
 | `EXPORT_PARALLELISM`    | `0` (GOMAXPROCS) | Number of concurrent scan workers.                                                |
 
 All four variables are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate.
 
 :::note Weaviate Cloud
 
-Collection export is not enabled by default in Weaviate Cloud. If you want to enable it, contact us via [email](mailto:support@weaviate.io). 
+Collection export is not enabled by default in Weaviate Cloud. If you want to enable it, contact us via [email](mailto:support@weaviate.io).
 
 :::
 
@@ -72,7 +72,7 @@ Specify an export ID, backend, file format, and optionally which collections to 
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST http://localhost:8080/v1/export/s3 \
+curl -X POST http://localhost:8080/v1/export/filesystem \
   -H "Content-Type: application/json" \
   -d '{
     "id": "my-export-2024",
@@ -109,7 +109,7 @@ Exports run asynchronously. Poll the status endpoint to track progress.
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl http://localhost:8080/v1/export/s3/my-async-export
+curl http://localhost:8080/v1/export/filesystem/my-async-export
 ```
 
   </TabItem>
@@ -150,7 +150,7 @@ Each shard within an export has its own status:
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X DELETE http://localhost:8080/v1/export/s3/my-async-export
+curl -X DELETE http://localhost:8080/v1/export/filesystem/my-async-export
 ```
 
   </TabItem>

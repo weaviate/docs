@@ -1,7 +1,7 @@
 import weaviate
 from weaviate.classes.config import Property, DataType
 from weaviate.classes.export import ExportStorage, ExportFileFormat
-from weaviate.export.export import ExportStatus
+from weaviate.outputs.export import ExportStatus
 import uuid
 
 client = weaviate.connect_to_local()

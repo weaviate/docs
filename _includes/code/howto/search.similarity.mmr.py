@@ -28,7 +28,7 @@ for i in range(30):
 
 time.sleep(2)
 
-# START MMRNearText
+# START MMRNearVectorExample
 from weaviate.classes.query import Diversity
 
 collection = client.collections.get("MMRDemo")
@@ -45,7 +45,7 @@ response = collection.query.near_vector(
 
 for o in response.objects:
     print(o.properties["question"])
-# END MMRNearText
+# END MMRNearVectorExample
 
 # Test
 assert response.objects[0].collection == "MMRDemo"
