@@ -1461,11 +1461,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "cloud/manage-clusters/upgrade",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "cloud/manage-clusters/authentication",
           className: "sidebar-item",
         },

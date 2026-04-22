@@ -64,7 +64,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/upgrade"
-to   = "/cloud/manage-clusters/upgrade"
+to   = "/cloud/platform/version"
 status = 301
 
 [[redirects]]
