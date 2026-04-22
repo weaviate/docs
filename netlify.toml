@@ -68,6 +68,11 @@ to   = "/cloud/platform/version"
 status = 301
 
 [[redirects]]
+from = "/cloud/manage-clusters/upgrade"
+to   = "/cloud/platform/version"
+status = 301
+
+[[redirects]]
 from = "/cloud/guides/console"
 to   = "/cloud/tools/query-tool"
 status = 301
