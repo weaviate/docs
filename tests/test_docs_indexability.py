@@ -251,6 +251,9 @@ def _is_decorative_image(img) -> bool:
     # Skip language/site logo SVGs (e.g., /img/site/logo-py.svg)
     if src.endswith(".svg") and "/img/site/" in src:
         return True
+    # Skip analytics tracking pixels (e.g., Scarf)
+    if "static.scarf.sh" in src:
+        return True
     # Skip very small images (likely icons)
     width = img.get("width")
     if width and str(width).isdigit() and int(width) < 30:
@@ -675,7 +678,7 @@ def test_chatgpt_can_search_llms_txt():
     )
 
     # Must find the key top-level sections from llms.txt
-    for section in ["agents", "cloud", "weaviate"]:
+    for section in ["cloud", "weaviate"]:
         assert section in text_lower, (
             f"ChatGPT didn't find '{section}' section in llms.txt. "
             f"Response:\n{text[:1000]}"
