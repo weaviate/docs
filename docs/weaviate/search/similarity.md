@@ -15,11 +15,11 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTest.java';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchSimilarityTest.cs";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
 
 Vector search returns the objects with most similar vectors to that of the query.
 
-import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+import QueryAgentTip from '/\_includes/query-agent-tip.mdx';
 
 <QueryAgentTip/>
 
@@ -745,6 +745,57 @@ The output is like this:
 />
 
 </details>
+
+## Diversity selection (MMR)
+
+import MMRPyCode from '!!raw-loader!/\_includes/code/howto/search.similarity.mmr.py';
+import V137Preview from '/\_includes/feature-notes/v137-preview.mdx';
+
+<V137Preview/>
+
+Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity — each selected result must add something new to the result set.
+
+Add the `selection` parameter to any vector search query:
+
+<FilteredTextBlock
+  text={MMRPyCode}
+  startMarker="# START MMRNearVectorExample"
+  endMarker="# END MMRNearVectorExample"
+  language="python"
+/>
+
+#### How it works
+
+1. Weaviate runs a regular vector search to retrieve a candidate set (controlled by the query's `limit`)
+2. The most relevant candidate is selected first
+3. For each remaining candidate, MMR computes a score that balances query similarity against maximum similarity to already-selected results, weighted by `balance`
+4. The candidate with the highest MMR score is selected next
+5. Steps 3–4 repeat until the `Diversity.MMR(limit)` is reached
+
+#### Parameters
+
+| Parameter | Type  | Description                                                                                                                                             |
+| :-------- | :---- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `limit`   | int   | Number of results to return after MMR reranking. Must be less than or equal to the query's top-level `limit` (the candidate set size).                  |
+| `balance` | float | Controls the relevance-diversity trade-off (0.0–1.0). `0.0` = pure diversity, `0.5` = balanced, `1.0` = pure relevance (equivalent to standard search). |
+
+<FilteredTextBlock
+  text={MMRPyCode}
+  startMarker="# START MMRBalanceExamples"
+  endMarker="# END MMRBalanceExamples"
+  language="python"
+/>
+
+Important notes:
+
+- **Result ordering**: Results are ordered by MMR score, not query similarity. The first result is the most relevant, but subsequent results may have lower query similarity because they were chosen for diversity.
+- **No reindexing needed**: MMR is applied at query time. You can use it on any existing collection without schema changes.
+- **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`.
+- **Not supported**: hybrid search and multi-vector collections.
+
+:::tip
+A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
+:::
 
 ## Related pages
 

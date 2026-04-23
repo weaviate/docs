@@ -167,6 +167,14 @@ The following examples show how to configure Google-specific options.
 - `modelId` (Optional): e.g. `gemini-embedding-2-preview`, `multimodalembedding@001`
 - `dimensions` (Optional): For `multimodalembedding@001`: `128`, `256`, `512`, or `1408` (default `1408`). For `gemini-embedding-2-preview`: `3072` (default).
 
+:::info Audio support (added in `v1.37`)
+
+The `multi2vec-google` module supports audio as a fourth modality (alongside text, images, and videos) via the `audioFields` property. Configure it the same way as `imageFields` or `videoFields`.
+
+Audio is only supported through the **Gemini API** (Google AI Studio). Vertex AI does not support audio embeddings.
+
+:::
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock

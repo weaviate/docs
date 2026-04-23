@@ -80,6 +80,7 @@ def test_compression(empty_weaviates, script_loc):
     "script_loc",
     [
         "./_includes/code/howto/configure.backups.py",
+        "./_includes/code/howto/configure.export.py",
         "./_includes/code/python/howto.configure.rbac.permissions.py",
         "./_includes/code/python/howto.configure.rbac.roles.py",
     ],
@@ -192,6 +193,21 @@ def test_search(empty_weaviates, script_loc):
     run_py_script(script_loc, custom_replace_pairs=utils.edu_readonly_replacements)
 
 
+@pytest.mark.pyv4
+@pytest.mark.skip(
+    reason="Diversity/MMR not yet in a released weaviate-client; unskip once "
+    "https://github.com/weaviate/weaviate-python-client/pull/1997 ships"
+)
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/howto/search.similarity.mmr.py",
+    ],
+)
+def test_search_mmr(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
 # ========== Starter Guides ==========
 
 @pytest.mark.pyv4
@@ -272,4 +288,33 @@ def test_quickstart_short_wcd(script_loc):
     ],
 )
 def test_quickstart_short_local(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
+# ========== Tutorials: Tokenization ==========
+
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/tutorials/tokenization/create_collection.py",
+        "./_includes/code/tutorials/tokenization/add_objects.py",
+        "./_includes/code/tutorials/tokenization/filters.py",
+        "./_includes/code/tutorials/tokenization/searches.py",
+    ],
+)
+def test_tutorial_tokenization(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/tutorials/tokenization/accent_folding.py",
+        "./_includes/code/tutorials/tokenization/custom_stopwords.py",
+        "./_includes/code/tutorials/tokenization/tokenize_endpoint.py",
+    ],
+)
+def test_tutorial_tokenization_v137(empty_weaviates, script_loc):
     run_py_script(script_loc)

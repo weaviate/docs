@@ -103,7 +103,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: ["weaviate/mcp/docs-mcp-server"],
+      items: ["weaviate/mcp/mcp-server","weaviate/mcp/docs-mcp-server"],
     },
     {
       type: "html",
@@ -1161,6 +1161,11 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/configuration/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/export",
           className: "sidebar-item",
         },
         {

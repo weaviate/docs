@@ -1,0 +1,280 @@
+---
+title: Weaviate MCP server
+# tags: ["mcp"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import MCPPreview from "/_includes/feature-notes/mcp.mdx";
+
+<MCPPreview />
+
+The Weaviate [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server is an implementation of the open standard that enables Large Language Models (LLMs) to interact securely with your Weaviate instance.
+
+Instead of pasting context manually, MCP allows compatible clients (like Claude Desktop or IDEs) to directly "see" and interact with your database. Weaviate implements this as a Streamable HTTP server that runs on the same port as the main Weaviate REST API. It exposes tools to inspect schemas, search data (vector/hybrid), and modify objects, governed by Weaviate's authentication and authorization.
+
+---
+
+## Using the Weaviate MCP server
+
+The Weaviate MCP server by default runs at `http://localhost:8080/v1/mcp` if enabled and supports authentication via Bearer tokens (API Keys).
+To get started:
+
+1. [Enable the MCP server](#environment-variables) (and optionally write access) through environment variables.
+2. [Ensure your API key has the right permissions](#permissions) if using RBAC.
+3. [Connect your MCP client](#mcp-client) using the REST API host and port.
+
+You can also optionally [customize tool descriptions](#custom-tool-descriptions) to tailor the LLM's understanding of your workflow.
+
+#### Connect your MCP client {#mcp-client}
+
+<Tabs groupId="platform">
+<TabItem value="claude_code" label="Claude Code">
+Run the following command in your terminal to add the server ([Claude Code MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp)):
+
+```bash
+claude mcp add-json weaviate-local '{"type":"http","url":"http://localhost:8080/v1/mcp","headers":{"Authorization":"Bearer YOUR_API_KEY"}}'
+```
+
+_If anonymous access is enabled, you can omit the `headers` field._
+
+</TabItem>
+<TabItem value="claude_desktop" label="Claude Desktop">
+[Claude Desktop](https://claude.ai/download) does not natively support Streamable HTTP transport. Use [`mcp-proxy`](https://github.com/sparfenyuk/mcp-proxy) to bridge between Claude Desktop's `stdio` transport and the Weaviate MCP server.
+
+**Config Location:**
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "weaviate-local": {
+      "command": "mcp-proxy",
+      "args": [
+        "http://localhost:8080/v1/mcp",
+        "--headers",
+        "Authorization",
+        "Bearer YOUR_API_KEY",
+        "--transport",
+        "streamablehttp"
+      ]
+    }
+  }
+}
+```
+
+_Note: Replace `YOUR_API_KEY` with your actual Weaviate API key. If anonymous access is enabled, you can omit the `--headers` arguments._
+
+</TabItem>
+<TabItem value="cursor" label="Cursor">
+Add the following to your `.cursor/mcp.json` file ([Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol)). Cursor supports Streamable HTTP connections directly.
+
+```json
+{
+  "mcpServers": {
+    "weaviate-local": {
+      "type": "streamable-http",
+      "url": "http://localhost:8080/v1/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="vsc" label="VS Code">
+**Prerequisites:** VS Code 1.102+ with GitHub Copilot enabled ([VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)).
+
+Create or edit the `mcp.json` file in your workspace `.vscode` folder:
+
+```json
+{
+  "servers": {
+    "weaviate-local": {
+      "type": "streamable-http",
+      "url": "http://localhost:8080/v1/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="other" label="Other">
+Most MCP clients support Streamable HTTP. Use the following connection details:
+
+- **URL:** `http://localhost:8080/v1/mcp`
+- **Transport:** Streamable HTTP
+- **Auth Header:** `Authorization: Bearer <your-api-key>`
+
+Standard JSON configuration format:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-local": {
+      "url": "http://localhost:8080/v1/mcp",
+      "type": "streamable-http"
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Configuration
+
+The MCP server is built into Weaviate but is **disabled by default** for security. It is served at the `/v1/mcp` endpoint on the same port as the REST API (default `8080`).
+
+### Environment variables
+
+To enable and configure the server, set the following [environment variables](/docs/deploy/configuration/env-vars/index.md) in your Weaviate configuration (e.g., `docker-compose.yml`):
+
+| Environment Variable                                                                                | Default | Description                                                                                                                                                                                                    |
+| --------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | **Required.** Set to `true` to start the MCP server.                                                                                                                                                           |
+| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                            |
+| [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. |
+
+### Permissions
+
+If you use [RBAC](/weaviate/configuration/rbac/index.mdx) with fine-grained permissions instead of root access, the role assigned to your API key must include the appropriate MCP permissions. Without them, tool calls are rejected.
+
+<details>
+  <summary>Per-tool permissions</summary>
+
+| Tool                              | MCP permissions required     | Additional collection permissions |
+| --------------------------------- | ---------------------------- | --------------------------------- |
+| `weaviate-collections-get-config` | `read_mcp`                   | `read_collections`                |
+| `weaviate-tenants-list`           | `read_mcp`                   | `read_data`                       |
+| `weaviate-query-hybrid`           | `read_mcp`                   | `read_data`                       |
+| `weaviate-objects-upsert`         | `create_mcp`, `update_mcp`   | `create_data`, `update_data`      |
+
+</details>
+
+### Custom tool descriptions
+
+You can override the default descriptions provided to the LLM by mounting a YAML or JSON file at `MCP_SERVER_CONFIG_PATH`.
+
+<Tabs groupId="config-format">
+<TabItem value="yaml" label="YAML">
+
+```yaml
+# mcp-config.yaml
+tools:
+  weaviate-query-hybrid:
+    description: "Perform a vector or keyword search on a collection."
+    arguments:
+      query: "The natural language search query to find relevant objects."
+      alpha: "0.0 = pure keyword (BM25), 1.0 = pure vector, 0.5 = equal weight (default)."
+```
+
+</TabItem>
+<TabItem value="json" label="JSON">
+
+```json
+{
+  "tools": {
+    "weaviate-query-hybrid": {
+      "description": "Perform a vector or keyword search on a collection.",
+      "arguments": {
+        "query": "The natural language search query to find relevant objects.",
+        "alpha": "0.0 = pure keyword (BM25), 1.0 = pure vector, 0.5 = equal weight (default)."
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Tools
+
+The server exposes different tools depending on your configuration. These are all the available tools:
+
+- `weaviate-collections-get-config`
+- `weaviate-tenants-list`
+- `weaviate-query-hybrid`
+- `weaviate-objects-upsert`
+
+### `weaviate-collections-get-config`
+
+Retrieves the schema configuration for collections.
+
+**Arguments:**
+
+- `collection_name` (string, optional): Specific collection to retrieve. If omitted, returns all.
+
+**Returns:** JSON object containing class names, properties, and vectorizer settings.
+
+### `weaviate-tenants-list`
+
+Lists tenants for multi-tenant collections.
+
+**Arguments:**
+
+- `collection_name` (string, required): The collection to inspect.
+
+**Returns:** List of tenants and their activity status (HOT/COLD).
+
+### `weaviate-query-hybrid`
+
+Performs a hybrid search combining vector similarity and keyword matching (BM25).
+
+**Arguments:**
+
+- `query` (string, required): The natural language search text.
+- `collection_name` (string, required): The collection to search.
+- `tenant_name` (string, optional): Tenant to search within for multi-tenant collections.
+- `alpha` (float, optional): Weighting. `0.0` = pure keyword search, `1.0` = pure vector search. Default is `0.5`.
+- `limit` (int, optional): Max results.
+- `target_vectors` (array, optional): Named vectors to use for vector search.
+- `target_properties` (array, optional): Properties to search with BM25. If omitted, searches all text properties.
+- `return_properties` (array, optional): Properties to include in results.
+- `return_metadata` (array, optional): Metadata fields to return (e.g., `id`, `distance`, `score`, `creationTimeUnix`).
+
+**Returns:** Ranked objects with similarity scores and distances.
+
+### `weaviate-objects-upsert`
+
+:::info MCP write access
+
+This tool is only available if `MCP_SERVER_WRITE_ACCESS_ENABLED=true`.
+
+:::
+
+Batch inserts or updates objects.
+
+**Arguments:**
+
+- `collection_name` (string, required): The collection to upsert into.
+- `tenant_name` (string, optional): Tenant for multi-tenant collections.
+- `objects` (array, required): List of objects containing `properties` and optional `uuid` or `vectors`.
+
+**Returns:** Array of results containing UUIDs or error messages per object.
+
+---
+
+## Further resources
+
+- [Vibe coding - Best practices](../best-practices/code-generation.md)
+- [Weaviate Docs MCP server](./docs-mcp-server.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

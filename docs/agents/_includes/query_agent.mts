@@ -382,6 +382,17 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 }
 // END BasicSearchQuery
 
+// START DiversityRanking
+const diversitySearchResponse = await qa.search("summer shoes", {
+    limit: 10,
+    diversityWeight: 0.5
+})
+
+// Access the search results
+for (const obj of diversitySearchResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - ${obj.properties['price']}`)
+}
+// END DiversityRanking
 
 // START BasicAskQuery
 // Perform a query

@@ -24,12 +24,13 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 * Backup and Restore between different storage providers
 * Single-command backup and restore
 * Choice of backing up an entire instance, or selected collections only
+* [Incremental backups](#incremental-backups) that only store changed data, reducing backup and speeding up backup times
 * Easy migration to new environments
 
 :::caution Important backup considerations
 
 - **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
-- **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
+- **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Starting in `v1.37`, backups include both `active` (HOT) and `inactive` (COLD) tenants — inactive tenants are backed up directly from disk without activation. `Offloaded` (FROZEN) tenants are still skipped since they have no local data. In versions prior to `v1.37`, only active tenants are included, so be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
 :::
 
 ## Backup Quickstart
@@ -327,6 +328,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
 | `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
+| `incremental_base_backup_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.37`. |
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -476,6 +478,70 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 </Tabs>
+
+### Incremental Backups
+
+import IncBackupsStatus from '/_includes/incremental-backups-status.mdx';
+
+<IncBackupsStatus/>
+
+Incremental backups reduce backup size and duration by only storing data that has changed since a previous backup. Instead of copying all files again, an incremental backup references unchanged files from a base backup.
+
+This can result in dramatically smaller backups and much faster backup times.
+
+#### How it works
+
+When creating a backup, Weaviate splits large files into individual chunks. During an incremental backup, Weaviate compares each file against the base backup. Files that haven't changed are stored as pointers to the base backup rather than being copied again. On restore, Weaviate automatically fetches the referenced files from the base backup.
+
+#### Create a full (base) backup
+
+First, create a regular backup that will serve as the base:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateFullBackup"
+  endMarker="# END CreateFullBackup"
+  language="py"
+/>
+
+#### Create an incremental backup
+
+To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateIncrementalBackup"
+  endMarker="# END CreateIncrementalBackup"
+  language="py"
+/>
+
+#### Chained incremental backups
+
+You can chain incremental backups by using a previous incremental backup as the base. Weaviate will walk the chain back to the original full backup to find unchanged files.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateChainedIncrementalBackup"
+  endMarker="# END CreateChainedIncrementalBackup"
+  language="py"
+/>
+
+#### Restore an incremental backup
+
+Restoring an incremental backup works the same as restoring any other backup. Weaviate automatically resolves the chain and fetches files from previous backups as needed.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START RestoreIncrementalBackup"
+  endMarker="# END RestoreIncrementalBackup"
+  language="py"
+/>
+
+:::caution Keep base backups available
+
+Base backups (and any intermediate incremental backups in a chain) must remain available for as long as you need to restore from any incremental backup that depends on them.
+
+:::
 
 ### Cancel Backup
 
