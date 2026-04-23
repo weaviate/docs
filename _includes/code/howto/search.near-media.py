@@ -32,7 +32,7 @@ client.collections.create(
     ],
     # highlight-start
     vector_config=Configure.Vectors.multi2vec_google_gemini(
-        model="gemini-embedding-2-preview",
+        model="gemini-embedding-2",
         text_fields=["title"],
         # video_fields=["video"],
         # image_fields=["image"],

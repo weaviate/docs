@@ -25,7 +25,7 @@ For image-only search using `near_image`, see the dedicated [Image search](./ima
 
 To use images, video, or audio as search inputs, configure a multi-modal vectorizer integration that supports these media types for your collection.
 
-For example, Google's `multi2vec-google` with the `gemini-embedding-2-preview` model supports image, video, and audio inputs. See the [model provider integrations](../model-providers/index.md) page for available options.
+For example, Google's `multi2vec-google` with the `gemini-embedding-2` model supports image, video, and audio inputs. See the [model provider integrations](../model-providers/index.md) page for available options.
 
 **Collection configuration**
 
@@ -129,7 +129,7 @@ The `NearMediaType` enum supports the following media types. Available types dep
 | IMU        | `NearMediaType.IMU`     | Inertial measurement unit data                                           |
 
 :::note Model support
-Not all models support all media types. For example, `gemini-embedding-2-preview` supports image, video, and audio. Check your model provider's documentation for supported modalities.
+Not all models support all media types. For example, `gemini-embedding-2` supports image, video, and audio. Check your model provider's documentation for supported modalities.
 :::
 
 ## Further resources
