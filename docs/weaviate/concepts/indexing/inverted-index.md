@@ -294,14 +294,14 @@ You can [configure custom stop words](../../config-refs/indexing/inverted-index.
 
 <TokenizerPreview/>
 
-Beyond the built-in `en` and `none` presets, you can declare custom stopword presets on the collection's `invertedIndexConfig.stopwordPresets`. Each preset has a name and either a flat word list or a base preset extended with `additions` and `removals`.
+Beyond the built-in `en` and `none` presets, you can declare custom stopword presets on the collection's `invertedIndexConfig.stopwordPresets`. Each preset has a name and a flat word list. A preset name that matches a built-in (`en`, `none`) replaces the built-in for this collection.
 
 ```json
 {
   "invertedIndexConfig": {
     "stopwordPresets": {
       "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"],
-      "en-keep-the": { "preset": "en", "removals": ["the"] }
+      "de": ["der", "die", "das", "und", "oder", "aber"]
     }
   }
 }

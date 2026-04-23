@@ -311,7 +311,7 @@ The default stopword presets are `en` and `none`. For a French property, neither
 - The `fr` preset filters out `la`, `le`, and `et` from BM25 scoring on the French property
 - The same words are not filtered on the English property (they are not English stopwords)
 - Stopwords are still indexed — only filtered at query time — so changing presets does not require reindexing
-- Custom presets can also extend a built-in preset with `additions` and `removals`
+- A preset name that matches a built-in (`en`, `none`) replaces the built-in for this collection. To tweak a built-in with `additions`/`removals`, use the collection-level `invertedIndexConfig.stopwords` field instead
 
 ## Example 6: Inspecting tokenization with the tokenize endpoint
 
@@ -332,7 +332,6 @@ Tuning an analyzer is much easier when you can see what it does. Two REST endpoi
 
 ```json
 {
-  "tokenization": "word",
   "indexed": ["the", "organic", "cafe", "creme", "blend"],
   "query":   ["organic", "cafe", "creme", "blend"]
 }
@@ -353,7 +352,6 @@ The response distinguishes **`indexed`** tokens (what is stored in the inverted 
 
 ```json
 {
-  "tokenization": "word",
   "indexed": ["la", "tasse", "bleue", "et", "le", "bol"],
   "query":   ["tasse", "bleue", "bol"]
 }

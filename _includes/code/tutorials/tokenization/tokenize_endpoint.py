@@ -34,6 +34,34 @@ query:   ['organic', 'cafe', 'creme', 'blend']
 """
 # END TokenizeEndpointFreeformResult
 
+# TokenizeEndpointCustomPreset
+# Define a named "fr" preset and reference it from analyzer_config.
+# stopword_presets is mutually exclusive with stopwords — pass at most one.
+result = client.tokenization.text(
+    text="La Tasse Bleue et le Bol",
+    tokenization=Tokenization.WORD,
+    analyzer_config=Configure.text_analyzer(stopword_preset="fr"),
+    stopword_presets={
+        "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"],
+    },
+)
+
+print(f"indexed: {result.indexed}")
+print(f"query:   {result.query}")
+# END TokenizeEndpointCustomPreset
+
+# Test: French stopwords are indexed but removed from query
+assert "la" in result.indexed and "et" in result.indexed and "le" in result.indexed
+assert "la" not in result.query and "et" not in result.query and "le" not in result.query
+assert "tasse" in result.query and "bleue" in result.query and "bol" in result.query
+
+# TokenizeEndpointCustomPresetResult
+"""
+indexed: ['la', 'tasse', 'bleue', 'et', 'le', 'bol']
+query:   ['tasse', 'bleue', 'bol']
+"""
+# END TokenizeEndpointCustomPresetResult
+
 # Setup: create collection for property-based tokenization example
 from weaviate.classes.config import Property, DataType
 
