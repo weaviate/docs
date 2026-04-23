@@ -207,13 +207,13 @@ The existing [`stopwords`](#stopwords) configuration remains as the default for 
 
 <TokenizerPreview />
 
-Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties, including accent folding and per-property stopword overrides.
+Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties, including accent folding and per-property stopword overrides. Supported on properties with tokenization `word`, `lowercase`, `whitespace`, `field`, or `trigram` — not on the language-specific tokenizers (`gse`, `gse_ch`, `kagome_ja`, `kagome_kr`).
 
-| Parameter         | Type       | Default | Details                                                                                                                 |
-| :---------------- | :--------- | :------ | :---------------------------------------------------------------------------------------------------------------------- |
-| `asciiFold`       | `boolean`  | `false` | Normalizes accented Latin characters to ASCII equivalents during indexing and querying. Uses Unicode NFD decomposition. |
-| `asciiFoldIgnore` | `string[]` | `[]`    | Characters exempt from ASCII folding. **Immutable** after property creation.                                            |
-| `stopwordPreset`  | `string`   | (none)  | Name of a collection-level stopword preset to use for this property, overriding the default `stopwords` config.         |
+| Parameter         | Type       | Default | Details                                                                                                                                                                                                                                  |
+| :---------------- | :--------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `asciiFold`       | `boolean`  | `false` | Normalizes accented Latin characters to ASCII equivalents during indexing and querying. Uses Unicode NFD decomposition. **Immutable** after the property is created.                                                                     |
+| `asciiFoldIgnore` | `string[]` | `[]`    | Characters exempt from ASCII folding. Each entry must be a single character. Can be updated after property creation, but changes only apply to newly indexed data.                                                                       |
+| `stopwordPreset`  | `string`   | (none)  | Name of a built-in (`en`, `none`) or collection-level stopword preset to use for this property, overriding the default `stopwords` config. **Only supported on properties with `tokenization: "word"`** — schema validation rejects it on other tokenizers. |
 
 <details>
   <summary>Example <code>textAnalyzer</code> configuration - JSON object</summary>

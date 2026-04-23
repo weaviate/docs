@@ -207,10 +207,13 @@ Weaviate provides several tokenization methods optimized for different data type
 - **`field`**: No splitting - entire value is one token. For exact matching.
 
 **Language-specific methods** (for languages without word boundaries):
-- **`gse`**: Chinese text segmentation using Jieba algorithm
+- **`gse`**: Japanese text segmentation using the [`gse`](https://pkg.go.dev/github.com/go-ego/gse) tokenizer (Japanese dictionary)
+- **`gse_ch`**: Chinese text segmentation using the same `gse` tokenizer with a Chinese dictionary
 - **`trigram`**: Splits into character trigrams for CJK languages
 - **`kagome_ja`**: Japanese morphological analysis
 - **`kagome_kr`**: Korean morphological analysis
+
+These language-specific tokenizers are not loaded by default. Enable them with the corresponding environment variables (`ENABLE_TOKENIZER_GSE`, `ENABLE_TOKENIZER_GSE_CH`, `ENABLE_TOKENIZER_KAGOME_JA`, `ENABLE_TOKENIZER_KAGOME_KR`).
 
 See the [tokenization configuration reference](../../config-refs/collections.mdx#tokenization) for detailed specifications and behavior examples.
 
@@ -309,7 +312,7 @@ Beyond the built-in `en` and `none` presets, you can declare custom stopword pre
 
 #### Per-property stopword overrides
 
-Each text property can override the collection-level stopword behavior via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections where different properties contain text in different languages.
+Each text property can override the collection-level stopword behavior via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections where different properties contain text in different languages. The override is only supported on properties with `tokenization: "word"` — schema validation rejects it on other tokenizers.
 
 ```json
 "properties": [
