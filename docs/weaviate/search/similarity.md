@@ -786,17 +786,19 @@ Add the `selection` parameter to any vector search query:
   language="python"
 />
 
-:::tip
-A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
-:::
-
-:::info Important notes
+Important notes:
 
 - **Result ordering**: Results are ordered by MMR score, not query similarity. The first result is the most relevant, but subsequent results may have lower query similarity because they were chosen for diversity.
 - **No reindexing needed**: MMR is applied at query time. You can use it on any existing collection without schema changes.
 - **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`.
 - **Not supported**: hybrid search and multi-vector collections.
 
+:::tip
+A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
+:::
+
+:::caution Multi-node clusters
+MMR reranking may produce suboptimal results for collections whose shards are distributed across multiple nodes, since each shard returns its own candidate set before the coordinator reranks them. We are actively working on improving this.
 :::
 
 ## Related pages
