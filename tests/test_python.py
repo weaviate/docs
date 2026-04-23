@@ -194,6 +194,10 @@ def test_search(empty_weaviates, script_loc):
 
 
 @pytest.mark.pyv4
+@pytest.mark.skip(
+    reason="Diversity/MMR not yet in a released weaviate-client; unskip once "
+    "https://github.com/weaviate/weaviate-python-client/pull/1997 ships"
+)
 @pytest.mark.parametrize(
     "script_loc",
     [
