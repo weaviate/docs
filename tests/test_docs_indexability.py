@@ -677,8 +677,9 @@ def test_chatgpt_can_search_llms_txt():
         f"ChatGPT couldn't identify Weaviate in llms.txt. Response:\n{text[:500]}"
     )
 
-    # Must find the key top-level sections from llms.txt
-    for section in ["cloud", "weaviate"]:
+    # Must find the key top-level sections from llms.txt.
+    # Use strings that actually appear as top-level `## ` headings in the file.
+    for section in ["quickstart", "python", "weaviate"]:
         assert section in text_lower, (
             f"ChatGPT didn't find '{section}' section in llms.txt. "
             f"Response:\n{text[:1000]}"
