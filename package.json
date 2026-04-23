@@ -40,7 +40,7 @@
     "sass": "^1.83.4",
     "uuid": "^13.0.0",
     "weaviate-agents": "^1.0.0",
-    "weaviate-client": "^3.9.0"
+    "weaviate-client": "^3.12.1"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.1",

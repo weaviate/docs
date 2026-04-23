@@ -274,12 +274,6 @@ Results are ordered by MMR score, not query similarity. The first result is alwa
 
 :::
 
-:::caution Multi-node clusters
-
-MMR reranking may produce suboptimal results for collections whose shards are distributed across multiple nodes, since each shard returns its own candidate set before the coordinator reranks them. We are actively working on improving this.
-
-:::
-
 See the [how-to guide](../../search/similarity.md#diversity-selection-mmr) for configuration details and code examples.
 
 ## Notes and best practices

@@ -26,7 +26,6 @@ assert "the" in result.indexed, f"Expected 'the' in indexed: {result.indexed}"
 assert "the" not in result.query, f"Expected 'the' removed from query: {result.query}"
 # Test: non-stopwords are in both
 assert "organic" in result.indexed and "organic" in result.query
-assert result.tokenization.value == "word"
 
 # TokenizeEndpointFreeformResult
 """
@@ -59,9 +58,8 @@ client.collections.create(
 
 # TokenizeEndpointProperty
 # Tokenize using an existing property's configuration
-collection = client.collections.get("TokenizeDemo")
-
-result = collection.config.tokenize_property(
+result = client.tokenization.for_property(
+    collection="TokenizeDemo",
     property_name="name_fr",
     text="La Tasse Bleue et le Bol",
 )

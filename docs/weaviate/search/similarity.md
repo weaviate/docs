@@ -797,10 +797,6 @@ Important notes:
 A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
 :::
 
-:::caution Multi-node clusters
-MMR reranking may produce suboptimal results for collections whose shards are distributed across multiple nodes, since each shard returns its own candidate set before the coordinator reranks them. We are actively working on improving this.
-:::
-
 ## Related pages
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
