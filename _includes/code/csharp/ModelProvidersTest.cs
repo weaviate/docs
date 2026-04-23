@@ -225,6 +225,8 @@ public class ModelProvidersTest : IAsyncLifetime
     {
         // Ensure data exists
         await TestInsertData();
+        // Wait for async vectorization to complete
+        await Task.Delay(3000);
 
         // START NearTextExample
         var collection = client.Collections.Use("DemoCollection");
@@ -251,6 +253,8 @@ public class ModelProvidersTest : IAsyncLifetime
     {
         // Ensure data exists
         await TestInsertData();
+        // Wait for async vectorization to complete
+        await Task.Delay(3000);
 
         // START HybridExample
         var collection = client.Collections.Use("DemoCollection");

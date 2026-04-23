@@ -37,7 +37,7 @@ await client.collections.create({
 let collection = client.collections.use('CollectionWithTTL');
 let config = await collection.config.get();
 assert.equal(config.objectTTL.enabled, true);
-assert.equal(config.objectTTL.deleteOn, '_creationTimeUnix');
+assert.equal(config.objectTTL.deleteOn, 'creationTime');
 assert.equal(config.objectTTL.defaultTTLSeconds, 3600);
 assert.equal(config.objectTTL.filterExpiredObjects, true);
 
@@ -79,7 +79,7 @@ await client.collections.create({
 collection = client.collections.use('CollectionWithTTL');
 config = await collection.config.get();
 assert.equal(config.objectTTL.enabled, true);
-assert.equal(config.objectTTL.deleteOn, '_lastUpdateTimeUnix');
+assert.equal(config.objectTTL.deleteOn, 'updateTime');
 assert.equal(config.objectTTL.defaultTTLSeconds, 864000);
 assert.equal(config.objectTTL.filterExpiredObjects, true);
 

@@ -58,9 +58,8 @@ client.collections.create(
 
 # TokenizeEndpointProperty
 # Tokenize using an existing property's configuration
-collection = client.collections.get("TokenizeDemo")
-
-result = collection.config.tokenize_property(
+result = client.tokenization.for_property(
+    collection="TokenizeDemo",
     property_name="name_fr",
     text="La Tasse Bleue et le Bol",
 )
