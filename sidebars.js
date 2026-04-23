@@ -634,6 +634,7 @@ const sidebars = {
         "weaviate/search/rerank",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        "weaviate/search/query-profile",
         {
           type: "link",
           label: "Search strategies: In depth",
