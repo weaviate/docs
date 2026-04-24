@@ -207,7 +207,7 @@ The existing [`stopwords`](#stopwords) configuration remains as the default for 
 
 <TokenizerPreview />
 
-Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties, including accent folding and per-property stopword overrides. Supported on properties with tokenization `word`, `lowercase`, `whitespace`, `field`, or `trigram` — not on the language-specific tokenizers (`gse`, `gse_ch`, `kagome_ja`, `kagome_kr`).
+Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties. The accent-folding options (`asciiFold`, `asciiFoldIgnore`) are supported on properties with tokenization `word`, `lowercase`, `whitespace`, `field`, or `trigram` — not on the language-specific tokenizers (`gse`, `gse_ch`, `kagome_ja`, `kagome_kr`). The `stopwordPreset` option is only supported on properties with `tokenization: "word"`.
 
 | Parameter         | Type       | Default | Details                                                                                                                                                                                                                                  |
 | :---------------- | :--------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
