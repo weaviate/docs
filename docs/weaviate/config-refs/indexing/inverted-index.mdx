@@ -12,6 +12,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import PyTokenizeEndpoint from "!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.py";
 
 The **[inverted index](../../concepts/indexing/inverted-index.md)** maps values (like words or numbers) to the objects that contain them. It is the backbone for all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
 
@@ -182,7 +183,9 @@ import TokenizerPreview from "/_includes/feature-notes/tokenizer.mdx";
 
 <TokenizerPreview />
 
-Part of `invertedIndexConfig`. Defines named stopword presets at the collection level. Each preset can be a flat list of words, or extend an existing preset with `additions` and `removals`. Properties can then reference a preset by name via [`textAnalyzer.stopwordPreset`](#textanalyzer).
+Part of `invertedIndexConfig`. Defines named stopword presets at the collection level. Each preset is a flat list of words. Properties can then reference a preset by name via [`textAnalyzer.stopwordPreset`](#textanalyzer).
+
+A preset name that matches a built-in (`"en"`, `"none"`) fully replaces the built-in for properties of this collection. Preset names must not be empty or whitespace-only; each word list must contain at least one word; individual words must not be empty or whitespace-only.
 
 <details>
   <summary>Example <code>stopwordPresets</code> configuration - JSON object</summary>
@@ -191,34 +194,26 @@ Part of `invertedIndexConfig`. Defines named stopword presets at the collection 
 "invertedIndexConfig": {
   "stopwordPresets": {
     "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"],
-    "en-keep-the": { "preset": "en", "removals": ["the"] }
+    "de": ["der", "die", "das", "und", "oder", "aber"]
   }
 }
 ```
 
 </details>
 
-When defining a preset as an object (instead of a flat list), the following fields are available:
-
-| Parameter   | Type       | Details                                                                      |
-| :---------- | :--------- | :--------------------------------------------------------------------------- |
-| `preset`    | `string`   | Name of a base preset to extend (`"en"`, `"none"`, or another custom preset) |
-| `additions` | `string[]` | Words to add on top of the base preset                                       |
-| `removals`  | `string[]` | Words to remove from the base preset                                         |
-
-The existing [`stopwords`](#stopwords) configuration remains as the default for properties that do not specify a `textAnalyzer.stopwordPreset` override.
+The existing [`stopwords`](#stopwords) configuration remains as the default for properties that do not specify a `textAnalyzer.stopwordPreset` override. For extending a built-in preset with `additions`/`removals`, use [`stopwords`](#stopwords) instead — it is the only stopword config that accepts that object form.
 
 #### `textAnalyzer` {#textanalyzer}
 
 <TokenizerPreview />
 
-Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties, including accent folding and per-property stopword overrides.
+Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties. The accent-folding options (`asciiFold`, `asciiFoldIgnore`) are supported on properties with tokenization `word`, `lowercase`, `whitespace`, `field`, or `trigram` — not on the language-specific tokenizers (`gse`, `gse_ch`, `kagome_ja`, `kagome_kr`). The `stopwordPreset` option is only supported on properties with `tokenization: "word"`.
 
-| Parameter         | Type       | Default | Details                                                                                                                 |
-| :---------------- | :--------- | :------ | :---------------------------------------------------------------------------------------------------------------------- |
-| `asciiFold`       | `boolean`  | `false` | Normalizes accented Latin characters to ASCII equivalents during indexing and querying. Uses Unicode NFD decomposition. |
-| `asciiFoldIgnore` | `string[]` | `[]`    | Characters exempt from ASCII folding. **Immutable** after property creation.                                            |
-| `stopwordPreset`  | `string`   | (none)  | Name of a collection-level stopword preset to use for this property, overriding the default `stopwords` config.         |
+| Parameter         | Type       | Default | Details                                                                                                                                                                                                                                  |
+| :---------------- | :--------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `asciiFold`       | `boolean`  | `false` | Normalizes accented Latin characters to ASCII equivalents during indexing and querying. Uses Unicode NFD decomposition. **Immutable** after the property is created.                                                                     |
+| `asciiFoldIgnore` | `string[]` | `[]`    | Characters exempt from ASCII folding. Each entry must be a single character. **Immutable** after the property is created.                                                                                                               |
+| `stopwordPreset`  | `string`   | (none)  | Name of a built-in (`en`, `none`) or collection-level stopword preset to use for this property, overriding the default `stopwords` config. **Only supported on properties with `tokenization: "word"`** — schema validation rejects it on other tokenizers. |
 
 <details>
   <summary>Example <code>textAnalyzer</code> configuration - JSON object</summary>
@@ -311,13 +306,32 @@ Two REST endpoints let you test tokenization without modifying your schema.
 
 **Request body:**
 
-| Parameter        | Type      | Required | Details                                                                                                      |
-| :--------------- | :-------- | :------- | :----------------------------------------------------------------------------------------------------------- |
-| `text`           | `string`  | yes      | The text to tokenize                                                                                         |
-| `tokenization`   | `string`  | yes      | Tokenization method (`word`, `lowercase`, `whitespace`, `field`, `gse`, `trigram`, `kagome_ja`, `kagome_kr`) |
-| `analyzerConfig` | `object`  | no       | Analyzer settings: `asciiFold` (`boolean`), `asciiFoldIgnore` (`string[]`), `stopwordPreset` (`string`)      |
+| Parameter         | Type     | Required | Details                                                                                                                                                                                                        |
+| :---------------- | :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`            | `string` | yes      | The text to tokenize. Maximum length 10,000 characters.                                                                                                                                                        |
+| `tokenization`    | `string` | yes      | Tokenization method (`word`, `lowercase`, `whitespace`, `field`, `trigram`, `gse`, `gse_ch`, `kagome_ja`, `kagome_kr`).                                                                                        |
+| `analyzerConfig`  | `object` | no       | Analyzer settings: `asciiFold` (`boolean`), `asciiFoldIgnore` (`string[]`), `stopwordPreset` (`string`).                                                                                                       |
+| `stopwords`       | `object` | no       | Fallback stopword configuration (same shape as [`invertedIndexConfig.stopwords`](#stopwords)). Applied when `analyzerConfig.stopwordPreset` is not set. With `word` tokenization, defaults to preset `en` when omitted. |
+| `stopwordPresets` | `object` | no       | Named stopword presets (same shape as [`invertedIndexConfig.stopwordPresets`](#stopwordpresets)). Reference one via `analyzerConfig.stopwordPreset`.                                                           |
+
+:::note
+
+`stopwords` and `stopwordPresets` are mutually exclusive — pass one or the other, not both. Use `stopwords` for a single preset optionally tweaked with additions/removals; use `stopwordPresets` to define named presets and select one via `analyzerConfig.stopwordPreset`.
+
+:::
 
 **Example:**
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyTokenizeEndpoint}
+      startMarker="# TokenizeEndpointFreeform"
+      endMarker="# END TokenizeEndpointFreeform"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST http://localhost:8080/v1/tokenize -d '{
@@ -327,11 +341,13 @@ curl -X POST http://localhost:8080/v1/tokenize -d '{
 }'
 ```
 
+  </TabItem>
+</Tabs>
+
 **Response:**
 
 ```json
 {
-  "tokenization": "word",
   "indexed": ["the", "organic", "cafe", "creme", "blend"],
   "query": ["organic", "cafe", "creme", "blend"]
 }
@@ -340,9 +356,47 @@ curl -X POST http://localhost:8080/v1/tokenize -d '{
 - `indexed`: tokens as stored in the inverted index
 - `query`: tokens after stopword filtering (what BM25 scores at search time)
 
+**Example with a custom stopword preset:**
+
+Define a named preset on the request via `stopwordPresets` and reference it from `analyzerConfig.stopwordPreset`. This is useful for previewing a non-English preset before adding it to a collection.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyTokenizeEndpoint}
+      startMarker="# TokenizeEndpointCustomPreset"
+      endMarker="# END TokenizeEndpointCustomPreset"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST http://localhost:8080/v1/tokenize -d '{
+  "text": "La Tasse Bleue et le Bol",
+  "tokenization": "word",
+  "analyzerConfig": { "stopwordPreset": "fr" },
+  "stopwordPresets": {
+    "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"]
+  }
+}'
+```
+
+  </TabItem>
+</Tabs>
+
+**Response:**
+
+```json
+{
+  "indexed": ["la", "tasse", "bleue", "et", "le", "bol"],
+  "query": ["tasse", "bleue", "bol"]
+}
+```
+
 ### Property-based tokenization
 
-`POST /v1/schema/{className}/properties/{propertyName}/tokenize` resolves the full analyzer config from an existing property.
+`POST /v1/schema/{className}/properties/{propertyName}/tokenize` resolves the full analyzer config from an existing property. The property's tokenization method, `textAnalyzer` settings, and the collection's stopword configuration are applied automatically — nothing else needs to be passed.
 
 **Request body:**
 
@@ -351,6 +405,28 @@ curl -X POST http://localhost:8080/v1/tokenize -d '{
 | `text`    | `string` | yes      | The text to tokenize |
 
 The response format is the same as freeform tokenization. Class and property names are case-insensitive, and collection aliases are resolved automatically.
+
+**Example:**
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyTokenizeEndpoint}
+      startMarker="# TokenizeEndpointProperty"
+      endMarker="# END TokenizeEndpointProperty"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST http://localhost:8080/v1/schema/TokenizeDemo/properties/name_fr/tokenize -d '{
+  "text": "La Tasse Bleue et le Bol"
+}'
+```
+
+  </TabItem>
+</Tabs>
 
 See the [tokenization tutorial](../../tutorials/tokenization.md#example-6-inspecting-tokenization-with-the-tokenize-endpoint) for worked examples.
 
