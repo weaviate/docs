@@ -13,7 +13,6 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.similarity.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.similarity-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTest.java';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
 
@@ -55,14 +54,6 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetNearText"
-      endMarker="// END GetNearText"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetNearText"
       endMarker="// END GetNearText"
       language="java"
@@ -136,14 +127,6 @@ This example uses a base64 representation of an image.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START search with base64"
-      endMarker="// END search with base64"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={ImgSrchCSharpCode}
@@ -188,14 +171,6 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetNearObject"
-      endMarker="// END GetNearObject"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetNearObject"
       endMarker="// END GetNearObject"
       language="java"
@@ -275,14 +250,6 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START GetNearVector"
-      endMarker="// END GetNearVector"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -333,14 +300,6 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START NamedVectorNearText"
-      endMarker="// END NamedVectorNearText"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
       language="java"
@@ -415,14 +374,6 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START GetWithDistance"
-      endMarker="// END GetWithDistance"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -489,14 +440,6 @@ Optionally, use `offset` to paginate the results.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START GetLimitOffset"
-      endMarker="// END GetLimitOffset"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -547,14 +490,6 @@ To limit results to groups of similar distances to the query, use the [`autocut`
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START Autocut"
-      endMarker="// END Autocut"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START Autocut"
       endMarker="// END Autocut"
       language="java"
@@ -629,14 +564,6 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START GetWithGroupBy"
-      endMarker="// END GetWithGroupBy"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -701,14 +628,6 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetWithFilter"
-      endMarker="// END GetWithFilter"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetWithFilter"
       endMarker="// END GetWithFilter"
       language="java"

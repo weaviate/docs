@@ -68,47 +68,4 @@ func main() {
 ```
 
 </TabItem> */}
-{/* <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-
-package io.weaviate;
-
-import java.util.ArrayList;
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.schema.model.DataType;
-import io.weaviate.client.v1.schema.model.Property;
-import io.weaviate.client.v1.schema.model.WeaviateClass;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("https", "WEAVIATE_INSTANCE_URL/");
-    // Replace WEAVIATE_INSTANCE_URL with your instance URL
-
-    WeaviateClient client = new WeaviateClient(config);
-
-    // add code here
-  }
-}
-```
-
-</TabItem>
-<TabItem value="curl" label="Curl">
-
-```bash
-# Replace ${WEAVIATE_INSTANCE_URL} with your instance URL.
-
-curl \
--X POST \
--H "Content-Type: application/json" \
--d '{
-    "class": "Question",
-    "vectorizer": "text2vec-openai",
-}' \
-https://${WEAVIATE_INSTANCE_URL}/v1/schema
-```
-
-</TabItem> */}
 </Tabs>

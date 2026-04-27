@@ -76,62 +76,6 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.graphql.model.GraphQLResponse;
-import io.weaviate.client.v1.graphql.query.argument.NearTextArgument;
-import io.weaviate.client.v1.graphql.query.argument.NearTextMoveParameters;
-import io.weaviate.client.v1.graphql.query.fields.Field;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("http", "localhost:8080");
-    WeaviateClient client = new WeaviateClient(config);
-
-    NearTextMoveParameters moveTo = NearTextMoveParameters.builder()
-      .objects(new NearTextMoveParameters.ObjectMove[]{
-        // this ID is of the article: "Tohoku: A Japan destination for all seasons."
-        NearTextMoveParameters.ObjectMove.builder().id("c4209549-7981-3699-9648-61a78c2124b9").build()
-      })
-      .force(0.85f)
-      .build();
-
-    NearTextArgument nearText = client.graphQL().arguments().nearTextArgBuilder()
-      .concepts(new String[]{ "travelling in Asia" })
-      .certainty(0.7f)
-      .moveTo(moveTo)
-      .build();
-
-    Field title = Field.builder().name("title").build();
-    Field summary = Field.builder().name("summary").build();
-    Field _additional = Field.builder()
-      .name("_additional")
-      .fields(new Field[]{
-        Field.builder().name("certainty").build(),
-      }).build();
-
-    Result<GraphQLResponse> result = client.graphQL().get()
-      .withClassName("Article")
-      .withFields(title, summary, _additional)
-      .withNearText(nearText)
-      .run();
-
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-```
-
-</TabItem>
 <TabItem value="curl" label="Curl">
 
 ```bash

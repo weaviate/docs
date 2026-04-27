@@ -121,56 +121,6 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.graphql.model.ExploreFields;
-import io.weaviate.client.v1.graphql.model.GraphQLResponse;
-import io.weaviate.client.v1.graphql.query.argument.NearTextArgument;
-import io.weaviate.client.v1.graphql.query.argument.NearTextMoveParameters;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("http", "localhost:8080");
-    WeaviateClient client = new WeaviateClient(config);
-
-    NearTextMoveParameters moveTo = NearTextMoveParameters.builder()
-      .concepts(new String[]{ "publisher", "articles" }).force(0.5f).build();
-
-    NearTextMoveParameters moveAway = NearTextMoveParameters.builder()
-      .concepts(new String[]{ "fashion", "shop" }).force(0.2f)
-      .build();
-
-    NearTextArgument nearText = client.graphQL().arguments().nearTextArgBuilder()
-      .concepts(new String[]{ "New Yorker" })
-      .moveTo(moveTo)
-      .moveAwayFrom(moveAway)
-      .distance(0.95f)  // prior to v1.14 use .certainty()
-      .build();
-
-    Result<GraphQLResponse> result = client.graphQL().explore()
-      .withFields(ExploreFields.BEACON,
-        ExploreFields.CERTAINTY,  // only supported if distance==cosine
-        ExploreFields.DISTANCE,   // always supported
-        ExploreFields.CLASS_NAME)
-      .withNearText(nearText)
-      .run();
-
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-```
-
-</TabItem>
 <TabItem value="curl" label="Curl">
 
 ```bash

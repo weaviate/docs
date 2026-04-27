@@ -56,64 +56,6 @@ GoNearText
   language="java"
 />
 </TabItem>
-{/* <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.graphql.model.GraphQLResponse;
-import io.weaviate.client.v1.graphql.query.argument.NearTextArgument;
-import io.weaviate.client.v1.graphql.query.argument.NearTextMoveParameters;
-import io.weaviate.client.v1.graphql.query.fields.Field;
-
-import java.util.HashMap;
-import java.util.Map;
-
-public class App {
-  public static void main(String[] args) {
-    Map<String, String> headers = new HashMap<String, String>() { {
-      put("X-OpenAI-Api-Key", "YOUR-OPENAI-API-KEY");
-    } };
-    Config config = new Config("https", "WEAVIATE_INSTANCE_URL/", headers);  // Replace with your Weaviate endpoint
-    WeaviateClient client = new WeaviateClient(config);
-
-    NearTextMoveParameters moveTo = NearTextMoveParameters.builder()
-      .concepts(new String[]{ "haute couture" }).force(0.85f).build();
-
-    NearTextMoveParameters moveAway = NearTextMoveParameters.builder()
-      .concepts(new String[]{ "finance" }).force(0.45f)
-      .build();
-
-    NearTextArgument nearText = client.graphQL().arguments().nearTextArgBuilder()
-      .concepts(new String[]{ "fashion" })
-      .distance(0.6f) // use .certainty(0.7f) prior to v1.14
-      .moveTo(moveTo)
-      .moveAwayFrom(moveAway)
-      .build();
-
-    Field question = Field.builder().name("question").build();
-    Field answer = Field.builder().name("answer").build();
-
-    Result<GraphQLResponse> result = client.graphQL().get()
-      .withClassName("Question")
-      .withFields(question, answer)
-      .withNearText(nearText)
-      .withLimit(1)
-      .run();
-
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-```
-
-</TabItem> */}
 <TabItem value="curl" label="Curl">
 
 ```bash
