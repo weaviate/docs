@@ -1,6 +1,6 @@
 // const fetch = require('node-fetch');
 
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 5;
 
 const getRepoVersion = async (repoName, attempt = 1) => {
     try {
