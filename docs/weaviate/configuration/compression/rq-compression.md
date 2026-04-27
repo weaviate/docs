@@ -13,7 +13,6 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compress
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import Java6Code from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -68,14 +67,6 @@ RQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START EnableRQ"
-      endMarker="// END EnableRQ"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -106,14 +97,6 @@ RQ can also be enabled for an existing collection by updating the collection def
         endMarker="// END UpdateSchema"
         language="ts"
       />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START UpdateSchema"
-      endMarker="// END UpdateSchema"
-      language="java"
-    />
   </TabItem>
     <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
@@ -176,14 +159,6 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START 1BitEnableRQ"
-      endMarker="// END 1BitEnableRQ"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
@@ -239,14 +214,6 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START 1BitUpdateSchema"
-      endMarker="// END 1BitUpdateSchema"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -293,14 +260,6 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={Java6Code}
-      startMarker="// START RQWithOptions"
-      endMarker="// END RQWithOptions"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START RQWithOptions"
       endMarker="// END RQWithOptions"
       language="java"

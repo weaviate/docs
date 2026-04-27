@@ -11,7 +11,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read-all-objects.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadAllTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadAllTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go";
@@ -58,14 +57,6 @@ The following code iterates through all objects, providing the properties and id
       text={JavaV6Code}
       startMarker="// START ReadAllProps"
       endMarker="// END ReadAllProps"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// Retrieve data"
-      endMarker="// Use this function to retrieve data"
       language="java"
     />
   </TabItem>
@@ -120,14 +111,6 @@ Read through all data including the vectors. (Also applicable where [named vecto
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START ReadAllVectors"
-      endMarker="// END ReadAllVectors"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -174,14 +157,6 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START ReadAllTenants"
-      endMarker="// END ReadAllTenants"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START ReadAllTenants"
       endMarker="// END ReadAllTenants"
       language="java"

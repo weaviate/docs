@@ -11,7 +11,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.create.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
@@ -56,14 +55,6 @@ This example creates an object in the `JeopardyQuestion` collection.
       text={JavaV6Code}
       startMarker="// START CreateSimpleObject"
       endMarker="// END CreateSimpleObject"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObject START"
-      endMarker="// CreateObject END"
       language="java"
     />
   </TabItem>
@@ -126,14 +117,6 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       text={JavaV6Code}
       startMarker="// START CreateObjectWithVector"
       endMarker="// END CreateObjectWithVector"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObjectWithVector START"
-      endMarker="// CreateObjectWithVector END"
       language="java"
     />
   </TabItem>
@@ -224,14 +207,6 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       text={JavaV6Code}
       startMarker="// START CreateObjectWithId"
       endMarker="// END CreateObjectWithId"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObjectWithId START"
-      endMarker="// CreateObjectWithId END"
       language="java"
     />
   </TabItem>
@@ -403,14 +378,6 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       text={JavaV6Code}
       startMarker="// START ValidateObject"
       endMarker="// END ValidateObject"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// ValidateObject START"
-      endMarker="// ValidateObject END"
       language="java"
     />
   </TabItem>

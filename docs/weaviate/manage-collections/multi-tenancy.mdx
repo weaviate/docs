@@ -9,7 +9,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMultiTenancyTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
@@ -55,14 +54,6 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START EnableMultiTenancy"
-      endMarker="// END EnableMultiTenancy"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="java"
@@ -238,14 +229,6 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START AddTenantsToClass"
-      endMarker="// END AddTenantsToClass"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -290,14 +273,6 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START ListTenants"
-      endMarker="// END ListTenants"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START ListTenants"
       endMarker="// END ListTenants"
       language="java"
@@ -436,14 +411,6 @@ Deleting a tenant deletes all associated objects.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START RemoveTenants"
-      endMarker="// END RemoveTenants"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -536,14 +503,6 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateMtObject"
-      endMarker="// END CreateMtObject"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -586,14 +545,6 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START Search"
-      endMarker="// END Search"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START Search"
       endMarker="// END Search"
       language="java"
@@ -650,14 +601,6 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddCrossRef"
-      endMarker="// END AddCrossRef"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddCrossRef"
       endMarker="// END AddCrossRef"
       language="java"

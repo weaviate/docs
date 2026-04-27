@@ -13,7 +13,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
@@ -69,14 +68,6 @@ Collection level settings override default values and general configuration para
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithVectorizer"
-      endMarker="// END CreateCollectionWithVectorizer"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -128,14 +119,6 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START ModuleSettings"
-      endMarker="// END ModuleSettings"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -182,14 +165,6 @@ As such, each named vector configuration can include its own vectorizer and vect
       text={JavaV6Code}
       startMarker="// START BasicNamedVectors"
       endMarker="// END BasicNamedVectors"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithNamedVectors"
-      endMarker="// END CreateCollectionWithNamedVectors"
       language="java"
     />
   </TabItem>
@@ -288,14 +263,6 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START MultiValueVectorCollection"
-      endMarker="// END MultiValueVectorCollection"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -342,14 +309,6 @@ The [vector index type](../config-refs/indexing/vector-index.mdx) can be set for
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SetVectorIndexType"
-      endMarker="// END SetVectorIndexType"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START SetVectorIndexType"
       endMarker="// END SetVectorIndexType"
       language="java"
@@ -406,14 +365,6 @@ Set [vector index parameters](../config-refs/indexing/vector-index.mdx) such as 
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SetVectorIndexParams"
-      endMarker="// END SetVectorIndexParams"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START SetVectorIndexParams"
       endMarker="// END SetVectorIndexParams"
       language="java"
@@ -479,14 +430,6 @@ Configure individual properties in a collection. Each property can have it's own
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START PropModuleSettings"
-      endMarker="// END PropModuleSettings"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -529,14 +472,6 @@ If you choose to bring your own vectors, you should specify the `distance metric
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START DistanceMetric"
-      endMarker="// END DistanceMetric"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START DistanceMetric"
       endMarker="// END DistanceMetric"
       language="java"

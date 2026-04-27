@@ -14,14 +14,11 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyConnect from "!!raw-loader!../\_includes/provider.connect.weaviate.py";
 import TSConnect from "!!raw-loader!../\_includes/provider.connect.weaviate.ts";
 import GoConnect from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go";
-import JavaConnect from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddingsTest.java";
 import PyCode from "!!raw-loader!../\_includes/provider.vectorizer.py";
 import TSCode from "!!raw-loader!../\_includes/provider.vectorizer.ts";
 import GoCode from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.cs";
-import JavaCode from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java";
-import JavaImportQueries from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java";
 
 <CloudOnlyBadge />
 
@@ -79,14 +76,6 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaConnect}
-      startMarker="// START WeaviateInstantiation"
-      endMarker="// END WeaviateInstantiation"
-      language="javaraw"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -134,14 +123,6 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BasicVectorizerWeaviate"
-      endMarker="// END BasicVectorizerWeaviate"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -184,14 +165,6 @@ You can specify one of the [available models](#available-models) for the vectori
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START VectorizerWeaviateCustomModel"
-      endMarker="// END VectorizerWeaviateCustomModel"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START VectorizerWeaviateCustomModel"
       endMarker="// END VectorizerWeaviateCustomModel"
       language="java"
@@ -260,14 +233,6 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaImportQueries}
-      startMarker="// START BatchImportExample"
-      endMarker="// END BatchImportExample"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -327,14 +292,6 @@ The query below returns the `n` most similar objects from the database, set by `
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaImportQueries}
-      startMarker="// START NearTextExample"
-      endMarker="// END NearTextExample"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -384,14 +341,6 @@ The query below returns the `n` best scoring objects from the database, set by `
 <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START HybridExample"
-      endMarker="// END HybridExample"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaImportQueries}
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="java"

@@ -4,7 +4,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 
 import PyV4Code from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsV3Code from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
-import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
 
 <Tabs className="code" groupId="languages">
@@ -30,14 +29,6 @@ import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
          startMarker="// START OIDCConnect"
          endMarker="// END OIDCConnect"
          language="ts"
-         />
-    </TabItem>
-    <TabItem value="java" label="Java v5 (Deprecated)">
-         <FilteredTextBlock
-         text={JavaCode}
-         startMarker="// START OIDCConnect"
-         endMarker="// END OIDCConnect"
-         language="java"
          />
     </TabItem>
 </Tabs>

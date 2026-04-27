@@ -15,7 +15,6 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsAliasTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsAliasTest.cs";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
 
 In this tutorial, we will explore how to use **collection aliases** in Weaviate to perform zero-downtime migrations. Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by multiple names. This powerful feature enables you to migrate to new collection schemas, update configurations, or reorganize your data without any service interruption.
 
@@ -109,14 +108,6 @@ First, connect to your Weaviate instance using your preferred client library.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START ConnectToWeaviate"
-      endMarker="// END ConnectToWeaviate"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -159,14 +150,6 @@ Let's create our initial products collection and populate it with data.
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START Step1CreateOriginal"
-      endMarker="// END Step1CreateOriginal"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START Step1CreateOriginal"
       endMarker="// END Step1CreateOriginal"
       language="java"
@@ -219,14 +202,6 @@ Now create an alias that your application will use. This decouples your applicat
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START Step2CreateAlias"
-      endMarker="// END Step2CreateAlias"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -269,14 +244,6 @@ Your application code should reference the alias, not the underlying collection.
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START MigrationUseAlias"
-      endMarker="// END MigrationUseAlias"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START MigrationUseAlias"
       endMarker="// END MigrationUseAlias"
       language="java"
@@ -331,14 +298,6 @@ Now let's create a new version of the collection with an additional field (e.g.,
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START Step3NewCollection"
-      endMarker="// END Step3NewCollection"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -381,14 +340,6 @@ Copy data from the old collection to the new one, adding default values for new 
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START Step4MigrateData"
-      endMarker="// END Step4MigrateData"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START Step4MigrateData"
       endMarker="// END Step4MigrateData"
       language="java"
@@ -441,14 +392,6 @@ This is the magic moment - update the alias to point to the new collection. This
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START Step5UpdateAlias"
-      endMarker="// END Step5UpdateAlias"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -491,14 +434,6 @@ After verifying that everything works correctly with the new collection, you can
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START Step6Cleanup"
-      endMarker="// END Step6Cleanup"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START Step6Cleanup"
       endMarker="// END Step6Cleanup"
       language="java"

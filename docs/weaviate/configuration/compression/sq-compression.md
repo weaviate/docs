@@ -13,7 +13,6 @@ import TSCodeSQOptions from '!!raw-loader!/\_includes/code/howto/configure-sq/sq
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.sq_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureSQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureSQTest.cs";
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/sq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
@@ -47,14 +46,6 @@ SQ can be enabled at collection creation time through the collection definition:
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START EnableSQ"
-      endMarker="// END EnableSQ"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START EnableSQ"
       endMarker="// END EnableSQ"
       language="java"
@@ -103,14 +94,6 @@ SQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START UpdateSchema"
-      endMarker="// END UpdateSchema"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -149,14 +132,6 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
   <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SQWithOptions"
-      endMarker="// END SQWithOptions"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START SQWithOptions"
       endMarker="// END SQWithOptions"
       language="java"
