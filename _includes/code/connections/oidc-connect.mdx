@@ -4,8 +4,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 
 import PyV4Code from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsV3Code from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
-import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTest.cs';
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py" label="Python">
@@ -29,15 +30,23 @@ import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
          text={GoCode}
          startMarker="// START OIDCConnect"
          endMarker="// END OIDCConnect"
-         language="ts"
+         language="go"
          />
     </TabItem>
-    <TabItem value="java" label="Java v5 (Deprecated)">
+    <TabItem value="java6" label="Java v6">
          <FilteredTextBlock
-         text={JavaCode}
+         text={JavaV6Code}
          startMarker="// START OIDCConnect"
          endMarker="// END OIDCConnect"
          language="java"
+         />
+    </TabItem>
+    <TabItem value="csharp" label="C#">
+         <FilteredTextBlock
+         text={CSharpCode}
+         startMarker="// START OIDCConnect"
+         endMarker="// END OIDCConnect"
+         language="csharp"
          />
     </TabItem>
 </Tabs>
