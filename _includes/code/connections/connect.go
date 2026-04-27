@@ -281,19 +281,16 @@ func main() {
 ////////////
 
 // START OIDCConnect
-// Set these environment variables
-// WEAVIATE_USER    your Weaviate OIDC username
-// WEAVIATE_PWD     your Weaviate OIDC password
-
+// Connect to a self-hosted Weaviate instance configured with OIDC.
+// Obtain the access token from your identity provider before connecting.
 cfg := weaviate.Config{
-    Host:   "weaviate.example.com",
+    Host:   os.Getenv("WEAVIATE_HTTP_HOST"),
     Scheme: "http",
-    AuthConfig: auth.ResourceOwnerPasswordFlow{
-        Username: os.Getenv("WEAVIATE_USER"),
-        Password: os.Getenv("WEAVIATE_PWD"),
-        Scopes:   []string{"offline_access"}, // optional, depends on the configuration of your identity provider (not required with WCD)
+    AuthConfig: auth.BearerToken{
+        AccessToken:  os.Getenv("WEAVIATE_OIDC_ACCESS_TOKEN"),
+        RefreshToken: os.Getenv("WEAVIATE_OIDC_REFRESH_TOKEN"),
+        ExpiresIn:    60,
     },
-    Headers: nil,
 }
 client, err := weaviate.NewClient(cfg)
 if err != nil{

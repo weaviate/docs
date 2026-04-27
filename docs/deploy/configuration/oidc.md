@@ -53,7 +53,9 @@ Here are some options to consider:
 
 ### Support for Weaviate clients
 
-If Weaviate Database is configured to use the `client credentials grant` flow or the `resource owner password flow`, a Weaviate client can instantiate a connection to Weaviate Database that incorporates the authentication flow.
+The recommended pattern is to obtain an access token from your IdP using one of the flows above, then pass it to the Weaviate client as a **bearer token**. The client transparently attaches it to every request and, if a refresh token is provided, renews the access token before it expires.
+
+The examples below show how each official client accepts a bearer token. See [Get and pass tokens manually](#get-and-pass-tokens-manually) for an end-to-end example of the token-acquisition step (talking to your IdP), or use your IdP's SDK.
 
 import OIDCExamples from '/\_includes/code/connections/oidc-connect.mdx';
 

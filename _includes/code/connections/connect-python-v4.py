@@ -249,7 +249,7 @@ import os
 openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_embedded(
-    version="1.30.0",
+    version="1.37.0",
     headers={
         "X-OpenAI-Api-Key": openai_api_key
     },
@@ -273,17 +273,23 @@ import os
 import weaviate
 from weaviate.classes.init import Auth
 
-# Best practice: store your credentials in environment variables
-weaviate_url = os.environ["WEAVIATE_URL"]
-weaviate_username = os.environ["WCD_USERNAME"]
-weaviate_password = os.environ["WCD_PASSWORD"]
+# Connect to a self-hosted Weaviate instance configured with OIDC.
+# Obtain the access token from your identity provider before connecting.
+http_host, http_port = os.environ["WEAVIATE_HTTP_HOST"].split(":")
+grpc_host, grpc_port = os.environ["WEAVIATE_GRPC_HOST"].split(":")
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=weaviate_url,   # Replace with your Weaviate Cloud URL
-    auth_credentials=Auth.client_password(
-        username=weaviate_username,  # Your Weaviate Cloud username
-        password=weaviate_password   # Your Weaviate Cloud password
-    )
+client = weaviate.connect_to_custom(
+    http_host=http_host,
+    http_port=int(http_port),
+    http_secure=False,
+    grpc_host=grpc_host,
+    grpc_port=int(grpc_port),
+    grpc_secure=False,
+    auth_credentials=Auth.bearer_token(
+        access_token=os.environ["WEAVIATE_OIDC_ACCESS_TOKEN"],
+        refresh_token=os.environ.get("WEAVIATE_OIDC_REFRESH_TOKEN"),
+        expires_in=int(os.environ.get("WEAVIATE_OIDC_EXPIRES_IN", "60")),
+    ),
 )
 # END OIDCConnect
 
