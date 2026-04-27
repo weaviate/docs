@@ -1137,3 +1137,8 @@ status = 301
 from = "/llms.txt"
 to   = "https://weaviate.io/llms.txt"
 status = 301
+
+[[redirects]]
+from = "/weaviate/modules/model_providers"
+to   = "/weaviate/model-providers"
+status = 301
