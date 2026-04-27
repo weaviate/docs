@@ -36,7 +36,7 @@ All four variables are [runtime-configurable](/docs/deploy/configuration/env-var
 
 :::note Weaviate Cloud
 
-Collection export is not enabled by default in Weaviate Cloud. If you want to enable it, contact us via [email](mailto:support@weaviate.io).
+The collection export feature is not available in Weaviate Cloud.
 
 :::
 
