@@ -523,13 +523,6 @@ The `ContainsNone` operator works on text properties and take an array of values
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-// Java support coming soon
-```
-
-  </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}

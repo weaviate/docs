@@ -4,7 +4,6 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.shards_test.go";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
@@ -45,14 +44,6 @@ console.log(JSON.stringify(shards, null, 2));
       endMarker="// END UpdateCollectionShards"
       language="java"
     />
-  </TabItem>
- <TabItem value="java" label="Java v5 (Deprecated)">
-     <FilteredTextBlock
-       text={JavaCode}
-       startMarker="// UpdateShardStatus START"
-       endMarker="// UpdateShardStatus END"
-       language="java"
-     />
   </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock

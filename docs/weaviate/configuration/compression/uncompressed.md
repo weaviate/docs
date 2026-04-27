@@ -13,7 +13,6 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 

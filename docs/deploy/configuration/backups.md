@@ -14,7 +14,6 @@ import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.b
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/configure.backups.java';
 import Java6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
@@ -82,14 +81,6 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
     />
   </TabItem>
 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateBackup"
-      endMarker="// END CreateBackup"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -368,14 +359,6 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
     />
   </TabItem>
 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateBackup"
-      endMarker="// END CreateBackup"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -460,14 +443,6 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START StatusCreateBackup"
-      endMarker="// END StatusCreateBackup"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -643,14 +618,6 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
     />
   </TabItem>
 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START RestoreBackup"
-      endMarker="// END RestoreBackup"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -709,14 +676,6 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
     />
   </TabItem>
 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START StatusRestoreBackup"
-      endMarker="// END StatusRestoreBackup"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock

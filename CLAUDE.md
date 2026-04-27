@@ -59,13 +59,12 @@ tests/start-weaviate.sh
 tests/stop-weaviate.sh
 ```
 
-#### Java Tests
+#### Java v6 Tests
 ```bash
-cd _includes/code/howto/java
+cd _includes/code/java-v6
 mvn clean install
 mvn test                      # Run all
-mvn test -Dgroups="crud"      # Run specific tag
-mvn test -Dtest=ManageDataCreateTest  # Run specific class
+mvn test -Dtest=ConnectionTest  # Run specific class
 ```
 
 #### Go Tests

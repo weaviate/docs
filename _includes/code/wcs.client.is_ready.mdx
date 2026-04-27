@@ -59,31 +59,4 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateAuthClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.misc.model.Meta;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("https", "WEAVIATE_INSTANCE_URL/");  // Replace with your Weaviate endpoint
-    WeaviateClient client = WeaviateAuthClient.apiKey(config, "YOUR-WEAVIATE-API-KEY");  // Replace with your Weaviate instance API key
-
-    Result<Boolean> result = client.misc().readyChecker().run();
-
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-```
-
-</TabItem>
 </Tabs>

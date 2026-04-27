@@ -51,13 +51,6 @@ The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/em
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-// Java support coming soon
-```
-
- </TabItem>
   <TabItem value="go" label="Go">
 
 ```go

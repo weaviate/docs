@@ -8,7 +8,7 @@ __*
 .venv
 nohup.out
 tests/temp.*
-_includes/code/howto/java/target
+_includes/code/java-v6/target
 _includes/code/howto/go/vendor
 **/.ipynb
 **/.ipynb_checkpoints/*
