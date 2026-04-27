@@ -225,34 +225,25 @@ await client.close()
 ////////////
 {
 // START OIDCConnect
-// Set these environment variables
-// WCD_USERNAME    your Weaviate OIDC username
-// WCD_PASSWORD     your Weaviate OIDC password
-// WEAVIATE_HTTP_HOST     your Weaviate instance
-// WEAVIATE_GRPC_HOST   your Weaviate instance GPC URL
+// Connect to a self-hosted Weaviate instance configured with OIDC.
+// Obtain the access token from your identity provider before connecting.
+const httpParts = process.env.WEAVIATE_HTTP_HOST!.split(':');
+const grpcParts = process.env.WEAVIATE_GRPC_HOST!.split(':');
 
-const client = await weaviate.connectToCustom(
- {
-    httpHost: process.env.WEAVIATE_HTTP_HOST,  // URL only, no http prefix
-    httpPort: 443,
-    grpcHost: process.env.WEAVIATE_GRPC_HOST,
-    grpcPort: 443,
-    grpcSecure: true,
-    httpSecure: true,
-    authCredentials: new weaviate.AuthUserPasswordCredentials({
-     username: process.env.WCD_USERNAME,
-     password: process.env.WCD_PASSWORD,
-    }),
-    headers: {
-      'X-Cohere-Api-Key': process.env.COHERE_API_KEY || ''
-    }
-  })
+const client = await weaviate.connectToCustom({
+  httpHost: httpParts[0],
+  httpPort: Number(httpParts[1]),
+  httpSecure: false,
+  grpcHost: grpcParts[0],
+  grpcPort: Number(grpcParts[1]),
+  grpcSecure: false,
+  authCredentials: new weaviate.AuthAccessTokenCredentials({
+    accessToken: process.env.WEAVIATE_OIDC_ACCESS_TOKEN!,
+    refreshToken: process.env.WEAVIATE_OIDC_REFRESH_TOKEN,
+    expiresIn: Number(process.env.WEAVIATE_OIDC_EXPIRES_IN ?? 60),
+  }),
+});
 // END OIDCConnect
-/*
-// START OIDCConnect
-console.log(client)
-// END OIDCConnect
-*/
 await client.close()
 }
 
