@@ -988,6 +988,24 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "DigitalOcean",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/installation-guides/digitalocean",
+          className: "sidebar-item",
+        },
+      ],
+    },
   ],
   deployConfigSidebar: [
     {
