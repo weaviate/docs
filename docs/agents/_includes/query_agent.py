@@ -674,3 +674,14 @@ async def run_streaming_query():
 
 asyncio.run(run_streaming_query())
 # END StreamAsyncResponse
+
+# START SuggestQueries
+response = qa.suggest_queries(
+    collections=["IRPAPERS"],
+    num_queries=3,
+    instructions="High-level themes and open-ended exploration",
+)
+
+for suggested_query in response.queries:
+    print(suggested_query.query)
+# END SuggestQueries
