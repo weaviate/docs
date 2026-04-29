@@ -1,5 +1,5 @@
 ---
-title: Usage
+title: Usage (old complete docs)
 sidebar_position: 30
 description: "Technical documentation and usage examples for implementing the Query Agent."
 image: og/docs/agents.jpg
@@ -20,8 +20,8 @@ The Weaviate Query Agent is a pre-built agentic service designed to answer natur
 
 The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
 
-![Weaviate Query Agent from a user perspective](../_includes/query_agent_usage_light.png#gh-light-mode-only "Weaviate Query Agent from a user perspective")
-![Weaviate Query Agent from a user perspective](../_includes/query_agent_usage_dark.png#gh-dark-mode-only "Weaviate Query Agent from a user perspective")
+![Weaviate Query Agent from a user perspective](./_includes/query_agent_usage_light.png#gh-light-mode-only "Weaviate Query Agent from a user perspective")
+![Weaviate Query Agent from a user perspective](./_includes/query_agent_usage_dark.png#gh-dark-mode-only "Weaviate Query Agent from a user perspective")
 
 This page describes how to use the Query Agent to answer natural language queries, using your data stored in Weaviate Cloud.
 

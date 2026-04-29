@@ -64,13 +64,13 @@ const secondaryNavbarItems = {
     link: "/deploy",
     links: [
       { label: "Get started", link: "/deploy", sidebar: "deploySidebar" },
-      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar"},
+      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar" },
       /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
-      { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
+      { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar" },
       /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
-      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
-      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar"},
+      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar" },
+      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar" },
     ]
   },
 

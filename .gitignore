@@ -274,3 +274,5 @@ tests/backups/
 
 # Ignore LLM/agent config files
 .claude/
+
+docs/agents old/*

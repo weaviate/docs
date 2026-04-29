@@ -31,22 +31,6 @@ featured = true
 description = "A getting-started guide to building a Weaviate Query Agent, demonstrated with an e-commerce assistant example."
 
 [[recipe]]
-title = "Build A Weaviate Transformation Agent"
-notebook = "weaviate-services/agents/transformation-agent-get-started.ipynb"
-tags = ["Transformation Agent"]
-agent = true
-featured = true
-description = "Learn the basics of creating and using a Weaviate Transformation Agent for data processing workflows."
-
-[[recipe]]
-title = "Benchmarking Arctic 2.0 vs. Arctic 1.5 with Synthetic RAG Evals"
-notebook = "weaviate-services/agents/transformation-agent-retrieval-benchmark.ipynb"
-tags = ["Transformation Agent"]
-agent = true
-featured = true
-description = "Benchmarks Arctic 2.0 against Arctic 1.5 using synthetic RAG evaluations within a Weaviate Agent context."
-
-[[recipe]]
 title = "Weaviate Query Agent with Crew AI"
 notebook = "integrations/llm-agent-frameworks/crewai/crewai-query-agent-as-tool.ipynb"
 tags = ["Query Agent", "Integration"]
@@ -66,21 +50,6 @@ notebook = "integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-w
 tags = ["Query Agent", "Integration"]
 integration = true
 description = "Illustrates how to incorporate the Weaviate Query Agent into agentic workflows built with LlamaIndex."
-
-[[recipe]]
-title = "Build a Weaviate Personalization Agent - Movie Recommender"
-notebook = "weaviate-services/agents/personalization-agent-get-started-movies.ipynb"
-tags = ["Personalization Agent"]
-agent = true
-featured = true
-description = "Learn how to create a movie recommendation engine powered by an LLM and a vector database."
-
-[[recipe]]
-title = "Build a Weaviate Personalization Agent - Food Recommender"
-notebook = "weaviate-services/agents/personalization-agent-get-started-recipes.ipynb"
-tags = ["Personalization Agent"]
-agent = true
-description = "Learn how to use the Weaviate Personalization Agent to create tailored food recommendations."
 
 [[recipe]]
 title = "Generative search (RAG) with AWS Bedrock"

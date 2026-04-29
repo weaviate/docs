@@ -103,7 +103,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: ["weaviate/mcp/mcp-server","weaviate/mcp/docs-mcp-server"],
+      items: ["weaviate/mcp/mcp-server", "weaviate/mcp/docs-mcp-server"],
     },
     {
       type: "html",
@@ -1263,22 +1263,14 @@ const sidebars = {
   ],
   agentsSidebar: [
     {
-      type: "doc",
-      id: "agents/index",
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
       type: "category",
-      label: "Query Agent",
+      label: "Overview",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/query/index",
+        id: "agents/index",
       },
       customProps: {
         cloudOnly: true,
@@ -1286,12 +1278,22 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "agents/query/usage",
+          id: "agents/index",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/query/tutorial-ecommerce",
+          id: "agents/installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/quickstart",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/usage",
           className: "sidebar-item",
         },
       ],
@@ -1302,26 +1304,36 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Transformation Agent",
+      label: "Features",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/transformation/index",
+        id: "agents/guides/index",
       },
       customProps: {
-        cloudOnly: true,
+        cloudOnly: false,
       },
       items: [
         {
           type: "doc",
-          id: "agents/transformation/usage",
+          id: "agents/guides/ask_mode",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/transformation/tutorial-enrich-dataset",
+          id: "agents/guides/search_mode",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/guides/research_mode",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/guides/suggest_queries",
           className: "sidebar-item",
         },
       ],
@@ -1332,29 +1344,78 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Personalization Agent",
+      label: "Reference",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/personalization/index",
+        id: "agents/guides/index",
       },
       customProps: {
-        cloudOnly: true,
+        cloudOnly: false,
       },
       items: [
         {
           type: "doc",
-          id: "agents/personalization/usage",
+          id: "agents/reference/additional_filters",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/personalization/tutorial-recipe-recommender",
+          id: "agents/reference/advanced_collections",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/reference/multi_turn_conversations",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/reference/troubleshooting",
           className: "sidebar-item",
         },
       ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Clients",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "agents/guides/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "agents/clients/python",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/clients/typescript",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/clients/api",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
   ],
   agentsRecipesSidebar: [

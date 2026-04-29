@@ -10,6 +10,7 @@ from pathlib import Path
     [
         "./docs/agents/_includes/query_agent_tutorial_ecommerce.py",
         "./docs/agents/_includes/query_agent.py",
+        "./docs/agents/_includes/quickstart.py",
         "./docs/agents/_includes/transformation_agent.py",
         "./docs/agents/_includes/transformation_agent_tutorial_enrich_dataset.py",
         "./docs/agents/_includes/personalization_agent.py",

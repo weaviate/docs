@@ -1,77 +1,132 @@
 ---
 title: Introduction
 sidebar_position: 10
-description: "Overview of Weaviate AI Agents documentation for personalization, querying, and data transformation agents."
+description: "Overview of the Weaviate Query Agent."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started']
 ---
 
-# Weaviate Agents - Introduction
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from "!!raw-loader!./_includes/code/quickstart.py";
+import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
+
+# Weaviate Query Agent: AI Search for your Database
 
 <CloudOnlyBadge />
 
-Weaviate Agents are pre-built agentic services designed for specific tasks. They are available out-of-the-box for Weaviate Cloud users to interact with their data in Weaviate Cloud to simplify data engineering and AI development workflows.
+The query agent uses agentic search (AI search) on your Weaviate vector database to determine the most effective query terms, filters, and other search options based on your natural language query.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START FirstExample"
+            endMarker="# END FirstExample"
+            language="py"
+        />
+    </TabItem>
+</Tabs>
+
+<details>
+<summary>Example output</summary>
+
+```
+╭───────────────────────────────────────────── 💬 Ask Mode Response ──────────────────────────────────────────────╮
+│                                                                                                                 │
+│ The most expensive blue t-shirt is **Neotech Noir Tee** by **Vivid Verse**, priced at **$46.00**.               │
+│                                                                                                                 │
+│ Details:                                                                                                        │
+│ - **Product ID:** 9f9fe575-be97-46d9-a5ca-ff41ae57bef4                                                          │
+│ - **Colors:** black, blue                                                                                       │
+│ - **Category:** Tops                                                                                            │
+│ - **Subcategory:** T-Shirts                                                                                     │
+│                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────── 🔭 Search 1/1 ─────────────────────────────────────────────────╮
+│                                                                                                                 │
+│ QueryResultWithCollectionNormalized(                                                                            │
+│     query=None,                                                                                                 │
+│     filters=FilterAndOr(                                                                                        │
+│         combine='AND',                                                                                          │
+│         filters=[                                                                                               │
+│             TextPropertyFilter(                                                                                 │
+│                 property_name='subcategory',                                                                    │
+│                 operator=<ComparisonOperator.EQUALS: '='>,                                                      │
+│                 value='T-Shirts'                                                                                │
+│             ),                                                                                                  │
+│             TextArrayPropertyFilter(                                                                            │
+│                 property_name='colors',                                                                         │
+│                 operator=<ComparisonOperator.CONTAINS_ANY: 'contains_any'>,                                     │
+│                 value=['blue']                                                                                  │
+│             )                                                                                                   │
+│         ]                                                                                                       │
+│     ),                                                                                                          │
+│     collection='ECommerce',                                                                                     │
+│     sort_property=QuerySort(property_name='price', order='descending', tie_break=None),                         │
+│     uuid_value=None                                                                                             │
+│ )                                                                                                               │
+│                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────── 📊 Aggregation 1/1 ───────────────────────────────────────────────╮
+│                                                                                                                 │
+│ AggregationResultWithCollectionNormalized(                                                                      │
+│     groupby_property=None,                                                                                      │
+│     aggregation=IntegerPropertyAggregation(property_name='price', metrics=<NumericMetrics.MAX: 'MAXIMUM'>),     │
+│     filters=FilterAndOr(                                                                                        │
+│         combine='AND',                                                                                          │
+│         filters=[                                                                                               │
+│             TextPropertyFilter(                                                                                 │
+│                 property_name='category',                                                                       │
+│                 operator=<ComparisonOperator.EQUALS: '='>,                                                      │
+│                 value='Tops'                                                                                    │
+│             ),                                                                                                  │
+│             TextPropertyFilter(                                                                                 │
+│                 property_name='subcategory',                                                                    │
+│                 operator=<ComparisonOperator.EQUALS: '='>,                                                      │
+│                 value='T-Shirts'                                                                                │
+│             ),                                                                                                  │
+│             TextArrayPropertyFilter(                                                                            │
+│                 property_name='colors',                                                                         │
+│                 operator=<ComparisonOperator.CONTAINS_ANY: 'contains_any'>,                                     │
+│                 value=['blue']                                                                                  │
+│             )                                                                                                   │
+│         ]                                                                                                       │
+│     ),                                                                                                          │
+│     collection='ECommerce'                                                                                      │
+│ )                                                                                                               │
+│                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+</details>
+
+## What is the Query Agent?
+
+The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across multiple collections, dynamically deciding which collection to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
+
+It is designed as a pre-built agentic service for your data, using AI to write and perform the most optimal search. The query agent currently has two modes:
+
+* [**Ask Mode**](guides/ask_mode.md): Design and execute an search, and answer the user query with a final response.
+* [**Search Mode**](guides/search_mode.md): Design and execute a search only, and return the retrieved data.
+
+## Get Started
+
+You will require a Weaviate cloud cluster, [a 14 day sandbox cluster is free](https://weaviate.io/deployment/serverless).
+
+
+From your Weaviate cloud cluster, you can upload data via a CSV on the cloud console, or you can upload via the Weaviate APIs.
+
+
+Check out the [quickstart guide](quickstart.md) to see an overview of the query agents features and functionalities. 
+
+## Questions and feedback
+
 
 :::info Changelog and feedback
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
-
-## How Weaviate Agents work
-
-Weaviate Agents have been pre-trained on Weaviate’s APIs, making them experts in performing Weaviate-specific data tasks.
-
-All you need to do is provide inputs, and the particular Agent will perform the required task using your data.
-
-:::info Weaviate Agents is not an agent framework
-Weaviate Agents is not a framework for building agents. It is a set of pre-built agentic services for Weaviate.
-:::
-
-## Query Agent
-
-The [Query Agent](./query/index.md) provides an answer to your natural language questions, by querying your stored data.
-
-[![Click to read more about the Query Agent](./_includes/query_agent_usage_light.png#gh-light-mode-only "Click to read more about the Query Agent")](./query/index.md)
-[![Click to read more about the Query Agent](./_includes/query_agent_usage_dark.png#gh-dark-mode-only "Click to read more about the Query Agent")](./query/index.md)
-
-[Read more about the Query Agent](./query/index.md)
-
-## Transformation Agent
-
-:::caution Technical Preview
-
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents are in technical preview.")
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents are in technical preview.")
-
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
-
-:::
-
-The [Transformation Agent](./transformation/index.md) enhances your data by manipulating it based on your instructions.
-
-[![Click to read more about the Transformation Agent](./_includes/transformation_agent_overview_light.png#gh-light-mode-only "Click to read more about the Transformation Agent")](./transformation/index.md)
-[![Click to read more about the Transformation Agent](./_includes/transformation_agent_overview_dark.png#gh-dark-mode-only "Click to read more about the Transformation Agent")](./transformation/index.md)
-
-[Read more about the Transformation Agent](./transformation/index.md)
-
-## Personalization Agent
-
-:::caution Technical Preview
-
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents are in technical preview.")
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents are in technical preview.")
-
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
-
-:::
-
-The [Personalization Agent](./personalization/index.md) customizes outputs based on persona-specific information, which can even be learned over time.
-
-[![Click to read more about the Personalization Agent](./_includes/personalization_agent_overview_light.png#gh-light-mode-only "Click to read more about the Personalization Agent")](./personalization/index.md)
-[![Click to read more about the Personalization Agent](./_includes/personalization_agent_overview_dark.png#gh-dark-mode-only "Click to read more about the Personalization Agent")](./personalization/index.md)
-
-[Read more about the Personalization Agent](./personalization/index.md)
-
-## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

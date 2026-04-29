@@ -6,6 +6,7 @@ title: "Build A Weaviate Query Agent - The E-Commerce Assistant"
 featured: True
 integration: False
 agent: True
+sidebar_position: 10
 tags: ['Query Agent']
 ---
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/query-agent-get-started.ipynb" target="_blank">
