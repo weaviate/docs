@@ -150,3 +150,31 @@ def test_quickstart_short_wcd(empty_weaviates, script_loc):
 )
 def test_quickstart_short_local(empty_weaviates, script_loc):
     run_ts_script(script_loc)
+
+
+# ========== Tokenization (v1.37) ==========
+
+@pytest.mark.ts
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/tutorials/tokenization/accent_folding.ts",
+        "./_includes/code/tutorials/tokenization/custom_stopwords.ts",
+        "./_includes/code/tutorials/tokenization/tokenize_endpoint.ts",
+    ],
+)
+def test_tokenization(empty_weaviates, script_loc):
+    run_ts_script(script_loc)
+
+
+# ========== Query profile (v1.37) ==========
+
+@pytest.mark.ts
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/howto/search.profile.ts",
+    ],
+)
+def test_search_profile(empty_weaviates, script_loc):
+    run_ts_script(script_loc)
