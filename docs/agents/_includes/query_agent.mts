@@ -582,19 +582,6 @@ if (basicResponse.missingInformation && basicResponse.missingInformation.length 
 if (!basicResponse.finalAnswer || basicResponse.finalAnswer === '') {
     throw new Error('Final answer is empty or null');
 }
-
-// START SuggestQueries
-const suggestResponse = await qa.suggestQueries({
-    collections: ["IRPAPERS"],
-    numQueries: 3,
-    instructions: "High-level themes and open-ended exploration",
-});
-
-for (const suggestedQuery of suggestResponse.queries) {
-    console.log(suggestedQuery.query);
-}
-// END SuggestQueries
-
 await client.close()
 
 }
