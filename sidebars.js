@@ -1376,6 +1376,11 @@ const sidebars = {
           id: "agents/reference/troubleshooting",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "agents/reference/queryagent_class",
+          className: "sidebar-item",
+        },
       ],
     },
     {

@@ -104,7 +104,7 @@ The query agent uses agentic search (AI search) on your Weaviate vector database
 
 ## What is the Query Agent?
 
-The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across multiple collections, dynamically deciding which collection to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
+The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across one or more collections, dynamically deciding which collection to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
 
 It is designed as a pre-built agentic service for your data, using AI to write and perform the most optimal search. The query agent currently has two modes:
 
@@ -113,20 +113,20 @@ It is designed as a pre-built agentic service for your data, using AI to write a
 
 ## Get Started
 
-You will require a Weaviate cloud cluster, [a 14 day sandbox cluster is free](https://weaviate.io/deployment/serverless).
+You will require a Weaviate cloud cluster, [a 14 day sandbox cluster is free](https://weaviate.io/deployment/serverless). 
 
+If you already have a cloud cluster, and data, you just need to install [one of the clients](./clients/index.md) and you can connect straight away. Otherwise, you can upload data via a CSV on the cloud console, or via the Weaviate APIs.
 
-From your Weaviate cloud cluster, you can upload data via a CSV on the cloud console, or you can upload via the Weaviate APIs.
+You can make up to 250 ask mode queries, or 1000 search mode queries per month for free.
 
-
-Check out the [quickstart guide](quickstart.md) to see an overview of the query agents features and functionalities. 
+Check out the [quickstart guide](quickstart.md) to see an overview of the query agent and how to get started. 
 
 ## Questions and feedback
 
 
-:::info Changelog and feedback
+<!-- :::info Changelog and feedback
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
-:::
+::: -->
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
