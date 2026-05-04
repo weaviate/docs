@@ -112,3 +112,16 @@ def test_quickstart(empty_weaviates, test_class):
 )
 def test_starter_guides(empty_weaviates, test_class):
     run_csharp_test(test_class, empty_weaviates)
+
+
+# ========== Tokenization (v1.37) ==========
+
+@pytest.mark.csharp
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "TokenizationTest",
+    ],
+)
+def test_tokenization(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)

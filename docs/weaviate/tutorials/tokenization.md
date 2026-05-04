@@ -16,6 +16,7 @@ import TsAccentFolding from '!!raw-loader!/_includes/code/tutorials/tokenization
 import TsCustomStopwords from '!!raw-loader!/_includes/code/tutorials/tokenization/custom_stopwords.ts';
 import TsTokenizeEndpoint from '!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.ts';
 import JavaTokenization from '!!raw-loader!/_includes/code/java-v6/src/test/java/TokenizationTest.java';
+import CsTokenization from '!!raw-loader!/_includes/code/csharp/TokenizationTest.cs';
 import TokenizerPreview from '/_includes/feature-notes/tokenizer.mdx';
 
 ## What you'll learn
@@ -238,6 +239,14 @@ Suppose you run a multilingual product catalog with names like "Café Crème Bio
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START AccentFoldingCreateCollection"
+      endMarker="// END AccentFoldingCreateCollection"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 We create three properties: one without folding (`text_default`), one with full folding (`text_folded`), and one that preserves `é` (`text_folded_keep_e`).
@@ -269,6 +278,14 @@ We create three properties: one without folding (`text_default`), one with full 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START AccentFoldingAddObjects"
+      endMarker="// END AccentFoldingAddObjects"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Filter with accent folding
@@ -296,6 +313,14 @@ We create three properties: one without folding (`text_default`), one with full 
       startMarker="// START AccentFoldingFilter"
       endMarker="// END AccentFoldingFilter"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START AccentFoldingFilter"
+      endMarker="// END AccentFoldingFilter"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -359,6 +384,14 @@ The default stopword presets are `en` and `none`. For a French property, neither
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START CustomStopwordsCreate"
+      endMarker="// END CustomStopwordsCreate"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Add test data
@@ -388,6 +421,14 @@ The default stopword presets are `en` and `none`. For a French property, neither
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START CustomStopwordsAddObjects"
+      endMarker="// END CustomStopwordsAddObjects"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Search with per-property stopwords
@@ -415,6 +456,14 @@ The default stopword presets are `en` and `none`. For a French property, neither
       startMarker="// START CustomStopwordsSearch"
       endMarker="// END CustomStopwordsSearch"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START CustomStopwordsSearch"
+      endMarker="// END CustomStopwordsSearch"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -472,6 +521,14 @@ Tuning an analyzer is much easier when you can see what it does. Two REST endpoi
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START TokenizeEndpointFreeform"
+      endMarker="// END TokenizeEndpointFreeform"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ```json
@@ -510,6 +567,14 @@ The response distinguishes **`indexed`** tokens (what is stored in the inverted 
       startMarker="// START TokenizeEndpointProperty"
       endMarker="// END TokenizeEndpointProperty"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START TokenizeEndpointProperty"
+      endMarker="// END TokenizeEndpointProperty"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

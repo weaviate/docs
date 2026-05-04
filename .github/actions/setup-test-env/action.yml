@@ -39,12 +39,12 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: 'npm'
-        cache-dependency-path: 'package-lock.json'
+        cache: 'yarn'
+        cache-dependency-path: 'yarn.lock'
 
     - name: Install Node.js dependencies
       shell: bash
       run: |
         echo "📦 Installing Node.js dependencies..."
-        npm ci
+        yarn install --frozen-lockfile
         echo "✅ Node.js environment ready"

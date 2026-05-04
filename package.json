@@ -30,6 +30,7 @@
     "@scalar/docusaurus": "^0.8.7",
     "@signalwire/docusaurus-plugin-llms-txt": "1.2.2",
     "clsx": "^2.0.0",
+    "csv-parser": "^3.0.0",
     "docusaurus-plugin-sass": "^0.2.6",
     "dotenv": "^17.2.3",
     "prism-react-renderer": "^2.3.0",
@@ -38,9 +39,12 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sass": "^1.83.4",
+    "stream-chain": "^2.2.5",
+    "stream-json": "^1.7.5",
     "uuid": "^13.0.0",
     "weaviate-agents": "^1.0.0",
-    "weaviate-client": "^3.12.1"
+    "weaviate-client": "^3.12.1",
+    "weaviate-ts-embedded": "^1.1.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.1",

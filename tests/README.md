@@ -152,7 +152,8 @@ These artifacts are retained for 7 days for debugging purposes.
 
 ### Prerequisites
 
-- Python 3.10+ and Node.js
+- Python 3.10+
+- Node.js 22+ and yarn
 - Docker (required for running Weaviate instances)
 - API keys for vectorization services (`OPENAI_API_KEY`, `COHERE_API_KEY`, `HUGGINGFACE_API_KEY`)
 
@@ -171,8 +172,11 @@ Additional language-specific requirements:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # From the repo root directory
-uv sync
+uv sync         # Python deps
+yarn install    # Node deps (tsx + weaviate-client + sample-script deps)
 ```
+
+Node deps live in a single root `package.json` / `yarn.lock` — there are no nested `package.json` files in `_includes/code/` or `tests/`. The TypeScript test harness shells out to `npx tsx`, which resolves modules from the root `node_modules/`.
 
 ### Running tests
 
@@ -190,6 +194,24 @@ uv run pytest tests/test_python.py::test_search
 ```
 
 ### Language-specific instructions
+
+#### TypeScript
+
+```bash
+# Start Weaviate instances
+tests/start-weaviate.sh
+
+# Run all TypeScript tests via pytest (excluding agents)
+uv run pytest -m "ts and not agents"
+
+# Run a specific test
+uv run pytest tests/test_typescript.py::test_tokenization
+
+# Stop Weaviate instances
+tests/stop-weaviate.sh
+```
+
+The harness writes a temporary `tests/temp.ts` and executes it with `npx tsx`, resolving imports from the root `node_modules/`. Make sure `yarn install` has been run (see [Setup](#setup)).
 
 #### Java v6
 
