@@ -208,10 +208,11 @@ For usage example with the async Python client, see the [Async Python client sec
 
 ## Querying
 
-The Query Agent supports two query types:
+The Query Agent supports three query types:
 
 - [**`Search`**](#search)
 - [**`Ask`**](#ask)
+- [**`Suggest Queries`**](#suggest-queries)
 
 ### `Search`
 
@@ -467,6 +468,35 @@ The conversation history helps the Query Agent understand context from previous 
         />
     </TabItem>
 
+</Tabs>
+
+### `Suggest Queries`
+
+The Query Agent can suggest queries based on the data in your collections. This is useful for helping users discover what kinds of questions they can ask, or for generating example queries for a new dataset.
+
+You can optionally specify:
+
+- `collections`: Override the collections configured at instantiation.
+- `num_queries` (`numQueries` in TypeScript): The number of queries to suggest (default: 3).
+- `instructions`: Guide the style or focus of the suggested queries.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SuggestQueries"
+            endMarker="# END SuggestQueries"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SuggestQueries"
+            endMarker="// END SuggestQueries"
+            language="ts"
+        />
+    </TabItem>
 </Tabs>
 
 ## Stream responses
