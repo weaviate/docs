@@ -75,10 +75,10 @@ def test_search(empty_weaviates, test_class):
     ],
 )
 def test_tokenization(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [

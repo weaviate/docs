@@ -1,0 +1,6 @@
+{
+  "name": "ts-code-samples",
+  "private": true,
+  "description": "Sets type: module so tsx interprets tests/temp.ts as ESM (top-level await support)",
+  "type": "module"
+}
