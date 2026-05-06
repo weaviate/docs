@@ -12,7 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
-import Java6Code from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
+import JavaCode from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -59,9 +59,9 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START EnableRQ"
       endMarker="// END EnableRQ"
       language="java"
@@ -98,9 +98,9 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="ts"
       />
   </TabItem>
-    <TabItem value="java6" label="Java v6">
+    <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="java"
@@ -159,9 +159,9 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START 1BitEnableRQ"
       endMarker="// END 1BitEnableRQ"
       language="java"
@@ -206,9 +206,9 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START 1BitUpdateSchema"
       endMarker="// END 1BitUpdateSchema"
       language="java"
@@ -257,9 +257,9 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START RQWithOptions"
       endMarker="// END RQWithOptions"
       language="java"

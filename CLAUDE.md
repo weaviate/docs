@@ -59,7 +59,7 @@ tests/start-weaviate.sh
 tests/stop-weaviate.sh
 ```
 
-#### Java v6 Tests
+#### Java Tests
 ```bash
 cd _includes/code/java-v6
 mvn clean install
@@ -212,7 +212,7 @@ Code snippets are organized by language under `_includes/code/`:
 |----------|--------------|----------------|---------------|-------------|
 | Python | `_includes/code/howto/*.py` | pytest (in `/tests`) | `weaviate-client` from PyPI (`pyproject.toml`) | `uv run python _includes/code/howto/<file>.py` |
 | TypeScript | `_includes/code/howto/*.ts` | Inline assertions (no test runner) | `weaviate-client` from npm (`package.json`) | `npx tsx _includes/code/howto/<file>.ts` |
-| Java v6 | `_includes/code/java-v6/src/test/java/*.java` | JUnit 5 + AssertJ | `io.weaviate:client6` from Maven/local (`pom.xml`) | `cd _includes/code/java-v6 && mvn test -Dtest=<ClassName>` |
+| Java | `_includes/code/java-v6/src/test/java/*.java` | JUnit 5 + AssertJ | `io.weaviate:client6` from Maven/local (`pom.xml`) | `cd _includes/code/java-v6 && mvn test -Dtest=<ClassName>` |
 | C# | `_includes/code/csharp/*.cs` | xunit | Local project ref to `../../csharp-client/` (`WeaviateProject.Tests.csproj`) | `dotnet test _includes/code/csharp/WeaviateProject.Tests.csproj --filter "FullyQualifiedName~<ClassName>"` |
 | Go | `_includes/code/howto/go/docs/*.go` | Go testing | `github.com/weaviate/weaviate-go-client` | `cd _includes/code/howto/go/docs && go test` |
 
@@ -220,7 +220,7 @@ Code snippets are organized by language under `_includes/code/`:
 
 - **Python**: Version pinned in `pyproject.toml`. Install via `uv sync`.
 - **TypeScript**: Version in root `package.json` (`devDependencies`). Uses `tsx` to run `.ts` files directly.
-- **Java v6**: Version in `_includes/code/java-v6/pom.xml`. For unreleased features, switch to SNAPSHOT: build the local client at `/Users/ivandespot/dev/java-client` with `mvn install -DskipTests -Dmaven.javadoc.skip=true`, then update the pom.xml version.
+- **Java**: Version in `_includes/code/java-v6/pom.xml`. For unreleased features, switch to SNAPSHOT: build the local client at `/Users/ivandespot/dev/java-client` with `mvn install -DskipTests -Dmaven.javadoc.skip=true`, then update the pom.xml version.
 - **C#**: References a local project at `../../../../csharp-client/` (i.e., `/Users/ivandespot/dev/csharp-client`). For unreleased features, checkout the appropriate branch in that repo (e.g., `git checkout v1.0.1`). The .NET 9.0 SDK is required.
 - **Go**: Version in `_includes/code/howto/go/docs/go.mod`.
 
@@ -250,7 +250,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.ttl.py';
 - `(await collection.aggregate.overAll()).totalCount`
 - Config: `await collection.config.get()` returns object with camelCase fields
 
-**Java v6** (`client6`):
+**Java** (`client6`):
 - `WeaviateClient client = WeaviateClient.connectToLocal()`
 - `client.collections.create("Name", c -> c.properties(Property.date("fieldName")).objectTtl(ttl -> ttl.deleteByCreationTime().defaultTtlSeconds(3600)))`
 - `collection.config.get()` returns `Optional<CollectionConfig>` — must call `.get().get()` to unwrap

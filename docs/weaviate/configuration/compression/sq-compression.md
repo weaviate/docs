@@ -43,7 +43,7 @@ SQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START EnableSQ"
@@ -86,7 +86,7 @@ SQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateSchema"
@@ -129,7 +129,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         language="go"
       />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SQWithOptions"
