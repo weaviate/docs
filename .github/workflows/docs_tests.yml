@@ -11,7 +11,24 @@ on:
     # Only run when pushed to the testing-ci branch
     branches:
       - testing-ci
-  workflow_dispatch: # Manual trigger option
+  workflow_dispatch:
+    inputs:
+      python_client_branch:
+        description: 'Python client branch (leave empty to use pinned version from pyproject.toml)'
+        required: false
+        default: ''
+      typescript_client_branch:
+        description: 'TypeScript client branch (leave empty to use pinned version from package.json)'
+        required: false
+        default: ''
+      java_client_branch:
+        description: 'Java client branch (defaults to main since pom.xml uses SNAPSHOT)'
+        required: false
+        default: 'main'
+      csharp_client_branch:
+        description: 'C# client branch (defaults to main since the test csproj references the local repo)'
+        required: false
+        default: 'main'
 
 env:
   # Centralize versions for easier maintenance
@@ -99,6 +116,13 @@ jobs:
         uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Override Python client branch
+        if: inputs.python_client_branch != ''
+        run: |
+          echo "📦 Installing weaviate-client from branch: ${{ inputs.python_client_branch }}"
+          uv pip install --reinstall "git+https://github.com/weaviate/weaviate-python-client.git@${{ inputs.python_client_branch }}"
+          echo "✅ Branch override installed"
 
       - name: Start services
         run: |
@@ -232,6 +256,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Override TypeScript client branch
+        if: inputs.typescript_client_branch != ''
+        run: |
+          echo "📦 Building weaviate-client from branch: ${{ inputs.typescript_client_branch }}"
+          git clone --depth 1 -b "${{ inputs.typescript_client_branch }}" https://github.com/weaviate/typescript-client.git /tmp/ts-client
+          cd /tmp/ts-client
+          npm install
+          npm run build
+          cd "$GITHUB_WORKSPACE"
+          yarn add "file:/tmp/ts-client"
+          echo "✅ Branch override installed"
+
       - name: Start services
         run: |
           echo "🚀 Starting Weaviate and Ollama services..."
@@ -364,8 +400,9 @@ jobs:
 
       - name: Clone and build Java client SNAPSHOT
         run: |
-          echo "📦 Building Java client SNAPSHOT..."
-          git clone --depth 1 https://github.com/weaviate/java-client.git /tmp/java-client
+          JAVA_BRANCH="${{ inputs.java_client_branch || 'main' }}"
+          echo "📦 Building Java client SNAPSHOT from branch: $JAVA_BRANCH"
+          git clone --depth 1 -b "$JAVA_BRANCH" https://github.com/weaviate/java-client.git /tmp/java-client
           cd /tmp/java-client
           mvn install -DskipTests -Dmaven.javadoc.skip=true -q
           echo "✅ Java client SNAPSHOT installed"
@@ -506,8 +543,9 @@ jobs:
 
       - name: Clone C# client
         run: |
-          echo "📦 Cloning C# client..."
-          git clone --depth 1 https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
+          CSHARP_BRANCH="${{ inputs.csharp_client_branch || 'main' }}"
+          echo "📦 Cloning C# client from branch: $CSHARP_BRANCH"
+          git clone --depth 1 -b "$CSHARP_BRANCH" https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
           echo "✅ C# client cloned to $(realpath "${{ github.workspace }}/../csharp-client")"
 
       - name: Start services

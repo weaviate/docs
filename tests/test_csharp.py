@@ -125,3 +125,16 @@ def test_starter_guides(empty_weaviates, test_class):
 )
 def test_tokenization(empty_weaviates, test_class):
     run_csharp_test(test_class, empty_weaviates)
+
+
+# ========== Search profile (v1.36.10+) ==========
+
+@pytest.mark.csharp
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "SearchProfileTest",
+    ],
+)
+def test_search_profile(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)

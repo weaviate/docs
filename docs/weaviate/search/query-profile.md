@@ -11,6 +11,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.profile.py';
 import TsCode from '!!raw-loader!/_includes/code/howto/search.profile.ts';
 import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/SearchProfileTest.java';
+import CsCode from '!!raw-loader!/_includes/code/csharp/SearchProfileTest.cs';
 import QueryProfileNote from '/_includes/feature-notes/query-profile.mdx';
 
 <QueryProfileNote/>
@@ -46,6 +47,14 @@ Add `query_profile=True` to `MetadataQuery`, or include `"query_profile"` in the
       startMarker="// START ProfileNearVector"
       endMarker="// END ProfileNearVector"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START ProfileNearVector"
+      endMarker="// END ProfileNearVector"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -90,6 +99,14 @@ Profile data is returned on the response object at `response.query_profile`, not
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START ProfileBM25"
+      endMarker="// END ProfileBM25"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Hybrid example
@@ -119,6 +136,14 @@ Hybrid search produces both `vector` and `keyword` profile sections per shard:
       startMarker="// START ProfileHybrid"
       endMarker="// END ProfileHybrid"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START ProfileHybrid"
+      endMarker="// END ProfileHybrid"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
