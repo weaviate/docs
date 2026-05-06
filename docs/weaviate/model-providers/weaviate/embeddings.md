@@ -68,7 +68,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START WeaviateInstantiation"
@@ -115,7 +115,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BasicVectorizerWeaviate"
@@ -162,7 +162,7 @@ You can specify one of the [available models](#available-models) for the vectori
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -225,7 +225,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="goraw"
     />
   </TabItem>
-<TabItem value="java6" label="Java v6">
+<TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BatchImportExample"
@@ -284,7 +284,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NearTextExample"
@@ -338,7 +338,7 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-<TabItem value="java6" label="Java v6">
+<TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridExample"

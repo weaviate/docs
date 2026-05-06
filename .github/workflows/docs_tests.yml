@@ -332,8 +332,8 @@ jobs:
           done
           docker system prune -f --volumes 2>/dev/null || true
 
-  test-java-v6:
-    name: Test Java v6
+  test-java:
+    name: Test Java
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -431,7 +431,7 @@ jobs:
       - name: Record test start time
         run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-      - name: Run Java v6 tests
+      - name: Run Java tests
         id: run-tests
         continue-on-error: true
         env:
@@ -448,8 +448,8 @@ jobs:
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          echo "🧪 Running Java v6 tests..."
-          uv run pytest -m "java_v6" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "🧪 Running Java tests..."
+          uv run pytest -m "java" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -457,7 +457,7 @@ jobs:
         uses: ./.github/actions/handle-test-results
         with:
           test-outcome: ${{ steps.run-tests.outcome }}
-          test-type: 'Java-v6'
+          test-type: 'Java'
           languages-tested: 'Java'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 

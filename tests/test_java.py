@@ -7,7 +7,7 @@ import os
 JAVA_V6_CWD = "_includes/code/java-v6"
 
 
-def run_java_v6_test(test_class, empty_weaviates):
+def run_java_test(test_class, empty_weaviates):
     command = shlex.split(f"mvn test -Dtest={test_class} --batch-mode")
     env = dict(os.environ)
 
@@ -17,7 +17,7 @@ def run_java_v6_test(test_class, empty_weaviates):
             capture_output=True, text=True, check=True,
         )
     except subprocess.CalledProcessError as error:
-        details = [f"Java v6 {test_class} failed (exit code {error.returncode})"]
+        details = [f"Java {test_class} failed (exit code {error.returncode})"]
         if error.stdout:
             details.append(f"\n--- STDOUT (last 80 lines) ---\n{chr(10).join(error.stdout.splitlines()[-80:])}")
         if error.stderr:
@@ -25,7 +25,7 @@ def run_java_v6_test(test_class, empty_weaviates):
         pytest.fail("\n".join(details))
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [
@@ -43,10 +43,10 @@ def run_java_v6_test(test_class, empty_weaviates):
     ],
 )
 def test_manage_data(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [
@@ -64,10 +64,10 @@ def test_manage_data(empty_weaviates, test_class):
     ],
 )
 def test_search(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [
@@ -89,10 +89,10 @@ def test_tokenization(empty_weaviates, test_class):
     ],
 )
 def test_compression(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [
@@ -104,10 +104,10 @@ def test_compression(empty_weaviates, test_class):
     ],
 )
 def test_configuration(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [
@@ -116,10 +116,10 @@ def test_configuration(empty_weaviates, test_class):
     ],
 )
 def test_quickstart(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)
 
 
-@pytest.mark.java_v6
+@pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
     [
@@ -129,4 +129,4 @@ def test_quickstart(empty_weaviates, test_class):
     ],
 )
 def test_starter_guides(empty_weaviates, test_class):
-    run_java_v6_test(test_class, empty_weaviates)
+    run_java_test(test_class, empty_weaviates)

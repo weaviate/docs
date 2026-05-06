@@ -43,7 +43,7 @@ The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/em
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiValueVectorMuvera"
