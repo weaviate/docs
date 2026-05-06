@@ -2040,16 +2040,16 @@ wheels = [
 
 [[package]]
 name = "weaviate-agents"
-version = "1.1.0"
+version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx-sse" },
     { name = "rich" },
     { name = "weaviate-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/ee/d6bdfb66593cd9fcf7efe9c2278539c3d8aa2bc9bee5f6bdf80673196751/weaviate_agents-1.1.0.tar.gz", hash = "sha256:09a09a4e0d1a5039034a54212b7edd87b8b1d2adc8541d59e6d59a63f2aa4a2a", size = 106707, upload-time = "2025-10-14T10:02:39.956Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/1c/cad26eea91555060b2c88ab9b9af9deca41243c67813bb550f86d8d06eb5/weaviate_agents-1.5.0.tar.gz", hash = "sha256:fb61aae5b6658b9e16e72b07699eecd255c16bdacb39824c74520a1a20672669", size = 105783, upload-time = "2026-05-05T12:06:41.059Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/bd/b43e20642d7b432604e614ee503c5fc9017abc7ca1a4d4cd64ab23738d76/weaviate_agents-1.1.0-py3-none-any.whl", hash = "sha256:1184a04ca3119c4a23ab11a1cd512eae8bf23c46db4f32765d8b16a5b8f28aac", size = 44817, upload-time = "2025-10-14T10:02:39.018Z" },
+    { url = "https://files.pythonhosted.org/packages/41/a2/d6a55f3748e8b97bac2d7b641a2456684292f9431129c035b90d575f20ce/weaviate_agents-1.5.0-py3-none-any.whl", hash = "sha256:8c2bbaa9fb02aa548821d465591bf1b4cfc426bc632b35c915d583fa90b1e820", size = 47864, upload-time = "2026-05-05T12:06:39.816Z" },
 ]
 
 [[package]]
@@ -2116,7 +2116,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "tqdm", specifier = ">=4.67.1" },
-    { name = "weaviate-agents", specifier = ">=1.1.0" },
+    { name = "weaviate-agents", specifier = ">=1.5.0" },
     { name = "weaviate-client", specifier = "==4.21.0" },
     { name = "weaviate-demo-datasets", specifier = ">=0.7.0" },
 ]
