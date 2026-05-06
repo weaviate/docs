@@ -79,7 +79,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START WeaviateInstantiation"
@@ -132,7 +132,7 @@ The ColModernVBERT model outputs multi-vector embeddings that can consume signif
 // Coming soon
 ```
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
 
 ```java
 // Coming soon
@@ -174,7 +174,7 @@ If you prefer to store the raw multi-vector embeddings without MUVERA compressio
 // Coming soon
 ```
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
 
 ```java
 // Coming soon
@@ -264,7 +264,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NearTextExample"
@@ -318,7 +318,7 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="goraw"
     />
   </TabItem>
-<TabItem value="java6" label="Java v6">
+<TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridExample"

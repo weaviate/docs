@@ -48,7 +48,7 @@ Connect using the [custom-connection helper](/weaviate/connections/connect-custo
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CustomConnect"

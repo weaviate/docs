@@ -20,7 +20,7 @@
   </properties>
 
   <dependencies>
-    <!-- Weaviate Java v6 Client -->
+    <!-- Weaviate Java Client -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
