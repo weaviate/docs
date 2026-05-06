@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.export.py';
+import CsCode from '!!raw-loader!/\_includes/code/csharp/ManageDataExportTest.cs';
 
 :::caution Preview — added in `v1.37`
 This is a preview feature. The API may change in future releases.
@@ -69,6 +70,14 @@ Specify an export ID, backend, file format, and optionally which collections to 
       language="py"
     />
   </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START CreateExport"
+      endMarker="// END CreateExport"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="curl" label="cURL">
 
 ```bash
@@ -104,6 +113,14 @@ Exports run asynchronously. Poll the status endpoint to track progress.
       startMarker="# START GetExportStatus"
       endMarker="# END GetExportStatus"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START GetExportStatus"
+      endMarker="// END GetExportStatus"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">
@@ -145,6 +162,14 @@ Each shard within an export has its own status:
       startMarker="# START CancelExport"
       endMarker="# END CancelExport"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START CancelExport"
+      endMarker="// END CancelExport"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">

@@ -138,3 +138,16 @@ def test_tokenization(empty_weaviates, test_class):
 )
 def test_search_profile(empty_weaviates, test_class):
     run_csharp_test(test_class, empty_weaviates)
+
+
+# ========== Collection export (v1.37+) ==========
+
+@pytest.mark.csharp
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "ManageDataExportTest",
+    ],
+)
+def test_export(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)
