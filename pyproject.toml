@@ -17,5 +17,5 @@ dependencies = [
     "tqdm>=4.67.1",
     "weaviate-agents>=1.5.0",
     "weaviate-client==4.21.0",
-    "weaviate-demo-datasets>=0.7.0",
+    "weaviate-demo-datasets>=0.8.1",
 ]
