@@ -17,6 +17,8 @@ To install and configure Weaviate, see the following:
 - **[Docker Compose](/deploy/installation-guides/docker-installation.md)**: Docker containers are well suited for development and testing.
 - **[Kubernetes](/deploy/installation-guides/k8s-installation.md)**: Kubernetes is ideal for scalable, production deployments.
 - **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
+- **[GCP Marketplace](./gcp-marketplace.md)**: Deploy Weaviate directly from the Google Cloud Marketplace.
+- **[DigitalOcean Managed Weaviate](./digitalocean.md)**: Run Weaviate as a managed service on DigitalOcean (private preview).
 - **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
 - **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
 

@@ -260,6 +260,45 @@ To modify a collection, first [select the collection](#collection-details) you w
 Some collection settings that are not available in the console can be updated programmatically using a client library. See the [collection mutability reference](/weaviate/config-refs/collections#mutability) for the full list.
 :::
 
+### Enable TTL for a collection
+
+[Time-to-live (TTL)](/docs/weaviate/manage-collections/time-to-live.mdx) allows you to set an expiration time for objects in a collection. TTLs are currently defined at the collection level. They can be set relative to an object's creation time, the last update time, or a specific DATE property within the object.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(56.25% + 46px)",
+    height: 0,
+    width: "100%",
+  }}
+>
+  <iframe
+    id="vkmxog0f3p"
+    src="https://app.guideflow.com/embed/vkmxog0f3p"
+    width="100%"
+    height="100%"
+    style={{ position: "absolute", inset: 0 }}
+    allow="clipboard-read; clipboard-write"
+    allowFullScreen
+    frameBorder="0"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="vkmxog0f3p"
+  ></script>
+</div>
+
+<details>
+  <summary>Enable TTL step by step</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select you organization and cluster in the left sidebar.
+3. Open the `Collections` tool from the left sidebar and select the collection you want to modify.
+4. Click the pencil icon next to the Time to live (TTL) field.
+5. Select you desired [TTL settings](/docs/weaviate/manage-collections/time-to-live.mdx) and save them.
+
+</details>
+
 ## Delete a collection
 
 Once a collection is deleted, it cannot be restored. The collection schema and all of the collection objects are deleted from the cluster. This operation cannot be undone.

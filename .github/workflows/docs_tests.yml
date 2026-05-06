@@ -11,7 +11,24 @@ on:
     # Only run when pushed to the testing-ci branch
     branches:
       - testing-ci
-  workflow_dispatch: # Manual trigger option
+  workflow_dispatch:
+    inputs:
+      python_client_branch:
+        description: 'Python client branch (leave empty to use pinned version from pyproject.toml)'
+        required: false
+        default: ''
+      typescript_client_branch:
+        description: 'TypeScript client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
+      java_client_branch:
+        description: 'Java client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
+      csharp_client_branch:
+        description: 'C# client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
 
 env:
   # Centralize versions for easier maintenance
@@ -99,6 +116,13 @@ jobs:
         uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Override Python client branch
+        if: ${{ inputs.python_client_branch != '' }}
+        run: |
+          echo "📦 Installing weaviate-client from branch: ${{ inputs.python_client_branch }}"
+          uv pip install --reinstall "git+https://github.com/weaviate/weaviate-python-client.git@${{ inputs.python_client_branch }}"
+          echo "✅ Branch override installed"
 
       - name: Start services
         run: |
@@ -232,6 +256,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Override TypeScript client branch
+        run: |
+          TS_BRANCH="${{ inputs.typescript_client_branch || 'tokenization-updates' }}"
+          echo "📦 Building weaviate-client from branch: $TS_BRANCH"
+          git clone --depth 1 -b "$TS_BRANCH" https://github.com/weaviate/typescript-client.git /tmp/ts-client
+          cd /tmp/ts-client
+          npm install
+          npm run build
+          cd "$GITHUB_WORKSPACE"
+          yarn add "file:/tmp/ts-client"
+          echo "✅ Branch override installed"
+
       - name: Start services
         run: |
           echo "🚀 Starting Weaviate and Ollama services..."
@@ -332,8 +368,8 @@ jobs:
           done
           docker system prune -f --volumes 2>/dev/null || true
 
-  test-java-v6:
-    name: Test Java v6
+  test-java:
+    name: Test Java
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -355,17 +391,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           cache: 'maven'
 
       - name: Clone and build Java client SNAPSHOT
         run: |
-          echo "📦 Building Java client SNAPSHOT..."
-          git clone --depth 1 https://github.com/weaviate/java-client.git /tmp/java-client
+          JAVA_BRANCH="${{ inputs.java_client_branch || 'main' }}"
+          echo "📦 Building Java client SNAPSHOT from branch: $JAVA_BRANCH"
+          git clone --depth 1 -b "$JAVA_BRANCH" https://github.com/weaviate/java-client.git /tmp/java-client
           cd /tmp/java-client
           mvn install -DskipTests -Dmaven.javadoc.skip=true -q
           echo "✅ Java client SNAPSHOT installed"
@@ -431,7 +468,7 @@ jobs:
       - name: Record test start time
         run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-      - name: Run Java v6 tests
+      - name: Run Java tests
         id: run-tests
         continue-on-error: true
         env:
@@ -448,8 +485,8 @@ jobs:
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          echo "🧪 Running Java v6 tests..."
-          uv run pytest -m "java_v6" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "🧪 Running Java tests..."
+          uv run pytest -m "java" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -457,7 +494,7 @@ jobs:
         uses: ./.github/actions/handle-test-results
         with:
           test-outcome: ${{ steps.run-tests.outcome }}
-          test-type: 'Java-v6'
+          test-type: 'Java'
           languages-tested: 'Java'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
@@ -506,8 +543,9 @@ jobs:
 
       - name: Clone C# client
         run: |
-          echo "📦 Cloning C# client..."
-          git clone --depth 1 https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
+          CSHARP_BRANCH="${{ inputs.csharp_client_branch || 'main' }}"
+          echo "📦 Cloning C# client from branch: $CSHARP_BRANCH"
+          git clone --depth 1 -b "$CSHARP_BRANCH" https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
           echo "✅ C# client cloned to $(realpath "${{ github.workspace }}/../csharp-client")"
 
       - name: Start services

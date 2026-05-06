@@ -13,28 +13,16 @@ When you provision a new cluster, Weaviate Cloud uses the latest available versi
 
 ## Updates
 
-Weaviate Cloud does not automatically update existing clusters when a new version of Weaviate is released.
+Weaviate Cloud automatically updates existing clusters as new Weaviate versions become available. You do not need to trigger updates manually.
 
-The Weaviate Cloud console informs you when a newer version is available. Consider your business needs, and [update your cluster](/cloud/platform/version) when you have a suitable maintenance window.
-
-<!-- TODO[g-despot]: Add update notification example -->
-
-import Downtime125Note from "/_includes/wcs/wcs.update-to-125-downtime.mdx";
-
-<Downtime125Note />
-
-## Security updates
-
-Weaviate Cloud does not automatically update clusters, however if an existing cluster has a security vulnerability, Weaviate Cloud updates the cluster when a fix is released.
-
-For security updates, Weaviate Cloud updates the cluster to the most current production release unless there are known compatibility issues. If there are compatibility issues, the cluster is updated to the most recent compatible version.
+A complete backup of your data is created before each update. Clusters with high availability (HA) enabled are updated with no downtime; stand-alone clusters incur a short restart period during the update.
 
 ## Additional considerations
 
 - **Billing**: If your cluster's Weaviate version cannot support the billing requirements for your pricing plan, Weaviate Cloud updates your cluster to the current production version or the most recent compatible version.
 - **Data integrity**: If your cluster's Weaviate version has a known risk of data loss or corruption, Weaviate Cloud updates the cluster when a fix is released.
 - **Downgrade**: You cannot downgrade your cluster to an earlier version of Weaviate.
-- **Dedicated Cloud customers**: If you are an Dedicated Cloud customer and you require a specific version of Weaviate, contact your support representative. In some circumstances, Weaviate Cloud can install a specific Weaviate version.
+- **Dedicated Cloud customers**: If you are a Dedicated Cloud customer and you require a specific version of Weaviate, contact your support representative. In some circumstances, Weaviate Cloud can install a specific Weaviate version.
 
 ## Support & feedback
 

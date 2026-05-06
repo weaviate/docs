@@ -632,9 +632,9 @@ const sidebars = {
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
-        "weaviate/search/query-profile",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        "weaviate/search/query-profile",
         {
           type: "link",
           label: "Search strategies: In depth",
@@ -788,15 +788,9 @@ const sidebars = {
           ],
         },
         {
-          type: "category",
-          label: "Java",
-          collapsed: true,
+          type: "doc",
+          id: "weaviate/client-libraries/java/index",
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/client-libraries/java/index",
-          },
-          items: ["weaviate/client-libraries/java/java-v5"],
         },
         {
           type: "doc",
@@ -990,6 +984,24 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/installation-guides/gcp-marketplace",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "DigitalOcean",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/installation-guides/digitalocean",
           className: "sidebar-item",
         },
       ],
@@ -1463,11 +1475,6 @@ const sidebars = {
         {
           type: "doc",
           id: "cloud/manage-clusters/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "cloud/manage-clusters/upgrade",
           className: "sidebar-item",
         },
         {

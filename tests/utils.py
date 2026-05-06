@@ -167,3 +167,54 @@ def run_script(command: list, script_path: str) -> None:
             ])
             
         raise Exception("\n".join(error_details))
+
+# ---------------------------------------------------------------------------
+# OIDC bearer-token helper for self-hosted Weaviate snippets.
+# Uses the Keycloak instance from docker-compose-rbac.yml (provisioned by
+# _includes/code/python/keycloak_helper_script.py). The Host header spoof
+# ensures the token's `iss` claim matches the Weaviate container's expected
+# issuer (http://keycloak:8081/...) regardless of which URL the host uses
+# to reach Keycloak.
+# ---------------------------------------------------------------------------
+
+OIDC_KEYCLOAK_URL = "http://localhost:8081"
+OIDC_REALM = "weaviate-test"
+OIDC_CLIENT_ID = "weaviate"
+OIDC_CLIENT_SECRET = "weaviate-client-secret-123"
+OIDC_USERNAME = "test-admin"
+OIDC_PASSWORD = "password123"
+
+OIDC_WEAVIATE_HTTP_HOST = "localhost:8580"
+OIDC_WEAVIATE_GRPC_HOST = "localhost:50551"
+
+
+def get_oidc_token(username: str = OIDC_USERNAME, password: str = OIDC_PASSWORD) -> dict:
+    """Fetch an OIDC bearer token from Keycloak for the configured test user."""
+    import requests
+
+    response = requests.post(
+        f"{OIDC_KEYCLOAK_URL}/realms/{OIDC_REALM}/protocol/openid-connect/token",
+        headers={"Host": "keycloak:8081"},  # match Weaviate's expected issuer
+        data={
+            "grant_type": "password",
+            "client_id": OIDC_CLIENT_ID,
+            "client_secret": OIDC_CLIENT_SECRET,
+            "username": username,
+            "password": password,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def oidc_env(token: dict | None = None) -> dict:
+    """Return the env-var dict expected by the OIDC connect snippets."""
+    token = token or get_oidc_token()
+    return {
+        "WEAVIATE_HTTP_HOST": OIDC_WEAVIATE_HTTP_HOST,
+        "WEAVIATE_GRPC_HOST": OIDC_WEAVIATE_GRPC_HOST,
+        "WEAVIATE_OIDC_ACCESS_TOKEN": token["access_token"],
+        "WEAVIATE_OIDC_REFRESH_TOKEN": token.get("refresh_token", ""),
+        "WEAVIATE_OIDC_EXPIRES_IN": str(token.get("expires_in", 60)),
+    }

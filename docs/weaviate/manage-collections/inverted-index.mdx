@@ -12,7 +12,6 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 An **inverted index** is a data structure in Weaviate that enables efficient text search and filtering operations.
@@ -68,17 +67,9 @@ The inverted index in Weaviate can be enabled through parameters at the property
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SetInvertedIndexParams"
-      endMarker="// END SetInvertedIndexParams"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
       language="java"
@@ -140,17 +131,9 @@ The inverted index in Weaviate can be configured through various parameters at t
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SetInvertedIndexParams"
-      endMarker="// END SetInvertedIndexParams"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
       language="java"
@@ -197,7 +180,7 @@ The following index types can be dropped: `searchable`, `filterable`, `rangeFilt
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DropInvertedIndex"
@@ -218,7 +201,7 @@ Tokenization determines how text content is broken down into individual terms th
 
 **`word`** - The default tokenization that splits text on whitespace and punctuation, converting to lowercase. Best for general text search where you want to match individual words.
 
-**`lowercase`** - Converts the entire property value to lowercase but treats it as a single token. Useful for exact matching of short strings like categories or tags while being case-insensitive.
+**`lowercase`** - Splits text on whitespace only, then lowercases each token. Preserves symbols (like `&`, `@`, `_`) that `word` tokenization would strip. Good for case-insensitive matching where punctuation is meaningful — e.g. code snippets or email addresses.
 
 **`whitespace`** - Splits text only on whitespace characters, preserving punctuation and case. Good when punctuation is meaningful for search.
 
@@ -226,7 +209,9 @@ Tokenization determines how text content is broken down into individual terms th
 
 **`trigram`** - Breaks text into overlapping 3-character sequences. Enables fuzzy matching and is useful for handling typos or partial matches.
 
-**`gse`** - Google Search Engine tokenization, optimized for Chinese, Japanese, and Korean text. Provides language-aware tokenization for CJK languages.
+**`gse`** - Language-aware tokenization for Chinese and Japanese text. Disabled by default. Enable with the `ENABLE_TOKENIZER_GSE` environment variable. For Korean text, see the `kagome_kr` option.
+
+For the full list of supported tokenizers — including `kagome_ja`, `kagome_kr`, and the per-property text-analyzer options — see the [tokenization reference](../config-refs/collections.mdx#tokenization).
 
 </details>
 
@@ -255,17 +240,9 @@ Tokenization determines how text content is broken down into individual terms th
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START PropModuleSettings"
-      endMarker="// END PropModuleSettings"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
       language="java"

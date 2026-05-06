@@ -12,6 +12,11 @@ import PySearches from '!!raw-loader!/_includes/code/tutorials/tokenization/sear
 import PyAccentFolding from '!!raw-loader!/_includes/code/tutorials/tokenization/accent_folding.py';
 import PyCustomStopwords from '!!raw-loader!/_includes/code/tutorials/tokenization/custom_stopwords.py';
 import PyTokenizeEndpoint from '!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.py';
+import TsAccentFolding from '!!raw-loader!/_includes/code/tutorials/tokenization/accent_folding.ts';
+import TsCustomStopwords from '!!raw-loader!/_includes/code/tutorials/tokenization/custom_stopwords.ts';
+import TsTokenizeEndpoint from '!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.ts';
+import JavaTokenization from '!!raw-loader!/_includes/code/java-v6/src/test/java/TokenizationTest.java';
+import CsTokenization from '!!raw-loader!/_includes/code/csharp/TokenizationTest.cs';
 import TokenizerPreview from '/_includes/feature-notes/tokenizer.mdx';
 
 ## What you'll learn
@@ -209,32 +214,116 @@ Suppose you run a multilingual product catalog with names like "Café Crème Bio
 
 ### Create a collection with accent folding
 
-<FilteredTextBlock
-  text={PyAccentFolding}
-  startMarker="# AccentFoldingCreateCollection"
-  endMarker="# END AccentFoldingCreateCollection"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyAccentFolding}
+      startMarker="# AccentFoldingCreateCollection"
+      endMarker="# END AccentFoldingCreateCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsAccentFolding}
+      startMarker="// AccentFoldingCreateCollection"
+      endMarker="// END AccentFoldingCreateCollection"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START AccentFoldingCreateCollection"
+      endMarker="// END AccentFoldingCreateCollection"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START AccentFoldingCreateCollection"
+      endMarker="// END AccentFoldingCreateCollection"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 We create three properties: one without folding (`text_default`), one with full folding (`text_folded`), and one that preserves `é` (`text_folded_keep_e`).
 
 ### Add test data
 
-<FilteredTextBlock
-  text={PyAccentFolding}
-  startMarker="# AccentFoldingAddObjects"
-  endMarker="# END AccentFoldingAddObjects"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyAccentFolding}
+      startMarker="# AccentFoldingAddObjects"
+      endMarker="# END AccentFoldingAddObjects"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsAccentFolding}
+      startMarker="// AccentFoldingAddObjects"
+      endMarker="// END AccentFoldingAddObjects"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START AccentFoldingAddObjects"
+      endMarker="// END AccentFoldingAddObjects"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START AccentFoldingAddObjects"
+      endMarker="// END AccentFoldingAddObjects"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ### Filter with accent folding
 
-<FilteredTextBlock
-  text={PyAccentFolding}
-  startMarker="# AccentFoldingFilter"
-  endMarker="# END AccentFoldingFilter"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyAccentFolding}
+      startMarker="# AccentFoldingFilter"
+      endMarker="# END AccentFoldingFilter"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsAccentFolding}
+      startMarker="// AccentFoldingFilter"
+      endMarker="// END AccentFoldingFilter"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START AccentFoldingFilter"
+      endMarker="// END AccentFoldingFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START AccentFoldingFilter"
+      endMarker="// END AccentFoldingFilter"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 | Query | `text_default` (no folding) | `text_folded` | `text_folded_keep_e` |
 |-------|-----------|------------|-----------------|
@@ -270,30 +359,114 @@ The default stopword presets are `en` and `none`. For a French property, neither
 
 ### Create a collection with custom stopwords
 
-<FilteredTextBlock
-  text={PyCustomStopwords}
-  startMarker="# CustomStopwordsCreate"
-  endMarker="# END CustomStopwordsCreate"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCustomStopwords}
+      startMarker="# CustomStopwordsCreate"
+      endMarker="# END CustomStopwordsCreate"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCustomStopwords}
+      startMarker="// CustomStopwordsCreate"
+      endMarker="// END CustomStopwordsCreate"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START CustomStopwordsCreate"
+      endMarker="// END CustomStopwordsCreate"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START CustomStopwordsCreate"
+      endMarker="// END CustomStopwordsCreate"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ### Add test data
 
-<FilteredTextBlock
-  text={PyCustomStopwords}
-  startMarker="# CustomStopwordsAddObjects"
-  endMarker="# END CustomStopwordsAddObjects"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCustomStopwords}
+      startMarker="# CustomStopwordsAddObjects"
+      endMarker="# END CustomStopwordsAddObjects"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCustomStopwords}
+      startMarker="// CustomStopwordsAddObjects"
+      endMarker="// END CustomStopwordsAddObjects"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START CustomStopwordsAddObjects"
+      endMarker="// END CustomStopwordsAddObjects"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START CustomStopwordsAddObjects"
+      endMarker="// END CustomStopwordsAddObjects"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ### Search with per-property stopwords
 
-<FilteredTextBlock
-  text={PyCustomStopwords}
-  startMarker="# CustomStopwordsSearch"
-  endMarker="# END CustomStopwordsSearch"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCustomStopwords}
+      startMarker="# CustomStopwordsSearch"
+      endMarker="# END CustomStopwordsSearch"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCustomStopwords}
+      startMarker="// CustomStopwordsSearch"
+      endMarker="// END CustomStopwordsSearch"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START CustomStopwordsSearch"
+      endMarker="// END CustomStopwordsSearch"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START CustomStopwordsSearch"
+      endMarker="// END CustomStopwordsSearch"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 <details>
   <summary>Example output</summary>
@@ -311,7 +484,7 @@ The default stopword presets are `en` and `none`. For a French property, neither
 - The `fr` preset filters out `la`, `le`, and `et` from BM25 scoring on the French property
 - The same words are not filtered on the English property (they are not English stopwords)
 - Stopwords are still indexed — only filtered at query time — so changing presets does not require reindexing
-- Custom presets can also extend a built-in preset with `additions` and `removals`
+- A preset name that matches a built-in (`en`, `none`) replaces the built-in for this collection. To tweak a built-in with `additions`/`removals`, use the collection-level `invertedIndexConfig.stopwords` field instead
 
 ## Example 6: Inspecting tokenization with the tokenize endpoint
 
@@ -323,16 +496,43 @@ Tuning an analyzer is much easier when you can see what it does. Two REST endpoi
 
 `POST /v1/tokenize` tokenizes arbitrary text with an explicit tokenizer and analyzer config. Use this to test configurations before committing them to a schema.
 
-<FilteredTextBlock
-  text={PyTokenizeEndpoint}
-  startMarker="# TokenizeEndpointFreeform"
-  endMarker="# END TokenizeEndpointFreeform"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyTokenizeEndpoint}
+      startMarker="# TokenizeEndpointFreeform"
+      endMarker="# END TokenizeEndpointFreeform"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsTokenizeEndpoint}
+      startMarker="// TokenizeEndpointFreeform"
+      endMarker="// END TokenizeEndpointFreeform"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START TokenizeEndpointFreeform"
+      endMarker="// END TokenizeEndpointFreeform"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START TokenizeEndpointFreeform"
+      endMarker="// END TokenizeEndpointFreeform"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ```json
 {
-  "tokenization": "word",
   "indexed": ["the", "organic", "cafe", "creme", "blend"],
   "query":   ["organic", "cafe", "creme", "blend"]
 }
@@ -344,16 +544,43 @@ The response distinguishes **`indexed`** tokens (what is stored in the inverted 
 
 `POST /v1/schema/{className}/properties/{propertyName}/tokenize` resolves the analyzer config from an existing property, so you can see what a specific property would do with a given input:
 
-<FilteredTextBlock
-  text={PyTokenizeEndpoint}
-  startMarker="# TokenizeEndpointProperty"
-  endMarker="# END TokenizeEndpointProperty"
-  language="py"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyTokenizeEndpoint}
+      startMarker="# TokenizeEndpointProperty"
+      endMarker="# END TokenizeEndpointProperty"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsTokenizeEndpoint}
+      startMarker="// TokenizeEndpointProperty"
+      endMarker="// END TokenizeEndpointProperty"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaTokenization}
+      startMarker="// START TokenizeEndpointProperty"
+      endMarker="// END TokenizeEndpointProperty"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsTokenization}
+      startMarker="// START TokenizeEndpointProperty"
+      endMarker="// END TokenizeEndpointProperty"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ```json
 {
-  "tokenization": "word",
   "indexed": ["la", "tasse", "bleue", "et", "le", "bol"],
   "query":   ["tasse", "bleue", "bol"]
 }

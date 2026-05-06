@@ -64,7 +64,12 @@ status = 301
 
 [[redirects]]
 from = "/cloud/upgrade"
-to   = "/cloud/manage-clusters/upgrade"
+to   = "/cloud/platform/version"
+status = 301
+
+[[redirects]]
+from = "/cloud/manage-clusters/upgrade"
+to   = "/cloud/platform/version"
 status = 301
 
 [[redirects]]
@@ -1131,4 +1136,14 @@ status = 301
 [[redirects]]
 from = "/llms.txt"
 to   = "https://weaviate.io/llms.txt"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/model_providers"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/client-libraries/java/java-v5"
+to   = "/weaviate/client-libraries/java"
 status = 301

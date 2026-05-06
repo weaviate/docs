@@ -24,7 +24,7 @@ Each language runs in its own parallel job:
 | `test-agents` | `agents` | Weaviate Agents tests |
 | `test-python` | `(pyv4 or pyv3) and not agents` | Python client tests |
 | `test-typescript` | `ts and not agents` | TypeScript client tests |
-| `test-java-v6` | `java_v6` | Java v6 client tests (with SNAPSHOT build) |
+| `test-java` | `java` | Java client tests (with SNAPSHOT build) |
 | `test-csharp` | `csharp` | C# client tests (clones csharp-client repo) |
 
 ## Software versions
@@ -81,7 +81,7 @@ Tests are organized by language, one file per language:
 | ---- | ------- | ----------- |
 | `test_python.py` | `pyv4`, `pyv3` | Python v4 and v3 client tests |
 | `test_typescript.py` | `ts` | TypeScript client tests |
-| `test_java_v6.py` | `java_v6` | Java v6 client tests (JUnit via Maven) |
+| `test_java.py` | `java` | Java client tests (JUnit via Maven) |
 | `test_csharp.py` | `csharp` | C# client tests (xUnit via dotnet) |
 | `test_agents.py` | `agents` | Weaviate Agents tests |
 
@@ -101,7 +101,7 @@ Tests are organized using pytest markers:
 | `pyv4` | Python snippets using v4 client library |
 | `pyv3` | Python snippets using v3 client library |
 | `ts` | TypeScript snippets |
-| `java_v6` | Java v6 client snippets |
+| `java` | Java client snippets |
 | `csharp` | C# client snippets |
 | `agents` | Weaviate Agents snippets |
 | `wcd` | Tests requiring a Weaviate Cloud instance |
@@ -152,7 +152,8 @@ These artifacts are retained for 7 days for debugging purposes.
 
 ### Prerequisites
 
-- Python 3.10+ and Node.js
+- Python 3.10+
+- Node.js 22+ and yarn
 - Docker (required for running Weaviate instances)
 - API keys for vectorization services (`OPENAI_API_KEY`, `COHERE_API_KEY`, `HUGGINGFACE_API_KEY`)
 
@@ -160,7 +161,7 @@ Additional language-specific requirements:
 
 | Language | Requirements |
 | -------- | ------------ |
-| Java v6 | JDK 17+, Maven |
+| Java | JDK 17+, Maven |
 | C# | .NET 9.0 SDK |
 | Go | Go 1.21+ |
 
@@ -171,8 +172,11 @@ Additional language-specific requirements:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # From the repo root directory
-uv sync
+uv sync         # Python deps
+yarn install    # Node deps (tsx + weaviate-client + sample-script deps)
 ```
+
+Node deps live in a single root `package.json` / `yarn.lock` — there are no nested `package.json` files in `_includes/code/` or `tests/`. The TypeScript test harness shells out to `npx tsx`, which resolves modules from the root `node_modules/`.
 
 ### Running tests
 
@@ -191,7 +195,25 @@ uv run pytest tests/test_python.py::test_search
 
 ### Language-specific instructions
 
-#### Java v6
+#### TypeScript
+
+```bash
+# Start Weaviate instances
+tests/start-weaviate.sh
+
+# Run all TypeScript tests via pytest (excluding agents)
+uv run pytest -m "ts and not agents"
+
+# Run a specific test
+uv run pytest tests/test_typescript.py::test_tokenization
+
+# Stop Weaviate instances
+tests/stop-weaviate.sh
+```
+
+The harness writes a temporary `tests/temp.ts` and executes it with `npx tsx`, resolving imports from the root `node_modules/`. Make sure `yarn install` has been run (see [Setup](#setup)).
+
+#### Java
 
 ```bash
 # Start Weaviate instances

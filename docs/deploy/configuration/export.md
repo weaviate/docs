@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.export.py';
+import CsCode from '!!raw-loader!/\_includes/code/csharp/ManageDataExportTest.cs';
 
 :::caution Preview — added in `v1.37`
 This is a preview feature. The API may change in future releases.
@@ -36,7 +37,7 @@ All four variables are [runtime-configurable](/docs/deploy/configuration/env-var
 
 :::note Weaviate Cloud
 
-Collection export is not enabled by default in Weaviate Cloud. If you want to enable it, contact us via [email](mailto:support@weaviate.io).
+The collection export feature is not available in Weaviate Cloud.
 
 :::
 
@@ -67,6 +68,14 @@ Specify an export ID, backend, file format, and optionally which collections to 
       startMarker="# START CreateExport"
       endMarker="# END CreateExport"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START CreateExport"
+      endMarker="// END CreateExport"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">
@@ -104,6 +113,14 @@ Exports run asynchronously. Poll the status endpoint to track progress.
       startMarker="# START GetExportStatus"
       endMarker="# END GetExportStatus"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START GetExportStatus"
+      endMarker="// END GetExportStatus"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">
@@ -145,6 +162,14 @@ Each shard within an export has its own status:
       startMarker="# START CancelExport"
       endMarker="# END CancelExport"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START CancelExport"
+      endMarker="// END CancelExport"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">

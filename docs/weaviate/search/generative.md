@@ -57,7 +57,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DynamicRag"
@@ -120,7 +120,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NamedVectorNearTextPython"
@@ -196,7 +196,7 @@ The properties you use in the prompt do not have to be among the properties you 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SingleGenerativeProperties"
@@ -265,7 +265,7 @@ You can use *generative parameters* to specify additional options when performin
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SingleGenerativeParametersTS"
@@ -343,7 +343,7 @@ Grouped task search returns one response that includes all of the query results.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GroupedGenerative"
@@ -407,7 +407,7 @@ Define object `properties` to use in the prompt. This limits the information in 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GroupedGenerativeProperties"
@@ -472,7 +472,7 @@ You can use *generative parameters* to specify additional options when performin
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GroupedGenerativeParameters"
@@ -535,7 +535,7 @@ The following fields are available for generative search with images:
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START WorkingWithImages"

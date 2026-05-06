@@ -13,7 +13,6 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.similarity.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.similarity-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTest.java';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
 
@@ -52,17 +51,9 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetNearText"
-      endMarker="// END GetNearText"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetNearText"
       endMarker="// END GetNearText"
       language="java"
@@ -128,17 +119,9 @@ This example uses a base64 representation of an image.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={ImgSrchJavaV6Code}
-      startMarker="// START search with base64"
-      endMarker="// END search with base64"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START search with base64"
       endMarker="// END search with base64"
       language="java"
@@ -185,17 +168,9 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetNearObject"
-      endMarker="// END GetNearObject"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetNearObject"
       endMarker="// END GetNearObject"
       language="java"
@@ -267,17 +242,9 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 </details>
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetNearVector"
-      endMarker="// END GetNearVector"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetNearVector"
       endMarker="// END GetNearVector"
       language="java"
@@ -330,17 +297,9 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START NamedVectorNearText"
-      endMarker="// END NamedVectorNearText"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
       language="java"
@@ -407,17 +366,9 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetWithDistance"
-      endMarker="// END GetWithDistance"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetWithDistance"
       endMarker="// END GetWithDistance"
       language="java"
@@ -481,17 +432,9 @@ Optionally, use `offset` to paginate the results.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetLimitOffset"
-      endMarker="// END GetLimitOffset"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetLimitOffset"
       endMarker="// END GetLimitOffset"
       language="java"
@@ -544,17 +487,9 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START Autocut"
-      endMarker="// END Autocut"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START Autocut"
       endMarker="// END Autocut"
       language="java"
@@ -621,19 +556,11 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithGroupby"
       endMarker="// END GetWithGroupby"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START GetWithGroupBy"
-      endMarker="// END GetWithGroupBy"
       language="java"
     />
   </TabItem>
@@ -698,17 +625,9 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetWithFilter"
-      endMarker="// END GetWithFilter"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetWithFilter"
       endMarker="// END GetWithFilter"
       language="java"
