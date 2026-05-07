@@ -73,7 +73,9 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "Weather",
             description="Daily weather information including temperature, wind speed, precipitation, pressure etc.",
-            vector_config=Configure.Vectors.text2vec_weaviate(),
+            # Use legacy single-vectorizer config so QueryAgent diversity
+            # ranking can resolve the collection's vectorizer.
+            vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
             properties=[
                 Property(name="date", data_type=DataType.DATE),
                 Property(name="humidity", data_type=DataType.NUMBER),
