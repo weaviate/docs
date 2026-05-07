@@ -238,18 +238,16 @@ public class ConnectionTest
         // START OIDCConnect
         // Connect to a self-hosted Weaviate instance configured with OIDC.
         // Obtain the access token from your identity provider before connecting.
-        var httpParts = Environment.GetEnvironmentVariable("WEAVIATE_HTTP_HOST")!.Split(':');
-        var grpcParts = Environment.GetEnvironmentVariable("WEAVIATE_GRPC_HOST")!.Split(':');
         var accessToken = Environment.GetEnvironmentVariable("WEAVIATE_OIDC_ACCESS_TOKEN")!;
         var refreshToken = Environment.GetEnvironmentVariable("WEAVIATE_OIDC_REFRESH_TOKEN") ?? "";
         var expiresIn = int.Parse(Environment.GetEnvironmentVariable("WEAVIATE_OIDC_EXPIRES_IN") ?? "60");
 
         WeaviateClient client = await WeaviateClientBuilder
             .Custom(
-                restEndpoint: httpParts[0],
-                restPort: httpParts[1],
-                grpcEndpoint: grpcParts[0],
-                grpcPort: grpcParts[1],
+                restEndpoint: "localhost",
+                restPort: "8580",
+                grpcEndpoint: "localhost",
+                grpcPort: "50551",
                 useSsl: false,
                 credentials: Auth.BearerToken(accessToken, expiresIn, refreshToken)
             )
