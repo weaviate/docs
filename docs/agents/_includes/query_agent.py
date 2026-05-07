@@ -681,7 +681,7 @@ asyncio.run(run_streaming_query())
 
 # START SuggestQueries
 response = qa.suggest_queries(
-    collections=["IRPAPERS"],
+    collections=["ArxivPapers"],
     num_queries=3,
     instructions="High-level themes and open-ended exploration",
 )

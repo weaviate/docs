@@ -176,6 +176,13 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
 
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py
 
@@ -338,6 +345,13 @@ jobs:
       - name: Configure Keycloak
         run: |
           echo "🔧 Configuring Keycloak..."
+
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
 
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py
@@ -502,6 +516,13 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
 
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py
 
@@ -657,6 +678,13 @@ jobs:
       - name: Configure Keycloak
         run: |
           echo "🔧 Configuring Keycloak..."
+
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
 
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py

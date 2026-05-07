@@ -586,7 +586,7 @@ if (!basicResponse.finalAnswer || basicResponse.finalAnswer === '') {
 
 // START SuggestQueries
 const suggestResponse = await qa.suggestQueries({
-    collections: ["IRPAPERS"],
+    collections: ["ArxivPapers"],
     numQueries: 3,
     instructions: "High-level themes and open-ended exploration",
 });
