@@ -15777,10 +15777,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-weaviate-agents@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/weaviate-agents/-/weaviate-agents-1.0.0.tgz"
-  integrity sha512-nBjZtJMA4iJw3W950Lx9Zmb37Rp1Quam5BjWitIAtFG90/pL4Hylo7qHYRIu4f4DOXEonBIYbDIwa89VumJfdg==
+weaviate-agents@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/weaviate-agents/-/weaviate-agents-1.4.0.tgz#6e74e750febb5fe104c99a662cda4e2268de1869"
+  integrity sha512-47X7oL5nuDG5zj4y5EcaAtwRQG7LxWbmi3TE2dPWeE+h4QwXsbJnkoh/hOab9PWjWy7EEbXS+xwsRzd5ArVV5Q==
 
 weaviate-client@^3.12.1:
   version "3.13.0"
