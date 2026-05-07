@@ -42,7 +42,7 @@
     "stream-chain": "^2.2.5",
     "stream-json": "^1.7.5",
     "uuid": "^13.0.0",
-    "weaviate-agents": "^1.0.0",
+    "weaviate-agents": "^1.4.0",
     "weaviate-client": "^3.12.1",
     "weaviate-ts-embedded": "^1.1.0"
   },
@@ -58,6 +58,9 @@
     "react-player": "^2.16.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
+  },
+  "resolutions": {
+    "tar": "^7.5.8"
   },
   "browserslist": {
     "production": [
