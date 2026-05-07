@@ -2,8 +2,10 @@ import pytest
 import utils
 
 
-def run_ts_script(script_loc):
-    temp_proc_script_loc = utils.load_and_prep_temp_file(script_loc, lang="ts")
+def run_ts_script(script_loc, custom_replace_pairs=None):
+    temp_proc_script_loc = utils.load_and_prep_temp_file(
+        script_loc, lang="ts", custom_replace_pairs=custom_replace_pairs or []
+    )
     command = ["npx", "tsx", temp_proc_script_loc]
 
     try:
@@ -81,7 +83,13 @@ def test_manage_data(empty_weaviates, script_loc):
     ],
 )
 def test_search(empty_weaviates, script_loc):
-    run_ts_script(script_loc)
+    # search.generative.ts loads `./koala.jpg`; the snippet is run as
+    # tests/temp.ts at test time, so rewrite the path to point at the
+    # actual bundled image in the docs repo.
+    custom = None
+    if "search.generative.ts" in script_loc:
+        custom = [("./koala.jpg", "_includes/code/howto/koala.jpg")]
+    run_ts_script(script_loc, custom_replace_pairs=custom)
 
 
 # ========== Quickstart (WCD) ==========
