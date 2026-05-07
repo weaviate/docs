@@ -385,7 +385,8 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 // START DiversityRanking
 const diversitySearchResponse = await qa.search("summer shoes", {
     limit: 10,
-    diversityWeight: 0.5
+    diversityWeight: 0.5,
+    collections: ["ECommerce"]
 })
 
 // Access the search results

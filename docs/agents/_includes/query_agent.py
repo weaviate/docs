@@ -94,7 +94,9 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "FinancialContracts",
             description="A dataset of financial contracts between individuals and/or companies, as well as information on the type of contract and who has authored them.",
-            vector_config=Configure.Vectors.text2vec_weaviate(),
+            # Use legacy single-vectorizer config so QueryAgent diversity
+            # ranking can resolve the collection's vectorizer.
+            vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
         )
         overwrite_existing = True
 
