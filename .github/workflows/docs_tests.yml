@@ -263,9 +263,13 @@ jobs:
           cd /tmp/ts-client
           npm install
           npm run build
+          # `yarn add file:` won't replace node_modules/weaviate-client when a
+          # peer dep (weaviate-agents) pins the same registry version, so the
+          # registry tarball wins. Use `yarn link` to force a symlink instead.
+          yarn link
           cd "$GITHUB_WORKSPACE"
-          yarn add "file:/tmp/ts-client"
-          echo "✅ Branch override installed"
+          yarn link weaviate-client
+          echo "✅ Branch override linked"
 
       - name: Start services
         run: |
