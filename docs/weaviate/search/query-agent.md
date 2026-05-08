@@ -13,10 +13,12 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
 
 <CloudOnlyBadge />
 
-The Weaviate Query Agent enables users to perform Weaviate searches or ask questions about their data using natural language.
+The Weaviate Query Agent enables users to perform Weaviate searches or ask questions about their data using natural language. 
+
+An agentic LLM will dynamically determine query terms and search strategies based on the natural language query.
 
 :::info First time using Weaviate Agents?
-Weaviate Agents are only available for Weaviate Cloud instances. See the [full setup guide](../../agents/query/usage.md) for setup and instantiation details.
+Weaviate Agents are only available for Weaviate Cloud instances. See the [full setup guide](../../agents/installation.md) for setup and instantiation details.
 :::
 
 ## Basic search

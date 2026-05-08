@@ -8,23 +8,197 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/\_includes/query_agent.py';
-import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
-
-# Search Mode
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.py';
+import TSCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.mts';
 
 <CloudOnlyBadge />
 
 
-Full breakdown of search mode, step by step:
+# Search Mode
 
-* Basic usage (similar to quick start)
-* Arguments/Configurable options, such as:
-    * user query input/Conversational inputs, brief explanation and link to the reference page
-    * collection names and configuration, brief explanation and link to reference page
-    * Extra filters, brief explanation and link to the reference page
-    * diversity ranking
-* Streaming:
-    * What different result payloads there are
-* Accessing results: weaviate objects, pagination, usage
+Search mode, called by the `.search()` method, transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
 
+For example, you could ask:
+
+> "Find me some vintage shoes under $70"
+
+And the agent will perform semantic search for `vintage shoes`, apply a filter for `price < 70`, and return the matching objects from your collections, ready for you to render or post-process.
+
+## Usage
+
+Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See here for more details on instantiating the main class.](../reference/instantiation.md) 
+
+Note, locally running Weaviate instances do not support the Query Agent.
+
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START BasicSearchMode"
+            endMarker="# END BasicSearchMode"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicSearchMode"
+            endMarker="// END BasicSearchMode"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+Make sure to include your API keys in your environment, and specify whichever collection you want to search over.
+
+:::note Async
+In Python, the Query Agent supports both synchronous and asynchronous usage. The Python examples on this page use the synchronous client, but can be easily replaced with the async equivalents — see the [async section](#async) for details. In JavaScript/TypeScript, all calls are asynchronous by default and use `await`.
+:::
+
+### Parameters
+
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+
+The `.search()` method accepts several arguments:
+
+    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`limit`**: The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages.
+    - **`diversity_weight`**: A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below.
+</TabItem>
+<TabItem value="ts_agents" label="JavaScript/TypeScript">
+
+The `.search()` method accepts several arguments:
+
+    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`limit`**: The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages.
+    - **`diversityWeight`**: A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below.
+</TabItem>
+</Tabs>
+
+For more advanced searches, you can also specify _additional filters_ within the collection configuration. See the [reference for filters](../reference/additional_filters.md) for more information.
+
+### Diversity ranking
+
+`Search` supports adding diversity weighting to result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of `0.0` to `1.0` — higher values favour more varied results over the most relevant ones.
+
+To use diversity ranking with target vectors, set the single target vector you want to use in the Query Agent's constructor. Diversity ranking is not yet supported with collections using multi-vector embeddings, and will only work across multiple collections if they share the same embedding model.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START DiversityRanking"
+            endMarker="# END DiversityRanking"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START DiversityRanking"
+            endMarker="// END DiversityRanking"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+## Response
+The search mode response has the following properties:
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+
+| Field | Description |
+| --- | --- |
+| `searches` | A list of `Search` objects detailing the searches the agent carried out. Each contains the search query, filters, and the collection the search was run against. |
+| `usage` | A `ModelUnitUsage` instance providing detail on the model units used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
+| `total_time` | Total time taken (seconds). |
+| `search_results` | A `QueryReturn` object whose `.objects` field is the list of matching Weaviate objects, each with `properties` and `metadata` (including the relevance `score`). |
+| `next(limit, offset)` | A method that returns the next page of results, reusing the same underlying searches for consistency. See [Pagination](#pagination) below. |
+</TabItem>
+
+<TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START ImportSearchResponse"
+        endMarker="// END ImportSearchResponse"
+        language="ts"
+    />
+
+| Field | Description |
+| --- | --- |
+| `searches` | A list of `Search` objects detailing the searches the agent carried out. Each contains the search query, filters, and the collection the search was run against. |
+| `usage` | A `ModelUnitUsage` object providing detail on the model units used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
+| `totalTime` | Total time taken (seconds). |
+| `searchResults` | A `WeaviateReturn` object whose `.objects` field is the list of matching Weaviate objects, each with `properties` and `metadata` (including the relevance `score`). |
+| `next({ limit, offset })` | A method that returns the next page of results, reusing the same underlying searches for consistency. See [Pagination](#pagination) below. |
+
+</TabItem>
+
+</Tabs>
+
+
+### Pagination
+
+Search returns results one page at a time. To fetch additional pages, call `.next()` on the previous response — the underlying searches are reused so results stay consistent across pages.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SearchPagination"
+            endMarker="# END SearchPagination"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SearchPagination"
+            endMarker="// END SearchPagination"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+## Async
+
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+
+In Python, the above examples use the synchronous client, but search mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client.
+
+<FilteredTextBlock
+    text={PyCode}
+    startMarker="# START AsyncInstantiation"
+    endMarker="# END AsyncInstantiation"
+    language="py"
+/>
+
+The `.search()` method must be awaited:
+<FilteredTextBlock
+    text={PyCode}
+    startMarker="# START AsyncSearch"
+    endMarker="# END AsyncSearch"
+    language="py"
+/>
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+
+In JavaScript/TypeScript, the `QueryAgent` is asynchronous by default — the examples in the previous sections already are asynchronous, and no separate async setup is needed.
+
+</TabItem>
+</Tabs>
+
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

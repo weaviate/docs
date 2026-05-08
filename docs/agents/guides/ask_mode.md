@@ -29,7 +29,7 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.mts';
 
 # Ask Mode
 
-Ask mode, called by the `.ask()` method, transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
+Ask mode, called by the `ask` method, transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
 
 For example, you could ask:
 
@@ -39,7 +39,7 @@ And the agents will filter for `orders`, perform semantic search for `books` and
 
 ## Usage
 
-Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See here for more details on instantiating the main class.](../reference/queryagent_class.md) 
+Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See here for more details on instantiating the main class.](../reference/instantiation.md) 
 
 Note, locally running Weaviate instances do not support the Query Agent.
 
@@ -63,11 +63,13 @@ Note, locally running Weaviate instances do not support the Query Agent.
     </TabItem>
 </Tabs>
 
+Make sure to include your API keys in your environment, and specify whichever collection you want to search over.
+
 :::note Async
 In Python, the Query Agent supports both synchronous and asynchronous usage. The Python examples on this page use the synchronous client, but can be easily replaced with the async equivalents — see the [async section](#async) for details. In JavaScript/TypeScript, all calls are asynchronous by default and use `await`.
 :::
 
-### Arguments
+### Parameters
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -76,7 +78,7 @@ In Python, the Query Agent supports both synchronous and asynchronous usage. The
 The `.ask()` method accepts several arguments:
 
     - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
     - **`result_evaluation`**: Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:
         - `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.
         - `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details.
@@ -86,7 +88,7 @@ The `.ask()` method accepts several arguments:
 The `.ask()` method accepts several arguments:
 
     - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. Learn more in the [collection configuration guide](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`.
     - **`resultEvaluation`** : Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:
         - `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.
         - `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details.
@@ -98,16 +100,10 @@ For more advanced searches, you can also specify _additional filters_ within the
 These arguments allow you to customize agent behavior, data access, and the type of answer you receive. 
 
 ## Response
+The `AskModeResponse` class has the following properties:
+
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START ImportAskResponse"
-            endMarker="# END ImportAskResponse"
-            language="py"
-        />
-
-The `AskModeResponse` class has the following attributes:
 | Field | Description |
 | --- | --- |
 | `searches` | A list of `QueryResultWithCollectionNormalized`. Each contains full details on the searches carried out during the run. This gives explicit information on the search query, filters, UUID values and sorts that were used, as well as the collection searched on. |
@@ -121,14 +117,6 @@ The `AskModeResponse` class has the following attributes:
 </TabItem>
 
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
-    <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START ImportAskResponse"
-        endMarker="// END ImportAskResponse"
-        language="ts"
-    />
-
-    The `AskModeResponse` class has the following attributes:
 
 | Field | Description |
 | --- | --- |
@@ -148,7 +136,7 @@ The `AskModeResponse` class has the following attributes:
 
 ## Streaming
 
-While `.ask()` returns a single object, you can choose to stream updates and tokens from the workflow of ask mode instead. 
+While regular ask mode returns a single object, you can choose to stream updates and tokens from the workflow of ask mode instead. 
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -169,9 +157,35 @@ While `.ask()` returns a single object, you can choose to stream updates and tok
     </TabItem>
 </Tabs>
 
-Since the Query Agent is a multi-layered agentic system, there are different types of streaming payloads you will receive. Each one always has a field that identifies which payload it is.
+Since the Query Agent is a multi-layered agentic system, there are different types of streaming payloads you will receive. Each one always has a field that identifies which payload it is, [see below](#responses).
 
-### Streamed Responses
+### Request
+
+In addition to the standard ask mode arguments ([above](#arguments)), the streaming method accepts two extra flags that control which payload types are emitted:
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `include_progress` | `bool` | Optional. If `True` (default), the agent will stream `ProgressMessage` updates as it processes the query. |
+| `include_final_state` | `bool` | Optional. If `True` (default), the agent will emit a final `AskModeResponse` payload at the end of the stream. |
+
+If both `include_progress` and `include_final_state` are set to `false`, the stream will only emit `StreamedTokens` payloads as the final answer is generated.
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `includeProgress` | `boolean` | Optional. If `true` (default), the agent will stream `ProgressMessage` updates as it processes the query. |
+| `includeFinalState` | `boolean` | Optional. If `true` (default), the agent will emit a final `AskModeResponse` payload at the end of the stream. |
+
+If both `includeProgress` and `includeFinalState` are set to `false`, the stream will only emit `StreamedTokens` payloads as the final answer is generated.
+
+    </TabItem>
+</Tabs>
+
+### Responses
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -208,7 +222,7 @@ Since the Query Agent is a multi-layered agentic system, there are different typ
 </TabItem>
 </Tabs>
 
-### Streaming Example
+### Example: Handling Different Streamed Responses
 
 You can handle each streamed payload differently depending on their class, or their output-type property. For example, you may want to display the progress message differently than building the tokens for the final answer.
 
@@ -233,41 +247,47 @@ You can handle each streamed payload differently depending on their class, or th
 
 ## Async
 
-In JavaScript/TypeScript, the `QueryAgent` is asynchronous by default — the examples in the previous sections already use `await` and `for await ... of`, so no separate async setup is needed.
+<!-- In JavaScript/TypeScript, the `QueryAgent` is asynchronous by default — the examples in the previous sections already are asynchronous, and no separate async setup is needed. -->
 
-In Python, ask mode can also be called asynchronously, which requires the `AsyncQueryAgent` class together with an async Weaviate client. 
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START AsyncInstantiation"
-            endMarker="# END AsyncInstantiation"
-            language="py"
-        />
-    </TabItem>
-</Tabs>
+
+In Python, the above examples use the synchronous client, but ask mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client. 
+
+<FilteredTextBlock
+    text={PyCode}
+    startMarker="# START AsyncInstantiation"
+    endMarker="# END AsyncInstantiation"
+    language="py"
+/>
 
 The `.ask()` method must be awaited:
-<Tabs className="code" groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START AsyncAsk"
-            endMarker="# END AsyncAsk"
-            language="py"
-        />
-    </TabItem>
-</Tabs>
+<FilteredTextBlock
+    text={PyCode}
+    startMarker="# START AsyncAsk"
+    endMarker="# END AsyncAsk"
+    language="py"
+/>
 
 And the `.ask_stream()` method must be used in an `async for` loop:
-<Tabs className="code" groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START AsyncStreaming"
-            endMarker="# END AsyncStreaming"
-            language="py"
-        />
+<FilteredTextBlock
+    text={PyCode}
+    startMarker="# START AsyncStreaming"
+    endMarker="# END AsyncStreaming"
+    language="py"
+/>
     </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+
+In JavaScript/TypeScript, the `QueryAgent` is asynchronous by default — the examples in the previous sections already are asynchronous,  and no separate async setup is needed.
+
+</TabItem>
 </Tabs>
+
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

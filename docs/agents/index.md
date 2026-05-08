@@ -9,8 +9,8 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from "!!raw-loader!./_includes/code/quickstart.py";
-import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
+import PyCode from "!!raw-loader!./_includes/code/introduction.py";
+import TSCode from '!!raw-loader!./_includes/code/introduction.mts';
 
 # Weaviate Query Agent: AI Search for your Database
 
@@ -25,6 +25,14 @@ The query agent uses agentic search (AI search) on your Weaviate vector database
             startMarker="# START FirstExample"
             endMarker="# END FirstExample"
             language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START FirstExample"
+            endMarker="// END FirstExample"
+            language="ts"
         />
     </TabItem>
 </Tabs>
@@ -104,11 +112,11 @@ The query agent uses agentic search (AI search) on your Weaviate vector database
 
 ## What is the Query Agent?
 
-The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across one or more collections, dynamically deciding which collection to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
+The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across one or more collections, dynamically deciding which collection(s) to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
 
 It is designed as a pre-built agentic service for your data, using AI to write and perform the most optimal search. The query agent currently has two modes:
 
-* [**Ask Mode**](guides/ask_mode.md): Design and execute an search, and answer the user query with a final response.
+* [**Ask Mode**](guides/ask_mode.md): Design and execute a search, and answer the user query with a final response.
 * [**Search Mode**](guides/search_mode.md): Design and execute a search only, and return the retrieved data.
 
 ## Get Started

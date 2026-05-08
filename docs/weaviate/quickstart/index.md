@@ -280,7 +280,7 @@ Are you ready to see how deep the rabbit hole goes? 🔴🔵 #TheMatrix #WakeUp
 
 <CloudOnlyBadge />
 
-The [Weaviate Query Agent](/agents/query/index.md) is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud. The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
+The [Weaviate Query Agent](/agents/index.md) is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud. The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
 
 import QueryAgentQuickstart from "/\_includes/code/quickstart/quickstart.short.query-agent.mdx";
 

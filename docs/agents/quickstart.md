@@ -10,7 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.py';
-import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
+import TSCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.mts';
 
 # Weaviate Query Agent: Quickstart
 
@@ -63,6 +63,14 @@ Perform a search using Search Mode (retrieval only, no answer generation). The L
             language="py"
         />
     </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicSearchQuery"
+            endMarker="// END BasicSearchQuery"
+            language="ts"
+        />
+    </TabItem>
 </Tabs>
 
 Search mode returns the raw Weaviate objects, as if you had performed the search in Weaviate directly.
@@ -74,6 +82,14 @@ Search mode returns the raw Weaviate objects, as if you had performed the search
             startMarker="# START BasicSearchResponse"
             endMarker="# END BasicSearchResponse"
             language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicSearchResponse"
+            endMarker="// END BasicSearchResponse"
+            language="ts"
         />
     </TabItem>
 </Tabs>
@@ -101,6 +117,14 @@ Perform a query using Ask Mode (with answer generation). The LLM creates a searc
             language="py"
         />
     </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicAskQuery"
+            endMarker="// END BasicAskQuery"
+            language="ts"
+        />
+    </TabItem>
 </Tabs>
 
 
@@ -113,6 +137,14 @@ You can access specific search results via `ask_response.sources`, the final res
             startMarker="# START BasicAskResponse"
             endMarker="# END BasicAskResponse"
             language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicAskResponse"
+            endMarker="// END BasicAskResponse"
+            language="ts"
         />
     </TabItem>
 </Tabs>

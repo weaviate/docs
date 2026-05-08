@@ -14,3 +14,9 @@ import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
 # Research Mode
 
 TBD
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

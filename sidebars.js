@@ -1358,6 +1358,21 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "agents/reference/instantiation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/reference/system_prompt",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/reference/multi_turn_conversations",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "agents/reference/additional_filters",
           className: "sidebar-item",
         },
@@ -1368,17 +1383,7 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "agents/reference/multi_turn_conversations",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "agents/reference/troubleshooting",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/reference/queryagent_class",
           className: "sidebar-item",
         },
       ],
