@@ -12,11 +12,15 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!./_includes/code/introduction.py";
 import TSCode from '!!raw-loader!./_includes/code/introduction.mts';
 
-# Weaviate Query Agent: AI Search for your Database
+# Weaviate Query Agent: Agentic Search for your Database
 
 <CloudOnlyBadge />
 
-The query agent uses agentic search (AI search) on your Weaviate vector database to determine the most effective query terms, filters, and other search options based on your natural language query.
+The Query Agent runs agentic search over your Weaviate Cloud database. Ask a question in natural language and the agent automatically decides which collections to search, which filters and sorts to apply, and which search types to use — all in a single call.
+
+:::info Free tier
+Up to 250 ask queries or 1000 search queries per month, no credit card required. [Get started →](quickstart.md)
+:::
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -114,20 +118,30 @@ The query agent uses agentic search (AI search) on your Weaviate vector database
 
 The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across one or more collections, dynamically deciding which collection(s) to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
 
-It is designed as a pre-built agentic service for your data, using AI to write and perform the most optimal search. The query agent currently has two modes:
+It is designed as a pre-built agentic service for your data, with two main modes:
 
-* [**Ask Mode**](guides/ask_mode.md): Design and execute a search, and answer the user query with a final response.
-* [**Search Mode**](guides/search_mode.md): Design and execute a search only, and return the retrieved data.
+* [**Ask Mode**](guides/ask_mode.md): Return a natural language answer after searching your data. Chat-like; best for end-user-facing apps where the user wants a written response instead of raw data.
+* [**Search Mode**](guides/search_mode.md): Return the raw matching objects directly from your collection(s), with filters, sorts, and search types chosen for you. Lookup-like; best for internal search, dashboards, or the retrieval step in a larger pipeline.
+
+### Example use cases
+
+- **Customer-facing chat assistant** (Ask Mode) — Answer questions like *"Recommend me vintage shoes under $70 in size 9"* with a written response, sourced from your product catalog.
+- **Natural-language filter on an internal dashboard** (Search Mode) — Turn *"orders flagged last week from EU customers"* into a filtered Weaviate query and render the rows in your UI.
+- **Retrieval step inside your own RAG or agent stack** (Search Mode) — Fetch the most relevant objects via the agent, then pass them to a downstream generative step you control.
 
 ## Get Started
 
-You will require a Weaviate cloud cluster, [a 14 day sandbox cluster is free](https://weaviate.io/deployment/serverless). 
+You need a Weaviate Cloud cluster — [a 14-day sandbox is free](https://weaviate.io/deployment/serverless). With a cluster and some data, install [the Python or TypeScript client](./installation.md) and you can run your first query in minutes.
 
-If you already have a cloud cluster, and data, you just need to install [one of the clients](./clients/index.md) and you can connect straight away. Otherwise, you can upload data via a CSV on the cloud console, or via the Weaviate APIs.
+Already have a cluster but no data? Upload via CSV in the cloud console, or via the Weaviate APIs.
 
-You can make up to 250 ask mode queries, or 1000 search mode queries per month for free.
+## Where to go next
 
-Check out the [quickstart guide](quickstart.md) to see an overview of the query agent and how to get started. 
+- [**Quickstart**](quickstart.md) — Set up the client and run your first ask and search calls.
+- [**Features**](guides/index.md) — Detailed pages on Ask Mode, Search Mode, and other modes.
+- [**Reference**](reference/instantiation.md) — Constructor options, collection configuration, additional filters, system prompts, and conversational inputs.
+- [**Recipes**](recipes.mdx) — End-to-end example notebooks.
+
 
 ## Questions and feedback
 
