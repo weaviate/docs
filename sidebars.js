@@ -1400,7 +1400,7 @@ const sidebars = {
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/guides/index",
+        id: "agents/clients/index",
       },
       customProps: {
         cloudOnly: false,
