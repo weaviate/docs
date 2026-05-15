@@ -100,7 +100,7 @@ Review the documentation of your specific IDE to see if it has this feature, and
 
 ### Consider using Weaviate Agents
 
-[Weaviate Agents](/agents) are pre-built agentic services designed for specific tasks, such as [querying](/agents/query), [transforming data](/agents/transformation/), and [personalizing content](/agents/personalization).
+[Weaviate Agents](/agents) are pre-built agentic services designed for searching your data, with AI deciding the search terms, filters, sorts, and other search parameters. The [Query Agent](/agents/query) is purpose-built for this usecase.
 
 Weaviate agents are available for Weaviate Cloud users to enable interacting with the Weaviate Cloud instance using natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
 
