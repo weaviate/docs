@@ -1291,11 +1291,6 @@ const sidebars = {
           id: "agents/quickstart",
           className: "sidebar-item",
         },
-        {
-          type: "doc",
-          id: "agents/usage",
-          className: "sidebar-item",
-        },
       ],
     },
     {

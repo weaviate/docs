@@ -368,7 +368,7 @@ However, no shoes under $60 were found based on available information.
 
 ## Further resources
 
-- [Query Agent full documentation](/agents/query) - Complete guide with setup and advanced features
+- [Query Agent full documentation](/agents/index.md) - Complete guide with setup and advanced features
 - [Connect to Weaviate Cloud](/cloud/manage-clusters/connect)
 - [Weaviate Cloud documentation](/cloud)
 - [AI agents framework](/agents)
