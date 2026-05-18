@@ -8,8 +8,8 @@ image: og/docs/howto.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent.py';
+import TSCode from '!!raw-loader!/docs/agents/_includes/code/query_agent.mts';
 
 <CloudOnlyBadge />
 
@@ -20,6 +20,27 @@ An agentic LLM will dynamically determine query terms and search strategies base
 :::info First time using Weaviate Agents?
 Weaviate Agents are only available for Weaviate Cloud instances. See the [full setup guide](../../agents/installation.md) for setup and instantiation details.
 :::
+
+First, you must define the Query Agent class, setup with a client pointing towards your Weaviate cloud cluster.
+
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START InstantiateQueryAgent"
+  endMarker="# END InstantiateQueryAgent"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// START InstantiateQueryAgent"
+  endMarker="// END InstantiateQueryAgent"
+  language="ts"
+/>
+</TabItem>
+</Tabs>
 
 ## Basic search
 

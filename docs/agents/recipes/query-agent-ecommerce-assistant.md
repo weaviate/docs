@@ -11,6 +11,9 @@ tags: ['Query Agent']
 
 In this recipe, we will be building a simple e-commerce assistant agent with the [Weaviate Query Agent](https://docs.weaviate.io/agents). This agent will have access to a number of Weaviate collections, and will be capable of answering complex queries about brands and clothing items, accessing information from each collection. By the end, we'll wrap the agent in a small reusable class that's ready to plug into a chatbot, CLI, or any larger application.
 
+![Weaviate Query Agent flowchart for the Ecommerce example](../_includes/query_agent_tutorial_ecommerce_flowchart.png#gh-light-mode-only "Weaviate Query Agent flowchart for the Ecommerce example")
+![Weaviate Query Agent flowchart for the Ecommerce example](../_includes/query_agent_tutorial_ecommerce_flowchart.png#gh-dark-mode-only "Weaviate Query Agent flowchart for the Ecommerce example")
+
 > 📚 You can read and learn more about this service in our ["Introducing the Weaviate Query Agent"](https://weaviate.io/blog/query-agent) blog.
 
 To get started, we've prepared two open datasets, available on Hugging Face. The first step will be walking through how to populate your Weaviate Cloud collections.
@@ -58,6 +61,10 @@ client = weaviate.connect_to_weaviate_cloud(
 In the following code blocks, we are pulling our demo datasets from Hugging Face and writing them to new collections in our Weaviate Serverless cluster.
 
 > ❗️ The `QueryAgent` uses the descriptions of collections and properties to decide which ones to use when solving queries, and to access more information about properties. You can experiment with changing these descriptions, providing more detail, and more. It's good practice to provide property descriptions too. For example, below we make sure that the `QueryAgent` knows that prices are all in USD, which is information that would otherwise be unavailable.
+
+![Ecommerce and Brands collection example data](../_includes/query_agent_tutorial_ecommerce_dataset.png#gh-light-mode-only "Ecommerce and Brands collection example data")
+![Ecommerce and Brands collection example data](../_includes/query_agent_tutorial_ecommerce_dataset.png#gh-dark-mode-only "Ecommerce and Brands collection example data")
+
 
 ```python
 from weaviate.classes.config import Configure, Property, DataType
