@@ -116,6 +116,9 @@ Up to 250 ask queries or 1000 search queries per month, no credit card required.
 
 ## What is the Query Agent?
 
+![Weaviate Query Agent from a user perspective](./_includes/query_agent_architecture_light.png#gh-light-mode-only "Weaviate Query Agent from a user perspective")
+![Weaviate Query Agent from a user perspective](./_includes/query_agent_architecture_dark.png#gh-dark-mode-only "Weaviate Query Agent from a user perspective")
+
 The Weaviate Query Agent connects to your pre-existing Weaviate database and transforms natural language queries into actionable searches using an LLM. It can perform multiple searches and aggregations across one or more collections, dynamically deciding which collection(s) to search on, creating custom filters, group bys, sorts, and search types, all depending on a single natural language question.
 
 It is designed as a pre-built agentic service for your data, with two main modes:
@@ -131,9 +134,13 @@ It is designed as a pre-built agentic service for your data, with two main modes
 
 ## Get Started
 
+:::info Query Agent in cloud
+[You can try the Query Agent without any setup on Weaviate Cloud. Simply go to the 'Agents' tab to start asking questions about data in your collections.](/go/console?utm_content=agents)
+:::
+
 You need a Weaviate Cloud cluster — [a 14-day sandbox is free](https://weaviate.io/deployment/serverless). With a cluster and some data, install [the Python or TypeScript client](./installation.md) and you can run your first query in minutes.
 
-Already have a cluster but no data? Upload via CSV in the cloud console, or via the Weaviate APIs.
+Already have a cluster but no data? Upload via CSV in the cloud console, or [via the Weaviate APIs](/weaviate/manage-objects/create).
 
 ## Where to go next
 
