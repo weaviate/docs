@@ -20,6 +20,21 @@ def run_csharp_test(test_class, empty_weaviates):
         pytest.fail(f"C# {test_class} failed with error: {error}")
 
 
+# ConnectionTest runs first: its OIDC case authenticates with a bearer token
+# fetched once at CI job start. That token has a short lifespan, and once it
+# lapses the 1.1.0 client attempts a refresh that fails. Running it before the
+# longer suites keeps it inside the token's valid window.
+@pytest.mark.csharp
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "ConnectionTest",
+    ],
+)
+def test_connection(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)
+
+
 @pytest.mark.csharp
 @pytest.mark.parametrize(
     "test_class",
@@ -78,7 +93,6 @@ def test_compression(empty_weaviates, test_class):
 @pytest.mark.parametrize(
     "test_class",
     [
-        "ConnectionTest",
         "BackupsTest",
         "RBACTest",
         "ReplicationTest",
