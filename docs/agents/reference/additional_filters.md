@@ -13,8 +13,6 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/code/additional_filters.
 
 <!-- Details on using the `additional_filters` argument, as well as typical usecases or examples where this might be useful. -->
 
-## Overview
-
 Additional filters can be used to subset the data in a single collection manually in addition to whatever filters the Query Agent decides to use in a particular search.
 
 These persistent filters are defined at the specification of the collection, and combined with agent-generated filters using logical `AND` operations at search time.
@@ -67,7 +65,7 @@ Or at **runtime of Ask or Search Mode**.
 </Tabs>
 
 
-The additional filters are an argument to `QueryAgentCollectionConfig`, and used as part of collection configuration - [see the page for more details](./advanced_collections.md).
+The additional filters are an argument to `QueryAgentCollectionConfig`, and used as part of collection configuration. [See the page on collection configuration for more detail](./advanced_collections.md).
 
 You can add as many layers of complexity to the custom filter as you need - a single filter on one property, or multiple nested filters across multiple properties.
 

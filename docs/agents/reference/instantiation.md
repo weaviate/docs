@@ -73,7 +73,7 @@ The `QueryAgent` constructor accepts the following arguments:
 | --- | --- | --- |
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
 | `collections` | `list[str \| QueryAgentCollectionConfig]` | Optional. The collections to query. Overridden if passed in the `run` method. |
-| `system_prompt` | `str` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. System prompt - [see the page for more details](./system_prompt.md). |
+| `system_prompt` | `str` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. [See the page on the system prompt for more detail](./system_prompt.md). |
 | `timeout` | `int` | Optional. The timeout for the request. Defaults to 60 seconds. |
 
     </TabItem>
@@ -85,7 +85,7 @@ The first argument is the Weaviate client. All other options are passed in a `Qu
 | --- | --- | --- |
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
 | `collections` | `(string \| QueryAgentCollectionConfig)[]` | Optional. The collections to query. Overridden if passed to the method call. |
-| `systemPrompt` | `string` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. System prompt - [see the page for more details](./system_prompt.md). |
+| `systemPrompt` | `string` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. [See the page on the system prompt for more detail](./system_prompt.md). |
 
     </TabItem>
 </Tabs>
@@ -132,7 +132,7 @@ You can define which collections are available either
         </TabItem>
     </Tabs>
 
-If you provide both, then the collections specified at runtime will override those specified in the base class. Collection configuration - [see the page for more details](./advanced_collections.md).
+If you provide both, then the collections specified at runtime will override those specified in the base class. [See the page on collection configuration for more detail](./advanced_collections.md).
 
 
 ## Questions and feedback

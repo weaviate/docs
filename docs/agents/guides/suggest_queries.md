@@ -1,5 +1,5 @@
 ---
-title: Suggest Queries
+title: Suggest Queries Mode
 description: "Generate suggested follow-up queries to help users explore Weaviate data."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'modes']
@@ -67,19 +67,17 @@ Suggest Queries can be called with the following arguments:
 
 | Parameter | Description |
 | --- | --- |
-| `collections` | Override the collections configured at instantiation. Collection configuration - [see the page for more details](../reference/advanced_collections.md). |
+| `collections` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `num_queries` | The number of queries to suggest (default: `3`). |
 | `instructions` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
-
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
 
 | Parameter | Description |
 | --- | --- |
-| `collections` | Override the collections configured at instantiation. Collection configuration - [see the page for more details](../reference/advanced_collections.md). |
+| `collections` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `numQueries` | The number of queries to suggest (default: `3`). |
 | `instructions` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
-
     </TabItem>
 </Tabs>
 
@@ -97,6 +95,7 @@ The `SuggestQueryResponse` class has the following properties:
 | `usage` | A `ModelUnitUsage` instance providing detail on the model units used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
 | `total_time` | Total time taken (seconds). |
 
+[See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.SuggestQueryResponse)
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
 
@@ -107,6 +106,7 @@ The `SuggestQueryResponse` class has the following properties:
 | `usage` | A `ModelUnitUsage` object providing detail on the model units used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
 | `totalTime` | Total time taken (seconds). |
 
+[See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/SuggestQueryResponse.html)
     </TabItem>
 </Tabs>
 

@@ -23,12 +23,44 @@ featured = true
 description = "Learn how to utilize the Weaviate Embedding Service available on Weaviate Cloud for generating vector embeddings."
 
 [[recipe]]
-title = "Build A Weaviate Query Agent - The E-Commerce Assistant"
+title = "Get Started with the Weaviate Query Agent"
 notebook = "weaviate-services/agents/query-agent-get-started.ipynb"
 tags = ["Query Agent"]
 agent = true
 featured = true
-description = "A getting-started guide to building a Weaviate Query Agent, demonstrated with an e-commerce assistant example."
+description = "A high-level introduction to the Weaviate Query Agent across Ask Mode, Search Mode, and Suggest Queries."
+
+[[recipe]]
+title = "Build a Query Agent E-Commerce Assistant"
+notebook = "weaviate-services/agents/query-agent-ecommerce-assistant.ipynb"
+tags = ["Query Agent", "E-Commerce"]
+agent = true
+featured = true
+description = "Wrap the Query Agent in a reusable customer-facing assistant for an e-commerce catalog."
+
+[[recipe]]
+title = "Build a Streaming Chat UI with Streamlit"
+notebook = "weaviate-services/agents/query-agent-streamlit-chat.ipynb"
+tags = ["Query Agent", "Streamlit", "Streaming", "UI"]
+agent = true
+featured = true
+description = "Build a Streamlit chat UI on top of the Query Agent with token-by-token streaming and multi-turn history."
+
+[[recipe]]
+title = "Using the Query Agent as a Tool"
+notebook = "weaviate-services/agents/query-agent-as-a-tool.ipynb"
+tags = ["Query Agent", "Integration", "Function Calling"]
+agent = true
+featured = true
+description = "Expose the Weaviate Query Agent as a callable tool inside your own agent framework."
+
+[[recipe]]
+title = "Query Agent vs. Doing It Yourself"
+notebook = "weaviate-services/agents/query-agent-vs-diy.ipynb"
+tags = ["Query Agent", "Comparison"]
+agent = true
+featured = true
+description = "Compare the Weaviate Query Agent against a hand-rolled retrieval and generation pipeline."
 
 [[recipe]]
 title = "Weaviate Query Agent with Crew AI"

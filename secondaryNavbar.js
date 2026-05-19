@@ -80,12 +80,7 @@ const secondaryNavbarItems = {
     description: "Build and deploy intelligent agents with Weaviate",
     link: "/agents",
     links: [
-      { label: "Documentation", link: "/agents", sidebar: "agentsSidebar" },
-      {
-        label: "Recipes",
-        link: "/agents/recipes",
-        sidebar: "agentsRecipesSidebar",
-      },
+      { label: "Documentation", link: "/agents", sidebar: "agentsSidebar" }
     ],
   },
   cloud: {

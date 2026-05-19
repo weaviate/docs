@@ -18,12 +18,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 qa = QueryAgent(
     client=client, 
-    collections=["Weather"],
-    system_prompt = (
-        "You are a helpful assistant. "
-        "Write your response in short, 5 word sentences. "
-        "Emphasize key insights."
-    )
+    collections=["Weather"]
 )
 # END BasicAskMode
 

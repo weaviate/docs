@@ -13,8 +13,6 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/code/conversations.mts';
 
 <!-- Detail on passing user/assistant message history instead of user query, typical usecases. Maybe an example function that iteratively updates message history every time `qa.ask()` is called. -->
 
-## Overview
-
 The Query Agent transforms a natural language query into actionable searches. You can either pass a single string for the query, or provide more context by including a full conversation with previous message turns.
 
 
@@ -37,7 +35,9 @@ The Query Agent transforms a natural language query into actionable searches. Yo
     </TabItem>
 </Tabs>
 
-Each message in the conversation must have a `role`, being either `"user"` or `"assistant"`, and `content`, being the text of the message.
+Each message in the conversation must have a `role`, being either `"user"` or `"assistant"`, and `content`, being the text of the message. 
+
+The final message should be a user message, and it will be treated as the current user query to define the task.
 
 ### Example: Iterative Message History
 
@@ -63,7 +63,6 @@ The example below wraps this pattern in a simple way.
         />
     </TabItem>
 </Tabs>
-
 
 ## Questions and feedback
 

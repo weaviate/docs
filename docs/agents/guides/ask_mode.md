@@ -13,7 +13,7 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.mts';
 
 <CloudOnlyBadge />
 
-Ask Mode, called by the `ask` method, transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
+Ask Mode transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
 
 For example, you could ask:
 
@@ -21,9 +21,12 @@ For example, you could ask:
 
 And the agents will filter for `orders`, perform semantic search for `books` and sort or filter for timestamps from the last week. Then, the agent will provide a response, answering this question exactly based on the data retrieved.
 
+For more details, see the page for [the Python client](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/weaviate_agents.query.html#weaviate_agents.query.QueryAgent.ask) or [the Typescript Client](https://weaviate.github.io/agents-typescript-client/classes/QueryAgent.html#ask).
+
+
 ## Usage
 
-Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. Class instantiation - [see the page for more details](../reference/instantiation.md).
+Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See the class instantiation page for more detail](../reference/instantiation.md).
 
 Note, locally running Weaviate instances do not support the Query Agent.
 
@@ -55,31 +58,28 @@ In Python, the Query Agent supports both synchronous and asynchronous usage. The
 
 ### Parameters
 
+The `.ask()` method accepts several arguments:
+
 <Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
+| Parameter | Description |
+| --- | --- |
+| `query` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
+| `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
+| `result_evaluation` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
 
-
-The `.ask()` method accepts several arguments:
-
-    - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Collection configuration - [see the page for more details](../reference/advanced_collections.md).
-    - **`result_evaluation`**: Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:
-        - `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.
-        - `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details.
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
+| Parameter | Description |
+| --- | --- |
+| `query` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
+| `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. [See the page on collection configuration for more detail](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. |
+| `resultEvaluation` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
 
-The `.ask()` method accepts several arguments:
-
-    - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. Collection configuration - [see the page for more details](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`.
-    - **`resultEvaluation`** : Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:
-        - `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.
-        - `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details.
 </TabItem>
 </Tabs>
 
-For more advanced searches, you can also specify _additional filters_ within the collection configuration. Additional filters - [see the page for more details](../reference/additional_filters.md).
+For more advanced searches, you can also specify _additional filters_ within the collection configuration. [See the page on additional filters for more detail](../reference/additional_filters.md).
 
 These arguments allow you to customize agent behavior, data access, and the type of answer you receive. 
 
@@ -98,6 +98,8 @@ The `AskModeResponse` class has the following properties:
 | `missing_information` | A list of strings detailing what information is missing from the answer that makes it incomplete. Only available if `result_evaluation` is `"llm"`. |
 | `final_answer` | A string comprising the LLM's final answer to the user query. |
 | `sources` | A list of `Source` objects, which have an `object_id` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `result_evaluation` is `"llm"`, these are subset to only those that are relevant to the `final_answer`. |
+
+[See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.AskModeResponse)
 </TabItem>
 
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -113,6 +115,7 @@ The `AskModeResponse` class has the following properties:
 | `finalAnswer` | A string comprising the LLM's final answer to the user query. |
 | `sources` | A list of `Source` objects, which have an `objectId` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `resultEvaluation` is `"llm"`, these are subset to only those that are relevant to the `finalAnswer`. |
 
+[See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/AskModeResponse.html)
 </TabItem>
     
 </Tabs>
@@ -181,11 +184,13 @@ If both `includeProgress` and `includeFinalState` are set to `false`, the stream
 | `output_type` | Always `progress_message`. |
 | `stage` | One of `query_analysis`, `search`, `aggregation`, or `final_answer`. Identifies the stage at which the agentic service is running. |
 | `message` | A human-readable message describing what the agent is doing. For example, during `query_analysis` this is `"Analyzing query..."`. |
-| `details` | A dictionary providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of dictionaries, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. |
+| `details` | A dictionary providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of dictionaries, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. | 
 
-**`StreamedTokens`** — incremental chunks of the final answer as it is generated, letting you render the response token-by-token rather than waiting for it to complete. Each instance has two fields: `output_type` (always `"streamed_tokens"`) and `delta` (the newly generated tokens to append to what you have received so far).
+[See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.ProgressMessage)
 
-**`AskModeResponse`** — the full response model, [as defined above](#response), with `output_type` always `final_state`. This is always the final result in the stream and indicates the system has completed.
+**`StreamedTokens`** — incremental chunks of the final answer as it is generated, letting you render the response token-by-token rather than waiting for it to complete. Each instance has two fields: `output_type` (always `"streamed_tokens"`) and `delta` (the newly generated tokens to append to what you have received so far). [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.StreamedTokens)
+
+**`AskModeResponse`** — the full response model, [as defined above](#response), with `output_type` always `final_state`. This is always the final result in the stream and indicates the system has completed. [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.AskModeResponse)
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -199,9 +204,11 @@ If both `includeProgress` and `includeFinalState` are set to `false`, the stream
 | `message` | A human-readable message describing what the agent is doing. For example, during `query_analysis` this is `"Analyzing query..."`. |
 | `details` | An object providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of objects, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. |
 
-**`StreamedTokens`** — incremental chunks of the final answer as it is generated, letting you render the response token-by-token rather than waiting for it to complete. Each instance has two fields: `outputType` (always `"streamedTokens"`) and `delta` (the newly generated tokens to append to what you have received so far).
+[See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/ProgressMessage.html)
 
-**`AskModeResponse`** — the full response model, [as defined above](#response), with `outputType` always `finalState`. This is always the final result in the stream and indicates the system has completed.
+**`StreamedTokens`** — incremental chunks of the final answer as it is generated, letting you render the response token-by-token rather than waiting for it to complete. Each instance has two fields: `outputType` (always `"streamedTokens"`) and `delta` (the newly generated tokens to append to what you have received so far). [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/StreamedTokens.html)
+
+**`AskModeResponse`** — the full response model, [as defined above](#response), with `outputType` always `finalState`. This is always the final result in the stream and indicates the system has completed. [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/AskModeResponse.html)
 
 </TabItem>
 </Tabs>
@@ -230,9 +237,6 @@ You can handle each streamed payload differently depending on their class, or th
 </Tabs>
 
 ## Async
-
-<!-- In JavaScript/TypeScript, the `QueryAgent` is asynchronous by default — the examples in the previous sections already are asynchronous, and no separate async setup is needed. -->
-
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">

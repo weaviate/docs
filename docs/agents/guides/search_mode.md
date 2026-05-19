@@ -13,7 +13,7 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.mts';
 
 <CloudOnlyBadge />
 
-Search Mode, called by the `.search()` method, transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
+Search Mode transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
 
 For example, you could ask:
 
@@ -21,9 +21,12 @@ For example, you could ask:
 
 And the agent will perform semantic search for `vintage shoes`, apply a filter for `price < 70`, and return the matching objects from your collections, ready for you to render or post-process.
 
+For more details, see the page for [the Python client](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/weaviate_agents.query.html#weaviate_agents.query.QueryAgent.search) or [the Typescript Client](https://weaviate.github.io/agents-typescript-client/classes/QueryAgent.html#search).
+
 ## Usage
 
-Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. Class instantiation - [see the page for more details](../reference/instantiation.md).
+Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See the class instantiation page for more detail](../reference/instantiation.md).
+
 
 Note, locally running Weaviate instances do not support the Query Agent.
 
@@ -55,29 +58,30 @@ In Python, the Query Agent supports both synchronous and asynchronous usage. The
 
 ### Parameters
 
+The `.search()` method accepts several arguments:
+
 <Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
+| Parameter | Description |
+| --- | --- |
+| `query` | The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
+| `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
+| `limit` | The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages. |
+| `diversity_weight` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
 
-
-The `.search()` method accepts several arguments:
-
-    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Collection configuration - [see the page for more details](../reference/advanced_collections.md).
-    - **`limit`**: The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages.
-    - **`diversity_weight`**: A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below.
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
+| Parameter | Description |
+| --- | --- |
+| `query` | The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
+| `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
+| `limit` | The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages. |
+| `diversityWeight` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
 
-The `.search()` method accepts several arguments:
-
-    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Collection configuration - [see the page for more details](../reference/advanced_collections.md).
-    - **`limit`**: The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages.
-    - **`diversityWeight`**: A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below.
 </TabItem>
 </Tabs>
 
-For more advanced searches, you can also specify _additional filters_ within the collection configuration. Additional filters - [see the page for more details](../reference/additional_filters.md).
+For more advanced searches, you can also specify _additional filters_ within the collection configuration. [See the page on additional filters for more detail](../reference/additional_filters.md).
 
 ### Diversity ranking
 
@@ -112,11 +116,13 @@ The Search Mode response has the following properties:
 
 | Field | Description |
 | --- | --- |
-| `searches` | A list of `Search` objects detailing the searches the agent carried out. Each contains the search query, filters, and the collection the search was run against. |
+| `searches` | A list of searches the agent carried out. Each contains the search query, filters, and the collection the search was run against. |
 | `usage` | A `ModelUnitUsage` instance providing detail on the model units used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
 | `total_time` | Total time taken (seconds). |
 | `search_results` | A `QueryReturn` object whose `.objects` field is the list of matching Weaviate objects, each with `properties` and `metadata` (including the relevance `score`). |
 | `next(limit, offset)` | A method that returns the next page of results, reusing the same underlying searches for consistency. See [Pagination](#pagination) below. |
+
+[See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.SearchModeResponse)
 </TabItem>
 
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -129,11 +135,13 @@ The Search Mode response has the following properties:
 
 | Field | Description |
 | --- | --- |
-| `searches` | A list of `Search` objects detailing the searches the agent carried out. Each contains the search query, filters, and the collection the search was run against. |
+| `searches` | A list of searches the agent carried out. Each contains the search query, filters, and the collection the search was run against. |
 | `usage` | A `ModelUnitUsage` object providing detail on the model units used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
 | `totalTime` | Total time taken (seconds). |
 | `searchResults` | A `WeaviateReturn` object whose `.objects` field is the list of matching Weaviate objects, each with `properties` and `metadata` (including the relevance `score`). |
 | `next({ limit, offset })` | A method that returns the next page of results, reusing the same underlying searches for consistency. See [Pagination](#pagination) below. |
+
+[See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/SearchModeResponse.html)
 
 </TabItem>
 

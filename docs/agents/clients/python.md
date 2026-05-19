@@ -5,22 +5,33 @@ image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']
 ---
 
-<!-- Details of the python client, some of:
-* More detailed installation
-* Link to the full API docs -->
-<!-- * Link to the github -->
+import QuickLinks from "/src/components/QuickLinks";
+
+export const pythonCardsData = [
+  {
+    title: "weaviate/weaviate-agents-python-client",
+    link: "https://github.com/weaviate/weaviate-agents-python-client",
+    icon: "fa-brands fa-github",
+  },
+  {
+    title: "Reference manual (docstrings)",
+    link: "https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/modules.html",
+    icon: "fa-solid fa-book",
+  },
+];
 
 The Python client allows you to easily interact with the Weaviate Agents API from your Python applications. 
 
 It relies on the [Weaviate Client package](../../weaviate/client-libraries/python/index.mdx), and handles authentication and connection to your Weaviate instance from there.
 
-## Client Documentation
 
-Full Weaviate Agents Python Client documentation - [see the page for more details](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/).
+:::note Python client (SDK)
 
-## Github
+The latest Weaviate Agents Python client is version `v||site.agents_python_version||`.
 
-Weaviate Agents Python Client Github repository - [see the page for more details](https://github.com/weaviate/weaviate-agents-python-client).
+<QuickLinks items={pythonCardsData} />
+
+:::
 
 ## Installation
 

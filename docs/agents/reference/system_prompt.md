@@ -12,7 +12,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/system_prompt.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/system_prompt.mts';
 
-## Overview
 
 You can provide a custom system prompt to guide the Query Agent's behavior, by passing it as part of the [instantiation](./instantiation.md).
 

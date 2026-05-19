@@ -19,7 +19,7 @@ Ensure you have access to:
 * A **Weaviate Cloud Instance**, such as a [free sandbox instance](/go/console?utm_content=agents).
 * Either one of the **Python Client**, **TypeScript Client** or the functionality to call the **API endpoints** directly.
 
-Installation - [see the page for more details](./installation.md).
+[See the installation page for more detail](./installation.md).
 
 
 ## Start the Query Agent
