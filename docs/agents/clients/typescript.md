@@ -2,7 +2,7 @@
 title: TypeScript Client
 description: "Use the TypeScript client to interact with Weaviate Agents."
 image: og/docs/agents.jpg
-# tags: ['agents', 'clients', 'typescript']
+tags: ['agents', 'query-agent', 'clients']
 ---
 
 The TypeScript client allows you to easily interact with the Weaviate Agents API from your JavaScript or TypeScript applications.
@@ -11,11 +11,11 @@ It relies on the [Weaviate Client package](../../weaviate/client-libraries/types
 
 ## Client Documentation
 
-[See here for the full client documentation of the Weaviate Agents TypeScript Client.](https://weaviate.github.io/agents-typescript-client/)
+Full Weaviate Agents TypeScript Client documentation - [see the page for more details](https://weaviate.github.io/agents-typescript-client/).
 
 ## Github
 
-[See here for the Github repository for the Weaviate Agents TypeScript Client.](https://github.com/weaviate/agents-typescript-client)
+Weaviate Agents TypeScript Client Github repository - [see the page for more details](https://github.com/weaviate/agents-typescript-client).
 
 ## Installation
 

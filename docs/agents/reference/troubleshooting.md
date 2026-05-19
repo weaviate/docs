@@ -1,26 +1,23 @@
 ---
 title: Limitations & Troubleshooting
-sidebar_position: 25
-description: "Technical documentation and usage examples for implementing the Query Agent."
+description: "Diagnose common issues and understand the limitations of the Query Agent."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'troubleshooting']
 ---
 
-# Limitations & Troubleshooting
-
-### Usage limits
+## Usage limits
 
 import UsageLimits from "/\_includes/agents/query-agent-usage-limits.mdx";
 
 <UsageLimits />
 
-### Custom collection descriptions
+## Custom collection descriptions
 
 import CollectionDescriptions from "/\_includes/agents/query-agent-collection-descriptions.mdx";
 
 <CollectionDescriptions />
 
-### Execution times
+## Execution times
 
 import ExecutionTimes from "/\_includes/agents/query-agent-execution-times.mdx";
 

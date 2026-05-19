@@ -21,7 +21,7 @@ We'll cover five integrations:
 
 Because the Query Agent is just a Python call (`agent.ask(query).final_answer`), the same pattern works in any framework that supports tools or function calling — see [the closing section](#using-the-query-agent-as-a-tool-anywhere) for how to adapt this to anything else.
 
-> 💡 New to the Query Agent itself? Start with the [**Get Started**](./query-agent-get-started.md) recipe first — it walks through the agent's own ask, search and suggest features before treating it as a building block.
+> 💡 New to the Query Agent itself? Start with the [**Get Started**](./query-agent-get-started.md) recipe first — it walks through the agent's own Ask Mode, Search Mode and Suggest Queries features before treating it as a building block.
 
 ## What You'll Need
 
@@ -419,7 +419,7 @@ workflow = AgentWorkflow.from_tools_or_functions(
 )
 ```
 
-The `system_prompt` here is the *outer* agent's prompt — it shapes how the LlamaIndex agent decides when and how to call the tool. The Query Agent itself has its own (separate) system prompt, which you can configure on the `QueryAgent` constructor; see [the system prompt reference](../reference/system_prompt.md).
+The `system_prompt` here is the *outer* agent's prompt — it shapes how the LlamaIndex agent decides when and how to call the tool. The Query Agent itself has its own (separate) system prompt, which you can configure on the `QueryAgent` constructor; see [Customising the System Prompt](../reference/system_prompt.md).
 
 ### Ask a question
 
@@ -468,12 +468,12 @@ A few things worth knowing once you take this past a notebook:
 - **Consider returning more than the final answer.** For some apps, the calling agent benefits from seeing the `sources` or executed `searches`, not just the natural-language answer. You can change `ask_weaviate` to return a structured object (JSON) and update the docstring to tell the LLM what to do with each field.
 - **Constrain the collections.** If you have many collections, instantiate separate agents over different subsets (e.g. `ask_products`, `ask_docs`) and expose each as its own tool. The calling LLM will pick the right one based on the docstrings.
 
-## Where to Go Next
+## Next Steps
 
-- [**Get Started**](./query-agent-get-started.md) — Walkthrough of the Query Agent's own ask, search and suggest features.
-- [**Build an E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — Use-case-focused tutorial that wraps the Query Agent into a reusable customer-facing assistant.
+- [**Get Started with the Weaviate Query Agent**](./query-agent-get-started.md) — Walkthrough of the Query Agent's own Ask Mode, Search Mode and Suggest Queries features.
+- [**Build a Query Agent E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — Use-case-focused tutorial that wraps the Query Agent into a reusable customer-facing assistant.
 - [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, multi-turn conversations, result evaluation.
-- [**System Prompt**](../reference/system_prompt.md) — Tune the Query Agent's own behavior independent of the outer agent's prompt.
+- [**Customising the System Prompt**](../reference/system_prompt.md) — Tune the Query Agent's own behavior independent of the outer agent's prompt.
 
 Close the Weaviate client when your application shuts down:
 

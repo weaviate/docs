@@ -1,12 +1,9 @@
 ---
 title: Installation
-sidebar_position: 20
-description: "Set up and install."
+description: "Install the Weaviate client with the agents extra to use the Query Agent."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started']
+tags: ['agents', 'query-agent', 'getting-started']
 ---
-
-# Weaviate Query Agent: Installation
 
 <CloudOnlyBadge />
 
@@ -20,12 +17,12 @@ For example, if the associated Weaviate credentials' user has access to only a s
 
 :::
 
-This Agent is available exclusively for use with a Weaviate Cloud instance. Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+The Query Agent is available exclusively for use with a Weaviate Cloud instance. Weaviate Cloud setup - [see the page for more details](/cloud/index.mdx).
 
 You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](/go/console?utm_content=agents).
 
 :::note Supported languages
-At this time, this Agent is available only for Python and TypeScript/JavaScript. Support for other languages will be added in the future.
+At this time, the Query Agent clients are available only for Python and TypeScript/JavaScript. Support for other languages will be added in the future.
 :::
 
 ### Python Client
@@ -38,7 +35,7 @@ Install the client library using the following command:
 pip install -U "weaviate-client[agents]"
 ```
 
-[See the Python Client installation section for more details.](./clients/python.md#installation)
+Python Client installation - [see the page for more details](./clients/python.md#installation).
 
 #### Troubleshooting: Force `pip` to install the latest version
 

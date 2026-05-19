@@ -1,9 +1,8 @@
 ---
 title: Multi-turn Conversations
-sidebar_position: 25
-description: "Provide a conversational input to the query agent instead of a single user query."
+description: "Pass conversation history to the Query Agent for context-aware follow-up questions."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'configuration']
 ---
 
 import Tabs from '@theme/Tabs';

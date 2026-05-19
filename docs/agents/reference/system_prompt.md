@@ -1,9 +1,8 @@
 ---
 title: Customising the System Prompt
-sidebar_position: 1
-description: "Query Agent class instantiation details."
+description: "Customise the Query Agent's system prompt to shape its behavior and output."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started']
+tags: ['agents', 'query-agent', 'configuration']
 ---
 
 
@@ -39,7 +38,7 @@ You can provide a custom system prompt to guide the Query Agent's behavior, by p
 
 Then any run using the Query Agent will use this new set of instructions.
 
-A custom system prompt is supported in **both ask mode and search mode.**
+A custom system prompt is supported in **both Ask Mode and Search Mode.**
 
 ## How is it used?
 

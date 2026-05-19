@@ -5,7 +5,7 @@ client = load_client_internally()
 populate_weaviate(client, False)
 
 # START FirstExample
-from weaviate_agents.query import QueryAgent
+from weaviate.agents.query import QueryAgent
 
 qa = QueryAgent(
     client=client, # your Weaviate cloud client

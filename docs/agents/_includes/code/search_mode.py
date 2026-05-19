@@ -11,7 +11,7 @@ client.close()
 # START BasicSearchMode
 import os
 import weaviate
-from weaviate_agents.query import QueryAgent
+from weaviate.agents.query import QueryAgent
 from weaviate.classes.init import Auth
 
 client = weaviate.connect_to_weaviate_cloud(

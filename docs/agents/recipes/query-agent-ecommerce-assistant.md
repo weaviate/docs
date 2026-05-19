@@ -21,7 +21,7 @@ To get started, we've prepared two open datasets, available on Hugging Face. The
 - [**E-commerce:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) A dataset that lists clothing items, prices, brands, reviews etc.
 - [**Brands:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) A dataset that lists clothing brands and information about them such as their parent brand, child brands, average customer rating etc.
 
-> 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it walks through ask mode, search mode and suggest queries at a higher level before diving into this use-case-focused tutorial.
+> 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it walks through Ask Mode, Search Mode and Suggest Queries at a higher level before diving into this use-case-focused tutorial.
 
 ## 1. Setting Up Weaviate & Importing Data
 
@@ -119,7 +119,7 @@ with ecommerce_collection.batch.dynamic() as batch:
 
 ## 2. Set Up the Query Agent
 
-When setting up the query agent, we have to provide it a few things:
+When setting up the Query Agent, we have to provide it a few things:
 - The `client`
 - The `collections` which we want the agent to have access to.
 - (Optionally) A `system_prompt` that describes how our agent should behave
@@ -349,16 +349,16 @@ From here, the `ECommerceAssistant` is a self-contained component you can drop i
 ### Extending the Assistant
 
 A few directions you can take this from here:
-- **Switch to search mode for product grids.** When you want to render a list of products rather than a written answer, call `agent.search(...)` and pass `response.search_results.objects` to your UI. See the [Search Mode reference](../guides/search_mode.md).
-- **Tune the assistant's voice with a richer system prompt.** Add brand-voice guidelines, response formatting (markdown, JSON), or language requirements. See [System Prompt](../reference/system_prompt.md).
-- **Restrict to a single user's data.** If your catalog is multi-tenant, set `tenant` on a `QueryAgentCollectionConfig`. To enforce a hard filter (e.g. `region = "EU"`) regardless of what the LLM decides, use `additional_filters`. See [Additional Filters](../reference/additional_filters.md) and [Collection configuration](../reference/advanced_collections.md).
+- **Switch to Search Mode for product grids.** When you want to render a list of products rather than a written answer, call `agent.search(...)` and pass `response.search_results.objects` to your UI. See the [Search Mode](../guides/search_mode.md) page.
+- **Tune the assistant's voice with a richer system prompt.** Add brand-voice guidelines, response formatting (markdown, JSON), or language requirements. See [Customising the System Prompt](../reference/system_prompt.md).
+- **Restrict to a single user's data.** If your catalog is multi-tenant, set `tenant` on a `QueryAgentCollectionConfig`. To enforce a hard filter (e.g. `region = "EU"`) regardless of what the LLM decides, use `additional_filters`. See [Additional Filters](../reference/additional_filters.md) and [Collection Configuration](../reference/advanced_collections.md).
 
-## Where to Go Next
+## Next Steps
 
 - [**Build a Streaming Chat UI with Streamlit**](./query-agent-streamlit-chat.md) — A direct continuation of this recipe: wrap the same `ECommerce + Brands` agent in a Streamlit app with token-by-token streaming, live progress updates, and persisted multi-turn history.
 - [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation.
 - [**Multi-turn Conversations**](../reference/multi_turn_conversations.md) — More detail on the conversation pattern used above.
-- [**Search Mode**](../guides/search_mode.md) — Use search mode if you want raw results instead of a written answer (for example to render a product grid).
+- [**Search Mode**](../guides/search_mode.md) — Use Search Mode if you want raw results instead of a written answer (for example to render a product grid).
 
 Close the client when you're done:
 

@@ -13,7 +13,7 @@ In this recipe, we'll answer the same natural-language question against the same
 
 The DIY side of this recipe is **deliberately minimal**: six filter operators, basic sorting, no aggregations, no multi-turn context, one collection. We'll then list what you'd have to add to match the Query Agent feature-for-feature.
 
-> 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it covers ask, search and suggest modes at a higher level.
+> 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it covers Ask Mode, Search Mode and Suggest Queries at a higher level.
 
 ## What You'll Need
 
@@ -386,10 +386,10 @@ The DIY pipeline above is a starting point. Here's what you'd extend, roughly in
 | **Source attribution** | Track which row IDs informed the final answer. The Query Agent surfaces this in `response.sources` and, with `result_evaluation="llm"`, trims it down to only the rows actually used. |
 | **Schema sampling** | Production LLMs need to see example values, not just types — otherwise filtering on enumerated string fields becomes unreliable. |
 
-## Where to Go Next
+## Next Steps
 
-- [**Get Started**](./query-agent-get-started.md) — Walkthrough of the Query Agent's own ask, search and suggest modes.
-- [**Ask Mode reference**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation.
+- [**Get Started with the Weaviate Query Agent**](./query-agent-get-started.md) — Walkthrough of the Query Agent's own Ask Mode, Search Mode and Suggest Queries.
+- [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation.
 - [**Additional Filters**](../reference/additional_filters.md) — How to enforce fixed filters that always apply regardless of what the agent's planner decides.
 - [**Collection Configuration**](../reference/advanced_collections.md) — Target vectors, view properties, multi-tenancy.
 

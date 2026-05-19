@@ -1,9 +1,8 @@
 ---
 title: Quickstart
-sidebar_position: 25
-description: "Technical documentation and usage examples for implementing the Query Agent."
+description: "Get started with the Weaviate Query Agent through a runnable example."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'getting-started']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -12,17 +11,15 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.py';
 import TSCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.mts';
 
-# Weaviate Query Agent: Quickstart
-
 <CloudOnlyBadge />
 
 ## Prerequisites
 
 Ensure you have access to:
 * A **Weaviate Cloud Instance**, such as a [free sandbox instance](/go/console?utm_content=agents).
-* Either one of the **Python Client**, **Typescript Client** or the functionality to call the **API endpoints** directly.
+* Either one of the **Python Client**, **TypeScript Client** or the functionality to call the **API endpoints** directly.
 
-See the [installation page](./installation.md) for more detail.
+Installation - [see the page for more details](./installation.md).
 
 
 ## Start the Query Agent
@@ -74,7 +71,7 @@ Perform a search using Search Mode (retrieval only, no answer generation). The L
     </TabItem>
 </Tabs>
 
-Search mode returns the raw Weaviate objects, as if you had performed the search in Weaviate directly.
+Search Mode returns the raw Weaviate objects, as if you had performed the search in Weaviate directly.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">

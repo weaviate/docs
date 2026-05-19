@@ -1,12 +1,11 @@
 ---
 title: Configuration
-sidebar_position: 10
-description: "Individual explanations of Query Agent functionalities, shared across ask and search mode."
+description: "Configure the Query Agent's behavior across Ask Mode and Search Mode."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started']
+tags: ['agents', 'query-agent', 'configuration']
 ---
 
-See the different configuration options for the Query Agent and how you can customise it to your specific usecase.
+See the different configuration options for the Query Agent and how you can customise it to your specific use case.
 
 * [Instantiation](./instantiation.md)
 * [System Prompt](./system_prompt.md)

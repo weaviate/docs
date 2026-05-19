@@ -1,8 +1,8 @@
 ---
 title: Ask Mode
-description: "Use the query agent to search data and get an answer from the LLM."
+description: "Use Ask Mode to retrieve data from Weaviate and get a generated answer."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,11 +11,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.mts';
 
-# Ask Mode
-
 <CloudOnlyBadge />
 
-Ask mode, called by the `ask` method, transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
+Ask Mode, called by the `ask` method, transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
 
 For example, you could ask:
 
@@ -25,7 +23,7 @@ And the agents will filter for `orders`, perform semantic search for `books` and
 
 ## Usage
 
-Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See here for more details on instantiating the main class.](../reference/instantiation.md) 
+Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. Class instantiation - [see the page for more details](../reference/instantiation.md).
 
 Note, locally running Weaviate instances do not support the Query Agent.
 
@@ -63,8 +61,8 @@ In Python, the Query Agent supports both synchronous and asynchronous usage. The
 
 The `.ask()` method accepts several arguments:
 
-    - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Collection configuration - [see the page for more details](../reference/advanced_collections.md).
     - **`result_evaluation`**: Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:
         - `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.
         - `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details.
@@ -73,15 +71,15 @@ The `.ask()` method accepts several arguments:
 
 The `.ask()` method accepts several arguments:
 
-    - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. Learn more in the [collection configuration guide](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`.
+    - **`query`**: The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. Collection configuration - [see the page for more details](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`.
     - **`resultEvaluation`** : Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:
         - `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.
         - `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details.
 </TabItem>
 </Tabs>
 
-For more advanced searches, you can also specify _additional filters_ within the collection configuration. See the [reference for filters](../reference/additional_filters.md) for more information.
+For more advanced searches, you can also specify _additional filters_ within the collection configuration. Additional filters - [see the page for more details](../reference/additional_filters.md).
 
 These arguments allow you to customize agent behavior, data access, and the type of answer you receive. 
 
@@ -122,7 +120,7 @@ The `AskModeResponse` class has the following properties:
 
 ## Streaming
 
-While regular ask mode returns a single object, you can choose to stream updates and tokens from the workflow of ask mode instead. 
+While regular Ask Mode returns a single object, you can choose to stream updates and tokens from the workflow of Ask Mode instead. 
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -147,7 +145,7 @@ Since the Query Agent is a multi-layered agentic system, there are different typ
 
 ### Request
 
-In addition to the standard ask mode arguments ([above](#arguments)), the streaming method accepts two extra flags that control which payload types are emitted:
+In addition to the standard Ask Mode arguments ([above](#arguments)), the streaming method accepts two extra flags that control which payload types are emitted:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -239,7 +237,7 @@ You can handle each streamed payload differently depending on their class, or th
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
-In Python, the above examples use the synchronous client, but ask mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client. 
+In Python, the above examples use the synchronous client, but Ask Mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client. 
 
 <FilteredTextBlock
     text={PyCode}

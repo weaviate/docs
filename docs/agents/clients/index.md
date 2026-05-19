@@ -1,11 +1,11 @@
 ---
 title: Agents Clients
-description: "Use various clients, in Python or Typescript/Javascript, to interact with Weaviate Agents."
+description: "Use the Python or TypeScript client to interact with Weaviate Agents."
 image: og/docs/agents.jpg
-# tags: ['agents', 'clients', 'python']
+tags: ['agents', 'query-agent', 'clients']
 ---
 
-You can call and use Weaviate agents either with the API directly, or via a Python or Typescript/Javascript client.
+You can call and use Weaviate Agents either with the API directly, or via a Python or TypeScript/JavaScript client.
 
 * [Python Client](./python.md)
-* [Typescript/Javascript Client](./typescript.md)
+* [TypeScript Client](./typescript.md)

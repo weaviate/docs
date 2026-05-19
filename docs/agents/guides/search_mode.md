@@ -1,8 +1,8 @@
 ---
 title: Search Mode
-description: "Use the query agent to agentically search your database without generating an answer. Retrieving results only."
+description: "Use Search Mode to retrieve raw results from Weaviate without generating an answer."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,11 +11,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.mts';
 
-# Search Mode
-
 <CloudOnlyBadge />
 
-Search mode, called by the `.search()` method, transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
+Search Mode, called by the `.search()` method, transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
 
 For example, you could ask:
 
@@ -25,7 +23,7 @@ And the agent will perform semantic search for `vintage shoes`, apply a filter f
 
 ## Usage
 
-Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. [See here for more details on instantiating the main class.](../reference/instantiation.md) 
+Like all features of the Query Agent, it requires instantiation of the `QueryAgent` class, which is connected to your Weaviate `client`. Class instantiation - [see the page for more details](../reference/instantiation.md).
 
 Note, locally running Weaviate instances do not support the Query Agent.
 
@@ -63,8 +61,8 @@ In Python, the Query Agent supports both synchronous and asynchronous usage. The
 
 The `.search()` method accepts several arguments:
 
-    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Collection configuration - [see the page for more details](../reference/advanced_collections.md).
     - **`limit`**: The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages.
     - **`diversity_weight`**: A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below.
 </TabItem>
@@ -72,14 +70,14 @@ The `.search()` method accepts several arguments:
 
 The `.search()` method accepts several arguments:
 
-    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). To learn more about conversational inputs, see [the page on multi-turn conversations](../reference/multi_turn_conversations.md).
-    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Learn more in the [collection configuration guide](../reference/advanced_collections.md).
+    - **`query`**: The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). Multi-turn conversations - [see the page for more details](../reference/multi_turn_conversations.md).
+    - **`collections`**: The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. Collection configuration - [see the page for more details](../reference/advanced_collections.md).
     - **`limit`**: The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages.
     - **`diversityWeight`**: A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below.
 </TabItem>
 </Tabs>
 
-For more advanced searches, you can also specify _additional filters_ within the collection configuration. See the [reference for filters](../reference/additional_filters.md) for more information.
+For more advanced searches, you can also specify _additional filters_ within the collection configuration. Additional filters - [see the page for more details](../reference/additional_filters.md).
 
 ### Diversity ranking
 
@@ -107,7 +105,7 @@ To use diversity ranking with target vectors, set the single target vector you w
 </Tabs>
 
 ## Response
-The search mode response has the following properties:
+The Search Mode response has the following properties:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -171,7 +169,7 @@ Search returns results one page at a time. To fetch additional pages, call `.nex
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
-In Python, the above examples use the synchronous client, but search mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client.
+In Python, the above examples use the synchronous client, but Search Mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client.
 
 <FilteredTextBlock
     text={PyCode}

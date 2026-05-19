@@ -1,9 +1,8 @@
 ---
 title: Class Instantiation
-sidebar_position: 10
-description: "Query Agent class instantiation details."
+description: "Instantiate a Query Agent with a Weaviate client, collections, and options."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started']
+tags: ['agents', 'query-agent', 'configuration']
 ---
 
 
@@ -15,7 +14,7 @@ import TSCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.mts';
 
 ## Basic Instantiation
 
-The Query Agent requires only a target [Weaviate cloud instance](/cloud/manage-clusters/connect.mdx) to be initialised. First, set up a Weaviate client:
+The Query Agent requires only a target [Weaviate Cloud instance](/cloud/manage-clusters/connect.mdx) to be initialised. First, set up a Weaviate client:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -74,7 +73,7 @@ The `QueryAgent` constructor accepts the following arguments:
 | --- | --- | --- |
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
 | `collections` | `list[str \| QueryAgentCollectionConfig]` | Optional. The collections to query. Overridden if passed in the `run` method. |
-| `system_prompt` | `str` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. See [the system prompt page](./system_prompt.md) for more detail. |
+| `system_prompt` | `str` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. System prompt - [see the page for more details](./system_prompt.md). |
 | `timeout` | `int` | Optional. The timeout for the request. Defaults to 60 seconds. |
 
     </TabItem>
@@ -86,7 +85,7 @@ The first argument is the Weaviate client. All other options are passed in a `Qu
 | --- | --- | --- |
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
 | `collections` | `(string \| QueryAgentCollectionConfig)[]` | Optional. The collections to query. Overridden if passed to the method call. |
-| `systemPrompt` | `string` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. See [the system prompt page](./system_prompt.md) for more detail. |
+| `systemPrompt` | `string` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. System prompt - [see the page for more details](./system_prompt.md). |
 
     </TabItem>
 </Tabs>
@@ -113,7 +112,7 @@ You can define which collections are available either
             />
         </TabItem>
     </Tabs>
-* or at runtime of the Query Agent's methods, either ask mode or search mode.
+* or at runtime of the Query Agent's methods, either Ask Mode or Search Mode.
     <Tabs className="code" groupId="languages">
         <TabItem value="py_agents" label="Python">
             <FilteredTextBlock
@@ -133,7 +132,7 @@ You can define which collections are available either
         </TabItem>
     </Tabs>
 
-If you provide both, then the collections specified at runtime will override those specified in the base class. See [the page on collection configuration](./advanced_collections.md) for more detail.
+If you provide both, then the collections specified at runtime will override those specified in the base class. Collection configuration - [see the page for more details](./advanced_collections.md).
 
 
 ## Questions and feedback

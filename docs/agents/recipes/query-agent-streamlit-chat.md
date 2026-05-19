@@ -19,7 +19,7 @@ This recipe focuses on three things:
 - **Multi-turn conversations** with persisted chat history.
 - **Surfacing the agent's reasoning** so the user can see *what* it's doing, not just the final answer.
 
-> 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it covers ask, search and suggest modes at a higher level.
+> 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it covers Ask Mode, Search Mode and Suggest Queries at a higher level.
 
 ## What You'll Build
 
@@ -321,14 +321,14 @@ Some questions to throw at the assistant once it's running:
 A few directions you can take this from here:
 
 - **Render product cards from sources.** Instead of showing UUIDs, fetch each source object via `client.collections.use("ECommerce").query.fetch_object_by_id(src.object_id)` and render its name, price, and image in `st.columns`. This is what a real storefront chat would do.
-- **Toggle between ask and search modes.** Add a sidebar radio to pick *"answer me"* (ask mode) versus *"show me the products"* (search mode). In search mode, call `agent.search(...)` and render `search_results.objects` as a product grid. See the [Search Mode reference](../guides/search_mode.md).
+- **Toggle between Ask and Search Modes.** Add a sidebar radio to pick *"answer me"* (Ask Mode) versus *"show me the products"* (Search Mode). In Search Mode, call `agent.search(...)` and render `search_results.objects` as a product grid. See the [Search Mode](../guides/search_mode.md) page.
 - **Show suggested follow-ups.** After each turn, call `agent.suggest_queries(num_queries=3, instructions="Based on the conversation, suggest follow-up questions a shopper might ask.")` and render the suggestions as buttons that re-submit when clicked. See [Suggest Queries](../guides/suggest_queries.md).
 - **Surface partial-answer warnings.** Pass `result_evaluation="llm"` to enable `is_partial_answer` and `missing_information`. Display a small warning above the answer when the agent flags the response as incomplete. See [Ask Mode](../guides/ask_mode.md#response).
 - **Deploy it.** Streamlit apps run on [Streamlit Community Cloud](https://streamlit.io/cloud), Hugging Face Spaces, or your own server. For deployment, move the env vars into [Streamlit secrets](https://docs.streamlit.io/develop/concepts/connections/secrets-management) (`st.secrets["WEAVIATE_URL"]`) instead of `os.environ`.
 
-## Where to Go Next
+## Next Steps
 
-- [**Ask Mode reference**](../guides/ask_mode.md) — Full details on `ask_stream`, the three streaming payload classes, and parameter reference.
-- [**Get Started**](./query-agent-get-started.md) — Walkthrough of ask, search and suggest modes at a higher level.
-- [**Build an E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — Use-case-focused tutorial that wraps the Query Agent into a reusable assistant class.
+- [**Ask Mode**](../guides/ask_mode.md) — Full details on `ask_stream`, the three streaming payload classes, and parameter reference.
+- [**Get Started with the Weaviate Query Agent**](./query-agent-get-started.md) — Walkthrough of Ask Mode, Search Mode and Suggest Queries at a higher level.
+- [**Build a Query Agent E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — Use-case-focused tutorial that wraps the Query Agent into a reusable assistant class.
 - [**Using the Query Agent as a Tool**](./query-agent-as-a-tool.md) — Hand the agent to other frameworks (Gemini, Vertex AI, Ollama, LangChain, LlamaIndex) as a callable tool.

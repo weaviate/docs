@@ -7,7 +7,7 @@ import os
 from util import populate_weaviate
 
 # START BasicAskMode
-from weaviate_agents.query import QueryAgent
+from weaviate.agents.query import QueryAgent
 from weaviate.classes.init import Auth
 import weaviate
 

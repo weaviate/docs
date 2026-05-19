@@ -1,9 +1,8 @@
 ---
 title: Introduction
-sidebar_position: 10
-description: "Overview of the Weaviate Query Agent."
+description: "Get an overview of the Weaviate Query Agent and what it can do."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started']
+tags: ['agents', 'query-agent', 'getting-started']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,8 +10,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from "!!raw-loader!./_includes/code/introduction.py";
 import TSCode from '!!raw-loader!./_includes/code/introduction.mts';
-
-# Weaviate Query Agent: Agentic Search for your Database
 
 <CloudOnlyBadge />
 
@@ -142,11 +139,11 @@ You need a Weaviate Cloud cluster — [a 14-day sandbox is free](https://weaviat
 
 Already have a cluster but no data? Upload via CSV in the cloud console, or [via the Weaviate APIs](/weaviate/manage-objects/create).
 
-## Where to go next
+## Next Steps
 
 - [**Quickstart**](quickstart.md) — Set up the client and run your first ask and search calls.
-- [**Features**](guides/index.md) — Detailed pages on Ask Mode, Search Mode, and other modes.
-- [**Reference**](reference/instantiation.md) — Constructor options, collection configuration, additional filters, system prompts, and conversational inputs.
+- [**Modes**](guides/index.md) — Detailed pages on Ask Mode, Search Mode, and other modes.
+- [**Configuration**](reference/instantiation.md) — Constructor options, collection configuration, additional filters, system prompts, and conversational inputs.
 - [**Recipes**](recipes.mdx) — End-to-end example notebooks.
 
 

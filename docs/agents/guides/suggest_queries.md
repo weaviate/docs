@@ -1,8 +1,8 @@
 ---
 title: Suggest Queries
-description: "Generate suggested questions or follow up queries to explore Weaviate data."
+description: "Generate suggested follow-up queries to help users explore Weaviate data."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,8 +10,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/agents/\_includes/code/suggest_queries.py';
 import TSCode from '!!raw-loader!/docs/agents/\_includes/code/suggest_queries.mts';
-
-# Suggest Queries Mode
 
 <CloudOnlyBadge />
 
@@ -62,14 +60,14 @@ Or can be called without any additional arguments, to use the defaults.
 
 ### Parameters
 
-The suggest queries mode can be called with the following arguments:
+Suggest Queries can be called with the following arguments:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
 | Parameter | Description |
 | --- | --- |
-| `collections` | Override the collections configured at instantiation. See [the collection configuration page](../reference/advanced_collections.md) for more details. |
+| `collections` | Override the collections configured at instantiation. Collection configuration - [see the page for more details](../reference/advanced_collections.md). |
 | `num_queries` | The number of queries to suggest (default: `3`). |
 | `instructions` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
 
@@ -78,7 +76,7 @@ The suggest queries mode can be called with the following arguments:
 
 | Parameter | Description |
 | --- | --- |
-| `collections` | Override the collections configured at instantiation. See [the collection configuration page](../reference/advanced_collections.md) for more details. |
+| `collections` | Override the collections configured at instantiation. Collection configuration - [see the page for more details](../reference/advanced_collections.md). |
 | `numQueries` | The number of queries to suggest (default: `3`). |
 | `instructions` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
 
@@ -118,7 +116,7 @@ The `SuggestQueryResponse` class has the following properties:
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
-In Python, the above examples use the synchronous client, but suggest queries can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client.
+In Python, the above examples use the synchronous client, but Suggest Queries can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client.
 
 <FilteredTextBlock
     text={PyCode}

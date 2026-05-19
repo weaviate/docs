@@ -2,7 +2,7 @@
 title: Python Client
 description: "Use the Python client to interact with Weaviate Agents."
 image: og/docs/agents.jpg
-# tags: ['agents', 'clients', 'python']
+tags: ['agents', 'query-agent', 'clients']
 ---
 
 <!-- Details of the python client, some of:
@@ -16,11 +16,11 @@ It relies on the [Weaviate Client package](../../weaviate/client-libraries/pytho
 
 ## Client Documentation
 
-[See here for the full client documentation of the Weaviate Agents Python Client.](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/)
+Full Weaviate Agents Python Client documentation - [see the page for more details](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/).
 
 ## Github
 
-[See here for the Github repository for the Weaviate Agents Python Client.](https://github.com/weaviate/weaviate-agents-python-client)
+Weaviate Agents Python Client Github repository - [see the page for more details](https://github.com/weaviate/weaviate-agents-python-client).
 
 ## Installation
 

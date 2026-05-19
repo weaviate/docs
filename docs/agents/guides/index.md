@@ -1,9 +1,8 @@
 ---
 title: Modes
-sidebar_position: 10
-description: "Overview of different Weaviate agents functionalities."
+description: "Compare the different modes the Weaviate Query Agent supports."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started']
+tags: ['agents', 'query-agent', 'modes']
 ---
 
 The Query Agent is capable of various different tasks:

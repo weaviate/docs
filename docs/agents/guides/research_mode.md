@@ -1,11 +1,9 @@
 ---
 title: Research Mode
-description: "Use the query agent to perform deep research across multiple runs of searches."
+description: "Use Research Mode to perform deep, multi-step research across your collections."
 image: og/docs/agents.jpg
-# tags: ['agents', 'getting started', 'query agent']
+tags: ['agents', 'query-agent', 'modes']
 ---
-
-# Research Mode
 
 TBD
 

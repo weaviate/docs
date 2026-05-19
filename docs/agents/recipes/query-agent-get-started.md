@@ -13,7 +13,7 @@ tags: ['Query Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-In this recipe, we will get started with the [Weaviate Query Agent](https://docs.weaviate.io/agents). We'll set up Weaviate Cloud, import a handful of open datasets, and run a few queries across them using **ask mode**, **search mode**, and the **suggest queries** feature.
+In this recipe, we will get started with the [Weaviate Query Agent](https://docs.weaviate.io/agents). We'll set up Weaviate Cloud, import a handful of open datasets, and run a few queries across them using **Ask Mode**, **Search Mode**, and the **Suggest Queries** feature.
 
 > 📚 You can read and learn more about this service in our ["Introducing the Weaviate Query Agent"](https://weaviate.io/blog/query-agent) blog.
 
@@ -151,7 +151,7 @@ with financial_collection.batch.dynamic() as batch:
 
 ## 2. Set Up the Query Agent
 
-When setting up the query agent, we have to provide it a few things:
+When setting up the Query Agent, we have to provide it a few things:
 - The `client`
 - The `collections` which we want the agent to have access to.
 - (Optionally) A `system_prompt` that describes how our agent should behave
@@ -170,7 +170,7 @@ agent = QueryAgent(
 
 ## 3. Ask Mode
 
-Ask mode returns a natural-language answer composed from the underlying data. The agent decides which collection(s) to search, which filters to apply, and how to phrase the response.
+Ask Mode returns a natural-language answer composed from the underlying data. The agent decides which collection(s) to search, which filters to apply, and how to phrase the response.
 
 ```python
 response = agent.ask("What was the average temperature in the first week of May 2025?")
@@ -193,7 +193,7 @@ print(response.final_answer)
 
 ## 4. Search Mode
 
-Search mode skips the final answer-generation step and returns the raw matching objects from your collection(s). This is what you want when you need rows, not a written response — for example as the retrieval step in your own pipeline, or to render results in a UI.
+Search Mode skips the final answer-generation step and returns the raw matching objects from your collection(s). This is what you want when you need rows, not a written response — for example as the retrieval step in your own pipeline, or to render results in a UI.
 
 ```python
 search_response = agent.search(
@@ -205,7 +205,7 @@ for obj in search_response.search_results.objects:
     print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
 ```
 
-You can inspect the agent's chosen filters and target collection through `search_response.searches`, just like in ask mode.
+You can inspect the agent's chosen filters and target collection through `search_response.searches`, just like in Ask Mode.
 
 ## 5. Suggest Queries
 
@@ -228,12 +228,12 @@ for q in suggestions.queries:
     print(q.query)
 ```
 
-## Where to Go Next
+## Next Steps
 
 - [**Build a Query Agent E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — A use-case-focused tutorial that wraps the Query Agent into a reusable customer-facing assistant.
-- [**Ask Mode reference**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation, multi-turn conversations.
-- [**Search Mode reference**](../guides/search_mode.md) — Pagination, diversity ranking.
-- [**Collection configuration**](../reference/advanced_collections.md) — Target vectors, view properties, multi-tenancy, additional filters.
+- [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation, multi-turn conversations.
+- [**Search Mode**](../guides/search_mode.md) — Pagination, diversity ranking.
+- [**Collection Configuration**](../reference/advanced_collections.md) — Target vectors, view properties, multi-tenancy, additional filters.
 
 Finally, free up resources by closing the client:
 
