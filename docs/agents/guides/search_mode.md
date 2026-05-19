@@ -11,10 +11,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.mts';
 
-<CloudOnlyBadge />
-
-
 # Search Mode
+
+<CloudOnlyBadge />
 
 Search mode, called by the `.search()` method, transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
 

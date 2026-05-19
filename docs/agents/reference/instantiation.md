@@ -1,5 +1,5 @@
 ---
-title: Instantiation
+title: Class Instantiation
 sidebar_position: 10
 description: "Query Agent class instantiation details."
 image: og/docs/agents.jpg

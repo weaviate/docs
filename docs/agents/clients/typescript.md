@@ -51,3 +51,9 @@ For existing installations, `npm install` may not upgrade `weaviate-agents` to t
 ```shell
 npm install weaviate-agents@latest
 ```
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

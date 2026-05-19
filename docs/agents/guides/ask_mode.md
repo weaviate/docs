@@ -11,23 +11,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.mts';
 
-<CloudOnlyBadge />
-
-
-<!-- * Basic usage (similar to quick start)
-* Arguments/Configurable options, such as:
-    * user query input/Conversational inputs, brief explanation and link to the reference page
-    * collection names and configuration, brief explanation and link to reference page
-    * Extra filters, brief explanation and link to the reference page
-    * `result_evaluation` i.e. disabling or enabling the evaluate node, what it does and what costs it incurs
-* Streaming:
-    * What different result payloads there are
-    * How text is streamed from final answer node
-    * Example code which parses results / strings to write the answer as strings come through
-* Accessing results of the response, e.g. final answer, usage, sources, and a breakdown of each one -->
-
-
 # Ask Mode
+
+<CloudOnlyBadge />
 
 Ask mode, called by the `ask` method, transforms your query into actionable searches or aggregations, and then provides a final answer to the question.
 

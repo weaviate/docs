@@ -8,6 +8,8 @@ image: og/docs/agents.jpg
 
 # Weaviate Query Agent: Installation
 
+<CloudOnlyBadge />
+
 ## Prerequisites
 
 :::info What does the Query Agent have access to?

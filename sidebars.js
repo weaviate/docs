@@ -1299,7 +1299,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Features",
+      label: "Modes",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1321,11 +1321,11 @@ const sidebars = {
           id: "agents/guides/search_mode",
           className: "sidebar-item",
         },
-        {
-          type: "doc",
-          id: "agents/guides/research_mode",
-          className: "sidebar-item",
-        },
+        // {
+        //   type: "doc",
+        //   id: "agents/guides/research_mode",
+        //   className: "sidebar-item",
+        // },
         {
           type: "doc",
           id: "agents/guides/suggest_queries",
@@ -1339,7 +1339,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Reference",
+      label: "Configuration",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1375,12 +1375,7 @@ const sidebars = {
           type: "doc",
           id: "agents/reference/advanced_collections",
           className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/reference/troubleshooting",
-          className: "sidebar-item",
-        },
+        }
       ],
     },
     {
@@ -1410,13 +1405,17 @@ const sidebars = {
           type: "doc",
           id: "agents/clients/typescript",
           className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/clients/api",
-          className: "sidebar-item",
-        },
+        }
       ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "doc",
+      id: "agents/reference/troubleshooting",
+      className: "sidebar-item",
     },
     {
       type: "html",

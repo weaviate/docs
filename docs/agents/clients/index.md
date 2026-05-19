@@ -9,4 +9,3 @@ You can call and use Weaviate agents either with the API directly, or via a Pyth
 
 * [Python Client](./python.md)
 * [Typescript/Javascript Client](./typescript.md)
-* [API](./api.md)

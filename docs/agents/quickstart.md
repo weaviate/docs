@@ -14,6 +14,7 @@ import TSCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.mts';
 
 # Weaviate Query Agent: Quickstart
 
+<CloudOnlyBadge />
 
 ## Prerequisites
 

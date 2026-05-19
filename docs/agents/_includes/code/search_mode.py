@@ -34,9 +34,7 @@ qa = QueryAgent(
             target_vector=[
                 "name_description_brand_vector"
             ],
-        ), 
-        "FinancialContracts", 
-        "Weather"
+        )
     ]
 )
 
@@ -50,15 +48,7 @@ search_response = qa.search(
 for obj in search_response.search_results.objects:
     print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
 # END BasicSearchMode
-qa = QueryAgent(
-    client=client, 
-    collections=[
-        QueryAgentCollectionConfig(
-            name="ECommerce",
-            target_vector=["name_description_brand_vector"],
-        )
-    ]
-)
+
 # START DiversityRanking
 qa = QueryAgent(
     client=client, 

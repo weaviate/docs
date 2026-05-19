@@ -77,3 +77,9 @@ Or install a [specific version](https://github.com/weaviate/weaviate-agents-pyth
 ```shell
 pip install -U weaviate-agents==||site.weaviate_agents_version||
 ```
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
