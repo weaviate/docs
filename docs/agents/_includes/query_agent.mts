@@ -249,8 +249,15 @@ await populateWeaviate(client);
 // Instantiate a new agent object
 const queryAgent = new QueryAgent(
     client, {
-    collections: ['ECommerce', 'FinancialContracts', 'Weather'],
-
+    collections: [
+        {
+            name: 'ECommerce',
+            // ECommerce has named vectors, so a target vector must be specified
+            targetVector: ['name_description_brand_vector'],
+        },
+        'FinancialContracts',
+        'Weather',
+    ],
 });
 // END InstantiateQueryAgent
 
@@ -386,7 +393,10 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 const diversitySearchResponse = await qa.search("summer shoes", {
     limit: 10,
     diversityWeight: 0.5,
-    collections: ["ECommerce"]
+    collections: [{
+        name: "ECommerce",
+        targetVector: ["name_description_brand_vector"],
+    }]
 })
 
 // Access the search results
