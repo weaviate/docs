@@ -144,7 +144,7 @@ Already have a cluster but no data? Upload via CSV in the cloud console, or [via
 - [**Quickstart**](quickstart.md) — Set up the client and run your first ask and search calls.
 - [**Modes**](guides/index.md) — Detailed pages on Ask Mode, Search Mode, and other modes.
 - [**Configuration**](reference/instantiation.md) — Constructor options, collection configuration, additional filters, system prompts, and conversational inputs.
-- [**Recipes**](recipes.mdx) — End-to-end example notebooks.
+- [**Recipes**](recipes/index.mdx) — End-to-end example notebooks.
 
 
 ## Questions and feedback
