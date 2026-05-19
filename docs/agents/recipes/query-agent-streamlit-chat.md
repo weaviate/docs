@@ -1,7 +1,7 @@
 ---
 layout: recipe
 toc: True
-title: "Build a Streaming Chat UI with Streamlit"
+title: "Build a streaming chat UI with Streamlit"
 featured: True
 integration: True
 agent: True
@@ -21,11 +21,11 @@ This recipe focuses on three things:
 
 > 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it covers Ask Mode, Search Mode and Suggest Queries at a higher level.
 
-## What You'll Build
+## What you'll build
 
 When you run the app, the user types a question like *"recommend me some vintage shoes under $80"* and immediately sees a sequence of progress lines — *"Analyzing query…"*, *"Searching ECommerce…"*, *"Generating answer…"* — appear above an empty assistant bubble. As soon as the agent starts composing its response, the answer streams in token by token. When the run completes, a *Sources* expander appears underneath with the UUIDs of the products the agent referenced. The whole experience feels alive instead of stuck.
 
-## What You'll Need
+## What you'll need
 
 - A **Weaviate Cloud** cluster — [create a free sandbox here](https://console.weaviate.cloud/). When you create the cluster, enable **Embeddings** so you don't need to provide an external embedding provider's API key.
 - The Weaviate client with the `agents` extras, plus Streamlit and `datasets` (for the one-time data import):
@@ -41,7 +41,7 @@ export WEAVIATE_URL="https://your-cluster.weaviate.network"
 export WEAVIATE_API_KEY="your-api-key"
 ```
 
-## Setting Up the Data
+## Setting up the data
 
 The chat app reads from two collections: **ECommerce** (clothing items with brands, prices, reviews, tags) and **Brands** (brand metadata including parent/child relationships). We'll load both from open datasets on Hugging Face.
 
@@ -141,7 +141,7 @@ The two datasets used here are public on Hugging Face:
 - [**weaviate/agents · query-agent-ecommerce**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) — clothing items with brands, prices, reviews and tags.
 - [**weaviate/agents · query-agent-brands**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) — clothing brand metadata including parent/child brand relationships.
 
-## The App
+## The app
 
 Save the following as `app.py`. We'll walk through what each part does in the next section.
 
@@ -246,7 +246,7 @@ streamlit run app.py
 
 This will open a browser at `http://localhost:8501` with the chat UI.
 
-## How It Works
+## How it works
 
 ### Connecting once with `@st.cache_resource`
 
@@ -307,7 +307,7 @@ if sources_to_show:
 
 For a real storefront app you'd likely fetch each object and render its full properties (name, brand, image, price) — see [Extending the App](#extending-the-app) below.
 
-## Try It Out
+## Try it out
 
 Some questions to throw at the assistant once it's running:
 
@@ -316,7 +316,7 @@ Some questions to throw at the assistant once it's running:
 - *"Tell me more about the parent brand of Loom & Aura."*
 - *"What about something more colorful in the same price range?"* — a follow-up to test multi-turn context.
 
-## Extending the App
+## Extending the app
 
 A few directions you can take this from here:
 
@@ -326,7 +326,7 @@ A few directions you can take this from here:
 - **Surface partial-answer warnings.** Pass `result_evaluation="llm"` to enable `is_partial_answer` and `missing_information`. Display a small warning above the answer when the agent flags the response as incomplete. See [Ask Mode](../guides/ask_mode.md#response).
 - **Deploy it.** Streamlit apps run on [Streamlit Community Cloud](https://streamlit.io/cloud), Hugging Face Spaces, or your own server. For deployment, move the env vars into [Streamlit secrets](https://docs.streamlit.io/develop/concepts/connections/secrets-management) (`st.secrets["WEAVIATE_URL"]`) instead of `os.environ`.
 
-## Next Steps
+## Further resources
 
 - [**Ask Mode**](../guides/ask_mode.md) — Full details on `ask_stream`, the three streaming payload classes, and parameter reference.
 - [**Get Started with the Weaviate Query Agent**](./query-agent-get-started.md) — Walkthrough of Ask Mode, Search Mode and Suggest Queries at a higher level.

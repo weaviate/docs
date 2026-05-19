@@ -1,5 +1,5 @@
 ---
-title: Agents Clients
+title: Agents clients
 description: "Use the Python or TypeScript client to interact with Weaviate Agents."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']

@@ -1,5 +1,5 @@
 ---
-title: Collection Configuration
+title: Collection configuration
 description: "Configure how Weaviate collections are exposed to the Query Agent."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'configuration']
@@ -23,7 +23,7 @@ The Query Agent, in Ask Mode or Search Mode, has the option to search one or mor
 
 These collections can either be specified by a string (the name of the collection) or via a more advanced configuration.
 
-### Simple Configuration
+### Simple configuration
 
 To give your collections without any advanced configuration, you can just pass strings of the collection names to the Query Agent.
 
@@ -46,7 +46,7 @@ To give your collections without any advanced configuration, you can just pass s
     </TabItem>
 </Tabs>
 
-### Advanced Configuration
+### Advanced configuration
 
 You can provide a more detailed configuration on how you want the agents to interact with your collections to define the tenant names (for a multi-tenant collection), target vector(s), property names and any additional filters.
 
@@ -90,7 +90,7 @@ A collection configuration object accepts the following fields:
 </TabItem>
 </Tabs>
 
-## Runtime Configuration
+## Runtime configuration
 
 The examples above show configuring collections at instantiation of the Query Agent. This defines the _default_ collections which will be used automatically when running Ask Mode or Search Mode.
 

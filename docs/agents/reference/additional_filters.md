@@ -75,7 +75,7 @@ The filters are applied in addition to any filters determined by any agent in a 
 
 In addition, a sample of data from the collection is provided to the agents to better understand the data they have access to. This data subset is also filtered using the additional filters provided.
 
-## Use Cases
+## Use cases
 
 Additional filters reduce the sample space of data to be retrieved. If you have a large data collection but only want to use the Query Agent across a subset of that data, specifying a filter enforces only a portion of the data can be used.
 
@@ -133,7 +133,7 @@ However, since the LLM agent is a non-deterministic process, it is never guarant
 
 Another example could be in a user-facing app, if you want to restrict search results to only a single user ID, you can directly pass the filter instead of relying on the agent to use the correct filter.
 
-## Basic Filtering
+## Basic filtering
 
 A single filter, such as limiting the search to only a single category, can be constructed simply.
 
@@ -156,7 +156,7 @@ A single filter, such as limiting the search to only a single category, can be c
     </TabItem>
 </Tabs>
 
-## Nested Filtering
+## Nested filtering
 
 If you want to provide more than one filter, you can wrap it in either a logical `AND` or `OR` using Weaviate filter construction, such as:
 

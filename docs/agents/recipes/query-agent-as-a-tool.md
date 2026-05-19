@@ -1,7 +1,7 @@
 ---
 layout: recipe
 toc: True
-title: "Using the Query Agent as a Tool"
+title: "Using the Query Agent as a tool"
 featured: True
 integration: True
 agent: True
@@ -23,7 +23,7 @@ Because the Query Agent is just a Python call (`agent.ask(query).final_answer`),
 
 > 💡 New to the Query Agent itself? Start with the [**Get Started**](./query-agent-get-started.md) recipe first — it walks through the agent's own Ask Mode, Search Mode and Suggest Queries features before treating it as a building block.
 
-## What You'll Need
+## What you'll need
 
 This recipe assumes:
 
@@ -37,7 +37,7 @@ This recipe assumes:
 
 Each framework section adds its own additional installs.
 
-## Connect to Weaviate and Define the Tool
+## Connect to Weaviate and define the tool
 
 The trick to using the Query Agent as a tool is simple: it's a Python function that takes a string in and returns a string out. Most modern agent frameworks can consume a regular Python function directly — the function's name and docstring become the tool's name and description, which is what the calling LLM uses to decide whether to invoke it.
 
@@ -419,7 +419,7 @@ workflow = AgentWorkflow.from_tools_or_functions(
 )
 ```
 
-The `system_prompt` here is the *outer* agent's prompt — it shapes how the LlamaIndex agent decides when and how to call the tool. The Query Agent itself has its own (separate) system prompt, which you can configure on the `QueryAgent` constructor; see [Customising the System Prompt](../reference/system_prompt.md).
+The `system_prompt` here is the *outer* agent's prompt — it shapes how the LlamaIndex agent decides when and how to call the tool. The Query Agent itself has its own (separate) system prompt, which you can configure on the `QueryAgent` constructor; see [Customizing the System Prompt](../reference/system_prompt.md).
 
 ### Ask a question
 
@@ -443,7 +443,7 @@ To run Weaviate with Docker, follow these steps:
 
 Because `workflow.run` is async, call it with `await` inside an async function (or wrap it with `asyncio.run(...)` in a script).
 
-## Using the Query Agent as a Tool Anywhere
+## Using the Query Agent as a tool anywhere
 
 The pattern is the same regardless of framework:
 
@@ -458,7 +458,7 @@ This means you can plug the Query Agent into **anything** that supports function
 - **MCP servers** — wrap the function as an MCP tool so any MCP-aware client (Claude Desktop, Cursor, custom IDE plugins) can call into your Weaviate data.
 - **Custom agent frameworks** — anything that can execute a Python callable can use this directly.
 
-### Production Tips
+### Production tips
 
 A few things worth knowing once you take this past a notebook:
 
@@ -468,12 +468,12 @@ A few things worth knowing once you take this past a notebook:
 - **Consider returning more than the final answer.** For some apps, the calling agent benefits from seeing the `sources` or executed `searches`, not just the natural-language answer. You can change `ask_weaviate` to return a structured object (JSON) and update the docstring to tell the LLM what to do with each field.
 - **Constrain the collections.** If you have many collections, instantiate separate agents over different subsets (e.g. `ask_products`, `ask_docs`) and expose each as its own tool. The calling LLM will pick the right one based on the docstrings.
 
-## Next Steps
+## Further resources
 
 - [**Get Started with the Weaviate Query Agent**](./query-agent-get-started.md) — Walkthrough of the Query Agent's own Ask Mode, Search Mode and Suggest Queries features.
 - [**Build a Query Agent E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — Use-case-focused tutorial that wraps the Query Agent into a reusable customer-facing assistant.
 - [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, multi-turn conversations, result evaluation.
-- [**Customising the System Prompt**](../reference/system_prompt.md) — Tune the Query Agent's own behavior independent of the outer agent's prompt.
+- [**Customizing the System Prompt**](../reference/system_prompt.md) — Tune the Query Agent's own behavior independent of the outer agent's prompt.
 
 Close the Weaviate client when your application shuts down:
 

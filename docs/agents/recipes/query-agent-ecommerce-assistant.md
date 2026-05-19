@@ -1,7 +1,7 @@
 ---
 layout: recipe
 toc: True
-title: "Build a Query Agent E-Commerce Assistant"
+title: "Build a Query Agent e-commerce assistant"
 featured: True
 integration: False
 agent: True
@@ -23,7 +23,7 @@ To get started, we've prepared two open datasets, available on Hugging Face. The
 
 > 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it walks through Ask Mode, Search Mode and Suggest Queries at a higher level before diving into this use-case-focused tutorial.
 
-## 1. Setting Up Weaviate & Importing Data
+## 1. Setting up Weaviate & importing data
 
 To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
 1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters)
@@ -56,7 +56,7 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 ```
 
-### Prepare the Collections
+### Prepare the collections
 
 In the following code blocks, we are pulling our demo datasets from Hugging Face and writing them to new collections in our Weaviate Serverless cluster.
 
@@ -117,7 +117,7 @@ with ecommerce_collection.batch.dynamic() as batch:
         batch.add_object(properties=item["properties"])
 ```
 
-## 2. Set Up the Query Agent
+## 2. Set up the Query Agent
 
 When setting up the Query Agent, we have to provide it a few things:
 - The `client`
@@ -149,7 +149,7 @@ When we run the agent, it will first make a few decisions, depending on the quer
 2. The agent will also decide whether to perform a regular ***search query***, what ***filters*** to use, whether to do an ***aggregation query***, or all of them together!
 3. It will then provide a response, accessible via `response.final_answer`, `response.sources`, or by calling `response.display()` for a rich formatted view.
 
-### Ask a Question
+### Ask a question
 **Let's start with a simple question: "I like the vintage clothes, can you list me some options that are less than &#36;200?"**
 
 We can then also inspect how the agent responded, what kind of searches it performed on which collections, whether it has identified if the final answer is missing information or not, as well as the final answer 👇
@@ -213,7 +213,7 @@ response.display()
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-### Ask a Follow Up Question
+### Ask a follow-up question
 
 Customers rarely ask one question and stop — they have a conversation. To give the agent the prior turns, pass a list of `ChatMessage` objects to `.ask()` instead of a single string. The agent will then use the full message history as context.
 
@@ -280,7 +280,7 @@ response.display()
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-### Search Across Multiple Collections
+### Search across multiple collections
 
 In some cases, we need to combine the results of searches across multiple collections. From the result above, we can see that "Loom & Aura" lists the most shoes.
 
@@ -309,7 +309,7 @@ response.display()
 
 You can see in `response.display()` that the agent issued two searches against the `Brands` collection (to find the parent/child relationships) plus one aggregation against the `ECommerce` collection (to compute the average price) — all from a single natural-language call.
 
-## 4. Wrap the Agent as a Reusable Assistant
+## 4. Wrap the agent as a reusable assistant
 
 So far we've been calling `agent.ask()` ad hoc and rebuilding the conversation list ourselves. To plug this into a real app, we want a small wrapper that:
 - Keeps a running conversation history across calls.
@@ -346,14 +346,14 @@ print(assistant.chat("Tell me more about the brand that makes the first pair you
 
 From here, the `ECommerceAssistant` is a self-contained component you can drop into a web app, Slack bot, CLI, or any flow where a customer needs to talk to your catalog in natural language. Because all of the search and aggregation work is delegated to the Query Agent, your application code stays small.
 
-### Extending the Assistant
+### Extending the assistant
 
 A few directions you can take this from here:
 - **Switch to Search Mode for product grids.** When you want to render a list of products rather than a written answer, call `agent.search(...)` and pass `response.search_results.objects` to your UI. See the [Search Mode](../guides/search_mode.md) page.
-- **Tune the assistant's voice with a richer system prompt.** Add brand-voice guidelines, response formatting (markdown, JSON), or language requirements. See [Customising the System Prompt](../reference/system_prompt.md).
+- **Tune the assistant's voice with a richer system prompt.** Add brand-voice guidelines, response formatting (markdown, JSON), or language requirements. See [Customizing the System Prompt](../reference/system_prompt.md).
 - **Restrict to a single user's data.** If your catalog is multi-tenant, set `tenant` on a `QueryAgentCollectionConfig`. To enforce a hard filter (e.g. `region = "EU"`) regardless of what the LLM decides, use `additional_filters`. See [Additional Filters](../reference/additional_filters.md) and [Collection Configuration](../reference/advanced_collections.md).
 
-## Next Steps
+## Further resources
 
 - [**Build a Streaming Chat UI with Streamlit**](./query-agent-streamlit-chat.md) — A direct continuation of this recipe: wrap the same `ECommerce + Brands` agent in a Streamlit app with token-by-token streaming, live progress updates, and persisted multi-turn history.
 - [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation.

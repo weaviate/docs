@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/query-agent-get-started.ipynb
 toc: True
-title: "Get Started with the Weaviate Query Agent"
+title: "Get started with the Weaviate Query Agent"
 featured: True
 integration: False
 agent: True
@@ -24,7 +24,7 @@ To follow along, we've prepared four open datasets, available on Hugging Face. W
 - [**Financial Contracts**:](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-financial-contracts) A dataset of financial contracts between individuals and/or companies, as well as information on the type of contract and who has authored them.
 - [**Weather**:](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-weather) Daily weather information including temperature, wind speed, precipitation, pressure etc.
 
-## 1. Setting Up Weaviate & Importing Data
+## 1. Setting up Weaviate & importing data
 
 To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
 1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters)
@@ -57,7 +57,7 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 ```
 
-### Prepare the Collections
+### Prepare the collections
 
 In the following code blocks, we are pulling our demo datasets from Hugging Face and writing them to new collections in our Weaviate Serverless cluster.
 
@@ -149,7 +149,7 @@ with financial_collection.batch.dynamic() as batch:
         batch.add_object(properties=item["properties"])
 ```
 
-## 2. Set Up the Query Agent
+## 2. Set up the Query Agent
 
 When setting up the Query Agent, we have to provide it a few things:
 - The `client`
@@ -228,7 +228,7 @@ for q in suggestions.queries:
     print(q.query)
 ```
 
-## Next Steps
+## Further resources
 
 - [**Build a Query Agent E-Commerce Assistant**](./query-agent-ecommerce-assistant.md) — A use-case-focused tutorial that wraps the Query Agent into a reusable customer-facing assistant.
 - [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation, multi-turn conversations.

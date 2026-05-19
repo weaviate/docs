@@ -1,5 +1,5 @@
 ---
-title: Class Instantiation
+title: Class instantiation
 description: "Instantiate a Query Agent with a Weaviate client, collections, and options."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'configuration']
@@ -12,7 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.mts';
 
-## Basic Instantiation
+## Basic instantiation
 
 The Query Agent requires only a target [Weaviate Cloud instance](/cloud/manage-clusters/connect.mdx) to be initialised. First, set up a Weaviate client:
 
@@ -60,7 +60,7 @@ Then pass that client to the Query Agent, and all Weaviate calls via agents will
 In Python, to instantiate the async Query Agent (`AsyncQueryAgent`), you must also pass an async Weaviate Client via `weaviate.use_async_with_weaviate_cloud`. In JavaScript/TypeScript, the Query Agent is async by default.
 :::
 
-## Additional Configuration
+## Additional configuration
 
 ### Parameters
 

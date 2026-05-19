@@ -85,7 +85,7 @@ For more advanced searches, you can also specify _additional filters_ within the
 
 ### Diversity ranking
 
-`Search` supports adding diversity weighting to result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of `0.0` to `1.0` — higher values favour more varied results over the most relevant ones.
+`Search` supports adding diversity weighting to result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of `0.0` to `1.0` — higher values favor more varied results over the most relevant ones.
 
 To use diversity ranking with target vectors, set the single target vector you want to use in the Query Agent's constructor. Diversity ranking is not yet supported with collections using multi-vector embeddings, and will only work across multiple collections if they share the same embedding model.
 

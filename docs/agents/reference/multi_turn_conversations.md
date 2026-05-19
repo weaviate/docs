@@ -1,5 +1,5 @@
 ---
-title: Multi-turn Conversations
+title: Multi-turn conversations
 description: "Pass conversation history to the Query Agent for context-aware follow-up questions."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'configuration']
@@ -39,7 +39,7 @@ Each message in the conversation must have a `role`, being either `"user"` or `"
 
 The final message should be a user message, and it will be treated as the current user query to define the task.
 
-### Example: Iterative Message History
+### Example: Iterative message history
 
 In a chat-style application, you typically want each new user message to build on top of everything said so far, rather than asking the agent in isolation. To do this, keep a running list of `ChatMessage` objects and append both the user's query and the agent's reply to it after every turn. Pass the full list back into `qa.ask()` on the next call so the agent has the complete context.
 

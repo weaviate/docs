@@ -1,6 +1,6 @@
 ---
-title: Customising the System Prompt
-description: "Customise the Query Agent's system prompt to shape its behavior and output."
+title: Customizing the system prompt
+description: "Customize the Query Agent's system prompt to shape its behavior and output."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'configuration']
 ---

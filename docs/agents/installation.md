@@ -25,7 +25,7 @@ You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud]
 At this time, the Query Agent clients are available only for Python and JavaScript/TypeScript. Support for other languages will be added in the future.
 :::
 
-## Python Client
+## Python client
 
 For Python, you can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package. For JavaScript/TypeScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
 
@@ -51,7 +51,7 @@ Or install a [specific version](https://github.com/weaviate/weaviate-agents-pyth
 pip install -U weaviate-agents==||site.weaviate_agents_version||
 ```
 
-## JavaScript/TypeScript Client
+## JavaScript/TypeScript client
 
 You can install for TypeScript or JavaScript via `npm`:
 

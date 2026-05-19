@@ -1,5 +1,5 @@
 ---
-title: JavaScript/TypeScript Client
+title: JavaScript/TypeScript client
 description: "Use the TypeScript client to interact with Weaviate Agents."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']

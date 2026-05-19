@@ -1,7 +1,7 @@
 ---
 layout: recipe
 toc: True
-title: "Query Agent vs. Doing It Yourself"
+title: "Query Agent vs. doing it yourself"
 featured: True
 integration: False
 agent: True
@@ -15,7 +15,7 @@ The DIY side of this recipe is **deliberately minimal**: six filter operators, b
 
 > 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it covers Ask Mode, Search Mode and Suggest Queries at a higher level.
 
-## What You'll Need
+## What you'll need
 
 - A **Weaviate Cloud** cluster — [create a free sandbox here](https://console.weaviate.cloud/). When you create the cluster, enable **Embeddings** so you don't need to provide an external embedding provider's API key.
 - The Weaviate client with the `agents` extras, the OpenAI SDK, and `datasets` (for the one-time data import):
@@ -32,7 +32,7 @@ export WEAVIATE_API_KEY="your-api-key"
 export OPENAI_API_KEY="sk-..."
 ```
 
-## Setting Up the Data
+## Setting up the data
 
 We'll use the **Weather** dataset — daily weather records with date, temperature, wind speed, precipitation, humidity, visibility and pressure. The numeric properties are well-suited to showing filter and sort extraction: the DIY pipeline has to translate phrases like *"more than 5mm"* and *"windiest"* into operators and orderings.
 
@@ -95,7 +95,7 @@ python load_data.py
 
 The dataset is public on Hugging Face: [**weaviate/agents · query-agent-weather**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-weather).
 
-## The Question
+## The question
 
 We'll use this single user question throughout the rest of the recipe:
 
@@ -371,7 +371,7 @@ Five distinct windier rainy days — including three the DIY pipeline missed (th
 
 The agent runs the same stages internally — schema introspection, query planning, execution, answer composition — and also covers multi-collection routing, the full set of filter and aggregation types Weaviate supports, search-method selection across `near_text`, `hybrid`, `bm25` and `fetch_objects`, source attribution, streaming, and multi-turn context. None of which the DIY example handles.
 
-## What You'd Have to Add to Match the Query Agent
+## What you'd have to add to match the Query Agent
 
 The DIY pipeline above is a starting point. Here's what you'd extend, roughly in order of how often you actually need each thing:
 
@@ -386,7 +386,7 @@ The DIY pipeline above is a starting point. Here's what you'd extend, roughly in
 | **Source attribution** | Track which row IDs informed the final answer. The Query Agent surfaces this in `response.sources` and, with `result_evaluation="llm"`, trims it down to only the rows actually used. |
 | **Schema sampling** | Production LLMs need to see example values, not just types — otherwise filtering on enumerated string fields becomes unreliable. |
 
-## Next Steps
+## Further resources
 
 - [**Get Started with the Weaviate Query Agent**](./query-agent-get-started.md) — Walkthrough of the Query Agent's own Ask Mode, Search Mode and Suggest Queries.
 - [**Ask Mode**](../guides/ask_mode.md) — Streaming, system prompts, result evaluation.

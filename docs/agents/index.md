@@ -129,7 +129,7 @@ It is designed as a pre-built agentic service for your data, with two main modes
 - **Natural-language filter on an internal dashboard** (Search Mode) — Turn *"orders flagged last week from EU customers"* into a filtered Weaviate query and render the rows in your UI.
 - **Retrieval step inside your own RAG or agent stack** (Search Mode) — Fetch the most relevant objects via the agent, then pass them to a downstream generative step you control.
 
-## Get Started
+## Get started
 
 :::info Query Agent in cloud
 [You can try the Query Agent without any setup on Weaviate Cloud. Simply go to the 'Agents' tab to start asking questions about data in your collections.](/go/console?utm_content=agents)
@@ -139,7 +139,7 @@ You need a Weaviate Cloud cluster — [a 14-day sandbox is free](https://weaviat
 
 Already have a cluster but no data? Upload via CSV in the cloud console, or [via the Weaviate APIs](/weaviate/manage-objects/create).
 
-## Next Steps
+## Further resources
 
 - [**Quickstart**](quickstart.md) — Set up the client and run your first ask and search calls.
 - [**Modes**](guides/index.md) — Detailed pages on Ask Mode, Search Mode, and other modes.

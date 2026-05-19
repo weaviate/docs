@@ -213,7 +213,7 @@ If both `includeProgress` and `includeFinalState` are set to `false`, the stream
 </TabItem>
 </Tabs>
 
-### Example: Handling Different Streamed Responses
+### Example: handling different streamed responses
 
 You can handle each streamed payload differently depending on their class, or their output-type property. For example, you may want to display the progress message differently than building the tokens for the final answer.
 

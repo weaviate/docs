@@ -1,5 +1,5 @@
 ---
-title: Python Client
+title: Python client
 description: "Use the Python client to interact with Weaviate Agents."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']
@@ -37,7 +37,7 @@ The latest Weaviate Agents Python client is version `v||site.agents_python_versi
 
 The Weaviate Agents Python client is distributed as the [`weaviate-agents`](https://pypi.org/project/weaviate-agents/) package on PyPI, and depends on the [`weaviate-client`](https://pypi.org/project/weaviate-client/) package. You can install it in one of two equivalent ways.
 
-**Recommended: install via the `weaviate-client` extra**
+**Recommended: Install via the `weaviate-client` extra**
 
 ```shell
 pip install -U "weaviate-client[agents]"
@@ -45,7 +45,7 @@ pip install -U "weaviate-client[agents]"
 
 This installs `weaviate-client` together with its `agents` extra, which pulls in a compatible version of `weaviate-agents`. This is the recommended form because it makes the relationship explicit — `weaviate-agents` is a sub-package designed to be used alongside `weaviate-client`.
 
-**Alternative: install `weaviate-agents` directly**
+**Alternative: Install `weaviate-agents` directly**
 
 ```shell
 pip install -U weaviate-agents
