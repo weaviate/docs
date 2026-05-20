@@ -63,6 +63,47 @@ def test_client(empty_weaviates, script_loc):
     run_py_script(script_loc)
 
 
+# ========== llms.txt code snippets ==========
+
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/llms-txt/python/local_connection.py",
+        "./_includes/code/llms-txt/python/crud.py",
+        "./_includes/code/llms-txt/python/queries.py",
+        "./_includes/code/llms-txt/python/filtering.py",
+        "./_includes/code/llms-txt/python/multi_tenancy.py",
+        "./_includes/code/llms-txt/python/named_vectors.py",
+        "./_includes/code/llms-txt/python/aggregations.py",
+        "./_includes/code/llms-txt/python/generative.py",
+        "./_includes/code/llms-txt/python/rbac.py",
+    ],
+)
+def test_llms_txt(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
+@pytest.mark.pyv4
+@pytest.mark.wcd
+@pytest.mark.parametrize(
+    "script_loc",
+    ["./_includes/code/llms-txt/python/quickstart.py"],
+)
+def test_llms_txt_wcd(script_loc):
+    run_py_script(script_loc)
+
+
+@pytest.mark.pyv4
+@pytest.mark.agents
+@pytest.mark.parametrize(
+    "script_loc",
+    ["./_includes/code/llms-txt/python/query_agent.py"],
+)
+def test_llms_txt_agents(script_loc):
+    run_py_script(script_loc)
+
+
 # ========== Compression ==========
 
 @pytest.mark.pyv4

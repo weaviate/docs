@@ -39,6 +39,17 @@ def test_connection(empty_weaviates, test_class):
 @pytest.mark.parametrize(
     "test_class",
     [
+        "LlmsTxtTest",
+    ],
+)
+def test_llms_txt(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)
+
+
+@pytest.mark.csharp
+@pytest.mark.parametrize(
+    "test_class",
+    [
         "ManageCollectionsTest",
         "ManageCollectionsAliasTest",
         "ManageCollectionsCrossReferencesTest",
