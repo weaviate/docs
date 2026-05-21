@@ -382,6 +382,17 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 }
 // END BasicSearchQuery
 
+// START SearchStrategyExample
+const strategyResponse = await qa.search("Find me some vintage shoes under $70", {
+    retrievalStrategy: "recall",
+    limit: 10,
+})
+
+for (const obj of strategyResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - ${obj.properties['price']}`)
+}
+// END SearchStrategyExample
+
 
 // START BasicAskQuery
 // Perform a query

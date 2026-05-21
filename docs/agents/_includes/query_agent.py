@@ -398,6 +398,17 @@ for obj in search_response.search_results.objects:
     print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
 # END BasicSearchQuery
 
+# START SearchStrategyExample
+search_response = qa.search(
+    "Find me some vintage shoes under $70",
+    retrieval_strategy="recall",
+    limit=10,
+)
+
+for obj in search_response.search_results.objects:
+    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
+# END SearchStrategyExample
+
 # START SearchModeResponseStructure
 # SearchModeResponse structure for Python
 search_response = qa.search("winter boots for under $100", limit=5)
