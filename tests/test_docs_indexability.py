@@ -638,6 +638,10 @@ def test_chatgpt_can_search_collapsible_content():
 
 
 @pytest.mark.indexability_agents
+@pytest.mark.xfail(
+    reason="Flaky: depends on non-deterministic ChatGPT web search summarizing llms.txt",
+    strict=False,
+)
 def test_chatgpt_can_search_llms_txt():
     """ChatGPT's web_search can find and read /llms.txt."""
     openai = pytest.importorskip("openai")

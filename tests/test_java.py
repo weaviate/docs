@@ -25,6 +25,21 @@ def run_java_test(test_class, empty_weaviates):
         pytest.fail("\n".join(details))
 
 
+# ConnectionTest runs first: its OIDC case authenticates with a bearer token
+# fetched once at CI job start, and that token expires partway through the
+# Java suite. Running it before the longer suites keeps it inside the token's
+# valid window.
+@pytest.mark.java
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "ConnectionTest",
+    ],
+)
+def test_connection(empty_weaviates, test_class):
+    run_java_test(test_class, empty_weaviates)
+
+
 @pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
@@ -60,9 +75,21 @@ def test_manage_data(empty_weaviates, test_class):
         "MultiTargetSearchTest",
         "SearchImageTest",
         "RerankTest",
+        "SearchProfileTest",
     ],
 )
 def test_search(empty_weaviates, test_class):
+    run_java_test(test_class, empty_weaviates)
+
+
+@pytest.mark.java
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "TokenizationTest",
+    ],
+)
+def test_tokenization(empty_weaviates, test_class):
     run_java_test(test_class, empty_weaviates)
 
 
@@ -84,7 +111,6 @@ def test_compression(empty_weaviates, test_class):
 @pytest.mark.parametrize(
     "test_class",
     [
-        "ConnectionTest",
         "BackupsTest",
         "RBACTest",
         "ModelProvidersTest",

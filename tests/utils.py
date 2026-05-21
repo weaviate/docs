@@ -184,10 +184,6 @@ OIDC_CLIENT_SECRET = "weaviate-client-secret-123"
 OIDC_USERNAME = "test-admin"
 OIDC_PASSWORD = "password123"
 
-OIDC_WEAVIATE_HTTP_HOST = "localhost:8580"
-OIDC_WEAVIATE_GRPC_HOST = "localhost:50551"
-
-
 def get_oidc_token(username: str = OIDC_USERNAME, password: str = OIDC_PASSWORD) -> dict:
     """Fetch an OIDC bearer token from Keycloak for the configured test user."""
     import requests
@@ -209,11 +205,16 @@ def get_oidc_token(username: str = OIDC_USERNAME, password: str = OIDC_PASSWORD)
 
 
 def oidc_env(token: dict | None = None) -> dict:
-    """Return the env-var dict expected by the OIDC connect snippets."""
+    """Return the env-var dict expected by the OIDC connect snippets.
+
+    Note: the OIDC connect snippets hardcode the localhost host/port for the
+    RBAC instance from `tests/docker-compose-rbac.yml`, so we deliberately do
+    NOT export WEAVIATE_HTTP_HOST / WEAVIATE_GRPC_HOST here — those env vars
+    are consumed by the WCD-targeting `connect_to_custom` snippets, and
+    overwriting them session-wide would break those tests.
+    """
     token = token or get_oidc_token()
     return {
-        "WEAVIATE_HTTP_HOST": OIDC_WEAVIATE_HTTP_HOST,
-        "WEAVIATE_GRPC_HOST": OIDC_WEAVIATE_GRPC_HOST,
         "WEAVIATE_OIDC_ACCESS_TOKEN": token["access_token"],
         "WEAVIATE_OIDC_REFRESH_TOKEN": token.get("refresh_token", ""),
         "WEAVIATE_OIDC_EXPIRES_IN": str(token.get("expires_in", 60)),

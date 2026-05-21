@@ -277,11 +277,11 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
   return btoa(binary);
 }
 
-const srcImgPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/500px-Koala_climbing_tree.jpg"
-const responseImg = await fetch(srcImgPath);
-const image = await responseImg.arrayBuffer();
+// Load the image from disk (bundled alongside this file).
+import { readFile } from 'node:fs/promises';
 
-const base64String = arrayBufferToBase64(image);
+const imageBuffer = await readFile('./koala.jpg');
+const base64String = imageBuffer.toString('base64');
 
 const prompt = {
   // highlight-start

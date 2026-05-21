@@ -275,15 +275,12 @@ from weaviate.classes.init import Auth
 
 # Connect to a self-hosted Weaviate instance configured with OIDC.
 # Obtain the access token from your identity provider before connecting.
-http_host, http_port = os.environ["WEAVIATE_HTTP_HOST"].split(":")
-grpc_host, grpc_port = os.environ["WEAVIATE_GRPC_HOST"].split(":")
-
 client = weaviate.connect_to_custom(
-    http_host=http_host,
-    http_port=int(http_port),
+    http_host="localhost",
+    http_port=8580,
     http_secure=False,
-    grpc_host=grpc_host,
-    grpc_port=int(grpc_port),
+    grpc_host="localhost",
+    grpc_port=50551,
     grpc_secure=False,
     auth_credentials=Auth.bearer_token(
         access_token=os.environ["WEAVIATE_OIDC_ACCESS_TOKEN"],

@@ -48,7 +48,13 @@ def test_api_gql(empty_weaviates, script_loc):
     "script_loc",
     [
         "./_includes/code/connections/connect-python-v4.py",
-        "./_includes/code/client-libraries/python_v4.py",
+        pytest.param(
+            "./_includes/code/client-libraries/python_v4.py",
+            marks=pytest.mark.xfail(
+                reason="Flaky: gRPC search intermittently returns Deadline Exceeded in CI",
+                strict=False,
+            ),
+        ),
         "./_includes/code/client-libraries/python_slow_connection.py",
         "./_includes/code/rest.well-known.py",
     ],

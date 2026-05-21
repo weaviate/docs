@@ -30,7 +30,7 @@
     <dependency>
       <groupId>io.weaviate</groupId>
       <artifactId>client6</artifactId>
-      <version>6.2.0</version>
+      <version>6.2.1-SNAPSHOT</version>
     </dependency>
 
     <!-- JUnit 5 for testing -->

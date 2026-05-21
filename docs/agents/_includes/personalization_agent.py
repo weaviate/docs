@@ -290,7 +290,7 @@ movies_collection = client.collections.use("Movie")
 movie_dict = {
     movie.properties["title"]: movie
     for movie in movies_collection.query.fetch_objects(
-        filters=Filter.by_property("title").contains_any(movie_titles), limit=20
+        filters=Filter.by_property("title").contains_any(movie_titles), limit=200
     ).objects
 }
 
