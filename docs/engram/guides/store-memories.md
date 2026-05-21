@@ -114,13 +114,13 @@ A successful response means the pipeline has started, not that the memories have
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `user_id` | string | [Scope](../concepts/scopes.md) the memory to a specific user |
-| `conversation_id` | string (UUID) | [Scope](../concepts/scopes.md) the memory to a specific conversation. Must be a valid UUID. |
+| `user_id` | string | [Scope](../concepts/scopes.md) the memory to a specific user. Required if the target topic is user-scoped. |
+| `properties` | object\<string, string\> | Custom [scope properties](../concepts/scopes.md) (e.g. `{"conversation_id": "abc-123"}`). Must include every key any target topic is scoped by. |
 | `group` | string | Memory [group](../concepts/groups.md) name (defaults to `default`) |
 | `root` | string | Pipeline root name (for advanced pipeline configurations) |
 
 :::info
-Which parameters are required depends on the topic's [scoping](../concepts/scopes.md) configuration, not the content type. If a topic is user-scoped, you must include `user_id`. If a topic is conversation-scoped, you must include `conversation_id` when storing (it is optional when searching). These scoping parameters apply equally to all three content types — for example, you can include `conversation_id` with string content, or omit it with conversation content, depending on the topic configuration.
+Which parameters are required depends on the topic's [scoping](../concepts/scopes.md) configuration, not the content type. If a topic is user-scoped, you must include `user_id`. If a topic is scoped by a custom property (e.g. `conversation_id`), pass it in `properties`. These scoping parameters apply equally to all three content types.
 :::
 
 ## Questions and feedback

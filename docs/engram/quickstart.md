@@ -42,9 +42,9 @@ Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud c
 
 You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
 
-The template provides you with a default [group](concepts/groups.md) called `personalization` and a default [topic](concepts/topics.md) called `UserKnowledge` (description: *"Anything relating to the user personally: their personal details (name, age, interpersonal relationships, etc.), their preferences, what they've done or plan to do, etc., i.e., any generic information about the user."*). This is enough to get started.
+The template seeds the project's `default` [group](concepts/groups.md) with a [topic](concepts/topics.md) called `UserKnowledge` (description: *"Anything relating to the user personally: their personal details (name, age, interpersonal relationships, etc.), their preferences, what they've done or plan to do, etc., i.e., any generic information about the user."*). This is enough to get started.
 
-The template also lets you optionally add a `ConversationSummary` topic, which maintains a single summary for each conversation ID containing the entire history of that conversation. Enabling this option makes `conversation_id` required when adding memories, which is why it's disabled by default.
+The template also lets you optionally add a `ConversationSummary` topic, which maintains a single summary per conversation. Enabling this option makes a `conversation_id` [property](concepts/scopes.md) required when adding memories that target it, which is why it's disabled by default.
 
 <details>
 

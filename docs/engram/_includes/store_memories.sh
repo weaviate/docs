@@ -11,9 +11,12 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "string",
-      "content": "The user prefers dark mode and works primarily in Python. They are building a RAG application."
+    "input": {
+      "string": {
+        "content": [
+          "The user prefers dark mode and works primarily in Python. They are building a RAG application."
+        ]
+      }
     },
     "user_id": "user-uuid",
     "group": "default"
@@ -25,10 +28,13 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "pre_extracted",
-      "content": "User prefers dark mode",
-      "topic": "preferences"
+    "input": {
+      "pre_extracted": {
+        "items": [
+          { "content": "User prefers dark mode", "topic": "UserKnowledge" },
+          { "content": "User works in Python", "topic": "UserKnowledge" }
+        ]
+      }
     },
     "user_id": "user-uuid",
     "group": "default"
@@ -40,8 +46,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "conversation",
+    "input": {
       "conversation": {
         "messages": [
           {
@@ -72,9 +77,12 @@ RUN_ID=$(curl -s -X POST "$BASE_URL/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "string",
-      "content": "The user prefers dark mode and works primarily in Python. They are building a RAG application."
+    "input": {
+      "string": {
+        "content": [
+          "The user prefers dark mode and works primarily in Python. They are building a RAG application."
+        ]
+      }
     },
     "user_id": "'"$USER_ID"'",
     "group": "default"
@@ -112,10 +120,12 @@ RUN_ID=$(curl -s -X POST "$BASE_URL/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "pre_extracted",
-      "content": "User prefers dark mode",
-      "topic": "preferences"
+    "input": {
+      "pre_extracted": {
+        "items": [
+          { "content": "User prefers dark mode", "topic": "UserKnowledge" }
+        ]
+      }
     },
     "user_id": "'"$USER_ID"'",
     "group": "default"
@@ -142,8 +152,7 @@ RUN_ID=$(curl -s -X POST "$BASE_URL/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "conversation",
+    "input": {
       "conversation": {
         "messages": [
           {"role": "user", "content": "I just moved to Berlin and I am looking for a good coffee shop."},
@@ -153,7 +162,6 @@ RUN_ID=$(curl -s -X POST "$BASE_URL/v1/memories" \
       }
     },
     "user_id": "'"$USER_ID"'",
-    "conversation_id": "'"$CONVERSATION_ID"'",
     "group": "default"
   }' | jq -r '.run_id')
 

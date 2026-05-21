@@ -18,9 +18,10 @@ RUN_ID=$(curl -s -X POST "$BASE_URL/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "string",
-      "content": "The user prefers dark mode and uses VS Code."
+    "input": {
+      "string": {
+        "content": ["The user prefers dark mode and uses VS Code."]
+      }
     },
     "user_id": "'"$USER_ID"'",
     "group": "default"

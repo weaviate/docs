@@ -177,12 +177,33 @@ If you omit `topics`, Engram searches across all topics in the group.
 Search results are [scoped](../concepts/scopes.md) to match the parameters you provide:
 
 - **`user_id`** — Required for user-scoped topics. Only returns memories for this user.
-- **`conversation_id`** — Optional for conversation-scoped topics. Include it to filter to a single conversation, or omit it to search across all conversations.
+- **`properties`** — Optional map of custom scope properties (e.g. `{"conversation_id": "abc-123"}`). Including a key narrows results; omitting a key searches across all values for that key.
 - **`group`** — Search within this group. Defaults to `default`.
 
 :::tip
-For user-scoped topics, always include the `user_id` you used when storing the memories. For conversation-scoped topics, you can omit `conversation_id` to search across all conversations at once.
+For user-scoped topics, always include the `user_id` you used when storing the memories. For property-scoped topics, you can omit a property key to search across all values — for example, omit `conversation_id` to find a user's memories across all conversations at once.
 :::
+
+### Per-topic property filters
+
+When searching multiple topics with different scope requirements, you can override the global `properties` filter on a per-topic basis. Pass an object instead of a string in the `topics` array:
+
+```python
+from engram import Topic
+
+results = client.memories.search(
+    query="...",
+    user_id="alice",
+    properties={"conversation_id": "abc-123"},  # global default
+    topics=[
+        "user_facts",                                            # not conversation-scoped, ignores the filter
+        Topic(name="conversation_summary"),                      # uses the global filter
+        Topic(name="messages", properties={"conversation_id": None}),  # clear filter — all conversations
+    ],
+)
+```
+
+A `null` value clears an inherited global filter for that topic only.
 
 ## Questions and feedback
 

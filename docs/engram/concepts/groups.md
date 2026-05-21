@@ -15,12 +15,9 @@ Each project can have multiple named groups, but most use cases only need the `d
 - Pipeline steps that define the processing flow
 - Topic name isolation — different groups can have topics with the same name without collision (e.g. two agents can each have a `user_preferences` topic in separate groups)
 
-## Default groups
+## The `default` group
 
-When you create a project, Engram sets up two default groups:
-
-- **`default_personalisation`** — [User-scoped](scopes.md). Requires a `user_id` when storing and searching. Use this for per-user preferences, facts, and context.
-- **`default_continual_learning`** — Project-wide. No `user_id` needed. Use this for things an agent learns about how to perform a task, regardless of which user it's working with.
+When you create a project, Engram provisions a group named `default`. All API requests use this group unless you specify another with the `group` parameter. Project templates may seed the default group with a starter set of topics — the [Personalization template](../quickstart.md), for example, seeds it with a `UserKnowledge` topic.
 
 ## When to create additional groups
 
@@ -30,8 +27,8 @@ Create additional groups when you have distinct use cases that need different to
 
 A **customer support agent** could use two groups:
 
-- **`default_personalisation`** (user-scoped) — Stores per-user facts like "prefers email over phone" or "has a Pro subscription". Requires a `user_id` on every store and search so each user's memories stay separate.
-- **`default_continual_learning`** (project-wide) — Stores knowledge the agent learns about how to do its job, like "always check the billing FAQ before escalating refund requests". No `user_id` needed — these memories are shared across all users.
+- **`personalization`** (user-scoped) — Stores per-user facts like "prefers email over phone" or "has a Pro subscription". Requires a `user_id` on every store and search so each user's memories stay separate.
+- **`continual_learning`** (project-wide) — Stores knowledge the agent learns about how to do its job, like "always check the billing FAQ before escalating refund requests". No `user_id` needed — these memories are shared across all users.
 
 When the agent handles a support ticket, it searches the personalization group with the user's ID to recall their history, and searches the continual learning group to recall best practices.
 
