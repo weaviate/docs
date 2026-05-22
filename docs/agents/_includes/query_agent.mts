@@ -389,6 +389,18 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 }
 // END BasicSearchQuery
 
+// START RetrievalStrategyExample
+const strategyResponse = await qa.search("Find me some vintage shoes under $70", {
+    retrievalStrategy: "recall",
+    limit: 10,
+})
+
+for (const obj of strategyResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - ${obj.properties['price']}`)
+}
+// END RetrievalStrategyExample
+
+
 // START DiversityRanking
 const diversitySearchResponse = await qa.search("summer shoes", {
     limit: 10,
