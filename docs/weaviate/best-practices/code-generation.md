@@ -18,7 +18,7 @@ Here are some tips for writing Weaviate client library code with generative AI m
 
 Weaviate provides two [MCP](https://modelcontextprotocol.io/) servers that integrate with AI development tools like Claude Code, Claude Desktop, Cursor, and VS Code:
 
-- **[Weaviate MCP Server](../mcp/mcp-server.mdx)** — Built into Weaviate itself. Lets AI assistants inspect schemas, search data, and modify objects in your Weaviate instance directly. Enable with `MCP_SERVER_ENABLED=true`.
+- **[Weaviate MCP Server](../configuration/mcp-server.mdx)** — Built into Weaviate itself. Lets AI assistants inspect schemas, search data, and modify objects in your Weaviate instance directly. Enable with `MCP_SERVER_ENABLED=true`.
 - **[Weaviate Docs MCP Server](../mcp/docs-mcp-server.mdx)** — A standalone server that gives AI assistants access to Weaviate's documentation, reducing hallucinations when generating Weaviate code.
 
 ### Weaviate Agent Skills
