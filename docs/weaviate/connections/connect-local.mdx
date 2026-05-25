@@ -16,7 +16,6 @@ import WCDAuthAndInferenceKeys from "/_includes/code/wcs.authentication.api.key.
 
 import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
-import JavaCode from "!!raw-loader!/_includes/code/connections/connect.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
@@ -59,17 +58,9 @@ To connect to a local instance without authentication, follow these examples.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START LocalNoAuth"
-      endMarker="// END LocalNoAuth"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START LocalNoAuth"
       endMarker="// END LocalNoAuth"
       language="java"
@@ -122,17 +113,9 @@ To change the default URL or port number, follow these examples.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START CustomURL"
-      endMarker="// END CustomURL"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START CustomURL"
       endMarker="// END CustomURL"
       language="java"
@@ -185,17 +168,9 @@ To authenticate with a Weaviate API key, follow these examples.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START LocalAuth"
-      endMarker="// END LocalAuth"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START LocalAuth"
       endMarker="// END LocalAuth"
       language="java"
@@ -220,10 +195,6 @@ To authenticate with a Weaviate API key, follow these examples.
 </Tabs>
 
 ### OIDC authentication
-
-import OIDCConnect from "/_includes/connect/oidc-connect-ref.mdx";
-
-<OIDCConnect />
 
 For additional client examples, see [OIDC authentication](/weaviate/connections/connect-custom#oidc-authentication).
 
@@ -256,17 +227,9 @@ Integrations that use external APIs often need API keys. To add third party API 
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START LocalThirdPartyAPIKeys"
-      endMarker="// END LocalThirdPartyAPIKeys"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START LocalThirdPartyAPIKeys"
       endMarker="// END LocalThirdPartyAPIKeys"
       language="java"

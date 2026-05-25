@@ -128,6 +128,26 @@ export const deploymentCardsData = [
       link: "/deploy/installation-guides/gcp-marketplace",
     },
   },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Development", active: true },
+      { label: "Production", active: false },
+    ],
+    header: "DigitalOcean",
+    bgImage: "/img/site/digitalocean.svg",
+    bgImageLight: "/img/site/digitalocean.svg",
+    listItems: [
+      "Fully managed by DigitalOcean",
+      "Provisioned via the DigitalOcean API",
+      "Daily backups, TLS on every connection",
+      "Currently in private preview",
+    ],
+    button: {
+      text: "Deploy Weaviate on DigitalOcean",
+      link: "/deploy/installation-guides/digitalocean",
+    },
+  },
 ];
 
 <DeploymentCards items={deploymentCardsData} />

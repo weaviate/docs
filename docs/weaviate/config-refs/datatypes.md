@@ -499,6 +499,35 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
   </TabItem>
 </Tabs>
 
+## `blobHash`
+
+:::info Added in `v1.37`
+:::
+
+The `blobHash` data type accepts base64-encoded data (same as [`blob`](#blob)) but stores only a SHA-256 hash on disk. This reduces storage space while still allowing modules (such as `multi2vec-google`) to vectorize the original media content during import.
+
+**How it works:**
+
+- During validation, the base64 input is validated but kept as-is.
+- The raw data flows through the vectorization pipeline so modules can vectorize the actual media content.
+- After vectorization, the base64 data is converted to a SHA-256 hex hash before being persisted.
+- When an object is updated, the incoming base64 data is hashed before being compared against the stored hash to determine whether re-vectorization is needed.
+
+**Behavior:** identical to `blob` for indexing restrictions (no `indexFilterable`), sorting (string comparator), API serialization (GraphQL string, gRPC blob value), and inverted index exclusion.
+
+```json
+{
+  "properties": [
+    {
+      "name": "image",
+      "dataType": ["blobHash"]
+    }
+  ]
+}
+```
+
+Use `blobHash` when you need a vectorizer to see the raw media at import time but don't need to retrieve the original bytes afterwards — only the hash is stored.
+
 ## `object`
 
 The `object` type allows you to store nested data as a JSON object that can be nested to any depth.

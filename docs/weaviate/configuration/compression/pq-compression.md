@@ -13,7 +13,6 @@ import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-com
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigurePQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigurePQTest.cs";
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
@@ -68,7 +67,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
        language="ts"
      />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CollectionWithAutoPQ"
@@ -145,17 +144,9 @@ Follow these steps to manually enable PQ.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START InitialSchema"
-      endMarker="// END InitialSchema"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START InitialSchema"
       endMarker="// END InitialSchema"
       language="java"
@@ -214,17 +205,9 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START UpdateSchema"
-      endMarker="// END UpdateSchema"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="java"
@@ -313,17 +296,9 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GetSchema"
-      endMarker="// END GetSchema"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START GetSchema"
       endMarker="// END GetSchema"
       language="java"

@@ -85,67 +85,6 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.graphql.model.GraphQLResponse;
-import io.weaviate.client.v1.graphql.query.argument.NearVectorArgument;
-import io.weaviate.client.v1.graphql.query.fields.Field;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("http", "localhost:8080");
-    WeaviateClient client = new WeaviateClient(config);
-    Field meta = Field.builder()
-      .name("meta")
-      .fields(new Field[]{
-        Field.builder().name("count").build()
-      }).build();
-    Field wordCount = Field.builder()
-      .name("wordCount")
-      .fields(new Field[]{
-        Field.builder().name("mean").build(),
-        Field.builder().name("maximum").build(),
-        Field.builder().name("median").build(),
-        Field.builder().name("minimum").build(),
-        Field.builder().name("mode").build(),
-        Field.builder().name("sum").build(),
-        Field.builder().name("type").build()
-      }).build();
-    Field inPublication = Field.builder()
-      .name("inPublication")
-      .fields(new Field[]{
-        Field.builder().name("pointingTo").build(),
-        Field.builder().name("count").build()
-      }).build();
-
-    Float[] vector = new Float[]{ 1.0f, 2.0f, -3.0f };
-    NearVectorArgument nearVector = NearVectorArgument.builder()
-      .certainty(0.7f) // at least one of certainty or objectLimit need to be set
-      .vector(vector)
-      .build();
-
-    Result<GraphQLResponse> result = client.graphQL().aggregate()
-      .withClassName("Article")
-      .withFields(meta, wordCount, inPublication)
-      .withNearVector(nearVector)
-      .withObjectLimit(100) // at least one of certainty or objectLimit need to be set
-      .run();
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-```
-
-</TabItem>
 <TabItem value="curl" label="Curl">
 
 ```bash

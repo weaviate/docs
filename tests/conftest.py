@@ -4,6 +4,24 @@ import time
 import sys
 import os
 
+import utils
+
+
+@pytest.fixture(scope="session", autouse=True)
+def oidc_env(empty_weaviates):
+    """Fetch an OIDC bearer token from Keycloak and expose it via env vars.
+
+    Runs once per session after the docker stack is up. Sets the env vars the
+    OIDCConnect snippets consume; if Keycloak isn't reachable, prints a warning
+    and lets the OIDC-touching tests fail with a clearer KeyError later.
+    """
+    try:
+        os.environ.update(utils.oidc_env())
+        print("[oidc] OIDC env vars set from Keycloak")
+    except Exception as exc:
+        print(f"[oidc] Skipping OIDC env setup — Keycloak unreachable: {exc}")
+    sys.stdout.flush()
+
 
 @pytest.fixture(scope="session")
 def empty_weaviates(request):

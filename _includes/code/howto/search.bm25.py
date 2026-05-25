@@ -63,7 +63,7 @@ from weaviate.classes.query import BM25Operator
 jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
-    query="Australian mammal cute",
+    query="African desert wind",
     operator=BM25Operator.or_(minimum_match=1),
     # highlight-end
     limit=3,
@@ -91,8 +91,8 @@ from weaviate.classes.query import BM25Operator
 jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
-    query="Australian mammal cute",
-    operator=BM25Operator.and_(),  # Each result must include all tokens (e.g. "australian", "mammal", "cute")
+    query="African desert wind",
+    operator=BM25Operator.and_(),  # Each result must include all tokens (e.g. "african", "desert", "wind")
     # highlight-end
     limit=3,
 )

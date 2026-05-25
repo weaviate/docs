@@ -1,0 +1,8 @@
+:::caution Preview — added in `v1.37`
+
+This is a preview feature. The API may change in future releases.
+
+- **Python client**: Support is not yet in a released `weaviate-client`. Coming in the next release (tracked in [PR #1997](https://github.com/weaviate/weaviate-python-client/pull/1997)).
+- **Multi-node clusters**: MMR reranking may produce suboptimal results for collections whose shards are distributed across multiple nodes, since each shard returns its own candidate set before the coordinator reranks them. We are actively working on improving this.
+
+:::

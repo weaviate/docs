@@ -15,7 +15,6 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsCrossReferencesTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsCrossReferencesTest.cs";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.cross-refs.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -56,7 +55,7 @@ Include the reference property in the collection definition before adding cross-
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CrossRefDefinition"
@@ -95,7 +94,7 @@ It is also possible to add a cross-reference property to an existing collection 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TwoWayCategoryCrossReferences"
@@ -134,7 +133,7 @@ Specify a cross-reference when creating an object.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ObjectWithCrossRef"
@@ -181,19 +180,11 @@ Specify the required id and properties for the source and the target.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START OneWayCrossReferences"
       endMarker="// END OneWayCrossReferences"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START OneWay"
-      endMarker="// END OneWay"
       language="java"
     />
   </TabItem>
@@ -230,7 +221,7 @@ Create the `JeopardyCategory` collection:
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TwoWayCategory1CrossReferences"
@@ -267,7 +258,7 @@ Create the `JeopardyQuestion` collection including the reference property to `Je
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TwoWayQuestionCrossReferences"
@@ -304,7 +295,7 @@ Modify `JeopardyCategory` to add the reference to `JeopardyQuestion`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TwoWayCategoryCrossReferences"
@@ -349,19 +340,11 @@ And add the cross-references:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TwoWayCrossReferences"
       endMarker="// END TwoWayCrossReferences"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// TwoWay Java"
-      endMarker="// END TwoWay Java"
       language="java"
     />
   </TabItem>
@@ -404,19 +387,11 @@ Weaviate allows creation of multiple cross-references from one source object.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultipleCrossReferences"
       endMarker="// END MultipleCrossReferences"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// Multiple Java"
-      endMarker="// END Multiple Java"
       language="java"
     />
   </TabItem>
@@ -451,7 +426,7 @@ Cross-references can be read as part of the object.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ReadCrossRef"
@@ -498,19 +473,11 @@ Deleting a cross-reference with the same parameters used to define the cross-ref
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DeleteCrossReference"
       endMarker="// END DeleteCrossReference"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// Delete Java"
-      endMarker="// END Delete Java"
       language="java"
     />
   </TabItem>
@@ -563,19 +530,11 @@ The targets of a cross-reference can be updated.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateCrossReference"
       endMarker="// END UpdateCrossReference"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// Update Java"
-      endMarker="// END Update Java"
       language="java"
     />
   </TabItem>

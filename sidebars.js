@@ -103,7 +103,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: ["weaviate/mcp/docs-mcp-server"],
+      items: ["weaviate/mcp/mcp-server","weaviate/mcp/docs-mcp-server"],
     },
     {
       type: "html",
@@ -634,6 +634,7 @@ const sidebars = {
         "weaviate/search/rerank",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        "weaviate/search/query-profile",
         {
           type: "link",
           label: "Search strategies: In depth",
@@ -787,15 +788,9 @@ const sidebars = {
           ],
         },
         {
-          type: "category",
-          label: "Java",
-          collapsed: true,
+          type: "doc",
+          id: "weaviate/client-libraries/java/index",
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/client-libraries/java/index",
-          },
-          items: ["weaviate/client-libraries/java/java-v5"],
         },
         {
           type: "doc",
@@ -993,6 +988,24 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "DigitalOcean",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/installation-guides/digitalocean",
+          className: "sidebar-item",
+        },
+      ],
+    },
   ],
   deployConfigSidebar: [
     {
@@ -1161,6 +1174,11 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/configuration/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/export",
           className: "sidebar-item",
         },
         {

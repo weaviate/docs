@@ -15,7 +15,6 @@ import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac
 import RolePyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py";
 import RoleTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-roles.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
@@ -59,17 +58,9 @@ Role management requires appropriate `role` resource permissions that can be obt
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AdminClient"
-      endMarker="// END AdminClient"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AdminClient"
       endMarker="// END AdminClient"
       language="java"
@@ -113,6 +104,8 @@ Permissions for these resource types can be assigned to roles:
 
 11. [**Groups**](#groups-permissions)
 
+12. [**MCP**](#mcp-permissions)
+
 #### Create a role with `Role Management` permissions {#role-management-permissions}
 
 This example creates a role called `testRole` with permissions to:
@@ -144,17 +137,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddManageRolesPermission"
-      endMarker="// END AddManageRolesPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddManageRolesPermission"
       endMarker="// END AddManageRolesPermission"
       language="java"
@@ -202,17 +187,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddManageUsersPermission"
-      endMarker="// END AddManageUsersPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddManageUsersPermission"
       endMarker="// END AddManageUsersPermission"
       language="java"
@@ -259,17 +236,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddCollectionsPermission"
-      endMarker="// END AddCollectionsPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddCollectionsPermission"
       endMarker="// END AddCollectionsPermission"
       language="java"
@@ -318,17 +287,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddTenantPermission"
-      endMarker="// END AddTenantPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddTenantPermission"
       endMarker="// END AddTenantPermission"
       language="java"
@@ -376,17 +337,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddDataObjectPermission"
-      endMarker="// END AddDataObjectPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddDataObjectPermission"
       endMarker="// END AddDataObjectPermission"
       language="java"
@@ -433,17 +386,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddBackupPermission"
-      endMarker="// END AddBackupPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddBackupPermission"
       endMarker="// END AddBackupPermission"
       language="java"
@@ -490,17 +435,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddClusterPermission"
-      endMarker="// END AddClusterPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddClusterPermission"
       endMarker="// END AddClusterPermission"
       language="java"
@@ -547,17 +484,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddNodesPermission"
-      endMarker="// END AddNodesPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddNodesPermission"
       endMarker="// END AddNodesPermission"
       language="java"
@@ -604,17 +533,9 @@ This example creates a role called `testRole` with permissions to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddAliasPermission"
-      endMarker="// END AddAliasPermission"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddAliasPermission"
       endMarker="// END AddAliasPermission"
       language="java"
@@ -660,7 +581,7 @@ endMarker="// END AddReplicationsPermission"
 language="go"
 />
 </TabItem>
-<TabItem value="java6" label="Java v6">
+<TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START AddReplicationsPermission"
@@ -668,14 +589,6 @@ language="go"
       language="java"
     />
   </TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-<FilteredTextBlock
-text={JavaCode}
-startMarker="// START AddReplicationsPermission"
-endMarker="// END AddReplicationsPermission"
-language="java"
-/>
-</TabItem>
 <TabItem value="csharp" label="C#">
 <FilteredTextBlock
 text={CSharpCode}
@@ -716,7 +629,7 @@ endMarker="// END AddGroupsPermission"
 language="go"
 />
 </TabItem>
-<TabItem value="java6" label="Java v6">
+<TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START AddGroupsPermission"
@@ -724,14 +637,6 @@ language="go"
       language="java"
     />
   </TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-<FilteredTextBlock
-text={JavaCode}
-startMarker="// START AddGroupsPermission"
-endMarker="// END AddGroupsPermission"
-language="java"
-/>
-</TabItem>
 <TabItem value="csharp" label="C#">
 <FilteredTextBlock
 text={CSharpCode}
@@ -741,6 +646,17 @@ language="csharp"
 />
 </TabItem>
 </Tabs>
+
+#### Create a role with `MCP` permissions {#mcp-permissions}
+
+The [Weaviate MCP server](/weaviate/mcp/mcp-server.mdx) uses three granular permissions:
+
+| Permission | Tools |
+| :--------- | :---- |
+| `read_mcp` | `weaviate-collections-get-config`, `weaviate-tenants-list`, `weaviate-query-hybrid` |
+| `create_mcp` + `update_mcp` | `weaviate-objects-upsert` |
+
+MCP tools also require standard collection-level permissions (e.g., `read_data` for search, `create_data` + `update_data` for upsert). See the [MCP server permissions](/weaviate/mcp/mcp-server.mdx#permissions) for the full per-tool breakdown.
 
 ### Grant additional permissions
 
@@ -775,17 +691,9 @@ This example grants additional permissions to the role `testRole` to:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AddRoles"
-      endMarker="// END AddRoles"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AddRoles"
       endMarker="// END AddRoles"
       language="java"
@@ -835,17 +743,9 @@ This example removes the following permissions from the role `testRole`:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START RemovePermissions"
-      endMarker="// END RemovePermissions"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START RemovePermissions"
       endMarker="// END RemovePermissions"
       language="java"
@@ -890,17 +790,9 @@ Check if the role `testRole` exists:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START CheckRoleExists"
-      endMarker="// END CheckRoleExists"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START CheckRoleExists"
       endMarker="// END CheckRoleExists"
       language="java"
@@ -945,17 +837,9 @@ View the permissions assigned to a role.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START InspectRole"
-      endMarker="// END InspectRole"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START InspectRole"
       endMarker="// END InspectRole"
       language="java"
@@ -1000,17 +884,9 @@ View all roles in the system and their permissions.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START ListAllRoles"
-      endMarker="// END ListAllRoles"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START ListAllRoles"
       endMarker="// END ListAllRoles"
       language="java"
@@ -1055,17 +931,9 @@ List all users who have the role `testRole`.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AssignedUsers"
-      endMarker="// END AssignedUsers"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START AssignedUsers"
       endMarker="// END AssignedUsers"
       language="java"
@@ -1110,17 +978,9 @@ Deleting a role will remove it from the system, and revoke the associated permis
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START DeleteRole"
-      endMarker="// END DeleteRole"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START DeleteRole"
       endMarker="// END DeleteRole"
       language="java"

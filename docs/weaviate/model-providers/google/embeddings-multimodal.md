@@ -167,6 +167,14 @@ The following examples show how to configure Google-specific options.
 - `modelId` (Optional): e.g. `gemini-embedding-2`, `multimodalembedding@001`
 - `dimensions` (Optional): For `multimodalembedding@001`: `128`, `256`, `512`, or `1408` (default `1408`). For `gemini-embedding-2`: `3072` (default).
 
+:::info Audio support (added in `v1.37`)
+
+The `multi2vec-google` module supports audio as a fourth modality (alongside text, images, and videos) via the `audioFields` property. Configure it the same way as `imageFields` or `videoFields`.
+
+Audio is only supported through the **Gemini API** (Google AI Studio). Vertex AI does not support audio embeddings.
+
+:::
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -318,7 +326,7 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `gemini-embedding-2` (GA as of 2026-04-23) — Vertex AI and Gemini API; supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
+- `gemini-embedding-2` (Vertex AI and Gemini API, added in 1.36.13) — Vertex AI and Gemini API; supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
 - `multimodalembedding@001` (Vertex AI only) — supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
 
 ## Further resources

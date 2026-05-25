@@ -24,7 +24,7 @@ def process_imports(content):
     if re.search(r"import\s+CSharpCode\s+from", content):
         return content
 
-    # Find the Java V6 import to base the new import on.
+    # Find the Java import to base the new import on.
     # It captures the full import statement and the file path part.
     java_import_match = re.search(
         r'(import\s+JavaV6Code\s+from\s+([\'"]).*?java-v6/(.*?)(\2;))',
@@ -47,7 +47,7 @@ def process_imports(content):
         .replace(java_file_path, csharp_file_path)
     )
 
-    # Insert the new import directly after the Java V6 one for consistency.
+    # Insert the new import directly after the Java one for consistency.
     return content.replace(
         full_import_statement, f"{full_import_statement}\n{new_import_statement}"
     )
@@ -60,25 +60,25 @@ def add_csharp_tab_to_block(tabs_block_match):
     tabs_block = tabs_block_match.group(0)
 
     # Condition 1: Don't add if a C# tab already exists.
-    # Condition 2: Don't add if there's no Java v6 tab to use as a template.
-    if 'value="csharp"' in tabs_block or 'value="java6"' not in tabs_block:
+    # Condition 2: Don't add if there's no Java tab to use as a template.
+    if 'value="csharp"' in tabs_block or 'value="java"' not in tabs_block:
         return tabs_block
 
-    # Find the Java v6 tab. We assume TabItems are not nested within each other.
-    java6_tab_match = re.search(
-        r'(<TabItem value="java6".*?>.*?</TabItem>)', tabs_block, re.DOTALL
+    # Find the Java tab. We assume TabItems are not nested within each other.
+    java_tab_match = re.search(
+        r'(<TabItem value="java".*?>.*?</TabItem>)', tabs_block, re.DOTALL
     )
-    if not java6_tab_match:
+    if not java_tab_match:
         return tabs_block
 
-    java6_tab_text = java6_tab_match.group(1)
+    java_tab_text = java_tab_match.group(1)
 
-    # Extract start and end markers from within the Java v6 tab text.
+    # Extract start and end markers from within the Java tab text.
     marker_match = re.search(
-        r'startMarker="([^"]+)"[\s\S]*?endMarker="([^"]+)"', java6_tab_text, re.DOTALL
+        r'startMarker="([^"]+)"[\s\S]*?endMarker="([^"]+)"', java_tab_text, re.DOTALL
     )
     if not marker_match:
-        # Cannot proceed if markers aren't found in the Java v6 tab.
+        # Cannot proceed if markers aren't found in the Java tab.
         return tabs_block
 
     start_marker, end_marker = marker_match.groups()
@@ -89,18 +89,18 @@ def add_csharp_tab_to_block(tabs_block_match):
     ).strip()
 
     # Determine the correct insertion point.
-    # We insert after the Java v6 tab, OR after the regular Java tab
-    # if it immediately follows the Java v6 tab.
+    # We insert after the Java tab, OR after the regular Java tab
+    # if it immediately follows the Java tab.
 
-    end_of_java6_match = java6_tab_match.end()
-    rest_of_block_after_java6 = tabs_block[end_of_java6_match:]
+    end_of_java_match = java_tab_match.end()
+    rest_of_block_after_java = tabs_block[end_of_java_match:]
 
     # Check if the next element is a regular Java tab.
-    if re.match(r'\s*<TabItem value="java"', rest_of_block_after_java6):
+    if re.match(r'\s*<TabItem value="java"', rest_of_block_after_java):
         # A Java tab exists. Find its full text to use as the replacement target.
         java_tab_match = re.search(
             r'(<TabItem value="java".*?>.*?</TabItem>)',
-            rest_of_block_after_java6,
+            rest_of_block_after_java,
             re.DOTALL,
         )
         if java_tab_match:
@@ -110,9 +110,9 @@ def add_csharp_tab_to_block(tabs_block_match):
                 java_tab_text, f"{java_tab_text}\n  {csharp_tab_text}"
             )
 
-    # If no regular Java tab followed, insert after the Java v6 tab.
-    # Replace the Java v6 tab with itself plus the new C# tab.
-    return tabs_block.replace(java6_tab_text, f"{java6_tab_text}\n  {csharp_tab_text}")
+    # If no regular Java tab followed, insert after the Java tab.
+    # Replace the Java tab with itself plus the new C# tab.
+    return tabs_block.replace(java_tab_text, f"{java_tab_text}\n  {csharp_tab_text}")
 
 
 def process_file_content(content):
@@ -170,7 +170,7 @@ def process_directory(directory_path, file_extensions, dry_run=True):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Adds C# TabItem blocks after Java v6/Java tabs in documentation files."
+        description="Adds C# TabItem blocks after Java/Java tabs in documentation files."
     )
     parser.add_argument("directory", help="Directory to process")
     parser.add_argument(

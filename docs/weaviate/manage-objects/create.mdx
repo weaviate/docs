@@ -11,7 +11,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.create.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
@@ -51,19 +50,11 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateSimpleObject"
       endMarker="// END CreateSimpleObject"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObject START"
-      endMarker="// CreateObject END"
       language="java"
     />
   </TabItem>
@@ -121,19 +112,11 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateObjectWithVector"
       endMarker="// END CreateObjectWithVector"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObjectWithVector START"
-      endMarker="// CreateObjectWithVector END"
       language="java"
     />
   </TabItem>
@@ -168,7 +151,7 @@ When you create an object, you can specify named vectors (if [configured in your
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateObjectNamedVectors"
@@ -219,19 +202,11 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateObjectWithId"
       endMarker="// END CreateObjectWithId"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObjectWithId START"
-      endMarker="// CreateObjectWithId END"
       language="java"
     />
   </TabItem>
@@ -277,7 +252,7 @@ Object IDs are not randomly generated. The same value always generates the same 
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CreateObjectWithDeterministicId"
@@ -335,7 +310,7 @@ You can create an object with cross-references to other objects.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={XrefJavaV6Code}
       startMarker="// START ObjectWithCrossRef"
@@ -398,19 +373,11 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ValidateObject"
       endMarker="// END ValidateObject"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// ValidateObject START"
-      endMarker="// ValidateObject END"
       language="java"
     />
   </TabItem>

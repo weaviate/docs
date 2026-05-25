@@ -12,7 +12,6 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
-import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 ## Replication settings
@@ -51,17 +50,9 @@ Configure replication settings, such as [async replication](/deploy/configuratio
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
       language="java"
@@ -143,7 +134,7 @@ Update async replication settings for an existing collection. The `asyncConfig` 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateReplicationSettings"
@@ -188,17 +179,9 @@ Configure sharding per collection.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
       startMarker="// START ShardingSettings"
       endMarker="// END ShardingSettings"
       language="java"

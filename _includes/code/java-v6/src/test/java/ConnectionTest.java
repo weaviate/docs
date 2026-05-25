@@ -232,4 +232,28 @@ class ConnectionTest {
     client.close(); // Free up resources
     // END TimeoutWCD
   }
+
+  @Test
+  void testConnectOIDC() throws Exception {
+    // START OIDCConnect
+    // Connect to a self-hosted Weaviate instance configured with OIDC.
+    // Obtain the access token from your identity provider before connecting.
+    String accessToken = System.getenv("WEAVIATE_OIDC_ACCESS_TOKEN");
+    String refreshToken = System.getenv("WEAVIATE_OIDC_REFRESH_TOKEN");
+    long expiresIn = Long.parseLong(
+        System.getenv().getOrDefault("WEAVIATE_OIDC_EXPIRES_IN", "60"));
+
+    WeaviateClient client = WeaviateClient.connectToCustom(config -> config
+        .scheme("http")
+        .httpHost("localhost")
+        .httpPort(8580)
+        .grpcHost("localhost")
+        .grpcPort(50551)
+        .authentication(Authentication.bearerToken(accessToken, refreshToken, expiresIn)));
+
+    System.out.println(client.isReady()); // Should print: `True`
+
+    client.close(); // Free up resources
+    // END OIDCConnect
+  }
 }
