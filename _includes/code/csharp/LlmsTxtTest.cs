@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Weaviate.Client;
@@ -11,8 +12,19 @@ namespace WeaviateProject.Examples;
 /// <summary>Runnable copies of the C# code snippets shown in llms.txt.</summary>
 public class LlmsTxtTest
 {
-    private static VectorConfig OllamaVectorizer() =>
-        Configure.Vector("default", v => v.Text2VecOllama(apiEndpoint: "http://ollama:11434", model: "nomic-embed-text"));
+    private static Task<WeaviateClient> ConnectCloud() =>
+        Connect.Cloud(
+            Environment.GetEnvironmentVariable("WEAVIATE_URL"),
+            Environment.GetEnvironmentVariable("WEAVIATE_API_KEY"));
+
+    private static Task<WeaviateClient> ConnectCloudWithOpenAi() =>
+        Connect.Cloud(
+            Environment.GetEnvironmentVariable("WEAVIATE_URL"),
+            Environment.GetEnvironmentVariable("WEAVIATE_API_KEY"),
+            headers: new Dictionary<string, string>
+            {
+                { "X-OpenAI-Api-Key", Environment.GetEnvironmentVariable("OPENAI_API_KEY") }
+            });
 
     [Fact]
     public async Task TestLocalConnection()
@@ -26,13 +38,13 @@ public class LlmsTxtTest
     [Fact]
     public async Task TestCrud()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Movie");
-        await client.Collections.Create(new CollectionCreateParams { Name = "Movie", VectorConfig = OllamaVectorizer() });
+        WeaviateClient client = await ConnectCloud();
+        await client.Collections.Delete("Movie__CrudCs");
+        await client.Collections.Create(new CollectionCreateParams { Name = "Movie__CrudCs", VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()) });
         try
         {
             // START llms_crud
-            var movies = client.Collections.Use("Movie");
+            var movies = client.Collections.Use("Movie__CrudCs");
 
             // Create — insert one object, returns its UUID
             Guid uuid = await movies.Data.Insert(new { title = "Inception", genre = "Science Fiction" });
@@ -50,18 +62,18 @@ public class LlmsTxtTest
 
             Assert.Null(await movies.Query.FetchObjectByID(uuid));
         }
-        finally { await client.Collections.Delete("Movie"); }
+        finally { await client.Collections.Delete("Movie__CrudCs"); }
     }
 
     [Fact]
     public async Task TestQueries()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Movie");
-        await client.Collections.Create(new CollectionCreateParams { Name = "Movie", VectorConfig = OllamaVectorizer() });
+        WeaviateClient client = await ConnectCloud();
+        await client.Collections.Delete("Movie__QueriesCs");
+        await client.Collections.Create(new CollectionCreateParams { Name = "Movie__QueriesCs", VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()) });
         try
         {
-            var col = client.Collections.Use("Movie");
+            var col = client.Collections.Use("Movie__QueriesCs");
             await col.Data.InsertMany(new[]
             {
                 new { title = "The animals of the savannah" },
@@ -78,29 +90,29 @@ public class LlmsTxtTest
             Assert.True(keywordRes.Objects.Count >= 1);
             Assert.NotNull(vectorRes);
         }
-        finally { await client.Collections.Delete("Movie"); }
+        finally { await client.Collections.Delete("Movie__QueriesCs"); }
     }
 
     [Fact]
     public async Task TestFiltering()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Restaurant");
+        WeaviateClient client = await ConnectCloud();
+        await client.Collections.Delete("Restaurant__FilteringCs");
         try
         {
             // START llms_filtering_create_minimal
             // Minimal: auto-schema sets filterable + searchable defaults on every property
-            await client.Collections.Create(new CollectionCreateParams { Name = "Restaurant", VectorConfig = OllamaVectorizer() });
+            await client.Collections.Create(new CollectionCreateParams { Name = "Restaurant__FilteringCs", VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()) });
             // END llms_filtering_create_minimal
 
-            await client.Collections.Delete("Restaurant");
+            await client.Collections.Delete("Restaurant__FilteringCs");
 
             // START llms_filtering_create_full
             // Full control: every knob set explicitly
             await client.Collections.Create(new CollectionCreateParams
             {
-                Name = "Restaurant",
-                VectorConfig = OllamaVectorizer(),
+                Name = "Restaurant__FilteringCs",
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
                 Properties =
                 [
                     Property.Text("name"),
@@ -111,7 +123,7 @@ public class LlmsTxtTest
             });
             // END llms_filtering_create_full
 
-            var col = client.Collections.Use("Restaurant");
+            var col = client.Collections.Use("Restaurant__FilteringCs");
             await col.Data.InsertMany(new[]
             {
                 new { name = "Ramen House", cuisine = "Japanese", url = "https://a.example", price = 15 },
@@ -135,24 +147,24 @@ public class LlmsTxtTest
             Assert.Equal(2, japaneseUnder30.Objects.Count);
             Assert.NotNull(cheapRamen);
         }
-        finally { await client.Collections.Delete("Restaurant"); }
+        finally { await client.Collections.Delete("Restaurant__FilteringCs"); }
     }
 
     [Fact]
     public async Task TestMultiTenancy()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Docs");
+        WeaviateClient client = await ConnectCloud();
+        await client.Collections.Delete("Docs__MtCs");
         try
         {
             // START llms_multi_tenancy
             await client.Collections.Create(new CollectionCreateParams
             {
-                Name = "Docs",
-                VectorConfig = OllamaVectorizer(),
+                Name = "Docs__MtCs",
+                VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
                 MultiTenancyConfig = new MultiTenancyConfig { Enabled = true },
             });
-            var col = client.Collections.Use("Docs");
+            var col = client.Collections.Use("Docs__MtCs");
             await col.Tenants.Create(["tenantA", "tenantB"]);
             var tenantCol = col.WithTenant("tenantA");
             await tenantCol.Data.Insert(new { title = "Hello" });
@@ -161,28 +173,28 @@ public class LlmsTxtTest
 
             Assert.Single(res.Objects);
         }
-        finally { await client.Collections.Delete("Docs"); }
+        finally { await client.Collections.Delete("Docs__MtCs"); }
     }
 
     [Fact]
     public async Task TestNamedVectors()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Article");
+        WeaviateClient client = await ConnectCloud();
+        await client.Collections.Delete("Article__NvCs");
         try
         {
             // START llms_named_vectors
             await client.Collections.Create(new CollectionCreateParams
             {
-                Name = "Article",
+                Name = "Article__NvCs",
                 VectorConfig = new VectorConfigList
                 {
-                    Configure.Vector("title", v => v.Text2VecOllama(apiEndpoint: "http://ollama:11434", model: "nomic-embed-text"), sourceProperties: ["title"]),
-                    Configure.Vector("body", v => v.Text2VecOllama(apiEndpoint: "http://ollama:11434", model: "nomic-embed-text"), sourceProperties: ["body"]),
+                    Configure.Vector("title", v => v.Text2VecWeaviate(), sourceProperties: ["title"]),
+                    Configure.Vector("body", v => v.Text2VecWeaviate(), sourceProperties: ["body"]),
                 },
                 Properties = [Property.Text("title"), Property.Text("body")],
             });
-            var col = client.Collections.Use("Article");
+            var col = client.Collections.Use("Article__NvCs");
             var res = await col.Query.NearText(
                 query => query(["machine learning"]).TargetVectorsMinimum("title"), limit: 3);
             // END llms_named_vectors
@@ -194,23 +206,23 @@ public class LlmsTxtTest
             Assert.Single(res2.Objects);
             Assert.NotNull(res);
         }
-        finally { await client.Collections.Delete("Article"); }
+        finally { await client.Collections.Delete("Article__NvCs"); }
     }
 
     [Fact]
     public async Task TestAggregations()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Movie");
+        WeaviateClient client = await ConnectCloud();
+        await client.Collections.Delete("Movie__AggsCs");
         await client.Collections.Create(new CollectionCreateParams
         {
-            Name = "Movie",
-            VectorConfig = OllamaVectorizer(),
+            Name = "Movie__AggsCs",
+            VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()),
             Properties = [Property.Text("title"), Property.Text("genre"), Property.Number("rating")],
         });
         try
         {
-            var movies = client.Collections.Use("Movie");
+            var movies = client.Collections.Use("Movie__AggsCs");
             await movies.Data.InsertMany(new[]
             {
                 new { title = "The Matrix", genre = "Science Fiction", rating = 8.7 },
@@ -229,18 +241,18 @@ public class LlmsTxtTest
             Assert.Equal(3, total.TotalCount);
             Assert.Equal(2, byGenre.Groups.Count);
         }
-        finally { await client.Collections.Delete("Movie"); }
+        finally { await client.Collections.Delete("Movie__AggsCs"); }
     }
 
     [Fact]
     public async Task TestGenerative()
     {
-        WeaviateClient client = await Connect.Local();
-        await client.Collections.Delete("Movie");
-        await client.Collections.Create(new CollectionCreateParams { Name = "Movie", VectorConfig = OllamaVectorizer() });
+        WeaviateClient client = await ConnectCloudWithOpenAi();
+        await client.Collections.Delete("Movie__GenCs");
+        await client.Collections.Create(new CollectionCreateParams { Name = "Movie__GenCs", VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()) });
         try
         {
-            var movies = client.Collections.Use("Movie");
+            var movies = client.Collections.Use("Movie__GenCs");
             await movies.Data.InsertMany(new[]
             {
                 new { title = "The Matrix", genre = "Science Fiction" },
@@ -252,7 +264,7 @@ public class LlmsTxtTest
             var response = await movies.Generate.NearText(
                 "science fiction",
                 limit: 2,
-                provider: new Providers.Ollama { ApiEndpoint = "http://ollama:11434", Model = "llama3.2" },
+                provider: new Providers.OpenAI { Model = "gpt-4o-mini" },
                 singlePrompt: new SinglePrompt("Write a one-line tagline for {title}"),
                 groupedTask: new GroupedTask("In one sentence, what common theme do these movies share?"));
 
@@ -265,7 +277,7 @@ public class LlmsTxtTest
 
             Assert.NotNull(response.Generative);
         }
-        finally { await client.Collections.Delete("Movie"); }
+        finally { await client.Collections.Delete("Movie__GenCs"); }
     }
 
     [Fact]

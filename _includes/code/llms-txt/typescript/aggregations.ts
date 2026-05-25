@@ -1,18 +1,20 @@
 // llms.txt snippet: aggregations. Section "Python / TypeScript > Aggregations".
 import weaviate, { vectors, dataType } from 'weaviate-client';
 
-const client = await weaviate.connectToLocal();
-await client.collections.delete('Movie');
+const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
+  authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
+});
+await client.collections.delete('Movie__AggsTs');
 await client.collections.create({
-  name: 'Movie',
-  vectorizers: vectors.text2VecOllama({ apiEndpoint: 'http://ollama:11434', model: 'nomic-embed-text' }),
+  name: 'Movie__AggsTs',
+  vectorizers: vectors.text2VecWeaviate(),
   properties: [
     { name: 'title', dataType: dataType.TEXT },
     { name: 'genre', dataType: dataType.TEXT },
     { name: 'rating', dataType: dataType.NUMBER },
   ],
 });
-const movies = client.collections.use('Movie');
+const movies = client.collections.use('Movie__AggsTs');
 await movies.data.insertMany([
   { title: 'The Matrix', genre: 'Science Fiction', rating: 8.7 },
   { title: 'Spirited Away', genre: 'Animation', rating: 8.6 },
@@ -34,5 +36,5 @@ const byGenre = await movies.aggregate.groupBy.overAll({ groupBy: { property: 'g
 
 if (total !== 3) throw new Error(`expected 3 objects, got ${total}`);
 if (byGenre.length !== 2) throw new Error('expected 2 genre groups');
-await client.collections.delete('Movie');
+await client.collections.delete('Movie__AggsTs');
 await client.close();

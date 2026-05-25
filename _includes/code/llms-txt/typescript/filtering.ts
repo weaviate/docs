@@ -1,24 +1,26 @@
 // llms.txt snippet: filtering. Section "Python / TypeScript > Filtering".
 import weaviate, { vectors, dataType, Filters } from 'weaviate-client';
 
-const client = await weaviate.connectToLocal();
-await client.collections.delete('Restaurant');
+const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
+  authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
+});
+await client.collections.delete('Restaurant__FilteringTs');
 
 // START llms_filtering_create_minimal
 // Minimal: auto-schema sets filterable + searchable defaults on every property
 await client.collections.create({
-  name: 'Restaurant',
-  vectorizers: vectors.text2VecOllama({ apiEndpoint: 'http://ollama:11434', model: 'nomic-embed-text' }),
+  name: 'Restaurant__FilteringTs',
+  vectorizers: vectors.text2VecWeaviate(),
 });
 // END llms_filtering_create_minimal
 
-await client.collections.delete('Restaurant');
+await client.collections.delete('Restaurant__FilteringTs');
 
 // START llms_filtering_create_full
 // Full control: every knob set explicitly
 await client.collections.create({
-  name: 'Restaurant',
-  vectorizers: vectors.text2VecOllama({ apiEndpoint: 'http://ollama:11434', model: 'nomic-embed-text' }),
+  name: 'Restaurant__FilteringTs',
+  vectorizers: vectors.text2VecWeaviate(),
   properties: [
     { name: 'name', dataType: dataType.TEXT, tokenization: 'word',
       indexFilterable: true, indexSearchable: true },
@@ -31,7 +33,7 @@ await client.collections.create({
 });
 // END llms_filtering_create_full
 
-const col = client.collections.use('Restaurant');
+const col = client.collections.use('Restaurant__FilteringTs');
 await col.data.insertMany([
   { name: 'Ramen House', cuisine: 'Japanese', url: 'https://a.example', price: 15 },
   { name: 'Sushi Bar', cuisine: 'Japanese', url: 'https://b.example', price: 25 },
@@ -55,5 +57,5 @@ const japaneseUnder30 = await col.query.fetchObjects({
 // END llms_filtering_query
 
 if (japaneseUnder30.objects.length !== 2) throw new Error(`expected 2, got ${japaneseUnder30.objects.length}`);
-await client.collections.delete('Restaurant');
+await client.collections.delete('Restaurant__FilteringTs');
 await client.close();

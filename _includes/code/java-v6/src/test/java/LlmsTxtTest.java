@@ -23,10 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /** Runnable copies of the Java code snippets shown in llms.txt. */
 class LlmsTxtTest {
 
-  private static Map.Entry<String, VectorConfig> ollamaVectorizer() {
-    return VectorConfig.text2vecOllama(b -> b
-        .apiEndpoint("http://ollama:11434")
-        .model("nomic-embed-text"));
+  private static WeaviateClient connectCloud() throws Exception {
+    return WeaviateClient.connectToWeaviateCloud(
+        System.getenv("WEAVIATE_URL"),
+        System.getenv("WEAVIATE_API_KEY"));
+  }
+
+  private static WeaviateClient connectCloudWithOpenAi() throws Exception {
+    return WeaviateClient.connectToWeaviateCloud(
+        System.getenv("WEAVIATE_URL"),
+        System.getenv("WEAVIATE_API_KEY"),
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", System.getenv("OPENAI_API_KEY"))));
   }
 
   @Test
@@ -40,13 +47,13 @@ class LlmsTxtTest {
 
   @Test
   void testCrud() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloud();
     try {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
-      client.collections.create("Movie", col -> col.vectorConfig(ollamaVectorizer()));
+      if (client.collections.exists("Movie__CrudJv")) client.collections.delete("Movie__CrudJv");
+      client.collections.create("Movie__CrudJv", col -> col.vectorConfig(VectorConfig.text2vecWeaviate()));
 
       // START llms_crud
-      CollectionHandle<Map<String, Object>> movies = client.collections.use("Movie");
+      CollectionHandle<Map<String, Object>> movies = client.collections.use("Movie__CrudJv");
 
       // Create — insert one object, returns its UUID
       String uuid = movies.data.insert(Map.of("title", "Inception", "genre", "Science Fiction")).uuid();
@@ -64,18 +71,18 @@ class LlmsTxtTest {
 
       assertTrue(movies.query.fetchObjectById(uuid).isEmpty());
     } finally {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
+      if (client.collections.exists("Movie__CrudJv")) client.collections.delete("Movie__CrudJv");
       client.close();
     }
   }
 
   @Test
   void testQueries() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloud();
     try {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
-      client.collections.create("Movie", col -> col.vectorConfig(ollamaVectorizer()));
-      CollectionHandle<Map<String, Object>> col = client.collections.use("Movie");
+      if (client.collections.exists("Movie__QueriesJv")) client.collections.delete("Movie__QueriesJv");
+      client.collections.create("Movie__QueriesJv", col -> col.vectorConfig(VectorConfig.text2vecWeaviate()));
+      CollectionHandle<Map<String, Object>> col = client.collections.use("Movie__QueriesJv");
       col.data.insertMany(
           Map.of("title", "The animals of the savannah"),
           Map.of("title", "A bowl of ramen and other street food"));
@@ -90,28 +97,28 @@ class LlmsTxtTest {
       assertTrue(keywordRes.objects().size() >= 1);
       assertNotNull(vectorRes);
     } finally {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
+      if (client.collections.exists("Movie__QueriesJv")) client.collections.delete("Movie__QueriesJv");
       client.close();
     }
   }
 
   @Test
   void testFiltering() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloud();
     try {
-      if (client.collections.exists("Restaurant")) client.collections.delete("Restaurant");
+      if (client.collections.exists("Restaurant__FilteringJv")) client.collections.delete("Restaurant__FilteringJv");
 
       // START llms_filtering_create_minimal
       // Minimal: auto-schema sets filterable + searchable defaults on every property
-      client.collections.create("Restaurant", col -> col.vectorConfig(ollamaVectorizer()));
+      client.collections.create("Restaurant__FilteringJv", col -> col.vectorConfig(VectorConfig.text2vecWeaviate()));
       // END llms_filtering_create_minimal
 
-      client.collections.delete("Restaurant");
+      client.collections.delete("Restaurant__FilteringJv");
 
       // START llms_filtering_create_full
       // Full control: every knob set explicitly
-      client.collections.create("Restaurant", col -> col
-          .vectorConfig(ollamaVectorizer())
+      client.collections.create("Restaurant__FilteringJv", col -> col
+          .vectorConfig(VectorConfig.text2vecWeaviate())
           .properties(
               Property.text("name"),
               Property.text("cuisine"),
@@ -119,7 +126,7 @@ class LlmsTxtTest {
               Property.number("price")));
       // END llms_filtering_create_full
 
-      CollectionHandle<Map<String, Object>> col = client.collections.use("Restaurant");
+      CollectionHandle<Map<String, Object>> col = client.collections.use("Restaurant__FilteringJv");
       col.data.insertMany(
           Map.of("name", "Ramen House", "cuisine", "Japanese", "url", "https://a.example", "price", 15),
           Map.of("name", "Sushi Bar", "cuisine", "Japanese", "url", "https://b.example", "price", 25),
@@ -142,22 +149,22 @@ class LlmsTxtTest {
       assertEquals(2, japaneseUnder30.objects().size());
       assertNotNull(cheapRamen);
     } finally {
-      if (client.collections.exists("Restaurant")) client.collections.delete("Restaurant");
+      if (client.collections.exists("Restaurant__FilteringJv")) client.collections.delete("Restaurant__FilteringJv");
       client.close();
     }
   }
 
   @Test
   void testMultiTenancy() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloud();
     try {
-      if (client.collections.exists("Docs")) client.collections.delete("Docs");
+      if (client.collections.exists("Docs__MtJv")) client.collections.delete("Docs__MtJv");
 
       // START llms_multi_tenancy
-      client.collections.create("Docs", col -> col
-          .vectorConfig(ollamaVectorizer())
+      client.collections.create("Docs__MtJv", col -> col
+          .vectorConfig(VectorConfig.text2vecWeaviate())
           .multiTenancy(mt -> mt.enabled(true)));
-      CollectionHandle<Map<String, Object>> col = client.collections.use("Docs");
+      CollectionHandle<Map<String, Object>> col = client.collections.use("Docs__MtJv");
       col.tenants.create(Tenant.active("tenantA"), Tenant.active("tenantB"));
       var tenantCol = col.withTenant("tenantA");
       tenantCol.data.insert(Map.of("title", "Hello"));
@@ -166,28 +173,24 @@ class LlmsTxtTest {
 
       assertEquals(1, res.objects().size());
     } finally {
-      if (client.collections.exists("Docs")) client.collections.delete("Docs");
+      if (client.collections.exists("Docs__MtJv")) client.collections.delete("Docs__MtJv");
       client.close();
     }
   }
 
   @Test
   void testNamedVectors() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloud();
     try {
-      if (client.collections.exists("Article")) client.collections.delete("Article");
+      if (client.collections.exists("Article__NvJv")) client.collections.delete("Article__NvJv");
 
       // START llms_named_vectors
-      client.collections.create("Article", col -> col
+      client.collections.create("Article__NvJv", col -> col
           .vectorConfig(
-              VectorConfig.text2vecOllama("title", b -> b
-                  .sourceProperties("title")
-                  .apiEndpoint("http://ollama:11434").model("nomic-embed-text")),
-              VectorConfig.text2vecOllama("body", b -> b
-                  .sourceProperties("body")
-                  .apiEndpoint("http://ollama:11434").model("nomic-embed-text")))
+              VectorConfig.text2vecWeaviate("title", c -> c.sourceProperties("title")),
+              VectorConfig.text2vecWeaviate("body", c -> c.sourceProperties("body")))
           .properties(Property.text("title"), Property.text("body")));
-      CollectionHandle<Map<String, Object>> col = client.collections.use("Article");
+      CollectionHandle<Map<String, Object>> col = client.collections.use("Article__NvJv");
       var res = col.query.nearText(Target.text("title", "machine learning"), q -> q.limit(3));
       // END llms_named_vectors
 
@@ -197,20 +200,20 @@ class LlmsTxtTest {
       assertEquals(1, res2.objects().size());
       assertNotNull(res);
     } finally {
-      if (client.collections.exists("Article")) client.collections.delete("Article");
+      if (client.collections.exists("Article__NvJv")) client.collections.delete("Article__NvJv");
       client.close();
     }
   }
 
   @Test
   void testAggregations() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloud();
     try {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
-      client.collections.create("Movie", col -> col
-          .vectorConfig(ollamaVectorizer())
+      if (client.collections.exists("Movie__AggsJv")) client.collections.delete("Movie__AggsJv");
+      client.collections.create("Movie__AggsJv", col -> col
+          .vectorConfig(VectorConfig.text2vecWeaviate())
           .properties(Property.text("title"), Property.text("genre"), Property.number("rating")));
-      CollectionHandle<Map<String, Object>> movies = client.collections.use("Movie");
+      CollectionHandle<Map<String, Object>> movies = client.collections.use("Movie__AggsJv");
       movies.data.insertMany(
           Map.of("title", "The Matrix", "genre", "Science Fiction", "rating", 8.7),
           Map.of("title", "Spirited Away", "genre", "Animation", "rating", 8.6),
@@ -232,18 +235,18 @@ class LlmsTxtTest {
       assertEquals(2, byGenre.groups().size());
       assertNotNull(ratingAgg);
     } finally {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
+      if (client.collections.exists("Movie__AggsJv")) client.collections.delete("Movie__AggsJv");
       client.close();
     }
   }
 
   @Test
   void testGenerative() throws Exception {
-    WeaviateClient client = WeaviateClient.connectToLocal();
+    WeaviateClient client = connectCloudWithOpenAi();
     try {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
-      client.collections.create("Movie", col -> col.vectorConfig(ollamaVectorizer()));
-      CollectionHandle<Map<String, Object>> movies = client.collections.use("Movie");
+      if (client.collections.exists("Movie__GenJv")) client.collections.delete("Movie__GenJv");
+      client.collections.create("Movie__GenJv", col -> col.vectorConfig(VectorConfig.text2vecWeaviate()));
+      CollectionHandle<Map<String, Object>> movies = client.collections.use("Movie__GenJv");
       movies.data.insertMany(
           Map.of("title", "The Matrix", "genre", "Science Fiction"),
           Map.of("title", "Blade Runner", "genre", "Science Fiction"));
@@ -257,9 +260,7 @@ class LlmsTxtTest {
               .singlePrompt("Write a one-line tagline for {title}")
               .groupedTask(
                   "In one sentence, what common theme do these movies share?",
-                  c -> c.generativeProvider(GenerativeProvider.ollama(o -> o
-                      .apiEndpoint("http://ollama:11434")
-                      .model("llama3.2")))));
+                  c -> c.generativeProvider(GenerativeProvider.openai(o -> o))));
 
       // Per-object result from the single prompt
       for (var obj : response.objects()) {
@@ -271,7 +272,7 @@ class LlmsTxtTest {
 
       assertNotNull(response.generative().text());
     } finally {
-      if (client.collections.exists("Movie")) client.collections.delete("Movie");
+      if (client.collections.exists("Movie__GenJv")) client.collections.delete("Movie__GenJv");
       client.close();
     }
   }

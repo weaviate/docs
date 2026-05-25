@@ -1,0 +1,55 @@
+name: llms.txt Tests
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # Run every Sunday at 23:00 UTC (slightly offset from the indexability job)
+    - cron: "0 23 * * 0"
+  push:
+    branches:
+      - testing-ci
+      - llms-txt
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: "3.10"
+
+jobs:
+  test-llms-txt:
+    name: Test llms.txt
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run llms.txt guard tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          # Raises GitHub's anonymous rate limit (60/hr → 5000/hr) for the
+          # version-freshness test, which hits /releases/latest per library.
+          GH_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🧪 Running llms.txt guard tests (snippet coverage, version freshness, link validity)..."
+          uv run pytest tests/test_llms_txt_code.py -m "llms_txt" -v --tb=short --durations=10 --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'llms.txt'
+          slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}

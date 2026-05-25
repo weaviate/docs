@@ -1,26 +1,34 @@
-# Testing `llms.txt` code snippets
+# Testing `llms.txt`
 
 The `llms.txt` file lives in the **`weaviate-io`** repo (`static/llms.txt`, served at
 `https://weaviate.io/llms.txt`). It contains Python, TypeScript, Java, and C# code
-snippets. This directory tests those snippets so they cannot drift from working code.
+snippets, recommended versions, and inline links. This directory tests all of that
+so the published file cannot drift from working code or current releases.
 
 ## Why
 
-`llms.txt` is hand-maintained in a different repo. Untested snippets rot: APIs
-change, and an LLM consuming `llms.txt` then emits broken code. Several real bugs
-were already found this way (re-declared `const`, wrong argument order, a
-vectorizer that silently returns no results).
+`llms.txt` is hand-maintained in a different repo. Untested content rots: APIs
+change, releases ship, marketing pages move. Real bugs already caught this way
+include re-declared `const`s, swapped function arguments, a vectorizer that
+silently returns no results, version recommendations stuck two minor releases
+behind, and a 404 on one of the linked LLM-twin pages.
 
 ## How it works — two layers
 
 1. **Execution tests** — every snippet is duplicated in this repo as a runnable
    script/test and run against a live Weaviate in the normal language CI jobs.
-2. **Coverage test** (`test_llms_txt_code.py`) — fetches `llms.txt` and asserts
-   every code block appears **verbatim** inside a tested snippet. This is what
-   links the two repos.
+2. **`test_llms_txt_code.py`** — three guard tests that compare the *live*
+   `llms.txt` against the rest of the world:
+   - **Snippet coverage** — every code block in `llms.txt` exists verbatim
+     between `START`/`END` markers in a tested snippet file.
+   - **Version freshness** — every recommended library version matches the
+     latest release on the corresponding `weaviate/*` GitHub repo.
+   - **Link validity** — every URL in `llms.txt` (outside code blocks)
+     resolves to a 2xx/3xx response.
 
-`llms.txt` is the source of truth for *what users see*; the docs-repo snippets are
-the source of truth for *what is verified*. The coverage test forces them equal.
+`llms.txt` is the source of truth for *what users see*; the docs-repo snippets
+are the source of truth for *what is verified*; the GitHub Releases API is the
+source of truth for *what's current*. The three guard tests force these in sync.
 
 ## File layout
 
@@ -31,7 +39,7 @@ _includes/code/java-v6/src/test/java/LlmsTxtTest.java   # one @Test per section
 _includes/code/csharp/LlmsTxtTest.cs          # one [Fact] per section
 tests/test_python.py / test_typescript.py / test_java.py / test_csharp.py
                                               # `test_llms_txt*` wires snippets in
-tests/test_llms_txt_code.py                   # the coverage test
+tests/test_llms_txt_code.py                   # snippet coverage + version + link tests
 ```
 
 Sections covered: local connection, CRUD, queries (near_text/bm25), filtering,
@@ -71,25 +79,34 @@ for local examples. Do not "fix" `llms.txt` back to `text2vec-weaviate`.
 
 ## Running the tests
 
-Start the test stack first: `tests/start-weaviate.sh`.
+Start the local test stack first: `tests/start-weaviate.sh`.
 
 ```bash
-# Execution tests (per language)
+# Execution tests (per language) — run the snippet code against live Weaviate
 uv run pytest tests/test_python.py     -k test_llms_txt
 uv run pytest tests/test_typescript.py -k test_llms_txt
 uv run pytest tests/test_java.py       -k test_llms_txt
 uv run pytest tests/test_csharp.py     -k test_llms_txt
 
-# Coverage test — fetches https://weaviate.io/llms.txt by default
-uv run pytest tests/test_llms_txt_code.py
+# Three guard tests — fetch https://weaviate.io/llms.txt by default
+uv run pytest tests/test_llms_txt_code.py -m llms_txt
 
-# Coverage test against a local (un-deployed) weaviate-io checkout
-LLMS_TXT_PATH=/path/to/weaviate-io/static/llms.txt uv run pytest tests/test_llms_txt_code.py
+# Validate a local (un-deployed) weaviate-io checkout instead of the live file
+LLMS_TXT_PATH=/path/to/weaviate-io/static/llms.txt \
+    uv run pytest tests/test_llms_txt_code.py -m llms_txt
 ```
 
-`wcd`/`agents` snippets (quickstart, Query Agent) need `WEAVIATE_URL` and
-`WEAVIATE_API_KEY` for a Weaviate Cloud cluster. The coverage test needs neither
-Weaviate nor keys — it only parses text.
+`wcd` / `agents` execution snippets (quickstart, Query Agent) need `WEAVIATE_URL`
+and `WEAVIATE_API_KEY` for a Weaviate Cloud cluster. The three guard tests need
+no Weaviate cluster.
+
+### Environment variables
+
+| Variable | What it does | Used by |
+|---|---|---|
+| `LLMS_TXT_PATH` | Read `llms.txt` from a local file instead of fetching the live URL | all three guards |
+| `GH_API_TOKEN` | GitHub Personal Access Token. Raises GitHub's anonymous rate limit (60/hr → 5000/hr) for the version freshness test | `test_llms_txt_recommended_versions_are_current` |
+| `WEAVIATE_URL`, `WEAVIATE_API_KEY` | Cloud cluster the quickstart + Query Agent execution snippets connect to | execution tests only |
 
 ## Adding or changing a snippet
 
@@ -102,27 +119,90 @@ Weaviate nor keys — it only parses text.
 4. New file? Add its path to the `test_llms_txt` parametrize list in the matching
    `tests/test_*.py`.
 
-## Coverage test details
+## What `test_llms_txt_code.py` checks
 
-`test_llms_txt_code.py`:
+All three tests are marked `@pytest.mark.llms_txt` and read `llms.txt` from the
+live URL by default (or `LLMS_TXT_PATH` if set). Network failure on any of them
+results in `pytest.skip(...)` rather than a failure — they can't flake CI.
 
-- Fetches `https://weaviate.io/llms.txt`; **skips** (does not fail) on network
-  error, so it cannot flake CI.
-- `LLMS_TXT_PATH` overrides the source with a local file.
-- Parses every ```` ```python / ```ts / ```java / ```csharp ```` block and requires
-  an identical `START`/`END` region in the snippet files.
-- Marked `@pytest.mark.llms_txt` (run with `-m llms_txt`).
+### 1. `test_llms_txt_snippets_are_covered`
+
+Parses every ```` ```python / ```ts / ```java / ```csharp ```` block out of
+`llms.txt`, normalizes whitespace, and requires an identical `START`/`END`
+region in the matching snippet file. Failure message lists each uncovered block
+so you can see exactly which snippet drifted.
+
+### 2. `test_llms_txt_recommended_versions_are_current`
+
+Parses each `- **Library**: vX.Y.Z+` bullet under *Latest versions* and compares
+the captured version to the `tag_name` from
+`https://api.github.com/repos/weaviate/<repo>/releases/latest`. Mapping today:
+
+| `llms.txt` label | GitHub repo |
+|---|---|
+| `Weaviate Server` | `weaviate/weaviate` |
+| `Python client` | `weaviate/weaviate-python-client` |
+| `TypeScript client` | `weaviate/typescript-client` |
+| `Java client` | `weaviate/java-client` |
+| `C# client` | `weaviate/csharp-client` |
+| `Agents SDK` | `weaviate/weaviate-agents-python-client` |
+
+`/releases/latest` already filters out pre-releases and drafts, so a single API
+call per repo is enough. Only libraries actually listed in `llms.txt` are
+checked — adding a new bullet there extends coverage automatically once the
+label is added to `LIBRARY_SPECS`. `versions-config.json` is **not** consulted
+(it's a manually-maintained build-time fallback that goes stale).
+
+### 3. `test_llms_txt_links_resolve`
+
+Strips ` ``` ... ``` ` code fences, extracts every markdown link (`[t](u)`) and
+bare `https?://...` URL, then HEAD-checks them in parallel (12 worker threads,
+15-second timeout). Falls back to GET on `405`/`501`. Status categories:
+
+- **ok** — 2xx / 3xx
+- **broken** — 404, 5xx, etc. — fails the test
+- **skipped** — 401/403/429 (bot-block or rate-limit) and network exceptions —
+  not a failure
+
+If *every* URL was skipped (no successes anywhere) the whole test skips on the
+assumption that the network is down. Uses a browser-style `User-Agent` to keep
+Cloudflare-style false positives low.
 
 ## Cross-repo deploy ordering
 
-The coverage test reads the **live** `llms.txt`, so it only passes once `weaviate-io`
-**deploys** an `llms.txt` matching the snippet files in this repo. During the window
-between updating the snippets here and deploying `weaviate-io`, the test reports the
-drift — that is correct, not a bug.
+The three guard tests all read the **live** `llms.txt`. That means they only go
+green once `weaviate-io` **deploys** changes that match the docs-repo snippet
+files / current releases / current URLs. During the window between updating
+content and the next `weaviate-io` deploy, the tests correctly report the
+drift — that's the design, not a bug.
 
-When wiring the coverage test into CI: gate it normally only after the matching
-`weaviate-io` change is live; otherwise mark it `@pytest.mark.xfail(strict=False)`
-until the deploy, then remove the xfail.
+When wiring these into a CI job, the same window applies: gate normally only
+after the matching `weaviate-io` change is live; otherwise mark with
+`@pytest.mark.xfail(strict=False)` until the deploy, then remove the xfail.
+
+## CI
+
+Two separate workflows cover this directory:
+
+| Workflow | What it runs |
+|---|---|
+| `.github/workflows/docs_tests.yml` | Per-language **execution** tests — `test_llms_txt*` in `test_python.py`, `test_typescript.py`, `test_java.py`, `test_csharp.py`. Rides the existing `pyv4` / `ts` / `java` / `csharp` / `agents` markers, so no separate job for these. |
+| `.github/workflows/llms_txt_tests.yml` | The three **guard tests** in `test_llms_txt_code.py` — snippet coverage, version freshness, link validity. Single job `test-llms-txt`, runs `uv run pytest tests/test_llms_txt_code.py -m "llms_txt"`. |
+
+The guard workflow triggers on:
+
+- **Schedule** — Sundays 23:00 UTC (offset 1h from `indexability_tests.yml`).
+- **Push** to `testing-ci` or `llms-txt`.
+- **`workflow_dispatch`** for manual runs.
+
+It exports `GH_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}` so the version-freshness
+test gets GitHub's authenticated rate limit (5000/hr instead of 60/hr). No
+Weaviate cluster, no Docker, no language toolchains — just Python + network,
+so the job is fast (≈ 30-60s end-to-end).
+
+Results post to Slack via the shared `./.github/actions/handle-test-results`
+composite under `test-type: 'llms.txt'`, with `continue-on-error: true` on the
+pytest step so the notification still fires when a guard fails.
 
 ## Per-language gotchas
 

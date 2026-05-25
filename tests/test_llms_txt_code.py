@@ -49,10 +49,22 @@ MARKER_RE = re.compile(r"(?:#|//)\s*START\s+(\w+)\n(.*?)\n[ \t]*(?:#|//)\s*END\s
 FENCE_RE = re.compile(r"```(\w+)\n(.*?)\n```", re.S)
 
 
+# Test scripts use per-language, per-test collection names (e.g.
+# `Movie__CrudPy`, `Restaurant__FilteringCs`) so the four language test jobs
+# can run in parallel against the same WCD cluster without racing on shared
+# collection state. llms.txt keeps the canonical names (`Movie`, `Restaurant`,
+# `Docs`, `Article`, …). This regex strips the `__Suffix` part during
+# comparison so the script marker and llms.txt block match.
+_TEST_COLLECTION_SUFFIX_RE = re.compile(r"\b(\w+)__[A-Za-z][A-Za-z0-9]*\b")
+
+
 def _normalize(code):
-    """Dedent, drop trailing whitespace, and strip blank edges for comparison."""
+    """Dedent, drop trailing whitespace, strip blank edges, and canonicalize
+    per-test collection-name suffixes (Movie__CrudPy → Movie) for comparison.
+    """
     dedented = textwrap.dedent(code).strip("\n")
-    return "\n".join(line.rstrip() for line in dedented.split("\n")).strip()
+    canonical = _TEST_COLLECTION_SUFFIX_RE.sub(r"\1", dedented)
+    return "\n".join(line.rstrip() for line in canonical.split("\n")).strip()
 
 
 def _load_llms_txt():

@@ -27,18 +27,13 @@ def test_client(script_loc):
 
 # ========== llms.txt code snippets ==========
 
+# Local-only — local_connection is just the connect call; rbac uses the
+# local RBAC instance on :8580.
 @pytest.mark.ts
 @pytest.mark.parametrize(
     "script_loc",
     [
         "./_includes/code/llms-txt/typescript/local_connection.ts",
-        "./_includes/code/llms-txt/typescript/crud.ts",
-        "./_includes/code/llms-txt/typescript/queries.ts",
-        "./_includes/code/llms-txt/typescript/filtering.ts",
-        "./_includes/code/llms-txt/typescript/multi_tenancy.ts",
-        "./_includes/code/llms-txt/typescript/named_vectors.ts",
-        "./_includes/code/llms-txt/typescript/aggregations.ts",
-        "./_includes/code/llms-txt/typescript/generative.ts",
         "./_includes/code/llms-txt/typescript/rbac.ts",
     ],
 )
@@ -46,11 +41,24 @@ def test_llms_txt(empty_weaviates, script_loc):
     run_ts_script(script_loc)
 
 
+# WCD-only — llms.txt recommends text2vec-weaviate (Weaviate Embeddings),
+# which needs a Cloud cluster. These scripts connect via WEAVIATE_URL /
+# WEAVIATE_API_KEY; generative.ts also needs OPENAI_API_KEY for the
+# generative-openai module.
 @pytest.mark.ts
 @pytest.mark.wcd
 @pytest.mark.parametrize(
     "script_loc",
-    ["./_includes/code/llms-txt/typescript/quickstart.ts"],
+    [
+        "./_includes/code/llms-txt/typescript/quickstart.ts",
+        "./_includes/code/llms-txt/typescript/crud.ts",
+        "./_includes/code/llms-txt/typescript/queries.ts",
+        "./_includes/code/llms-txt/typescript/filtering.ts",
+        "./_includes/code/llms-txt/typescript/multi_tenancy.ts",
+        "./_includes/code/llms-txt/typescript/named_vectors.ts",
+        "./_includes/code/llms-txt/typescript/aggregations.ts",
+        "./_includes/code/llms-txt/typescript/generative.ts",
+    ],
 )
 def test_llms_txt_wcd(script_loc):
     run_ts_script(script_loc)

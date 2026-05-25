@@ -1,27 +1,28 @@
 """llms.txt snippet: generative search (DIY RAG). Section "Python / TypeScript > Generative search"."""
+import os
 import time
 import weaviate
-from weaviate.classes.config import Configure
-from weaviate.classes.init import AdditionalConfig, Timeout
+from weaviate.classes.init import Auth
 
-# Local Ollama generation is CPU-bound, so allow a generous query timeout
-client = weaviate.connect_to_local(
-    additional_config=AdditionalConfig(timeout=Timeout(query=180, insert=180)),
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=os.environ["WEAVIATE_URL"],
+    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
+    headers={"X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]},
 )
-client.collections.delete("Movie")
+client.collections.delete("Movie__GenPy")
 
 # START llms_generative_config
 from weaviate.classes.config import Configure
 
 # Attach a generative model to the collection
 client.collections.create(
-    "Movie",
-    vector_config=Configure.Vectors.text2vec_ollama(api_endpoint="http://ollama:11434", model="nomic-embed-text"),
-    generative_config=Configure.Generative.ollama(api_endpoint="http://ollama:11434", model="llama3.2"),
+    "Movie__GenPy",
+    vector_config=Configure.Vectors.text2vec_weaviate(),
+    generative_config=Configure.Generative.openai(),
 )
 # END llms_generative_config
 
-movies = client.collections.use("Movie")
+movies = client.collections.use("Movie__GenPy")
 movies.data.insert_many([
     {"title": "The Matrix", "genre": "Science Fiction"},
     {"title": "Blade Runner", "genre": "Science Fiction"},
@@ -48,5 +49,5 @@ print(res.generative.text)
 # END llms_generative_query
 
 assert res.generative.text is not None
-client.collections.delete("Movie")
+client.collections.delete("Movie__GenPy")
 client.close()

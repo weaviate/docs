@@ -1,28 +1,33 @@
 """llms.txt snippet: filtering. Section "Python / TypeScript > Filtering"."""
+import os
 import weaviate
+from weaviate.classes.init import Auth
 from weaviate.classes.config import Configure
 
-client = weaviate.connect_to_local()
-client.collections.delete("Restaurant")
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=os.environ["WEAVIATE_URL"],
+    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
+)
+client.collections.delete("Restaurant__FilteringPy")
 
 # START llms_filtering_create_minimal
 # Minimal: auto-schema sets filterable + searchable defaults on every property
 client.collections.create(
-    "Restaurant",
-    vector_config=Configure.Vectors.text2vec_ollama(api_endpoint="http://ollama:11434", model="nomic-embed-text"),
+    "Restaurant__FilteringPy",
+    vector_config=Configure.Vectors.text2vec_weaviate(),
 )
 # END llms_filtering_create_minimal
 
-assert client.collections.exists("Restaurant")
-client.collections.delete("Restaurant")
+assert client.collections.exists("Restaurant__FilteringPy")
+client.collections.delete("Restaurant__FilteringPy")
 
 # START llms_filtering_create_full
 from weaviate.classes.config import Configure, Property, DataType, Tokenization
 
 # Full control: every knob set explicitly
 client.collections.create(
-    "Restaurant",
-    vector_config=Configure.Vectors.text2vec_ollama(api_endpoint="http://ollama:11434", model="nomic-embed-text"),
+    "Restaurant__FilteringPy",
+    vector_config=Configure.Vectors.text2vec_weaviate(),
     properties=[
         Property(name="name", data_type=DataType.TEXT, tokenization=Tokenization.WORD,
                  index_filterable=True, index_searchable=True),
@@ -36,7 +41,7 @@ client.collections.create(
 )
 # END llms_filtering_create_full
 
-col = client.collections.use("Restaurant")
+col = client.collections.use("Restaurant__FilteringPy")
 col.data.insert_many([
     {"name": "Ramen House", "cuisine": "Japanese", "url": "https://a.example", "price": 15},
     {"name": "Sushi Bar", "cuisine": "Japanese", "url": "https://b.example", "price": 25},
@@ -60,5 +65,5 @@ res = col.query.fetch_objects(
 # END llms_filtering_query
 
 assert len(res.objects) == 2
-client.collections.delete("Restaurant")
+client.collections.delete("Restaurant__FilteringPy")
 client.close()

@@ -7,7 +7,7 @@ with weaviate.connect_to_weaviate_cloud(
     cluster_url=os.environ["WEAVIATE_URL"],
     auth_credentials=os.environ["WEAVIATE_API_KEY"],
 ) as _reset:
-    _reset.collections.delete("Movie")
+    _reset.collections.delete("Movie__QuickstartPy")
 
 # START llms_quickstart
 import os
@@ -37,13 +37,13 @@ with weaviate.connect_to_weaviate_cloud(
     auth_credentials=os.environ["WEAVIATE_API_KEY"],
 ) as client:
     # Create (or reuse) a collection
-    if not client.collections.exists("Movie"):
+    if not client.collections.exists("Movie__QuickstartPy"):
         client.collections.create(
-            name="Movie",
+            name="Movie__QuickstartPy",
             vector_config=Configure.Vectors.text2vec_weaviate(),
         )
 
-    movies = client.collections.use("Movie")
+    movies = client.collections.use("Movie__QuickstartPy")
 
     # Import objects
     with movies.batch.fixed_size(batch_size=200) as batch:

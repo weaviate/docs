@@ -1,19 +1,21 @@
 // llms.txt snippet: generative search (DIY RAG). Section "Python / TypeScript > Generative search".
 import weaviate, { vectors, configure } from 'weaviate-client';
 
-// Local Ollama generation is CPU-bound, so allow a generous query timeout
-const client = await weaviate.connectToLocal({ timeout: { query: 180, insert: 180 } });
-await client.collections.delete('Movie');
+const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
+  authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
+  headers: { 'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY! },
+});
+await client.collections.delete('Movie__GenTs');
 
 // START llms_generative_config
 await client.collections.create({
-  name: 'Movie',
-  vectorizers: vectors.text2VecOllama({ apiEndpoint: 'http://ollama:11434', model: 'nomic-embed-text' }),
-  generative: configure.generative.ollama({ apiEndpoint: 'http://ollama:11434', model: 'llama3.2' }),
+  name: 'Movie__GenTs',
+  vectorizers: vectors.text2VecWeaviate(),
+  generative: configure.generative.openAI(),
 });
 // END llms_generative_config
 
-const movies = client.collections.use('Movie');
+const movies = client.collections.use('Movie__GenTs');
 await movies.data.insertMany([
   { title: 'The Matrix', genre: 'Science Fiction' },
   { title: 'Blade Runner', genre: 'Science Fiction' },
@@ -39,5 +41,5 @@ console.log(groupedRes.generative?.text);
 // END llms_generative_query
 
 if (!groupedRes.generative?.text) throw new Error('no grouped generation');
-await client.collections.delete('Movie');
+await client.collections.delete('Movie__GenTs');
 await client.close();
