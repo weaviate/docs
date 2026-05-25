@@ -395,11 +395,11 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 **Google AI Studio (Gemini API):**
-- `gemini-embedding-2-preview` (added in 1.36.5)
+- `gemini-embedding-2`
 - `gemini-embedding-001` (default)
 
 **Vertex AI:**
-- `gemini-embedding-2-preview` (added in 1.36.5)
+- `gemini-embedding-2`
 - `gemini-embedding-001` (default, added in 1.30.11, 1.31.5 and onwards)
 - `text-embedding-005` (added in 1.30.11, 1.31.5 and onwards)
 - `text-multilingual-embedding-002` (added in 1.30.11, 1.31.5 and onwards)
