@@ -98,11 +98,11 @@ Some AI-powered code generation tools such as Cursor allow you to index further 
 
 Review the documentation of your specific IDE to see if it has this feature, and how to use it.
 
-### Consider using Weaviate Agents
+### Consider using the Query Agent
 
-[Weaviate Agents](/agents) are pre-built agentic services designed for searching your data, with AI deciding the search terms, filters, sorts, and other search parameters. The [Query Agent](/agents/guides/index.md) is purpose-built for this usecase.
+The [Query Agent](/agents) is a pre-built agentic search service that decides the search terms, filters, sorts, and other search parameters for you — the [modes overview](/agents/guides/index.md) covers what it can do.
 
-Weaviate agents are available for Weaviate Cloud users to enable interacting with the Weaviate Cloud instance using natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
+The Query Agent is available to Weaviate Cloud users for interacting with their Weaviate Cloud instance in natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
 
 ## Help us improve this page
 

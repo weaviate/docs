@@ -1,6 +1,6 @@
 ---
 title: Agents clients
-description: "Use the Python or TypeScript client to interact with Weaviate Agents."
+description: "Use the Python or TypeScript client to interact with the Query Agent."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']
 ---
@@ -14,13 +14,13 @@ export const agentsClientLibrariesData = [
   {
     title: "Python Client",
     description:
-      "Install and use the official Weaviate Agents Python client.",
+      "Install and use the official Query Agent Python client.",
     link: "/agents/clients/python/",
     icon: "fab fa-python",
   },
   {
     title: "JavaScript / TypeScript Client",
-    description: "Use the official Weaviate Agents TypesScript/JavaScript client.",
+    description: "Use the official Query Agent TypeScript/JavaScript client.",
     link: "/agents/clients/typescript/",
     icon: "fab fa-js",
   }

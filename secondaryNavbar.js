@@ -75,9 +75,9 @@ const secondaryNavbarItems = {
   },
 
   agents: {
-    title: "Weaviate Agents",
+    title: "Query Agent",
     icon: "fa fa-robot",
-    description: "Build and deploy intelligent agents with Weaviate",
+    description: "Run agentic search over your Weaviate Cloud collections",
     link: "/agents",
     links: [
       { label: "Documentation", link: "/agents", sidebar: "agentsSidebar" }

@@ -1,6 +1,6 @@
 ---
 title: JavaScript/TypeScript client
-description: "Use the TypeScript client to interact with Weaviate Agents."
+description: "Use the TypeScript client to interact with the Query Agent."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']
 ---
@@ -20,13 +20,13 @@ export const pythonCardsData = [
   },
 ];
 
-The TypeScript client supports code that is written in TypeScript or JavaScript. It allows you to easily interact with the Weaviate Agents API from your JavaScript or TypeScript applications.
+The TypeScript client supports code that is written in TypeScript or JavaScript. It allows you to easily interact with the Query Agent API from your JavaScript or TypeScript applications.
 
 It relies on the [Weaviate Client package](../../weaviate/client-libraries/typescript/index.mdx), and handles authentication and connection to your Weaviate instance from there.
 
-:::note JavaScript/TypeScript Client client (SDK)
+:::note JavaScript/TypeScript client (SDK)
 
-The latest Weaviate Agents TypeScript client is version `v||site.agents_typescript_version||`.
+The latest Query Agent TypeScript client is version `v||site.agents_typescript_version||`.
 
 <QuickLinks items={pythonCardsData} />
 
@@ -34,7 +34,7 @@ The latest Weaviate Agents TypeScript client is version `v||site.agents_typescri
 
 ## Installation
 
-The Weaviate Agents TypeScript client is distributed as the [`weaviate-agents`](https://www.npmjs.com/package/weaviate-agents) package on npm, and depends on the [`weaviate-client`](https://www.npmjs.com/package/weaviate-client) package, which it declares as a peer dependency. You should install both packages together:
+The Query Agent TypeScript client is distributed as the [`weaviate-agents`](https://www.npmjs.com/package/weaviate-agents) package on npm, and depends on the [`weaviate-client`](https://www.npmjs.com/package/weaviate-client) package, which it declares as a peer dependency. You should install both packages together:
 
 ```shell
 npm install weaviate-client weaviate-agents

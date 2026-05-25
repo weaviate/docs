@@ -5,6 +5,8 @@ image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'troubleshooting']
 ---
 
+Things to check when the Query Agent isn't behaving as expected, plus the soft usage limits and typical execution timings to keep in mind.
+
 ## Usage limits
 
 import UsageLimits from "/\_includes/agents/query-agent-usage-limits.mdx";

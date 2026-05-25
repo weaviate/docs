@@ -13,6 +13,8 @@ import TSCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.mts';
 
 <CloudOnlyBadge />
 
+This quickstart walks through connecting to a Weaviate Cloud cluster, pointing the Query Agent at one or more existing collections, and running your first natural-language queries in both Search Mode and Ask Mode.
+
 ## Prerequisites
 
 Ensure you have access to:

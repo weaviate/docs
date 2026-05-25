@@ -147,9 +147,15 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 // END BasicSearchQuery
 
 // START DiversityRanking
+// Diversity ranking needs a vectorizer it can resolve. Scope the call to a
+// single collection with a target vector so the agent knows what to use.
 const diversitySearchResponse = await qa.search("summer shoes", {
     limit: 10,
-    diversityWeight: 0.5
+    diversityWeight: 0.5,
+    collections: [{
+        name: "ECommerce",
+        targetVector: ["name_description_brand_vector"],
+    }],
 })
 
 // Access the search results
@@ -349,7 +355,7 @@ if (!basicResponse.finalAnswer || basicResponse.finalAnswer === '') {
 
 // START SuggestQueries
 const suggestResponse = await qa.suggestQueries({
-    collections: ["IRPAPERS"],
+    collections: ["FinancialContracts"],
     numQueries: 3,
     instructions: "High-level themes and open-ended exploration",
 });

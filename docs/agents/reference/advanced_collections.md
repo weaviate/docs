@@ -11,14 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/advanced_collections.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/advanced_collections.mts';
 
-<!-- Contains:
-* Explanation on how the QA can choose which collections are queried
-* Detail on how you can pass either string or `QueryAgentCollectionConfig` to the `collections` argument to `.ask()` or `.search()`
-* Full breakdown of `QueryAgentCollectionConfig` and all its arguments:
-    * `target_vector`
-    * `view_properties`
-    * `additional_filters` and link to additional filters reference page -->
-
 The Query Agent, in Ask Mode or Search Mode, has the option to search one or more of any collections that are provided to it. 
 
 These collections can either be specified by a string (the name of the collection) or via a more advanced configuration.

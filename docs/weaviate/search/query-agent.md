@@ -17,8 +17,8 @@ The Weaviate Query Agent enables users to perform Weaviate searches or ask quest
 
 An agentic LLM will dynamically determine query terms and search strategies based on the natural language query.
 
-:::info First time using Weaviate Agents?
-Weaviate Agents are only available for Weaviate Cloud instances. See the [full setup guide](../../agents/installation.md) for setup and instantiation details.
+:::info First time using the Query Agent?
+The Query Agent is only available for Weaviate Cloud instances. See the [full setup guide](../../agents/installation.md) for setup and instantiation details.
 :::
 
 First, you must define the Query Agent class, setup with a client pointing towards your Weaviate cloud cluster.
