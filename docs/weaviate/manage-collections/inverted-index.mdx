@@ -16,6 +16,12 @@ import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.class
 
 An **inverted index** is a data structure in Weaviate that enables efficient text search and filtering operations.
 
+:::tip Change inverted indexes on a live collection (v1.38+)
+
+You can add, change, rebuild, or drop inverted indexes on a populated collection without restart. See [Reindex a property](./reindex-property.mdx).
+
+:::
+
 <details>
 <summary>Additional information</summary>
 
@@ -154,6 +160,12 @@ The inverted index in Weaviate can be configured through various parameters at t
 Drop (delete) an inverted index from a property. This is a destructive operation — the index data is removed from disk. To use the index again, it must be regenerated.
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
+
+:::note v1.38+ MutationGuard
+
+From `v1.38`, the drop is rejected with `409` while a [runtime reindex](./reindex-property.mdx) is in flight on the same property. Cancel the in-flight task first, or wait for it to reach `ready` / `failed` / `cancelled`.
+
+:::
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

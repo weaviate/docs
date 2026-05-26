@@ -257,7 +257,21 @@ You can drop (delete) an inverted index from a property. This is a destructive o
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
+REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is gated by the [runtime-reindex](../../manage-collections/reindex-property.mdx) MutationGuard — rejected while a reindex is in flight on the same property.
+
 See [How-to: Drop an inverted index](../../manage-collections/inverted-index.mdx#drop-an-inverted-index) for code examples.
+
+## Runtime reindex (v1.38 Preview)
+
+From `v1.38`, three REST endpoints let you alter a property's inverted-index configuration on a live collection without restart:
+
+| Method | Path | Purpose |
+|---|---|---|
+| `PUT` | `/v1/schema/{class}/indexes/{property}` | Add an inverted index, change tokenization, migrate BM25 WAND → BlockMax, rebuild a bucket, or cancel an in-flight task. The body shape selects the migration type. |
+| `DELETE` | `/v1/schema/{class}/properties/{property}/index/{indexName}` | Drop a configured index. `indexName` ∈ `{filterable, searchable, rangeFilters}`. |
+| `GET` | `/v1/schema/{class}/indexes` | Read per-property index status. |
+
+`PUT` / `DELETE` require `UPDATE` on `Collections`; `GET` requires `READ` on `CollectionsMetadata`. See [How-to: Reindex a property](../../manage-collections/reindex-property.mdx) for request bodies, response shapes, concurrency rules, and worked examples.
 
 ## How Weaviate creates inverted indexes
 

@@ -1,0 +1,260 @@
+---
+title: Reindex a property
+sidebar_label: Reindex a property
+sidebar_position: 50
+image: og/docs/configuration.jpg
+description: Change a property's inverted-index configuration on a live Weaviate collection without restart — add or drop filterable / searchable / range indexes, change tokenization, or migrate BM25 from WAND to BlockMax. Reads stay available throughout.
+# tags: ['configuration', 'reindex', 'tokenization', 'bm25']
+---
+
+import RuntimeReindexPreview from '/_includes/feature-notes/runtime-reindex.mdx';
+
+<RuntimeReindexPreview/>
+
+Change a property's **inverted-index configuration** on a live collection without restarting the cluster and without losing writes. Reads stay available throughout the migration. This replaces the previous workaround of exporting, recreating the collection, and re-importing.
+
+This page covers **inverted indexes only** (`IndexFilterable`, `IndexSearchable`, `IndexRangeFilters`, BM25 algorithm, tokenization). Vector indexes are configured separately — see [Vector configuration](./vector-config.mdx).
+
+## What you can do
+
+| Verb | Use when |
+|---|---|
+| **Add** a missing inverted index | The property was created without `IndexFilterable` / `IndexSearchable` / `IndexRangeFilters` and you now need to filter or search on it. |
+| **Change** a property's tokenization | You picked `word` and want `trigram` (or vice versa) on a live `text` / `text[]` property. |
+| **Migrate BM25** from WAND to BlockMax | One-way upgrade for the searchable bucket on existing collections. |
+| **Rebuild / repair** a bucket | Refresh a `RoaringSet` / `RoaringSetRange` / BlockMax index after suspected corruption or heavy data churn. |
+| **Cancel** an in-flight migration | You realised the call was wrong, or want to free the slot for another migration. |
+
+To **drop** a configured inverted index, use the existing [Drop an inverted index](./inverted-index.mdx#drop-an-inverted-index) flow — it has client-library support for Python, TypeScript, Go, and Java. From v1.38, the drop operation is gated by the same MutationGuard described on this page.
+
+## REST endpoints
+
+The feature is REST-only for v1.38 Preview. Two new endpoints (`PUT`, `GET`), plus a new MutationGuard contract on the existing drop endpoint:
+
+| Method | Path | Purpose |
+|---|---|---|
+| `PUT` | `/v1/schema/{class}/indexes/{property}` | **New in v1.38.** Submit a migration. The request body shape selects which migration type. |
+| `GET` | `/v1/schema/{class}/indexes` | **New in v1.38.** Read per-property index status. |
+| `DELETE` | `/v1/schema/{class}/properties/{property}/index/{indexName}` | Drop a configured index. Existed before v1.38 (see [Drop an inverted index](./inverted-index.mdx#drop-an-inverted-index)); from v1.38 it is now rejected by the MutationGuard while another reindex on the same property is in flight. |
+
+All examples below assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections` (`GET` only needs `READ` on `CollectionsMetadata`).
+
+## Add a missing inverted index
+
+To enable filtering on a property that was created without one:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"filterable":{"enabled":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/category"
+```
+
+Body shapes per index type:
+
+| Body | Effect |
+|---|---|
+| `{"filterable":{"enabled":true}}` | Creates a `RoaringSet` bucket and flips `IndexFilterable=true`. |
+| `{"searchable":{"enabled":true,"tokenization":"word"}}` | Creates a BlockMax searchable bucket, sets `Tokenization`, flips `IndexSearchable=true`. Requires `text` / `text[]`. |
+| `{"rangeable":{"enabled":true}}` | Creates a `RoaringSetRange` bucket and flips `IndexRangeFilters=true`. Numeric types only (`int`, `number`, `date`). |
+
+The server responds `202 Accepted` with a task ID:
+
+```json
+{
+  "status": "STARTED",
+  "taskId": "reindex/Article/category/enable-filterable/1700000000"
+}
+```
+
+## Change tokenization
+
+To retokenize a populated `text` property:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"tokenization":"trigram"}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+```
+
+If the property has **both** a searchable and a filterable index, they are retokenized together in one coordinated migration. To retokenize only the filterable bucket:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"filterable":{"tokenization":"word"}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/category"
+```
+
+For the canonical list of tokenization values, see [Tokenization options](../config-refs/collections.mdx#tokenization).
+
+## Migrate BM25 from WAND to BlockMax
+
+[BlockMax WAND](../concepts/indexing/inverted-index.md) is a faster scoring algorithm that replaced the original WAND implementation. On collections created before BlockMax was the default, you can migrate every searchable property in one call:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"algorithm":"blockmax"}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+```
+
+The migration touches every searchable property on the class. The class-level `UsingBlockMaxWAND` flag flips to `true` after every property has been rebuilt.
+
+This is **one-way** — a request to flip `searchable.algorithm` back from `blockmax` to `wand` is rejected. WAND is deprecated.
+
+## Rebuild or repair an index
+
+If you suspect corruption or want to refresh an index after heavy data churn:
+
+```bash
+# Rebuild the BlockMax searchable bucket from object storage
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+
+# Repair a filterable bucket
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"filterable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/category"
+
+# Repair a rangeable bucket
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"rangeable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/price"
+```
+
+`searchable.rebuild` is for BlockMax buckets only. To rebuild a property still on WAND, first migrate it to BlockMax (above) — `rebuild:true` on a WAND bucket is rejected.
+
+## Cancel an in-flight migration
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"cancel":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+```
+
+The response is one of:
+
+- `{"status": "CANCELLED", "taskId": "<id>"}` — a `STARTED` task was found and cancelled.
+- `{"status": "NO_OP"}` — nothing matched (already finished, never submitted, or already cancelled). Idempotent.
+
+Cancelling wipes partial on-disk state, so the next submit starts from a clean slate.
+
+## Check migration status
+
+```bash
+curl -fsS -H "Authorization: Bearer $TOKEN" \
+  "$WEAVIATE/v1/schema/Article/indexes"
+```
+
+```json
+{
+  "collection": "Article",
+  "properties": [{
+    "name": "body",
+    "dataType": "text",
+    "indexes": [
+      { "type": "filterable", "status": "ready",    "tokenization": "word" },
+      { "type": "searchable", "status": "indexing", "progress": 0.42,
+        "tokenization": "word", "targetTokenization": "trigram",
+        "algorithm": "blockmax" }
+    ]
+  }]
+}
+```
+
+| `status` | Meaning |
+|---|---|
+| `ready` | Index is live and serving. No migration in flight. |
+| `pending` | A task has been accepted; per-shard work has not started yet. |
+| `indexing` | Per-shard work is running. `progress` is a 0..1 estimate. |
+| `failed` | At least one node reported `Success=false`. The schema flag was **not** flipped — the property is still in its pre-migration state. Submit a new task to retry. |
+| `cancelled` | Operator cancelled. Partial state has been scrubbed. |
+
+Readback is throttled (3 s), so polling in a tight loop is cheap:
+
+```bash
+until curl -fsS "$WEAVIATE/v1/schema/Article/indexes" \
+      | jq -e '.properties[] | select(.name=="body")
+                   | .indexes[] | select(.type=="searchable")
+                   | .status == "ready"' > /dev/null
+do sleep 2; done
+```
+
+## Multi-tenancy
+
+Scope a task to specific tenants on a multi-tenant class with the `?tenants=` query parameter:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"filterable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/category?tenants=customerA,customerB"
+```
+
+Rules:
+
+| Class | `?tenants=` | Migration type | Result |
+|---|---|---|---|
+| Single-tenant | provided | any | `400` |
+| Multi-tenant | omitted | format-only (`rebuild`, `repair`, `enable-rangeable`) | targets all tenants |
+| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-*`) | targets all tenants (the schema flip is cluster-wide) |
+| Multi-tenant | provided | format-only | targets the named subset |
+| Multi-tenant | provided | semantic | `400` — semantic migrations cannot be sub-scoped |
+| any | tenant in `OFFLOADED` / `FROZEN` | any | `400` — the offending tenant is named in the error |
+
+Each tenant's replicas form an independent barrier group: tenant A starts serving the new bucket as soon as its own replicas finish, even if tenant B is still reindexing.
+
+## Concurrency limits
+
+- **Per `(class, property)` exclusivity** — only one migration is allowed in flight on a given `(collection, property)` pair. A second submit on the same pair returns `409` with the offending task ID.
+- **Per-class cap** — up to 32 concurrent migrations per class. The next submit returns `503` until the in-flight units drain.
+- **Different properties on the same class run in parallel.** Different classes are fully independent.
+
+## What's blocked during a reindex
+
+While a reindex is in flight on `(class, property)`, the schema FSM rejects:
+
+- `UpdateProperty` on the same property.
+- `DeleteClass` on the affected class.
+- `DeleteTenants` / `UpdateTenants` on the targeted tenants when the transition makes shards locally unavailable (HOT → COLD / FROZEN / OFFLOADED). Transitions toward available (e.g. UNFREEZING) are not blocked.
+- `DELETE /v1/schema/{class}/properties/{property}/index/{indexName}` on the same property.
+
+The reject message names the in-flight task. Submitting a reindex on a **different** property of the same class is **not** blocked.
+
+## Errors and recovery
+
+| Code | When | Resolution |
+|---|---|---|
+| `400` | Malformed body, wrong property type, missing prerequisite (e.g. `searchable.tokenization` on a property with no searchable index), `?tenants=` on a single-tenant class, `?tenants=` on a semantic migration, target tenant in `OFFLOADED` / `FROZEN`. | Error responses carry next-step hints — read them. |
+| `404` | Class or property doesn't exist. | Verify the class + property names. |
+| `409` | An in-flight task overlaps this `(collection, property)`. The error names the offending task ID and migration type. | Wait, or cancel the existing task first. |
+| `429` / `503` | Per-class in-flight cap reached, or cluster temporarily unavailable. | Retry once in-flight migrations drain. |
+
+The schema flag is the source of truth: if a task ends in `failed`, the flag was not flipped and the property is still in its pre-migration state. A reindex is restart-safe at every phase — in-flight migrations are picked up automatically after a node restart.
+
+## Authentication and authorization
+
+| Endpoint | Required permission |
+|---|---|
+| `GET /v1/schema/{class}/indexes` | `READ` on `CollectionsMetadata` |
+| `PUT /v1/schema/{class}/indexes/{property}` | `UPDATE` on `Collections` |
+| `DELETE /v1/schema/{class}/properties/{property}/index/{indexName}` | `UPDATE` on `Collections` |
+
+`UPDATE` on `Collections` is the same permission that gates `UpdateClass` and replication-factor changes — there is no dedicated `reindex` role today.
+
+## Related pages
+
+- [Inverted index configuration](./inverted-index.mdx) — how to set inverted indexes at collection creation, and how to drop them (multi-language client support).
+- [Tokenization options](../config-refs/collections.mdx#tokenization) — canonical list of tokenization values.
+- [Vector configuration](./vector-config.mdx) — sibling page covering vector indexes.
+- [BlockMax WAND](../concepts/indexing/inverted-index.md) — background on the BM25 algorithm migration.
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
