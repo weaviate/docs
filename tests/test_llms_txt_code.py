@@ -256,6 +256,11 @@ def _check_link(url):
             # Retry with GET if HEAD specifically isn't allowed.
             if method == "HEAD" and exc.code in (405, 501):
                 continue
+            # A 3xx that surfaces as an HTTPError means urllib's redirect handler
+            # didn't follow it — happens with 308 on Python <3.11. The link is
+            # still valid (the resource just moved), so treat any 3xx as ok.
+            if 300 <= exc.code < 400:
+                return (url, "ok", None)
             if exc.code in _INCONCLUSIVE_CODES:
                 return (url, "skipped", f"HTTP {exc.code} (likely bot-block)")
             return (url, "broken", f"HTTP {exc.code}")
