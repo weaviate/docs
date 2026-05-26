@@ -391,7 +391,7 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 
 // START RetrievalStrategyExample
 const strategyResponse = await qa.search("Find me some vintage shoes under $70", {
-    retrievalStrategy: "recall",
+    filtering: "recall",
     limit: 10,
 })
 

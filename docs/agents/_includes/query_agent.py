@@ -412,7 +412,7 @@ for obj in search_response.search_results.objects:
 # START RetrievalStrategyExample
 search_response = qa.search(
     "Find me some vintage shoes under $70",
-    retrieval_strategy="recall",
+    filtering="recall",
     limit=10,
 )
 

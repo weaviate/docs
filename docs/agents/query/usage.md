@@ -238,9 +238,9 @@ The Query Agent supports three query types:
 
 </Tabs>
 
-#### `Search`: Retrieval Strategy
+#### `Search` with Customized Filtering
 
-Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `retrieval_strategy` parameter (`retrievalStrategy` in JavaScript/TypeScript) controls how many Weaviate queries are generated.
+Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `filtering` parameter controls how many Weaviate queries are generated.
 
 - **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query.
 - **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query.
