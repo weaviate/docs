@@ -238,33 +238,6 @@ The Query Agent supports three query types:
 
 </Tabs>
 
-#### `Search` with Customized Filtering
-
-Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `filtering` parameter controls how many Weaviate queries are generated.
-
-- **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query.
-- **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query.
-
-<Tabs className="code" groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START RetrievalStrategyExample"
-            endMarker="# END RetrievalStrategyExample"
-            language="py"
-        />
-    </TabItem>
-    <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START RetrievalStrategyExample"
-            endMarker="// END RetrievalStrategyExample"
-            language="ts"
-        />
-    </TabItem>
-
-</Tabs>
-
 #### `Search` response structure
 
 <Tabs className="code" groupId="languages">
@@ -308,6 +281,33 @@ Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'c
 ```
 
 </details>
+
+#### `Search` with customized filtering
+
+Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `filtering` parameter controls how many Weaviate queries are generated.
+
+- **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query.
+- **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START RetrievalStrategyExample"
+            endMarker="# END RetrievalStrategyExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START RetrievalStrategyExample"
+            endMarker="// END RetrievalStrategyExample"
+            language="ts"
+        />
+    </TabItem>
+
+</Tabs>
 
 #### `Search` with pagination
 
