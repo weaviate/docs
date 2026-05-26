@@ -11,6 +11,8 @@ try { await client.roles.delete('movie_reader'); } catch { /* not present */ }
 try { await client.users.db.delete('alice'); } catch { /* not present */ }
 
 // START llms_rbac
+import weaviate from 'weaviate-client';
+
 // Create a role scoped to one collection
 await client.roles.create('movie_reader', [
   ...weaviate.permissions.collections({ collection: 'Movie', read_config: true }),

@@ -1,4 +1,4 @@
-// llms.txt snippet: generative search (DIY RAG). Section "Python / TypeScript > Generative search".
+// llms.txt snippet: generative search. Section "Python / TypeScript > Generative search".
 import weaviate, { vectors, configure } from 'weaviate-client';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
@@ -8,6 +8,8 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Movie__GenTs');
 
 // START llms_generative_config
+import { vectors, configure } from 'weaviate-client';
+
 await client.collections.create({
   name: 'Movie__GenTs',
   vectorizers: vectors.text2VecWeaviate(),

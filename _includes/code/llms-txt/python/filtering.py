@@ -24,7 +24,7 @@ client.collections.delete("Restaurant__FilteringPy")
 # START llms_filtering_create_full
 from weaviate.classes.config import Configure, Property, DataType, Tokenization
 
-# Full control: every knob set explicitly
+# Full control: all options set explicitly
 client.collections.create(
     "Restaurant__FilteringPy",
     vector_config=Configure.Vectors.text2vec_weaviate(),

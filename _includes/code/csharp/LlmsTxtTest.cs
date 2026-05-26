@@ -108,7 +108,7 @@ public class LlmsTxtTest
             await client.Collections.Delete("Restaurant__FilteringCs");
 
             // START llms_filtering_create_full
-            // Full control: every knob set explicitly
+            // Full control: all options set explicitly
             await client.Collections.Create(new CollectionCreateParams
             {
                 Name = "Restaurant__FilteringCs",

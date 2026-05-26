@@ -116,7 +116,7 @@ class LlmsTxtTest {
       client.collections.delete("Restaurant__FilteringJv");
 
       // START llms_filtering_create_full
-      // Full control: every knob set explicitly
+      // Full control: all options set explicitly
       client.collections.create("Restaurant__FilteringJv", col -> col
           .vectorConfig(VectorConfig.text2vecWeaviate())
           .properties(

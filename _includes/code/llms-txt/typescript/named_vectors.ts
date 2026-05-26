@@ -7,6 +7,8 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Article__NvTs');
 
 // START llms_named_vectors
+import { vectors, dataType } from 'weaviate-client';
+
 await client.collections.create({
   name: 'Article__NvTs',
   vectorizers: [

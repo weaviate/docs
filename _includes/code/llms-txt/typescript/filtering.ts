@@ -7,6 +7,8 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Restaurant__FilteringTs');
 
 // START llms_filtering_create_minimal
+import { vectors } from 'weaviate-client';
+
 // Minimal: auto-schema sets filterable + searchable defaults on every property
 await client.collections.create({
   name: 'Restaurant__FilteringTs',
@@ -17,7 +19,9 @@ await client.collections.create({
 await client.collections.delete('Restaurant__FilteringTs');
 
 // START llms_filtering_create_full
-// Full control: every knob set explicitly
+import { vectors, dataType } from 'weaviate-client';
+
+// Full control: all options set explicitly
 await client.collections.create({
   name: 'Restaurant__FilteringTs',
   vectorizers: vectors.text2VecWeaviate(),
@@ -41,6 +45,8 @@ await col.data.insertMany([
 ]);
 
 // START llms_filtering_query
+import { Filters } from 'weaviate-client';
+
 // Single condition
 const cheapRamen = await col.query.hybrid('ramen', {
   filters: col.filter.byProperty('price').lessThan(20), limit: 3,

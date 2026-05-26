@@ -2,6 +2,8 @@
 import weaviate from 'weaviate-client';
 
 // START llms_local_connection
+import weaviate from 'weaviate-client';
+
 const client = await weaviate.connectToLocal();
 // END llms_local_connection
 

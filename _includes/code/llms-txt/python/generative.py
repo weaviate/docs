@@ -1,4 +1,4 @@
-"""llms.txt snippet: generative search (DIY RAG). Section "Python / TypeScript > Generative search"."""
+"""llms.txt snippet: generative search. Section "Python / TypeScript > Generative search"."""
 import os
 import time
 import weaviate
