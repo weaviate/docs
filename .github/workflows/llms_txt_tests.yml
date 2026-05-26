@@ -52,4 +52,7 @@ jobs:
         with:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'llms.txt'
+          # Not language-specific — relabel the field and describe what was checked.
+          scope-label: 'Checks'
+          languages-tested: 'Snippet coverage · Versions · Links'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
