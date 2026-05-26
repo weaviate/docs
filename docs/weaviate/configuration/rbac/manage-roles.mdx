@@ -649,14 +649,14 @@ language="csharp"
 
 #### Create a role with `MCP` permissions {#mcp-permissions}
 
-The [Weaviate MCP server](/weaviate/mcp/mcp-server.mdx) uses three granular permissions:
+The [Weaviate MCP server](/weaviate/configuration/mcp-server.mdx) uses three granular permissions:
 
 | Permission | Tools |
 | :--------- | :---- |
 | `read_mcp` | `weaviate-collections-get-config`, `weaviate-tenants-list`, `weaviate-query-hybrid` |
 | `create_mcp` + `update_mcp` | `weaviate-objects-upsert` |
 
-MCP tools also require standard collection-level permissions (e.g., `read_data` for search, `create_data` + `update_data` for upsert). See the [MCP server permissions](/weaviate/mcp/mcp-server.mdx#permissions) for the full per-tool breakdown.
+MCP tools also require standard collection-level permissions (e.g., `read_data` for search, `create_data` + `update_data` for upsert). See the [MCP server permissions](/weaviate/configuration/mcp-server.mdx#permissions) for the full per-tool breakdown.
 
 ### Grant additional permissions
 

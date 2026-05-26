@@ -103,7 +103,14 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: ["weaviate/mcp/mcp-server","weaviate/mcp/docs-mcp-server"],
+      items: [
+        {
+          type: "ref",
+          id: "weaviate/configuration/mcp-server",
+          label: "Weaviate MCP Server",
+        },
+        "weaviate/mcp/docs-mcp-server",
+      ],
     },
     {
       type: "html",
@@ -518,6 +525,11 @@ const sidebars = {
         },
         "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
+        {
+          type: "doc",
+          id: "weaviate/configuration/mcp-server",
+          label: "MCP Server",
+        },
         {
           type: "html",
           value: "<hr class='sidebar-divider' />",
