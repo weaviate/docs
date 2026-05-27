@@ -15,6 +15,7 @@ faq:
   - question: How do I request a new MCP tool or feature?
     answer: >-
       Open a feature request on the Weaviate GitHub repo at https://github.com/weaviate/weaviate/issues/new/choose. Pick the "Feature request" template and describe the tool, parameter, or capability you'd like the MCP server to expose, with a concrete use case.
+
 # tags: ["mcp", "configuration"]
 ---
 
@@ -155,11 +156,11 @@ The MCP server is built into Weaviate but is **disabled by default** for securit
 
 To enable and configure the server, set the following [environment variables](/docs/deploy/configuration/env-vars/index.md) in your Weaviate configuration (e.g., `docker-compose.yml`):
 
-| Environment Variable                                                                                | Default | Description                                                                                                                                                                                                                                                                                                 |
-| --------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | **Required.** Set to `true` to start the MCP server.                                                                                                                                                                                                                                                        |
-| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                                                                                                                         |
-| [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. |
+| Environment Variable                                                                                | Default | Runtime-configurable | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------- | ------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | from `v1.38`         | **Required.** Set to `true` to start the MCP server.                                                                                                                                                                                                                                                                                                                                                              |
+| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | from `v1.38`         | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                                                                                                                                                                                                                               |
+| [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | No                   | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. Tool descriptions are baked into the tool schemas at registration, so this flag remains startup-only. |
 
 ### Permissions
 
@@ -280,6 +281,14 @@ Batch inserts or updates objects.
 - `objects` (array, required): List of objects containing `properties` and optional `uuid` or `vectors`.
 
 **Returns:** Array of results containing UUIDs or error messages per object.
+
+---
+
+## Monitoring
+
+From `v1.38`, the MCP server emits six Prometheus metrics under the `weaviate_mcp_*` prefix on the existing [Prometheus endpoint](/deploy/configuration/monitoring.md). Use them to track tool traffic, latency, auth failures, and the live state of the write-access flag.
+
+See [Monitoring → MCP server](/deploy/configuration/monitoring.md#mcp-server) for the full label catalogue and the rest of Weaviate's Prometheus surface.
 
 ---
 

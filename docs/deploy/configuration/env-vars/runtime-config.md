@@ -114,6 +114,17 @@ The following overrides are currently supported:
 | `authentication_oidc_skip_client_id_check` | `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` |
 | `authentication_oidc_username_claim`       | `AUTHENTICATION_OIDC_USERNAME_CLAIM`   |
 
+### MCP
+
+Added in `v1.38`. Toggling these at runtime does not require a cluster restart — the HTTP handlers stay registered and per-request checks pick up the new value. See [MCP server — Toggle without restart](/weaviate/configuration/mcp-server.mdx#toggle-without-restart) for behavior details.
+
+| Runtime override name             | Environment variable name           |
+| :-------------------------------- | :---------------------------------- |
+| `mcp_server_enabled`              | `MCP_SERVER_ENABLED`                |
+| `mcp_server_write_access_enabled` | `MCP_SERVER_WRITE_ACCESS_ENABLED`   |
+
+`MCP_SERVER_CONFIG_PATH` is intentionally **not** runtime-configurable — tool descriptions are baked into the tool schemas at registration.
+
 Refer to the [Environment variables](./index.md) page for descriptions on each configuration option
 
 ## Operation and monitoring
