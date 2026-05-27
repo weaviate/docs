@@ -286,8 +286,11 @@ Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'c
 
 Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `filtering` parameter controls how many Weaviate queries are generated.
 
-- **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query.
+ **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query.
+You should use these when you prefer to get results, even if they don't match every criteria in your query.
+
 - **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query.
+You should use this when you want the results to follow your query intent closely, even if that means potentially receiving no results.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
