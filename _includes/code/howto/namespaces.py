@@ -33,7 +33,7 @@ for cleanup_ns in ("customer1",):
     deadline = time.time() + 60
     while client.namespaces.get(name=cleanup_ns) is not None and time.time() < deadline:
         time.sleep(0.5)
-for cleanup_role in ("namespace_admin", "all_namespace_admin"):
+for cleanup_role in ("sandboxUser", "namespace_admin", "all_namespace_admin"):
     try:
         client.roles.delete(role_name=cleanup_role)
     except Exception:
@@ -92,6 +92,32 @@ client.namespaces.update(name="customer1", home_node=target_node)
 
 
 # ==========================================
+# ===== Create a sandbox role for tenants =====
+# ==========================================
+
+# START SandboxRole
+# Define the role once at the global level — the RBAC matcher fans the
+# collection pattern out per caller's namespace at request time. Do NOT
+# hard-code `customer1:` into role definitions.
+client.roles.create(
+    role_name="sandboxUser",
+    permissions=(
+        Permissions.collections(
+            collection="*",
+            create_collection=True,
+            read_config=True,
+            update_config=True,
+            delete_collection=True,
+        )
+        + Permissions.data(
+            collection="*", create=True, read=True, update=True, delete=True
+        )
+    ),
+)
+# END SandboxRole
+
+
+# ==========================================
 # ===== Create a namespaced DB user =====
 # ==========================================
 
@@ -101,6 +127,40 @@ client.namespaces.update(name="customer1", home_node=target_node)
 api_key = client.users.db.create(user_id="api_user", namespace="customer1")
 print(api_key)
 # END CreateNamespacedUser
+
+
+# ==========================================
+# ===== Assign the sandbox role to the namespaced user =====
+# ==========================================
+
+# START AssignSandboxRole
+# Address the namespaced user by its fully-qualified internal name.
+client.users.db.assign_roles(
+    user_id="customer1:api_user", role_names=["sandboxUser"]
+)
+# END AssignSandboxRole
+
+
+# ==========================================
+# ===== What the namespaced user sees =====
+# ==========================================
+
+# START NamespacedUserView
+# Connect as the namespaced user (using the api_key from when the user
+# was created) and create a collection with a SHORT name — no
+# `customer1:` prefix.
+ns_client = weaviate.connect_to_local(
+    auth_credentials=Auth.api_key(api_key),
+)
+ns_client.collections.create(name="Movies")
+
+# Listing the schema strips the namespace prefix:
+for name in ns_client.collections.list_all():
+    print(name)
+# → Movies
+
+ns_client.close()
+# END NamespacedUserView
 
 
 # ==========================================
