@@ -22,6 +22,9 @@ const contextualApiKey = process.env.CONTEXTUAL_API_KEY || '';  // Replace with 
 // START DatabricksInstantiation
 const databricksToken = process.env.DATABRICKS_TOKEN || '';  // Replace with your inference API key
 // END DatabricksInstantiation
+// START DigitalOceanInstantiation
+const digitaloceanApiKey = process.env.DIGITALOCEAN_APIKEY || '';  // Replace with your inference API key
+// END DigitalOceanInstantiation
 // START FriendliInstantiation
 const friendliApiKey = process.env.FRIENDLI_TOKEN || '';  // Replace with your inference API key
 // END FriendliInstantiation
@@ -87,6 +90,9 @@ const client = await weaviate.connectToWeaviateCloud(
       // START DatabricksInstantiation
       'X-Databricks-Token': databricksToken,
       // END DatabricksInstantiation
+      // START DigitalOceanInstantiation
+      'X-Digitalocean-Api-Key': digitaloceanApiKey,
+      // END DigitalOceanInstantiation
       // START FriendliInstantiation  // START FriendliDedicatedInstantiation
       'X-Friendli-Api-Key': friendliApiKey,
       // END FriendliInstantiation  // END FriendliDedicatedInstantiation
