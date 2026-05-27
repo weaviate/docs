@@ -6,7 +6,8 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "fetch-vibe-eval": "node tools/fetch-vibe-eval-results.js",
+    "build": "npm run fetch-vibe-eval; docusaurus build",
     "build-dev": "docusaurus build --config docusaurus.dev.config.js --out-dir build.dev",
     "validate-links-dev": "node ./_build_scripts/validate-links-pr.js",
     "swizzle": "docusaurus swizzle",
