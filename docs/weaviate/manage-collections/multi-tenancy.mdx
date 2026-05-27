@@ -18,6 +18,12 @@ import SkipLink from "/src/components/SkipValidationLink";
 
 Multi-tenancy provides data isolation. Each tenant is stored on a separate shard. Data stored in one tenant is not visible to another tenant. If your application serves many different users, multi-tenancy keeps their data private and makes database operations more efficient.
 
+:::info Multi-tenancy vs namespaces
+
+Multi-tenancy and [namespaces](../configuration/namespaces.mdx) (`v1.38` Preview) are two different features that can be used together. Multi-tenancy isolates **data within one collection** (per-tenant shards). Namespaces isolate **collections across the cluster** (one customer = one namespace of collections). A multi-tenant collection inside a namespace works as expected.
+
+:::
+
 :::info Tenant status renamed in `v1.26`
 In `v1.26`, the `HOT` status was renamed to `ACTIVE` and the `COLD` status was renamed to `INACTIVE`.
 :::

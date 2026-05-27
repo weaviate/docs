@@ -88,6 +88,12 @@ style Permissions fill:#E0F7FA,stroke:#B2EBF2,stroke-width:1px
 
 This RBAC system ensures that users only have the access necessary for their roles, enhancing both security and manageability within Weaviate. Roles and permissions can be managed through the Weaviate <b><SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink></b> directly or through a **[client library](/weaviate/configuration/rbac/manage-roles)** programmatically.
 
+:::info On namespace-enabled clusters (`v1.38`+ Preview)
+
+When [namespaces](/weaviate/concepts/namespaces.md) are enabled, every authenticated principal is classified as either **namespaced** (a dynamic DB user, or an OIDC user whose token carries a namespace claim) or **global** (a static API key, or an OIDC user with the global claim). Role definitions stay namespace-agnostic — the Casbin matcher scopes them to the caller's own namespace at request time. Built-in roles split: `root` and `viewer` (env-var-only) are reserved for global principals; `admin` and `viewer` (assignable) are the tenant-safe roles for namespaced principals.
+
+:::
+
 ## Roles
 
 ### Predefined roles

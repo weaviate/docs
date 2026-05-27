@@ -1,0 +1,358 @@
+---
+title: Manage namespaces
+sidebar_label: Manage namespaces
+sidebar_position: 51
+image: og/docs/configuration.jpg
+description: Enable namespaces on a Weaviate cluster, create and manage namespace entities via the REST API, and bootstrap a namespaced DB user — operator how-to for the v1.38 Preview namespaces feature.
+# tags: ['namespaces', 'operations', 'multi-tenancy', 'rbac']
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/namespaces.py";
+
+import NamespacesPreview from '/_includes/feature-notes/namespaces.mdx';
+
+<NamespacesPreview/>
+
+Operator how-to for the **namespaces** feature — a cluster-level tenant isolation boundary. For the conceptual model and the disambiguation from per-collection multi-tenancy, see [Namespaces](../concepts/namespaces.md).
+
+This page covers what an operator does: enable namespaces on a cluster, manage namespace entities via the REST API or the Python client (`client.namespaces`), and bootstrap a namespaced DB user.
+
+:::note Client library support
+
+The Python client supports the `/v1/namespaces` endpoints via `client.namespaces.{create, get, list_all, update, delete}` and the `Permissions.namespaces(...)` RBAC factory. See [weaviate/weaviate-python-client#2033](https://github.com/weaviate/weaviate-python-client/pull/2033). Other clients (TypeScript, Java, C#, Go) do not yet expose typed methods — use REST/curl on those.
+
+:::
+
+## Enable namespaces on a new cluster
+
+Namespaces are only supported on **newly bootstrapped clusters**. Set the following env vars before first start:
+
+```sh
+NAMESPACES_ENABLED=true
+DISABLE_GRAPHQL=true
+REPLICATION_MAXIMUM_FACTOR=1
+```
+
+The server validates these at boot. It refuses to start if `NAMESPACES_ENABLED=true` is set on a cluster that already has non-namespaced collections, or if `NAMESPACES_ENABLED=false` is set on a cluster that already has namespace entities.
+
+For OIDC clusters, also set the claim names used to classify tokens (see [Namespaces concept page](../concepts/namespaces.md#oidc-classification) for the rules):
+
+```sh
+OIDC_NAMESPACE_CLAIM=namespace
+OIDC_GLOBAL_PRINCIPAL_CLAIM=is_global
+```
+
+:::warning Downgrade is not supported
+
+A cluster that has ever run with `NAMESPACES_ENABLED=true` cannot be downgraded to a pre-namespace binary. There is no migration tool to enable namespaces on an existing cluster or move a namespace between clusters in this preview.
+
+:::
+
+## Namespace REST endpoints
+
+All `/v1/namespaces` endpoints are **operator-only** and require the `manage_namespaces` permission. The whole surface returns `404 Not Found` when `NAMESPACES_ENABLED=false`.
+
+| Verb | Path | Purpose |
+|---|---|---|
+| `POST` | `/v1/namespaces/{namespace_id}` | Create a namespace. |
+| `GET` | `/v1/namespaces` | List namespaces (RBAC-filtered). |
+| `GET` | `/v1/namespaces/{namespace_id}` | Get a namespace. |
+| `PUT` | `/v1/namespaces/{namespace_id}` | Update `home_node` only. `name` and `state` are immutable through this endpoint. |
+| `DELETE` | `/v1/namespaces/{namespace_id}` | Two-phase deletion (flip to `deleting`, then cascade cleanup). Idempotent. |
+
+The examples below assume `$WEAVIATE` is the cluster URL and `$OPERATOR_TOKEN` is a global-principal API key.
+
+## Create a namespace
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateNamespace"
+      endMarker="# END CreateNamespace"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"home_node":"node-2"}' \
+  "$WEAVIATE/v1/namespaces/customer1"
+```
+
+  </TabItem>
+</Tabs>
+
+The `home_node` argument is optional — omit it to let Weaviate pick one automatically.
+
+REST response (`201 Created`):
+
+```json
+{
+  "name": "customer1",
+  "state": "active",
+  "home_node": "node-2"
+}
+```
+
+### Naming rules
+
+- 3–36 characters
+- `[a-z0-9][a-z0-9-]*[a-z0-9]` — lowercase ASCII, digits, hyphens; cannot start or end with a hyphen
+- Cannot contain `:` (the namespace separator, reserved cluster-wide)
+- Not in the reserved list: `admin`, `system`, `default`, `internal`, `weaviate`, `global`, `public`
+
+The name is **immutable** after create. To rename, delete the namespace (which cascades to all its collections, aliases, and users) and create a new one.
+
+## Get and list namespaces
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GetNamespace"
+      endMarker="# END GetNamespace"
+      language="py"
+    />
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ListNamespaces"
+      endMarker="# END ListNamespaces"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+
+```bash
+# Get a single namespace
+curl -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  "$WEAVIATE/v1/namespaces/customer1"
+
+# List all
+curl -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  "$WEAVIATE/v1/namespaces"
+```
+
+  </TabItem>
+</Tabs>
+
+The list response is RBAC-filtered: a caller without `manage_namespaces` on any namespace receives an empty list, never a `403`.
+
+## Update the home node
+
+`PUT` accepts a `home_node` change. Existing shards are **not** moved — only new shards land on the new node. To move existing shards, do that out of band.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateNamespace"
+      endMarker="# END UpdateNamespace"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"home_node":"node-3"}' \
+  "$WEAVIATE/v1/namespaces/customer1"
+```
+
+  </TabItem>
+</Tabs>
+
+## Delete a namespace
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DeleteNamespace"
+      endMarker="# END DeleteNamespace"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  "$WEAVIATE/v1/namespaces/customer1"
+```
+
+  </TabItem>
+</Tabs>
+
+Deletion is two-phase:
+
+1. **Immediate** — namespace flips to `state: deleting`. Subsequent namespaced-principal requests targeting it are rejected.
+2. **Background cascade** — Weaviate removes DB users in the namespace, then aliases, then collections. On-disk shard data may be renamed to a `.deleteme` tombstone first so cleanup can resume safely across restarts. Once empty, the namespace entity itself is removed.
+
+`DELETE` is **idempotent** — repeated calls during cleanup observe the same in-flight deletion and return without error.
+
+## Bootstrap a namespaced DB user
+
+The end-to-end flow for setting up a namespaced sandbox: create the namespace, create a global role with the permissions you want tenants to have, create a DB user inside the namespace, and assign the role. After step 4 the user can create collections using short names without seeing the namespace prefix at all.
+
+### Step 1: Create the namespace
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"home_node":"node-2"}' \
+  "$WEAVIATE/v1/namespaces/customer1"
+```
+
+### Step 2: Create a role with the permissions tenants should have
+
+Define the role **once** at the global level. The Casbin model fans the role's collection patterns out per caller at request time — do **not** hard-code `customer1:` into the role definition.
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"sandboxUser","permissions":[
+        {"action":"create_collections","collections":{"collection":"*"}},
+        {"action":"manage_collections","collections":{"collection":"*"}},
+        {"action":"read_collections","collections":{"collection":"*"}},
+        {"action":"create_data","collections":{"collection":"*"}},
+        {"action":"update_data","collections":{"collection":"*"}},
+        {"action":"delete_data","collections":{"collection":"*"}},
+        {"action":"read_data","collections":{"collection":"*"}}
+      ]}' \
+  "$WEAVIATE/v1/authz/roles"
+```
+
+### Step 3: Create a DB user in the namespace
+
+The Python client takes a separate `namespace=` keyword argument. The REST endpoint requires the fully-qualified internal name `customer1:api_user` in the path — there is no separate `namespace` body parameter.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateNamespacedUser"
+      endMarker="# END CreateNamespacedUser"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  "$WEAVIATE/v1/users/db/customer1:api_user"
+```
+
+  </TabItem>
+</Tabs>
+
+The response (`201 Created`) returns the API key for the new user.
+
+### Step 4: Assign the role
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"roles":["sandboxUser"]}' \
+  "$WEAVIATE/v1/authz/users/customer1:api_user/assign"
+```
+
+### What the namespaced user sees
+
+Using the API key from Step 3, the namespaced user creates a collection with a **short name** — no `customer1:` prefix anywhere:
+
+```bash
+TOKEN_OF_API_USER="<key from step 3>"
+
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN_OF_API_USER" \
+  -H "Content-Type: application/json" \
+  -d '{"class":"Movies","properties":[{"name":"title","dataType":["text"]}]}' \
+  "$WEAVIATE/v1/schema"
+```
+
+The collection is stored internally as `customer1:Movies`. Listing the schema strips the prefix:
+
+```bash
+curl -H "Authorization: Bearer $TOKEN_OF_API_USER" \
+  "$WEAVIATE/v1/schema"
+# → { "classes": [ { "class": "Movies", ... } ] }
+```
+
+A global operator listing the same schema sees `customer1:Movies` unstripped.
+
+## Grant the `manage_namespaces` permission
+
+All `/v1/namespaces` endpoints require the operator-only `manage_namespaces` permission. To delegate namespace administration to another principal, create a role that grants this permission:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START NamespacePermissions"
+      endMarker="# END NamespacePermissions"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="curl" label="curl">
+
+```bash
+# Scope to a single namespace
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"namespace_admin","permissions":[
+        {"action":"manage_namespaces","namespaces":{"namespace":"customer1"}}
+      ]}' \
+  "$WEAVIATE/v1/authz/roles"
+
+# Wildcard — manage any namespace
+curl -X POST \
+  -H "Authorization: Bearer $OPERATOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"all_namespace_admin","permissions":[
+        {"action":"manage_namespaces","namespaces":{"namespace":"*"}}
+      ]}' \
+  "$WEAVIATE/v1/authz/roles"
+```
+
+  </TabItem>
+</Tabs>
+
+## Common errors
+
+| Status | Message shape | What it means |
+|---|---|---|
+| `404` on `/v1/namespaces/...` | _The namespaces feature is not enabled on this cluster._ | `NAMESPACES_ENABLED=false`. |
+| `422` on `POST /v1/namespaces/{name}` | _namespace name … must be 3-36 characters_ | Syntax violation. |
+| `422` on `POST /v1/namespaces/{name}` | _namespace name … is reserved_ | Name is in the reserved list. |
+| `409` on create | _namespace already exists_ / _is currently being deleted_ | Conflict — read the message to differentiate. |
+| `403` on collection-create as global principal | _create requires a namespaced principal on a namespaces-enabled cluster_ | Global principals can't create collections on NS clusters. |
+| `404` on collection-read as global principal | _class not found_ | Global principals must use fully-qualified `ns:Name` — short names fall through. |
+| `401` on OIDC token | varies | Token had both namespace + global claims, neither, or `root` combined with a namespace. |
+| `410 Gone` on a deprecated endpoint | _endpoint not supported on namespace-enabled clusters_ | GraphQL or the deprecated `/objects/{id}` family. See the [concept page](../concepts/namespaces.md#disabled-and-blocked-surfaces). |
+
+## Related pages
+
+- [Namespaces (concept)](../concepts/namespaces.md) — what namespaces are, principal model, name resolution rules.
+- [Multi-tenancy](../manage-collections/multi-tenancy.mdx) — per-collection tenant isolation (different feature).
+- [RBAC](./rbac/index.mdx) — how the namespaced/global principal split affects roles.
+- [OIDC configuration](/deploy/configuration/oidc.md) — claim configuration for OIDC token classification.
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

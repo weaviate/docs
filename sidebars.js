@@ -525,6 +525,7 @@ const sidebars = {
         },
         "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
+        "weaviate/configuration/namespaces",
         {
           type: "doc",
           id: "weaviate/configuration/mcp-server",
