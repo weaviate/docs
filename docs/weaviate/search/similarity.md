@@ -15,6 +15,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
+import BoostPreview from '/_includes/feature-notes/boost.mdx';
 
 Vector search returns the objects with most similar vectors to that of the query.
 
@@ -715,6 +716,14 @@ Important notes:
 :::tip
 A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
 :::
+
+## Soft-rank with Boost
+
+<BoostPreview/>
+
+Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
+
+See [Boost](./boost.md) for the supported condition types (filter, property value, time decay, numeric decay), curve choices, blending semantics, and depth tuning.
 
 ## Related pages
 
