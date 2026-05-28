@@ -177,6 +177,10 @@ The Search Mode response has the following properties:
 
 </Tabs>
 
+:::note Result scores
+The `search_results` / `searchResults` field reuses Weaviate's native `QueryReturn` / `WeaviateReturn` type, so results have the same shape as a standard Weaviate query. However, the `score` in each object's metadata is replaced with Search Mode's own ranking score rather than the original Weaviate search score.
+:::
+
 
 ### Pagination
 
