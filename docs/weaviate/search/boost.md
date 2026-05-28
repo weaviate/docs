@@ -32,7 +32,7 @@ A boost is one or more **conditions**, blended into a single rescore. Every cond
 
 ### Filter condition (soft `WHERE`)
 
-Score is `1` if the result matches the filter, `0` if not. Non-matching documents stay in the set but lose weight against matching ones. Supported filter operators: `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanEqual`, `LessThan`, `LessThanEqual`, `And`, `Or`, `Not`. (`Like`, `IsNull`, geo operators, and ref-path filters are not supported in boost conditions.)
+Score is `1` if the result matches the filter, `0` if not. Non-matching documents stay in the result set but rank lower than matching ones. Supported filter operators: `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanEqual`, `LessThan`, `LessThanEqual`, `And`, `Or`, `Not`. (`Like`, `IsNull`, geo operators, and ref-path filters are not supported in boost conditions.)
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -149,7 +149,7 @@ final_score = (1 − weight) · primary_norm + weight · boost_norm
 
 ### Negative weights demote
 
-A condition with `weight: -1.0` (or `-2.0`, etc.) reverses the effect: documents that match the condition are pushed to the bottom of the results instead of the top. They are not removed. This is useful for deprioritizing — for example, surfacing drafts last without filtering them out.
+A condition with `weight: -1.0` (or `-2.0`, etc.) reverses the effect: documents that match the condition rank below non-matching ones instead of above them. They are not removed. This is useful for deprioritizing — for example, surfacing drafts last without filtering them out.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -164,9 +164,9 @@ A condition with `weight: -1.0` (or `-2.0`, etc.) reverses the effect: documents
 
 ## Depth and pagination
 
-`depth` controls the **candidate pool**. The primary search fetches `depth` results before the boost rescorer runs, after rescoring, the user's `offset` and `limit` are applied.
+`depth` controls the **candidate pool**. The primary search fetches `depth` results before the boost rescorer runs. After rescoring, the user's `offset` and `limit` are applied.
 
-| | Value |
+| Property | Value |
 |---|---|
 | Default | `100` |
 | Operator override | [`QUERY_BOOST_DEFAULT_DEPTH`](/deploy/configuration/env-vars#QUERY_BOOST_DEFAULT_DEPTH) env var |

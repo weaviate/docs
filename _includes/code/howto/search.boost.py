@@ -149,6 +149,9 @@ response = articles.query.near_text(
 )
 # END BoostNumericDecay
 
+# Both top-2 results have the target price; the $199 outlier is pushed down.
+assert all(o.properties["price"] == 49.99 for o in response.objects[:2])
+
 
 # ==========================================
 # ===== Blend multiple conditions =====
@@ -173,6 +176,10 @@ response = articles.query.near_text(
     return_properties=["title", "likes", "published"],
 )
 # END BoostBlend
+
+# Recency dominates, but the LOG1P-dampened 5M-likes article still surfaces
+# in the top 3 — popularity is helping, not invisible.
+assert any(o.properties["likes"] == 5_000_000 for o in response.objects[:3])
 
 
 # ==========================================
@@ -223,6 +230,10 @@ response = articles.query.hybrid(
     return_properties=["title", "category", "draft"],
 )
 # END BoostOnHybrid
+
+# Top result is research and not a draft — both boost legs worked.
+assert response.objects[0].properties["category"] == "research"
+assert response.objects[0].properties["draft"] is False
 
 
 client.collections.delete("Articles")
