@@ -15,7 +15,7 @@ for _ in range(20):
         break
     for m in results:
         try:
-            client.memories.delete(m.id, topic=m.topic, user_id=user_id)
+            client.memories.delete(m.id, user_id=user_id, group=group)
             deleted += 1
         except Exception:
             pass

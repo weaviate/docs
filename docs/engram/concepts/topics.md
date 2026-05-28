@@ -12,6 +12,8 @@ Each topic has:
 |----------|-------------|
 | `name` | Unique identifier within the group (e.g. `user_facts`) |
 | `description` | Natural language description used in LLM prompts during extraction (e.g. "What food the user likes to eat") |
+| `scoping` | Which scopes the topic requires: `user_scoped` (requires `user_id`) and a list of custom `scope_properties` keys (e.g. `conversation_id`). See [scopes](scopes.md). |
+| `is_bounded` | Whether the topic has a size cap. Bounded topics trigger consolidation transforms in the pipeline to keep the topic compact. |
 
 The topic `description` is important — it's what the extraction [pipeline](pipelines.md) uses to decide how to categorize information. For example, a travel agent might have separate topics with descriptions like "The places the user would like to visit" and "What food the user likes to eat" so the pipeline can route extracted facts to the right topic.
 

@@ -89,9 +89,10 @@ RUN_ID=$(curl -s -X POST "$BASE_URL/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": {
-      "type": "string",
-      "content": "The user works primarily in Python and prefers dark mode. They are building a RAG application with FastAPI."
+    "input": {
+      "string": {
+        "content": ["The user works primarily in Python and prefers dark mode. They are building a RAG application with FastAPI."]
+      }
     },
     "user_id": "'"$USER_ID"'",
     "group": "default"

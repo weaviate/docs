@@ -44,8 +44,7 @@ Retrieve a single memory by its ID.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `user_id` | string | User [scope](../concepts/scopes.md) (required if the topic is user-scoped) |
-| `conversation_id` | string | Conversation [scope](../concepts/scopes.md) (required if the topic is conversation-scoped) |
-| `group` | string | The memory [group](../concepts/groups.md) name |
+| `group` | string | The memory [group](../concepts/groups.md) name (defaults to `default`) |
 
 ### Response
 
@@ -57,6 +56,7 @@ Retrieve a single memory by its ID.
   "content": "The user prefers dark mode.",
   "topic": "UserKnowledge",
   "group": "default",
+  "properties": { "conversation_id": "abc-123" },
   "created_at": "2025-01-01T00:00:00Z",
   "updated_at": "2025-01-01T00:00:00Z"
 }

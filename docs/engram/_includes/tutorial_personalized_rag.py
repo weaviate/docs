@@ -1,7 +1,7 @@
 import os
 import uuid
 import asyncio
-from engram import EngramClient, AsyncEngramClient, RetrievalConfig, PreExtractedContent
+from engram import EngramClient, AsyncEngramClient, RetrievalConfig
 
 # START SetupClients
 engram = EngramClient(

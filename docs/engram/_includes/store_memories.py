@@ -1,7 +1,7 @@
 import os
 import time
 import uuid
-from engram import EngramClient, PreExtractedContent
+from engram import EngramClient, PreExtractedInput, PreExtractedItem
 
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
@@ -39,13 +39,12 @@ results = client.memories.search(query="Python RAG dark mode", user_id=test_user
 assert len(results) >= 1
 assert any("Python" in m.content or "dark mode" in m.content or "RAG" in m.content for m in results)
 
-"""TODO[g-despot] Needs topic
-
 # START StorePreExtracted
 run = client.memories.add(
-    PreExtractedContent(
-        content="User prefers dark mode",
-    ),
+    PreExtractedInput(items=[
+        PreExtractedItem(content="User prefers dark mode", topic="UserKnowledge"),
+        PreExtractedItem(content="User works in Python", topic="UserKnowledge"),
+    ]),
     user_id=test_user_id,
     group="default",
 )
@@ -61,7 +60,7 @@ assert status.status == "completed"
 results = client.memories.search(query="dark mode preference", user_id=test_user_id, group="default")
 assert len(results) >= 1
 assert any("dark mode" in m.content for m in results)
-"""
+
 # START StoreConversation
 run = client.memories.add(
     [
