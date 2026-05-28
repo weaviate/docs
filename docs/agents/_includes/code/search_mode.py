@@ -96,6 +96,17 @@ for page_num, page_response in enumerate(
     print()
 # END SearchPagination
 
+# START FilteringExample
+search_response = qa.search(
+    "Find me some vintage shoes under $70",
+    filtering="precision",
+    limit=10,
+)
+
+for obj in search_response.search_results.objects:
+    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
+# END FilteringExample
+
 # --- Async code examples in string as top-level await doesn't work, full code will be executed in 
 # asyncio.run below
 

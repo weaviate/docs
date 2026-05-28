@@ -91,4 +91,15 @@ pages.forEach((pageResponse, index) => {
 });
 // END SearchPagination
 
+// START FilteringExample
+const filteringResponse = await qa.search("Find me some vintage shoes under $70", {
+    filtering: "precision",
+    limit: 10,
+});
+
+for (const obj of filteringResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - $${obj.properties['price']}`);
+}
+// END FilteringExample
+
 await client.close();
