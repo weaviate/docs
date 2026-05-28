@@ -737,124 +737,6 @@ The output is like this:
 
 </details>
 
-## Filter on nested object properties
-
-:::caution Preview feature
-
-Available from Weaviate `v1.38` as a preview, gated by the `WEAVIATE_PREVIEW_NESTED_FILTERING=on` environment variable on the server. The path syntax and operator semantics are stable, but the on-disk encoding may change before GA — don't rely on persistent state from preview clusters carrying over to the GA release. The env var is removed at GA and the feature is enabled unconditionally.
-
-:::
-
-[`object` and `object[]` properties](../config-refs/datatypes.md#object) carry their own nested schemas. To filter on a value inside a nested object, use a single dotted path naming the path from the parent property down to the leaf you want to compare.
-
-Given a collection like this:
-
-<FilteredTextBlock
-  text={PyCodeNested}
-  startMarker="client.collections.create("
-  endMarker="docs = client.collections.use"
-  language="python"
-/>
-
-### Path syntax
-
-The filter property is a single dotted path. The dot is the only separator. An optional `[N]` after any segment pins that segment to an array index (0-based).
-
-| Path | Meaning |
-|---|---|
-| `cars.make` | Any car's `make` (matches if **any** element of the `cars` array has it) |
-| `cars[0].make` | The first car's `make` (positional) |
-| `cars.tires.width` | Any tire on any car (recursive across two `object[]` levels) |
-| `cars[1].tires[2].brand` | The second car's third tire's `brand` (positional through nesting) |
-
-`[N]` on a segment requires that segment to be an `object[]` (array). Every intermediate segment must be `object` or `object[]` — you cannot pivot through a scalar. The leaf may be any supported scalar type.
-
-### Match any element (default)
-
-A path without `[N]` markers matches if **any** element in the parent array satisfies the condition.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCodeNested}
-      startMarker="# START NestedExistential"
-      endMarker="# END NestedExistential"
-      language="python"
-    />
-  </TabItem>
-</Tabs>
-
-### Match by position
-
-Use `[N]` to pin a path segment to a specific array index. Indices are 0-based.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCodeNested}
-      startMarker="# START NestedPositional"
-      endMarker="# END NestedPositional"
-      language="python"
-    />
-  </TabItem>
-</Tabs>
-
-### Same-element correlation across leaves
-
-Combining two leaf filters with `And` matches when **the same element** in the parent array satisfies both. A document with one car `(Toyota, blue)` and another `(Honda, red)` would not match `cars.make = "Toyota" AND cars.color = "red"` — both conditions must hold on the **same** car.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCodeNested}
-      startMarker="# START NestedSameElementAnd"
-      endMarker="# END NestedSameElementAnd"
-      language="python"
-    />
-  </TabItem>
-</Tabs>
-
-### Deep / recursive paths
-
-`object[]` can nest inside `object[]` to any depth. Each segment in the dotted path traverses one level.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCodeNested}
-      startMarker="# START NestedRecursive"
-      endMarker="# END NestedRecursive"
-      language="python"
-    />
-  </TabItem>
-</Tabs>
-
-### Check whether a nested object is absent
-
-Pointing a path at an `object` or `object[]` segment (rather than a scalar leaf) is only valid with `IsNull`, which asks whether that whole sub-object is present.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCodeNested}
-      startMarker="# START NestedIsNull"
-      endMarker="# END NestedIsNull"
-      language="python"
-    />
-  </TabItem>
-</Tabs>
-
-### Limitations
-
-:::note
-
-- **Allowed leaf data types**: `text`, `int`, `number`, `boolean`, `date`, `uuid`, `blob`, `blobHash`, and their array variants. `geoCoordinates`, `phoneNumber`, and cross-references (`cref`) are not allowed inside nested objects.
-- **`IndexFilterable` is required**: nested filtering uses the filterable inverted index on each leaf. `IndexRangeFilters` and `IndexSearchable` flags exist on nested-property definitions but are not yet exercised by the nested searcher — range filters on nested numeric leaves currently use the filterable bucket.
-- **Tokenization matters**: nested `text` leaves use the same tokenization options as flat properties. For exact-match filters on names, codes, or identifiers, set `tokenization: field` on the leaf so the value is stored as a single token.
-- **Reference-path vs nested-path**: a reference-path filter is a multi-element `Path` (`["inCity", "City", "name"]`) traversing cross-references; a nested-path filter is a **single-element** path with dots inside it (`["cars.make"]`). They are independent — namespace-enabled cluster restrictions on reference-path filters do not apply to nested-path filters.
-
-:::
-
 ## By geo-coordinates
 
 import GeoLimitations from '/\_includes/geo-limitations.mdx';
@@ -1182,6 +1064,122 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
     />
   </TabItem>
 </Tabs>
+
+## Filter on nested object properties
+
+:::caution Preview feature
+
+Available from Weaviate `v1.38` as a preview, gated by the `WEAVIATE_PREVIEW_NESTED_FILTERING=on` environment variable on the server. The path syntax and operator semantics are stable, but the on-disk encoding may change before GA — don't rely on persistent state from preview clusters carrying over to the GA release. The env var is removed at GA and the feature is enabled unconditionally.
+
+:::
+
+[`object` and `object[]` properties](../config-refs/datatypes.md#object) carry their own nested schemas. To filter on a value inside a nested object, use a single dotted path naming the path from the parent property down to the leaf you want to compare.
+
+Given a collection like this:
+
+<FilteredTextBlock
+  text={PyCodeNested}
+  startMarker="client.collections.create("
+  endMarker="docs = client.collections.use"
+  language="python"
+/>
+
+The filter property is a single dotted path. The dot is the only separator. An optional `[N]` after any segment pins that segment to an array index (0-based).
+
+| Path | Meaning |
+|---|---|
+| `cars.make` | Any car's `make` (matches if **any** element of the `cars` array has it) |
+| `cars[0].make` | The first car's `make` (positional) |
+| `cars.tires.width` | Any tire on any car (recursive across two `object[]` levels) |
+| `cars[1].tires[2].brand` | The second car's third tire's `brand` (positional through nesting) |
+
+`[N]` on a segment requires that segment to be an `object[]` (array). Every intermediate segment must be `object` or `object[]` — you cannot pivot through a scalar. The leaf may be any supported scalar type.
+
+### Match any element (default)
+
+A path without `[N]` markers matches if **any** element in the parent array satisfies the condition.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeNested}
+      startMarker="# START NestedExistential"
+      endMarker="# END NestedExistential"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+### Match by position
+
+Use `[N]` to pin a path segment to a specific array index. Indices are 0-based.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeNested}
+      startMarker="# START NestedPositional"
+      endMarker="# END NestedPositional"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+### Same-element correlation across leaves
+
+Combining two leaf filters with `And` matches when **the same element** in the parent array satisfies both. A document with one car `(Toyota, blue)` and another `(Honda, red)` would not match `cars.make = "Toyota" AND cars.color = "red"` — both conditions must hold on the **same** car.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeNested}
+      startMarker="# START NestedSameElementAnd"
+      endMarker="# END NestedSameElementAnd"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+### Deep / recursive paths
+
+`object[]` can nest inside `object[]` to any depth. Each segment in the dotted path traverses one level.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeNested}
+      startMarker="# START NestedRecursive"
+      endMarker="# END NestedRecursive"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+### Check whether a nested object is absent
+
+Pointing a path at an `object` or `object[]` segment (rather than a scalar leaf) is only valid with `IsNull`, which asks whether that whole sub-object is present.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeNested}
+      startMarker="# START NestedIsNull"
+      endMarker="# END NestedIsNull"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+### Limitations
+
+:::note
+
+- **Allowed leaf data types**: `text`, `int`, `number`, `boolean`, `date`, `uuid`, `blob`, `blobHash`, and their array variants. `geoCoordinates`, `phoneNumber`, and cross-references (`cref`) are not allowed inside nested objects.
+- **`IndexFilterable` is required**: nested filtering uses the filterable inverted index on each leaf. `IndexRangeFilters` and `IndexSearchable` flags exist on nested-property definitions but are not yet exercised by the nested searcher — range filters on nested numeric leaves currently use the filterable bucket.
+- **Tokenization matters**: nested `text` leaves use the same tokenization options as flat properties. For exact-match filters on names, codes, or identifiers, set `tokenization: field` on the leaf so the value is stored as a single token.
+- **Reference-path vs nested-path**: a reference-path filter is a multi-element `Path` (`["inCity", "City", "name"]`) traversing cross-references; a nested-path filter is a **single-element** path with dots inside it (`["cars.make"]`).
+
+:::
 
 ## Filter considerations
 
