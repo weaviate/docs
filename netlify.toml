@@ -193,6 +193,13 @@ from = "/weaviate/roadmap*"
 to   = "/weaviate/release-notes"
 status = 301
 
+## MCP server moved from /weaviate/mcp/mcp-server to /weaviate/configuration/mcp-server
+
+[[redirects]]
+from = "/weaviate/mcp/mcp-server"
+to   = "/weaviate/configuration/mcp-server"
+status = 301
+
 ## Deployment redirects
 
 [[redirects]]

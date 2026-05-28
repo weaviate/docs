@@ -1,6 +1,21 @@
 ---
 title: Weaviate MCP server
-# tags: ["mcp"]
+description: Enable and configure the Weaviate Model Context Protocol (MCP) server so LLMs and IDE assistants like Claude Desktop, Claude Code, Cursor, and VS Code can inspect schemas, run vector and hybrid searches, and modify objects in your Weaviate instance over HTTP.
+image: og/docs/configuration.jpg
+faq:
+  - question: Does Weaviate offer an MCP server?
+    answer: >-
+      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (preview, available from v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
+  - question: Is the MCP server an external library?
+    answer: >-
+      No — it's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
+  - question: Which tools does the Weaviate MCP server expose?
+    answer: >-
+      Four tools, gated by RBAC permissions — weaviate-collections-get-config (inspect collection schemas), weaviate-tenants-list (list tenants in a multi-tenant collection), weaviate-query-hybrid (run hybrid vector + keyword searches), and weaviate-objects-upsert (create or update objects, requires write access).
+  - question: How do I request a new MCP tool or feature?
+    answer: >-
+      Open a feature request on the Weaviate GitHub repo at https://github.com/weaviate/weaviate/issues/new/choose. Pick the "Feature request" template and describe the tool, parameter, or capability you'd like the MCP server to expose, with a concrete use case.
+# tags: ["mcp", "configuration"]
 ---
 
 import Tabs from "@theme/Tabs";
@@ -140,10 +155,10 @@ The MCP server is built into Weaviate but is **disabled by default** for securit
 
 To enable and configure the server, set the following [environment variables](/docs/deploy/configuration/env-vars/index.md) in your Weaviate configuration (e.g., `docker-compose.yml`):
 
-| Environment Variable                                                                                | Default | Description                                                                                                                                                                                                    |
-| --------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | **Required.** Set to `true` to start the MCP server.                                                                                                                                                           |
-| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                            |
+| Environment Variable                                                                                | Default | Description                                                                                                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | **Required.** Set to `true` to start the MCP server.                                                                                                                                                                                                                                                        |
+| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                                                                                                                         |
 | [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. |
 
 ### Permissions
@@ -153,12 +168,12 @@ If you use [RBAC](/weaviate/configuration/rbac/index.mdx) with fine-grained perm
 <details>
   <summary>Per-tool permissions</summary>
 
-| Tool                              | MCP permissions required     | Additional collection permissions |
-| --------------------------------- | ---------------------------- | --------------------------------- |
-| `weaviate-collections-get-config` | `read_mcp`                   | `read_collections`                |
-| `weaviate-tenants-list`           | `read_mcp`                   | `read_data`                       |
-| `weaviate-query-hybrid`           | `read_mcp`                   | `read_data`                       |
-| `weaviate-objects-upsert`         | `create_mcp`, `update_mcp`   | `create_data`, `update_data`      |
+| Tool                              | MCP permissions required   | Additional collection permissions |
+| --------------------------------- | -------------------------- | --------------------------------- |
+| `weaviate-collections-get-config` | `read_mcp`                 | `read_collections`                |
+| `weaviate-tenants-list`           | `read_mcp`                 | `read_data`                       |
+| `weaviate-query-hybrid`           | `read_mcp`                 | `read_data`                       |
+| `weaviate-objects-upsert`         | `create_mcp`, `update_mcp` | `create_data`, `update_data`      |
 
 </details>
 
@@ -271,7 +286,7 @@ Batch inserts or updates objects.
 ## Further resources
 
 - [Vibe coding - Best practices](../best-practices/code-generation.md)
-- [Weaviate Docs MCP server](./docs-mcp-server.mdx)
+- [Weaviate Docs MCP server](../mcp/docs-mcp-server.mdx)
 
 ## Questions and feedback
 

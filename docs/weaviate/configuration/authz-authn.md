@@ -113,6 +113,7 @@ With [undifferentiated access](../../deploy/configuration/authorization.md#undif
 - [Configuration: OIDC](/deploy/configuration/oidc.md)
 - [Configuration: RBAC](/weaviate/configuration/rbac/index.mdx)
 - [Configuration: Environment variables - Authentication and Authorization](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
+- [Weaviate MCP server](/weaviate/configuration/mcp-server.mdx) — authenticates via API key and respects RBAC permissions.
 
 ## Questions and feedback
 
