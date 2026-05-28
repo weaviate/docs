@@ -7,19 +7,19 @@
       "type": "select-multiline",
       "options": [
         {
-          "name": "v1.34.0",
-          "displayName": "v1.34.0",
-          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.34.0"
+          "name": "v1.37.0",
+          "displayName": "v1.37.0",
+          "description": "See release notes at https://github.com/weaviate/weaviate/releases/tag/v1.37.0"
         },
         {
-          "name": "v1.33.4",
-          "displayName": "v1.33.4",
-          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.33.4"
+          "name": "v1.36.10",
+          "displayName": "v1.36.10",
+          "description": "See release notes at https://github.com/weaviate/weaviate/releases/tag/v1.36.10"
         },
         {
-          "name": "v1.32.16",
-          "displayName": "v1.32.16",
-          "description": "See release notes at hhttps://github.com/weaviate/weaviate/releases/tag/v1.32.16"
+          "name": "v1.35.17",
+          "displayName": "v1.35.17",
+          "description": "See release notes at https://github.com/weaviate/weaviate/releases/tag/v1.35.17"
         }
       ]
     },

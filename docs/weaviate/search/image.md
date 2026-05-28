@@ -14,7 +14,6 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.image.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-image_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchImageTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchImageTest.cs";
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/ImageSearchTest.java';
 
 `Image` search uses an **image as a search input** to perform vector similarity search.
 
@@ -63,17 +62,9 @@ If your query image is stored in a file, you can use the client library to searc
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START ImageFileSearch"
-      endMarker="// END ImageFileSearch"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START ImageFileSearch"
       endMarker="// END ImageFileSearch"
       language="java"
@@ -130,17 +121,9 @@ You can search by a base64 representation of an image:
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START search with base64"
-      endMarker="// END search with base64"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START search with base64"
       endMarker="// END search with base64"
       language="java"
@@ -197,20 +180,12 @@ You can create a base64 representation of an online image, and use it as input f
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START helper base64 functions"
       endMarker="// END helper base64 functions"
       language="javaraw"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START helper base64 functions"
-      endMarker="// END helper base64 functions"
-      language="java"
     />
   </TabItem>
   <TabItem value="csharp" label="C#">

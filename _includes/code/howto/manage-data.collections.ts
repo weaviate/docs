@@ -691,8 +691,11 @@ await client.collections.create({
 // =======================
 // ===== All replication settings
 // =======================
+// Connect to a setup with 3 replicas (required for factor: 3)
+const replicationClient: WeaviateClient = await weaviate.connectToLocal({ port: 8180 })
+
 // Clean slate
-await client.collections.delete(collectionName)
+await replicationClient.collections.delete(collectionName)
 
 /*
 // START AllReplicationSettings
@@ -702,7 +705,7 @@ import { configure } from 'weaviate-client';
 */
 
 // START AllReplicationSettings
-await client.collections.create({
+await replicationClient.collections.create({
   name: 'Article',
   // highlight-start
   replication: configure.replication({
@@ -720,10 +723,10 @@ await client.collections.create({
 // END AllReplicationSettings
 
 // START UpdateReplicationSettings
-const article = client.collections.use('Article')
+const articleReplication = replicationClient.collections.use('Article')
 
 // highlight-start
-await article.config.update({
+await articleReplication.config.update({
   replication: reconfigure.replication({
     asyncConfig: {
       maxWorkers: 10,
@@ -736,6 +739,8 @@ await article.config.update({
 
  // Test
  // TODO NEEDS TEST assert.equal(result.replicationConfig.factor, 3);
+
+await replicationClient.close()
 
 // ====================
 // ===== SHARDING =====

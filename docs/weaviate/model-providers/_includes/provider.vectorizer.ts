@@ -331,7 +331,7 @@ await client.collections.create({
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>',
       // (Optional) To manually set the model ID
-      modelId: 'gemini-embedding-001'
+      model: 'gemini-embedding-2'
     }),
   ],
   // highlight-end
@@ -357,7 +357,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID
-      modelId: 'gemini-embedding-001'
+      model: 'gemini-embedding-2'
     }),
   ],
   // highlight-end
@@ -368,7 +368,7 @@ await client.collections.create({
 // Clean up
 await client.collections.delete('DemoCollection');
 
-// START FullVectorizerGoogleStudio
+// START FullVectorizerGoogle
 await client.collections.create({
   name: 'DemoCollection',
   properties: [
@@ -391,7 +391,7 @@ await client.collections.create({
   // highlight-end
   // Additional parameters not shown
 });
-// END FullVectorizerGoogleStudio
+// END FullVectorizerGoogle
 
 // START BasicMMVectorizerGoogleVertex
 await client.collections.create({
@@ -456,7 +456,7 @@ await client.collections.create({
     weaviate.configure.vectors.multi2VecGoogle({
       name: 'title_vector',
       projectId: '<google-cloud-project-id>',
-      modelId: '<google-model-id>',
+      model: '<google-model-id>',
       location: '<google-cloud-location>',
       dimensions: 512,
       imageFields: [

@@ -9,12 +9,9 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
-import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
-import JavaCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 
 A **collection definition** specifies how to store and index a set of data objects in Weaviate. This page discusses the available parameters for configuring a collection.
@@ -128,14 +125,6 @@ This code example shows how to configure the collection parameters through a cli
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BasicCreateCollection"
-      endMarker="// END BasicCreateCollection"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -239,14 +228,6 @@ This code example shows how to configure the property parameters through a clien
       startMarker="// START CreateCollectionWithProperties"
       endMarker="// END CreateCollectionWithProperties"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -596,14 +577,6 @@ This code example shows how to configure the vectorizer parameters for a single 
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithVectorizer"
-      endMarker="// END CreateCollectionWithVectorizer"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -645,14 +618,6 @@ This code example shows how to configure multiple named vectors through a client
       startMarker="// START BasicNamedVectors"
       endMarker="// END BasicNamedVectors"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithNamedVectors"
-      endMarker="// END CreateCollectionWithNamedVectors"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -790,14 +755,6 @@ This code example shows how to configure the replication parameters through a cl
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -872,14 +829,6 @@ This code example shows how to configure the sharding parameters through a clien
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -935,14 +884,6 @@ This code example shows how to configure the multi-tenancy parameters through a 
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCodeMultiTenancy}
-      startMarker="// START EnableMultiTenancy"
-      endMarker="// END EnableMultiTenancy"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">

@@ -64,7 +64,12 @@ status = 301
 
 [[redirects]]
 from = "/cloud/upgrade"
-to   = "/cloud/manage-clusters/upgrade"
+to   = "/cloud/platform/version"
+status = 301
+
+[[redirects]]
+from = "/cloud/manage-clusters/upgrade"
+to   = "/cloud/platform/version"
 status = 301
 
 [[redirects]]
@@ -186,6 +191,13 @@ status = 301
 [[redirects]]
 from = "/weaviate/roadmap*"
 to   = "/weaviate/release-notes"
+status = 301
+
+## MCP server moved from /weaviate/mcp/mcp-server to /weaviate/configuration/mcp-server
+
+[[redirects]]
+from = "/weaviate/mcp/mcp-server"
+to   = "/weaviate/configuration/mcp-server"
 status = 301
 
 ## Deployment redirects
@@ -1126,4 +1138,19 @@ status = 301
 [[redirects]]
 from = "/integrations/*"
 to   = "https://weaviate.io/product/integrations"
+status = 301
+
+[[redirects]]
+from = "/llms.txt"
+to   = "https://weaviate.io/llms.txt"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/model_providers"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/client-libraries/java/java-v5"
+to   = "/weaviate/client-libraries/java"
 status = 301

@@ -1,15 +1,24 @@
 ---
 title: Weaviate Docs MCP Server
-sidebar_label: Docs MCP Server
+description: Connect Claude Desktop, Cursor, VS Code, Claude Code, and ChatGPT Desktop to the Weaviate Docs MCP server (powered by Kapa.ai) to query Weaviate's documentation directly from your AI assistant or IDE.
+image: og/docs/configuration.jpg
 # tags: ["mcp"]
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+:::info Looking for the Weaviate MCP server?
+
+This page is about the **Weaviate _Docs_ MCP server** — a hosted server (powered by Kapa.ai) that lets AI assistants query Weaviate's **documentation**.
+
+If you instead want an MCP server that lets AI assistants interact with **your own Weaviate instance** (inspect schemas, run hybrid searches, upsert objects), see the built-in [Weaviate MCP server](../configuration/mcp-server.mdx).
+
+:::
+
 The **Weaviate Docs MCP Server** brings instant access to Weaviate's documentation directly into your AI development environment. Built on the Model Context Protocol (MCP), this server integrates seamlessly with tools like Claude Desktop and Cursor, allowing you to query Weaviate's documentation without leaving your IDE.
 
-The MCP server uses [kapa.ai](https://kapa.ai) (which in turn uses Weaviate under the hood) as its knowledge engine, which powers the search and retrieval of Weaviate documentation. The server offers:
+The MCP server uses [Kapa.ai](https://kapa.ai) (which in turn uses Weaviate under the hood) as its knowledge engine, which powers the search and retrieval of Weaviate documentation. The server offers:
 
 - **Instant documentation access**: Search Weaviate docs without context switching.
 - **Multi-source knowledge base**: Queries across docs, tutorials, API references, GitHub issues and community content.

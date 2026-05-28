@@ -14,8 +14,7 @@ import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.b
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/configure.backups.java';
-import Java6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
+import JavaCode from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
 Weaviate's Backup feature is designed to work natively with cloud technology. Most notably, it allows:
@@ -24,12 +23,13 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 * Backup and Restore between different storage providers
 * Single-command backup and restore
 * Choice of backing up an entire instance, or selected collections only
+* [Incremental backups](#incremental-backups) that only store changed data, reducing backup and speeding up backup times
 * Easy migration to new environments
 
 :::caution Important backup considerations
 
 - **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
-- **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
+- **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Starting in `v1.37`, backups include both `active` (HOT) and `inactive` (COLD) tenants — inactive tenants are backed up directly from disk without activation. `Offloaded` (FROZEN) tenants are still skipped since they have no local data. In versions prior to `v1.37`, only active tenants are included, so be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
 :::
 
 ## Backup Quickstart
@@ -81,14 +81,6 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
     />
   </TabItem>
 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateBackup"
-      endMarker="// END CreateBackup"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -310,6 +302,15 @@ You can choose to include or exclude specific collections in the backup. If you 
 
 The `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those.
 
+#### Wildcard matching
+
+:::info Added in `v1.36.0`
+:::
+
+The `include` and `exclude` options support wildcard patterns to match multiple collections at once. Wildcard matching is **case sensitive**.
+
+The `*` character matches any sequence of characters. For example, `Article*` matches `Article`, `ArticleV1`, and `ArticleV2`, but not `article` or `Publication`.
+
 ##### Available `config` object properties
 
 | name | type | required | default | description |
@@ -318,6 +319,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 | `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
+| `incremental_base_backup_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.37`. |
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -348,16 +350,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
     />
   </TabItem>
 
-  <TabItem value="java6" label="Java">
-    <FilteredTextBlock
-      text={Java6Code}
-      startMarker="// START CreateBackup"
-      endMarker="// END CreateBackup"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START CreateBackup"
@@ -365,6 +358,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
       language="java"
     />
   </TabItem>
+
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -440,16 +434,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 
-  <TabItem value="java6" label="Java">
-    <FilteredTextBlock
-      text={Java6Code}
-      startMarker="// START StatusCreateBackup"
-      endMarker="// END StatusCreateBackup"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START StatusCreateBackup"
@@ -457,6 +442,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       language="java"
     />
   </TabItem>
+
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -467,6 +453,70 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 </Tabs>
+
+### Incremental Backups
+
+import IncBackupsStatus from '/_includes/incremental-backups-status.mdx';
+
+<IncBackupsStatus/>
+
+Incremental backups reduce backup size and duration by only storing data that has changed since a previous backup. Instead of copying all files again, an incremental backup references unchanged files from a base backup.
+
+This can result in dramatically smaller backups and much faster backup times.
+
+#### How it works
+
+When creating a backup, Weaviate splits large files into individual chunks. During an incremental backup, Weaviate compares each file against the base backup. Files that haven't changed are stored as pointers to the base backup rather than being copied again. On restore, Weaviate automatically fetches the referenced files from the base backup.
+
+#### Create a full (base) backup
+
+First, create a regular backup that will serve as the base:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateFullBackup"
+  endMarker="# END CreateFullBackup"
+  language="py"
+/>
+
+#### Create an incremental backup
+
+To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateIncrementalBackup"
+  endMarker="# END CreateIncrementalBackup"
+  language="py"
+/>
+
+#### Chained incremental backups
+
+You can chain incremental backups by using a previous incremental backup as the base. Weaviate will walk the chain back to the original full backup to find unchanged files.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateChainedIncrementalBackup"
+  endMarker="# END CreateChainedIncrementalBackup"
+  language="py"
+/>
+
+#### Restore an incremental backup
+
+Restoring an incremental backup works the same as restoring any other backup. Weaviate automatically resolves the chain and fetches files from previous backups as needed.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START RestoreIncrementalBackup"
+  endMarker="# END RestoreIncrementalBackup"
+  language="py"
+/>
+
+:::caution Keep base backups available
+
+Base backups (and any intermediate incremental backups in a chain) must remain available for as long as you need to restore from any incremental backup that depends on them.
+
+:::
 
 ### Cancel Backup
 
@@ -489,9 +539,9 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START CancelBackup"
       endMarker="// END CancelBackup"
       language="java"
@@ -559,16 +609,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
     />
   </TabItem>
 
-  <TabItem value="java6" label="Java">
-    <FilteredTextBlock
-      text={Java6Code}
-      startMarker="// START RestoreBackup"
-      endMarker="// END RestoreBackup"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START RestoreBackup"
@@ -576,6 +617,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       language="java"
     />
   </TabItem>
+
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -625,16 +667,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
     />
   </TabItem>
 
-  <TabItem value="java6" label="Java">
-    <FilteredTextBlock
-      text={Java6Code}
-      startMarker="// START StatusRestoreBackup"
-      endMarker="// END StatusRestoreBackup"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java v5 (Deprecated)">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START StatusRestoreBackup"
@@ -642,6 +675,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       language="java"
     />
   </TabItem>
+
 
   <TabItem value="curl" label="curl">
     <FilteredTextBlock
@@ -690,9 +724,9 @@ A restore goes through the following phases:
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={Java6Code}
+      text={JavaCode}
       startMarker="// START CancelRestore"
       endMarker="// END CancelRestore"
       language="java"

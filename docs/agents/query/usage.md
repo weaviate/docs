@@ -47,7 +47,7 @@ Install the client library using the following command:
 <TabItem value="py_agents" label="Python">
 
 ```shell
-pip install -U weaviate-client[agents]
+pip install -U "weaviate-client[agents]"
 ```
 
 #### Troubleshooting: Force `pip` to install the latest version
@@ -208,10 +208,11 @@ For usage example with the async Python client, see the [Async Python client sec
 
 ## Querying
 
-The Query Agent supports two query types:
+The Query Agent supports three query types:
 
 - [**`Search`**](#search)
 - [**`Ask`**](#ask)
+- [**`Suggest Queries`**](#suggest-queries)
 
 ### `Search`
 
@@ -327,6 +328,32 @@ Page 3:
 
 </details>
 
+#### `Search` with diversity ranking
+
+`Search` supports adding diversity weighting to search result rankings using Maximal Marginal Relevance (MMR). This is enabled by passing a `diversity_weight` parameter in the range of 0.0 to 1.0. To use diversity ranking with target vectors, set the single target vector that you want to use in the Query Agent's constructor. Diversity ranking is not yet supported with collections using multi-vector embeddings. Diversity ranking will work with multiple collections, unless they are using **different** embedding models.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START DiversityRanking"
+            endMarker="# END DiversityRanking"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START DiversityRanking"
+            endMarker="// END DiversityRanking"
+            language="ts"
+        />
+    </TabItem>
+
+</Tabs>
+
+
+
 ### `Ask`
 
 `Ask` the Query Agent a question using natural language. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the answer.
@@ -441,6 +468,35 @@ The conversation history helps the Query Agent understand context from previous 
         />
     </TabItem>
 
+</Tabs>
+
+### `Suggest Queries`
+
+The Query Agent can suggest queries based on the data in your collections. This is useful for helping users discover what kinds of questions they can ask, or for generating example queries for a new dataset.
+
+You can optionally specify:
+
+- `collections`: Override the collections configured at instantiation.
+- `num_queries` (`numQueries` in TypeScript): The number of queries to suggest (default: 3).
+- `instructions`: Guide the style or focus of the suggested queries.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SuggestQueries"
+            endMarker="# END SuggestQueries"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SuggestQueries"
+            endMarker="// END SuggestQueries"
+            language="ts"
+        />
+    </TabItem>
 </Tabs>
 
 ## Stream responses

@@ -636,6 +636,31 @@ If you need resources from the previous version of Weaviate Academy, check out t
 
 </details>
 
+#### Q: What happened to the Weaviate Community Slack?
+
+<details>
+  <summary>Answer</summary>
+
+> The Weaviate Community Slack has been decommissioned. We've moved community discussions to the [Weaviate Community Forum](https://forum.weaviate.io/), which offers better long-term discoverability — conversations are indexed and searchable, so valuable answers don't get lost over time.
+>
+> Join us at [forum.weaviate.io](https://forum.weaviate.io/) to ask questions, share ideas, and connect with the community. For private support inquiries, you can reach us at [support@weaviate.io](mailto:support@weaviate.io).
+
+</details>
+
+#### Q: Does Weaviate have MCP server support?
+
+<details>
+  <summary>Answer</summary>
+
+> Yes, Weaviate provides two MCP (Model Context Protocol) servers:
+>
+> - **[Weaviate MCP server](/weaviate/configuration/mcp-server.mdx)** — Built into Weaviate itself. Exposes tools for inspecting schemas, searching data (vector/hybrid), and modifying objects. Runs on the same port as the REST API at `/v1/mcp`. Disabled by default — enable with `MCP_SERVER_ENABLED=true`.
+> - **[Weaviate Docs MCP server](/weaviate/mcp/docs-mcp-server.mdx)** — A standalone server that gives LLMs access to Weaviate's documentation. Useful for AI-assisted development with Weaviate.
+>
+> Both servers use the Streamable HTTP transport and work with MCP clients like Claude Code, Claude Desktop, Cursor, and VS Code.
+
+</details>
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';

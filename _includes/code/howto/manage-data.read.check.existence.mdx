@@ -82,53 +82,13 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java6" label="Java v6">
+<TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CheckForAnObject"
       endMarker="// END CheckForAnObject"
       language="java"
     />
-</TabItem>
-<TabItem value="java" label="Java v5 (Deprecated)">
-
-```java
-package io.weaviate;
-
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.data.replication.model.ConsistencyLevel;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("http", "localhost:8080");
-    WeaviateClient client = new WeaviateClient(config);
-
-    Result<Boolean> result = client.data().checker()
-      .withClassName("MyClass")
-      .withID("36ddd591-2dee-4e7e-a3cc-eb86d30a4303")
-      .withConsistencyLevel(ConsistencyLevel.ONE)  // default QUORUM
-      .run();
-
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-
-// The parameter passed to `withConsistencyLevel` can be one of:
-// * ConsistencyLevel.ALL,
-// * ConsistencyLevel.QUORUM, or
-// * ConsistencyLevel.ONE.
-//
-// It determines how many replicas must acknowledge a request
-// before it is considered successful.
-
-```
-
 </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock

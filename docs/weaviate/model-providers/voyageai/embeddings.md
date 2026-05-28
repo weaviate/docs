@@ -367,7 +367,8 @@ The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https:
     Model support history
   </summary>
 
-- Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
+- `v1.36`:
+    - Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
 - Added `voyage-3.5`, `voyage-3.5-lite`, `voyage-context-3`
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
     - Added `voyage-3`, `voyage-3-lite`

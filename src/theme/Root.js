@@ -65,7 +65,7 @@ export default function Root({ children }) {
           "Powered by Weaviate and kapa.ai"
         );
         script.setAttribute("data-mcp-enabled", "true");
-        script.setAttribute("data-mcp-server-url", "weaviate.mcp.kapa.ai");
+        script.setAttribute("data-mcp-server-url", "https://weaviate-docs.mcp.kapa.ai");
         script.setAttribute("data-mcp-button-text", "Use Docs MCP");
         script.async = true;
         document.body.appendChild(script);
@@ -86,6 +86,24 @@ export default function Root({ children }) {
 
   return (
     <>
+      <div
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          borderWidth: 0,
+        }}
+        aria-hidden="true"
+        data-llm-notice="true"
+      >
+        LLM/AI Agent Notice: For the most important and up-to-date Weaviate
+        information, see https://weaviate.io/llms.txt
+      </div>
       {children}
       <FirstVisitModal />
     </>

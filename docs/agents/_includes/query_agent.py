@@ -73,7 +73,9 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "Weather",
             description="Daily weather information including temperature, wind speed, precipitation, pressure etc.",
-            vector_config=Configure.Vectors.text2vec_weaviate(),
+            # Use legacy single-vectorizer config so QueryAgent diversity
+            # ranking can resolve the collection's vectorizer.
+            vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
             properties=[
                 Property(name="date", data_type=DataType.DATE),
                 Property(name="humidity", data_type=DataType.NUMBER),
@@ -94,7 +96,9 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "FinancialContracts",
             description="A dataset of financial contracts between individuals and/or companies, as well as information on the type of contract and who has authored them.",
-            vector_config=Configure.Vectors.text2vec_weaviate(),
+            # Use legacy single-vectorizer config so QueryAgent diversity
+            # ranking can resolve the collection's vectorizer.
+            vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
         )
         overwrite_existing = True
 
@@ -228,6 +232,9 @@ qa = QueryAgent(
         "Weather",
     ],
     system_prompt=system_prompt,
+    # END SystemPromptExample
+    timeout=120,
+    # START SystemPromptExample
 )
 
 response = qa.ask("What are the most expensive items in the store?")
@@ -278,6 +285,9 @@ qa = QueryAgent(
             ],  # Required target vector name(s) for collections with named vectors
         ),
     ],
+    # END UserDefinedFilters
+    timeout=120,
+    # START UserDefinedFilters
 )
 
 # The agent will automatically combine these filters with any it generates
@@ -309,6 +319,7 @@ qa = QueryAgent(
         QueryAgentCollectionConfig(name="FinancialContracts"),
         QueryAgentCollectionConfig(name="Weather"),
     ],
+    timeout=120,
 )
 
 # START QueryAgentAskBasicCollectionSelection
@@ -446,6 +457,18 @@ for page_num, page_response in enumerate(
     print()
 # END SearchPagination
 
+# START DiversityRanking
+search_response = qa.search(
+    "summer shoes",
+    limit=10,
+    diversity_weight=0.5,
+)
+
+# Access the search results
+for obj in search_response.search_results.objects:
+    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
+# END DiversityRanking
+
 # START FollowUpQuery
 # Perform a follow-up query and include the answer from the previous query
 from weaviate.agents.classes import ChatMessage
@@ -579,6 +602,7 @@ async def run_concurrent_queries():
                     # tenant="tenantA"
                 ),
             ],
+            timeout=120,
         )
 
         # Wait for both to complete
@@ -644,6 +668,7 @@ async def run_streaming_query():
                     # tenant="tenantA"
                 ),
             ],
+            timeout=120,
         )
         await stream_query(async_qa)
 
@@ -653,3 +678,14 @@ async def run_streaming_query():
 
 asyncio.run(run_streaming_query())
 # END StreamAsyncResponse
+
+# START SuggestQueries
+response = qa.suggest_queries(
+    collections=["ArxivPapers"],
+    num_queries=3,
+    instructions="High-level themes and open-ended exploration",
+)
+
+for suggested_query in response.queries:
+    print(suggested_query.query)
+# END SuggestQueries

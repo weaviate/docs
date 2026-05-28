@@ -10,7 +10,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.update.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.update.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsUpdateTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsUpdateTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go";
@@ -67,19 +66,11 @@ However, if you add a _new_ property to your collection definition, Weaviate onl
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateProps"
       endMarker="// END UpdateProps"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// UpdateProps START"
-      endMarker="// UpdateProps END"
       language="java"
     />
   </TabItem>
@@ -119,18 +110,13 @@ The object vector can also be updated similarly to properties. For [named vector
 > Coming soon
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START UpdateVector"
       endMarker="// END UpdateVector"
       language="java"
     />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-> Coming soon
-
   </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
@@ -171,19 +157,11 @@ The entire object can be replaced by providing the collection name, id and the n
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Replace"
       endMarker="// END Replace"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// Replace START"
-      endMarker="// Replace END"
       language="java"
     />
   </TabItem>
@@ -228,20 +206,12 @@ At object level, you can replace the object with a copy that has those propertie
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DelProps"
       endMarker="// END DelProps"
       language="javaraw"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// DelProps START"
-      endMarker="// DelProps END"
-      language="java"
     />
   </TabItem>
   <TabItem value="csharp" label="C#">

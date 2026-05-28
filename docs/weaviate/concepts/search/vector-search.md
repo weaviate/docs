@@ -248,6 +248,34 @@ Weaviate uses cosine distance as the default distance metric for vector searches
 In a "distance", the lower the value, the closer the vectors are to each other. In a "similarity", or "certainty" score, the higher the value, the closer the vectors are to each other. Some metrics, such as cosine distance, can also be expressed as a similarity score. Others, such as Euclidean distance, are only expressable as a distance.
 :::
 
+## Diversity selection (MMR)
+
+import V137Preview from '/_includes/feature-notes/v137-preview.mdx';
+
+<V137Preview/>
+
+Standard vector search returns the closest matches to a query, which often means a cluster of near-duplicate results. For example, searching for "Italian food" in a product catalog might return five images of pizza instead of a diverse spread of Italian dishes.
+
+**Maximum Marginal Relevance (MMR)** solves this by reranking results to balance two objectives:
+
+- **Relevance**: how well does the item match the query?
+- **Diversity**: how different is the item from the results already selected?
+
+The algorithm works iteratively. It selects the most relevant item first, then for each subsequent pick it scores candidates by weighing their query similarity against their maximum similarity to any already-selected result. The `balance` parameter (λ) controls the trade-off:
+- **λ = 0.0**: Pure diversity — maximizes difference from already-selected items
+- **λ = 0.5**: Balanced — each result must be both relevant and distinct
+- **λ = 1.0**: Pure relevance — equivalent to standard vector search
+
+MMR is applied at query time as a reranking step on top of standard search. No reindexing is needed. The typical pattern is to retrieve a larger candidate set via regular vector search, then rerank a subset using MMR.
+
+:::note Result ordering
+
+Results are ordered by MMR score, not query similarity. The first result is always the most relevant, but subsequent results may have lower query similarity because they were chosen for the diversity they add.
+
+:::
+
+See the [how-to guide](../../search/similarity.md#diversity-selection-mmr) for configuration details and code examples.
+
 ## Notes and best practices
 
 All compatible vectors are similar to some degree search.

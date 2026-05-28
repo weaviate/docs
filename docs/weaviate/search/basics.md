@@ -14,7 +14,6 @@ import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.basics-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.basics.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchBasicTest.cs";
 
 With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#retrieve-object-properties) and [metadata](#retrieve-metadata-values) to return.
@@ -54,7 +53,7 @@ You can get objects without specifying any parameters. This returns objects in a
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BasicGet"
@@ -62,14 +61,6 @@ You can get objects without specifying any parameters. This returns objects in a
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START BasicGet"
-    endMarker="// END BasicGet"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -138,7 +129,7 @@ Use `limit` to set a fixed maximum number of objects to return.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithLimit"
@@ -146,14 +137,6 @@ Use `limit` to set a fixed maximum number of objects to return.
       language="java"
     />
   </TabItem> 
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START GetWithLimit"
-    endMarker="// END GetWithLimit"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -215,7 +198,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithOffset"
@@ -223,14 +206,6 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START GetWithOffset"
-    endMarker="// END GetWithOffset"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -267,7 +242,7 @@ To paginate through the entire database, use a [cursor](../manage-objects/read-a
 
 ## Retrieve object `properties`
 
-You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise (_this does not apply to the Go and Java v5 client libraries)_.
+You can specify which object properties to return. By default, all properties and object UUIDs are returned. Blob and reference properties are excluded unless specified otherwise (_this does not apply to the Go client library_).
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -294,7 +269,7 @@ You can specify which object properties to return. By default, all properties an
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetProperties"
@@ -302,14 +277,6 @@ You can specify which object properties to return. By default, all properties an
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START GetProperties"
-    endMarker="// END GetProperties"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -371,7 +338,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetObjectVector"
@@ -379,14 +346,6 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START GetObjectVector"
-    endMarker="// END GetObjectVector"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -448,7 +407,7 @@ You can retrieve the object `id` (uuid).
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetObjectId"
@@ -456,14 +415,6 @@ You can retrieve the object `id` (uuid).
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START GetObjectId"
-    endMarker="// END GetObjectId"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -533,7 +484,7 @@ To retrieve properties from cross-referenced objects, specify:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithCrossRefs"
@@ -602,7 +553,7 @@ You can specify metadata fields to be returned.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetWithMetadata"
@@ -610,14 +561,6 @@ You can specify metadata fields to be returned.
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START GetWithMetadata"
-    endMarker="// END GetWithMetadata"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
@@ -637,6 +580,10 @@ You can specify metadata fields to be returned.
 </Tabs>
 
 For a comprehensive list of metadata fields, see [GraphQL: Additional properties](../api/graphql/additional-properties.md).
+
+:::tip Debugging query performance
+Use [query profiling](./query-profile.md) to get per-shard timing breakdowns for any search query. Add `query_profile=True` to `MetadataQuery` to see exactly how long each phase takes.
+:::
 
 ## Multi-tenancy
 
@@ -667,7 +614,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiTenancy"
@@ -675,14 +622,6 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
       language="java"
     />
   </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START MultiTenancy"
-    endMarker="// END MultiTenancy"
-    language="java"
-  />
-</TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}

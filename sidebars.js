@@ -103,7 +103,14 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: ["weaviate/mcp/docs-mcp-server"],
+      items: [
+        {
+          type: "ref",
+          id: "weaviate/configuration/mcp-server",
+          label: "Weaviate MCP Server",
+        },
+        "weaviate/mcp/docs-mcp-server",
+      ],
     },
     {
       type: "html",
@@ -519,6 +526,11 @@ const sidebars = {
         "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
         {
+          type: "doc",
+          id: "weaviate/configuration/mcp-server",
+          label: "MCP Server",
+        },
+        {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
@@ -628,11 +640,13 @@ const sidebars = {
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
         "weaviate/search/image",
+        "weaviate/search/near-media",
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        "weaviate/search/query-profile",
         {
           type: "link",
           label: "Search strategies: In depth",
@@ -786,15 +800,9 @@ const sidebars = {
           ],
         },
         {
-          type: "category",
-          label: "Java",
-          collapsed: true,
+          type: "doc",
+          id: "weaviate/client-libraries/java/index",
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/client-libraries/java/index",
-          },
-          items: ["weaviate/client-libraries/java/java-v5"],
         },
         {
           type: "doc",
@@ -992,6 +1000,24 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "DigitalOcean",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/installation-guides/digitalocean",
+          className: "sidebar-item",
+        },
+      ],
+    },
   ],
   deployConfigSidebar: [
     {
@@ -1160,6 +1186,11 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/configuration/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/export",
           className: "sidebar-item",
         },
         {
@@ -1456,11 +1487,6 @@ const sidebars = {
         {
           type: "doc",
           id: "cloud/manage-clusters/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "cloud/manage-clusters/upgrade",
           className: "sidebar-item",
         },
         {

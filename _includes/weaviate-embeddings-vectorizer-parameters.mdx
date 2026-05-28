@@ -6,7 +6,6 @@ import TSCode from "!!raw-loader!/docs/weaviate/model-providers/_includes/provid
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ModelProvidersTest.cs";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddings.java";
 
 - `model` (optional): The name of the model to use for embedding generation.
 - `dimensions` (optional): The number of dimensions to use for the generated embeddings.
@@ -39,17 +38,9 @@ The following examples show how to configure Weaviate Embeddings-specific option
       language="goraw"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SnowflakeArcticEmbedMV15"
-      endMarker="// END SnowflakeArcticEmbedMV15"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START SnowflakeArcticEmbedMV15"
       endMarker="// END SnowflakeArcticEmbedMV15"
       language="java"

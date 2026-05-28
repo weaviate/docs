@@ -24,7 +24,7 @@ To help you get started, we're providing a few demo datasets, available on Huggi
 For this example, we will be using the movies dataset to create a movie recommender service
 
 ```python
-!pip install weaviate-client[agents] datasets
+!pip install "weaviate-client[agents]" datasets
 ```
 
 ## Setting Up Weaviate & Importing Data

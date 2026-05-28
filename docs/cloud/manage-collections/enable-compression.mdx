@@ -1,74 +1,110 @@
 ---
-title: Enable RQ compression
+title: Enable compression
 image: og/wcd/user_guides.jpg
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.py';
-import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.ts';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.py";
+import TSCode from "!!raw-loader!/\_includes/code/howto/configure-rq/update-collections-rq.ts";
 
-This guide shows you how to enable [RQ 8-bit compression](../../weaviate/configuration/compression/rq-compression.md) on existing collections in your Weaviate Cloud cluster. RQ compression significantly reduces vector dimensions costs while maintaining high recall.
+This guide shows you how to enable [vector compression](../../weaviate/concepts/vector-quantization.md) on existing collections in your Weaviate Cloud cluster. Compression reduces memory consumption while maintaining high recall.
 
-:::warning Permanent Change
+:::tip Recommended: RQ 8-bit compression
+We recommend [RQ 8-bit compression](../../weaviate/configuration/compression/rq-compression.md) for most use cases. It provides significant memory and storage savings with minimal recall impact, and should result in improved performance for most workloads.
+:::
+
+:::warning Permanent change
 Once compression is enabled on a collection, it cannot be disabled. Always test compression on non-production data first.
 :::
 
-## Prerequisites
+## Enable compression from the console
+
+You can enable compression directly from the Weaviate Cloud console without writing any code.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(56.25% + 46px)",
+    height: 0,
+    width: "100%",
+  }}
+>
+  <iframe
+    id="yr4znlxblp"
+    src="https://app.guideflow.com/embed/yr4znlxblp"
+    width="100%"
+    height="100%"
+    style={{ position: "absolute", inset: 0 }}
+    allow="clipboard-read; clipboard-write"
+    allowFullScreen
+    frameBorder="0"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="yr4znlxblp"
+  ></script>
+</div>
+
+## Enable compression programmatically
+
+You can also enable compression using a Weaviate client library.
+
+### Prerequisites
 
 - A Weaviate [client library](/weaviate/client-libraries) installed
 - [API key](../manage-clusters/authentication.mdx) with write access to your Weaviate Cloud cluster
 
-## Connect to your cluster
+### Connect to your cluster
 
 First, establish a connection to your Weaviate Cloud cluster:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START ConnectCode"
-        endMarker="# END ConnectCode"
-        language="py"
-      />
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ConnectCode"
+      endMarker="# END ConnectCode"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START ConnectCode"
-        endMarker="// END ConnectCode"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ConnectCode"
+      endMarker="// END ConnectCode"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
 Replace `YOUR-WEAVIATE-CLOUD-URL` with your cluster URL (e.g., `https://your-cluster.weaviate.network`) and `YOUR-API-KEY` with your authentication key.
 
-## Update a single collection
+### Update a single collection
 
 The update syntax depends on your collection's **vector index type** (HNSW, flat, or dynamic) and whether it uses **named vectors**.
 
-### HNSW index (default)
+#### HNSW index (default)
 
-Most collections use the HNSW index. To enable RQ 8-bit compression:
+Most collections use the HNSW index. To enable compression:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START UpdateSingleCollectionHNSW"
-        endMarker="# END UpdateSingleCollectionHNSW"
-        language="py"
-      />
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateSingleCollectionHNSW"
+      endMarker="# END UpdateSingleCollectionHNSW"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START UpdateSingleCollectionHNSW"
-        endMarker="// END UpdateSingleCollectionHNSW"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateSingleCollectionHNSW"
+      endMarker="// END UpdateSingleCollectionHNSW"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
@@ -76,103 +112,103 @@ Most collections use the HNSW index. To enable RQ 8-bit compression:
 If your collection uses named vectors (not "default"), update the `name` parameter to match your vector name.
 :::
 
-### Flat index
+#### Flat index
 
-Compression settings on flat indexes are immutable after collection creation. You cannot enable or change compression on an existing flat index. To use RQ compression with a flat index, you must specify the compression settings when creating the collection.
+Compression settings on flat indexes are immutable after collection creation. You cannot enable or change compression on an existing flat index. To use compression with a flat index, you must specify the compression settings when creating the collection.
 
-### Dynamic index
+#### Dynamic index
 
 For collections using the dynamic index, you can update the HNSW compression settings. Note that the flat index portion of a dynamic index cannot be modified after creation:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START UpdateSingleCollectionDynamic"
-        endMarker="# END UpdateSingleCollectionDynamic"
-        language="py"
-      />
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateSingleCollectionDynamic"
+      endMarker="# END UpdateSingleCollectionDynamic"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START UpdateSingleCollectionDynamic"
-        endMarker="// END UpdateSingleCollectionDynamic"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateSingleCollectionDynamic"
+      endMarker="// END UpdateSingleCollectionDynamic"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
-### Legacy collections (pre-named vectors)
+#### Legacy collections (pre-named vectors)
 
 Collections created before Weaviate v1.24 (when named vectors were introduced) use a different schema structure. For these collections, use `vector_index_config` directly instead of `vector_config`:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START UpdateLegacyCollection"
-        endMarker="# END UpdateLegacyCollection"
-        language="py"
-      />
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateLegacyCollection"
+      endMarker="# END UpdateLegacyCollection"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START UpdateLegacyCollection"
-        endMarker="// END UpdateLegacyCollection"
-        language="ts"
-      />
-  </TabItem>
-</Tabs>
-
-## Update multiple collections
-
-Before updating multiple collections, you should understand the index types in your cluster. Different index types require different update syntax.
-
-### List collections by index type
-
-The following example categorizes your collections by their vector index types:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START ListCollectionsByIndexType"
-        endMarker="# END ListCollectionsByIndexType"
-        language="py"
-      />
-  </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START ListCollectionsByIndexType"
-        endMarker="// END ListCollectionsByIndexType"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateLegacyCollection"
+      endMarker="// END UpdateLegacyCollection"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
 ### Update multiple collections
 
-The following example enables RQ compression on HNSW collections in batches. To avoid cluster instability, limit each batch to approximately 100 collections:
+Before updating multiple collections, you should understand the index types in your cluster. Different index types require different update syntax.
+
+#### List collections by index type
+
+The following example categorizes your collections by their vector index types:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START UpdateMultipleCollections"
-        endMarker="# END UpdateMultipleCollections"
-        language="py"
-      />
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ListCollectionsByIndexType"
+      endMarker="# END ListCollectionsByIndexType"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START UpdateMultipleCollections"
-        endMarker="// END UpdateMultipleCollections"
-        language="ts"
-      />
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ListCollectionsByIndexType"
+      endMarker="// END ListCollectionsByIndexType"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+#### Update multiple collections
+
+The following example enables compression on HNSW collections in batches. To avoid cluster instability, limit each batch to approximately 100 collections:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateMultipleCollections"
+      endMarker="# END UpdateMultipleCollections"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateMultipleCollections"
+      endMarker="// END UpdateMultipleCollections"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
@@ -183,6 +219,31 @@ Enabling compression on too many collections at once can cause cluster instabili
 :::tip Dry run
 Consider adding a "dry run" mode that only prints what would change without actually updating collections. Comment out the `collection.config.update()` call and test the logic first.
 :::
+
+### Verify compression status
+
+After enabling compression, verify the configuration:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckCompressionStatus"
+      endMarker="# END CheckCompressionStatus"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CheckCompressionStatus"
+      endMarker="// END CheckCompressionStatus"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+You should see output confirming the compression type and settings (e.g., quantizer type `rq` with `bits: 8` for RQ compression).
 
 ## Performance considerations
 
@@ -206,36 +267,11 @@ For clusters with multiple collections or large vector counts:
 4. **Build in buffers**: Add sufficient delays between batches to allow compression to complete before starting the next batch
 5. **Start with smaller collections**: Test on smaller collections first to understand timing and resource impact before compressing larger ones
 
-## Verify compression status
-
-After enabling compression, verify the configuration:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-      <FilteredTextBlock
-        text={PyCode}
-        startMarker="# START CheckCompressionStatus"
-        endMarker="# END CheckCompressionStatus"
-        language="py"
-      />
-  </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START CheckCompressionStatus"
-        endMarker="// END CheckCompressionStatus"
-        language="ts"
-      />
-  </TabItem>
-</Tabs>
-
-You should see output confirming the quantizer type is `rq` with `bits: 8`.
-
 ## What happens after enabling compression?
 
-When you enable RQ compression on an existing collection:
+When you enable compression on an existing collection:
 
-1. **Existing vectors are re-encoded**: Weaviate automatically converts existing vector data to use RQ compression
+1. **Existing vectors are re-encoded**: Weaviate automatically converts existing vector data to use the selected compression method
 2. **Storage and memory usage are reduced**: Less disk space and RAM are required for vector data
 3. **Query performance**: Query speed remains similar with minimal recall impact (typically 1-2%)
 4. **Irreversible**: The change cannot be undone
@@ -254,12 +290,11 @@ For large collections, the compression process may take some time. Your collecti
 
 ## Further resources
 
-- [How-to configure: Rotational quantization (compression)](../../weaviate/configuration/compression/rq-compression.md)
 - [Concepts: Vector quantization](../../weaviate/concepts/vector-quantization.md)
 - [Starter guides: Managing resources - Compression](../../weaviate/starter-guides/managing-resources/compression.mdx)
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from "/\_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

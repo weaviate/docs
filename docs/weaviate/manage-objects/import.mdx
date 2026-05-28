@@ -12,7 +12,6 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
 import PySuppCode from '!!raw-loader!/_includes/code/howto/sample-data.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
 import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.import.java';
 import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsImportTest.java';
 import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportTest.cs';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
@@ -71,17 +70,9 @@ Find out more about error handling on the Python client [reference page](/weavia
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START BasicBatchImportExample"
-      endMarker="// END BasicBatchImportExample"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START BasicBatchImportExample"
       endMarker="// END BasicBatchImportExample"
       language="java"
@@ -128,14 +119,7 @@ Here's how to import objects into a collection named `MyCollection` using [serve
 ```
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
-
-```java
-// Java support coming soon
-```
-
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
+  <TabItem value="java" label="Java">
 
 ```java
 // Java support coming soon
@@ -176,21 +160,10 @@ The TypeScript client v3 uses gRPC by default.
 The legacy TypeScript client does not support gRPC.
 
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
 
 The Java client v6 uses gRPC by default.
   
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-
-To use the gRPC API with the Java client, add the `setGRPCHost` field to your client connection code. Update `setGRPCSecured` if you use an encrypted connection.<br/><br/>
-
-```java
-Config config = new Config("http", "localhost:8080");
-config.setGRPCSecured(false);
-config.setGRPCHost("localhost:50051");
-```
-
   </TabItem>
   <TabItem value="go" label="Go">
 
@@ -273,17 +246,9 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START BatchImportWithIDExample"
-      endMarker="// END BatchImportWithIDExample"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START BatchImportWithIDExample"
       endMarker="// END BatchImportWithIDExample"
       language="java"
@@ -328,17 +293,9 @@ Use the `vector` property to specify a vector for each object.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START BatchImportWithVectorExample"
-      endMarker="// END BatchImportWithVectorExample"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java v5 (Deprecated)">
-    <FilteredTextBlock
-      text={JavaCode}
       startMarker="// START BatchImportWithVectorExample"
       endMarker="// END BatchImportWithVectorExample"
       language="java"
@@ -375,7 +332,7 @@ When you create an object, you can specify named vectors (if [configured in your
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BatchImportWithNamedVectors"
@@ -406,7 +363,7 @@ You can batch create links from an object to another other object through cross-
       language="py"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BatchImportWithRefExample"
@@ -461,7 +418,7 @@ To try the example code, download the sample data and create the sample input fi
       language="py"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START GetData"
@@ -501,7 +458,7 @@ To try the example code, download the sample data and create the sample input fi
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START JSON streaming"
@@ -541,7 +498,7 @@ To try the example code, download the sample data and create the sample input fi
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START CSV streaming"
@@ -582,7 +539,7 @@ Note that each provider exposes different configuration options.
       language="py"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BatchVectorizationClientModify"

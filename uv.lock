@@ -203,6 +203,19 @@ wheels = [
 ]
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.14.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "soupsieve" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c3/b0/1c6a16426d389813b48d95e26898aff79abbde42ad353958ad95cc8c9b21/beautifulsoup4-4.14.3.tar.gz", hash = "sha256:6292b1c5186d356bba669ef9f7f051757099565ad9ada5dd630bd9de5fa7fb86", size = 627737, upload-time = "2025-11-30T15:08:26.084Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1a/39/47f9197bdd44df24d67ac8893641e16f386c984a0619ef2ee4c51fbbc019/beautifulsoup4-4.14.3-py3-none-any.whl", hash = "sha256:0918bfe44902e6ad8d57732ba310582e98da931428d231a5ecb9e7c703a735bb", size = 107721, upload-time = "2025-11-30T15:08:24.087Z" },
+]
+
+[[package]]
 name = "certifi"
 version = "2025.7.14"
 source = { registry = "https://pypi.org/simple" }
@@ -389,18 +402,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/55/bf/bb927bde63d649296c83e883171ae77074717c1b80fe2868b328bd0dbcbb/datasets-4.5.0.tar.gz", hash = "sha256:00c698ce1c2452e646cc5fad47fef39d3fe78dd650a8a6eb205bb45eb63cd500", size = 588384, upload-time = "2026-01-14T18:27:54.297Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fc/d5/0d563ea3c205eee226dc8053cf7682a8ac588db8acecd0eda2b587987a0b/datasets-4.5.0-py3-none-any.whl", hash = "sha256:b5d7e08096ffa407dd69e58b1c0271c9b2506140839b8d99af07375ad31b6726", size = 515196, upload-time = "2026-01-14T18:27:52.419Z" },
-]
-
-[[package]]
-name = "deprecation"
-version = "2.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/d3/8ae2869247df154b64c1884d7346d412fed0c49df84db635aab2d1c40e62/deprecation-2.1.0.tar.gz", hash = "sha256:72b3bde64e5d778694b0cf68178aed03d15e15477116add3fb773e581f9518ff", size = 173788, upload-time = "2020-04-20T14:23:38.738Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/c3/253a89ee03fc9b9682f1541728eb66db7db22148cd94f89ab22528cd1e1b/deprecation-2.1.0-py2.py3-none-any.whl", hash = "sha256:a10811591210e1fb0e768a8c25517cabeabcba6f0bf96564f8ff45189f90b14a", size = 11178, upload-time = "2020-04-20T14:23:36.581Z" },
 ]
 
 [[package]]
@@ -1094,7 +1095,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "2.24.0"
+version = "2.26.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1106,9 +1107,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/55/13/17e87641b89b74552ed408a92b231283786523edddc95f3545809fab673c/openai-2.24.0.tar.gz", hash = "sha256:1e5769f540dbd01cb33bc4716a23e67b9d695161a734aff9c5f925e2bf99a673", size = 658717, upload-time = "2026-02-24T20:02:07.958Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/91/2a06c4e9597c338cac1e5e5a8dd6f29e1836fc229c4c523529dca387fda8/openai-2.26.0.tar.gz", hash = "sha256:b41f37c140ae0034a6e92b0c509376d907f3a66109935fba2c1b471a7c05a8fb", size = 666702, upload-time = "2026-03-05T23:17:35.874Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c9/30/844dc675ee6902579b8eef01ed23917cc9319a1c9c0c14ec6e39340c96d0/openai-2.24.0-py3-none-any.whl", hash = "sha256:fed30480d7d6c884303287bde864980a4b137b60553ffbcf9ab4a233b7a73d94", size = 1120122, upload-time = "2026-02-24T20:02:05.669Z" },
+    { url = "https://files.pythonhosted.org/packages/c6/2e/3f73e8ca53718952222cacd0cf7eecc9db439d020f0c1fe7ae717e4e199a/openai-2.26.0-py3-none-any.whl", hash = "sha256:6151bf8f83802f036117f06cc8a57b3a4da60da9926826cc96747888b57f394f", size = 1136409, upload-time = "2026-03-05T23:17:34.072Z" },
 ]
 
 [[package]]
@@ -1620,6 +1621,15 @@ wheels = [
 ]
 
 [[package]]
+name = "soupsieve"
+version = "2.8.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7b/ae/2d9c981590ed9999a0d91755b47fc74f74de286b0f5cee14c9269041e6c4/soupsieve-2.8.3.tar.gz", hash = "sha256:3267f1eeea4251fb42728b6dfb746edc9acaffc4a45b27e19450b676586e8349", size = 118627, upload-time = "2026-01-20T04:27:02.457Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/2c/1462b1d0a634697ae9e55b3cecdcb64788e8b7d63f54d923fcd0bb140aed/soupsieve-2.8.3-py3-none-any.whl", hash = "sha256:ed64f2ba4eebeab06cc4962affce381647455978ffc1e36bb79a545b91f45a95", size = 37016, upload-time = "2026-01-20T04:27:01.012Z" },
+]
+
+[[package]]
 name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1708,48 +1718,47 @@ wheels = [
 
 [[package]]
 name = "weaviate-agents"
-version = "1.1.0"
+version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx-sse" },
     { name = "rich" },
     { name = "weaviate-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/ee/d6bdfb66593cd9fcf7efe9c2278539c3d8aa2bc9bee5f6bdf80673196751/weaviate_agents-1.1.0.tar.gz", hash = "sha256:09a09a4e0d1a5039034a54212b7edd87b8b1d2adc8541d59e6d59a63f2aa4a2a", size = 106707, upload-time = "2025-10-14T10:02:39.956Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/1c/cad26eea91555060b2c88ab9b9af9deca41243c67813bb550f86d8d06eb5/weaviate_agents-1.5.0.tar.gz", hash = "sha256:fb61aae5b6658b9e16e72b07699eecd255c16bdacb39824c74520a1a20672669", size = 105783, upload-time = "2026-05-05T12:06:41.059Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/bd/b43e20642d7b432604e614ee503c5fc9017abc7ca1a4d4cd64ab23738d76/weaviate_agents-1.1.0-py3-none-any.whl", hash = "sha256:1184a04ca3119c4a23ab11a1cd512eae8bf23c46db4f32765d8b16a5b8f28aac", size = 44817, upload-time = "2025-10-14T10:02:39.018Z" },
+    { url = "https://files.pythonhosted.org/packages/41/a2/d6a55f3748e8b97bac2d7b641a2456684292f9431129c035b90d575f20ce/weaviate_agents-1.5.0-py3-none-any.whl", hash = "sha256:8c2bbaa9fb02aa548821d465591bf1b4cfc426bc632b35c915d583fa90b1e820", size = 47864, upload-time = "2026-05-05T12:06:39.816Z" },
 ]
 
 [[package]]
 name = "weaviate-client"
-version = "4.19.2"
+version = "4.21.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "authlib" },
-    { name = "deprecation" },
     { name = "grpcio" },
     { name = "httpx" },
     { name = "protobuf" },
     { name = "pydantic" },
     { name = "validators" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0b/57/f3201e5047d91aa9e7a06aa004b995bc8b05b2ea95dd178ace17eaaec16e/weaviate_client-4.19.2.tar.gz", hash = "sha256:99e76e912c95762436089cd5feedbfeea31e892aa13b6ad94729a2a54b316c45", size = 786448, upload-time = "2025-12-31T12:48:46.174Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/a2/6729149edc0bd5884bd0436186f7823f925ec489d47c327a3e408e514494/weaviate_client-4.21.0.tar.gz", hash = "sha256:050243b07f80349bbbaa3d426ace38466a972a073eff5cff62708ae5e9287dbe", size = 838731, upload-time = "2026-04-23T10:37:11.283Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d5/09/636abb5ecfae2316b6584eaae7001a03abfe131f72d747fbec3419075524/weaviate_client-4.19.2-py3-none-any.whl", hash = "sha256:e78306d47c574c4035c87223e480bb77bd6e54142a21c4c58522dd43019fe493", size = 603652, upload-time = "2025-12-31T12:48:44.42Z" },
+    { url = "https://files.pythonhosted.org/packages/83/6b/5ae0aa935602f58fa2c2f5062c3faed8615a45df4b0406eb2d9deeeae73c/weaviate_client-4.21.0-py3-none-any.whl", hash = "sha256:82904bce3aae8f38a880e860195f4a17e6b55810708780f718132199030c8260", size = 639005, upload-time = "2026-04-23T10:37:09.668Z" },
 ]
 
 [[package]]
 name = "weaviate-demo-datasets"
-version = "0.7.0"
+version = "0.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "pandas" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/a5/cbd00fe9822470334e4598fc3d0f093216c496de2ec31a8049e6554cd4d7/weaviate_demo_datasets-0.7.0.tar.gz", hash = "sha256:4acd56d16044eb1bcd1a4f8c95e9fe529fd1e6795bd074f555a7efa728b2a007", size = 69466432, upload-time = "2025-07-28T22:31:52.074Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/6b/558755735d030542b28c5a0a8c051691409930e4975983b97d2e8d926602/weaviate_demo_datasets-0.8.1.tar.gz", hash = "sha256:d2b23f138cf4c5c3f9142869be093a8ac645cd3c266a5106fb64b8d9b1f045a4", size = 69472881, upload-time = "2025-11-14T16:20:40.325Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/92/98/fa48bc0f9c9c55386c20648c3b2162317bc2b570cb5235bc415aeebe4da8/weaviate_demo_datasets-0.7.0-py3-none-any.whl", hash = "sha256:fb8201f75c064946f7ea49712dfaec99a10eda10c34ac8c8269287ae7cc2b23d", size = 73909773, upload-time = "2025-07-28T22:31:39.476Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/c9/f78f61ea1745b16968b4ee343c7f00a8977d9577cf71e02ecdb8f518cd3f/weaviate_demo_datasets-0.8.1-py3-none-any.whl", hash = "sha256:1495bd908200f0dac88c6c2aa4a8bc8c5a0b1b4636b407232a79be7ffd9a1291", size = 73909777, upload-time = "2025-11-14T16:20:30.389Z" },
 ]
 
 [[package]]
@@ -1758,6 +1767,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "anthropic" },
+    { name = "beautifulsoup4" },
     { name = "datasets" },
     { name = "ijson" },
     { name = "openai" },
@@ -1775,6 +1785,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "anthropic", specifier = ">=0.40.0" },
+    { name = "beautifulsoup4", specifier = ">=4.12.0" },
     { name = "datasets", specifier = ">=4.0.0" },
     { name = "ijson", specifier = ">=3.3.0" },
     { name = "openai", specifier = ">=1.50.0" },
@@ -1783,22 +1794,22 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "tqdm", specifier = ">=4.67.1" },
-    { name = "weaviate-agents", specifier = ">=1.1.0" },
-    { name = "weaviate-client", specifier = ">=4.19.0" },
-    { name = "weaviate-demo-datasets", specifier = ">=0.7.0" },
+    { name = "weaviate-agents", specifier = ">=1.5.0" },
+    { name = "weaviate-client", specifier = "==4.21.0" },
+    { name = "weaviate-demo-datasets", specifier = ">=0.8.1" },
     { name = "weaviate-engram", specifier = ">=0.3.0" },
 ]
 
 [[package]]
 name = "weaviate-engram"
-version = "0.3.0"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/b2/7929e35ac1322fb1709dc2df5fb9350eb6c942b2d68929d2749ee290642e/weaviate_engram-0.3.0.tar.gz", hash = "sha256:fbec6aa42652a821a148c68e28821ea0c01c28cdcb18b789ac6b969577c528a9", size = 7954, upload-time = "2026-03-05T11:20:42.329Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8d/2e/c06fb66498ba330d8fd4f03148c9352b6208da624d97db439856eb536606/weaviate_engram-0.6.0.tar.gz", hash = "sha256:8ab9d74253feeee2190fd552292d58ee7b6293457f32bbf3c3103674e6ab76cc", size = 8790, upload-time = "2026-05-08T09:38:55.301Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2e/80/41667ee6e1a6299d38a68e0e9a7eee4668baaab29427fd3f5f1557fc88dd/weaviate_engram-0.3.0-py3-none-any.whl", hash = "sha256:f73a31cf1effb6d73fbfcf2effa50063c18a469ddd26f7116f7357c9075ee46c", size = 13584, upload-time = "2026-03-05T11:20:43.259Z" },
+    { url = "https://files.pythonhosted.org/packages/ee/5e/45b9ab0beb540d2c82607ec6c6dc2e6b46b70d7159ac6c94600c88b17468/weaviate_engram-0.6.0-py3-none-any.whl", hash = "sha256:4e22db022c3aa5853656681ad4e0cabbe2930588a529c97cbeee106d51df1b91", size = 14450, upload-time = "2026-05-08T09:38:56.053Z" },
 ]
 
 [[package]]

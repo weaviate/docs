@@ -11,7 +11,24 @@ on:
     # Only run when pushed to the testing-ci branch
     branches:
       - testing-ci
-  workflow_dispatch: # Manual trigger option
+  workflow_dispatch:
+    inputs:
+      python_client_branch:
+        description: 'Python client branch (leave empty to use pinned version from pyproject.toml)'
+        required: false
+        default: ''
+      typescript_client_branch:
+        description: 'TypeScript client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
+      java_client_branch:
+        description: 'Java client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
+      csharp_client_branch:
+        description: 'C# client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
 
 env:
   # Centralize versions for easier maintenance
@@ -72,7 +89,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'Agents'
           languages-tested: 'Python, TypeScript'
-          artifact-name: 'test-results-agents'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
   test-python:
@@ -93,13 +109,19 @@ jobs:
           sudo rm -rf /usr/local/lib/android &
           sudo rm -rf /usr/local/share/powershell &
           sudo rm -rf /usr/local/share/chromium &
-          sudo rm -rf /usr/local/lib/node_modules &
           wait
 
       - name: Set up test environment
         uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Override Python client branch
+        if: ${{ inputs.python_client_branch != '' }}
+        run: |
+          echo "📦 Installing weaviate-client from branch: ${{ inputs.python_client_branch }}"
+          uv pip install --reinstall "git+https://github.com/weaviate/weaviate-python-client.git@${{ inputs.python_client_branch }}"
+          echo "✅ Branch override installed"
 
       - name: Start services
         run: |
@@ -154,8 +176,30 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
 
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py
+
+          echo "🔑 Obtaining OIDC bearer token..."
+          TOKEN_JSON=$(curl -sf -X POST \
+            "http://localhost:8081/realms/weaviate-test/protocol/openid-connect/token" \
+            -d "grant_type=password" \
+            -d "client_id=weaviate" \
+            -d "client_secret=weaviate-client-secret-123" \
+            -d "username=test-admin" \
+            -d "password=password123" \
+            -d "scope=openid")
+          ACCESS_TOKEN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['access_token'])")
+          EXPIRES_IN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin).get('expires_in', 60))")
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "WEAVIATE_OIDC_ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
+          echo "WEAVIATE_OIDC_EXPIRES_IN=$EXPIRES_IN" >> $GITHUB_ENV
 
           echo "✅ Keycloak configuration completed"
 
@@ -192,7 +236,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'Python'
           languages-tested: 'Python'
-          artifact-name: 'test-results-python'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
@@ -233,6 +276,22 @@ jobs:
         uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Override TypeScript client branch
+        run: |
+          TS_BRANCH="${{ inputs.typescript_client_branch || 'main' }}"
+          echo "📦 Building weaviate-client from branch: $TS_BRANCH"
+          git clone --depth 1 -b "$TS_BRANCH" https://github.com/weaviate/typescript-client.git /tmp/ts-client
+          cd /tmp/ts-client
+          npm install
+          npm run build
+          # `yarn add file:` won't replace node_modules/weaviate-client when a
+          # peer dep (weaviate-agents) pins the same registry version, so the
+          # registry tarball wins. Use `yarn link` to force a symlink instead.
+          yarn link
+          cd "$GITHUB_WORKSPACE"
+          yarn link weaviate-client
+          echo "✅ Branch override linked"
 
       - name: Start services
         run: |
@@ -283,6 +342,37 @@ jobs:
 
           echo "✅ Service check completed"
 
+      - name: Configure Keycloak
+        run: |
+          echo "🔧 Configuring Keycloak..."
+
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+
+          sleep 5
+          uv run python _includes/code/python/keycloak_helper_script.py
+
+          echo "🔑 Obtaining OIDC bearer token..."
+          TOKEN_JSON=$(curl -sf -X POST \
+            "http://localhost:8081/realms/weaviate-test/protocol/openid-connect/token" \
+            -d "grant_type=password" \
+            -d "client_id=weaviate" \
+            -d "client_secret=weaviate-client-secret-123" \
+            -d "username=test-admin" \
+            -d "password=password123" \
+            -d "scope=openid")
+          ACCESS_TOKEN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['access_token'])")
+          EXPIRES_IN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin).get('expires_in', 60))")
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "WEAVIATE_OIDC_ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
+          echo "WEAVIATE_OIDC_EXPIRES_IN=$EXPIRES_IN" >> $GITHUB_ENV
+
+          echo "✅ Keycloak configuration completed"
+
       - name: Record test start time
         run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
@@ -316,7 +406,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'TypeScript'
           languages-tested: 'TypeScript'
-          artifact-name: 'test-results-typescript'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
@@ -335,8 +424,8 @@ jobs:
           done
           docker system prune -f --volumes 2>/dev/null || true
 
-  test-java-v6:
-    name: Test Java v6
+  test-java:
+    name: Test Java
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -358,17 +447,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           cache: 'maven'
 
       - name: Clone and build Java client SNAPSHOT
         run: |
-          echo "📦 Building Java client SNAPSHOT..."
-          git clone --depth 1 https://github.com/weaviate/java-client.git /tmp/java-client
+          JAVA_BRANCH="${{ inputs.java_client_branch || 'main' }}"
+          echo "📦 Building Java client SNAPSHOT from branch: $JAVA_BRANCH"
+          git clone --depth 1 -b "$JAVA_BRANCH" https://github.com/weaviate/java-client.git /tmp/java-client
           cd /tmp/java-client
           mvn install -DskipTests -Dmaven.javadoc.skip=true -q
           echo "✅ Java client SNAPSHOT installed"
@@ -426,15 +516,37 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
 
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py
+
+          echo "🔑 Obtaining OIDC bearer token..."
+          TOKEN_JSON=$(curl -sf -X POST \
+            "http://localhost:8081/realms/weaviate-test/protocol/openid-connect/token" \
+            -d "grant_type=password" \
+            -d "client_id=weaviate" \
+            -d "client_secret=weaviate-client-secret-123" \
+            -d "username=test-admin" \
+            -d "password=password123" \
+            -d "scope=openid")
+          ACCESS_TOKEN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['access_token'])")
+          EXPIRES_IN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin).get('expires_in', 60))")
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "WEAVIATE_OIDC_ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
+          echo "WEAVIATE_OIDC_EXPIRES_IN=$EXPIRES_IN" >> $GITHUB_ENV
 
           echo "✅ Keycloak configuration completed"
 
       - name: Record test start time
         run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-      - name: Run Java v6 tests
+      - name: Run Java tests
         id: run-tests
         continue-on-error: true
         env:
@@ -451,8 +563,8 @@ jobs:
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          echo "🧪 Running Java v6 tests..."
-          uv run pytest -m "java_v6" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "🧪 Running Java tests..."
+          uv run pytest -m "java" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Handle test results
@@ -460,9 +572,8 @@ jobs:
         uses: ./.github/actions/handle-test-results
         with:
           test-outcome: ${{ steps.run-tests.outcome }}
-          test-type: 'Java-v6'
+          test-type: 'Java'
           languages-tested: 'Java'
-          artifact-name: 'test-results-java-v6'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
@@ -510,8 +621,9 @@ jobs:
 
       - name: Clone C# client
         run: |
-          echo "📦 Cloning C# client..."
-          git clone --depth 1 https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
+          CSHARP_BRANCH="${{ inputs.csharp_client_branch || '1.1.0' }}"
+          echo "📦 Cloning C# client from branch: $CSHARP_BRANCH"
+          git clone --depth 1 -b "$CSHARP_BRANCH" https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
           echo "✅ C# client cloned to $(realpath "${{ github.workspace }}/../csharp-client")"
 
       - name: Start services
@@ -567,8 +679,30 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
 
+          # OIDC tokens are issued with iss=http://keycloak:8081/... (the
+          # docker-internal hostname, set via KC_HOSTNAME). Clients running
+          # on the runner host need to resolve that name too — the C# and
+          # Java clients fetch /.well-known/openid-configuration which
+          # points at the keycloak: hostname.
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+
           sleep 5
           uv run python _includes/code/python/keycloak_helper_script.py
+
+          echo "🔑 Obtaining OIDC bearer token..."
+          TOKEN_JSON=$(curl -sf -X POST \
+            "http://localhost:8081/realms/weaviate-test/protocol/openid-connect/token" \
+            -d "grant_type=password" \
+            -d "client_id=weaviate" \
+            -d "client_secret=weaviate-client-secret-123" \
+            -d "username=test-admin" \
+            -d "password=password123" \
+            -d "scope=openid")
+          ACCESS_TOKEN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['access_token'])")
+          EXPIRES_IN=$(echo "$TOKEN_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin).get('expires_in', 60))")
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "WEAVIATE_OIDC_ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
+          echo "WEAVIATE_OIDC_EXPIRES_IN=$EXPIRES_IN" >> $GITHUB_ENV
 
           echo "✅ Keycloak configuration completed"
 
@@ -603,7 +737,6 @@ jobs:
           test-outcome: ${{ steps.run-tests.outcome }}
           test-type: 'CSharp'
           languages-tested: 'C#'
-          artifact-name: 'test-results-csharp'
           slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
 
       - name: Stop services
