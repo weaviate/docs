@@ -837,8 +837,8 @@ const sidebars = {
       collapsible: false,
       items: [
         {
-          type: "doc",
-          id: "weaviate/api/rest",
+          type: "link",
+          href: "/weaviate/api/rest",
           label: "RESTful API",
           className: "sidebar-item",
         },

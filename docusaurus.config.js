@@ -57,7 +57,7 @@ const config = {
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // showSidebar: true,
+          showSidebar: true,
         },
       },
     ],
@@ -67,11 +67,13 @@ const config = {
         id: "engram-api",
         label: "",
         route: "/engram/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
             url: "/specs/engram-openapi.json",
           },
           hideModels: true,
+          showSidebar: true,
         },
       },
     ],
