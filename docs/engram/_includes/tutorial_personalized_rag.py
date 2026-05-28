@@ -104,10 +104,8 @@ assert len(alice_results["user_memories"]) >= 1
 
 
 # START BuildPromptAnthropic
-def build_prompt_anthropic(query, kb_docs, user_memories):
+def build_prompt_anthropic(query, kb_docs, user_memories, anthropic_client):
     """Build a personalized prompt combining KB docs and user memory."""
-    import anthropic
-
     kb_context = "\n".join(f"- {doc}" for doc in kb_docs)
     memory_context = "\n".join(f"- {m.content}" for m in user_memories)
 
@@ -121,7 +119,7 @@ What you know about this user:
 
 Tailor your response to the user's background and preferences."""
 
-    response = anthropic.Anthropic().messages.create(
+    response = anthropic_client.messages.create(
         model="claude-sonnet-4-5-20250929",
         max_tokens=1024,
         system=system_prompt,
@@ -134,10 +132,8 @@ Tailor your response to the user's background and preferences."""
 
 
 # START BuildPromptOpenAI
-def build_prompt_openai(query, kb_docs, user_memories):
+def build_prompt_openai(query, kb_docs, user_memories, openai_client):
     """Build a personalized prompt combining KB docs and user memory."""
-    from openai import OpenAI
-
     kb_context = "\n".join(f"- {doc}" for doc in kb_docs)
     memory_context = "\n".join(f"- {m.content}" for m in user_memories)
 
@@ -151,7 +147,7 @@ What you know about this user:
 
 Tailor your response to the user's background and preferences."""
 
-    response = OpenAI().chat.completions.create(
+    response = openai_client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {"role": "system", "content": system_prompt},
@@ -198,16 +194,22 @@ kb_docs = [
     "Acme's Python SDK supports async operations with asyncio.",
 ]
 
-alice_answer = build_prompt_anthropic(query, kb_docs, alice_memories)
-bob_answer = build_prompt_anthropic(query, kb_docs, bob_memories)
+import anthropic
+from openai import OpenAI
+
+anthropic_client = anthropic.Anthropic()
+openai_client = OpenAI()
+
+alice_answer = build_prompt_anthropic(query, kb_docs, alice_memories, anthropic_client)
+bob_answer = build_prompt_anthropic(query, kb_docs, bob_memories, anthropic_client)
 assert isinstance(alice_answer, str) and len(alice_answer) > 0
 assert isinstance(bob_answer, str) and len(bob_answer) > 0
 assert alice_answer != bob_answer, "Personalized answers should differ for Alice and Bob"
 print(f"Alice (Anthropic): {alice_answer[:100]}...")
 print(f"Bob (Anthropic): {bob_answer[:100]}...")
 
-alice_answer_oai = build_prompt_openai(query, kb_docs, alice_memories)
-bob_answer_oai = build_prompt_openai(query, kb_docs, bob_memories)
+alice_answer_oai = build_prompt_openai(query, kb_docs, alice_memories, openai_client)
+bob_answer_oai = build_prompt_openai(query, kb_docs, bob_memories, openai_client)
 assert isinstance(alice_answer_oai, str) and len(alice_answer_oai) > 0
 assert isinstance(bob_answer_oai, str) and len(bob_answer_oai) > 0
 assert alice_answer_oai != bob_answer_oai, "Personalized answers should differ for Alice and Bob"
@@ -275,7 +277,6 @@ async def handle_concurrent_users():
         for m in memories:
             print(f"  - {m.content}")
 
-    await async_client.aclose()
     return results
 
 

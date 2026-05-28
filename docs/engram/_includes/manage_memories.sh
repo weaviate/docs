@@ -6,12 +6,12 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START GetMemory
-curl https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default \
+curl "https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END GetMemory
 
 # START DeleteMemory
-curl -X DELETE https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default \
+curl -X DELETE "https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END DeleteMemory
 DOCSNIPPETS
@@ -76,7 +76,7 @@ echo "Delete memory: OK"
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
   "$BASE_URL/v1/memories/$MEMORY_ID?user_id=$USER_ID&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY")
-[ "$HTTP_CODE" = "404" ] || echo "Warning: expected 404 after delete, got $HTTP_CODE"
+[ "$HTTP_CODE" = "404" ] || { echo "FAIL: expected 404 after delete, got $HTTP_CODE"; exit 1; }
 
 # Cleanup remaining
 curl -s -X POST "$BASE_URL/v1/memories/search" \

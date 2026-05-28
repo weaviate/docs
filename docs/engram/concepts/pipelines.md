@@ -17,7 +17,7 @@ Pipelines will be configurable in the future.
 Each pipeline is a DAG with multiple entrypoints — one per content type — that converge into shared downstream steps:
 
 1. **Extract** — The entrypoint into the pipeline. Each [content type](input-data-types.md) has its own extraction step (`ExtractFromString`, `ExtractFromConversation`, or `ExtractFromPreExtracted`), but they all feed into the same downstream transform and commit steps.
-2. **Transform** — Refines extracted memories using existing context. Steps like `TransformWithContext`, `TransformOperations`, `TransformConcatenate`, and `TransformAggregate` deduplicate, merge, consolidate, and resolve conflicts with existing memories. `TransformAggregate` and `TransformWithContext` also honor [bounded topics](topics.md), shrinking the topic back under its cap when it would overflow.
+2. **Transform** — Refines extracted memories using existing context. Steps like `TransformWithContext`, `TransformOperations`, `TransformConcatenate`, and `TransformAggregate` deduplicate, merge, consolidate, and resolve conflicts with existing memories. `TransformAggregate` and `TransformWithContext` also honor [bounded topics](topics.md), consolidating multiple extracted facts into the single memory that exists for the topic's scope.
 3. **Buffer** — Pauses the pipeline and accumulates memories (or raw inputs) until a trigger fires — by count, time since the first item, or time since the last item. Buffers can appear anywhere in the pipeline, not just at the start. Memories from different content types that route into the same buffer are aggregated together.
 4. **Commit** — Finalizes the operations (create, update, delete) and persists them to storage.
 

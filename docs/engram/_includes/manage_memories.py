@@ -47,8 +47,8 @@ client.memories.delete(
 try:
     client.memories.get(memory_id, user_id=test_user_id, group="default")
     assert False, "Expected memory to be deleted"
-except APIError:
-    pass  # Memory no longer exists
+except APIError as e:
+    assert e.status_code == 404, f"Expected 404 after delete, got {e.status_code}"
 
 # Cleanup
 _all = client.memories.search(query="dark mode", user_id=test_user_id, group="default")

@@ -197,6 +197,42 @@ else
   echo "Topic filter search: skipped (no topics found)"
 fi
 
+# Differential check: BM25 with no lexical overlap should return 0 results.
+# Catches the regression where the server silently ignores retrieval_type.
+BM25_NO_OVERLAP=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
+  -H "Authorization: Bearer $ENGRAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "submarine periscope rotation",
+    "user_id": "'"$USER_ID"'",
+    "group": "default",
+    "retrieval_config": {"retrieval_type": "bm25", "limit": 10}
+  }' | jq '.memories | length')
+[ "$BM25_NO_OVERLAP" -eq 0 ] || { echo "FAIL: BM25 with no lexical overlap returned $BM25_NO_OVERLAP, expected 0"; exit 1; }
+echo "BM25 no-overlap differential: OK"
+
+# Differential check: a non-existent topic must restrict to 0 results.
+# Catches the regression where the topics parameter is silently dropped.
+NONEXIST_RESP=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/v1/memories/search" \
+  -H "Authorization: Bearer $ENGRAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "user preferences",
+    "topics": ["DefinitelyNotARealTopicXYZ"],
+    "user_id": "'"$USER_ID"'",
+    "group": "default",
+    "retrieval_config": {"retrieval_type": "hybrid", "limit": 10}
+  }')
+NONEXIST_CODE=$(echo "$NONEXIST_RESP" | tail -n1)
+NONEXIST_BODY=$(echo "$NONEXIST_RESP" | sed '$d')
+if [ "$NONEXIST_CODE" -ge 200 ] && [ "$NONEXIST_CODE" -lt 300 ]; then
+  NONEXIST_COUNT=$(echo "$NONEXIST_BODY" | jq '.memories | length')
+  [ "$NONEXIST_COUNT" -eq 0 ] || { echo "FAIL: non-existent topic returned $NONEXIST_COUNT, expected 0"; exit 1; }
+elif [ "$NONEXIST_CODE" -lt 400 ] || [ "$NONEXIST_CODE" -ge 500 ]; then
+  echo "FAIL: unexpected status $NONEXIST_CODE for non-existent topic filter"; exit 1
+fi
+echo "Non-existent topic differential: OK"
+
 # Cleanup
 curl -s -X POST "$BASE_URL/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \

@@ -1,6 +1,7 @@
 import os
 import uuid
 from engram import EngramClient, RetrievalConfig
+from engram.errors import APIError
 
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
@@ -83,6 +84,42 @@ for memory in results:
 
 assert len(results) >= 1
 assert all(m.topic == topic for m in results)
+
+# --- Differential checks: confirm retrieval_type and topics filter are actually applied ---
+
+# BM25 ranks by lexical term overlap. A query whose terms appear nowhere in any
+# stored memory should return 0 results. If the server silently ignored
+# retrieval_type and fell back to vector/hybrid, this would still return hits.
+bm25_no_overlap = client.memories.search(
+    query="submarine periscope rotation",  # no terms in common with the seed
+    user_id=test_user_id,
+    group="default",
+    retrieval_config=RetrievalConfig(retrieval_type="bm25", limit=10),
+)
+assert len(bm25_no_overlap) == 0, (
+    f"BM25 with no lexical overlap should return 0 results, got {len(bm25_no_overlap)}"
+)
+
+# A topics filter for a topic that doesn't exist in this group must restrict
+# results to 0. If the topics parameter were silently dropped, this would still
+# return the seed memory.
+try:
+    nonexistent_topic_results = client.memories.search(
+        query="user preferences",
+        topics=["DefinitelyNotARealTopicXYZ"],
+        user_id=test_user_id,
+        group="default",
+        retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=10),
+    )
+    assert len(nonexistent_topic_results) == 0, (
+        f"topics filter must restrict — non-existent topic should return 0, "
+        f"got {len(nonexistent_topic_results)}"
+    )
+except APIError as e:
+    # Some configurations reject unknown topics with 4xx — that's still enforcement
+    assert 400 <= e.status_code < 500, (
+        f"non-existent topic should return 0 results or a 4xx, got status {e.status_code}"
+    )
 
 # Cleanup
 _all = client.memories.search(query="user", user_id=test_user_id, group="default")

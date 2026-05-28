@@ -63,10 +63,6 @@
             "format": "date-time",
             "type": "string"
           },
-          "id": {
-            "description": "Conversation ID. Auto-generated if not provided.",
-            "type": "string"
-          },
           "messages": {
             "description": "The messages in this conversation. Must contain at least one message.",
             "items": {
@@ -87,43 +83,10 @@
             "description": "When the conversation was last updated (RFC 3339). Defaults to now.",
             "format": "date-time",
             "type": "string"
-          },
-          "user_id": {
-            "description": "User ID associated with this conversation.",
-            "type": "string"
           }
         },
         "required": [
           "messages"
-        ],
-        "type": "object"
-      },
-      "CountRunsResponseBody": {
-        "additionalProperties": false,
-        "properties": {
-          "$schema": {
-            "description": "A URL to the JSON Schema for this object.",
-            "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/CountRunsResponseBody.json"
-            ],
-            "format": "uri",
-            "readOnly": true,
-            "type": "string"
-          },
-          "count": {
-            "description": "Number of pipeline runs",
-            "format": "int64",
-            "type": "integer"
-          },
-          "hours": {
-            "description": "Time window in hours",
-            "format": "int64",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "count",
-          "hours"
         ],
         "type": "object"
       },
@@ -133,23 +96,26 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/CreateMemoryRequest.json"
+              "https://api.engram.weaviate.io/schemas/CreateMemoryRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
             "type": "string"
           },
-          "content": {
-            "$ref": "#/components/schemas/InputContent",
-            "description": "The content to process. Accepts raw text, pre-extracted facts, or a multi-turn conversation."
-          },
-          "conversation_id": {
-            "description": "Conversation ID to scope this memory to. Must be a valid UUID. Required when the topic is conversation-scoped.",
-            "type": "string"
-          },
           "group": {
             "description": "Pipeline group name. Defaults to 'default'.",
             "type": "string"
+          },
+          "input": {
+            "$ref": "#/components/schemas/Input",
+            "description": "The input to process. Accepts one of string, conversation, or pre_extracted."
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Scope properties to associate with this memory. Must include every key any topic in the group is scoped by.",
+            "type": "object"
           },
           "root": {
             "description": "Pipeline entry point. Overrides the default starting step.",
@@ -161,7 +127,7 @@
           }
         },
         "required": [
-          "content"
+          "input"
         ],
         "type": "object"
       },
@@ -188,7 +154,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/ErrorModel.json"
+              "https://api.engram.weaviate.io/schemas/ErrorModel.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -246,34 +212,96 @@
         },
         "type": "object"
       },
-      "InputContent": {
+      "Input": {
         "additionalProperties": false,
         "properties": {
-          "content": {
-            "description": "The text content. Required for 'string' and 'pre_extracted' types.",
-            "type": "string"
-          },
           "conversation": {
             "$ref": "#/components/schemas/ConversationInput",
-            "description": "Conversation payload. Required for 'conversation' type."
+            "description": "Conversation content. Exactly one of string, pre_extracted, or conversation must be set."
           },
-          "topic": {
-            "description": "Target topic name. Required for 'pre_extracted' type.",
+          "pre_extracted": {
+            "$ref": "#/components/schemas/PreExtractedInput",
+            "description": "Pre-extracted content. Exactly one of string, pre_extracted, or conversation must be set."
+          },
+          "string": {
+            "$ref": "#/components/schemas/StringInput",
+            "description": "String content. Exactly one of string, pre_extracted, or conversation must be set."
+          }
+        },
+        "type": "object"
+      },
+      "ListMemoriesRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://api.engram.weaviate.io/schemas/ListMemoriesRequest.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
             "type": "string"
           },
-          "type": {
-            "description": "The input format: 'string' for raw text, 'pre_extracted' for pre-processed facts, or 'conversation' for multi-turn messages.",
-            "enum": [
-              "string",
-              "pre_extracted",
-              "conversation"
-            ],
+          "group": {
+            "description": "Pipeline group name. Defaults to 'default'.",
+            "type": "string"
+          },
+          "limit": {
+            "description": "Maximum number of results. Defaults to 20 when omitted.",
+            "format": "int64",
+            "maximum": 100,
+            "type": "integer"
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Property filter. Searches all topics, narrowing results for topics scoped by passed properties.",
+            "type": "object"
+          },
+          "topics": {
+            "description": "Restrict the search to the listed topics. Each entry is either a topic name or an object with an optional per-topic property filter that composes with top-level properties.",
+            "items": {
+              "description": "A topic to include in the search. Either a topic name string, or an object with `name` and an optional per-topic `properties` filter.",
+              "oneOf": [
+                {
+                  "description": "Topic name.",
+                  "type": "string"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "description": "Topic name.",
+                      "type": "string"
+                    },
+                    "properties": {
+                      "additionalProperties": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "description": "Per-topic property filter. Keys must be ones the topic is scoped by; unknown keys are rejected. Use null to clear an inherited global filter for this topic.",
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "user_id": {
+            "description": "User ID (case-insensitive) to filter results by. Required when searching user-scoped topics.",
             "type": "string"
           }
         },
-        "required": [
-          "type"
-        ],
         "type": "object"
       },
       "Memory": {
@@ -282,7 +310,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/Memory.json"
+              "https://api.engram.weaviate.io/schemas/Memory.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -290,10 +318,6 @@
           },
           "content": {
             "description": "The stored memory content.",
-            "type": "string"
-          },
-          "conversation_id": {
-            "description": "Conversation ID this memory is scoped to, if any.",
             "type": "string"
           },
           "created_at": {
@@ -312,6 +336,13 @@
           "project_id": {
             "description": "The project this memory belongs to.",
             "type": "string"
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "All scope properties associated with this memory.",
+            "type": "object"
           },
           "score": {
             "description": "Relevance score. Only present in search results.",
@@ -349,7 +380,7 @@
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/MemoryList.json"
+              "https://api.engram.weaviate.io/schemas/MemoryList.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -381,8 +412,7 @@
         "additionalProperties": false,
         "properties": {
           "content": {
-            "description": "The message text.",
-            "minLength": 1,
+            "description": "The message text. May be empty for assistant messages that contain only tool calls.",
             "type": "string"
           },
           "created_at": {
@@ -390,23 +420,72 @@
             "format": "date-time",
             "type": "string"
           },
+          "name": {
+            "description": "Name of the tool/function. Used on 'tool' role messages.",
+            "type": "string"
+          },
           "role": {
-            "description": "The role of the message sender: 'user', 'assistant', or 'system'.",
+            "description": "The role of the message sender. 'tool' is mapped to 'user' and 'developer' to 'system' internally.",
             "enum": [
               "user",
               "assistant",
-              "system"
+              "system",
+              "tool",
+              "developer"
             ],
             "type": "string"
           },
-          "tool_call_metadata": {
-            "$ref": "#/components/schemas/ToolCallMetaInput",
-            "description": "Tool call metadata, if this message is related to a tool invocation."
+          "tool_call_id": {
+            "description": "ID of the tool call this message responds to. Used on 'tool' role messages.",
+            "type": "string"
+          },
+          "tool_calls": {
+            "description": "Tool calls made by the assistant.",
+            "items": {
+              "$ref": "#/components/schemas/ToolCallInput"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
           }
         },
         "required": [
-          "role",
-          "content"
+          "role"
+        ],
+        "type": "object"
+      },
+      "PreExtractedInput": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PreExtractedInputItem"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "PreExtractedInputItem": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "topic"
         ],
         "type": "object"
       },
@@ -431,44 +510,13 @@
         ],
         "type": "object"
       },
-      "RunOutput": {
+      "Run": {
         "additionalProperties": false,
         "properties": {
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/RunOutput.json"
-            ],
-            "format": "uri",
-            "readOnly": true,
-            "type": "string"
-          },
-          "error": {
-            "description": "Error details, present only when status is 'failed'.",
-            "type": "string"
-          },
-          "run_id": {
-            "description": "Unique identifier for the pipeline run. Use this to poll the run status.",
-            "type": "string"
-          },
-          "status": {
-            "description": "Current run status: 'running', 'completed', 'failed', or 'in_buffer'.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "run_id",
-          "status"
-        ],
-        "type": "object"
-      },
-      "RunStatusResponseBody": {
-        "additionalProperties": false,
-        "properties": {
-          "$schema": {
-            "description": "A URL to the JSON Schema for this object.",
-            "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/RunStatusResponseBody.json"
+              "https://api.engram.weaviate.io/schemas/Run.json"
             ],
             "format": "uri",
             "readOnly": true,
@@ -529,25 +577,59 @@
         ],
         "type": "object"
       },
+      "RunOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://api.engram.weaviate.io/schemas/RunOutput.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "error": {
+            "description": "Error details, present only when status is 'failed'.",
+            "type": "string"
+          },
+          "run_id": {
+            "description": "Unique identifier for the pipeline run. Use this to poll the run status.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Current run status: 'running', 'completed', 'failed', or 'in_buffer'.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "status"
+        ],
+        "type": "object"
+      },
       "SearchMemoriesRequest": {
         "additionalProperties": false,
         "properties": {
           "$schema": {
             "description": "A URL to the JSON Schema for this object.",
             "examples": [
-              "https://api.engram.weaviate.io/v1/schemas/SearchMemoriesRequest.json"
+              "https://api.engram.weaviate.io/schemas/SearchMemoriesRequest.json"
             ],
             "format": "uri",
             "readOnly": true,
             "type": "string"
           },
-          "conversation_id": {
-            "description": "Conversation ID to filter results by. Must be a valid UUID. Required when searching conversation-scoped topics.",
-            "type": "string"
-          },
           "group": {
             "description": "Pipeline group name. Defaults to 'default'.",
             "type": "string"
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Property filter. Searches all topics, narrowing results for topics scoped by passed properties.",
+            "type": "object"
           },
           "query": {
             "description": "The search query text.",
@@ -559,9 +641,37 @@
             "description": "Controls the search method and result limit. Defaults to hybrid search with a limit of 10."
           },
           "topics": {
-            "description": "Topic names to search. Defaults to all topics in the group.",
+            "description": "Restrict the search to the listed topics. Each entry is either a topic name or an object with an optional per-topic property filter that composes with top-level properties.",
             "items": {
-              "type": "string"
+              "description": "A topic to include in the search. Either a topic name string, or an object with `name` and an optional per-topic `properties` filter.",
+              "oneOf": [
+                {
+                  "description": "Topic name.",
+                  "type": "string"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "description": "Topic name.",
+                      "type": "string"
+                    },
+                    "properties": {
+                      "additionalProperties": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "description": "Per-topic property filter. Keys must be ones the topic is scoped by; unknown keys are rejected. Use null to clear an inherited global filter for this topic.",
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": "object"
+                }
+              ]
             },
             "type": [
               "array",
@@ -578,20 +688,81 @@
         ],
         "type": "object"
       },
-      "ToolCallMetaInput": {
+      "StringInput": {
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "description": "Unique identifier for this tool call.",
+          "content": {
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "type": "object"
+      },
+      "ToolCallCustomInput": {
+        "additionalProperties": false,
+        "properties": {
+          "input": {
+            "description": "Input to the tool, as a string.",
             "type": "string"
           },
           "name": {
-            "description": "The name of the tool or function that was called.",
+            "description": "The name of the custom tool.",
             "type": "string"
           }
         },
         "required": [
           "name",
+          "input"
+        ],
+        "type": "object"
+      },
+      "ToolCallFuncInput": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "description": "JSON-encoded string of the function arguments.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the function.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "arguments"
+        ],
+        "type": "object"
+      },
+      "ToolCallInput": {
+        "additionalProperties": false,
+        "properties": {
+          "custom": {
+            "$ref": "#/components/schemas/ToolCallCustomInput",
+            "description": "Custom tool details. Present when type is 'custom'."
+          },
+          "function": {
+            "$ref": "#/components/schemas/ToolCallFuncInput",
+            "description": "Function details. Present when type is 'function'."
+          },
+          "id": {
+            "description": "Unique identifier for this tool call.",
+            "type": "string"
+          },
+          "type": {
+            "description": "Tool type: 'function' or 'custom'.",
+            "type": "string"
+          }
+        },
+        "required": [
           "id"
         ],
         "type": "object"
@@ -599,100 +770,13 @@
     }
   },
   "info": {
-    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nThe base URL for all projects is:\n\n```\nhttps://api.engram.weaviate.io/v1/\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
+    "description": "Persistent memory for LLM agents and applications. Store, search, and manage memories using vector embeddings and LLM-powered processing.\n\n## Base URL\n\nThe base URL for all projects is:\n\n```\nhttps://api.engram.weaviate.io\n```\n\n## Authentication\n\nInclude your API key in the `Authorization` header:\n\n```\nAuthorization: Bearer eng_your_api_key\n```\n\nAPI keys are scoped to a project. All requests authenticated with a key operate within that project's scope.\n\n## Errors\n\nAll error responses use a consistent format:\n\n```json\n{\n  \"status\": 400,\n  \"message\": \"error description\"\n}\n```\n\n| Code | Description |\n|------|-------------|\n| 400 | Bad request — invalid input or missing required fields |\n| 401 | Unauthorized — missing or invalid API key |\n| 403 | Forbidden — insufficient permissions |\n| 404 | Not found — resource does not exist |\n| 500 | Internal server error |",
     "title": "Engram API",
     "version": "1.0.0"
   },
   "openapi": "3.1.0",
   "paths": {
     "/memories": {
-      "get": {
-        "description": "Returns all memories in the project. Results are scoped to the API key's project.",
-        "operationId": "list-memories",
-        "parameters": [
-          {
-            "description": "Filter by group name",
-            "explode": false,
-            "in": "query",
-            "name": "group",
-            "schema": {
-              "description": "Filter by group name",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by topic name",
-            "explode": false,
-            "in": "query",
-            "name": "topic",
-            "schema": {
-              "description": "Filter by topic name",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by user ID (enables user-scoped topics)",
-            "explode": false,
-            "in": "query",
-            "name": "user_id",
-            "schema": {
-              "description": "Filter by user ID (enables user-scoped topics)",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by conversation ID. Must be a valid UUID.",
-            "explode": false,
-            "in": "query",
-            "name": "conversation_id",
-            "schema": {
-              "description": "Filter by conversation ID. Must be a valid UUID.",
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Maximum number of results",
-            "explode": false,
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "default": 20,
-              "description": "Maximum number of results",
-              "format": "int64",
-              "maximum": 100,
-              "minimum": 1,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MemoryList"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "summary": "List memories",
-        "tags": [
-          "Memories"
-        ]
-      },
       "post": {
         "description": "Send content to be processed through the memory pipeline. Accepts raw text, pre-extracted facts, or a multi-turn conversation. Processing is asynchronous — use the returned `run_id` to track progress.",
         "operationId": "create-memory",
@@ -734,9 +818,51 @@
         ]
       }
     },
+    "/memories/list": {
+      "post": {
+        "description": "Returns all memories in the project. Results are scoped to the API key's project.",
+        "operationId": "list-memories",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListMemoriesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoryList"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "List memories",
+        "tags": [
+          "Memories"
+        ]
+      }
+    },
     "/memories/search": {
       "post": {
-        "description": "Find relevant memories using vector similarity, BM25 keyword matching, or hybrid search. Filter results by topic and scope them to a specific user or conversation.",
+        "description": "Find relevant memories using vector similarity, BM25 keyword matching, or hybrid search.",
         "operationId": "search-memories",
         "requestBody": {
           "content": {
@@ -778,7 +904,7 @@
     },
     "/memories/{id}": {
       "delete": {
-        "description": "Permanently remove a memory by its ID. You must provide the correct scoping parameters (`user_id`, `conversation_id`) if the topic requires them.",
+        "description": "Permanently remove a memory by its ID. You must provide `user_id` if the topic is user-scoped.",
         "operationId": "delete-memory",
         "parameters": [
           {
@@ -834,7 +960,7 @@
         ]
       },
       "get": {
-        "description": "Retrieve a single memory by its ID. You must provide the correct scoping parameters (`user_id`, `conversation_id`) if the topic requires them.",
+        "description": "Retrieve a single memory by its ID. You must provide `user_id` if the topic is user-scoped.",
         "operationId": "get-memory",
         "parameters": [
           {
@@ -897,53 +1023,6 @@
         ]
       }
     },
-    "/runs/count": {
-      "get": {
-        "operationId": "count-runs",
-        "parameters": [
-          {
-            "description": "Count runs in the last N hours",
-            "explode": false,
-            "in": "query",
-            "name": "hours",
-            "schema": {
-              "default": 24,
-              "description": "Count runs in the last N hours",
-              "format": "int64",
-              "maximum": 720,
-              "minimum": 1,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CountRunsResponseBody"
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "default": {
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "summary": "Count pipeline runs for a project",
-        "tags": [
-          "Runs"
-        ]
-      }
-    },
     "/runs/{run_id}": {
       "get": {
         "description": "Check the status of an asynchronous pipeline run. Returns the current state and, once completed, the list of memory operations that were committed (created, updated, or deleted).",
@@ -966,7 +1045,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RunStatusResponseBody"
+                  "$ref": "#/components/schemas/Run"
                 }
               }
             },
@@ -992,7 +1071,7 @@
   },
   "servers": [
     {
-      "url": "https://api.engram.weaviate.io/v1"
+      "url": "https://api.engram.weaviate.io"
     }
   ]
 }

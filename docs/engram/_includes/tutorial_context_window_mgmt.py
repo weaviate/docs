@@ -283,6 +283,7 @@ for _retry in range(5):
 # START TopicFiltering
 results = client.memories.search(
     query="What tech stack does the user prefer?",
+    topics=["UserKnowledge"],
     user_id=user_id,
     group="default",
     retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
@@ -293,6 +294,9 @@ for memory in results:
 # END TopicFiltering
 
 assert len(results) >= 1
+assert all(m.topic == "UserKnowledge" for m in results), (
+    f"topics filter must restrict results, got topics: {[m.topic for m in results]}"
+)
 
 # Cleanup
 for _m in results:
