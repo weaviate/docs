@@ -33,7 +33,7 @@ for cleanup_ns in ("customer1",):
     deadline = time.time() + 60
     while client.namespaces.get(name=cleanup_ns) is not None and time.time() < deadline:
         time.sleep(0.5)
-for cleanup_role in ("sandboxUser", "namespace_admin", "all_namespace_admin"):
+for cleanup_role in ("namespaceUser", "namespace_admin", "all_namespace_admin"):
     try:
         client.roles.delete(role_name=cleanup_role)
     except Exception:
@@ -92,15 +92,15 @@ client.namespaces.update(name="customer1", home_node=target_node)
 
 
 # ==========================================
-# ===== Create a sandbox role for tenants =====
+# ===== Create a role for namespaced principals =====
 # ==========================================
 
-# START SandboxRole
+# START NamespaceUserRole
 # Define the role once at the global level — the RBAC matcher fans the
 # collection pattern out per caller's namespace at request time. Do NOT
 # hard-code `customer1:` into role definitions.
 client.roles.create(
-    role_name="sandboxUser",
+    role_name="namespaceUser",
     permissions=(
         Permissions.collections(
             collection="*",
@@ -114,7 +114,7 @@ client.roles.create(
         )
     ),
 )
-# END SandboxRole
+# END NamespaceUserRole
 
 
 # ==========================================
@@ -122,23 +122,24 @@ client.roles.create(
 # ==========================================
 
 # START CreateNamespacedUser
-# Bind the new DB user to a namespace. The user is stored internally as
-# `customer1:api_user` and can only see resources in `customer1`.
+# Bind the new DB user to a namespace via the `namespace=` argument. The user
+# is stored internally as `customer1:api_user` and can only see resources in
+# `customer1`.
 api_key = client.users.db.create(user_id="api_user", namespace="customer1")
 print(api_key)
 # END CreateNamespacedUser
 
 
 # ==========================================
-# ===== Assign the sandbox role to the namespaced user =====
+# ===== Assign the role to the namespaced user =====
 # ==========================================
 
-# START AssignSandboxRole
+# START AssignNamespaceUserRole
 # Address the namespaced user by its fully-qualified internal name.
 client.users.db.assign_roles(
-    user_id="customer1:api_user", role_names=["sandboxUser"]
+    user_id="customer1:api_user", role_names=["namespaceUser"]
 )
-# END AssignSandboxRole
+# END AssignNamespaceUserRole
 
 
 # ==========================================

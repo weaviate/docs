@@ -2,7 +2,7 @@
 title: Namespaces
 sidebar_position: 8
 image: og/docs/concepts.jpg
-description: Namespaces in Weaviate provide cluster-level tenant isolation — every collection and alias belongs to exactly one namespace. One physical cluster can host many isolated logical "customer clusters" with separate users, schemas, and quotas.
+description: Namespaces in Weaviate provide cluster-level isolation — every collection and alias belongs to exactly one namespace. One physical cluster can host many isolated logical "customer clusters" with separate users, schemas, and quotas.
 # tags: ['namespaces', 'multi-tenancy', 'isolation']
 ---
 
@@ -10,7 +10,7 @@ import NamespacesPreview from '/_includes/feature-notes/namespaces.mdx';
 
 <NamespacesPreview/>
 
-A **namespace** is a cluster-level isolation boundary. Every collection and alias on a namespace-enabled cluster belongs to **exactly one** namespace. Tenants see short names like `Movies`; the cluster stores qualified names like `customer1:Movies`. One physical Weaviate cluster can host many isolated logical "customer clusters" — each with its own collections, aliases, quotas, and authenticated principals — without anything leaking between them.
+A **namespace** is a cluster-level isolation boundary. Every collection and alias on a namespace-enabled cluster belongs to **exactly one** namespace. Namespaced principals see short names like `Movies` and the cluster stores qualified names like `customer1:Movies`. One physical Weaviate cluster can host many isolated logical "customer clusters" — each with its own collections, aliases, quotas, and authenticated principals — without anything leaking between them.
 
 ## Namespaces vs multi-tenancy
 
@@ -26,16 +26,6 @@ These are **two different features** that sound similar. They are orthogonal and
 
 A multi-tenant collection inside a namespace works exactly as before — namespace scopes the *collection*; multi-tenancy scopes the *data within the collection*.
 
-## Phase status
-
-| Phase | Status | What's in it |
-|---|---|---|
-| Phase 1 | **Available in `v1.38` Preview** | Collections + aliases scoped per namespace. Operator-managed DB users. The `:` separator is reserved cluster-wide. |
-| Phase 2 | Designed, not yet shipped | Namespace-local roles and namespace-scoped role assignment. Namespaced principals creating sub-users. |
-| Phase 3 | Deferred | Suspend-on-idle for inactive namespaces. |
-
-This page reflects Phase 1 behavior.
-
 ## Mental model
 
 A namespace is a control-plane entity stored in RAFT. It exposes:
@@ -48,7 +38,7 @@ On a namespace-enabled cluster, the `:` character is **reserved**. Collection, a
 
 ## Cluster prerequisites
 
-Namespace mode is opt-in and only supported on newly bootstrapped clusters. Three server-level invariants are checked at startup:
+Namespace mode is opt-in and only supported on new clusters. Three server-level invariants are checked at startup:
 
 | Setting | Required value | Why |
 |---|---|---|
@@ -74,7 +64,7 @@ Every authenticated request on a namespace-enabled cluster resolves to **exactly
 | Source | Classification |
 |---|---|
 | **Dynamic DB user** — created via `POST /v1/users/db/{user_id}` | Always **namespaced**. The target namespace is set at create time and cannot change. |
-| **Static API key** — configured via `AUTHENTICATION_APIKEY_USERS` + `_ALLOWED_KEYS` | Always **global**. Operator/bootstrap only — not exposed to tenants in managed deployments. |
+| **Static API key** — configured via `AUTHENTICATION_APIKEY_USERS` + `_ALLOWED_KEYS` | Always **global**. Operator/bootstrap only — not exposed to namespaced principals in managed deployments. |
 | **OIDC user** | Classified by token claims — see below. |
 
 ### OIDC classification
@@ -108,6 +98,15 @@ On clusters with `NAMESPACES_ENABLED=false`, presence of either claim in the tok
 | `/v1/backups`, `/v1/replication`, `/v1/nodes` | Blocked via RBAC | ✓ |
 | GraphQL | Disabled cluster-wide | Disabled cluster-wide |
 
+**Blocked via RBAC.** These endpoints exist but are typically not granted to namespaced principals:
+
+- `/v1/backups/...`, `/v1/export/...`
+- `GET /v1/nodes`, `GET /v1/nodes/{className}`
+- `/v1/replication/...`
+- `GET /v1/cluster/statistics`
+- `/v1/authz/...` role/user CRUD
+- `/v1/authz/groups/...` is not applicable on namespace-enabled clusters — namespaces are DB-user / API-key only.
+
 ### Built-in roles on namespace-enabled clusters
 
 The four built-in roles split into two classes:
@@ -117,31 +116,9 @@ The four built-in roles split into two classes:
 
 ## Name resolution
 
-```
-       stored:  customer1:Movies
+Take a collection stored as `customer1:Movies`. A **namespaced principal** sees the short name `Movies`; it submits `Movies` (which Weaviate auto-qualifies to `customer1:Movies`), and submitting the qualified `customer1:Movies` directly is rejected. A **global principal** sees the qualified `customer1:Movies` with no stripping, and must submit `customer1:Movies` — short names fall through the not-found path.
 
-namespaced
-principal:  → sees Movies
-            → submits Movies (auto-qualified to customer1:Movies)
-            → submitting customer1:Movies is rejected
-
-global
-principal:  → sees customer1:Movies (no stripping)
-            → must submit customer1:Movies (short names fall through
-                                            the not-found path)
-```
-
-For a namespaced caller, Weaviate strips the namespace prefix from responses **at the source** — the point where the response is built. Stripping applies to:
-
-- `GET /v1/schema` and per-class schema responses (`class` + cross-reference target class names)
-- Object responses (REST + batch) and `class` fields
-- gRPC `SearchReply` (recursive through ref properties)
-- Alias responses (alias name and target class name)
-- Multi-target beacon URIs (`weaviate://localhost/{class}/{uuid}`)
-- 4xx error messages that mention class names
-- MCP tool replies that surface collection names
-- `getOwnInfo` — a DB user inspecting itself
-
+For a namespaced caller, Weaviate strips the namespace prefix from responses **at the source** — the point where the response is built.
 Stripping uses the caller's **own** namespace. A namespaced caller can never observe another namespace's prefix; the worst-case "leak" would be their own prefix surfacing in a missed strip site.
 
 ### References across namespaces don't work
@@ -170,18 +147,6 @@ These endpoints lack a class-name path segment to namespace-qualify, are depreca
 - Deprecated batch / object endpoints without `className` in the path — the `/objects/{id}` family
 - `POST /v1/classifications/...`
 - GraphQL endpoints
-
-### Blocked via RBAC
-
-These exist but are typically not granted to namespaced principals:
-
-- `/v1/backups/...`, `/v1/export/...`
-- `GET /v1/nodes`, `GET /v1/nodes/{className}`
-- `/v1/replication/...`
-- `GET /v1/cluster/statistics`
-- `/v1/authz/...` role/user CRUD (Phase 1 — unblocks in Phase 2)
-
-`/v1/authz/groups/...` is not applicable on namespace-enabled clusters — namespaces are DB-user / API-key only.
 
 ## Cross-feature interactions
 
