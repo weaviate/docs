@@ -1,7 +1,7 @@
 ---
 title: DigitalOcean + Weaviate
 sidebar_position: 10
-image: og/docs/integrations/provider_integrations.jpg
+image: og/docs/model-provider-integrations.jpg
 # tags: ['model providers', 'digitalocean']
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Text Embeddings
 sidebar_position: 20
-image: og/docs/integrations/provider_integrations.jpg
+image: og/docs/model-provider-integrations.jpg
 # tags: ['model providers', 'digitalocean', 'embeddings']
 ---
 
@@ -164,7 +164,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keywo
 
 ### Available models
 
-DigitalOcean's Serverless Inference catalogue includes several embedding-capable models. See the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/gradient-ai-platform/concepts/serverless-inference/) for the live list — model availability and dimensions can change.
+DigitalOcean's Serverless Inference catalogue includes several embedding-capable models. See the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the live list — model availability and dimensions can change.
 
 :::note Dimensions parameter currently not supported
 
