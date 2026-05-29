@@ -25,7 +25,7 @@ These are **two different features** that sound similar. They are orthogonal and
 | **Use case** | "One Weaviate cluster, many customer environments" | "One collection, many end-users with isolated rows" |
 | **Enabled by** | `NAMESPACES_ENABLED=true` cluster-wide | `MultiTenancyConfig` on the collection |
 
-A multi-tenant collection inside a namespace works exactly as before — namespace scopes the *collection*; multi-tenancy scopes the *data within the collection*.
+A multi-tenant collection inside a namespace works exactly as before: the namespace scopes the *collection*, and multi-tenancy scopes the *data within the collection*.
 
 ## Cluster prerequisites
 
@@ -33,9 +33,9 @@ Namespace mode is opt-in and only supported on new clusters. Three server-level 
 
 | Setting | Required value | Why |
 |---|---|---|
-| `NAMESPACES_ENABLED` | `true` | Master switch. Off by default. |
-| `DISABLE_GRAPHQL` | `true` | GraphQL introspection cannot be safely scoped per namespace. The two flags are validated together at boot. |
-| `REPLICATION_MAXIMUM_FACTOR` | `1` | Every collection in a namespace runs at RF=1 on its single home node. Multi-replica namespaces are out of scope for this preview. |
+| [`NAMESPACES_ENABLED`](/deploy/configuration/env-vars/index.md#NAMESPACES_ENABLED) | `true` | Master switch. Off by default. |
+| [`DISABLE_GRAPHQL`](/deploy/configuration/env-vars/index.md#DISABLE_GRAPHQL) | `true` | GraphQL introspection cannot be safely scoped per namespace. The two flags are validated together at boot. |
+| [`REPLICATION_MAXIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MAXIMUM_FACTOR) | `1` | Every collection in a namespace runs at RF=1 on its single home node. Multi-replica namespaces are out of scope for this preview. |
 
 The server refuses to start if:
 
@@ -51,7 +51,7 @@ A cluster that has ever run with `NAMESPACES_ENABLED=true` cannot be downgraded 
 ### Naming rules
 
 - 3–36 characters
-- `[a-z0-9][a-z0-9-]*[a-z0-9]` — lowercase ASCII, digits, hyphens; cannot start or end with a hyphen
+- `[a-z0-9][a-z0-9-]*[a-z0-9]` — lowercase ASCII, digits, and hyphens, and cannot start or end with a hyphen
 - Cannot contain `:` (the namespace separator, reserved cluster-wide)
 - Not in the reserved list: `admin`, `system`, `default`, `internal`, `weaviate`, `global`, `public`
 
@@ -71,21 +71,10 @@ Every authenticated request on a namespace-enabled cluster resolves to **exactly
 
 Two server env vars name the claims used to classify OIDC tokens:
 
-- `OIDC_NAMESPACE_CLAIM` — the claim holding the namespace string.
-- `OIDC_GLOBAL_PRINCIPAL_CLAIM` — the claim holding the global-principal boolean.
+- [`OIDC_NAMESPACE_CLAIM`](/deploy/configuration/env-vars/index.md#OIDC_NAMESPACE_CLAIM) — the claim holding the namespace string.
+- [`OIDC_GLOBAL_PRINCIPAL_CLAIM`](/deploy/configuration/env-vars/index.md#OIDC_GLOBAL_PRINCIPAL_CLAIM) — the claim holding the global-principal boolean.
 
-The token must select exactly one classification:
-
-| Token shape | Result |
-|---|---|
-| Namespace claim non-empty AND no global claim (or `false`) | Accepted as **namespaced**. |
-| Global claim `true` AND no namespace claim (or empty) | Accepted as **global**. |
-| Both claims set | **Rejected.** Combining is ambiguous. |
-| Neither claim set | **Rejected** on namespace-enabled clusters. |
-| Namespace claim names a non-existent namespace | **Rejected.** Weaviate never auto-creates namespaces. |
-| Token would otherwise carry `root` (via `AUTHORIZATION_RBAC_ROOT_GROUPS` / `_USERS`) AND a namespace claim | **Rejected with 401.** `root` is cluster-global and cannot coexist with a namespace. |
-
-On clusters with `NAMESPACES_ENABLED=false`, presence of either claim in the token causes the request to be rejected.
+A token must resolve to exactly one classification. A non-empty namespace claim with no global claim (or `false`) is accepted as **namespaced**. The global claim set to `true` with no namespace claim is accepted as **global**. Weaviate **rejects** the token when both claims are set (ambiguous), when neither is set, when the namespace claim names a namespace that doesn't exist (Weaviate never auto-creates them), or when a namespace claim is combined with `root` (via `AUTHORIZATION_RBAC_ROOT_GROUPS` / `_USERS`), since `root` is cluster-global and cannot coexist with a namespace. On clusters with `NAMESPACES_ENABLED=false`, presence of either claim causes the request to be rejected.
 
 ### What each kind can do
 
@@ -103,14 +92,14 @@ On clusters with `NAMESPACES_ENABLED=false`, presence of either claim in the tok
 The four built-in roles split into two classes:
 
 - **`root`, `read-only`** — env-var-only operator roles. Not assignable through the role-assignment API. Reserved for explicit global principals.
-- **`admin`, `viewer`** — assignable built-ins safe to grant to namespaced principals, narrowed to allowlists over objects/data, collections/schema, multi-tenancy. `viewer` = read/list; `admin` = CRUD within those families.
+- **`admin`, `viewer`** — assignable built-ins safe to grant to namespaced principals, narrowed to allowlists over objects/data, collections/schema, multi-tenancy. `viewer` = read/list, `admin` = CRUD within those families.
 
 ## Name resolution
 
-Take a collection stored as `customer1:Movies`. A **namespaced principal** sees the short name `Movies`; it submits `Movies` (which Weaviate auto-qualifies to `customer1:Movies`), and submitting the qualified `customer1:Movies` directly is rejected. A **global principal** sees the qualified `customer1:Movies` with no stripping, and must submit `customer1:Movies` — short names fall through the not-found path.
+Take a collection stored as `customer1:Movies`. A **namespaced principal** sees the short name `Movies`. It submits `Movies` (which Weaviate auto-qualifies to `customer1:Movies`), and submitting the qualified `customer1:Movies` directly is rejected. A **global principal** sees the qualified `customer1:Movies` with no stripping, and must submit `customer1:Movies` — short names fall through the not-found path.
 
 For a namespaced caller, Weaviate strips the namespace prefix from responses **at the source** — the point where the response is built.
-Stripping uses the caller's **own** namespace. A namespaced caller can never observe another namespace's prefix; the worst-case "leak" would be their own prefix surfacing in a missed strip site.
+Stripping uses the caller's **own** namespace. A namespaced caller can never observe another namespace's prefix. The worst-case "leak" would be their own prefix surfacing in a missed strip site.
 
 ### References across namespaces don't work
 
@@ -132,7 +121,7 @@ Beacons store the **short** target name in payload — `weaviate://localhost/Mov
 | **Auto-schema** | A namespaced principal who triggers auto-schema creates the resulting collection in their own namespace. |
 | **Filter parser** | Collection names in filter paths are resolved through the namespacing resolver — namespaced callers use short names. |
 | **MCP server** | Both `weaviate-get-collection-config` and `weaviate-query-hybrid` resolve short names via the namespacing resolver. Namespaced principals can use MCP tools transparently. |
-| **Multi-tenancy** | Orthogonal. A multi-tenant collection inside a namespace works as expected; per-tenant data isolation is preserved within the namespace's collection. |
+| **Multi-tenancy** | Orthogonal. A multi-tenant collection inside a namespace works as expected, and per-tenant data isolation is preserved within the namespace's collection. |
 | **Aliases** | Scoped to a namespace. An alias in `customer1` resolves to a collection in `customer1`. |
 | **Audit logging** | Every operation includes the namespace in audit entries — emitted as separate `namespace=` and `collection=` fields (not concatenated), so downstream tooling can filter on namespace without string parsing. |
 

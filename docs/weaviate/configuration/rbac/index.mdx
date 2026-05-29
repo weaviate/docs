@@ -90,7 +90,7 @@ This RBAC system ensures that users only have the access necessary for their rol
 
 :::info On namespace-enabled clusters
 
-When [namespaces](/weaviate/concepts/namespaces.md) are enabled, every authenticated principal is classified as either **namespaced** (a dynamic DB user, or an OIDC user whose token carries a namespace claim) or **global** (a static API key, or an OIDC user with the global claim). Role definitions stay namespace-agnostic — the Casbin matcher scopes them to the caller's own namespace at request time. Built-in roles split: `root` and `read-only` (env-var-only) are reserved for global principals; `admin` and `viewer` (assignable) are the roles that are safe to assign to namespaced principals.
+When [namespaces](/weaviate/concepts/namespaces.md) are enabled, every authenticated principal is classified as either **namespaced** (a dynamic DB user, or an OIDC user whose token carries a namespace claim) or **global** (a static API key, or an OIDC user with the global claim). Role definitions stay namespace-agnostic — the Casbin matcher scopes them to the caller's own namespace at request time. Built-in roles split: `root` and `read-only` (env-var-only) are reserved for global principals. `admin` and `viewer` (assignable) are the roles that are safe to assign to namespaced principals.
 
 :::
 
