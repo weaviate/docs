@@ -191,7 +191,7 @@ By default, Weaviate validates that the token includes a specified client id in 
 
 ## OIDC on namespace-enabled clusters
 
-On clusters with `NAMESPACES_ENABLED=true` ([namespaces, `v1.38`+ Preview](/weaviate/concepts/namespaces.md)), every OIDC token is classified as either a **namespaced** or **global** principal. Two env vars select which claims drive the classification:
+On clusters with `NAMESPACES_ENABLED=true` ([namespaces](/weaviate/concepts/namespaces.md)), every OIDC token is classified as either a **namespaced** or **global** principal. Two env vars select which claims drive the classification:
 
 | Env var | Purpose |
 |---|---|

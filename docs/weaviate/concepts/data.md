@@ -326,7 +326,7 @@ To separate data within a cluster, use multi-tenancy. Weaviate partitions the cl
 
 :::info Multi-tenancy is different from namespaces
 
-[Multi-tenancy](../manage-collections/multi-tenancy.mdx) isolates **data within one collection**. [Namespaces](./namespaces.md) (`v1.38`+ Preview) isolate **collections across the cluster**. They're orthogonal — a multi-tenant collection inside a namespace works as expected.
+[Multi-tenancy](../manage-collections/multi-tenancy.mdx) isolates **data within one collection**. [Namespaces](./namespaces.md) isolate **collections across the cluster**. They're orthogonal — a multi-tenant collection inside a namespace works as expected.
 
 :::
 

@@ -240,7 +240,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 | `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | Enable/disable the request queue buffer for replicated indices in multi-node clusters. Can be modified at runtime. Default: `false` | `boolean` | `true` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
-| `REPLICATION_MAXIMUM_FACTOR` | The maximum replication factor for all collections in the cluster. Must be `1` when [namespaces](/weaviate/concepts/namespaces.md) are enabled. | `string - number` | `1` |
+| `REPLICATION_MAXIMUM_FACTOR` | The maximum replication factor for all collections in the cluster. | `string - number` | `1` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
 
 ```mdx-code-block
