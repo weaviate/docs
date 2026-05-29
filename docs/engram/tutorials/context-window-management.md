@@ -134,6 +134,23 @@ If your project has multiple topics, filter search results to specific topics fo
   language="py"
 />
 
+### Use a `ConversationSummary` topic for full history
+
+For long conversations where you want the LLM to see every detail (not just discrete facts), let Engram maintain a single running summary of the entire conversation and replace the message history with that summary on each turn.
+
+Enable the optional **Include Conversation Summary Topic** checkbox when creating your project from the Personalization template. This adds a `ConversationSummary` topic that's scoped by `conversation_id` and bounded to one memory per conversation. Each `memories.add` updates that memory in place.
+
+Fetch it with the `fetch` retrieval type — it returns the bounded memory directly by topic and scope, without scoring by query relevance.
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ConversationSummary"
+  endMarker="# END ConversationSummary"
+  language="py"
+/>
+
+The summary stays one memory regardless of how long the conversation runs, so the token cost of including it in your LLM call is constant — and the LLM still sees the full conversational context.
+
 ### Hybrid search tuning
 
 Adjust the `retrieval_config` to control how memories are ranked:

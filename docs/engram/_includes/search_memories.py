@@ -66,13 +66,10 @@ results = client.memories.search(
 
 assert len(results) >= 1
 
-# Discover actual topic name from existing results
-topic = results[0].topic
-
 # START TopicFilter
 results = client.memories.search(
     query="user preferences",
-    topics=[topic],
+    topics=["UserKnowledge"],
     user_id=test_user_id,
     group="default",
     retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=10),
@@ -83,7 +80,7 @@ for memory in results:
 # END TopicFilter
 
 assert len(results) >= 1
-assert all(m.topic == topic for m in results)
+assert all(m.topic == "UserKnowledge" for m in results)
 
 # --- Differential checks: confirm retrieval_type and topics filter are actually applied ---
 

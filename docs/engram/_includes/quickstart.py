@@ -1,7 +1,7 @@
 import os
 import time
-import uuid
-from engram import EngramClient
+from engram import EngramClient, RetrievalConfig
+from engram.errors import APIError
 
 # START Connect
 client = EngramClient(
@@ -9,12 +9,31 @@ client = EngramClient(
 )
 # END Connect
 
-test_user_id = f"test-{uuid.uuid4().hex[:8]}"
+
+def _cleanup_alice():
+    """Remove any prior memories for the test user so reruns stay idempotent."""
+    try:
+        existing = client.memories.search(
+            query="user",
+            user_id="alice",
+            group="default",
+            retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=100),
+        )
+        for m in existing:
+            try:
+                client.memories.delete(m.id, user_id="alice", group="default")
+            except APIError:
+                pass
+    except APIError:
+        pass
+
+
+_cleanup_alice()
 
 # START AddMemory
 run = client.memories.add(
     "The user prefers dark mode and uses VS Code as their primary editor.",
-    user_id=test_user_id,
+    user_id="alice",  # any unique string per user (e.g. a username)
 )
 
 print(run.run_id)
@@ -33,12 +52,10 @@ assert status.status == "completed"
 assert status.committed_operations is not None
 assert len(status.memories_created) >= 1
 
-from engram.errors import APIError
-
 # Warm up tenant — retry until search succeeds (tenant may still be initializing)
 for _retry in range(5):
     try:
-        client.memories.search(query="test", user_id=test_user_id, group="default")
+        client.memories.search(query="test", user_id="alice", group="default")
         break
     except APIError:
         time.sleep(3)
@@ -46,7 +63,7 @@ for _retry in range(5):
 # START SearchMemory
 results = client.memories.search(
     query="What editor does the user prefer?",
-    user_id=test_user_id,
+    user_id="alice",
 )
 
 for memory in results:
@@ -54,13 +71,11 @@ for memory in results:
 # END SearchMemory
 
 assert len(results) >= 1
-assert any("VS Code" in m.content or "editor" in m.content or "dark mode" in m.content for m in results)
+assert any(
+    "VS Code" in m.content or "editor" in m.content or "dark mode" in m.content
+    for m in results
+)
 
-# Cleanup
-for _m in results:
-    try:
-        client.memories.delete(_m.id, user_id=test_user_id, group="default")
-    except Exception:
-        pass
+_cleanup_alice()
 
 client.close()

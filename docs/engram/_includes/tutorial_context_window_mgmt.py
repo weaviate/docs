@@ -298,8 +298,65 @@ assert all(m.topic == "UserKnowledge" for m in results), (
     f"topics filter must restrict results, got topics: {[m.topic for m in results]}"
 )
 
+# START ConversationSummary
+conversation_id = f"session-{uuid.uuid4().hex[:8]}"
+
+# Add messages tied to a conversation_id. If the project enabled the
+# `ConversationSummary` topic, the pipeline maintains one summary memory
+# per conversation_id and rewrites it in place on each add.
+run = client.memories.add(
+    [
+        {"role": "user", "content": "I'm planning a trip to Lisbon next month."},
+        {"role": "assistant", "content": "Great choice! Any specific neighborhoods?"},
+        {"role": "user", "content": "I'd love to stay in Alfama for the historic vibe."},
+    ],
+    user_id=user_id,
+    group="default",
+    properties={"conversation_id": conversation_id},
+)
+client.runs.wait(run.run_id)
+
+# Fetch the running summary — `fetch` returns the bounded memory directly
+# by topic + scope, without ranking by query relevance. The topic must be
+# enabled in the project; otherwise the search returns a "topic not found"
+# error.
+try:
+    summary_results = client.memories.search(
+        query="conversation summary",  # ignored by fetch retrieval
+        user_id=user_id,
+        group="default",
+        topics=["ConversationSummary"],
+        properties={"conversation_id": conversation_id},
+        retrieval_config=RetrievalConfig(retrieval_type="fetch", limit=1),
+    )
+except APIError:
+    summary_results = []  # ConversationSummary topic not enabled in this project
+
+if summary_results:
+    print(f"Summary: {summary_results[0].content}")
+# END ConversationSummary
+
+# The summary is only present if the project enabled the optional
+# ConversationSummary topic in the Personalization template. Treat its
+# absence as "not configured" rather than a test failure.
+if summary_results:
+    print(
+        f"ConversationSummary verified: returned 1 memory of "
+        f"length {len(summary_results[0].content)}"
+    )
+else:
+    print(
+        "ConversationSummary topic not enabled in this project — "
+        "skipping summary verification"
+    )
+
 # Cleanup
 for _m in results:
     client.memories.delete(_m.id, user_id=user_id, group="default")
+for _m in summary_results:
+    try:
+        client.memories.delete(_m.id, user_id=user_id, group="default")
+    except APIError:
+        pass
 
 client.close()

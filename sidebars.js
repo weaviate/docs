@@ -1602,12 +1602,12 @@ const sidebars = {
       collapsed: true,
       items: [
         "engram/concepts/memories",
-        "engram/concepts/groups",
         "engram/concepts/topics",
         "engram/concepts/scopes",
         "engram/concepts/input-data-types",
         "engram/concepts/pipelines",
         "engram/concepts/search",
+        "engram/concepts/groups",
       ],
     },
     { type: "html", value: "<hr class='sidebar-divider' />" },

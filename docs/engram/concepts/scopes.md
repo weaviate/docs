@@ -6,11 +6,15 @@ description: "Engram's multi-level scoping system: project, user, and custom pro
 
 Engram uses a multi-level scoping system to isolate memories:
 
-- **Project** — Always required. Every memory belongs to a project, identified by the API key.
+- **Project** — Inherited from the API key. Every memory belongs to exactly one project, so you never set it explicitly.
 - **User** — Required for user-scoped [topics](topics.md). Memories are strictly isolated between users.
 - **Custom properties** — Arbitrary `key: value` pairs (e.g. `conversation_id`, `session_id`, `tenant_id`) that topics can require for additional isolation.
 
 Which scopes a request must provide depends on the topic configuration.
+
+## Project-wide topics
+
+Topics that are not user-scoped are shared across the entire project. These are useful for procedural memory — things an agent learns about how to perform a task, regardless of which user it is working with. No `user_id` is needed.
 
 ## User-scoped topics
 
@@ -27,10 +31,6 @@ results = client.memories.search(
     user_id="alice",
 )
 ```
-
-## Project-wide topics
-
-Topics that are not user-scoped are shared across the entire project. These are useful for procedural memory — things an agent learns about how to perform a task, regardless of which user it is working with. No `user_id` is needed.
 
 ## Custom property scopes
 
@@ -81,7 +81,25 @@ results = client.memories.search(
 
 ## Multiple topics in one request
 
-A single request can interact with multiple topics. The required scope parameters are the union of each topic's requirements. For example, if one topic requires `user_id` and another requires `properties.conversation_id`, the request must include both.
+A single request can interact with multiple topics. The required scope parameters are the **union** of every targeted topic's requirements — if any one of them needs `user_id`, you must pass `user_id`; if any one needs `properties.conversation_id`, you must pass `properties.conversation_id`.
+
+For example, imagine a customer support agent with two topics in the same group:
+
+- `user_facts` — user-scoped, stores per-user facts like "prefers email over phone".
+- `conversation_summary` — scoped by `conversation_id`, keeps a running summary of each conversation.
+
+A single search across both must include `user_id` (required by `user_facts`) and `properties.conversation_id` (required by `conversation_summary`):
+
+```python
+results = client.memories.search(
+    query="What does the user want and where did we leave off?",
+    user_id="alice",
+    properties={"conversation_id": "abc-123"},
+    topics=["user_facts", "conversation_summary"],
+)
+```
+
+Topics that don't require a given parameter simply ignore it — `user_facts` doesn't care about `conversation_id`, but `conversation_summary` uses it to pick the right summary. If you omit a parameter that any targeted topic requires, the request is rejected.
 
 ## Questions and feedback
 
