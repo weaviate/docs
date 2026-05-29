@@ -36,6 +36,7 @@ import APITable from '@site/src/components/APITable';
 | `DEFAULT_SHARDING_COUNT` | Default `desiredCount` for new single-tenant collections, used when the collection definition does not specify one. An explicit `desiredCount` in the class creation request still takes precedence. A value of `0` (default) uses the cluster node count. Multi-tenant collections are unaffected. Must be `<= 512`. Runtime-configurable. Default: `0`<br/>Added in `v1.37` | `string - number` | `12` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - can be overridden by the vectorizer in the collection definition. | `string` | `text2vec-contextionary` |
 | `API_BASED_MODULES_DISABLED` | Weaviate automatically enables the usage of all [API based modules](../../../weaviate/model-providers/index.md#api-based). Set this variable to `true` in order to limit access and only allow specific modules through the [`ENABLE_MODULES`](#ENABLE_MODULES) variable. Default: `false`<br/> Added in `v1.33` | `boolean` | `true` |
+| `DISABLE_GRAPHQL` | If `true`, disable the GraphQL API cluster-wide; use the REST and gRPC APIs instead. Required when [namespaces](/weaviate/concepts/namespaces.md) are enabled. Default: `false` | `boolean` | `true` |
 | `DISABLE_LAZY_LOAD_SHARDS` | When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. **Deprecated in `v1.36.6`.** Use `LAZY_LOAD_SHARD_COUNT_THRESHOLD` and `LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB` instead. Weaviate now auto-detects when lazy loading is needed per collection. | `string` | `false` |
 | `DISABLE_TELEMETRY` | Disable [telemetry](/deploy/configuration/telemetry.md) data collection | boolean | `false` |
 | `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
@@ -239,6 +240,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 | `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | Enable/disable the request queue buffer for replicated indices in multi-node clusters. Can be modified at runtime. Default: `false` | `boolean` | `true` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
+| `REPLICATION_MAXIMUM_FACTOR` | The maximum replication factor for all collections in the cluster. Must be `1` when [namespaces](/weaviate/concepts/namespaces.md) are enabled. | `string - number` | `1` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
 
 ```mdx-code-block

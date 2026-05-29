@@ -1,0 +1,20 @@
+A **namespace** is a cluster-level isolation boundary: every collection and alias belongs to **exactly one** namespace, so one physical Weaviate cluster can host many isolated logical "customer clusters" without anything leaking between them.
+
+For example, a user in namespace `customer1` creates a collection called `Movies`. The cluster stores it under the qualified name `customer1:Movies`, but that user only ever sees the short name `Movies`. A user in another namespace can create their own `Movies` collection without collision.
+
+Each namespace is an entity with three attributes:
+
+- A **name** (`customer1`) — immutable, lowercase ASCII plus digits and hyphens, 3–36 characters.
+- A **home node** that every collection in the namespace pins all its shards to (each namespace runs at replication factor 1).
+- A **state**, either `active` or `deleting`.
+
+On a namespace-enabled cluster the `:` character is **reserved** — collection, alias, role, and user IDs cannot contain it, so the split between a namespace and a short name is always unambiguous.
+
+Terminology used throughout these pages:
+
+- **Principal** — an authenticated identity making a request. On a namespace-enabled cluster every principal is either *namespaced* or *global*.
+  - **Namespaced principal** — a caller bound to a single namespace (a dynamic DB user, or an OIDC user whose token carries a namespace claim). Sees and submits short names like `Movies`.
+  - **Global principal** — a cluster-wide caller (a static API key, or an OIDC user with the global claim). Sees and must submit fully-qualified names like `customer1:Movies`.
+- **Operator** — a global principal with administrative permissions (such as `manage_namespaces`) who creates and manages namespaces and their users.
+- **Name resolution** — how Weaviate maps between the short names a namespaced principal uses (`Movies`) and the qualified names stored on the cluster (`customer1:Movies`), stripping the prefix from responses automatically.
+- **Home node** — the single node a namespace's shards are pinned to.

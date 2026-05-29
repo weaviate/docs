@@ -12,31 +12,35 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/namespaces.py";
 
 import NamespacesPreview from '/_includes/feature-notes/namespaces.mdx';
+import NamespacesOverview from '/_includes/namespaces-overview.mdx';
 
 <NamespacesPreview/>
 
-Operator how-to for the **namespaces** feature — a cluster-level isolation boundary. For the conceptual model and how it differs from per-collection multi-tenancy, see [Namespaces](../concepts/namespaces.md).
+Operator how-to for the **namespaces** feature — a cluster-level isolation boundary. For the conceptual model and how it differs from per-collection multi-tenancy, see [Namespaces](../concepts/namespaces.md). This page covers what an operator does: enable namespaces on a cluster, manage namespace entities, and bootstrap a namespaced DB user.
 
-This page covers what an operator does: enable namespaces on a cluster, manage namespace entities, and bootstrap a namespaced DB user. Examples are in Python.
+<details>
+  <summary>
+    New to namespaces? Concepts and terminology
+  </summary>
+
+<NamespacesOverview/>
+
+</details>
 
 ## Enable namespaces on a new cluster
 
 Namespaces are only supported on **new clusters**. Set the following env vars before first start:
 
-```sh
-NAMESPACES_ENABLED=true
-DISABLE_GRAPHQL=true
-REPLICATION_MAXIMUM_FACTOR=1
-```
+- [`NAMESPACES_ENABLED`](/deploy/configuration/env-vars/index.md#NAMESPACES_ENABLED) — set to `true`. The master switch.
+- [`DISABLE_GRAPHQL`](/deploy/configuration/env-vars/index.md#DISABLE_GRAPHQL) — set to `true`. GraphQL cannot be safely scoped per namespace.
+- [`REPLICATION_MAXIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MAXIMUM_FACTOR) — set to `1`. Every collection in a namespace runs at RF=1 on its home node.
 
 The server validates these at boot. It refuses to start if `NAMESPACES_ENABLED=true` is set on a cluster that already has non-namespaced collections, or if `NAMESPACES_ENABLED=false` is set on a cluster that already has namespace entities.
 
 For OIDC clusters, also set the claim names used to classify tokens (see [Namespaces concept page](../concepts/namespaces.md#oidc-classification) for the rules):
 
-```sh
-OIDC_NAMESPACE_CLAIM=namespace
-OIDC_GLOBAL_PRINCIPAL_CLAIM=is_global
-```
+- [`OIDC_NAMESPACE_CLAIM`](/deploy/configuration/env-vars/index.md#OIDC_NAMESPACE_CLAIM) — name of the claim holding the namespace string (e.g. `namespace`).
+- [`OIDC_GLOBAL_PRINCIPAL_CLAIM`](/deploy/configuration/env-vars/index.md#OIDC_GLOBAL_PRINCIPAL_CLAIM) — name of the claim holding the global-principal boolean (e.g. `is_global`).
 
 :::warning Downgrade is not supported
 
@@ -50,9 +54,9 @@ All `/v1/namespaces` endpoints are **operator-only** and require the `manage_nam
 
 | Verb | Path | Purpose |
 |---|---|---|
-| `POST` | `/v1/namespaces/{namespace_id}` | Create a namespace. |
 | `GET` | `/v1/namespaces` | List namespaces (RBAC-filtered). |
 | `GET` | `/v1/namespaces/{namespace_id}` | Get a namespace. |
+| `POST` | `/v1/namespaces/{namespace_id}` | Create a namespace. |
 | `PUT` | `/v1/namespaces/{namespace_id}` | Update `home_node` only. `name` and `state` are immutable through this endpoint. |
 | `DELETE` | `/v1/namespaces/{namespace_id}` | Two-phase deletion (flip to `deleting`, then cascade cleanup). Idempotent. |
 
@@ -72,15 +76,6 @@ The examples below connect as a global (operator) principal — `client.namespac
 </Tabs>
 
 The `home_node` argument is optional — omit it to let Weaviate pick one automatically. The returned `Namespace` dataclass carries the assigned `home_node` and `state`.
-
-### Naming rules
-
-- 3–36 characters
-- `[a-z0-9][a-z0-9-]*[a-z0-9]` — lowercase ASCII, digits, hyphens; cannot start or end with a hyphen
-- Cannot contain `:` (the namespace separator, reserved cluster-wide)
-- Not in the reserved list: `admin`, `system`, `default`, `internal`, `weaviate`, `global`, `public`
-
-The name is **immutable** after create. To rename, delete the namespace (which cascades to all its collections, aliases, and users) and create a new one.
 
 ## Get and list namespaces
 
@@ -110,7 +105,7 @@ The name is **immutable** after create. To rename, delete the namespace (which c
 
 ## Update the home node
 
-Updating `home_node` only affects future shard placements — existing shards are **not** moved. To move existing shards, do that out of band.
+Updating `home_node` only affects future shard placements — existing shards are **not** moved. 
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

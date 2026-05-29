@@ -7,10 +7,11 @@ description: Namespaces in Weaviate provide cluster-level isolation — every co
 ---
 
 import NamespacesPreview from '/_includes/feature-notes/namespaces.mdx';
+import NamespacesOverview from '/_includes/namespaces-overview.mdx';
 
 <NamespacesPreview/>
 
-A **namespace** is a cluster-level isolation boundary. Every collection and alias on a namespace-enabled cluster belongs to **exactly one** namespace. Namespaced principals see short names like `Movies` and the cluster stores qualified names like `customer1:Movies`. One physical Weaviate cluster can host many isolated logical "customer clusters" — each with its own collections, aliases, quotas, and authenticated principals — without anything leaking between them.
+<NamespacesOverview/>
 
 ## Namespaces vs multi-tenancy
 
@@ -25,16 +26,6 @@ These are **two different features** that sound similar. They are orthogonal and
 | **Enabled by** | `NAMESPACES_ENABLED=true` cluster-wide | `MultiTenancyConfig` on the collection |
 
 A multi-tenant collection inside a namespace works exactly as before — namespace scopes the *collection*; multi-tenancy scopes the *data within the collection*.
-
-## Mental model
-
-A namespace is a control-plane entity stored in RAFT. It exposes:
-
-- A **name** (`customer1`) — immutable, lowercase ASCII + digits + hyphens, 3–36 chars.
-- A **home node** — every collection in the namespace pins all its shards to this node.
-- A **state** — `active` or `deleting`.
-
-On a namespace-enabled cluster, the `:` character is **reserved**. Collection, alias, role, and user IDs cannot contain it; the split between namespace and short name is always unambiguous.
 
 ## Cluster prerequisites
 
@@ -56,6 +47,15 @@ The server refuses to start if:
 A cluster that has ever run with `NAMESPACES_ENABLED=true` cannot be downgraded to a pre-namespace binary. Plan accordingly.
 
 :::
+
+### Naming rules
+
+- 3–36 characters
+- `[a-z0-9][a-z0-9-]*[a-z0-9]` — lowercase ASCII, digits, hyphens; cannot start or end with a hyphen
+- Cannot contain `:` (the namespace separator, reserved cluster-wide)
+- Not in the reserved list: `admin`, `system`, `default`, `internal`, `weaviate`, `global`, `public`
+
+The name is **immutable** after create. To rename, delete the namespace (which cascades to all its collections, aliases, and users) and create a new one.
 
 ## Principals: namespaced vs global
 
@@ -98,21 +98,12 @@ On clusters with `NAMESPACES_ENABLED=false`, presence of either claim in the tok
 | `/v1/backups`, `/v1/replication`, `/v1/nodes` | Blocked via RBAC | ✓ |
 | GraphQL | Disabled cluster-wide | Disabled cluster-wide |
 
-**Blocked via RBAC.** These endpoints exist but are typically not granted to namespaced principals:
-
-- `/v1/backups/...`, `/v1/export/...`
-- `GET /v1/nodes`, `GET /v1/nodes/{className}`
-- `/v1/replication/...`
-- `GET /v1/cluster/statistics`
-- `/v1/authz/...` role/user CRUD
-- `/v1/authz/groups/...` is not applicable on namespace-enabled clusters — namespaces are DB-user / API-key only.
-
 ### Built-in roles on namespace-enabled clusters
 
 The four built-in roles split into two classes:
 
 - **`root`, `read-only`** — env-var-only operator roles. Not assignable through the role-assignment API. Reserved for explicit global principals.
-- **`admin`, `viewer`** — tenant-safe assignable built-ins, narrowed to allowlists over objects/data, collections/schema, multi-tenancy. `viewer` = read/list; `admin` = CRUD within those families.
+- **`admin`, `viewer`** — assignable built-ins safe to grant to namespaced principals, narrowed to allowlists over objects/data, collections/schema, multi-tenancy. `viewer` = read/list; `admin` = CRUD within those families.
 
 ## Name resolution
 
@@ -134,26 +125,12 @@ Beacons store the **short** target name in payload — `weaviate://localhost/Mov
 | Collection count per namespace | Reinterprets `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` as **per-namespace** on NS-enabled clusters | Checked at schema-create time. |
 | Vector dimensions per namespace | Reserved in design | Not yet enforced in Phase 1. |
 
-## Disabled and blocked surfaces
-
-### Cluster-wide disabled
-
-- **GraphQL** — required to be off (`DISABLE_GRAPHQL=true`). Use REST and gRPC instead.
-
-### 410 Gone on namespace-enabled clusters
-
-These endpoints lack a class-name path segment to namespace-qualify, are deprecated, or are GraphQL-only. They return `410 Gone` on a namespace-enabled cluster and remain available on non-namespaced clusters:
-
-- Deprecated batch / object endpoints without `className` in the path — the `/objects/{id}` family
-- `POST /v1/classifications/...`
-- GraphQL endpoints
-
 ## Cross-feature interactions
 
 | Feature | Behavior on namespace-enabled clusters |
 |---|---|
-| **Auto-schema** | A namespaced principal who triggers auto-schema creates the resulting class in their own namespace. |
-| **Filter parser** | Class names in filter paths are resolved through the namespacing resolver — namespaced callers use short names. |
+| **Auto-schema** | A namespaced principal who triggers auto-schema creates the resulting collection in their own namespace. |
+| **Filter parser** | Collection names in filter paths are resolved through the namespacing resolver — namespaced callers use short names. |
 | **MCP server** | Both `weaviate-get-collection-config` and `weaviate-query-hybrid` resolve short names via the namespacing resolver. Namespaced principals can use MCP tools transparently. |
 | **Multi-tenancy** | Orthogonal. A multi-tenant collection inside a namespace works as expected; per-tenant data isolation is preserved within the namespace's collection. |
 | **Aliases** | Scoped to a namespace. An alias in `customer1` resolves to a collection in `customer1`. |
