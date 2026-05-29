@@ -240,6 +240,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "DigitalOcean",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/digitalocean/index",
+              },
+              items: ["weaviate/model-providers/digitalocean/embeddings"],
+            },
+            {
+              type: "category",
               label: "FriendliAI",
               className: "sidebar-item",
               link: {
