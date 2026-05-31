@@ -48,7 +48,7 @@ When Weaviate detects inconsistent data across nodes, it attempts to repair the 
 
 Weaviate offers [async replication](/weaviate/concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
 
-Repair-on-read is automatic. To activate async replication, set `asyncEnabled` to true in the `replicationConfig` section of your collection definition.
+Repair-on-read is automatic. As of Weaviate `v1.38`, async replication is also **enabled by default** for any collection with a replication factor greater than `1` — there is no longer a per-collection flag to switch it on. To turn it off cluster-wide, set the [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#async-replication) environment variable to `true`. The `replicationConfig` section is used to set the replication factor and to fine-tune async replication via `asyncConfig`:
 
 import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/replication-consistency.mdx';
 
@@ -64,8 +64,10 @@ Update the following [environment variables](/deploy/configuration/env-vars/inde
 
 #### Worker limits
 
-- **Set the cluster-wide worker cap:** `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`
-  Set the maximum number of concurrent async replication workers across the entire cluster. Default: `30`. Individual collections can set their own `maxWorkers` via `asyncConfig`, but the total across all collections will not exceed this cluster limit.
+- **Set the scheduler worker pool size:** `ASYNC_REPLICATION_SCHEDULER_WORKERS`
+  Set the number of workers in the cluster-wide pool that run async replication work across all shards and tenants. Default: `10`, maximum: `100`. As of `v1.38` this replaces the removed `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` variable and the per-collection `maxWorkers` option; collections share this single pool.
+- **Set hash tree init concurrency:** `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`
+  Set how many shards may build their hash tree concurrently when async replication starts up. Default: `100`.
 
 #### Logging
 
@@ -78,12 +80,14 @@ Update the following [environment variables](/deploy/configuration/env-vars/inde
   Define how often each node compares its local data with other nodes.
 - **Set comparison timeout:** `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT`
   Optionally configure a timeout for how long to wait during comparison when a node is unresponsive.
-- **Monitor node availability:** `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
-  Trigger comparisons whenever there’s a change in node availability.
 - **Configure hash tree height:** `ASYNC_REPLICATION_HASHTREE_HEIGHT`
   Specify the size of the hash tree, which helps narrow down data differences by comparing hash digests at multiple levels instead of scanning entire datasets. See [this page](/weaviate/concepts/replication-architecture/consistency.md#memory-and-performance-considerations-for-async-replication) for more information on the memory and performance considerations for async replication.
 - **Batch size for digest comparison:** `ASYNC_REPLICATION_DIFF_BATCH_SIZE`
   Define the number of objects whose digest (e.g., last update time) is compared between nodes before propagating actual objects.
+
+:::note Removed in `v1.38`
+The `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` (replaced by `ASYNC_REPLICATION_SCHEDULER_WORKERS`) and `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY` environment variables were removed in `v1.38` when async replication moved to a centralized scheduler.
+:::
 
 #### Data synchronization
 
