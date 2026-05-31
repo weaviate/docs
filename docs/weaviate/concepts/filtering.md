@@ -80,7 +80,7 @@ The `indexRangeFilters` index is a range-based index for filtering by numerical 
 
 Internally, rangeable indexes are implemented as roaring bitmap slices. This data structure limits the index to values that can be stored as 64 bit integers.
 
-Before `v1.38`, `indexRangeFilters` was only available for new properties — existing properties could not be converted to use the rangeable index. From `v1.38`, you can add a rangeable index to an existing property on a populated collection without restart using the [runtime reindex](../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection-v138) endpoints.
+Before `v1.38`, `indexRangeFilters` was only available for new properties — existing properties could not be converted to use the rangeable index. From `v1.38`, you can add a rangeable index to an existing property on a populated collection without restart using the [runtime reindex](../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection) endpoints.
 
 ## Recall on Pre-Filtered Searches
 

@@ -19,7 +19,7 @@ An **inverted index** is a data structure in Weaviate that enables efficient tex
 
 :::tip Change inverted indexes on a collection (v1.38+)
 
-You can add, change, rebuild, or drop inverted indexes on a populated collection without restart. See [Reindex a property on a collection](#reindex-a-property-on-a-collection-v138).
+You can add, change, rebuild, or drop inverted indexes on a populated collection without restart. See [Reindex a property on a collection](#reindex-a-property-on-a-collection).
 
 :::
 
@@ -164,7 +164,7 @@ The following index types can be dropped: `searchable`, `filterable`, `rangeFilt
 
 :::note v1.38+
 
-From `v1.38`, the drop is rejected with `409` while a [runtime reindex](#reindex-a-property-on-a-collection-v138) is in progress on the same property. Cancel the in-progress migration first, or wait for it to finish.
+From `v1.38`, the drop is rejected with `409` while a [runtime reindex](#reindex-a-property-on-a-collection) is in progress on the same property. Cancel the in-progress migration first, or wait for it to finish.
 
 :::
 
@@ -271,7 +271,7 @@ For the full list of supported tokenizers — including `kagome_ja`, `kagome_kr`
   </TabItem>
 </Tabs>
 
-## Reindex a property on a collection (v1.38+)
+## Reindex a property on a collection
 
 <RuntimeReindexPreview/>
 
@@ -279,7 +279,7 @@ From `v1.38`, you can change a property's inverted-index configuration on a **po
 
 These operations cover **inverted indexes only** (filterable, searchable, and range indexes, the BM25 algorithm, and tokenization). Vector indexes are configured separately — see [Vector configuration](./vector-config.mdx).
 
-The feature is **REST-only** for the v1.38 Preview — there is no client-library support yet, so the examples below use `curl`. All examples assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections` (required to submit a reindex) and `READ` on `CollectionsMetadata` (required to read the migration status). For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
+The feature is **REST-only** for the v1.38 Preview — there is no client-library support yet, so the examples below use `curl`. All examples assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections` (required to submit a reindex) and `READ` on `CollectionsMetadata` (required to read the migration status). For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex).
 
 ### Add an inverted index to a collection
 
@@ -292,7 +292,7 @@ curl -X PUT \
   "$WEAVIATE/v1/schema/Article/indexes/category"
 ```
 
-The body shape selects the index type — `filterable`, `searchable` (requires `text` / `text[]`), or `rangeable` (numeric types only). For the full body-shape reference, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
+The body shape selects the index type — `filterable`, `searchable` (requires `text` / `text[]`), or `rangeable` (numeric types only). For the full body-shape reference, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex).
 
 The server responds `202 Accepted` with a task ID, which you can treat as an opaque identifier:
 
@@ -391,7 +391,7 @@ curl -fsS -H "Authorization: Bearer $TOKEN" \
 }
 ```
 
-Polling this endpoint is cheap, so you can poll in a loop while a migration runs. For the meaning of each `status` value, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview). To poll until an index is `ready`:
+Polling this endpoint is cheap, so you can poll in a loop while a migration runs. For the meaning of each `status` value, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex). To poll until an index is `ready`:
 
 ```bash
 until curl -fsS -H "Authorization: Bearer $TOKEN" "$WEAVIATE/v1/schema/Article/indexes" \
@@ -401,13 +401,13 @@ until curl -fsS -H "Authorization: Bearer $TOKEN" "$WEAVIATE/v1/schema/Article/i
 do sleep 2; done
 ```
 
-To scope a migration to specific tenants on a multi-tenant class, add the `?tenants=` query parameter — see the [multi-tenancy rules](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview) in the reference.
+To scope a migration to specific tenants on a multi-tenant class, add the `?tenants=` query parameter — see the [multi-tenancy rules](../config-refs/indexing/inverted-index.mdx#runtime-reindex) in the reference.
 
 ## Further resources
 
 - [References: Collection definition](/weaviate/config-refs/collections.mdx)
 - [References: Inverted index](../config-refs/indexing/inverted-index.mdx)
-- [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview)
+- [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex)
 - [Concepts: Inverted index](../concepts/indexing/inverted-index.md)
 
 ## Questions and feedback

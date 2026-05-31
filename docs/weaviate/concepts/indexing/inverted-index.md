@@ -174,7 +174,7 @@ Because an inverted index is built at import time, a property created without on
 
 From `v1.38`, Weaviate can **reindex a property on a collection** instead. A reindex builds the new index in the background from the stored objects while the existing index keeps serving reads, then switches over once the rebuild is complete. If the rebuild fails, the property is left in its pre-migration state — nothing is partially applied — and an interrupted reindex resumes automatically after a node restart. This makes adding a missing index, changing tokenization, or migrating BM25 from WAND to BlockMax a non-destructive, restart-safe operation.
 
-For the operational steps, see [How-to: Reindex a property on a collection](/weaviate/manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection-v138); for the endpoint reference, see [References: Runtime reindex](/weaviate/config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
+For the operational steps, see [How-to: Reindex a property on a collection](/weaviate/manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection); for the endpoint reference, see [References: Runtime reindex](/weaviate/config-refs/indexing/inverted-index.mdx#runtime-reindex).
 
 ## Tokenization
 

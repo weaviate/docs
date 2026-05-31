@@ -257,17 +257,17 @@ You can drop (delete) an inverted index from a property. This is a destructive o
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
-REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is rejected while a [runtime reindex](#runtime-reindex-v138-preview) is in progress on the same property.
+REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is rejected while a [runtime reindex](#runtime-reindex) is in progress on the same property.
 
 See [How-to: Drop an inverted index](../../manage-collections/inverted-index.mdx#drop-an-inverted-index) for code examples.
 
-## Runtime reindex (v1.38 Preview)
+## Runtime reindex
 
 import RuntimeReindexPreview from "/_includes/feature-notes/runtime-reindex.mdx";
 
 <RuntimeReindexPreview/>
 
-From `v1.38`, three REST endpoints let you alter a property's inverted-index configuration on a collection without restart. For task-oriented walkthroughs with `curl` examples, see [How-to: Reindex a property on a collection](../../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection-v138). This section is the endpoint and behavior reference.
+From `v1.38`, three REST endpoints let you alter a property's inverted-index configuration on a collection without restart. For task-oriented walkthroughs with `curl` examples, see [How-to: Reindex a property on a collection](../../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection). This section is the endpoint and behavior reference.
 
 ### Endpoints
 
@@ -365,7 +365,7 @@ This is caused by the inverted index being built at import time. If you add a pr
 To avoid this, you can either:
 
 - Add the property before importing objects.
-- From `v1.38`, use the [runtime reindex](#runtime-reindex-v138-preview) endpoints to add or change an inverted index on the collection without restart.
+- From `v1.38`, use the [runtime reindex](#runtime-reindex) endpoints to add or change an inverted index on the collection without restart.
 - On versions before `v1.38`, delete the collection, re-create it with the new property, and then re-import the data.
 
 ## How tokenization affects inverted indexing
