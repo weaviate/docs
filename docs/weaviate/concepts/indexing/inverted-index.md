@@ -50,7 +50,7 @@ import BlockmaxWand from '/_includes/feature-notes/blockmax-wand.mdx';
 
 The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
 
-If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](/deploy/migration/weaviate-1-30.md) — or on `v1.38+`, use the live [Reindex a property](/weaviate/manage-collections/reindex-property.mdx#migrate-bm25-from-wand-to-blockmax) endpoint to migrate without restart.
+If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](/deploy/migration/weaviate-1-30.md) — or on `v1.38+`, use the live [Reindex a property](/weaviate/manage-collections/inverted-index.mdx#migrate-bm25-from-wand-to-blockmax) endpoint to migrate without restart.
 
 :::note Scoring changes with BlockMax WAND
 
@@ -167,6 +167,14 @@ An example of a complete collection object without inverted indexes:
 ```
 
 </details>
+
+### Changing an index after import
+
+Because an inverted index is built at import time, a property created without one (or with the "wrong" tokenization or BM25 algorithm) historically required exporting the data, recreating the collection, and re-importing — an expensive, downtime-prone operation.
+
+From `v1.38`, Weaviate can **reindex a property on a collection** instead. A reindex builds the new bucket in the background from object storage while the existing index keeps serving reads, then atomically flips a single schema flag once every replica has finished. The schema flag is the source of truth: if the rebuild fails, the flag is never flipped and the property stays in its pre-migration state, and an interrupted reindex is picked up automatically after a node restart. This makes adding a missing index, changing tokenization, or migrating BM25 from WAND to BlockMax a non-destructive, restart-safe operation.
+
+For the operational steps, see [How-to: Reindex a property on a collection](/weaviate/manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection-v138); for the endpoint reference, see [References: Runtime reindex](/weaviate/config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
 
 ## Tokenization
 

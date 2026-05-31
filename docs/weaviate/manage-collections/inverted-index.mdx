@@ -13,12 +13,13 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import RuntimeReindexPreview from "/_includes/feature-notes/runtime-reindex.mdx";
 
 An **inverted index** is a data structure in Weaviate that enables efficient text search and filtering operations.
 
-:::tip Change inverted indexes on a live collection (v1.38+)
+:::tip Change inverted indexes on a collection (v1.38+)
 
-You can add, change, rebuild, or drop inverted indexes on a populated collection without restart. See [Reindex a property](./reindex-property.mdx).
+You can add, change, rebuild, or drop inverted indexes on a populated collection without restart. See [Reindex a property on a collection](#reindex-a-property-on-a-collection-v138).
 
 :::
 
@@ -163,7 +164,7 @@ The following index types can be dropped: `searchable`, `filterable`, `rangeFilt
 
 :::note v1.38+ MutationGuard
 
-From `v1.38`, the drop is rejected with `409` while a [runtime reindex](./reindex-property.mdx) is in flight on the same property. Cancel the in-flight task first, or wait for it to reach `ready` / `failed` / `cancelled`.
+From `v1.38`, the drop is rejected with `409` while a [runtime reindex](#reindex-a-property-on-a-collection-v138) is in flight on the same property. Cancel the in-flight task first, or wait for it to reach `ready` / `failed` / `cancelled`.
 
 :::
 
@@ -270,10 +271,144 @@ For the full list of supported tokenizers — including `kagome_ja`, `kagome_kr`
   </TabItem>
 </Tabs>
 
+## Reindex a property on a collection (v1.38+)
+
+<RuntimeReindexPreview/>
+
+From `v1.38`, you can change a property's inverted-index configuration on a **populated collection without restarting the cluster and without losing writes**. Reads stay available throughout the migration. This replaces the previous workaround of exporting the data, recreating the collection, and re-importing.
+
+These operations cover **inverted indexes only** (`IndexFilterable`, `IndexSearchable`, `IndexRangeFilters`, BM25 algorithm, tokenization). Vector indexes are configured separately — see [Vector configuration](./vector-config.mdx).
+
+The feature is **REST-only** for the v1.38 Preview — there is no client-library support yet, so the examples below use `curl`. All examples assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections`. For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
+
+### Add an inverted index to a collection
+
+To enable filtering on a property that was created without an index:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"filterable":{"enabled":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/category"
+```
+
+The body shape selects the index type — `filterable`, `searchable` (requires `text` / `text[]`), or `rangeable` (numeric types only). For the full body-shape reference, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
+
+The server responds `202 Accepted` with a task ID:
+
+```json
+{
+  "status": "STARTED",
+  "taskId": "reindex/Article/category/enable-filterable/1700000000"
+}
+```
+
+### Change tokenization on a collection
+
+To retokenize a populated `text` property:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"tokenization":"trigram"}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+```
+
+If the property has **both** a searchable and a filterable index, they are retokenized together in one coordinated migration. To retokenize only the filterable bucket, send `{"filterable":{"tokenization":"word"}}` instead. For the canonical list of tokenization values, see [Tokenization options](../config-refs/collections.mdx#tokenization).
+
+### Migrate BM25 from WAND to BlockMax
+
+[BlockMax WAND](../concepts/indexing/inverted-index.md#blockmax-wand-algorithm) is a faster scoring algorithm that replaced the original WAND implementation. On collections created before BlockMax was the default, you can migrate every searchable property in one call:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"algorithm":"blockmax"}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+```
+
+The migration touches every searchable property on the class. The class-level `UsingBlockMaxWAND` flag flips to `true` after every property has been rebuilt. This is **one-way** — a request to flip `searchable.algorithm` back from `blockmax` to `wand` is rejected, because WAND is deprecated.
+
+### Rebuild or repair an index
+
+If you suspect corruption or want to refresh an index after heavy data churn, send `rebuild:true` for the bucket type:
+
+```bash
+# Rebuild the BlockMax searchable bucket from object storage
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+
+# Repair a filterable bucket
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"filterable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/category"
+
+# Repair a rangeable bucket
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"rangeable":{"rebuild":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/price"
+```
+
+`searchable.rebuild` is for BlockMax buckets only. To rebuild a property still on WAND, first migrate it to BlockMax (above) — `rebuild:true` on a WAND bucket is rejected. `rangeable.rebuild` rebuilds from **object storage** (the same source enable-rangeable reads from), so it works even on numeric properties created with `IndexFilterable=false`.
+
+### Cancel an in-flight migration
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"searchable":{"cancel":true}}' \
+  "$WEAVIATE/v1/schema/Article/indexes/body"
+```
+
+The response is one of:
+
+- `{"status": "CANCELLED", "taskId": "<id>"}` — a `STARTED` task was found and cancelled.
+- `{"status": "NO_OP"}` — nothing matched (already finished, never submitted, or already cancelled). Idempotent.
+
+Cancelling cleans up partial on-disk state so the next submit starts from a clean slate. The cleanup runs synchronously in the cancel request (with a 10-second drain timeout); if the drain times out, the next submit's pre-cleanup picks up the work.
+
+### Check migration status
+
+```bash
+curl -fsS -H "Authorization: Bearer $TOKEN" \
+  "$WEAVIATE/v1/schema/Article/indexes"
+```
+
+```json
+{
+  "collection": "Article",
+  "properties": [{
+    "name": "body",
+    "dataType": "text",
+    "indexes": [
+      { "type": "filterable", "status": "ready",    "tokenization": "word" },
+      { "type": "searchable", "status": "indexing", "progress": 0.42,
+        "tokenization": "word", "targetTokenization": "trigram",
+        "algorithm": "blockmax" }
+    ]
+  }]
+}
+```
+
+The endpoint reads cluster task state directly, so polling in a tight loop is safe. For the meaning of each `status` value, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview). To poll until an index is `ready`:
+
+```bash
+until curl -fsS "$WEAVIATE/v1/schema/Article/indexes" \
+      | jq -e '.properties[] | select(.name=="body")
+                   | .indexes[] | select(.type=="searchable")
+                   | .status == "ready"' > /dev/null
+do sleep 2; done
+```
+
+To scope a migration to specific tenants on a multi-tenant class, add the `?tenants=` query parameter — see the [multi-tenancy rules](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview) in the reference.
+
 ## Further resources
 
 - [References: Collection definition](/weaviate/config-refs/collections.mdx)
-- [Concepts: Inverted index](../config-refs/indexing/inverted-index.mdx)
+- [References: Inverted index](../config-refs/indexing/inverted-index.mdx)
+- [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview)
+- [Concepts: Inverted index](../concepts/indexing/inverted-index.md)
 
 ## Questions and feedback
 

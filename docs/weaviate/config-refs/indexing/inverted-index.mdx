@@ -257,13 +257,19 @@ You can drop (delete) an inverted index from a property. This is a destructive o
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
-REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is gated by the [runtime-reindex](../../manage-collections/reindex-property.mdx) MutationGuard — rejected while a reindex is in flight on the same property.
+REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is gated by the [runtime-reindex](#runtime-reindex-v138-preview) MutationGuard — rejected while a reindex is in flight on the same property.
 
 See [How-to: Drop an inverted index](../../manage-collections/inverted-index.mdx#drop-an-inverted-index) for code examples.
 
 ## Runtime reindex (v1.38 Preview)
 
-From `v1.38`, three REST endpoints let you alter a property's inverted-index configuration on a live collection without restart:
+import RuntimeReindexPreview from "/_includes/feature-notes/runtime-reindex.mdx";
+
+<RuntimeReindexPreview/>
+
+From `v1.38`, three REST endpoints let you alter a property's inverted-index configuration on a collection without restart. For task-oriented walkthroughs with `curl` examples, see [How-to: Reindex a property on a collection](../../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection-v138). This section is the endpoint and behavior reference.
+
+### Endpoints
 
 | Method | Path | Purpose |
 |---|---|---|
@@ -271,7 +277,78 @@ From `v1.38`, three REST endpoints let you alter a property's inverted-index con
 | `DELETE` | `/v1/schema/{class}/properties/{property}/index/{indexName}` | Drop a configured index. `indexName` ∈ `{filterable, searchable, rangeFilters}`. |
 | `GET` | `/v1/schema/{class}/indexes` | Read per-property index status. |
 
-`PUT` / `DELETE` require `UPDATE` on `Collections`; `GET` requires `READ` on `CollectionsMetadata`. See [How-to: Reindex a property](../../manage-collections/reindex-property.mdx) for request bodies, response shapes, concurrency rules, and worked examples.
+### Request body shapes (`PUT`)
+
+| Body | Effect |
+|---|---|
+| `{"filterable":{"enabled":true}}` | Creates a `RoaringSet` bucket and flips `IndexFilterable=true`. |
+| `{"searchable":{"enabled":true,"tokenization":"word"}}` | Creates a BlockMax searchable bucket, sets `Tokenization`, flips `IndexSearchable=true`. Requires `text` / `text[]`. |
+| `{"rangeable":{"enabled":true}}` | Creates a `RoaringSetRange` bucket and flips `IndexRangeFilters=true`. Numeric types only (`int`, `number`, `date`). |
+| `{"searchable":{"tokenization":"trigram"}}` | Retokenizes a populated `text` property. If a filterable bucket also exists, both are retokenized together. |
+| `{"searchable":{"algorithm":"blockmax"}}` | Migrates every searchable property on the class from WAND to BlockMax. One-way; flipping back to `wand` is rejected. |
+| `{"<bucket>":{"rebuild":true}}` | Rebuilds the named bucket (`filterable` / `searchable` / `rangeable`) from object storage. `searchable.rebuild` requires the property to already be on BlockMax. |
+| `{"<bucket>":{"cancel":true}}` | Cancels an in-flight task on the property. Idempotent — returns `NO_OP` when nothing matches. |
+
+A successful submit returns `202 Accepted` with `{"status":"STARTED","taskId":"<id>"}`.
+
+### Status values (`GET`)
+
+`GET /v1/schema/{class}/indexes` returns per-property index status. Each index reports one of:
+
+| `status` | Meaning |
+|---|---|
+| `ready` | Index is live and serving. No migration in flight. |
+| `pending` | A task has been accepted; per-shard work has not started yet. |
+| `indexing` | Per-shard work is running. `progress` is a 0..1 estimate. |
+| `failed` | At least one node reported `Success=false`. The schema flag was **not** flipped — the property is still in its pre-migration state. Submit a new task to retry. |
+| `cancelled` | Operator cancelled. Partial state has been scrubbed. |
+
+Between "task FINISHED" and "schema flag flipped", the response keeps the index at `indexing@100%` for a 3–10-second finalize window so the status never blinks back to a pre-migration shape before the schema catches up.
+
+### Concurrency
+
+- **Per `(class, property)` exclusivity** — only one migration is allowed in flight on a given `(collection, property)` pair. A second submit on the same pair returns `409` with the offending task ID.
+- **Per-class cap** — up to 32 concurrent migrations per class. The next submit returns `429 Too Many Requests` until the in-flight units drain.
+- **Different properties on the same class run in parallel.** Different classes are fully independent.
+
+While a reindex is in flight on `(class, property)`, the schema FSM rejects `UpdateProperty` on the same property, `DeleteClass` on the affected class, `DeleteTenants` / `UpdateTenants` that make targeted shards locally unavailable (HOT → COLD / FROZEN / OFFLOADED), and `DELETE …/index/{indexName}` on the same property. The reject message names the in-flight task. A reindex on a **different** property of the same class is not blocked.
+
+### Multi-tenancy
+
+Scope a task to specific tenants on a multi-tenant class with the `?tenants=` query parameter (comma-separated). The rules:
+
+| Class | `?tenants=` | Migration type | Result |
+|---|---|---|---|
+| Single-tenant | provided | any | `400` |
+| Multi-tenant | omitted | format-only (`rebuild`, `repair`, `enable-rangeable`) | targets all tenants |
+| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-*`) | targets all tenants (the schema flip is cluster-wide) |
+| Multi-tenant | provided | format-only | targets the named subset |
+| Multi-tenant | provided | semantic | `400` — semantic migrations cannot be sub-scoped |
+| any | tenant in `OFFLOADED` / `FROZEN` | any | `400` — the offending tenant is named in the error |
+
+Each tenant's replicas form an independent barrier group: tenant A starts serving the new bucket as soon as its own replicas finish, even if tenant B is still reindexing.
+
+### Errors and recovery
+
+| Code | When | Resolution |
+|---|---|---|
+| `400` | Malformed body, wrong property type, missing prerequisite (e.g. `searchable.tokenization` on a property with no searchable index), `?tenants=` on a single-tenant class, `?tenants=` on a semantic migration, target tenant in `OFFLOADED` / `FROZEN`. | Error responses carry next-step hints — read them. |
+| `404` | Class or property doesn't exist. | Verify the class + property names. |
+| `409` | An in-flight task overlaps this `(collection, property)`. The error names the offending task ID and migration type. | Wait, or cancel the existing task first. |
+| `429` | Per-class in-flight cap reached (32 concurrent migrations). | Retry once in-flight migrations drain. |
+| `503` | Cluster service temporarily unavailable. | Retry. |
+
+The schema flag is the source of truth: if a task ends in `failed`, the flag was not flipped and the property is still in its pre-migration state. A reindex is restart-safe at every phase — in-flight migrations are picked up automatically after a node restart.
+
+### Required permissions
+
+| Endpoint | Required permission |
+|---|---|
+| `GET /v1/schema/{class}/indexes` | `READ` on `CollectionsMetadata` |
+| `PUT /v1/schema/{class}/indexes/{property}` | `UPDATE` on `Collections` |
+| `DELETE /v1/schema/{class}/properties/{property}/index/{indexName}` | `UPDATE` on `CollectionsMetadata` |
+
+`PUT` is intentionally stricter than the other endpoints: submitting a reindex task rebuilds buckets on every replica and flips schema flags, so it requires `UPDATE` on `Collections` — the same permission that gates `UpdateClass` and replication-factor changes. `DELETE` shares the existing schema-metadata permission (`UPDATE` on `CollectionsMetadata`) used by the other property-management endpoints. There is no dedicated `reindex` role today.
 
 ## How Weaviate creates inverted indexes
 
@@ -288,9 +365,8 @@ This is caused by the inverted index being built at import time. If you add a pr
 To avoid this, you can either:
 
 - Add the property before importing objects.
-- Delete the collection, re-create it with the new property and then re-import the data.
-
-We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
+- From `v1.38`, use the [runtime reindex](#runtime-reindex-v138-preview) endpoints to add or change an inverted index on the collection without restart.
+- On versions before `v1.38`, delete the collection, re-create it with the new property, and then re-import the data.
 
 ## How tokenization affects inverted indexing
 
