@@ -35,6 +35,22 @@ def test_connection(empty_weaviates, test_class):
     run_csharp_test(test_class, empty_weaviates)
 
 
+# Most LlmsTxtTest [Fact] methods connect to Weaviate Cloud (text2vec-weaviate
+# requires Weaviate Embeddings, which only Cloud has). The wcd marker
+# signals the dependency; TestLocalConnection + TestRbac inside the class
+# still use the local stack on :8080 / :8580.
+@pytest.mark.csharp
+@pytest.mark.wcd
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "LlmsTxtTest",
+    ],
+)
+def test_llms_txt(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)
+
+
 @pytest.mark.csharp
 @pytest.mark.parametrize(
     "test_class",

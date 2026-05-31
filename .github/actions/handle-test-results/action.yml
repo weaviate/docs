@@ -9,8 +9,12 @@ inputs:
     description: 'Type of tests run (e.g., Agents, Database-Cloud, Database-Local)'
     required: true
   languages-tested:
-    description: 'Languages tested (e.g., Python, TypeScript)'
+    description: 'Languages tested (e.g., Python, TypeScript). Leave empty for non-language-specific test suites — the field will be hidden in the Slack message.'
     required: false
+  scope-label:
+    description: 'Label for the scope field in the Slack message. Defaults to "Languages Tested". Use e.g. "Checks" for non-language-specific suites (paired with a custom languages-tested value like "Coverage · Versions · Links").'
+    required: false
+    default: 'Languages Tested'
   slack-bot-token:
     description: 'Slack webhook for testing CI channel'
     required: false
@@ -54,6 +58,7 @@ runs:
         # Set test type for notifications
         echo "TEST_TYPE=${{ inputs.test-type }}" >> $GITHUB_ENV
         echo "LANGUAGES_TESTED=${{ inputs.languages-tested }}" >> $GITHUB_ENV
+        echo "SCOPE_LABEL=${{ inputs.scope-label }}" >> $GITHUB_ENV
 
         # Parse JUnit XML files for test counts
         TOTAL_TESTS=0
