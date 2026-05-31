@@ -321,7 +321,7 @@ Scope a task to specific tenants on a multi-tenant class with the `?tenants=` qu
 |---|---|---|---|
 | Single-tenant | provided | any | `400` |
 | Multi-tenant | omitted | format-only (`rebuild`, `repair`, `enable-rangeable`) | targets all tenants |
-| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-filterable`, `enable-searchable`) | targets all tenants (the schema flip is cluster-wide) |
+| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-filterable`, `enable-searchable`, `change-algorithm` (BM25 WAND → BlockMax)) | targets all tenants (the schema flip is cluster-wide) |
 | Multi-tenant | provided | format-only | targets the named subset |
 | Multi-tenant | provided | semantic | `400` — semantic migrations cannot be sub-scoped |
 | any | tenant in `OFFLOADED` / `FROZEN` | any | `400` — the offending tenant is named in the error |
