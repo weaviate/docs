@@ -257,7 +257,7 @@ You can drop (delete) an inverted index from a property. This is a destructive o
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
-REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is gated by the [runtime-reindex](#runtime-reindex-v138-preview) MutationGuard — rejected while a reindex is in flight on the same property.
+REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is rejected while a [runtime reindex](#runtime-reindex-v138-preview) is in progress on the same property.
 
 See [How-to: Drop an inverted index](../../manage-collections/inverted-index.mdx#drop-an-inverted-index) for code examples.
 
@@ -273,7 +273,7 @@ From `v1.38`, three REST endpoints let you alter a property's inverted-index con
 
 | Method | Path | Purpose |
 |---|---|---|
-| `PUT` | `/v1/schema/{class}/indexes/{property}` | Add an inverted index, change tokenization, migrate BM25 WAND → BlockMax, rebuild a bucket, or cancel an in-flight task. The body shape selects the migration type. |
+| `PUT` | `/v1/schema/{class}/indexes/{property}` | Add an inverted index, change tokenization, migrate BM25 WAND → BlockMax, rebuild an index, or cancel an in-progress migration. The body shape selects the migration type. |
 | `DELETE` | `/v1/schema/{class}/properties/{property}/index/{indexName}` | Drop a configured index. `indexName` ∈ `{filterable, searchable, rangeFilters}`. |
 | `GET` | `/v1/schema/{class}/indexes` | Read per-property index status. |
 
@@ -281,15 +281,15 @@ From `v1.38`, three REST endpoints let you alter a property's inverted-index con
 
 | Body | Effect |
 |---|---|
-| `{"filterable":{"enabled":true}}` | Creates a `RoaringSet` bucket and flips `IndexFilterable=true`. |
-| `{"searchable":{"enabled":true,"tokenization":"word"}}` | Creates a BlockMax searchable bucket, sets `Tokenization`, flips `IndexSearchable=true`. Requires `text` / `text[]`. |
-| `{"rangeable":{"enabled":true}}` | Creates a `RoaringSetRange` bucket and flips `IndexRangeFilters=true`. Numeric types only (`int`, `number`, `date`). |
-| `{"searchable":{"tokenization":"trigram"}}` | Retokenizes a populated `text` property. If a filterable bucket also exists, both are retokenized together. |
-| `{"searchable":{"algorithm":"blockmax"}}` | Migrates every searchable property on the class from WAND to BlockMax. One-way; flipping back to `wand` is rejected. |
-| `{"<bucket>":{"rebuild":true}}` | Rebuilds the named bucket (`filterable` / `searchable` / `rangeable`) from object storage. `searchable.rebuild` requires the property to already be on BlockMax. |
-| `{"<bucket>":{"cancel":true}}` | Cancels an in-flight task on the property. Idempotent — returns `NO_OP` when nothing matches. |
+| `{"filterable":{"enabled":true}}` | Enables filtering on the property. |
+| `{"searchable":{"enabled":true,"tokenization":"word"}}` | Enables keyword search on the property and sets its tokenization. Requires `text` / `text[]`. |
+| `{"rangeable":{"enabled":true}}` | Enables range filtering on the property. Numeric types only (`int`, `number`, `date`). |
+| `{"searchable":{"tokenization":"trigram"}}` | Retokenizes a populated `text` property. If the property also has a filterable index, both are retokenized together. |
+| `{"searchable":{"algorithm":"blockmax"}}` | Migrates every searchable property on the collection from WAND to BlockMax. One-way; switching back to `wand` is rejected. |
+| `{"<index>":{"rebuild":true}}` | Rebuilds the named index (`filterable` / `searchable` / `rangeable`) from the stored objects. `searchable.rebuild` requires the property to already use BlockMax. |
+| `{"<index>":{"cancel":true}}` | Cancels an in-progress migration on the property. Idempotent — returns `NO_OP` when nothing matches. |
 
-A successful submit returns `202 Accepted` with `{"status":"STARTED","taskId":"<id>"}`.
+A successful submit returns `202 Accepted` with `{"status":"STARTED","taskId":"<id>"}`. Treat `taskId` as an opaque identifier.
 
 ### Status values (`GET`)
 
@@ -297,21 +297,21 @@ A successful submit returns `202 Accepted` with `{"status":"STARTED","taskId":"<
 
 | `status` | Meaning |
 |---|---|
-| `ready` | Index is live and serving. No migration in flight. |
-| `pending` | A task has been accepted; per-shard work has not started yet. |
-| `indexing` | Per-shard work is running. `progress` is a 0..1 estimate. |
-| `failed` | At least one node reported `Success=false`. The schema flag was **not** flipped — the property is still in its pre-migration state. Submit a new task to retry. |
-| `cancelled` | Operator cancelled. Partial state has been scrubbed. |
+| `ready` | Index is live and serving. No migration in progress. |
+| `pending` | A migration has been accepted but has not started yet. |
+| `indexing` | Migration is running. `progress` is a 0..1 estimate. |
+| `failed` | The migration did not complete. The property is left in its pre-migration state — submit it again to retry. |
+| `cancelled` | The migration was cancelled. The property is left in its pre-migration state. |
 
-Between "task FINISHED" and "schema flag flipped", the response keeps the index at `indexing@100%` for a 3–10-second finalize window so the status never blinks back to a pre-migration shape before the schema catches up.
+The status stays at `indexing` until the change is fully applied, so it never briefly reports the pre-migration shape after the data is already rebuilt.
 
 ### Concurrency
 
-- **Per `(class, property)` exclusivity** — only one migration is allowed in flight on a given `(collection, property)` pair. A second submit on the same pair returns `409` with the offending task ID.
-- **Per-class cap** — up to 32 concurrent migrations per class. The next submit returns `429 Too Many Requests` until the in-flight units drain.
-- **Different properties on the same class run in parallel.** Different classes are fully independent.
+- **One migration per property** — only one migration can be in progress on a given property at a time. A second submit on the same property returns `409`.
+- **Per-collection cap** — up to 32 migrations can run concurrently on a collection. Further submits return `429 Too Many Requests` until in-progress migrations finish.
+- **Different properties on the same collection run in parallel.** Different collections are fully independent.
 
-While a reindex is in flight on `(class, property)`, the schema FSM rejects `UpdateProperty` on the same property, `DeleteClass` on the affected class, `DeleteTenants` / `UpdateTenants` that make targeted shards locally unavailable (HOT → COLD / FROZEN / OFFLOADED), and `DELETE …/index/{indexName}` on the same property. The reject message names the in-flight task. A reindex on a **different** property of the same class is not blocked.
+While a reindex is in progress on a property, Weaviate rejects updates to that property, deletion of the collection, dropping an index on that property, and tenant-status changes that would take the targeted tenants offline (for example moving them to `COLD`, `FROZEN`, or `OFFLOADED`). A reindex on a **different** property of the same collection is not blocked.
 
 ### Multi-tenancy
 
@@ -321,12 +321,12 @@ Scope a task to specific tenants on a multi-tenant class with the `?tenants=` qu
 |---|---|---|---|
 | Single-tenant | provided | any | `400` |
 | Multi-tenant | omitted | format-only (`rebuild`, `repair`, `enable-rangeable`) | targets all tenants |
-| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-filterable`, `enable-searchable`, `change-algorithm` (BM25 WAND → BlockMax)) | targets all tenants (the schema flip is cluster-wide) |
+| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-filterable`, `enable-searchable`, `change-algorithm` (BM25 WAND → BlockMax)) | targets all tenants (the change is collection-wide) |
 | Multi-tenant | provided | format-only | targets the named subset |
 | Multi-tenant | provided | semantic | `400` — semantic migrations cannot be sub-scoped |
 | any | tenant in `OFFLOADED` / `FROZEN` | any | `400` — the offending tenant is named in the error |
 
-Each tenant's replicas form an independent barrier group: tenant A starts serving the new bucket as soon as its own replicas finish, even if tenant B is still reindexing.
+Each tenant is reindexed independently: a tenant starts serving its new index as soon as its own reindex finishes, even if other tenants are still in progress.
 
 ### Errors and recovery
 
@@ -334,11 +334,11 @@ Each tenant's replicas form an independent barrier group: tenant A starts servin
 |---|---|---|
 | `400` | Malformed body, wrong property type, missing prerequisite (e.g. `searchable.tokenization` on a property with no searchable index), `?tenants=` on a single-tenant class, `?tenants=` on a semantic migration, target tenant in `OFFLOADED` / `FROZEN`. | Error responses carry next-step hints — read them. |
 | `404` | Class or property doesn't exist. | Verify the class + property names. |
-| `409` | An in-flight task overlaps this `(collection, property)`. The error names the offending task ID and migration type. | Wait, or cancel the existing task first. |
-| `429` | Per-class in-flight cap reached (32 concurrent migrations). | Retry once in-flight migrations drain. |
-| `503` | Cluster service temporarily unavailable. | Retry. |
+| `409` | A migration is already in progress on this property. | Wait, or cancel the existing migration first. |
+| `429` | Per-collection concurrency cap reached (32 migrations). | Retry once in-progress migrations finish. |
+| `503` | Service temporarily unavailable. | Retry. |
 
-The schema flag is the source of truth: if a task ends in `failed`, the flag was not flipped and the property is still in its pre-migration state. A reindex is restart-safe at every phase — in-flight migrations are picked up automatically after a node restart.
+If a migration ends in `failed`, the property is left in its pre-migration state — nothing is partially applied. Reindexing is also restart-safe: an interrupted migration resumes automatically after a node restart.
 
 ### Required permissions
 
@@ -348,7 +348,7 @@ The schema flag is the source of truth: if a task ends in `failed`, the flag was
 | `PUT /v1/schema/{class}/indexes/{property}` | `UPDATE` on `Collections` |
 | `DELETE /v1/schema/{class}/properties/{property}/index/{indexName}` | `UPDATE` on `CollectionsMetadata` |
 
-`PUT` is intentionally stricter than the other endpoints: submitting a reindex task rebuilds buckets on every replica and flips schema flags, so it requires `UPDATE` on `Collections` — the same permission that gates `UpdateClass` and replication-factor changes. `DELETE` shares the existing schema-metadata permission (`UPDATE` on `CollectionsMetadata`) used by the other property-management endpoints. There is no dedicated `reindex` role today.
+`PUT` is intentionally stricter than the other endpoints: submitting a reindex rebuilds the index and changes the collection definition, so it requires `UPDATE` on `Collections` — the same permission that gates other collection-definition changes. `DELETE` shares the existing schema-metadata permission (`UPDATE` on `CollectionsMetadata`) used by the other property-management endpoints. There is no dedicated `reindex` role today.
 
 ## How Weaviate creates inverted indexes
 
