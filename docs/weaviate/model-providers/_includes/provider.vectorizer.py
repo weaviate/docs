@@ -959,6 +959,27 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicVectorizerDigitalOcean
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_digitalocean(
+            model="qwen3-embedding-0.6b",  # Required — choose from the DigitalOcean Serverless Inference catalogue
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerDigitalOcean
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START VectorizerOpenAICustomModelV3
 from weaviate.classes.config import Configure
 
