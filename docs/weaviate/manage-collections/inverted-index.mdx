@@ -279,7 +279,7 @@ From `v1.38`, you can change a property's inverted-index configuration on a **po
 
 These operations cover **inverted indexes only** (`IndexFilterable`, `IndexSearchable`, `IndexRangeFilters`, BM25 algorithm, tokenization). Vector indexes are configured separately — see [Vector configuration](./vector-config.mdx).
 
-The feature is **REST-only** for the v1.38 Preview — there is no client-library support yet, so the examples below use `curl`. All examples assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections`. For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
+The feature is **REST-only** for the v1.38 Preview — there is no client-library support yet, so the examples below use `curl`. All examples assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections` (required to submit a reindex) and `READ` on `CollectionsMetadata` (required to read the migration status). For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview).
 
 ### Add an inverted index to a collection
 
@@ -394,7 +394,7 @@ curl -fsS -H "Authorization: Bearer $TOKEN" \
 The endpoint reads cluster task state directly, so polling in a tight loop is safe. For the meaning of each `status` value, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex-v138-preview). To poll until an index is `ready`:
 
 ```bash
-until curl -fsS "$WEAVIATE/v1/schema/Article/indexes" \
+until curl -fsS -H "Authorization: Bearer $TOKEN" "$WEAVIATE/v1/schema/Article/indexes" \
       | jq -e '.properties[] | select(.name=="body")
                    | .indexes[] | select(.type=="searchable")
                    | .status == "ready"' > /dev/null
