@@ -123,7 +123,7 @@ The size of an HNSW index is dominated by the number of vectors; take a look at 
 | Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
 | Edge | 10B x 20 connections | 200B | 200MB | 20GB |
 
-As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory.
+As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps only a compressed centroid index in memory, which can dramatically reduce the memory footprint for very large datasets.
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
@@ -232,7 +232,7 @@ import DynamicAsyncRequirements from '/\_includes/dynamic-index-async-req.mdx';
 
 <DynamicAsyncRequirements/>
 
-The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale.
+The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale. For very large datasets where memory is the main constraint, the [HFresh index](#hfresh-index) is another option: it scales to large collections without keeping the full index in memory, trading some query speed for much lower memory use.
 
 By configuring a dynamic index, you can automatically switch from flat to HNSW indexes. This switch occurs when the object count exceeds a specified threshold (by default 10,000). This functionality only works with async indexing enabled. When the threshold is hit while importing, all the data piles up in the async queue, the HNSW index is constructed in the background and when ready the swap from flat to HNSW is completed.
 
@@ -256,11 +256,15 @@ HFresh works by:
 
 This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (number of posting lists each vector is added to).
 
+Only the centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick a few relevant postings, reads only those postings from disk, and rescores the top candidates against the uncompressed vectors. Because only a small subset of the data is read per query, disk I/O stays bounded and latency stays predictable as the dataset grows. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
+
 HFresh is particularly well-suited for:
 
 - **Large-scale datasets with memory constraints**: Reduces memory usage while maintaining good search performance
 - **High-dimensional vectors**: Particularly effective with high-dimensional embedding models
 - **Cost-sensitive deployments**: Lower memory requirements can reduce infrastructure costs
+
+HFresh is not designed to beat HNSW on raw query throughput. It targets deployments where memory efficiency matters more than peak QPS, and where the application can tolerate slightly higher query latencies.
 
 :::note Supported distance metrics
 HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is not supported.
@@ -327,13 +331,14 @@ Here's a quick guide to choosing the right index:
 
 #### Comparison between index types
 
-| Feature                       | Flat                             | HNSW                        | HFresh                                    |
-| ----------------------------- | -------------------------------- | --------------------------- | ----------------------------------------- |
-| Memory usage                  | Very low                         | High                        | Low                                       |
-| Search speed (small datasets) | Fast                             | Very fast                   | Moderate                                  |
-| Search speed (large datasets) | Slow                             | Very fast                   | Fast                                      |
-| Disk usage                    | Low                              | Moderate                    | Moderate to high                          |
-| Best for                      | Small collections, multi-tenancy | Large collections, high QPS | Large collections with memory constraints |
+| Feature                       | Flat                             | HNSW                        | HFresh                                              |
+| ----------------------------- | -------------------------------- | --------------------------- | --------------------------------------------------- |
+| Memory usage                  | Very low                         | High                        | Low                                                 |
+| Search speed (small datasets) | Fast                             | Very fast                   | Moderate                                            |
+| Search speed (large datasets) | Slow                             | Very fast                   | Fast                                                |
+| Disk usage                    | Low                              | Moderate                    | Moderate to high                                    |
+| Maintenance                   | None                             | Costlier as the graph grows | Self-balancing in the background, no full rebuilds  |
+| Best for                      | Small collections, multi-tenancy | Large collections, high QPS | Large, memory-constrained collections (disk-backed) |
 
 Note that the vector index type parameter only specifies how the vectors of data objects are _indexed_. The index is used for data retrieval and similarity search.
 

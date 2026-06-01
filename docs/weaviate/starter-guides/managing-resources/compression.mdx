@@ -11,7 +11,7 @@ When collections have millions of objects, the total storage size for the vector
 
 Weaviate creates indexes to search the vector space for your collection. The default vector index is a [Hierarchical Navigable Small World (HNSW)](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) index. This data structure includes the vectors as well as an index graph. HNSW indexes allow fast vector searches while maintaining excellent recall, but they can be expensive to use because they are stored in RAM memory.
 
-Updating the default index configuration settings can result in significant cost savings and even performance improvements. In many cases, you can use compression or a different index type to change the way Weaviate stores and searches your data, and still maintain high levels of recall.
+Updating the default index configuration settings can result in significant cost savings and even performance improvements. In many cases, you can use compression or a different index type (such as the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index), which keeps only a compressed centroid index in memory) to change the way Weaviate stores and searches your data, and still maintain high levels of recall.
 
 This page discusses compression algorithms. For more on indexes, see [Vector indexing](/weaviate/concepts/vector-index).
 
@@ -63,7 +63,7 @@ The cost savings are most visible with in-memory indexes such as HNSW. More RAM 
 - RQ compressed vectors typically use 75% less memory than uncompressed vectors.
 - BQ compressed vectors use 97% less memory than uncompressed vectors.
 
-An HNSW index comprises a connection graph as well as the vectors. Quantization methods reduce the size of the vectors, but does not affect the size of the graph. As a result the overall reduction in memory usage is less than the reduction in vector size, but still significant.
+An HNSW index comprises a connection graph as well as the vectors. Quantization methods reduce the size of the vectors, but does not affect the size of the graph. As a result the overall reduction in memory usage is less than the reduction in vector size, but still significant. If you need to reduce memory further for a very large dataset, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) avoids keeping the full graph in memory altogether.
 
 #### Recall
 
