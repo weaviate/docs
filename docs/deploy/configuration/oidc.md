@@ -189,6 +189,24 @@ Configuring the OIDC token issuer is outside the scope of Weaviate's configurati
 By default, Weaviate validates that the token includes a specified client id in the audience claim. If your token issuer does not support this feature, you can turn it off as outlined in the [authentication configuration](./authentication.md#oidc-docker).
 :::
 
+## OIDC on namespace-enabled clusters
+
+On clusters with `NAMESPACES_ENABLED=true` ([namespaces](/weaviate/concepts/namespaces.md)), every OIDC token is classified as either a **namespaced** or **global** principal. Two env vars select which claims drive the classification:
+
+| Env var | Purpose |
+|---|---|
+| `OIDC_NAMESPACE_CLAIM` | Name of the claim that holds the namespace string (e.g. `namespace`). |
+| `OIDC_GLOBAL_PRINCIPAL_CLAIM` | Name of the claim that holds the global-principal boolean (e.g. `is_global`). |
+
+A token must select exactly one classification. The server **rejects** tokens that:
+
+- Carry both a namespace claim and the global-principal claim set to `true`.
+- Carry neither claim on a namespace-enabled cluster.
+- Name a namespace that doesn't exist (Weaviate never auto-creates).
+- Combine a namespace claim with a `root` group from `AUTHORIZATION_RBAC_ROOT_GROUPS` / `_USERS` — `root` is cluster-global and cannot coexist with a namespace.
+
+On clusters where `NAMESPACES_ENABLED=false`, presence of either claim in the token causes the request to be rejected. See [Namespaces — OIDC classification](/weaviate/concepts/namespaces.md#oidc-classification) for the full rules.
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
