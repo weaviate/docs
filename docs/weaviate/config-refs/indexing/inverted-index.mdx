@@ -303,16 +303,15 @@ While a reindex is in progress on a property, Weaviate rejects updates to that p
 
 ### Multi-tenancy
 
-Scope a task to specific tenants on a multi-tenant class with the `?tenants=` query parameter (comma-separated). The rules:
+On a multi-tenant collection, use the `?tenants=` query parameter (comma-separated) to scope a migration to specific tenants. Migrations fall into two groups, which behave differently:
 
-| Class | `?tenants=` | Migration type | Result |
-|---|---|---|---|
-| Single-tenant | provided | any | `400` |
-| Multi-tenant | omitted | format-only (`rebuild`, `repair`, `enable-rangeable`) | targets all tenants |
-| Multi-tenant | omitted | semantic (`change-tokenization*`, `enable-filterable`, `enable-searchable`, `change-algorithm` (BM25 WAND → BlockMax)) | targets all tenants (the change is collection-wide) |
-| Multi-tenant | provided | format-only | targets the named subset |
-| Multi-tenant | provided | semantic | `400` — semantic migrations cannot be sub-scoped |
-| any | tenant in `OFFLOADED` / `FROZEN` | any | `400` — the offending tenant is named in the error |
+- **Format-only migrations** — rebuilding or repairing an index, and enabling a range index — can be scoped to a subset of tenants with `?tenants=`. If you omit the parameter, they apply to all tenants.
+- **Semantic migrations** — enabling a filterable or searchable index, changing tokenization, and migrating BM25 from WAND to BlockMax — always apply to every tenant, because they change the collection definition. Supplying `?tenants=` for a semantic migration returns `400`.
+
+Other rules:
+
+- Supplying `?tenants=` on a single-tenant collection returns `400`.
+- A migration that targets a tenant in the `OFFLOADED` or `FROZEN` state returns `400`, with the offending tenant named in the error.
 
 Each tenant is reindexed independently: a tenant starts serving its new index as soon as its own reindex finishes, even if other tenants are still in progress.
 
