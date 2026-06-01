@@ -33,6 +33,10 @@ contextual_key = os.getenv("CONTEXTUAL_API_KEY")
 # Recommended: save sensitive data as environment variables
 databricks_token = os.getenv("DATABRICKS_TOKEN")
 # END DatabricksInstantiation
+# START DigitalOceanInstantiation
+# Recommended: save sensitive data as environment variables
+digitalocean_key = os.getenv("DIGITALOCEAN_APIKEY")
+# END DigitalOceanInstantiation
 # START FriendliInstantiation
 # Recommended: save sensitive data as environment variables
 friendli_key = os.getenv("FRIENDLI_TOKEN")
@@ -110,6 +114,9 @@ headers = {
 # START DatabricksInstantiation
     "X-Databricks-Token": databricks_token,
 # END DatabricksInstantiation
+# START DigitalOceanInstantiation
+    "X-Digitalocean-Api-Key": digitalocean_key,
+# END DigitalOceanInstantiation
 # START FriendliInstantiation
     "X-Friendli-Api-Key": friendli_key,
 # END FriendliInstantiation
