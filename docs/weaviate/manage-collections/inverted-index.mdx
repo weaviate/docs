@@ -277,9 +277,7 @@ For the full list of supported tokenizers — including `kagome_ja`, `kagome_kr`
 
 From `v1.38`, you can change a property's inverted-index configuration on a **populated collection without restarting and without losing writes**. Reads stay available throughout the migration. This replaces the previous workaround of exporting the data, recreating the collection, and re-importing.
 
-These operations cover **inverted indexes only** (filterable, searchable, and range indexes, the BM25 algorithm, and tokenization). Vector indexes are configured separately — see [Vector configuration](./vector-config.mdx).
-
-The feature is **REST-only** for the v1.38 Preview — there is no client-library support yet, so the examples below use `curl`. All examples assume `$WEAVIATE` is the cluster URL and `$TOKEN` is an API key with `UPDATE` on `Collections` (required to submit a reindex) and `READ` on `CollectionsMetadata` (required to read the migration status). For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex).
+These operations cover **inverted indexes only** (filterable, searchable, and range indexes, the BM25 algorithm, and tokenization). For the endpoint list, request-body reference, status values, concurrency rules, error codes, and required permissions, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex).
 
 ### Add an inverted index to a collection
 
@@ -292,7 +290,7 @@ curl -X PUT \
   "$WEAVIATE/v1/schema/Article/indexes/category"
 ```
 
-The body shape selects the index type — `filterable`, `searchable` (requires `text` / `text[]`), or `rangeable` (numeric types only). For the full body-shape reference, see [References: Runtime reindex](../config-refs/indexing/inverted-index.mdx#runtime-reindex).
+The body shape selects the index type — `filterable`, `searchable` (requires `text` / `text[]`), or `rangeable` (numeric types only). For the full request and response formats, see the <SkipLink href="/weaviate/api/rest#tag/schema">REST API reference</SkipLink>.
 
 The server responds `202 Accepted` with a task ID, which you can treat as an opaque identifier:
 

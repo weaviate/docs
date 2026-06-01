@@ -277,19 +277,7 @@ From `v1.38`, three REST endpoints let you alter a property's inverted-index con
 | `DELETE` | `/v1/schema/{class}/properties/{property}/index/{indexName}` | Drop a configured index. `indexName` ∈ `{filterable, searchable, rangeFilters}`. |
 | `GET` | `/v1/schema/{class}/indexes` | Read per-property index status. |
 
-### Request body shapes (`PUT`)
-
-| Body | Effect |
-|---|---|
-| `{"filterable":{"enabled":true}}` | Enables filtering on the property. |
-| `{"searchable":{"enabled":true,"tokenization":"word"}}` | Enables keyword search on the property and sets its tokenization. Requires `text` / `text[]`. |
-| `{"rangeable":{"enabled":true}}` | Enables range filtering on the property. Numeric types only (`int`, `number`, `date`). |
-| `{"searchable":{"tokenization":"trigram"}}` | Retokenizes a populated `text` property. If the property also has a filterable index, both are retokenized together. |
-| `{"searchable":{"algorithm":"blockmax"}}` | Migrates every searchable property on the collection from WAND to BlockMax. One-way; switching back to `wand` is rejected. |
-| `{"<index>":{"rebuild":true}}` | Rebuilds the named index (`filterable` / `searchable` / `rangeable`) from the stored objects. `searchable.rebuild` requires the property to already use BlockMax. |
-| `{"<index>":{"cancel":true}}` | Cancels an in-progress migration on the property. Idempotent — returns `NO_OP` when nothing matches. |
-
-A successful submit returns `202 Accepted` with `{"status":"STARTED","taskId":"<id>"}`. Treat `taskId` as an opaque identifier.
+For the `PUT` request body shapes and response formats, see the <SkipLink href="/weaviate/api/rest#tag/schema">REST API reference</SkipLink>. For worked examples of each migration type, see the [how-to guide](../../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection).
 
 ### Status values (`GET`)
 
