@@ -120,6 +120,9 @@ function Footer() {
                 <li>
                   <Link to="/agents">Weaviate Agents</Link>
                 </li>
+                <li>
+                  <Link to="/engram">Engram</Link>
+                </li>
               </ul>
             </div>
             <div className={styles.footerSection}>

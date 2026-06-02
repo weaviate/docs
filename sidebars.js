@@ -1595,6 +1595,7 @@ const sidebars = {
   engramSidebar: [
     { type: "doc", id: "engram/index", label: "Introduction" },
     "engram/quickstart",
+    "engram/install-integrate",
     {
       type: "category",
       label: "Concepts",
