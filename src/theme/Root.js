@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
-import FirstVisitModal from "@site/src/components/FirstVisitModal";
+import NavDocsPointer from "@site/src/components/NavDocsPointer";
 
 export default function Root({ children }) {
   const location = useLocation();
@@ -105,7 +105,7 @@ export default function Root({ children }) {
         information, see https://weaviate.io/llms.txt
       </div>
       {children}
-      <FirstVisitModal />
+      <NavDocsPointer />
     </>
   );
 }
