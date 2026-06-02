@@ -7,7 +7,7 @@ featured: True
 integration: False
 agent: True
 sidebar_position: 10
-tags: ['Query Agent']
+# tags: ['Query Agent']
 ---
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/query-agent-get-started.ipynb" target="_blank">
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>

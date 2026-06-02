@@ -2,7 +2,7 @@
 title: Collection configuration
 description: "Configure how Weaviate collections are exposed to the Query Agent."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'configuration']
+# tags: ['agents', 'query-agent', 'configuration']
 ---
 
 import Tabs from '@theme/Tabs';

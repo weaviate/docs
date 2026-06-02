@@ -2,7 +2,7 @@
 title: Suggest Queries Mode
 description: "Generate suggested follow-up queries to help users explore Weaviate data."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'modes']
+# tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';

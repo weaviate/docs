@@ -2,7 +2,7 @@
 title: Configuration
 description: "Configure the Query Agent's behavior across Ask Mode and Search Mode."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'configuration']
+# tags: ['agents', 'query-agent', 'configuration']
 ---
 
 See the different configuration options for the Query Agent and how you can customize it to your specific use case.

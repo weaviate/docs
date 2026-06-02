@@ -6,7 +6,7 @@ featured: True
 integration: True
 agent: True
 sidebar_position: 40
-tags: ['Query Agent', 'Integration', 'Function Calling']
+# tags: ['Query Agent', 'Integration', 'Function Calling']
 ---
 
 In this recipe, we'll show how to expose the [Weaviate Query Agent](https://docs.weaviate.io/agents) as a **tool** to other LLMs and agent frameworks. The Query Agent already handles search, filtering, aggregation, and writing a natural-language answer — wrapping it as a tool lets a higher-level model decide *when* to consult your Weaviate data as part of a larger reasoning flow.

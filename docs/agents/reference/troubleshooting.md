@@ -2,7 +2,7 @@
 title: Limitations & troubleshooting
 description: "Diagnose common issues and understand the limitations of the Query Agent."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'troubleshooting']
+# tags: ['agents', 'query-agent', 'troubleshooting']
 ---
 
 Things to check when the Query Agent isn't behaving as expected, plus the soft usage limits and typical execution timings to keep in mind.

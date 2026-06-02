@@ -6,7 +6,7 @@ featured: True
 integration: True
 agent: True
 sidebar_position: 30
-tags: ['Query Agent', 'Streamlit', 'Streaming', 'UI']
+# tags: ['Query Agent', 'Streamlit', 'Streaming', 'UI']
 ---
 
 In this recipe, we'll build a chat UI for the Weaviate Query Agent using [Streamlit](https://streamlit.io). The UI streams the agent's progress (which collection it's searching, what query it's running) *and* the final answer token by token, so the user sees something happen the moment they hit enter — instead of waiting silently for the full response.

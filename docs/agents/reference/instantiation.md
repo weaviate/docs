@@ -2,7 +2,7 @@
 title: Class instantiation
 description: "Instantiate a Query Agent with a Weaviate client, collections, and options."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'configuration']
+# tags: ['agents', 'query-agent', 'configuration']
 ---
 
 

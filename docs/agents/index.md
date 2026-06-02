@@ -2,7 +2,7 @@
 title: Introduction
 description: "Get an overview of the Weaviate Query Agent and what it can do."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'getting-started']
+# tags: ['agents', 'query-agent', 'getting-started']
 ---
 
 import Tabs from '@theme/Tabs';

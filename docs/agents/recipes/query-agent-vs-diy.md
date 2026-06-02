@@ -6,7 +6,7 @@ featured: True
 integration: False
 agent: True
 sidebar_position: 50
-tags: ['Query Agent', 'Comparison']
+# tags: ['Query Agent', 'Comparison']
 ---
 
 In this recipe, we'll answer the same natural-language question against the same Weaviate collection two ways: first by writing the LLM pipeline ourselves with Pydantic-typed plans and explicit filter/sort builders, then by calling `agent.ask(...)`. The goal is to show what scaffolding the DIY approach needs to support even a small slice of what the Query Agent handles.

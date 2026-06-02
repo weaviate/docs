@@ -2,7 +2,7 @@
 title: Additional Filters
 description: "Apply persistent filters that the Query Agent uses on every query."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'configuration']
+# tags: ['agents', 'query-agent', 'configuration']
 ---
 
 import Tabs from '@theme/Tabs';

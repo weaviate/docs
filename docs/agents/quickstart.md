@@ -2,7 +2,7 @@
 title: Quickstart
 description: "Get started with the Weaviate Query Agent through a runnable example."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'getting-started']
+# tags: ['agents', 'query-agent', 'getting-started']
 ---
 
 import Tabs from '@theme/Tabs';

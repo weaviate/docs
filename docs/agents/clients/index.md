@@ -2,7 +2,7 @@
 title: Agents clients
 description: "Use the Python or TypeScript client to interact with the Query Agent."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'clients']
+# tags: ['agents', 'query-agent', 'clients']
 ---
 
 You can interact with the Query Agent through official client libraries, currently supporting either Python or JavaScript/TypeScript:

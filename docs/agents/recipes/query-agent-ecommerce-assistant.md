@@ -6,7 +6,7 @@ featured: True
 integration: False
 agent: True
 sidebar_position: 20
-tags: ['Query Agent']
+# tags: ['Query Agent']
 ---
 
 In this recipe, we will be building a simple e-commerce assistant agent with the [Weaviate Query Agent](https://docs.weaviate.io/agents). This agent will have access to a number of Weaviate collections, and will be capable of answering complex queries about brands and clothing items, accessing information from each collection. By the end, we'll wrap the agent in a small reusable class that's ready to plug into a chatbot, CLI, or any larger application.

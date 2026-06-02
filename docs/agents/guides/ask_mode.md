@@ -2,7 +2,7 @@
 title: Ask Mode
 description: "Use Ask Mode to retrieve data from Weaviate and get a generated answer."
 image: og/docs/agents.jpg
-tags: ['agents', 'query-agent', 'modes']
+# tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
