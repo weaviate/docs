@@ -303,18 +303,16 @@ Before PR merge:
 - **LLMs.txt plugin** - Generates LLM-friendly content dump
 - **Mermaid** - Diagram support in markdown
 
-## Package Managers
+## Package Manager
 
-This repo uses **two package managers** for different purposes:
+This repo uses **yarn** for all Node dependencies — Docusaurus, the TypeScript code samples, and the test harness. There is a single `package.json` and a single `yarn.lock` at the repo root; no nested `package.json` files. CI installs with `yarn install --frozen-lockfile` (see `.github/actions/setup-test-env/action.yml`).
 
-- **yarn** — for Docusaurus and all frontend dependencies (`package.json`). Always use `yarn install`, `yarn add`, etc. for Docusaurus packages. Never use `npm install` for Docusaurus dependencies — it creates a `package-lock.json` that conflicts with `yarn.lock`.
-- **npm** — only for TypeScript test code execution (e.g., `npx tsx`).
+Use `yarn install`, `yarn add`, etc. Never run `npm install` at the repo root — it generates a `package-lock.json` that drifts from `yarn.lock`. `npx tsx` is fine for running TS samples since it doesn't touch dependencies.
 
-When adding or upgrading a Docusaurus dependency (e.g., `@scalar/docusaurus`), use:
+When adding or upgrading a dependency (e.g., `@scalar/docusaurus`), use:
 ```bash
 yarn add @scalar/docusaurus@latest
 ```
-Not `npm install`.
 
 ## Environment Requirements
 

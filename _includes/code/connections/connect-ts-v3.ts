@@ -227,15 +227,12 @@ await client.close()
 // START OIDCConnect
 // Connect to a self-hosted Weaviate instance configured with OIDC.
 // Obtain the access token from your identity provider before connecting.
-const httpParts = process.env.WEAVIATE_HTTP_HOST!.split(':');
-const grpcParts = process.env.WEAVIATE_GRPC_HOST!.split(':');
-
 const client = await weaviate.connectToCustom({
-  httpHost: httpParts[0],
-  httpPort: Number(httpParts[1]),
+  httpHost: 'localhost',
+  httpPort: 8580,
   httpSecure: false,
-  grpcHost: grpcParts[0],
-  grpcPort: Number(grpcParts[1]),
+  grpcHost: 'localhost',
+  grpcPort: 50551,
   grpcSecure: false,
   authCredentials: new weaviate.AuthAccessTokenCredentials({
     accessToken: process.env.WEAVIATE_OIDC_ACCESS_TOKEN!,

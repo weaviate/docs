@@ -5,8 +5,13 @@ image: og/docs/howto.jpg
 description: "Profile search queries to get per-shard timing breakdowns for vector search, keyword scoring, and filter evaluation."
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.profile.py';
+import TsCode from '!!raw-loader!/_includes/code/howto/search.profile.ts';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/SearchProfileTest.java';
+import CsCode from '!!raw-loader!/_includes/code/csharp/SearchProfileTest.cs';
 import QueryProfileNote from '/_includes/feature-notes/query-profile.mdx';
 
 <QueryProfileNote/>
@@ -19,12 +24,40 @@ Profiling uses the same instrumentation as [slow query logging](/deploy/configur
 
 Add `query_profile=True` to `MetadataQuery`, or include `"query_profile"` in the metadata list:
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START ProfileNearVector"
-  endMarker="# END ProfileNearVector"
-  language="python"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ProfileNearVector"
+      endMarker="# END ProfileNearVector"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCode}
+      startMarker="// START ProfileNearVector"
+      endMarker="// END ProfileNearVector"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ProfileNearVector"
+      endMarker="// END ProfileNearVector"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START ProfileNearVector"
+      endMarker="// END ProfileNearVector"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 Profile data is returned on the response object at `response.query_profile`, not on individual result objects. It represents the entire query across all shards.
 
@@ -41,23 +74,79 @@ Profile data is returned on the response object at `response.query_profile`, not
 
 ### BM25 example
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START ProfileBM25"
-  endMarker="# END ProfileBM25"
-  language="python"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ProfileBM25"
+      endMarker="# END ProfileBM25"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCode}
+      startMarker="// START ProfileBM25"
+      endMarker="// END ProfileBM25"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ProfileBM25"
+      endMarker="// END ProfileBM25"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START ProfileBM25"
+      endMarker="// END ProfileBM25"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ### Hybrid example
 
 Hybrid search produces both `vector` and `keyword` profile sections per shard:
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START ProfileHybrid"
-  endMarker="# END ProfileHybrid"
-  language="python"
-/>
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ProfileHybrid"
+      endMarker="# END ProfileHybrid"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCode}
+      startMarker="// START ProfileHybrid"
+      endMarker="// END ProfileHybrid"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ProfileHybrid"
+      endMarker="// END ProfileHybrid"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CsCode}
+      startMarker="// START ProfileHybrid"
+      endMarker="// END ProfileHybrid"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ## Response structure
 
@@ -92,7 +181,7 @@ Each search type contains a `details` dict with string key-value pairs. The avai
 | :----- | :---------- |
 | `vector_search_took` | Time spent in vector index search |
 | `knn_search_layer_N_took` | Per-layer HNSW graph traversal time (N = layer number) |
-| `knn_search_rescore_took` | Time rescoring compressed vectors (PQ/BQ/SQ) |
+| `knn_search_rescore_took` | Time rescoring compressed vectors (PQ/SQ/RQ/BQ) |
 | `hnsw_flat_search` | Whether flat (brute-force) search was used instead of HNSW (`"true"` or `"false"`) |
 
 ### Filter metrics

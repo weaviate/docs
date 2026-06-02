@@ -134,6 +134,9 @@ public class GetStartedTests
 
         // 4. Import the data
         var result = await movies.Data.InsertMany(dataObjects);
+        // END GetStarted
+        await Task.Delay(2000); // Wait for data to be indexed
+        // START GetStarted
 
         // 5. Run the query
         var response = await movies.Query.NearText("sci-fi", limit: 2);

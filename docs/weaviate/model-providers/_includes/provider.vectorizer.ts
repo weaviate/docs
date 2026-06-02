@@ -315,6 +315,31 @@ await client.collections.create({
 // Clean up
 await client.collections.delete('DemoCollection');
 
+// START BasicVectorizerDigitalOcean
+await client.collections.create({
+  name: 'DemoCollection',
+  properties: [
+    {
+      name: 'title',
+      dataType: 'text' as const,
+    },
+  ],
+  // highlight-start
+  vectorizers: [
+    weaviate.configure.vectors.text2VecDigitalOcean({
+      model: 'qwen3-embedding-0.6b',  // Required — choose from the DigitalOcean Serverless Inference catalogue
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    })
+  ],
+  // highlight-end
+  // Additional parameters not shown
+});
+// END BasicVectorizerDigitalOcean
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
 // START BasicVectorizerGoogleVertex
 await client.collections.create({
   name: 'DemoCollection',
@@ -331,7 +356,7 @@ await client.collections.create({
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>',
       // (Optional) To manually set the model ID
-      modelId: 'gemini-embedding-2-preview'
+      model: 'gemini-embedding-2'
     }),
   ],
   // highlight-end
@@ -357,7 +382,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID
-      modelId: 'gemini-embedding-2-preview'
+      model: 'gemini-embedding-2'
     }),
   ],
   // highlight-end
@@ -456,7 +481,7 @@ await client.collections.create({
     weaviate.configure.vectors.multi2VecGoogle({
       name: 'title_vector',
       projectId: '<google-cloud-project-id>',
-      modelId: '<google-model-id>',
+      model: '<google-model-id>',
       location: '<google-cloud-location>',
       dimensions: 512,
       imageFields: [

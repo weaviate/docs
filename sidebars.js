@@ -103,7 +103,14 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: ["weaviate/mcp/mcp-server", "weaviate/mcp/docs-mcp-server"],
+      items: [
+        {
+          type: "ref",
+          id: "weaviate/configuration/mcp-server",
+          label: "Weaviate MCP Server",
+        },
+        "weaviate/mcp/docs-mcp-server",
+      ],
     },
     {
       type: "html",
@@ -230,6 +237,16 @@ const sidebars = {
                 "weaviate/model-providers/databricks/embeddings",
                 "weaviate/model-providers/databricks/generative",
               ],
+            },
+            {
+              type: "category",
+              label: "DigitalOcean",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/digitalocean/index",
+              },
+              items: ["weaviate/model-providers/digitalocean/embeddings"],
             },
             {
               type: "category",
@@ -518,6 +535,11 @@ const sidebars = {
         },
         "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
+        {
+          type: "doc",
+          id: "weaviate/configuration/mcp-server",
+          label: "MCP Server",
+        },
         {
           type: "html",
           value: "<hr class='sidebar-divider' />",

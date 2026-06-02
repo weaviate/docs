@@ -257,7 +257,7 @@ client.collections.create(
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # (Optional) To manually set the model ID
-        model="gemini-embedding-2-preview"
+        model="gemini-embedding-2"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -277,7 +277,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
-        model="gemini-embedding-2-preview"
+        model="gemini-embedding-2"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -317,7 +317,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="gemini-embedding-2-preview",
+        model_id="gemini-embedding-2",
     ),
     # highlight-end
     # Additional parameters not shown
@@ -955,6 +955,27 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END BasicVectorizerDatabricks
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicVectorizerDigitalOcean
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_digitalocean(
+            model="qwen3-embedding-0.6b",  # Required — choose from the DigitalOcean Serverless Inference catalogue
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerDigitalOcean
 
 # clean up
 client.collections.delete("DemoCollection")

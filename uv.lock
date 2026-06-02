@@ -2071,7 +2071,7 @@ wheels = [
 
 [[package]]
 name = "weaviate-demo-datasets"
-version = "0.7.0"
+version = "0.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -2079,9 +2079,9 @@ dependencies = [
     { name = "pandas" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/a5/cbd00fe9822470334e4598fc3d0f093216c496de2ec31a8049e6554cd4d7/weaviate_demo_datasets-0.7.0.tar.gz", hash = "sha256:4acd56d16044eb1bcd1a4f8c95e9fe529fd1e6795bd074f555a7efa728b2a007", size = 69466432, upload-time = "2025-07-28T22:31:52.074Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/6b/558755735d030542b28c5a0a8c051691409930e4975983b97d2e8d926602/weaviate_demo_datasets-0.8.1.tar.gz", hash = "sha256:d2b23f138cf4c5c3f9142869be093a8ac645cd3c266a5106fb64b8d9b1f045a4", size = 69472881, upload-time = "2025-11-14T16:20:40.325Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/92/98/fa48bc0f9c9c55386c20648c3b2162317bc2b570cb5235bc415aeebe4da8/weaviate_demo_datasets-0.7.0-py3-none-any.whl", hash = "sha256:fb8201f75c064946f7ea49712dfaec99a10eda10c34ac8c8269287ae7cc2b23d", size = 73909773, upload-time = "2025-07-28T22:31:39.476Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/c9/f78f61ea1745b16968b4ee343c7f00a8977d9577cf71e02ecdb8f518cd3f/weaviate_demo_datasets-0.8.1-py3-none-any.whl", hash = "sha256:1495bd908200f0dac88c6c2aa4a8bc8c5a0b1b4636b407232a79be7ffd9a1291", size = 73909777, upload-time = "2025-11-14T16:20:30.389Z" },
 ]
 
 [[package]]
@@ -2118,7 +2118,7 @@ requires-dist = [
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "weaviate-agents", specifier = ">=1.5.0" },
     { name = "weaviate-client", specifier = "==4.21.0" },
-    { name = "weaviate-demo-datasets", specifier = ">=0.7.0" },
+    { name = "weaviate-demo-datasets", specifier = ">=0.8.1" },
 ]
 
 [[package]]

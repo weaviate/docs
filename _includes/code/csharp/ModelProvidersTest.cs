@@ -95,6 +95,65 @@ public class ModelProvidersTest : IAsyncLifetime
     }
 
     [Fact]
+    public async Task TestDigitalOceanInstantiation()
+    {
+        // START DigitalOceanInstantiation
+        // Best practice: store your credentials in environment variables
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string digitalOceanApiKey = Environment.GetEnvironmentVariable("DIGITALOCEAN_APIKEY");
+
+        // highlight-start
+        using var client = await Connect.Cloud(
+            weaviateUrl,
+            weaviateApiKey,
+            headers: new Dictionary<string, string>
+            {
+                ["X-Digitalocean-Api-Key"] = digitalOceanApiKey,
+            }
+        );
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta.Version);
+        // highlight-end
+        // END DigitalOceanInstantiation
+    }
+
+    [Fact]
+    public async Task TestDigitalOceanVectorizer()
+    {
+        if (await client.Collections.Exists("DemoCollection"))
+            await client.Collections.Delete("DemoCollection");
+
+        // START BasicVectorizerDigitalOcean
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "DemoCollection",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title_vector",
+                        v => v.Text2VecDigitalOcean(model: "qwen3-embedding-0.6b"),
+                        sourceProperties: ["title"]
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("description")],
+            }
+        );
+        // END BasicVectorizerDigitalOcean
+
+        var config = await client.Collections.Export("DemoCollection");
+        Assert.True(config.VectorConfig.ContainsKey("title_vector"));
+        Assert.Equal(
+            "text2vec-digitalocean",
+            config.VectorConfig["title_vector"].Vectorizer.Identifier
+        );
+
+        await client.Collections.Delete("DemoCollection");
+    }
+
+    [Fact]
     public async Task TestWeaviateVectorizerModel()
     {
         // START VectorizerWeaviateCustomModel
