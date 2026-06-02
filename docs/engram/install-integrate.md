@@ -60,7 +60,7 @@ curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   }'
 ```
 
-See the [REST API reference](/engram/api/rest) for the full list of endpoints.
+See the [REST API reference](/engram/api/rest) for the full list of endpoints, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories.
 
 ## Hermes Agent
 

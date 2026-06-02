@@ -19,7 +19,11 @@ Engram organizes and processes memories for your AI applications. Here's how the
 
 Below is an overview of Engram's key concepts and how they relate to each other:
 
-![Weaviate Engram Concepts](../_includes/concepts.png "Weaviate Engram Concepts")
+import ConceptsImg from '/docs/engram/_includes/concepts.png';
+
+<DocsImage image={ConceptsImg} alt="Weaviate Engram Concepts" />
+
+<br/>
 
 - You send [**input data**](input-data-types.md) (text, a conversation, or pre-extracted facts) along with [**scope**](scopes.md) parameters (`user_id` and any `properties` the target topic requires) that control how the memories are isolated.
 - The input is routed to a [**group**](groups.md), which bundles [**topics**](topics.md) with a [**pipeline**](pipelines.md) — one group per use case.

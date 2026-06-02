@@ -19,7 +19,11 @@ Use Engram to give your agents persistent memory that they can write to and sear
 
 Below is an overview of Engram's architecture and information flow:
 
-![Weaviate Engram](./_includes/architecture.png "Weaviate Engram")
+import ArchitectureImg from '/docs/engram/_includes/architecture.png';
+
+<DocsImage image={ArchitectureImg} alt="Weaviate Engram architecture" />
+
+<br/>
 
 Your app communicates with Engram through the REST API or Python SDK.
 

@@ -26,7 +26,11 @@ A pipeline can chain these steps in different ways. For example, a pipeline for 
 
 In this case, memories are immediately extracted, transformed, and committed. They then enter a buffer that accumulates all memories added with the same [scope](scopes.md) (user or conversation). When the buffer triggers (e.g. after 24 hours), the accumulated batch continues through a second transform step — which could combine everything into a single "daily activity" memory — followed by a second commit.
 
-![Weaviate Engram Pipeline](../_includes/pipeline.png "Weaviate Engram Pipeline")
+import PipelineImg from '/docs/engram/_includes/pipeline.png';
+
+<DocsImage image={PipelineImg} alt="Weaviate Engram Pipeline" />
+
+<br/>
 
 ## Runs
 
