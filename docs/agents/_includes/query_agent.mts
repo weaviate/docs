@@ -606,6 +606,30 @@ for (const suggestedQuery of suggestResponse.queries) {
 }
 // END SuggestQueries
 
+// START SuggestQueriesWithConversation
+// Build a conversation history
+const suggestConversation: ChatMessage[] = [
+    {
+        role: "user",
+        content: "What are some popular machine learning frameworks?",
+    },
+    {
+        role: "assistant",
+        content: "Some popular ML frameworks include TensorFlow, PyTorch, and JAX.",
+    },
+];
+
+// Suggest follow-up queries based on the conversation context
+const suggestWithConvoResponse = await qa.suggestQueries({
+    conversation: suggestConversation,
+    numQueries: 3,
+});
+
+for (const suggestedQuery of suggestWithConvoResponse.queries) {
+    console.log(suggestedQuery.query);
+}
+// END SuggestQueriesWithConversation
+
 await client.close()
 
 }

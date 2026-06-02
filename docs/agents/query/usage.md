@@ -499,6 +499,31 @@ You can optionally specify:
     </TabItem>
 </Tabs>
 
+#### `Suggest Queries`: Follow-Up Queries
+
+You can pass a `conversation` to `Suggest Queries` to generate follow-up query suggestions based on the conversation history. This is useful for guiding users toward relevant next questions after an initial exchange.
+
+The `conversation` parameter accepts a list of `ChatMessage` objects, using the same format as [conversational queries](#conversational-queries).
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SuggestQueriesWithConversation"
+            endMarker="# END SuggestQueriesWithConversation"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SuggestQueriesWithConversation"
+            endMarker="// END SuggestQueriesWithConversation"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
 ## Stream responses
 
 The Query Agent can also stream responses, allowing you to receive the answer as it is being generated.
