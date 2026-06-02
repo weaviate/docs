@@ -1,7 +1,7 @@
 import os
 import time
 import uuid
-from engram import EngramClient, RetrievalConfig
+from engram import EngramClient, HybridRetrieval, FetchRetrieval
 
 # START Setup
 client = EngramClient(
@@ -151,7 +151,7 @@ def memory_augmented_chat_anthropic():
             query=user_input,
             user_id=user_id,
             group="default",
-            retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+            retrieval_config=HybridRetrieval(limit=5),
         )
         memory_context = "\n".join(f"- {m.content}" for m in results)
 
@@ -210,7 +210,7 @@ def memory_augmented_chat_openai():
             query=user_input,
             user_id=user_id,
             group="default",
-            retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+            retrieval_config=HybridRetrieval(limit=5),
         )
         memory_context = "\n".join(f"- {m.content}" for m in results)
 
@@ -286,7 +286,7 @@ results = client.memories.search(
     topics=["UserKnowledge"],
     user_id=user_id,
     group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+    retrieval_config=HybridRetrieval(limit=5),
 )
 
 for memory in results:
@@ -327,7 +327,7 @@ try:
         group="default",
         topics=["ConversationSummary"],
         properties={"conversation_id": conversation_id},
-        retrieval_config=RetrievalConfig(retrieval_type="fetch", limit=1),
+        retrieval_config=FetchRetrieval(limit=1),
     )
 except APIError:
     summary_results = []  # ConversationSummary topic not enabled in this project

@@ -1,6 +1,6 @@
 import os
 import uuid
-from engram import EngramClient, RetrievalConfig
+from engram import EngramClient, VectorRetrieval, BM25Retrieval, HybridRetrieval
 from engram.errors import APIError
 
 client = EngramClient(
@@ -13,7 +13,6 @@ test_user_id = f"test-{uuid.uuid4().hex[:8]}"
 run = client.memories.add(
     "The user prefers dark mode and works primarily in Python. They are building a RAG application.",
     user_id=test_user_id,
-    group="default",
 )
 status = client.runs.wait(run.run_id)
 assert status.status == "completed"
@@ -23,8 +22,6 @@ assert len(status.memories_created) >= 1
 results = client.memories.search(
     query="What programming language does the user prefer?",
     user_id=test_user_id,
-    group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
 )
 
 for memory in results:
@@ -37,8 +34,7 @@ assert len(results) >= 1
 results = client.memories.search(
     query="What programming language does the user prefer?",
     user_id=test_user_id,
-    group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="vector", limit=10),
+    retrieval_config=VectorRetrieval(limit=10),
 )
 # END VectorSearch
 
@@ -48,8 +44,7 @@ assert len(results) >= 1
 results = client.memories.search(
     query="What programming language does the user prefer?",
     user_id=test_user_id,
-    group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="bm25", limit=10),
+    retrieval_config=BM25Retrieval(limit=10),
 )
 # END BM25Search
 
@@ -59,8 +54,7 @@ assert len(results) >= 1
 results = client.memories.search(
     query="What programming language does the user prefer?",
     user_id=test_user_id,
-    group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=10),
+    retrieval_config=HybridRetrieval(limit=10),
 )
 # END HybridSearch
 
@@ -71,8 +65,7 @@ results = client.memories.search(
     query="user preferences",
     topics=["UserKnowledge"],
     user_id=test_user_id,
-    group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=10),
+    retrieval_config=HybridRetrieval(limit=10),
 )
 
 for memory in results:
@@ -90,8 +83,7 @@ assert all(m.topic == "UserKnowledge" for m in results)
 bm25_no_overlap = client.memories.search(
     query="submarine periscope rotation",  # no terms in common with the seed
     user_id=test_user_id,
-    group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="bm25", limit=10),
+    retrieval_config=BM25Retrieval(limit=10),
 )
 assert len(bm25_no_overlap) == 0, (
     f"BM25 with no lexical overlap should return 0 results, got {len(bm25_no_overlap)}"
@@ -105,8 +97,7 @@ try:
         query="user preferences",
         topics=["DefinitelyNotARealTopicXYZ"],
         user_id=test_user_id,
-        group="default",
-        retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=10),
+        retrieval_config=HybridRetrieval(limit=10),
     )
     assert len(nonexistent_topic_results) == 0, (
         f"topics filter must restrict — non-existent topic should return 0, "
@@ -119,8 +110,8 @@ except APIError as e:
     )
 
 # Cleanup
-_all = client.memories.search(query="user", user_id=test_user_id, group="default")
+_all = client.memories.search(query="user", user_id=test_user_id)
 for _m in _all:
-    client.memories.delete(_m.id, user_id=test_user_id, group="default")
+    client.memories.delete(_m.id, user_id=test_user_id)
 
 client.close()

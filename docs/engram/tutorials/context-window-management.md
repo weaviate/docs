@@ -157,13 +157,13 @@ Adjust the `retrieval_config` to control how memories are ranked:
 
 ```python
 # Pure semantic search — best for conceptual similarity
-RetrievalConfig(retrieval_type="vector", limit=5)
+VectorRetrieval(limit=5)
 
 # Keyword search — best for exact terms
-RetrievalConfig(retrieval_type="bm25", limit=5)
+BM25Retrieval(limit=5)
 
 # Hybrid (recommended) — combines both approaches
-RetrievalConfig(retrieval_type="hybrid", limit=10)
+HybridRetrieval(limit=10)
 ```
 
 ### Dual-memory pattern

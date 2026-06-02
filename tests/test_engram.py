@@ -10,6 +10,7 @@ from pathlib import Path
     [
         "./docs/engram/_includes/quickstart.py",
         "./docs/engram/_includes/store_memories.py",
+        "./docs/engram/_includes/input_data_types.py",
         "./docs/engram/_includes/search_memories.py",
         "./docs/engram/_includes/manage_memories.py",
         "./docs/engram/_includes/check_run_status.py",

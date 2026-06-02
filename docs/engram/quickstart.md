@@ -17,7 +17,7 @@ This guide walks you through the core Engram workflow: create a project, get an 
 ## Prerequisites
 
 - A [Weaviate Cloud](https://console.weaviate.cloud) account
-- `curl` or install the [Python SDK](https://pypi.org/project/weaviate-engram/):
+- `curl` or install the Engram [Python SDK](https://pypi.org/project/weaviate-engram/):
 
 <Tabs groupId="python-install">
 <TabItem value="pip" label="pip">
@@ -40,9 +40,28 @@ uv add weaviate-engram
 
 Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud console](https://console.weaviate.cloud).
 
+Follow this interactive walkthrough to create a project with the **Personalization** template, set up its group and the `UserKnowledge` topic, and generate an API key to connect to it:
+
+<div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
+  <iframe
+    id="xrg3yooiwk"
+    src="https://app.guideflow.com/embed/xrg3yooiwk"
+    width="100%"
+    height="100%"
+    style={{overflow: "hidden", position: "absolute", border: "none"}}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="xrg3yooiwk"></script>
+</div>
+
 You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
 
-The template seeds the project's `default` [group](concepts/groups.md) with a [topic](concepts/topics.md) called `UserKnowledge` (description: *"Anything relating to the user personally: their personal details (name, age, interpersonal relationships, etc.), their preferences, what they've done or plan to do, etc., i.e., any generic information about the user."*). This is enough to get started.
+The template sets up the project's `default` [group](concepts/groups.md) with default [topics](concepts/topics.md), such as `UserKnowledge` for general information about the user. This is enough to get started.
 
 The template also lets you optionally add a `ConversationSummary` topic, which maintains a single summary per conversation. Enabling this option makes a `conversation_id` [property](concepts/scopes.md) required when adding memories that target it, which is why it's disabled by default.
 
@@ -129,7 +148,7 @@ Send content to Engram using the memory API. This example sends a plain text str
 </TabItem>
 </Tabs>
 
-Engram processes memories asynchronously. The response includes a `run_id` you can use to check the pipeline status.
+Engram processes memories asynchronously and immediately returns a `run_id`. In most cases you don't need to wait, since memories become available for search once the pipeline finishes. If you want to confirm when a run completes, see [Check run status](guides/check-run-status.md).
 
 <details>
 
@@ -144,61 +163,7 @@ Engram processes memories asynchronously. The response includes a `run_id` you c
 
 </details>
 
-## Step 5: Check run status
-
-Poll the run endpoint to confirm your memory has been committed.
-
-<Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START CheckRun"
-  endMarker="# END CheckRun"
-  language="py"
-/>
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-<FilteredTextBlock
-  text={CurlCode}
-  startMarker="# START CheckRun"
-  endMarker="# END CheckRun"
-  language="bash"
-/>
-
-</TabItem>
-</Tabs>
-
-<details>
-
-<summary>Example response</summary>
-
-```json
-{
-  "run_id": "run-uuid",
-  "status": "completed",
-  "group_id": "group-uuid",
-  "user_id": "user-uuid",
-  "starting_step": 1,
-  "input_type": "string",
-  "committed_operations": {
-    "created": [
-      {
-        "memory_id": "memory-uuid",
-        "committed_at": "2025-01-01T00:00:01Z"
-      }
-    ]
-  },
-  "created_at": "2025-01-01T00:00:00Z",
-  "updated_at": "2025-01-01T00:00:01Z"
-}
-```
-
-</details>
-
-## Step 6: Search memories
+## Step 5: Search memories
 
 Search for relevant memories using a natural language query.
 

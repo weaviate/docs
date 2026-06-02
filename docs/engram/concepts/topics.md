@@ -13,17 +13,17 @@ Each topic has:
 | `name` | Unique identifier within the group (e.g. `user_facts`) |
 | `description` | Natural language description used in LLM prompts during extraction (e.g. "What food the user likes to eat") |
 | `scoping` | Which scopes the topic requires: `user_scoped` (requires `user_id`) and a list of custom `scope_properties` keys (e.g. `conversation_id`). See [scopes](scopes.md). |
-| `is_bounded` | If true, the topic holds at most **one** memory per [scope](scopes.md). Useful for running summaries. |
+| `is_bounded` | If true, the topic holds at most **one** memory per [scope](scopes.md). Useful for things like running conversation summaries or per-user profiles. |
 
-The topic `description` is important — it's what the extraction [pipeline](pipelines.md) uses to decide how to categorize information. For example, a travel agent might have separate topics with descriptions like "The places the user would like to visit" and "What food the user likes to eat" so the pipeline can route extracted facts to the right topic.
+The topic `description` is important — it's what the [pipeline](pipelines.md) uses to decide how to categorize information. For example, a travel agent might have separate topics with descriptions like "The places the user would like to visit" and "What food the user likes to eat" so the pipeline can route extracted facts to the right topic.
 
 ## Bounded topics
 
-A **bounded topic** holds exactly one memory per unique scope. The pipeline derives the memory's ID deterministically from the topic name and scope, so subsequent writes update the same memory rather than creating new ones.
+A **bounded topic** holds at most one memory per unique scope. The pipeline derives the memory's ID deterministically from the topic name and scope, so subsequent writes update the same memory rather than creating new ones.
 
 This is the right shape for a running summary that should always have a single canonical version. For example:
 
-- A `ConversationSummary` topic scoped by `user_id` + `conversation_id` keeps one summary per conversation. New messages update that summary in place.
+- A `ConversationSummary` topic scoped by `user_id` + `properties.conversation_id` keeps one summary per conversation. New messages update that summary in place.
 - A `UserProfile` topic scoped by `user_id` keeps one profile per user.
 
 The pipeline's [transform steps](pipelines.md) honor the bound: when a transform would otherwise produce multiple memories for the same scope, it consolidates them down to one.

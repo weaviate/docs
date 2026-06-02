@@ -41,6 +41,35 @@ Send raw text and let Engram extract structured memories from it.
 
 The pipeline extracts individual facts from the text (e.g. "prefers dark mode", "works in Python") and stores them as separate memories.
 
+## Conversation content
+
+Send multi-turn messages and let Engram extract memories from the dialogue. You can send new messages as they happen — there is no need to wait until a conversation is finished.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START StoreConversation"
+  endMarker="# END StoreConversation"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START StoreConversation"
+  endMarker="# END StoreConversation"
+  language="bash"
+/>
+
+</TabItem>
+</Tabs>
+
+The pipeline reads the messages and extracts relevant facts (e.g. "lives in Berlin", "prefers specialty coffee").
+
 ## Pre-extracted content
 
 If you've already extracted structured content, send it directly. This bypasses the LLM extraction step, but the content still passes through the transform and commit pipeline stages.
@@ -68,35 +97,6 @@ If you've already extracted structured content, send it directly. This bypasses 
 </TabItem>
 </Tabs>
 
-## Conversation content
-
-Send a multi-turn conversation and let Engram extract memories from the full exchange.
-
-<Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START StoreConversation"
-  endMarker="# END StoreConversation"
-  language="py"
-/>
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-<FilteredTextBlock
-  text={CurlCode}
-  startMarker="# START StoreConversation"
-  endMarker="# END StoreConversation"
-  language="bash"
-/>
-
-</TabItem>
-</Tabs>
-
-The pipeline analyzes the full conversation and extracts relevant facts (e.g. "lives in Berlin", "prefers specialty coffee").
-
 ## Response
 
 All three content types return the same response format:
@@ -108,7 +108,7 @@ All three content types return the same response format:
 }
 ```
 
-A successful response means the pipeline has started, not that the memories have been committed. Use the `run_id` to [check the pipeline status](check-run-status.md) and confirm when processing is complete.
+A successful response means the pipeline has started, not that the memories have been committed. In most cases you don't need to do anything else, since memories become available once the pipeline finishes. If you have a specific reason to confirm completion, you can use the `run_id` to [check the pipeline status](check-run-status.md).
 
 ## Optional parameters
 

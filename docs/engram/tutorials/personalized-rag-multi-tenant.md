@@ -93,7 +93,7 @@ def dual_search(query, user_id, weaviate_collection):
     # Search user memory
     user_memories = engram.memories.search(
         query=query, user_id=user_id, group="default",
-        retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+        retrieval_config=HybridRetrieval(limit=5),
     )
 
     return {"knowledge_base": kb_docs, "user_memories": user_memories}

@@ -1,6 +1,6 @@
 import os
 import time
-from engram import EngramClient, RetrievalConfig
+from engram import EngramClient, HybridRetrieval
 from engram.errors import APIError
 
 # START Connect
@@ -17,7 +17,7 @@ def _cleanup_alice():
             query="user",
             user_id="alice",
             group="default",
-            retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=100),
+            retrieval_config=HybridRetrieval(limit=100),
         )
         for m in existing:
             try:

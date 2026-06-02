@@ -1,7 +1,7 @@
 import os
 import uuid
 import asyncio
-from engram import EngramClient, AsyncEngramClient, RetrievalConfig
+from engram import EngramClient, AsyncEngramClient, HybridRetrieval
 
 # START SetupClients
 engram = EngramClient(
@@ -87,7 +87,7 @@ def dual_search(query, user_id, kb_results=None):
         query=query,
         user_id=user_id,
         group="default",
-        retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+        retrieval_config=HybridRetrieval(limit=5),
     )
 
     return {
@@ -167,7 +167,7 @@ alice_memories = engram.memories.search(
     query=query,
     user_id=f"tutorial-rag-alice-{_test_suffix}",
     group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+    retrieval_config=HybridRetrieval(limit=5),
 )
 print("Alice's context:")
 for m in alice_memories:
@@ -178,7 +178,7 @@ bob_memories = engram.memories.search(
     query=query,
     user_id=f"tutorial-rag-bob-{_test_suffix}",
     group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+    retrieval_config=HybridRetrieval(limit=5),
 )
 print("\nBob's context:")
 for m in bob_memories:
@@ -259,7 +259,7 @@ async def search_for_user(async_engram, user_id, query):
         query=query,
         user_id=user_id,
         group="default",
-        retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+        retrieval_config=HybridRetrieval(limit=5),
     )
     return user_id, results
 

@@ -1,6 +1,6 @@
 import os
 import uuid
-from engram import EngramClient, RetrievalConfig
+from engram import EngramClient, HybridRetrieval
 
 # START Setup
 client = EngramClient(
@@ -145,7 +145,7 @@ results = client.memories.search(
     query="What kind of coffee does the user like?",
     user_id=user_id,
     group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+    retrieval_config=HybridRetrieval(limit=5),
 )
 
 memory_context = "\n".join(f"- {m.content}" for m in results)
@@ -191,7 +191,7 @@ def memory_chat_loop_anthropic():
             query=user_input,
             user_id=user_id,
             group="default",
-            retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+            retrieval_config=HybridRetrieval(limit=5),
         )
         memory_context = "\n".join(f"- {m.content}" for m in results)
         system_prompt = f"""You are a helpful assistant with memory of past conversations.
@@ -251,7 +251,7 @@ def memory_chat_loop_openai():
             query=user_input,
             user_id=user_id,
             group="default",
-            retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+            retrieval_config=HybridRetrieval(limit=5),
         )
         memory_context = "\n".join(f"- {m.content}" for m in results)
         system_prompt = f"""You are a helpful assistant with memory of past conversations.
@@ -306,7 +306,7 @@ _loop_results = client.memories.search(
     query="hiking mountains",
     user_id="user-123",
     group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+    retrieval_config=HybridRetrieval(limit=5),
 )
 assert (
     len(_loop_results) >= 1
@@ -329,7 +329,7 @@ _loop_results_oai = client.memories.search(
     query="science fiction books",
     user_id="user-123",
     group="default",
-    retrieval_config=RetrievalConfig(retrieval_type="hybrid", limit=5),
+    retrieval_config=HybridRetrieval(limit=5),
 )
 assert (
     len(_loop_results_oai) >= 1

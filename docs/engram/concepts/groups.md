@@ -27,8 +27,10 @@ Create additional groups when you have distinct use cases that need different to
 
 A **customer support agent** could use two groups:
 
-- **`personalization`** (user-scoped) — Stores per-user facts like "prefers email over phone" or "has a Pro subscription". Requires a `user_id` on every store and search so each user's memories stay separate.
-- **`continual_learning`** (project-wide) — Stores knowledge the agent learns about how to do its job, like "always check the billing FAQ before escalating refund requests". No `user_id` needed — these memories are shared across all users.
+- **`personalization`** — Its topics are user-scoped, storing per-user facts like "prefers email over phone" or "has a Pro subscription". A `user_id` is required when adding to these topics so each user's memories stay separate.
+- **`continual_learning`** — Its topics are project-wide, storing knowledge the agent learns about how to do its job, like "always check the billing FAQ before escalating refund requests". No `user_id` needed, so these memories are shared across all users.
+
+Scoping is configured per topic, not per group, so a single group can mix user-scoped and project-wide topics.
 
 When the agent handles a support ticket, it searches the personalization group with the user's ID to recall their history, and searches the continual learning group to recall best practices.
 

@@ -13,7 +13,6 @@ test_user_id = f"test-{uuid.uuid4().hex[:8]}"
 run = client.memories.add(
     "The user prefers dark mode",
     user_id=test_user_id,
-    group="default",
 )
 
 # START PollRun
@@ -37,7 +36,6 @@ time.sleep(2)  # Allow tenant indexing to complete
 refine_run = client.memories.add(
     "The user actually prefers light mode now",
     user_id=test_user_id,
-    group="default",
 )
 refine_status = client.runs.wait(refine_run.run_id)
 assert refine_status.status == "completed"
@@ -53,8 +51,8 @@ print(
 )
 
 # Cleanup
-_all = client.memories.search(query="dark mode", user_id=test_user_id, group="default")
+_all = client.memories.search(query="dark mode", user_id=test_user_id)
 for _m in _all:
-    client.memories.delete(_m.id, user_id=test_user_id, group="default")
+    client.memories.delete(_m.id, user_id=test_user_id)
 
 client.close()

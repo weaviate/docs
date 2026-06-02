@@ -60,7 +60,7 @@ Provide a query and Engram returns the most relevant memories.
 
 ## Retrieval types
 
-Specify the [retrieval type](../concepts/search.md) in `retrieval_config`:
+Set the [retrieval type](../concepts/search.md) with `retrieval_config`. Pass a retrieval model — `VectorRetrieval`, `BM25Retrieval`, or `HybridRetrieval` — each with an optional `limit`. To use a type with its default settings, you can also pass its name as a string (`"vector"`, `"bm25"`, `"hybrid"`, or `"fetch"`).
 
 ### Vector search
 

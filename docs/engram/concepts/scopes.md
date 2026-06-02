@@ -81,14 +81,18 @@ results = client.memories.search(
 
 ## Multiple topics in one request
 
-A single request can interact with multiple topics. The required scope parameters are the **union** of every targeted topic's requirements — if any one of them needs `user_id`, you must pass `user_id`; if any one needs `properties.conversation_id`, you must pass `properties.conversation_id`.
+A single request can target multiple topics at once.
+
+**When adding memories**, you must provide the scope parameters that every targeted topic requires, which is the **union** of their requirements. If any targeted topic needs `user_id`, you must pass `user_id`. If any needs `properties.conversation_id`, you must pass `properties.conversation_id`. If you omit a parameter that a targeted topic requires, the request is rejected.
+
+**When searching**, scope parameters are optional. They act as filters that narrow results to a specific user or property value, so you only pass the ones you want to filter by.
 
 For example, imagine a customer support agent with two topics in the same group:
 
 - `user_facts` — user-scoped, stores per-user facts like "prefers email over phone".
 - `conversation_summary` — scoped by `conversation_id`, keeps a running summary of each conversation.
 
-A single search across both must include `user_id` (required by `user_facts`) and `properties.conversation_id` (required by `conversation_summary`):
+To search across both for a specific user and conversation, pass `user_id` and `properties.conversation_id` as filters:
 
 ```python
 results = client.memories.search(
@@ -99,7 +103,7 @@ results = client.memories.search(
 )
 ```
 
-Topics that don't require a given parameter simply ignore it — `user_facts` doesn't care about `conversation_id`, but `conversation_summary` uses it to pick the right summary. If you omit a parameter that any targeted topic requires, the request is rejected.
+Topics that don't use a given parameter simply ignore it — `user_facts` doesn't filter on `conversation_id`, but `conversation_summary` uses it to pick the right summary.
 
 ## Questions and feedback
 

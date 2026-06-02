@@ -12,6 +12,10 @@ import CurlCode from '!!raw-loader!../_includes/check_run_status.sh';
 
 When you [store memories](store-memories.md), Engram processes them asynchronously through a [pipeline](../concepts/pipelines.md). Each request returns a `run_id` that you can use to track progress.
 
+:::tip
+In most cases, you don't need to poll for completion — memories are eventually consistent and will be available for search once the pipeline finishes. Check the initial response from `memories.add` to catch immediate errors. Use `runs.get` only when you need to confirm that a specific run has completed, such as during testing or debugging.
+:::
+
 ## Poll a run
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
@@ -96,10 +100,6 @@ If a run fails, the `error` field contains a description of what went wrong.
   "updated_at": "2025-01-01T00:00:01Z"
 }
 ```
-
-:::tip
-In most cases, you don't need to poll for completion — memories are eventually consistent and will be available for search once the pipeline finishes. Check the initial response from `memories.add` to catch immediate errors. Use `runs.get` only when you need to confirm that a specific run has completed, such as during testing or debugging.
-:::
 
 ## Questions and feedback
 
