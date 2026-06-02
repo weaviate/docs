@@ -1642,6 +1642,7 @@ const sidebars = {
       label: "REST API reference",
       href: "/engram/api/rest",
     },
+    "engram/console",
   ],
 };
 

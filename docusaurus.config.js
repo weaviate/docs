@@ -188,8 +188,8 @@ const config = {
     ({
       image: "og/default.jpg",
       announcementBar: {
-        id: "announcement-bar-september-2025",
-        content: `<a href="https://academy.weaviate.io/">The new <b>Weaviate Academy</b> learning platform is here!</a>`,
+        id: "announcement-bar-engram-2026",
+        content: `<a href="/engram/">Introducing <b>Engram</b> — managed memory for AI agents, built on Weaviate</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,
