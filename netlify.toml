@@ -1147,3 +1147,62 @@ status = 301
 from = "/weaviate/client-libraries/java/java-v5"
 to   = "/weaviate/client-libraries/java"
 status = 301
+
+# Agents rework (PR #410): Personalization and Transformation Agents removed,
+# Query Agent restructured into /agents with guides/reference/recipes/clients.
+# Specific paths first; splats below catch anything else under the removed roots.
+
+[[redirects]]
+from = "/agents/query"
+to   = "/agents"
+status = 301
+
+[[redirects]]
+from = "/agents/query/usage"
+to   = "/agents/guides/ask_mode"
+status = 301
+
+[[redirects]]
+from = "/agents/query/tutorial-ecommerce"
+to   = "/agents/recipes/query-agent-ecommerce-assistant"
+status = 301
+
+[[redirects]]
+from = "/agents/recipes/personalization-agent-get-started-movies"
+to   = "/agents/recipes"
+status = 301
+
+[[redirects]]
+from = "/agents/recipes/personalization-agent-get-started-recipes"
+to   = "/agents/recipes"
+status = 301
+
+[[redirects]]
+from = "/agents/recipes/transformation-agent-get-started"
+to   = "/agents/recipes"
+status = 301
+
+[[redirects]]
+from = "/agents/recipes/transformation-agent-retrieval-benchmark"
+to   = "/agents/recipes"
+status = 301
+
+[[redirects]]
+from = "/agents/personalization"
+to   = "/agents"
+status = 301
+
+[[redirects]]
+from = "/agents/personalization/*"
+to   = "/agents"
+status = 301
+
+[[redirects]]
+from = "/agents/transformation"
+to   = "/agents"
+status = 301
+
+[[redirects]]
+from = "/agents/transformation/*"
+to   = "/agents"
+status = 301

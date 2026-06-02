@@ -273,6 +273,12 @@ search_response = qa.search(
     "summer shoes",
     limit=10,
     diversity_weight=0.5,
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
 )
 
 # Access the search results
@@ -364,12 +370,18 @@ client.close()
 import asyncio
 import os
 import weaviate
+from weaviate.classes.init import Auth
 from weaviate.agents.query import AsyncQueryAgent
 
+# Provide any inference-provider keys your collections' vectorizers / generative
+# models need; an empty dict is fine if the cluster uses Weaviate Embeddings.
+headers = {
+    "X-OpenAI-API-Key": os.environ.get("OPENAI_API_KEY", ""),
+}
 
 async_client = weaviate.use_async_with_weaviate_cloud(
     cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=os.environ.get("WEAVIATE_API_KEY"),
+    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
     headers=headers,
 )
 
@@ -492,7 +504,7 @@ asyncio.run(run_streaming_query())
 
 # START SuggestQueries
 response = qa.suggest_queries(
-    collections=["IRPAPERS"],
+    collections=["FinancialContracts"],
     num_queries=3,
     instructions="High-level themes and open-ended exploration",
 )

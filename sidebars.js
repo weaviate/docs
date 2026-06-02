@@ -1398,10 +1398,9 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Recipes",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
+      label: "Tutorials and guides",
+      className: "sidebar-item",
+      collapsed: true,
       link: {
         type: "doc",
         id: "agents/recipes/index",
@@ -1437,10 +1436,10 @@ const sidebars = {
         },
       ],
     },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
+    // {
+    //   type: "html",
+    //   value: "<hr class='sidebar-divider' />",
+    // },
     {
       type: "doc",
       id: "agents/reference/troubleshooting",

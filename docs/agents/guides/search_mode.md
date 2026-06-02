@@ -67,6 +67,7 @@ The `.search()` method accepts several arguments:
 | `query` | The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `limit` | The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages. |
+| `filtering` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversity_weight` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
 
 </TabItem>
@@ -76,12 +77,41 @@ The `.search()` method accepts several arguments:
 | `query` | The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `limit` | The maximum number of results returned in this page of results. Use [`.next()`](#pagination) to fetch additional pages. |
+| `filtering` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) above. |
 | `diversityWeight` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
 
 </TabItem>
 </Tabs>
 
 For more advanced searches, you can also specify _additional filters_ within the collection configuration. [See the page on additional filters for more detail](../reference/additional_filters.md).
+
+### Customized filtering
+
+Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `filtering` parameter controls how many Weaviate queries are generated.
+
+- **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query. You should use these when you prefer to get results, even if they don't match every criteria in your query.
+
+- **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query. You should use this when you want the results to follow your query intent closely, even if that means potentially receiving no results.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START FilteringExample"
+            endMarker="# END FilteringExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START FilteringExample"
+            endMarker="// END FilteringExample"
+            language="ts"
+        />
+    </TabItem>
+
+</Tabs>
 
 ### Diversity ranking
 
@@ -146,6 +176,10 @@ The Search Mode response has the following properties:
 </TabItem>
 
 </Tabs>
+
+:::note Result scores
+The `search_results` / `searchResults` field reuses Weaviate's native `QueryReturn` / `WeaviateReturn` type, so results have the same shape as a standard Weaviate query. However, the `score` in each object's metadata is replaced with Search Mode's own ranking score rather than the original Weaviate search score.
+:::
 
 
 ### Pagination

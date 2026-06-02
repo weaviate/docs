@@ -1,6 +1,6 @@
 ---
 title: Python client
-description: "Use the Python client to interact with Weaviate Agents."
+description: "Use the Python client to interact with the Query Agent."
 image: og/docs/agents.jpg
 tags: ['agents', 'query-agent', 'clients']
 ---
@@ -20,14 +20,14 @@ export const pythonCardsData = [
   },
 ];
 
-The Python client allows you to easily interact with the Weaviate Agents API from your Python applications. 
+The Python client allows you to easily interact with the Query Agent API from your Python applications. 
 
 It relies on the [Weaviate Client package](../../weaviate/client-libraries/python/index.mdx), and handles authentication and connection to your Weaviate instance from there.
 
 
 :::note Python client (SDK)
 
-The latest Weaviate Agents Python client is version `v||site.agents_python_version||`.
+The latest Query Agent Python client is version `v||site.agents_python_version||`.
 
 <QuickLinks items={pythonCardsData} />
 
@@ -35,7 +35,7 @@ The latest Weaviate Agents Python client is version `v||site.agents_python_versi
 
 ## Installation
 
-The Weaviate Agents Python client is distributed as the [`weaviate-agents`](https://pypi.org/project/weaviate-agents/) package on PyPI, and depends on the [`weaviate-client`](https://pypi.org/project/weaviate-client/) package. You can install it in one of two equivalent ways.
+The Query Agent Python client is distributed as the [`weaviate-agents`](https://pypi.org/project/weaviate-agents/) package on PyPI, and depends on the [`weaviate-client`](https://pypi.org/project/weaviate-client/) package. You can install it in one of two equivalent ways.
 
 **Recommended: Install via the `weaviate-client` extra**
 

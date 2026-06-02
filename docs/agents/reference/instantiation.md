@@ -12,6 +12,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.mts';
 
+Instantiate the Query Agent against an authenticated Weaviate Cloud client. Configuration can be set at construction time (collections, system prompt, default timeout) and most options can also be overridden per call to `ask()` or `search()`.
+
 ## Basic instantiation
 
 The Query Agent requires only a target [Weaviate Cloud instance](/cloud/manage-clusters/connect.mdx) to be initialised. First, set up a Weaviate client:

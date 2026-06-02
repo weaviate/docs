@@ -11,8 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/conversations.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/conversations.mts';
 
-<!-- Detail on passing user/assistant message history instead of user query, typical usecases. Maybe an example function that iteratively updates message history every time `qa.ask()` is called. -->
-
 The Query Agent transforms a natural language query into actionable searches. You can either pass a single string for the query, or provide more context by including a full conversation with previous message turns.
 
 

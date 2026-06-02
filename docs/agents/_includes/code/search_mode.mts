@@ -52,6 +52,10 @@ for (const obj of searchResponse.searchResults.objects) {
 const diversitySearchResponse = await qa.search("summer shoes", {
     limit: 10,
     diversityWeight: 0.5,
+    collections: [{
+        name: "ECommerce",
+        targetVector: ["name_description_brand_vector"],
+    }],
 });
 
 for (const obj of diversitySearchResponse.searchResults.objects) {
@@ -86,5 +90,16 @@ pages.forEach((pageResponse, index) => {
     });
 });
 // END SearchPagination
+
+// START FilteringExample
+const filteringResponse = await qa.search("Find me some vintage shoes under $70", {
+    filtering: "precision",
+    limit: 10,
+});
+
+for (const obj of filteringResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - $${obj.properties['price']}`);
+}
+// END FilteringExample
 
 await client.close();

@@ -11,8 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/additional_filters.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/additional_filters.mts';
 
-<!-- Details on using the `additional_filters` argument, as well as typical usecases or examples where this might be useful. -->
-
 Additional filters can be used to subset the data in a single collection manually in addition to whatever filters the Query Agent decides to use in a particular search.
 
 These persistent filters are defined at the specification of the collection, and combined with agent-generated filters using logical `AND` operations at search time.

@@ -61,6 +61,7 @@ async def _async_run_for_testing():
     import weaviate
     from weaviate.classes.init import Auth
     from weaviate.agents.query import AsyncQueryAgent
+    from weaviate.agents.classes import QueryAgentCollectionConfig
 
     async_client = weaviate.use_async_with_weaviate_cloud(
         cluster_url=os.environ.get("WEAVIATE_URL"),

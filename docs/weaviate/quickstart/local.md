@@ -194,7 +194,7 @@ import QueryNearVectorImportVectors from "/_includes/code/quickstart/quickstart.
 
 </details>
 
-:::tip Weaviate Agents
+:::tip Query Agent
 
 Try the [Query Agent](/agents/index.md) with a Weaviate Cloud instance. You simply provide a prompt/question in natural language, and the Query Agent takes care of all the needed steps to provide an answer.
 
