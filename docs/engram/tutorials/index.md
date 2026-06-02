@@ -1,6 +1,5 @@
 ---
 title: Tutorials
-sidebar_position: 4
 description: "End-to-end tutorials for building AI applications with Engram memory."
 ---
 

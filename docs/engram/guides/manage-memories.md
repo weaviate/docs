@@ -1,6 +1,5 @@
 ---
 title: Manage memories
-sidebar_position: 3
 description: "How to get and delete individual memories in Engram by ID."
 ---
 
@@ -8,22 +7,70 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/manage_memories.py';
+import AsyncPyCode from '!!raw-loader!../_includes/manage_memories_async.py';
 import CurlCode from '!!raw-loader!../_includes/manage_memories.sh';
 
 You can retrieve and delete individual [memories](../concepts/memories.md) using their ID.
+
+<details>
+<summary>All examples below use a connected <code>client</code></summary>
+
+See [Connect to Engram](../quickstart.md#step-3-connect-to-engram) for how to instantiate one.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+```
+
+</TabItem>
+</Tabs>
+
+</details>
 
 ## Get a memory
 
 Retrieve a single memory by its ID.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START GetMemory"
   endMarker="# END GetMemory"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START GetMemory"
+  endMarker="# END GetMemory"
+  language="pyindent"
 />
 
 </TabItem>
@@ -67,13 +114,23 @@ Retrieve a single memory by its ID.
 Remove a memory permanently by its ID.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START DeleteMemory"
   endMarker="# END DeleteMemory"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START DeleteMemory"
+  endMarker="# END DeleteMemory"
+  language="pyindent"
 />
 
 </TabItem>

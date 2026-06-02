@@ -1,6 +1,5 @@
 ---
 title: Check run status
-sidebar_position: 4
 description: "How to poll pipeline run status and interpret committed operations in Engram."
 ---
 
@@ -8,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/check_run_status.py';
+import AsyncPyCode from '!!raw-loader!../_includes/check_run_status_async.py';
 import CurlCode from '!!raw-loader!../_includes/check_run_status.sh';
 
 When you [store memories](store-memories.md), Engram processes them asynchronously through a [pipeline](../concepts/pipelines.md). Each request returns a `run_id` that you can use to track progress.
@@ -16,16 +16,63 @@ When you [store memories](store-memories.md), Engram processes them asynchronous
 In most cases, you don't need to poll for completion — memories are eventually consistent and will be available for search once the pipeline finishes. Check the initial response from `memories.add` to catch immediate errors. Use `runs.get` only when you need to confirm that a specific run has completed, such as during testing or debugging.
 :::
 
+<details>
+<summary>All examples below use a connected <code>client</code></summary>
+
+See [Connect to Engram](../quickstart.md#step-3-connect-to-engram) for how to instantiate one.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+```
+
+</TabItem>
+</Tabs>
+
+</details>
+
 ## Poll a run
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START PollRun"
   endMarker="# END PollRun"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START PollRun"
+  endMarker="# END PollRun"
+  language="pyindent"
 />
 
 </TabItem>

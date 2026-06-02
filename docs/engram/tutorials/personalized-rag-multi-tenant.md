@@ -1,6 +1,5 @@
 ---
 title: "Personalized RAG with Per-User Memory"
-sidebar_position: 3
 description: "Build a multi-tenant RAG application that combines a Weaviate knowledge base with per-user Engram memory for personalized responses."
 ---
 

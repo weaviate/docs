@@ -1,6 +1,5 @@
 ---
 title: Pipelines and runs
-sidebar_position: 6
 description: "Engram's async processing pipelines: extract, transform, and commit steps, plus run tracking."
 ---
 

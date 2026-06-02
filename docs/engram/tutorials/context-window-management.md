@@ -1,6 +1,5 @@
 ---
 title: "Context Window Management"
-sidebar_position: 2
 description: "Reduce LLM token usage and cost by replacing full conversation history with Engram memory search."
 ---
 

@@ -1,6 +1,5 @@
 ---
-title: Console
-sidebar_position: 2
+title: Engram Web Console
 description: "Browse and manage Engram projects, memories, users, runs, and API keys from the Weaviate Cloud console."
 ---
 

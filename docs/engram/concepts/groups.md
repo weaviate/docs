@@ -1,6 +1,5 @@
 ---
 title: Groups
-sidebar_position: 8
 description: "Groups in Engram: containers of topics and pipelines that map 1:1 to use cases."
 ---
 

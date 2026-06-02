@@ -1,6 +1,5 @@
 ---
 title: Search memories
-sidebar_position: 2
 description: "How to search memories in Engram using vector, BM25, and hybrid retrieval with filtering and scoping."
 ---
 
@@ -8,22 +7,70 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/search_memories.py';
+import AsyncPyCode from '!!raw-loader!../_includes/search_memories_async.py';
 import CurlCode from '!!raw-loader!../_includes/search_memories.sh';
 
 You can retrieve stored memories using different search techniques. 
+
+<details>
+<summary>All examples below use a connected <code>client</code></summary>
+
+See [Connect to Engram](../quickstart.md#step-3-connect-to-engram) for how to instantiate one.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+```
+
+</TabItem>
+</Tabs>
+
+</details>
 
 ## Basic search
 
 Provide a query and Engram returns the most relevant memories.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START BasicSearch"
   endMarker="# END BasicSearch"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START BasicSearch"
+  endMarker="# END BasicSearch"
+  language="pyindent"
 />
 
 </TabItem>
@@ -67,13 +114,23 @@ Set the [retrieval type](../concepts/search.md) with `retrieval_config`. Pass a 
 Pure semantic search using embeddings. Finds memories that are conceptually similar to your query, even without matching keywords.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START VectorSearch"
   endMarker="# END VectorSearch"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START VectorSearch"
+  endMarker="# END VectorSearch"
+  language="pyindent"
 />
 
 </TabItem>
@@ -94,13 +151,23 @@ Pure semantic search using embeddings. Finds memories that are conceptually simi
 Full-text keyword search. Best for finding memories that contain specific terms.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START BM25Search"
   endMarker="# END BM25Search"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START BM25Search"
+  endMarker="# END BM25Search"
+  language="pyindent"
 />
 
 </TabItem>
@@ -121,13 +188,23 @@ Full-text keyword search. Best for finding memories that contain specific terms.
 Combines vector and BM25 for the best of both approaches. This is the recommended retrieval type for most use cases.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START HybridSearch"
   endMarker="# END HybridSearch"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START HybridSearch"
+  endMarker="# END HybridSearch"
+  language="pyindent"
 />
 
 </TabItem>
@@ -148,13 +225,23 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 Restrict your search to specific [topics](../concepts/topics.md) by providing a `topics` array.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START TopicFilter"
   endMarker="# END TopicFilter"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START TopicFilter"
+  endMarker="# END TopicFilter"
+  language="pyindent"
 />
 
 </TabItem>

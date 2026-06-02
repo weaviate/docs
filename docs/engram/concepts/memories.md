@@ -1,6 +1,5 @@
 ---
 title: Memories
-sidebar_position: 1
 description: "What memories are in Engram: content, topic, group, scope, and vector embeddings."
 ---
 

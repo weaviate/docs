@@ -1,7 +1,6 @@
 ---
 title: Engram
 sidebar_label: Introduction
-sidebar_position: 0
 description: "Engram is a memory server for LLM agents and applications that provides persistent, semantically searchable memory through a REST API."
 ---
 

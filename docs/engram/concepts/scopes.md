@@ -1,6 +1,5 @@
 ---
 title: Scopes
-sidebar_position: 4
 description: "Engram's multi-level scoping system: project, user, and custom property isolation for memories."
 ---
 

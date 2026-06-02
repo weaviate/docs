@@ -1,6 +1,5 @@
 ---
 title: Quickstart
-sidebar_position: 1
 description: "Get started with Engram by creating a project, generating an API key, storing a memory, and searching it."
 ---
 
@@ -99,7 +98,7 @@ Copy and store the API key immediately. You cannot retrieve it again after it is
 ## Step 3: Connect to Engram
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 Initialize the client with your API key.
 
@@ -127,7 +126,7 @@ All `curl` commands authenticate via the `Authorization` header with a Bearer to
 Send content to Engram using the memory API. This example sends a plain text string.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START AddMemory"
@@ -168,7 +167,7 @@ Engram processes memories asynchronously and immediately returns a `run_id`. In 
 Search for relevant memories using a natural language query.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}

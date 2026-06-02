@@ -1,11 +1,13 @@
-import os
 import uuid
-from engram import EngramClient, VectorRetrieval, BM25Retrieval, HybridRetrieval
+from engram import VectorRetrieval, BM25Retrieval, HybridRetrieval
 from engram.errors import APIError
 
-client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"]
-)
+# START Connect
+import os
+from engram import EngramClient
+
+client = EngramClient(api_key=os.environ["ENGRAM_API_KEY"])
+# END Connect
 
 test_user_id = f"test-{uuid.uuid4().hex[:8]}"
 

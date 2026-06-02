@@ -1,6 +1,5 @@
 ---
 title: Guides
-sidebar_position: 3
 description: "Step-by-step guides for storing, searching, and managing memories in Engram."
 ---
 

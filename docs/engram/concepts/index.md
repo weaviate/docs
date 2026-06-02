@@ -1,6 +1,5 @@
 ---
 title: Concepts
-sidebar_position: 2
 description: "Core concepts in Engram: memories, topics, groups, scoping, pipelines, retrieval types, and runs."
 ---
 

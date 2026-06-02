@@ -1,6 +1,5 @@
 ---
 title: Topics
-sidebar_position: 3
 description: "Topics in Engram: named categories within a group that control extraction and scoping."
 ---
 

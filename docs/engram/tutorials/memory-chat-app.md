@@ -1,6 +1,5 @@
 ---
 title: "Add Long-Term Memory to a Chat App"
-sidebar_position: 1
 description: "Build a chatbot with persistent memory across sessions using Engram with Anthropic or OpenAI."
 ---
 

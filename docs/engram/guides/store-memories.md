@@ -1,6 +1,5 @@
 ---
 title: Store memories
-sidebar_position: 1
 description: "How to store memories in Engram using string, pre-extracted, or conversation content types."
 ---
 
@@ -8,22 +7,70 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/store_memories.py';
+import AsyncPyCode from '!!raw-loader!../_includes/store_memories_async.py';
 import CurlCode from '!!raw-loader!../_includes/store_memories.sh';
 
 Engram supports three [content types](../concepts/input-data-types.md) for storing memories. Each content type is a different entrypoint into the same [pipeline](../concepts/pipelines.md).
+
+<details>
+<summary>All examples below use a connected <code>client</code></summary>
+
+See [Connect to Engram](../quickstart.md#step-3-connect-to-engram) for how to instantiate one.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+```
+
+</TabItem>
+</Tabs>
+
+</details>
 
 ## String content
 
 Send raw text and let Engram extract structured memories from it.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START StoreString"
   endMarker="# END StoreString"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START StoreString"
+  endMarker="# END StoreString"
+  language="pyindent"
 />
 
 </TabItem>
@@ -46,13 +93,23 @@ The pipeline extracts individual facts from the text (e.g. "prefers dark mode", 
 Send multi-turn messages and let Engram extract memories from the dialogue. You can send new messages as they happen — there is no need to wait until a conversation is finished.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START StoreConversation"
   endMarker="# END StoreConversation"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START StoreConversation"
+  endMarker="# END StoreConversation"
+  language="pyindent"
 />
 
 </TabItem>
@@ -75,13 +132,23 @@ The pipeline reads the messages and extracts relevant facts (e.g. "lives in Berl
 If you've already extracted structured content, send it directly. This bypasses the LLM extraction step, but the content still passes through the transform and commit pipeline stages.
 
 <Tabs className="code" groupId="languages" docsUrl="engram">
-<TabItem value="py" label="Python">
+<TabItem value="py_engram" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START StorePreExtracted"
   endMarker="# END StorePreExtracted"
   language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START StorePreExtracted"
+  endMarker="# END StorePreExtracted"
+  language="pyindent"
 />
 
 </TabItem>

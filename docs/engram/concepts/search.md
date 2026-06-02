@@ -1,6 +1,5 @@
 ---
 title: Search
-sidebar_position: 7
 description: "Engram search retrieval types: vector, BM25, and hybrid search strategies."
 ---
 
