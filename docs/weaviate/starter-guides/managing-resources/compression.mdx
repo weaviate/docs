@@ -63,7 +63,7 @@ The cost savings are most visible with in-memory indexes such as HNSW. More RAM 
 - RQ compressed vectors typically use 75% less memory than uncompressed vectors.
 - BQ compressed vectors use 97% less memory than uncompressed vectors.
 
-An HNSW index comprises a connection graph as well as the vectors. Quantization methods reduce the size of the vectors, but does not affect the size of the graph. As a result the overall reduction in memory usage is less than the reduction in vector size, but still significant. If you need to reduce memory further for a very large dataset, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) avoids keeping the full graph in memory altogether.
+An HNSW index comprises a connection graph as well as the vectors. Quantization methods reduce the size of the vectors, but do not affect the size of the graph. As a result the overall reduction in memory usage is less than the reduction in vector size, but still significant. If you need to reduce memory further for a very large dataset, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) avoids keeping the full graph in memory altogether.
 
 #### Recall
 
