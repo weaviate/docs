@@ -87,6 +87,10 @@ const FilteredTextBlock = ({
             // remove leading indent of 4 spaces
             format = (input) => input.replace(/^    /, '');
             break;
+        case 'pyindent':
+            // remove leading indent of 4 spaces (e.g. code inside `async def main()`)
+            format = (input) => input.replace(/^    /, '');
+            break;
         case 'tsindent':
             // remove leading indent of 4 spaces
             format = (input) => input.replace(/^  /, '');
@@ -157,6 +161,9 @@ const FilteredTextBlock = ({
             break;
         case 'csharpraw':
             language2 = 'csharp';
+            break;
+        case 'pyindent':
+            language2 = 'py';
             break;
     }
 

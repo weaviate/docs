@@ -17,6 +17,15 @@ image: og/docs/more-resources.jpg
 
 </details>
 
+#### Q: Can I use Weaviate to store memory for AI agents?
+
+<details>
+  <summary>Answer</summary>
+
+> Yes. Weaviate works well as a vector store for agent memory. If you'd rather not build and operate the memory layer yourself, we also offer [Engram](/engram/), a dedicated managed memory service built on Weaviate that automatically extracts, stores, and retrieves memories for your agents and applications.
+
+</details>
+
 #### Q: What is the difference between Weaviate and for example Elasticsearch?
 
 <details>

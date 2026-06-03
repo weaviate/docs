@@ -57,7 +57,23 @@ const config = {
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // showSidebar: true,
+          showSidebar: true,
+        },
+      },
+    ],
+    [
+      "@scalar/docusaurus",
+      {
+        id: "engram-api",
+        label: "",
+        route: "/engram/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
+        configuration: {
+          spec: {
+            url: "/specs/engram-openapi.json",
+          },
+          hideModels: true,
+          showSidebar: true,
         },
       },
     ],
@@ -172,8 +188,8 @@ const config = {
     ({
       image: "og/default.jpg",
       announcementBar: {
-        id: "announcement-bar-september-2025",
-        content: `<a href="https://academy.weaviate.io/">The new <b>Weaviate Academy</b> learning platform is here!</a>`,
+        id: "announcement-bar-engram-2026",
+        content: `<a href="/engram/">Introducing <b>Engram</b> — managed memory for AI agents, built on Weaviate</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,
@@ -214,7 +230,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ["java", "csharp"],
+        additionalLanguages: ["java", "csharp", "bash"],
       },
       docs: {
         sidebar: {

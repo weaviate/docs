@@ -847,8 +847,8 @@ const sidebars = {
       collapsible: false,
       items: [
         {
-          type: "doc",
-          id: "weaviate/api/rest",
+          type: "link",
+          href: "/weaviate/api/rest",
           label: "RESTful API",
           className: "sidebar-item",
         },
@@ -1664,6 +1664,59 @@ const sidebars = {
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
+  ],
+  engramSidebar: [
+    { type: "doc", id: "engram/index", label: "Introduction" },
+    "engram/quickstart",
+    "engram/install-integrate",
+    {
+      type: "category",
+      label: "Concepts",
+      link: { type: "doc", id: "engram/concepts/index" },
+      collapsed: true,
+      items: [
+        "engram/concepts/memories",
+        "engram/concepts/topics",
+        "engram/concepts/scopes",
+        "engram/concepts/input-data-types",
+        "engram/concepts/pipelines",
+        "engram/concepts/search",
+        "engram/concepts/groups",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/guides/index" },
+      items: [
+        "engram/guides/store-memories",
+        "engram/guides/search-memories",
+        "engram/guides/manage-memories",
+        "engram/guides/check-run-status",
+      ],
+    },
+    {
+      type: "category",
+      label: "Tutorials",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/tutorials/index" },
+      items: [
+        "engram/tutorials/memory-chat-app",
+        "engram/tutorials/context-window-management",
+        "engram/tutorials/personalized-rag-multi-tenant",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "link",
+      label: "REST API reference",
+      href: "/engram/api/rest",
+    },
+    "engram/console",
   ],
 };
 
