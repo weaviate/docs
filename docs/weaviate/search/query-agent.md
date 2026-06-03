@@ -13,7 +13,7 @@ import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent.mt
 
 <CloudOnlyBadge />
 
-The Weaviate Query Agent enables users to perform Weaviate searches or ask questions about their data using natural language. 
+The Weaviate Query Agent enables users to perform Weaviate searches or ask questions about their data using natural language.
 
 An agentic LLM will dynamically determine query terms and search strategies based on the natural language query.
 
@@ -392,7 +392,6 @@ However, no shoes under $60 were found based on available information.
 - [Query Agent full documentation](/query-agent/index.md) - Complete guide with setup and advanced features
 - [Connect to Weaviate Cloud](/cloud/manage-clusters/connect)
 - [Weaviate Cloud documentation](/cloud)
-- [AI agents framework](/query-agent)
 
 ## Questions and feedback
 

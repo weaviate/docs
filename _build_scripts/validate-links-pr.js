@@ -34,7 +34,7 @@ const runPRValidationFromBuildDev = async () => {
     }, Verbosity.ERROR);
     
     const paths = [
-        `/agents`,
+        `/query-agent`,
         `/cloud`,
         `/weaviate`,
     ]

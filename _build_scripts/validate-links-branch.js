@@ -36,7 +36,7 @@ const runBranchValidationOnNetlify = async () => {
     }, Verbosity.ERROR)
 
     const paths = [
-        `${netlifyPath}/agents`,
+        `${netlifyPath}/query-agent`,
         `${netlifyPath}/cloud`,
         `${netlifyPath}/deploy`,
         `${netlifyPath}/weaviate`,
