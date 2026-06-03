@@ -1284,117 +1284,180 @@ const sidebars = {
     },
   ],
   agentsSidebar: [
+    "query-agent/index",
+    "query-agent/installation",
+    "query-agent/quickstart",
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Modes",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/guides/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/guides/ask_mode",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/guides/search_mode",
+          className: "sidebar-item",
+        },
+        // {
+        //   type: "doc",
+        //   id: "query-agent/guides/research_mode",
+        //   className: "sidebar-item",
+        // },
+        {
+          type: "doc",
+          id: "query-agent/guides/suggest_queries",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Configuration",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/reference/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/reference/instantiation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/system_prompt",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/multi_turn_conversations",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/additional_filters",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/advanced_collections",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Clients",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/clients/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/clients/python",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/clients/typescript",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Tutorials and guides",
+      className: "sidebar-item",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "query-agent/recipes/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-get-started",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-ecommerce-assistant",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-streamlit-chat",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-vs-diy",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-as-a-tool",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    // {
+    //   type: "html",
+    //   value: "<hr class='sidebar-divider' />",
+    // },
     {
       type: "doc",
-      id: "agents/index",
+      id: "query-agent/reference/troubleshooting",
+      className: "sidebar-item",
     },
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Query Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/query/index",
-      },
-      customProps: {
-        cloudOnly: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/query/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/query/tutorial-ecommerce",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Transformation Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/transformation/index",
-      },
-      customProps: {
-        cloudOnly: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/transformation/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/transformation/tutorial-enrich-dataset",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Personalization Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/personalization/index",
-      },
-      customProps: {
-        cloudOnly: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/personalization/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/personalization/tutorial-recipe-recommender",
-          className: "sidebar-item",
-        },
-      ],
-    },
-  ],
-  agentsRecipesSidebar: [
-    {
-      type: "category",
-      label: "Recipes",
-      collapsed: false,
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "agents/recipes",
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "agents/recipes", // Scans the folder docs/weaviate/recipes/
-        },
-      ],
     },
   ],
   contributorSidebar: [

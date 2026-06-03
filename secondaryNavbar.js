@@ -64,28 +64,23 @@ const secondaryNavbarItems = {
     link: "/deploy",
     links: [
       { label: "Get started", link: "/deploy", sidebar: "deploySidebar" },
-      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar"},
+      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar" },
       /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
-      { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
+      { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar" },
       /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
-      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
-      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar"},
+      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar" },
+      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar" },
     ]
   },
 
   agents: {
-    title: "Weaviate Agents",
+    title: "Query Agent",
     icon: "fa fa-robot",
-    description: "Build and deploy intelligent agents with Weaviate",
-    link: "/agents",
+    description: "Run agentic search over your Weaviate Cloud collections",
+    link: "/query-agent",
     links: [
-      { label: "Documentation", link: "/agents", sidebar: "agentsSidebar" },
-      {
-        label: "Recipes",
-        link: "/agents/recipes",
-        sidebar: "agentsRecipesSidebar",
-      },
+      { label: "Documentation", link: "/query-agent", sidebar: "agentsSidebar" }
     ],
   },
   cloud: {

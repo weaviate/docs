@@ -118,7 +118,7 @@ function Footer() {
                   <Link to="/cloud">Weaviate Cloud</Link>
                 </li>
                 <li>
-                  <Link to="/agents">Weaviate Agents</Link>
+                  <Link to="/query-agent">Query Agent</Link>
                 </li>
                 <li>
                   <Link to="/engram">Engram</Link>
