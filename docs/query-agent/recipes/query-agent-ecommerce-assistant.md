@@ -12,9 +12,9 @@ sidebar_position: 20
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_ecommerce_assistant.py';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent_ecommerce_assistant.py';
 
-In this recipe, we will be building a simple e-commerce assistant agent with the [Weaviate Query Agent](https://docs.weaviate.io/agents). This agent will have access to a number of Weaviate collections, and will be capable of answering complex queries about brands and clothing items, accessing information from each collection. By the end, we'll wrap the agent in a small reusable class that's ready to plug into a chatbot, CLI, or any larger application.
+In this recipe, we will be building a simple e-commerce assistant agent with the [Weaviate Query Agent](https://docs.weaviate.io/query-agent). This agent will have access to a number of Weaviate collections, and will be capable of answering complex queries about brands and clothing items, accessing information from each collection. By the end, we'll wrap the agent in a small reusable class that's ready to plug into a chatbot, CLI, or any larger application.
 
 ![Weaviate Query Agent flowchart for the Ecommerce example](../_includes/query_agent_tutorial_ecommerce_flowchart.png#gh-light-mode-only "Weaviate Query Agent flowchart for the Ecommerce example")
 ![Weaviate Query Agent flowchart for the Ecommerce example](../_includes/query_agent_tutorial_ecommerce_flowchart.png#gh-dark-mode-only "Weaviate Query Agent flowchart for the Ecommerce example")

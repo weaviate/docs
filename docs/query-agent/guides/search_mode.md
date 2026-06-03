@@ -1,15 +1,15 @@
 ---
 title: Search Mode
 description: "Use Search Mode to retrieve raw results from Weaviate without generating an answer."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/search_mode.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/search_mode.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/search_mode.mts';
 
 <CloudOnlyBadge />
 

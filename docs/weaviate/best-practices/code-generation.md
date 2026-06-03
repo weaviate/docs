@@ -100,7 +100,7 @@ Review the documentation of your specific IDE to see if it has this feature, and
 
 ### Consider using the Query Agent
 
-The [Query Agent](/agents) is a pre-built agentic search service that decides the search terms, filters, sorts, and other search parameters for you — the [modes overview](/agents/guides/index.md) covers what it can do.
+The [Query Agent](/query-agent) is a pre-built agentic search service that decides the search terms, filters, sorts, and other search parameters for you — the [modes overview](/query-agent/guides/index.md) covers what it can do.
 
 The Query Agent is available to Weaviate Cloud users for interacting with their Weaviate Cloud instance in natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
 

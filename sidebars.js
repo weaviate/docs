@@ -1284,9 +1284,9 @@ const sidebars = {
     },
   ],
   agentsSidebar: [
-    "agents/index",
-    "agents/installation",
-    "agents/quickstart",
+    "query-agent/index",
+    "query-agent/installation",
+    "query-agent/quickstart",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
@@ -1299,7 +1299,7 @@ const sidebars = {
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/guides/index",
+        id: "query-agent/guides/index",
       },
       customProps: {
         cloudOnly: false,
@@ -1307,22 +1307,22 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "agents/guides/ask_mode",
+          id: "query-agent/guides/ask_mode",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/guides/search_mode",
+          id: "query-agent/guides/search_mode",
           className: "sidebar-item",
         },
         // {
         //   type: "doc",
-        //   id: "agents/guides/research_mode",
+        //   id: "query-agent/guides/research_mode",
         //   className: "sidebar-item",
         // },
         {
           type: "doc",
-          id: "agents/guides/suggest_queries",
+          id: "query-agent/guides/suggest_queries",
           className: "sidebar-item",
         },
       ],
@@ -1339,7 +1339,7 @@ const sidebars = {
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/reference/index",
+        id: "query-agent/reference/index",
       },
       customProps: {
         cloudOnly: false,
@@ -1347,27 +1347,27 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "agents/reference/instantiation",
+          id: "query-agent/reference/instantiation",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/reference/system_prompt",
+          id: "query-agent/reference/system_prompt",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/reference/multi_turn_conversations",
+          id: "query-agent/reference/multi_turn_conversations",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/reference/additional_filters",
+          id: "query-agent/reference/additional_filters",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/reference/advanced_collections",
+          id: "query-agent/reference/advanced_collections",
           className: "sidebar-item",
         },
       ],
@@ -1384,7 +1384,7 @@ const sidebars = {
       collapsed: false,
       link: {
         type: "doc",
-        id: "agents/clients/index",
+        id: "query-agent/clients/index",
       },
       customProps: {
         cloudOnly: false,
@@ -1392,12 +1392,12 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "agents/clients/python",
+          id: "query-agent/clients/python",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/clients/typescript",
+          id: "query-agent/clients/typescript",
           className: "sidebar-item",
         },
       ],
@@ -1413,7 +1413,7 @@ const sidebars = {
       collapsed: true,
       link: {
         type: "doc",
-        id: "agents/recipes/index",
+        id: "query-agent/recipes/index",
       },
       customProps: {
         cloudOnly: false,
@@ -1421,27 +1421,27 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "agents/recipes/query-agent-get-started",
+          id: "query-agent/recipes/query-agent-get-started",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/recipes/query-agent-ecommerce-assistant",
+          id: "query-agent/recipes/query-agent-ecommerce-assistant",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/recipes/query-agent-streamlit-chat",
+          id: "query-agent/recipes/query-agent-streamlit-chat",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/recipes/query-agent-vs-diy",
+          id: "query-agent/recipes/query-agent-vs-diy",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "agents/recipes/query-agent-as-a-tool",
+          id: "query-agent/recipes/query-agent-as-a-tool",
           className: "sidebar-item",
         },
       ],
@@ -1452,7 +1452,7 @@ const sidebars = {
     // },
     {
       type: "doc",
-      id: "agents/reference/troubleshooting",
+      id: "query-agent/reference/troubleshooting",
       className: "sidebar-item",
     },
     {

@@ -1,7 +1,7 @@
 ---
 title: Configuration
 description: "Configure the Query Agent's behavior across Ask Mode and Search Mode."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 

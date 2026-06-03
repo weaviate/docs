@@ -1,15 +1,15 @@
 ---
 title: Ask Mode
 description: "Use Ask Mode to retrieve data from Weaviate and get a generated answer."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/ask_mode.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/ask_mode.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/ask_mode.mts';
 
 <CloudOnlyBadge />
 

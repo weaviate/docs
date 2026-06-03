@@ -1,7 +1,7 @@
 ---
 title: Introduction
 description: "Get an overview of the Weaviate Query Agent and what it can do."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'getting-started']
 ---
 

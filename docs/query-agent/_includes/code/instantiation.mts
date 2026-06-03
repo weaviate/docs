@@ -1,5 +1,5 @@
 import 'dotenv/config'
-const { populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/agents/_includes/code/util.mjs'));
+const { populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 // START WeaviateSetup
 import weaviate from 'weaviate-client';
 import { QueryAgent } from 'weaviate-agents';

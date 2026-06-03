@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, "docs/agents/_includes/code")
+sys.path.insert(0, "docs/query-agent/_includes/code")
 import os
 from util import load_client_internally, populate_weaviate
 client = load_client_internally()

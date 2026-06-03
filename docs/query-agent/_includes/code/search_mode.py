@@ -1,6 +1,6 @@
 import sys
 import asyncio
-sys.path.insert(0, "docs/agents/_includes/code")
+sys.path.insert(0, "docs/query-agent/_includes/code")
 from util import populate_weaviate, load_client_internally
 
 

@@ -8,8 +8,8 @@ image: og/docs/howto.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/query_agent.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent.mts';
 
 <CloudOnlyBadge />
 
@@ -18,7 +18,7 @@ The Weaviate Query Agent enables users to perform Weaviate searches or ask quest
 An agentic LLM will dynamically determine query terms and search strategies based on the natural language query.
 
 :::info First time using the Query Agent?
-The Query Agent is only available for Weaviate Cloud instances. See the [full setup guide](../../agents/installation.md) for setup and instantiation details.
+The Query Agent is only available for Weaviate Cloud instances. See the [full setup guide](../../query-agent/installation.md) for setup and instantiation details.
 :::
 
 First, you must define the Query Agent class, setup with a client pointing towards your Weaviate cloud cluster.
@@ -389,10 +389,10 @@ However, no shoes under $60 were found based on available information.
 
 ## Further resources
 
-- [Query Agent full documentation](/agents/index.md) - Complete guide with setup and advanced features
+- [Query Agent full documentation](/query-agent/index.md) - Complete guide with setup and advanced features
 - [Connect to Weaviate Cloud](/cloud/manage-clusters/connect)
 - [Weaviate Cloud documentation](/cloud)
-- [AI agents framework](/agents)
+- [AI agents framework](/query-agent)
 
 ## Questions and feedback
 

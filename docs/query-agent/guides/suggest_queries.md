@@ -1,15 +1,15 @@
 ---
 title: Suggest Queries Mode
 description: "Generate suggested follow-up queries to help users explore Weaviate data."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'modes']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/\_includes/code/suggest_queries.py';
-import TSCode from '!!raw-loader!/docs/agents/\_includes/code/suggest_queries.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/suggest_queries.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/suggest_queries.mts';
 
 <CloudOnlyBadge />
 

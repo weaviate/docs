@@ -1,7 +1,7 @@
 ---
 title: Class instantiation
 description: "Instantiate a Query Agent with a Weaviate client, collections, and options."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 
@@ -9,8 +9,8 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/instantiation.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/instantiation.mts';
 
 Instantiate the Query Agent against an authenticated Weaviate Cloud client. Configuration can be set at construction time (collections, system prompt, and — in Python — a request timeout) and most options can also be overridden per call to `ask()` or `search()`.
 

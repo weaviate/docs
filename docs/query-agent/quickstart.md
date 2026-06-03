@@ -1,15 +1,15 @@
 ---
 title: Quickstart
 description: "Get started with the Weaviate Query Agent through a runnable example."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'getting-started']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.py';
-import TSCode from '!!raw-loader!/docs/agents/\_includes/code/quickstart.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/quickstart.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/quickstart.mts';
 
 <CloudOnlyBadge />
 

@@ -12,9 +12,9 @@ sidebar_position: 40
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_as_a_tool.py';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent_as_a_tool.py';
 
-In this recipe, we'll show how to expose the [Weaviate Query Agent](https://docs.weaviate.io/agents) as a **tool** to other LLMs and agent frameworks. The Query Agent already handles search, filtering, aggregation, and writing a natural-language answer — wrapping it as a tool lets a higher-level model decide *when* to consult your Weaviate data as part of a larger reasoning flow.
+In this recipe, we'll show how to expose the [Weaviate Query Agent](https://docs.weaviate.io/query-agent) as a **tool** to other LLMs and agent frameworks. The Query Agent already handles search, filtering, aggregation, and writing a natural-language answer — wrapping it as a tool lets a higher-level model decide *when* to consult your Weaviate data as part of a larger reasoning flow.
 
 We'll cover five integrations:
 

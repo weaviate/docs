@@ -12,7 +12,7 @@ sidebar_position: 30
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_streamlit_chat.py';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent_streamlit_chat.py';
 
 In this recipe, we'll build a chat UI for the Weaviate Query Agent using [Streamlit](https://streamlit.io). The UI streams the agent's progress (which collection it's searching, what query it's running) *and* the final answer token by token, so the user sees something happen the moment they hit enter — instead of waiting silently for the full response.
 

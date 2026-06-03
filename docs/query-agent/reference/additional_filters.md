@@ -1,15 +1,15 @@
 ---
 title: Additional filters
 description: "Apply persistent filters that the Query Agent uses on every query."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/additional_filters.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/additional_filters.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/additional_filters.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/additional_filters.mts';
 
 Additional filters can be used to subset the data in a single collection manually in addition to whatever filters the Query Agent decides to use in a particular search.
 

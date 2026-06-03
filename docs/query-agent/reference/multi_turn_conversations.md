@@ -1,15 +1,15 @@
 ---
 title: Multi-turn conversations
 description: "Pass conversation history to the Query Agent for context-aware follow-up questions."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/conversations.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/conversations.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/conversations.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/conversations.mts';
 
 The Query Agent transforms a natural language query into actionable searches. You can either pass a single string for the query, or provide more context by including a full conversation with previous message turns.
 

@@ -1,7 +1,7 @@
 ---
 title: Limitations & troubleshooting
 description: "Diagnose common issues and understand the limitations of the Query Agent."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'troubleshooting']
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Customizing the system prompt
 description: "Customize the Query Agent's system prompt to shape its behavior and output."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 
@@ -9,8 +9,8 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/system_prompt.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/system_prompt.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/system_prompt.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/system_prompt.mts';
 
 
 You can provide a custom system prompt to guide the Query Agent's behavior, by passing it as part of the [instantiation](./instantiation.md).

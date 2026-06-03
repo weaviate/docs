@@ -1,15 +1,15 @@
 ---
 title: Collection configuration
 description: "Configure how Weaviate collections are exposed to the Query Agent."
-image: og/docs/agents.jpg
+image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/advanced_collections.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/code/advanced_collections.mts';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/advanced_collections.py';
+import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/advanced_collections.mts';
 
 The Query Agent, in Ask Mode or Search Mode, has the option to search one or more of any collections that are provided to it. 
 

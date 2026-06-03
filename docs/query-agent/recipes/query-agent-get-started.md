@@ -16,9 +16,9 @@ sidebar_position: 10
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_get_started.py';
+import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/query_agent_get_started.py';
 
-In this recipe, we will get started with the [Weaviate Query Agent](https://docs.weaviate.io/agents). We'll set up Weaviate Cloud, import a handful of open datasets, and run a few queries across them using **Ask Mode**, **Search Mode**, and the **Suggest Queries** feature.
+In this recipe, we will get started with the [Weaviate Query Agent](https://docs.weaviate.io/query-agent). We'll set up Weaviate Cloud, import a handful of open datasets, and run a few queries across them using **Ask Mode**, **Search Mode**, and the **Suggest Queries** feature.
 
 > 📚 You can read and learn more about this service in our ["Introducing the Weaviate Query Agent"](https://weaviate.io/blog/query-agent) blog.
 
