@@ -1,6 +1,7 @@
 ---
 title: Topics
 description: "Topics in Engram: named categories within a group that control extraction and scoping."
+image: og/docs/engram.png
 ---
 
 Topics are named categories within a [group](groups.md). They tell Engram what kinds of information to extract and how to scope it.

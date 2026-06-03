@@ -1,6 +1,7 @@
 ---
 title: Store memories
 description: "How to store memories in Engram using string, pre-extracted, or conversation content types."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

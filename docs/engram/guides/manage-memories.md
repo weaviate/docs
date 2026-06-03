@@ -1,6 +1,7 @@
 ---
 title: Manage memories
 description: "How to get and delete individual memories in Engram by ID."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

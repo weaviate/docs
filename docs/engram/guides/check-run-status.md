@@ -1,6 +1,7 @@
 ---
 title: Check run status
 description: "How to poll pipeline run status and interpret committed operations in Engram."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

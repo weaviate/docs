@@ -1,7 +1,7 @@
 ---
 title: Collection configuration
 description: "Configure how Weaviate collections are exposed to the Query Agent."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 

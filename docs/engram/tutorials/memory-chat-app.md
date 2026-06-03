@@ -1,6 +1,7 @@
 ---
 title: "Add Long-Term Memory to a Chat App"
 description: "Build a chatbot with persistent memory across sessions using Engram with Anthropic or OpenAI."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

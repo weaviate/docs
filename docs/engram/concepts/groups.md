@@ -1,6 +1,7 @@
 ---
 title: Groups
 description: "Groups in Engram: containers of topics and pipelines that map 1:1 to use cases."
+image: og/docs/engram.png
 ---
 
 A group is a container of [topics](topics.md) and a [pipeline](pipelines.md) definition — a bundle of configuration that maps 1:1 to a use case. If you have multiple use cases (e.g. personalization and continual learning), create separate groups for each.

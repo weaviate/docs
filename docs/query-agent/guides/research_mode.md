@@ -1,7 +1,7 @@
 ---
 title: Research Mode
 description: "Use Research Mode to perform deep, multi-step research across your collections."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'modes']
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: Memories
 description: "What memories are in Engram: content, topic, group, scope, and vector embeddings."
+image: og/docs/engram.png
 ---
 
 A memory is a discrete piece of information stored in Engram. Each memory has:

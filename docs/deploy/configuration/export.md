@@ -43,7 +43,7 @@ The collection export feature is not available in Weaviate Cloud.
 
 ## Backend configuration
 
-Exports support three cloud storage backends and the [local filesystem](./backups#filesystem). Each cloud storage backend uses the same credential environment variables as [backups](./backups.md#configuration):
+Exports support three cloud storage backends and the [local filesystem](./backups.md#filesystem). Each cloud storage backend uses the same credential environment variables as [backups](./backups.md#configuration):
 
 | Backend                                                       | Value   | Credential env vars                                                               |
 | :------------------------------------------------------------ | :------ | :-------------------------------------------------------------------------------- |

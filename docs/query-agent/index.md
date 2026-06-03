@@ -1,7 +1,7 @@
 ---
 title: Introduction
 description: "Get an overview of the Weaviate Query Agent and what it can do."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'getting-started']
 ---
 
@@ -42,7 +42,7 @@ Up to 250 ask queries or 1000 search queries per month, no credit card required.
 [Engram](/engram/) is a managed memory service that gives your agents persistent, searchable memory across conversations and users.
 :::
 
-## How Weaviate Agents work
+## How the Query Agent works
 
 <details>
 <summary>Example output</summary>

@@ -34,7 +34,7 @@ TEST_PAGES = [
     ("/weaviate/concepts/data-import", {"images"}),
     ("/cloud/quickstart", {"code", "images"}),
     ("/cloud/manage-clusters/create", {"images"}),
-    ("/agents/query/tutorial-ecommerce", {"code"}),
+    ("/query-agent/recipes/query-agent-ecommerce-assistant", {"code"}),
     ("/weaviate/search", set()),  # landing page
 ]
 

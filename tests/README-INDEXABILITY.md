@@ -94,7 +94,7 @@ The suite tests 11 representative URLs covering all doc sections:
 | `/weaviate/concepts/data-import` | images |
 | `/cloud/quickstart` | code, images |
 | `/cloud/manage-clusters/create` | images |
-| `/agents/query/tutorial-ecommerce` | code |
+| `/query-agent/recipes/query-agent-ecommerce-assistant` | code |
 | `/weaviate/search` | landing page |
 
 ## Quickstart vectorizer lines

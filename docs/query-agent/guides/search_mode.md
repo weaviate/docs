@@ -1,7 +1,7 @@
 ---
 title: Search Mode
 description: "Use Search Mode to retrieve raw results from Weaviate without generating an answer."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'modes']
 ---
 

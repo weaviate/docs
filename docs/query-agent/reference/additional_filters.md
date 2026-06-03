@@ -1,7 +1,7 @@
 ---
 title: Additional filters
 description: "Apply persistent filters that the Query Agent uses on every query."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 

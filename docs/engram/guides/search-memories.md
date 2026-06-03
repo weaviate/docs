@@ -1,6 +1,7 @@
 ---
 title: Search memories
 description: "How to search memories in Engram using vector, BM25, and hybrid retrieval with filtering and scoping."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

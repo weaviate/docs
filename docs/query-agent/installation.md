@@ -1,7 +1,7 @@
 ---
 title: Installation
 description: "Install the Weaviate client with the agents extra to use the Query Agent."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'getting-started']
 ---
 
@@ -29,7 +29,7 @@ At this time, the Query Agent clients are available only for Python and JavaScri
 
 ## Python client
 
-For Python, you can install the Weaviate client library with the optional `agents` extras to use the Query Agent. This will install the `weaviate-agents` package along with the `weaviate-client` package. For JavaScript/TypeScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
+For Python, you can install the Weaviate client library with the optional `agents` extras to use the Query Agent. This will install the `weaviate-agents` package along with the `weaviate-client` package.
 
 Install the client library using the following command:
 

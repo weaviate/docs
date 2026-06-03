@@ -1,7 +1,7 @@
 ---
 title: Modes
 description: "Compare the different modes the Weaviate Query Agent supports."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'modes']
 ---
 

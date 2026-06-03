@@ -31,13 +31,18 @@ const domainsToIgnore = [
     'https://www.computerhope.com',
     'https://console.x.ai/',
     'https://console.cloud.google.com',
+    'corpus-texmex.irisa.fr', // academic dataset server, frequent network timeouts
+    'https://db-engines.com', // 403s automated requests
     'https://docs.anthropic.com',
+    'https://docs.aws.amazon.com', // 403s automated/bot requests
     'https://docs.x.ai',
     'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link
     'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
+    'https://huggingface.co', // 429 Too Many Requests when validating many model/dataset links
+    'https://ieeexplore.ieee.org', // 403s automated requests
     'https://instagram.com/',
     'https://www.iso.org',
-    'https://medium.com/', // TODO[g-despot]: started throwing Forbidden 403
+    'medium.com', // TODO[g-despot]: started throwing Forbidden 403 (incl. subdomains, e.g. *.medium.com)
     'https://www.npmjs.com',
     'https://openai.com',
     'https://platform.openai.com',
