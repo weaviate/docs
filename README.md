@@ -34,7 +34,7 @@ The docs are in the following directories:
 - **`/docs/weaviate/`** → Main database documentation
 - **`/docs/deploy/`** → Deployment documentation
 - **`/docs/cloud/`** → Weaviate Cloud docs
-- **`/docs/agents/`** → Query Agent docs
+- **`/docs/query-agent/`** → Query Agent docs
 
 They are rendered using the following mapping files:
 - **`secondaryNavbar.js`** → Top navigation bar (add new sections here)
