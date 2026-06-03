@@ -1081,6 +1081,7 @@ Given a collection like this:
   text={PyCodeNested}
   startMarker="client.collections.create("
   endMarker="docs = client.collections.use"
+  includeStartMarker="true"
   language="python"
 />
 
@@ -1174,7 +1175,7 @@ Pointing a path at an `object` or `object[]` segment (rather than a scalar leaf)
 
 :::note
 
-- **Allowed leaf data types**: `text`, `int`, `number`, `boolean`, `date`, `uuid`, `blob`, `blobHash`, and their array variants. `geoCoordinates`, `phoneNumber`, and cross-references (`cref`) are not allowed inside nested objects.
+- **Allowed leaf data types**: `text`, `int`, `number`, `boolean`, `date`, `uuid`, and their array variants. `blob`, `blobHash`, `geoCoordinates`, `phoneNumber`, and cross-references (`cref`) are not allowed inside nested objects for nested filtering.
 - **`IndexFilterable` is required**: nested filtering uses the filterable inverted index on each leaf. `IndexRangeFilters` and `IndexSearchable` flags exist on nested-property definitions but are not yet exercised by the nested searcher — range filters on nested numeric leaves currently use the filterable bucket.
 - **Tokenization matters**: nested `text` leaves use the same tokenization options as flat properties. For exact-match filters on names, codes, or identifiers, set `tokenization: field` on the leaf so the value is stored as a single token.
 - **Reference-path vs nested-path**: a reference-path filter is a multi-element `Path` (`["inCity", "City", "name"]`) traversing cross-references; a nested-path filter is a **single-element** path with dots inside it (`["cars.make"]`).

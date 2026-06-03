@@ -19,6 +19,7 @@ client.collections.delete("Document")
 client.collections.create(
     name="Document",
     vector_config=Configure.Vectors.self_provided(),
+    inverted_index_config=Configure.inverted_index(index_null_state=True),
     properties=[
         Property(name="title", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
         Property(
