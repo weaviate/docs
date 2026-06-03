@@ -19,12 +19,9 @@ This quickstart walks through connecting to a Weaviate Cloud cluster, pointing t
 
 Ensure you have access to:
 * A **Weaviate Cloud Instance**, such as a [free sandbox instance](/go/console?utm_content=agents).
-* Either one of the **Python Client**, **TypeScript Client** or the functionality to call the **API endpoints** directly.
+* Either the **[Python Client](./installation.md#python-client)** or the **[TypeScript Client](./installation.md#javascripttypescript-client)**.
 
-[See the installation page for more detail](./installation.md).
-
-
-## Start the Query Agent
+## Step 1: Start the Query Agent
 
 You only need to provide:
 - Your Weaviate client object, which points to a target [Weaviate Cloud instance](/cloud/manage-clusters/connect.mdx)
@@ -50,7 +47,7 @@ You only need to provide:
 
 </Tabs>
 
-## Search with the Query Agent
+## Step 2: Search with the Query Agent
 
 Perform a search using Search Mode (retrieval only, no answer generation). The LLM decides dynamic search options (such as filters, sorts, etc.) and returns the search results.
 
@@ -104,7 +101,7 @@ Product: Mystic Garden Strappy Flats - $59.0
 ```
 </details>
 
-## Ask the Query Agent
+## Step 3: Ask the Query Agent
 
 Perform a query using Ask Mode (with answer generation). The LLM creates a search with dynamic filters and other search settings, and then answers the question using the search results to inform the answer.
 
