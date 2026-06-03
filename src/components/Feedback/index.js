@@ -15,9 +15,9 @@ export default function FeedbackComponent() {
   const [isExpanded, setIsExpanded] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("feedbackWidgetExpanded");
-      return saved !== null ? saved === "true" : true;
+      return saved !== null ? saved === "true" : false;
     }
-    return true;
+    return false;
   });
 
   // This effect now only saves the expanded/collapsed state.

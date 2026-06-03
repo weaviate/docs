@@ -16,6 +16,10 @@ Weaviate Agents are pre-built agentic services designed for specific tasks. They
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
+:::tip Looking for agent memory?
+[Engram](/engram/) is a managed memory service that gives your agents persistent, searchable memory across conversations and users.
+:::
+
 ## How Weaviate Agents work
 
 Weaviate Agents have been pre-trained on Weaviate’s APIs, making them experts in performing Weaviate-specific data tasks.
