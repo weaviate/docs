@@ -163,12 +163,6 @@ Read more about how replication works in Weaviate in [Philosophy](./philosophy.m
 
 See [how to configure replication](/deploy/configuration/replication.md). You can enable replication in the collection definition. In queries, you can [specify the desired consistency level](../../search/basics.md#replication).
 
-## Roadmap
-
-* Not scheduled yet
-  * Multi-Datacenter replication (you can upvote this feature [here](https://github.com/weaviate/weaviate/issues/2436))
-
-
 ## Related pages
 - [Configuration: Replication](/deploy/configuration/replication.md)
 

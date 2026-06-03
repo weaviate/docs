@@ -192,7 +192,13 @@ def test_modules(empty_weaviates, script_loc):
         "./_includes/code/howto/search.aggregate.py",
         "./_includes/code/howto/search.generative.py",
         "./_includes/code/howto/search.rerank.py",
-        "./_includes/code/howto/search.multi-target-v4.py"
+        "./_includes/code/howto/search.multi-target-v4.py",
+        # Nested-object filtering preview (v1.38). Requires WEAVIATE_PREVIEW_NESTED_FILTERING=on,
+        # which is set on the anon test instance (tests/docker-compose-anon.yml).
+        "./_includes/code/howto/search.filters.nested.py",
+        # Boost preview (v1.38). Re-enable once the weaviate-client release with Boost support
+        # (weaviate/weaviate-python-client#2030) is pinned in pyproject.toml — 4.21.0 lacks it.
+        # "./_includes/code/howto/search.boost.py",
     ],
 )
 def test_search(empty_weaviates, script_loc):

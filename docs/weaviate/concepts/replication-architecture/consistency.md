@@ -264,7 +264,7 @@ A larger hash tree means less data for each leaf to hash, leading to faster comp
 :::note Default settings
 The default hash tree height is `16` for single-tenant collections and `10` for multi-tenant collections. These defaults balance memory consumption with replication performance.
 
-As of `v1.36`, these parameters can be configured per-collection via the [`asyncConfig`](/weaviate/config-refs/collections#async-config) object in `replicationConfig`, overriding the cluster-wide environment variable defaults. Worker concurrency is no longer a per-collection setting and as of `v1.38` the cluster shares a single async replication worker pool sized by [`ASYNC_REPLICATION_SCHEDULER_WORKERS`](/deploy/configuration/env-vars/index.md#async-replication).
+As of `v1.36`, these parameters can be configured per-collection via the [`asyncConfig`](/weaviate/config-refs/collections#async-config) object in `replicationConfig`. Worker concurrency is no longer a per-collection setting and as of `v1.38` the cluster shares a single async replication worker pool sized by [`ASYNC_REPLICATION_SCHEDULER_WORKERS`](/deploy/configuration/env-vars/index.md#async-replication).
 :::
 
 ### Deletion resolution strategies
