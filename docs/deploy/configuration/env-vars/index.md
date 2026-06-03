@@ -90,6 +90,7 @@ import APITable from '@site/src/components/APITable';
 | `PERSISTENCE_LSM_MAX_SEGMENT_SIZE` | Maximum size of a segment in the [LSM store](/weaviate/concepts/storage.md#object-and-inverted-index-store). Set this to limit disk usage spikes during compaction to ~2x the segment size. Default: no limit | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
 | `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](/deploy/configuration/monitoring.md) | `boolean` | `false` |
 | `PROMETHEUS_MONITORING_GROUP` | If set, Weaviate groups metrics for the same class across all shards. | `boolean` | `true` |
+| `QUERY_BOOST_DEFAULT_DEPTH` | Default candidate-pool size used when a [Boost](/weaviate/search/boost.md) query does not set its own `depth`. The primary search retrieves this many candidates before the boost rescorer runs. Must be a positive integer and is hard-capped by `QUERY_MAXIMUM_RESULTS`. Default: `100`<br/>Added in `v1.38` | `string - number` | `200` |
 | `QUERY_CROSS_REFERENCE_DEPTH_LIMIT` | Sets the maximum depth of cross-references to be resolved in a query. Defaults to 5. | `string - number` | `3` |
 | `QUERY_DEFAULTS_LIMIT` | Sets the default number of objects to be returned in a query. | `string - number` | `25` <br/> Defaults to `10`|
 | `QUERY_MAXIMUM_RESULTS` | Sets the maximum total number of objects that can be retrieved. | `string - number` | `10000` |
