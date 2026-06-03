@@ -1,30 +1,26 @@
 ---
 title: Multi-Data center
 sidebar_position: 5
-description: "Running a Weaviate cluster across data centers (WAN), and the roadmap for topology-aware multi-data center replication."
+description: "Run a Weaviate cluster across multiple data centers (WAN) for lower latency and cross-region redundancy."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
 
 
-Multi-Data center (Multi-DC) replication enables you to have multiple copies of the data on multiple servers across more than one data center. Since `v1.31`, Weaviate supports running a single cluster across multiple data centers. What is not yet supported is *topology-aware* Multi-DC replication, where Weaviate places replicas with awareness of data center topology — for example, automatically keeping a copy of the data in each region. If you are interested in topology-aware Multi-DC, upvote [this GitHub issue](https://github.com/weaviate/weaviate/issues/2436) and tell us about your use case so we can incorporate it into our roadmap.
+Multi-Data center (Multi-DC) replication enables you to have multiple copies of the data on multiple servers across more than one data center. Weaviate supports running a single cluster across multiple data centers (since `v1.31`), so you can place nodes in different geographic regions for lower latency and keep your data redundant across locations.
 
 Multi-DC replication is beneficial if you have user groups spread over different geographical locations (e.g. Iceland and Australia). When you place nodes in different local regions of user groups, latency can be decreased.
 Multi-DC replication also comes with the additional benefit that data is redundant on more physical locations, which means that in the rare case of an entire  data center going down, data can still be served from another location.
 
-In most deployments, you can work under the assumption that all replica nodes are in the same  data center. The advantage of this is that network requests between nodes are cheap and fast. The downside is that if the entire  data center fails, there is no redundancy. Topology-aware Multi-DC replication will solve this, [when implemented](https://github.com/weaviate/weaviate/issues/2436).
+If all replica nodes are in the same data center, network requests between nodes are cheap and fast, but the whole deployment is at risk if that data center goes down. Spreading a cluster's nodes across data centers removes this single point of failure, so your data remains available even if an entire data center becomes unreachable.
 
-It is, however, possible to run a single Weaviate cluster whose nodes are spread across data centers by tuning the cluster networking for high-latency links. This is a networking-layer capability only — Weaviate still treats every node as part of one flat cluster and is not yet aware of data center topology when placing replicas. See [Running a single cluster across data centers (WAN)](#running-a-single-cluster-across-data-centers-wan) below.
+To run a cluster across data centers, tune Weaviate's inter-node networking for the higher-latency, lower-reliability links between regions. See [Running a single cluster across data centers (WAN)](#running-a-single-cluster-across-data-centers-wan) below.
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-regional-proximity-3.png" alt="Replication multi-dc" width="75%"/></p>
 
 ## Running a single cluster across data centers (WAN)
 
 Weaviate can operate a single cluster across data centers (a wide-area network, or WAN) by adjusting its inter-node communication for high-latency, lower-reliability links.
-
-:::info Networking only — not topology-aware replication
-This configures how nodes discover and talk to each other across data centers. It does **not** make replication data center-aware (for example, keeping a replica in each region). The topology-aware Multi-DC replication feature described above remains on the [roadmap](https://github.com/weaviate/weaviate/issues/2436).
-:::
 
 ### Enabling WAN mode
 
