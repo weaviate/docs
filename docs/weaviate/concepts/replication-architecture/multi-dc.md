@@ -7,7 +7,7 @@ image: og/docs/concepts.jpg
 ---
 
 
-Multi-Data center (Multi-DC) replication enables you to have multiple copies of the data on multiple servers across more than one data center. This form of replication is not currently supported, but the existing replication design is intended to support Multi-DC in the future. If you are interested in this feature, upvote [this GitHub issue](https://github.com/weaviate/weaviate/issues/2436) and tell us about your use case so we can incorporate it into our roadmap.
+Multi-Data center (Multi-DC) replication enables you to have multiple copies of the data on multiple servers across more than one data center. Since `v1.31`, Weaviate supports running a single cluster across multiple data centers. What is not yet supported is *topology-aware* Multi-DC replication, where Weaviate places replicas with awareness of data center topology — for example, automatically keeping a copy of the data in each region. If you are interested in topology-aware Multi-DC, upvote [this GitHub issue](https://github.com/weaviate/weaviate/issues/2436) and tell us about your use case so we can incorporate it into our roadmap.
 
 Multi-DC replication is beneficial if you have user groups spread over different geographical locations (e.g. Iceland and Australia). When you place nodes in different local regions of user groups, latency can be decreased.
 Multi-DC replication also comes with the additional benefit that data is redundant on more physical locations, which means that in the rare case of an entire  data center going down, data can still be served from another location.
