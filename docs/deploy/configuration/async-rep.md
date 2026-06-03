@@ -16,7 +16,8 @@ This applies solely to data objects, as metadata consistency is treated differen
 ### Under the Hood
 
 - Async replication operates as a background process either per tenant (in a multi-tenant collection) or per shard (in a non-multi-tenant collection).
-- It is disabled by default but can be enabled through collection configuration changes, similar to setting the replication factor. 
+- As of Weaviate `v1.38`, async replication is **enabled by default** for any collection with a replication factor greater than `1`. There is no longer a per-collection toggle to enable or disable it; the per-collection `asyncConfig` object is used only to fine-tune the behavior of an already-running process.
+- To turn async replication off across the entire cluster, set the [`ASYNC_REPLICATION_DISABLED`](#async_replication_disabled) environment variable to `true`.
 
 ## Environment Variable Deep Dive
 
@@ -48,13 +49,36 @@ Globally disables the entire async replication feature.
 <details>
 <summary> Cluster Worker Limits </summary>
 
-#### `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`
-Sets the maximum number of concurrent async replication workers across the entire cluster.
+#### `ASYNC_REPLICATION_SCHEDULER_WORKERS`
+Sets the number of workers in the cluster-wide pool that the async replication scheduler uses to run hashbeat work across all shards and tenants.
 
-- Its default value is `30`.
-- **Use case**: Limits the total number of concurrent replication workers to prevent resource exhaustion in large clusters with many collections or tenants.
+- Its default value is `10`. The maximum is `100`.
+- **Use case**: A single bounded worker pool replaces the previous per-shard goroutines, so this is the main lever for capping async replication's total concurrency and preventing resource exhaustion on clusters with many collections or tenants.
 - **Special Considerations**:
-  - This is a cluster-wide cap. Individual collections can set their own `maxWorkers` via the per-collection [`asyncConfig`](/weaviate/config-refs/collections#async-config), but the total across all collections will not exceed this cluster limit.
+  - This is a cluster-wide setting. There is no per-collection worker count; collections share this single pool.
+
+:::note Changed in `v1.38`
+`ASYNC_REPLICATION_SCHEDULER_WORKERS` replaces the removed `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` environment variable, and the per-collection `maxWorkers` option has been removed.
+:::
+
+#### `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`
+Sets how many shards may initialize (build) their hash tree concurrently when async replication starts up.
+
+- Its default value is `100`.
+- **Use case**: Bounds the burst of work when many shards begin async replication at once, for example after a node restart or when many replicated collections exist.
+
+</details>
+
+<details>
+<summary> Removed environment variables (v1.38) </summary>
+
+These variables were removed when async replication moved to a centralized scheduler in `v1.38`. They are listed here for reference and are no longer read by Weaviate.
+
+#### `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`
+**Removed in `v1.38`.** Previously set the maximum number of concurrent async replication workers across the cluster (default `30`). Replaced by [`ASYNC_REPLICATION_SCHEDULER_WORKERS`](#async_replication_scheduler_workers).
+
+#### `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
+**Removed in `v1.38`.** Previously defined how often the background process checked for changes in node availability (default `5s`). The scheduler no longer uses a separate alive-nodes polling mechanism.
 
 </details>
 
@@ -150,16 +174,6 @@ Defines a shorter frequency for subsequent comparison and propagation attempts w
   - Its default value is `3s`. The value requires a time unit suffix (e.g. `3s`, `1m`).
   -  **Use Case(s)**: When inconsistencies are known to exist, this expedites the synchronization process.
   - **Considerations**: This is activated after a propagation cycle detects differences but does not propagate all of them due to limits. 
-
-</details>
-
-<details>
-<summary> Node Status Monitoring </summary>
-
-#### `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
-Defines the frequency at which the system checks for changes in the availability of nodes within the cluster.
-  - Its default value is `5s`. The value requires a time unit suffix (e.g. `5s`, `1m`).
-  - **Use Case(s)**: When a node rejoins the cluster after a period of downtime, it is highly likely to be out of sync. This setting ensures that the replication process is initiated promptly.
 
 </details>
 

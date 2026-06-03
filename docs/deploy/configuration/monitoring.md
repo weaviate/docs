@@ -439,9 +439,16 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 
 These metrics track asynchronous replication operations for maintaining data consistency across replicas.
 
+:::note Changed in `v1.38`
+As of Weaviate `v1.38`, async replication runs through a centralized scheduler with a bounded worker pool (replacing the previous per-shard goroutines). The `async_replication_scheduler_*` metrics below are new in `v1.38`, and the `async_replication_goroutines_running` metric has been removed.
+:::
+
 | Metric                                                   | Description                                                              | Labels                                | Type        |
 | -------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------- | ----------- |
-| `async_replication_goroutines_running`                   | Number of currently running async replication goroutines                 | `type` (hashbeater, hashbeat_trigger) | `Gauge`     |
+| `async_replication_scheduler_worker_pool_size`           | Current target size of the scheduler worker pool                         | None                                  | `Gauge`     |
+| `async_replication_scheduler_workers_active`             | Number of scheduler worker goroutines currently executing a hashbeat cycle | None                                | `Gauge`     |
+| `async_replication_scheduler_shards_registered`          | Number of shards currently registered with the async replication scheduler | None                                | `Gauge`     |
+| `async_replication_scheduler_queue_depth`                | Number of shards waiting in the scheduler heap (not in-flight)           | None                                  | `Gauge`     |
 | `async_replication_hashtree_init_count`                  | Count of async replication hashtree initializations                      | None                                  | `Counter`   |
 | `async_replication_hashtree_init_running`                | Number of currently running hashtree initializations                     | None                                  | `Gauge`     |
 | `async_replication_hashtree_init_failure_count`          | Count of async replication hashtree initialization failures              | None                                  | `Counter`   |
@@ -452,10 +459,13 @@ These metrics track asynchronous replication operations for maintaining data con
 | `async_replication_iteration_running`                    | Number of currently running async replication iterations                 | None                                  | `Gauge`     |
 | `async_replication_hashtree_diff_duration_seconds`       | Duration of async replication hashtree diff computation in seconds       | None                                  | `Histogram` |
 | `async_replication_object_digests_diff_duration_seconds` | Duration of async replication object digests diff computation in seconds | None                                  | `Histogram` |
+| `async_replication_objects_diff_total`                   | Total objects found in diff per hashbeat cycle (queued for propagation or locally deleted before propagation) | None             | `Counter`   |
 | `async_replication_propagation_count`                    | Count of async replication propagation executions                        | None                                  | `Counter`   |
 | `async_replication_propagation_failure_count`            | Count of async replication propagation failures                          | None                                  | `Counter`   |
 | `async_replication_propagation_object_count`             | Count of objects propagated by async replication                         | None                                  | `Counter`   |
 | `async_replication_propagation_duration_seconds`         | Duration of async replication propagation in seconds                     | None                                  | `Histogram` |
+| `async_replication_local_deletions_total`                | Total local object deletions applied due to remote-deleted verdicts or deletion-conflict responses during async replication | None | `Counter`   |
+| `async_replication_reconcile_failures_total`             | Number of indices that failed to reconcile async replication with the global `ASYNC_REPLICATION_DISABLED` flag | None             | `Counter`   |
 
 #### Replication coordinator
 

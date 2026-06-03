@@ -57,7 +57,9 @@ The following overrides are currently supported:
 | Runtime override name                            | Environment variable name                    |
 | :----------------------------------------------- | :------------------------------------------- |
 | `async_replication_disabled`                     | `ASYNC_REPLICATION_DISABLED`                 |
-| `async_replication_cluster_max_workers`          | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`      |
+| `async_replication_scheduler_workers`            | `ASYNC_REPLICATION_SCHEDULER_WORKERS`        |
+| `async_replication_hashtree_init_concurrency`    | `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`|
+| `async_replication_cluster_max_workers` _(removed in `v1.38`)_ | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` _(removed in `v1.38`)_ |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
