@@ -1,5 +1,5 @@
 ---
-title: Agents clients
+title: Client libraries
 description: "Use the Python or TypeScript client to interact with the Query Agent."
 image: og/query-agent.jpg
 # tags: ['agents', 'query-agent', 'clients']
