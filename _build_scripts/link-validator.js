@@ -31,6 +31,7 @@ const domainsToIgnore = [
     'https://www.computerhope.com',
     'https://console.x.ai/',
     'https://console.cloud.google.com',
+    'corpus-texmex.irisa.fr', // academic dataset server, frequent network timeouts
     'https://db-engines.com', // 403s automated requests
     'https://docs.anthropic.com',
     'https://docs.aws.amazon.com', // 403s automated/bot requests
