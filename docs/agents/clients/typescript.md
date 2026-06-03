@@ -7,7 +7,7 @@ image: og/docs/agents.jpg
 
 import QuickLinks from "/src/components/QuickLinks";
 
-export const pythonCardsData = [
+export const typescriptCardsData = [
   {
     title: "weaviate/agents-typescript-client",
     link: "https://github.com/weaviate/agents-typescript-client",
@@ -28,7 +28,7 @@ It relies on the [Weaviate Client package](../../weaviate/client-libraries/types
 
 The latest Query Agent TypeScript client is version `v||site.agents_typescript_version||`.
 
-<QuickLinks items={pythonCardsData} />
+<QuickLinks items={typescriptCardsData} />
 
 :::
 

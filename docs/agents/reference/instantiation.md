@@ -12,7 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/code/instantiation.mts';
 
-Instantiate the Query Agent against an authenticated Weaviate Cloud client. Configuration can be set at construction time (collections, system prompt, default timeout) and most options can also be overridden per call to `ask()` or `search()`.
+Instantiate the Query Agent against an authenticated Weaviate Cloud client. Configuration can be set at construction time (collections, system prompt, and — in Python — a request timeout) and most options can also be overridden per call to `ask()` or `search()`.
 
 ## Basic instantiation
 
@@ -74,9 +74,9 @@ The `QueryAgent` constructor accepts the following arguments:
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
-| `collections` | `list[str \| QueryAgentCollectionConfig]` | Optional. The collections to query. Overridden if passed in the `run` method. |
+| `collections` | `list[str \| QueryAgentCollectionConfig]` | Optional. The collections to query. Can be overridden per call to `ask()` or `search()`. |
 | `system_prompt` | `str` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. [See the page on the system prompt for more detail](./system_prompt.md). |
-| `timeout` | `int` | Optional. The timeout for the request. Defaults to 60 seconds. |
+| `timeout` | `int` | Optional. The maximum time to wait for a response, in seconds. |
 
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -86,8 +86,10 @@ The first argument is the Weaviate client. All other options are passed in a `Qu
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
-| `collections` | `(string \| QueryAgentCollectionConfig)[]` | Optional. The collections to query. Overridden if passed to the method call. |
+| `collections` | `(string \| QueryAgentCollectionConfig)[]` | Optional. The collections to query. Can be overridden per call to `ask()` or `search()`. |
 | `systemPrompt` | `string` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. [See the page on the system prompt for more detail](./system_prompt.md). |
+
+The TypeScript client does not currently expose a `timeout` option.
 
     </TabItem>
 </Tabs>

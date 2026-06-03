@@ -1284,21 +1284,9 @@ const sidebars = {
     },
   ],
   agentsSidebar: [
-    {
-      type: "doc",
-      id: "agents/index",
-      className: "sidebar-item",
-    },
-    {
-      type: "doc",
-      id: "agents/installation",
-      className: "sidebar-item",
-    },
-    {
-      type: "doc",
-      id: "agents/quickstart",
-      className: "sidebar-item",
-    },
+    "agents/index",
+    "agents/installation",
+    "agents/quickstart",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
@@ -1381,7 +1369,7 @@ const sidebars = {
           type: "doc",
           id: "agents/reference/advanced_collections",
           className: "sidebar-item",
-        }
+        },
       ],
     },
     {
@@ -1411,7 +1399,7 @@ const sidebars = {
           type: "doc",
           id: "agents/clients/typescript",
           className: "sidebar-item",
-        }
+        },
       ],
     },
     {

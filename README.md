@@ -4,7 +4,7 @@
   </a>
 </div>
 
-This repository contains the documentation for Weaviate (vector database), Weaviate Cloud, and Weaviate Agents. It's built with Docusaurus 3.
+This repository contains the documentation for Weaviate (vector database), Weaviate Cloud, and Query Agent. It's built with Docusaurus 3.
 
 # Contributor Quickstart
 
@@ -34,7 +34,7 @@ The docs are in the following directories:
 - **`/docs/weaviate/`** → Main database documentation
 - **`/docs/deploy/`** → Deployment documentation
 - **`/docs/cloud/`** → Weaviate Cloud docs
-- **`/docs/agents/`** → Weaviate Agents docs
+- **`/docs/agents/`** → Query Agent docs
 
 They are rendered using the following mapping files:
 - **`secondaryNavbar.js`** → Top navigation bar (add new sections here)

@@ -1,3 +1,4 @@
+import os
 import pytest
 import utils
 from pathlib import Path
@@ -19,9 +20,29 @@ from pathlib import Path
         "./docs/agents/_includes/code/search_mode.py",
         "./docs/agents/_includes/code/suggest_queries.py",
         "./docs/agents/_includes/code/system_prompt.py",
+        # Recipe walkthroughs (Weaviate Cloud + Weaviate Embeddings only)
+        "./docs/agents/_includes/code/query_agent_get_started.py",
+        "./docs/agents/_includes/code/query_agent_ecommerce_assistant.py",
     ],
 )
 def test_on_blank_instance_pyv4(script_loc):
+    proc_script = utils.load_and_prep_script(script_loc)
+    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+
+
+@pytest.mark.pyv4
+@pytest.mark.agents
+@pytest.mark.skipif(
+    not os.environ.get("OPENAI_API_KEY"),
+    reason="Query-Agent-vs-DIY recipe builds a DIY OpenAI pipeline; needs OPENAI_API_KEY.",
+)
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./docs/agents/_includes/code/query_agent_vs_diy.py",
+    ],
+)
+def test_recipes_requiring_openai_pyv4(script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
     utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
 

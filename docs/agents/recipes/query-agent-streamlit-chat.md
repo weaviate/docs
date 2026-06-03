@@ -9,6 +9,11 @@ sidebar_position: 30
 # tags: ['Query Agent', 'Streamlit', 'Streaming', 'UI']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_streamlit_chat.py';
+
 In this recipe, we'll build a chat UI for the Weaviate Query Agent using [Streamlit](https://streamlit.io). The UI streams the agent's progress (which collection it's searching, what query it's running) *and* the final answer token by token, so the user sees something happen the moment they hit enter — instead of waiting silently for the full response.
 
 We'll use the **ECommerce + Brands** datasets and give the agent a system prompt that frames it as a shopping assistant. The result is a working chat app you can run locally with `streamlit run app.py`.
@@ -49,84 +54,18 @@ This is a **one-time setup** — once the collections exist and have data you ca
 
 Save the following as `load_data.py` and run it once:
 
-```python
-"""One-time data import for the Streamlit chat recipe."""
-import os
-import weaviate
-from weaviate.classes.init import Auth
-from weaviate.classes.config import Configure, Property, DataType
-from datasets import load_dataset
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.environ["WEAVIATE_URL"],
-    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LoadData"
+  endMarker="# END LoadData"
+  language="py"
+/>
 
-# --- Create the collections --------------------------------------------------
-# The `description` fields below are what the Query Agent reads to decide
-# which collection to search and how to interpret each property — providing
-# them is what lets the agent route a question like "what's the cheapest
-# vintage dress?" to the right place.
-
-client.collections.create(
-    "Brands",
-    description=(
-        "A dataset that lists information about clothing brands, their "
-        "parent companies, average rating and more."
-    ),
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-)
-
-client.collections.create(
-    "ECommerce",
-    description="A dataset that lists clothing items, their brands, prices, and more.",
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-    properties=[
-        Property(name="collection", data_type=DataType.TEXT),
-        Property(name="category", data_type=DataType.TEXT),
-        Property(name="tags", data_type=DataType.TEXT_ARRAY),
-        Property(name="subcategory", data_type=DataType.TEXT),
-        Property(name="name", data_type=DataType.TEXT),
-        Property(name="description", data_type=DataType.TEXT),
-        Property(name="brand", data_type=DataType.TEXT),
-        Property(name="product_id", data_type=DataType.UUID),
-        Property(name="colors", data_type=DataType.TEXT_ARRAY),
-        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
-        Property(name="image_url", data_type=DataType.TEXT),
-        Property(
-            name="price",
-            data_type=DataType.NUMBER,
-            description="price of item in USD",
-        ),
-    ],
-)
-
-# --- Pull the datasets from Hugging Face ------------------------------------
-brands_dataset = load_dataset(
-    "weaviate/agents", "query-agent-brands", split="train", streaming=True
-)
-ecommerce_dataset = load_dataset(
-    "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
-)
-
-brands_collection = client.collections.use("Brands")
-ecommerce_collection = client.collections.use("ECommerce")
-
-print("Importing Brands…")
-with brands_collection.batch.dynamic() as batch:
-    for item in brands_dataset:
-        batch.add_object(properties=item["properties"])
-
-print("Importing ECommerce…")
-with ecommerce_collection.batch.dynamic() as batch:
-    for item in ecommerce_dataset:
-        batch.add_object(properties=item["properties"])
-
-print(f"\nBrands collection:    {len(brands_collection)} objects")
-print(f"ECommerce collection: {len(ecommerce_collection)} objects")
-
-client.close()
-```
+</TabItem>
+</Tabs>
 
 Run it:
 
@@ -145,98 +84,18 @@ The two datasets used here are public on Hugging Face:
 
 Save the following as `app.py`. We'll walk through what each part does in the next section.
 
-```python
-"""Streamlit chat UI for the Weaviate Query Agent."""
-import os
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-import streamlit as st
-import weaviate
-from weaviate.classes.init import Auth
-from weaviate.agents.query import QueryAgent
-from weaviate.agents.classes import (
-    ProgressMessage,
-    StreamedTokens,
-    AskModeResponse,
-    ChatMessage,
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AppFull"
+  endMarker="# END AppFull"
+  language="py"
+/>
 
-st.set_page_config(page_title="E-Commerce Assistant", page_icon="🛍️")
-st.title("🛍️ E-Commerce Assistant")
-st.caption("Powered by the Weaviate Query Agent")
-
-
-@st.cache_resource
-def get_agent() -> QueryAgent:
-    client = weaviate.connect_to_weaviate_cloud(
-        cluster_url=os.environ["WEAVIATE_URL"],
-        auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
-    )
-    return QueryAgent(
-        client=client,
-        collections=["ECommerce", "Brands"],
-        system_prompt=(
-            "You are a friendly e-commerce shopping assistant. "
-            "Help the user find products from the catalog, compare options, "
-            "and answer questions about brands. Recommend specific items with "
-            "their name, brand and price, and explain why they match."
-        ),
-    )
-
-
-agent = get_agent()
-
-# Chat history persists across script re-runs
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-with st.sidebar:
-    st.header("Settings")
-    if st.button("Reset conversation", use_container_width=True):
-        st.session_state.messages = []
-        st.rerun()
-
-# Render history so the user sees prior turns
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
-
-# Handle a new prompt
-if prompt := st.chat_input("Ask about products, brands, prices…"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
-    # Build the full conversation for the agent
-    conversation = [
-        ChatMessage(role=m["role"], content=m["content"])
-        for m in st.session_state.messages
-    ]
-
-    # Stream the agent's response
-    with st.chat_message("assistant"):
-        progress_box = st.empty()
-        answer_box = st.empty()
-        sources_to_show = []
-        answer_so_far = ""
-
-        for output in agent.ask_stream(conversation):
-            if isinstance(output, ProgressMessage):
-                progress_box.info(f"🔄 {output.message}")
-            elif isinstance(output, StreamedTokens):
-                answer_so_far += output.delta
-                answer_box.markdown(answer_so_far + "▌")
-            elif isinstance(output, AskModeResponse):
-                progress_box.empty()
-                answer_box.markdown(answer_so_far)
-                sources_to_show = output.sources or []
-
-        if sources_to_show:
-            with st.expander(f"Sources ({len(sources_to_show)})"):
-                for src in sources_to_show:
-                    st.write(f"- `{src.object_id}` in **{src.collection}**")
-
-    st.session_state.messages.append({"role": "assistant", "content": answer_so_far})
-```
+</TabItem>
+</Tabs>
 
 Run it with:
 
@@ -252,12 +111,18 @@ This will open a browser at `http://localhost:8501` with the chat UI.
 
 Streamlit re-runs the entire script on every interaction — every chat submission, every button click. Without caching, that would mean opening a fresh Weaviate connection and instantiating a new `QueryAgent` for every message the user sends.
 
-```python
-@st.cache_resource
-def get_agent() -> QueryAgent:
-    client = weaviate.connect_to_weaviate_cloud(...)
-    return QueryAgent(client=client, collections=[...], system_prompt=...)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START GetAgentExcerpt"
+  endMarker="# END GetAgentExcerpt"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 `@st.cache_resource` marks a function whose return value is a long-lived resource. The agent and its underlying Weaviate client are created exactly once per session, no matter how many turns the user takes.
 
@@ -275,18 +140,18 @@ Passing the *entire* history on every call is what gives the agent full context 
 
 `agent.ask_stream(conversation)` is a generator that yields three different payload types as the agent works through your question. The UI handles each one differently:
 
-```python
-for output in agent.ask_stream(conversation):
-    if isinstance(output, ProgressMessage):
-        progress_box.info(f"🔄 {output.message}")
-    elif isinstance(output, StreamedTokens):
-        answer_so_far += output.delta
-        answer_box.markdown(answer_so_far + "▌")
-    elif isinstance(output, AskModeResponse):
-        progress_box.empty()
-        answer_box.markdown(answer_so_far)
-        sources_to_show = output.sources or []
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START StreamingExcerpt"
+  endMarker="# END StreamingExcerpt"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 - **`ProgressMessage`** — Updates like *"Analyzing query…"*, *"Running search…"*, *"Generating answer…"*. We show only the latest in `progress_box`. This is the part that makes the app feel responsive — within a second of the user hitting enter, they see *something* describing what the agent is doing.
 - **`StreamedTokens`** — Incremental chunks of the final answer. We append `output.delta` to a running string and re-render. The trailing `▌` is a fake cursor that visually communicates *still generating*.
@@ -298,12 +163,18 @@ The two `st.empty()` placeholders are the trick that makes this work. Calling `.
 
 When the run is done, we render an expander with the UUIDs of the source objects the agent used:
 
-```python
-if sources_to_show:
-    with st.expander(f"Sources ({len(sources_to_show)})"):
-        for src in sources_to_show:
-            st.write(f"- `{src.object_id}` in **{src.collection}**")
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SourcesExcerpt"
+  endMarker="# END SourcesExcerpt"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 For a real storefront app you'd likely fetch each object and render its full properties (name, brand, image, price) — see [Extending the App](#extending-the-app) below.
 

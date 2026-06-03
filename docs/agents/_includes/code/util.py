@@ -3,14 +3,15 @@ import weaviate
 from weaviate.classes.init import Auth
 from weaviate.classes.config import Configure, Property, DataType
 
-def populate_weaviate(client, overwrite_existing=False):
+def populate_weaviate(client, overwrite_existing=False, include_ecommerce=True):
 
     if overwrite_existing:
-        client.collections.delete("ECommerce")
+        if include_ecommerce:
+            client.collections.delete("ECommerce")
         client.collections.delete("Weather")
         client.collections.delete("FinancialContracts")
 
-    if not client.collections.exists("ECommerce"):
+    if include_ecommerce and not client.collections.exists("ECommerce"):
         client.collections.create(
             "ECommerce",
             description="A dataset that lists clothing items, their brands, prices, and more.",
@@ -106,9 +107,6 @@ def populate_weaviate(client, overwrite_existing=False):
         print("Data already exists in Weaviate, skipping import.")
         return
 
-    ecommerce_dataset = load_dataset(
-        "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
-    )
     weather_dataset = load_dataset(
         "weaviate/agents", "query-agent-weather", split="train", streaming=True
     )
@@ -119,22 +117,27 @@ def populate_weaviate(client, overwrite_existing=False):
         streaming=True,
     )
 
-    ecommerce_collection = client.collections.use("ECommerce")
     weather_collection = client.collections.use("Weather")
     financial_collection = client.collections.use("FinancialContracts")
 
-    print("\nImport `query-agent-ecommerce` dataset into Weaviate")
-    with ecommerce_collection.batch.fixed_size(batch_size=200) as batch:
-        for item in ecommerce_dataset:
-            batch.add_object(properties=item["properties"])
-            if batch.number_errors > 0:
-                print("Batch import stopped due to excessive errors.")
-                break
+    if include_ecommerce:
+        ecommerce_dataset = load_dataset(
+            "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
+        )
+        ecommerce_collection = client.collections.use("ECommerce")
 
-    failed_objects = ecommerce_collection.batch.failed_objects
-    if failed_objects:
-        print(f"Number of failed imports: {len(failed_objects)}")
-        print(f"First failed object: {failed_objects[0]}")
+        print("\nImport `query-agent-ecommerce` dataset into Weaviate")
+        with ecommerce_collection.batch.fixed_size(batch_size=200) as batch:
+            for item in ecommerce_dataset:
+                batch.add_object(properties=item["properties"])
+                if batch.number_errors > 0:
+                    print("Batch import stopped due to excessive errors.")
+                    break
+
+        failed_objects = ecommerce_collection.batch.failed_objects
+        if failed_objects:
+            print(f"Number of failed imports: {len(failed_objects)}")
+            print(f"First failed object: {failed_objects[0]}")
 
     print("\nImport `query-agent-weather` dataset into Weaviate")
     with weather_collection.batch.fixed_size(batch_size=200) as batch:
@@ -163,11 +166,112 @@ def populate_weaviate(client, overwrite_existing=False):
         print(f"First failed object: {failed_objects[0]}")
 
     print("\nData import complete!")
-    print(f"Size of the ECommerce dataset: {len(ecommerce_collection)}")
+    if include_ecommerce:
+        print(f"Size of the ECommerce dataset: {len(ecommerce_collection)}")
     print(f"Size of the Weather dataset: {len(weather_collection)}")
     print(f"Size of the Financial dataset: {len(financial_collection)}")
 
-    client.close()  # Free up resources
+def populate_brands(client, overwrite_existing=False):
+    """Create and populate the `Brands` collection used by the recipe walkthroughs.
+
+    Idempotent: skips creation/import when the collection already has data, unless
+    `overwrite_existing=True`.
+    """
+    if overwrite_existing:
+        client.collections.delete("Brands")
+
+    needs_import = overwrite_existing
+    if not client.collections.exists("Brands"):
+        client.collections.create(
+            "Brands",
+            description=(
+                "A dataset that lists information about clothing brands, their "
+                "parent companies, average rating and more."
+            ),
+            vector_config=Configure.Vectors.text2vec_weaviate(),
+        )
+        needs_import = True
+
+    if not needs_import:
+        print("Brands data already exists in Weaviate, skipping import.")
+        return
+
+    from datasets import load_dataset
+
+    brands_dataset = load_dataset(
+        "weaviate/agents", "query-agent-brands", split="train", streaming=True
+    )
+    brands_collection = client.collections.use("Brands")
+
+    print("\nImport `query-agent-brands` dataset into Weaviate")
+    with brands_collection.batch.fixed_size(batch_size=200) as batch:
+        for item in brands_dataset:
+            batch.add_object(properties=item["properties"])
+            if batch.number_errors > 0:
+                print("Batch import stopped due to excessive errors.")
+                break
+
+    failed_objects = brands_collection.batch.failed_objects
+    if failed_objects:
+        print(f"Number of failed imports: {len(failed_objects)}")
+        print(f"First failed object: {failed_objects[0]}")
+
+    print(f"Size of the Brands dataset: {len(brands_collection)}")
+
+
+def populate_recipe_ecommerce(client):
+    """Create and populate `ECommerce` with a single default vector, matching the
+    recipe walkthroughs (so the agent can target it by name without specifying a
+    vector). Force-recreates the collection so the schema is deterministic even if
+    a multi-vector `ECommerce` was left behind by another test.
+    """
+    client.collections.delete("ECommerce")
+    client.collections.create(
+        "ECommerce",
+        description="A dataset that lists clothing items, their brands, prices, and more.",
+        vector_config=Configure.Vectors.text2vec_weaviate(),
+        properties=[
+            Property(name="collection", data_type=DataType.TEXT),
+            Property(name="category", data_type=DataType.TEXT),
+            Property(name="tags", data_type=DataType.TEXT_ARRAY),
+            Property(name="subcategory", data_type=DataType.TEXT),
+            Property(name="name", data_type=DataType.TEXT),
+            Property(name="description", data_type=DataType.TEXT),
+            Property(name="brand", data_type=DataType.TEXT),
+            Property(name="product_id", data_type=DataType.UUID),
+            Property(name="colors", data_type=DataType.TEXT_ARRAY),
+            Property(name="reviews", data_type=DataType.TEXT_ARRAY),
+            Property(name="image_url", data_type=DataType.TEXT),
+            Property(
+                name="price",
+                data_type=DataType.NUMBER,
+                description="price of item in USD",
+            ),
+        ],
+    )
+
+    from datasets import load_dataset
+
+    ecommerce_dataset = load_dataset(
+        "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
+    )
+    ecommerce_collection = client.collections.use("ECommerce")
+
+    print("\nImport `query-agent-ecommerce` dataset into Weaviate (single vector)")
+    with ecommerce_collection.batch.fixed_size(batch_size=200) as batch:
+        for item in ecommerce_dataset:
+            batch.add_object(properties=item["properties"])
+            if batch.number_errors > 0:
+                print("Batch import stopped due to excessive errors.")
+                break
+
+    failed_objects = ecommerce_collection.batch.failed_objects
+    if failed_objects:
+        print(f"Number of failed imports: {len(failed_objects)}")
+        print(f"First failed object: {failed_objects[0]}")
+
+    print(f"Size of the ECommerce dataset: {len(ecommerce_collection)}")
+
 
 def load_client_internally():
     headers = {

@@ -9,6 +9,11 @@ sidebar_position: 50
 # tags: ['Query Agent', 'Comparison']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_vs_diy.py';
+
 In this recipe, we'll answer the same natural-language question against the same Weaviate collection two ways: first by writing the LLM pipeline ourselves with Pydantic-typed plans and explicit filter/sort builders, then by calling `agent.ask(...)`. The goal is to show what scaffolding the DIY approach needs to support even a small slice of what the Query Agent handles.
 
 The DIY side of this recipe is **deliberately minimal**: six filter operators, basic sorting, no aggregations, no multi-turn context, one collection. We'll then list what you'd have to add to match the Query Agent feature-for-feature.
@@ -38,54 +43,18 @@ We'll use the **Weather** dataset — daily weather records with date, temperatu
 
 This is a **one-time setup** — once the `Weather` collection exists and has data, you can re-run the rest of the recipe freely. Save the following as `load_data.py` and run it once:
 
-```python
-"""One-time data import for the Query-Agent-vs-DIY recipe."""
-import os
-import weaviate
-from weaviate.classes.init import Auth
-from weaviate.classes.config import Configure, Property, DataType
-from datasets import load_dataset
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.environ["WEAVIATE_URL"],
-    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LoadData"
+  endMarker="# END LoadData"
+  language="py"
+/>
 
-client.collections.create(
-    "Weather",
-    description=(
-        "Daily weather information including temperature, wind speed, "
-        "precipitation, pressure etc."
-    ),
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-    properties=[
-        Property(name="date", data_type=DataType.DATE),
-        Property(name="humidity", data_type=DataType.NUMBER),
-        Property(name="precipitation", data_type=DataType.NUMBER),
-        Property(name="wind_speed", data_type=DataType.NUMBER),
-        Property(name="visibility", data_type=DataType.NUMBER),
-        Property(name="pressure", data_type=DataType.NUMBER),
-        Property(
-            name="temperature",
-            data_type=DataType.NUMBER,
-            description="temperature value in Celsius",
-        ),
-    ],
-)
-
-weather_dataset = load_dataset(
-    "weaviate/agents", "query-agent-weather", split="train", streaming=True
-)
-weather_collection = client.collections.use("Weather")
-
-print("Importing Weather…")
-with weather_collection.batch.dynamic() as batch:
-    for item in weather_dataset:
-        batch.add_object(properties=item["properties"], vector=item["vector"])
-
-print(f"Weather collection: {len(weather_collection)} objects")
-client.close()
-```
+</TabItem>
+</Tabs>
 
 Run it once:
 
@@ -105,19 +74,18 @@ It has all three of the structured pieces the DIY pipeline has to extract: a **f
 
 Both sides of the comparison share a tiny bit of setup — connecting to Weaviate and grabbing the collection handle:
 
-```python
-import os
-import weaviate
-from weaviate.classes.init import Auth
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-weaviate_client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.environ["WEAVIATE_URL"],
-    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
-)
-weather = weaviate_client.collections.use("Weather")
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SharedSetup"
+  endMarker="# END SharedSetup"
+  language="py"
+/>
 
-question = "Show me the top 5 windiest days where it rained more than 5mm."
-```
+</TabItem>
+</Tabs>
 
 ## Without the Query Agent
 
@@ -129,45 +97,18 @@ Each step below is a small Python function. At the end of this section we compos
 
 The first job is to constrain what the LLM is allowed to emit. Pydantic gives us strong types we can pass straight to the OpenAI parser, and clear field descriptions the LLM will read to understand what to populate.
 
-```python
-from typing import Literal
-from pydantic import BaseModel, Field
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START PydanticModels"
+  endMarker="# END PydanticModels"
+  language="py"
+/>
 
-class SearchFilter(BaseModel):
-    field: str = Field(description="Property name to filter on.")
-    operator: Literal["=", "!=", ">", "<", ">=", "<="] = Field(
-        description="Comparison operator to apply between the property and the value."
-    )
-    value: str | float | int | bool = Field(
-        description="Value to compare the property against."
-    )
-
-
-class SearchSort(BaseModel):
-    field: str = Field(description="Property name to sort by.")
-    direction: Literal["asc", "desc"] = Field(description="Sort direction.")
-
-
-class Search(BaseModel):
-    query: str | None = Field(
-        default=None,
-        description=(
-            "Optional semantic search string. Set this only when the question has a "
-            "free-text or topical component (e.g. 'hot summer days'). Leave None for "
-            "purely structured queries that filter and sort numeric or date properties."
-        ),
-    )
-    filters: list[SearchFilter] = Field(
-        default_factory=list,
-        description="Filters to apply, combined with AND.",
-    )
-    sort: SearchSort | None = Field(
-        default=None,
-        description="Optional sort order. Use it for questions like 'windiest', 'coldest', 'most recent'.",
-    )
-    limit: int = Field(default=10, description="Maximum number of results to return.")
-```
+</TabItem>
+</Tabs>
 
 The `query` field is what lets the planner choose between **semantic** search and **structured** retrieval depending on the question. For our example, the LLM should set `query=None` — *"top 5 windiest days where it rained more than 5mm"* has no free-text component — but the field exists so the same plumbing handles a question like *"hot summer days"* too.
 
@@ -177,15 +118,18 @@ The `query` field is what lets the planner choose between **semantic** search an
 
 The LLM has no idea what's in your database, so before we ask it to plan a query we have to tell it which properties exist and what type each one is. The Weaviate client exposes this via `collection.config.get()`:
 
-```python
-def get_schema(collection) -> list[dict]:
-    """Read the collection schema so the LLM knows what properties exist."""
-    config = collection.config.get()
-    return [
-        {"name": p.name, "type": str(p.data_type)}
-        for p in config.properties
-    ]
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START GetSchema"
+  endMarker="# END GetSchema"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 > **In production**, the schema alone isn't enough — the LLM also needs realistic example values per property (so it knows `category` is one of a fixed set rather than free-form). You'd sample rows, fold them into the description, and budget a token cap. If you have many collections, a routing step has to run first to pick which one(s) to even describe.
 
@@ -193,27 +137,18 @@ def get_schema(collection) -> list[dict]:
 
 With the schema and the question, the LLM emits a `Search`. We use OpenAI's typed-output API (`beta.chat.completions.parse`) so the response is already a `Search` instance — no JSON parsing, no validation glue.
 
-```python
-import json
-from openai import OpenAI
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-openai_client = OpenAI()
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START PlanQuery"
+  endMarker="# END PlanQuery"
+  language="py"
+/>
 
-
-def plan_query(question: str, schema: list[dict]) -> Search:
-    """Ask the LLM to turn a natural-language question into a structured Search."""
-    prompt = (
-        f"Collection schema:\n{json.dumps(schema, indent=2)}\n\n"
-        f'User question: "{question}"\n\n'
-        "Return a Search object with the filters, sort and limit needed to answer it."
-    )
-    completion = openai_client.beta.chat.completions.parse(
-        model="gpt-5.4-mini",
-        messages=[{"role": "user", "content": prompt}],
-        response_format=Search,
-    )
-    return completion.choices[0].message.parsed
-```
+</TabItem>
+</Tabs>
 
 > **In production**, this prompt grows considerably: few-shot examples for each filter shape, instructions for ambiguous values (*"under $80"* → `< 80` vs `<= 80`?), and stricter validation that string values look reasonable for their declared types. Once `Search` has 10+ fields you'd also split prompts by question category — one for filter-only questions, one for semantic, one for aggregation — because a single prompt covering everything starts to lose accuracy.
 
@@ -221,43 +156,18 @@ def plan_query(question: str, schema: list[dict]) -> Search:
 
 The LLM produces a `Search` of typed Python objects, but Weaviate's query API wants its own `Filter` and `Sort` objects. Two small helpers handle the mapping:
 
-```python
-from weaviate.classes.query import Filter, Sort
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START BuildQuery"
+  endMarker="# END BuildQuery"
+  language="py"
+/>
 
-def build_filter(f: SearchFilter) -> Filter:
-    """Convert a single SearchFilter into a Weaviate Filter."""
-    prop = Filter.by_property(f.field)
-    if f.operator == "=":
-        return prop.equal(f.value)
-    if f.operator == "!=":
-        return prop.not_equal(f.value)
-    if f.operator == ">":
-        return prop.greater_than(f.value)
-    if f.operator == "<":
-        return prop.less_than(f.value)
-    if f.operator == ">=":
-        return prop.greater_or_equal(f.value)
-    if f.operator == "<=":
-        return prop.less_or_equal(f.value)
-    raise ValueError(f"Unsupported operator: {f.operator}")
-
-
-def build_filters(filters: list[SearchFilter]) -> Filter | None:
-    """Combine multiple SearchFilters with AND. Returns None if there are none."""
-    if not filters:
-        return None
-    if len(filters) == 1:
-        return build_filter(filters[0])
-    return Filter.all_of([build_filter(f) for f in filters])
-
-
-def build_sort(s: SearchSort | None) -> Sort | None:
-    """Convert a SearchSort into a Weaviate Sort, or None if not specified."""
-    if s is None:
-        return None
-    return Sort.by_property(s.field, ascending=(s.direction == "asc"))
-```
+</TabItem>
+</Tabs>
 
 > **In production**, this is where most of the long tail of work lives. Weaviate also supports `like`, `contains_any` / `contains_all` (for array properties like `tags`, `colors`), `is_null`, and per-tenant filtering — each needs a branch here and a matching entry in `SearchFilter.operator`. `Sort.by_property` also doesn't combine with `near_text`, so any time you sort while doing semantic search you have to pick a tradeoff the agent resolves automatically.
 
@@ -265,22 +175,18 @@ def build_sort(s: SearchSort | None) -> Sort | None:
 
 Now we hit Weaviate. The executor branches on whether the LLM set `query`: with a semantic query we use `near_text`, without one we fall through to `fetch_objects` (which is the path that supports `sort`).
 
-```python
-def run_query(collection, plan: Search):
-    """Execute the Search against Weaviate, picking the right query method."""
-    filters = build_filters(plan.filters)
-    if plan.query:
-        return collection.query.near_text(
-            query=plan.query,
-            filters=filters,
-            limit=plan.limit,
-        )
-    return collection.query.fetch_objects(
-        filters=filters,
-        sort=build_sort(plan.sort),
-        limit=plan.limit,
-    )
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START RunQuery"
+  endMarker="# END RunQuery"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 > **In production**, this branching expands. Real apps also need `hybrid` (with a tunable `alpha`) and `bm25` (keyword), plus rules for when each combines with `sort`. Aggregation questions go to `collection.aggregate.*` entirely — a separate API with its own planner schema and answer composer.
 
@@ -288,21 +194,18 @@ def run_query(collection, plan: Search):
 
 Weaviate returns rows. The user wants a written answer, so a second LLM call turns the rows into prose:
 
-```python
-def compose_answer(question: str, objects: list) -> str:
-    """Turn the matching rows into a natural-language answer."""
-    rows = [obj.properties for obj in objects]
-    prompt = (
-        f'User question: "{question}"\n\n'
-        f"Results:\n{json.dumps(rows, default=str, indent=2)}\n\n"
-        "Write a short, friendly answer using only the results above."
-    )
-    completion = openai_client.chat.completions.create(
-        model="gpt-5.4-mini",
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return completion.choices[0].message.content
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ComposeAnswer"
+  endMarker="# END ComposeAnswer"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 > **In production**, this prompt also has to handle the empty-result case (apologise, suggest a relaxed filter), the too-many-rows case (truncate intelligently, flag the answer as partial), and streaming (`stream=True` and propagate chunks). UI integrations want to surface which rows informed the answer so they can be rendered as sources.
 
@@ -310,18 +213,18 @@ def compose_answer(question: str, objects: list) -> str:
 
 All the building blocks compose into one function — the DIY equivalent of `agent.ask(question)`:
 
-```python
-def ask_diy(question: str, collection) -> str:
-    """End-to-end DIY pipeline: schema → plan → query → answer."""
-    schema = get_schema(collection)
-    plan = plan_query(question, schema)
-    print(f"LLM plan: {plan}")
-    results = run_query(collection, plan)
-    return compose_answer(question, results.objects)
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskDiy"
+  endMarker="# END AskDiy"
+  language="py"
+/>
 
-print(ask_diy(question, weather))
-```
+</TabItem>
+</Tabs>
 
 <details>
 <summary>Example output</summary>
@@ -337,7 +240,7 @@ Here are the top 5 windiest days with more than 5 mm of rain:
 5. 2023-08-18 — Wind: 74.1, Rain: 6.3 mm
 ```
 
-Notice the duplicates. The DIY pipeline returns whatever `fetch_objects` gives it, so when the underlying data has near-identical rows the final answer reflects that — and the `limit=5` cap gets consumed by them, hiding windier rainy days that would otherwise appear in the result.
+Notice the duplicates. The DIY pipeline returns whatever `fetch_objects` gives it, so when the underlying data has near-identical rows the final answer reflects that — and the `limit=5` cap gets consumed by them, so only two distinct days surface and the next-windiest distinct days never make the cut.
 
 </details>
 
@@ -345,12 +248,18 @@ That's the minimum DIY pipeline. Roughly 90 lines once you count the Pydantic mo
 
 ## With the Query Agent
 
-```python
-from weaviate.agents.query import QueryAgent
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-agent = QueryAgent(client=weaviate_client, collections=["Weather"])
-print(agent.ask(question).final_answer)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START WithAgent"
+  endMarker="# END WithAgent"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 <details>
 <summary>Example output</summary>
@@ -358,14 +267,14 @@ print(agent.ask(question).final_answer)
 ```text
 Here are the top 5 windiest days with rainfall over 5 mm:
 
-1. 2023-09-04 — wind speed: 94.9, precipitation: 28.6 mm
-2. 2023-05-02 — wind speed: 93.5, precipitation: 12.0 mm
-3. 2023-11-08 — wind speed: 91.5, precipitation: 30.6 mm
-4. 2023-12-13 — wind speed: 91.1, precipitation: 30.0 mm
-5. 2023-08-18 — wind speed: 74.1, precipitation: 6.3 mm
+1. 2023-05-02 — wind speed: 93.5, precipitation: 12.0 mm
+2. 2023-08-18 — wind speed: 74.1, precipitation: 6.3 mm
+3. 2023-11-08 — wind speed: 71.5, precipitation: 30.6 mm
+4. 2023-12-13 — wind speed: 68.2, precipitation: 30.0 mm
+5. 2023-09-04 — wind speed: 66.9, precipitation: 28.6 mm
 ```
 
-Five distinct windier rainy days — including three the DIY pipeline missed (the 94.9, 91.5 and 91.1 m/s days) because its `limit=5` was consumed by duplicate rows.
+Five distinct rainy days — including three the DIY pipeline never surfaced (the 71.5, 68.2 and 66.9 days) because its `limit=5` was consumed by duplicate rows.
 
 </details>
 
@@ -395,6 +304,15 @@ The DIY pipeline above is a starting point. Here's what you'd extend, roughly in
 
 Close the Weaviate client when you're done:
 
-```python
-weaviate_client.close()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Close"
+  endMarker="# END Close"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>

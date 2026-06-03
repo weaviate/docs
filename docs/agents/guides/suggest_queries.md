@@ -65,19 +65,19 @@ Suggest Queries can be called with the following arguments:
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
-| Parameter | Description |
-| --- | --- |
-| `collections` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
-| `num_queries` | The number of queries to suggest (default: `3`). |
-| `instructions` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `collections` | `list[str \| QueryAgentCollectionConfig] \| None` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
+| `num_queries` | `int` | The number of queries to suggest (default: `3`). |
+| `instructions` | `str \| None` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
 
-| Parameter | Description |
-| --- | --- |
-| `collections` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
-| `numQueries` | The number of queries to suggest (default: `3`). |
-| `instructions` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `collections` | `(string \| QueryAgentCollectionConfig)[]` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
+| `numQueries` | `number` | The number of queries to suggest (default: `3`). |
+| `instructions` | `string` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
     </TabItem>
 </Tabs>
 
@@ -88,23 +88,23 @@ The `SuggestQueryResponse` class has the following properties:
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
-| Field | Description |
-| --- | --- |
-| `queries` | A list of `SuggestedQuery` objects, each with a single property `query`, a suggested query that the user could run against their data. |
-| `collection_count` | The number of collections that were considered when generating the suggested queries. |
-| `usage` | A `ModelUnitUsage` instance providing detail on the model units used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
-| `total_time` | Total time taken (seconds). |
+| Field | Type | Description |
+| --- | --- | --- |
+| `queries` | `list[SuggestedQuery]` | A list of `SuggestedQuery` objects, each with a single property `query`, a suggested query that the user could run against their data. |
+| `collection_count` | `int` | The number of collections that were considered when generating the suggested queries. |
+| `usage` | `ModelUnitUsage` | A `ModelUnitUsage` instance providing detail on the model units used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
+| `total_time` | `float` | Total time taken (seconds). |
 
 [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.SuggestQueryResponse)
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
 
-| Field | Description |
-| --- | --- |
-| `queries` | A list of `SuggestedQuery` objects, each with a single property `query`, a suggested query that the user could run against their data. |
-| `collectionCount` | The number of collections that were considered when generating the suggested queries. |
-| `usage` | A `ModelUnitUsage` object providing detail on the model units used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
-| `totalTime` | Total time taken (seconds). |
+| Field | Type | Description |
+| --- | --- | --- |
+| `queries` | `SuggestedQuery[]` | A list of `SuggestedQuery` objects, each with a single property `query`, a suggested query that the user could run against their data. |
+| `collectionCount` | `number` | The number of collections that were considered when generating the suggested queries. |
+| `usage` | `ModelUnitUsage` | A `ModelUnitUsage` object providing detail on the model units used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
+| `totalTime` | `number` | Total time taken (seconds). |
 
 [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/SuggestQueryResponse.html)
     </TabItem>

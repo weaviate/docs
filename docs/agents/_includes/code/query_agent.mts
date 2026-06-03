@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import weaviate from 'weaviate-client';
+import { ChatMessage } from 'weaviate-agents';
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/agents/_includes/code/util.mjs'));
 const client = await loadClientInternally();
 await populateWeaviate(client, false);
@@ -187,7 +188,7 @@ console.log("Usage statistics:", searchResponse.usage)
 
 // Access the searches performed (if any)
 if (searchResponse.searches) {
-    for (const search in searchResponse.searches) {
+    for (const search of searchResponse.searches) {
         console.log("Search performed:", search)
     }
 }
@@ -330,10 +331,8 @@ for (const collectionSearches of basicResponse.searches) {
 
 if (basicResponse.aggregations) {
     console.log('📊 Aggregation Results:');
-    for (const collectionAggs of basicResponse.aggregations) {
-        for (const agg in collectionAggs) {
-            console.log(`- ${agg}\n`);
-        }
+    for (const agg of basicResponse.aggregations) {
+        console.log(`- ${JSON.stringify(agg)}\n`);
     }
 }
 

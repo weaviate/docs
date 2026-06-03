@@ -9,6 +9,11 @@ sidebar_position: 40
 # tags: ['Query Agent', 'Integration', 'Function Calling']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_as_a_tool.py';
+
 In this recipe, we'll show how to expose the [Weaviate Query Agent](https://docs.weaviate.io/agents) as a **tool** to other LLMs and agent frameworks. The Query Agent already handles search, filtering, aggregation, and writing a natural-language answer — wrapping it as a tool lets a higher-level model decide *when* to consult your Weaviate data as part of a larger reasoning flow.
 
 We'll cover five integrations:
@@ -43,39 +48,18 @@ The trick to using the Query Agent as a tool is simple: it's a Python function t
 
 We'll create the Weaviate client and the `QueryAgent` **once**, and wrap a thin function around them. Reusing a single client across calls avoids reopening a connection on every invocation, which is what you want in any real application.
 
-```python
-import os
-import weaviate
-from weaviate.classes.init import Auth
-from weaviate.agents.query import QueryAgent
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-weaviate_client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WEAVIATE_URL"),
-    auth_credentials=Auth.api_key(os.getenv("WEAVIATE_API_KEY")),
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START DefineTool"
+  endMarker="# END DefineTool"
+  language="py"
+/>
 
-agent = QueryAgent(
-    client=weaviate_client,
-    collections=["WeaviateBlogChunks"],
-)
-
-def ask_weaviate(query: str) -> str:
-    """
-    Look up information in the Weaviate knowledge base by asking a question.
-
-    Use this tool whenever the user asks something that may be answered by
-    content stored in the Weaviate database. The tool runs an agentic search
-    and returns a natural-language answer composed from the underlying data.
-
-    Args:
-        query: The user's question, phrased in natural language.
-
-    Returns:
-        A natural-language answer composed from the relevant content
-        in the database.
-    """
-    return agent.ask(query).final_answer
-```
+</TabItem>
+</Tabs>
 
 A few things to notice:
 
@@ -104,28 +88,35 @@ os.environ["GOOGLE_API_KEY"] = ""  # your Gemini API key
 
 ### Create the client and register the tool
 
-```python
-from google import genai
-from google.genai import types
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-client = genai.Client()
-config = types.GenerateContentConfig(tools=[ask_weaviate])
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START GeminiClient"
+  endMarker="# END GeminiClient"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 `ask_weaviate` goes in the `tools` list and Gemini will call it when its response logic decides the user's question requires looking something up. The SDK reads the function's signature and docstring to build the tool declaration for you.
 
 ### Ask a question
 
-```python
-prompt = """
-You are connected to a database that has Weaviate blog posts.
-How do I deploy Weaviate with Docker?
-"""
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-chat = client.chats.create(model="gemini-2.0-flash", config=config)
-response = chat.send_message(prompt)
-print(response.text)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START GeminiAsk"
+  endMarker="# END GeminiAsk"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ```text
 To deploy Weaviate with Docker, you need to:
@@ -165,34 +156,33 @@ os.environ["GOOGLE_CLOUD_REGION"] = ""  # e.g. "us-central1"
 
 ### Create the Vertex client
 
-```python
-from google import genai
-from google.genai.types import GenerateContentConfig
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-client = genai.Client(
-    vertexai=True,
-    project=os.getenv("GCP_PROJECT_ID"),
-    location=os.getenv("GOOGLE_CLOUD_REGION"),
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START VertexClient"
+  endMarker="# END VertexClient"
+  language="py"
+/>
 
-MODEL_ID = "gemini-2.0-flash-001"  # any Model Garden model that supports function calling
-```
+</TabItem>
+</Tabs>
 
 ### Ask a question
 
-```python
-prompt = """
-You are connected to a database that has Weaviate blog posts.
-How do I deploy Weaviate with Docker?
-"""
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-response = client.models.generate_content(
-    model=MODEL_ID,
-    contents=prompt,
-    config=GenerateContentConfig(tools=[ask_weaviate], temperature=0),
-)
-print(response.text)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START VertexAsk"
+  endMarker="# END VertexAsk"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ```text
 To deploy Weaviate on Docker, you need Docker and Docker Compose CLI.
@@ -222,82 +212,50 @@ ollama pull llama3.1
 
 ### Declare the tool schema
 
-```python
-import json
-import ollama
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-query_agent_tool_schema = [{
-    "type": "function",
-    "function": {
-        "name": "ask_weaviate",
-        "description": "Send a question to the Weaviate knowledge base and get a natural-language answer.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "The question to ask, in natural language.",
-                },
-            },
-            "required": ["query"],
-        },
-    },
-}]
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START OllamaSchema"
+  endMarker="# END OllamaSchema"
+  language="py"
+/>
 
-tool_mapping = {"ask_weaviate": ask_weaviate}
-```
+</TabItem>
+</Tabs>
 
 ### Drive the function-calling loop
 
 With Ollama you make a first call to let the model decide whether to invoke a tool, execute the tool yourself if it does, then make a second call with the tool's output appended to the message history.
 
-```python
-def chat_with_weaviate(user_message: str, model_name: str = "llama3.1") -> str:
-    messages = [{"role": "user", "content": user_message}]
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-    # First call: let the model decide whether to call a tool
-    response = ollama.chat(
-        model=model_name,
-        messages=messages,
-        tools=query_agent_tool_schema,
-    )
-    messages.append(response["message"])
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START OllamaLoop"
+  endMarker="# END OllamaLoop"
+  language="py"
+/>
 
-    # If a tool was requested, execute it and append the result
-    if response["message"].get("tool_calls"):
-        for tool in response["message"]["tool_calls"]:
-            function_name = tool["function"]["name"]
-            args = tool["function"]["arguments"]
-            if isinstance(args, str):
-                args = json.loads(args)
-            query = args.get("query", "")
-
-            print(f"Querying Weaviate with: {query}")
-            function_response = tool_mapping[function_name](query)
-
-            messages.append({
-                "role": "tool",
-                "content": function_response,
-                "name": function_name,
-            })
-
-        # Second call: let the model use the tool result to compose its answer
-        final_response = ollama.chat(model=model_name, messages=messages)
-        return final_response["message"]["content"]
-
-    # No tool used — return the model's direct answer
-    return response["message"]["content"]
-```
+</TabItem>
+</Tabs>
 
 ### Ask a question
 
-```python
-response = chat_with_weaviate(
-    user_message="How do I deploy Weaviate with Docker?",
-    model_name="llama3.1",
-)
-print(response)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START OllamaAsk"
+  endMarker="# END OllamaAsk"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ```text
 Querying Weaviate with: docker deployment
@@ -335,42 +293,50 @@ os.environ["OPENAI_API_KEY"] = ""
 
 LangChain's `@tool` decorator turns a regular Python function into a `BaseTool`, using the docstring as the tool description. You can pass `ask_weaviate` as-is by decorating a wrapper, or apply `@tool` directly:
 
-```python
-from langchain.tools import tool
-from langchain.chat_models import init_chat_model
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-@tool
-def ask_weaviate_tool(query: str) -> str:
-    """
-    Look up information in the Weaviate knowledge base by asking a question.
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LangchainTool"
+  endMarker="# END LangchainTool"
+  language="py"
+/>
 
-    Use this whenever the user asks something that may be answered by
-    content stored in the Weaviate database.
-
-    Args:
-        query: The user's question in natural language.
-
-    Returns:
-        A natural-language answer composed from the relevant content.
-    """
-    return ask_weaviate(query)
-```
+</TabItem>
+</Tabs>
 
 ### Bind the tool to a model
 
-```python
-llm = init_chat_model("gpt-4o", model_provider="openai")
-llm_with_tools = llm.bind_tools([ask_weaviate_tool])
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LangchainBind"
+  endMarker="# END LangchainBind"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 `bind_tools` is the swap-friendly part — change the `init_chat_model` call to point at Anthropic, Vertex, or any other supported provider and the rest stays the same.
 
 ### Ask a question
 
-```python
-response = llm_with_tools.invoke("How do I run Weaviate with Docker?")
-print(response.content)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LangchainAsk"
+  endMarker="# END LangchainAsk"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ```text
 To run Weaviate with Docker, you can follow these steps:
@@ -403,30 +369,35 @@ os.environ["OPENAI_API_KEY"] = ""
 
 ### Build the agent workflow
 
-```python
-from llama_index.llms.openai import OpenAI
-from llama_index.core.agent.workflow import AgentWorkflow
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-llm = OpenAI(model="gpt-4o-mini")
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LlamaWorkflow"
+  endMarker="# END LlamaWorkflow"
+  language="py"
+/>
 
-workflow = AgentWorkflow.from_tools_or_functions(
-    [ask_weaviate],
-    llm=llm,
-    system_prompt=(
-        "You are an agent that can search a Weaviate database "
-        "of blog content and answer questions about it."
-    ),
-)
-```
+</TabItem>
+</Tabs>
 
 The `system_prompt` here is the *outer* agent's prompt — it shapes how the LlamaIndex agent decides when and how to call the tool. The Query Agent itself has its own (separate) system prompt, which you can configure on the `QueryAgent` constructor; see [Customizing the System Prompt](../reference/system_prompt.md).
 
 ### Ask a question
 
-```python
-response = await workflow.run(user_msg="How do I run Weaviate with Docker?")
-print(response)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START LlamaAsk"
+  endMarker="# END LlamaAsk"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ```text
 To run Weaviate with Docker, follow these steps:
@@ -477,6 +448,15 @@ A few things worth knowing once you take this past a notebook:
 
 Close the Weaviate client when your application shuts down:
 
-```python
-weaviate_client.close()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Close"
+  endMarker="# END Close"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>

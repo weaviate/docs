@@ -9,6 +9,11 @@ sidebar_position: 20
 # tags: ['Query Agent']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_ecommerce_assistant.py';
+
 In this recipe, we will be building a simple e-commerce assistant agent with the [Weaviate Query Agent](https://docs.weaviate.io/agents). This agent will have access to a number of Weaviate collections, and will be capable of answering complex queries about brands and clothing items, accessing information from each collection. By the end, we'll wrap the agent in a small reusable class that's ready to plug into a chatbot, CLI, or any larger application.
 
 ![Weaviate Query Agent flowchart for the Ecommerce example](../_includes/query_agent_tutorial_ecommerce_flowchart.png#gh-light-mode-only "Weaviate Query Agent flowchart for the Ecommerce example")
@@ -46,15 +51,18 @@ if "WEAVIATE_URL" not in os.environ:
   os.environ["WEAVIATE_URL"] = getpass("Weaviate URL")
 ```
 
-```python
-import weaviate
-from weaviate.auth import Auth
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
-)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ### Prepare the collections
 
@@ -66,56 +74,31 @@ In the following code blocks, we are pulling our demo datasets from Hugging Face
 ![Ecommerce and Brands collection example data](../_includes/query_agent_tutorial_ecommerce_dataset.png#gh-dark-mode-only "Ecommerce and Brands collection example data")
 
 
-```python
-from weaviate.classes.config import Configure, Property, DataType
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-# To re-run cell you may have to delete collections
-# client.collections.delete("Brands")
-client.collections.create(
-    "Brands",
-    description="A dataset that lists information about clothing brands, their parent companies, average rating and more.",
-    vector_config=Configure.Vectors.text2vec_weaviate()
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateCollections"
+  endMarker="# END CreateCollections"
+  language="py"
+/>
 
-# client.collections.delete("ECommerce")
-client.collections.create(
-    "ECommerce",
-    description="A dataset that lists clothing items, their brands, prices, and more.",
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-    properties=[
-        Property(name="collection", data_type=DataType.TEXT),
-        Property(name="category", data_type=DataType.TEXT),
-        Property(name="tags", data_type=DataType.TEXT_ARRAY),
-        Property(name="subcategory", data_type=DataType.TEXT),
-        Property(name="name", data_type=DataType.TEXT),
-        Property(name="description", data_type=DataType.TEXT),
-        Property(name="brand", data_type=DataType.TEXT),
-        Property(name="product_id", data_type=DataType.UUID),
-        Property(name="colors", data_type=DataType.TEXT_ARRAY),
-        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
-        Property(name="image_url", data_type=DataType.TEXT),
-        Property(name="price", data_type=DataType.NUMBER, description="price of item in USD"),
-    ]
-)
-```
+</TabItem>
+</Tabs>
 
-```python
-from datasets import load_dataset
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-brands_dataset = load_dataset("weaviate/agents", "query-agent-brands", split="train", streaming=True)
-ecommerce_dataset = load_dataset("weaviate/agents", "query-agent-ecommerce", split="train", streaming=True)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ImportData"
+  endMarker="# END ImportData"
+  language="py"
+/>
 
-brands_collection = client.collections.use("Brands")
-ecommerce_collection = client.collections.use("ECommerce")
-
-with brands_collection.batch.dynamic() as batch:
-    for item in brands_dataset:
-        batch.add_object(properties=item["properties"])
-
-with ecommerce_collection.batch.dynamic() as batch:
-    for item in ecommerce_dataset:
-        batch.add_object(properties=item["properties"])
-```
+</TabItem>
+</Tabs>
 
 ## 2. Set up the Query Agent
 
@@ -127,19 +110,18 @@ When setting up the Query Agent, we have to provide it a few things:
 
 Let's start with a simple agent. Here, we're creating an `agent` that has access to our `Brands` & `ECommerce` datasets, and frame it as a helpful shopping assistant via the system prompt.
 
-```python
-from weaviate.agents.query import QueryAgent
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-agent = QueryAgent(
-    client=client,
-    collections=["ECommerce", "Brands"],
-    system_prompt=(
-        "You are a friendly e-commerce shopping assistant. "
-        "Help the user find products from the catalog, compare options, and answer questions about brands. "
-        "Recommend specific items with their names, brands and prices, and explain why they match the user's request."
-    ),
-)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START InstantiateAgent"
+  endMarker="# END InstantiateAgent"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ## 3. Run the Query Agent
 
@@ -154,10 +136,18 @@ When we run the agent, it will first make a few decisions, depending on the quer
 
 We can then also inspect how the agent responded, what kind of searches it performed on which collections, whether it has identified if the final answer is missing information or not, as well as the final answer 👇
 
-```python
-response = agent.ask("I like the vintage clothes, can you list me some options that are less than $200?")
-response.display()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskVintage"
+  endMarker="# END AskVintage"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>╭─────────────────────────────────────────────── 🔍 Original Query ───────────────────────────────────────────────╮
 │                                                                                                                 │
@@ -217,18 +207,18 @@ response.display()
 
 Customers rarely ask one question and stop — they have a conversation. To give the agent the prior turns, pass a list of `ChatMessage` objects to `.ask()` instead of a single string. The agent will then use the full message history as context.
 
-```python
-from weaviate.agents.classes import ChatMessage
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-conversation = [
-    ChatMessage(role="user", content="I like the vintage clothes, can you list me some options that are less than $200?"),
-    ChatMessage(role="assistant", content=response.final_answer),
-    ChatMessage(role="user", content="What about some nice shoes, same budget as before?"),
-]
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START FollowUp"
+  endMarker="# END FollowUp"
+  language="py"
+/>
 
-new_response = agent.ask(conversation)
-new_response.display()
-```
+</TabItem>
+</Tabs>
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>╭──────────────────────────────────────────────── 📝 Final Answer ────────────────────────────────────────────────╮
 │                                                                                                                 │
@@ -258,10 +248,18 @@ new_response.display()
 
 Now let's try a question that should require an aggregation. Let's see which brand lists the most shoes.
 
-```python
-response = agent.ask("What is the name of the brand that lists the most shoes?")
-response.display()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskAggregation"
+  endMarker="# END AskAggregation"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>╭──────────────────────────────────────────────── 📝 Final Answer ────────────────────────────────────────────────╮
 │                                                                                                                 │
@@ -286,13 +284,18 @@ In some cases, we need to combine the results of searches across multiple collec
 
 Let's imagine a scenario where the user would now want to find out more about this company, _as well_ as the items that they sell.
 
-```python
-response = agent.ask(
-    "Does the brand 'Loom & Aura' have a parent brand or child brands and what countries do they operate from? "
-    "Also, what's the average price of a item from 'Loom & Aura'?"
-)
-response.display()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskMultiCollection"
+  endMarker="# END AskMultiCollection"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>╭──────────────────────────────────────────────── 📝 Final Answer ────────────────────────────────────────────────╮
 │                                                                                                                 │
@@ -316,33 +319,33 @@ So far we've been calling `agent.ask()` ad hoc and rebuilding the conversation l
 - Returns just the final answer to the caller.
 - Lets us reset between sessions.
 
-```python
-from weaviate.agents.classes import ChatMessage
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-class ECommerceAssistant:
-    def __init__(self, agent: QueryAgent):
-        self.agent = agent
-        self.history: list[ChatMessage] = []
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AssistantClass"
+  endMarker="# END AssistantClass"
+  language="py"
+/>
 
-    def chat(self, user_message: str) -> str:
-        self.history.append(ChatMessage(role="user", content=user_message))
-        response = self.agent.ask(self.history)
-        self.history.append(ChatMessage(role="assistant", content=response.final_answer))
-        return response.final_answer
-
-    def reset(self):
-        self.history = []
-```
+</TabItem>
+</Tabs>
 
 We can now drive a multi-turn session with a single object:
 
-```python
-assistant = ECommerceAssistant(agent)
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-print(assistant.chat("I like the vintage clothes, can you list me some options that are less than $200?"))
-print(assistant.chat("What about some nice shoes, same budget as before?"))
-print(assistant.chat("Tell me more about the brand that makes the first pair you mentioned."))
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START DriveAssistant"
+  endMarker="# END DriveAssistant"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 From here, the `ECommerceAssistant` is a self-contained component you can drop into a web app, Slack bot, CLI, or any flow where a customer needs to talk to your catalog in natural language. Because all of the search and aggregation work is delegated to the Query Agent, your application code stays small.
 
@@ -362,6 +365,15 @@ A few directions you can take this from here:
 
 Close the client when you're done:
 
-```python
-client.close()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Close"
+  endMarker="# END Close"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>

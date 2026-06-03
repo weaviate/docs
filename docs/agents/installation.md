@@ -50,7 +50,7 @@ pip install -U weaviate-agents
 Or install a [specific version](https://github.com/weaviate/weaviate-agents-python-client/tags):
 
 ```shell
-pip install -U weaviate-agents==||site.weaviate_agents_version||
+pip install -U weaviate-agents==||site.agents_python_version||
 ```
 
 ## JavaScript/TypeScript client

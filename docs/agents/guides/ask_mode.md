@@ -62,19 +62,19 @@ The `.ask()` method accepts several arguments:
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
-| Parameter | Description |
-| --- | --- |
-| `query` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
-| `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
-| `result_evaluation` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `query` | `str \| list[ChatMessage]` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
+| `collections` | `list[str \| QueryAgentCollectionConfig] \| None` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
+| `result_evaluation` | `Literal["llm", "none"]` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
-| Parameter | Description |
-| --- | --- |
-| `query` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
-| `collections` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. [See the page on collection configuration for more detail](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. |
-| `resultEvaluation` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `query` | `string \| ChatMessage[]` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
+| `collections` | `(string \| QueryAgentCollectionConfig)[]` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. [See the page on collection configuration for more detail](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. |
+| `resultEvaluation` | `"llm" \| "none"` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
 
 </TabItem>
 </Tabs>
@@ -88,32 +88,32 @@ The `AskModeResponse` class has the following properties:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-| Field | Description |
-| --- | --- |
-| `searches` | A list of `QueryResultWithCollectionNormalized`. Each contains full details on the searches carried out during the run. This gives explicit information on the search query, filters, UUID values and sorts that were used, as well as the collection searched on. |
-| `aggregations` | A list of `AggregationResultWithCollectionNormalized`. Each contains full details on the aggregations carried out during the run. This gives explicit information on the group-by property, filters, and aggregation metrics that were used, as well as the collection aggregated on. |
-| `usage` | A `ModelUnitUsage` instance providing detail on the model units that were used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
-| `total_time` | Total time taken (seconds). |
-| `is_partial_answer` | A boolean or null value indicating whether the answer is incomplete or not. Only available if `result_evaluation` is `"llm"`. |
-| `missing_information` | A list of strings detailing what information is missing from the answer that makes it incomplete. Only available if `result_evaluation` is `"llm"`. |
-| `final_answer` | A string comprising the LLM's final answer to the user query. |
-| `sources` | A list of `Source` objects, which have an `object_id` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `result_evaluation` is `"llm"`, these are subset to only those that are relevant to the `final_answer`. |
+| Field | Type | Description |
+| --- | --- | --- |
+| `searches` | `list[QueryResultWithCollectionNormalized]` | A list of `QueryResultWithCollectionNormalized`. Each contains full details on the searches carried out during the run. This gives explicit information on the search query, filters, UUID values and sorts that were used, as well as the collection searched on. |
+| `aggregations` | `list[AggregationResultWithCollectionNormalized]` | A list of `AggregationResultWithCollectionNormalized`. Each contains full details on the aggregations carried out during the run. This gives explicit information on the group-by property, filters, and aggregation metrics that were used, as well as the collection aggregated on. |
+| `usage` | `ModelUnitUsage` | A `ModelUnitUsage` instance providing detail on the model units that were used during the run. The `model_units` are effectively token usage measurements normalized by cost. |
+| `total_time` | `float` | Total time taken (seconds). |
+| `is_partial_answer` | `bool \| None` | A boolean or null value indicating whether the answer is incomplete or not. Only available if `result_evaluation` is `"llm"`. |
+| `missing_information` | `list[str] \| None` | A list of strings detailing what information is missing from the answer that makes it incomplete. Only available if `result_evaluation` is `"llm"`. |
+| `final_answer` | `str` | A string comprising the LLM's final answer to the user query. |
+| `sources` | `list[Source] \| None` | A list of `Source` objects, which have an `object_id` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `result_evaluation` is `"llm"`, these are subset to only those that are relevant to the `final_answer`. |
 
 [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.AskModeResponse)
 </TabItem>
 
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
 
-| Field | Description |
-| --- | --- |
-| `searches` | A list of `Search` objects. Each contains full details on the searches carried out during the run. This gives explicit information on the search query, filters, UUID values and sorts that were used, as well as the collection searched on. |
-| `aggregations` | A list of `Aggregation` objects. Each contains full details on the aggregations carried out during the run. This gives explicit information on the group-by property, filters, and aggregation metrics that were used, as well as the collection aggregated on. |
-| `usage` | A `ModelUnitUsage` object providing detail on the model units that were used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
-| `totalTime` | Total time taken (seconds). |
-| `isPartialAnswer` | A boolean or null value indicating whether the answer is incomplete or not. Only available if `resultEvaluation` is `"llm"`. |
-| `missingInformation` | A list of strings detailing what information is missing from the answer that makes it incomplete. Only available if `resultEvaluation` is `"llm"`. |
-| `finalAnswer` | A string comprising the LLM's final answer to the user query. |
-| `sources` | A list of `Source` objects, which have an `objectId` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `resultEvaluation` is `"llm"`, these are subset to only those that are relevant to the `finalAnswer`. |
+| Field | Type | Description |
+| --- | --- | --- |
+| `searches` | `Search[]` | A list of `Search` objects. Each contains full details on the searches carried out during the run. This gives explicit information on the search query, filters, UUID values and sorts that were used, as well as the collection searched on. |
+| `aggregations` | `Aggregation[]` | A list of `Aggregation` objects. Each contains full details on the aggregations carried out during the run. This gives explicit information on the group-by property, filters, and aggregation metrics that were used, as well as the collection aggregated on. |
+| `usage` | `ModelUnitUsage` | A `ModelUnitUsage` object providing detail on the model units that were used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
+| `totalTime` | `number` | Total time taken (seconds). |
+| `isPartialAnswer` | `boolean` | A boolean or null value indicating whether the answer is incomplete or not. Only available if `resultEvaluation` is `"llm"`. |
+| `missingInformation` | `string[]` | A list of strings detailing what information is missing from the answer that makes it incomplete. Only available if `resultEvaluation` is `"llm"`. |
+| `finalAnswer` | `string` | A string comprising the LLM's final answer to the user query. |
+| `sources` | `Source[]` | A list of `Source` objects, which have an `objectId` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `resultEvaluation` is `"llm"`, these are subset to only those that are relevant to the `finalAnswer`. |
 
 [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/AskModeResponse.html)
 </TabItem>
@@ -148,7 +148,7 @@ Since the Query Agent is a multi-layered agentic system, there are different typ
 
 ### Request
 
-In addition to the standard Ask Mode arguments ([above](#arguments)), the streaming method accepts two extra flags that control which payload types are emitted:
+In addition to the standard Ask Mode arguments ([above](#parameters)), the streaming method accepts two extra flags that control which payload types are emitted:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -179,12 +179,12 @@ If both `includeProgress` and `includeFinalState` are set to `false`, the stream
 
 **`ProgressMessage`** — an update on what part of the system has most recently been completed. A class with four fields:
 
-| Field | Description |
-| --- | --- |
-| `output_type` | Always `progress_message`. |
-| `stage` | One of `query_analysis`, `search`, `aggregation`, or `final_answer`. Identifies the stage at which the agentic service is running. |
-| `message` | A human-readable message describing what the agent is doing. For example, during `query_analysis` this is `"Analyzing query..."`. |
-| `details` | A dictionary providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of dictionaries, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. | 
+| Field | Type | Description |
+| --- | --- | --- |
+| `output_type` | `Literal["progress_message"]` | Always `progress_message`. |
+| `stage` | `str` | One of `query_analysis`, `search`, `aggregation`, or `final_answer`. Identifies the stage at which the agentic service is running. |
+| `message` | `str` | A human-readable message describing what the agent is doing. For example, during `query_analysis` this is `"Analyzing query..."`. |
+| `details` | `ProgressDetails` | A dictionary providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of dictionaries, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. |
 
 [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.ProgressMessage)
 
@@ -197,12 +197,12 @@ If both `includeProgress` and `includeFinalState` are set to `false`, the stream
 
 **`ProgressMessage`** — an update on what part of the system has most recently been completed. A class with four fields:
 
-| Field | Description |
-| --- | --- |
-| `outputType` | Always `progressMessage`. |
-| `stage` | One of `query_analysis`, `search`, `aggregation`, or `final_answer`. Identifies the stage at which the agentic service is running. |
-| `message` | A human-readable message describing what the agent is doing. For example, during `query_analysis` this is `"Analyzing query..."`. |
-| `details` | An object providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of objects, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. |
+| Field | Type | Description |
+| --- | --- | --- |
+| `outputType` | `"progressMessage"` | Always `progressMessage`. |
+| `stage` | `string` | One of `query_analysis`, `search`, `aggregation`, or `final_answer`. Identifies the stage at which the agentic service is running. |
+| `message` | `string` | A human-readable message describing what the agent is doing. For example, during `query_analysis` this is `"Analyzing query..."`. |
+| `details` | `ProgressDetails` | An object providing additional context about each stage.<br/><br/>During the `search` and `aggregation` stages, this typically includes a `"queries"` key — a list of objects, each with:<br/>• `query` — the specific search term used.<br/>• `collection` — the collection the search was run against.<br/><br/>This lets you see exactly which queries were issued, and against which collections, at each stage. |
 
 [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/ProgressMessage.html)
 

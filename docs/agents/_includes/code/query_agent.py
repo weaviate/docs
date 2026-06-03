@@ -190,15 +190,13 @@ print("🔍 Final Answer Found:")
 print(f"{response.final_answer}\n")
 
 print("🔍 Searches Executed:")
-for collection_searches in response.searches:
-    for result in collection_searches:
-        print(f"- {result}\n")
+for search in response.searches:
+    print(f"- {search}\n")
 
 if len(response.aggregations) > 0:
     print("📊 Aggregation Results:")
-    for collection_aggs in response.aggregations:
-        for agg in collection_aggs:
-            print(f"- {agg}\n")
+    for agg in response.aggregations:
+        print(f"- {agg}\n")
 
 if response.missing_information:
     if response.is_partial_answer:
@@ -364,8 +362,6 @@ for output in qa.ask_stream(
         output.display()
 # END StreamResponse
 
-client.close()
-
 # START UsageAsyncQueryAgent
 import asyncio
 import os
@@ -512,3 +508,5 @@ response = qa.suggest_queries(
 for suggested_query in response.queries:
     print(suggested_query.query)
 # END SuggestQueries
+
+client.close()

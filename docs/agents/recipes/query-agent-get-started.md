@@ -13,6 +13,11 @@ sidebar_position: 10
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/docs/agents/_includes/code/query_agent_get_started.py';
+
 In this recipe, we will get started with the [Weaviate Query Agent](https://docs.weaviate.io/agents). We'll set up Weaviate Cloud, import a handful of open datasets, and run a few queries across them using **Ask Mode**, **Search Mode**, and the **Suggest Queries** feature.
 
 > 📚 You can read and learn more about this service in our ["Introducing the Weaviate Query Agent"](https://weaviate.io/blog/query-agent) blog.
@@ -47,15 +52,18 @@ if "WEAVIATE_URL" not in os.environ:
   os.environ["WEAVIATE_URL"] = getpass("Weaviate URL")
 ```
 
-```python
-import weaviate
-from weaviate.auth import Auth
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
-)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Connect"
+  endMarker="# END Connect"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ### Prepare the collections
 
@@ -63,91 +71,31 @@ In the following code blocks, we are pulling our demo datasets from Hugging Face
 
 > ❗️ The `QueryAgent` uses the descriptions of collections and properties to decide which ones to use when solving queries, and to access more information about properties. You can experiment with changing these descriptions, providing more detail, and more. It's good practice to provide property descriptions too. For example, below we make sure that the `QueryAgent` knows that prices are all in USD, which is information that would otherwise be unavailable.
 
-```python
-from weaviate.classes.config import Configure, Property, DataType
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-# To re-run cell you may have to delete collections
-# client.collections.delete("Brands")
-client.collections.create(
-    "Brands",
-    description="A dataset that lists information about clothing brands, their parent companies, average rating and more.",
-    vector_config=Configure.Vectors.text2vec_weaviate()
-)
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CreateCollections"
+  endMarker="# END CreateCollections"
+  language="py"
+/>
 
-# client.collections.delete("ECommerce")
-client.collections.create(
-    "ECommerce",
-    description="A dataset that lists clothing items, their brands, prices, and more.",
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-    properties=[
-        Property(name="collection", data_type=DataType.TEXT),
-        Property(name="category", data_type=DataType.TEXT),
-        Property(name="tags", data_type=DataType.TEXT_ARRAY),
-        Property(name="subcategory", data_type=DataType.TEXT),
-        Property(name="name", data_type=DataType.TEXT),
-        Property(name="description", data_type=DataType.TEXT),
-        Property(name="brand", data_type=DataType.TEXT),
-        Property(name="product_id", data_type=DataType.UUID),
-        Property(name="colors", data_type=DataType.TEXT_ARRAY),
-        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
-        Property(name="image_url", data_type=DataType.TEXT),
-        Property(name="price", data_type=DataType.NUMBER, description="price of item in USD"),
-    ]
-)
+</TabItem>
+</Tabs>
 
-# client.collections.delete("Weather")
-client.collections.create(
-    "Weather",
-    description="Daily weather information including temperature, wind speed, percipitation, pressure etc.",
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-    properties=[
-        Property(name="date", data_type=DataType.DATE),
-        Property(name="humidity", data_type=DataType.NUMBER),
-        Property(name="precipitation", data_type=DataType.NUMBER),
-        Property(name="wind_speed", data_type=DataType.NUMBER),
-        Property(name="visibility", data_type=DataType.NUMBER),
-        Property(name="pressure", data_type=DataType.NUMBER),
-        Property(name="temperature", data_type=DataType.NUMBER, description="temperature value in Celsius")
-    ]
-)
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-# client.collections.delete("Financial_contracts")
-client.collections.create(
-    "Financial_contracts",
-    description="A dataset of financial contracts between indivicuals and/or companies, as well as information on the type of contract and who has authored them.",
-    vector_config=Configure.Vectors.text2vec_weaviate(),
-)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ImportData"
+  endMarker="# END ImportData"
+  language="py"
+/>
 
-```python
-from datasets import load_dataset
-
-brands_dataset = load_dataset("weaviate/agents", "query-agent-brands", split="train", streaming=True)
-ecommerce_dataset = load_dataset("weaviate/agents", "query-agent-ecommerce", split="train", streaming=True)
-weather_dataset = load_dataset("weaviate/agents", "query-agent-weather", split="train", streaming=True)
-financial_dataset = load_dataset("weaviate/agents", "query-agent-financial-contracts", split="train", streaming=True)
-
-brands_collection = client.collections.use("Brands")
-ecommerce_collection = client.collections.use("ECommerce")
-weather_collection = client.collections.use("Weather")
-financial_collection = client.collections.use("Financial_contracts")
-
-with brands_collection.batch.dynamic() as batch:
-    for item in brands_dataset:
-        batch.add_object(properties=item["properties"])
-
-with ecommerce_collection.batch.dynamic() as batch:
-    for item in ecommerce_dataset:
-        batch.add_object(properties=item["properties"])
-
-with weather_collection.batch.dynamic() as batch:
-    for item in weather_dataset:
-        batch.add_object(properties=item["properties"])
-
-with financial_collection.batch.dynamic() as batch:
-    for item in financial_dataset:
-        batch.add_object(properties=item["properties"])
-```
+</TabItem>
+</Tabs>
 
 ## 2. Set up the Query Agent
 
@@ -159,51 +107,82 @@ When setting up the Query Agent, we have to provide it a few things:
 
 Here we'll give it access to all four collections so it can route any question to the right place.
 
-```python
-from weaviate.agents.query import QueryAgent
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-agent = QueryAgent(
-    client=client,
-    collections=["ECommerce", "Brands", "Weather", "Financial_contracts"],
-)
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START InstantiateAgent"
+  endMarker="# END InstantiateAgent"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ## 3. Ask Mode
 
 Ask Mode returns a natural-language answer composed from the underlying data. The agent decides which collection(s) to search, which filters to apply, and how to phrase the response.
 
-```python
-response = agent.ask("What was the average temperature in the first week of May 2025?")
-response.display()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskWeather"
+  endMarker="# END AskWeather"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 The `display()` method prints a rich view of the original query, the searches and aggregations that were executed, the sources used, and the final answer. You can also access individual pieces of the response directly:
 
-```python
-print(response.final_answer)
-print(response.sources)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskAccessResponse"
+  endMarker="# END AskAccessResponse"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 Because our agent has access to all four collections, it can route the query to the right one without us specifying. The same agent can also answer questions about clothing:
 
-```python
-response = agent.ask("I like vintage clothes and nice shoes. Recommend some of each below $60.")
-print(response.final_answer)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START AskClothing"
+  endMarker="# END AskClothing"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ## 4. Search Mode
 
 Search Mode skips the final answer-generation step and returns the raw matching objects from your collection(s). This is what you want when you need rows, not a written response — for example as the retrieval step in your own pipeline, or to render results in a UI.
 
-```python
-search_response = agent.search(
-    "Find me some vintage shoes under $70",
-    limit=10,
-)
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
 
-for obj in search_response.search_results.objects:
-    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
-```
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SearchMode"
+  endMarker="# END SearchMode"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 You can inspect the agent's chosen filters and target collection through `search_response.searches`, just like in Ask Mode.
 
@@ -211,22 +190,33 @@ You can inspect the agent's chosen filters and target collection through `search
 
 If you're not sure what to ask, the Query Agent can suggest queries based on the data in your collections. This is useful for surfacing what's available in a new dataset, or for populating example prompts in a UI.
 
-```python
-suggestions = agent.suggest_queries(num_queries=3)
-for q in suggestions.queries:
-    print(q.query)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SuggestQueries"
+  endMarker="# END SuggestQueries"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 You can also constrain the style or focus of the suggestions with the `instructions` argument:
 
-```python
-suggestions = agent.suggest_queries(
-    num_queries=3,
-    instructions="Focus on questions a customer would ask about the clothing items.",
-)
-for q in suggestions.queries:
-    print(q.query)
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SuggestQueriesInstructions"
+  endMarker="# END SuggestQueriesInstructions"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
 
 ## Further resources
 
@@ -237,6 +227,15 @@ for q in suggestions.queries:
 
 Finally, free up resources by closing the client:
 
-```python
-client.close()
-```
+<Tabs className="code" groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Close"
+  endMarker="# END Close"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>

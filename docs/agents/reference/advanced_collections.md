@@ -52,13 +52,13 @@ You can provide a more detailed configuration on how you want the agents to inte
         />
 The `QueryAgentCollectionConfig` class accepts the following arguments:
 
-| Field | Description |
-| --- | --- |
-| `name` | The name of the collection to query. Required. |
-| `target_vector` | An optional list of target vector name(s) for collections with named vectors. Required when the collection has more than one named vector. |
-| `view_properties` | An optional list of property names that the agent is allowed to view when reasoning about and querying the collection. If omitted, the agent can view all properties. |
-| `tenant` | An optional tenant name for collections with multi-tenancy enabled. |
-| `additional_filters` | An optional `Filter` object that is always combined with any agent-generated filters when querying this collection. [See the page on additional filters for more detail](./additional_filters.md). |
+| Field | Type | Description |
+| --- | --- | --- |
+| `name` | `str` | The name of the collection to query. Required. |
+| `target_vector` | `str \| list[str] \| None` | An optional list of target vector name(s) for collections with named vectors. Required when the collection has more than one named vector. |
+| `view_properties` | `list[str] \| None` | An optional list of property names that the agent is allowed to view when reasoning about and querying the collection. If omitted, the agent can view all properties. |
+| `tenant` | `str \| None` | An optional tenant name for collections with multi-tenancy enabled. |
+| `additional_filters` | `Filter \| None` | An optional `Filter` object that is always combined with any agent-generated filters when querying this collection. [See the page on additional filters for more detail](./additional_filters.md). |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -71,13 +71,13 @@ The `QueryAgentCollectionConfig` class accepts the following arguments:
 
 A collection configuration object accepts the following fields:
 
-| Field | Description |
-| --- | --- |
-| `name` | The name of the collection to query. Required. |
-| `targetVector` | An optional list of target vector name(s) for collections with named vectors. Required when the collection has more than one named vector. |
-| `viewProperties` | An optional list of property names that the agent is allowed to view when reasoning about and querying the collection. If omitted, the agent can view all properties. |
-| `tenant` | An optional tenant name for collections with multi-tenancy enabled. |
-| `additionalFilters` | An optional `Filter` object that is always combined with any agent-generated filters when querying this collection. [See the page on additional filters for more detail](./additional_filters.md). |
+| Field | Type | Description |
+| --- | --- | --- |
+| `name` | `string` | The name of the collection to query. Required. |
+| `targetVector` | `string \| string[]` | An optional list of target vector name(s) for collections with named vectors. Required when the collection has more than one named vector. |
+| `viewProperties` | `string[]` | An optional list of property names that the agent is allowed to view when reasoning about and querying the collection. If omitted, the agent can view all properties. |
+| `tenant` | `string` | An optional tenant name for collections with multi-tenancy enabled. |
+| `additionalFilters` | `FilterValue` | An optional `Filter` object that is always combined with any agent-generated filters when querying this collection. [See the page on additional filters for more detail](./additional_filters.md). |
 
 </TabItem>
 </Tabs>
