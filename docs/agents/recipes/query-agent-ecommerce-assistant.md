@@ -23,8 +23,8 @@ In this recipe, we will be building a simple e-commerce assistant agent with the
 
 To get started, we've prepared two open datasets, available on Hugging Face. The first step will be walking through how to populate your Weaviate Cloud collections.
 
-- [**E-commerce:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) A dataset that lists clothing items, prices, brands, reviews etc.
-- [**Brands:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) A dataset that lists clothing brands and information about them such as their parent brand, child brands, average customer rating etc.
+- [**E-commerce:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) A dataset that lists clothing items, prices, brands, reviews, etc.
+- [**Brands:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) A dataset that lists clothing brands and information about them such as their parent brand, child brands, average customer rating, etc.
 
 > 💡 New to the Query Agent? Start with the [**Get Started**](./query-agent-get-started.md) recipe — it walks through Ask Mode, Search Mode and Suggest Queries at a higher level before diving into this use-case-focused tutorial.
 

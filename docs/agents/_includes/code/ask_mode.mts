@@ -3,7 +3,7 @@ const { populateWeaviate } = await import('./util.mjs').catch(() => import('../d
 
 
 // START BasicAskMode
-import weaviate, { WeaviateClient, vectors, dataType, configure } from 'weaviate-client';
+import weaviate from 'weaviate-client';
 import { QueryAgent } from 'weaviate-agents';
 
 // END BasicAskMode

@@ -76,7 +76,7 @@ The `QueryAgent` constructor accepts the following arguments:
 | `client` | `WeaviateClient` | Required. The Weaviate client connected to a Weaviate Cloud cluster. |
 | `collections` | `list[str \| QueryAgentCollectionConfig]` | Optional. The collections to query. Can be overridden per call to `ask()` or `search()`. |
 | `system_prompt` | `str` | Optional. Prompt to provide extra instructions to the agents, as well as define the tone, format, and style of the agent's final response. [See the page on the system prompt for more detail](./system_prompt.md). |
-| `timeout` | `int` | Optional. The maximum time to wait for a response, in seconds. |
+| `timeout` | `int \| None` | Optional. The maximum time to wait for a response, in seconds. Defaults to 60 seconds. |
 
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">

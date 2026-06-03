@@ -41,7 +41,7 @@ def populate_weaviate(client, overwrite_existing=False, include_ecommerce=True):
                 Property(
                     name="tags",
                     data_type=DataType.TEXT_ARRAY,
-                    description="The tags that are assocciated with the clothing item",
+                    description="The tags that are associated with the clothing item",
                 ),
                 Property(name="subcategory", data_type=DataType.TEXT),
                 Property(name="name", data_type=DataType.TEXT),

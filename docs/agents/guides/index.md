@@ -5,7 +5,7 @@ image: og/docs/agents.jpg
 # tags: ['agents', 'query-agent', 'modes']
 ---
 
-The Query Agent is capable of various different tasks:
+The Query Agent is capable of various tasks:
 
 * **[Ask Mode](./ask_mode.md)**: Search using natural language, and retrieve a natural language answer back. The user query is transformed into one or many different searches or aggregations, whose results are used by an LLM to answer the original question.
 * **[Search Mode](./search_mode.md)**: Search using natural language, and return a list of raw Weaviate objects, no final answer generation.

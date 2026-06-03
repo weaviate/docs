@@ -19,7 +19,7 @@ For example, you could ask:
 
 > "How many orders related to books were placed last week?"
 
-And the agents will filter for `orders`, perform semantic search for `books` and sort or filter for timestamps from the last week. Then, the agent will provide a response, answering this question exactly based on the data retrieved.
+And the agent will filter for `orders`, perform semantic search for `books` and sort or filter for timestamps from the last week. Then, the agent will provide a response, answering this question exactly based on the data retrieved.
 
 For more details, see the page for [the Python client](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/weaviate_agents.query.html#weaviate_agents.query.QueryAgent.ask) or [the Typescript Client](https://weaviate.github.io/agents-typescript-client/classes/QueryAgent.html#ask).
 
@@ -110,7 +110,7 @@ The `AskModeResponse` class has the following properties:
 | `aggregations` | `Aggregation[]` | A list of `Aggregation` objects. Each contains full details on the aggregations carried out during the run. This gives explicit information on the group-by property, filters, and aggregation metrics that were used, as well as the collection aggregated on. |
 | `usage` | `ModelUnitUsage` | A `ModelUnitUsage` object providing detail on the model units that were used during the run. The `modelUnits` are effectively token usage measurements normalized by cost. |
 | `totalTime` | `number` | Total time taken (seconds). |
-| `isPartialAnswer` | `boolean` | A boolean or null value indicating whether the answer is incomplete or not. Only available if `resultEvaluation` is `"llm"`. |
+| `isPartialAnswer` | `boolean` | A boolean indicating whether the answer is incomplete. Only available if `resultEvaluation` is `"llm"`. |
 | `missingInformation` | `string[]` | A list of strings detailing what information is missing from the answer that makes it incomplete. Only available if `resultEvaluation` is `"llm"`. |
 | `finalAnswer` | `string` | A string comprising the LLM's final answer to the user query. |
 | `sources` | `Source[]` | A list of `Source` objects, which have an `objectId` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `resultEvaluation` is `"llm"`, these are subset to only those that are relevant to the `finalAnswer`. |
