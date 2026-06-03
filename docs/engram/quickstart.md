@@ -1,6 +1,7 @@
 ---
 title: Quickstart
 description: "Get started with Engram by creating a project, generating an API key, storing a memory, and searching it."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

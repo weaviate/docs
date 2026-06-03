@@ -1,6 +1,7 @@
 ---
 title: Scopes
 description: "Engram's multi-level scoping system: project, user, and custom property isolation for memories."
+image: og/docs/engram.png
 ---
 
 Engram uses a multi-level scoping system to isolate memories:

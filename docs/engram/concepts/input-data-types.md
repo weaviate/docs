@@ -1,6 +1,7 @@
 ---
 title: Input data types
 description: "The three content types Engram accepts: string, pre-extracted, and conversation."
+image: og/docs/engram.png
 ---
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';

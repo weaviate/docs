@@ -1,6 +1,7 @@
 ---
 title: Engram Web Console
 description: "Browse and manage Engram projects, memories, users, runs, and API keys from the Weaviate Cloud console."
+image: og/docs/engram.png
 ---
 
 The Engram console is a graphical interface for inspecting and managing your Engram projects in [Weaviate Cloud](https://console.weaviate.cloud). Browse memories, users, and runs, manage API keys, and review your project's groups and topics, all without writing code.

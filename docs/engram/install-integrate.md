@@ -1,6 +1,7 @@
 ---
 title: Install & integrate
 description: "Ways to use Engram: the Python SDK, the REST API, and agent integrations such as the Hermes memory plugin."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';

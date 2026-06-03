@@ -1,7 +1,7 @@
 ---
 title: JavaScript/TypeScript client
 description: "Use the TypeScript client to interact with the Query Agent."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'clients']
 ---
 

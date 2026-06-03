@@ -1,7 +1,7 @@
 ---
 title: Quickstart
 description: "Get started with the Weaviate Query Agent through a runnable example."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'getting-started']
 ---
 

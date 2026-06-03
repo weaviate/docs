@@ -1,6 +1,7 @@
 ---
 title: Tutorials
 description: "End-to-end tutorials for building AI applications with Engram memory."
+image: og/docs/engram.png
 ---
 
 These tutorials walk you through building real AI applications with Engram, from a simple memory-enabled chatbot to a production-ready personalized RAG system.

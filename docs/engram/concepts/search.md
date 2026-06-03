@@ -1,6 +1,7 @@
 ---
 title: Search
 description: "Engram search retrieval types: vector, BM25, and hybrid search strategies."
+image: og/docs/engram.png
 ---
 
 Engram supports three search strategies for finding relevant memories:

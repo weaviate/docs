@@ -33,10 +33,16 @@ const runPRValidationFromBuildDev = async () => {
         ]
     }, Verbosity.ERROR);
     
+    // One seed per top-level docs section. linkinator's recurse only follows
+    // links *under* each seed's path, so every section must be listed here or
+    // it never gets crawled. Keep in sync with the route roots under /docs.
     const paths = [
+        `/weaviate`,
+        `/deploy`,
         `/query-agent`,
         `/cloud`,
-        `/weaviate`,
+        `/engram`,
+        `/contributor-guide`,
     ]
     
     const success = await validator.validateLinks(paths);

@@ -1,6 +1,7 @@
 ---
 title: Guides
 description: "Step-by-step guides for storing, searching, and managing memories in Engram."
+image: og/docs/engram.png
 ---
 
 These guides cover common Engram operations with detailed examples.

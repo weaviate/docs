@@ -1,7 +1,7 @@
 ---
 title: Ask Mode
 description: "Use Ask Mode to retrieve data from Weaviate and get a generated answer."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'modes']
 ---
 

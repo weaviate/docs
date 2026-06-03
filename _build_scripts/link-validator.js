@@ -37,7 +37,7 @@ const domainsToIgnore = [
     'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
     'https://instagram.com/',
     'https://www.iso.org',
-    'https://medium.com/', // TODO[g-despot]: started throwing Forbidden 403
+    'medium.com', // TODO[g-despot]: started throwing Forbidden 403 (incl. subdomains, e.g. *.medium.com)
     'https://www.npmjs.com',
     'https://openai.com',
     'https://platform.openai.com',

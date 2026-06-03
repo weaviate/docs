@@ -1,7 +1,7 @@
 ---
 title: Multi-turn conversations
 description: "Pass conversation history to the Query Agent for context-aware follow-up questions."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'configuration']
 ---
 

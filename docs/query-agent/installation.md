@@ -1,7 +1,7 @@
 ---
 title: Installation
 description: "Install the Weaviate client with the agents extra to use the Query Agent."
-image: og/query-agent.jpg
+image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'getting-started']
 ---
 

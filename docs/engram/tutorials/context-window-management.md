@@ -1,6 +1,7 @@
 ---
 title: "Context Window Management"
 description: "Reduce LLM token usage and cost by replacing full conversation history with Engram memory search."
+image: og/docs/engram.png
 ---
 
 import Tabs from '@theme/Tabs';
