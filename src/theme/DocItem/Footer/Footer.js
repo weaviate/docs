@@ -126,16 +126,10 @@ function Footer() {
               </ul>
             </div>
             <div className={styles.footerSection}>
-              <h5>Support</h5>
+              <h5>Get help</h5>
               <ul>
                 <li>
-                  <Link
-                    to="https://forum.weaviate.io/c/support/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Forum
-                  </Link>
+                  <Link to="/support">Support</Link>
                 </li>
               </ul>
             </div>

@@ -133,6 +133,20 @@ const secondaryNavbarItems = {
       },
     ],
   },
+  support: {
+    title: "Support",
+    icon: "fa fa-life-ring",
+    isSmall: true,
+    description: "Get help with Weaviate — community, Cloud support, and plans",
+    link: "/support",
+    links: [
+      {
+        label: "Overview",
+        link: "/support",
+        sidebar: "supportSidebar",
+      },
+    ],
+  },
   events: {
     title: "Events & Workshops",
     icon: "fa fa-calendar-days",

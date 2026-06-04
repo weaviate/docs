@@ -1718,6 +1718,13 @@ const sidebars = {
     },
     "engram/console",
   ],
+  supportSidebar: [
+    {
+      type: "doc",
+      id: "support/index",
+      label: "Overview",
+    },
+  ],
 };
 
 module.exports = sidebars;

@@ -912,6 +912,30 @@ button.close {
   fill: white;
 }
 
+.supportNavIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  font-size: 20px;
+  line-height: 1;
+  color: #2c3854;
+
+  @media screen and (max-width: 768px) {
+    width: 18px;
+    font-size: 16px;
+  }
+}
+
+[data-theme="dark"] .supportNavIcon {
+  color: white;
+}
+
+.navbarIconLink.navbar__link {
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
 .navbar__link--active,
 .navbar__link:hover {
   color: var(--ifm-link-color);

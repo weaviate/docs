@@ -1,0 +1,114 @@
+---
+title: Weaviate Support
+sidebar_label: Overview
+description: "Where to get help with Weaviate — community channels, Weaviate Cloud support tickets, support plans, and how to reach the team."
+sidebar_position: 0
+image: og/default.jpg
+---
+
+Weaviate offers several ways to get help, depending on what you're using and the kind of answer you need. This page explains the available channels, who they're for, and how to reach the right place quickly.
+
+## Find the right channel
+
+import CardsSection from "/src/components/CardsSection";
+
+export const supportChannelsData = [
+  {
+    title: "Community Forum",
+    description:
+      "For open-source and community users. Get help with technical questions, report issues or bugs with your self-hosted cluster, share ideas, and connect with the Weaviate team and other users.",
+    link: "https://forum.weaviate.io/",
+    icon: "fa fa-comments",
+  },
+  {
+    title: "Weaviate Cloud & Customer Support",
+    description:
+      "For Weaviate Cloud users, self-hosted customers, and enterprise support plans. Open a ticket from the console or email support@weaviate.io to reach the Weaviate team directly. Requests are prioritized by severity and answered in line with your support plan's SLA.",
+    link: "https://console.weaviate.cloud/support",
+    icon: "fa fa-headset",
+  },
+  {
+    title: "Support plans",
+    description:
+      "Need guaranteed response times and dedicated assistance? Explore the available support plans and tiers.",
+    link: "https://weaviate.io/support-plans",
+    icon: "fa fa-life-ring",
+  },
+  {
+    title: "Documentation feedback",
+    description:
+      "Found something missing, unclear, or incorrect in these docs? Open a GitHub issue so we can fix it.",
+    link: "https://github.com/weaviate/docs/issues",
+    icon: "fa-brands fa-github",
+  },
+];
+
+<CardsSection items={supportChannelsData} />
+
+<br />
+
+Not sure where to go? Use this quick guide:
+
+| If you... | Go to |
+| --- | --- |
+| Run a **Shared Cloud** or **Dedicated Cloud** cluster, are a **self-hosted customer**, or have an **enterprise support package** | [Weaviate Cloud & Customer Support](#weaviate-cloud--customer-support) |
+| Are an **open-source / community user** with a technical question, or want to report an issue or bug with your self-hosted cluster | [Community Forum](https://forum.weaviate.io/) |
+| Want guaranteed response times and a dedicated contact | [Support plans](https://weaviate.io/support-plans) |
+| Found a bug in Weaviate itself | [GitHub issues](https://github.com/weaviate/weaviate/issues) |
+| Found a problem in the documentation | [Docs GitHub issues](https://github.com/weaviate/docs/issues) |
+| Want to report a security vulnerability | [Report a vulnerability](https://weaviate.io/security) |
+
+## Weaviate Cloud & Customer Support
+
+Support tickets are the right channel if you are a **paying or managed customer** — this includes:
+
+- **Weaviate Cloud** users (Shared Cloud and Dedicated Cloud).
+- **Self-hosted customers** that Weaviate serves directly.
+- Anyone on an **enterprise support package** or paid [support plan](https://weaviate.io/support-plans).
+
+To open a support ticket with the Weaviate team:
+
+- **Email:** Contact [support@weaviate.io](mailto:support@weaviate.io) to open a ticket. Each request is automatically logged in our support system, prioritized by severity, and routed to the support team, who respond in line with your support plan's SLA. Include your organization name, cluster details, and a clear description of the issue so we can prioritize and resolve it faster.
+- **In-console:** From the Weaviate Cloud console, use the [support option](https://console.weaviate.cloud/support) to reach the team directly.
+
+Common support requests include:
+
+- Reporting a bug, outage, or unexpected behavior with your cluster — including production-impacting or high-severity issues that need urgent attention.
+- Something not working as expected (errors, performance problems, failed operations, connectivity issues).
+- Restoring a backup.
+- Increasing cluster limits — by default an organization can have up to six (6) Shared Cloud clusters and two (2) sandbox clusters.
+- Custom provisioning or increased resources for a cluster.
+- Billing and account questions (see also the [billing guide](/cloud/platform/billing)).
+
+:::info Sandbox clusters
+Free sandbox clusters are intended for evaluation and learning. For production workloads, use a Shared Cloud or Dedicated Cloud cluster so that support and SLAs apply.
+:::
+
+## Community support
+
+The [Weaviate community forum](https://forum.weaviate.io/) is the home for **open-source and community users**. It's the best place for technical questions, reporting issues or bugs with your self-hosted cluster, and discussion. The forum is monitored by the Weaviate team and community members, and answers there help other users too.
+
+You can:
+
+- Browse and search [existing forum topics](https://forum.weaviate.io/) before posting — your question may already be answered.
+- Start a [new technical question](https://forum.weaviate.io/new-topic?title=%5BQuestion%5D%20YOUR%20TOPIC&body=Details%20here&category=support&tags=technical) directly.
+- Report technical issues or bugs with your self-hosted cluster, or open an issue in the [Weaviate GitHub repository](https://github.com/weaviate/weaviate/issues).
+
+Community support is free and available to everyone. If you're a Cloud or enterprise customer, use [customer support](#weaviate-cloud--customer-support) instead for account-specific or time-sensitive issues.
+
+## Support plans
+
+For teams that need guaranteed response times, dedicated assistance, and higher support tiers, Weaviate offers [several support plans](https://weaviate.io/support-plans). Support plans determine your response-time SLAs and the level of assistance available.
+
+To add or upgrade a support plan, contact [Weaviate sales](https://weaviate.io/pricing#contact-sales). For more on how plans affect billing, see the [billing documentation](/cloud/platform/billing).
+
+## Documentation feedback
+
+These docs are open source. If something is missing, unclear, or incorrect:
+
+- [Open an issue](https://github.com/weaviate/docs/issues) in the documentation repository.
+- Use the feedback widget on any docs page to let us know what worked and what didn't.
+
+## Report a security issue
+
+To responsibly disclose a security vulnerability, follow the process on the [Weaviate security page](https://weaviate.io/security). Please do not report security issues through the public forum or GitHub issues.
