@@ -69,7 +69,7 @@ import WeaviateEmbeddingsVectorizerParameters from '/_includes/weaviate-embeddin
 - [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 - [Model provider integrations: Multimodal Embeddings](/weaviate/model-providers/weaviate/embeddings-multimodal.md)
 
-## Support & feedback
+## Support
 
 import SupportAndTrouble from '/\_includes/wcs/support-and-troubleshoot.mdx';
 

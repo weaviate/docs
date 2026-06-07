@@ -136,6 +136,20 @@ export default function NavigationModal({
                 </span>
               </div>
 
+              {/* Support Portal Card - styled like the resource cards */}
+              <div
+                className={styles.resourceCard}
+                onClick={() =>
+                  window.open("https://support.weaviate.io", "_blank")
+                }
+              >
+                <i
+                  className={`fa fa-headset ${styles.resourceIcon}`}
+                  aria-hidden="true"
+                />
+                <span className={styles.resourceTitle}>Support Portal</span>
+              </div>
+
               {/* New Forum Card - styled like the resource cards */}
               <div
                 className={styles.resourceCard}
@@ -144,7 +158,7 @@ export default function NavigationModal({
                 }
               >
                 <i
-                  className="fa fa-comments styles.resourceIcon"
+                  className={`fa fa-comments ${styles.resourceIcon}`}
                   aria-hidden="true"
                 />
                 <span className={styles.resourceTitle}>Community Forum</span>
