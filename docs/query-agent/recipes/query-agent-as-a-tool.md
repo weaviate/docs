@@ -32,7 +32,7 @@ Because the Query Agent is just a Python call (`agent.ask(query).final_answer`),
 
 This recipe assumes:
 
-- A **Weaviate Cloud** cluster — [create a free sandbox here](https://console.weaviate.cloud/).
+- A **Weaviate Cloud** cluster — [create a free cluster here](https://console.weaviate.cloud/).
 - A populated collection. The examples below use `WeaviateBlogChunks` (the Weaviate blog content), but you can substitute your own collection name throughout.
 - The Weaviate client with the `agents` extras:
 

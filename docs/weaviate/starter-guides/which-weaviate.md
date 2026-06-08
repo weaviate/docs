@@ -43,12 +43,12 @@ Here are some recommendations for different use cases.
 
 If you are evaluating Weaviate, we recommend using one of these instance types to get started quickly:
 
-- [Weaviate Cloud (WCD)](/cloud) sandbox
+- [Weaviate Cloud (WCD)](/cloud) free cluster
 - [Embedded Weaviate](/deploy/installation-guides/embedded)
 
 Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or `text2vec-google`.
 
-The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
+The [Quickstart guide](/weaviate/quickstart) uses a WCD free cluster and an API based vectorizer to run the examples.
 
 ### Development
 

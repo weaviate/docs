@@ -1,18 +1,22 @@
 ---
 title: Create a cluster
 sidebar_position: 2
-description: "Step-by-step guide to create and configure new Sandbox or Shared Cloud clusters."
+description: "Step-by-step guide to create and configure new free or Shared Cloud clusters."
 image: og/wcd/user_guides.jpg
 ---
 
-[Weaviate Cloud (WCD)](/go/console?utm_content=cloud) provides two instance types.
+[Weaviate Cloud (WCD)](/go/console?utm_content=cloud) provides two cluster types.
 
-- **[Sandbox clusters](#sandbox-clusters)**: Sandbox clusters are small, free clusters designed for learning and experimentation. Sandbox clusters are not scalable and expire after 14 days. You will also have an option to extend their lifetime and convert them into a production ready Shared Cloud cluster.
+- **[Free clusters](#free-clusters)**: Free clusters are free forever and need no credit card, which makes them the easiest way to get started. They are perfect for learning, hobby projects, and small workloads, and you can upgrade to a paid plan at any time without losing your data. For the current free tier limits, see the [pricing page](https://weaviate.io/pricing).
 - **[Shared Cloud clusters](#shared-cloud-clusters)**: Shared Cloud clusters are robust, paid clusters designed for production use.
 
 When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters. There are no clusters when you log in to a new account.
 
-## Sandbox clusters
+## Free clusters
+
+Free clusters are the easiest way to start building with Weaviate. They are free forever, need no credit card, and are ideal for learning, hobby projects, and small workloads. Each user can create one free cluster, and you can upgrade to a paid plan at any time without losing your data.
+
+The free tier includes a monthly allowance for the database, [Weaviate Embeddings](/cloud/embeddings/index.md), and the [Query Agent](/query-agent/index.md). For the current limits, see the [pricing page](https://weaviate.io/pricing).
 
 <div
   style={{
@@ -43,18 +47,19 @@ When you log into the Weaviate Cloud web console, the `Clusters` panel lists you
 <br />
 
 <details>
-    <summary>Steps to create a Sandbox cluster</summary>
+    <summary>Steps to create a free cluster</summary>
 
-To create a Sandbox cluster, follow these steps:
+To create a free cluster, follow these steps:
 
 1. In the clusters sidebar, click the plus button.
-2. Select the `Sandbox` option.
+2. Select the `Free` option.
 3. Choose a name for your cluster.
-4. Select a cloud provider (GCP by default).
-5. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
-6. Click the `Create cluster` button.
+4. The [optimization profile](#optimization-profile) is set to `Cost Optimized` for free clusters.
+5. Select a cloud provider (GCP by default).
+6. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
+7. Click the `Create cluster` button.
 
-#### Advanced configuration for Shared Cloud clusters
+#### Advanced cluster configuration
 
 The following advanced configuration settings are available:
 
@@ -62,6 +67,12 @@ The following advanced configuration settings are available:
 - `Allow all CORS origins`
 
 </details>
+
+:::note Free cluster lifecycle
+A free cluster runs for as long as you use it. After **7 days of inactivity**, the cluster is **suspended** and your data is preserved. You can reactivate a suspended cluster from the [Weaviate Cloud console](https://console.weaviate.cloud/).
+
+If a cluster stays inactive, it is permanently deleted after **30 days** of total inactivity (about 23 days after it is suspended). Weaviate sends a warning email **1 day before** the cluster is deleted. To keep a cluster running indefinitely, or to run production workloads, [upgrade to a paid plan](https://weaviate.io/pricing).
+:::
 
 ## Shared Cloud clusters
 
@@ -103,10 +114,11 @@ To create a Shared Cloud cluster, follow these steps:
 1. In the clusters sidebar, click the plus button.
 2. Select the `Shared Cloud` option.
 3. Choose a name for your cluster.
-4. Select a cloud provider (GCP by default).
-5. Select if you need high-availability (enabled by default).
-6. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
-7. Click the `Create cluster` button.
+4. Select an [optimization profile](#optimization-profile) (`Cost Optimized` or `Performance Optimized`).
+5. Select a cloud provider (GCP by default).
+6. Select if you need high-availability (enabled by default).
+7. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
+8. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
 
@@ -116,6 +128,19 @@ The following advanced configuration settings are available:
 - `Allow all CORS origins`
 
 </details>
+
+## Optimization profile
+
+When you create a cluster, the **Optimization profile** sets the default [vector index](/weaviate/concepts/vector-index) and [compression](/weaviate/configuration/compression) for new collections in that cluster. Choose the profile that matches your workload:
+
+- **Cost Optimized**: Uses the **[HFresh](/weaviate/concepts/vector-index#hfresh-index)** vector index for a lower memory footprint and reduced storage costs. Suitable for small or non-latency-sensitive workloads.
+- **Performance Optimized**: Uses the **HNSW** vector index for efficient in-memory retrieval that balances speed and search quality. Suitable for most workloads.
+
+The optimization profile only sets the *default* for new collections. You can still configure the [vector index and compression for each collection](/weaviate/manage-collections/vector-config) when you create it.
+
+:::note Free clusters
+Free clusters support the **Cost Optimized** (HFresh) profile only. To use the **Performance Optimized** (HNSW) profile, [upgrade to a paid plan](https://weaviate.io/pricing).
+:::
 
 ## Authentication
 
@@ -136,7 +161,7 @@ If RBAC is not enabled (before `v1.30`), clusters use the traditional approach w
 - **Admin keys**: Provide read-write access to the database
 - **ReadOnly keys**: Provide read-only access to the database
 
-Shared Cloud clusters can create, delete, edit, and rotate API keys, while Sandbox clusters cannot modify the default keys.
+Shared Cloud clusters can create, delete, edit, and rotate API keys, while free clusters cannot modify the default keys.
 
 ## Weaviate Database version
 
@@ -150,9 +175,7 @@ For more details on Weaviate Cloud versioning, see:
 
 ## Number of clusters
 
-<!-- TODO[g-despot]: Check if this is true.-->
-
-By default, an organization can have up to six (6) shared clusters and two (2) sandbox clusters at the same time. To change these limits, [contact support](mailto:support@weaviate.io).
+Each user can create one (1) free cluster. By default, an organization can have up to six (6) Shared Cloud clusters at the same time. To change these limits, [contact support](mailto:support@weaviate.io).
 
 ## Support & feedback
 

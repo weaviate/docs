@@ -54,12 +54,12 @@ import PromptStarter from "/src/components/PromptStarter";
 
 ## Prerequisites
 
-A **[Weaviate Cloud](https://console.weaviate.cloud/)** Sandbox instance - you will need an admin **API key** and a **REST endpoint URL** to connect to your instance. See the instructions below for more info. If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
+A **[Weaviate Cloud](https://console.weaviate.cloud/)** free cluster - you will need an admin **API key** and a **REST endpoint URL** to connect to your instance. See the instructions below for more info. If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
 
 <details>
-<summary>How to set up a Weaviate Cloud Sandbox instance</summary>
+<summary>How to set up a Weaviate Cloud free cluster</summary>
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance as shown in the interactive example below.
+Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free cluster as shown in the interactive example below.
 
 <div
   style={{
@@ -93,7 +93,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 - Cluster provisioning typically takes 1-3 minutes.
 - When the cluster is ready, Weaviate Cloud displays a checkmark (`✔️`) next to the cluster name.
-- Note that Weaviate Cloud adds a random suffix to sandbox cluster names to ensure uniqueness.
+- Note that Weaviate Cloud may add a random suffix to cluster names to ensure uniqueness.
 
 :::
 
@@ -143,7 +143,7 @@ Weaviate supports both REST and gRPC protocols. For Weaviate Cloud deployments, 
 
 :::
 
-Once you have the **REST Endpoint URL** and the **admin API key**, you can connect to the Sandbox instance, and work with Weaviate.
+Once you have the **REST Endpoint URL** and the **admin API key**, you can connect to your cluster, and work with Weaviate.
 
 </details>
 
