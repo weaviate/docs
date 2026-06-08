@@ -32,7 +32,7 @@ When you run the app, the user types a question like *"recommend me some vintage
 
 ## What you'll need
 
-- A **Weaviate Cloud** cluster — [create a free sandbox here](https://console.weaviate.cloud/). When you create the cluster, enable **Embeddings** so you don't need to provide an external embedding provider's API key.
+- A **Weaviate Cloud** cluster — [create a free cluster here](https://console.weaviate.cloud/). When you create the cluster, enable **Embeddings** so you don't need to provide an external embedding provider's API key.
 - The Weaviate client with the `agents` extras, plus Streamlit and `datasets` (for the one-time data import):
 
 ```bash

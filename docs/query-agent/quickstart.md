@@ -18,7 +18,7 @@ This quickstart walks through connecting to a Weaviate Cloud cluster, pointing t
 ## Prerequisites
 
 Ensure you have access to:
-* A **Weaviate Cloud Instance**, such as a [free sandbox instance](/go/console?utm_content=agents).
+* A **Weaviate Cloud Instance**, such as a [free cluster](/go/console?utm_content=agents).
 * Either the **[Python Client](./installation.md#python-client)** or the **[TypeScript Client](./installation.md#javascripttypescript-client)**.
 
 ## Step 1: Start the Query Agent
