@@ -16,7 +16,7 @@ Weaviate supports these vector index types:
 - [HNSW index](#hierarchical-navigable-small-world-hnsw-index): a more complex index that is slower to build, but it scales well to large datasets as queries have a logarithmic time complexity.
 - [Flat index](#flat-index): a simple, lightweight index that is designed for small datasets.
 - [Dynamic index](#dynamic-index): allows you to automatically switch from a flat index to an HNSW index as object count scales
-- [HFresh index](#hfresh-index): a cluster-based index that uses HNSW for the centroid index, providing memory efficiency for large datasets
+- [HFresh index](#hfresh-index): a cluster-based index that uses HNSW for the centroid index, providing strong memory efficiency by keeping most of the data on disk
 
 This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
@@ -123,7 +123,7 @@ The size of an HNSW index is dominated by the number of vectors; take a look at 
 | Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
 | Edge | 10B x 20 connections | 200B | 200MB | 20GB |
 
-As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps only a compressed centroid index in memory, which can dramatically reduce the memory footprint for very large datasets.
+As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps only a compressed centroid index in memory, which can dramatically reduce the memory footprint.
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
@@ -232,7 +232,7 @@ import DynamicAsyncRequirements from '/\_includes/dynamic-index-async-req.mdx';
 
 <DynamicAsyncRequirements/>
 
-The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale. For very large datasets where memory is the main constraint, the [HFresh index](#hfresh-index) is another option: it scales to large collections without keeping the full index in memory, trading some query speed for much lower memory use.
+The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale. When memory is your main constraint, the [HFresh index](#hfresh-index) is another option: it avoids keeping the full index in memory, trading some query speed for much lower memory use.
 
 By configuring a dynamic index, you can automatically switch from flat to HNSW indexes. This switch occurs when the object count exceeds a specified threshold (by default 10,000). This functionality only works with async indexing enabled. When the threshold is hit while importing, all the data piles up in the async queue, the HNSW index is constructed in the background and when ready the swap from flat to HNSW is completed.
 
@@ -260,7 +260,7 @@ Only the centroid index stays in memory, compressed with 8-bit [rotational quant
 
 HFresh is particularly well-suited for:
 
-- **Large-scale datasets with memory constraints**: Reduces memory usage while maintaining good search performance
+- **Memory-constrained deployments**: Reduces memory usage while maintaining good search performance, from small collections up to very large ones
 - **High-dimensional vectors**: Particularly effective with high-dimensional embedding models
 - **Cost-sensitive deployments**: Lower memory requirements can reduce infrastructure costs
 
@@ -327,7 +327,7 @@ Here's a quick guide to choosing the right index:
 
 - **Dynamic index**: Best for collections that start small but may grow significantly over time. Automatically transitions from flat to HNSW as data scales.
 
-- **HFresh index**: Best for very large collections where memory efficiency is a priority, especially with high-dimensional vectors.
+- **HFresh index**: Best when memory efficiency is the priority, especially with high-dimensional vectors. Suitable from small collections up to very large ones.
 
 #### Comparison between index types
 
@@ -338,7 +338,7 @@ Here's a quick guide to choosing the right index:
 | Search speed (large datasets) | Slow                             | Very fast                   | Fast                                                |
 | Disk usage                    | Low                              | Moderate                    | Moderate to high                                    |
 | Maintenance                   | None                             | Costlier as the graph grows | Self-balancing in the background, no full rebuilds  |
-| Best for                      | Small collections, multi-tenancy | Large collections, high QPS | Large, memory-constrained collections (disk-backed) |
+| Best for                      | Small collections, multi-tenancy | Large collections, high QPS | Memory-constrained deployments, any size (disk-backed) |
 
 Note that the vector index type parameter only specifies how the vectors of data objects are _indexed_. The index is used for data retrieval and similarity search.
 
