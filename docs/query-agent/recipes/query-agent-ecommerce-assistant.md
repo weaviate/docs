@@ -30,8 +30,8 @@ To get started, we've prepared two open datasets, available on Hugging Face. The
 
 ## 1. Setting up Weaviate & importing data
 
-To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
-1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [cluster](https://docs.weaviate.io/cloud/manage-clusters/create#free-clusters)
+To use the Weaviate Query Agent, first, create a [Weaviate Cloud](https://console.weaviate.cloud) account👇
+1. [Create a Weaviate Cloud account](https://console.weaviate.cloud) and set up a free [cluster](https://docs.weaviate.io/cloud/manage-clusters/create#free-clusters)
 2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
 3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
 
@@ -66,7 +66,7 @@ if "WEAVIATE_URL" not in os.environ:
 
 ### Prepare the collections
 
-In the following code blocks, we are pulling our demo datasets from Hugging Face and writing them to new collections in our Weaviate Serverless cluster.
+In the following code blocks, we are pulling our demo datasets from Hugging Face and writing them to new collections in our Weaviate Cloud cluster.
 
 > ❗️ The `QueryAgent` uses the descriptions of collections and properties to decide which ones to use when solving queries, and to access more information about properties. You can experiment with changing these descriptions, providing more detail, and more. It's good practice to provide property descriptions too. For example, below we make sure that the `QueryAgent` knows that prices are all in USD, which is information that would otherwise be unavailable.
 
