@@ -257,7 +257,85 @@ You can drop (delete) an inverted index from a property. This is a destructive o
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
+REST: `DELETE /v1/schema/{className}/properties/{propertyName}/index/{indexName}`. From `v1.38`, the drop is rejected while a [runtime reindex](#runtime-reindex) is in progress on the same property.
+
 See [How-to: Drop an inverted index](../../manage-collections/inverted-index.mdx#drop-an-inverted-index) for code examples.
+
+## Runtime reindex
+
+import RuntimeReindexPreview from "/_includes/feature-notes/runtime-reindex.mdx";
+
+<RuntimeReindexPreview/>
+
+From `v1.38`, three REST endpoints let you alter a property's inverted-index configuration on a collection without restart. For task-oriented walkthroughs with `curl` examples, see [How-to: Reindex a property on a collection](../../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection). This section is the endpoint and behavior reference.
+
+### Endpoints
+
+| Method | Path | Purpose |
+|---|---|---|
+| `PUT` | `/v1/schema/{class}/indexes/{property}` | Add an inverted index, change tokenization, migrate BM25 WAND → BlockMax, rebuild an index, or cancel an in-progress migration. The body shape selects the migration type. |
+| `DELETE` | `/v1/schema/{class}/properties/{property}/index/{indexName}` | Drop a configured index. `indexName` ∈ `{filterable, searchable, rangeFilters}`. |
+| `GET` | `/v1/schema/{class}/indexes` | Read per-property index status. |
+
+For the `PUT` request body shapes and response formats, see the <SkipLink href="/weaviate/api/rest#tag/schema">REST API reference</SkipLink>. For worked examples of each migration type, see the [how-to guide](../../manage-collections/inverted-index.mdx#reindex-a-property-on-a-collection).
+
+### Status values (`GET`)
+
+`GET /v1/schema/{class}/indexes` returns per-property index status. Each index reports one of:
+
+| `status` | Meaning |
+|---|---|
+| `ready` | Index is live and serving. No migration in progress. |
+| `pending` | A migration has been accepted but has not started yet. |
+| `indexing` | Migration is running. `progress` is a 0..1 estimate. |
+| `failed` | The migration did not complete. The property is left in its pre-migration state — submit it again to retry. |
+| `cancelled` | The migration was cancelled. The property is left in its pre-migration state. |
+
+The status stays at `indexing` until the change is fully applied, so it never briefly reports the pre-migration shape after the data is already rebuilt.
+
+### Concurrency
+
+- **One migration per property** — only one migration can be in progress on a given property at a time. A second submit on the same property returns `409`.
+- **Per-collection cap** — up to 32 migrations can run concurrently on a collection. Further submits return `429 Too Many Requests` until in-progress migrations finish.
+- **Different properties on the same collection run in parallel.** Different collections are fully independent.
+
+While a reindex is in progress on a property, Weaviate rejects updates to that property, deletion of the collection, dropping an index on that property, and tenant-status changes that would take the targeted tenants offline (for example moving them to `COLD`, `FROZEN`, or `OFFLOADED`). A reindex on a **different** property of the same collection is not blocked.
+
+### Multi-tenancy
+
+On a multi-tenant collection, use the `?tenants=` query parameter (comma-separated) to scope a migration to specific tenants. Migrations fall into two groups, which behave differently:
+
+- **Format-only migrations** — rebuilding or repairing an index, and enabling a range index — can be scoped to a subset of tenants with `?tenants=`. If you omit the parameter, they apply to all tenants.
+- **Semantic migrations** — enabling a filterable or searchable index, changing tokenization, and migrating BM25 from WAND to BlockMax — always apply to every tenant, because they change the collection definition. Supplying `?tenants=` for a semantic migration returns `400`.
+
+Other rules:
+
+- Supplying `?tenants=` on a single-tenant collection returns `400`.
+- A migration that targets a tenant in the `OFFLOADED` or `FROZEN` state returns `400`, with the offending tenant named in the error.
+
+Each tenant is reindexed independently: a tenant starts serving its new index as soon as its own reindex finishes, even if other tenants are still in progress.
+
+### Errors and recovery
+
+| Code | When | Resolution |
+|---|---|---|
+| `400` | Malformed body, wrong property type, missing prerequisite (e.g. `searchable.tokenization` on a property with no searchable index), `?tenants=` on a single-tenant class, `?tenants=` on a semantic migration, target tenant in `OFFLOADED` / `FROZEN`. | Error responses carry next-step hints — read them. |
+| `404` | Class or property doesn't exist. | Verify the class + property names. |
+| `409` | A migration is already in progress on this property. | Wait, or cancel the existing migration first. |
+| `429` | Per-collection concurrency cap reached (32 migrations). | Retry once in-progress migrations finish. |
+| `503` | Service temporarily unavailable. | Retry. |
+
+If a migration ends in `failed`, the property is left in its pre-migration state — nothing is partially applied. Reindexing is also restart-safe: an interrupted migration resumes automatically after a node restart.
+
+### Required permissions
+
+| Endpoint | Required permission |
+|---|---|
+| `GET /v1/schema/{class}/indexes` | `READ` on `CollectionsMetadata` |
+| `PUT /v1/schema/{class}/indexes/{property}` | `UPDATE` on `Collections` |
+| `DELETE /v1/schema/{class}/properties/{property}/index/{indexName}` | `UPDATE` on `CollectionsMetadata` |
+
+`PUT` is intentionally stricter than the other endpoints: submitting a reindex rebuilds the index and changes the collection definition, so it requires `UPDATE` on `Collections` — the same permission that gates other collection-definition changes. `DELETE` shares the existing schema-metadata permission (`UPDATE` on `CollectionsMetadata`) used by the other property-management endpoints. There is no dedicated `reindex` role today.
 
 ## How Weaviate creates inverted indexes
 
@@ -274,9 +352,8 @@ This is caused by the inverted index being built at import time. If you add a pr
 To avoid this, you can either:
 
 - Add the property before importing objects.
-- Delete the collection, re-create it with the new property and then re-import the data.
-
-We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
+- From `v1.38`, use the [runtime reindex](#runtime-reindex) endpoints to add or change an inverted index on the collection without restart.
+- On versions before `v1.38`, delete the collection, re-create it with the new property, and then re-import the data.
 
 ## How tokenization affects inverted indexing
 

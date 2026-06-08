@@ -597,9 +597,8 @@ Property indexes are built at import time. If you add a new property after impor
 To create an index that includes all of the objects in a collection, do one of the following:
 
 - New collections: Add all of the collection's properties before importing objects.
-- Existing collections: Export the existing data from the collection. Re-create it with the new property. Import the data into the updated collection.
-
-We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
+- Existing collections (v1.38+): Use the runtime [Reindex a property](./inverted-index.mdx#reindex-a-property-on-a-collection) endpoints to add or change inverted indexes on a collection without restart.
+- Existing collections (pre-v1.38): Export the existing data from the collection, recreate it with the new property, and re-import the data into the updated collection.
 
 </details>
 
