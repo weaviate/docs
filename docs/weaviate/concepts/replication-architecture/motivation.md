@@ -84,7 +84,7 @@ When users are located in different regional areas (e.g. Iceland and Australia a
 Multi-DC replication also comes with the additional benefit that data is redundant on more physical locations, which means that in the rare case of an entire datacenter going down, data can still be served from another location.
 
 :::note
-Note, Regional Proximity depends on the Multi-Datacenter feature of replication, which you can [vote for here](https://github.com/weaviate/weaviate/issues/2436).
+Regional Proximity is enabled by [running a Weaviate cluster across data centers](./multi-dc.md).
 :::
 
 ## Questions and feedback

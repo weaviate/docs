@@ -67,8 +67,8 @@ import APITable from '@site/src/components/APITable';
 | `MAXIMUM_CONCURRENT_BUCKET_LOADS` | Maximum number of buckets that can be loaded concurrently during startup. This is a safeguard to prevent overwhelming the operating system when loading large numbers of collections. Default: `100`<br/>Added in `v1.31.22` | `string - number` | `50` |
 | `MAXIMUM_CONCURRENT_SHARD_LOADS` | Maximum number of shards that can be loaded concurrently during startup. This is a safeguard to prevent overwhelming the operating system when loading large numbers of collections. Default: `100` | `string - number` | `50` |
 | `MCP_SERVER_CONFIG_PATH` | Path to a YAML file for customizing MCP tool descriptions. Useful for prompt engineering the LLM's understanding of your specific data. If not provided or file malformed, the default descriptions will be used. Default: `""` (default tool descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used)<br/>Added in `v1.37.1` | `string` | `/etc/weaviate/mcp-config.yaml` |
-| `MCP_SERVER_ENABLED` | Enable the built-in MCP server. When enabled, the MCP endpoint is available at `/v1/mcp` on the REST API port. Default: `false`<br/>Added in `v1.37.1` | `boolean` | `true` |
-| `MCP_SERVER_WRITE_ACCESS_ENABLED` | Enable write tools (`weaviate-objects-upsert`) on the MCP server. When `false`, only read and query tools are available. Default: `false`<br/>Added in `v1.37.1` | `boolean` | `true` |
+| `MCP_SERVER_ENABLED` | Enable the built-in MCP server. When enabled, the MCP endpoint is available at `/v1/mcp` on the REST API port. Default: `false`<br/>Added in `v1.37.1`. [Runtime-configurable](./runtime-config.md#mcp) from `v1.38`. | `boolean` | `true` |
+| `MCP_SERVER_WRITE_ACCESS_ENABLED` | Enable write tools (`weaviate-objects-upsert`) on the MCP server. When `false`, only read and query tools are available. Default: `false`<br/>Added in `v1.37.1`. [Runtime-configurable](./runtime-config.md#mcp) from `v1.38`. | `boolean` | `true` |
 | `MEMORY_READONLY_PERCENTAGE` | If memory usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. (Default: `0` - i.e. no limit) | `string - number` | `75` |
 | `MEMORY_WARNING_PERCENTAGE` | If memory usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. (Default: `0` - i.e. no limit) | `string - number` | `85` |
 | `MODULES_CLIENT_TIMEOUT` | Timeout for requests to Weaviate modules. Default: `50s` | `string - duration` | `5s`, `10m`, `1h` |
@@ -90,6 +90,7 @@ import APITable from '@site/src/components/APITable';
 | `PERSISTENCE_LSM_MAX_SEGMENT_SIZE` | Maximum size of a segment in the [LSM store](/weaviate/concepts/storage.md#object-and-inverted-index-store). Set this to limit disk usage spikes during compaction to ~2x the segment size. Default: no limit | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
 | `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](/deploy/configuration/monitoring.md) | `boolean` | `false` |
 | `PROMETHEUS_MONITORING_GROUP` | If set, Weaviate groups metrics for the same class across all shards. | `boolean` | `true` |
+| `QUERY_BOOST_DEFAULT_DEPTH` | Default candidate-pool size used when a [Boost](/weaviate/search/boost.md) query does not set its own `depth`. The primary search retrieves this many candidates before the boost rescorer runs. Must be a positive integer and is hard-capped by `QUERY_MAXIMUM_RESULTS`. Default: `100`<br/>Added in `v1.38` | `string - number` | `200` |
 | `QUERY_CROSS_REFERENCE_DEPTH_LIMIT` | Sets the maximum depth of cross-references to be resolved in a query. Defaults to 5. | `string - number` | `3` |
 | `QUERY_DEFAULTS_LIMIT` | Sets the default number of objects to be returned in a query. | `string - number` | `25` <br/> Defaults to `10`|
 | `QUERY_MAXIMUM_RESULTS` | Sets the maximum total number of objects that can be retrieved. | `string - number` | `10000` |
@@ -225,9 +226,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_BOOTSTRAP_EXPECT` | The number of voter notes at bootstrapping time | `string - number` | `1` |
 | `RAFT_BOOTSTRAP_TIMEOUT` | The time in seconds to wait for the cluster to bootstrap | `string - number` | `90` |
 | `RAFT_DRAIN_SLEEP` | Grace period before shutdown to allow ongoing operations to complete. (Default: `200ms`) | `string - number` | `2s` |
-| `RAFT_ENABLE_FQDN_RESOLVER` | If `true`, use DNS lookup instead of memberlist lookup for Raft. Removed in `v1.30`. ([Read more](/weaviate/concepts/cluster.md#node-discovery)) | `boolean` | `true` |
 | `RAFT_ENABLE_ONE_NODE_RECOVERY` | Enable running the single node recovery routine on restart. This is useful if the default hostname has changed and a single node cluster believes there are supposed to be two nodes. | `boolean` | `false` |
-| `RAFT_FQDN_RESOLVER_TLD` | The top-level domain to use for DNS lookup, in `[node-id].[tld]` format. Removed in `v1.30`. ([Read more](/weaviate/concepts/cluster.md#node-discovery)) | `string` | `example.com` |
 | `RAFT_GRPC_MESSAGE_MAX_SIZE` | The maximum internal raft gRPC message size in bytes. Defaults to 1073741824 | `string - number` | `1073741824` |
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
@@ -250,12 +249,14 @@ For more information on authentication and authorization, see the [Authenticatio
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
-| `ASYNC_REPLICATION_DISABLED` | Disable async replication. Default: `false` | `boolean` | `false` |
-| `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` | Maximum concurrent async replication workers across the cluster. Default: `30` | `string - number` | `10` |
+| `ASYNC_REPLICATION_DISABLED` | Disable async replication cluster-wide. When `false` (default), async replication runs automatically for any collection with a replication factor greater than `1`. Default: `false` | `boolean` | `false` |
+| `ASYNC_REPLICATION_SCHEDULER_WORKERS` | Number of workers in the cluster-wide pool that run async replication work across all shards and tenants. Added in `v1.38`, replacing `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS`. Default: `10`, Max: `100`<br/> [Read more.](/deploy/configuration/async-rep.md#async_replication_scheduler_workers) | `string - number` | `10` |
+| `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY` | Number of shards that may build their hash tree concurrently when async replication starts up. Added in `v1.38`. Default: `100`<br/> [Read more.](/deploy/configuration/async-rep.md#async_replication_hashtree_init_concurrency) | `string - number` | `100` |
+| `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` | **Removed in `v1.38`.** Previously set the maximum number of concurrent async replication workers across the cluster. Replaced by `ASYNC_REPLICATION_SCHEDULER_WORKERS`. | `string - number` | `30` |
 | `ASYNC_REPLICATION_HASHTREE_HEIGHT` | Height of the hash tree used for data comparison between nodes. If the height is `0` each node will store just one digest per shard. Default: `16` (single-tenant) / `10` (multi-tenant), Min: `0`, Max: `20`<br/> [Read more about potentially increased memory consumption.](/weaviate/concepts/replication-architecture/consistency#memory-and-performance-considerations-for-async-replication) | `string - number` | `10` |
 | `ASYNC_REPLICATION_FREQUENCY` |  Frequency of periodic data comparison between nodes. Default: `30s` | `string - duration` | `60s` |
 | `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING` | Frequency of data comparison between nodes while propagation is active. Default: `3s` | `string - duration` | `5s` |
-| `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY` | Frequency of how often the background process checks for changes in the availability of nodes. Default: `5s` | `string - duration` | `20s` |
+| `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY` | **Removed in `v1.38`.** Previously set how often the background process checked for changes in node availability. No longer used by the async replication scheduler. | `string - duration` | `5s` |
 | `ASYNC_REPLICATION_LOGGING_FREQUENCY` | Frequency of how often the background process logs any events. Default: `60s` | `string - duration` | `7s` |
 | `ASYNC_REPLICATION_DIFF_BATCH_SIZE` | Specifies the batch size for comparing digest information between nodes. Default: `1000`, Min: `1`, Max: `10000` |`string - number`  | `2000` |
 | `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT` | Defines the time limit a node has to provide a comparison response. Default: `10s` | `string - duration` | `30s` |

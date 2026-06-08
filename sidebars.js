@@ -654,6 +654,7 @@ const sidebars = {
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
+        "weaviate/search/boost",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
         "weaviate/search/query-profile",

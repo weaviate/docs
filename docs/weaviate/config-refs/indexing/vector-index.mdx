@@ -29,7 +29,7 @@ Use these parameters to configure the index type and their properties. They can 
 
 Generally, the `hnsw` index type is recommended for most use cases. The `flat` index type is recommended for use cases where the data the number of objects per index is low, such as in multi-tenancy cases. You can also opt for the `dynamic` index which will initially configure a `flat` index and once the object count exceeds a specified threshold it will automatically convert to an `hnsw` index.
 
-The `hfresh` index is a cluster-based index that uses HNSW for the centroid index. It can provide memory efficiency benefits for large datasets while maintaining good search performance.
+The `hfresh` index is a cluster-based index that uses HNSW for the centroid index. It can provide significant memory efficiency benefits while maintaining good search performance.
 
 See [this section](../../concepts/indexing/vector-index.md#which-vector-index-is-right-for-me) for more information about the different index types and how to choose between them.
 
@@ -156,7 +156,7 @@ Using the `dynamic` index will initially create a flat index and once the number
 
 This is only a one-way switch that converts a flat index to a HNSW, the index does not support changing back to a flat index even if the object count goes below the threshold due to deletion.
 
-The goal of `dynamic` indexing is to shorten latencies during query time at the cost of a larger memory footprint.
+The goal of `dynamic` indexing is to shorten latencies during query time at the cost of a larger memory footprint. If your priority is the opposite — keeping memory low — consider the [HFresh index](#hfresh-index) instead.
 
 ### Dynamic index parameters
 
@@ -173,7 +173,7 @@ import HFreshStatus from "/_includes/feature-notes/hfresh_status.mdx";
 
 <HFreshStatus />
 
-HFresh is a cluster-based vector index based on the SPFresh algorithm. It uses an HNSW index for centroid search, providing a balance between memory efficiency and search performance for large datasets.
+HFresh is a cluster-based vector index based on the SPFresh algorithm. It uses an HNSW index for centroid search, providing a balance between memory efficiency and search performance.
 
 :::note Supported distance metrics
 HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is not supported.
@@ -184,10 +184,14 @@ HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is 
 | Parameter          | Type    | Default  | Mutable | Details                                                                                                                                                                         |
 | :----------------- | :------ | :------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `distance`         | string  | `cosine` | No      | Distance metric. Only `cosine` and `l2-squared` are supported.                                                                                                                  |
-| `maxPostingSizeKB` | integer | `48`     | Yes     | Maximum size in KB for a posting list. Weaviate uses this value along with the vector dimensions to calculate the maximum number of vectors per posting. Min: `8`, Max: `1024`. |
+| `maxPostingSizeKB` | integer | `48`     | Yes     | Maximum size in KB for a posting list. Weaviate uses this value along with the vector dimensions to calculate the maximum number of vectors per posting. Min: `8`, Max: `1024`. Best set when you create the collection: an update is accepted but only affects newly-indexed data — data that is already indexed is not re-partitioned. |
 | `replicas`         | integer | `4`      | No      | Number of posting lists in which a vector is added. Min: `1`, Max: `10`.                                                                                                        |
 | `searchProbe`      | integer | `64`     | Yes     | Number of posting lists to search during a query.                                                                                                                               |
-| `rq`               | object  | --       | No      | Rotational quantization (RQ) compression configuration. RQ is enabled by default and immutable.                                                                                 |
+| `rq`               | object  | --       | Partial | Rotational quantization (RQ) compression configuration. RQ is mandatory for HFresh and cannot be turned off. Its `rescoreLimit` (default `350`) — the number of candidates rescored against uncompressed vectors — is mutable at runtime.                                                                                 |
+
+:::tip Tuning HFresh recall
+Start with the defaults. If recall is too low, increase `searchProbe` (search more posting lists per query) or the RQ `rescoreLimit` (rescore more candidates with full-precision vectors). Both are mutable at runtime and take effect **without reindexing**.
+:::
 
 ## Quantization parameters
 

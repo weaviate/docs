@@ -90,7 +90,7 @@ Adding or changing data objects are **write** operations.
 Write operations are tunable starting with Weaviate v1.18, to `ONE`, `QUORUM` (default) or `ALL`. In v1.17, write operations are always set to `ALL` (highest consistency).
 :::
 
-The main reason for introducing configurable write consistency in v1.18 is because that is also when automatic repairs are introduced. A write will always be written to n (replication factor) nodes, regardless of the chosen consistency level. The coordinator node however waits for acknowledgments from `ONE`, `QUORUM` or `ALL` nodes before it returns. To guarantee that a write is applied everywhere without the availability of repairs on read requests, write consistency is set to `ALL` for now. Possible settings in v1.18+ are:
+The main reason for introducing configurable write consistency in v1.18 is because that is also when automatic repairs are introduced. A write will always be written to n (replication factor) nodes, regardless of the chosen consistency level. The coordinator node however waits for acknowledgments from `ONE`, `QUORUM` or `ALL` nodes before it returns. To guarantee that a write is acknowledged everywhere before the request returns, without relying on read-time repairs, set write consistency to `ALL`. Possible settings in v1.18+ are:
 * **ONE** - a write must receive an acknowledgment from at least one replica node. This is the fastest (most available), but least consistent option.
 * **QUORUM** - a write must receive an acknowledgment from at least `QUORUM` replica nodes. `QUORUM` is calculated as _n / 2 + 1_, where _n_ is the number of replicas (replication factor). For example, using a replication factor of 6, the quorum is 4, which means the cluster can tolerate 2 replicas down.
 * **ALL** - a write must receive an acknowledgment from all replica nodes. This is the most consistent, but 'slowest' (least available) option.
@@ -197,7 +197,7 @@ Repair-on-read works well with one or two isolated repairs. Async replication is
 
 Async replication supplements the repair-on-read mechanism. If a node becomes inconsistent between sync checks, the repair-on-read mechanism catches the problem at read time.
 
-To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-collections/multi-node-setup.mdx#replication-settings). Visit the [How-to: Replication](/deploy/configuration/replication.md#async-replication-settings) page to learn more about the available async replication settings.
+As of Weaviate `v1.38`, async replication is enabled by default for any collection with a replication factor greater than `1`, there is no per-collection flag to enable it. To turn it off cluster-wide, set the `ASYNC_REPLICATION_DISABLED` environment variable to `true`. Visit the [How-to: Replication](/deploy/configuration/replication.md#async-replication-settings) page to learn more about the available async replication settings.
 
 #### Memory and performance considerations for async replication
 
@@ -262,9 +262,9 @@ A larger hash tree means less data for each leaf to hash, leading to faster comp
   - `Number of Leaves = 2^20 = 1,048,576`
 
 :::note Default settings
-The default hash tree height is `16` for single-tenant collections and `10` for multi-tenant collections. These defaults balance memory consumption with replication performance. Similarly, the default `maxWorkers` is `3` for single-tenant collections and `30` for multi-tenant collections.
+The default hash tree height is `16` for single-tenant collections and `10` for multi-tenant collections. These defaults balance memory consumption with replication performance.
 
-As of `v1.36`, these parameters can be configured per-collection via the [`asyncConfig`](/weaviate/config-refs/collections#async-config) object in `replicationConfig`, overriding the cluster-wide environment variable defaults.
+As of `v1.36`, these parameters can be configured per-collection via the [`asyncConfig`](/weaviate/config-refs/collections#async-config) object in `replicationConfig`. Worker concurrency is no longer a per-collection setting and as of `v1.38` the cluster shares a single async replication worker pool sized by [`ASYNC_REPLICATION_SCHEDULER_WORKERS`](/deploy/configuration/env-vars/index.md#async-replication).
 :::
 
 ### Deletion resolution strategies

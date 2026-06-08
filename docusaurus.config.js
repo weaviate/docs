@@ -54,7 +54,7 @@ const config = {
         cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
-            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/v1-38/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
           showSidebar: true,
