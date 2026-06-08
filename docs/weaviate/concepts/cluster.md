@@ -32,7 +32,7 @@ You can set the desired number of replicas, also called a replication factor, in
 Generally there are (at least) three distinct motivations to scale out horizontally which all will lead to different setups.
 
 ### Motivation 1: Maximum Dataset Size
-Due to the [memory footprint of an HNSW graph](./resources.md#the-role-of-memory) it may be desirable to spread a dataset across multiple servers ("nodes"). In such a setup, a single collection may be split into shards and shards are spread across nodes.
+Due to the [memory footprint of an HNSW graph](./resources.md#the-role-of-memory) it may be desirable to spread a dataset across multiple servers ("nodes"). In such a setup, a single collection may be split into shards and shards are spread across nodes. The disk-based [HFresh index](./indexing/vector-index.md#hfresh-index) can also reduce the need to shard purely for memory reasons.
 
 Weaviate does the required orchestration at import and query time fully automatically.
 

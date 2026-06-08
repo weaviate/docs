@@ -189,6 +189,8 @@ With RQ's high native recall of 98-99%, you can often disable rescoring (set `re
 
 An [HNSW index](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) can be configured using [PQ](#product-quantization), [SQ](#scalar-quantization), [RQ](#rotational-quantization), or [BQ](#binary-quantization). Since HNSW is in memory, compression can reduce your memory footprint or allow you to store more data in the same amount of memory.
 
+If memory is your main constraint, you can also consider the disk-based [HFresh index](./indexing/vector-index.md#hfresh-index) as an index-level alternative to compression: it keeps only a compressed centroid index in memory and stores the rest on disk.
+
 :::tip
 You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithms Part 2.1](https://weaviate.io/blog/ann-algorithms-hnsw-pq).
 :::
