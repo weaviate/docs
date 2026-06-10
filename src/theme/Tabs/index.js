@@ -17,6 +17,7 @@ import { DOC_SYSTEMS } from "../../components/Documentation/FilteredTextBlock";
 import Tooltip from "/src/components/Tooltip";
 import Link from "@docusaurus/Link";
 import { runPythonCode } from "./pyodideRunner";
+import { runTypeScriptCode } from "./tsRunner";
 import {
   CREDENTIALS_CHANGE_EVENT,
   loadCredentials,
@@ -77,10 +78,10 @@ const LANGUAGE_CONFIG = {
 };
 
 // Configuration for in-browser code execution.
-// "ts" gets added once the TypeScript client gains browser grpc-web support.
-// Java, C# and Go cannot run in the browser.
+// Python runs on Pyodide, TypeScript via in-browser transpilation against the
+// grpc-web client bundle. Java, C# and Go cannot run in the browser.
 const BROWSER_EXECUTION_CONFIG = {
-  SUPPORTED_LANGUAGES: ["py"],
+  SUPPORTED_LANGUAGES: ["py", "ts"],
 };
 
 // Predefined docs URL overrides by product name
@@ -219,7 +220,8 @@ const extractCodeFromChild = (child) => {
   return null;
 };
 
-// In-browser code execution component (Python via Pyodide)
+// In-browser code execution component (Python via Pyodide, TypeScript via
+// in-browser transpilation)
 const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
@@ -237,9 +239,10 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
     setError(null);
     setStatusText("Running code…");
 
+    const runCode = language === "ts" ? runTypeScriptCode : runPythonCode;
     try {
       // Never rejects: resolves to { output, error }
-      const result = await runPythonCode(code, { onStatus: setStatusText });
+      const result = await runCode(code, { onStatus: setStatusText });
       setOutput(result.output);
       setError(result.error);
     } finally {

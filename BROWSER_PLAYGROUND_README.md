@@ -4,7 +4,7 @@ This document explains how executable code snippets run in the reader's browser 
 
 ## What It Is
 
-Executable docs snippets run directly in the reader's browser. There is no execution server. Python code runs on Pyodide, which is CPython compiled to WebAssembly. Pyodide is loaded from the jsDelivr CDN, pinned to version 0.29.4. The pin matters because dependencies with native code (pydantic-core, cryptography) only exist as WebAssembly builds inside the Pyodide distribution, so the bundled pydantic version must satisfy the client wheel's pydantic floor. Check the new `pyodide-lock.json` before bumping either side.
+Executable docs snippets run directly in the reader's browser. There is no execution server. Python code runs on Pyodide, which is CPython compiled to WebAssembly, and TypeScript code is transpiled in the browser and executed as a native ES module. Pyodide is loaded from the jsDelivr CDN, pinned to version 0.29.4. The pin matters because dependencies with native code (pydantic-core, cryptography) only exist as WebAssembly builds inside the Pyodide distribution, so the bundled pydantic version must satisfy the client wheel's pydantic floor. Check the new `pyodide-lock.json` before bumping either side.
 
 ## How It Works
 
@@ -12,9 +12,29 @@ Executable docs snippets run directly in the reader's browser. There is no execu
 
 The two wheels must be installed in a single `micropip.install()` call. The grpc-web wheel declares an unpinned dependency on `weaviate-client`, and installing both together lets the local client wheel satisfy that dependency instead of pulling a release from PyPI.
 
+## The TypeScript Client
+
+TypeScript snippets are handled by `src/theme/Tabs/tsRunner.js`. It loads the TypeScript compiler from jsDelivr (pinned to 5.9.3) on the first Run click, transpiles the snippet, rewrites its `weaviate-client` import to the browser bundle served from `static/playground/weaviate-client.web.js`, and runs the result as a native ES module through a Blob URL. Each run is a fresh module, so unlike Python nothing persists between runs.
+
+The bundle is built from typescript-client PR #437 (grpc-web transport, browser shims for Node built-ins). To rebuild it:
+
+```bash
+cd ~/dev/typescript-client && git fetch origin pull/437/head && git worktree add /tmp/tsc-437 FETCH_HEAD
+cd /tmp/tsc-437 && npm ci && npm run build:web
+cp dist/web/index.web.js <docs repo>/static/playground/weaviate-client.web.js
+```
+
+**Note:** The bundle from `typescript-client` contains bare imports (e.g., `import 'long'`) that browsers cannot resolve. You **must** run the following command in the docs repo to finalize the bundle (this requires `nice-grpc-web` to be installed in the docs repo):
+
+```bash
+yarn build:playground-client
+```
+
+The bundle's web entry (`connectToCustom`, `connectToWeaviateCloud`) speaks grpc-web on the main host with the default path prefix `/grpc-web`, matching the Python snippet's connection defaults.
+
 ## Reader Credentials
 
-The **Connect** button next to **Run** stores the reader's Weaviate Cloud cluster URL and API key in `localStorage` (`src/theme/Tabs/playgroundCredentials.js`). Before each run the runner injects them into the interpreter as the `WEAVIATE_URL` (normalized to a bare host) and `WEAVIATE_API_KEY` environment variables, and removes them when cleared. Snippets read them with `os.environ.get(...)` and fall back to `localhost` when unset. The values never leave the reader's browser except in the requests the snippet itself makes to their Weaviate instance.
+The **Connect** button next to **Run** stores the reader's Weaviate Cloud cluster URL and API key in `localStorage` (`src/theme/Tabs/playgroundCredentials.js`). Before each run the runner injects them as the `WEAVIATE_URL` (normalized to a bare host) and `WEAVIATE_API_KEY` environment variables — `os.environ` for Python, a `process.env` shim for TypeScript — and removes them when cleared. Snippets read them with `os.environ.get(...)` and fall back to `localhost` when unset. The values never leave the reader's browser except in the requests the snippet itself makes to their Weaviate instance.
 
 ## The Python Client
 
@@ -42,7 +62,7 @@ Snippets need a Weaviate instance fronted by a grpc-web transcoder such as Envoy
 - Async client only, the sync client does not work under WebAssembly.
 - No `batch.stream()` or `batch.experimental()`, bidirectional streaming is not possible over grpc-web.
 - Java, C#, and Go snippets cannot run in the browser.
-- TypeScript support is planned via the grpc-web compatible TS client.
+- TypeScript runs each snippet as a fresh module, so no state carries over between runs the way it does for Python.
 - A run times out after 60 seconds. After a timeout the page keeps working but the old run may still hold the interpreter, so reload the page for a clean session.
 
 ## Validating Without a Browser

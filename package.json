@@ -15,7 +15,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "test:ts": "tsx"
+    "test:ts": "tsx",
+    "build:playground-client": "esbuild static/playground/weaviate-client.web.js --bundle --format=esm --outfile=static/playground/weaviate-client.web.js --define:process.env.NODE_ENV='\"production\"' --allow-overwrite"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
@@ -33,6 +34,7 @@
     "csv-parser": "^3.0.0",
     "docusaurus-plugin-sass": "^0.2.6",
     "dotenv": "^17.2.3",
+    "nice-grpc-web": "^3.3.10",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

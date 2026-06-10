@@ -12,10 +12,12 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyMoviesCode from "!!raw-loader!/_includes/code/python/quickstart.movies.browser.py";
+import TSMoviesCode from "!!raw-loader!/_includes/code/typescript/quickstart.movies.browser.ts";
 
 # Movies Quickstart in the Browser Playground
 
-This recipe runs a complete Weaviate workflow directly in your browser through WebAssembly (Pyodide), with no execution server involved.
+This recipe runs a complete Weaviate workflow directly in your browser, with no execution server involved.
+Python runs on WebAssembly (Pyodide) and TypeScript is transpiled and executed natively in the browser, both talking to Weaviate over grpc-web.
 The snippet connects to your instance, creates a `Movies` collection vectorized by [Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) (`text2vec-weaviate`), imports a small movie dataset, and runs a semantic `nearText` search.
 
 Use the **Connect** button to store your Weaviate Cloud cluster URL and API key — they stay in your browser and are available to the snippet as the `WEAVIATE_URL` and `WEAVIATE_API_KEY` environment variables, or edit the connection values directly with the **Edit** button.
@@ -30,6 +32,17 @@ The example deletes and recreates the `Movies` collection, so it is safe to run 
       endMarker="# END EndToEndExample"
       language="py"
       title="movies_quickstart.py"
+      executable={true}
+      editable={true}
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSMoviesCode}
+      startMarker="// EndToEndExample"
+      endMarker="// END EndToEndExample"
+      language="ts"
+      title="movies_quickstart.ts"
       executable={true}
       editable={true}
     />
