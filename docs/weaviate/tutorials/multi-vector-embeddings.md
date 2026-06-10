@@ -9,9 +9,8 @@ image: og/docs/tutorials.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.py';
-import TSCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.ts';
-
+import PyCode from '!!raw-loader!/docs/weaviate/tutorials/\_includes/multi-vector-embeddings.py';
+import TSCode from '!!raw-loader!/docs/weaviate/tutorials/\_includes/multi-vector-embeddings.ts';
 
 In this section, we will explore how to use multi-vector embeddings in Weaviate. Multi-vector embeddings (implemented through models like ColBERT, ColPali, or ColQwen) represent each object or query using multiple vectors instead of a single vector. This approach enables more precise searching through "late interaction" - a technique that matches individual parts of texts rather than comparing them as whole units.
 
@@ -19,10 +18,10 @@ In this section, we will explore how to use multi-vector embeddings in Weaviate.
 
 Before starting this tutorial, ensure you have the following:
 
-- An instance of Weaviate (e.g. on [Weaviate Cloud](https://console.weaviate.cloud), or locally), version `v1.29` or newer.
+- An instance of Weaviate (e.g. on [Weaviate Cloud](/go/console?utm_content=tutorial), or locally), version `v1.29` or newer.
 - Your preferred Weaviate client library installed.
 - An API key for Jina AI
-    - A free, "toy" key can be obtained from [Jina AI](https://jina.ai/).
+  - A free, "toy" key can be obtained from [Jina AI](https://jina.ai/).
 
 :::tip See the Quickstart guide
 For information on how to set up Weaviate and install the client library, see the [cloud](../quickstart/index.md) or [local](../quickstart/local.md) Quickstart guide.
@@ -95,11 +94,13 @@ Late interaction takes advantage of this structure by finding the best match for
 <br/>
 
 A late interaction search:
+
 1. Compares each query vector against each object vector
 1. Combines these token-level comparisons to produce a final similarity score
-<br/>
+   <br/>
 
 This approach often leads to better search results, as it can capture more nuanced relationships between objects.
+
 </details>
 
 :::
@@ -585,6 +586,6 @@ Once the data has been ingested, you can perform semantic, hybrid, and vector se
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

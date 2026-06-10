@@ -10,8 +10,8 @@ import weaviate, { GenerateOptions, WeaviateClient } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string;
 const weaviateKey = process.env.WEAVIATE_API_KEY as string;
-const openaiKey = process.env.OPENAI_APIKEY as string;
-const anthropicKey = process.env.ANTHROPIC_APIKEY as string;
+const openaiKey = process.env.OPENAI_API_KEY as string;
+const anthropicKey = process.env.ANTHROPIC_API_KEY as string;
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL, {
   authCredentials: new weaviate.ApiKey(weaviateKey),
@@ -277,11 +277,11 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
   return btoa(binary);
 }
 
-const srcImgPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/500px-Koala_climbing_tree.jpg"
-const responseImg = await fetch(srcImgPath);
-const image = await responseImg.arrayBuffer();
+// Load the image from disk (bundled alongside this file).
+import { readFile } from 'node:fs/promises';
 
-const base64String = arrayBufferToBase64(image);
+const imageBuffer = await readFile('./koala.jpg');
+const base64String = imageBuffer.toString('base64');
 
 const prompt = {
   // highlight-start

@@ -114,7 +114,7 @@ import os
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,  # Replace with your Weaviate Cloud URL
@@ -158,7 +158,7 @@ client = weaviate.connect_to_custom(
     grpc_port=50051,
     grpc_secure=False,
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")  # Or any other inference API keys
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")  # Or any other inference API keys
     }
 )
 
@@ -191,7 +191,7 @@ import os
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 # END LocalInstantiationWithHeaders
@@ -236,7 +236,7 @@ client = weaviate.WeaviateClient(
     ),
     auth_client_secret=Auth.api_key("secr3tk3y"),
     additional_headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     },
     additional_config=AdditionalConfig(
         timeout=Timeout(init=30, query=60, insert=120),  # Values in seconds
@@ -310,6 +310,21 @@ finally:
     client.close()
 # END BatchDynamic
 
+# START BatchStream
+import weaviate
+
+client = weaviate.connect_to_local()
+
+try:
+    with client.batch.stream() as batch:  # or <collection>.batch.stream()
+        # Batch import objects/references - e.g.:
+        batch.add_object(properties={"title": "Multitenancy"}, collection="WikiArticle", uuid=src_uuid)
+        batch.add_object(properties={"title": "Database schema"}, collection="WikiArticle", uuid=tgt_uuid)
+        batch.add_reference(from_collection="WikiArticle", from_uuid=src_uuid, from_property="linkedArticle", to=tgt_uuid)
+
+finally:
+    client.close()
+# END BatchStream
 
 # START BatchFixedSize
 import weaviate
@@ -608,7 +623,7 @@ finally:
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 
@@ -698,7 +713,7 @@ client.close()
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 
@@ -825,7 +840,7 @@ from weaviate.classes.init import Auth
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,
@@ -1250,7 +1265,7 @@ async_client = weaviate.WeaviateAsyncClient(
     ),
     auth_client_secret=Auth.api_key("secr3tk3y"),
     additional_headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     },
     additional_config=AdditionalConfig(
         timeout=Timeout(init=30, query=60, insert=120),  # Values in seconds
@@ -1355,9 +1370,8 @@ finally:
 # END AsyncInsertionExample
 
 # Wait for collection to be populated - async indexing is on
-# TODO[g-despot]: Implement better mechanism
 import time
-time.sleep(1)
+time.sleep(5)
 
 # START AsyncSearchExample
 import weaviate

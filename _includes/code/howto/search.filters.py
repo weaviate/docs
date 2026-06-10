@@ -11,7 +11,7 @@ import os
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,
@@ -486,7 +486,7 @@ client.close()
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-openai_api_key = os.environ["OPENAI_APIKEY"]
+openai_api_key = os.environ["OPENAI_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,
@@ -538,9 +538,9 @@ response = collection.query.fetch_objects(
     filters=Filter.by_property("country").is_none(True)  # Find objects where the `country` property is null
     # highlight-end
 )
-
+print("despot. othing") 
 for o in response.objects:
-    print(o.properties)  # Inspect returned objects
+    print("despot"+o.properties)  # Inspect returned objects
 # END FilterByPropertyNullState
 
 

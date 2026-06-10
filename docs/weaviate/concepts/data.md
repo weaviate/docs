@@ -263,8 +263,9 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 #### Adding a named vector after collection creation
 
-:::info Added in `v1.31`
-:::
+import AddNamedVectors from '/_includes/feature-notes/add-named-vectors.mdx';
+
+<AddNamedVectors/>
 
 A named vector can be added to an existing collection definition after collection creation. This allows you to add new vector representations for objects without having to delete and recreate the collection.
 
@@ -279,6 +280,25 @@ If you want to populate the new named vector for existing objects, delete and re
 :::caution Not available for legacy (unnamed) vectorizers
 The ability to add a named vector after collection creation is only available for collections configured with named vectors.
 :::
+
+### Time to live (TTL)
+
+import TtlStatus from '/_includes/feature-notes/ttl-status.mdx';
+
+<TtlStatus/>
+
+Objects can be optionally set to expire after a predetermined amount of time using the Time to Live (TTL) feature.
+
+A TTL can be set at the collection level. The expiration time can be defined in relation to:
+- The time of object creation
+- The time of the last object update
+- A Weaviate `DATE` property value (a date & time property)
+
+The TTL value is specified in seconds. The TTL must be positive, except for those relative to a `DATE` property, which can also be negative to allow for expiration before the specified date.
+
+Expired objects are automatically deleted by Weaviate at a set of predetermined intervals. The default value can be overridden using the `OBJECTS_TTL_DELETE_SCHEDULE` environment variable or `objects_ttl_delete_schedule` configuration in the helm chart. Expired, but yet undeleted, objects can optionally be excluded from query results to prevent erroneous data retrieval before the deletion process runs.
+
+Note that for multi-tenant collections, deletions can only occur for active tenants. Deletion operations will be skipped for inactive or offloaded tenants; and the deletion will occur only when the tenant becomes active again.
 
 ## Data Schema
 
@@ -301,10 +321,6 @@ Schemas fulfill several roles:
 For details on configuring your schema, see the [schema tutorial](../starter-guides/managing-collections/index.mdx) or [How-to: Manage collections](../manage-collections/index.mdx).
 
 ## Multi-tenancy
-
-:::info Multi-tenancy availability
-- Multi-tenancy added in `v1.20`
-:::
 
 To separate data within a cluster, use multi-tenancy. Weaviate partitions the cluster into shards. Each shard holds data for a single tenant.
 
@@ -400,11 +416,6 @@ Deleting a tenant deletes the associated shard. As a result, deleting a tenant a
 
 ### Tenant states
 
-:::info Multi-tenancy availability
-- Tenant activity status setting added in `v1.21`
-- `OFFLOADED` status added in `v1.26`
-:::
-
 Tenants have an activity status (also called a tenant state) that reflects their availability and storage location. A tenant can be `ACTIVE`, `INACTIVE`, `OFFLOADED`, `OFFLOADING`, or `ONLOADING`.
 
 - `ACTIVE` tenants are loaded and available for read and write operations.
@@ -437,9 +448,6 @@ For example, data may not be immediately available after reactivating an offload
 :::
 
 #### Offloaded tenants
-
-:::info Added in `v1.26.0`
-:::
 
 import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 

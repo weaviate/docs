@@ -226,6 +226,7 @@ await client.collections.create({
     vectorIndexConfig: configure.vectorIndex.hnsw(),  // Use HNSW
     // vectorIndexConfig: configure.vectorIndex.flat(),  // Use Flat
     // vectorIndexConfig: configure.vectorIndex.dynamic(),  // Use Dynamic
+    // vectorIndexConfig: configure.vectorIndex.hfresh(),  // Use HFresh
     // highlight-end
   }),
   properties: [
@@ -546,7 +547,7 @@ await client.collections.create({
       // highlight-end
     },
     {
-      name: 'chunk_no',
+      name: 'chunk_number',
       dataType: dataType.INT,
       // highlight-start
       indexRangeFilters: true,
@@ -555,6 +556,21 @@ await client.collections.create({
   ],
 })
 // END EnableInvertedIndex
+
+// START DropInvertedIndex
+const article = client.collections.use('Article')
+
+// highlight-start
+// Drop the searchable inverted index from the "title" property
+await article.config.dropInvertedIndex('title', 'searchable')
+
+// Drop the filterable inverted index from the "title" property
+await article.config.dropInvertedIndex('title', 'filterable')
+
+// Drop the range filter index from the "chunk_number" property
+await article.config.dropInvertedIndex('chunk_number', 'rangeFilters')
+// highlight-end
+// END DropInvertedIndex
 
 
 // ===============================================
@@ -661,9 +677,9 @@ import { configure } from 'weaviate-client';
 await client.collections.create({
   name: 'Article',
   // highlight-start
+  // Async replication runs by default when the replication factor is greater than 1
   replication: configure.replication({
     factor: 1,
-    asyncEnabled: true,
   }),
   // highlight-end
 })
@@ -675,8 +691,11 @@ await client.collections.create({
 // =======================
 // ===== All replication settings
 // =======================
+// Connect to a setup with 3 replicas (required for factor: 3)
+const replicationClient: WeaviateClient = await weaviate.connectToLocal({ port: 8180 })
+
 // Clean slate
-await client.collections.delete(collectionName)
+await replicationClient.collections.delete(collectionName)
 
 /*
 // START AllReplicationSettings
@@ -686,20 +705,39 @@ import { configure } from 'weaviate-client';
 */
 
 // START AllReplicationSettings
-await client.collections.create({
+await replicationClient.collections.create({
   name: 'Article',
   // highlight-start
   replication: configure.replication({
-    factor: 1,
-    asyncEnabled: true,
-    deletionStrategy: 'TimeBasedResolution'  // Available from Weaviate v1.28.0
+    factor: 3,
+    deletionStrategy: 'TimeBasedResolution',
+    asyncConfig: {
+      hashtreeHeight: 16,
+      frequency: 30,
+    },
   }),
   // highlight-end
 })
 // END AllReplicationSettings
 
+// START UpdateReplicationSettings
+const articleReplication = replicationClient.collections.use('Article')
+
+// highlight-start
+await articleReplication.config.update({
+  replication: reconfigure.replication({
+    asyncConfig: {
+      frequency: 60,
+    },
+  }),
+})
+// highlight-end
+// END UpdateReplicationSettings
+
  // Test
  // TODO NEEDS TEST assert.equal(result.replicationConfig.factor, 3);
+
+await replicationClient.close()
 
 // ====================
 // ===== SHARDING =====

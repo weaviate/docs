@@ -30,6 +30,18 @@ const LANGUAGE_CONFIG = {
     runtime: "python3",
     fileExtension: ".py",
   },
+  py_engram: {
+    label: "Python",
+    icon: "/img/site/logo-py.svg",
+    runtime: "python3",
+    fileExtension: ".py",
+  },
+  py_engram_async: {
+    label: "Python (Async)",
+    icon: "/img/site/logo-py.svg",
+    runtime: "python3",
+    fileExtension: ".py",
+  },
   ts: {
     label: "JavaScript/TypeScript",
     icon: "/img/site/logo-ts.svg",
@@ -54,9 +66,13 @@ const LANGUAGE_CONFIG = {
     runtime: "java",
     fileExtension: ".java",
   },
+  csharp: {
+    label: "C#",
+    icon: "/img/site/logo-csharp.svg",
+  },
   curl: {
     label: "Curl",
-    icon: null,
+    icon: "/img/site/logo-curl.svg",
     runtime: "bash",
     fileExtension: ".sh",
   },
@@ -86,18 +102,15 @@ const EXECUTION_CONFIG = {
   SUPPORTED_LANGUAGES: ["py", "ts", "go", "java"],
   DEVELOPMENT_MODE: true,
 
-  // py: { label: "Python", icon: "/img/site/logo-py.svg" },
-  // py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
-  // ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
-  // ts_agents: {
-  //   label: "JavaScript/TypeScript (Agents)",
-  //   icon: "/img/site/logo-ts.svg",
+};
+
+// Predefined docs URL overrides by product name
+const DOCS_URL_PRESETS = {
+  // API docs link for Engram Python is intentionally omitted for now.
+  // engram: {
+  //   py_engram: "https://github.com/weaviate/engram-python-sdk",
+  //   py_engram_async: "https://github.com/weaviate/engram-python-sdk",
   // },
-  // go: { label: "Go", icon: "/img/site/logo-go.svg" },
-  // java: { label: "Java", icon: "/img/site/logo-java.svg" },
-  // curl: { label: "Curl", icon: null },
-  // bash: { label: "Bash", icon: null },
-  // shell: { label: "Shell", icon: null },
 };
 
 // Context for sharing selected language across all code dropdowns
@@ -400,6 +413,7 @@ const CodeDropdownTabs = ({
   groupId,
   defaultValue,
   values,
+  docsUrl,
   ...props
 }) => {
   const tabValues =
@@ -431,6 +445,26 @@ const CodeDropdownTabs = ({
         return "py_agents";
       if (targetLang === "py_agents" && availableLangs.includes("py"))
         return "py";
+      if (targetLang === "py" && availableLangs.includes("py_engram"))
+        return "py_engram";
+      if (targetLang === "py_engram" && availableLangs.includes("py"))
+        return "py";
+      if (targetLang === "py_agents" && availableLangs.includes("py_engram"))
+        return "py_engram";
+      if (targetLang === "py_engram" && availableLangs.includes("py_agents"))
+        return "py_agents";
+      if (
+        targetLang === "py_engram_async" &&
+        availableLangs.includes("py_engram")
+      )
+        return "py_engram";
+      if (targetLang === "py_engram_async" && availableLangs.includes("py"))
+        return "py";
+      if (
+        targetLang === "py_engram_async" &&
+        availableLangs.includes("py_agents")
+      )
+        return "py_agents";
       if (targetLang === "ts" && availableLangs.includes("ts_agents"))
         return "ts_agents";
       if (targetLang === "ts_agents" && availableLangs.includes("ts"))
@@ -483,6 +517,41 @@ const CodeDropdownTabs = ({
           valueToSet = "py_agents";
         else if (newGlobalLang === "py_agents" && availableLangs.includes("py"))
           valueToSet = "py";
+        else if (
+          newGlobalLang === "py" &&
+          availableLangs.includes("py_engram")
+        )
+          valueToSet = "py_engram";
+        else if (
+          newGlobalLang === "py_engram" &&
+          availableLangs.includes("py")
+        )
+          valueToSet = "py";
+        else if (
+          newGlobalLang === "py_agents" &&
+          availableLangs.includes("py_engram")
+        )
+          valueToSet = "py_engram";
+        else if (
+          newGlobalLang === "py_engram" &&
+          availableLangs.includes("py_agents")
+        )
+          valueToSet = "py_agents";
+        else if (
+          newGlobalLang === "py_engram_async" &&
+          availableLangs.includes("py_engram")
+        )
+          valueToSet = "py_engram";
+        else if (
+          newGlobalLang === "py_engram_async" &&
+          availableLangs.includes("py")
+        )
+          valueToSet = "py";
+        else if (
+          newGlobalLang === "py_engram_async" &&
+          availableLangs.includes("py_agents")
+        )
+          valueToSet = "py_agents";
         else if (newGlobalLang === "ts" && availableLangs.includes("ts_agents"))
           valueToSet = "ts_agents";
         else if (newGlobalLang === "ts_agents" && availableLangs.includes("ts"))
@@ -555,6 +624,8 @@ const CodeDropdownTabs = ({
   const canEdit = isEditable && originalCode !== null;
 
   const docSystem = DOC_SYSTEMS[selectedValue];
+  const resolvedDocsUrl = typeof docsUrl === "string" ? DOCS_URL_PRESETS[docsUrl] : docsUrl;
+  const overrideDocsUrl = resolvedDocsUrl && resolvedDocsUrl[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const params = new URLSearchParams({
     template: "doc_feedback.yml",
@@ -620,27 +691,27 @@ const CodeDropdownTabs = ({
           )}
         </div>
 
-        {docSystem?.baseUrl && (
+        {(overrideDocsUrl || docSystem?.baseUrl) && (
           <div className={styles.rightSection}>
             <a
-              href={docSystem.baseUrl}
+              href={overrideDocsUrl || docSystem.baseUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.apiDocsLink}
               title="View API documentation"
             >
-              {docSystem.icon ? (
+              {docSystem?.icon ? (
                 <img
                   src={docSystem.icon}
                   alt={`${selectedValue} docs`}
-                  height="18"
-                  width="18"
+                  height="12"
+                  width="12"
                   style={{ verticalAlign: "middle" }}
                 />
               ) : (
                 <svg
-                  height="18"
-                  width="18"
+                  height="12"
+                  width="12"
                   aria-hidden="true"
                   viewBox="0 0 24 24"
                   fill="currentColor"
@@ -680,8 +751,8 @@ const CodeDropdownTabs = ({
                 <span className={styles.versionLabel}>
                   More info
                   <svg
-                    width="14"
-                    height="14"
+                    width="11"
+                    height="11"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     className={styles.infoIcon}

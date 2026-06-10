@@ -36,14 +36,14 @@ Your Weaviate instance must be configured with the Voyage AI vectorizer integrat
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -54,7 +54,7 @@ You must provide a valid Voyage AI API key to Weaviate for this integration. Go 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `VOYAGEAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -341,8 +341,12 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
+- voyage-4
+- voyage-4-lite
+- voyage-4-large
 - voyage-3.5
 - voyage-3.5-lite
+- voyage-context-3 (contextual embeddings)
 - voyage-3-large
 - voyage-3 (default)
 - voyage-3-lite
@@ -354,11 +358,18 @@ The query below returns the `n` best scoring objects from the database, set by `
 - voyage-finance-2
 - voyage-multilingual-2
 
+:::note Contextual embeddings
+The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https://docs.voyageai.com/docs/contextualized-chunk-embeddings). When you configure this model, Weaviate automatically routes requests to the `/contextualizedembeddings` endpoint. This model is optimized for retrieval-augmented generation (RAG) use cases where document context improves retrieval quality.
+:::
+
 <details>
   <summary>
     Model support history
   </summary>
 
+- `v1.36`:
+    - Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
+- Added `voyage-3.5`, `voyage-3.5-lite`, `voyage-context-3`
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
     - Added `voyage-3`, `voyage-3-lite`
     - Default model changed to `voyage-3` from `voyage-large-2`

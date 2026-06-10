@@ -4,7 +4,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/local.quickstart.query.neartext.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/local.quickstart.query.neartext.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart_local/3_1_neartext/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart_local/NearText.java';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartLocalTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartLocalTest.cs";
 
 
 <Tabs className="code" groupId="languages">
@@ -44,13 +45,21 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 
 <TabItem value="java" label="Java">
 <FilteredTextBlock
-  text={JavaCode}
+  text={JavaV6Code}
   startMarker="// START NearText"
   endMarker="// END NearText"
-  language="javaraw"
-  title="quickstart/NearText.java"
+  language="java"
 />
 </TabItem>
+
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearText"
+      endMarker="// END NearText"
+      language="csharp"
+    />
+  </TabItem>
 
 <TabItem value="curl" label="Curl">
 

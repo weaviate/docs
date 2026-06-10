@@ -18,18 +18,19 @@
     "test:ts": "tsx"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.8.1",
-    "@docusaurus/plugin-client-redirects": "^3.8.1",
-    "@docusaurus/plugin-google-tag-manager": "^3.8.1",
-    "@docusaurus/preset-classic": "^3.8.1",
-    "@docusaurus/theme-mermaid": "^3.8.1",
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/plugin-client-redirects": "^3.9.2",
+    "@docusaurus/plugin-google-tag-manager": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
+    "@docusaurus/theme-mermaid": "^3.9.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.0.0",
-    "@scalar/docusaurus": "^0.7.16",
-    "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
+    "@scalar/docusaurus": "^0.8.7",
+    "@signalwire/docusaurus-plugin-llms-txt": "1.2.2",
     "clsx": "^2.0.0",
+    "csv-parser": "^3.0.0",
     "docusaurus-plugin-sass": "^0.2.6",
     "dotenv": "^17.2.3",
     "prism-react-renderer": "^2.3.0",
@@ -38,8 +39,12 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sass": "^1.83.4",
-    "weaviate-agents": "^1.0.0",
-    "weaviate-client": "^3.9.0"
+    "stream-chain": "^2.2.5",
+    "stream-json": "^1.7.5",
+    "uuid": "^13.0.0",
+    "weaviate-agents": "^1.4.1",
+    "weaviate-client": "^3.12.1",
+    "weaviate-ts-embedded": "^1.1.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.1",
@@ -53,6 +58,9 @@
     "react-player": "^2.16.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
+  },
+  "resolutions": {
+    "tar": "^7.5.8"
   },
   "browserslist": {
     "production": [
@@ -68,5 +76,6 @@
   },
   "engines": {
     "node": ">=18.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

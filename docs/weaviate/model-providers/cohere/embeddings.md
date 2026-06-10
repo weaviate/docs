@@ -15,12 +15,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyConnect from '!!raw-loader!../_includes/provider.connect.py';
 import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect/main.go';
-import JavaConnect from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/Connect.java';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageCohereTextEmbeddings.java';
-import JavaImportQueries from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java';
 
 Weaviate's integration with Cohere's APIs allows you to access their models' capabilities directly from Weaviate.
 
@@ -39,14 +36,14 @@ Your Weaviate instance must be configured with the Cohere vectorizer integration
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -57,7 +54,7 @@ You must provide a valid Cohere API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
+- Set the `COHERE_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -97,14 +94,6 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaConnect}
-      startMarker="// START CohereInstantiation"
-      endMarker="// END CohereInstantiation"
-      language="javaraw"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -140,14 +129,6 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BasicVectorizerCohere"
-      endMarker="// END BasicVectorizerCohere"
-      language="java"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -183,14 +164,6 @@ You can specify one of the [available models](#available-models) for the vectori
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START VectorizerCohereCustomModel"
-      endMarker="// END VectorizerCohereCustomModel"
-      language="java"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -237,14 +210,6 @@ The following examples show how to configure Cohere-specific options.
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START FullVectorizerCohere"
-      endMarker="// END FullVectorizerCohere"
-      language="java"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -294,14 +259,6 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaImportQueries}
-      startMarker="// START BatchImportExample"
-      endMarker="// END BatchImportExample"
-      language="java"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -350,14 +307,6 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaImportQueries}
-      startMarker="// START NearTextExample"
-      endMarker="// END NearTextExample"
-      language="java"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -400,14 +349,6 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaImportQueries}
-      startMarker="// START HybridExample"
-      endMarker="// END HybridExample"
-      language="java"
-    />
-  </TabItem>
 </Tabs>
 
 ## References

@@ -34,14 +34,14 @@ Your Weaviate instance must be configured with the Voyage AI reranker integratio
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -52,7 +52,7 @@ You must provide a valid Voyage AI API key to Weaviate for this integration. Go 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `VOYAGEAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -157,6 +157,8 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
+- rerank-2.5
+- rerank-2.5-lite
 - rerank-2
 - rerank-2-lite
 - rerank-1
@@ -167,6 +169,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
     Model support history
   </summary>
 
+- Added `rerank-2.5`, `rerank-2.5-lite`
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
     - Added `rerank-2`, `rerank-2-lite`
 - `v1.24.18`, `v1.25.3`:

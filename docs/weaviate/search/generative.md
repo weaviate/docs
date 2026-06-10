@@ -2,25 +2,32 @@
 title: Retrieval Augmented Generation (RAG)
 sidebar_position: 70
 image: og/docs/howto.jpg
+description: "Retrieval augmented generation (RAG) with single-prompt and grouped-task patterns with code in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'generative']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import GenerativeConfig from '/_includes/feature-notes/generative-config.mdx';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.generative.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.generative-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchGenerativeTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchGenerativeTest.cs";
 
 Retrieval Augmented Generation (RAG) combines information retrieval with generative AI models.
 
 In Weaviate, a RAG query consists of two parts: *a search query*, and a *prompt for the model*. Weaviate first performs the search, then passes both the search results and your prompt to a generative AI model before returning the generated response.
 
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
+
 ## Configure a generative model provider
 
-:::info Added in `v1.30`
-:::
+<GenerativeConfig/>
 
 To use RAG with a [generative model integration](../model-providers/index.md):
 - [set a default configuration for the collection](../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) and/or
@@ -35,7 +42,6 @@ To use RAG with a [generative model integration](../model-providers/index.md):
       language="python"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -51,12 +57,21 @@ To use RAG with a [generative model integration](../model-providers/index.md):
 ```
 
   </TabItem>
-    <TabItem value="java" label="Java">
-
-```ts
-// Java support coming soon
-```
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DynamicRag"
+      endMarker="// END DynamicRag"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DynamicRag"
+      endMarker="// END DynamicRag"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -86,9 +101,6 @@ For more information on the available modeld and their additional options, see t
 :::
 ## Named vectors
 
-:::info Added in `v1.24`
-:::
-
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
 <Tabs className="code" groupId="languages">
@@ -100,8 +112,6 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -110,8 +120,22 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
       language="ts"
     />
   </TabItem>
-
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START NamedVectorNearTextPython"
+      endMarker="// END NamedVectorNearTextPython"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NamedVectorNearText"
+      endMarker="// END NamedVectorNearText"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -156,8 +180,6 @@ The properties you use in the prompt do not have to be among the properties you 
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -166,8 +188,6 @@ The properties you use in the prompt do not have to be among the properties you 
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -176,7 +196,22 @@ The properties you use in the prompt do not have to be among the properties you 
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SingleGenerativeProperties"
+      endMarker="// END SingleGenerativeProperties"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SingleGenerativeProperties"
+      endMarker="// END SingleGenerativeProperties"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -202,8 +237,7 @@ Single prompt result: Which country in ancient history had more kings than any o
 
 ### Additional parameters
 
-:::info Added in `v1.30`
-:::
+<GenerativeConfig/>
 
 You can use *generative parameters* to specify additional options when performing a single prompt search:
 
@@ -231,12 +265,21 @@ You can use *generative parameters* to specify additional options when performin
 ```
 
   </TabItem>
-    <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SingleGenerativeParametersTS"
+      endMarker="// END SingleGenerativeParametersTS"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SingleGenerativeParameters"
+      endMarker="// END SingleGenerativeParameters"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -284,8 +327,6 @@ Grouped task search returns one response that includes all of the query results.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -294,8 +335,6 @@ Grouped task search returns one response that includes all of the query results.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -304,7 +343,22 @@ Grouped task search returns one response that includes all of the query results.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GroupedGenerative"
+      endMarker="// END GroupedGenerative"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GroupedGenerative"
+      endMarker="// END GroupedGenerative"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -337,8 +391,6 @@ Define object `properties` to use in the prompt. This limits the information in 
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -347,8 +399,6 @@ Define object `properties` to use in the prompt. This limits the information in 
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -357,7 +407,22 @@ Define object `properties` to use in the prompt. This limits the information in 
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GroupedGenerativeProperties"
+      endMarker="// END GroupedGenerativeProperties"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GroupedGenerativeProperties"
+      endMarker="// END GroupedGenerativeProperties"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -379,8 +444,7 @@ Grouped task result: The commonality among these animals is that they are all na
 
 ### Additional parameters
 
-:::info Added in `v1.30`
-:::
+<GenerativeConfig/>
 
 You can use *generative parameters* to specify additional options when performing grouped tasks:
 
@@ -408,12 +472,21 @@ You can use *generative parameters* to specify additional options when performin
 ```
 
   </TabItem>
-    <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GroupedGenerativeParameters"
+      endMarker="// END GroupedGenerativeParameters"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GroupedGenerativeParameters"
+      endMarker="// END GroupedGenerativeParameters"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -462,12 +535,21 @@ The following fields are available for generative search with images:
 ```
 
   </TabItem>
-    <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START WorkingWithImages"
+      endMarker="// END WorkingWithImages"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START WorkingWithImages"
+      endMarker="// END WorkingWithImages"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 

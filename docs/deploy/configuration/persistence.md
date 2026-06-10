@@ -91,15 +91,19 @@ changed the thresholds) you can use the <SkipLink href="/weaviate/api/rest#tag/s
 
 ## Disk access method
 
-:::info Added in `v1.21`
-:::
-
 Weaviate maps data on disk to memory. To configure how Weaviate uses virtual memory, set the `PERSISTENCE_LSM_ACCESS_STRATEGY` environment variable. The default value is `mmap`. Use `pread` to as an alternative.
 
 The two functions reflect different under-the-hood memory management behaviors. `mmap` uses a memory-mapped file, which means that the file is mapped into the virtual memory of the process. `pread` is a function that reads data from a file descriptor at a given offset.
 
 In general, `mmap` may be a preferred option with memory management benefits. However, if you experience stalling situations under heavy memory load, we suggest trying `pread` instead.
 
+## Object Time-To-Live (TTL)
+
+import TtlPreview from '/_includes/feature-notes/ttl-status.mdx';
+
+<TtlPreview/>
+
+You can configure automatic deletion of objects after a specified time period using Time-To-Live (TTL) settings at the collection level. Read more [about it](/weaviate/concepts/data#time-to-live-ttl) or how to [set it up](/weaviate/manage-collections/time-to-live).
 
 ## Related pages
 - [Configuration: Backups](/deploy/configuration/backups.md)

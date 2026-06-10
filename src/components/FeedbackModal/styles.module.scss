@@ -1,0 +1,141 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.modal {
+  background-color: var(--ifm-background-surface-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--ifm-font-color-base);
+  position: relative; // For positioning the close button
+
+  h3 {
+    margin-top: 0;
+    padding-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--ifm-color-emphasis-700);
+  }
+}
+
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-bottom: 1rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+}
+
+.commentLabel {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 4px;
+    background-color: var(--ifm-background-surface-color);
+    color: var(--ifm-font-color-base);
+    resize: vertical;
+    font-family: inherit;
+
+    &:focus {
+      border-color: #130c49;
+      outline: none;
+    }
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.githubContainer {
+  margin-top: 0.75rem;
+  text-align: right;
+}
+
+.githubButton {
+  background: none;
+  border: none;
+  color: var(--ifm-link-color);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 0.9rem;
+
+  &:hover {
+    color: var(--ifm-link-hover-color);
+    text-decoration: underline;
+  }
+}
+
+.submitButton {
+  background-color: #130c49 !important;
+  border-color: #130c49 !important;
+
+  &:hover {
+    background-color: #262262 !important;
+  }
+
+  // Dark mode styles
+  [data-theme='dark'] & {
+    color: white !important;
+  }
+}
+
+.cancelButton {
+  /* Style overrides if needed */
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ifm-color-emphasis-500);
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: var(--ifm-color-emphasis-800);
+  }
+}

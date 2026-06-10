@@ -1,15 +1,11 @@
 ---
 title: Enable and configure RBAC
-sidebar_label: RBAC
+sidebar_label: Enable and configure RBAC
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
-
-:::info Added in `v1.29`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
-:::
 
 Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to **[define roles and assign permissions](/weaviate/configuration/rbac/manage-roles)** to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
 
@@ -64,12 +60,6 @@ import DynamicUserManagement from '/_includes/configuration/dynamic-user-managem
 
 <DynamicUserManagement />
 
-:::caution Changes in environment variables
-As of Weaviate version `v1.29` these environment variables have changed:
-- `AUTHORIZATION_VIEWER_USERS` and `AUTHORIZATION_ADMIN_USERS` were removed
-- `AUTHORIZATION_ADMIN_USERS` has been replaced with `AUTHORIZATION_RBAC_ROOT_USERS`
-:::
-
 ## Kubernetes <i class="fa fa-cubes"></i> {#kubernetes}
 
 For Kubernetes deployments using Helm, API key authentication can be configured in the `values.yaml` file under the `authorization` section. Here's an example configuration:
@@ -105,6 +95,21 @@ This configuration:
 
 You can connect to your instance with the root user in order to [create new users](/weaviate/configuration/rbac/manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](/weaviate/configuration/rbac/manage-roles.mdx).
 
+## Authorization audit logging
+
+When RBAC is enabled, Weaviate automatically logs all authorization decisions for audit purposes. These logs capture:
+
+- User making the request
+- Action being authorized
+- Authorization decision (allowed or denied)
+- User groups (if applicable)
+- Source IP address (optional)
+- Resource being accessed
+
+Audit logs are written at the `info` level for successful authorizations and `error` level for denials. No additional configuration is required - audit logging is automatic when RBAC is enabled.
+
+For details on log format, how to collect and analyze authorization audit logs, and best practices for log retention, see the [Logging configuration page](./logging.md#authorization-audit-logging).
+
 ## RBAC and performance
 
 RBAC is a powerful feature that allows you to define fine-grained access control policies. However, it can also have an impact on performance as each operation must be checked against the user's permissions.
@@ -122,7 +127,7 @@ Here are some tips to optimize performance when using RBAC:
 - [RBAC: Overview](/weaviate/configuration/rbac/index.mdx)
 - [RBAC: Manage roles](/weaviate/configuration/rbac/manage-roles.mdx)
 - [RBAC: Manage users](/weaviate/configuration/rbac/manage-users.mdx)
-- [RBAC: Tutorial](/deploy/tutorials/rbac.mdx)
+- [RBAC: Tutorial](/weaviate/tutorials/rbac.mdx)
 
 ## Questions and feedback
 

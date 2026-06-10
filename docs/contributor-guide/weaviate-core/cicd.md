@@ -81,7 +81,7 @@ disadvantages: Mainly deviating code-bases and painful merge conflicts.
 
 *This section only applies to Weaviate employees. Outside contributors cannot make
 releases. If you have made a contribution and think it should be released,
-please let us know on the public Weaviate Slack.*
+please let us know on the [Weaviate Community Forum](https://forum.weaviate.io/).*
 
 There is a convenience script located at `tools/prepare_release.sh`, to use it
 adhere to the following steps:

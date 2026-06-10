@@ -1,0 +1,50 @@
+.kapaAiLink {
+  background: transparent;
+  border: none;
+  color: var(--site-primary, var(--ifm-color-primary));
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.125rem;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+
+  // Subtle underline effect
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0.125rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  &:hover {
+    background-color: var(--ifm-hover-overlay);
+    transform: translateY(-1px);
+    color: var(--site-primary, var(--ifm-color-primary));
+
+    &::after {
+      opacity: 0.8;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus {
+    outline: 2px solid var(--ifm-color-primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+}

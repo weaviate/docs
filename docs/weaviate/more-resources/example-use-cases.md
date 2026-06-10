@@ -19,7 +19,7 @@ A vector databases enables fast, efficient similarity searches on and across any
 | --- | --- | --- | --- |
 | Plant search | Semantic search over plants.  | Text | [JavaScript](https://github.com/weaviate-tutorials/DEMO-text-search-plants) |
 | Wine search | Semantic search over wines. | Text | [Python](https://github.com/weaviate-tutorials/DEMO-text-search-wines) |
-| Book recommender system ([Video](https://www.youtube.com/watch?v=SF1ZlRjVsxw), [Demo](https://bookrecs.weaviate.io/)) | Find book recommendations based on search query. | Text | [TypeScript](https://github.com/weaviate/BookRecs) |
+| Book recommender system ([Video](https://www.youtube.com/watch?v=SF1ZlRjVsxw)) | Find book recommendations based on search query. | Text | [TypeScript](https://github.com/weaviate/BookRecs) |
 | Movie recommender system ([Blog](https://medium.com/towards-data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4)) | Find similar movies. | Text | [JavaScript](https://github.com/weaviate-tutorials/awesome-moviate) |
 | Multilingual Wikipedia Search | Search through Wikipedia in multiple languages. | Text | [TypeScript](https://github.com/weaviate/weaviate-examples/tree/main/cohere-multilingual-wikipedia-search/frontend) |
 | Podcast search | Semantic search over podcast episodes. | Text | [Python](https://github.com/weaviate-tutorials/DEMO-semantic-search-podcast) |
@@ -37,8 +37,9 @@ Vector databases help to address some of large language models (LLMs) limitation
 
 |Title | Description | Modality | Code |
 | --- | --- | --- | --- |
-| Verba, the golden RAGtriever ([Video](https://www.youtube.com/watch?v=OSt3sFT1i18 ), [Demo](https://verba.weaviate.io/)) | Retrieval-Augmented Generation (RAG) system to chat with Weaviate documentation and blog posts. | Text | [Python](https://github.com/weaviate/Verba) |
-| HealthSearch ([Blog](https://weaviate.io/blog/healthsearch-demo), [Demo](https://healthsearch-frontend.onrender.com/)) | Recommendation system of health products based on symptoms. | Text  | [Python](https://github.com/weaviate/healthsearch-demo) |
+
+| Verba, the golden RAGtriever ([Video](https://www.youtube.com/watch?v=OSt3sFT1i18)) | Retrieval-Augmented Generation (RAG) system to chat with Weaviate documentation and blog posts. | Text | [Python](https://github.com/weaviate/Verba) |
+| HealthSearch ([Blog](https://weaviate.io/blog/healthsearch-demo)) | Recommendation system of health products based on symptoms. | Text  | [Python](https://github.com/weaviate/healthsearch-demo) |
 | Magic Chat | Search through Magic The Gathering cards | Text | [Python](https://github.com/weaviate/st-weaviate-connection/tree/main) |
 | AirBnB Listings ([Blog](https://weaviate.io/blog/generative-feedback-loops-with-llms)) | Generation of customized advertisements for AirBnB listings with Generative Feedback Loops | Text | [Python](https://github.com/weaviate/Generative-Feedback-Loops/) |
 | Distyll | Summarize text or video content. | Text | [Python](https://github.com/databyjp/distyll) |

@@ -5,8 +5,9 @@ image: og/docs/integrations/provider_integrations_model2vec.jpg
 # tags: ['model providers', 'model2vec', 'embeddings']
 ---
 
-:::info Added in `v1.31.0`
-:::
+import Model2vec from '/_includes/feature-notes/model2vec.mdx';
+
+<Model2vec/>
 
 # Model2Vec Embeddings with Weaviate
 
@@ -36,14 +37,14 @@ Your Weaviate instance must be configured with the Model2Vec vectorizer integrat
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running Model2Vec instance.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires a locally running Model2Vec instance.
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -54,7 +55,7 @@ To use this integration, you must configure the container image of the Model2Vec
 
 The following example shows how to configure the Model2Vec integration in Weaviate:
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="deployments">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file

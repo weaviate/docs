@@ -7,9 +7,6 @@ image: og/docs/integrations/provider_integrations_friendliai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-:::info Added in `v1.26.3`
-:::
-
 FriendliAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with FriendliAI APIs, allowing users to leverage FriendliAI's inference engine within the Weaviate Database.
 
 FriendliAI integration empowers developers to build sophisticated AI-driven applications with ease.

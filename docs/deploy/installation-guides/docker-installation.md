@@ -13,10 +13,6 @@ You can [run Weaviate with default settings from a command line](#run-weaviate-w
 
 ## Run Weaviate with default settings
 
-:::info Added in v1.24.1
-
-:::
-
 To run Weaviate with Docker using default settings, run this command from from your shell:
 
 ```bash
@@ -28,6 +24,10 @@ The command sets the following default [environment variables](#environment-vari
 - `PERSISTENCE_DATA_PATH` defaults to `./data`
 - `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED` defaults to `true`.
 - `QUERY_DEFAULTS_LIMIT` defaults to `10`.
+
+import TelemetryNotice from '/_includes/telemetry-notice.mdx';
+
+<TelemetryNotice/>
 
 ## Customize your Weaviate configuration
 
@@ -135,13 +135,21 @@ To start your Weaviate instance, run this command from your shell:
 docker compose up -d
 ```
 
+## Hosting
+
+To make Weaviate accessible over both HTTP and gRPC, you need to expose their respective ports (by default `8080` for HTTP and `50051` for gRPC). To access these services via a domain, configure your reverse proxy to forward traffic to both ports. The recommended approach is to use a subdomain prefixed with `grpc-` for gRPC traffic, which ensures compatibility with most Weaviate clients.
+
+For example, if your domain is `weaviate.example.com`, configure your reverse proxy as follows:
+- `weaviate.example.com` → `localhost:8080` (HTTP)
+- `grpc-weaviate.example.com` → `localhost:50051` (gRPC, typically using h2c)
+
 ## Configurator
 
-The Configurator can generate a `docker-compose.yml` file for you. Use the Configurator to select specific Weaviate modules, including vectorizers that run locally (i.e. `text2vec-transformers`, or `multi2vec-clip`)
+The Configurator (experimental) can generate a `docker-compose.yml` file for you. Use the Configurator to select specific Weaviate modules, including vectorizers that run locally (i.e. `text2vec-transformers`, or `multi2vec-clip`)
 
-import DocsConfigGen from '@site/src/components/DockerConfigGen';
+import WeaviateConfigurator from '@site/src/components/WeaviateConfigurator';
 
-<DocsConfigGen />
+<WeaviateConfigurator />
 
 ## Environment variables
 

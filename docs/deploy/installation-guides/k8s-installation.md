@@ -5,9 +5,11 @@ image: og/docs/installation.jpg
 # tags: ['installation', 'Kubernetes']
 ---
 
+<!-- TODO[g-despot] This needs to be replaced with something else
 :::tip End-to-end guide
 For a tutorial on how to use [minikube](https://minikube.sigs.k8s.io/docs/) to deploy Weaviate on Kubernetes, see the Weaviate Academy course, [Weaviate on Kubernetes](../../academy/deployment/k8s/index.md).
 :::
+-->
 
 ## Requirements
 
@@ -15,6 +17,10 @@ For a tutorial on how to use [minikube](https://minikube.sigs.k8s.io/docs/) to d
 * The cluster needs to be able to provision `PersistentVolumes` using Kubernetes' `PersistentVolumeClaims`.
 * A file system that can be mounted read-write by a single node to allow Kubernetes' `ReadWriteOnce` access mode.
 * Helm version v3 or higher. The current Helm chart is version `||site.helm_version||`.
+
+import TelemetryNotice from '/_includes/telemetry-notice.mdx';
+
+<TelemetryNotice/>
 
 ## Weaviate Helm chart
 

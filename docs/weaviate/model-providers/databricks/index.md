@@ -7,9 +7,6 @@ image: og/docs/integrations/provider_integrations_databricks.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-:::info Added in `v1.26.3`
-:::
-
 Databricks offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with Databricks' Foundation Model APIs, allowing users to leverage Databricks' models directly from the Weaviate Database.
 
 These integrations empower developers to build sophisticated AI-driven applications with ease.

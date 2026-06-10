@@ -5,14 +5,15 @@ sidebar_position: 1
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.30`
-:::
+import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
 
-Weaviate supports runtime configuration management, allowing certain environment variables to be updated and read by Weaviate on the fly without the need for restarts. This feature helps you adapt settings in real time and fine-tune your instance based on evolving needs.
+<RuntimeConfig/>
 
-## Set up runtime configuration
+Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 
-Follow these steps to set up runtime configuration management:
+Each runtime configuration corresponds to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable.
+
+## How to set up runtime configuration
 
 1.  **Enable the feature**
     Set the environment variable `RUNTIME_OVERRIDES_ENABLED` to `true`.
@@ -20,8 +21,8 @@ Follow these steps to set up runtime configuration management:
 2.  **Provide an overrides file**
     Create a configuration file that contains the runtime overrides and point to it using the `RUNTIME_OVERRIDES_PATH` variable.
 
-    \<details\>
-    \<summary\>Example configuration override file\</summary\>
+    <details>
+    <summary>Example configuration override file</summary>
 
     ```yaml title="overrides.yaml"
     maximum_allowed_collections_count: 8
@@ -29,7 +30,7 @@ Follow these steps to set up runtime configuration management:
     async_replication_disabled: false
     ```
 
-    \</details\>
+    </details>
 
 3.  **Set the update interval**
     Set the `RUNTIME_OVERRIDES_LOAD_INTERVAL` variable to define how often Weaviate should check for configuration changes (default is `2m`).
@@ -45,19 +46,88 @@ The following environment variables are used to control runtime configuration ma
 | :-------------------------------- | :--------------------------------------------------------------------------- | :------------------- |
 | `RUNTIME_OVERRIDES_ENABLED`       | If set, the runtime configuration management is enabled. Default: `false`    | `boolean`            |
 | `RUNTIME_OVERRIDES_PATH`          | Path of the configuration override file.                      | `string - file path` |
-| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Refresh rate for checking if there are configuration changes. Default: `2m`  | `string - duration`  |
+| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | The interval between reading the configuration override file. Default: `2m`  | `string - duration`  |
 
-## Runtime configurable environment variables
+## Available overrides
 
-Below is a list of the environment variables that can be changed at runtime and the names that should be used in the override file:
+The following overrides are currently supported:
 
-| Environment variable name           | Runtime override name               |
-| :---------------------------------- | :---------------------------------- |
-| `ASYNC_REPLICATION_DISABLED`        | `async_replication_disabled`        |
-| `AUTOSCHEMA_ENABLED`                | `autoschema_enabled`                |
-| `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | `maximum_allowed_collections_count` |
+### General
 
-For more details about the variables, check out the [Environment variables](./index.md) page.
+| Runtime override name                            | Environment variable name                    |
+| :----------------------------------------------- | :------------------------------------------- |
+| `async_replication_disabled`                     | `ASYNC_REPLICATION_DISABLED`                 |
+| `async_replication_scheduler_workers`            | `ASYNC_REPLICATION_SCHEDULER_WORKERS`        |
+| `async_replication_hashtree_init_concurrency`    | `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`|
+| `async_replication_cluster_max_workers` _(removed in `v1.38`)_ | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` _(removed in `v1.38`)_ |
+| `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
+| `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
+| `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
+| `export_default_bucket`                          | `EXPORT_DEFAULT_BUCKET`                      |
+| `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
+| `export_enabled`                                 | `EXPORT_ENABLED`                             |
+| `export_parallelism`                             | `EXPORT_PARALLELISM`                         |
+| `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
+| `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
+| `objects_ttl_batch_size`                          | `OBJECTS_TTL_BATCH_SIZE`                     |
+| `objects_ttl_concurrency_factor`                  | `OBJECTS_TTL_CONCURRENCY_FACTOR`             |
+| `objects_ttl_delete_schedule`                    | `OBJECTS_TTL_DELETE_SCHEDULE`                |
+| `objects_ttl_pause_duration`                      | `OBJECTS_TTL_PAUSE_DURATION`                 |
+| `objects_ttl_pause_every_no_batches`              | `OBJECTS_TTL_PAUSE_EVERY_NO_BATCHES`         |
+| `operational_mode`                               | `OPERATIONAL_MODE`                           |
+| `query_slow_log_enabled`                         | `QUERY_SLOW_LOG_ENABLED`                     |
+| `query_slow_log_threshold`                       | `QUERY_SLOW_LOG_THRESHOLD`                   |
+| `replica_movement_minimum_async_wait`            | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT`        |
+| `replicated_indices_request_queue_enabled`       | `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED`   |
+| `revectorize_check_disabled`                     | `REVECTORIZE_CHECK_DISABLED`                 |
+| `tenant_activity_read_log_level`                 | `TENANT_ACTIVITY_READ_LOG_LEVEL`             |
+| `tenant_activity_write_log_level`                | `TENANT_ACTIVITY_WRITE_LOG_LEVEL`            |
+
+### Raft settings
+
+| Runtime override name       | Environment variable name   |
+| :-------------------------- | :-------------------------- |
+| `raft_drain_sleep`          | `RAFT_DRAIN_SLEEP`          |
+| `raft_timeouts_multiplier`  | `RAFT_TIMEOUTS_MULTIPLIER`  |
+
+### Usage tracking
+
+| Runtime override name          | Environment variable name      |
+| :----------------------------- | :----------------------------- |
+| `usage_gcs_bucket`             | `USAGE_GCS_BUCKET`             |
+| `usage_gcs_prefix`             | `USAGE_GCS_PREFIX`             |
+| `usage_policy_version`         | `USAGE_POLICY_VERSION`         |
+| `usage_s3_bucket`              | `USAGE_S3_BUCKET`              |
+| `usage_s3_prefix`              | `USAGE_S3_PREFIX`              |
+| `usage_scrape_interval`        | `USAGE_SCRAPE_INTERVAL`        |
+| `usage_shard_jitter_interval`  | `USAGE_SHARD_JITTER_INTERVAL`  |
+| `usage_verify_permissions`     | `USAGE_VERIFY_PERMISSIONS`     |
+
+### Authentication
+
+| Runtime override name                      | Environment variable name              |
+| :----------------------------------------- | :------------------------------------- |
+| `authentication_oidc_certificate`          | `AUTHENTICATION_OIDC_CERTIFICATE`      |
+| `authentication_oidc_client_id`            | `AUTHENTICATION_OIDC_CLIENT_ID`        |
+| `authentication_oidc_groups_claim`         | `AUTHENTICATION_OIDC_GROUPS_CLAIM`     |
+| `authentication_oidc_issuer`               | `AUTHENTICATION_OIDC_ISSUER`           |
+| `authentication_oidc_jwks_url`             | `AUTHENTICATION_OIDC_JWKS_URL`         |
+| `authentication_oidc_scopes`               | `AUTHENTICATION_OIDC_SCOPES`           |
+| `authentication_oidc_skip_client_id_check` | `AUTHENTICATION_OIDC_SKIP_CLIENT_ID_CHECK` |
+| `authentication_oidc_username_claim`       | `AUTHENTICATION_OIDC_USERNAME_CLAIM`   |
+
+### MCP
+
+Added in `v1.38`. Toggling these at runtime does not require a cluster restart — the HTTP handlers stay registered and per-request checks pick up the new value. See [MCP server — Toggle without restart](/weaviate/configuration/mcp-server.mdx#toggle-without-restart) for behavior details.
+
+| Runtime override name             | Environment variable name           |
+| :-------------------------------- | :---------------------------------- |
+| `mcp_server_enabled`              | `MCP_SERVER_ENABLED`                |
+| `mcp_server_write_access_enabled` | `MCP_SERVER_WRITE_ACCESS_ENABLED`   |
+
+`MCP_SERVER_CONFIG_PATH` is intentionally **not** runtime-configurable — tool descriptions are baked into the tool schemas at registration.
+
+Refer to the [Environment variables](./index.md) page for descriptions on each configuration option
 
 ## Operation and monitoring
 

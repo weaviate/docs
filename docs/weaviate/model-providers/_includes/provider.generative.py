@@ -37,9 +37,9 @@ def import_data():
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"],
-        "X-Cohere-Api-Key": os.environ["COHERE_APIKEY"],
-        "X-Anthropic-Api-Key": os.environ["ANTHROPIC_APIKEY"],
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"],
+        "X-Cohere-Api-Key": os.environ["COHERE_API_KEY"],
+        "X-Anthropic-Api-Key": os.environ["ANTHROPIC_API_KEY"],
     }
 )
 
@@ -421,6 +421,92 @@ response = collection.generate.near_text(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicGenerativeContextualAI
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.contextualai()
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicGenerativeContextualAI
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START GenerativeContextualAICustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.contextualai(
+        model="v2"
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END GenerativeContextualAICustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+
+# START FullGenerativeContextualAI
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.contextualai(
+        # # These parameters are optional
+        # model="v2",
+        # temperature=0.7,
+        # max_tokens=1024,
+        # top_p=0.9,
+        # system_prompt="You are a helpful assistant"
+        # avoid_commentary=True,
+        # knowledge=["Custom knowledge override", "Additional context"],
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullGenerativeContextualAI
+
+# clean up
+client.collections.delete("DemoCollection")
+import_data()
+
+# START RuntimeModelSelectionContextualAI
+from weaviate.classes.config import Configure
+from weaviate.classes.generate import GenerativeConfig
+
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="A holiday film",
+    limit=2,
+    grouped_task="Write a tweet promoting these two movies",
+    # highlight-start
+    generative_provider=GenerativeConfig.contextualai(
+        # # These parameters are optional
+        # model="v2",
+        # temperature=0.7,
+        # max_tokens=1024,
+        # top_p=0.9,
+        # system_prompt="You are a helpful assistant"
+        # avoid_commentary=True,
+        # knowledge=["Custom knowledge override", "Additional context"],
+    ),
+    # Additional parameters not shown
+    # highlight-end
+)
+# END RuntimeModelSelectionContextualAI
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicGenerativeDatabricks
 from weaviate.classes.config import Configure
 
@@ -582,7 +668,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.google(
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
-        model_id="gemini-1.0-pro"
+        model_id="gemini-2.5-flash"
     )
     # highlight-end
     # Additional parameters not shown
@@ -599,7 +685,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.google(
-        model_id="gemini-pro"
+        model_id="gemini-2.5-flash"
     )
     # highlight-end
     # Additional parameters not shown

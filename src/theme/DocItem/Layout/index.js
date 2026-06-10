@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import Head from "@docusaurus/Head";
 import { useWindowSize } from "@docusaurus/theme-common";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import DocItemPaginator from "@theme/DocItem/Paginator";
@@ -15,7 +16,36 @@ import styles from "./styles.module.css";
 
 /* ---- START: Customizations ---- */
 import FeedbackComponent from "@site/src/components/Feedback";
+import PageRatingWidget from "@site/src/components/PageRatingWidget";
+import ContextualMenu from "@site/src/components/ContextualMenu";
 /* ---- END: Customizations ---- */
+
+// Emit a schema.org FAQPage JSON-LD block when the page's frontmatter declares
+// a `faq:` list. Google reads this for entity understanding; rich-result FAQ
+// snippets themselves are restricted post-2024 so don't expect a SERP card.
+function FaqJsonLd({ faq }) {
+  if (!Array.isArray(faq) || faq.length === 0) return null;
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq
+      .filter((item) => item && item.question && item.answer)
+      .map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+  };
+  if (data.mainEntity.length === 0) return null;
+  return (
+    <Head>
+      <script type="application/ld+json">{JSON.stringify(data)}</script>
+    </Head>
+  );
+}
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -53,13 +83,21 @@ export default function DocItemLayout({ children }) {
 
   return (
     <>
+      <FaqJsonLd faq={frontMatter.faq} />
       <div className="row">
         <div className={clsx("col", !docTOC.hidden && styles.docItemCol)}>
           <ContentVisibility metadata={metadata} />
           <DocVersionBanner />
           <div className={styles.docItemContainer}>
             <article>
-              <DocBreadcrumbs />
+              <div className={styles.docHeader}>
+                <div className={styles.docHeaderLeft}>
+                  <DocBreadcrumbs />
+                </div>
+                <div className={styles.docHeaderRight}>
+                  <ContextualMenu />
+                </div>
+              </div>
               <DocVersionBadge />
               {docTOC.mobile}
               <DocItemContent>{children}</DocItemContent>
@@ -67,13 +105,17 @@ export default function DocItemLayout({ children }) {
             </article>
             <DocItemPaginator />
           </div>
+          {/* ---- REMOVED: Feedback component from main column ---- */}
         </div>
         {docTOC.desktop && (
           <div className="col col--3">
             {/* ---- START: Customizations ---- */}
-            {/* TOC in sticky container */}
-            <div className={styles.tocStickyContainer}>{docTOC.desktop}</div>
-            {/* Feedback component aligned with TOC column */}
+            <div className={styles.customTocStickyContainer}>
+              {docTOC.desktop}
+              {/* TODO: Temporarily hidden while debugging env vars */}
+              <PageRatingWidget />
+            </div>
+            {/* Feedback component back in TOC column */}
             {showFeedback && (
               <div className={styles.feedbackWrapper}>
                 <FeedbackComponent />

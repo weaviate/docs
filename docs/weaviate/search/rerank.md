@@ -2,6 +2,7 @@
 title: Reranking
 sidebar_position: 75
 image: og/docs/howto.jpg
+description: "Rerank search results for improved relevance with code examples in Python, TypeScript, Go, Java, and C#."
 # tags: ['how to', 'rank']
 ---
 
@@ -15,8 +16,7 @@ import SimilarityPyCode from '!!raw-loader!/_includes/code/howto/search.similari
 import SimilarityPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.similarity-v3.py';
 import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
-
-
+import BoostPreview from '/_includes/feature-notes/boost.mdx';
 
 Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
 
@@ -33,10 +33,11 @@ A collection can have multiple rerankers. If multiple `reranker` modules are ena
 
 </details>
 
-## Named vectors
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
 
-:::info Added in `v1.24`
-:::
+<QueryAgentTip/>
+
+## Named vectors
 
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
@@ -195,6 +196,12 @@ The response should look like this:
   />
 
 </details>
+
+## Soft-rank with Boost
+
+<BoostPreview/>
+
+For lightweight result reordering based on filters, property values, or time / numeric decay — without calling an external rerank model — use [Boost](./boost.md). Rerank and Boost can be used independently. Pick rerank when you need a smarter model to re-rank the top-N, and Boost when you want to bias by simple signals already on the objects.
 
 ## Related pages
 

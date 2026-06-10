@@ -19,15 +19,14 @@ import UserPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac
 import UserTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.users.ts";
 import OidcUserPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.users.py";
 import OidcUserTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.users.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-users.java";
-import OidcUserJavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-oidc-users.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.users_test.go";
 import OidcUserGoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.oidc.users_test.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
-:::info Added in `v1.29` and `v1.30`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
-User management is available from version `v1.30`.
-:::
+import RbacUserManagement from '/_includes/feature-notes/rbac-user-management.mdx';
+
+<RbacUserManagement/>
 
 In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
 
@@ -78,10 +77,18 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START ListAllUsers"
       endMarker="// END ListAllUsers"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -129,10 +136,18 @@ This example creates a user called `custom-user`.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START CreateUser"
       endMarker="// END CreateUser"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -177,10 +192,18 @@ This example deletes a user called `custom-user`.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START DeleteUser"
       endMarker="// END DeleteUser"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteUser"
+      endMarker="// END DeleteUser"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -216,10 +239,18 @@ This example updates (rotates) the API key for `custom-user`.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START RotateApiKey"
       endMarker="// END RotateApiKey"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -268,10 +299,18 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START AssignRole"
       endMarker="// END AssignRole"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AssignRole"
+      endMarker="// END AssignRole"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -309,10 +348,18 @@ This example removes the role `testRole` from the user `custom-user`.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START RevokeRoles"
       endMarker="// END RevokeRoles"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -348,10 +395,18 @@ Retrieve the role information for any user.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaV6Code}
       startMarker="// START ListUserRoles"
       endMarker="// END ListUserRoles"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -368,7 +423,7 @@ viewer
 
 ## OIDC users: Permissions management <i class="fas fa-user-lock"></i> {#oidc-user-permissions-management}
 
-When using [OIDC](https://www.google.com/search?q=/deploy/configuration/oidc.md), an identity provider authenticates the user and issues tokens, which are then validated by Weaviate. These users can be assigned roles with custom permissions using RBAC.
+When using [OIDC](/deploy/configuration/oidc.md), an identity provider authenticates the user and issues tokens, which are then validated by Weaviate. These users can be assigned roles with custom permissions using RBAC.
 
 ### Assign a role to an OIDC user
 
@@ -403,10 +458,18 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={OidcUserJavaCode}
+      text={JavaV6Code}
       startMarker="// START AssignOidcUserRole"
       endMarker="// END AssignOidcUserRole"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -444,10 +507,18 @@ This example removes the role `testRole` from the user `custom-user`.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={OidcUserJavaCode}
+      text={JavaV6Code}
       startMarker="// START RevokeOidcUserRoles"
       endMarker="// END RevokeOidcUserRoles"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -483,10 +554,18 @@ Retrieve the role information for an OIDC user.
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={OidcUserJavaCode}
+      text={JavaV6Code}
       startMarker="// START ListOidcUserRoles"
       endMarker="// END ListOidcUserRoles"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -503,9 +582,9 @@ viewer
 
 ## Further resources
 
-- [RBAC: Overview](https://www.google.com/search?q=./index.mdx)
-- [RBAC: Configuration](https://www.google.com/search?q=/deploy/configuration/configuring-rbac.md)
-- [RBAC: Manage roles](https://www.google.com/search?q=./manage-roles.mdx)
+- [RBAC: Overview](./index.mdx)
+- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
+- [RBAC: Manage roles](./manage-roles.mdx)
 
 ## Questions and feedback
 

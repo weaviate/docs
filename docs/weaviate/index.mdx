@@ -1,7 +1,7 @@
 ---
 title: Weaviate Database
 sidebar_position: 0
-description: "Complete documentation for Weaviate, the open-source AI-native vector database."
+description: "Complete documentation for Weaviate, the open-source vector database for AI applications."
 image: og/docs/home.jpg
 hide_table_of_contents: false
 # tags: []
@@ -24,11 +24,23 @@ export const welcomeCardsData = [
       </>
     ),
     link: "/weaviate/quickstart",
-    icon: "fas fa-star", // use Font Awesome CSS class
+    icon: "fas fa-star",
+  },
+  {
+    id: "academy",
+    title: "Weaviate Academy",
+    description: (
+      <>
+        Check out <span className={styles.highlight}>Weaviate Academy</span> – a
+        learning platform centered around AI-native development.
+      </>
+    ),
+    link: "https://academy.weaviate.io/",
+    icon: "fa-solid fa-graduation-cap",
   },
 ];
 
-Weaviate _(we-vee-eight)_ is an open-source, AI-native vector database. Use
+Weaviate _(we-vee-eight)_ is an open-source, AI vector database. Use
 this documentation to get started with Weaviate and learn how to get the
 most out of Weaviate's features.
 
@@ -42,14 +54,40 @@ The Weaviate documentation is structured into multiple units based on the servic
 
 {/* Filter out items where isSmall is true */}
 {(() => {
-  const regularItems = Object.fromEntries(
-    Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
-  );
-  
-  <br />
-  return <CardsSection items={regularItems} />;
-  <br />
+const regularItems = Object.fromEntries(
+Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
+);
+
+{" "}
+<br />
+return <CardsSection items={regularItems} className={styles.smallCards} />;
+<br />
 })()}
+
+## AI-assisted coding
+
+Check out our resources on AI-assisted coding (_Vibe coding_) with Weaviate:
+
+export const vibeCodingCardsData = [
+  {
+    id: "new",
+    title: "Weaviate MCP Server",
+    description: "Enable and configure the Weaviate MCP server so LLMs and IDE assistants can interact with your Weaviate instance. ",
+    link: "/weaviate/configuration/mcp-server",
+    icon: "fas fa-book",
+  },
+  {
+    id: "academy",
+    title: "Best practices for coding with AI",
+    description: "Avoid hallucinations and improve your AI-assisted coding experience.",
+    link: "/weaviate/best-practices/code-generation",
+    icon: "fas fa-lightbulb",
+  },
+];
+
+<CardsSection items={vibeCodingCardsData} className={styles.smallCards} />
+
+<br />
 
 ## What is Weaviate?
 
@@ -61,8 +99,14 @@ Weaviate is an **open-source vector database** designed to store and index both 
 - **[Retrieval augmented generation (RAG)](./search/generative.md)**  
   Weaviate can serve as a robust backend for RAG workflows, where vector search is used to retrieve context that enhances the output of generative models, making it easier to generate accurate, context-aware responses.
 
-- **[Agent-driven workflows](../agents/index.md)**  
+- **[Agent-driven workflows](../query-agent/index.md)**  
   Its flexible API and integration with modern AI models make Weaviate suitable for powering applications that rely on intelligent agents. These agents can leverage semantic insights to make decisions or trigger actions based on the data stored in Weaviate.
+
+import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+
+<AcademyAdmonition 
+  courseId="quick-tour-of-weaviate"
+/>
 
 ## The Weaviate Ecosystem
 
@@ -81,7 +125,7 @@ As shown in the high-level overview above, the ecosystem consists of:
 
 - **[Weaviate Database](#what-is-weaviate)**: An open source vector database that stores both objects and vectors.
 - **[Weaviate Cloud](/cloud)**: A fully managed cloud deployment of the Weaviate vector database.
-- **[Weaviate Agents](/agents)**: Pre-built agentic services for Weaviate Cloud users.
+- **[Query Agent](/query-agent)**: A pre-built agentic search service for Weaviate Cloud users.
 - **[Weaviate Embeddings](/cloud/embeddings)**: A managed embedding inference service for Weaviate Cloud users.
 - **[External model providers](/weaviate/model-providers)**: Third-party models that integrate with Weaviate.
 
@@ -98,8 +142,8 @@ export const deploymentCardsData = [
     bgImage: "/img/site/hex-weaviate.svg",
     bgImageLight: "/img/site/hex-weaviate-light.svg",
     listItems: [
-      "From evaluation (sandbox) to production",
-      "Serverless (infrastructure managed by Weaviate)",
+      "From evaluation (free tier) to production",
+      "Shared Cloud (infrastructure managed by Weaviate)",
       "(Optional) Data replication (high-availability)",
       "(Optional) Zero-downtime updates",
     ],

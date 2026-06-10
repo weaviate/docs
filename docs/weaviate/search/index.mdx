@@ -19,6 +19,14 @@ export const searchTopicsData = [
     icon: "fas fa-book-reader",
   },
   {
+    title: "Query Agent (natural language)",
+    description:
+      "Ask questions in plain English - automatically translates to optimized Weaviate queries.",
+    link: "/weaviate/search/query-agent",
+    icon: "fas fa-comments",
+    cloudOnly: true,
+  },
+  {
     title: "Vector similarity search",
     description:
       "Find objects based on vector embedding similarity using `nearVector`, `nearObject`, etc.",
@@ -31,6 +39,13 @@ export const searchTopicsData = [
       "Perform vector similarity searches using images as the query input.",
     link: "/weaviate/search/image",
     icon: "fas fa-image",
+  },
+  {
+    title: "Multimedia search",
+    description:
+      "Search using audio or video files as query inputs with multimedia search.",
+    link: "/weaviate/search/near-media",
+    icon: "fas fa-play-circle",
   },
   {
     title: "Keyword search (BM25F)",
@@ -77,7 +92,7 @@ export const searchTopicsData = [
 ];
 
 <br />
-<CardsSection items={searchTopicsData} />
+<CardsSection items={searchTopicsData} recipeCards />
 <br />
 
 ## Questions and feedback

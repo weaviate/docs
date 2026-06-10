@@ -45,6 +45,7 @@ DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
 DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;
 DOC_SYSTEMS.javaraw = DOC_SYSTEMS.java;
+DOC_SYSTEMS.csharpraw = DOC_SYSTEMS.csharp;
 
 // Custom styles for badges
 const badgeStyles = {
@@ -81,6 +82,22 @@ export const extractFilteredCode = (
   let format;
 
   switch (language) {
+    case "csharp":
+      // remove leading indent of 8 spaces
+      format = (input) => input.replace(/^        /, "");
+      break;
+    case "csharpraw":
+      // remove leading indent of 4 spaces
+      format = (input) => input.replace(/^    /, "");
+      break;
+    case "pyindent":
+      // remove leading indent of 4 spaces (e.g. code inside `async def main()`)
+      format = (input) => input.replace(/^    /, "");
+      break;
+    case "tsindent":
+      // remove leading indent of 2 spaces
+      format = (input) => input.replace(/^  /, "");
+      break;
     case "java":
     case "javaraw":
       format = (input) => input.replace(/^    /, "");
@@ -148,6 +165,7 @@ const FilteredTextBlock = ({
       language2 = "py";
       break;
     case "tsv2":
+    case "tsindent":
       language2 = "ts";
       break;
     case "gonew":
@@ -156,6 +174,12 @@ const FilteredTextBlock = ({
       break;
     case "javaraw":
       language2 = "java";
+      break;
+    case "csharpraw":
+      language2 = "csharp";
+      break;
+    case "pyindent":
+      language2 = "py";
       break;
   }
 

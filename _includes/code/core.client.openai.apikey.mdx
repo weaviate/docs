@@ -52,31 +52,4 @@ func main() {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-package io.weaviate;
-import java.util.ArrayList;
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-
-public class App {
-  public static void main(String[] args) {
-    // highlight-start
-    Map<String, String> headers = new HashMap<String, String>() { {
-      // Replace with your API key
-      put("X-OpenAI-Api-Key", "YOUR-OPENAI-API-KEY");  // Replace with your API key
-      put("X-Azure-Api-Key", "YOUR-AZURE-API-KEY"); // Replace with your API key
-    } };
-    // highlight-end
-
-    Config config = new Config("https", "WEAVIATE_INSTANCE_URL/", headers);
-    // Replace WEAVIATE_INSTANCE_URL with the URL
-    WeaviateClient client = new WeaviateClient(config);
-  }
-}
-```
-
-</TabItem>
 </Tabs>

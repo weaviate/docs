@@ -5,7 +5,7 @@ image: og/docs/installation.jpg
 # tags: ['installation']
 ---
 
-Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](https://console.weaviate.cloud/), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
+Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](/go/console?utm_content=deploy), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
 
 If you are upgrading from a previous version of Weaviate, see the [Migration Guide](/deploy/migration/index.md) for any changes that may affect your installation.
 
@@ -17,6 +17,8 @@ To install and configure Weaviate, see the following:
 - **[Docker Compose](/deploy/installation-guides/docker-installation.md)**: Docker containers are well suited for development and testing.
 - **[Kubernetes](/deploy/installation-guides/k8s-installation.md)**: Kubernetes is ideal for scalable, production deployments.
 - **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
+- **[GCP Marketplace](./gcp-marketplace.md)**: Deploy Weaviate directly from the Google Cloud Marketplace.
+- **[DigitalOcean Managed Weaviate](./digitalocean.md)**: Run Weaviate as a managed service on DigitalOcean (private preview).
 - **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
 - **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
 
@@ -34,13 +36,14 @@ If you are self-hosting, consider experimenting on a small scale with Docker and
 
 ## Unreleased versions
 
-import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
+import RunUnreleasedImages from '/\_includes/configuration/run-unreleased.mdx'
 
 <RunUnreleasedImages />
 
 When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
 
 ## Related pages
+
 - [Connect to Weaviate](docs/weaviate/connections/index.mdx)
 - [Weaviate Quickstart](docs/weaviate/quickstart/index.md)
 - [Weaviate Cloud Quickstart](docs/cloud/quickstart.mdx)
@@ -48,6 +51,6 @@ When you try upcoming features, please provide [feedback](https://github.com/wea
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

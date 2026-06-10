@@ -49,14 +49,6 @@ function Footer() {
                 <i className="fab fa-github" aria-hidden="true"></i>
               </Link>
               <Link
-                to="https://weaviate.io/slack"
-                title="Slack"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="fab fa-slack" aria-hidden="true"></i>
-              </Link>
-              <Link
                 to="https://x.com/weaviate_io"
                 title="X"
                 target="_blank"
@@ -126,7 +118,10 @@ function Footer() {
                   <Link to="/cloud">Weaviate Cloud</Link>
                 </li>
                 <li>
-                  <Link to="/agents">Weaviate Agents</Link>
+                  <Link to="/query-agent">Query Agent</Link>
+                </li>
+                <li>
+                  <Link to="/engram">Engram</Link>
                 </li>
               </ul>
             </div>
@@ -142,51 +137,33 @@ function Footer() {
                     Forum
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="https://weaviate.io/slack"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Slack
-                  </Link>
-                </li>
               </ul>
             </div>
-            {/* 
-            <div className={styles.footerSection}>
-              <h5>Deployment options</h5>
-              <ul>
-                <li>
-                  <Link
-                    to="https://weaviate.io/deployment/serverless"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Serverless Cloud
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="https://weaviate.io/deployment/enterprise-cloud"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Enterprise Cloud
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="https://weaviate.io/deployment/byoc"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Bring Your Own Cloud
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            */}
+            {/* {
+              <div className={styles.footerSection}>
+                <h5>Deployment options</h5>
+                <ul>
+                  <li>
+                    <Link
+                      to="https://weaviate.io/deployment/shared"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Shared Cloud
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="https://weaviate.io/deployment/dedicated"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Dedicated Cloud
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            } */}
           </div>
         </div>
         {/*

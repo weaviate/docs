@@ -34,13 +34,13 @@ Your Weaviate instance must be configured with the Hugging Face Transformers vec
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the Hugging Face model.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires spinning up a container with the Hugging Face model.
 
 </details>
 
 #### Enable the integration module
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 #### Configure the integration
@@ -49,7 +49,7 @@ To use this integration, configure the container image of the Hugging Face Trans
 
 The following example shows how to configure the Hugging Face Transformers integration in Weaviate:
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="deployments">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
@@ -316,7 +316,7 @@ Lists of pre-built Docker images for this integration are available in the tabs 
 
 [You can also build your own Docker image](./embeddings-custom-image.md)
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="deployments">
 <TabItem value="main" label="Single container models">
 
 :::info

@@ -165,7 +165,7 @@ func Test_ManageDataClasses(t *testing.T) {
 				"title": {
 					Vectorizer: map[string]interface{}{
 						"text2vec-openai": map[string]interface{}{
-							"sourceProperties": []string{"title"},
+							"properties": []string{"title"},
 						},
 					},
 					VectorIndexType: "hnsw",
@@ -173,7 +173,7 @@ func Test_ManageDataClasses(t *testing.T) {
 				"title_country": {
 					Vectorizer: map[string]interface{}{
 						"text2vec-openai": map[string]interface{}{
-							"sourceProperties": []string{"title", "country"},
+							"properties": []string{"title", "country"},
 						},
 					},
 					VectorIndexType: "hnsw",
@@ -239,7 +239,7 @@ func Test_ManageDataClasses(t *testing.T) {
 				},
 			},
 			Vectorizer:      "text2vec-openai",
-			VectorIndexType: "hnsw", // Or "flat", "dynamic"
+			VectorIndexType: "hnsw", // Or "flat", "dynamic", "hfresh"
 		}
 		// END SetVectorIndexType
 
@@ -408,6 +408,60 @@ func Test_ManageDataClasses(t *testing.T) {
 		require.NoError(t, err)
 	})
 
+	t.Run("drop inverted index from property", func(t *testing.T) {
+		err = client.Schema().ClassDeleter().WithClassName("Article").Do(ctx)
+		require.NoError(t, err)
+
+		vTrue := true
+		articleClass := &models.Class{
+			Class: "Article",
+			Properties: []*models.Property{
+				{
+					Name:            "title",
+					DataType:        schema.DataTypeText.PropString(),
+					IndexFilterable: &vTrue,
+					IndexSearchable: &vTrue,
+				},
+				{
+					Name:              "chunk_no",
+					DataType:          schema.DataTypeInt.PropString(),
+					IndexRangeFilters: &vTrue,
+				},
+			},
+		}
+		err = client.Schema().ClassCreator().WithClass(articleClass).Do(ctx)
+		require.NoError(t, err)
+
+		// START DropInvertedIndex
+		collection := client.Schema()
+
+		// highlight-start
+		// Drop the searchable inverted index from the "title" property
+		err = collection.PropertyIndexDeleter().
+			WithClassName("Article").
+			WithPropertyName("title").
+			WithSearchable().
+			Do(ctx)
+
+		// Drop the filterable inverted index from the "title" property
+		err = collection.PropertyIndexDeleter().
+			WithClassName("Article").
+			WithPropertyName("title").
+			WithFilterable().
+			Do(ctx)
+
+		// Drop the range filter index from the "chunk_no" property
+		err = collection.PropertyIndexDeleter().
+			WithClassName("Article").
+			WithPropertyName("chunk_no").
+			WithRangeFilters().
+			Do(ctx)
+		// highlight-end
+		// END DropInvertedIndex
+
+		require.NoError(t, err)
+	})
+
 	t.Run("create class with reranker model integration", func(t *testing.T) {
 		err = client.Schema().ClassDeleter().WithClassName("Article").Do(ctx)
 		require.NoError(t, err)
@@ -531,8 +585,8 @@ func Test_ManageDataClasses(t *testing.T) {
 		articleClass := &models.Class{
 			Class:       "Article",
 			Description: "Collection of articles",
+			// Async replication runs by default when the replication factor is greater than 1
 			ReplicationConfig: &models.ReplicationConfig{
-				AsyncEnabled:     true,
 				Factor:           3,
 				DeletionStrategy: models.ReplicationConfigDeletionStrategyTimeBasedResolution,
 			},

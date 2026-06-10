@@ -1,0 +1,47 @@
+import CardsSection from "/src/components/CardsSection";
+import styles from "/src/components/CardsSection/styles.module.scss";
+
+We recommend you check out the following resources to continue learning about Weaviate.
+
+export const nextStepsCardsData = [
+  {
+    title: "Quick tour of Weaviate",
+    description: (
+      <>
+        Continue with the{" "}
+        <span className={styles.highlight}>Quick tour tutorial</span> – an
+        end-to-end guide that covers important topics like configuring
+        collections, searches, etc.
+      </>
+    ),
+    link: "/weaviate/tutorials/quick-tour-of-weaviate",
+    icon: "fas fa-signs-post",
+  },
+  {
+    title: "Weaviate Academy",
+    description: (
+      <>
+        Check out <span className={styles.highlight}>Weaviate Academy</span> – a
+        learning platform centered around AI-native development.
+      </>
+    ),
+    link: "https://academy.weaviate.io/",
+    icon: "fa-solid fa-graduation-cap",
+  },
+  {
+    title: "How-to manuals",
+    description:
+      "Quick examples of how to configure, manage and query Weaviate using client libraries.",
+    link: "/weaviate/guides",
+    icon: "fas fa-book-open",
+  },
+  {
+    title: "Starter guides",
+    description: "Guides and tips for new users learning how to use Weaviate.",
+    link: "/weaviate/starter-guides",
+    icon: "fas fa-compass",
+  },
+];
+
+<CardsSection items={nextStepsCardsData} className={styles.smallCards} />
+<br />

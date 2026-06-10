@@ -1,9 +1,9 @@
 // const fetch = require('node-fetch');
 
-const getRepoVersion = async (repoName) => {
-    try {
-        (process.env.GH_API_TOKEN)
+const MAX_ATTEMPTS = 5;
 
+const getRepoVersion = async (repoName, attempt = 1) => {
+    try {
         const fetch = (await import('node-fetch')).default;
         const response = await fetch( // fetch all release versions
             `https://api.github.com/repos/weaviate/${repoName}/releases`,
@@ -14,7 +14,7 @@ const getRepoVersion = async (repoName) => {
                     'User-Agent': 'request',
                     'authorization': // Use the github token if available
                         (process.env.GH_API_TOKEN) ?
-                            `Bearer ${ process.env.GH_API_TOKEN }` : ''
+                            `Bearer ${process.env.GH_API_TOKEN}` : ''
                 }
             }
         );
@@ -49,8 +49,13 @@ const getRepoVersion = async (repoName) => {
         console.log(`${repoName} ${highestVersion}`);
         return highestVersion;
     } catch (error) {
-        console.error(`Error fetching version for ${repoName}:`, error);
-        // Maybe return a default version or rethrow depending on your needs
+        if (attempt < MAX_ATTEMPTS) {
+            const delay = 1000 * 2 ** (attempt - 1); // 1s, 2s
+            console.warn(`[${repoName}] attempt ${attempt} failed (${error.message}); retrying in ${delay}ms`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+            return getRepoVersion(repoName, attempt + 1);
+        }
+        console.error(`Error fetching version for ${repoName} after ${MAX_ATTEMPTS} attempts:`, error);
         throw error;
     }
 }
@@ -65,6 +70,8 @@ const appendVersionsToConfig = async (config) => {
     config.typescript_client_version = await getRepoVersion('typescript-client');
     config.helm_version = await getRepoVersion('weaviate-helm');
     config.weaviate_cli_version = await getRepoVersion('weaviate-cli');
+    config.agents_python_version = await getRepoVersion('weaviate-agents-python-client');
+    config.agents_typescript_version = await getRepoVersion('agents-typescript-client');
 
     config.spark_connector_version = await getRepoVersion('spark-connector');
 }
@@ -83,10 +90,10 @@ const updateConfigFile = async () => {
     await appendVersionsToConfig(config);
 
     fs.writeFile(path, JSON.stringify(config, null, 2), (err) => {
-      if (err) return console.log(err);
+        if (err) return console.log(err);
 
-      console.log(`Updating ${path}`)
-      console.log(JSON.stringify(config, null, 2));
+        console.log(`Updating ${path}`)
+        console.log(JSON.stringify(config, null, 2));
     });
 }
 

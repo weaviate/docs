@@ -118,9 +118,6 @@ Use the `distance` or `certainty` field to fetch a vector similarity metric betw
 
 #### Distance
 
-:::info Added in `v1.14.0`
-:::
-
 `Distance` is the raw distance determined as part of the vector search, displayed in the same unit as the distance metric used.
 
 See the full overview of [distance metrics and the expected distance ranges](../../config-refs/distances.md#available-distance-metrics).
@@ -156,6 +153,18 @@ The `score` will be the hybrid score of the result, based on the nominated [fusi
 
 The `explainScore` will be the hybrid score of the result, broken down into its vector and keyword search components. This can be used to understand why a result was scored the way it was.
 
+
+### Query profiling
+
+import QueryProfileNote from '/_includes/feature-notes/query-profile.mdx';
+
+<QueryProfileNote/>
+
+Use `queryProfile` to get per-shard timing breakdowns for a search query. Profile data is returned on the response level (attached to the first result in GraphQL), not per object. It includes timing for vector search, keyword scoring, filter evaluation, and object retrieval, broken down by shard and cluster node.
+
+In GraphQL, request `_additional { queryProfile }`. The profile is returned as a JSON string.
+
+See [How-to: Query profiling](../../search/query-profile.md) for full details, available metrics, and Python examples.
 
 ### Classification
 

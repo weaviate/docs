@@ -8,8 +8,8 @@ import weaviate
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"],
-        "X-Cohere-Api-Key": os.environ["COHERE_APIKEY"],
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"],
+        "X-Cohere-Api-Key": os.environ["COHERE_API_KEY"],
     }
 )
 
@@ -56,6 +56,40 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END RerankerCohereCustomModel
+
+# Clean up
+client.collections.delete("DemoCollection")
+
+# START RerankerContextualAIBasic
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    reranker_config=Configure.Reranker.contextualai()
+    # highlight-end
+    # Additional parameters not shown
+)
+# END RerankerContextualAIBasic
+
+# Clean up
+client.collections.delete("DemoCollection")
+
+# START RerankerContextualAICustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    reranker_config=Configure.Reranker.contextualai(
+        model="ctxl-rerank-v2-instruct-multilingual",
+        instruction="Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.",
+        top_n=5
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END RerankerContextualAICustomModel
 
 # Clean up
 client.collections.delete("DemoCollection")

@@ -13,11 +13,11 @@ Weaviate scales well for large projects. Smaller projects, less than 1M objects,
 
 You can set [environment variables](/deploy/configuration/env-vars/index.md) to manage Weaviate's resource usage, as to prevent Weaviate from using all available resources. The following environment variables are available:
 
-- `LIMIT_RESOURCES`: When set to true, Weaviate automatically limits its resource usage. It sets memory usage to 80% of the total memory and uses all but one CPU core. It overrides any `GOMEMLIMIT` values but respects `GOMAXPROCS` settings.
+- [`LIMIT_RESOURCES`](/deploy/configuration/env-vars/index.md#LIMIT_RESOURCES): When set to true, Weaviate automatically limits its resource usage. It sets memory usage to 80% of the total memory and uses all but one CPU core. It overrides any `GOMEMLIMIT` values but respects `GOMAXPROCS` settings.
 
-- `GOMEMLIMIT`: This sets the memory limit for the Go runtime, which should be around 10-20% of the total memory available for Weaviate. It controls the aggressiveness of the Garbage Collector as memory usage approaches this limit.
+- [`GOMEMLIMIT`](/deploy/configuration/env-vars/index.md#GOMEMLIMIT): This sets the memory limit for the Go runtime, which should be around 80-90% of the total memory available for Weaviate. It controls the aggressiveness of the Garbage Collector as memory usage approaches this limit.
 
-- `GOMAXPROCS`: This sets the maximum number of threads for concurrent execution. If set, it's respected by `LIMIT_RESOURCES`, allowing users to specify the exact number of CPU cores Weaviate should use.
+- [`GOMAXPROCS`](/deploy/configuration/env-vars/index.md#GOMAXPROCS): This sets the maximum number of threads for concurrent execution. If set, it's respected by `LIMIT_RESOURCES`, allowing users to specify the exact number of CPU cores Weaviate should use.
 
 These settings help in optimizing Weaviate's performance by balancing resource utilization with the available system resources.
 
@@ -46,9 +46,9 @@ When search throughput is limited, add CPUs to increase the number of queries pe
 Memory determines the maximum supported dataset size. Memory does not directly influence query speed.
 :::
 
-The HNSW index must be stored in memory. The memory required is directly related to the size of your dataset. There is no correlation between the size of your dataset and the current query load. You can use [`product quantization (PQ)`](/weaviate/concepts/vector-quantization#product-quantization) to compress the vectors in your dataset in increase the number of vectors your can hold in memory.
+The HNSW index must be stored in memory. The memory required is directly related to the size of your dataset. There is no correlation between the size of your dataset and the current query load. You can use [`product quantization (PQ)`](/weaviate/concepts/vector-quantization#product-quantization) to compress the vectors in your dataset and increase the number of vectors you can hold in memory. If memory is your main constraint, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) is another option.
 
-Weaviate let's you configure a limit to the number of vectors held in memory in order to prevent unexpected Out-of-Memory ("OOM") situations. The default value is one trillion (`1e12`) objects.  per collection. To adjust the number of objects, update the value of [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) in your index settings.
+Weaviate lets you configure a limit to the number of vectors held in memory in order to prevent unexpected Out-of-Memory ("OOM") situations. The default value is one trillion (`1e12`) objects per collection. To adjust the number of objects, update the value of [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) in your index settings.
 
 Weaviate also uses [memory-mapped files](https://en.wikipedia.org/wiki/Memory-mapped_file) for data stored on disks. Memory-mapped files are efficient, but disk storage is much slower than in-memory storage.
 

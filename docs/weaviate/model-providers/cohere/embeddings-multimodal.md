@@ -8,9 +8,6 @@ image: og/docs/integrations/provider_integrations_cohere.jpg
 
 # Cohere Multimodal Embeddings with Weaviate
 
-:::info Added in `1.25.25`, `1.26.9` and `v1.27.2`
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
@@ -36,14 +33,14 @@ Your Weaviate instance must be configured with the Cohere vectorizer integration
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -54,7 +51,7 @@ You must provide a valid Cohere API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
+- Set the `COHERE_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -169,7 +166,7 @@ For further details on model parameters, see the [Cohere API documentation](http
 
 ## Data import
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for image objects using the specified model.
 
 <Tabs className="code" groupId="languages">
 

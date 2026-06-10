@@ -1,0 +1,113 @@
+# Documentation Feedback Widget
+
+This document provides a brief overview of the feedback widget and how to test it locally.
+
+## What It Is
+
+The feedback widget is a component that appears on documentation pages, allowing internal team members to submit feedback.
+
+When a user clicks "Yes" or "No", a modal opens for optional, detailed feedback. Upon submission, a single data object is sent to a Netlify serverless function, which then stores it in a dedicated Weaviate instance.
+
+For negative feedback, after submitting the initial feedback, users are shown a "Thank You" modal with an optional step to create a GitHub issue. This allows users to provide more detailed feedback without the security concerns of free-text input, as the GitHub issue form handles input sanitization.
+
+## User Flow
+
+### Positive Feedback
+1. User clicks "Yes" (thumbs up)
+2. Modal opens with positive feedback options
+3. User selects options (optional) and clicks "Submit"
+4. Feedback is sent to Weaviate instance
+5. Modal closes
+
+### Negative Feedback
+1. User clicks "No" (thumbs down)
+2. Modal opens with negative feedback options
+3. User selects options (optional) and clicks "Submit"
+4. Feedback is sent to Weaviate instance
+5. "Thank You" modal appears with option to create GitHub issue
+6. User can either:
+   - Click "Create GitHub Issue" (opens pre-populated GitHub issue form in new tab with selected feedback options)
+   - Click "Skip" to close the modal
+
+## Data Payload
+
+The JSON payload sent to the Weaviate instance has the following structure:
+
+```json
+{
+  "page": "/weaviate/installation",
+  "isPositive": false,
+  "options": [0, 3],
+  "comments": "The explanation was confusing.",
+  "timestamp": "2023-10-27T10:00:00.000Z",
+  "testData": true,
+  "hostname": "localhost:8888"
+}
+```
+-   `testData` is `true` for any non-production hostname (e.g., localhost, deploy previews).
+    - Update `PROD_HOSTNAME = 'docs.weaviate.io'` in `src/components/PageRatingWidget/index.js` if the production hostname changes
+-   `isPositive` is a boolean indicating whether the user voted thumbs up (`true`) or thumbs down (`false`).
+-   `options` is an array of integers representing the indexes of selected feedback options from the modal.
+
+## How to Test Locally
+
+The widget's backend is a Netlify serverless function. To run this function locally, you must use the Netlify CLI, as the standard Docusaurus development server cannot process the requests.
+
+### 1. Prerequisites
+
+*   Install the Netlify CLI globally:
+    ```bash
+    npm install -g netlify-cli
+    ```
+*   You will need the Weaviate URL and API key for the feedback database.
+
+### 2. Create a Local Environment File
+
+Create a file named `.env` at the root of the project. **This file should not be committed to git.**
+See `.env.example` for an example of the required environment variables.
+
+Add the credentials to your `.env` file like this:
+
+Note: The variables have `2` suffixes as a result of debugging process. In case of any errors, check with folks with access to the Weaviate instance for the correct keys. The keys need to be scoped to "Functions" in Netlify so that the function can access them.
+
+```
+WEAVIATE_DOCFEEDBACK_URL2="https://your-weaviate-instance.weaviate.cloud"
+WEAVIATE_DOCFEEDBACK_APIKEY2="YourSecretWeaviateApiKey"
+ALLOWED_ORIGIN="http://localhost:8888"  # Set "https://docs.weaviate.io" for prod, "*.netlify.app" for staging and "http://localhost:8888" for local testing
+```
+
+For production, `ALLOWED_ORIGIN` should be set to `https://docs.weaviate.io`.
+
+### 3. Run the Development Server
+
+Start the local development environment using the Netlify CLI:
+
+```bash
+netlify dev
+```
+
+The CLI will automatically start the Docusaurus site and the serverless function, loading your local environment variables. You can now navigate to the local site (usually at `http://localhost:8888`) and test the feedback widget. Submissions will be sent to the configured Weaviate instance.
+
+### 4. Create the Weaviate Collection
+
+Ensure the `DocFeedback` class exists in your Weaviate instance. It should look like this :
+
+```python
+client.collections.create(
+    "DocFeedback",
+    properties=[
+        Property(name="page", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
+        Property(name="isPositive", data_type=DataType.BOOL),
+        Property(name="options", data_type=DataType.INT_ARRAY),
+        Property(name="comments", data_type=DataType.TEXT),
+        Property(name="timestamp", data_type=DataType.DATE),
+        Property(name="testData", data_type=DataType.BOOL),
+        Property(name="hostname", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
+    ],
+    vector_config=[Configure.Vectors.self_provided(name="default")],
+)
+```
+
+## Notes
+
+- Thumbs up & down icons: from Lucide (https://lucide.dev/)

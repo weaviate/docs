@@ -6,7 +6,7 @@ const secondaryNavbarItems = {
     link: "/weaviate",
     links: [
       {
-        label: "Get Started",
+        label: "Get started",
         link: "/weaviate",
         sidebar: "getStartedSidebar",
       },
@@ -16,7 +16,7 @@ const secondaryNavbarItems = {
         sidebar: "guidesSidebar",
       },
       {
-        label: "Model Integrations",
+        label: "Model integrations",
         link: "/weaviate/model-providers",
         sidebar: "modelProvidersSidebar",
       },
@@ -30,13 +30,13 @@ const secondaryNavbarItems = {
         link: "/weaviate/concepts",
         sidebar: "conceptsSidebar",
       },
+      // {
+      //   label: "Recipes",
+      //   link: "/weaviate/recipes",
+      //   sidebar: "weaviateRecipesSidebar",
+      // },
       {
-        label: "Recipes",
-        link: "/weaviate/recipes",
-        sidebar: "weaviateRecipesSidebar",
-      },
-      {
-        label: "Other",
+        label: "Releases & Other",
         link: "/weaviate/release-notes",
         sidebar: "othersSidebar",
         /*
@@ -63,31 +63,24 @@ const secondaryNavbarItems = {
     description: "Deploy, configure, and maintain Weaviate Database",
     link: "/deploy",
     links: [
-      { label: "Get Started", link: "/deploy", sidebar: "deploySidebar" },
-      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar"},
+      { label: "Get started", link: "/deploy", sidebar: "deploySidebar" },
+      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar" },
       /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
-      { label: "Production Guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
-      { label: "Tutorials", link: "/deploy/tutorials/rbac", sidebar: "deployTutorialSidebar"},
-      { label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },
+      { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar" },
       /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
-      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
-      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar"},
+      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar" },
+      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar" },
     ]
   },
 
   agents: {
-    title: "Weaviate Agents",
+    title: "Query Agent",
     icon: "fa fa-robot",
-    description: "Build and deploy intelligent agents with Weaviate",
-    link: "/agents",
+    description: "Run agentic search over your Weaviate Cloud collections",
+    link: "/query-agent",
     links: [
-      { label: "Documentation", link: "/agents", sidebar: "agentsSidebar" },
-      {
-        label: "Recipes",
-        link: "/agents/recipes",
-        sidebar: "agentsRecipesSidebar",
-      },
+      { label: "Documentation", link: "/query-agent", sidebar: "agentsSidebar" }
     ],
   },
   cloud: {
@@ -96,7 +89,7 @@ const secondaryNavbarItems = {
     description: "Manage and scale Weaviate in the cloud",
     link: "/cloud",
     links: [
-      { label: "Get Started", link: "/cloud", sidebar: "cloudSidebar" },
+      { label: "Get started", link: "/cloud", sidebar: "cloudSidebar" },
       {
         label: "Weaviate Embeddings",
         link: "/cloud/embeddings",
@@ -109,19 +102,13 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  academy: {
-    title: "Academy",
-    icon: "fa fa-graduation-cap",
-    isSmall: true,
-    description:
-      "Learn about vector search and Weaviate through structured courses",
-    link: "/academy",
+  engram: {
+    title: "Engram",
+    icon: "fa fa-brain",
+    description: "Persistent memory for LLM agents and applications",
+    link: "/engram",
     links: [
-      {
-        label: "Get Started",
-        link: "/academy",
-        sidebar: "academySidebar",
-      },
+      { label: "Documentation", link: "/engram", sidebar: "engramSidebar" },
     ],
   },
   integrations: {
@@ -129,19 +116,8 @@ const secondaryNavbarItems = {
     icon: "fa fa-puzzle-piece",
     isSmall: true,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
-    link: "/integrations",
-    links: [
-      {
-        label: "Documentation",
-        link: "/integrations",
-        sidebar: "integrationsSidebar",
-      },
-      {
-        label: "Recipes",
-        link: "/integrations/recipes",
-        sidebar: "integrationsRecipesSidebar",
-      },
-    ],
+    href: "https://weaviate.io/product/integrations",
+    links: [],
   },
   contributor: {
     title: "Contributor guide",
@@ -163,6 +139,14 @@ const secondaryNavbarItems = {
     isSmall: true,
     description: "",
     href: "https://weaviate.io/community/events",
+    links: [],
+  },
+  academy: {
+    title: "Weaviate Academy",
+    icon: "fa-solid fa-graduation-cap",
+    isSmall: true,
+    description: "",
+    href: "https://academy.weaviate.io/",
     links: [],
   },
 };

@@ -31,7 +31,7 @@ func main() {
 		Scheme:     "https",
 		AuthConfig: auth.ApiKey{Value: os.Getenv("WEAVIATE_API_KEY")},
 		Headers: map[string]string{
-			"X-Cohere-Api-Key": os.Getenv("COHERE_APIKEY"),
+			"X-Cohere-Api-Key": os.Getenv("COHERE_API_KEY"),
 		},
 	}
 
@@ -1212,6 +1212,28 @@ func main() {
 	}
 	// highlight-end
 	// END SnowflakeArcticEmbedLV20
+
+	// START BasicVectorizerMMWeaviate
+	// highlight-start
+	// Define the collection
+	basicWeaviateMMVectorizerDef := &models.Class{
+		Class: "DemoCollection",
+		VectorConfig: map[string]models.VectorConfig{
+			"poster": {
+				Vectorizer: map[string]interface{}{
+					"multi2multivec-weaviate": map[string]interface{}{},
+				},
+			},
+		},
+	}
+
+	// add the collection
+	err = client.Schema().ClassCreator().WithClass(basicWeaviateMMVectorizerDef).Do(ctx)
+	if err != nil {
+		panic(err)
+	}
+	// highlight-end
+	// END BasicVectorizerMMWeaviate
 
 	// START BatchImportExample
 	var sourceObjects = []map[string]string{

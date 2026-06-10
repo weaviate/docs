@@ -1,0 +1,13 @@
+### `ModernVBERT/colmodernvbert` {#colmodernvbert}
+
+- A 250M parameter late-interaction vision-language encoder, fine-tuned for visual document retrieval tasks.
+- Generates multi-vector embeddings (ColBERT-style late-interaction) from document images and text queries.
+- Ideal for getting documents directly into Weaviate without heavy preprocessing - no OCR or text extraction required.
+- State-of-the-art performance in its size class, matching models up to 10x larger.
+- Query token limit: 8,092 tokens
+- Read more at the [Hugging Face model card](https://huggingface.co/ModernVBERT/colmodernvbert)
+- For integration details, see [Weaviate Embeddings: Multimodal](/weaviate/model-providers/weaviate/embeddings-multimodal)
+
+:::info MUVERA encoding recommended
+Enable [MUVERA encoding](/weaviate/configuration/compression/multi-vectors) to reduce memory usage while preserving retrieval quality.
+:::

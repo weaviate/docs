@@ -23,28 +23,44 @@ featured = true
 description = "Learn how to utilize the Weaviate Embedding Service available on Weaviate Cloud for generating vector embeddings."
 
 [[recipe]]
-title = "Build A Weaviate Query Agent - The E-Commerce Assistant"
+title = "Get Started with the Weaviate Query Agent"
 notebook = "weaviate-services/agents/query-agent-get-started.ipynb"
 tags = ["Query Agent"]
 agent = true
 featured = true
-description = "A getting-started guide to building a Weaviate Query Agent, demonstrated with an e-commerce assistant example."
+description = "A high-level introduction to the Weaviate Query Agent across Ask Mode, Search Mode, and Suggest Queries."
 
 [[recipe]]
-title = "Build A Weaviate Transformation Agent"
-notebook = "weaviate-services/agents/transformation-agent-get-started.ipynb"
-tags = ["Transformation Agent"]
+title = "Build a Query Agent E-Commerce Assistant"
+notebook = "weaviate-services/agents/query-agent-ecommerce-assistant.ipynb"
+tags = ["Query Agent", "E-Commerce"]
 agent = true
 featured = true
-description = "Learn the basics of creating and using a Weaviate Transformation Agent for data processing workflows."
+description = "Wrap the Query Agent in a reusable customer-facing assistant for an e-commerce catalog."
 
 [[recipe]]
-title = "Benchmarking Arctic 2.0 vs. Arctic 1.5 with Synthetic RAG Evals"
-notebook = "weaviate-services/agents/transformation-agent-retrieval-benchmark.ipynb"
-tags = ["Transformation Agent"]
+title = "Build a Streaming Chat UI with Streamlit"
+notebook = "weaviate-services/agents/query-agent-streamlit-chat.ipynb"
+tags = ["Query Agent", "Streamlit", "Streaming", "UI"]
 agent = true
 featured = true
-description = "Benchmarks Arctic 2.0 against Arctic 1.5 using synthetic RAG evaluations within a Weaviate Agent context."
+description = "Build a Streamlit chat UI on top of the Query Agent with token-by-token streaming and multi-turn history."
+
+[[recipe]]
+title = "Using the Query Agent as a Tool"
+notebook = "weaviate-services/agents/query-agent-as-a-tool.ipynb"
+tags = ["Query Agent", "Integration", "Function Calling"]
+agent = true
+featured = true
+description = "Expose the Weaviate Query Agent as a callable tool inside your own agent framework."
+
+[[recipe]]
+title = "Query Agent vs. Doing It Yourself"
+notebook = "weaviate-services/agents/query-agent-vs-diy.ipynb"
+tags = ["Query Agent", "Comparison"]
+agent = true
+featured = true
+description = "Compare the Weaviate Query Agent against a hand-rolled retrieval and generation pipeline."
 
 [[recipe]]
 title = "Weaviate Query Agent with Crew AI"
@@ -66,21 +82,6 @@ notebook = "integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-w
 tags = ["Query Agent", "Integration"]
 integration = true
 description = "Illustrates how to incorporate the Weaviate Query Agent into agentic workflows built with LlamaIndex."
-
-[[recipe]]
-title = "Build a Weaviate Personalization Agent - Movie Recommender"
-notebook = "weaviate-services/agents/personalization-agent-get-started-movies.ipynb"
-tags = ["Personalization Agent"]
-agent = true
-featured = true
-description = "Learn how to create a movie recommendation engine powered by an LLM and a vector database."
-
-[[recipe]]
-title = "Build a Weaviate Personalization Agent - Food Recommender"
-notebook = "weaviate-services/agents/personalization-agent-get-started-recipes.ipynb"
-tags = ["Personalization Agent"]
-agent = true
-description = "Learn how to use the Weaviate Personalization Agent to create tailored food recommendations."
 
 [[recipe]]
 title = "Generative search (RAG) with AWS Bedrock"

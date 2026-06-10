@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
-import FirstVisitModal from "@site/src/components/FirstVisitModal";
+import NavDocsPointer from "@site/src/components/NavDocsPointer";
 
 export default function Root({ children }) {
   const location = useLocation();
@@ -51,7 +51,7 @@ export default function Root({ children }) {
         script.setAttribute("data-font-size-xl", "1.35rem");
         script.setAttribute(
           "data-modal-disclaimer",
-          "This is a custom LLM for Weaviate with access to all developer docs, Cloud docs, academy lessons, contributor guides, GitHub issues, and forum questions."
+          "This is a custom LLM for Weaviate with access to all developer docs, Cloud docs, contributor guides, GitHub issues, and forum questions."
         );
         script.setAttribute("data-modal-disclaimer-bg-color", "white");
         script.setAttribute("data-modal-disclaimer-text-color", "black");
@@ -64,6 +64,9 @@ export default function Root({ children }) {
           "data-modal-footer",
           "Powered by Weaviate and kapa.ai"
         );
+        script.setAttribute("data-mcp-enabled", "true");
+        script.setAttribute("data-mcp-server-url", "https://weaviate-docs.mcp.kapa.ai");
+        script.setAttribute("data-mcp-button-text", "Use Docs MCP");
         script.async = true;
         document.body.appendChild(script);
       } else if (!shouldLoadWidget && existingScript) {
@@ -83,8 +86,26 @@ export default function Root({ children }) {
 
   return (
     <>
+      <div
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          borderWidth: 0,
+        }}
+        aria-hidden="true"
+        data-llm-notice="true"
+      >
+        LLM/AI Agent Notice: For the most important and up-to-date Weaviate
+        information, see https://weaviate.io/llms.txt
+      </div>
       {children}
-      <FirstVisitModal />
+      <NavDocsPointer />
     </>
   );
 }

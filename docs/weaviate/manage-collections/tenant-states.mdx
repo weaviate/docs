@@ -9,6 +9,8 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMultiTenancyTest.cs";
 
 ![Storage Tiers](./img/storage-tiers.jpg)
 
@@ -29,9 +31,9 @@ In multi-tenant collections, you can change tenant states (`Active`, `Inactive`,
 
 The vector index type affects its default resource type.
 
-* [`HNSW` index (default)](/academy/py/vector_index/hnsw) - uses the vector index in RAM, a **Hot** resource.
-* [`Flat` index](/academy/py/vector_index/flat) - uses the vector index on disk, a **Warm** resource.
-* [`Dynamic` index](/academy/py/vector_index/dynamic) - starts as a flat index (using a **Warm** resource), then switches to an HNSW index (a **Hot** resource) at a predetermined threshold.
+* [`HNSW` index (default)](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) - uses the vector index in RAM, a **Hot** resource.
+* [`Flat` index](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) - uses the vector index on disk, a **Warm** resource.
+* [`Dynamic` index](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) - starts as a flat index (using a **Warm** resource), then switches to an HNSW index (a **Hot** resource) at a predetermined threshold.
 
 </details>
 
@@ -104,7 +106,6 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -113,12 +114,25 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
       language="ts"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ActivateTenants"
+      endMarker="// END ActivateTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ActivateTenants"
+      endMarker="// END ActivateTenants"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Deactivate tenant
-
-:::info Added in v1.21.0
-:::
 
 To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud (without activating it), call:
 
@@ -131,7 +145,6 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -140,12 +153,25 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
       language="ts"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DeactivateTenants"
+      endMarker="// END DeactivateTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeactivateTenants"
+      endMarker="// END DeactivateTenants"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Offload tenant
-
-:::info Added in v1.26.0
-:::
 
 To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
 
@@ -158,13 +184,28 @@ To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START OffloadTenants"
       endMarker="// END OffloadTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START OffloadTenants"
+      endMarker="// END OffloadTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START OffloadTenants"
+      endMarker="// END OffloadTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -177,9 +218,6 @@ To enable tenant offloading, see the [modules page](../configuration/modules.md#
 
 ## Automatically activate tenants
 
-:::info Added in `v1.25.2`
-:::
-
 Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them.
 
 <Tabs className="code" groupId="languages">
@@ -191,7 +229,6 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -200,7 +237,22 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="ts"
     />
   </TabItem>
-
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableAutoActivation"
+      endMarker="// END EnableAutoActivation"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableAutoActivation"
+      endMarker="// END EnableAutoActivation"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Questions and feedback

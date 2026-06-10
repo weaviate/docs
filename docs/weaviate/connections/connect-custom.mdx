@@ -2,94 +2,137 @@
 title: Custom connections
 sidebar_position: 30
 image: og/docs/connect.jpg
+description: "Custom connection configurations with code examples in Python and TypeScript."
 # tags: ['getting started', 'connect']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 
-import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
-import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
+import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
+import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 
 The [Python Client v4](/weaviate/client-libraries/python) and the [TypeScript Client v3](../client-libraries/typescript/index.mdx) provide helper methods for common connection types. They also provide custom methods for when you need additional connection configuration.
 
 If you are using one of the other clients, the standard connection methods are configurable for all connections.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-   <FilteredTextBlock
-     text={PyCodeV4}
-     startMarker="# START CustomConnect"
-     endMarker="# END CustomConnect"
-     language="py"
-   />
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-   <FilteredTextBlock
-     text={TsCodeV3}
-     startMarker="// START CustomConnect"
-     endMarker="// END CustomConnect"
-     language="ts"
-   />
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeV4}
+      startMarker="# START CustomConnect"
+      endMarker="# END CustomConnect"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCodeV3}
+      startMarker="// START CustomConnect"
+      endMarker="// END CustomConnect"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CustomConnect"
+      endMarker="// END CustomConnect"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CustomConnect"
+      endMarker="// END CustomConnect"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Environment variables
 
-import EnvVarsHowto from '/_includes/environment-variables.mdx';
+import EnvVarsHowto from "/_includes/environment-variables.mdx";
 
-<EnvVarsHowto/>
+<EnvVarsHowto />
 
 ## gRPC Timeouts
 
-import GRPCTimeoutIntro from '/_includes/connect/timeouts-intro.mdx';
+import GRPCTimeoutIntro from "/_includes/connect/timeouts-intro.mdx";
 
-<GRPCTimeoutIntro/>
+<GRPCTimeoutIntro />
 
-import GRPCTimeouts from '/_includes/code/connections/timeouts-custom.mdx';
+import GRPCTimeouts from "/_includes/code/connections/timeouts-custom.mdx";
 
-<GRPCTimeouts/>
+<GRPCTimeouts />
 
 ## Third party API keys
 
 Integrations that use external APIs often need API keys. To add third party API keys, follow these examples:
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-   <FilteredTextBlock
-     text={PyCodeV4}
-     startMarker="# START ConnectWithApiKeyExample"
-     endMarker="# END ConnectWithApiKeyExample"
-     language="py"
-   />
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-   <FilteredTextBlock
-     text={TsCodeV3}
-     startMarker="// START ConnectWithApiKeyExample"
-     endMarker="// END ConnectWithApiKeyExample"
-     language="ts"
-   />
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCodeV4}
+      startMarker="# START ConnectWithApiKeyExample"
+      endMarker="# END ConnectWithApiKeyExample"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TsCodeV3}
+      startMarker="// START ConnectWithApiKeyExample"
+      endMarker="// END ConnectWithApiKeyExample"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ConnectWithApiKeyExample"
+      endMarker="// END ConnectWithApiKeyExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ConnectWithApiKeyExample"
+      endMarker="// END ConnectWithApiKeyExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## OIDC authentication
 
-import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+OIDC lets you authenticate to a self-hosted Weaviate instance using a bearer access token issued by your identity provider (Keycloak, Okta, Azure AD, Auth0, etc.). Your application obtains the token from the IdP, then passes it to the Weaviate client and the client attaches it to every request.
 
-<WCDOIDCWarning/>
+For server-side configuration (enabling OIDC on Weaviate), the supported authentication flows (client credentials, resource owner password, hybrid), and how to obtain tokens from your IdP, see the [OIDC configuration guide](/deploy/configuration/oidc.md).
 
-import OIDCConnect from '/_includes/connect/oidc-connect-ref.mdx';
+import WCDOIDCWarning from "/_includes/wcd-oidc.mdx";
 
-<OIDCConnect/>
+<WCDOIDCWarning />
 
-import OIDCExamples from '/_includes/code/connections/oidc-connect.mdx';
+The examples below assume you already have a bearer access token. Set the following environment variables before running them:
 
-<OIDCExamples/>
+- `WEAVIATE_HTTP_HOST` — host:port of the Weaviate REST endpoint (e.g., `localhost:8080`)
+- `WEAVIATE_GRPC_HOST` — host:port of the Weaviate gRPC endpoint (e.g., `localhost:50051`)
+- `WEAVIATE_OIDC_ACCESS_TOKEN` — the access token from your IdP
+- `WEAVIATE_OIDC_REFRESH_TOKEN` — *(optional)* refresh token for automatic renewal
+- `WEAVIATE_OIDC_EXPIRES_IN` — *(optional)* token lifetime in seconds
+
+import OIDCExamples from "/_includes/code/connections/oidc-connect.mdx";
+
+<OIDCExamples />
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

@@ -14,7 +14,6 @@
   - `autoTenantCreation`  (introduced in `v1.25.0`)
   - `autoTenantActivation`  (introduced in `v1.25.2`)
 - `replicationConfig`
-  - `asyncEnabled`  (introduced in `v1.26.0`)
   - `factor`  (not mutable in `v1.25` or higher)
   - `deletionStrategy`  (introduced in `v1.27.0`)
 - `vectorIndexConfig`
@@ -24,7 +23,6 @@
   - `filterStrategy`  (introduced in `v1.27.0`, applicable for HNSW)
   - `flatSearchCutoff`
   - `bq`
-    - `enabled`
     - `rescoreLimit`
   - `pq`
     - `centroids`
@@ -34,6 +32,8 @@
     - `encoder`
       - `type`
       - `distribution`
+  - `rq`
+    - `rescoreLimit`
   - `sq`
     - `enabled`
     - `rescoreLimit`

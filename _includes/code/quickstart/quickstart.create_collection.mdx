@@ -4,7 +4,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/quickstart.create_collection.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.create_collection.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/2_1_create_collection/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/CreateCollection.java';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
 import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
 
@@ -52,19 +53,22 @@ The collection also contains a configuration for the generative (RAG) integratio
 </TabItem>
 
 <TabItem value="java" label="Java">
-
-The collection also contains a configuration for the generative (RAG) integration:
-- OpenAI [generative AI integrations](/weaviate/model-providers/openai/generative) for retrieval augmented generation (RAG).
-
 <FilteredTextBlock
-  text={JavaCode}
+  text={JavaV6Code}
   startMarker="// START CreateCollection"
   endMarker="// END CreateCollection"
-  language="javaraw"
-  title="quickstart/CreateCollection.java"
+  language="java"
 />
-
 </TabItem>
+
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollection"
+      endMarker="// END CreateCollection"
+      language="csharp"
+    />
+  </TabItem>
 
 <TabItem value="curl" label="Curl">
 

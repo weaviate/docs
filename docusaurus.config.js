@@ -7,6 +7,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import commonRoomScript from "./src/scripts/commonroom.js";
 import hubspotScript from "./src/scripts/hubspot.js";
+import scarfScript from "./src/scripts/scarf.js";
 
 const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
@@ -26,14 +27,21 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
+  clientModules: [require.resolve("./src/components/UTM/capture.js")],
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+      onBrokenMarkdownImages: "throw",
+    },
+    mermaid: true,
+  },
 
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
   },
 
-  headTags: [commonRoomScript, hubspotScript],
+  headTags: [commonRoomScript, hubspotScript, scarfScript],
 
   plugins: [
     "docusaurus-plugin-sass",
@@ -43,33 +51,98 @@ const config = {
       {
         label: "",
         route: "/weaviate/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
-            // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
-            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/v1-38/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
-          // hiddenClients: [...],
-          showAuthentication: false,
-          showRequestSamples: false,
+          showSidebar: true,
         },
       },
     ],
     [
-      "@signalwire/docusaurus-plugin-llms-txt",
+      "@scalar/docusaurus",
       {
-        siteTitle: "Weaviate Documentation",
-        siteDescription:
-          "Comprehensive guides and references for Weaviate, the open-source vector database.",
-        depth: 3,
-        content: {
-          //excludeRoutes: ["/academy/**", "/contributor-guide/**"], // Throwing an error in GitHub Actions
-          enableMarkdownFiles: false,
+        id: "engram-api",
+        label: "",
+        route: "/engram/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
+        configuration: {
+          spec: {
+            url: "/specs/engram-openapi.json",
+          },
+          hideModels: true,
+          showSidebar: true,
         },
-        //logLevel: 3, // Uncomment to enable debug logging
       },
     ],
+    // [
+    //   "@signalwire/docusaurus-plugin-llms-txt",
+    //   {
+    //     siteTitle: "Weaviate Documentation",
+    //     siteDescription:
+    //       "Comprehensive guides and references for Weaviate, the open-source vector database. " +
+    //       "Sections labeled [CODE] contain runnable multi-language code examples (Python, TypeScript, Go, Java, C#). " +
+    //       "Sections labeled [REFERENCE] contain configuration details and API specs. " +
+    //       "Sections labeled [CONCEPTS] contain theoretical explanations.",
+    //     depth: 3,
+    //     includeOrder: [
+    //       "/weaviate/connections/**",
+    //       "/weaviate/manage-collections/**",
+    //       "/weaviate/manage-objects/**",
+    //       "/weaviate/search/**",
+    //       "/weaviate/configuration/**",
+    //       "/weaviate/client-libraries/**",
+    //       "/weaviate/starter-guides/**",
+    //       "/weaviate/tutorials/**",
+    //       "/weaviate/quickstart/**",
+    //       "/weaviate/concepts/**",
+    //       "/weaviate/config-refs/**",
+    //       "/weaviate/api/**",
+    //       "/weaviate/model-providers/**",
+    //     ],
+    //     optionalLinks: [
+    //       {
+    //         title: "Weaviate Python Client API Reference",
+    //         url: "https://weaviate.github.io/weaviate-python-client/",
+    //         description: "Full Python client API reference (external).",
+    //       },
+    //       {
+    //         title: "Weaviate TypeScript Client API Reference",
+    //         url: "https://weaviate.github.io/typescript-client/",
+    //         description: "Full TypeScript client API reference (external).",
+    //       },
+    //     ],
+    //     content: {
+    //       //excludeRoutes: ["/contributor-guide/**"], // Throwing an error in GitHub Actions
+    //       enableMarkdownFiles: false,
+    //       routeRules: [
+    //         // Code-heavy how-to sections
+    //         { route: "/weaviate/connections/**", categoryName: "[CODE] Connect to Weaviate" },
+    //         { route: "/weaviate/manage-collections/**", categoryName: "[CODE] Manage Collections" },
+    //         { route: "/weaviate/manage-objects/**", categoryName: "[CODE] Manage Objects (CRUD)" },
+    //         { route: "/weaviate/search/**", categoryName: "[CODE] Search and Queries" },
+    //         { route: "/weaviate/configuration/**", categoryName: "[CODE] Configuration How-Tos" },
+    //         { route: "/weaviate/client-libraries/**", categoryName: "[CODE] Client Libraries and SDKs" },
+    //         { route: "/weaviate/starter-guides/**", categoryName: "[CODE] Starter Guides" },
+    //         { route: "/weaviate/tutorials/**", categoryName: "[CODE] Tutorials" },
+    //         { route: "/weaviate/quickstart/**", categoryName: "[CODE] Quickstart" },
+    //         // Reference sections
+    //         { route: "/weaviate/config-refs/**", categoryName: "[REFERENCE] Configuration Reference" },
+    //         { route: "/weaviate/api/**", categoryName: "[REFERENCE] API Reference (REST, GraphQL, gRPC)" },
+    //         // Concepts sections
+    //         { route: "/weaviate/concepts/**", categoryName: "[CONCEPTS] Architecture and Theory" },
+    //         { route: "/weaviate/benchmarks/**", categoryName: "[CONCEPTS] Benchmarks" },
+    //         { route: "/weaviate/best-practices/**", categoryName: "[CONCEPTS] Best Practices" },
+    //         { route: "/weaviate/more-resources/**", categoryName: "[CONCEPTS] More Resources" },
+    //         // Other
+    //         { route: "/weaviate/model-providers/**", categoryName: "Model Provider Integrations" },
+    //       ],
+    //     },
+    //     //logLevel: 3, // Uncomment to enable debug logging
+    //   },
+    // ],
     [
       "@docusaurus/plugin-google-tag-manager",
       {
@@ -77,9 +150,6 @@ const config = {
       },
     ],
   ],
-  markdown: {
-    mermaid: true,
-  },
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
     [
@@ -93,6 +163,9 @@ const config = {
           editUrl: "https://github.com/weaviate/docs/tree/main/",
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
+        },
+        pages: {
+          path: "src/pages",
         },
         theme: {
           customCss: [
@@ -115,8 +188,8 @@ const config = {
     ({
       image: "og/default.jpg",
       announcementBar: {
-        id: "announcement-bar-september-2025",
-        content: `<a href="https://docs.weaviate.io/agents/query">Product update: The Weaviate Query Agent has been released!</a>`,
+        id: "announcement-bar-engram-2026",
+        content: `<a href="/engram/">Introducing <b>Engram</b> — managed memory for AI agents, built on Weaviate</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,
@@ -136,9 +209,15 @@ const config = {
             position: "right",
           },
           {
+            label: "Academy",
+            className: "academy-button",
+            to: "https://academy.weaviate.io",
+            position: "right",
+          },
+          {
             label: "Weaviate Cloud",
-            className: "modern-button",
-            to: "https://console.weaviate.cloud",
+            className: "cloud-button",
+            to: "/go/console?utm_content=navbar",
             position: "right",
           },
           {
@@ -151,7 +230,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ["java"],
+        additionalLanguages: ["java", "csharp", "bash"],
       },
       docs: {
         sidebar: {

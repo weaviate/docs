@@ -38,6 +38,7 @@ export function useNavbarButton(
     if (!buttonRef.current) {
       const button = document.createElement("button");
       button.className = buttonStyles.modalButton;
+      button.setAttribute("data-nav-switcher", "true");
       button.onclick = () => setModalOpen(true);
 
       // Create icon element

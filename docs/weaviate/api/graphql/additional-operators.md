@@ -16,7 +16,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.additional-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/graphql.additional.ts';
 import GoCode from '!!raw-loader!/_includes/code/graphql.additional.go';
-import JavaCode from '!!raw-loader!/_includes/code/graphql.additional.java';
 import CurlCode from '!!raw-loader!/_includes/code/graphql.additional.sh';
 
 <TryEduDemo />
@@ -327,14 +326,6 @@ The sort function takes either an object, or an array of objects, that describe 
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START Sorting"
-      endMarker="// END Sorting"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="Curl">
     <FilteredTextBlock
@@ -412,14 +403,6 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START MultiplePropSorting"
-      endMarker="// END MultiplePropSorting"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="Curl">
     <FilteredTextBlock
@@ -472,14 +455,6 @@ To sort with metadata, add an underscore to the property name.
     />
   </TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START AdditionalPropSorting"
-      endMarker="// END AdditionalPropSorting"
-      language="java"
-    />
-  </TabItem>
 
   <TabItem value="curl" label="Curl">
     <FilteredTextBlock

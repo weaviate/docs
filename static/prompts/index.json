@@ -1,0 +1,72 @@
+{
+  "quickstart_prompt": {
+    "description": "Build a working movie search app with natural language queries, vector search, and RAG in 5 steps.",
+    "detailedDescription": "The prompt will guide you to create a movie search demo application that uses natural language queries, vector and hybrid search to browse a movie collection.",
+    "features": [
+      "Create a Movie collection with text2vec-weaviate vectorizer",
+      "Import 5 sample movies (The Matrix, Inception, The Godfather, Spirited Away, The Dark Knight)",
+      "Use the query agent to retrieve information with natural language queries (only Python & TypeScript)",
+      "Implement vector, hybrid, and keyword search modes",
+      "Add Retrieval Augmented Generation (RAG) with Anthropic for AI-powered movie explanations"
+    ],
+    "languages": {
+      "python": {
+        "file": "quickstart-python.md",
+        "title": "Build a Weaviate Web App with FastAPI",
+        "framework": "FastAPI + Uvicorn",
+        "tags": [
+          "Create Collection",
+          "Import Data",
+          "Query Agent",
+          "Hybrid Search",
+          "RAG"
+        ],
+        "packages": [
+          "weaviate-client>=4.19.0",
+          "weaviate-agents>=1.2.0",
+          "fastapi",
+          "uvicorn",
+          "python-dotenv"
+        ]
+      },
+      "typescript": {
+        "file": "quickstart-typescript.md",
+        "title": "Build a Weaviate Web App with Next.js",
+        "framework": "Next.js (App Router) + Tailwind CSS",
+        "tags": [
+          "Create Collection",
+          "Import Data",
+          "Query Agent",
+          "Hybrid Search",
+          "RAG"
+        ],
+        "packages": ["weaviate-client@^3.11.0", "weaviate-agents@^1.1.0"]
+      },
+      "go": {
+        "file": "quickstart-go.md",
+        "title": "Build a Weaviate Web App with Gin",
+        "framework": "Gin",
+        "tags": ["Create Collection", "Import Data", "Hybrid Search", "RAG"],
+        "packages": [
+          "github.com/weaviate/weaviate-go-client/v5@v5.6.0",
+          "github.com/gin-gonic/gin",
+          "github.com/joho/godotenv"
+        ]
+      },
+      "java": {
+        "file": "quickstart-java.md",
+        "title": "Build a Weaviate Web App with Spring Boot",
+        "framework": "Spring Boot",
+        "tags": ["Create Collection", "Import Data", "Hybrid Search", "RAG"],
+        "packages": ["io.weaviate:client:6.0.1"]
+      },
+      "csharp": {
+        "file": "quickstart-csharp.md",
+        "title": "Build a Weaviate Web App with ASP.NET Core",
+        "framework": "ASP.NET Core MVC",
+        "tags": ["Create Collection", "Import Data", "Hybrid Search", "RAG"],
+        "packages": ["Weaviate.Client >= 1.0.0"]
+      }
+    }
+  }
+}

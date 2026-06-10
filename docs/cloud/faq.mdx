@@ -5,7 +5,7 @@ description: "Frequently asked questions and answers about Weaviate Cloud (WCD) 
 image: og/wcd/faq.jpg
 ---
 
-Frequently asked questions (FAQs) about [Weaviate Cloud (WCD)](https://console.weaviate.cloud/).
+Frequently asked questions (FAQs) about [Weaviate Cloud (WCD)](/go/console?utm_content=cloud).
 
 ## Features
 
@@ -14,7 +14,28 @@ Frequently asked questions (FAQs) about [Weaviate Cloud (WCD)](https://console.w
 <details>
 <summary> Answer </summary>
 
-Using Weaviate Cloud gives you access to a 14-day free sandbox for testing. You also get access to advanced features like [Weaviate Embeddings](docs/cloud/embeddings/index.md) and [Weaviate Agents](docs/agents/index.md), which are not available in all deployment methods.
+Using Weaviate Cloud gives you access to a free cluster that is free forever and ideal for testing and small projects. You also get access to advanced features like [Weaviate Embeddings](/cloud/embeddings/index.md) and the [Query Agent](/query-agent/index.md), which are not available in self-hosted deployment methods. For the current free tier limits, see the [pricing page](https://weaviate.io/pricing).
+
+</details>
+
+#### Q: What types of data can you import and query through Weaviate Cloud?
+
+<details>
+<summary> Answer </summary>
+
+Using Weaviate Cloud gives you access the option of importing [CVS/Excel](./tools/collections-tool.mdx) and [PDF](./tools/collections-tool.mdx) directly from the WCD console. You can also [connect to your WCD instance programmatically](./manage-clusters/connect.mdx) and [import any kind of data](/weaviate/tutorials/import) as well. 
+
+</details>
+
+#### Q: What happened to the Personalization Agent and Transformation Agent? {#deprecated-agents}
+
+<details>
+<summary> Answer </summary>
+
+Weaviate Agents now focus exclusively on the [Query Agent](/query-agent/index.md). The **Personalization Agent** and **Transformation Agent** have been deprecated and are no longer available.
+
+- For agentic search and retrieval over your data, use the [Query Agent](/query-agent/index.md).
+- For personalization use cases previously served by the **Personalization Agent**, **[Engram](/engram/index.md)** is a good alternative. Engram is Weaviate's memory server for LLM and agent applications: it stores user interactions and preferences as persistent, semantically searchable memories that you can use to power personalized, context-aware experiences.
 
 </details>
 
@@ -25,7 +46,7 @@ Using Weaviate Cloud gives you access to a 14-day free sandbox for testing. You 
 <details>
 <summary> Answer </summary>
 
-Yes. Go to the [Weaviate Cloud login page](https://console.weaviate.cloud/) and click the "Log in" button. Then, click **"Forgot Password"** and enter your email. You’ll receive a reset email at that address.
+Yes. Go to the [Weaviate Cloud login page](/go/console?utm_content=cloud) and click the "Log in" button. Then, click **"Forgot Password"** and enter your email. You’ll receive a reset email at that address.
 
 </details>
 
@@ -49,12 +70,12 @@ Yes. Weaviate Cloud performs daily automated backups. It also backs up your data
 
 </details>
 
-#### Q: Can Weaviate Cloud clusters be updated to newer versions?
+#### Q: Are Weaviate Cloud clusters updated to newer versions?
 
 <details>
 <summary> Answer </summary>
 
-Yes. In the Cloud Console, go to your cluster and click **"Details."** If a newer version is available, you’ll see an **"Update!"** button. Only update during a safe maintenance window.
+Yes. Weaviate Cloud automatically updates existing clusters as new Weaviate versions become available, so you do not need to trigger updates manually. A complete backup is created before each update. For details on the update process, see [Cluster versions](/cloud/platform/version).
 
 </details>
 
@@ -81,7 +102,7 @@ Possibly. Contact [support@weaviate.io](mailto:support@weaviate.io) to discuss c
 <details>
 <summary> Answer </summary>
 
-By default, each organization can have up to **six (6)** serverless clusters and **two (2)** sandbox clusters. If you need more, [contact support](mailto:support@weaviate.io).
+Each user can have one (1) free cluster, and by default each organization can have up to **six (6)** Shared Cloud clusters. If you need more, [contact support](mailto:support@weaviate.io).
 
 </details>
 
@@ -116,8 +137,17 @@ Yes. The GraphQL query tool in the Weaviate Cloud Console can connect to **exter
 
 </details>
 
+#### Q: What are Serverless and Enterprise clusters in Weaviate Cloud?
+
+<details>
+<summary> Answer </summary>
+
+Weaviate updated its Cloud offering on October 27th, 2025. Before that, **Shared Cloud** clusters were called **Serverless** clusters and **Dedicated Cloud** clusters were called **Enterprise** clusters.
+
+</details>
+
 ## Support
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

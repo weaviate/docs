@@ -1,37 +1,94 @@
 ---
-title: Connect with Query App
+title: Connect with Query Agent
 sidebar_position: 60
 image: og/docs/connect.jpg
 # tags: ['getting started', 'connect']
 ---
 
-import WCDQueryConsoleLocation from '/docs/cloud/img/wcs-query-console-location.jpg';
+import WCDQueryConsoleLocation from "/docs/cloud/img/wcs-query-console-location.jpg";
+
+<CloudOnlyBadge />
+
+The fastest way to query data in [Weaviate Cloud (WCD)](/cloud) without writing code is the [Query Agent](/docs/cloud/tools/query-agent.mdx) — a natural-language interface that translates a prompt into a multi-step search against your collections and returns a grounded answer.
+
+If you'd rather write GraphQL by hand, the [Query tool](#query-tool) is still available further down on this page.
+
+## Query Agent
+
+The Query Agent lets you ask natural-language questions over one or more collections in your Weaviate Cloud cluster. Behind the scenes it plans a hybrid search strategy, executes it, and returns an answer along with the matching source objects.
+
+### Query a collection
+
+In your [WCD Dashboard](/go/console?utm_content=howto), select **Agents** in the left-hand sidebar, choose the cluster and collection(s) you want to query, and type a natural-language prompt. The agent picks the right collections, runs the underlying searches, and returns an answer along with the objects that backed it.
+
+Beyond picking collections, you can also provide API keys for external model providers (OpenAI, Anthropic, etc.), choose which named vector to query when a collection has more than one, and set a **system prompt** to steer tone, language, or output format.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="zkjyx88tek"
+    src="https://app.guideflow.com/embed/zkjyx88tek"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="zkjyx88tek"
+  ></script>
+</div>
+
+<br />
+
+### Generate client code
+
+After running a query in the console, you can copy a Python or TypeScript snippet that reproduces the same call through the [`weaviate-agents`](/query-agent/index.md) client libraries — useful for moving from exploration into application code.
+
+### Limitations
+
+- The Cloud-console Query Agent does **not** support multi-tenant collections. To use the Query Agent with multi-tenancy, call it from a [client library](/query-agent/reference/advanced_collections.md).
+- Standard Query Agent [usage limits](/docs/cloud/tools/query-agent.mdx#usage-limits) apply.
+
+For a deeper walkthrough including additional screen recordings, see the [Query Agent tool docs](/docs/cloud/tools/query-agent.mdx).
+
+## Query tool
 
 The [Query application (query tool)](/cloud/tools/query-tool) is a browser-based GraphQL IDE. The Query tool is available in the Weaviate Cloud (WCD) console.
 
 Use the query tool to work interactively with clusters hosted in Weaviate Cloud and self-hosted instances too.
 
-## Open the query tool
+### Open the query tool
 
-To use the query tool, open your [WCD Dashboard](https://console.weaviate.cloud).
+To use the query tool, open your [WCD Dashboard](/go/console?utm_content=howto).
 
 In the left-hand menu, click the Query tool icon.
 
-<img src={WCDQueryConsoleLocation} width="25%" alt="WCD query tool location"/>
+<img src={WCDQueryConsoleLocation} width="25%" alt="WCD query tool location" />
 
-## Select a Weaviate instance
+### Select a Weaviate instance
 
 The query tool connects directly to your WCD clusters. The query tool can also connect to external Weaviate instances if you have anonymous access enabled or authentication credentials.
 
 To select a cluster, Click the `Query` button and choose a cluster from the clusters list.
 
-### Pass authentication details
+#### Pass authentication details
 
-import ExternalAuth from '/_includes/wcs/query-auth-details.mdx';
+import ExternalAuth from "/_includes/wcs/query-auth-details.mdx";
 
-<ExternalAuth/>
+<ExternalAuth />
 
-### Pass inference keys
+#### Pass inference keys
 
 To pass API keys for inference modules, use request headers.
 
@@ -45,18 +102,18 @@ The header can pass multiple keys.
 }
 ```
 
-## Example query
+### Example query
 
 This example uses [keyword search](/weaviate/search/bm25) to query a movie database. The [GraphiQL editor](https://graphqleditor.com/docs/) helps you to build the query on the left hand side of the screen. When you run the query, it displays the results on the right hand side.
 
-import QueryAppExample from '/docs/cloud/img/query-app-example.jpg';
+import QueryAppExample from "/docs/cloud/img/query-app-example.jpg";
 
-<img src={QueryAppExample} width="85%" alt="Query tool example"/>
+<img src={QueryAppExample} width="85%" alt="Query tool example" />
 
 For more information about the GraphQL API, see the [GraphQL API](/weaviate/api/graphql).
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

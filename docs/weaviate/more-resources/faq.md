@@ -17,6 +17,15 @@ image: og/docs/more-resources.jpg
 
 </details>
 
+#### Q: Can I use Weaviate to store memory for AI agents?
+
+<details>
+  <summary>Answer</summary>
+
+> Yes. Weaviate works well as a vector store for agent memory. If you'd rather not build and operate the memory layer yourself, we also offer [Engram](/engram/), a dedicated managed memory service built on Weaviate that automatically extracts, stores, and retrieves memories for your agents and applications.
+
+</details>
+
 #### Q: What is the difference between Weaviate and for example Elasticsearch?
 
 <details>
@@ -618,6 +627,46 @@ docker compose up
 Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/),
 
 Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](/docs/deploy/installation-guides/embedded.md) should be avoided.
+
+</details>
+
+#### Q: What is Weaviate Academy?
+
+<details>
+  <summary>Answer</summary>
+
+Weaviate Academy is a full-fledged learning platform available at [academy.weaviate.io](https://academy.weaviate.io). 
+
+:::note
+
+If you need resources from the previous version of Weaviate Academy, check out the [documentation archive](https://archive.docs.weaviate.io/academy)
+
+:::
+
+</details>
+
+#### Q: What happened to the Weaviate Community Slack?
+
+<details>
+  <summary>Answer</summary>
+
+> The Weaviate Community Slack has been decommissioned. We've moved community discussions to the [Weaviate Community Forum](https://forum.weaviate.io/), which offers better long-term discoverability — conversations are indexed and searchable, so valuable answers don't get lost over time.
+>
+> Join us at [forum.weaviate.io](https://forum.weaviate.io/) to ask questions, share ideas, and connect with the community. For private support inquiries, you can reach us at [support@weaviate.io](mailto:support@weaviate.io).
+
+</details>
+
+#### Q: Does Weaviate have MCP server support?
+
+<details>
+  <summary>Answer</summary>
+
+> Yes, Weaviate provides two MCP (Model Context Protocol) servers:
+>
+> - **[Weaviate MCP server](/weaviate/configuration/mcp-server.mdx)** — Built into Weaviate itself. Exposes tools for inspecting schemas, searching data (vector/hybrid), and modifying objects. Runs on the same port as the REST API at `/v1/mcp`. Disabled by default — enable with `MCP_SERVER_ENABLED=true`.
+> - **[Weaviate Docs MCP server](/weaviate/mcp/docs-mcp-server.mdx)** — A standalone server that gives LLMs access to Weaviate's documentation. Useful for AI-assisted development with Weaviate.
+>
+> Both servers use the Streamable HTTP transport and work with MCP clients like Claude Code, Claude Desktop, Cursor, and VS Code.
 
 </details>
 

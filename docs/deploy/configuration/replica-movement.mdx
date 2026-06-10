@@ -3,10 +3,17 @@ title: Replica movement
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.32`
-:::
+import ReplicaMovement from '/_includes/feature-notes/replica-movement.mdx';
 
-Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/docs/weaviate/api/rest.md) or through the client library API described below.
+<ReplicaMovement/>
+
+Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/weaviate/api/rest) or through the client library API described below.
+
+:::info Enable replica movement
+
+Replica movement is disabled by default. To use this feature, set the [`REPLICA_MOVEMENT_ENABLED`](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_ENABLED) environment variable to `true` on all nodes in your cluster.
+
+:::
 
 When a replica movement is initiated, it changes the replication factor of that shard *only*, not the entire collection. A collection has a particular replication factor, but a shard (a subset of a collection), can have its own replication factor which can be different. If a replica COPY operation is made, this can be incremented.
 
@@ -39,13 +46,6 @@ import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.replica.
 
 ```go
 // Go support coming soon
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
 ```
 
 </TabItem>
@@ -90,13 +90,6 @@ language="py"
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-</TabItem>
 </Tabs>
 
 <details>
@@ -132,13 +125,6 @@ language="py"
 
 ```go
 // Go support coming soon
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
 ```
 
 </TabItem>
@@ -195,13 +181,6 @@ language="py"
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-</TabItem>
 </Tabs>
 
 <details>
@@ -241,13 +220,6 @@ language="py"
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-</TabItem>
 </Tabs>
 
 ## Delete a replication operation
@@ -274,13 +246,6 @@ language="py"
 
 ```go
 // Go support coming soon
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
 ```
 
 </TabItem>
@@ -313,18 +278,11 @@ language="py"
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-</TabItem>
 </Tabs>
 
 ## Further resources
 
-- [RESTful API: Replication endpoints](/docs/weaviate/api/rest.md)
+- [RESTful API: Replication endpoints](/weaviate/api/rest)
 - [Concepts: Replication architecture](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement)
 
 ## Questions and feedback

@@ -4,7 +4,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/quickstart.is_ready.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.is_ready.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/1_is_ready/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/IsReady.java';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
 import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
 
 <Tabs className="code" groupId="languages">
@@ -45,14 +46,21 @@ import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
 
 <TabItem value="java" label="Java">
 <FilteredTextBlock
-  text={JavaCode}
+  text={JavaV6Code}
   startMarker="// START InstantiationExample"
   endMarker="// END InstantiationExample"
-  language="javaraw"
-  title="quickstart/IsReady.java"
+  language="java"
 />
-<HostnameWarning />
 </TabItem>
+
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START InstantiationExample"
+      endMarker="// END InstantiationExample"
+      language="csharp"
+    />
+  </TabItem>
 
 <TabItem value="curl" label="Curl">
 

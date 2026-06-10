@@ -3,7 +3,7 @@ title: Query Agent
 image: og/wcd/user_guides.jpg
 ---
 
-The **Weaviate Cloud (WCD) Query Agent** provides and interactive console for using the Weaviate [Query Agent](/docs/agents/query/index.md), a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
+The **Weaviate Cloud (WCD) Query Agent** provides an interactive console for using the Weaviate [Query Agent](/query-agent/index.md), a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
 
 The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
 
@@ -19,19 +19,25 @@ In order to use the Query Agent, log into your Weaviate Cloud account and select
   }}
 >
   <iframe
-    id="dkd5mgyugr"
-    src="https://app.guideflow.com/embed/dkd5mgyugr"
+    id="zkjyx88tek"
+    src="https://app.guideflow.com/embed/zkjyx88tek"
     width="100%"
     height="100%"
     style={{ overflow: "hidden", position: "absolute", border: "none" }}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
-    webkitAllowFullScreen
+    webKitAllowFullScreen
     mozAllowFullScreen
     allowFullScreen
     allowTransparency="true"
   />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="zkjyx88tek"
+  ></script>
 </div>
+
+<br />
 
 ## Additional parameters for querying
 
@@ -65,7 +71,7 @@ In addition to selecting one or more collections to query, you can also:
 
 ## Generate code snippets
 
-After executing a query, you can also generate a code snippet that performs the same task through one of the available Weaviate Agents client libraries, either Python or TypeScript.
+After executing a query, you can also generate a code snippet that performs the same task through one of the available Query Agent client libraries, either Python or TypeScript.
 
 <div
   style={{
@@ -97,6 +103,20 @@ import UsageLimits from "/_includes/agents/query-agent-usage-limits.mdx";
 
 <UsageLimits />
 
+import QAConsoleUsage from "/docs/cloud/img/weaviate-cloud-qa-usage.png";
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={QAConsoleUsage} alt="Weaviate Cloud Console Query Agent Usage" />
+    </div>
+    <div class="card__body">
+      <p>You can track your organization's Query Agent usage directly in the Console.</p>
+    </div>
+  </div>
+</div>
+<br />
+
 ### Custom collection descriptions
 
 import CollectionDescriptions from "/_includes/agents/query-agent-collection-descriptions.mdx";
@@ -111,11 +131,11 @@ import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
 
 ### Multi-tenancy
 
-The WCD Query Agent does not support multi-tenancy. In order to utilize multi-tenancy with the Query Agent, use a [client library](/docs/agents/query/usage.md#configure-collections).
+The WCD Query Agent does not support multi-tenancy. In order to utilize multi-tenancy with the Query Agent, use a [client library](/query-agent/reference/advanced_collections.md).
 
 ## Further resources
 
-- [Weaviate Agents: Query Agent](/docs/agents/query/index.md)
+- [Query Agent](/query-agent/index.md)
 
 ## Support
 

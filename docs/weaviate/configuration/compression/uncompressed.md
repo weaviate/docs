@@ -11,7 +11,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
-import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
@@ -32,8 +33,7 @@ When creating the collection, you can choose not to use quantization through the
         language="py"
       />
   </TabItem>
-
-  <TabItem value="ts" label="JS/TS">
+    <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START Uncompressed"
@@ -41,6 +41,22 @@ When creating the collection, you can choose not to use quantization through the
         language="ts"
       />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START Uncompressed"
+      endMarker="// END Uncompressed"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START Uncompressed"
+      endMarker="// END Uncompressed"
+      language="csharp"
+    />
+    </TabItem>
 </Tabs>
 
 ## Additional considerations

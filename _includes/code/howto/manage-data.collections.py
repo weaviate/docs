@@ -159,6 +159,7 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.hnsw(),  # Use the HNSW index
         # vector_index_config=Configure.VectorIndex.flat(),  # Use the FLAT index
         # vector_index_config=Configure.VectorIndex.dynamic(),  # Use the DYNAMIC index
+        # vector_index_config=Configure.VectorIndex.hfresh(),  # Use the HFRESH index
         # highlight-end
     ),
     properties=[
@@ -202,7 +203,7 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.hnsw(
             ef_construction=300,
             distance_metric=VectorDistances.COSINE,
-            filter_strategy=VectorFilterStrategy.SWEEPING,  # or ACORN (Available from Weaviate v1.27.0)
+            filter_strategy=VectorFilterStrategy.ACORN,
         ),
         # highlight-end
     ),
@@ -212,7 +213,7 @@ client.collections.create(
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
+assert config.vector_config["default"].vector_index_config.filter_strategy == "acorn"
 assert isinstance(
     config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
 )
@@ -287,6 +288,21 @@ client.collections.create(
     ],
 )
 # END EnableInvertedIndex
+
+# START DropInvertedIndex
+collection = client.collections.get("Article")
+
+# highlight-start
+# Drop the searchable inverted index from the "title" property
+collection.config.delete_property_index("title", "searchable")
+
+# Drop the filterable inverted index from the "title" property
+collection.config.delete_property_index("title", "filterable")
+
+# Drop the range filter index from the "chunk_number" property
+collection.config.delete_property_index("chunk_number", "rangeFilters")
+# highlight-end
+# END DropInvertedIndex
 
 # Delete the collection to recreate it
 client.collections.delete("Article")
@@ -770,9 +786,9 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "Article",
     # highlight-start
+    # Async replication runs by default when the replication factor is greater than 1
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,
     ),
     # highlight-end
 )
@@ -803,17 +819,35 @@ client.collections.create(
     # highlight-start
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,  # Enable asynchronous repair
-        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,  # Added in v1.28; Set the deletion conflict resolution strategy
+        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
+        async_config=Configure.Replication.async_config(
+            hashtree_height=16,
+            frequency=30,
+        ),
     ),
     # highlight-end
 )
 # END AllReplicationSettings
 
+# START UpdateReplicationSettings
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("Article")
+
+# highlight-start
+collection.config.update(
+    replication_config=Reconfigure.replication(
+        async_config=Reconfigure.Replication.async_config(
+            frequency=60,
+        ),
+    ),
+)
+# highlight-end
+# END UpdateReplicationSettings
+
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.replication_config.async_enabled == True
 assert (
     config.replication_config.deletion_strategy
     == ReplicationDeletionStrategy.TIME_BASED_RESOLUTION

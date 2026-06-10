@@ -23,7 +23,7 @@ This architecture provides flexibility and performance optimization but also mea
 
 For `text` properties specifically, the indexing process follows these steps:
 
-1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
+1. **Tokenization**: The text is first tokenized according to the [tokenization method](#tokenization) configured for that property.
 3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
 
 This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
@@ -44,8 +44,9 @@ As always, we recommend upgrading to the latest version of Weaviate to benefit f
 
 ## BlockMax WAND algorithm
 
-:::info Added in `v1.30`
-:::
+import BlockmaxWand from '/_includes/feature-notes/blockmax-wand.mdx';
+
+<BlockmaxWand/>
 
 The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
 
@@ -167,12 +168,193 @@ An example of a complete collection object without inverted indexes:
 
 </details>
 
+## Tokenization
+
+Tokenization is the process of breaking text into smaller units called tokens. This process is fundamental to how inverted indexes work - the tokens produced determine what can be searched and how matching occurs.
+
+### How tokenization works
+
+When you add an object to Weaviate, text in each property is tokenized according to that property's configured tokenization method. For example, the text:
+
+'"Ankh-Morpork's police captain"' could be tokenized using different tokenization methods:
+
+1. `'word'`: `["ankh", "morpork", "s", "police", "captain"]` - splits on non-alphanumeric characters, lowercased
+2. `'lowercase'`: `["ankh-morpork's", "police", "captain"]` - splits on whitespace only, lowercased
+3. `'whitespace'`: `["Ankh-Morpork's", "police", "captain"]` - splits on whitespace, preserves case
+4. `'field'`: `["Ankh-Morpork's police captain"]` - treats entire text as single token
+
+Each tokenization method serves different use cases and directly impacts search and filter behavior.
+
+### Tokenization and the inverted index
+
+The inverted index maps each token to the objects containing it. When you perform a keyword search or filter:
+
+1. Your query/filter text is tokenized using the **same method** as the indexed property
+2. The inverted index looks up which objects contain those tokens
+3. For searches, BM25f ranks results based on token matches
+4. For filters, exact token matches determine inclusion
+
+This means the tokenization method controls the "granularity" of matching. For example, with `word` tokenization, searching for `"clark"` will match an object containing `"Clark:"` because both tokenize to `["clark"]`. With `field` tokenization, only exact matches succeed.
+
+### Available tokenization methods
+
+Weaviate provides several tokenization methods optimized for different data types:
+
+**Standard methods:**
+- **`word`** (default): Splits on non-alphanumeric characters, lowercases. Best for typical text.
+- **`lowercase`**: Splits on whitespace, lowercases. Preserves symbols like `@`, `_`, `-`.
+- **`whitespace`**: Splits on whitespace, preserves case and symbols. For case-sensitive data.
+- **`field`**: No splitting - entire value is one token. For exact matching.
+
+**Language-specific methods** (for languages without word boundaries):
+- **`gse`**: Japanese text segmentation using the [`gse`](https://pkg.go.dev/github.com/go-ego/gse) tokenizer (Japanese dictionary)
+- **`gse_ch`**: Chinese text segmentation using the same `gse` tokenizer with a Chinese dictionary
+- **`trigram`**: Splits into character trigrams for CJK languages
+- **`kagome_ja`**: Japanese morphological analysis
+- **`kagome_kr`**: Korean morphological analysis
+
+These language-specific tokenizers are not loaded by default. Enable them with the corresponding environment variables (`ENABLE_TOKENIZER_GSE`, `ENABLE_TOKENIZER_GSE_CH`, `ENABLE_TOKENIZER_KAGOME_JA`, `ENABLE_TOKENIZER_KAGOME_KR`).
+
+See the [tokenization configuration reference](../../config-refs/collections.mdx#tokenization) for detailed specifications and behavior examples.
+
+### Accent folding
+
+import TokenizerPreview from '/_includes/feature-notes/tokenizer.mdx';
+
+<TokenizerPreview/>
+
+Text properties can opt in to **accent folding** via the `textAnalyzer` block. When `asciiFold` is set to `true`, the analyzer normalizes accented Latin characters and any other character carrying combining marks or diacritics to their ASCII equivalents during both indexing and querying. A document containing "Café Crème" becomes searchable as "cafe creme", and vice versa. The same normalization is applied to filters (`Equal`, `Like`), so what you can search for is exactly what you can filter on.
+
+```json
+{
+  "name": "description",
+  "dataType": ["text"],
+  "tokenization": "word",
+  "textAnalyzer": { "asciiFold": true }
+}
+```
+
+The implementation uses [Unicode NFD decomposition](https://unicode.org/reports/tr15/) (covering acute, grave, circumflex, tilde, dieresis, caron, cedilla, ogonek, macron, breve, ring, and more) plus an explicit replacement table for single-codepoint letters that do not decompose, such as `ł`, `æ`, `ø`, `ð`, `þ`, `đ`, and `ß`. Together this covers 20+ Latin-script languages, including French, Portuguese, Spanish, German, Polish, Czech, Croatian, and Icelandic.
+
+Accent folding composes with every tokenization method: `word`, `lowercase`, `whitespace`, `field`, and `trigram`.
+
+#### Per-character exceptions
+
+If you want most accents folded but need to preserve specific characters (for example, an `é` that distinguishes two product names) use `asciiFoldIgnore`:
+
+```json
+{
+  "name": "name",
+  "dataType": ["text"],
+  "tokenization": "word",
+  "textAnalyzer": {
+    "asciiFold": true,
+    "asciiFoldIgnore": ["é", "Ł"]
+  }
+}
+```
+
+Because `asciiFoldIgnore` changes which tokens are written to disk, it is **immutable** after the property is created. Schema updates that change the ignore list are rejected. To change it, create a new property and reindex.
+
+See the [accent folding tutorial](../../tutorials/tokenization.md#example-4-accent-folding) for a worked example and the [textAnalyzer configuration reference](../../config-refs/indexing/inverted-index.mdx#textanalyzer) for all options.
+
+### Impact on search and filtering
+
+#### Filters
+
+Filters perform binary matching - an object either matches or doesn't. Tokenization determines what counts as a match:
+
+| Query | Indexed text | `word` | `lowercase` | `whitespace` | `field` |
+|-------|--------------|--------|-------------|--------------|---------|
+| `"clark"` | `"Clark:"` | ✅ | ❌ | ❌ | ❌ |
+| `"variable_name"` | `"variable_name"` | ✅ | ✅ | ✅ | ✅ |
+| `"variable_name"` | `"variable_new_name"` | ✅ | ❌ | ❌ | ❌ |
+
+With `word` tokenization, `"variable_name"` matches `"variable_new_name"` because both contain the tokens `["variable", "name"]`.
+
+#### Keyword searches
+
+Keyword searches use BM25f to rank results. Tokenization affects:
+
+1. **Result inclusion**: Only objects with matching tokens appear
+2. **Ranking scores**: More matching tokens = higher scores
+
+For example, searching for `"lois clark"` with `word` tokenization will rank objects containing both words higher than those with just one.
+
+### Stop words
+
+Stop words are common words (like "a", "the", "is") that are typically ignored during search. By default, Weaviate uses a standard English stop words list.
+
+After tokenization, stop words in queries behave as if they're not present for matching purposes:
+- Filter for `"a computer mouse"` behaves like `"computer mouse"`
+- Stop words still affect BM25f ranking scores
+
+You can [configure custom stop words](../../config-refs/indexing/inverted-index.mdx#stopwords) in your collection definition.
+
+**Note**: With `field` tokenization, stop words don't apply since the entire field is one token.
+
+#### Custom stopword presets
+
+<TokenizerPreview/>
+
+Beyond the built-in `en` and `none` presets, you can declare custom stopword presets on the collection's `invertedIndexConfig.stopwordPresets`. Each preset has a name and a flat word list. A preset name that matches a built-in (`en`, `none`) replaces the built-in for this collection.
+
+```json
+{
+  "invertedIndexConfig": {
+    "stopwordPresets": {
+      "fr": ["le", "la", "les", "un", "une", "des", "du", "de", "et"],
+      "de": ["der", "die", "das", "und", "oder", "aber"]
+    }
+  }
+}
+```
+
+#### Per-property stopword overrides
+
+Each text property can override the collection-level stopword behavior via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections where different properties contain text in different languages. The override is only supported on properties with `tokenization: "word"` — schema validation rejects it on other tokenizers.
+
+```json
+"properties": [
+  {
+    "name": "name_en",
+    "dataType": ["text"],
+    "tokenization": "word",
+    "textAnalyzer": { "stopwordPreset": "en" }
+  },
+  {
+    "name": "name_fr",
+    "dataType": ["text"],
+    "tokenization": "word",
+    "textAnalyzer": { "stopwordPreset": "fr" }
+  }
+]
+```
+
+Stopwords are still **indexed** — they are only filtered at query time. Changing the stopword configuration does **not** require reindexing your data.
+
+See the [custom stopwords tutorial](../../tutorials/tokenization.md#example-5-custom-and-per-property-stopword-presets) for a worked example and the [stopwordPresets configuration reference](../../config-refs/indexing/inverted-index.mdx#stopwordpresets) for all options.
+
+### Choosing a tokenization method
+
+The choice of tokenization method should match your data characteristics and search requirements. Here are some general guidelines:
+
+- **General text** (articles, descriptions): Use `word` (default)
+- **Technical data with symbols** (code, emails): Use `lowercase`
+- **Case-sensitive data** (names, acronyms): Use `whitespace`
+- **Unique identifiers** (URLs, IDs): Use `field`
+- **CJK languages**: Use language-specific methods
+
+For detailed guidance and practical examples, see the [tokenization tutorial](../../tutorials/tokenization.md).
+
 ## Further resources
 
 :::info Related pages
 
 - [Configuration: Inverted index](../../config-refs/indexing/inverted-index.mdx)
 - [How-to: Configure collections](../../manage-collections/vector-config.mdx#property-level-settings)
+- [Configuration: Tokenization](../../config-refs/collections.mdx#tokenization)
+- [Tutorial: Configure tokenization](../../tutorials/tokenization.md)
 
 :::
 

@@ -39,14 +39,14 @@ Your Weaviate instance must be configured with the OpenAI vectorizer integration
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -59,7 +59,7 @@ You must provide a valid OpenAI API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
+- Set the `OPENAI_API_KEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -271,6 +271,12 @@ You can provide the API key as well as some optional parameters at runtime throu
 Any additional headers provided at runtime will override the existing Weaviate configuration.
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+
+:::note
+
+By passing the `X-OpenAI-Baseurl`, you can use an endpoint compatible with the OpenAI API. Weaviate appends `/v1/embeddings` to this base URL. If this doesn't match your endpoint, you can rewrite the path with a proxy (e.g., `your.domain.com/v1/embeddings` -> `api.deepinfra.com/v1/openai/embeddings`).
+
+:::
 
 ## Data import
 

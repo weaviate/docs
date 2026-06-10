@@ -1,0 +1,157 @@
+import React, { useState, useEffect } from "react";
+import { useLocation } from "@docusaurus/router";
+import styles from "./styles.module.scss";
+import FeedbackModal from "../FeedbackModal";
+import ThankYouModal from "../ThankYouModal";
+import ThumbsUp from "../Icons/ThumbsUp";
+import ThumbsDown from "../Icons/ThumbsDown";
+
+export default function PageRatingWidget() {
+  const [vote, setVote] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalHasOpened, setModalHasOpened] = useState(false);
+  const [thankYouModalOpen, setThankYouModalOpen] = useState(false);
+  const [lastFeedback, setLastFeedback] = useState(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Reset state on page change
+    setVote(null);
+    setModalOpen(false);
+    setModalHasOpened(false);
+    setThankYouModalOpen(false);
+    setLastFeedback(null);
+  }, [location.pathname]);
+
+  const submitFeedback = async (payload) => {
+    const PROD_HOSTNAME = 'docs.weaviate.io'; // <-- Important: Update if your production hostname is different
+    const isTestData = window.location.hostname !== PROD_HOSTNAME;
+
+    const finalPayload = {
+      ...payload,
+      testData: isTestData,
+      hostname: window.location.hostname,
+    };
+
+    // Debug mode: Log the payload to the console on non-production hostnames.
+    if (isTestData) {
+      console.log('Feedback Widget [Debug Mode]: Payload:', finalPayload);
+    }
+
+    try {
+      const response = await fetch('/.netlify/functions/submit-feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalPayload),
+      });
+
+      if (!response.ok) {
+        // Read response text first, then try to parse as JSON
+        const responseText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(responseText);
+        } catch {
+          errorData = { error: responseText };
+        }
+
+        // Log comprehensive error details for debugging
+        console.error('Feedback submission failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          serverError: errorData.error,
+          serverDebug: errorData.debug,
+          url: response.url,
+          payload: finalPayload,
+        });
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      console.log('Feedback submitted successfully:', {
+        status: response.status,
+        payload: finalPayload,
+      });
+    } catch (error) {
+      console.error('Failed to submit feedback:', {
+        error: error.message,
+        stack: error.stack,
+        name: error.name,
+        payload: finalPayload,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  };
+
+  const handleVote = (newVote) => {
+    // Set the vote state, which will be used when the modal is submitted.
+    setVote(newVote);
+
+    // Do not submit feedback here. Only open the modal.
+    if (!modalHasOpened) {
+      setModalOpen(true);
+      setModalHasOpened(true);
+    }
+  };
+
+  const handleModalSubmit = (feedback) => {
+    // Single point of submission.
+    const feedbackPayload = {
+      page: location.pathname,
+      isPositive: vote === 'up', // Convert vote to boolean
+      ...feedback,
+    };
+    submitFeedback(feedbackPayload);
+    setModalOpen(false);
+
+    // If negative feedback, show thank you modal with option to create GitHub issue
+    if (vote === 'down') {
+      setLastFeedback(feedback);
+      setThankYouModalOpen(true);
+    }
+  };
+
+  return (
+    <>
+      <div className={styles.container}>
+        <p className={styles.text}>Was this page helpful?</p>
+        <div className={styles.buttonContainer}>
+          <button
+            className={`${styles.voteButton} ${styles.voteButtonYes} ${
+              vote === 'up' ? styles.selected : ''
+            }`}
+            onClick={() => handleVote('up')}
+            aria-label="Vote up"
+          >
+            <ThumbsUp />
+            Yes
+          </button>
+          <button
+            className={`${styles.voteButton} ${styles.voteButtonNo} ${
+              vote === 'down' ? styles.selected : ''
+            }`}
+            onClick={() => handleVote('down')}
+            aria-label="Vote down"
+          >
+            <ThumbsDown />
+            No
+          </button>
+        </div>
+      </div>
+      <FeedbackModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleModalSubmit}
+        voteType={vote}
+      />
+      <ThankYouModal
+        isOpen={thankYouModalOpen}
+        onClose={() => setThankYouModalOpen(false)}
+        selectedOptions={lastFeedback?.options}
+        pageUrl={typeof window !== "undefined" ? window.location.href : ""}
+      />
+    </>
+  );
+}

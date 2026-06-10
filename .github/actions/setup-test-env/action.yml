@@ -9,7 +9,7 @@ inputs:
   node-version:
     description: 'Node.js version to use'
     required: false
-    default: "20"
+    default: "22"
 
 runs:
   using: 'composite'
@@ -24,50 +24,27 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    - name: Cache Python dependencies
-      uses: actions/cache@v4
-      id: cache-python
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ inputs.python-version }}-${{ hashFiles('tests/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-${{ inputs.python-version }}-
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
 
     - name: Install Python dependencies
       shell: bash
       run: |
         echo "📦 Setting up Python environment..."
-        
-        # Always create a fresh virtual environment
-        python -m venv .venv
-        source .venv/bin/activate
-        
-        # Upgrade pip
-        pip install --upgrade pip
-        
-        # Install dependencies (pip cache will speed this up)
-        pip install -r tests/requirements.txt
-        
-        # Verify pytest is installed
-        if ! command -v pytest &> /dev/null; then
-          echo "❌ Error: pytest not found after installation"
-          exit 1
-        fi
-        
+        uv sync
         echo "✅ Python environment ready"
-        echo "pytest location: $(which pytest)"
-        pytest --version
+        uv run pytest --version
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: 'npm'
-        cache-dependency-path: 'package-lock.json'
+        cache: 'yarn'
+        cache-dependency-path: 'yarn.lock'
 
     - name: Install Node.js dependencies
       shell: bash
       run: |
         echo "📦 Installing Node.js dependencies..."
-        npm ci
+        yarn install --frozen-lockfile
         echo "✅ Node.js environment ready"

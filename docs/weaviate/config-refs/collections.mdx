@@ -9,12 +9,9 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
-import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
-import JavaCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 
 A **collection definition** specifies how to store and index a set of data objects in Weaviate. This page discusses the available parameters for configuring a collection.
@@ -31,7 +28,7 @@ These are the top-level parameters you can set when creating a collection.
 | [`invertedIndexConfig`](#inverted-index)     | Object | Configuration for the inverted index, affecting filtering and keyword search.                                         | See [Inverted Index reference](./indexing/inverted-index.mdx#inverted-index-parameters)                                                                                                               | Yes           |
 | [`vectorConfig`](#vector-configuration)      | Object | Configure multiple named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields. | `null`                                                                                                                                                                                                | Partially\*\* |
 | [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | Default vectorizer defined by [environment variable](/deploy/configuration/env-vars#DEFAULT_VECTORIZER_MODULE). See [Model provider](../model-providers/index.md) for module-specific config defaults | No            |
-| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`).                                                          | `hnsw`                                                                                                                                                                                                | No            |
+| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`, `hfresh`).                                                | `hnsw`                                                                                                                                                                                                | No            |
 | [`moduleConfig`](#module-configuration)      | Object | Module-specific configuration settings.                                                                               | See [Module configuration](#module-configuration)                                                                                                                                                     | Partially     |
 | [`vectorIndexConfig`](#vector-configuration) | Object | Configuration settings specific to the chosen `vectorIndexType`.                                                      | See [Vector index reference](./indexing/vector-index.mdx)                                                                                                                                             | Partially     |
 | [`shardingConfig`](#sharding)                | Object | Controls sharding behavior in a multi-node cluster.                                                                   | See [Sharding section](#sharding)                                                                                                                                                                     | No            |
@@ -128,14 +125,6 @@ This code example shows how to configure the collection parameters through a cli
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BasicCreateCollection"
-      endMarker="// END BasicCreateCollection"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -173,7 +162,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
 #### `description`
 
-A description of the collection. This is for your reference and can also provide additional information to [Weaviate Agents](/docs/agents/index.md).
+A description of the collection. This is for your reference and can also provide additional information to the [Query Agent](/query-agent/index.md).
 
 ---
 
@@ -241,14 +230,6 @@ This code example shows how to configure the property parameters through a clien
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -314,33 +295,90 @@ Tokenization is a property-level configuration for `text` properties. [See how t
 
 </details>
 
-Each token will be indexed separately in the inverted index. For example, if you have a `text` property with the value `Hello, (beautiful) world`, the following table shows how the tokens would be indexed for each tokenization method:
+##### Standard tokenization methods
 
-import TokenizationDefinition from "/_includes/tokenization_definition.mdx";
+###### `word` tokenization
 
-<TokenizationDefinition />
+**Description**: Splits text by any non-alphanumeric characters, then lowercases each token. This is the default setting.
 
-##### Tokenization and search / filtering
+**Behavior examples**:
 
-Tokenization impacts how filters or keywords searches behave. The filter or keyword search query is also tokenized before being matched against the inverted index.
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["why", "hello", "there"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["lois", "clark", "the", "new", "adventures", "of", "superman"]` |
+| `"variable_name"` | `["variable", "name"]` |
+| `"Email: john.doe@example.com"` | `["email", "john", "doe", "example", "com"]` |
 
-The following table shows an example scenario showing whether a filter or keyword search would identify a `text` property with value `Hello, (beautiful) world` as a hit.
+**When to use**:
+- Recommended for most general text data (articles, descriptions).
+- When case-insensitivity and ignoring punctuation is desired for more forgiving searches.
 
-- **Row**: Various tokenization methods.
-- **Column**: Various search strings.
+---
 
-|                  | `Beautiful` | `(Beautiful)` | `(beautiful)` | `Hello, (beautiful) world` |
-| ---------------- | ----------- | ------------- | ------------- | -------------------------- |
-| `word` (default) | ✅          | ✅            | ✅            | ✅                         |
-| `lowercase`      | ❌          | ✅            | ✅            | ✅                         |
-| `whitespace`     | ❌          | ❌            | ✅            | ✅                         |
-| `field`          | ❌          | ❌            | ❌            | ✅                         |
+###### `lowercase` tokenization
+
+**Description**: Splits text by whitespace only, then lowercases each token. It preserves symbols that `word` tokenization would remove.
+
+**Behavior examples**:
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["why,", "hello", "there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["lois", "&", "clark:", "the", "new", "adventures", "of", "superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["email:", "john.doe@example.com"]` |
+
+**When to use**:
+- For technical data where symbols like `&`, `@`, or `_` are meaningful (e.g., code snippets, email addresses).
+- When you need case-insensitive matching but must preserve symbols.
+
+---
+
+###### `whitespace` tokenization
+
+**Description**: Splits text by whitespace only, preserving both case and symbols.
+
+**Behavior examples**:
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["Why,", "hello", "there!"]` |
+| `"Lois & Clark: The New Adventures of Superman"` | `["Lois", "&", "Clark:", "The", "New", "Adventures", "of", "Superman"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["Email:", "john.doe@example.com"]` |
+
+**When to use**:
+- When case-sensitivity is important (e.g., for proper nouns, acronyms, or specific codes).
+- Requires careful query construction to match case.
+
+---
+
+###### `field` tokenization
+
+**Description**: Treats the entire value of the property as a single token. No splitting occurs.
+
+**Behavior examples**:
+
+| Text | Tokens |
+| ---- | ------ |
+| `"Why, hello there!"` | `["Why, hello there!"]` |
+| `"variable_name"` | `["variable_name"]` |
+| `"Email: john.doe@example.com"` | `["Email: john.doe@example.com"]` |
+
+**When to use**:
+- When you need to match the entire field value exactly.
+- For properties containing unique identifiers like URLs, UUIDs, or email addresses.
+- Limited use for keyword searches but powerful for exact filtering.
+
+---
+
+##### Language-specific tokenization
+
+The standard tokenization methods work well for English and other languages that use spaces to separate words. For languages like Chinese, Japanese, and Korean that don't rely on spaces, Weaviate provides specialized tokenization methods.
 
 <details>
   <summary>`gse` and `trigram` tokenization methods</summary>
-
-:::info Added in `1.24`
-:::
 
 For Japanese and Chinese text, we recommend use of `gse` or `trigram` tokenization methods. These methods work better with these languages than the other methods as these languages are not easily able to be tokenized using whitespaces.
 
@@ -362,10 +400,6 @@ While originally designed for Asian languages, `trigram` tokenization is also hi
 <details>
   <summary>`kagome_ja` tokenization method</summary>
 
-:::caution Experimental feature
-Available starting in `v1.28.0`. This is an experimental feature. Use with caution.
-:::
-
 For Japanese text, `kagome_ja` tokenization method is also available. This uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Japanese [MeCab IPA](https://github.com/ikawaha/kagome-dict/) dictionary to split the property text.
 
 The `kagome_ja` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_KAGOME_JA` to `true` on the Weaviate instance.
@@ -383,10 +417,6 @@ The `kagome_ja` tokenizer is not loaded by default to save resources. To use it,
 
 <details>
   <summary>`kagome_kr` tokenization method</summary>
-
-:::caution Experimental feature
-Available starting in `v1.25.7`. This is an experimental feature. Use with caution.
-:::
 
 For Korean text, we recommend use of the `kagome_kr` tokenization method. This uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Korean MeCab ([mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)) dictionary to split the property text.
 
@@ -448,6 +478,37 @@ Use trigram tokenization selectively on fields where fuzzy matching is preferred
 
 </details>
 
+##### Decision guide
+
+Use this table to quickly identify the right tokenization method for your data.
+
+| If your data is... | Consider | Because |
+|-------------------|----------|---------|
+| General text (articles, descriptions) | `word` | Case-insensitive, ignores punctuation, forgiving |
+| Code, technical IDs with `_` or `-` | `lowercase` | Preserves symbols, case-insensitive |
+| Names, acronyms where case matters | `whitespace` | Case-sensitive, preserves symbols |
+| Email addresses, URLs, unique IDs | `field` | Requires exact matches |
+| Chinese text | `gse` or `trigram` | Proper word segmentation |
+| Japanese text | `kagome_ja` or `trigram` | Proper morphological analysis |
+| Korean text | `kagome_kr` or `trigram` | Proper morphological analysis |
+
+##### Performance considerations
+
+**Indexing speed**
+- `word`, `lowercase`, `whitespace`: Fast, with similar performance.
+- `field`: Fastest, as no splitting is required.
+- `gse`, `trigram`, `kagome_*`: Slower due to more complex segmentation algorithms.
+
+**Query performance**
+- Simple tokenization methods (`word`, `lowercase`, `whitespace`): Fast.
+- `field` with wildcard filters: Can be slow and should be used judiciously.
+- Language-specific methods: Performance is similar to simple methods for queries.
+
+**Index size**
+- More tokens result in a larger index.
+- `field`: Creates the smallest index (one token per value).
+- `trigram`: Creates the largest index due to many overlapping trigrams.
+
 ---
 
 ### Inverted index {#inverted-index}
@@ -479,14 +540,14 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 | Parameter                                                                | Type   | Description                                                                                                                                                   | Default                 | Mutable       |
 | :----------------------------------------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------- | :------------ |
 | `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | Module-specific default | No            |
-| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, or `dynamic`                                                                                                     | `hnsw`                  | No            |
+| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, `dynamic`, or `hfresh`                                                                                           | `hnsw`                  | No            |
 | [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | Configuration settings for your chosen `vectorIndexType`                                                                                                      | Index-specific defaults | Partially\*   |
 | `vectorConfig`                                                           | Object | **Alternative to above**: Define multiple named vector spaces                                                                                                 | `null`                  | Partially\*\* |
 | ↪ `vectorConfig.<name>.vectorizer`                                       | Object | Vectorizer config for this named vector (e.g., `{"text2vec-openai": {"properties": ["title"]}}`)                                                              | (Required)              | No            |
 | [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | Index type for this named vector                                                                                                                              | `hnsw`                  | No            |
 | [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | Index configuration for this named vector                                                                                                                     | Index-specific defaults | Partially\*   |
 
-\* See [vector index mutable parameters](./indexing/vector-index.mdx)  
+\* See [vector index mutable parameters](./indexing/vector-index.mdx)
 \*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
 
 #### Single vector collections
@@ -514,14 +575,6 @@ This code example shows how to configure the vectorizer parameters for a single 
       startMarker="// START Vectorizer"
       endMarker="// END Vectorizer"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithVectorizer"
-      endMarker="// END CreateCollectionWithVectorizer"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -565,14 +618,6 @@ This code example shows how to configure multiple named vectors through a client
       startMarker="// START BasicNamedVectors"
       endMarker="// END BasicNamedVectors"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithNamedVectors"
-      endMarker="// END CreateCollectionWithNamedVectors"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -631,9 +676,13 @@ More details about the `vectorIndexType` and `vectorIndexConfig` parameters can 
 
 | Parameter          | Type    | Description                                                                                                                                   | Default                   | Mutable                                 |
 | :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
-| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No in `v1.25+`, Yes in earlier versions |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                             | `false`                   | Yes                                     |
-| `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`. Added in `v1.27` | `"NoAutomatedResolution"` | Yes                                     |
+| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No |
+| `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`.  | `"TimeBasedResolution"` | Yes                                     |
+| `asyncConfig`      | Object  | Configuration for async replication tuning. See [`asyncConfig` parameters](#async-config) below. Added in `v1.36`                              | See below                 | Yes                                     |
+
+:::note Async replication is on by default (`v1.38`)
+The `asyncEnabled` flag has been removed. As of Weaviate `v1.38`, async replication runs automatically for any collection with a `factor` greater than `1`. To turn it off, set the [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#async-replication) environment variable to `true`.
+:::
 
 <details>
   <summary>Example replication configuration -  JSON object</summary>
@@ -647,14 +696,42 @@ An example of a complete `replicationConfig` object:
   // highlight-start
   "replicationConfig": {
     "factor": 3,
-    "asyncEnabled": false,
-    "deletionStrategy": "NoAutomatedResolution"
+    "deletionStrategy": "TimeBasedResolution",
+    "asyncConfig": {
+      "hashtreeHeight": 16,
+      "frequency": 30000
+    }
   }
   // highlight-end
 }
 ```
 
 </details>
+
+#### `asyncConfig` parameters {#async-config}
+
+import AsyncConfigCollection from '/_includes/feature-notes/async-config-collection.mdx';
+
+<AsyncConfigCollection/>
+
+:::note Multi-tenant vs single-tenant defaults
+Some `asyncConfig` parameters have different defaults depending on whether the collection uses multi-tenancy. These differences are noted in the table below.
+:::
+
+| Parameter | Type | Description | Default (single-tenant) | Default (multi-tenant) |
+| :--- | :--- | :--- | :--- | :--- |
+| `hashtreeHeight` | Integer | Height of the hash tree used for data comparison between nodes. Min: `0`, Max: `20` | `16` | `10` |
+| `frequency` | Integer | Frequency of periodic data comparison between nodes, in milliseconds. | `30000` | `30000` |
+| `frequencyWhilePropagating` | Integer | Frequency of data comparison while propagation is active, in milliseconds. | `3000` | `3000` |
+| `loggingFrequency` | Integer | How often the async replication process logs its activity, in seconds. | `60` | `60` |
+| `diffBatchSize` | Integer | Number of object keys fetched per request during comparison. Min: `1`, Max: `10000` | `1000` | `1000` |
+| `diffPerNodeTimeout` | Integer | Timeout for a comparison response from a remote node, in seconds. | `10` | `10` |
+| `prePropagationTimeout` | Integer | Overall timeout for the pre-propagation phase, in seconds. | `300` | `300` |
+| `propagationTimeout` | Integer | Timeout for a propagation request to a remote node, in seconds. | `60` | `60` |
+| `propagationLimit` | Integer | Maximum number of objects propagated in a single iteration. Min: `1`, Max: `1000000` | `10000` | `10000` |
+| `propagationDelay` | Integer | Delay before considering an object for propagation, in milliseconds. | `30000` | `30000` |
+| `propagationConcurrency` | Integer | Number of concurrent workers for propagation. Min: `1`, Max: `20` | `5` | `5` |
+| `propagationBatchSize` | Integer | Maximum number of objects per propagation batch. Min: `1`, Max: `1000` | `100` | `100` |
 
 #### Code example - How to configure replication
 
@@ -675,14 +752,6 @@ This code example shows how to configure the replication parameters through a cl
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -759,14 +828,6 @@ This code example shows how to configure the sharding parameters through a clien
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -800,8 +861,8 @@ To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyCon
 | Parameter              | Type    | Description                                                                                                                                                 | Default | Mutable |
 | :--------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
 | `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                        | `false` | No      |
-| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. Added in `v1.25`                                              | `false` | Yes     |
-| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. Added in `v1.25.2` | `false` | Yes     |
+| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant.                                              | `false` | Yes     |
+| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. | `false` | Yes     |
 
 #### Code example - How to configure multi-tenancy
 
@@ -822,14 +883,6 @@ This code example shows how to configure the multi-tenancy parameters through a 
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCodeMultiTenancy}
-      startMarker="// START EnableMultiTenancy"
-      endMarker="// END EnableMultiTenancy"
-      language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -904,12 +957,13 @@ The following are not allowed:
 
 ## Collections count limit {#collections-count-limit}
 
-:::info Added in `v1.30`
-:::
+import CollectionsLimit from '/_includes/feature-notes/collections-limit.mdx';
 
-To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
+<CollectionsLimit/>
 
-- **Default limit**: `1000` collections.
+Each collection adds overhead in terms of indexing, definition management, and storage. It is possible to **limit the number of collections per instance**. This helps maintain optimal performance and resource utilization.
+
+- **Default limit**: `-1` (no limit).
 - **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) environment variable to adjust the collection count limit.
 
 :::note
@@ -923,8 +977,9 @@ For more details, see [Starter Guides: Scaling limits with collections](../start
 
 ## Collection aliases
 
-:::info Added in `v1.32`
-:::
+import CollectionAliases from '/_includes/feature-notes/collection-aliases.mdx';
+
+<CollectionAliases/>
 
 Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
 

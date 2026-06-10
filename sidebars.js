@@ -30,11 +30,23 @@ const sidebars = {
         id: "weaviate/connections/index",
       },
       items: [
-        "weaviate/connections/connect-cloud",
+        {
+          type: "doc",
+          id: "weaviate/connections/connect-cloud",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/connections/connect-local",
         "weaviate/connections/connect-custom",
         "weaviate/connections/connect-embedded",
-        "weaviate/connections/connect-query",
+        {
+          type: "doc",
+          id: "weaviate/connections/connect-query",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
       ],
     },
     {
@@ -81,325 +93,407 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/index",
       },
-      items: []
+      items: [],
     },
     {
       type: "category",
-      label: "AI-based code generation",
+      label: "AI-assisted (vibe) coding",
+      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/best-practices/code-generation",
       },
-      items: []
-    }
+      items: [
+        {
+          type: "ref",
+          id: "weaviate/configuration/mcp-server",
+          label: "Weaviate MCP Server",
+        },
+        "weaviate/mcp/docs-mcp-server",
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "link",
+      label: "Integration ecosystem",
+      href: "https://weaviate.io/product/integrations",
+    },
+    {
+      type: "link",
+      label: "Concepts & architecture",
+      href: "https://academy.weaviate.io/courses/wa050-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
   ],
   modelProvidersSidebar: [
     {
-      type: "doc",
-      id: "weaviate/model-providers/index",
+      type: "category",
       label: "Model provider integrations",
-      //className: "sidebar-main-category",
-    },
-    {
-      type: "category",
-      label: "API-based",
-      collapsed: false,
+      className: "sidebar-main-category",
       collapsible: false,
-      className: "sidebar-item",
+      link: {
+        type: "doc",
+        id: "weaviate/model-providers/index",
+      },
       items: [
         {
           type: "category",
-          label: "Weaviate",
+          label: "API-based providers",
+          collapsed: true,
+          collapsible: true,
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/weaviate/index",
-          },
-          items: ["weaviate/model-providers/weaviate/embeddings"],
-        },
-        {
-          type: "category",
-          label: "Anthropic",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/anthropic/index",
-          },
-          items: ["weaviate/model-providers/anthropic/generative"],
-        },
-        {
-          type: "category",
-          label: "Anyscale",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/anyscale/index",
-          },
-          items: ["weaviate/model-providers/anyscale/generative"],
-        },
-        {
-          type: "category",
-          label: "AWS",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/aws/index",
-          },
           items: [
-            "weaviate/model-providers/aws/embeddings",
-            "weaviate/model-providers/aws/generative",
+            {
+              type: "category",
+              label: "Weaviate",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/weaviate/index",
+              },
+              customProps: {
+                cloudOnly: true,
+              },
+              items: [
+                "weaviate/model-providers/weaviate/embeddings",
+                "weaviate/model-providers/weaviate/embeddings-multimodal",
+              ],
+            },
+            {
+              type: "category",
+              label: "Anthropic",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/anthropic/index",
+              },
+              items: ["weaviate/model-providers/anthropic/generative"],
+            },
+            {
+              type: "category",
+              label: "Anyscale",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/anyscale/index",
+              },
+              items: ["weaviate/model-providers/anyscale/generative"],
+            },
+            {
+              type: "category",
+              label: "AWS",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/aws/index",
+              },
+              items: [
+                "weaviate/model-providers/aws/embeddings",
+                "weaviate/model-providers/aws/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "Cohere",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/cohere/index",
+              },
+              items: [
+                "weaviate/model-providers/cohere/embeddings",
+                "weaviate/model-providers/cohere/embeddings-multimodal",
+                "weaviate/model-providers/cohere/generative",
+                "weaviate/model-providers/cohere/reranker",
+              ],
+            },
+            {
+              type: "category",
+              label: "Contextual AI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/contextualai/index",
+              },
+              items: [
+                "weaviate/model-providers/contextualai/generative",
+                "weaviate/model-providers/contextualai/reranker",
+              ],
+            },
+            {
+              type: "category",
+              label: "Databricks",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/databricks/index",
+              },
+              items: [
+                "weaviate/model-providers/databricks/embeddings",
+                "weaviate/model-providers/databricks/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "DigitalOcean",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/digitalocean/index",
+              },
+              items: ["weaviate/model-providers/digitalocean/embeddings"],
+            },
+            {
+              type: "category",
+              label: "FriendliAI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/friendliai/index",
+              },
+              items: ["weaviate/model-providers/friendliai/generative"],
+            },
+            {
+              type: "category",
+              label: "Google",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/google/index",
+              },
+              items: [
+                "weaviate/model-providers/google/embeddings",
+                "weaviate/model-providers/google/embeddings-multimodal",
+                "weaviate/model-providers/google/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "Hugging Face",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/huggingface/index",
+              },
+              items: ["weaviate/model-providers/huggingface/embeddings"],
+            },
+            {
+              type: "category",
+              label: "JinaAI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/jinaai/index",
+              },
+              items: [
+                "weaviate/model-providers/jinaai/embeddings",
+                "weaviate/model-providers/jinaai/embeddings-colbert",
+                "weaviate/model-providers/jinaai/embeddings-multimodal",
+                "weaviate/model-providers/jinaai/reranker",
+              ],
+            },
+            {
+              type: "category",
+              label: "Mistral",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/mistral/index",
+              },
+              items: [
+                "weaviate/model-providers/mistral/embeddings",
+                "weaviate/model-providers/mistral/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "NVIDIA",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/nvidia/index",
+              },
+              items: [
+                "weaviate/model-providers/nvidia/embeddings",
+                "weaviate/model-providers/nvidia/embeddings-multimodal",
+                "weaviate/model-providers/nvidia/generative",
+                "weaviate/model-providers/nvidia/reranker",
+              ],
+            },
+            {
+              type: "category",
+              label: "OctoAI (deprecated)",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/octoai/index",
+              },
+              items: [
+                "weaviate/model-providers/octoai/embeddings",
+                "weaviate/model-providers/octoai/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "OpenAI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/openai/index",
+              },
+              items: [
+                "weaviate/model-providers/openai/embeddings",
+                "weaviate/model-providers/openai/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "OpenAI Azure",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/openai-azure/index",
+              },
+              items: [
+                "weaviate/model-providers/openai-azure/embeddings",
+                "weaviate/model-providers/openai-azure/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "VoyageAI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/voyageai/index",
+              },
+              items: [
+                "weaviate/model-providers/voyageai/embeddings",
+                "weaviate/model-providers/voyageai/embeddings-multimodal",
+                "weaviate/model-providers/voyageai/reranker",
+              ],
+            },
+            {
+              type: "category",
+              label: "xAI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/xai/index",
+              },
+              items: ["weaviate/model-providers/xai/generative"],
+            },
           ],
         },
         {
           type: "category",
-          label: "Cohere",
+          label: "Locally hosted models",
+          collapsed: true,
+          collapsible: true,
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/cohere/index",
-          },
           items: [
-            "weaviate/model-providers/cohere/embeddings",
-            "weaviate/model-providers/cohere/embeddings-multimodal",
-            "weaviate/model-providers/cohere/generative",
-            "weaviate/model-providers/cohere/reranker",
+            {
+              type: "category",
+              label: "GPT4All",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/gpt4all/index",
+              },
+              items: ["weaviate/model-providers/gpt4all/embeddings"],
+            },
+            {
+              type: "category",
+              label: "Hugging Face",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/transformers/index",
+              },
+              items: [
+                "weaviate/model-providers/transformers/embeddings",
+                "weaviate/model-providers/transformers/embeddings-custom-image",
+                "weaviate/model-providers/transformers/embeddings-multimodal",
+                "weaviate/model-providers/transformers/embeddings-multimodal-custom-image",
+                "weaviate/model-providers/transformers/reranker",
+              ],
+            },
+            {
+              type: "category",
+              label: "KubeAI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/kubeai/index",
+              },
+              items: [
+                "weaviate/model-providers/kubeai/embeddings",
+                "weaviate/model-providers/kubeai/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "Meta ImageBind",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/imagebind/index",
+              },
+              items: [
+                "weaviate/model-providers/imagebind/embeddings-multimodal",
+              ],
+            },
+            {
+              type: "category",
+              label: "Model2Vec",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/model2vec/index",
+              },
+              items: ["weaviate/model-providers/model2vec/embeddings"],
+            },
+            {
+              type: "category",
+              label: "Ollama",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/ollama/index",
+              },
+              items: [
+                "weaviate/model-providers/ollama/embeddings",
+                "weaviate/model-providers/ollama/generative",
+              ],
+            },
           ],
-        },
-        {
-          type: "category",
-          label: "Databricks",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/databricks/index",
-          },
-          items: [
-            "weaviate/model-providers/databricks/embeddings",
-            "weaviate/model-providers/databricks/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "FriendliAI",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/friendliai/index",
-          },
-          items: ["weaviate/model-providers/friendliai/generative"],
-        },
-        {
-          type: "category",
-          label: "Google",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/google/index",
-          },
-          items: [
-            "weaviate/model-providers/google/embeddings",
-            "weaviate/model-providers/google/embeddings-multimodal",
-            "weaviate/model-providers/google/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "Hugging Face",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/huggingface/index",
-          },
-          items: ["weaviate/model-providers/huggingface/embeddings"],
-        },
-        {
-          type: "category",
-          label: "JinaAI",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/jinaai/index",
-          },
-          items: [
-            "weaviate/model-providers/jinaai/embeddings",
-            "weaviate/model-providers/jinaai/embeddings-colbert",
-            "weaviate/model-providers/jinaai/embeddings-multimodal",
-            "weaviate/model-providers/jinaai/reranker",
-          ],
-        },
-        {
-          type: "category",
-          label: "Mistral",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/mistral/index",
-          },
-          items: [
-            "weaviate/model-providers/mistral/embeddings",
-            "weaviate/model-providers/mistral/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "NVIDIA",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/nvidia/index",
-          },
-          items: [
-            "weaviate/model-providers/nvidia/embeddings",
-            "weaviate/model-providers/nvidia/embeddings-multimodal",
-            "weaviate/model-providers/nvidia/generative",
-            "weaviate/model-providers/nvidia/reranker",
-          ],
-        },
-        {
-          type: "category",
-          label: "OctoAI (deprecated)",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/octoai/index",
-          },
-          items: [
-            "weaviate/model-providers/octoai/embeddings",
-            "weaviate/model-providers/octoai/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "OpenAI",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/openai/index",
-          },
-          items: [
-            "weaviate/model-providers/openai/embeddings",
-            "weaviate/model-providers/openai/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "OpenAI Azure",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/openai-azure/index",
-          },
-          items: [
-            "weaviate/model-providers/openai-azure/embeddings",
-            "weaviate/model-providers/openai-azure/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "VoyageAI",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/voyageai/index",
-          },
-          items: [
-            "weaviate/model-providers/voyageai/embeddings",
-            "weaviate/model-providers/voyageai/embeddings-multimodal",
-            "weaviate/model-providers/voyageai/reranker",
-          ],
-        },
-        {
-          type: "category",
-          label: "xAI",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/xai/index",
-          },
-          items: ["weaviate/model-providers/xai/generative"],
         },
       ],
     },
     {
-      type: "category",
-      label: "Locally hosted",
-      collapsed: false,
-      collapsible: false,
-      className: "sidebar-item",
-      items: [
-        {
-          type: "category",
-          label: "GPT4All",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/gpt4all/index",
-          },
-          items: ["weaviate/model-providers/gpt4all/embeddings"],
-        },
-        {
-          type: "category",
-          label: "Hugging Face",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/transformers/index",
-          },
-          items: [
-            "weaviate/model-providers/transformers/embeddings",
-            "weaviate/model-providers/transformers/embeddings-custom-image",
-            "weaviate/model-providers/transformers/embeddings-multimodal",
-            "weaviate/model-providers/transformers/embeddings-multimodal-custom-image",
-            "weaviate/model-providers/transformers/reranker",
-          ],
-        },
-        {
-          type: "category",
-          label: "KubeAI",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/kubeai/index",
-          },
-          items: [
-            "weaviate/model-providers/kubeai/embeddings",
-            "weaviate/model-providers/kubeai/generative",
-          ],
-        },
-        {
-          type: "category",
-          label: "Meta ImageBind",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/imagebind/index",
-          },
-          items: ["weaviate/model-providers/imagebind/embeddings-multimodal"],
-        },
-        {
-          type: "category",
-          label: "Model2Vec",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/model2vec/index",
-          },
-          items: ["weaviate/model-providers/model2vec/embeddings"],
-        },
-        {
-          type: "category",
-          label: "Ollama",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/model-providers/ollama/index",
-          },
-          items: [
-            "weaviate/model-providers/ollama/embeddings",
-            "weaviate/model-providers/ollama/generative",
-          ],
-        },
-      ],
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "link",
+      label: "AI models: A deep dive",
+      href: "https://academy.weaviate.io/courses/wa150-py",
+      customProps: {
+        academyOnly: true,
+      },
+    },
+    {
+      type: "link",
+      label: "Embedding model selection",
+      href: "https://academy.weaviate.io/courses/wa260-py",
+      customProps: {
+        academyOnly: true,
+      },
     },
   ],
   conceptsSidebar: [
@@ -442,18 +536,46 @@ const sidebars = {
         "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
         {
-          type: "category",
-          label: "RBAC",
-          link: {
-            type: "doc",
-            id: "weaviate/configuration/rbac/index",
-          },
-          items: [
-            "weaviate/configuration/rbac/manage-roles",
-            "weaviate/configuration/rbac/manage-users",
-            "weaviate/configuration/rbac/manage-groups",
-          ],
+          type: "doc",
+          id: "weaviate/configuration/mcp-server",
+          label: "MCP Server",
         },
+        {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "link",
+          label: "Database configuration",
+          href: "/deploy/configuration/env-vars",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "Monitoring and logging",
+          href: "/deploy/configuration/monitoring",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "Replication and scaling",
+          href: "/deploy/configuration/replication",
+          customProps: { openInNewTab: true },
+        },
+        {
+          type: "link",
+          label: "Storage and backups",
+          href: "/deploy/configuration/backups",
+          customProps: { openInNewTab: true },
+        },
+        // {
+        //   type: "link",
+        //   label: "Architectural decisions guide",
+        //   href: "https://academy.weaviate.io/courses/wa210-py",
+        //   customProps: {
+        //     academyOnly: true,
+        //   },
+        // },
       ],
     },
     {
@@ -478,6 +600,7 @@ const sidebars = {
           items: ["weaviate/manage-collections/tenant-states"],
         },
         "weaviate/manage-collections/collection-aliases",
+        "weaviate/manage-collections/time-to-live",
         "weaviate/manage-collections/multi-node-setup",
         "weaviate/manage-collections/migrate",
         "weaviate/manage-collections/cross-references",
@@ -497,6 +620,14 @@ const sidebars = {
         "weaviate/manage-objects/read-all-objects",
         "weaviate/manage-objects/update",
         "weaviate/manage-objects/delete",
+        {
+          type: "link",
+          label: "Data ingestion: In depth",
+          href: "https://academy.weaviate.io/courses/wa230-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
       ],
     },
     {
@@ -508,15 +639,33 @@ const sidebars = {
       },
       items: [
         "weaviate/search/basics",
+        {
+          type: "doc",
+          id: "weaviate/search/query-agent",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/search/similarity",
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
         "weaviate/search/image",
+        "weaviate/search/near-media",
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
+        "weaviate/search/boost",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
+        "weaviate/search/query-profile",
+        {
+          type: "link",
+          label: "Search strategies: In depth",
+          href: "https://academy.weaviate.io/courses/wa220-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
       ],
     },
     {
@@ -527,9 +676,30 @@ const sidebars = {
         id: "weaviate/tutorials/index",
       },
       items: [
-        "weaviate/tutorials/multi-vector-embeddings",
+        {
+          type: "link",
+          label: "Hands-on Weaviate with Python",
+          href: "https://academy.weaviate.io/courses/wa101t-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
+        {
+          type: "link",
+          label: "Your first AI app",
+          href: "https://academy.weaviate.io/courses/wa180-py",
+          customProps: {
+            academyOnly: true,
+          },
+        },
+        "weaviate/tutorials/quick-tour-of-weaviate",
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
+        "weaviate/tutorials/multi-vector-embeddings",
+        "weaviate/tutorials/vector-indexing-deep-dive",
+        "weaviate/tutorials/tokenization",
+        "weaviate/tutorials/rbac",
+        "weaviate/tutorials/tls-ssl",
         "weaviate/tutorials/collection-aliases",
         "weaviate/tutorials/cross-references",
         "weaviate/tutorials/spark-connector",
@@ -586,7 +756,7 @@ const sidebars = {
         {
           type: "link",
           label: "Environment variables",
-          href: "https://docs.weaviate.io/deploy/configuration/env-vars",
+          href: "/deploy/configuration/env-vars",
           className: "sidebar-item",
         },
       ],
@@ -642,7 +812,12 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "weaviate/client-libraries/java",
+          id: "weaviate/client-libraries/java/index",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/client-libraries/csharp",
           className: "sidebar-item",
         },
         {
@@ -673,8 +848,8 @@ const sidebars = {
       collapsible: false,
       items: [
         {
-          type: "doc",
-          id: "weaviate/api/rest",
+          type: "link",
+          href: "/weaviate/api/rest",
           label: "RESTful API",
           className: "sidebar-item",
         },
@@ -705,22 +880,6 @@ const sidebars = {
       ],
     },
   ],
-  weaviateRecipesSidebar: [
-    {
-      type: "category",
-      label: "Recipes",
-      link: {
-        type: "doc",
-        id: "weaviate/recipes",
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "weaviate/recipes", // Scans the folder docs/weaviate/recipes/
-        },
-      ],
-    },
-  ],
   othersSidebar: [
     {
       type: "category",
@@ -729,7 +888,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/release-notes/index",
       },
-      items: [],
+      items: ["weaviate/release-notes/known-issues"],
     },
     {
       type: "category",
@@ -762,6 +921,20 @@ const sidebars = {
     "weaviate/more-resources/faq",
     "weaviate/more-resources/glossary",
     "weaviate/more-resources/example-datasets",
+    {
+      type: "category",
+      label: "Recipes",
+      link: {
+        type: "doc",
+        id: "weaviate/recipes",
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "weaviate/recipes", // Scans the folder docs/weaviate/recipes/
+        },
+      ],
+    },
   ],
   deploySidebar: [
     {
@@ -815,16 +988,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/installation-guides/eks-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/ecs-marketplace",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/installation-guides/eks",
           className: "sidebar-item",
         },
@@ -846,9 +1009,22 @@ const sidebars = {
           id: "deploy/installation-guides/gcp-marketplace",
           className: "sidebar-item",
         },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "DigitalOcean",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
         {
           type: "doc",
-          id: "deploy/installation-guides/gke-marketplace",
+          id: "deploy/installation-guides/digitalocean",
           className: "sidebar-item",
         },
       ],
@@ -856,51 +1032,9 @@ const sidebars = {
   ],
   deployConfigSidebar: [
     {
-      type: "category",
-      label: "Configuration Guides",
-      className: "sidebar-main-category",
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "deploy/configuration/index",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "deploy/configuration/backups",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/horizontal-scaling",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/monitoring",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/persistence",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/telemetry",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/tenant-offloading",
-          className: "sidebar-item",
-        },
-      ],
+      type: "doc",
+      id: "deploy/configuration/index",
+      className: "sidebar-item",
     },
     {
       type: "html",
@@ -910,6 +1044,8 @@ const sidebars = {
       type: "category",
       label: "Authorization and authentication",
       className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
       items: [
         {
           type: "doc",
@@ -927,9 +1063,36 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "deploy/configuration/configuring-rbac",
+          type: "category",
+          label: "RBAC",
           className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/configuration/rbac/index",
+          },
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy/configuration/configuring-rbac",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/configuration/rbac/manage-roles",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/configuration/rbac/manage-users",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/configuration/rbac/manage-groups",
+              className: "sidebar-item",
+            },
+          ],
         },
       ],
     },
@@ -939,34 +1102,10 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Replication",
+      label: "Database configuration",
       className: "sidebar-main-category",
-      items: [
-        {
-          type: "doc",
-          id: "deploy/configuration/replication",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/async-rep",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/configuration/replica-movement",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Environment variables",
-      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
       items: [
         {
           type: "doc",
@@ -986,39 +1125,151 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Cluster information",
+      label: "Monitoring and logging",
       className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
       items: [
         {
           type: "doc",
-          id: "deploy/configuration/meta",
+          id: "deploy/configuration/monitoring",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/configuration/nodes",
+          id: "deploy/configuration/logging",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/status",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/telemetry",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Replication and scaling",
+      className: "sidebar-main-category",
+      collapsible: true,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/replication",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/async-rep",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/replica-movement",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/horizontal-scaling",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Storage and backups",
+      className: "sidebar-main-category",
+      collapsible: true,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/export",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/persistence",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
       ],
     },
   ],
   deployProductionSidebar: [
+    "deploy/production/index",
     {
-      type: "autogenerated",
-      dirName: "deploy/production",
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
-  ],
-  deployAwsSidebar: [
     {
-      type: "autogenerated",
-      dirName: "deploy/aws",
+      type: "category",
+      label: "Kubernetes",
+      link: {
+        type: "doc",
+        id: "deploy/production/kubernetes/index",
+      },
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/production/kubernetes/get-to-production",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/production/kubernetes/production-readiness",
+          className: "sidebar-item",
+        },
+      ],
     },
-  ],
-  deployTutorialSidebar: [
     {
-      type: "doc",
-      label: "RBAC",
-      id: "deploy/tutorials/rbac",
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "AWS",
+      link: {
+        type: "doc",
+        id: "deploy/production/aws/index",
+      },
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/production/aws/hardening-eks",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/production/aws/network-security",
+          className: "sidebar-item",
+        },
+      ],
     },
   ],
   deployFaqsSidebar: [
@@ -1034,114 +1285,180 @@ const sidebars = {
     },
   ],
   agentsSidebar: [
+    "query-agent/index",
+    "query-agent/installation",
+    "query-agent/quickstart",
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Modes",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/guides/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/guides/ask_mode",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/guides/search_mode",
+          className: "sidebar-item",
+        },
+        // {
+        //   type: "doc",
+        //   id: "query-agent/guides/research_mode",
+        //   className: "sidebar-item",
+        // },
+        {
+          type: "doc",
+          id: "query-agent/guides/suggest_queries",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Configuration",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/reference/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/reference/instantiation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/system_prompt",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/multi_turn_conversations",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/additional_filters",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/advanced_collections",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Clients",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/clients/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/clients/python",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/clients/typescript",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Tutorials and guides",
+      className: "sidebar-item",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "query-agent/recipes/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-get-started",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-ecommerce-assistant",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-streamlit-chat",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-vs-diy",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-as-a-tool",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    // {
+    //   type: "html",
+    //   value: "<hr class='sidebar-divider' />",
+    // },
     {
       type: "doc",
-      id: "agents/index",
+      id: "query-agent/reference/troubleshooting",
+      className: "sidebar-item",
     },
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Query Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/query/index",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/query/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/query/tutorial-ecommerce",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Transformation Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/transformation/index",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/transformation/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/transformation/tutorial-enrich-dataset",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Personalization Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/personalization/index",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/personalization/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/personalization/tutorial-recipe-recommender",
-          className: "sidebar-item",
-        },
-      ],
-    },
-  ],
-  agentsRecipesSidebar: [
-    {
-      type: "category",
-      label: "Recipes",
-      collapsed: false,
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "agents/recipes",
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "agents/recipes", // Scans the folder docs/weaviate/recipes/
-        },
-      ],
-    },
-  ],
-  academySidebar: [
-    {
-      type: "autogenerated",
-      dirName: "academy",
     },
   ],
   contributorSidebar: [
@@ -1226,7 +1543,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Manage a cluster",
+      label: "Manage clusters",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1248,17 +1565,40 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "cloud/manage-clusters/upgrade",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "cloud/manage-clusters/authentication",
           className: "sidebar-item",
         },
         {
           type: "doc",
           id: "cloud/manage-clusters/authorization",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/default-settings",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Manage collections",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "cloud/tools/collections-tool",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-collections/enable-compression",
           className: "sidebar-item",
         },
       ],
@@ -1287,21 +1627,10 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Tools",
+      label: "Other tools",
       className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
+      collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "cloud/tools/import-tool",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "cloud/tools/collections-tool",
-          className: "sidebar-item",
-        },
         {
           type: "doc",
           id: "cloud/tools/explorer-tool",
@@ -1332,114 +1661,63 @@ const sidebars = {
   ],
   cloudAccountManagementSidebar: [
     "cloud/platform/billing",
-    "cloud/platform/support-levels",
     "cloud/platform/version",
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
   ],
-  integrationsSidebar: [
-    "integrations/index",
+  engramSidebar: [
+    { type: "doc", id: "engram/index", label: "Introduction" },
+    "engram/quickstart",
+    "engram/install-integrate",
     {
       type: "category",
-      label: "Cloud Hyperscalers",
-      link: {
-        type: "doc",
-        id: "integrations/cloud-hyperscalers/index",
-      },
+      label: "Concepts",
+      link: { type: "doc", id: "engram/concepts/index" },
+      collapsed: true,
       items: [
-        "integrations/cloud-hyperscalers/aws/index",
-        "integrations/cloud-hyperscalers/google/index",
+        "engram/concepts/memories",
+        "engram/concepts/topics",
+        "engram/concepts/scopes",
+        "engram/concepts/input-data-types",
+        "engram/concepts/pipelines",
+        "engram/concepts/search",
+        "engram/concepts/groups",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/guides/index" },
+      items: [
+        "engram/guides/store-memories",
+        "engram/guides/search-memories",
+        "engram/guides/manage-memories",
+        "engram/guides/check-run-status",
       ],
     },
     {
       type: "category",
-      label: "Compute Infrastructure",
-      link: {
-        type: "doc",
-        id: "integrations/compute-infrastructure/index",
-      },
+      label: "Tutorials",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/tutorials/index" },
       items: [
-        "integrations/compute-infrastructure/modal/index",
-        "integrations/compute-infrastructure/replicate/index",
-        "integrations/compute-infrastructure/replicated/index"
+        "engram/tutorials/memory-chat-app",
+        "engram/tutorials/context-window-management",
+        "engram/tutorials/personalized-rag-multi-tenant",
       ],
     },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
     {
-      type: "category",
-      label: "Data Platforms",
-      link: {
-        type: "doc",
-        id: "integrations/data-platforms/index",
-      },
-      items: [
-        "integrations/data-platforms/airbyte/index",
-        "integrations/data-platforms/aryn/index",
-        "integrations/data-platforms/astronomer/index",
-        "integrations/data-platforms/boomi/index",
-        "integrations/data-platforms/box/index",
-        "integrations/data-platforms/cardinal/index",
-        "integrations/data-platforms/confluent/index",
-        "integrations/data-platforms/context-data/index",
-        "integrations/data-platforms/databricks/index",
-        "integrations/data-platforms/firecrawl/index",
-        "integrations/data-platforms/ibm/index",
-        "integrations/data-platforms/unstructured/index",
-      ],
+      type: "link",
+      label: "REST API reference",
+      href: "/engram/api/rest",
     },
-    {
-      type: "category",
-      label: "LLM and Agent Frameworks",
-      link: {
-        type: "doc",
-        id: "integrations/llm-agent-frameworks/index",
-      },
-      items: [
-        "integrations/llm-agent-frameworks/agno/index",
-        "integrations/llm-agent-frameworks/composio/index",
-        "integrations/llm-agent-frameworks/crewai/index",
-        "integrations/llm-agent-frameworks/dspy/index",
-        "integrations/llm-agent-frameworks/dynamiq/index",
-        "integrations/llm-agent-frameworks/haystack/index",
-        "integrations/llm-agent-frameworks/langchain/index",
-        "integrations/llm-agent-frameworks/llamaindex/index",
-        "integrations/llm-agent-frameworks/n8n/index",
-        "integrations/llm-agent-frameworks/semantic-kernel/index",
-      ],
-    },
-    {
-      type: "category",
-      label: "Operations",
-      link: {
-        type: "doc",
-        id: "integrations/operations/index",
-      },
-      items: [
-        "integrations/operations/arize/index",
-        "integrations/operations/deepeval/index",
-        "integrations/operations/langtrace/index",
-        "integrations/operations/langwatch/index",
-        "integrations/operations/nomic/index",
-        "integrations/operations/ragas/index",
-        "integrations/operations/wandb/index",
-      ],
-    },
-  ],
-  integrationsRecipesSidebar: [
-    {
-      type: "category",
-      label: "Recipes",
-      link: {
-        type: "doc",
-        id: "integrations/recipes",
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "integrations/recipes",
-        },
-      ],
-    },
+    "engram/console",
   ],
 };
 

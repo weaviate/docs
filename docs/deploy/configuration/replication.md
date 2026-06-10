@@ -5,6 +5,7 @@ image: og/docs/configuration.jpg
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
+import AsyncReplicationPerCollectionConfig from '/_includes/async-replication-per-collection-config.mdx';
 
 Weaviate instances can be replicated. Replication can improve read throughput, improve availability, and enable zero-downtime upgrades.
 
@@ -45,9 +46,9 @@ The example data schema has a [write consistency](/weaviate/concepts/replication
 
 When Weaviate detects inconsistent data across nodes, it attempts to repair the out of sync data.
 
-Starting in v1.26, Weaviate adds [async replication](/weaviate/concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
+Weaviate offers [async replication](/weaviate/concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
 
-Repair-on-read is automatic. To activate async replication, set `asyncEnabled` to true in the `replicationConfig` section of your collection definition.
+Repair-on-read is automatic. As of Weaviate `v1.38`, async replication is also **enabled by default** for any collection with a replication factor greater than `1` — there is no longer a per-collection flag to switch it on. To turn it off cluster-wide, set the [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#async-replication) environment variable to `true`. The `replicationConfig` section is used to set the replication factor and to fine-tune async replication via `asyncConfig`:
 
 import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/replication-consistency.mdx';
 
@@ -55,13 +56,18 @@ import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/rep
 
 ### Configure async replication settings {#async-replication-settings}
 
-:::info Added in `v1.29`
-The [environment variables](/deploy/configuration/env-vars/index.md#async-replication) for configuring async replication (`ASYNC_*`) have been introduced in `v1.29`.
-:::
+<AsyncReplicationPerCollectionConfig />
 
 Async replication helps achieve consistency for data replicated across multiple nodes.
 
 Update the following [environment variables](/deploy/configuration/env-vars/index.md#async-replication) to configure async replication for your particular use case.
+
+#### Worker limits
+
+- **Set the scheduler worker pool size:** `ASYNC_REPLICATION_SCHEDULER_WORKERS`
+  Set the number of workers in the cluster-wide pool that run async replication work across all shards and tenants. Default: `10`, maximum: `100`. As of `v1.38` this replaces the removed `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` variable and the per-collection `maxWorkers` option; collections share this single pool.
+- **Set hash tree init concurrency:** `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`
+  Set how many shards may build their hash tree concurrently when async replication starts up. Default: `100`.
 
 #### Logging
 
@@ -74,12 +80,14 @@ Update the following [environment variables](/deploy/configuration/env-vars/inde
   Define how often each node compares its local data with other nodes.
 - **Set comparison timeout:** `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT`
   Optionally configure a timeout for how long to wait during comparison when a node is unresponsive.
-- **Monitor node availability:** `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
-  Trigger comparisons whenever there’s a change in node availability.
 - **Configure hash tree height:** `ASYNC_REPLICATION_HASHTREE_HEIGHT`
   Specify the size of the hash tree, which helps narrow down data differences by comparing hash digests at multiple levels instead of scanning entire datasets. See [this page](/weaviate/concepts/replication-architecture/consistency.md#memory-and-performance-considerations-for-async-replication) for more information on the memory and performance considerations for async replication.
 - **Batch size for digest comparison:** `ASYNC_REPLICATION_DIFF_BATCH_SIZE`
   Define the number of objects whose digest (e.g., last update time) is compared between nodes before propagating actual objects.
+
+:::note Removed in `v1.38`
+The `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` (replaced by `ASYNC_REPLICATION_SCHEDULER_WORKERS`) and `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY` environment variables were removed in `v1.38` when async replication moved to a centralized scheduler.
+:::
 
 #### Data synchronization
 
@@ -87,6 +95,8 @@ Once differences between nodes are detected, Weaviate propagates outdated or mis
 
 - **Set the frequency of propagation:** `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING`
   After synchronization is completed on a node, temporarily adjust the data comparison frequency to the set value.
+- **Set pre-propagation timeout:** `ASYNC_REPLICATION_PRE_PROPAGATION_TIMEOUT`
+  Configure a delay before propagation begins to allow in-progress write operations to complete across nodes.
 - **Set propagation timeout:** `ASYNC_REPLICATION_PROPAGATION_TIMEOUT`
   Optionally configure a timeout for how long to wait during propagation when a node is unresponsive.
 - **Set propagation delay:** `ASYNC_REPLICATION_PROPAGATION_DELAY`
@@ -123,15 +133,16 @@ import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx'
 
 ## Replica movement and status
 
-:::info Added in `v1.32`
-:::
+import ReplicaMovement from '/_includes/feature-notes/replica-movement.mdx';
+
+<ReplicaMovement/>
 
 Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated <SkipLink href="/weaviate/api/rest#tag/replication">RESTful API endpoints</SkipLink> or [programmatically through client libraries](./replica-movement.mdx).
 
 ## Related pages
 
 - [Concepts: Replication Architecture](/weaviate/concepts/replication-architecture/index.md)
-- [Configurinfg Async Replication](./async-rep.md)
+- [Configuring Async Replication](./async-rep.md)
 
 ## Questions and feedback
 

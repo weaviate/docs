@@ -1,0 +1,120 @@
+.pointer {
+  position: fixed;
+  z-index: 9000;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  padding: 16px;
+  background: var(--ifm-background-surface-color, #ffffff);
+  color: var(--ifm-font-color-base);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.06),
+    0 16px 40px rgba(15, 23, 42, 0.18);
+  animation: navPointerIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arrow {
+  position: absolute;
+  top: -7px;
+  left: 26px;
+  width: 13px;
+  height: 13px;
+  background: var(--ifm-background-surface-color, #ffffff);
+  border-left: 1px solid var(--ifm-color-emphasis-200);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  border-top-left-radius: 3px;
+  transform: rotate(45deg);
+}
+
+.body {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.iconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  color: var(--ifm-color-primary);
+  background: color-mix(in srgb, var(--ifm-color-primary) 12%, transparent);
+}
+
+.content {
+  min-width: 0;
+}
+
+.title {
+  margin: 1px 0 4px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.text {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ifm-color-emphasis-500);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+
+  &:hover {
+    background: var(--ifm-color-emphasis-100);
+    color: var(--ifm-font-color-base);
+  }
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ifm-color-primary);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.12s ease;
+
+  &:hover {
+    background: var(--ifm-color-primary-dark);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+@keyframes navPointerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

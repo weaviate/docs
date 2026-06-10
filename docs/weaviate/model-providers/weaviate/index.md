@@ -5,11 +5,9 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'weaviate embeddings']
 ---
 
-:::info Access to Weaviate Embeddings
-Weaviate Embeddings is a paid service available through Weaviate Cloud. You can try it out for free by using a Sandbox cluster.
-:::
-
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
+
+<CloudOnlyBadge />
 
 [Weaviate Embeddings](/cloud/embeddings) offers vectorizer models to Weaviate Cloud users, allowing users to leverage Weaviate Embeddings' models directly from a Weaviate Cloud database instance.
 
@@ -26,6 +24,7 @@ Weaviate Embeddings' models transform text data into vector embeddings, capturin
 [Weaviate Cloud integrates with Weaviate Embeddings' embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
 
 [Weaviate Embeddings integration page](./embeddings.md)
+[Weaviate multimodal embedding integration page](./embeddings-multimodal.md)
 
 ## Summary
 
@@ -35,14 +34,15 @@ In turn, they simplify the process of building AI-driven applications to speed u
 
 ## Get started
 
-You must provide a valid Weaviate Cloud API key to Weaviate for these integrations. Go to [Weaviate Cloud](https://console.weaviate.cloud/) to sign up and obtain an API key.
+You must provide a valid Weaviate Cloud API key to Weaviate for these integrations. Go to [Weaviate Cloud](/go/console?utm_content=howto/) to sign up and obtain an API key.
 
 Then, go to the relevant integration page to learn how to configure Weaviate with the Weaviate Embeddings models and start using them in your applications.
 
 - [Text Embeddings](./embeddings.md)
+- [Multimodal Embeddings](./embeddings-multimodal.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

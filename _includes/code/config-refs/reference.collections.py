@@ -57,7 +57,6 @@ client.collections.create(
     ),
     replication_config=Configure.replication(
         factor=1,
-        async_enabled=False,
         deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
     ),
 )
@@ -733,7 +732,6 @@ client.collections.create(
     # highlight-start
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,
         deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
     ),
     # highlight-end
@@ -743,7 +741,6 @@ client.collections.create(
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.replication_config.async_enabled == True
 assert (
     config.replication_config.deletion_strategy
     == ReplicationDeletionStrategy.TIME_BASED_RESOLUTION

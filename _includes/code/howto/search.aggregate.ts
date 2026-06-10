@@ -8,7 +8,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
  {
    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY as string,  // Replace with your inference API key
    }
  }
 )
@@ -113,6 +113,58 @@ console.log(JSON.stringify(result, null, 2));
 //   { groupedBy: { value: 'Final Jeopardy!' }, meta: { count: 285 } },
 // ]));
 // End test
+}
+
+// =========================================
+// ===== nearObject EXAMPLES =====
+// =========================================
+{
+// nearObjectAggregate TS
+const collection = client.collections.use('JeopardyQuestion');
+const someObjects = await collection.query.fetchObjects({ limit: 1 });
+const objectId = someObjects.objects[0].uuid;
+
+const result = await collection.aggregate.nearObject(
+  // highlight-start
+  objectId,
+  {
+    objectLimit: 200,
+    distance: 0.6,
+    returnMetrics: collection.metrics.aggregate('points')
+      .integer(['count', 'sum', 'maximum', 'minimum', 'mean', 'median', 'mode']),
+  }
+  // highlight-end
+)
+
+console.log(result.totalCount);
+console.log(JSON.stringify(result.properties, null, 2));
+// END nearObjectAggregate TS
+}
+
+// =========================================
+// ===== nearVector EXAMPLES =====
+// =========================================
+{
+// nearVectorAggregate TS
+const collection = client.collections.use('JeopardyQuestion');
+const someObjects = await collection.query.fetchObjects({ limit: 1, includeVector: true });
+const someVector = someObjects.objects[0].vectors.default;
+
+const result = await collection.aggregate.nearVector(
+  // highlight-start
+  someVector,
+  {
+    objectLimit: 200,
+    distance: 0.7,
+    returnMetrics: collection.metrics.aggregate('points')
+      .integer(['count', 'sum', 'maximum', 'minimum', 'mean', 'median', 'mode']),
+  }
+  // highlight-end
+)
+
+console.log(result.totalCount);
+console.log(JSON.stringify(result.properties, null, 2));
+// END nearVectorAggregate TS
 }
 
 // =========================================

@@ -8,6 +8,7 @@ image: og/docs/model-provider-integrations.jpg
 Weaviate integrates with a variety of [self-hosted](#locally-hosted) and [API-based](#api-based) models from a range of providers.
 
 This enables an enhanced developed experience, such as the ability to:
+
 - Import objects directly into Weaviate without having to manually specify embeddings, and
 - Build an integrated retrieval augmented generation (RAG) pipeline with generative AI models.
 
@@ -19,9 +20,11 @@ This enables an enhanced developed experience, such as the ability to:
 | --- | --- | --- | --- |
 | [Anthropic](./anthropic/index.md) | - | [Text](./anthropic/generative.md) | - |
 | [Anyscale](./anyscale/index.md) | - | [Text](./anyscale/generative.md) | - |
-| [AWS](./aws/index.md) | [Text](./aws/embeddings.md) | [Text](./aws/generative.md) |
+| [AWS](./aws/index.md) | [Text](./aws/embeddings.md) | [Text](./aws/generative.md) | - |
 | [Cohere](./cohere/index.md) | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md) | [Text](./cohere/generative.md) | [Reranker](./cohere/reranker.md) |
+| [Contextual AI](./contextualai/index.md) | - | [Text](./contextualai/generative.md) | [Reranker](./contextualai/reranker.md) |
 | [Databricks](./databricks/index.md) | [Text](./databricks/embeddings.md) | [Text](./databricks/generative.md) | - |
+| [DigitalOcean](./digitalocean/index.md) | [Text](./digitalocean/embeddings.md) | - | - |
 | [FriendliAI](./friendliai/index.md) | - | [Text](./friendliai/generative.md) | - |
 | [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
 | [Hugging Face](./huggingface/index.md) | [Text](./huggingface/embeddings.md) | - | - |
@@ -32,23 +35,29 @@ This enables an enhanced developed experience, such as the ability to:
 | [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
 | [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
 | [Voyage AI](./voyageai/index.md) | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | - | [Reranker](./voyageai/reranker.md) |
-| [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md) | - | - |
+| [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md), [Multimodal](./weaviate/embeddings-multimodal.md) | - | - |
 | [xAI](./xai/index.md) | - | [Text](./xai/generative.md) | - |
 
 #### Enable all API-based modules
 
-All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`. 
+All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`.
 
 ### Locally hosted
 
-| Model provider | Embeddings | Generative AI | Others |
-| --- | --- | --- | --- |
-| [GPT4All (Deprecated)](./gpt4all/index.md) | [Text (Deprecated)](./gpt4all/embeddings.md) | - | - |
-| [Hugging Face](./transformers/index.md) | [Text](./transformers/embeddings.md), [Multimodal (CLIP)](./transformers/embeddings-multimodal.md) | - | [Reranker](./transformers/reranker.md) |
-| [KubeAI](./kubeai/index.md) | [Text](./kubeai/embeddings.md) | - | - |
-| [Model2vec](./model2vec/index.md) | [Text](./model2vec/embeddings.md) | - | - |
-| [Meta ImageBind](./imagebind/index.md) | [Multimodal](./imagebind/embeddings-multimodal.md) | - | - |
-| [Ollama](./ollama/index.md) | [Text](./ollama/embeddings.md) | [Text](./ollama/generative.md) | - |
+| Model provider                             | Embeddings                                                                                         | Generative AI                  | Others                                 |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------- |
+| [GPT4All (Deprecated)](./gpt4all/index.md) | [Text (Deprecated)](./gpt4all/embeddings.md)                                                       | -                              | -                                      |
+| [Hugging Face](./transformers/index.md)    | [Text](./transformers/embeddings.md), [Multimodal (CLIP)](./transformers/embeddings-multimodal.md) | -                              | [Reranker](./transformers/reranker.md) |
+| [KubeAI](./kubeai/index.md)                | [Text](./kubeai/embeddings.md)                                                                     | -                              | -                                      |
+| [Model2vec](./model2vec/index.md)          | [Text](./model2vec/embeddings.md)                                                                  | -                              | -                                      |
+| [Meta ImageBind](./imagebind/index.md)     | [Multimodal](./imagebind/embeddings-multimodal.md)                                                 | -                              | -                                      |
+| [Ollama](./ollama/index.md)                | [Text](./ollama/embeddings.md)                                                                     | [Text](./ollama/generative.md) | -                                      |
+
+import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+
+<AcademyAdmonition
+  courseId="embedding-model-evaluation"
+/>
 
 ## How does Weaviate generate embeddings?
 
@@ -121,6 +130,6 @@ The text is always lowercased for the `text2vec-contextionary` integration.
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

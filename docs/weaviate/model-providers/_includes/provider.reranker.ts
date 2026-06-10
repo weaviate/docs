@@ -7,8 +7,8 @@ import weaviate from 'weaviate-client';
 
 const client = await weaviate.connectToLocal({
   headers: {
-    'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY || '',
-    'X-Cohere-Api-Key': process.env.COHERE_APIKEY || '',
+    'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY || '',
+    'X-Cohere-Api-Key': process.env.COHERE_API_KEY || '',
   },
 });
 
@@ -40,6 +40,28 @@ await client.collections.create({
   // highlight-end
 });
 // END RerankerCohereCustomModel
+
+// START RerankerContextualAIBasic
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  reranker: weaviate.configure.reranker.contextualai(),
+  // highlight-end
+});
+// END RerankerContextualAIBasic
+
+// START RerankerContextualAICustomModel
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  reranker: weaviate.configure.reranker.contextualai({
+    model: 'ctxl-rerank-v2-instruct-multilingual',
+    instruction: 'Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.',
+    topN: 5,
+  }),
+  // highlight-end
+});
+// END RerankerContextualAICustomModel
 
 // START RerankerJinaAIBasic
 await client.collections.create({

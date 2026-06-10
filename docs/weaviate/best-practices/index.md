@@ -99,6 +99,8 @@ As the size of your dataset grows, the accompanying vector indexes can lead to h
 
 If you have a large number of vectors, consider using vector quantization to reduce the memory footprint of the vector index. This will reduce the required memory, and allow you to scale more effectively at lower costs.
 
+If memory is your priority, you can also consider the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) — an index-level alternative to quantization for reducing the memory footprint.
+
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
 
@@ -194,18 +196,25 @@ As a result, this method may be useful for showing the overall high bound for th
 
 ### Configure shard loading behavior to balance system & data availability
 
-When Weaviate starts, it loads data from all shards in your deployment. By default, lazy shard loading enables faster startup by loading shards in the background while allowing immediate queries to already-loaded shards.
+:::info Added in `v1.36.6`
+:::
 
-However, for single-tenant collections under high loads, lazy loading can cause import operations to slow down or partially fail. In these scenarios, consider [disabling lazy loading](../concepts/storage.md#lazy-shard-loading), by setting the following environment variable:
+When Weaviate starts, it loads data from all shards in your deployment. Starting in v1.36.6, Weaviate uses [dynamic lazy shard loading](../concepts/storage.md#dynamic-lazy-shard-loading) to automatically decide per collection whether to load shards eagerly or lazily, based on shard count and size thresholds.
+
+By default, shards are **eagerly loaded** (synchronously) until a collection exceeds either:
+- **1,000 shards** (`LAZY_LOAD_SHARD_COUNT_THRESHOLD`)
+- **100 GB total shard size** (`LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB`)
+
+This default provides better query and ingestion reliability during rolling restarts and upgrades. For large multi-tenant deployments that exceed these thresholds, lazy loading activates automatically.
+
+If you need to force lazy loading for all collections (e.g., very large clusters), set:
 
 ```
-DISABLE_LAZY_LOAD_SHARDS: "true"
+LAZY_LOAD_SHARD_COUNT_THRESHOLD: "0"
 ```
 
-This ensures all shards are fully loaded before Weaviate reports itself as ready.
-
-:::caution Important
-Only disable lazy shard loading for single-tenant collections. For multi-tenant deployments, keeping lazy loading enabled is recommended as it can significantly speed up the startup time.
+:::note
+The `DISABLE_LAZY_LOAD_SHARDS` environment variable is deprecated as of v1.36.6. Weaviate now auto-detects when lazy loading is needed per collection.
 :::
 
 ## Data structures

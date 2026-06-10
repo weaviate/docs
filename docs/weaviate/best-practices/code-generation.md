@@ -1,12 +1,10 @@
 ---
-title: AI-based Weaviate code generation
-sidebar_position: 50
+title: AI-assisted Weaviate code generation
+sidebar_label: Vibe coding - Best practices
 description: "Tips and techniques for using generative AI models to write better Weaviate-related code."
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---
-
-# AI-based Weaviate code generation (vibe-coding)
 
 Generative AI models are becoming more capable at writing code. This practice is often referred to as "vibe-coding" or "AI-assisted coding". While this can speed up development, it is also subject to some pitfalls, such as hallucinations due to out-of-date, or missing information in the training data.
 
@@ -15,6 +13,23 @@ Here are some tips for writing Weaviate client library code with generative AI m
 ![Weaviate vibe-coding guide](./_img/weaviate_vibe_coding_guide.png "Weaviate vibe-coding guide")
 
 ## Specific recommendations
+
+### Weaviate MCP Servers
+
+Weaviate provides two [MCP](https://modelcontextprotocol.io/) servers that integrate with AI development tools like Claude Code, Claude Desktop, Cursor, and VS Code:
+
+- **[Weaviate MCP Server](../configuration/mcp-server.mdx)** — Built into Weaviate itself. Lets AI assistants inspect schemas, search data, and modify objects in your Weaviate instance directly. Enable with `MCP_SERVER_ENABLED=true`.
+- **[Weaviate Docs MCP Server](../mcp/docs-mcp-server.mdx)** — A standalone server that gives AI assistants access to Weaviate's documentation, reducing hallucinations when generating Weaviate code.
+
+### Weaviate Agent Skills
+
+**[Weaviate Agent Skills](https://github.com/weaviate/agent-skills)** gives AI coding agents (Claude Code, Cursor, GitHub Copilot, and others) built-in knowledge of Weaviate — covering search, collection management, data import, and complete application blueprints such as RAG, agentic RAG, and chatbots. When the skill is installed, agents can discover and use it automatically, reducing hallucinations and speeding up Weaviate development.
+
+Install with:
+
+```bash
+npx skills add weaviate/agent-skills
+```
 
 ### High-performing models
 
@@ -34,12 +49,12 @@ We found that performances of the above LLMs improved significantly when provide
 
 As a starting point, we have curated a set of code examples below. Try copy and pasting this block of code into your prompt.
 
-import CodeExamples from '!!raw-loader!/_includes/code/python/best-practices.python.ai.py';
+import CodeExamples from '!!raw-loader!/\_includes/code/python/best-practices.python.ai.py';
 import CodeBlock from '@theme/CodeBlock';
 
 <div style={{height: '300px', overflow: 'auto'}}>
 
-  <CodeBlock language="python">{CodeExamples}</CodeBlock>
+<CodeBlock language="python">{CodeExamples}</CodeBlock>
 
 </div>
 <br/>
@@ -83,11 +98,11 @@ Some AI-powered code generation tools such as Cursor allow you to index further 
 
 Review the documentation of your specific IDE to see if it has this feature, and how to use it.
 
-### Consider using Weaviate Agents
+### Consider using the Query Agent
 
-[Weaviate Agents](/agents) are pre-built agentic services designed for specific tasks, such as [querying](/agents/query), [transforming data](/agents/transformation/), and [personalizing content](/agents/personalization).
+The [Query Agent](/query-agent) is a pre-built agentic search service that decides the search terms, filters, sorts, and other search parameters for you — the [modes overview](/query-agent/guides/index.md) covers what it can do.
 
-Weaviate agents are available for Weaviate Cloud users to enable interacting with the Weaviate Cloud instance using natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
+The Query Agent is available to Weaviate Cloud users for interacting with their Weaviate Cloud instance in natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
 
 ## Help us improve this page
 
@@ -105,6 +120,6 @@ If you have any questions or feedback, please let us know by opening an issue on
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

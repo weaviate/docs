@@ -22,6 +22,14 @@ For asynchronous operations, use the `WeaviateAsyncClient` async client, availab
 
 The `WeaviateAsyncClient` async client largely supports the same functions and methods as the `WeaviateClient` [synchronous client](./index.mdx), with the key difference that the async client is designed to be used in an `async` function running in an [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop).
 
+<!-- TODO[g-despot] Uncomment when available 
+import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+
+<AcademyAdmonition 
+  courseId="async-python-client-usage"
+/>
+-->
+
 ## Installation
 
 The async client is already included in the `weaviate-client` package. Follow the installation instructions in the [Python client library documentation](./index.mdx#installation).
@@ -46,7 +54,7 @@ When using the async helper functions, you must call the async `.connect()` meth
 <!-- TODO[g-despot]: Add link to external Python references once created for "external API keys", "connection timeout values" and "authentication details" -->
 The async helper functions take the same parameters for external API keys, connection timeout values and authentication details.
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="custom">
 <TabItem value="wcd" label="WCD">
 
 <FilteredTextBlock
@@ -183,9 +191,9 @@ Note the use of a context manager in the async function. The context manager is 
 
 ### Bulk data insertion
 
-For server-side batch operations, we recommend using the synchronous client and its [`batch` operations](../../manage-objects/import.mdx). The batch operations are designed to handle large amounts of data efficiently through concurrent requests already.
+The async client supports server-side batching through the `stream()` method, which uses the same feedback-based flow as the synchronous client. For client-side batching methods (`dynamic`, `fixed_size`, `rate_limit`), use the synchronous client.
 
-The async client still offers `insert` and `insert_many` methods for data insertion, which can be used in an async context.
+The async client also offers `insert` and `insert_many` methods for data insertion, which can be used in an async context.
 
 ### Application-level example
 

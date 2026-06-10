@@ -2,6 +2,7 @@
 title: Batch import
 sidebar_position: 15
 image: og/docs/howto.jpg
+description: "How to batch import objects in Weaviate with code examples in Python, TypeScript, Go, Java, and C#."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,7 +12,8 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
 import PySuppCode from '!!raw-loader!/_includes/code/howto/sample-data.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
 import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.import.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsImportTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportTest.cs';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
@@ -60,14 +62,6 @@ Find out more about error handling on the Python client [reference page](/weavia
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BasicBatchImportExample"
-      endMarker="// END BasicBatchImportExample"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -76,32 +70,52 @@ Find out more about error handling on the Python client [reference page](/weavia
       language="go"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Server-side batching
 
-:::caution Preview
+import SsbStatus from '/_includes/feature-notes/ssb-status.mdx';
 
-Server-side batching was added in **`v1.33`** as a **preview** and is **not yet supported in our client libraries**.<br/><br/>
+<SsbStatus/>
 
-:::
-
-<!--
 Here's how to import objects into a collection named `MyCollection` using [server-side batch imports](../concepts/data-import.mdx#server-side-batching). The client will send data in batch sizes using feedback from the server.
--->
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-
-```python
-# Python support coming soon
-```
-
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ServerSideBatchImportExample"
+      endMarker="# END ServerSideBatchImportExample"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // TypeScript support coming soon
+```
+
+  </TabItem>
+    <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
 ```
 
   </TabItem>
@@ -112,19 +126,17 @@ Here's how to import objects into a collection named `MyCollection` using [serve
 ```
 
   </TabItem>
-  <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
 ## Use the gRPC API
-
-:::info Added in `v1.23`.
-:::
 
 The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
 
@@ -150,14 +162,8 @@ The legacy TypeScript client does not support gRPC.
   </TabItem>
   <TabItem value="java" label="Java">
 
-To use the gRPC API with the Java client, add the `setGRPCHost` field to your client connection code. Update `setGRPCSecured` if you use an encrypted connection.<br/><br/>
-
-```java
-Config config = new Config("http", "localhost:8080");
-config.setGRPCSecured(false);
-config.setGRPCHost("localhost:50051");
-```
-
+The Java client v6 uses gRPC by default.
+  
   </TabItem>
   <TabItem value="go" label="Go">
 
@@ -181,6 +187,11 @@ if err != nil {
   }
 ```
 
+  </TabItem>
+    <TabItem value="csharp" label="C#">
+
+The C# uses gRPC by default.
+  
   </TabItem>
   <TabItem value="spark" label="Spark">
 
@@ -227,20 +238,28 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BatchImportWithIDExample"
-      endMarker="// END BatchImportWithIDExample"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START BatchImportWithIDExample"
       endMarker="// END BatchImportWithIDExample"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -266,14 +285,6 @@ Use the `vector` property to specify a vector for each object.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START BatchImportWithVectorExample"
-      endMarker="// END BatchImportWithVectorExample"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -282,12 +293,25 @@ Use the `vector` property to specify a vector for each object.
       language="go"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Specify named vectors
-
-:::info Added in `v1.24`
-:::
 
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
@@ -308,6 +332,22 @@ When you create an object, you can specify named vectors (if [configured in your
       language="ts"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithNamedVectors"
+      endMarker="// END BatchImportWithNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportWithNamedVectors"
+      endMarker="// END BatchImportWithNamedVectors"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Import with references
@@ -323,6 +363,22 @@ You can batch create links from an object to another other object through cross-
       language="py"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithRefExample"
+      endMarker="// END BatchImportWithRefExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportWithRefExample"
+      endMarker="// END BatchImportWithRefExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Python-specific considerations
@@ -334,7 +390,7 @@ The Python clients have built-in batching methods to help you optimize import sp
 
 ### Async Python client and batching
 
-Currently, the [async Python client does not support batching](../client-libraries/python/async.md#bulk-data-insertion). To use batching, use the sync Python client.
+The [async Python client](../client-libraries/python/async.md#bulk-data-insertion) supports server-side batching through the `stream()` method. For client-side batching, use the sync Python client.
 
 ## Stream data from large files
 
@@ -362,6 +418,22 @@ To try the example code, download the sample data and create the sample input fi
       language="py"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetData"
+      endMarker="// END GetData"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetData"
+      endMarker="// END GetData"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 </details>
@@ -384,6 +456,22 @@ To try the example code, download the sample data and create the sample input fi
       startMarker="// START JSON streaming"
       endMarker="// END JSON streaming"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START JSON streaming"
+      endMarker="// END JSON streaming"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START JSON streaming"
+      endMarker="// END JSON streaming"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -410,14 +498,27 @@ To try the example code, download the sample data and create the sample input fi
       language="ts"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CSV streaming"
+      endMarker="// END CSV streaming"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CSV streaming"
+      endMarker="// END CSV streaming"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 </details>
 
 ## Batch vectorization
-
-:::info Added in `v1.25`.
-:::
 
 import BatchVectorizationOverview from "/_includes/code/client-libraries/batch-import.mdx";
 
@@ -436,6 +537,22 @@ Note that each provider exposes different configuration options.
       startMarker="# START BatchVectorizationClientModify"
       endMarker="# END BatchVectorizationClientModify"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchVectorizationClientModify"
+      endMarker="// END BatchVectorizationClientModify"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchVectorizationClientModify"
+      endMarker="// END BatchVectorizationClientModify"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

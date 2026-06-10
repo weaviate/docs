@@ -101,6 +101,10 @@ client.collections.create(
         quantizer=Configure.VectorIndex.Quantizer.rq(
             bits=8,  # Optional: Number of bits
             rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
+            cache=True,  # Optional: Enable caching for flat index (enabled by default for for HNSW)
+        ),
+        vector_index_config=Configure.VectorIndex.flat(
+            vector_cache_max_objects=100000,  # Optional: Maximum number of objects in the memory cache
         ),
         # highlight-end
     ),

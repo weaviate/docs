@@ -11,7 +11,7 @@ Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud 
 
 :::info
 Weaviate Embeddings is a paid service and only available for use with Weaviate Cloud instances.  
-You can try it out **for free by using a Sandbox cluster**.
+You can try it out **for free on a free cluster**.
 :::
 
 With Weaviate Embeddings, you can generate embeddings for your data and queries directly from a Weaviate Cloud database instance.
@@ -36,23 +36,29 @@ Simplified embedding management through:
 
 The following models are available for use with Weaviate Embeddings:
 
+### Text embedding models
+
 - **[`Snowflake/snowflake-arctic-embed-m-v1.5`](/cloud/embeddings/models#snowflake-arctic-embed-m-v1.5)**
 - **[`Snowflake/snowflake-arctic-embed-l-v2.0`](/cloud/embeddings/models#snowflake-arctic-embed-l-v2.0)**
+
+### Multimodal embedding models
+
+- **[`ModernVBERT/colmodernvbert`](/cloud/embeddings/models#colmodernvbert)** - A vision-language model for visual document retrieval. Embed document images (PDFs, slides, invoices) directly without OCR or preprocessing, then search with text queries. Images and text are represented together in the same vector space.
 
 ## Authentication
 
 In order to use Weaviate Embeddings you only need a [connection to your Weaviate Cloud cluster](/cloud/manage-clusters/connect). 
-No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/weaviate/client-libraries) or, for example, via [OIDC](/weaviate/configuration/authz-authn#oidc).
+No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/weaviate/client-libraries) or, for example, via [OIDC](/deploy/configuration/oidc).
 
 ## Usage limits
 
 <!-- TODO[g-despot] Don't hardcode these values here if possible -->
-Weaviate Embeddings only imposes usage limits on requests for free Sandbox clusters.
-The rate limit for Sandbox clusters is `2000` requests per cluster per day.
+Weaviate Embeddings only imposes usage limits on requests for free clusters.
+The rate limit for free clusters is `2000` requests per cluster per day.
 
 :::info
 If you use a [batch import](/weaviate/manage-objects/import) to vectorize your data, the maximum size is `200` objects per batch. 
-This means that you can generate up to a maximum of `400 000` embeddings (`2000 (requests) * 200 (objects per request)`) within your free Sandbox cluster.
+This means that you can generate up to a maximum of `400 000` embeddings (`2000 (requests) * 200 (objects per request)`) within your free cluster.
 :::
 
 ## Requirements
@@ -78,7 +84,8 @@ We may expand the service to other regions in the future.
 - [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
 - [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Model provider integrations: Multimodal Embeddings](/weaviate/model-providers/weaviate/embeddings-multimodal.md)
 
 ## Support & feedback
 

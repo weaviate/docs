@@ -48,37 +48,6 @@ func GetSchema() {
 ```
 
 </TabItem> */}
-{/* <TabItem value="java" label="Java">
-
-```java
-package io.weaviate;
-
-import java.util.List;
-import io.weaviate.client.Config;
-import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.data.model.WeaviateObject;
-
-public class App {
-  public static void main(String[] args) {
-    Config config = new Config("https", "WEAVIATE_INSTANCE_URL/");
-    // Replace WEAVIATE_INSTANCE_URL with your instance URL
-
-    WeaviateClient client = new WeaviateClient(config);
-
-    Result<List<WeaviateObject>> result = client.data().objectsGetter()
-      .run();
-
-    if (result.hasErrors()) {
-      System.out.println(result.getError());
-      return;
-    }
-    System.out.println(result.getResult());
-  }
-}
-```
-
-</TabItem> */}
 {/* <TabItem value="curl" label="Curl">
 
 ```bash

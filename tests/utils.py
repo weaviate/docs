@@ -18,12 +18,12 @@ def populate_inference_api_keys(codeblock_in: str) -> str:
 
     codeblock_out = codeblock_in
     for pattern, my_env_var, repl_pattern in [
-        (r'(["\'])X-Cohere-Api-Key\1: \1(.+?)\1', "COHERE_APIKEY", r'\1X-Cohere-Api-Key\1: \1'),
-        (r'(["\'])X-OpenAI-Api-Key\1: \1(.+?)\1', "OPENAI_APIKEY", r'\1X-OpenAI-Api-Key\1: \1'),
-        (r'(["\'])X-HuggingFace-Api-Key\1: \1(.+?)\1', "HUGGINGFACE_APIKEY", r'\1X-HuggingFace-Api-Key\1: \1')
+        (r'(["\'])X-Cohere-Api-Key\1: \1(.+?)\1', "COHERE_API_KEY", r'\1X-Cohere-Api-Key\1: \1'),
+        (r'(["\'])X-OpenAI-Api-Key\1: \1(.+?)\1', "OPENAI_API_KEY", r'\1X-OpenAI-Api-Key\1: \1'),
+        (r'(["\'])X-HuggingFace-Api-Key\1: \1(.+?)\1', "HUGGINGFACE_API_KEY", r'\1X-HuggingFace-Api-Key\1: \1')
     ]:
-        my_api_key = os.environ[my_env_var]
         if re.search(pattern, codeblock_out) is not None:
+            my_api_key = os.environ[my_env_var]
             # Replace key
             codeblock_out = re.sub(
                 pattern, repl_pattern + my_api_key + r'\1', codeblock_out
@@ -167,3 +167,55 @@ def run_script(command: list, script_path: str) -> None:
             ])
             
         raise Exception("\n".join(error_details))
+
+# ---------------------------------------------------------------------------
+# OIDC bearer-token helper for self-hosted Weaviate snippets.
+# Uses the Keycloak instance from docker-compose-rbac.yml (provisioned by
+# _includes/code/python/keycloak_helper_script.py). The Host header spoof
+# ensures the token's `iss` claim matches the Weaviate container's expected
+# issuer (http://keycloak:8081/...) regardless of which URL the host uses
+# to reach Keycloak.
+# ---------------------------------------------------------------------------
+
+OIDC_KEYCLOAK_URL = "http://localhost:8081"
+OIDC_REALM = "weaviate-test"
+OIDC_CLIENT_ID = "weaviate"
+OIDC_CLIENT_SECRET = "weaviate-client-secret-123"
+OIDC_USERNAME = "test-admin"
+OIDC_PASSWORD = "password123"
+
+def get_oidc_token(username: str = OIDC_USERNAME, password: str = OIDC_PASSWORD) -> dict:
+    """Fetch an OIDC bearer token from Keycloak for the configured test user."""
+    import requests
+
+    response = requests.post(
+        f"{OIDC_KEYCLOAK_URL}/realms/{OIDC_REALM}/protocol/openid-connect/token",
+        headers={"Host": "keycloak:8081"},  # match Weaviate's expected issuer
+        data={
+            "grant_type": "password",
+            "client_id": OIDC_CLIENT_ID,
+            "client_secret": OIDC_CLIENT_SECRET,
+            "username": username,
+            "password": password,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def oidc_env(token: dict | None = None) -> dict:
+    """Return the env-var dict expected by the OIDC connect snippets.
+
+    Note: the OIDC connect snippets hardcode the localhost host/port for the
+    RBAC instance from `tests/docker-compose-rbac.yml`, so we deliberately do
+    NOT export WEAVIATE_HTTP_HOST / WEAVIATE_GRPC_HOST here — those env vars
+    are consumed by the WCD-targeting `connect_to_custom` snippets, and
+    overwriting them session-wide would break those tests.
+    """
+    token = token or get_oidc_token()
+    return {
+        "WEAVIATE_OIDC_ACCESS_TOKEN": token["access_token"],
+        "WEAVIATE_OIDC_REFRESH_TOKEN": token.get("refresh_token", ""),
+        "WEAVIATE_OIDC_EXPIRES_IN": str(token.get("expires_in", 60)),
+    }

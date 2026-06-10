@@ -1,0 +1,24 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.query_agent.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.query_agent.ts";
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START QueryAgent"
+      endMarker="# END QueryAgent"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START QueryAgent"
+      endMarker="// END QueryAgent"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
