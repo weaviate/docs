@@ -1,0 +1,45 @@
+---
+layout: recipe
+toc: True
+title: "Movies Quickstart in the Browser Playground"
+featured: False
+integration: False
+agent: False
+tags: ["Weaviate Embeddings", "Weaviate Cloud", "Playground"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyMoviesCode from "!!raw-loader!/_includes/code/python/quickstart.movies.browser.py";
+
+# Movies Quickstart in the Browser Playground
+
+This recipe runs a complete Weaviate workflow directly in your browser through WebAssembly (Pyodide), with no execution server involved.
+The snippet connects to your instance, creates a `Movies` collection vectorized by [Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) (`text2vec-weaviate`), imports a small movie dataset, and runs a semantic `nearText` search.
+
+Use the **Connect** button to store your Weaviate Cloud cluster URL and API key — they stay in your browser and are available to the snippet as the `WEAVIATE_URL` and `WEAVIATE_API_KEY` environment variables, or edit the connection values directly with the **Edit** button.
+Your instance must be reachable from the browser through a grpc-web proxy that allows cross-origin requests from this site and exposes the `grpc-status` and `grpc-message` response headers.
+The example deletes and recreates the `Movies` collection, so it is safe to run repeatedly.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyMoviesCode}
+      startMarker="# EndToEndExample"
+      endMarker="# END EndToEndExample"
+      language="py"
+      title="movies_quickstart.py"
+      executable={true}
+      editable={true}
+    />
+  </TabItem>
+</Tabs>
+
+:::note Dev embedding endpoint
+The vectorizer points at the development endpoint of Weaviate Embeddings (`https://dev-embedding.labs.weaviate.io`), which serves `dev` Weaviate Cloud clusters.
+On a production Weaviate Cloud cluster, remove the `base_url` argument to use the default endpoint.
+:::
+
+None of the movie descriptions contain the words in the search query, yet the closest matches come back first.
+Edit the query and run it again to explore.

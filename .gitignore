@@ -77,7 +77,8 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
+# Anchored to the repo root so static/wheels/ (browser playground wheels) stays tracked
+/wheels/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
