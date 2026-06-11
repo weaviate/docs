@@ -23,6 +23,10 @@ import {
   loadCredentials,
   saveCredentials,
   clearCredentials,
+  normalizeClusterUrl,
+  hasCredentials,
+  isLocalOptIn,
+  setLocalOptIn,
 } from "./playgroundCredentials";
 
 // Language configuration
@@ -318,12 +322,30 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
 // Button + panel for storing the reader's Weaviate Cloud URL and API key.
 // They are kept in localStorage and injected as WEAVIATE_URL /
 // WEAVIATE_API_KEY environment variables before each in-browser run.
-const CredentialsButton = () => {
+//
+// When `promptOpen` is true (the reader hit Run without connection details),
+// the panel opens in prompt mode: it explains why the details are needed,
+// links to creating a free cluster, and offers "Save and run" plus a
+// "Use local instance" escape hatch. `onConnected` starts the pending run.
+const CredentialsButton = ({
+  promptOpen = false,
+  onPromptDismiss,
+  onConnected,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [url, setUrl] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [isSaved, setIsSaved] = useState(false);
   const wrapperRef = useRef(null);
+
+  const panelOpen = isOpen || promptOpen;
+
+  const closePanel = () => {
+    setIsOpen(false);
+    if (promptOpen && onPromptDismiss) {
+      onPromptDismiss();
+    }
+  };
 
   // Sync state from storage, including when another instance on the page
   // saves or clears credentials.
@@ -339,25 +361,48 @@ const CredentialsButton = () => {
     return () => window.removeEventListener(CREDENTIALS_CHANGE_EVENT, sync);
   }, []);
 
+  // When Run opens the prompt, discard any unsaved draft so the fields show
+  // what a run would actually use.
+  useEffect(() => {
+    if (promptOpen) {
+      const creds = loadCredentials();
+      setUrl(creds.url);
+      setApiKey(creds.apiKey);
+    }
+  }, [promptOpen]);
+
   // Close the panel on outside clicks
   useEffect(() => {
-    if (!isOpen) return undefined;
+    if (!panelOpen) return undefined;
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsOpen(false);
+        closePanel();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  }, [panelOpen, promptOpen]);
 
   const handleSave = () => {
     saveCredentials({ url, apiKey });
-    setIsOpen(false);
+    const savedUrl = Boolean(normalizeClusterUrl(url));
+    closePanel();
+    // In prompt mode, saving a cluster URL starts the run the reader asked for
+    if (promptOpen && savedUrl && onConnected) {
+      onConnected();
+    }
   };
 
   const handleClear = () => {
     clearCredentials();
+  };
+
+  const handleUseLocal = () => {
+    setLocalOptIn(true);
+    closePanel();
+    if (onConnected) {
+      onConnected();
+    }
   };
 
   return (
@@ -365,14 +410,16 @@ const CredentialsButton = () => {
       <button
         className={clsx(styles.editButton, styles.credentialsButton)}
         onClick={() => {
-          if (!isOpen) {
-            // Discard any unsaved draft from a previous open, so the fields
-            // always show what Run will actually use
-            const creds = loadCredentials();
-            setUrl(creds.url);
-            setApiKey(creds.apiKey);
+          if (panelOpen) {
+            closePanel();
+            return;
           }
-          setIsOpen(!isOpen);
+          // Discard any unsaved draft from a previous open, so the fields
+          // always show what Run will actually use
+          const creds = loadCredentials();
+          setUrl(creds.url);
+          setApiKey(creds.apiKey);
+          setIsOpen(true);
         }}
         title="Set your Weaviate Cloud URL and API key"
       >
@@ -387,8 +434,25 @@ const CredentialsButton = () => {
         {isSaved && <span className={styles.connectedDot} />}
       </button>
 
-      {isOpen && (
+      {panelOpen && (
         <div className={styles.credentialsPanel}>
+          {promptOpen && (
+            <div className={styles.credentialsPromptIntro}>
+              <strong>Connect to Weaviate to run this snippet</strong>
+              <p>
+                The code runs in your browser against your own Weaviate Cloud
+                cluster. Enter its connection details below — or{" "}
+                <a
+                  href="https://console.weaviate.cloud"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  create a free cluster
+                </a>{" "}
+                first.
+              </p>
+            </div>
+          )}
           <label className={styles.credentialsField}>
             <span>Cluster URL</span>
             <input
@@ -397,6 +461,7 @@ const CredentialsButton = () => {
               onChange={(e) => setUrl(e.target.value)}
               placeholder="your-cluster.weaviate.cloud"
               spellCheck="false"
+              autoFocus={promptOpen}
             />
           </label>
           <label className={styles.credentialsField}>
@@ -414,12 +479,29 @@ const CredentialsButton = () => {
             <code>WEAVIATE_URL</code> and <code>WEAVIATE_API_KEY</code>.
           </div>
           <div className={styles.credentialsActions}>
-            <button className={styles.credentialsSave} onClick={handleSave}>
-              Save
+            <button
+              className={styles.credentialsSave}
+              onClick={handleSave}
+              disabled={promptOpen && !url.trim()}
+            >
+              {promptOpen ? "Save and run" : "Save"}
             </button>
-            <button className={styles.credentialsClear} onClick={handleClear}>
-              Clear
-            </button>
+            {promptOpen ? (
+              <button
+                className={styles.credentialsClear}
+                onClick={handleUseLocal}
+                title="Run against a local Weaviate instance on localhost:8080"
+              >
+                Use local instance
+              </button>
+            ) : (
+              <button
+                className={styles.credentialsClear}
+                onClick={handleClear}
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -496,6 +578,10 @@ const CodeDropdownTabs = ({
   });
 
   const [isExecuting, setIsExecuting] = useState(false);
+  // When the reader hits Run without stored connection details, the Connect
+  // panel opens in prompt mode instead of executing against the localhost
+  // fallback (which most readers do not have running).
+  const [showConnectPrompt, setShowConnectPrompt] = useState(false);
   // State for editing mode
   const [isEditing, setIsEditing] = useState(false);
   const [editedCode, setEditedCode] = useState(null);
@@ -593,6 +679,7 @@ const CodeDropdownTabs = ({
     isInternalChange.current = true;
     setSelectedValue(newValue);
     setIsExecuting(false); // Reset execution state when changing language
+    setShowConnectPrompt(false);
     if (typeof window !== "undefined") {
       if (groupId) {
         localStorage.setItem(`docusaurus.tab.${groupId}`, newValue);
@@ -605,11 +692,21 @@ const CodeDropdownTabs = ({
   };
 
   // Save code if editing, then run
-  const handleExecute = () => {
+  const startRun = () => {
     if (isEditing) {
       setIsEditing(false);
     }
     setIsExecuting(true);
+  };
+
+  // Run gate: without stored credentials (and no explicit local-instance
+  // choice), prompt for connection details instead of running.
+  const handleExecute = () => {
+    if (!hasCredentials() && !isLocalOptIn()) {
+      setShowConnectPrompt(true);
+      return;
+    }
+    startRun();
   };
 
   // This handler now calculates and sets the editor's height
@@ -715,7 +812,13 @@ const CodeDropdownTabs = ({
             </button>
           )}
 
-          {canExecute && <CredentialsButton />}
+          {canExecute && (
+            <CredentialsButton
+              promptOpen={showConnectPrompt}
+              onPromptDismiss={() => setShowConnectPrompt(false)}
+              onConnected={startRun}
+            />
+          )}
         </div>
 
         {(overrideDocsUrl || docSystem?.baseUrl) && (

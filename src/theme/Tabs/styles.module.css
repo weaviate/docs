@@ -121,6 +121,30 @@ html[data-theme="dark"] .editButton {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* Shown above the fields when the Run button opens the panel because no
+   connection details are stored yet */
+.credentialsPromptIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  strong {
+    font-size: 13px;
+    color: var(--ifm-font-color-base);
+  }
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ifm-color-emphasis-700);
+  }
+
+  a {
+    font-weight: 600;
+  }
+}
+
 .credentialsField {
   display: flex;
   flex-direction: column;
@@ -180,8 +204,13 @@ html[data-theme="dark"] .editButton {
   background-color: var(--ifm-color-primary);
   border: 1px solid var(--ifm-color-primary);
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: var(--ifm-color-primary-dark);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 

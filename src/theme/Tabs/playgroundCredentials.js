@@ -7,6 +7,9 @@
 
 const URL_STORAGE_KEY = "weaviatePlayground.wcdUrl";
 const API_KEY_STORAGE_KEY = "weaviatePlayground.wcdApiKey";
+// Set when the reader explicitly chooses to run against a local instance, so
+// the Run button stops prompting for Weaviate Cloud credentials.
+const LOCAL_OPT_IN_STORAGE_KEY = "weaviatePlayground.useLocalInstance";
 
 // Other CodeDropdownTabs instances on the page listen for this to keep their
 // "Connect" button state in sync (same pattern as codeLanguageChange).
@@ -55,10 +58,28 @@ export function clearCredentials() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(URL_STORAGE_KEY);
   localStorage.removeItem(API_KEY_STORAGE_KEY);
+  // Clearing credentials also forgets the local-instance choice, so the next
+  // Run click prompts for connection details again.
+  localStorage.removeItem(LOCAL_OPT_IN_STORAGE_KEY);
   window.dispatchEvent(new CustomEvent(CREDENTIALS_CHANGE_EVENT));
 }
 
 export function hasCredentials() {
   const { url, apiKey } = loadCredentials();
   return Boolean(url || apiKey);
+}
+
+export function isLocalOptIn() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(LOCAL_OPT_IN_STORAGE_KEY) === "true";
+}
+
+export function setLocalOptIn(value) {
+  if (typeof window === "undefined") return;
+  if (value) {
+    localStorage.setItem(LOCAL_OPT_IN_STORAGE_KEY, "true");
+  } else {
+    localStorage.removeItem(LOCAL_OPT_IN_STORAGE_KEY);
+  }
+  window.dispatchEvent(new CustomEvent(CREDENTIALS_CHANGE_EVENT));
 }
