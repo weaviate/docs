@@ -12,7 +12,7 @@ Build a web application using FastAPI and Weaviate with 5 sequential sections:
 
 ## Prerequisites
 
-1. Create a free Weaviate Cloud Sandbox at https://console.weaviate.cloud
+1. Create a free Weaviate Cloud cluster at https://console.weaviate.cloud
 2. Get your **WEAVIATE_URL** (REST Endpoint) and **WEAVIATE_API_KEY** (Admin API Key)
 3. Get an **ANTHROPIC_API_KEY** from https://console.anthropic.com
 
