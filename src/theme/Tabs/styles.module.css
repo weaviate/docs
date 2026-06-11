@@ -9,19 +9,11 @@
 .codeDropdownHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  border-bottom: 2px solid var(--ifm-color-emphasis-300);
-  padding-bottom: 1rem;
-  background-color: var(--ifm-code-background);
-  padding: 1rem;
-  border-radius: 8px 8px 0 0;
-  background: linear-gradient(
-    to right,
-    var(--ifm-code-background),
-    transparent
-  );
+  justify-content: space-between; /* Space between left and right sections */
+  gap: 0.5rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  padding: 0.5rem 0;
   position: relative;
 }
 
@@ -95,6 +87,144 @@ html[data-theme="dark"] .editButton {
   color: var(--ifm-color-emphasis-700);
 }
 
+/* Weaviate Cloud credentials button + panel */
+.credentialsWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.credentialsButton {
+  gap: 0.4rem;
+}
+
+.connectedDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--ifm-color-success);
+  flex-shrink: 0;
+}
+
+.credentialsPanel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: min(320px, 90vw);
+  padding: 0.85rem;
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Shown above the fields when the Run button opens the panel because no
+   connection details are stored yet */
+.credentialsPromptIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  strong {
+    font-size: 13px;
+    color: var(--ifm-font-color-base);
+  }
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ifm-color-emphasis-700);
+  }
+
+  a {
+    font-weight: 600;
+  }
+}
+
+.credentialsField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  span {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ifm-color-emphasis-600);
+  }
+
+  input {
+    padding: 0.4rem 0.6rem;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ifm-font-color-base);
+    background-color: var(--ifm-background-color);
+    border: 1px solid var(--ifm-color-emphasis-400);
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+      border-color: var(--ifm-color-primary);
+    }
+  }
+}
+
+.credentialsHint {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--ifm-color-emphasis-600);
+
+  code {
+    font-size: 10px;
+  }
+}
+
+.credentialsActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.credentialsSave,
+.credentialsClear {
+  padding: 0.35rem 0.9rem;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.credentialsSave {
+  color: var(--ifm-color-primary-contrast-background, #fff);
+  background-color: var(--ifm-color-primary);
+  border: 1px solid var(--ifm-color-primary);
+
+  &:hover:not(:disabled) {
+    background-color: var(--ifm-color-primary-dark);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.credentialsClear {
+  color: var(--ifm-color-emphasis-700);
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-400);
+
+  &:hover {
+    border-color: var(--ifm-color-danger);
+    color: var(--ifm-color-danger);
+  }
+}
+
 /* Play Button Spinner Styles */
 .playButtonSpinner {
   animation: rotate 1s linear infinite;
@@ -103,7 +233,7 @@ html[data-theme="dark"] .editButton {
 }
 
 .spinnerPath {
-  stroke: white;
+  stroke: currentColor;
   stroke-linecap: round;
   animation: dash 1.5s ease-in-out infinite;
 }
@@ -479,7 +609,7 @@ html[data-theme="dark"] {
     border-color: var(--ifm-color-primary);
   }
 
-  outputContainer {
+  .outputContainer {
     /* Subtle background for the content */
     background-color: rgba(16, 185, 129, 0.1);
   }
@@ -532,6 +662,7 @@ html[data-theme="dark"] {
 
   .leftSection {
     width: 100%;
+    flex-wrap: wrap;
     justify-content: space-between;
   }
 
@@ -559,10 +690,6 @@ html[data-theme="dark"] {
   .languageDropdown {
     min-width: unset;
     width: 100%;
-  }
-
-  .playButton {
-    margin-left: auto;
   }
 }
 
@@ -604,6 +731,7 @@ html[data-theme="dark"] {
   &:focus {
     outline: none;
     border-color: var(--ifm-color-primary);
-    box-shadow: 0 0 0 3px rgba(var(--ifm-color-primary-rgb), 0.25);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--ifm-color-primary) 25%, transparent);
   }
 }

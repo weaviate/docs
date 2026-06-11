@@ -1,5 +1,6 @@
 // src/theme/Tabs/index.js
-// This overrides the default Docusaurus Tabs component with remote code execution
+// This overrides the default Docusaurus Tabs component with in-browser code
+// execution: Python snippets run via Pyodide (WebAssembly) in the user's browser
 
 import React, {
   useState,
@@ -15,56 +16,52 @@ import styles from "./styles.module.css";
 import { DOC_SYSTEMS } from "../../components/Documentation/FilteredTextBlock";
 import Tooltip from "/src/components/Tooltip";
 import Link from "@docusaurus/Link";
+import { runPythonCode } from "./pyodideRunner";
+import { runTypeScriptCode } from "./tsRunner";
+import {
+  CREDENTIALS_CHANGE_EVENT,
+  loadCredentials,
+  saveCredentials,
+  clearCredentials,
+  normalizeClusterUrl,
+  hasCredentials,
+  isLocalOptIn,
+  setLocalOptIn,
+} from "./playgroundCredentials";
 
 // Language configuration
 const LANGUAGE_CONFIG = {
   py: {
     label: "Python",
     icon: "/img/site/logo-py.svg",
-    runtime: "python3",
-    fileExtension: ".py",
   },
   py_agents: {
     label: "Python (Agents)",
     icon: "/img/site/logo-py.svg",
-    runtime: "python3",
-    fileExtension: ".py",
   },
   py_engram: {
     label: "Python",
     icon: "/img/site/logo-py.svg",
-    runtime: "python3",
-    fileExtension: ".py",
   },
   py_engram_async: {
     label: "Python (Async)",
     icon: "/img/site/logo-py.svg",
-    runtime: "python3",
-    fileExtension: ".py",
   },
   ts: {
     label: "JavaScript/TypeScript",
     icon: "/img/site/logo-ts.svg",
-    runtime: "typescript",
-    fileExtension: ".ts",
   },
   ts_agents: {
     label: "JavaScript/TypeScript (Agents)",
     icon: "/img/site/logo-ts.svg",
-    runtime: "typescript",
-    fileExtension: ".ts",
   },
   go: {
     label: "Go",
     icon: "/img/site/logo-go.svg",
-    runtime: "go",
-    fileExtension: ".go",
   },
   java: {
     label: "Java",
     icon: "/img/site/logo-java.svg",
-    runtime: "java",
-    fileExtension: ".java",
   },
   csharp: {
     label: "C#",
@@ -73,35 +70,22 @@ const LANGUAGE_CONFIG = {
   curl: {
     label: "Curl",
     icon: "/img/site/logo-curl.svg",
-    runtime: "bash",
-    fileExtension: ".sh",
   },
   bash: {
     label: "Bash",
     icon: null,
-    runtime: "bash",
-    fileExtension: ".sh",
   },
   shell: {
     label: "Shell",
     icon: null,
-    runtime: "bash",
-    fileExtension: ".sh",
   },
 };
 
-// Configuration for the remote execution service
-const EXECUTION_CONFIG = {
-  // Replace with your actual GCP Cloud Run service URL
-  //API_ENDPOINT: "http://localhost:8088", //local dev
-  API_ENDPOINT: "https://code-executor-orchestrator-something.a.run.app",
-  //API_KEY: "local-dev-api-key-123",
-  API_KEY: "api-key",
-  USE_GOOGLE_AUTH: false,
-  MAX_EXECUTION_TIME: 30000, // 30 seconds
-  SUPPORTED_LANGUAGES: ["py", "ts", "go", "java"],
-  DEVELOPMENT_MODE: true,
-
+// Configuration for in-browser code execution.
+// Python runs on Pyodide, TypeScript via in-browser transpilation against the
+// grpc-web client bundle. Java, C# and Go cannot run in the browser.
+const BROWSER_EXECUTION_CONFIG = {
+  SUPPORTED_LANGUAGES: ["py", "ts"],
 };
 
 // Predefined docs URL overrides by product name
@@ -240,30 +224,13 @@ const extractCodeFromChild = (child) => {
   return null;
 };
 
-// Get Google Auth Token (for authenticated Cloud Run)
-const getGoogleAuthToken = async () => {
-  // This requires the user to be logged in with Google
-  // You can use Firebase Auth or Google Identity Services
-  if (typeof window !== "undefined" && window.gapi && window.gapi.auth2) {
-    try {
-      const auth2 = window.gapi.auth2.getAuthInstance();
-      const user = auth2.currentUser.get();
-      const authResponse = user.getAuthResponse();
-      return authResponse.id_token;
-    } catch (err) {
-      console.error("Failed to get Google auth token:", err);
-      return null;
-    }
-  }
-  return null;
-};
-
-// Remote code execution component
+// In-browser code execution component (Python via Pyodide, TypeScript via
+// in-browser transpilation)
 const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
-  const [authError, setAuthError] = useState(false);
+  const [statusText, setStatusText] = useState("Running code…");
 
   const executeCode = async () => {
     if (!code) {
@@ -274,68 +241,14 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
     setIsRunning(true);
     setOutput(null);
     setError(null);
-    setAuthError(false);
+    setStatusText("Running code…");
 
-    const langConfig = LANGUAGE_CONFIG[language];
-    if (!langConfig) {
-      setError("Language not supported for execution");
-      setIsRunning(false);
-      return;
-    }
-
+    const runCode = language === "ts" ? runTypeScriptCode : runPythonCode;
     try {
-      // Prepare headers
-      const headers = {
-        "Content-Type": "application/json",
-      };
-
-      // Add authentication based on configuration
-      if (EXECUTION_CONFIG.USE_GOOGLE_AUTH) {
-        const token = await getGoogleAuthToken();
-        if (!token) {
-          setAuthError(true);
-          setError(
-            "Authentication required. Please sign in with Google to run code."
-          );
-          setIsRunning(false);
-          return;
-        }
-        headers["Authorization"] = `Bearer ${token}`;
-      } else if (EXECUTION_CONFIG.API_KEY) {
-        console.log("Using API Key for authentication");
-        headers["X-API-Key"] = EXECUTION_CONFIG.API_KEY;
-      }
-
-      const response = await fetch(`${EXECUTION_CONFIG.API_ENDPOINT}/execute`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify({
-          code: code,
-          language: langConfig.runtime,
-          fileExtension: langConfig.fileExtension,
-          timeout: EXECUTION_CONFIG.MAX_EXECUTION_TIME / 1000,
-        }),
-      });
-
-      if (response.status === 401 || response.status === 403) {
-        setAuthError(true);
-        setError("Authentication failed. Please check your credentials.");
-        setIsRunning(false);
-        return;
-      }
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setOutput(result.output);
-        if (result.error) {
-          setError(result.error);
-        }
-      } else {
-        setError(result.error || "Execution failed");
-      }
-    } catch (err) {
-      setError(`Failed to connect to execution service: ${err.message}`);
+      // Never rejects: resolves to { output, error }
+      const result = await runCode(code, { onStatus: setStatusText });
+      setOutput(result.output);
+      setError(result.error);
     } finally {
       setIsRunning(false);
       if (onExecute) {
@@ -359,7 +272,7 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
       {isRunning && (
         <div className={styles.executionLoading}>
           <div className={styles.spinner}></div>
-          <span>Executing code...</span>
+          <span>{statusText}</span>
         </div>
       )}
 
@@ -400,6 +313,196 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
             Error
           </div>
           <pre className={styles.errorContent}>{error}</pre>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Button + panel for storing the reader's Weaviate Cloud URL and API key.
+// They are kept in localStorage and injected as WEAVIATE_URL /
+// WEAVIATE_API_KEY environment variables before each in-browser run.
+//
+// When `promptOpen` is true (the reader hit Run without connection details),
+// the panel opens in prompt mode: it explains why the details are needed,
+// links to creating a free cluster, and offers "Save and run" plus a
+// "Use local instance" escape hatch. `onConnected` starts the pending run.
+const CredentialsButton = ({
+  promptOpen = false,
+  onPromptDismiss,
+  onConnected,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [url, setUrl] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
+  const wrapperRef = useRef(null);
+
+  const panelOpen = isOpen || promptOpen;
+
+  const closePanel = () => {
+    setIsOpen(false);
+    if (promptOpen && onPromptDismiss) {
+      onPromptDismiss();
+    }
+  };
+
+  // Sync state from storage, including when another instance on the page
+  // saves or clears credentials.
+  useEffect(() => {
+    const sync = () => {
+      const creds = loadCredentials();
+      setUrl(creds.url);
+      setApiKey(creds.apiKey);
+      setIsSaved(Boolean(creds.url || creds.apiKey));
+    };
+    sync();
+    window.addEventListener(CREDENTIALS_CHANGE_EVENT, sync);
+    return () => window.removeEventListener(CREDENTIALS_CHANGE_EVENT, sync);
+  }, []);
+
+  // When Run opens the prompt, discard any unsaved draft so the fields show
+  // what a run would actually use.
+  useEffect(() => {
+    if (promptOpen) {
+      const creds = loadCredentials();
+      setUrl(creds.url);
+      setApiKey(creds.apiKey);
+    }
+  }, [promptOpen]);
+
+  // Close the panel on outside clicks
+  useEffect(() => {
+    if (!panelOpen) return undefined;
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        closePanel();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [panelOpen, promptOpen]);
+
+  const handleSave = () => {
+    saveCredentials({ url, apiKey });
+    const savedUrl = Boolean(normalizeClusterUrl(url));
+    closePanel();
+    // In prompt mode, saving a cluster URL starts the run the reader asked for
+    if (promptOpen && savedUrl && onConnected) {
+      onConnected();
+    }
+  };
+
+  const handleClear = () => {
+    clearCredentials();
+  };
+
+  const handleUseLocal = () => {
+    setLocalOptIn(true);
+    closePanel();
+    if (onConnected) {
+      onConnected();
+    }
+  };
+
+  return (
+    <div className={styles.credentialsWrapper} ref={wrapperRef}>
+      <button
+        className={clsx(styles.editButton, styles.credentialsButton)}
+        onClick={() => {
+          if (panelOpen) {
+            closePanel();
+            return;
+          }
+          // Discard any unsaved draft from a previous open, so the fields
+          // always show what Run will actually use
+          const creds = loadCredentials();
+          setUrl(creds.url);
+          setApiKey(creds.apiKey);
+          setIsOpen(true);
+        }}
+        title="Set your Weaviate Cloud URL and API key"
+      >
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fillRule="evenodd"
+            d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <span>Connect</span>
+        {isSaved && <span className={styles.connectedDot} />}
+      </button>
+
+      {panelOpen && (
+        <div className={styles.credentialsPanel}>
+          {promptOpen && (
+            <div className={styles.credentialsPromptIntro}>
+              <strong>Connect to Weaviate to run this snippet</strong>
+              <p>
+                The code runs in your browser against your own Weaviate Cloud
+                cluster. Enter its connection details below — or{" "}
+                <a
+                  href="https://console.weaviate.cloud"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  create a free cluster
+                </a>{" "}
+                first.
+              </p>
+            </div>
+          )}
+          <label className={styles.credentialsField}>
+            <span>Cluster URL</span>
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="your-cluster.weaviate.cloud"
+              spellCheck="false"
+              autoFocus={promptOpen}
+            />
+          </label>
+          <label className={styles.credentialsField}>
+            <span>API key</span>
+            <input
+              type="password"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="Your Weaviate Cloud API key"
+              spellCheck="false"
+            />
+          </label>
+          <div className={styles.credentialsHint}>
+            Stored only in your browser. Available to snippets as{" "}
+            <code>WEAVIATE_URL</code> and <code>WEAVIATE_API_KEY</code>.
+          </div>
+          <div className={styles.credentialsActions}>
+            <button
+              className={styles.credentialsSave}
+              onClick={handleSave}
+              disabled={promptOpen && !url.trim()}
+            >
+              {promptOpen ? "Save and run" : "Save"}
+            </button>
+            {promptOpen ? (
+              <button
+                className={styles.credentialsClear}
+                onClick={handleUseLocal}
+                title="Run against a local Weaviate instance on localhost:8080"
+              >
+                Use local instance
+              </button>
+            ) : (
+              <button
+                className={styles.credentialsClear}
+                onClick={handleClear}
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -475,6 +578,10 @@ const CodeDropdownTabs = ({
   });
 
   const [isExecuting, setIsExecuting] = useState(false);
+  // When the reader hits Run without stored connection details, the Connect
+  // panel opens in prompt mode instead of executing against the localhost
+  // fallback (which most readers do not have running).
+  const [showConnectPrompt, setShowConnectPrompt] = useState(false);
   // State for editing mode
   const [isEditing, setIsEditing] = useState(false);
   const [editedCode, setEditedCode] = useState(null);
@@ -489,9 +596,13 @@ const CodeDropdownTabs = ({
     : null;
   const codeToUse = editedCode ?? originalCode;
 
-  // Get the actual content block (e.g., FilteredTextBlock) inside the selected TabItem
-  const contentBlock =
-    selectedChild && React.Children.only(selectedChild.props.children);
+  // Get the actual content block (e.g., FilteredTextBlock) inside the selected
+  // TabItem. A TabItem may contain several children (prose around the code
+  // block) — only a lone content block can carry executable/editable props.
+  const tabItemChildren = selectedChild
+    ? Children.toArray(selectedChild.props.children).filter(isValidElement)
+    : [];
+  const contentBlock = tabItemChildren.length === 1 ? tabItemChildren[0] : null;
 
   // Check the props of the content block to see if it's executable or editable
   const isExecutable = contentBlock?.props?.executable === true;
@@ -568,6 +679,7 @@ const CodeDropdownTabs = ({
     isInternalChange.current = true;
     setSelectedValue(newValue);
     setIsExecuting(false); // Reset execution state when changing language
+    setShowConnectPrompt(false);
     if (typeof window !== "undefined") {
       if (groupId) {
         localStorage.setItem(`docusaurus.tab.${groupId}`, newValue);
@@ -580,11 +692,21 @@ const CodeDropdownTabs = ({
   };
 
   // Save code if editing, then run
-  const handleExecute = () => {
+  const startRun = () => {
     if (isEditing) {
       setIsEditing(false);
     }
     setIsExecuting(true);
+  };
+
+  // Run gate: without stored credentials (and no explicit local-instance
+  // choice), prompt for connection details instead of running.
+  const handleExecute = () => {
+    if (!hasCredentials() && !isLocalOptIn()) {
+      setShowConnectPrompt(true);
+      return;
+    }
+    startRun();
   };
 
   // This handler now calculates and sets the editor's height
@@ -619,7 +741,7 @@ const CodeDropdownTabs = ({
 
   const canExecute =
     isExecutable &&
-    EXECUTION_CONFIG.SUPPORTED_LANGUAGES.includes(selectedValue) &&
+    BROWSER_EXECUTION_CONFIG.SUPPORTED_LANGUAGES.includes(selectedValue) &&
     codeToUse;
   const canEdit = isEditable && originalCode !== null;
 
@@ -688,6 +810,14 @@ const CodeDropdownTabs = ({
               </svg>
               <span>{isEditing ? "Save" : "Edit"}</span>
             </button>
+          )}
+
+          {canExecute && (
+            <CredentialsButton
+              promptOpen={showConnectPrompt}
+              onPromptDismiss={() => setShowConnectPrompt(false)}
+              onConnected={startRun}
+            />
           )}
         </div>
 
