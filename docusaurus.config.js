@@ -215,12 +215,6 @@ const config = {
             position: "right",
           },
           {
-            label: "Academy",
-            className: "academy-button",
-            to: "https://academy.weaviate.io",
-            position: "right",
-          },
-          {
             label: "Weaviate Cloud",
             className: "cloud-button",
             to: "/go/console?utm_content=navbar",

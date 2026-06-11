@@ -83,7 +83,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   background-color: var(--docs-modal-header-bg, #f9f9f9);
   border-bottom: 1px solid var(--docs-divider-color);
 
@@ -95,7 +95,7 @@
 }
 
 .modalHeaderLeft {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--ifm-navbar-link-color);
 
@@ -112,10 +112,10 @@
 
 /* Modal Body */
 .modalBody {
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.25rem;
   overflow-y: auto;
 }
 
@@ -124,8 +124,8 @@
   font-size: 16px;
   font-weight: 600;
   color: var(--docs-section-title-color);
-  margin: 0 0 1rem 0;
-  padding-bottom: 0.5rem;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.4rem;
   border-bottom: 1px solid var(--docs-divider-color);
 
   /* Add dark mode support */
