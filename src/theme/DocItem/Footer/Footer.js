@@ -131,6 +131,15 @@ function Footer() {
                 <li>
                   <Link to="/support">Support</Link>
                 </li>
+                <li>
+                  <Link
+                    to="https://forum.weaviate.io/c/support"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Forum
+                  </Link>
+                </li>
               </ul>
             </div>
             {/* {

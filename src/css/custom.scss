@@ -395,6 +395,33 @@
   }
 }
 
+.support-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  margin-right: 5px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--ifm-navbar-link-color);
+  color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @media screen and (max-width: 1150px) {
+    display: none;
+  }
+}
+
+.support-button:hover {
+  background: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-navbar-link-color);
+  transform: translateY(-0.5px);
+}
+
 // Dark mode adjustments
 [data-theme='dark'] {
   .cloud-button {
@@ -910,30 +937,6 @@ button.close {
 
 [data-theme="dark"] .githubStars {
   fill: white;
-}
-
-.supportNavIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  font-size: 20px;
-  line-height: 1;
-  color: #2c3854;
-
-  @media screen and (max-width: 768px) {
-    width: 18px;
-    font-size: 16px;
-  }
-}
-
-[data-theme="dark"] .supportNavIcon {
-  color: white;
-}
-
-.navbarIconLink.navbar__link {
-  padding-left: 0.4rem;
-  padding-right: 0.4rem;
 }
 
 .navbar__link--active,

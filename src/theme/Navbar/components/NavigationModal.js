@@ -11,12 +11,13 @@ export default function NavigationModal({
   activeLink, // Add activeLink prop to know which item is currently active
   selectedOption, // Add selectedOption prop to know which category is selected
 }) {
-  // Filter options into regular and small groups
+  // Filter options into regular and small groups.
+  // Support is rendered in the "Need help?" section instead of the resources grid.
   const regularItems = Object.entries(secondaryNavOptions).filter(
     ([, value]) => !value.isSmall
   );
   const smallItems = Object.entries(secondaryNavOptions).filter(
-    ([, value]) => value.isSmall
+    ([key, value]) => value.isSmall && key !== "support"
   );
 
   // Helper function to determine if an option is active
@@ -136,18 +137,21 @@ export default function NavigationModal({
                 </span>
               </div>
 
-              {/* Support Portal Card - styled like the resource cards */}
+              {/* Support Card - links to the Support hub page */}
               <div
-                className={styles.resourceCard}
-                onClick={() =>
-                  window.open("https://support.weaviate.io", "_blank")
-                }
+                className={`${styles.resourceCard} ${
+                  isOptionActive("support") ? styles.activeResource : ""
+                }`}
+                onClick={() => handleOptionSelect("support")}
               >
                 <i
-                  className={`fa fa-headset ${styles.resourceIcon}`}
+                  className={`fa fa-life-ring ${styles.resourceIcon}`}
                   aria-hidden="true"
                 />
-                <span className={styles.resourceTitle}>Support Portal</span>
+                <span className={styles.resourceTitle}>Support</span>
+                {isOptionActive("support") && (
+                  <div className={styles.activeResourceIndicator}></div>
+                )}
               </div>
 
               {/* New Forum Card - styled like the resource cards */}
