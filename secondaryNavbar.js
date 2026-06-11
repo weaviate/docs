@@ -147,14 +147,6 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  events: {
-    title: "Events & Workshops",
-    icon: "fa fa-calendar-days",
-    isSmall: true,
-    description: "",
-    href: "https://weaviate.io/community/events",
-    links: [],
-  },
   academy: {
     title: "Weaviate Academy",
     icon: "fa-solid fa-graduation-cap",

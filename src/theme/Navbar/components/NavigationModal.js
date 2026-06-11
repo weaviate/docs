@@ -12,12 +12,14 @@ export default function NavigationModal({
   selectedOption, // Add selectedOption prop to know which category is selected
 }) {
   // Filter options into regular and small groups.
-  // Support is rendered in the "Need help?" section instead of the resources grid.
+  // Support and the contributor guide are rendered in the "Need help?"
+  // section instead of the resources grid.
+  const NEED_HELP_KEYS = ["support", "contributor"];
   const regularItems = Object.entries(secondaryNavOptions).filter(
     ([, value]) => !value.isSmall
   );
   const smallItems = Object.entries(secondaryNavOptions).filter(
-    ([key, value]) => value.isSmall && key !== "support"
+    ([key, value]) => value.isSmall && !NEED_HELP_KEYS.includes(key)
   );
 
   // Helper function to determine if an option is active
@@ -166,6 +168,23 @@ export default function NavigationModal({
                   aria-hidden="true"
                 />
                 <span className={styles.resourceTitle}>Community Forum</span>
+              </div>
+
+              {/* Contributor Guide Card - styled like the resource cards */}
+              <div
+                className={`${styles.resourceCard} ${
+                  isOptionActive("contributor") ? styles.activeResource : ""
+                }`}
+                onClick={() => handleOptionSelect("contributor")}
+              >
+                <i
+                  className={`fa fa-edit ${styles.resourceIcon}`}
+                  aria-hidden="true"
+                />
+                <span className={styles.resourceTitle}>Contributor guide</span>
+                {isOptionActive("contributor") && (
+                  <div className={styles.activeResourceIndicator}></div>
+                )}
               </div>
             </div>
           </div>
