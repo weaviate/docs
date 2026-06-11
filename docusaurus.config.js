@@ -209,9 +209,9 @@ const config = {
             position: "right",
           },
           {
-            label: "Academy",
-            className: "academy-button",
-            to: "https://academy.weaviate.io",
+            label: "Support",
+            className: "support-button",
+            to: "/support",
             position: "right",
           },
           {

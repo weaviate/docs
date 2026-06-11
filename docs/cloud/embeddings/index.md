@@ -87,7 +87,7 @@ We may expand the service to other regions in the future.
 - [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 - [Model provider integrations: Multimodal Embeddings](/weaviate/model-providers/weaviate/embeddings-multimodal.md)
 
-## Support & feedback
+## Support
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 

@@ -133,13 +133,19 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  events: {
-    title: "Events & Workshops",
-    icon: "fa fa-calendar-days",
+  support: {
+    title: "Support",
+    icon: "fa fa-life-ring",
     isSmall: true,
-    description: "",
-    href: "https://weaviate.io/community/events",
-    links: [],
+    description: "Get help with Weaviate — community, Cloud support, and plans",
+    link: "/support",
+    links: [
+      {
+        label: "Overview",
+        link: "/support",
+        sidebar: "supportSidebar",
+      },
+    ],
   },
   academy: {
     title: "Weaviate Academy",

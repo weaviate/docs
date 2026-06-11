@@ -11,7 +11,7 @@ Build a web application using ASP.NET Core and Weaviate with 4 sequential sectio
 
 ## Prerequisites
 
-1. Create a free Weaviate Cloud Sandbox at https://console.weaviate.cloud
+1. Create a free Weaviate Cloud cluster at https://console.weaviate.cloud
 2. Get your **WEAVIATE_URL** and **WEAVIATE_API_KEY**
 3. Get an **ANTHROPIC_API_KEY** from https://console.anthropic.com
 
