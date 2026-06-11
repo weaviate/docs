@@ -149,7 +149,7 @@ Starting with `v1.12.0` you can configure your own [stopword lists for the inver
 
 ## Multiple operands
 
-You can set multiple operands or [nest conditions](../../search/filters.md#nested-filters).
+You can set multiple operands or [combine conditions with `And` / `Or`](../../search/filters.md#combine-filters-with-and-or-or).
 
 :::tip
 You can filter datetimes similarly to numbers, with the `valueDate` given as `string` in [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) format.
@@ -471,6 +471,61 @@ import GraphQLFiltersWhereBeaconCount from '/_includes/code/graphql.filters.wher
 ```
 
 </details>
+
+### By nested object property
+
+:::caution Preview feature
+
+Available from Weaviate `v1.38` as a preview, gated by `WEAVIATE_PREVIEW_NESTED_FILTERING=on` on the server. See [Filter on nested object properties](../../search/filters.md#filter-on-nested-object-properties) for the conceptual guide and worked examples.
+
+:::
+
+A `where` filter can target a leaf inside an [`object` / `object[]` property](../../config-refs/datatypes.md#object). The `path` is a **single-element array** containing a dotted path; `[N]` pins a segment to an array index.
+
+```graphql
+# Any car has make = "Toyota"
+{
+  Get {
+    Document(
+      where: {
+        path: ["cars.make"]
+        operator: Equal
+        valueText: "Toyota"
+      }
+    ) { title }
+  }
+}
+
+# The first car's third tire is a Bridgestone
+{
+  Get {
+    Document(
+      where: {
+        path: ["cars[0].tires[2].brand"]
+        operator: Equal
+        valueText: "Bridgestone"
+      }
+    ) { title }
+  }
+}
+
+# Same-element correlation: the SAME car is both Toyota AND red
+{
+  Get {
+    Document(
+      where: {
+        operator: And
+        operands: [
+          { path: ["cars.make"],  operator: Equal, valueText: "Toyota" }
+          { path: ["cars.color"], operator: Equal, valueText: "red" }
+        ]
+      }
+    ) { title }
+  }
+}
+```
+
+Don't confuse this with a [reference-path filter](#by-cross-references): a reference-path `path` has multiple elements traversing cross-references (`["inCity", "City", "name"]`), while a nested-path `path` is a **single element** with dots inside it (`["cars.make"]`).
 
 ### By geo coordinates
 

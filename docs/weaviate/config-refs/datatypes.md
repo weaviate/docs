@@ -534,10 +534,10 @@ The `object` type allows you to store nested data as a JSON object that can be n
 
 For example, a `Person` collection could have an `address` property as an object. It could in turn include nested properties such as `street` and `city`:
 
-:::note Limitations
-Currently, `object` and `object[]` datatype properties are not indexed and not vectorized.
+:::note Indexing and filtering
 
-Future plans include the ability to index nested properties, for example to allow for filtering on nested properties and vectorization options.
+`object` and `object[]` properties are not vectorized — only their leaf scalars are stored in the inverted index. From Weaviate `v1.38` (preview), you can filter on nested-object leaves using a dotted path syntax. See [Filter on nested object properties](../search/filters.md#filter-on-nested-object-properties).
+
 :::
 
 ### Examples

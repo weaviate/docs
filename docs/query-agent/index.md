@@ -141,7 +141,7 @@ It is designed as a pre-built agentic service for your data, with two main modes
 [You can try the Query Agent without any setup on Weaviate Cloud. Simply go to the 'Agents' tab to start asking questions about data in your collections.](/go/console?utm_content=agents)
 :::
 
-You need a Weaviate Cloud cluster — [a 14-day sandbox is free](https://weaviate.io/deployment/serverless). With a cluster and some data, install [the Python or TypeScript client](./installation.md) and you can run your first query in minutes.
+You need a Weaviate Cloud cluster — [the free tier is free forever](https://weaviate.io/pricing). With a cluster and some data, install [the Python or TypeScript client](./installation.md) and you can run your first query in minutes.
 
 Already have a cluster but no data? Upload via CSV in the cloud console, or [via the Weaviate APIs](/weaviate/manage-objects/create).
 

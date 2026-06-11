@@ -677,9 +677,12 @@ More details about the `vectorIndexType` and `vectorIndexConfig` parameters can 
 | Parameter          | Type    | Description                                                                                                                                   | Default                   | Mutable                                 |
 | :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
 | `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication.                                                                                             | `false`                   | Yes                                     |
 | `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`.  | `"TimeBasedResolution"` | Yes                                     |
 | `asyncConfig`      | Object  | Configuration for async replication tuning. See [`asyncConfig` parameters](#async-config) below. Added in `v1.36`                              | See below                 | Yes                                     |
+
+:::note Async replication is on by default (`v1.38`)
+The `asyncEnabled` flag has been removed. As of Weaviate `v1.38`, async replication runs automatically for any collection with a `factor` greater than `1`. To turn it off, set the [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#async-replication) environment variable to `true`.
+:::
 
 <details>
   <summary>Example replication configuration -  JSON object</summary>
@@ -693,10 +696,8 @@ An example of a complete `replicationConfig` object:
   // highlight-start
   "replicationConfig": {
     "factor": 3,
-    "asyncEnabled": true,
     "deletionStrategy": "TimeBasedResolution",
     "asyncConfig": {
-      "maxWorkers": 5,
       "hashtreeHeight": 16,
       "frequency": 30000
     }
@@ -719,11 +720,9 @@ Some `asyncConfig` parameters have different defaults depending on whether the c
 
 | Parameter | Type | Description | Default (single-tenant) | Default (multi-tenant) |
 | :--- | :--- | :--- | :--- | :--- |
-| `maxWorkers` | Integer | Maximum number of concurrent async replication workers for this collection. | `3` | `30` |
 | `hashtreeHeight` | Integer | Height of the hash tree used for data comparison between nodes. Min: `0`, Max: `20` | `16` | `10` |
 | `frequency` | Integer | Frequency of periodic data comparison between nodes, in milliseconds. | `30000` | `30000` |
 | `frequencyWhilePropagating` | Integer | Frequency of data comparison while propagation is active, in milliseconds. | `3000` | `3000` |
-| `aliveNodesCheckingFrequency` | Integer | Frequency of checking node availability, in milliseconds. | `5000` | `5000` |
 | `loggingFrequency` | Integer | How often the async replication process logs its activity, in seconds. | `60` | `60` |
 | `diffBatchSize` | Integer | Number of object keys fetched per request during comparison. Min: `1`, Max: `10000` | `1000` | `1000` |
 | `diffPerNodeTimeout` | Integer | Timeout for a comparison response from a remote node, in seconds. | `10` | `10` |

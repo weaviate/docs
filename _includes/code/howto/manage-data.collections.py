@@ -786,9 +786,9 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "Article",
     # highlight-start
+    # Async replication runs by default when the replication factor is greater than 1
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,
     ),
     # highlight-end
 )
@@ -819,10 +819,8 @@ client.collections.create(
     # highlight-start
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,
         deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
         async_config=Configure.Replication.async_config(
-            max_workers=5,
             hashtree_height=16,
             frequency=30,
         ),
@@ -840,7 +838,6 @@ collection = client.collections.get("Article")
 collection.config.update(
     replication_config=Reconfigure.replication(
         async_config=Reconfigure.Replication.async_config(
-            max_workers=10,
             frequency=60,
         ),
     ),
@@ -851,7 +848,6 @@ collection.config.update(
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.replication_config.async_enabled == True
 assert (
     config.replication_config.deletion_strategy
     == ReplicationDeletionStrategy.TIME_BASED_RESOLUTION

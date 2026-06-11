@@ -32,7 +32,7 @@ You can set the desired number of replicas, also called a replication factor, in
 Generally there are (at least) three distinct motivations to scale out horizontally which all will lead to different setups.
 
 ### Motivation 1: Maximum Dataset Size
-Due to the [memory footprint of an HNSW graph](./resources.md#the-role-of-memory) it may be desirable to spread a dataset across multiple servers ("nodes"). In such a setup, a single collection may be split into shards and shards are spread across nodes.
+Due to the [memory footprint of an HNSW graph](./resources.md#the-role-of-memory) it may be desirable to spread a dataset across multiple servers ("nodes"). In such a setup, a single collection may be split into shards and shards are spread across nodes. The disk-based [HFresh index](./indexing/vector-index.md#hfresh-index) can also reduce the need to shard purely for memory reasons.
 
 Weaviate does the required orchestration at import and query time fully automatically.
 
@@ -112,53 +112,11 @@ By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hash
 
 Weaviate - especially when running as a cluster - is optimized to run on Kubernetes. The [Weaviate Helm chart](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery. All you have to do is specify the desired node count.
 
-<details>
-  <summary>FQDN for node discovery</summary>
-
-:::caution Removed in `v1.30`
-
-This was an experimental feature. Use with caution.
-
-:::
-
-There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](/deploy/configuration/env-vars/index.md#multi-node-instances) to enable fully qualified domain name (FQDN) based node discovery.
-
-If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
-
-:::info FQDN: For metadata changes only
-This feature is only used for metadata changes which [use Raft as the consensus mechanism](./replication-architecture/cluster-architecture.md#metadata-replication-raft). It does not affect data read/write operations.
-:::
-
-#### Examples of when to use FQDN for node discovery
-
-The use of FQDN can resolve a situation where if IP addresses are re-used across different clusters, the nodes in one cluster could mistakenly discover nodes in another cluster.
-
-It can also be useful when using services (for example, Kubernetes) where the IP of the services is different from the actual node IP, but it proxies the connection to the node.
-
-#### Environment variables for FQDN node discovery
-
-`RAFT_ENABLE_FQDN_RESOLVER` is a Boolean flag. This flag enables the FQDN resolver. If set to `true`, Weaviate uses the FQDN resolver to resolve the node name to the node IP address. If set to `false`, Weaviate uses the memberlist lookup to resolve the node name to the node IP address. The default value is `false`.
-
-`RAFT_FQDN_RESOLVER_TLD` is a string that is appended in the format `[node-id].[tld]` when resolving a node-id to an IP address, where `[tld]` is the top-level domain.
-
-To use this feature, set `RAFT_ENABLE_FQDN_RESOLVER` to `true`.
-
-</details>
-
 ## Node affinity of shards and/or replication shards
 
 Weaviate tries to select the node with the most available disk space.
 
 This only applies when creating a new class, rather than when adding more data to an existing single class.
-
-<details>
-  <summary>Pre-<code>v1.18.1</code> behavior</summary>
-
-In versions `v1.8.0`-`v1.18.0`, users could not specify the node-affinity of a specific shard or replication shard.
-
-Shards were assigned to 'live' nodes in a round-robin fashion starting with a random node.
-
-</details>
 
 ## Consistency and current limitations
 

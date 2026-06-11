@@ -21,7 +21,7 @@ For example, if the associated Weaviate credentials' user has access to only a s
 
 The Query Agent is available exclusively for use with a Weaviate Cloud instance. [See the page on Weaviate Cloud for more detail](/cloud/index.mdx).
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](/go/console?utm_content=agents).
+You can try this Weaviate Agent with a free cluster on [Weaviate Cloud](/go/console?utm_content=agents).
 
 :::note Supported languages
 At this time, the Query Agent clients are available only for Python and JavaScript/TypeScript. Support for other languages will be added in the future.

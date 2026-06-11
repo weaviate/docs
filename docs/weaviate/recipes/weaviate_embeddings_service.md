@@ -27,7 +27,7 @@ This notebook will show you how to:
 ## Requirements
 
 1. Weaviate Cloud (WCD) account: You can register [here](/go/console?utm_content=recipe/)
-1. Create a cluster on WCD: A sandbox or serverless cluster is fine. You will need to grab the cluster URL and admin API key
+1. Create a cluster on WCD: A free or Shared Cloud cluster is fine. You will need to grab the cluster URL and admin API key
 1. OpenAI key to access `GPT-4o mini`
 
 ```python

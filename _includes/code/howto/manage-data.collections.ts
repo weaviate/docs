@@ -677,9 +677,9 @@ import { configure } from 'weaviate-client';
 await client.collections.create({
   name: 'Article',
   // highlight-start
+  // Async replication runs by default when the replication factor is greater than 1
   replication: configure.replication({
     factor: 1,
-    asyncEnabled: true,
   }),
   // highlight-end
 })
@@ -710,10 +710,8 @@ await replicationClient.collections.create({
   // highlight-start
   replication: configure.replication({
     factor: 3,
-    asyncEnabled: true,
     deletionStrategy: 'TimeBasedResolution',
     asyncConfig: {
-      maxWorkers: 5,
       hashtreeHeight: 16,
       frequency: 30,
     },
@@ -729,7 +727,6 @@ const articleReplication = replicationClient.collections.use('Article')
 await articleReplication.config.update({
   replication: reconfigure.replication({
     asyncConfig: {
-      maxWorkers: 10,
       frequency: 60,
     },
   }),

@@ -585,8 +585,8 @@ func Test_ManageDataClasses(t *testing.T) {
 		articleClass := &models.Class{
 			Class:       "Article",
 			Description: "Collection of articles",
+			// Async replication runs by default when the replication factor is greater than 1
 			ReplicationConfig: &models.ReplicationConfig{
-				AsyncEnabled:     true,
 				Factor:           3,
 				DeletionStrategy: models.ReplicationConfigDeletionStrategyTimeBasedResolution,
 			},

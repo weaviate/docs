@@ -85,10 +85,8 @@ curl \
     ],
     "replicationConfig": {
       "factor": 3,
-      "asyncEnabled": true,
       "deletionStrategy": "TimeBasedResolution",
       "asyncConfig": {
-        "maxWorkers": 5,
         "hashtreeHeight": 16,
         "frequency": 30000
       }

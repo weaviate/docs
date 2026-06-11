@@ -78,9 +78,9 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
 <details>
 
-<summary>How to create a Weaviate Cloud Sandbox</summary>
+<summary>How to create a Weaviate Cloud free cluster</summary>
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance.
+Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free cluster.
 
 <div
   style={{
@@ -114,7 +114,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 - Cluster provisioning typically takes 1-3 minutes.
 - When the cluster is ready, Weaviate Cloud displays a checkmark (`✔️`) next to the cluster name.
-- Note that Weaviate Cloud adds a random suffix to sandbox cluster names to ensure uniqueness.
+- Note that Weaviate Cloud may add a random suffix to cluster names to ensure uniqueness.
 
 :::
 
@@ -164,7 +164,7 @@ Weaviate supports both REST and gRPC protocols. For Weaviate Cloud deployments, 
 
 :::
 
-Once you have the **REST Endpoint URL** and the **admin API key**, you can connect to the Sandbox instance, and work with Weaviate.
+Once you have the **REST Endpoint URL** and the **admin API key**, you can connect to your cluster, and work with Weaviate.
 
 The example below shows how to connect to Weaviate and perform a basic operation, like checking the cluster status.
 
@@ -401,7 +401,7 @@ The power of RAG comes from the ability to transform your own data. Weaviate hel
 
 In this quickstart guide, you:
 
-- Created a Serverless Weaviate sandbox instance on Weaviate Cloud.
+- Created a free cluster on Weaviate Cloud.
 - Defined a collection and added data.
 - Performed queries, including:
   - Semantic search, and
