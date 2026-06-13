@@ -192,7 +192,7 @@ tools:
     description: "Perform a vector or keyword search on a collection."
     arguments:
       query: "The natural language search query to find relevant objects."
-      alpha: "0.0 = pure keyword (BM25), 1.0 = pure vector, 0.5 = equal weight (default)."
+      alpha: "0.0 = pure keyword (BM25), 1.0 = pure vector. Defaults to 0.75."
 ```
 
 </TabItem>
@@ -205,7 +205,7 @@ tools:
       "description": "Perform a vector or keyword search on a collection.",
       "arguments": {
         "query": "The natural language search query to find relevant objects.",
-        "alpha": "0.0 = pure keyword (BM25), 1.0 = pure vector, 0.5 = equal weight (default)."
+        "alpha": "0.0 = pure keyword (BM25), 1.0 = pure vector. Defaults to 0.75."
       }
     }
   }
@@ -255,7 +255,7 @@ Performs a hybrid search combining vector similarity and keyword matching (BM25)
 - `query` (string, required): The natural language search text.
 - `collection_name` (string, required): The collection to search.
 - `tenant_name` (string, optional): Tenant to search within for multi-tenant collections.
-- `alpha` (float, optional): Weighting. `0.0` = pure keyword search, `1.0` = pure vector search. Default is `0.5`.
+- `alpha` (float, optional): Weighting. `0.0` = pure keyword search, `1.0` = pure vector search. Default is `0.75`, the same default as a regular [hybrid search](/weaviate/api/graphql/search-operators#hybrid).
 - `limit` (int, optional): Max results.
 - `target_vectors` (array, optional): Named vectors to use for vector search.
 - `target_properties` (array, optional): Properties to search with BM25. If omitted, searches all text properties.
