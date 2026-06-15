@@ -7,6 +7,7 @@ import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -77,6 +78,7 @@ class ModelProvidersTest {
   }
 
   @Test
+  @Disabled("Requires DIGITALOCEAN_APIKEY, not configured in CI")
   void testDigitalOceanInstantiation() throws Exception {
     // START DigitalOceanInstantiation
     // Best practice: store your credentials in environment variables
@@ -98,6 +100,7 @@ class ModelProvidersTest {
   }
 
   @Test
+  @Disabled("Requires DIGITALOCEAN_APIKEY, not configured in CI")
   void testDigitalOceanVectorizer() throws IOException {
     client.collections.delete("DemoCollection");
     // START BasicVectorizerDigitalOcean

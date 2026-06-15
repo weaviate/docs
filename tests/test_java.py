@@ -128,7 +128,14 @@ def test_compression(empty_weaviates, test_class):
     "test_class",
     [
         "BackupsTest",
-        "RBACTest",
+        pytest.param(
+            "RBACTest",
+            marks=pytest.mark.skip(
+                reason="Released Java client (6.2.0) can't deserialize the `namespaces` RBAC "
+                "permission that Weaviate 1.35.0 emits in its built-in roles; unskip once a "
+                "client release adds support."
+            ),
+        ),
         "ModelProvidersTest",
         "GetStartedTest",
     ],
