@@ -63,6 +63,7 @@ The following overrides are currently supported:
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
+| `default_vector_index`                           | `DEFAULT_VECTOR_INDEX`                       |
 | `export_default_bucket`                          | `EXPORT_DEFAULT_BUCKET`                      |
 | `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
 | `export_enabled`                                 | `EXPORT_ENABLED`                             |
