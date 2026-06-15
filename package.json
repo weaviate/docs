@@ -60,7 +60,8 @@
     "typescript": "^5.3.3"
   },
   "resolutions": {
-    "tar": "^7.5.8"
+    "tar": "^7.5.8",
+    "esbuild": "^0.28.1"
   },
   "browserslist": {
     "production": [
