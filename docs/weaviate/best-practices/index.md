@@ -168,6 +168,10 @@ If `go` is available to your system, you can view the heap profile with golang's
 - Have a go runtime installed, or start a Go-based docker container
 - Expose port 6060 if running in docker/k8s
 
+:::note `DEBUG_ENDPOINTS_ENABLED` required in `v1.37.9`+
+As of `v1.37.9`, the debug HTTP listener (including the `/debug/pprof/*` endpoints) is disabled by default and returns `404`. Set [`DEBUG_ENDPOINTS_ENABLED=true`](/deploy/configuration/env-vars/index.md) to serve these endpoints before profiling. Earlier versions serve them unconditionally.
+:::
+
 To view the profile visually:
 
 ```bash

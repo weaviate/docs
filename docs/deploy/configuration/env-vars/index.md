@@ -56,6 +56,7 @@ import APITable from '@site/src/components/APITable';
 | `INVERTED_SORTER_DISABLED` | Forces the "objects bucket" strategy and doesn't consider inverted sorting. Most users should never set this flag; it exists for benchmarking and as a safety net. Default: `false` | `boolean` | `false` |
 | `GO_PROFILING_DISABLE` | If `true`, disables Go profiling. Default: `false`. | `boolean` | `false` |
 | `GO_PROFILING_PORT` | Sets the port for the Go profiler. Default: `6060` | `integer` | `6060` |
+| `DEBUG_ENDPOINTS_ENABLED` | Gate for the debug HTTP listener (the profiling port set by `GO_PROFILING_PORT`, default `6060`), which serves the Go profiling endpoints (`/debug/pprof/*`, `/debug/fgprof`) and `/debug/config`. When `false`, the listener still binds but returns `404` for every request. Set to `true` to serve these endpoints. Runtime-configurable. Default: `false`<br/>Added in `v1.37.9` (previously these endpoints were always served). `GO_PROFILING_DISABLE` still controls whether the listener binds at all. | `boolean` | `true` |
 | `GRPC_MAX_MESSAGE_SIZE` | Maximum gRPC message size in bytes. Default: 10MB | `string - number` | `2000000000` |
 | `GRPC_PORT` | The port on which Weaviate's gRPC server listens for incoming requests. Default: `50051` | `string - number` | `50052` |
 | `HNSW_GEO_INDEX_EF` | Balance geo index search speed and recall. This value controls the search depth for geo-based queries. Default: `800`<br/>Added in `v1.31.22` | `string - number` | `1000` |
