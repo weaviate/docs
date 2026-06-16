@@ -69,9 +69,9 @@ The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebr
   - `Like`
   - `WithinGeoRange`
   - `IsNull`
-  - `ContainsAny`  (*For array properties (e.g. `int[]`, `number[]`, `text[]`, `boolean[]`, `date[]`, `uuid[]`) and `text`/`string` properties)
-  - `ContainsAll`  (*For array properties (e.g. `int[]`, `number[]`, `text[]`, `boolean[]`, `date[]`, `uuid[]`) and `text`/`string` properties)
-  - `ContainsNone` (*For array properties (e.g. `int[]`, `number[]`, `text[]`, `boolean[]`, `date[]`, `uuid[]`) and `text`/`string` properties)
+  - `ContainsAny`  (*For `text`/`string`, `int`, `number`, `boolean`, `date`, `uuid` properties and their array variants)
+  - `ContainsAll`  (*For `text`/`string`, `int`, `number`, `boolean`, `date`, `uuid` properties and their array variants)
+  - `ContainsNone` (*For `text`/`string`, `int`, `number`, `boolean`, `date`, `uuid` properties and their array variants)
 - `Path`: Is a list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style, indicating the property name of the collection.
   - If the property is a cross-reference, the path should be followed as a list of strings. For a `inPublication` reference property that refers to `Publication` collection, the path selector for `name` will be `["inPublication", "Publication", "name"]`.
 - `valueType`
@@ -243,11 +243,15 @@ The `ContainsAny`, `ContainsAll` and `ContainsNone` operators filter objects usi
 
 These operators expect an array of values and return objects that match based on the input values.
 
-They are not limited to text. They work with any array data type — for example `int[]`, `number[]`, `boolean[]`, `date[]`, and `uuid[]` — as well as `text`/`string` properties. Pass the candidate values using the argument that matches the property's data type, such as `valueInt` for `int`, `valueNumber` for `number`, or `valueText` for `text`. For example, a `ContainsAny` query on an `int` property with a value of `[10, 20, 30]` returns objects whose property holds at least one of those integers.
+They are not limited to text. They work on `text`/`string`, `int`, `number`, `boolean`, `date`, and `uuid` properties — and on the array variants of each (`int[]`, `number[]`, etc.). A scalar property is treated as a single-element set: the object matches if its value satisfies the operator against the candidate list.
+
+Pass the candidate values using the argument that matches the property's data type: `valueText` for `text`/`string`, `valueInt` for `int`, `valueNumber` for `number`, `valueBoolean` for `boolean`, and `valueDate` for `date`. For `uuid`/`uuid[]` properties, pass the UUIDs as strings using `valueText` (there is no `valueUuid` argument). For example, a `ContainsAny` query on an `int` property with a value of `[10, 20, 30]` returns objects whose property holds at least one of those integers.
+
+Geo-coordinate and phone-number properties are not supported by these operators; use `WithinGeoRange` for geo filtering.
 
 :::note `ContainsAny`/`ContainsAll`/`ContainsNone` notes:
 - The `ContainsAny`, `ContainsAll` and `ContainsNone` operators treat texts as an array. The text is split into an array of tokens based on the chosen tokenization scheme, and the search is performed on that array.
-- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the values must be specified with the array-suffixed argument that matches the property's data type, such as `valueTextArray` for `text` or `valueIntArray` for `int`. This is different from the usage in search, where the singular argument (e.g. `valueText`, `valueInt`) can be used.
+- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the values must be specified with the array-suffixed argument that matches the property's data type, such as `valueTextArray` for `text` (and `uuid`) or `valueIntArray` for `int`. This is different from the usage in search, where the singular argument (e.g. `valueText`, `valueInt`) can be used.
 :::
 
 
