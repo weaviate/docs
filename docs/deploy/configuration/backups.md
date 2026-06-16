@@ -124,6 +124,16 @@ To use any provider:
 
 Note multiple providers can be enabled simultaneously
 
+### Skip the storage access check
+
+When a cloud backup backend (`backup-s3`, `backup-gcs`, or `backup-azure`) initializes, Weaviate verifies that the configured credentials can write to and delete from the target bucket. It does this by writing a temporary `access-check` object and then removing it. This probe fails on immutable (write-once / WORM) buckets, or with least-privilege credentials that are not permitted to delete objects.
+
+Set `BACKUP_SKIP_ACCESS_CHECK=true` to skip this probe. The variable applies to all cloud backup backends, defaults to `false`, and is applied at startup (a restart is required to change it).
+
+| Environment variable | Required | Description |
+| --- | --- | --- |
+| `BACKUP_SKIP_ACCESS_CHECK` | no | Skip the write-and-delete access check performed when a backup backend initializes. Set to `true` for immutable (write-once / WORM) buckets or least-privilege credentials that cannot delete objects. Defaults to `false`.<br/><br/>Added in `v1.37.8`. |
+
 ### S3 (AWS or S3-compatible)
 
 - Works with AWS S3 and S3-compatible services (e.g., MinIO)
