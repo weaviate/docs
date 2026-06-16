@@ -81,7 +81,7 @@ response = articles.query.near_text(
     query="transformer architectures",
     limit=5,
     # highlight-start
-    boost=Boost.property(
+    boost=Boost.numeric_property(
         "likes",
         modifier=Boost.Modifier.LOG1P,
         weight=0.7,
@@ -167,8 +167,10 @@ response = articles.query.near_text(
     limit=5,
     # highlight-start
     boost=Boost.blend(
-        Boost.time_decay("published", origin="now", scale=timedelta(days=30), weight=2.0),
-        Boost.property("likes", modifier=Boost.Modifier.LOG1P, weight=1.0),
+        [
+            Boost.time_decay("published", origin="now", scale=timedelta(days=30), weight=2.0),
+            Boost.numeric_property("likes", modifier=Boost.Modifier.LOG1P, weight=1.0),
+        ],
         weight=0.4,
         depth=200,  # rescore the top 200 vector matches
     ),
@@ -222,8 +224,10 @@ response = articles.query.hybrid(
     limit=5,
     # highlight-start
     boost=Boost.blend(
-        Boost.filter(Filter.by_property("category").equal("research"), weight=1.0),
-        Boost.filter(Filter.by_property("draft").equal(True), weight=-2.0),
+        [
+            Boost.filter(Filter.by_property("category").equal("research"), weight=1.0),
+            Boost.filter(Filter.by_property("draft").equal(True), weight=-2.0),
+        ],
         weight=0.3,
     ),
     # highlight-end

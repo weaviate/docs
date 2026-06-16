@@ -16,7 +16,7 @@ import BoostPreview from '/_includes/feature-notes/boost.mdx';
 
 **Boost** soft-ranks search results — promote or demote matching documents without removing them from the result set. Matching documents move up. Non-matching documents stay in the results but rank lower.
 
-Apply boost to vector, hybrid, BM25, near-text, near-vector, near-object, and aggregate queries.
+Apply boost to vector, hybrid, BM25, near-text, near-vector, near-object, near-image, and near-media queries.
 
 ## How it works
 
