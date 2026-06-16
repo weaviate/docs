@@ -61,6 +61,7 @@ The following overrides are currently supported:
 | `async_replication_hashtree_init_concurrency`    | `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`|
 | `async_replication_cluster_max_workers` _(removed in `v1.38`)_ | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` _(removed in `v1.38`)_ |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
+| `debug_endpoints_enabled`                        | `DEBUG_ENDPOINTS_ENABLED`                    |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
 | `default_vector_index`                           | `DEFAULT_VECTOR_INDEX`                       |
