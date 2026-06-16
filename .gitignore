@@ -269,8 +269,9 @@ _includes/code/csharp/quickstart/bin
 _includes/code/csharp/quickstart/obj
 *.sln
 
-# Exclude WCD backups
-tests/backups/
+# Exclude WCD snapshot data (hundreds of MB), but track the restore tooling
+# (restore.py, README.md). Snapshots live in backup_<timestamp>/ directories.
+tests/backups/backup_*/
 
 # Ignore LLM/agent config files
 .claude/
