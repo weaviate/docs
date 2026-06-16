@@ -169,9 +169,7 @@ If `go` is available to your system, you can view the heap profile with golang's
 - Expose port 6060 if running in docker/k8s
 
 :::caution `DEBUG_ENDPOINTS_ENABLED` required in `v1.37.9`+
-As of `v1.37.9`, the debug HTTP listener (including the `/debug/pprof/*` endpoints) is disabled by default and returns `404`. Set [`DEBUG_ENDPOINTS_ENABLED=true`](/deploy/configuration/env-vars/index.md) to serve these endpoints before profiling. Earlier versions serve them unconditionally.
-
-These endpoints are **unauthenticated** and include sensitive and destructive operations, so only enable them on a trusted network and never expose the profiling port (default `6060`) publicly. Even when enabled, secrets such as API keys and the cluster basic-auth password are redacted from `/debug/config`, but heap profiles may still contain in-memory secrets.
+As of `v1.37.9`, the debug HTTP listener (including the `/debug/pprof/*` endpoints) is disabled by default. Set [`DEBUG_ENDPOINTS_ENABLED=true`](/deploy/configuration/env-vars/index.md) to serve these endpoints before profiling.
 :::
 
 To view the profile visually:
