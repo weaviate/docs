@@ -16,7 +16,7 @@ dependencies = [
     "requests>=2.32.3",
     "tqdm>=4.67.1",
     "weaviate-agents>=1.5.0",
-    "weaviate-client==4.21.3",
+    "weaviate-client==4.22.0",
     "weaviate-demo-datasets>=0.8.1",
     "weaviate-engram>=0.3.0",
     "anthropic>=0.40.0",
