@@ -22,9 +22,9 @@ faq:
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-:::info Generally available
-The built-in Weaviate MCP server is generally available as of `v1.38` (introduced as a preview in `v1.37.1`). Its enable flags are runtime-configurable from `v1.38` — see [Environment variables](#environment-variables).
-:::
+import MCPPreview from "/_includes/feature-notes/mcp.mdx";
+
+<MCPPreview />
 
 The Weaviate [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server is an implementation of the open standard that enables Large Language Models (LLMs) to interact securely with your Weaviate instance.
 
