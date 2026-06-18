@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 faq:
   - question: Does Weaviate offer an MCP server?
     answer: >-
-      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (preview, available from v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
+      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
   - question: Is the MCP server an external library?
     answer: >-
       No — it's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
