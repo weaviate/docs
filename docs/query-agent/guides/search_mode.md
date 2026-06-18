@@ -93,12 +93,6 @@ Search Mode uses query rewriting to transform your original query into one or mu
 
 - **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query. You should use this when you want the results to follow your query intent closely, even if that means potentially receiving no results.
 
-:::note Python availability
-
-The `filtering` parameter is not yet available in a released `weaviate-agents` Python package (it is merged upstream but unreleased as of `weaviate-agents` `1.5.0`). Until a newer version is published, calling `search(filtering=...)` with the Python client raises `TypeError: unexpected keyword argument 'filtering'`. Upgrade to a `weaviate-agents` release newer than `1.5.0` to use it.
-
-:::
-
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
