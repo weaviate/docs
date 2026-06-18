@@ -39,12 +39,12 @@ const getRepoVersion = async (repoName, attempt = 1) => {
         }
 
         const highestVersion = releases
-            .filter(item => !item.prerelease) // remove pre-release items
-            .filter(item => !item.draft)      // remove draft releases
-            .map(item => item.tag_name)       // keep only the tag_name
-            .sort()                           // sort items alphabetically – ascending
-            .pop()                            // the last item contains the highest version (what we need)
-            .replace('v', '')                 // remove the v from the name "v1.26.1" => "1.26.1"
+            .filter(item => !item.prerelease)        // remove pre-release items
+            .filter(item => !item.draft)             // remove draft releases
+            .map(item => item.tag_name.replace('v', '')) // strip the v: "v1.26.1" => "1.26.1"
+            .sort((a, b) =>                          // semver-aware sort – ascending
+                a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
+            .pop()                                   // the last item is the highest version (what we need)
 
         console.log(`${repoName} ${highestVersion}`);
         return highestVersion;

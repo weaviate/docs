@@ -384,7 +384,7 @@ import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
 
 <SearchOperators/>
 
-Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present in the object to be returned. The options are `and`, or `or` (default).
+Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present within a single searched property for an object to be returned. The options are `and`, or `or` (default).
 
 ### `or`
 
@@ -435,7 +435,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
 
 ### `and`
 
-With the `and` operator, the search returns objects that contain all tokens in the search string.
+With the `and` operator, the search returns objects where all tokens in the search string appear together within a single searched property.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
