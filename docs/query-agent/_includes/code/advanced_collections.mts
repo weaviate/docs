@@ -1,6 +1,9 @@
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 const client = await loadClientInternally();
-await populateWeaviate(client, false);
+// Recreate ECommerce so it always has the `name_description_brand_vector` named
+// vector this snippet targets (a stale collection on the shared instance may
+// lack it, causing WEAVIATE_NAMED_VECTOR_ERROR).
+await populateWeaviate(client, true);
 
 // START SimpleConfig
 import { QueryAgent } from 'weaviate-agents';

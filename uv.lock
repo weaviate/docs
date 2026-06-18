@@ -1718,33 +1718,34 @@ wheels = [
 
 [[package]]
 name = "weaviate-agents"
-version = "1.5.0"
+version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx-sse" },
     { name = "rich" },
     { name = "weaviate-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/1c/cad26eea91555060b2c88ab9b9af9deca41243c67813bb550f86d8d06eb5/weaviate_agents-1.5.0.tar.gz", hash = "sha256:fb61aae5b6658b9e16e72b07699eecd255c16bdacb39824c74520a1a20672669", size = 105783, upload-time = "2026-05-05T12:06:41.059Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6e/a5/bd394d83a86153bcb54c297052558b312a247368c04ed08149850f0dcf71/weaviate_agents-1.6.0.tar.gz", hash = "sha256:a30c9c5120df3bc55ba1fa2384a4ebf5a3654d427a758294d9fa712cb5791576", size = 107790, upload-time = "2026-06-16T19:38:56.386Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/41/a2/d6a55f3748e8b97bac2d7b641a2456684292f9431129c035b90d575f20ce/weaviate_agents-1.5.0-py3-none-any.whl", hash = "sha256:8c2bbaa9fb02aa548821d465591bf1b4cfc426bc632b35c915d583fa90b1e820", size = 47864, upload-time = "2026-05-05T12:06:39.816Z" },
+    { url = "https://files.pythonhosted.org/packages/96/69/9c5876da7925332d63151bcc61990e272cb8140a6dc7c6e887c905a3aede/weaviate_agents-1.6.0-py3-none-any.whl", hash = "sha256:e68723e3c14bf9639feadf307a55b7af4ddf2010e4d382e87b70766aeec8dae4", size = 50262, upload-time = "2026-06-16T19:38:55.445Z" },
 ]
 
 [[package]]
 name = "weaviate-client"
-version = "4.21.0"
+version = "4.22.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "authlib" },
     { name = "grpcio" },
     { name = "httpx" },
+    { name = "packaging" },
     { name = "protobuf" },
     { name = "pydantic" },
     { name = "validators" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ec/a2/6729149edc0bd5884bd0436186f7823f925ec489d47c327a3e408e514494/weaviate_client-4.21.0.tar.gz", hash = "sha256:050243b07f80349bbbaa3d426ace38466a972a073eff5cff62708ae5e9287dbe", size = 838731, upload-time = "2026-04-23T10:37:11.283Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/34/2a/73cf7d6c7c6aa638738dfcb0d318e0404aab3c0673f82a1a4d89455b21a5/weaviate_client-4.22.0.tar.gz", hash = "sha256:0c50fbef546a522262a87d1138cde0509c7a8a48e702e967be33472e9f7fbae3", size = 860126, upload-time = "2026-06-18T06:08:30.202Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/6b/5ae0aa935602f58fa2c2f5062c3faed8615a45df4b0406eb2d9deeeae73c/weaviate_client-4.21.0-py3-none-any.whl", hash = "sha256:82904bce3aae8f38a880e860195f4a17e6b55810708780f718132199030c8260", size = 639005, upload-time = "2026-04-23T10:37:09.668Z" },
+    { url = "https://files.pythonhosted.org/packages/e1/a3/27353ea3fbf9e7d4f03375176a838c632d009f5167d801adcbb5f6d3bd07/weaviate_client-4.22.0-py3-none-any.whl", hash = "sha256:ff2dbc8d1fc25739942402c22d1aba2350a16ba4a6b6ed0ba140689c70adf1d9", size = 652691, upload-time = "2026-06-18T06:08:28.622Z" },
 ]
 
 [[package]]
@@ -1794,8 +1795,8 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "tqdm", specifier = ">=4.67.1" },
-    { name = "weaviate-agents", specifier = ">=1.5.0" },
-    { name = "weaviate-client", specifier = "==4.21.0" },
+    { name = "weaviate-agents", specifier = ">=1.6.0" },
+    { name = "weaviate-client", specifier = "==4.22.0" },
     { name = "weaviate-demo-datasets", specifier = ">=0.8.1" },
     { name = "weaviate-engram", specifier = ">=0.3.0" },
 ]

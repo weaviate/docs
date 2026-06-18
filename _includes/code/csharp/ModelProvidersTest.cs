@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Weaviate.Client;
@@ -94,7 +95,7 @@ public class ModelProvidersTest : IAsyncLifetime
         await client.Collections.Delete("DemoCollection");
     }
 
-    [Fact]
+    [Fact(Skip = "Requires DIGITALOCEAN_APIKEY, not configured in CI")]
     public async Task TestDigitalOceanInstantiation()
     {
         // START DigitalOceanInstantiation
@@ -119,7 +120,7 @@ public class ModelProvidersTest : IAsyncLifetime
         // END DigitalOceanInstantiation
     }
 
-    [Fact]
+    [Fact(Skip = "Requires DIGITALOCEAN_APIKEY, not configured in CI")]
     public async Task TestDigitalOceanVectorizer()
     {
         if (await client.Collections.Exists("DemoCollection"))
