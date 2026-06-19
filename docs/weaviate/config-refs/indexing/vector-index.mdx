@@ -245,7 +245,7 @@ For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or
 
 Unless specified otherwise in the collection definition, the default behavior is to:
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
+- Only vectorize properties with a string value — `text`, `text[]`, and `blob` (a base64-encoded string) — unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings). Other data types (such as `number`, `int`, `boolean`, `date`, and `object`) are not vectorized unless they are listed in `source_properties` (see [below](#specify-which-properties-to-vectorize)).
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
@@ -272,6 +272,16 @@ By default, the calculation includes the collection name and all property values
 To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
 
 To configure vectorization on a per-property basis, use `skip` and `vectorizePropertyName`.
+
+### Specify which properties to vectorize
+
+To vectorize only a specific set of properties, set `source_properties` (the `properties` field of the vector configuration). Only the listed properties are then vectorized, in the order given.
+
+When `source_properties` is set, listed properties that are **not** text are also vectorized: `number`, `int`, `boolean`, `date`, `object`, and their array variants are converted to a string and concatenated into the input text. (Without `source_properties`, only string-valued properties — `text`, `text[]`, and `blob` — are vectorized; `uuid`, geo-coordinates, and phone-number properties are never vectorized.)
+
+:::caution `blob` properties are vectorized as text
+A `blob` value is a base64-encoded string, so an indexed `blob` property is vectorized like text — even without `source_properties`. To avoid sending a blob's base64 data to a text vectorizer, exclude it with `source_properties` or [`skip`](../../manage-collections/vector-config.mdx#property-level-settings).
+:::
 
 ## Asynchronous indexing
 
