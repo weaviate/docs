@@ -1,6 +1,27 @@
+import os
+
 import pytest
 import utils
 from pathlib import Path
+
+
+def _client_supports_namespaces():
+    """The namespace snippet needs the Python client from
+    weaviate-python-client#2033: typed `client.namespaces` + `Permissions.namespaces`
+    AND a `namespace=` argument on `users.db.create`. The API is still settling in the
+    open PR, so require all of them — otherwise skip rather than hard-fail."""
+    try:
+        import inspect
+
+        from weaviate.rbac.models import Permissions
+        from weaviate.users.base import _UsersDBExecutor
+
+        return (
+            hasattr(Permissions, "namespaces")
+            and "namespace" in inspect.signature(_UsersDBExecutor.create).parameters
+        )
+    except Exception:
+        return False
 
 
 def run_py_script(script_loc, custom_replace_pairs=None):
@@ -174,6 +195,28 @@ def test_manage_data_edu(empty_weaviates, script_loc):
 )
 def test_modules(empty_weaviates, script_loc):
     run_py_script(script_loc)
+
+
+# ========== Namespaces ==========
+
+@pytest.mark.pyv4
+@pytest.mark.skipif(
+    not _client_supports_namespaces(),
+    reason="Installed weaviate-client lacks namespace support (needs weaviate-python-client#2033)",
+)
+def test_namespaces(empty_weaviates):
+    # Runs against the namespace-enabled instance (docker-compose-namespaces.yml,
+    # ports 8680/50651), connecting as the static-API-key operator (global) principal.
+    os.environ["OPERATOR_API_KEY"] = "operator-api-key"
+    run_py_script(
+        "./_includes/code/howto/namespaces.py",
+        custom_replace_pairs=[
+            [
+                "weaviate.connect_to_local(",
+                "weaviate.connect_to_local(port=8680, grpc_port=50651, ",
+            ],
+        ],
+    )
 
 
 # ========== Search ==========

@@ -42,6 +42,10 @@ import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
 
 - Read more about Weaviate's vector quantization options.
 
+**[Namespaces](./namespaces.md)**
+
+- Cluster-level isolation where every collection and alias belongs to exactly one namespace, letting one cluster host many isolated logical "customer clusters".
+
 ## Weaviate Architecture
 
 The figure below gives a 30,000 feet view of Weaviate's architecture.
