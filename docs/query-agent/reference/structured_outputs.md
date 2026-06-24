@@ -24,7 +24,7 @@ Structured outputs ensure that the model's final response will adhere to a given
 
         The structured output can be accessed by a new field, `final_answer_parsed`, which appears only when the `output_format` argument is not `None`. The raw string from the model can still be accessed at `final_answer`.
 
-        ### Pydantic BaseModel
+        **Pydantic BaseModel**
         <FilteredTextBlock
             text={PyCode}
             startMarker="# START SOBasicExampleBaseModel"
@@ -46,7 +46,7 @@ Structured outputs ensure that the model's final response will adhere to a given
         </details>
 
 
-        ### Dictionary
+        **Dictionary**
         <FilteredTextBlock
             text={PyCode}
             startMarker="# START SOBasicDictExample"
@@ -75,7 +75,7 @@ Structured outputs ensure that the model's final response will adhere to a given
 
         The structured output can be accessed by a new field, `finalAnswerParsed`, which appears only when the `outputFormat` argument is not null. The raw string from the model can still be accessed at `finalAnswer`.
 
-        ### Zod schema
+        **Zod schema**
         <FilteredTextBlock
             text={TSCode}
             startMarker="// START SOBasicExampleBaseModel"
@@ -95,7 +95,7 @@ Structured outputs ensure that the model's final response will adhere to a given
         ```
         </details>
 
-        ### Object
+        **Object**
         <FilteredTextBlock
             text={TSCode}
             startMarker="// START SOBasicDictExample"
@@ -431,7 +431,9 @@ The Query Agent natively supports subsetting and evaluating the quality of the r
 
 Structured outputs are supported with [streaming ask mode](../guides/ask_mode.md#streaming).
 
-When streaming, the structured output is delivered incrementally as raw string fragments through `StreamedTokens` instances. No special parsing is applied during the stream — each token is simply a piece of the final output. To use the result, accumulate the streamed tokens into a single string, then validate the completed string against your schema. You can also attempt partial validation as the string grows if you want to react to the output before the stream finishes.
+When streaming, the structured output is delivered incrementally as raw string fragments through `StreamedTokens` instances. No special parsing is applied during the stream — each token is simply a piece of the final output. To use the partial result, accumulate the streamed tokens into a single string, then partially validate the string against your schema. 
+
+To use the final result after completion, you do not need to use the streamed tokens. Simply access the `final_answer_parsed` attribute (`finalAnswerParsed` in TypeScript) of the [`AskModeResponse` final state output](../guides/ask_mode.md#responses).
 
 ## Questions and feedback
 
