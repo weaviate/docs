@@ -42,7 +42,7 @@ Weaviate is an open-source vector database built to power AI applications. This 
 1. **Set up a collection** - Create a collection and import data into it.
 2. **Search** - Perform a similarity (vector) search on your data.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
-4. **Query Agent** - Get answers from you data by using a natural language prompt/question. <CloudOnlyBadge compact />
+4. **Query Agent** - Get answers from your data by using a natural language prompt/question. <CloudOnlyBadge compact />
 
 import KapaAI from "/src/components/KapaAI";
 
