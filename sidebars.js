@@ -1371,6 +1371,11 @@ const sidebars = {
           id: "query-agent/reference/advanced_collections",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "query-agent/reference/structured_outputs",
+          className: "sidebar-item",
+        },
       ],
     },
     {
