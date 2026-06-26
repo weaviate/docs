@@ -33,6 +33,10 @@ contextual_key = os.getenv("CONTEXTUAL_API_KEY")
 # Recommended: save sensitive data as environment variables
 databricks_token = os.getenv("DATABRICKS_TOKEN")
 # END DatabricksInstantiation
+# START DeepseekInstantiation
+# Recommended: save sensitive data as environment variables
+deepseek_key = os.getenv("DEEPSEEK_APIKEY")
+# END DeepseekInstantiation
 # START DigitalOceanInstantiation
 # Recommended: save sensitive data as environment variables
 digitalocean_key = os.getenv("DIGITALOCEAN_APIKEY")
@@ -114,6 +118,10 @@ headers = {
 # START DatabricksInstantiation
     "X-Databricks-Token": databricks_token,
 # END DatabricksInstantiation
+# START DeepseekInstantiation
+    "X-Deepseek-Api-Key": deepseek_key,
+    # "X-Deepseek-Baseurl": "https://api.deepseek.com",  # Optional; for providing a custom base URL
+# END DeepseekInstantiation
 # START DigitalOceanInstantiation
     "X-Digitalocean-Api-Key": digitalocean_key,
 # END DigitalOceanInstantiation
