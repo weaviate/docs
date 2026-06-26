@@ -11,7 +11,7 @@ export default function ContextualMenu({
   promptName = "",
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [copyStatus, setCopyStatus] = useState("idle"); // idle, copying, success
+  const [copyStatus, setCopyStatus] = useState("idle"); // idle, copying, success, error
   const [selectedLanguage, setSelectedLanguage] = useState(
     languages[0] || "python",
   );
@@ -42,9 +42,21 @@ export default function ContextualMenu({
   const copyPageAsMarkdown = async () => {
     setCopyStatus("copying");
     try {
-      // Get the main article content
-      const articleElement = document.querySelector("article");
-      if (!articleElement) {
+      // turndown touches the DOM, and Docusaurus server-renders this component
+      // at build time, so it must never be imported at module scope. Load it
+      // lazily inside this browser-only async handler instead.
+      const { default: TurndownService } = await import("turndown");
+      const { gfm } = await import("turndown-plugin-gfm");
+
+      // Scope to the rendered MDX body only. `.theme-doc-markdown` is the inner
+      // wrapper from @theme/DocItem/Content; the breadcrumbs, the ContextualMenu
+      // button, the version badge, the mobile TOC and the footer are all
+      // siblings OUTSIDE it (see src/theme/DocItem/Layout/index.js), so scoping
+      // here drops all the page chrome. Fall back to <article> for safety.
+      const contentRoot =
+        document.querySelector(".theme-doc-markdown") ||
+        document.querySelector("article");
+      if (!contentRoot) {
         throw new Error("Article content not found");
       }
 
@@ -52,19 +64,101 @@ export default function ContextualMenu({
       const title = metadata.title || frontMatter.title || "Untitled";
       const pageUrl = getCurrentPageUrl();
 
-      // Extract text content from the article
-      const content = articleElement.innerText;
+      // Work on a clone so the live page is never mutated.
+      const clone = contentRoot.cloneNode(true);
 
-      // Format as markdown with metadata
-      const markdown = `# ${title}
+      // Strip non-prose chrome from the clone before converting. Only stable
+      // (non-CSS-module-hashed) selectors are used here.
+      //   [aria-hidden="true"] - our custom code Tabs (src/theme/Tabs/index.js)
+      //     render EVERY language panel and hide the non-selected ones with
+      //     display:none + aria-hidden="true"; removing them leaves only the
+      //     selected language. (Also drops decorative aria-hidden icons.)
+      //   [role="tablist"]     - the clickable label strip of DEFAULT Docusaurus
+      //     <Tabs> (used for non-code content, e.g. Docker/Kubernetes steps),
+      //     which would otherwise leak as a bullet list of tab labels.
+      //   [hidden]             - inactive DEFAULT-tab panels mark themselves with
+      //     the `hidden` attribute (not aria-hidden); removing them gives the
+      //     same selected-only behavior for non-code tabs. (Custom code tabs use
+      //     style+aria-hidden, never `hidden`/role=tablist, so no code regression.)
+      //   select               - the per-tab language dropdown.
+      //   .badge               - FilteredTextBlock's badge row (stable Infima
+      //     class, see FilteredTextBlock.js:198,222).
+      //   button, nav          - stray controls.
+      //   img[alt=""]          - decorative empty-alt icons (e.g. logo-py.svg);
+      //     real content images keep their meaningful alt and survive.
+      //   [data-copy-exclude]  - explicit opt-out marker on shared components
+      //     whose chrome leaks but isn't otherwise stably targetable (currently
+      //     CloudOnlyBadge / AcademyBadge).
+      clone
+        .querySelectorAll(
+          '[aria-hidden="true"], [role="tablist"], [hidden], select, .badge, button, nav, img[alt=""], [data-copy-exclude]',
+        )
+        .forEach((node) => node.remove());
 
-Source: ${pageUrl}
+      // Drop the code-tab HEADER chrome (language dropdown, the "API docs" link
+      // + icon, the "More info" tooltip) while KEEPING the code content. Our
+      // code blocks are authored as <Tabs className="code"> (src/theme/Tabs/
+      // index.js:464-474), which renders a container carrying the literal,
+      // stable `code` class whose FIRST child is the header and second is the
+      // code content (Tabs/index.js:333-460). The bare `code` class is used
+      // ONLY for these containers (verified: no other component or global CSS
+      // uses it), so removing each container's first element child strips the
+      // header without ever touching the code.
+      clone
+        .querySelectorAll(".code")
+        .forEach((container) => container.firstElementChild?.remove());
 
----
+      const turndownService = new TurndownService({
+        headingStyle: "atx",
+        codeBlockStyle: "fenced",
+        bulletListMarker: "-",
+      });
+      turndownService.use(gfm);
+      turndownService.remove(["select", "button", "nav", "script", "style"]);
 
-${content}`;
+      // Docusaurus/Prism renders code as <pre class="language-xxx"> with a
+      // <code> child whose lines are <span class="token-line"> separated by
+      // <br>. turndown's default fenced-code rule reads the language off <code>
+      // (Docusaurus puts it on <pre>) and drops the <br> line breaks, so emit
+      // our own fenced block: language from the language-xxx class, content
+      // rebuilt from the token-line spans (falling back to textContent).
+      turndownService.addRule("docusaurusCodeBlock", {
+        filter: (node) =>
+          node.nodeName === "PRE" &&
+          (node.querySelector("code") !== null ||
+            node.classList.contains("prism-code")),
+        replacement: (_content, node) => {
+          const code = node.querySelector("code") || node;
+          const classAttr = `${node.className} ${code.className}`;
+          const langMatch = classAttr.match(/language-([\w-]+)/);
+          const language = langMatch ? langMatch[1] : "";
+          const lines = code.querySelectorAll(".token-line");
+          const text = (
+            lines.length
+              ? Array.from(lines)
+                  .map((line) => line.textContent)
+                  .join("\n")
+              : code.textContent
+          ).replace(/\n+$/, "");
+          return `\n\n\`\`\`${language}\n${text}\n\`\`\`\n\n`;
+        },
+      });
 
-      await navigator.clipboard.writeText(markdown);
+      const markdown = turndownService.turndown(clone);
+
+      // No synthetic `# title` — the page H1 already lives inside
+      // .theme-doc-markdown, so prepending one would duplicate it. Keep the
+      // Source line for LLM context.
+      const output = `Source: ${pageUrl}\n\n---\n\n${markdown}`;
+
+      // Guard against insecure contexts where the Clipboard API is missing,
+      // rather than throwing an opaque error into the catch.
+      if (!navigator.clipboard?.writeText) {
+        throw new Error(
+          "Clipboard API is unavailable (a secure context is required)",
+        );
+      }
+      await navigator.clipboard.writeText(output);
 
       // Track successful copy
       analytics.contextualMenu.copyPage(pageUrl, title);
@@ -75,7 +169,10 @@ ${content}`;
       }, 1500);
     } catch (error) {
       console.error("Failed to copy page:", error);
-      setCopyStatus("idle");
+      setCopyStatus("error");
+      setTimeout(() => {
+        setCopyStatus("idle");
+      }, 2000);
     }
   };
 
@@ -200,13 +297,15 @@ ${content}`;
 
   const showLanguageSelector = variant === "prompts" && languages.length > 1;
   const mainButtonLabel =
-    variant === "prompts"
-      ? copyStatus === "success"
-        ? "Copied!"
-        : "Copy prompt"
-      : copyStatus === "success"
-        ? "Copied!"
-        : "Copy page";
+    copyStatus === "error"
+      ? "Copy failed"
+      : variant === "prompts"
+        ? copyStatus === "success"
+          ? "Copied!"
+          : "Copy prompt"
+        : copyStatus === "success"
+          ? "Copied!"
+          : "Copy page";
   const mainButtonHandler =
     variant === "prompts" ? copyPromptFromFile : copyPageAsMarkdown;
 
@@ -303,7 +402,7 @@ ${content}`;
               </>
             )}
           </svg>
-          <span>{mainButtonLabel}</span>
+          <span aria-live="polite">{mainButtonLabel}</span>
         </button>
         <div className={styles.separator}></div>
         <button
