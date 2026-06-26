@@ -857,6 +857,110 @@ response = collection.generate.near_text(
 # clean up
 client.collections.delete("DemoCollection")
 
+# ---------------------------------------------------------------------------
+# DeepSeek generative integration (generative-deepseek).
+#
+# These snippets are documented AHEAD of Python client support:
+# `Configure.Generative.deepseek()` and `GenerativeConfig.deepseek()` do not
+# yet exist in the released weaviate-client (pinned in pyproject.toml). The
+# blocks below are DISPLAY-ONLY — they are rendered in the docs via
+# FilteredTextBlock (with `language="pyindent"`, which strips the 4-space guard
+# indent) and are intentionally kept out of the test runner's allowlist in
+# tests/test_python.py. The `if DEEPSEEK_CLIENT_AVAILABLE:` guard is a
+# belt-and-suspenders measure so that even if this file is ever executed
+# end-to-end, the not-yet-released `deepseek()` calls can never run.
+# TODO: set DEEPSEEK_CLIENT_AVAILABLE = True and drop `pyindent` once the
+# weaviate-client ships Configure.Generative.deepseek() / GenerativeConfig.deepseek().
+# ---------------------------------------------------------------------------
+DEEPSEEK_CLIENT_AVAILABLE = False
+
+if DEEPSEEK_CLIENT_AVAILABLE:
+    # START BasicGenerativeDeepseek
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.deepseek()
+        # highlight-end
+        # Additional parameters not shown
+    )
+    # END BasicGenerativeDeepseek
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
+    # START GenerativeDeepseekCustomModel
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.deepseek(
+            model="deepseek-v4-flash"
+        )
+        # highlight-end
+        # Additional parameters not shown
+    )
+    # END GenerativeDeepseekCustomModel
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
+    # START FullGenerativeDeepseek
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.deepseek(
+            # # These parameters are optional
+            # model="deepseek-v4-flash",
+            # temperature=0.7,
+            # max_tokens=500,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
+            # top_p=1.0,
+            # base_url="https://api.deepseek.com",
+            # stop=["\n\n"],
+        )
+        # highlight-end
+    )
+    # END FullGenerativeDeepseek
+
+    # clean up
+    client.collections.delete("DemoCollection")
+    import_data()
+
+    # START RuntimeModelSelectionDeepseek
+    from weaviate.classes.config import Configure
+    from weaviate.classes.generate import GenerativeConfig
+
+    collection = client.collections.use("DemoCollection")
+    response = collection.generate.near_text(
+        query="A holiday film",
+        limit=2,
+        grouped_task="Write a tweet promoting these two movies",
+        # highlight-start
+        generative_provider=GenerativeConfig.deepseek(
+            # # These parameters are optional
+            # model="deepseek-v4-flash",
+            # temperature=0.7,
+            # max_tokens=500,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
+            # top_p=1.0,
+            # base_url="https://api.deepseek.com",
+            # stop=["\n\n"],
+        ),
+        # Additional parameters not shown
+        # highlight-end
+    )
+    # END RuntimeModelSelectionDeepseek
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
 # START BasicGenerativeNVIDIA
 from weaviate.classes.config import Configure
 
