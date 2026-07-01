@@ -83,15 +83,35 @@ export default function ContextualMenu({
       //   select               - the per-tab language dropdown.
       //   .badge               - FilteredTextBlock's badge row (stable Infima
       //     class, see FilteredTextBlock.js:198,222).
-      //   button, nav          - stray controls.
+      //   nav                  - stray navigation controls.
       //   img[alt=""]          - decorative empty-alt icons (e.g. logo-py.svg);
       //     real content images keep their meaningful alt and survive.
+      //   .hash-link           - Docusaurus heading anchor (<a class="hash-link"
+      //     aria-label="Direct link to ..."> holding a zero-width char); it uses
+      //     aria-label (not aria-hidden), so it must be named explicitly or it
+      //     leaks as `[](#... "Direct link to ...")` on every heading.
       //   [data-copy-exclude]  - explicit opt-out marker on shared components
-      //     whose chrome leaks but isn't otherwise stably targetable (currently
-      //     CloudOnlyBadge / AcademyBadge).
+      //     whose chrome leaks but isn't otherwise stably targetable (badges,
+      //     the docs-feedback partial, the Tooltip popup, the PromptStarter CTA).
+      // NB: we do NOT strip <button> wholesale — inline content buttons are
+      // legitimate prose (e.g. the KapaAI "Ask AI" trigger rendered mid-sentence,
+      // src/components/KapaAI/index.jsx). Code-block chrome buttons are handled
+      // by a targeted strip just below.
       clone
         .querySelectorAll(
-          '[aria-hidden="true"], [role="tablist"], [hidden], select, .badge, button, nav, img[alt=""], [data-copy-exclude]',
+          '[aria-hidden="true"], [role="tablist"], [hidden], select, .badge, nav, img[alt=""], .hash-link, [data-copy-exclude]',
+        )
+        .forEach((node) => node.remove());
+
+      // Strip ONLY the code-block chrome buttons (the Docusaurus "Copy" button and
+      // the word-wrap toggle). These hydrate client-side (not present in the static
+      // build HTML) and carry a stable Copy/word-wrap aria-label or title; the
+      // KapaAI inline button carries neither, so it survives. This runs AFTER the
+      // strip above so any data-copy-exclude subtree (e.g. the PromptStarter CTA,
+      // whose nested menu has a "Copy prompt" button) is already gone.
+      clone
+        .querySelectorAll(
+          'button[aria-label*="copy" i], button[title*="copy" i], button[aria-label*="wrap" i], button[title*="wrap" i]',
         )
         .forEach((node) => node.remove());
 
@@ -108,13 +128,53 @@ export default function ContextualMenu({
         .querySelectorAll(".code")
         .forEach((container) => container.firstElementChild?.remove());
 
+      // Content cards (CardsSection, src/components/CardsSection/index.jsx) render
+      // each card as an <a> wrapping BLOCK markup (<div> header + <span> title,
+      // <p> description). Rewrite each into a flat <p><a>title</a> — desc</p> so
+      // turndown's DEFAULT (inline) link rule produces a clean single line. This
+      // is done as DOM pre-processing rather than a turndown <a> rule on purpose:
+      // an <a> rule whose replacement emits blank lines makes turndown
+      // block-separate EVERY inline link (orphaning surrounding bold/text). The
+      // querySelector guard means plain inline links (<a> wrapping only
+      // text/inline) are skipped and keep turndown's default inline rendering.
+      clone.querySelectorAll("a[href]").forEach((a) => {
+        if (!a.querySelector("div, p, h1, h2, h3, h4, h5, h6")) return; // card-links only
+        // <br> -> space so e.g. "import" + "(recommended)" don't run together.
+        a.querySelectorAll("br").forEach((br) =>
+          br.replaceWith(document.createTextNode(" ")),
+        );
+        const collapse = (s) => (s || "").replace(/\s+/g, " ").trim();
+        const titleEl =
+          a.querySelector('[class*="cardTitle"]') ||
+          a.querySelector("h1, h2, h3, h4, h5, h6");
+        const descEl =
+          a.querySelector('[class*="cardDescription"]') || a.querySelector("p");
+        const title =
+          collapse(titleEl && titleEl.textContent) || collapse(a.textContent);
+        const desc = collapse(descEl && descEl.textContent);
+        const href = a.getAttribute("href");
+        if (!title) return;
+        const p = document.createElement("p");
+        const link = document.createElement("a");
+        link.setAttribute("href", href);
+        link.textContent = title;
+        p.appendChild(link);
+        if (desc && desc !== title) {
+          p.appendChild(document.createTextNode(" — " + desc));
+        }
+        a.replaceWith(p);
+      });
+
       const turndownService = new TurndownService({
         headingStyle: "atx",
         codeBlockStyle: "fenced",
         bulletListMarker: "-",
       });
       turndownService.use(gfm);
-      turndownService.remove(["select", "button", "nav", "script", "style"]);
+      // Note: "button" is intentionally absent — inline content buttons (KapaAI's
+      // "Ask AI") must survive; code-block chrome buttons are stripped from the
+      // clone above.
+      turndownService.remove(["select", "nav", "script", "style"]);
 
       // Docusaurus/Prism renders code as <pre class="language-xxx"> with a
       // <code> child whose lines are <span class="token-line"> separated by

@@ -125,6 +125,12 @@ const Tooltip = ({
       onMouseLeave={handleMouseLeave}
     >
       {children}
+      {/*
+        data-copy-exclude keeps this popup out of the "Copy page" markdown export
+        (src/components/ContextualMenu strips [data-copy-exclude]): it holds the
+        tooltip/glossary definition, which would otherwise inline mid-sentence.
+        The trigger text ({children}) stays in the sentence.
+      */}
       <span
         ref={tooltipRef}
         className={`${styles.tooltipContent} ${
@@ -134,6 +140,7 @@ const Tooltip = ({
         data-position={position}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        data-copy-exclude=""
       >
         {content}
       </span>

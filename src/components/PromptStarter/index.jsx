@@ -31,7 +31,10 @@ const PromptStarter = ({
   }, [page, languages, promptDetails]);
 
   return (
-    <div className={styles.promptStarterWrapper}>
+    // data-copy-exclude marks this promo CTA as UI chrome so the "Copy page"
+    // markdown export (src/components/ContextualMenu) drops it via
+    // [data-copy-exclude] instead of leaking "Get started faster with AI".
+    <div className={styles.promptStarterWrapper} data-copy-exclude="">
       <div className={styles.promptStarter}>
         <div className={styles.iconColumn}>
           <div className={styles.icon}>
