@@ -46,7 +46,10 @@ export default function ContextualMenu({
       // at build time, so it must never be imported at module scope. Load it
       // lazily inside this browser-only async handler instead.
       const { default: TurndownService } = await import("turndown");
-      const { gfm } = await import("turndown-plugin-gfm");
+      // Resolve `gfm` robustly whether the named export lands on the module
+      // namespace or on `.default` (CJS/ESM interop can differ by bundler).
+      const gfmMod = await import("turndown-plugin-gfm");
+      const gfm = gfmMod.gfm ?? gfmMod.default?.gfm ?? gfmMod.default;
 
       // Scope to the rendered MDX body only. `.theme-doc-markdown` is the inner
       // wrapper from @theme/DocItem/Content; the breadcrumbs, the ContextualMenu
@@ -137,8 +140,10 @@ export default function ContextualMenu({
       //     pre-strip step didn't un-hide (custom code tabs use style+aria-hidden,
       //     never `hidden`/role=tablist, so this never touches code tabs).
       //   select               - the per-tab language dropdown.
-      //   .badge               - FilteredTextBlock's badge row (stable Infima
-      //     class, see FilteredTextBlock.js:198,222).
+      //   a.badge              - FilteredTextBlock's chrome badge row, which are
+      //     all <a class="badge badge--secondary"> (FilteredTextBlock.js:198,222).
+      //     Scoped to <a> so real content badges like
+      //     <span class="badge">Expected time: 30 minutes</span> are preserved.
       //   nav                  - stray navigation controls.
       //   img[alt=""]          - decorative empty-alt icons (e.g. logo-py.svg);
       //     real content images keep their meaningful alt and survive.
@@ -155,7 +160,7 @@ export default function ContextualMenu({
       // by a targeted strip just below.
       clone
         .querySelectorAll(
-          '[aria-hidden="true"], [role="tablist"], [hidden], select, .badge, nav, img[alt=""], .hash-link, [data-copy-exclude]',
+          '[aria-hidden="true"], [role="tablist"], [hidden], select, a.badge, nav, img[alt=""], .hash-link, [data-copy-exclude]',
         )
         .forEach((node) => node.remove());
 
@@ -513,7 +518,10 @@ export default function ContextualMenu({
       }, 1500);
     } catch (error) {
       console.error("Failed to copy prompt:", error);
-      setCopyStatus("idle");
+      setCopyStatus("error");
+      setTimeout(() => {
+        setCopyStatus("idle");
+      }, 2000);
     }
   };
 
