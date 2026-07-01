@@ -9,10 +9,13 @@ const CloudOnlyBadge = ({
   iconOnly = false,
   className = ""
 }) => {
+  // data-copy-exclude marks this badge as UI chrome so the "Copy page" markdown
+  // export (src/components/ContextualMenu) strips it out via [data-copy-exclude].
   return (
     <span
       className={`${styles.cloudOnlyBadge} ${compact ? styles.compact : ""} ${iconOnly ? styles.iconOnly : ""} ${className}`}
       title={iconOnly ? "Weaviate Cloud only" : undefined}
+      data-copy-exclude=""
     >
       <img src="/img/cloud-icon.svg" alt="" className={styles.cloudIcon} />
       {!iconOnly && <span>{compact ? compactText : text}</span>}

@@ -11,7 +11,7 @@ export default function ContextualMenu({
   promptName = "",
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [copyStatus, setCopyStatus] = useState("idle"); // idle, copying, success
+  const [copyStatus, setCopyStatus] = useState("idle"); // idle, copying, success, error
   const [selectedLanguage, setSelectedLanguage] = useState(
     languages[0] || "python",
   );
@@ -42,9 +42,24 @@ export default function ContextualMenu({
   const copyPageAsMarkdown = async () => {
     setCopyStatus("copying");
     try {
-      // Get the main article content
-      const articleElement = document.querySelector("article");
-      if (!articleElement) {
+      // turndown touches the DOM, and Docusaurus server-renders this component
+      // at build time, so it must never be imported at module scope. Load it
+      // lazily inside this browser-only async handler instead.
+      const { default: TurndownService } = await import("turndown");
+      // Resolve `gfm` robustly whether the named export lands on the module
+      // namespace or on `.default` (CJS/ESM interop can differ by bundler).
+      const gfmMod = await import("turndown-plugin-gfm");
+      const gfm = gfmMod.gfm ?? gfmMod.default?.gfm ?? gfmMod.default;
+
+      // Scope to the rendered MDX body only. `.theme-doc-markdown` is the inner
+      // wrapper from @theme/DocItem/Content; the breadcrumbs, the ContextualMenu
+      // button, the version badge, the mobile TOC and the footer are all
+      // siblings OUTSIDE it (see src/theme/DocItem/Layout/index.js), so scoping
+      // here drops all the page chrome. Fall back to <article> for safety.
+      const contentRoot =
+        document.querySelector(".theme-doc-markdown") ||
+        document.querySelector("article");
+      if (!contentRoot) {
         throw new Error("Article content not found");
       }
 
@@ -52,19 +67,333 @@ export default function ContextualMenu({
       const title = metadata.title || frontMatter.title || "Untitled";
       const pageUrl = getCurrentPageUrl();
 
-      // Extract text content from the article
-      const content = articleElement.innerText;
+      // Work on a clone so the live page is never mutated.
+      const clone = contentRoot.cloneNode(true);
 
-      // Format as markdown with metadata
-      const markdown = `# ${title}
+      // --- Pre-strip normalizations (MUST run before the chrome strip below) ---
 
-Source: ${pageUrl}
+      // KaTeX math: replace each rendered .katex with its source LaTeX. KaTeX
+      // emits accessible MathML (with the real LaTeX in
+      // <annotation encoding="application/x-tex">) plus a visual .katex-html that
+      // is aria-hidden. If the strip drops .katex-html, the leftover MathML
+      // glyphs + annotation concatenate into garbage ("2ksim2^{ksim}"). Swap the
+      // whole node for `$latex$` (or `$$latex$$` inside a .katex-display).
+      clone.querySelectorAll(".katex").forEach((k) => {
+        const annotation = k.querySelector(
+          'annotation[encoding="application/x-tex"]',
+        );
+        const latex = annotation && (annotation.textContent || "").trim();
+        if (!latex) return;
+        const display = k.closest(".katex-display");
+        (display || k).replaceWith(
+          document.createTextNode(display ? `$$${latex}$$` : `$${latex}$`),
+        );
+      });
 
----
+      // DEFAULT Docusaurus tabs (role="tablist" + [hidden] panels): the strip
+      // below would DROP every non-selected panel, losing real content (e.g. a
+      // docker-compose "With authentication" variant). Instead surface ALL
+      // panels — label each with an <h3> and un-hide it — then remove the
+      // tablist. This targets ONLY default tabs; our custom CODE tabs use
+      // <select> + aria-hidden/display:none (no role=tablist/[hidden]), so they
+      // are untouched and stay selected-language-only.
+      clone.querySelectorAll('[role="tablist"]').forEach((tablist) => {
+        const labels = Array.from(
+          tablist.querySelectorAll('[role="tab"]'),
+        ).map((t) => (t.textContent || "").replace(/\s+/g, " ").trim());
+        // Docusaurus wraps the panels in the tablist's next sibling; fall back to
+        // the parent container. Using direct children avoids grabbing the panels
+        // of NESTED default tabs (which are handled by their own iteration).
+        const wrap = tablist.nextElementSibling;
+        let panels =
+          (wrap &&
+            Array.from(wrap.querySelectorAll(':scope > [role="tabpanel"]'))) ||
+          [];
+        if (panels.length === 0 && tablist.parentElement) {
+          panels = Array.from(
+            tablist.parentElement.querySelectorAll('[role="tabpanel"]'),
+          );
+        }
+        panels.forEach((panel, i) => {
+          panel.removeAttribute("hidden");
+          const label = labels[i];
+          if (label) {
+            const h = document.createElement("h3");
+            h.textContent = label;
+            panel.insertBefore(h, panel.firstChild);
+          }
+        });
+        tablist.remove();
+      });
 
-${content}`;
+      // Strip non-prose chrome from the clone before converting. Only stable
+      // (non-CSS-module-hashed) selectors are used here.
+      //   [aria-hidden="true"] - our custom code Tabs (src/theme/Tabs/index.js)
+      //     render EVERY language panel and hide the non-selected ones with
+      //     display:none + aria-hidden="true"; removing them leaves only the
+      //     selected language. (Also drops decorative aria-hidden icons.)
+      //   [role="tablist"]     - DEFAULT Docusaurus <Tabs> label strip. Normally
+      //     already removed by the pre-strip step above (which surfaces every
+      //     panel under an <h3>); kept here as a fallback so any un-processed
+      //     tablist doesn't leak as a bullet list of labels.
+      //   [hidden]             - fallback for any inactive DEFAULT-tab panel the
+      //     pre-strip step didn't un-hide (custom code tabs use style+aria-hidden,
+      //     never `hidden`/role=tablist, so this never touches code tabs).
+      //   select               - the per-tab language dropdown.
+      //   a.badge              - FilteredTextBlock's chrome badge row, which are
+      //     all <a class="badge badge--secondary"> (FilteredTextBlock.js:198,222).
+      //     Scoped to <a> so real content badges like
+      //     <span class="badge">Expected time: 30 minutes</span> are preserved.
+      //   nav                  - stray navigation controls.
+      //   img[alt=""]          - decorative empty-alt icons (e.g. logo-py.svg);
+      //     real content images keep their meaningful alt and survive.
+      //   .hash-link           - Docusaurus heading anchor (<a class="hash-link"
+      //     aria-label="Direct link to ..."> holding a zero-width char); it uses
+      //     aria-label (not aria-hidden), so it must be named explicitly or it
+      //     leaks as `[](#... "Direct link to ...")` on every heading.
+      //   [data-copy-exclude]  - explicit opt-out marker on shared components
+      //     whose chrome leaks but isn't otherwise stably targetable (badges,
+      //     the docs-feedback partial, the Tooltip popup, the PromptStarter CTA).
+      // NB: we do NOT strip <button> wholesale — inline content buttons are
+      // legitimate prose (e.g. the KapaAI "Ask AI" trigger rendered mid-sentence,
+      // src/components/KapaAI/index.jsx). Code-block chrome buttons are handled
+      // by a targeted strip just below.
+      clone
+        .querySelectorAll(
+          '[aria-hidden="true"], [role="tablist"], [hidden], select, a.badge, nav, img[alt=""], .hash-link, [data-copy-exclude]',
+        )
+        .forEach((node) => node.remove());
 
-      await navigator.clipboard.writeText(markdown);
+      // Strip ONLY the code-block chrome buttons (the Docusaurus "Copy" button and
+      // the word-wrap toggle). These hydrate client-side (not present in the static
+      // build HTML) and carry a stable Copy/word-wrap aria-label or title; the
+      // KapaAI inline button carries neither, so it survives. This runs AFTER the
+      // strip above so any data-copy-exclude subtree (e.g. the PromptStarter CTA,
+      // whose nested menu has a "Copy prompt" button) is already gone.
+      clone
+        .querySelectorAll(
+          'button[aria-label*="copy" i], button[title*="copy" i], button[aria-label*="wrap" i], button[title*="wrap" i]',
+        )
+        .forEach((node) => node.remove());
+
+      // Drop the code-tab HEADER chrome (language dropdown, the "API docs" link
+      // + icon, the "More info" tooltip) while KEEPING the code content. Our
+      // code blocks are authored as <Tabs className="code"> (src/theme/Tabs/
+      // index.js:464-474), which renders a container carrying the literal,
+      // stable `code` class whose FIRST child is the header and second is the
+      // code content (Tabs/index.js:333-460). The bare `code` class is used
+      // ONLY for these containers (verified: no other component or global CSS
+      // uses it), so removing each container's first element child strips the
+      // header without ever touching the code.
+      clone
+        .querySelectorAll(".code")
+        .forEach((container) => container.firstElementChild?.remove());
+
+      // Content cards (CardsSection, src/components/CardsSection/index.jsx) render
+      // each card as an <a> wrapping BLOCK markup (<div> header + <span> title,
+      // <p> description). Rewrite each into a flat <p><a>title</a> — desc</p> so
+      // turndown's DEFAULT (inline) link rule produces a clean single line. This
+      // is done as DOM pre-processing rather than a turndown <a> rule on purpose:
+      // an <a> rule whose replacement emits blank lines makes turndown
+      // block-separate EVERY inline link (orphaning surrounding bold/text). The
+      // querySelector guard means plain inline links (<a> wrapping only
+      // text/inline) are skipped and keep turndown's default inline rendering.
+      clone.querySelectorAll("a[href]").forEach((a) => {
+        if (!a.querySelector("div, p, h1, h2, h3, h4, h5, h6")) return; // card-links only
+        // <br> -> space so e.g. "import" + "(recommended)" don't run together.
+        a.querySelectorAll("br").forEach((br) =>
+          br.replaceWith(document.createTextNode(" ")),
+        );
+        const collapse = (s) => (s || "").replace(/\s+/g, " ").trim();
+        const titleEl =
+          a.querySelector('[class*="cardTitle"]') ||
+          a.querySelector("h1, h2, h3, h4, h5, h6");
+        const descEl =
+          a.querySelector('[class*="cardDescription"]') || a.querySelector("p");
+        const title =
+          collapse(titleEl && titleEl.textContent) || collapse(a.textContent);
+        const desc = collapse(descEl && descEl.textContent);
+        const href = a.getAttribute("href");
+        if (!title) return;
+        const p = document.createElement("p");
+        const link = document.createElement("a");
+        link.setAttribute("href", href);
+        link.textContent = title;
+        p.appendChild(link);
+        if (desc && desc !== title) {
+          p.appendChild(document.createTextNode(" — " + desc));
+        }
+        a.replaceWith(p);
+      });
+
+      // Flatten table cells so GFM tables stay valid. A <br>, a block child
+      // (<p>/<div>) or a list (<ul>/<ol>) inside a <td>/<th> makes turndown emit
+      // newlines INSIDE the cell, which splits the row across physical lines and
+      // breaks the whole table (env-vars pages have ~50 such cells, incl. a
+      // COLLECTION_RETRIEVAL_STRATEGY cell with a <ul>). Turn <br> into spaces,
+      // join list items with a separator, and unwrap block/list wrappers so every
+      // cell stays inline (preserving inline <code>/<a> etc.) and each row is one
+      // physical line.
+      clone.querySelectorAll("td, th").forEach((cell) => {
+        cell
+          .querySelectorAll("br")
+          .forEach((br) => br.replaceWith(document.createTextNode(" ")));
+        // Lists -> inline: separate <li> items with " • ", then unwrap the <li>
+        // and the <ul>/<ol> so only their inline children remain in the cell.
+        cell.querySelectorAll("ul, ol").forEach((list) => {
+          Array.from(list.querySelectorAll(":scope > li")).forEach((li, i) => {
+            if (i > 0) li.before(document.createTextNode(" • "));
+            while (li.firstChild) li.before(li.firstChild);
+            li.remove();
+          });
+          while (list.firstChild) list.before(list.firstChild);
+          list.remove();
+        });
+        // Unwrap remaining block wrappers (incl. <p> that "loose" list items
+        // leave behind) so nothing forces a line break.
+        cell.querySelectorAll("p, div").forEach((block) => {
+          block.before(document.createTextNode(" ")); // keep a word boundary
+          while (block.firstChild) block.before(block.firstChild);
+          block.remove();
+        });
+      });
+
+      // Admonitions -> GitHub callouts. Pre-process: read the type from the
+      // class, capture a custom title (when the heading text isn't just the type
+      // word), stash both on data-* attrs, and drop the heading chrome (icon +
+      // type label). The turndown rule below quotes the remaining body.
+      const ADMONITION_CALLOUT = {
+        note: "NOTE",
+        tip: "TIP",
+        info: "NOTE",
+        caution: "CAUTION",
+        warning: "WARNING",
+        danger: "CAUTION",
+      };
+      clone
+        .querySelectorAll(".theme-admonition, .admonition")
+        .forEach((adm) => {
+          const m = (adm.className || "").match(/admonition-([a-z]+)/i);
+          const rawType = (m ? m[1] : "note").toLowerCase();
+          const callout = ADMONITION_CALLOUT[rawType] || "NOTE";
+          const heading = adm.querySelector('[class*="admonitionHeading"]');
+          if (heading) {
+            const headingText = (heading.textContent || "")
+              .replace(/\s+/g, " ")
+              .trim();
+            // A custom title is a heading whose text isn't just the type word.
+            if (
+              headingText &&
+              headingText.toLowerCase() !== rawType &&
+              headingText.toLowerCase() !== callout.toLowerCase()
+            ) {
+              adm.setAttribute("data-callout-title", headingText);
+            }
+            heading.remove();
+          }
+          adm.setAttribute("data-callout", callout);
+        });
+
+      // <details>/<summary> -> bold summary + body (see rule). Stash the summary
+      // text and remove the <summary> so the rule's `content` is body-only.
+      clone.querySelectorAll("details").forEach((d) => {
+        const summary = d.querySelector("summary");
+        if (summary) {
+          const t = (summary.textContent || "").replace(/\s+/g, " ").trim();
+          if (t) d.setAttribute("data-summary", t);
+          summary.remove();
+        }
+      });
+
+      const turndownService = new TurndownService({
+        headingStyle: "atx",
+        codeBlockStyle: "fenced",
+        bulletListMarker: "-",
+      });
+      turndownService.use(gfm);
+      // Note: "button" is intentionally absent — inline content buttons (KapaAI's
+      // "Ask AI") must survive; code-block chrome buttons are stripped from the
+      // clone above.
+      turndownService.remove(["select", "nav", "script", "style"]);
+
+      // Docusaurus/Prism renders code as <pre class="language-xxx"> with a
+      // <code> child whose lines are <span class="token-line"> separated by
+      // <br>. turndown's default fenced-code rule reads the language off <code>
+      // (Docusaurus puts it on <pre>) and drops the <br> line breaks, so emit
+      // our own fenced block: language from the language-xxx class, content
+      // rebuilt from the token-line spans (falling back to textContent).
+      turndownService.addRule("docusaurusCodeBlock", {
+        filter: (node) =>
+          node.nodeName === "PRE" &&
+          (node.querySelector("code") !== null ||
+            node.classList.contains("prism-code")),
+        replacement: (_content, node) => {
+          const code = node.querySelector("code") || node;
+          const classAttr = `${node.className} ${code.className}`;
+          const langMatch = classAttr.match(/language-([\w-]+)/);
+          const language = langMatch ? langMatch[1] : "";
+          const lines = code.querySelectorAll(".token-line");
+          const text = (
+            lines.length
+              ? Array.from(lines)
+                  .map((line) => line.textContent)
+                  .join("\n")
+              : code.textContent
+          ).replace(/\n+$/, "");
+          return `\n\n\`\`\`${language}\n${text}\n\`\`\`\n\n`;
+        },
+      });
+
+      // Admonitions -> GitHub-flavored callout blockquotes. Type + optional title
+      // were stashed on data-* attrs during pre-processing; here we quote the
+      // body content line by line.
+      turndownService.addRule("admonitionCallout", {
+        filter: (node) =>
+          node.nodeType === 1 && node.getAttribute("data-callout") !== null,
+        replacement: (content, node) => {
+          const callout = node.getAttribute("data-callout") || "NOTE";
+          const title = node.getAttribute("data-callout-title");
+          const body = content.replace(/^\n+|\n+$/g, "");
+          const lines = [`[!${callout}]`];
+          if (title) lines.push(`**${title}**`);
+          body.split("\n").forEach((line) => lines.push(line));
+          return `\n\n${lines
+            .map((l) => (l ? `> ${l}` : ">"))
+            .join("\n")}\n\n`;
+        },
+      });
+
+      // <details> -> bold summary followed by the (expanded) body content. The
+      // <summary> was removed in pre-processing, so `content` is body-only.
+      turndownService.addRule("detailsBlock", {
+        filter: (node) => node.nodeName === "DETAILS",
+        replacement: (content, node) => {
+          const summary = node.getAttribute("data-summary");
+          const body = content.replace(/^\n+|\n+$/g, "");
+          return `\n\n${summary ? `**${summary}**\n\n` : ""}${body}\n\n`;
+        },
+      });
+
+      // Squeeze runs of blank lines the conversion can leave behind (e.g. from
+      // emptied wrappers) down to a single blank line. The Source/--- prefix is
+      // added afterwards, so its structure is unaffected.
+      const markdown = turndownService
+        .turndown(clone)
+        .replace(/\n{3,}/g, "\n\n");
+
+      // No synthetic `# title` — the page H1 already lives inside
+      // .theme-doc-markdown, so prepending one would duplicate it. Keep the
+      // Source line for LLM context.
+      const output = `Source: ${pageUrl}\n\n---\n\n${markdown}`;
+
+      // Guard against insecure contexts where the Clipboard API is missing,
+      // rather than throwing an opaque error into the catch.
+      if (!navigator.clipboard?.writeText) {
+        throw new Error(
+          "Clipboard API is unavailable (a secure context is required)",
+        );
+      }
+      await navigator.clipboard.writeText(output);
 
       // Track successful copy
       analytics.contextualMenu.copyPage(pageUrl, title);
@@ -75,7 +404,10 @@ ${content}`;
       }, 1500);
     } catch (error) {
       console.error("Failed to copy page:", error);
-      setCopyStatus("idle");
+      setCopyStatus("error");
+      setTimeout(() => {
+        setCopyStatus("idle");
+      }, 2000);
     }
   };
 
@@ -186,7 +518,10 @@ ${content}`;
       }, 1500);
     } catch (error) {
       console.error("Failed to copy prompt:", error);
-      setCopyStatus("idle");
+      setCopyStatus("error");
+      setTimeout(() => {
+        setCopyStatus("idle");
+      }, 2000);
     }
   };
 
@@ -200,13 +535,15 @@ ${content}`;
 
   const showLanguageSelector = variant === "prompts" && languages.length > 1;
   const mainButtonLabel =
-    variant === "prompts"
-      ? copyStatus === "success"
-        ? "Copied!"
-        : "Copy prompt"
-      : copyStatus === "success"
-        ? "Copied!"
-        : "Copy page";
+    copyStatus === "error"
+      ? "Copy failed"
+      : variant === "prompts"
+        ? copyStatus === "success"
+          ? "Copied!"
+          : "Copy prompt"
+        : copyStatus === "success"
+          ? "Copied!"
+          : "Copy page";
   const mainButtonHandler =
     variant === "prompts" ? copyPromptFromFile : copyPageAsMarkdown;
 
@@ -303,7 +640,7 @@ ${content}`;
               </>
             )}
           </svg>
-          <span>{mainButtonLabel}</span>
+          <span aria-live="polite">{mainButtonLabel}</span>
         </button>
         <div className={styles.separator}></div>
         <button

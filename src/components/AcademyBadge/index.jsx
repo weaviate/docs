@@ -9,10 +9,13 @@ const AcademyBadge = ({
   iconOnly = false,
   className = ""
 }) => {
+  // data-copy-exclude marks this badge as UI chrome so the "Copy page" markdown
+  // export (src/components/ContextualMenu) strips it out via [data-copy-exclude].
   return (
     <span
       className={`${styles.academyBadge} ${compact ? styles.compact : ""} ${iconOnly ? styles.iconOnly : ""} ${className}`}
       title={iconOnly ? "Weaviate Academy" : undefined}
+      data-copy-exclude=""
     >
       <img src="/img/graduation-cap-icon.svg" alt="" className={styles.academyIcon} />
       {!iconOnly && <span>{compact ? compactText : text}</span>}
