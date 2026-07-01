@@ -67,19 +67,75 @@ export default function ContextualMenu({
       // Work on a clone so the live page is never mutated.
       const clone = contentRoot.cloneNode(true);
 
+      // --- Pre-strip normalizations (MUST run before the chrome strip below) ---
+
+      // KaTeX math: replace each rendered .katex with its source LaTeX. KaTeX
+      // emits accessible MathML (with the real LaTeX in
+      // <annotation encoding="application/x-tex">) plus a visual .katex-html that
+      // is aria-hidden. If the strip drops .katex-html, the leftover MathML
+      // glyphs + annotation concatenate into garbage ("2ksim2^{ksim}"). Swap the
+      // whole node for `$latex$` (or `$$latex$$` inside a .katex-display).
+      clone.querySelectorAll(".katex").forEach((k) => {
+        const annotation = k.querySelector(
+          'annotation[encoding="application/x-tex"]',
+        );
+        const latex = annotation && (annotation.textContent || "").trim();
+        if (!latex) return;
+        const display = k.closest(".katex-display");
+        (display || k).replaceWith(
+          document.createTextNode(display ? `$$${latex}$$` : `$${latex}$`),
+        );
+      });
+
+      // DEFAULT Docusaurus tabs (role="tablist" + [hidden] panels): the strip
+      // below would DROP every non-selected panel, losing real content (e.g. a
+      // docker-compose "With authentication" variant). Instead surface ALL
+      // panels — label each with an <h3> and un-hide it — then remove the
+      // tablist. This targets ONLY default tabs; our custom CODE tabs use
+      // <select> + aria-hidden/display:none (no role=tablist/[hidden]), so they
+      // are untouched and stay selected-language-only.
+      clone.querySelectorAll('[role="tablist"]').forEach((tablist) => {
+        const labels = Array.from(
+          tablist.querySelectorAll('[role="tab"]'),
+        ).map((t) => (t.textContent || "").replace(/\s+/g, " ").trim());
+        // Docusaurus wraps the panels in the tablist's next sibling; fall back to
+        // the parent container. Using direct children avoids grabbing the panels
+        // of NESTED default tabs (which are handled by their own iteration).
+        const wrap = tablist.nextElementSibling;
+        let panels =
+          (wrap &&
+            Array.from(wrap.querySelectorAll(':scope > [role="tabpanel"]'))) ||
+          [];
+        if (panels.length === 0 && tablist.parentElement) {
+          panels = Array.from(
+            tablist.parentElement.querySelectorAll('[role="tabpanel"]'),
+          );
+        }
+        panels.forEach((panel, i) => {
+          panel.removeAttribute("hidden");
+          const label = labels[i];
+          if (label) {
+            const h = document.createElement("h3");
+            h.textContent = label;
+            panel.insertBefore(h, panel.firstChild);
+          }
+        });
+        tablist.remove();
+      });
+
       // Strip non-prose chrome from the clone before converting. Only stable
       // (non-CSS-module-hashed) selectors are used here.
       //   [aria-hidden="true"] - our custom code Tabs (src/theme/Tabs/index.js)
       //     render EVERY language panel and hide the non-selected ones with
       //     display:none + aria-hidden="true"; removing them leaves only the
       //     selected language. (Also drops decorative aria-hidden icons.)
-      //   [role="tablist"]     - the clickable label strip of DEFAULT Docusaurus
-      //     <Tabs> (used for non-code content, e.g. Docker/Kubernetes steps),
-      //     which would otherwise leak as a bullet list of tab labels.
-      //   [hidden]             - inactive DEFAULT-tab panels mark themselves with
-      //     the `hidden` attribute (not aria-hidden); removing them gives the
-      //     same selected-only behavior for non-code tabs. (Custom code tabs use
-      //     style+aria-hidden, never `hidden`/role=tablist, so no code regression.)
+      //   [role="tablist"]     - DEFAULT Docusaurus <Tabs> label strip. Normally
+      //     already removed by the pre-strip step above (which surfaces every
+      //     panel under an <h3>); kept here as a fallback so any un-processed
+      //     tablist doesn't leak as a bullet list of labels.
+      //   [hidden]             - fallback for any inactive DEFAULT-tab panel the
+      //     pre-strip step didn't un-hide (custom code tabs use style+aria-hidden,
+      //     never `hidden`/role=tablist, so this never touches code tabs).
       //   select               - the per-tab language dropdown.
       //   .badge               - FilteredTextBlock's badge row (stable Infima
       //     class, see FilteredTextBlock.js:198,222).
@@ -165,6 +221,85 @@ export default function ContextualMenu({
         a.replaceWith(p);
       });
 
+      // Flatten table cells so GFM tables stay valid. A <br>, a block child
+      // (<p>/<div>) or a list (<ul>/<ol>) inside a <td>/<th> makes turndown emit
+      // newlines INSIDE the cell, which splits the row across physical lines and
+      // breaks the whole table (env-vars pages have ~50 such cells, incl. a
+      // COLLECTION_RETRIEVAL_STRATEGY cell with a <ul>). Turn <br> into spaces,
+      // join list items with a separator, and unwrap block/list wrappers so every
+      // cell stays inline (preserving inline <code>/<a> etc.) and each row is one
+      // physical line.
+      clone.querySelectorAll("td, th").forEach((cell) => {
+        cell
+          .querySelectorAll("br")
+          .forEach((br) => br.replaceWith(document.createTextNode(" ")));
+        // Lists -> inline: separate <li> items with " • ", then unwrap the <li>
+        // and the <ul>/<ol> so only their inline children remain in the cell.
+        cell.querySelectorAll("ul, ol").forEach((list) => {
+          Array.from(list.querySelectorAll(":scope > li")).forEach((li, i) => {
+            if (i > 0) li.before(document.createTextNode(" • "));
+            while (li.firstChild) li.before(li.firstChild);
+            li.remove();
+          });
+          while (list.firstChild) list.before(list.firstChild);
+          list.remove();
+        });
+        // Unwrap remaining block wrappers (incl. <p> that "loose" list items
+        // leave behind) so nothing forces a line break.
+        cell.querySelectorAll("p, div").forEach((block) => {
+          block.before(document.createTextNode(" ")); // keep a word boundary
+          while (block.firstChild) block.before(block.firstChild);
+          block.remove();
+        });
+      });
+
+      // Admonitions -> GitHub callouts. Pre-process: read the type from the
+      // class, capture a custom title (when the heading text isn't just the type
+      // word), stash both on data-* attrs, and drop the heading chrome (icon +
+      // type label). The turndown rule below quotes the remaining body.
+      const ADMONITION_CALLOUT = {
+        note: "NOTE",
+        tip: "TIP",
+        info: "NOTE",
+        caution: "CAUTION",
+        warning: "WARNING",
+        danger: "CAUTION",
+      };
+      clone
+        .querySelectorAll(".theme-admonition, .admonition")
+        .forEach((adm) => {
+          const m = (adm.className || "").match(/admonition-([a-z]+)/i);
+          const rawType = (m ? m[1] : "note").toLowerCase();
+          const callout = ADMONITION_CALLOUT[rawType] || "NOTE";
+          const heading = adm.querySelector('[class*="admonitionHeading"]');
+          if (heading) {
+            const headingText = (heading.textContent || "")
+              .replace(/\s+/g, " ")
+              .trim();
+            // A custom title is a heading whose text isn't just the type word.
+            if (
+              headingText &&
+              headingText.toLowerCase() !== rawType &&
+              headingText.toLowerCase() !== callout.toLowerCase()
+            ) {
+              adm.setAttribute("data-callout-title", headingText);
+            }
+            heading.remove();
+          }
+          adm.setAttribute("data-callout", callout);
+        });
+
+      // <details>/<summary> -> bold summary + body (see rule). Stash the summary
+      // text and remove the <summary> so the rule's `content` is body-only.
+      clone.querySelectorAll("details").forEach((d) => {
+        const summary = d.querySelector("summary");
+        if (summary) {
+          const t = (summary.textContent || "").replace(/\s+/g, " ").trim();
+          if (t) d.setAttribute("data-summary", t);
+          summary.remove();
+        }
+      });
+
       const turndownService = new TurndownService({
         headingStyle: "atx",
         codeBlockStyle: "fenced",
@@ -204,7 +339,42 @@ export default function ContextualMenu({
         },
       });
 
-      const markdown = turndownService.turndown(clone);
+      // Admonitions -> GitHub-flavored callout blockquotes. Type + optional title
+      // were stashed on data-* attrs during pre-processing; here we quote the
+      // body content line by line.
+      turndownService.addRule("admonitionCallout", {
+        filter: (node) =>
+          node.nodeType === 1 && node.getAttribute("data-callout") !== null,
+        replacement: (content, node) => {
+          const callout = node.getAttribute("data-callout") || "NOTE";
+          const title = node.getAttribute("data-callout-title");
+          const body = content.replace(/^\n+|\n+$/g, "");
+          const lines = [`[!${callout}]`];
+          if (title) lines.push(`**${title}**`);
+          body.split("\n").forEach((line) => lines.push(line));
+          return `\n\n${lines
+            .map((l) => (l ? `> ${l}` : ">"))
+            .join("\n")}\n\n`;
+        },
+      });
+
+      // <details> -> bold summary followed by the (expanded) body content. The
+      // <summary> was removed in pre-processing, so `content` is body-only.
+      turndownService.addRule("detailsBlock", {
+        filter: (node) => node.nodeName === "DETAILS",
+        replacement: (content, node) => {
+          const summary = node.getAttribute("data-summary");
+          const body = content.replace(/^\n+|\n+$/g, "");
+          return `\n\n${summary ? `**${summary}**\n\n` : ""}${body}\n\n`;
+        },
+      });
+
+      // Squeeze runs of blank lines the conversion can leave behind (e.g. from
+      // emptied wrappers) down to a single blank line. The Source/--- prefix is
+      // added afterwards, so its structure is unaffected.
+      const markdown = turndownService
+        .turndown(clone)
+        .replace(/\n{3,}/g, "\n\n");
 
       // No synthetic `# title` — the page H1 already lives inside
       // .theme-doc-markdown, so prepending one would duplicate it. Keep the

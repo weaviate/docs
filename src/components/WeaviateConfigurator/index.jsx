@@ -253,11 +253,25 @@ function WeaviateConfigurator() {
     };
   }, [selections, parameters]);
 
-  if (loading) return <div className="weaviate-configurator-loading">Loading...</div>;
-  if (error) return <div className="weaviate-configurator-error">{error}</div>;
+  // data-copy-exclude marks this interactive tool (and its loading/error
+  // fallbacks) as UI chrome so the "Copy page" markdown export
+  // (src/components/ContextualMenu) drops it via [data-copy-exclude] rather than
+  // leaking "Loading..." or the whole configurator form.
+  if (loading)
+    return (
+      <div className="weaviate-configurator-loading" data-copy-exclude="">
+        Loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="weaviate-configurator-error" data-copy-exclude="">
+        {error}
+      </div>
+    );
 
   return (
-    <div className="weaviate-configurator">
+    <div className="weaviate-configurator" data-copy-exclude="">
       <div className="wc-header">
         <p>
           Use this tool to generate a `docker-compose.yml` file for your Weaviate instance.
