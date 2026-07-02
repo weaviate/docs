@@ -6,7 +6,7 @@
   "weaviate_cli_version": "3.4.1",
   "agents_python_version": "1.6.0",
   "agents_typescript_version": "1.5.0",
-  "python_client_version": "4.21.3",
+  "python_client_version": "4.22.0",
   "go_client_version": "5.7.2",
   "java_client_version": "6.2.0",
   "typescript_client_version": "3.13.1",

@@ -16,6 +16,10 @@ import './styles.css';
 // Import parameters
 import parametersData from './parameters.json';
 
+// Auto-fetched latest patch versions (written at prebuild by
+// _build_scripts/update-config-versions.js; same source as ||site.weaviate_version||).
+import versionsConfig from '@site/versions-config.json';
+
 // Accordion components
 function AccordionItem({ title, summary, children, description }) {
   return (
@@ -167,7 +171,33 @@ function WeaviateConfigurator() {
   // Load parameters
   useEffect(() => {
     try {
-      setParameters(parametersData.parameters);
+      // Auto-pull the latest patch version for the weaviate_version dropdown.
+      // versionsConfig.weaviate_version is written at prebuild with the latest
+      // patch (e.g. 1.38.2); locally it is the value in versions-config.json.
+      const latest = versionsConfig.weaviate_version;
+      const autoVersionOption = {
+        name: `v${latest}`,
+        displayName: `v${latest}`,
+        description: `See release notes at https://github.com/weaviate/weaviate/releases/tag/v${latest}`,
+      };
+
+      const params = parametersData.parameters.map((param) => {
+        if (param.name !== 'weaviate_version') return param;
+        // Prepend the auto option as the first (default) choice, dropping any
+        // static option that duplicates it, and keep the older static versions
+        // below so they remain selectable.
+        const olderOptions = (param.options || []).filter(
+          (opt) => opt.name !== autoVersionOption.name,
+        );
+        return { ...param, options: [autoVersionOption, ...olderOptions] };
+      });
+
+      setParameters(params);
+      // Default the selected version to the auto-pulled latest patch.
+      setSelections((prev) => ({
+        ...prev,
+        weaviate_version: autoVersionOption.name,
+      }));
       setLoading(false);
     } catch (err) {
       setError('Failed to load parameters');
