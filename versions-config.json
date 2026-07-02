@@ -1,7 +1,7 @@
 {
   "COMMENT1": "These values are used for yarn local yarn builds",
   "COMMENT2": "Build time values are set in _build_scripts/update-config-versions.js",
-  "weaviate_version": "1.38.0",
+  "weaviate_version": "1.38.2",
   "weaviate_recent_versions": ["1.38.2", "1.37.11", "1.36.19"],
   "helm_version": "17.8.1",
   "weaviate_cli_version": "3.4.1",
