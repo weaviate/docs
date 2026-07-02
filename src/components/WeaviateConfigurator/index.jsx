@@ -171,33 +171,40 @@ function WeaviateConfigurator() {
   // Load parameters
   useEffect(() => {
     try {
-      // Auto-pull the weaviate_version dropdown: the latest patch of each of
-      // the supported latest-3 MINORS (e.g. ["1.38.2","1.37.11","1.36.19"]),
-      // written at prebuild by _build_scripts/update-config-versions.js. Fall
-      // back to the single latest patch if the array is ever missing.
-      const recent =
-        Array.isArray(versionsConfig.weaviate_recent_versions) &&
-        versionsConfig.weaviate_recent_versions.length
-          ? versionsConfig.weaviate_recent_versions
-          : [versionsConfig.weaviate_version];
+      // weaviate_version dropdown: the auto-fetched latest patches of the
+      // supported latest-3 MINORS (e.g. ["1.38.2","1.37.11","1.36.19"], written
+      // at prebuild by _build_scripts/update-config-versions.js) are PRIMARY;
+      // the static parameters.json options are the fallback if that array is
+      // ever missing/empty.
+      const auto = versionsConfig.weaviate_recent_versions;
+      const autoVersionOptions =
+        Array.isArray(auto) && auto.length
+          ? auto.map((v) => ({
+              name: `v${v}`,
+              displayName: `v${v}`,
+              description: `See release notes at https://github.com/weaviate/weaviate/releases/tag/v${v}`,
+            }))
+          : null;
 
-      const autoVersionOptions = recent.map((v) => ({
-        name: `v${v}`,
-        displayName: `v${v}`,
-        description: `See release notes at https://github.com/weaviate/weaviate/releases/tag/v${v}`,
-      }));
+      // Resolve the version options ONCE so param.options and the default
+      // selection stay in sync (auto primary, static parameters.json fallback).
+      const staticVersionParam = parametersData.parameters.find(
+        (p) => p.name === 'weaviate_version',
+      );
+      const versionOptions =
+        autoVersionOptions ?? (staticVersionParam?.options || []);
 
-      const params = parametersData.parameters.map((param) => {
-        if (param.name !== 'weaviate_version') return param;
-        // The 3 auto versions REPLACE the static list — they are the list now.
-        return { ...param, options: autoVersionOptions };
-      });
+      const params = parametersData.parameters.map((param) =>
+        param.name === 'weaviate_version'
+          ? { ...param, options: versionOptions }
+          : param,
+      );
 
       setParameters(params);
-      // Default the selected version to the newest (first) auto option.
+      // Default the selected version to the first of the resolved options.
       setSelections((prev) => ({
         ...prev,
-        weaviate_version: `v${recent[0]}`,
+        weaviate_version: versionOptions[0]?.name,
       }));
       setLoading(false);
     } catch (err) {
