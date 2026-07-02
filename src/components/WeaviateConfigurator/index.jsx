@@ -171,32 +171,33 @@ function WeaviateConfigurator() {
   // Load parameters
   useEffect(() => {
     try {
-      // Auto-pull the latest patch version for the weaviate_version dropdown.
-      // versionsConfig.weaviate_version is written at prebuild with the latest
-      // patch (e.g. 1.38.2); locally it is the value in versions-config.json.
-      const latest = versionsConfig.weaviate_version;
-      const autoVersionOption = {
-        name: `v${latest}`,
-        displayName: `v${latest}`,
-        description: `See release notes at https://github.com/weaviate/weaviate/releases/tag/v${latest}`,
-      };
+      // Auto-pull the weaviate_version dropdown: the latest patch of each of
+      // the supported latest-3 MINORS (e.g. ["1.38.2","1.37.11","1.36.19"]),
+      // written at prebuild by _build_scripts/update-config-versions.js. Fall
+      // back to the single latest patch if the array is ever missing.
+      const recent =
+        Array.isArray(versionsConfig.weaviate_recent_versions) &&
+        versionsConfig.weaviate_recent_versions.length
+          ? versionsConfig.weaviate_recent_versions
+          : [versionsConfig.weaviate_version];
+
+      const autoVersionOptions = recent.map((v) => ({
+        name: `v${v}`,
+        displayName: `v${v}`,
+        description: `See release notes at https://github.com/weaviate/weaviate/releases/tag/v${v}`,
+      }));
 
       const params = parametersData.parameters.map((param) => {
         if (param.name !== 'weaviate_version') return param;
-        // Prepend the auto option as the first (default) choice, dropping any
-        // static option that duplicates it, and keep the older static versions
-        // below so they remain selectable.
-        const olderOptions = (param.options || []).filter(
-          (opt) => opt.name !== autoVersionOption.name,
-        );
-        return { ...param, options: [autoVersionOption, ...olderOptions] };
+        // The 3 auto versions REPLACE the static list — they are the list now.
+        return { ...param, options: autoVersionOptions };
       });
 
       setParameters(params);
-      // Default the selected version to the auto-pulled latest patch.
+      // Default the selected version to the newest (first) auto option.
       setSelections((prev) => ({
         ...prev,
-        weaviate_version: autoVersionOption.name,
+        weaviate_version: `v${recent[0]}`,
       }));
       setLoading(false);
     } catch (err) {
