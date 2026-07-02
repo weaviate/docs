@@ -34,6 +34,16 @@ const config = {
       onBrokenMarkdownImages: "throw",
     },
     mermaid: true,
+    // Interpolate ||site.*|| tokens on raw file content, for every md/mdx file.
+    // The remark-replace plugin below only runs on docs pages; partials imported
+    // from _includes/ are compiled by Docusaurus' MDX *fallback* loader, which
+    // does not receive the docs preset's remarkPlugins, so ||site.*|| tokens in
+    // those partials (e.g. code snippets in the quickstart install tabs) were
+    // never interpolated. This preprocessor covers every file, including
+    // fallback-loaded partials. It shares one implementation with the plugin and
+    // is idempotent, so it does not affect pages the plugin already handles.
+    preprocessor: ({ fileContent, filePath }) =>
+      remarkReplace.replaceSiteTokens(fileContent, filePath),
   },
 
   i18n: {
