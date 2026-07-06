@@ -51,6 +51,7 @@ const domainsToIgnore = [
     'https://static.scarf.sh',
     'https://www.snowflake.com',
     'https://stackoverflow.com/',
+    'https://www.tim-kleyersburg.de/', // 403s automated requests (site loads fine in a browser); community PHP client author link
     'https://towardsdatascience.com/',
     'https://voyageai.com/',
     'https://weaviateagents.featurebase.app',
