@@ -211,7 +211,7 @@ assert response.final_answer != "" and response.final_answer is not None
 
 # START BasicSearchQuery
 # Perform a search using Search Mode (retrieval only, no answer generation)
-search_response = qa.search("Find me some vintage shoes under $70", limit=10)
+search_response = qa.search("Find me some vintage shoes under $70", filtering="recall", limit=10)
 
 # Access the search results
 for obj in search_response.search_results.objects:
@@ -220,7 +220,7 @@ for obj in search_response.search_results.objects:
 
 # START SearchModeResponseStructure
 # SearchModeResponse structure for Python
-search_response = qa.search("winter boots for under $100", limit=5)
+search_response = qa.search("winter boots for under $100", filtering="recall", limit=5)
 
 # Access different parts of the response
 print(f"Original query: {search_response.searches[0].query}")
@@ -244,6 +244,7 @@ for obj in search_response.search_results.objects:
 # Search with pagination
 response_page_1 = qa.search(
     "Find summer shoes and accessories between $50 and $100 that have the tag 'sale'",
+    filtering="recall",
     limit=3,
 )
 
@@ -269,6 +270,7 @@ for page_num, page_response in enumerate(
 # START DiversityRanking
 search_response = qa.search(
     "summer shoes",
+    filtering="recall",
     limit=10,
     diversity_weight=0.5,
     collections=[

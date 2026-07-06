@@ -51,6 +51,7 @@ qa = new QueryAgent(client, {
 // START BasicSearchQuery
 const searchResponse = await qa.search(
     "Find me some vintage shoes under $70", {
+    filtering: "recall",
     limit: 10,
 });
 // END BasicSearchQuery

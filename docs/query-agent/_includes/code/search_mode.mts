@@ -39,6 +39,7 @@ await populateWeaviate(client);
 
 // START BasicSearchMode
 const searchResponse = await qa.search("Find me some vintage shoes under $70", {
+    filtering: "recall",
     limit: 10,
 });
 
@@ -50,6 +51,7 @@ for (const obj of searchResponse.searchResults.objects) {
 
 // START DiversityRanking
 const diversitySearchResponse = await qa.search("summer shoes", {
+    filtering: "recall",
     limit: 10,
     diversityWeight: 0.5,
     collections: [{
@@ -67,6 +69,7 @@ for (const obj of diversitySearchResponse.searchResults.objects) {
 // Search with pagination
 const responsePage1 = await qa.search(
     "Find summer shoes and accessories between $50 and $100 that have the tag 'sale'", {
+    filtering: "recall",
     limit: 3,
 });
 

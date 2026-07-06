@@ -135,6 +135,7 @@ print(response.final_answer)
 # START SearchMode
 search_response = agent.search(
     "Find me some vintage shoes under $70",
+    filtering="recall",
     limit=10,
 )
 

@@ -67,7 +67,7 @@ The `.search()` method accepts several arguments:
 | `query` | `str \| list[ChatMessage]` | The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | `list[str \| QueryAgentCollectionConfig] \| None` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `limit` | `int` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
-| `filtering` | `Literal["recall", "precision"]` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
+| `filtering` | `Literal["recall", "precision"]` | **Required.** Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. Pass `"recall"` for most cases. See [Customized filtering](#customized-filtering) below. |
 | `diversity_weight` | `float \| None` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
 
 </TabItem>
@@ -77,7 +77,7 @@ The `.search()` method accepts several arguments:
 | `query` | `string \| ChatMessage[]` | The user query you want the agent to search with. This can be a simple string (`"Find me some vintage shoes under $70"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | `(string \| QueryAgentCollectionConfig)[]` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `limit` | `number` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
-| `filtering` | `"recall" \| "precision"` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
+| `filtering` | `"recall" \| "precision"` | **Required.** Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. Pass `"recall"` for most cases. See [Customized filtering](#customized-filtering) below. |
 | `diversityWeight` | `number` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
 
 </TabItem>
@@ -89,7 +89,9 @@ For more advanced searches, you can also specify _additional filters_ within the
 
 Search Mode uses query rewriting to transform your original query into one or multiple Weaviate queries, each with either a search query, metadata filters, or both. The `filtering` parameter controls how many Weaviate queries are generated.
 
-- **`"recall"`** (default): Generates multiple Weaviate queries spanning different filters and interpretations of the user query. You should use these when you prefer to get results, even if they don't match every criteria in your query.
+`filtering` is a required argument; pass either `"recall"` or `"precision"`. `"recall"` is recommended when you want more results.
+
+- **`"recall"`** (recommended): Generates multiple Weaviate queries spanning different filters and interpretations of the user query. You should use these when you prefer to get results, even if they don't match every criteria in your query.
 
 - **`"precision"`**: Generates a single Weaviate query targeting the most likely interpretation of the user query. You should use this when you want the results to follow your query intent closely, even if that means potentially receiving no results.
 

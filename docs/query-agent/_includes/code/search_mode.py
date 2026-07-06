@@ -41,6 +41,7 @@ qa = QueryAgent(
 # START BasicSearchMode
 search_response = qa.search(
     query="Find me some vintage shoes under $70",
+    filtering="recall",
     limit=10,
 )
 
@@ -62,6 +63,7 @@ qa = QueryAgent(
 
 search_response = qa.search(
     "summer shoes",
+    filtering="recall",
     limit=10,
     diversity_weight=0.5,
 )
@@ -74,6 +76,7 @@ for obj in search_response.search_results.objects:
 # Search with pagination
 response_page_1 = qa.search(
     "Find summer shoes and accessories between $50 and $100 that have the tag 'sale'",
+    filtering="recall",
     limit=3,
 )
 
@@ -135,6 +138,7 @@ async_qa = AsyncQueryAgent(
 # START AsyncSearch
 await async_qa.search(
     query="Find me some vintage shoes under $70",
+    filtering="recall",
     limit=10,
 )
 # END AsyncSearch
@@ -161,6 +165,7 @@ async def _async_run_for_testing():
 
     await async_qa.search(
         query="Find me some vintage shoes under $70",
+        filtering="recall",
         limit=10,
     )
     await async_client.close()

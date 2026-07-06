@@ -28,7 +28,7 @@ response = qa.ask("Recommend sci-fi movies with good reviews under $15")
 print(response.final_answer)
 
 # Retrieval only (no generation)
-search_response = qa.search("sci-fi movies", limit=5)
+search_response = qa.search("sci-fi movies", filtering="recall", limit=5)
 # END llms_query_agent
 
 assert response.final_answer
