@@ -18,7 +18,7 @@ with weaviate.connect_to_weaviate_cloud(
     qa = QueryAgent(client=client, collections=["Movie"])
 
     # Step 2.3: Perform a query using Search Mode
-    response = qa.search("Find a cool sci-fi movie.", limit=1)
+    response = qa.search("Find a cool sci-fi movie.", filtering="recall", limit=1)
     # highlight-end
 
     # Print the response
