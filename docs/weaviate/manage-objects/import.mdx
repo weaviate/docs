@@ -17,22 +17,72 @@ import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportT
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
-[Batch imports](../tutorials/import.mdx) are an efficient way to add multiple data objects and cross-references.
+[Batch imports](../tutorials/import.mdx) are an efficient way to add multiple data objects and cross-references. For most use cases, we recommend **server-side batching** as the starting point: the server tells the client how much data to send next, so you don't have to tune batch parameters yourself. When you need manual control over the batch size and concurrency — or you are using a client that does not yet support server-side batching — use [manual batching](#manual-batching) instead.
+
+## Server-side batching
+
+import SsbStatus from '/_includes/feature-notes/ssb-status.mdx';
+
+<SsbStatus/>
+
+With [server-side batch imports](../concepts/data-import.mdx#server-side-batching) (also called "automatic" batching), the client sends data in batch sizes determined by feedback from the server. This simplifies your code and helps the server manage its own load. The following example adds objects to a collection named `MyCollection`.
+
+Server-side batching uses the [gRPC API](#use-the-grpc-api), which current client versions enable by default.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ServerSideBatchImportExample"
+      endMarker="# END ServerSideBatchImportExample"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+The Go client does not support server-side batching; use [manual batching](#manual-batching) instead.
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
+
+## Manual batching
+
+Use manual (client-side) batching when you want to control the batch size and concurrency yourself, or when using a client that does not yet support server-side batching (such as the Go client). The following example adds objects to the `MyCollection` collection.
 
 <details>
   <summary>Additional information</summary>
 
-To create a bulk import job, follow these steps:
+To create a bulk import job manually, follow these steps:
 
 1. Initialize a batch object.
 1. Add items to the batch object.
 1. Ensure that the last batch is sent (flushed).
 
 </details>
-
-## Basic import
-
-The following example adds objects to the `MyCollection` collection.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -88,56 +138,6 @@ Find out more about error handling on the Python client [reference page](/weavia
   </TabItem>
 </Tabs>
 
-## Server-side batching
-
-import SsbStatus from '/_includes/feature-notes/ssb-status.mdx';
-
-<SsbStatus/>
-
-Here's how to import objects into a collection named `MyCollection` using [server-side batch imports](../concepts/data-import.mdx#server-side-batching). The client will send data in batch sizes using feedback from the server.
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START ServerSideBatchImportExample"
-      endMarker="# END ServerSideBatchImportExample"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START ServerSideBatchImportExample"
-      endMarker="// END ServerSideBatchImportExample"
-      language="ts"
-    />
-  </TabItem>
-    <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START ServerSideBatchImportExample"
-      endMarker="// END ServerSideBatchImportExample"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="csharp" label="C#">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START ServerSideBatchImportExample"
-      endMarker="// END ServerSideBatchImportExample"
-      language="csharp"
-    />
-  </TabItem>
-</Tabs>
-
 ## Use the gRPC API
 
 The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
@@ -171,7 +171,7 @@ The Java client v6 uses gRPC by default.
 
 To use the gRPC API with the Go client, add the `GrpcConfig` field to your client connection code. Update `Secured` if you use an encrypted connection.<br/><br/>
 
-```java
+```go
 cfg := weaviate.Config{
   Host:   fmt.Sprintf("localhost:%v", "8080"),
   Scheme: "http",
