@@ -456,7 +456,7 @@ jobs:
 
       - name: Clone and build Java client SNAPSHOT
         run: |
-          JAVA_BRANCH="${{ inputs.java_client_branch || '6.2.0' }}"
+          JAVA_BRANCH="${{ inputs.java_client_branch || '6.3.0' }}"
           echo "📦 Building Java client SNAPSHOT from branch: $JAVA_BRANCH"
           git clone --depth 1 -b "$JAVA_BRANCH" https://github.com/weaviate/java-client.git /tmp/java-client
           cd /tmp/java-client
