@@ -19,6 +19,8 @@ TRANSIENT_MARKERS = (
     "connection reset", "econnreset", "connection aborted",
     "502", "503", "504", "429", "too many requests",
     "rate limit", "overloaded", "temporarily unavailable",
+    "error while connecting", "connection error",
+    "weaviate_cloud_connection_error",
 )
 
 

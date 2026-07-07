@@ -27,7 +27,10 @@ from pathlib import Path
 )
 def test_on_blank_instance_pyv4(script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
-    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+    utils.retry_on_transient(
+        lambda: utils.execute_py_script_as_module(proc_script, Path(script_loc).stem),
+        label=str(script_loc),
+    )
 
 
 @pytest.mark.pyv4
@@ -44,7 +47,10 @@ def test_on_blank_instance_pyv4(script_loc):
 )
 def test_recipes_requiring_openai_pyv4(script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
-    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+    utils.retry_on_transient(
+        lambda: utils.execute_py_script_as_module(proc_script, Path(script_loc).stem),
+        label=str(script_loc),
+    )
 
 
 @pytest.mark.ts
