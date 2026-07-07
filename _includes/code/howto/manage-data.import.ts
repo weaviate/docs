@@ -319,7 +319,7 @@ console.log(`Finished importing ${counter} articles.`);
 // ==================================================
 // ===== Server-side (automatic) batch import =====
 // ==================================================
-/*
+
 // Clean slate
 try {
   await client.collections.delete('MyCollection');
@@ -355,7 +355,7 @@ console.log(result)
 }
 
 await client.collections.delete('MyCollection');
-*/
+
 // ===========================
 // ===== Batch with gRPC =====
 // ===========================
