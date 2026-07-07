@@ -335,11 +335,11 @@ try {
 {
 // START ServerSideBatchImportExample
 const dataObjects = [
-  { title: 'Object 1' },
-  { title: 'Object 2' },
-  { title: 'Object 3' },
-  { title: 'Object 4' },
-  { title: 'Object 5' },
+  { properties: { title: 'Object 1' } },
+  { properties: { title: 'Object 2' } },
+  { properties: { title: 'Object 3' } },
+  { properties: { title: 'Object 4' } },
+  { properties: { title: 'Object 5' } },
 ]
 
 const myCollection = client.collections.use('MyCollection')
@@ -352,6 +352,14 @@ const result = await myCollection.data.ingest(dataObjects)
 
 console.log(result)
 // END ServerSideBatchImportExample
+
+// Verify the import (not shown in the docs snippet): all 5 objects and
+// their `title` property must have persisted.
+const check = await myCollection.query.fetchObjects({ limit: 5 })
+if (check.objects.length !== 5)
+  throw new Error(`SSB import: expected 5 objects, got ${check.objects.length}`)
+if (!check.objects.every((o) => typeof o.properties.title === 'string' && o.properties.title.length > 0))
+  throw new Error('SSB import did not persist the title property')
 }
 
 await client.collections.delete('MyCollection');
