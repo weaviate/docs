@@ -53,8 +53,7 @@ qa = QueryAgent(
 
 # START BasicSearchQuery
 search_response = qa.search(
-    "Find me some vintage shoes under $70",
-    filtering="recall",
+    "Find me some vintage shoes under $70", 
     limit=10
 )
 # END BasicSearchQuery

@@ -141,7 +141,6 @@ clothingResponse.display();
 // START BasicSearchQuery
 // Perform a search using Search Mode (retrieval only, no answer generation)
 const basicSearchResponse = await qa.search("Find me some vintage shoes under $70", {
-    filtering: "recall",
     limit: 10
 })
 
@@ -155,7 +154,6 @@ for (const obj of basicSearchResponse.searchResults.objects) {
 // Diversity ranking needs a vectorizer it can resolve. Scope the call to a
 // single collection with a target vector so the agent knows what to use.
 const diversitySearchResponse = await qa.search("summer shoes", {
-    filtering: "recall",
     limit: 10,
     diversityWeight: 0.5,
     collections: [{
@@ -181,7 +179,6 @@ basicResponse.display();
 // START SearchModeResponseStructure
 // SearchModeResponse structure for TypeScript
 const searchResponse = await qa.search("winter boots for under $100", {
-    filtering: "recall",
     limit: 5
 })
 
@@ -209,7 +206,6 @@ for (const obj of searchResponse.searchResults.objects) {
 // Search with pagination
 const responsePage1 = await qa.search(
     "Find summer shoes and accessories between $50 and $100 that have the tag 'sale'", {
-    filtering: "recall",
     limit: 3,
 })
 
