@@ -2,6 +2,8 @@ import subprocess
 import pytest
 import os
 
+import utils
+
 
 CSHARP_CSPROJ = "_includes/code/csharp/WeaviateProject.Tests.csproj"
 
@@ -14,9 +16,19 @@ def run_csharp_test(test_class, empty_weaviates):
     ]
     env = dict(os.environ)
 
+    def _run():
+        result = subprocess.run(command, env=env, capture_output=True, text=True)
+        if result.stdout.strip():
+            print(result.stdout)
+        if result.returncode != 0:
+            raise Exception(
+                f"C# {test_class} failed (exit {result.returncode})\n"
+                f"--- STDERR ---\n{result.stderr}\n--- STDOUT ---\n{result.stdout}"
+            )
+
     try:
-        subprocess.check_call(command, env=env)
-    except subprocess.CalledProcessError as error:
+        utils.retry_on_transient(_run, label=test_class)
+    except Exception as error:
         pytest.fail(f"C# {test_class} failed with error: {error}")
 
 

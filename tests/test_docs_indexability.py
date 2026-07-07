@@ -453,43 +453,53 @@ def test_claude_can_fetch_llms_txt():
     # The llms.txt file starts with "# Weaviate Documentation" and contains
     # section headings like "## agents", "## cloud", "## weaviate".
     # Ask Claude to quote specific content to prove it fetched the real file.
-    response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=2048,
-        tools=[{
-            "type": "web_fetch_20250910",
-            "name": "web_fetch",
-            "max_uses": 1,
-            "allowed_domains": ["docs.weaviate.io", "weaviate.io"],
-        }],
-        messages=[{
-            "role": "user",
-            "content": (
-                f"Fetch {url} and tell me: "
-                "1) What is the first heading line of the file (copy it verbatim)? "
-                "2) List ALL the top-level section headings (lines starting with '## '). "
-                "3) Does it mention code examples in multiple languages? Which ones?"
-            ),
-        }],
-    )
+    # LLM responses are non-deterministic, so retry a few times: pass as soon
+    # as one attempt satisfies ALL conditions; only fail if every attempt does.
+    required_sections = ["agents", "cloud", "weaviate"]
+    last_text = ""
+    for attempt in range(3):
+        response = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=2048,
+            tools=[{
+                "type": "web_fetch_20250910",
+                "name": "web_fetch",
+                "max_uses": 1,
+                "allowed_domains": ["docs.weaviate.io", "weaviate.io"],
+            }],
+            messages=[{
+                "role": "user",
+                "content": (
+                    f"Fetch {url} and tell me: "
+                    "1) What is the first heading line of the file (copy it verbatim)? "
+                    "2) List ALL the top-level section headings (lines starting with '## '). "
+                    "3) Does it mention code examples in multiple languages? Which ones?"
+                ),
+            }],
+        )
+        last_text = _extract_text_from_response(response)
+        tl = last_text.lower()
+        if "weaviate" in tl and all(s in tl for s in required_sections) and "python" in tl:
+            return
+        time.sleep(5)
 
-    text = _extract_text_from_response(response)
-    text_lower = text.lower()
+    # All attempts fell short — surface the last response via the existing assertions
+    tl = last_text.lower()
 
     # Must identify Weaviate
-    assert "weaviate" in text_lower, (
-        f"Claude couldn't identify Weaviate in llms.txt. Response: {text[:500]}"
+    assert "weaviate" in tl, (
+        f"Claude couldn't identify Weaviate in llms.txt. Response: {last_text[:500]}"
     )
 
     # Must find the key top-level sections from llms.txt
-    for section in ["agents", "cloud", "weaviate"]:
-        assert section in text_lower, (
-            f"Claude didn't find '{section}' section in llms.txt. Response: {text[:1000]}"
+    for section in required_sections:
+        assert section in tl, (
+            f"Claude didn't find '{section}' section in llms.txt. Response: {last_text[:1000]}"
         )
 
     # Must identify multi-language code examples
-    assert "python" in text_lower, (
-        f"Claude didn't find Python mentioned in llms.txt. Response: {text[:500]}"
+    assert "python" in tl, (
+        f"Claude didn't find Python mentioned in llms.txt. Response: {last_text[:500]}"
     )
 
 

@@ -9,7 +9,9 @@ def run_ts_script(script_loc, custom_replace_pairs=None):
     command = ["npx", "tsx", temp_proc_script_loc]
 
     try:
-        utils.run_script(command, script_loc)
+        utils.retry_on_transient(
+            lambda: utils.run_script(command, script_loc), label=str(script_loc)
+        )
     except Exception as e:
         pytest.fail(str(e))
 

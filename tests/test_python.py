@@ -4,16 +4,19 @@ from pathlib import Path
 
 
 def run_py_script(script_loc, custom_replace_pairs=None):
-    if custom_replace_pairs:
-        temp_proc_script_loc = utils.load_and_prep_temp_file(
-            script_loc, lang="py", custom_replace_pairs=custom_replace_pairs
-        )
-        utils.execute_py_script_as_module(
-            temp_proc_script_loc.read_text(), Path(script_loc).stem
-        )
-    else:
-        proc_script = utils.load_and_prep_script(script_loc)
-        utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+    def _exec():
+        if custom_replace_pairs:
+            temp_proc_script_loc = utils.load_and_prep_temp_file(
+                script_loc, lang="py", custom_replace_pairs=custom_replace_pairs
+            )
+            utils.execute_py_script_as_module(
+                temp_proc_script_loc.read_text(), Path(script_loc).stem
+            )
+        else:
+            proc_script = utils.load_and_prep_script(script_loc)
+            utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+
+    utils.retry_on_transient(_exec, label=str(script_loc))
 
 
 def run_pyv3_script(script_loc):

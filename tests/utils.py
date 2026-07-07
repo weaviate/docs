@@ -2,11 +2,49 @@ import os
 import re
 import subprocess
 import tempfile
+import time
 import runpy
 from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+# Substrings (case-insensitive) that indicate a transient external-service
+# failure worth retrying (gRPC blips, timeouts, rate limits, 5xx) rather than a
+# real snippet/assertion bug. Kept deliberately narrow.
+TRANSIENT_MARKERS = (
+    "unavailable", "deadline exceeded", "deadline_exceeded",
+    "timed out", "timeout", "read operation timed out",
+    "connection reset", "econnreset", "connection aborted",
+    "502", "503", "504", "429", "too many requests",
+    "rate limit", "overloaded", "temporarily unavailable",
+)
+
+
+def is_transient_error(err) -> bool:
+    """True if the error message looks like a transient external-service blip."""
+    msg = str(err).lower()
+    return any(marker in msg for marker in TRANSIENT_MARKERS)
+
+
+def retry_on_transient(fn, *, retries: int = 2, delay: int = 8, label: str = ""):
+    """Call fn(); on a TRANSIENT error, wait and retry up to `retries` times.
+    Non-transient errors (assertion/logic/syntax) re-raise immediately."""
+    for attempt in range(retries + 1):
+        try:
+            return fn()
+        except Exception as err:
+            if attempt < retries and is_transient_error(err):
+                print(
+                    f"[retry] transient failure on {label} "
+                    f"(attempt {attempt + 1}/{retries + 1}), retrying in {delay}s: "
+                    f"{str(err)[:300]}"
+                )
+                time.sleep(delay)
+                continue
+            raise
+
 
 def load_script(script_path: str) -> str:
     with open(script_path, "r") as f:
