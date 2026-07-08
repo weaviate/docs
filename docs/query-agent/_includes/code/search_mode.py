@@ -107,6 +107,17 @@ for obj in search_response.search_results.objects:
     print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
 # END FilteringExample
 
+# START RankingInstructions
+search_response = qa.search(
+    "wireless headphones",
+    ranking_instructions="Prioritize products with recent reviews and in-stock availability over price.",
+    limit=10,
+)
+
+for obj in search_response.search_results.objects:
+    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
+# END RankingInstructions
+
 # --- Async code examples in string as top-level await doesn't work, full code will be executed in 
 # asyncio.run below
 
