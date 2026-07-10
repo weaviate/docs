@@ -19,7 +19,7 @@ Weaviate can be deployed in the following ways:
 - [Embedded Weaviate](/deploy/installation-guides/embedded.md)
 - [Docker-Compose](/deploy/installation-guides/docker-installation.md)
 - [Weaviate Cloud (WCD)](/deploy/installation-guides/weaviate-cloud.md)
-- [DigitalOcean Managed Weaviate](/deploy/installation-guides/digitalocean.md), a fully managed Weaviate service operated by DigitalOcean
+- [DigitalOcean Managed Weaviate](/deploy/installation-guides/digitalocean.md)
 - [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 
