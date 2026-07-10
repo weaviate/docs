@@ -9,6 +9,10 @@ image: og/docs/model-provider-integrations.jpg
 
 [DigitalOcean's Serverless Inference](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) hosts a curated set of open-weight embedding and language models behind a single OpenAI-compatible API. Weaviate integrates with DigitalOcean's embedding endpoint so you can vectorize and search data using DigitalOcean-hosted models directly from your Weaviate instance.
 
+:::note
+Looking to *host* Weaviate on DigitalOcean? See [DigitalOcean Managed Weaviate](/deploy/installation-guides/digitalocean).
+:::
+
 ## Integrations with DigitalOcean
 
 ### Embedding models for vector search

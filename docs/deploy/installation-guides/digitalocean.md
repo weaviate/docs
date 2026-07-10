@@ -73,4 +73,5 @@ For usage from here on out, see the standard [search](/weaviate/search), [manage
 - [DigitalOcean Managed Weaviate docs](https://docs.digitalocean.com/products/vector-databases/weaviate/)
 - [Announcing Managed Weaviate on DigitalOcean (public preview)](https://www.digitalocean.com/blog/public-preview-managed-weaviate)
 - [Connect to a custom Weaviate instance](/weaviate/connections/connect-custom)
+- [DigitalOcean model provider (Serverless Inference)](/weaviate/model-providers/digitalocean)
 - [How-to guides](/weaviate/guides)
