@@ -37,7 +37,17 @@ This [page](../installation-guides/gcp-marketplace.md) will walk you through all
 
 </details>
 
-#### Q4: Is there a recommended limit for collections?
+#### Q4: How do I run Weaviate as a managed service on DigitalOcean?
+
+<details>
+
+<summary> Answer </summary>
+
+This [page](../installation-guides/digitalocean.md) will walk you through running Weaviate as a fully managed service operated by DigitalOcean. 
+
+</details>
+
+#### Q5: Is there a recommended limit for collections?
 
 <details>
 
@@ -49,7 +59,7 @@ If you plan to create more than **20** collections, you may want to consider mul
 
 </details>
 
-#### Q5: What are some common issues that occur during deployment?
+#### Q6: What are some common issues that occur during deployment?
 
 <details>
 
@@ -68,7 +78,7 @@ For further information, the [troubleshooting page](./troubleshooting.md) will h
 
 </details>
 
-#### Q6: What's the difference between Weaviate and other databases?
+#### Q7: What's the difference between Weaviate and other databases?
 
 <details>
 
@@ -77,7 +87,7 @@ For further information, the [troubleshooting page](./troubleshooting.md) will h
 Weaviate has complex processes which means that ingestion and deletion require more steps than other types of databases. Data ingestion tends to take longer than a traditional database because of vectorization and deleting objects can be expensive due to the embedding costs. 
 </details>
 
-#### Q7: Do my resources free up immediately after deleting objects?
+#### Q8: Do my resources free up immediately after deleting objects?
 
 <details>
 
@@ -87,7 +97,7 @@ No, it does not happen instantaneously. When you delete objects a tombstone is c
 
 </details>
 
-#### Q8: What's the difference between client timeouts and module timeouts?
+#### Q9: What's the difference between client timeouts and module timeouts?
 
 <details>
 

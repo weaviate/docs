@@ -15,8 +15,8 @@ import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConnectionTest.cs";
 
 [**DigitalOcean Managed Weaviate**](https://docs.digitalocean.com/products/vector-databases/weaviate/) is a fully managed offering of the Weaviate open-source vector database, operated by DigitalOcean. Clusters are provisioned, secured, backed up, and patched by DigitalOcean. You are responsible for your data, your schema, and the application that reads and writes to the cluster.
 
-:::caution Private preview
-DigitalOcean Managed Weaviate is in **private preview**. APIs, plans, regions, and Control Panel surfaces may change before general availability.
+:::caution Public preview
+DigitalOcean Managed Weaviate is in **public preview**.
 :::
 
 ## Provisioning
@@ -71,5 +71,7 @@ For usage from here on out, see the standard [search](/weaviate/search), [manage
 ## Further resources
 
 - [DigitalOcean Managed Weaviate docs](https://docs.digitalocean.com/products/vector-databases/weaviate/)
+- [Announcing Managed Weaviate on DigitalOcean (public preview)](https://www.digitalocean.com/blog/public-preview-managed-weaviate)
 - [Connect to a custom Weaviate instance](/weaviate/connections/connect-custom)
+- [DigitalOcean model provider (Serverless Inference)](/weaviate/model-providers/digitalocean)
 - [How-to guides](/weaviate/guides)
