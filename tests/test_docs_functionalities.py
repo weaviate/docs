@@ -82,15 +82,34 @@ def test_copy_page_button_writes_markdown(page, path):
     button = page.get_by_role("button", name=COPY_BUTTON_NAME)
     expect(button).to_be_visible(timeout=30_000)
 
-    button.click()
+    # The button is server-rendered, so Playwright reports it "visible" BEFORE
+    # React hydrates and attaches its onClick handler. A click landing in that
+    # gap is silently dropped: the handler never runs, so the label stays on
+    # "Copy page" and never reports success. That race — not a clipboard issue
+    # (permissions are granted above and the Clipboard API works here) — is what
+    # made this suite red on the slower headless CI runners, deterministically
+    # on the heavier pages. Fix: wait for the page's JS to finish loading
+    # (hydration), then retry the click so an early one can't leave us red.
+    try:
+        page.wait_for_load_state("networkidle", timeout=15_000)
+    except Exception:
+        pass  # a chatty live page may never fully idle; the retry below covers it
 
     # Success signal: the inner aria-live span text becomes "Copied!".
-    try:
-        expect(button).to_contain_text(SUCCESS_LABEL, timeout=8_000)
-    except AssertionError as exc:
+    def clicked_and_copied():
+        for _ in range(5):
+            button.click()
+            try:
+                expect(button).to_contain_text(SUCCESS_LABEL, timeout=3_000)
+                return True
+            except AssertionError:
+                continue
+        return False
+
+    if not clicked_and_copied():
         pytest.fail(
-            f"{path}: copy button never showed '{SUCCESS_LABEL}' within 8s "
-            f"(current button text: {button.inner_text()!r}). Underlying: {exc}"
+            f"{path}: copy button never showed '{SUCCESS_LABEL}' after retries "
+            f"(current button text: {button.inner_text()!r})."
         )
 
     markdown = page.evaluate("() => navigator.clipboard.readText()")
