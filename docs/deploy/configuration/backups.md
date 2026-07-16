@@ -122,7 +122,7 @@ To use any provider:
     - Option 1: Set the necessary environment variables
     - Option 2 (Kubernetes): Configure the [Helm chart values](#kubernetes-configuration)
 
-Note multiple providers can be enabled simultaneously
+Note multiple providers can be enabled simultaneously.
 
 ### S3 (AWS or S3-compatible)
 
@@ -777,6 +777,16 @@ It is not just safe - but even recommended - to create backups on live productio
 The backup API is built in a way that no long-running network requests are required. The request to create a new backup returns immediately. It does some basic validation, then returns to the user. The backup is now in status `STARTED`. To get the status of a running backup you can poll the [status endpoint](#asynchronous-status-checking). This makes the backup itself resilient to network or client failures.
 
 If you would like your application to wait for the background backup process to complete, you can use the "wait for completion" feature that is present in all language clients. The clients will poll the status endpoint in the background and block until the status is either `SUCCESS` or `FAILED`. This makes it easy to write simple synchronous backup scripts, even with the async nature of the API.
+
+### Skip the storage access check
+
+When a cloud backup backend (`backup-s3`, `backup-gcs`, or `backup-azure`) initializes, Weaviate verifies that the configured credentials can write to and delete from the target bucket. It does this by writing a temporary `access-check` object and then removing it. This probe fails on immutable (write-once / WORM) buckets, or with least-privilege credentials that are not permitted to delete objects.
+
+Set `BACKUP_SKIP_ACCESS_CHECK=true` to skip this probe. The variable applies to all cloud backup backends, defaults to `false`, and is applied at startup (a restart is required to change it).
+
+| Environment variable | Required | Description |
+| --- | --- | --- |
+| `BACKUP_SKIP_ACCESS_CHECK` | no | Skip the write-and-delete access check performed when a backup backend initializes. Set to `true` for immutable (write-once / WORM) buckets or least-privilege credentials that cannot delete objects. Defaults to `false`.<br/><br/>Added in `v1.37.8`. |
 
 ## Other Use cases
 

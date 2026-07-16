@@ -16,6 +16,10 @@ import './styles.css';
 // Import parameters
 import parametersData from './parameters.json';
 
+// Auto-fetched latest patch versions (written at prebuild by
+// _build_scripts/update-config-versions.js; same source as ||site.weaviate_version||).
+import versionsConfig from '@site/versions-config.json';
+
 // Accordion components
 function AccordionItem({ title, summary, children, description }) {
   return (
@@ -167,7 +171,41 @@ function WeaviateConfigurator() {
   // Load parameters
   useEffect(() => {
     try {
-      setParameters(parametersData.parameters);
+      // weaviate_version dropdown: the auto-fetched latest patches of the
+      // supported latest-3 MINORS (e.g. ["1.38.2","1.37.11","1.36.19"], written
+      // at prebuild by _build_scripts/update-config-versions.js) are PRIMARY;
+      // the static parameters.json options are the fallback if that array is
+      // ever missing/empty.
+      const auto = versionsConfig.weaviate_recent_versions;
+      const autoVersionOptions =
+        Array.isArray(auto) && auto.length
+          ? auto.map((v) => ({
+              name: `v${v}`,
+              displayName: `v${v}`,
+              description: `See release notes at https://github.com/weaviate/weaviate/releases/tag/v${v}`,
+            }))
+          : null;
+
+      // Resolve the version options ONCE so param.options and the default
+      // selection stay in sync (auto primary, static parameters.json fallback).
+      const staticVersionParam = parametersData.parameters.find(
+        (p) => p.name === 'weaviate_version',
+      );
+      const versionOptions =
+        autoVersionOptions ?? (staticVersionParam?.options || []);
+
+      const params = parametersData.parameters.map((param) =>
+        param.name === 'weaviate_version'
+          ? { ...param, options: versionOptions }
+          : param,
+      );
+
+      setParameters(params);
+      // Default the selected version to the first of the resolved options.
+      setSelections((prev) => ({
+        ...prev,
+        weaviate_version: versionOptions[0]?.name,
+      }));
       setLoading(false);
     } catch (err) {
       setError('Failed to load parameters');
@@ -253,11 +291,25 @@ function WeaviateConfigurator() {
     };
   }, [selections, parameters]);
 
-  if (loading) return <div className="weaviate-configurator-loading">Loading...</div>;
-  if (error) return <div className="weaviate-configurator-error">{error}</div>;
+  // data-copy-exclude marks this interactive tool (and its loading/error
+  // fallbacks) as UI chrome so the "Copy page" markdown export
+  // (src/components/ContextualMenu) drops it via [data-copy-exclude] rather than
+  // leaking "Loading..." or the whole configurator form.
+  if (loading)
+    return (
+      <div className="weaviate-configurator-loading" data-copy-exclude="">
+        Loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="weaviate-configurator-error" data-copy-exclude="">
+        {error}
+      </div>
+    );
 
   return (
-    <div className="weaviate-configurator">
+    <div className="weaviate-configurator" data-copy-exclude="">
       <div className="wc-header">
         <p>
           Use this tool to generate a `docker-compose.yml` file for your Weaviate instance.

@@ -3,6 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.ReferenceProperty;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
+import io.weaviate.client6.v1.api.collections.batch.BatchContext;
 import io.weaviate.client6.v1.api.collections.data.BatchReference;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
@@ -108,11 +109,47 @@ class ManageObjectsImportTest {
     client.collections.delete("MyCollection");
   }
 
-  //@Test
+  @Test
   void testServerSideBatchImport() throws IOException {
+    // Define and create the class
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.selfProvided()));
+
     // START ServerSideBatchImportExample
-    // Coming soon
+    List<Map<String, Object>> dataRows = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      dataRows.add(Map.of("title", "Object " + (i + 1)));
+    }
+
+    var collection = client.collections.use("MyCollection");
+
+    // Use `batch.start()` for server-side batching. The client sends data
+    // in batches at a rate controlled by the server. The batch is flushed
+    // and closed automatically when the try-with-resources block exits.
+    // highlight-start
+    BatchContext<Map<String, Object>> batch = collection.batch.start();
+    try (batch) {
+      for (Map<String, Object> dataRow : dataRows) {
+        batch.add(WeaviateObject.<Map<String, Object>>of(
+            obj -> obj.properties(dataRow)));
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+    // highlight-end
+
+    // numberOfErrors() reports objects that could not be imported.
+    if (batch.numberOfErrors() > 0) {
+      System.err
+          .println("Number of failed imports: " + batch.numberOfErrors());
+    }
     // END ServerSideBatchImportExample
+
+    var result =
+        collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
+    assertThat(result.totalCount()).isEqualTo(5);
+
+    client.collections.delete("MyCollection");
   }
 
   @Test

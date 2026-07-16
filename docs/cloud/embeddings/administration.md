@@ -60,7 +60,7 @@ More info about billing in Weaviate Cloud can be found on [this page](/cloud/pla
 - [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
 - [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 
-## Support & feedback
+## Support
 
 import SupportAndTrouble from '/\_includes/wcs/support-and-troubleshoot.mdx';
 

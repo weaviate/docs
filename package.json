@@ -41,8 +41,10 @@
     "sass": "^1.83.4",
     "stream-chain": "^2.2.5",
     "stream-json": "^1.7.5",
+    "turndown": "^7.2.0",
+    "turndown-plugin-gfm": "^1.0.2",
     "uuid": "^13.0.0",
-    "weaviate-agents": "^1.4.0",
+    "weaviate-agents": "^1.5.0",
     "weaviate-client": "^3.12.1",
     "weaviate-ts-embedded": "^1.1.0"
   },
@@ -60,7 +62,8 @@
     "typescript": "^5.3.3"
   },
   "resolutions": {
-    "tar": "^7.5.8"
+    "tar": "^7.5.8",
+    "esbuild": "^0.28.1"
   },
   "browserslist": {
     "production": [
@@ -76,5 +79,6 @@
   },
   "engines": {
     "node": ">=18.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

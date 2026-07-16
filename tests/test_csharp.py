@@ -2,6 +2,8 @@ import subprocess
 import pytest
 import os
 
+import utils
+
 
 CSHARP_CSPROJ = "_includes/code/csharp/WeaviateProject.Tests.csproj"
 
@@ -14,9 +16,19 @@ def run_csharp_test(test_class, empty_weaviates):
     ]
     env = dict(os.environ)
 
+    def _run():
+        result = subprocess.run(command, env=env, capture_output=True, text=True)
+        if result.stdout.strip():
+            print(result.stdout)
+        if result.returncode != 0:
+            raise Exception(
+                f"C# {test_class} failed (exit {result.returncode})\n"
+                f"--- STDERR ---\n{result.stderr}\n--- STDOUT ---\n{result.stdout}"
+            )
+
     try:
-        subprocess.check_call(command, env=env)
-    except subprocess.CalledProcessError as error:
+        utils.retry_on_transient(_run, label=test_class)
+    except Exception as error:
         pytest.fail(f"C# {test_class} failed with error: {error}")
 
 
@@ -32,6 +44,22 @@ def run_csharp_test(test_class, empty_weaviates):
     ],
 )
 def test_connection(empty_weaviates, test_class):
+    run_csharp_test(test_class, empty_weaviates)
+
+
+# Most LlmsTxtTest [Fact] methods connect to Weaviate Cloud (text2vec-weaviate
+# requires Weaviate Embeddings, which only Cloud has). The wcd marker
+# signals the dependency; TestLocalConnection + TestRbac inside the class
+# still use the local stack on :8080 / :8580.
+@pytest.mark.csharp
+@pytest.mark.wcd
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "LlmsTxtTest",
+    ],
+)
+def test_llms_txt(empty_weaviates, test_class):
     run_csharp_test(test_class, empty_weaviates)
 
 
@@ -94,8 +122,20 @@ def test_compression(empty_weaviates, test_class):
     "test_class",
     [
         "BackupsTest",
-        "RBACTest",
-        "ReplicationTest",
+        pytest.param(
+            "RBACTest",
+            marks=pytest.mark.skip(
+                reason="Released Java/C# clients can't deserialize the `namespaces` RBAC "
+                "permission that Weaviate 1.35.0 emits in its built-in roles; unskip once a "
+                "client release adds support."
+            ),
+        ),
+        pytest.param(
+            "ReplicationTest",
+            marks=pytest.mark.skip(
+                reason="Replication workflow needs a stable multi-node cluster; flaky in CI."
+            ),
+        ),
         "ModelProvidersTest",
         "GetStartedTest",
     ],

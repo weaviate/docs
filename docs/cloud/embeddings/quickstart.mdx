@@ -82,17 +82,18 @@ To use Weaviate Embeddings, you will need:
 
 <!-- TODO[g-despot]: Update prerequisites with correct client versions -->
 
-- A Weaviate Cloud Sandbox running at least Weaviate `1.28.5`
+- A Weaviate Cloud free cluster running at least Weaviate `1.28.5`
 - A Weaviate client library that supports Weaviate Embeddings:
   - **Python** client version `4.9.5` or higher
   - **JavaScript/TypeScript** client version `3.2.5` or higher
-  - **Go/Java** clients are not yet officially supported; you must pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually upon instantiation as shown below.
+  - **Java** or **C#** clients
+  - **Go** client is not yet officially supported; you must pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually upon instantiation as shown below.
 
 ## Step 1: Set up Weaviate
 
 ### 1.1 Create a new cluster
 
-To create a free **Sandbox** cluster in Weaviate Cloud, follow **[these instructions](/cloud/manage-clusters/create)**.
+To create a **free cluster** in Weaviate Cloud, follow **[these instructions](/cloud/manage-clusters/create)**.
 
 import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
@@ -264,7 +265,7 @@ export const nextStepsData = [
 <CardsSection items={nextStepsData} />
 <br />
 
-## Support & feedback
+## Support
 
 import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 

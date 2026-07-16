@@ -408,12 +408,13 @@ class ManageCollectionsTest {
   @Test
   void testAsyncRepair() throws IOException {
     // START AsyncRepair
+    // Async replication runs by default when the replication factor is greater than 1
     client.collections.create("Article", col -> col.replication(
-        Replication.of(rep -> rep.replicationFactor(1).asyncEnabled(true))));
+        Replication.of(rep -> rep.replicationFactor(1))));
     // END AsyncRepair
 
     var config = client.collections.getConfig("Article").get();
-    assertThat(config.replication().asyncEnabled()).isTrue();
+    assertThat(config.replication().replicationFactor()).isEqualTo(1);
   }
 
   @Test
@@ -421,7 +422,6 @@ class ManageCollectionsTest {
     // START AllReplicationSettings
     threeNodeClient.collections.create("Article",
         col -> col.replication(Replication.of(rep -> rep.replicationFactor(3)
-            .asyncEnabled(true)
             .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION)
             .asyncReplication(AsyncReplicationConfig.of(async -> async
                 .propagationConcurrency(5)
@@ -431,7 +431,6 @@ class ManageCollectionsTest {
 
     var config = threeNodeClient.collections.getConfig("Article").get();
     assertThat(config.replication().replicationFactor()).isEqualTo(3);
-    assertThat(config.replication().asyncEnabled()).isTrue();
 
     // START UpdateReplicationSettings
     var collection = threeNodeClient.collections.use("Article");

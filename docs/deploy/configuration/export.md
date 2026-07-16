@@ -32,8 +32,9 @@ Set these [environment variables](/docs/deploy/configuration/env-vars/index.md) 
 | `EXPORT_DEFAULT_BUCKET` | (empty)          | Storage bucket name. Required for S3, GCS, and Azure backends.                    |
 | `EXPORT_DEFAULT_PATH`   | `""`             | Optional base path prefix for exported files within the bucket. Defaults to an empty string (no prefix). _Changed in `v1.37.1`: previously required to be explicitly set._ |
 | `EXPORT_PARALLELISM`    | `0` (GOMAXPROCS) | Number of concurrent scan workers.                                                |
+| `EXPORT_SKIP_ACCESS_CHECK` | `false`       | Skip the write-and-delete access check that runs when the export backend initializes. Set to `true` for immutable (write-once / WORM) buckets or least-privilege credentials that cannot delete objects. _Added in `v1.37.8`._ |
 
-All four variables are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate.
+`EXPORT_ENABLED`, `EXPORT_DEFAULT_BUCKET`, `EXPORT_DEFAULT_PATH`, and `EXPORT_PARALLELISM` are [runtime-configurable](/docs/deploy/configuration/env-vars/runtime-config.md) and can be changed without restarting Weaviate. `EXPORT_SKIP_ACCESS_CHECK` is applied at startup and requires a restart to change.
 
 :::note Weaviate Cloud
 
@@ -43,7 +44,7 @@ The collection export feature is not available in Weaviate Cloud.
 
 ## Backend configuration
 
-Exports support three cloud storage backends and the [local filesystem](./backups#filesystem). Each cloud storage backend uses the same credential environment variables as [backups](./backups.md#configuration):
+Exports support three cloud storage backends and the [local filesystem](./backups.md#filesystem). Each cloud storage backend uses the same credential environment variables as [backups](./backups.md#configuration):
 
 | Backend                                                       | Value   | Credential env vars                                                               |
 | :------------------------------------------------------------ | :------ | :-------------------------------------------------------------------------------- |

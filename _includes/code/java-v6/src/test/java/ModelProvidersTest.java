@@ -7,6 +7,7 @@ import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -73,6 +74,48 @@ class ModelProvidersTest {
     System.out.println("first: " + config.vectors().get("title_vector"));
     assertThat(config.vectors().get("title_vector").getClass().getSimpleName())
         .isEqualTo("Text2VecWeaviateVectorizer");
+    client.collections.delete("DemoCollection");
+  }
+
+  @Test
+  @Disabled("Requires DIGITALOCEAN_APIKEY, not configured in CI")
+  void testDigitalOceanInstantiation() throws Exception {
+    // START DigitalOceanInstantiation
+    // Best practice: store your credentials in environment variables
+    String weaviateUrl = System.getenv("WEAVIATE_URL");
+    String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+    String digitalOceanApiKey = System.getenv("DIGITALOCEAN_APIKEY");
+
+    // highlight-start
+    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(
+        weaviateUrl,
+        weaviateApiKey,
+        config -> config.setHeaders(Map.of("X-Digitalocean-Api-Key", digitalOceanApiKey)));
+
+    System.out.println(client.isReady()); // Should print: `True`
+    // highlight-end
+
+    client.close(); // Free up resources
+    // END DigitalOceanInstantiation
+  }
+
+  @Test
+  @Disabled("Requires DIGITALOCEAN_APIKEY, not configured in CI")
+  void testDigitalOceanVectorizer() throws IOException {
+    client.collections.delete("DemoCollection");
+    // START BasicVectorizerDigitalOcean
+    client.collections.create("DemoCollection",
+        col -> col
+            .vectorConfig(
+                VectorConfig.text2vecDigitalOcean("title_vector",
+                    c -> c.model("qwen3-embedding-0.6b").sourceProperties("title")))
+            .properties(Property.text("title"), Property.text("description")));
+    // END BasicVectorizerDigitalOcean
+
+    var config = client.collections.getConfig("DemoCollection").get();
+    assertThat(config.vectors()).containsKey("title_vector");
+    assertThat(config.vectors().get("title_vector").getClass().getSimpleName())
+        .isEqualTo("Text2VecDigitalOceanVectorizer");
     client.collections.delete("DemoCollection");
   }
 

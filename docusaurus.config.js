@@ -34,6 +34,16 @@ const config = {
       onBrokenMarkdownImages: "throw",
     },
     mermaid: true,
+    // Interpolate ||site.*|| tokens on raw file content, for every md/mdx file.
+    // The remark-replace plugin below only runs on docs pages; partials imported
+    // from _includes/ are compiled by Docusaurus' MDX *fallback* loader, which
+    // does not receive the docs preset's remarkPlugins, so ||site.*|| tokens in
+    // those partials (e.g. code snippets in the quickstart install tabs) were
+    // never interpolated. This preprocessor covers every file, including
+    // fallback-loaded partials. It shares one implementation with the plugin and
+    // is idempotent, so it does not affect pages the plugin already handles.
+    preprocessor: ({ fileContent, filePath }) =>
+      remarkReplace.replaceSiteTokens(fileContent, filePath),
   },
 
   i18n: {
@@ -54,10 +64,26 @@ const config = {
         cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
-            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/v1-38/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // showSidebar: true,
+          showSidebar: true,
+        },
+      },
+    ],
+    [
+      "@scalar/docusaurus",
+      {
+        id: "engram-api",
+        label: "",
+        route: "/engram/api/rest",
+        cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
+        configuration: {
+          spec: {
+            url: "/specs/engram-openapi.json",
+          },
+          hideModels: true,
+          showSidebar: true,
         },
       },
     ],
@@ -172,8 +198,8 @@ const config = {
     ({
       image: "og/default.jpg",
       announcementBar: {
-        id: "announcement-bar-september-2025",
-        content: `<a href="https://academy.weaviate.io/">The new <b>Weaviate Academy</b> learning platform is here!</a>`,
+        id: "announcement-bar-engram-2026",
+        content: `<a href="/engram/">Introducing <b>Engram</b> — managed memory for AI agents, built on Weaviate</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,
@@ -193,9 +219,9 @@ const config = {
             position: "right",
           },
           {
-            label: "Academy",
-            className: "academy-button",
-            to: "https://academy.weaviate.io",
+            label: "Support",
+            className: "support-button",
+            to: "/support",
             position: "right",
           },
           {
@@ -214,7 +240,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ["java", "csharp"],
+        additionalLanguages: ["java", "csharp", "bash"],
       },
       docs: {
         sidebar: {

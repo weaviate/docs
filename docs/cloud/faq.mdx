@@ -14,7 +14,7 @@ Frequently asked questions (FAQs) about [Weaviate Cloud (WCD)](/go/console?utm_c
 <details>
 <summary> Answer </summary>
 
-Using Weaviate Cloud gives you access to a 14-day free sandbox for testing. You also get access to advanced features like [Weaviate Embeddings](docs/cloud/embeddings/index.md) and [Weaviate Agents](docs/agents/index.md), which are not available in all deployment methods.
+Using Weaviate Cloud gives you access to a free cluster that is free forever and ideal for testing and small projects. You also get access to advanced features like [Weaviate Embeddings](/cloud/embeddings/index.md) and the [Query Agent](/query-agent/index.md), which are not available in self-hosted deployment methods. For the current free tier limits, see the [pricing page](https://weaviate.io/pricing).
 
 </details>
 
@@ -24,6 +24,18 @@ Using Weaviate Cloud gives you access to a 14-day free sandbox for testing. You 
 <summary> Answer </summary>
 
 Using Weaviate Cloud gives you access the option of importing [CVS/Excel](./tools/collections-tool.mdx) and [PDF](./tools/collections-tool.mdx) directly from the WCD console. You can also [connect to your WCD instance programmatically](./manage-clusters/connect.mdx) and [import any kind of data](/weaviate/tutorials/import) as well. 
+
+</details>
+
+#### Q: What happened to the Personalization Agent and Transformation Agent? {#deprecated-agents}
+
+<details>
+<summary> Answer </summary>
+
+Weaviate Agents now focus exclusively on the [Query Agent](/query-agent/index.md). The **Personalization Agent** and **Transformation Agent** have been deprecated and are no longer available.
+
+- For agentic search and retrieval over your data, use the [Query Agent](/query-agent/index.md).
+- For personalization use cases previously served by the **Personalization Agent**, **[Engram](/engram/index.md)** is a good alternative. Engram is Weaviate's memory server for LLM and agent applications: it stores user interactions and preferences as persistent, semantically searchable memories that you can use to power personalized, context-aware experiences.
 
 </details>
 
@@ -72,7 +84,7 @@ Yes. Weaviate Cloud automatically updates existing clusters as new Weaviate vers
 <details>
 <summary> Answer </summary>
 
-Not currently. Weaviate Cloud monitors your cluster and flags when resizing may be required, but automatic scaling is not enabled by default.
+Weaviate Cloud runs on automatically scaling infrastructure that adapts the underlying capacity to your workload as it grows, keeping your cluster performant and available without manual intervention. Your cluster is also continuously monitored, and Weaviate Cloud flags when a resize is recommended. [Contact Weaviate Cloud Support](/support) if you anticipate significant growth.
 
 </details>
 
@@ -81,7 +93,7 @@ Not currently. Weaviate Cloud monitors your cluster and flags when resizing may 
 <details>
 <summary> Answer </summary>
 
-Possibly. Contact [support@weaviate.io](mailto:support@weaviate.io) to discuss custom provisioning or increased resource needs for your cluster.
+Possibly. [Contact support](/support) to discuss custom provisioning or increased resource needs for your cluster.
 
 </details>
 
@@ -90,7 +102,7 @@ Possibly. Contact [support@weaviate.io](mailto:support@weaviate.io) to discuss c
 <details>
 <summary> Answer </summary>
 
-By default, each organization can have up to **six (6)** Shared Cloud clusters and **two (2)** sandbox clusters. If you need more, [contact support](mailto:support@weaviate.io).
+Each user can have one (1) free cluster, and by default each organization can have up to **six (6)** Shared Cloud clusters. If you need more, [contact support](/support).
 
 </details>
 
@@ -130,7 +142,7 @@ Yes. The GraphQL query tool in the Weaviate Cloud Console can connect to **exter
 <details>
 <summary> Answer </summary>
 
-Weaviate updated it's Cloud offering on October 27th, 2025. Before that, **Shared Cloud** clusters were called **Serverless** clusters and **Dedicated Cloud** clusters were called **Enterprise** clusters.
+Weaviate updated its Cloud offering on October 27th, 2025. Before that, **Shared Cloud** clusters were called **Serverless** clusters and **Dedicated Cloud** clusters were called **Enterprise** clusters.
 
 </details>
 

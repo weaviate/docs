@@ -42,7 +42,7 @@ Weaviate is an open-source vector database built to power AI applications. This 
 1. **Set up a collection** - Create a collection and import data into it.
 2. **Search** - Perform a similarity (vector) search on your data.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
-4. **Query Agent** - Get answers from you data by using a natural language prompt/question. <CloudOnlyBadge compact />
+4. **Query Agent** - Get answers from your data by using a natural language prompt/question. <CloudOnlyBadge compact />
 
 import KapaAI from "/src/components/KapaAI";
 
@@ -54,12 +54,12 @@ import PromptStarter from "/src/components/PromptStarter";
 
 ## Prerequisites
 
-A **[Weaviate Cloud](https://console.weaviate.cloud/)** Sandbox instance - you will need an admin **API key** and a **REST endpoint URL** to connect to your instance. See the instructions below for more info. If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
+A **[Weaviate Cloud](https://console.weaviate.cloud/)** free cluster - you will need an admin **API key** and a **REST endpoint URL** to connect to your instance. See the instructions below for more info. If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
 
 <details>
-<summary>How to set up a Weaviate Cloud Sandbox instance</summary>
+<summary>How to set up a Weaviate Cloud free cluster</summary>
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance as shown in the interactive example below.
+Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free cluster as shown in the interactive example below.
 
 <div
   style={{
@@ -93,7 +93,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 - Cluster provisioning typically takes 1-3 minutes.
 - When the cluster is ready, Weaviate Cloud displays a checkmark (`✔️`) next to the cluster name.
-- Note that Weaviate Cloud adds a random suffix to sandbox cluster names to ensure uniqueness.
+- Note that Weaviate Cloud may add a random suffix to cluster names to ensure uniqueness.
 
 :::
 
@@ -143,7 +143,7 @@ Weaviate supports both REST and gRPC protocols. For Weaviate Cloud deployments, 
 
 :::
 
-Once you have the **REST Endpoint URL** and the **admin API key**, you can connect to the Sandbox instance, and work with Weaviate.
+Once you have the **REST Endpoint URL** and the **admin API key**, you can connect to your cluster, and work with Weaviate.
 
 </details>
 
@@ -280,7 +280,7 @@ Are you ready to see how deep the rabbit hole goes? 🔴🔵 #TheMatrix #WakeUp
 
 <CloudOnlyBadge />
 
-The [Weaviate Query Agent](/agents/query/index.md) is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud. The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
+The [Weaviate Query Agent](/query-agent/index.md) is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud. The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
 
 import QueryAgentQuickstart from "/\_includes/code/quickstart/quickstart.short.query-agent.mdx";
 

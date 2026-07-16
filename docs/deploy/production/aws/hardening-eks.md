@@ -34,7 +34,7 @@ Anonymous access is convenient for testing, but in production it's like leaving 
 
 **Action:** Disable anonymous access immediately.
 
-📚 [How to disable anonymous access](../../configuration/authentication#anonymous-access-kubernetes)
+📚 [How to disable anonymous access](../../configuration/authentication.md#anonymous-access-kubernetes)
 
 ### Enable API Key authentication
 
@@ -47,7 +47,7 @@ Use strong authentication with properly managed credentials.
 - Rotate keys regularly
 - Map each key to a specific user or service for accountability
 
-📚 [API Key authentication setup](../../configuration/authentication#api-keys-kubernetes)
+📚 [API Key authentication setup](../../configuration/authentication.md#api-keys-kubernetes)
 
 ### Enable OIDC authentication
 
@@ -224,7 +224,7 @@ Set up automated, encrypted backups to S3.
 - ✅ Set up lifecycle policies for cost management
 - ✅ Block all public access
 
-📚 [S3 backup configuration](../../configuration/backups#s3-aws-or-s3-compatible)
+📚 [S3 backup configuration](../../configuration/backups.md#s3-aws-or-s3-compatible)
 
 ### Test backup and restore procedures
 
@@ -242,7 +242,7 @@ A backup you can't restore is just expensive storage. Document your RTO (Recover
 
 Turn on Prometheus metrics for system visibility.
 
-📚 [Monitoring setup guide](../../configuration/monitoring)
+📚 [Monitoring setup guide](../../configuration/monitoring.md)
 
 ### Configure critical alerts
 

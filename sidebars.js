@@ -240,6 +240,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "DigitalOcean",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/digitalocean/index",
+              },
+              items: ["weaviate/model-providers/digitalocean/embeddings"],
+            },
+            {
+              type: "category",
               label: "FriendliAI",
               className: "sidebar-item",
               link: {
@@ -644,6 +654,7 @@ const sidebars = {
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
         "weaviate/search/rerank",
+        "weaviate/search/boost",
         "weaviate/search/aggregate",
         "weaviate/search/filters",
         "weaviate/search/query-profile",
@@ -837,8 +848,8 @@ const sidebars = {
       collapsible: false,
       items: [
         {
-          type: "doc",
-          id: "weaviate/api/rest",
+          type: "link",
+          href: "/weaviate/api/rest",
           label: "RESTful API",
           className: "sidebar-item",
         },
@@ -1274,117 +1285,180 @@ const sidebars = {
     },
   ],
   agentsSidebar: [
+    "query-agent/index",
+    "query-agent/installation",
+    "query-agent/quickstart",
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Modes",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/guides/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/guides/ask_mode",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/guides/search_mode",
+          className: "sidebar-item",
+        },
+        // {
+        //   type: "doc",
+        //   id: "query-agent/guides/research_mode",
+        //   className: "sidebar-item",
+        // },
+        {
+          type: "doc",
+          id: "query-agent/guides/suggest_queries",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Configuration",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/reference/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/reference/instantiation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/system_prompt",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/multi_turn_conversations",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/additional_filters",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/advanced_collections",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Clients",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "query-agent/clients/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/clients/python",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/clients/typescript",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Tutorials and guides",
+      className: "sidebar-item",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "query-agent/recipes/index",
+      },
+      customProps: {
+        cloudOnly: false,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-get-started",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-ecommerce-assistant",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-streamlit-chat",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-vs-diy",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/recipes/query-agent-as-a-tool",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    // {
+    //   type: "html",
+    //   value: "<hr class='sidebar-divider' />",
+    // },
     {
       type: "doc",
-      id: "agents/index",
+      id: "query-agent/reference/troubleshooting",
+      className: "sidebar-item",
     },
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Query Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/query/index",
-      },
-      customProps: {
-        cloudOnly: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/query/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/query/tutorial-ecommerce",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Transformation Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/transformation/index",
-      },
-      customProps: {
-        cloudOnly: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/transformation/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/transformation/tutorial-enrich-dataset",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Personalization Agent",
-      className: "sidebar-main-category",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "agents/personalization/index",
-      },
-      customProps: {
-        cloudOnly: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "agents/personalization/usage",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "agents/personalization/tutorial-recipe-recommender",
-          className: "sidebar-item",
-        },
-      ],
-    },
-  ],
-  agentsRecipesSidebar: [
-    {
-      type: "category",
-      label: "Recipes",
-      collapsed: false,
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "agents/recipes",
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "agents/recipes", // Scans the folder docs/weaviate/recipes/
-        },
-      ],
     },
   ],
   contributorSidebar: [
@@ -1591,6 +1665,66 @@ const sidebars = {
     "cloud/platform/create-account",
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
+  ],
+  engramSidebar: [
+    { type: "doc", id: "engram/index", label: "Introduction" },
+    "engram/quickstart",
+    "engram/install-integrate",
+    {
+      type: "category",
+      label: "Concepts",
+      link: { type: "doc", id: "engram/concepts/index" },
+      collapsed: true,
+      items: [
+        "engram/concepts/memories",
+        "engram/concepts/topics",
+        "engram/concepts/scopes",
+        "engram/concepts/input-data-types",
+        "engram/concepts/pipelines",
+        "engram/concepts/search",
+        "engram/concepts/groups",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/guides/index" },
+      items: [
+        "engram/guides/store-memories",
+        "engram/guides/search-memories",
+        "engram/guides/manage-memories",
+        "engram/guides/check-run-status",
+      ],
+    },
+    {
+      type: "category",
+      label: "Tutorials",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: { type: "doc", id: "engram/tutorials/index" },
+      items: [
+        "engram/tutorials/memory-chat-app",
+        "engram/tutorials/context-window-management",
+        "engram/tutorials/personalized-rag-multi-tenant",
+      ],
+    },
+    { type: "html", value: "<hr class='sidebar-divider' />" },
+    {
+      type: "link",
+      label: "REST API reference",
+      href: "/engram/api/rest",
+    },
+    "engram/console",
+  ],
+  supportSidebar: [
+    {
+      type: "doc",
+      id: "support/index",
+      label: "Overview",
+    },
   ],
 };
 

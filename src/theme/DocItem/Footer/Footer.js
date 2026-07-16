@@ -118,16 +118,22 @@ function Footer() {
                   <Link to="/cloud">Weaviate Cloud</Link>
                 </li>
                 <li>
-                  <Link to="/agents">Weaviate Agents</Link>
+                  <Link to="/query-agent">Query Agent</Link>
+                </li>
+                <li>
+                  <Link to="/engram">Engram</Link>
                 </li>
               </ul>
             </div>
             <div className={styles.footerSection}>
-              <h5>Support</h5>
+              <h5>Get help</h5>
               <ul>
                 <li>
+                  <Link to="/support">Support</Link>
+                </li>
+                <li>
                   <Link
-                    to="https://forum.weaviate.io/c/support/"
+                    to="https://forum.weaviate.io/c/support"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

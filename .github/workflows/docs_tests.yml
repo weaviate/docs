@@ -279,7 +279,7 @@ jobs:
 
       - name: Override TypeScript client branch
         run: |
-          TS_BRANCH="${{ inputs.typescript_client_branch || 'main' }}"
+          TS_BRANCH="${{ inputs.typescript_client_branch || 'v3.13.1' }}"
           echo "📦 Building weaviate-client from branch: $TS_BRANCH"
           git clone --depth 1 -b "$TS_BRANCH" https://github.com/weaviate/typescript-client.git /tmp/ts-client
           cd /tmp/ts-client
@@ -456,7 +456,7 @@ jobs:
 
       - name: Clone and build Java client SNAPSHOT
         run: |
-          JAVA_BRANCH="${{ inputs.java_client_branch || 'main' }}"
+          JAVA_BRANCH="${{ inputs.java_client_branch || '6.3.0' }}"
           echo "📦 Building Java client SNAPSHOT from branch: $JAVA_BRANCH"
           git clone --depth 1 -b "$JAVA_BRANCH" https://github.com/weaviate/java-client.git /tmp/java-client
           cd /tmp/java-client
@@ -621,7 +621,7 @@ jobs:
 
       - name: Clone C# client
         run: |
-          CSHARP_BRANCH="${{ inputs.csharp_client_branch || '1.1.0' }}"
+          CSHARP_BRANCH="${{ inputs.csharp_client_branch || '1.1.1' }}"
           echo "📦 Cloning C# client from branch: $CSHARP_BRANCH"
           git clone --depth 1 -b "$CSHARP_BRANCH" https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
           echo "✅ C# client cloned to $(realpath "${{ github.workspace }}/../csharp-client")"

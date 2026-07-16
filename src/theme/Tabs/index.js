@@ -19,6 +19,8 @@ import Link from "@docusaurus/Link";
 const LANGUAGE_CONFIG = {
   py: { label: "Python", icon: "/img/site/logo-py.svg" },
   py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
+  py_engram: { label: "Python", icon: "/img/site/logo-py.svg" },
+  py_engram_async: { label: "Python (Async)", icon: "/img/site/logo-py.svg" },
   ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
   ts_agents: {
     label: "JavaScript/TypeScript (Agents)",
@@ -27,9 +29,18 @@ const LANGUAGE_CONFIG = {
   go: { label: "Go", icon: "/img/site/logo-go.svg" },
   java: { label: "Java", icon: "/img/site/logo-java.svg" },
   csharp: { label: "C#", icon: "/img/site/logo-csharp.svg" },
-  curl: { label: "Curl", icon: null },
+  curl: { label: "Curl", icon: "/img/site/logo-curl.svg" },
   bash: { label: "Bash", icon: null },
   shell: { label: "Shell", icon: null },
+};
+
+// Predefined docs URL overrides by product name
+const DOCS_URL_PRESETS = {
+  // API docs link for Engram Python is intentionally omitted for now.
+  // engram: {
+  //   py_engram: "https://github.com/weaviate/engram-python-sdk",
+  //   py_engram_async: "https://github.com/weaviate/engram-python-sdk",
+  // },
 };
 
 // Context for sharing selected language across all code dropdowns
@@ -116,6 +127,7 @@ const CodeDropdownTabs = ({
   groupId,
   defaultValue,
   values,
+  docsUrl,
   ...props
 }) => {
   // Get tab values and labels from children
@@ -156,6 +168,35 @@ const CodeDropdownTabs = ({
         return "py";
       }
 
+      if (targetLang === "py" && availableLangs.includes("py_engram")) {
+        return "py_engram";
+      }
+      if (targetLang === "py_engram" && availableLangs.includes("py")) {
+        return "py";
+      }
+      if (targetLang === "py_agents" && availableLangs.includes("py_engram")) {
+        return "py_engram";
+      }
+      if (targetLang === "py_engram" && availableLangs.includes("py_agents")) {
+        return "py_agents";
+      }
+
+      if (
+        targetLang === "py_engram_async" &&
+        availableLangs.includes("py_engram")
+      ) {
+        return "py_engram";
+      }
+      if (targetLang === "py_engram_async" && availableLangs.includes("py")) {
+        return "py";
+      }
+      if (
+        targetLang === "py_engram_async" &&
+        availableLangs.includes("py_agents")
+      ) {
+        return "py_agents";
+      }
+
       if (targetLang === "ts" && availableLangs.includes("ts_agents")) {
         return "ts_agents";
       }
@@ -189,6 +230,41 @@ const CodeDropdownTabs = ({
           availableLangs.includes("py")
         ) {
           valueToSet = "py";
+        } else if (
+          newGlobalLang === "py" &&
+          availableLangs.includes("py_engram")
+        ) {
+          valueToSet = "py_engram";
+        } else if (
+          newGlobalLang === "py_engram" &&
+          availableLangs.includes("py")
+        ) {
+          valueToSet = "py";
+        } else if (
+          newGlobalLang === "py_agents" &&
+          availableLangs.includes("py_engram")
+        ) {
+          valueToSet = "py_engram";
+        } else if (
+          newGlobalLang === "py_engram" &&
+          availableLangs.includes("py_agents")
+        ) {
+          valueToSet = "py_agents";
+        } else if (
+          newGlobalLang === "py_engram_async" &&
+          availableLangs.includes("py_engram")
+        ) {
+          valueToSet = "py_engram";
+        } else if (
+          newGlobalLang === "py_engram_async" &&
+          availableLangs.includes("py")
+        ) {
+          valueToSet = "py";
+        } else if (
+          newGlobalLang === "py_engram_async" &&
+          availableLangs.includes("py_agents")
+        ) {
+          valueToSet = "py_agents";
         } else if (
           newGlobalLang === "ts" &&
           availableLangs.includes("ts_agents")
@@ -243,6 +319,8 @@ const CodeDropdownTabs = ({
   }
 
   const docSystem = DOC_SYSTEMS[selectedValue];
+  const resolvedDocsUrl = typeof docsUrl === "string" ? DOCS_URL_PRESETS[docsUrl] : docsUrl;
+  const overrideDocsUrl = resolvedDocsUrl && resolvedDocsUrl[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const params = new URLSearchParams({
     template: "doc_feedback.yml",
@@ -263,16 +341,16 @@ const CodeDropdownTabs = ({
           />
         </div>
 
-        {docSystem?.baseUrl && (
+        {(overrideDocsUrl || docSystem?.baseUrl) && (
           <div className={styles.rightSection}>
             <a
-              href={docSystem.baseUrl}
+              href={overrideDocsUrl || docSystem.baseUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.apiDocsLink}
               title="View API documentation"
             >
-              {docSystem.icon ? (
+              {docSystem?.icon ? (
                 <img
                   src={docSystem.icon}
                   alt={`${selectedValue} docs`}

@@ -181,7 +181,7 @@ Each search type contains a `details` dict with string key-value pairs. The avai
 | :----- | :---------- |
 | `vector_search_took` | Time spent in vector index search |
 | `knn_search_layer_N_took` | Per-layer HNSW graph traversal time (N = layer number) |
-| `knn_search_rescore_took` | Time rescoring compressed vectors (PQ/BQ/SQ) |
+| `knn_search_rescore_took` | Time rescoring compressed vectors (PQ/SQ/RQ/BQ) |
 | `hnsw_flat_search` | Whether flat (brute-force) search was used instead of HNSW (`"true"` or `"false"`) |
 
 ### Filter metrics

@@ -10,7 +10,7 @@ Weaviate provides powerful filtered vector search capabilities, allowing you to 
 
 Filtered vector search in Weaviate is based on the concept of pre-filtering. This means that the filter is constructed before the vector search is performed. Unlike some pre-filtering implementations, Weaviate's pre-filtering does not require a brute-force vector search and is highly efficient.
 
-Starting in `v1.34`, Weaviate uses the [`ACORN`](#acorn) filter strategy as the default. This filtering method significantly improves performance for large datasets, especially when the filter has low correlation with the query vector.
+Starting in `v1.34`, Weaviate uses the [`ACORN`](#acorn) filter strategy as the default. This filtering method significantly improves performance for large datasets, especially when the filter has low correlation with the query vector. Because the [HFresh index](./indexing/vector-index.md#hfresh-index) uses an HNSW index for its centroids, it also benefits from ACORN when routing filtered queries.
 
 ## Post-Filtering vs Pre-Filtering
 

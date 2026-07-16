@@ -11,12 +11,15 @@ export default function NavigationModal({
   activeLink, // Add activeLink prop to know which item is currently active
   selectedOption, // Add selectedOption prop to know which category is selected
 }) {
-  // Filter options into regular and small groups
+  // Filter options into regular and small groups.
+  // Support and the contributor guide are rendered in the "Need help?"
+  // section instead of the resources grid.
+  const NEED_HELP_KEYS = ["support", "contributor"];
   const regularItems = Object.entries(secondaryNavOptions).filter(
     ([, value]) => !value.isSmall
   );
   const smallItems = Object.entries(secondaryNavOptions).filter(
-    ([, value]) => value.isSmall
+    ([key, value]) => value.isSmall && !NEED_HELP_KEYS.includes(key)
   );
 
   // Helper function to determine if an option is active
@@ -136,6 +139,23 @@ export default function NavigationModal({
                 </span>
               </div>
 
+              {/* Support Card - links to the Support hub page */}
+              <div
+                className={`${styles.resourceCard} ${
+                  isOptionActive("support") ? styles.activeResource : ""
+                }`}
+                onClick={() => handleOptionSelect("support")}
+              >
+                <i
+                  className={`fa fa-life-ring ${styles.resourceIcon}`}
+                  aria-hidden="true"
+                />
+                <span className={styles.resourceTitle}>Support</span>
+                {isOptionActive("support") && (
+                  <div className={styles.activeResourceIndicator}></div>
+                )}
+              </div>
+
               {/* New Forum Card - styled like the resource cards */}
               <div
                 className={styles.resourceCard}
@@ -144,10 +164,27 @@ export default function NavigationModal({
                 }
               >
                 <i
-                  className="fa fa-comments styles.resourceIcon"
+                  className={`fa fa-comments ${styles.resourceIcon}`}
                   aria-hidden="true"
                 />
                 <span className={styles.resourceTitle}>Community Forum</span>
+              </div>
+
+              {/* Contributor Guide Card - styled like the resource cards */}
+              <div
+                className={`${styles.resourceCard} ${
+                  isOptionActive("contributor") ? styles.activeResource : ""
+                }`}
+                onClick={() => handleOptionSelect("contributor")}
+              >
+                <i
+                  className={`fa fa-edit ${styles.resourceIcon}`}
+                  aria-hidden="true"
+                />
+                <span className={styles.resourceTitle}>Contributor guide</span>
+                {isOptionActive("contributor") && (
+                  <div className={styles.activeResourceIndicator}></div>
+                )}
               </div>
             </div>
           </div>

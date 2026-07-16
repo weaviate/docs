@@ -3,7 +3,7 @@ name = "weaviate-docs"
 version = "0.1.0"
 description = "Weaviate documentation test suite"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "anthropic>=0.40.0",
     "beautifulsoup4>=4.12.0",
@@ -11,11 +11,15 @@ dependencies = [
     "ijson>=3.3.0",
     "openai>=1.50.0",
     "pandas>=2.2.3",
+    "playwright>=1.40.0",
     "pytest>=8.3.5",
     "python-dotenv>=1.1.1",
     "requests>=2.32.3",
     "tqdm>=4.67.1",
-    "weaviate-agents>=1.5.0",
-    "weaviate-client==4.21.0",
+    "weaviate-agents>=1.6.0",
+    "weaviate-client==4.22.0",
     "weaviate-demo-datasets>=0.8.1",
+    "weaviate-engram>=0.3.0",
+    "anthropic>=0.40.0",
+    "openai>=1.50.0",
 ]

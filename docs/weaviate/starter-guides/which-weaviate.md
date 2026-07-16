@@ -19,6 +19,7 @@ Weaviate can be deployed in the following ways:
 - [Embedded Weaviate](/deploy/installation-guides/embedded.md)
 - [Docker-Compose](/deploy/installation-guides/docker-installation.md)
 - [Weaviate Cloud (WCD)](/deploy/installation-guides/weaviate-cloud.md)
+- [DigitalOcean Managed Weaviate](/deploy/installation-guides/digitalocean.md)
 - [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 
@@ -43,12 +44,12 @@ Here are some recommendations for different use cases.
 
 If you are evaluating Weaviate, we recommend using one of these instance types to get started quickly:
 
-- [Weaviate Cloud (WCD)](/cloud) sandbox
+- [Weaviate Cloud (WCD)](/cloud) free cluster
 - [Embedded Weaviate](/deploy/installation-guides/embedded)
 
 Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or `text2vec-google`.
 
-The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
+The [Quickstart guide](/weaviate/quickstart) uses a WCD free cluster and an API based vectorizer to run the examples.
 
 ### Development
 
@@ -86,12 +87,13 @@ Keep in mind two other factors, which are cost, and their footprint.
 For production deployments, consider one of these hosting models:
 
 - [Weaviate Cloud (WCD)](/cloud)
+- [DigitalOcean Managed Weaviate](/deploy/installation-guides/digitalocean.md)
 - [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](/cloud)
 
 All of these options are scalable. Kubernetes and Hybrid SaaS offer the most configuration flexibility.
 
-A WCD-based solution is the easiest way to deploy Weaviate in terms of setup and maintenance. A self-managed Kubernetes deployment combines flexibility and scalability.
+A WCD-based solution is the easiest way to deploy Weaviate in terms of setup and maintenance. A self-managed Kubernetes deployment combines flexibility and scalability. DigitalOcean Managed Weaviate is a fully managed option operated by DigitalOcean, a good fit for teams already on DigitalOcean or who want managed hosting outside Weaviate Cloud.
 
 If you need additional configuration control, but you don't want to manage your Weaviate deployment, Hybrid SaaS offers a best-of-both-worlds solution.
 

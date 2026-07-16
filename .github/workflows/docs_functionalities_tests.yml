@@ -1,0 +1,60 @@
+name: Docs Functionalities Tests
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # Run every Sunday at 23:00 UTC (offset from indexability's 22:00 slot)
+    - cron: "0 23 * * 0"
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Base URL to test against (e.g. a Netlify deploy preview)"
+        required: false
+        default: "https://docs.weaviate.io"
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  test-functionalities:
+    name: Test Functionalities
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Playwright browser
+        run: uv run playwright install --with-deps chromium
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run functionalities tests
+        id: functionalities-tests
+        continue-on-error: true
+        env:
+          DOCS_BASE_URL: ${{ github.event.inputs.base_url || 'https://docs.weaviate.io' }}
+          # Tell tests/conftest.py to skip its Weaviate docker-compose startup —
+          # this Playwright-only suite doesn't need a local Weaviate instance.
+          DOCS_GITHUB_ENV: "true"
+        run: |
+          echo "Running Copy-page functionalities tests against ${DOCS_BASE_URL} ..."
+          uv run pytest -m "functionalities" -v --tb=short --junitxml=pytest-results.xml
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.functionalities-tests.outcome == 'success' && 'success' || 'failure' }}
+          test-type: 'Functionalities'
+          slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
+          test-results-xml: 'pytest-results.xml'

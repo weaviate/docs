@@ -136,15 +136,15 @@ import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
 
 <SearchOperators/>
 
-Search operators define the minimum number of query [tokens](../../search/bm25.md#set-tokenization) that must be present in the object to be returned.
+Search operators define the minimum number of query [tokens](../../search/bm25.md#set-tokenization) that must be present within a single searched property for an object to be returned.
 
 Conceptually, it works as though a filter is applied to the results of the BM25 score calculation. The available operators are:
-- `and`: All tokens must be present in the object
-- `or`: At least one token must be present in the object, with the minimum number of tokens being configurable (`minimumOrTokensMatch`)
+- `and`: All tokens must be present within a single searched property
+- `or`: At least one token must be present within a single searched property, with the minimum number of tokens being configurable (`minimumOrTokensMatch`)
 
-As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects that contain all of the tokens `computer`, `networking`, and `guide`. In contrast, the same query with the `or` operator would return objects that contain at least one of those tokens. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present in the object.
+As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects where all of the tokens `computer`, `networking`, and `guide` appear together within a single searched property. If the tokens are spread across different properties — for example, `computer` in `title` and `networking` in `description` — the object does not match under `and`. In contrast, the same query with the `or` operator would return objects where at least one of those tokens appears in a searched property. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present within a single searched property.
 
-If not specified, the default operator is `or`, with a `minimumOrTokensMatch` of `1`. This means that at least one token must be present in the object for it to be returned.
+If not specified, the default operator is `or`, with a `minimumOrTokensMatch` of `1`. This means that at least one token must be present in a searched property for the object to be returned.
 
 import BM25OperatorsLight from '../img/bm25_operators_light.png';
 import BM25OperatorsDark from '../img/bm25_operators_dark.png';

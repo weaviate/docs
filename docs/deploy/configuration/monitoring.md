@@ -64,7 +64,8 @@ Be aware that metrics do not follow the semantic versioning guidelines of other 
 
 :::
 
-The list of metrics that are obtainable through Weaviate's metric system is constantly being expanded. The complete list of metrics can be found in the source code files: 
+The list of metrics that are obtainable through Weaviate's metric system is constantly being expanded. The complete list of metrics can be found in the source code files:
+
 - [`usecases/monitoring/prometheus.go`](https://github.com/weaviate/weaviate/blob/main/usecases/monitoring/prometheus.go)
 - [`usecases/replica/metrics.go`](https://github.com/weaviate/weaviate/blob/main/usecases/replica/metrics.go)
 - [`adapters/repos/db/metrics.go`](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/metrics.go)
@@ -270,7 +271,7 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `lsm_bucket_wal_recovery_failure_count`    | Number of failed LSM bucket WAL recoveries                | `strategy` | `Counter`   |
 | `lsm_bucket_wal_recovery_duration_seconds` | Duration of LSM bucket WAL recovery in seconds            | `strategy` | `Histogram` |
 
-### Schema & cluster consensus 
+### Schema & cluster consensus
 
 #### Schema & RAFT consensus
 
@@ -356,17 +357,17 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 
 #### Backup & restore
 
-| Metric                            | Description                                               | Labels                       | Type      |
-| --------------------------------- | --------------------------------------------------------- | ---------------------------- | --------- |
-| `backup_restore_ms`               | Duration of a backup restore                              | `backend_name`, `class_name` | `Summary` |
-| `backup_restore_class_ms`         | Duration restoring class                                  | `class_name`                 | `Summary` |
-| `backup_restore_init_ms`          | Startup phase of a backup restore                         | `backend_name`, `class_name` | `Summary` |
-| `backup_restore_from_backend_ms`  | File transfer stage of a backup restore                   | `backend_name`, `class_name` | `Summary` |
-| `backup_store_to_backend_ms`      | File transfer stage of a backup store                     | `backend_name`, `class_name` | `Summary` |
-| `bucket_pause_durations_ms`       | Bucket pause durations                                    | `bucket_dir`                 | `Summary` |
-| `backup_restore_data_transferred` | Total number of bytes transferred during a backup restore | `backend_name`, `class_name` | `Counter` |
-| `backup_store_data_transferred`   | Total number of bytes transferred during a backup store   | `backend_name`, `class_name` | `Counter` |
-| `weaviate_restore_phase_duration_seconds` | Duration of restore phases (prepare, object_storage_download, schema_apply) | `phase` | `Histogram` |
+| Metric                                    | Description                                                                 | Labels                       | Type        |
+| ----------------------------------------- | --------------------------------------------------------------------------- | ---------------------------- | ----------- |
+| `backup_restore_ms`                       | Duration of a backup restore                                                | `backend_name`, `class_name` | `Summary`   |
+| `backup_restore_class_ms`                 | Duration restoring class                                                    | `class_name`                 | `Summary`   |
+| `backup_restore_init_ms`                  | Startup phase of a backup restore                                           | `backend_name`, `class_name` | `Summary`   |
+| `backup_restore_from_backend_ms`          | File transfer stage of a backup restore                                     | `backend_name`, `class_name` | `Summary`   |
+| `backup_store_to_backend_ms`              | File transfer stage of a backup store                                       | `backend_name`, `class_name` | `Summary`   |
+| `bucket_pause_durations_ms`               | Bucket pause durations                                                      | `bucket_dir`                 | `Summary`   |
+| `backup_restore_data_transferred`         | Total number of bytes transferred during a backup restore                   | `backend_name`, `class_name` | `Counter`   |
+| `backup_store_data_transferred`           | Total number of bytes transferred during a backup store                     | `backend_name`, `class_name` | `Counter`   |
+| `weaviate_restore_phase_duration_seconds` | Duration of restore phases (prepare, object_storage_download, schema_apply) | `phase`                      | `Histogram` |
 
 #### Shard management
 
@@ -438,9 +439,16 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 
 These metrics track asynchronous replication operations for maintaining data consistency across replicas.
 
+:::note Changed in `v1.38`
+As of Weaviate `v1.38`, async replication runs through a centralized scheduler with a bounded worker pool (replacing the previous per-shard goroutines). The `async_replication_scheduler_*` metrics below are new in `v1.38`, and the `async_replication_goroutines_running` metric has been removed.
+:::
+
 | Metric                                                   | Description                                                              | Labels                                | Type        |
 | -------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------- | ----------- |
-| `async_replication_goroutines_running`                   | Number of currently running async replication goroutines                 | `type` (hashbeater, hashbeat_trigger) | `Gauge`     |
+| `async_replication_scheduler_worker_pool_size`           | Current target size of the scheduler worker pool                         | None                                  | `Gauge`     |
+| `async_replication_scheduler_workers_active`             | Number of scheduler worker goroutines currently executing a hashbeat cycle | None                                | `Gauge`     |
+| `async_replication_scheduler_shards_registered`          | Number of shards currently registered with the async replication scheduler | None                                | `Gauge`     |
+| `async_replication_scheduler_queue_depth`                | Number of shards waiting in the scheduler heap (not in-flight)           | None                                  | `Gauge`     |
 | `async_replication_hashtree_init_count`                  | Count of async replication hashtree initializations                      | None                                  | `Counter`   |
 | `async_replication_hashtree_init_running`                | Number of currently running hashtree initializations                     | None                                  | `Gauge`     |
 | `async_replication_hashtree_init_failure_count`          | Count of async replication hashtree initialization failures              | None                                  | `Counter`   |
@@ -451,10 +459,13 @@ These metrics track asynchronous replication operations for maintaining data con
 | `async_replication_iteration_running`                    | Number of currently running async replication iterations                 | None                                  | `Gauge`     |
 | `async_replication_hashtree_diff_duration_seconds`       | Duration of async replication hashtree diff computation in seconds       | None                                  | `Histogram` |
 | `async_replication_object_digests_diff_duration_seconds` | Duration of async replication object digests diff computation in seconds | None                                  | `Histogram` |
+| `async_replication_objects_diff_total`                   | Total objects found in diff per hashbeat cycle (queued for propagation or locally deleted before propagation) | None             | `Counter`   |
 | `async_replication_propagation_count`                    | Count of async replication propagation executions                        | None                                  | `Counter`   |
 | `async_replication_propagation_failure_count`            | Count of async replication propagation failures                          | None                                  | `Counter`   |
 | `async_replication_propagation_object_count`             | Count of objects propagated by async replication                         | None                                  | `Counter`   |
 | `async_replication_propagation_duration_seconds`         | Duration of async replication propagation in seconds                     | None                                  | `Histogram` |
+| `async_replication_local_deletions_total`                | Total local object deletions applied due to remote-deleted verdicts or deletion-conflict responses during async replication | None | `Counter`   |
+| `async_replication_reconcile_failures_total`             | Number of indices that failed to reconcile async replication with the global `ASYNC_REPLICATION_DISABLED` flag | None             | `Counter`   |
 
 #### Replication coordinator
 
@@ -473,6 +484,26 @@ These metrics track the replication coordinator's read and write operations acro
 | `replication_coordinator_writes_duration_seconds` | Duration in seconds of write operations to replicas                            | None   | `Histogram` |
 | `replication_coordinator_reads_duration_seconds`  | Duration in seconds of read operations from replicas                           | None   | `Histogram` |
 | `replication_read_repair_duration_seconds`        | Duration in seconds of read repair operations                                  | None   | `Histogram` |
+
+### MCP server
+
+Added in `v1.38`. These metrics track tool traffic, latency, auth failures, and the live state of the runtime write-access flag for the built-in [Weaviate MCP server](/weaviate/configuration/mcp-server.mdx).
+
+| Metric                                    | Description                                                                                       | Labels           | Type        |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------- | ----------- |
+| `weaviate_mcp_tool_calls_total`           | Total MCP tool invocations.                                                                       | `tool`, `status` | `Counter`   |
+| `weaviate_mcp_tool_call_duration_seconds` | Latency of MCP tool calls (LatencyBuckets histogram).                                             | `tool`, `status` | `Histogram` |
+| `weaviate_mcp_tool_calls_inflight`        | In-flight MCP tool calls per tool. Catches one slow tool starving the rest.                       | `tool`           | `Gauge`     |
+| `weaviate_mcp_auth_failures_total`        | MCP authentication and authorization failures.                                                    | `reason`         | `Counter`   |
+| `weaviate_mcp_tools_listed_total`         | `tools/list` calls, labeled with whether the write tool was visible in the response.              | `write_access`   | `Counter`   |
+| `weaviate_mcp_write_access_enabled`       | Live state of `MCP_SERVER_WRITE_ACCESS_ENABLED`, polled at scrape time. Reflects runtime toggles. | None             | `Gauge`     |
+
+Label values:
+
+- **`tool`** — the MCP tool name (e.g. `weaviate-query-hybrid`, `weaviate-objects-upsert`).
+- **`status`** — `success` · `error` · `denied` · `write_disabled`. `denied` covers authorization failures classified via the `Forbidden` / `Unauthenticated` error families. `write_disabled` is emitted when a write call hits the runtime guard.
+- **`reason`** — `missing_token` · `invalid_token` · `forbidden` · `unauthenticated`. `missing_token` and `invalid_token` are detected at the principal-extraction step; `forbidden` and `unauthenticated` are detected at authorization time.
+- **`write_access`** — `enabled` / `disabled`, matching the live state of `MCP_SERVER_WRITE_ACCESS_ENABLED` at the time of the `tools/list` call.
 
 ---
 

@@ -35,7 +35,7 @@ Weaviate offers four types of vector indexes, [Hierarchical Navigable Small Worl
 - HNSW indexes enable fast, scalable vector searching that works well even with very large data sets.
 - Flat indexes are memory-efficient indexes that work best with small data sets.
 - Dynamic indexes switch from a flat index to an HNSW index when a [collection](../../concepts/data.md#collections) or [tenant](../../concepts/data.md#multi-tenancy) reaches a threshold size.
-- HFresh indexes use a cluster-based approach with HNSW for centroids, providing memory efficiency for large datasets.
+- HFresh indexes use a cluster-based approach with HNSW for centroids, providing memory efficiency by keeping most data on disk.
 
 #### HNSW indexes
 
@@ -97,7 +97,11 @@ import HFreshStatus from '/_includes/feature-notes/hfresh_status.mdx';
 
 [HFresh indexes](/weaviate/concepts/vector-index#hfresh-index) are cluster-based vector indexes that use HNSW for the centroid index. They partition vectors into posting lists (clusters) and search only the most relevant clusters for a query.
 
-HFresh indexes are well-suited for very large collections where memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids.
+HFresh indexes are well-suited when memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids. Only the compressed centroid index is kept in memory. The posting lists live on disk, so memory usage stays low even as the collection grows. The trade-off is lower peak query throughput than HNSW, so HFresh is a good fit when you can tolerate higher query latency in exchange for smaller memory requirements.
+
+:::tip Tuning
+Start with the default parameters. If recall is too low, increase `searchProbe` or the RQ `rescoreLimit` — both take effect at runtime.
+:::
 
 :::note
 HFresh only supports `cosine` and `l2-squared` distance metrics.

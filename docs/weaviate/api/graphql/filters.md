@@ -69,9 +69,9 @@ The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebr
   - `Like`
   - `WithinGeoRange`
   - `IsNull`
-  - `ContainsAny`  (*Only for array and text properties)
-  - `ContainsAll`  (*Only for array and text properties)
-  - `ContainsNone` (*Only for array and text properties)
+  - `ContainsAny`  (*For `text`/`string`, `int`, `number`, `boolean`, `date`, `uuid` properties and their array variants)
+  - `ContainsAll`  (*For `text`/`string`, `int`, `number`, `boolean`, `date`, `uuid` properties and their array variants)
+  - `ContainsNone` (*For `text`/`string`, `int`, `number`, `boolean`, `date`, `uuid` properties and their array variants)
 - `Path`: Is a list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style, indicating the property name of the collection.
   - If the property is a cross-reference, the path should be followed as a list of strings. For a `inPublication` reference property that refers to `Publication` collection, the path selector for `name` will be `["inPublication", "Publication", "name"]`.
 - `valueType`
@@ -149,7 +149,7 @@ Starting with `v1.12.0` you can configure your own [stopword lists for the inver
 
 ## Multiple operands
 
-You can set multiple operands or [nest conditions](../../search/filters.md#nested-filters).
+You can set multiple operands or [combine conditions with `And` / `Or`](../../search/filters.md#combine-filters-with-and-or-or).
 
 :::tip
 You can filter datetimes similarly to numbers, with the `valueDate` given as `string` in [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) format.
@@ -241,11 +241,17 @@ Currently, the `Like` filter is not able to match wildcard characters (`?` and `
 
 The `ContainsAny`, `ContainsAll` and `ContainsNone` operators filter objects using values of an array as criteria.
 
-Both operators expect an array of values and return objects that match based on the input values.
+These operators expect an array of values and return objects that match based on the input values.
+
+They are not limited to text. They work on `text`/`string`, `int`, `number`, `boolean`, `date`, and `uuid` properties — and on the array variants of each (`int[]`, `number[]`, etc.). A scalar property is treated as a single-element set: the object matches if its value satisfies the operator against the candidate list.
+
+Pass the candidate values using the argument that matches the property's data type: `valueText` for `text`/`string`, `valueInt` for `int`, `valueNumber` for `number`, `valueBoolean` for `boolean`, and `valueDate` for `date`. For `uuid`/`uuid[]` properties, pass the UUIDs as strings using `valueText` (there is no `valueUuid` argument). For example, a `ContainsAny` query on an `int` property with a value of `[10, 20, 30]` returns objects whose property holds at least one of those integers.
+
+Geo-coordinate and phone-number properties are not supported by these operators; use `WithinGeoRange` for geo filtering.
 
 :::note `ContainsAny`/`ContainsAll`/`ContainsNone` notes:
 - The `ContainsAny`, `ContainsAll` and `ContainsNone` operators treat texts as an array. The text is split into an array of tokens based on the chosen tokenization scheme, and the search is performed on that array.
-- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the text array must be specified with the `valueTextArray` argument. This is different from the usage in search, where the `valueText` argument that can be used.
+- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the values must be specified with the array-suffixed argument that matches the property's data type, such as `valueTextArray` for `text` (and `uuid`) or `valueIntArray` for `int`. This is different from the usage in search, where the singular argument (e.g. `valueText`, `valueInt`) can be used.
 :::
 
 
@@ -471,6 +477,61 @@ import GraphQLFiltersWhereBeaconCount from '/_includes/code/graphql.filters.wher
 ```
 
 </details>
+
+### By nested object property
+
+:::caution Preview feature
+
+Available from Weaviate `v1.38` as a preview, gated by `WEAVIATE_PREVIEW_NESTED_FILTERING=on` on the server. See [Filter on nested object properties](../../search/filters.md#filter-on-nested-object-properties) for the conceptual guide and worked examples.
+
+:::
+
+A `where` filter can target a leaf inside an [`object` / `object[]` property](../../config-refs/datatypes.md#object). The `path` is a **single-element array** containing a dotted path; `[N]` pins a segment to an array index.
+
+```graphql
+# Any car has make = "Toyota"
+{
+  Get {
+    Document(
+      where: {
+        path: ["cars.make"]
+        operator: Equal
+        valueText: "Toyota"
+      }
+    ) { title }
+  }
+}
+
+# The first car's third tire is a Bridgestone
+{
+  Get {
+    Document(
+      where: {
+        path: ["cars[0].tires[2].brand"]
+        operator: Equal
+        valueText: "Bridgestone"
+      }
+    ) { title }
+  }
+}
+
+# Same-element correlation: the SAME car is both Toyota AND red
+{
+  Get {
+    Document(
+      where: {
+        operator: And
+        operands: [
+          { path: ["cars.make"],  operator: Equal, valueText: "Toyota" }
+          { path: ["cars.color"], operator: Equal, valueText: "red" }
+        ]
+      }
+    ) { title }
+  }
+}
+```
+
+Don't confuse this with a [reference-path filter](#by-cross-references): a reference-path `path` has multiple elements traversing cross-references (`["inCity", "City", "name"]`), while a nested-path `path` is a **single element** with dots inside it (`["cars.make"]`).
 
 ### By geo coordinates
 

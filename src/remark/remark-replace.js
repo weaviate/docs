@@ -15,17 +15,24 @@ const siteConfig = readSiteConfig();
 // pattern to match: ||site.some_name|| in markdown
 const pattern = /[|]{2}[ ]*site\.([a-z_]*)[ ]*[|]{2}/g
 
-const interpolate = (value, vfile) => {
+// Shared token replacement. Used by the remark plugin (below) for docs pages,
+// and by the site's markdown.preprocessor (docusaurus.config.js) so that the
+// same ||site.*|| interpolation also runs on imported partials from _includes/,
+// which are compiled by Docusaurus' MDX *fallback* loader and therefore never
+// see this remark plugin. Keeping one implementation avoids drift.
+const replaceSiteTokens = (value, sourcePath) => {
   // replace the pattern with config variables
   return value.replaceAll(pattern, (_, name) => {
     // display a warning if config variable is missing
     if (siteConfig[name] == undefined) {
-      console.warn('\x1b[33m%s', vfile.path, '\x1b[0m');
+      console.warn('\x1b[33m%s', sourcePath, '\x1b[0m');
       console.warn(`Couldn't find`, '\x1b[31m', `||site.${name}||`, '\x1b[0m');
     }
     return siteConfig[name]
   })
 }
+
+const interpolate = (value, vfile) => replaceSiteTokens(value, vfile.path)
 
 const valueNodes = ['text', 'jsx', 'code', 'inlineCode'];
 const valueNodeFilter = (node) => 
@@ -51,3 +58,6 @@ const plugin = (options) => {
 };
 
 module.exports = plugin;
+// Exposed so docusaurus.config.js `markdown.preprocessor` can reuse the exact
+// same interpolation on raw file content (covers fallback-loaded partials).
+module.exports.replaceSiteTokens = replaceSiteTokens;

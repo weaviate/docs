@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 faq:
   - question: Does Weaviate offer an MCP server?
     answer: >-
-      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (preview, available from v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
+      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
   - question: Is the MCP server an external library?
     answer: >-
       No — it's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
@@ -15,6 +15,7 @@ faq:
   - question: How do I request a new MCP tool or feature?
     answer: >-
       Open a feature request on the Weaviate GitHub repo at https://github.com/weaviate/weaviate/issues/new/choose. Pick the "Feature request" template and describe the tool, parameter, or capability you'd like the MCP server to expose, with a concrete use case.
+
 # tags: ["mcp", "configuration"]
 ---
 
@@ -155,11 +156,11 @@ The MCP server is built into Weaviate but is **disabled by default** for securit
 
 To enable and configure the server, set the following [environment variables](/docs/deploy/configuration/env-vars/index.md) in your Weaviate configuration (e.g., `docker-compose.yml`):
 
-| Environment Variable                                                                                | Default | Description                                                                                                                                                                                                                                                                                                 |
-| --------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | **Required.** Set to `true` to start the MCP server.                                                                                                                                                                                                                                                        |
-| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                                                                                                                         |
-| [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. |
+| Environment Variable                                                                                | Default | Runtime-configurable | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------- | ------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_ENABLED)                           | `false` | from `v1.38`         | **Required.** Set to `true` to start the MCP server.                                                                                                                                                                                                                                                                                                                                                              |
+| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | from `v1.38`         | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                                                                                                                                                                                                                               |
+| [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | No                   | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. Tool descriptions are baked into the tool schemas at registration, so this flag remains startup-only. |
 
 ### Permissions
 
@@ -191,7 +192,7 @@ tools:
     description: "Perform a vector or keyword search on a collection."
     arguments:
       query: "The natural language search query to find relevant objects."
-      alpha: "0.0 = pure keyword (BM25), 1.0 = pure vector, 0.5 = equal weight (default)."
+      alpha: "0.0 = pure keyword (BM25), 1.0 = pure vector. Defaults to 0.75."
 ```
 
 </TabItem>
@@ -204,7 +205,7 @@ tools:
       "description": "Perform a vector or keyword search on a collection.",
       "arguments": {
         "query": "The natural language search query to find relevant objects.",
-        "alpha": "0.0 = pure keyword (BM25), 1.0 = pure vector, 0.5 = equal weight (default)."
+        "alpha": "0.0 = pure keyword (BM25), 1.0 = pure vector. Defaults to 0.75."
       }
     }
   }
@@ -254,7 +255,7 @@ Performs a hybrid search combining vector similarity and keyword matching (BM25)
 - `query` (string, required): The natural language search text.
 - `collection_name` (string, required): The collection to search.
 - `tenant_name` (string, optional): Tenant to search within for multi-tenant collections.
-- `alpha` (float, optional): Weighting. `0.0` = pure keyword search, `1.0` = pure vector search. Default is `0.5`.
+- `alpha` (float, optional): Weighting. `0.0` = pure keyword search, `1.0` = pure vector search. Default is `0.75`, the same default as a regular [hybrid search](/weaviate/api/graphql/search-operators#hybrid).
 - `limit` (int, optional): Max results.
 - `target_vectors` (array, optional): Named vectors to use for vector search.
 - `target_properties` (array, optional): Properties to search with BM25. If omitted, searches all text properties.
@@ -280,6 +281,14 @@ Batch inserts or updates objects.
 - `objects` (array, required): List of objects containing `properties` and optional `uuid` or `vectors`.
 
 **Returns:** Array of results containing UUIDs or error messages per object.
+
+---
+
+## Monitoring
+
+From `v1.38`, the MCP server emits six Prometheus metrics under the `weaviate_mcp_*` prefix on the existing [Prometheus endpoint](/deploy/configuration/monitoring.md). Use them to track tool traffic, latency, auth failures, and the live state of the write-access flag.
+
+See [Monitoring → MCP server](/deploy/configuration/monitoring.md#mcp-server) for the full label catalogue and the rest of Weaviate's Prometheus surface.
 
 ---
 

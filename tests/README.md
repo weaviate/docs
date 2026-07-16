@@ -21,7 +21,7 @@ Each language runs in its own parallel job:
 
 | Job | Marker(s) | Description |
 | --- | --------- | ----------- |
-| `test-agents` | `agents` | Weaviate Agents tests |
+| `test-agents` | `agents` | Query Agent tests |
 | `test-python` | `(pyv4 or pyv3) and not agents` | Python client tests |
 | `test-typescript` | `ts and not agents` | TypeScript client tests |
 | `test-java` | `java` | Java client tests (with SNAPSHOT build) |
@@ -83,7 +83,7 @@ Tests are organized by language, one file per language:
 | `test_typescript.py` | `ts` | TypeScript client tests |
 | `test_java.py` | `java` | Java client tests (JUnit via Maven) |
 | `test_csharp.py` | `csharp` | C# client tests (xUnit via dotnet) |
-| `test_agents.py` | `agents` | Weaviate Agents tests |
+| `test_agents.py` | `agents` | Query Agent tests |
 
 Supporting files:
 
@@ -103,7 +103,7 @@ Tests are organized using pytest markers:
 | `ts` | TypeScript snippets |
 | `java` | Java client snippets |
 | `csharp` | C# client snippets |
-| `agents` | Weaviate Agents snippets |
+| `agents` | Query Agent snippets |
 | `wcd` | Tests requiring a Weaviate Cloud instance |
 
 ### Running tests by marker

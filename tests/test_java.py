@@ -40,6 +40,22 @@ def test_connection(empty_weaviates, test_class):
     run_java_test(test_class, empty_weaviates)
 
 
+# Most LlmsTxtTest @Test methods connect to Weaviate Cloud (text2vec-weaviate
+# requires Weaviate Embeddings, which only Cloud has). The wcd marker
+# signals the dependency; testLocalConnection + testRbac inside the class
+# still use the local stack on :8080 / :8580.
+@pytest.mark.java
+@pytest.mark.wcd
+@pytest.mark.parametrize(
+    "test_class",
+    [
+        "LlmsTxtTest",
+    ],
+)
+def test_llms_txt(empty_weaviates, test_class):
+    run_java_test(test_class, empty_weaviates)
+
+
 @pytest.mark.java
 @pytest.mark.parametrize(
     "test_class",
@@ -112,7 +128,14 @@ def test_compression(empty_weaviates, test_class):
     "test_class",
     [
         "BackupsTest",
-        "RBACTest",
+        pytest.param(
+            "RBACTest",
+            marks=pytest.mark.skip(
+                reason="Released Java client (6.2.0) can't deserialize the `namespaces` RBAC "
+                "permission that Weaviate 1.35.0 emits in its built-in roles; unskip once a "
+                "client release adds support."
+            ),
+        ),
         "ModelProvidersTest",
         "GetStartedTest",
     ],

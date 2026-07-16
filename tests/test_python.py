@@ -4,16 +4,19 @@ from pathlib import Path
 
 
 def run_py_script(script_loc, custom_replace_pairs=None):
-    if custom_replace_pairs:
-        temp_proc_script_loc = utils.load_and_prep_temp_file(
-            script_loc, lang="py", custom_replace_pairs=custom_replace_pairs
-        )
-        utils.execute_py_script_as_module(
-            temp_proc_script_loc.read_text(), Path(script_loc).stem
-        )
-    else:
-        proc_script = utils.load_and_prep_script(script_loc)
-        utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+    def _exec():
+        if custom_replace_pairs:
+            temp_proc_script_loc = utils.load_and_prep_temp_file(
+                script_loc, lang="py", custom_replace_pairs=custom_replace_pairs
+            )
+            utils.execute_py_script_as_module(
+                temp_proc_script_loc.read_text(), Path(script_loc).stem
+            )
+        else:
+            proc_script = utils.load_and_prep_script(script_loc)
+            utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+
+    utils.retry_on_transient(_exec, label=str(script_loc))
 
 
 def run_pyv3_script(script_loc):
@@ -60,6 +63,58 @@ def test_api_gql(empty_weaviates, script_loc):
     ],
 )
 def test_client(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
+# ========== llms.txt code snippets ==========
+
+# Local-only — these don't need Weaviate Cloud credentials. local_setup.py
+# uses text2vec-ollama (the "local setup example" in llms.txt); rbac.py uses
+# the local RBAC instance on :8580; local_connection.py is just the connect
+# call.
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/llms-txt/python/local_connection.py",
+        "./_includes/code/llms-txt/python/local_setup.py",
+        "./_includes/code/llms-txt/python/rbac.py",
+    ],
+)
+def test_llms_txt(empty_weaviates, script_loc):
+    run_py_script(script_loc)
+
+
+# WCD-only — llms.txt recommends text2vec-weaviate (Weaviate Embeddings),
+# which needs a Cloud cluster. These scripts connect via WEAVIATE_URL /
+# WEAVIATE_API_KEY; generative.py also needs OPENAI_API_KEY (forwarded as
+# X-OpenAI-Api-Key) for the generative-openai module.
+@pytest.mark.pyv4
+@pytest.mark.wcd
+@pytest.mark.parametrize(
+    "script_loc",
+    [
+        "./_includes/code/llms-txt/python/quickstart.py",
+        "./_includes/code/llms-txt/python/crud.py",
+        "./_includes/code/llms-txt/python/queries.py",
+        "./_includes/code/llms-txt/python/filtering.py",
+        "./_includes/code/llms-txt/python/multi_tenancy.py",
+        "./_includes/code/llms-txt/python/named_vectors.py",
+        "./_includes/code/llms-txt/python/aggregations.py",
+        "./_includes/code/llms-txt/python/generative.py",
+    ],
+)
+def test_llms_txt_wcd(script_loc):
+    run_py_script(script_loc)
+
+
+@pytest.mark.pyv4
+@pytest.mark.agents
+@pytest.mark.parametrize(
+    "script_loc",
+    ["./_includes/code/llms-txt/python/query_agent.py"],
+)
+def test_llms_txt_agents(script_loc):
     run_py_script(script_loc)
 
 
@@ -192,7 +247,13 @@ def test_modules(empty_weaviates, script_loc):
         "./_includes/code/howto/search.aggregate.py",
         "./_includes/code/howto/search.generative.py",
         "./_includes/code/howto/search.rerank.py",
-        "./_includes/code/howto/search.multi-target-v4.py"
+        "./_includes/code/howto/search.multi-target-v4.py",
+        # Nested-object filtering preview (v1.38). Requires WEAVIATE_PREVIEW_NESTED_FILTERING=on,
+        # which is set on the anon test instance (tests/docker-compose-anon.yml).
+        "./_includes/code/howto/search.filters.nested.py",
+        # Boost (v1.38). Requires weaviate-client >= 4.22.0
+        # (weaviate/weaviate-python-client#2030), pinned in pyproject.toml.
+        "./_includes/code/howto/search.boost.py",
     ],
 )
 def test_search(empty_weaviates, script_loc):
