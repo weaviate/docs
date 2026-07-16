@@ -29,6 +29,28 @@ for suggested_query in response.queries:
     print(suggested_query.query)
 # END AccessResponse
 
+# START SuggestQueriesWithConversation
+from weaviate.agents.classes import ChatMessage
+
+# Build a conversation history
+conversation = [
+    ChatMessage(role="user", content="What are some popular machine learning frameworks?"),
+    ChatMessage(
+        role="assistant",
+        content="Some popular ML frameworks include TensorFlow, PyTorch, and JAX.",
+    ),
+]
+
+# Suggest follow-up queries based on the conversation context
+response = qa.suggest_queries(
+    conversation=conversation,
+    num_queries=3,
+)
+
+for suggested_query in response.queries:
+    print(suggested_query.query)
+# END SuggestQueriesWithConversation
+
 """
 # START AsyncInstantiation
 import os

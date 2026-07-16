@@ -70,6 +70,7 @@ Suggest Queries can be called with the following arguments:
 | `collections` | `list[str \| QueryAgentCollectionConfig] \| None` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `num_queries` | `int` | The number of queries to suggest (default: `3`). |
 | `instructions` | `str \| None` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
+| `conversation` | `list[ChatMessage] \| None` | A conversation history used to generate follow-up query suggestions. |
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
 
@@ -78,6 +79,32 @@ Suggest Queries can be called with the following arguments:
 | `collections` | `(string \| QueryAgentCollectionConfig)[]` | Override the collections configured at instantiation. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `numQueries` | `number` | The number of queries to suggest (default: `3`). |
 | `instructions` | `string` | Guide the style or focus of the suggested queries. This is provided in addition to any system instructions. Useful for e.g. specifying language. |
+| `conversation` | `ChatMessage[]` | A conversation history used to generate follow-up query suggestions. |
+    </TabItem>
+</Tabs>
+
+### Follow-up queries
+
+You can pass a `conversation` to Suggest Queries to generate follow-up query suggestions based on the conversation history. This is useful for guiding users toward relevant next questions after an initial exchange.
+
+The `conversation` parameter accepts a list of `ChatMessage` objects, using the same format as [multi-turn conversations](../reference/multi_turn_conversations.md).
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SuggestQueriesWithConversation"
+            endMarker="# END SuggestQueriesWithConversation"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SuggestQueriesWithConversation"
+            endMarker="// END SuggestQueriesWithConversation"
+            language="ts"
+        />
     </TabItem>
 </Tabs>
 
