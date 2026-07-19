@@ -119,7 +119,7 @@ Starting in `v1.39`, snapshots are part of how the vector index is stored rather
 
 Because the merge reads its inputs as sorted streams from disk, only the most recently flushed commit log is processed in memory. That step has a fixed cost regardless of how large the graph is, so snapshot creation no longer requires enough memory to hold the previous snapshot plus the commit log delta.
 
-Weaviate protects this on-disk state in several ways. New files are written to a temporary path and atomically renamed into place, so an interrupted write can never be mistaken for a complete file, and orphaned temporary files are cleaned up on the next startup. Snapshots are stored in a checksummed block format. If a commit log file has a torn tail after a crash, it is truncated back to its last valid entry, and a compacted segment that cannot be read in full is dropped in favor of the snapshot and the remaining clean segments.
+Weaviate protects this on-disk state in several ways. New files are written to a temporary path and atomically renamed into place, so an interrupted write can never be mistaken for a complete file, and orphaned temporary files are cleaned up on the next startup. Snapshots are stored in a checksummed block format. If a file cannot be read in full, whether it is a commit log with a torn tail after a crash or a compacted segment damaged on disk, it is truncated back to its last valid entry. The entries written before the damage are retained, and the file becomes valid again so that later compaction can read it. Only the damaged tail is lost, and it is unrecoverable in any case.
 
 See **[the HNSW snapshots configuration](../configuration/hnsw-snapshots.md)** for version-specific details.
 
