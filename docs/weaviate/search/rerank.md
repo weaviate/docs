@@ -16,7 +16,7 @@ import SimilarityPyCode from '!!raw-loader!/_includes/code/howto/search.similari
 import SimilarityPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.similarity-v3.py';
 import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
-import BoostPreview from '/_includes/feature-notes/boost.mdx';
+import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
 
@@ -199,7 +199,7 @@ The response should look like this:
 
 ## Soft-rank with Boost
 
-<BoostPreview/>
+<BoostNote/>
 
 For lightweight result reordering based on filters, property values, or time / numeric decay — without calling an external rerank model — use [Boost](./boost.md). Rerank and Boost can be used independently. Pick rerank when you need a smarter model to re-rank the top-N, and Boost when you want to bias by simple signals already on the objects.
 
