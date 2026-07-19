@@ -2,29 +2,51 @@
 title: HNSW Snapshots
 sidebar_position: 47
 sidebar_label: HNSW Snapshots
-description: Learn about HNSW snapshots in Weaviate for faster startup times and how to manage them.
+description: Learn how Weaviate uses HNSW snapshots for faster startup times, and how they were configured in versions before v1.39.
 ---
 
 import HnswSnapshots from '/_includes/feature-notes/hnsw-snapshots.mdx';
 
 <HnswSnapshots/>
 
-HNSW (Hierarchical Navigable Small World) snapshots can significantly reduce startup times for instances with large vector indexes.
-
-HNSW snapshotting is **enabled by default** starting in `v1.36`. To disable it, set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `true`.
-
-In versions prior to `v1.36`, HNSW snapshotting is disabled by default. Set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `false` to enable it.
+HNSW (Hierarchical Navigable Small World) snapshots significantly reduce startup times for instances with large vector indexes.
 
 :::info Concepts: HNSW snapshots
 See this [concepts page](../concepts/storage.md#hnsw-snapshots) for a detailed description.
 :::
 
-## Configuring snapshot creation
+## Snapshots in `v1.39` and later
 
-Set the following optional environment variables to configure the snapshotting behavior.
+Starting in `v1.39`, HNSW snapshots are always enabled and are not configurable.
+
+The commit log compactor owns the on-disk lifecycle of the vector index, and snapshots are one of the file formats it produces. Weaviate creates and maintains them automatically, so there is nothing to enable, disable, schedule, or tune.
+
+### Environment variables that no longer have an effect
+
+The following environment variables are still recognized, so existing deployments continue to start without a configuration error. However, they are ignored:
+
+- `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS`
+- `PERSISTENCE_HNSW_SNAPSHOT_INTERVAL_SECONDS`
+- `PERSISTENCE_HNSW_SNAPSHOT_ON_STARTUP`
+- `PERSISTENCE_HNSW_SNAPSHOT_MIN_DELTA_COMMITLOGS_NUMBER`
+- `PERSISTENCE_HNSW_SNAPSHOT_MIN_DELTA_COMMITLOGS_SIZE_PERCENTAGE`
+
+If any of these variables is set, Weaviate logs a warning at startup that names the variable and states that it has no effect and will be removed in a future version. Variables that are not set produce no warning. To clear the warnings, remove the variables from your deployment configuration.
+
+Setting the equivalent options in a YAML or JSON configuration file is also accepted and also ignored, but it does not produce a startup warning.
+
+## Configuring snapshot creation in versions before `v1.39`
 
 :::note
-Before creating a new snapshot, the previous snapshot and the commit log difference need to be loaded into memory. Make sure you have enough memory to accommodate this process.
+This section applies to `v1.31` through `v1.38` only. In `v1.39` and later, the environment variables below are ignored.
+:::
+
+In these versions, HNSW snapshotting is an optional feature layered on top of the commit log, and the following environment variables control it.
+
+HNSW snapshotting is **enabled by default** starting in `v1.36`. To disable it, set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `true`. In versions prior to `v1.36`, HNSW snapshotting is disabled by default. Set `PERSISTENCE_HNSW_DISABLE_SNAPSHOTS` to `false` to enable it.
+
+:::note
+Before creating a new snapshot, the previous snapshot and the commit log difference need to be loaded into memory. Make sure you have enough memory to accommodate this process. This requirement does not apply in `v1.39` and later, where snapshots are merged from disk as a stream.
 :::
 
 ### Snapshot on startup
