@@ -234,8 +234,11 @@ The following examples show how to configure Google-specific options.
 
 **Vertex AI parameters:**
 - `projectId` (Required): Your Google Cloud project ID, e.g. `cloud-large-language-models`
+- `location` (Optional): The Google Cloud region to send requests to, e.g. `europe-west1`. Defaults to `us-central1`.
 - `apiEndpoint` (Optional): Regional endpoint, e.g. `us-central1-aiplatform.googleapis.com`
 - `modelId` (Optional): e.g. `gemini-embedding-001`, `text-embedding-005`
+
+Set `location` together with a matching `apiEndpoint` to keep data in a specific region.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

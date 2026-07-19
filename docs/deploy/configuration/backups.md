@@ -316,7 +316,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
 | name | type | required | default | description |
 | ---- | ---- | ---- | ---- |---- |
 | `CPUPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
-| `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
+| `ChunkSize`       | number | no | - | **Deprecated. This option has no effect.** Weaviate ignores any value sent here, so it neither sets nor caps the chunk size. Chunk sizing is now controlled by the [`BACKUP_CHUNK_TARGET_SIZE`](#how-it-works) environment variable, which replaced it. |
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
 | `incremental_base_backup_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.37`. |
@@ -467,6 +467,28 @@ This can result in dramatically smaller backups and much faster backup times.
 #### How it works
 
 When creating a backup, Weaviate splits large files into individual chunks. During an incremental backup, Weaviate compares each file against the base backup. Files that haven't changed are stored as pointers to the base backup rather than being copied again. On restore, Weaviate automatically fetches the referenced files from the base backup.
+
+Only files that are large enough to get a chunk of their own can be referenced individually. Smaller files are packed together into shared chunks, so a change to any one of them means the whole chunk is written again. Three environment variables control the packing: `BACKUP_MIN_CHUNK_SIZE` sets which files count as large, `BACKUP_CHUNK_TARGET_SIZE` sets how much data is packed into one shared chunk, and `BACKUP_SPLIT_FILE_SIZE` sets when a single very large file is spread across several chunks.
+
+Lowering `BACKUP_MIN_CHUNK_SIZE` allows more files to be referenced individually, at the cost of more chunks per backup.
+
+The following environment variables control chunking. All three accept a plain number of bytes or a number with a unit suffix (`B`, `KB`, `MB`, `GB`, `TB`, `KiB`, `MiB`, `GiB`, `TiB`), for example `4MiB`, and all three are applied at startup, so a restart is required to change them.
+
+| Environment variable | Required | Description |
+| --- | --- | --- |
+| `BACKUP_MIN_CHUNK_SIZE` | no | The minimum size a file must reach before it is stored in its own chunk and can be referenced individually by a later incremental backup. Defaults to `1MiB`. |
+| `BACKUP_CHUNK_TARGET_SIZE` | no | The size Weaviate aims for when packing several small files into a single chunk. Defaults to `10MiB`. |
+| `BACKUP_SPLIT_FILE_SIZE` | no | The size above which a single file is split across multiple chunks instead of being written to one. Defaults to `50GiB`. |
+
+:::note Minimum values are raised automatically
+
+These three settings are lower bounds, not exact values, and Weaviate raises them when a smaller value would have no useful effect:
+
+- The threshold for treating a file as large is the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the 100th largest file in the shard, so roughly the 100 largest files in a shard can get their own chunk, and lowering `BACKUP_MIN_CHUNK_SIZE` below that point has no further effect.
+- `BACKUP_CHUNK_TARGET_SIZE` is raised to that threshold if you set it lower, since a chunk that packs small files must still be able to hold one large file.
+- `BACKUP_SPLIT_FILE_SIZE` is likewise raised to that threshold if you set it lower; otherwise no file would ever be large enough to split.
+
+:::
 
 #### Create a full (base) backup
 
