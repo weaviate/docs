@@ -21,6 +21,10 @@ Starting in `v1.39`, HNSW snapshots are always enabled and are not configurable.
 
 The commit log compactor owns the on-disk lifecycle of the vector index, and snapshots are one of the file formats it produces. Weaviate creates and maintains them automatically, so there is nothing to enable, disable, schedule, or tune.
 
+:::caution Snapshots are now required to start
+Because a snapshot replaces the commit logs it covers, it is the only copy of the index state up to that point. If the current snapshot cannot be read, the affected vector index fails to start rather than loading partial data, and it cannot be rebuilt from the node's remaining files. Recovering that shard means restoring the data, for example from a [backup](/deploy/configuration/backups.md). In `v1.31` through `v1.38`, an unreadable snapshot is discarded and Weaviate replays the full commit log instead.
+:::
+
 ### Environment variables that no longer have an effect
 
 The following environment variables are still recognized, so existing deployments continue to start without a configuration error. However, they are ignored:
@@ -33,12 +37,12 @@ The following environment variables are still recognized, so existing deployment
 
 If any of these variables is set, Weaviate logs a warning at startup that names the variable and states that it has no effect and will be removed in a future version. Variables that are not set produce no warning. To clear the warnings, remove the variables from your deployment configuration.
 
-Setting the equivalent options in a YAML or JSON configuration file is also accepted and also ignored, but it does not produce a startup warning.
+The same settings in a Weaviate configuration file (`weaviate.conf.json` by default) are accepted and ignored too, but they produce no startup warning.
 
-## Configuring snapshot creation in versions before `v1.39`
+## Configuring snapshot creation in versions before `v1.39` {#pre-v1-39-configuration}
 
-:::note
-This section applies to `v1.31` through `v1.38` only. In `v1.39` and later, the environment variables below are ignored.
+:::note Applies to `v1.31` through `v1.38`
+In `v1.39` and later, the environment variables below are ignored.
 :::
 
 In these versions, HNSW snapshotting is an optional feature layered on top of the commit log, and the following environment variables control it.

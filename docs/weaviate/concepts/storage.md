@@ -101,7 +101,7 @@ For the HNSW vector index, the Write-Ahead-Log (WAL) is a critical component for
 
 The entire HNSW index state can be reconstructed by replaying these WAL entries.
 
-For very large indexes of tens or hundreds of millions of objects, this can be time-consuming. To avoid replaying the entire WAL on every restart, Weaviate periodically writes **[HNSW snapshots](../configuration/hnsw-snapshots.md)**.
+For very large indexes of tens or hundreds of millions of objects, this can be time-consuming. To avoid replaying the entire WAL on every restart, Weaviate writes **[HNSW snapshots](../configuration/hnsw-snapshots.md)**.
 
 ### HNSW snapshots
 
@@ -111,20 +111,24 @@ import HnswSnapshots from '/_includes/feature-notes/hnsw-snapshots.mdx';
 
 For very large HNSW vector indexes, HNSW snapshots significantly reduce the startup time.
 
-A snapshot represents a point-in-time state of the HNSW index. When Weaviate starts, if a snapshot exists, it is loaded first, and only the changes made after the snapshot was taken are replayed from the WAL. This significantly reduces startup time, because the number of WAL entries that have to be processed no longer grows with the age of the index.
+A snapshot represents a point-in-time state of the HNSW index. When Weaviate starts, it loads the most recent snapshot and replays only the commit log entries written after it. This significantly reduces startup time, because the number of entries that have to be replayed no longer grows with the age of the index.
 
-The WAL is still used to persist every change immediately, guaranteeing that any acknowledged write is durable. Even with a fresh snapshot, the server typically still has to load at least one subsequent commit log file.
+The commit log still persists every change immediately, guaranteeing that any acknowledged write is durable. Even with a fresh snapshot, the server typically still has to load at least one subsequent commit log file.
 
-Starting in `v1.39`, snapshots are part of how the vector index is stored rather than an optional speedup, and Weaviate manages them automatically. A background compactor owns the on-disk lifecycle of the index: it converts each newly flushed commit log into a sorted file, merges sorted files together, and writes a new snapshot when doing so is worthwhile. Snapshot and commit log files live in the same directory, and a snapshot replaces the files it covers rather than duplicating them, which keeps the disk footprint proportional to the size of the index.
+Starting in `v1.39`, snapshots are part of how the vector index is stored rather than an optional speedup, and Weaviate manages them automatically. A background compactor owns the on-disk lifecycle of the index: it compacts newly flushed commit logs, merges them together, and writes a new snapshot when doing so is worthwhile. Snapshots and commit logs live in the same directory, and a snapshot replaces the commit logs it covers rather than duplicating them, which keeps the disk footprint proportional to the size of the index.
 
 Because the merge reads its inputs as sorted streams from disk, only the most recently flushed commit log is processed in memory. That step has a fixed cost regardless of how large the graph is, so snapshot creation no longer requires enough memory to hold the previous snapshot plus the commit log delta.
 
-Weaviate protects this on-disk state in several ways. New files are written to a temporary path and atomically renamed into place, so an interrupted write can never be mistaken for a complete file, and orphaned temporary files are cleaned up on the next startup. Snapshots are stored in a checksummed block format. If a file cannot be read in full, whether it is a commit log with a torn tail after a crash or a compacted segment damaged on disk, it is truncated back to its last valid entry. The entries written before the damage are retained, and the file becomes valid again so that later compaction can read it. Only the damaged tail is lost, and it is unrecoverable in any case.
+Weaviate protects this on-disk state in several ways. New files are written to a temporary path and atomically renamed into place, so an interrupted write can never be mistaken for a complete file, and orphaned temporary files are cleaned up on the next startup.
+
+Commit logs, including compacted ones, are self-healing. If one cannot be read in full, whether because a crash tore its tail or because the file was damaged on disk, it is truncated back to its last valid entry. The entries written before the damage are retained and the file becomes valid again for later compaction, so only the damaged tail is lost.
+
+Snapshots are handled differently. A snapshot is stored in a checksummed block format, and it is never truncated or repaired. If the current snapshot cannot be read, the affected vector index fails to start rather than loading partial data. Because the commit logs a snapshot covers are deleted once it has been written, nothing remains on the node to replay in its place, so recovering that shard means restoring the data, for example from a [backup](/deploy/configuration/backups.md).
 
 See **[the HNSW snapshots configuration](../configuration/hnsw-snapshots.md)** for version-specific details.
 
-:::note Behavior before `v1.39`
-In `v1.31` through `v1.38`, snapshots are an optional feature layered on top of the commit log, and are configured with the `PERSISTENCE_HNSW_SNAPSHOT_*` environment variables. They are enabled by default starting in `v1.36`, and disabled by default in `v1.31` through `v1.35`. In these versions, Weaviate creates a snapshot at startup if the commit log changed since the last snapshot, and periodically once a configured time interval has passed and enough new commit log data has accumulated. If a snapshot cannot be loaded, it is removed and Weaviate falls back to loading the full commit log from the beginning. In `v1.39` and later, a snapshot that cannot be read is a startup error instead, because the commit logs it covers no longer exist as a separate copy.
+:::note Behavior in `v1.31` through `v1.38`
+In these versions, snapshots are an optional feature layered on top of the commit log, and are configured with the `PERSISTENCE_HNSW_SNAPSHOT_*` environment variables. They are enabled by default starting in `v1.36`, and disabled by default in `v1.31` through `v1.35`. Weaviate creates a snapshot at startup if the commit log changed since the last snapshot, and periodically once a configured time interval has passed and enough new commit log data has accumulated. If a snapshot cannot be loaded, it is removed and Weaviate falls back to loading the full commit log from the beginning.
 :::
 
 ## Conclusions
