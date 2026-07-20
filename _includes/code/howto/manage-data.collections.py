@@ -386,6 +386,38 @@ if server_version >= (1, 39):
     assert repeat.status.value == "NO_OP"
     assert repeat.task_id is None
 
+    # START ChangePropertyIndexTokenization
+    from weaviate.classes.config import Tokenization
+
+    collection = client.collections.use("Article")
+
+    # highlight-start
+    # Change the tokenization of the "title" searchable index
+    status = collection.config.update_property_index(
+        "title",
+        "searchable",
+        tokenization=Tokenization.FIELD,
+        wait_for_completion=True,
+    )
+    # highlight-end
+
+    print(status.tokenization)  # Tokenization.FIELD
+
+    # The filterable index on the same property reports the new tokenization too
+    indexes = collection.config.get_property_indexes()
+    title_property = [p for p in indexes.properties if p.name == "title"][0]
+
+    for index in title_property.indexes:
+        print(index.type, index.tokenization)
+
+    # filterable Tokenization.FIELD
+    # searchable Tokenization.FIELD
+    # END ChangePropertyIndexTokenization
+
+    # Test
+    assert status.tokenization.value == "field"
+    assert {i.tokenization.value for i in title_property.indexes} == {"field"}
+
     # START CheckPropertyIndexes
     collection = client.collections.use("Article")
 

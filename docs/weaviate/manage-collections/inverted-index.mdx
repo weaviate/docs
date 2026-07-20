@@ -154,19 +154,19 @@ The inverted index in Weaviate can be configured through various parameters at t
 :::info Added in `v1.39`
 :::
 
-Add, migrate, or rebuild an inverted index on a property of an existing collection. Weaviate builds the index in the background, so the collection stays available for reads and writes while the work runs.
+Add, change, or rebuild an inverted index on a property of an existing collection. Weaviate builds the index in the background, so the collection stays available for reads and writes while the work runs.
 
 :::note Python client only
-This API is currently available in the Python client. Support for the other client libraries is planned. The examples in this section are shown in Python regardless of the language tab selected elsewhere on this page.
+Only the Python client supports this API at the moment. If you work in another client library, use the Python client for these operations until support arrives.
 :::
 
 ### Add or change an index
 
-`update_property_index()` is declarative. It describes the index you want, and Weaviate makes the property match that description. If the index already matches, the call is a no-op and returns a task with a `NO_OP` status and no task ID, so it is safe to run repeatedly.
+`update_property_index()` is declarative. It describes the index you want, and Weaviate makes the property match that description. Re-running a call that has already taken effect does nothing and returns a `NO_OP` status with no task ID, so it is safe to retry.
 
-The call returns as soon as the task is accepted. Pass `wait_for_completion=True` to block until the index is ready and return its final status instead.
+The call returns as soon as Weaviate accepts the task, before the index is built. Use [Check index status](#check-index-status) to follow its progress, or pass `wait_for_completion=True` to block until the index is ready and return its final status.
 
-:::caution Enabling a searchable index requires a tokenization
+:::note Enabling a searchable index requires a `tokenization` argument
 When you add a `searchable` index, you must pass `tokenization`, even if the property already has one. Without it, the request fails with `enable-searchable requires a tokenization to be set on the request body`.
 :::
 
@@ -181,15 +181,32 @@ When you add a `searchable` index, you must pass `tokenization`, even if the pro
   </TabItem>
 </Tabs>
 
-:::caution Tokenization is a property-level setting
-Tokenization belongs to the property, not to an individual index. Changing the tokenization of a property's `searchable` index also changes the tokenization reported for its `filterable` index, which changes how filters on that property match. Review both indexes before you migrate a tokenization.
+To change an index that already exists, describe the configuration you want and Weaviate rebuilds the index to match it.
+
+<Tabs className="code">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ChangePropertyIndexTokenization"
+      endMarker="# END ChangePropertyIndexTokenization"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
+
+:::caution Changing tokenization changes how filters match
+Tokenization belongs to the property, not to an individual index. Changing the tokenization of a property's `searchable` index also changes the tokenization reported for its `filterable` index, which changes how filters on that property match. Review both indexes before you change a tokenization.
 :::
+
+For a multi-tenant collection, adding or changing an index always applies to every tenant, so these calls reject a `tenants` argument.
 
 ### Check index status
 
-`get_property_indexes()` reports every index on every property of the collection, along with its state.
+`get_property_indexes()` reports every index on every property of the collection, along with each index's status.
 
-An index moves through `pending`, then `indexing`, then `ready`. The `progress` field is a fraction between `0` and `1`, but it is only populated while an index is actively being built, and it is often `None`. Treat `status` as the reliable signal and `progress` as a hint.
+An index moves through `pending`, then `indexing`, then `ready`. On a small collection, the first two states can pass too quickly to observe. An index can also report `indexing` briefly after the work itself has finished, while Weaviate swaps the new index into place, so wait for `ready` rather than treating the end of `indexing` as completion.
+
+The `progress` field is a fraction between `0` and `1`, but it is only populated while an index is actively being built, and it is often `None`. Treat `status` as the reliable signal and `progress` as a hint.
 
 <Tabs className="code">
   <TabItem value="py" label="Python">
@@ -206,7 +223,7 @@ An index moves through `pending`, then `indexing`, then `ready`. The `progress` 
 
 Rebuilding regenerates an index from the current object data without changing its configuration. Use it to recover an index you suspect is inconsistent.
 
-Rebuilding is a background task, and you can stop one that is still running with `cancel_property_index_task()`. Cancelling is safe to call when nothing is in flight, in which case it returns a `NO_OP` status.
+Rebuilding is a background task, and you can stop one that is still running with `cancel_property_index_task()`. It is safe to call when nothing is in flight, in which case it returns a `NO_OP` status.
 
 <Tabs className="code">
   <TabItem value="py" label="Python">
@@ -219,9 +236,9 @@ Rebuilding is a background task, and you can stop one that is still running with
   </TabItem>
 </Tabs>
 
-For a multi-tenant collection, `rebuild_property_index()` accepts a `tenants` argument to limit the rebuild to specific tenants. Adding an index or migrating a tokenization always applies to every tenant, so those calls reject a `tenants` argument.
+For a multi-tenant collection, `rebuild_property_index()` accepts a `tenants` argument to limit the rebuild to specific tenants.
 
-While a task is in flight, Weaviate blocks other schema changes to the same property. Dropping the index or starting a second rebuild fails until the task finishes or is cancelled.
+While a task is in flight, Weaviate blocks other schema changes to the same property. [Dropping the index](#drop-an-inverted-index) or starting a second rebuild fails until the task finishes or is canceled.
 
 ## Drop an inverted index
 
