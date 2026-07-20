@@ -149,6 +149,80 @@ The inverted index in Weaviate can be configured through various parameters at t
   </TabItem>
 </Tabs>
 
+## Update inverted indexes at runtime
+
+:::info Added in `v1.39`
+:::
+
+Add, migrate, or rebuild an inverted index on a property of an existing collection. Weaviate builds the index in the background, so the collection stays available for reads and writes while the work runs.
+
+:::note Python client only
+This API is currently available in the Python client. Support for the other client libraries is planned. The examples in this section are shown in Python regardless of the language tab selected elsewhere on this page.
+:::
+
+### Add or change an index
+
+`update_property_index()` is declarative. It describes the index you want, and Weaviate makes the property match that description. If the index already matches, the call is a no-op and returns a task with a `NO_OP` status and no task ID, so it is safe to run repeatedly.
+
+The call returns as soon as the task is accepted. Pass `wait_for_completion=True` to block until the index is ready and return its final status instead.
+
+:::caution Enabling a searchable index requires a tokenization
+When you add a `searchable` index, you must pass `tokenization`, even if the property already has one. Without it, the request fails with `enable-searchable requires a tokenization to be set on the request body`.
+:::
+
+<Tabs className="code">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AddPropertyIndex"
+      endMarker="# END AddPropertyIndex"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
+
+:::caution Tokenization is a property-level setting
+Tokenization belongs to the property, not to an individual index. Changing the tokenization of a property's `searchable` index also changes the tokenization reported for its `filterable` index, which changes how filters on that property match. Review both indexes before you migrate a tokenization.
+:::
+
+### Check index status
+
+`get_property_indexes()` reports every index on every property of the collection, along with its state.
+
+An index moves through `pending`, then `indexing`, then `ready`. The `progress` field is a fraction between `0` and `1`, but it is only populated while an index is actively being built, and it is often `None`. Treat `status` as the reliable signal and `progress` as a hint.
+
+<Tabs className="code">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckPropertyIndexes"
+      endMarker="# END CheckPropertyIndexes"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
+
+### Rebuild an index
+
+Rebuilding regenerates an index from the current object data without changing its configuration. Use it to recover an index you suspect is inconsistent.
+
+Rebuilding is a background task, and you can stop one that is still running with `cancel_property_index_task()`. Cancelling is safe to call when nothing is in flight, in which case it returns a `NO_OP` status.
+
+<Tabs className="code">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START RebuildPropertyIndex"
+      endMarker="# END RebuildPropertyIndex"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
+
+For a multi-tenant collection, `rebuild_property_index()` accepts a `tenants` argument to limit the rebuild to specific tenants. Adding an index or migrating a tokenization always applies to every tenant, so those calls reject a `tenants` argument.
+
+While a task is in flight, Weaviate blocks other schema changes to the same property. Dropping the index or starting a second rebuild fails until the task finishes or is cancelled.
+
 ## Drop an inverted index
 
 Drop (delete) an inverted index from a property. This is a destructive operation — the index data is removed from disk. To use the index again, it must be regenerated.

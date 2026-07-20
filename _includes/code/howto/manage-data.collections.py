@@ -308,6 +308,130 @@ collection.config.delete_property_index("chunk_number", "rangeFilters")
 client.collections.delete("Article")
 
 
+# ==========================================================
+# ===== UPDATE PROPERTY INDEXES ON A LIVE COLLECTION =====
+# ==========================================================
+
+from weaviate.classes.config import Property, DataType
+
+client.collections.create(
+    "Article",
+    properties=[
+        Property(
+            name="title",
+            data_type=DataType.TEXT,
+            index_filterable=True,
+            index_searchable=False,
+        ),
+        Property(
+            name="chunk_number",
+            data_type=DataType.INT,
+            index_filterable=True,
+            index_range_filters=False,
+        ),
+    ],
+)
+
+articles = client.collections.use("Article")
+with articles.batch.fixed_size(batch_size=50) as batch:
+    for i in range(50):
+        batch.add_object({"title": f"Title {i}", "chunk_number": i})
+
+# Runtime property index updates require Weaviate `1.39` or higher. The docs test
+# suite pins an older server in `tests/docker-compose-anon.yml`, so the blocks below
+# are skipped there. Bump that image to a released `1.39` to execute them in CI.
+server_version = tuple(
+    int(part) for part in client.get_meta()["version"].split("-")[0].split(".")[:2]
+)
+
+if server_version >= (1, 39):
+    # START AddPropertyIndex
+    from weaviate.classes.config import Tokenization
+
+    collection = client.collections.use("Article")
+
+    # highlight-start
+    # Add a searchable index to the existing "title" property.
+    # Enabling a searchable index always requires a tokenization.
+    task = collection.config.update_property_index(
+        "title",
+        "searchable",
+        tokenization=Tokenization.WORD,
+    )
+    # highlight-end
+
+    print(task.status)  # PropertyIndexTaskStatus.STARTED
+    print(task.task_id)  # "Article:enable-searchable:title:a1ec"
+
+    # Or block until the index is ready and return its final status
+    # highlight-start
+    status = collection.config.update_property_index(
+        "chunk_number",
+        "rangeFilters",
+        wait_for_completion=True,
+    )
+    # highlight-end
+
+    print(status.status)  # PropertyIndexState.READY
+    # END AddPropertyIndex
+
+    # Test
+    assert task.status.value == "STARTED"
+    assert status.status.value == "ready"
+
+    # Re-issuing the same update is a no-op
+    repeat = collection.config.update_property_index(
+        "chunk_number", "rangeFilters", wait_for_completion=False
+    )
+    assert repeat.status.value == "NO_OP"
+    assert repeat.task_id is None
+
+    # START CheckPropertyIndexes
+    collection = client.collections.use("Article")
+
+    # highlight-start
+    indexes = collection.config.get_property_indexes()
+    # highlight-end
+
+    for property_index in indexes.properties:
+        for index in property_index.indexes:
+            print(property_index.name, index.type, index.status, index.progress)
+
+    # title filterable PropertyIndexState.READY None
+    # title searchable PropertyIndexState.READY None
+    # END CheckPropertyIndexes
+
+    # Test
+    assert indexes.collection == "Article"
+    title_indexes = [p for p in indexes.properties if p.name == "title"][0]
+    assert {i.type for i in title_indexes.indexes} == {"filterable", "searchable"}
+
+    # START RebuildPropertyIndex
+    collection = client.collections.use("Article")
+
+    # highlight-start
+    # Rebuild an index from scratch without changing its configuration
+    task = collection.config.rebuild_property_index("title", "searchable")
+    # highlight-end
+
+    print(task.task_id)  # "Article:rebuild-searchable:title:38c6"
+
+    # highlight-start
+    # Stop a rebuild that is still running
+    cancelled = collection.config.cancel_property_index_task("title", "searchable")
+    # highlight-end
+
+    print(cancelled.status)  # PropertyIndexTaskStatus.CANCELLED
+    # END RebuildPropertyIndex
+
+    # Test
+    assert task.task_id is not None
+    assert cancelled.status.value in ("CANCELLED", "NO_OP")
+
+# Delete the collection to recreate it
+client.collections.delete("Article")
+
+
 # ===============================================
 # ===== CREATE A COLLECTION WITH A RERANKER MODULE =====
 # ===============================================
