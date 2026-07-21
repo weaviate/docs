@@ -346,7 +346,7 @@ server_version = tuple(
 
 if server_version >= (1, 39):
     # START AddPropertyIndex
-    from weaviate.classes.config import Tokenization, PropertyIndexType
+    from weaviate.classes.config import Tokenization, InvertedIndexType
 
     collection = client.collections.use("Article")
 
@@ -355,24 +355,24 @@ if server_version >= (1, 39):
     # Enabling a searchable index always requires a tokenization.
     task = collection.config.update_property_index(
         "title",
-        PropertyIndexType.SEARCHABLE,
+        InvertedIndexType.SEARCHABLE,
         tokenization=Tokenization.WORD,
     )
     # highlight-end
 
-    print(task.status)  # PropertyIndexTaskStatus.STARTED
+    print(task.status)  # InvertedIndexTaskStatus.STARTED
     print(task.task_id)  # "Article:enable-searchable:title:a1ec"
 
     # Or block until the index is ready and return its final status
     # highlight-start
     status = collection.config.update_property_index(
         "chunk_number",
-        PropertyIndexType.RANGE_FILTERS,
+        InvertedIndexType.RANGE_FILTERS,
         wait_for_completion=True,
     )
     # highlight-end
 
-    print(status.status)  # PropertyIndexState.READY
+    print(status.status)  # InvertedIndexState.READY
     # END AddPropertyIndex
 
     # Test
@@ -381,13 +381,13 @@ if server_version >= (1, 39):
 
     # Re-issuing the same update is a no-op
     repeat = collection.config.update_property_index(
-        "chunk_number", PropertyIndexType.RANGE_FILTERS, wait_for_completion=False
+        "chunk_number", InvertedIndexType.RANGE_FILTERS, wait_for_completion=False
     )
     assert repeat.status.value == "NO_OP"
     assert repeat.task_id is None
 
     # START ChangePropertyIndexTokenization
-    from weaviate.classes.config import Tokenization, PropertyIndexType
+    from weaviate.classes.config import Tokenization, InvertedIndexType
 
     collection = client.collections.use("Article")
 
@@ -395,7 +395,7 @@ if server_version >= (1, 39):
     # Change the tokenization of the "title" searchable index
     status = collection.config.update_property_index(
         "title",
-        PropertyIndexType.SEARCHABLE,
+        InvertedIndexType.SEARCHABLE,
         tokenization=Tokenization.FIELD,
         wait_for_completion=True,
     )
@@ -429,8 +429,8 @@ if server_version >= (1, 39):
         for index in property_index.indexes:
             print(property_index.name, index.type, index.status, index.progress)
 
-    # title filterable PropertyIndexState.READY None
-    # title searchable PropertyIndexState.READY None
+    # title filterable InvertedIndexState.READY None
+    # title searchable InvertedIndexState.READY None
     # END CheckPropertyIndexes
 
     # Test
@@ -439,13 +439,13 @@ if server_version >= (1, 39):
     assert {i.type for i in title_indexes.indexes} == {"filterable", "searchable"}
 
     # START RebuildPropertyIndex
-    from weaviate.classes.config import PropertyIndexType
+    from weaviate.classes.config import InvertedIndexType
 
     collection = client.collections.use("Article")
 
     # highlight-start
     # Rebuild an index from scratch without changing its configuration
-    task = collection.config.rebuild_property_index("title", PropertyIndexType.SEARCHABLE)
+    task = collection.config.rebuild_property_index("title", InvertedIndexType.SEARCHABLE)
     # highlight-end
 
     print(task.task_id)  # "Article:rebuild-searchable:title:38c6"
@@ -453,11 +453,11 @@ if server_version >= (1, 39):
     # highlight-start
     # Stop a rebuild that is still running
     cancelled = collection.config.cancel_property_index_task(
-        "title", PropertyIndexType.SEARCHABLE
+        "title", InvertedIndexType.SEARCHABLE
     )
     # highlight-end
 
-    print(cancelled.status)  # PropertyIndexTaskStatus.CANCELLED
+    print(cancelled.status)  # InvertedIndexTaskStatus.CANCELLED
     # END RebuildPropertyIndex
 
     # Test
