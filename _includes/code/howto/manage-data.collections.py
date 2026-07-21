@@ -346,7 +346,7 @@ server_version = tuple(
 
 if server_version >= (1, 39):
     # START AddPropertyIndex
-    from weaviate.classes.config import Tokenization
+    from weaviate.classes.config import Tokenization, PropertyIndexType
 
     collection = client.collections.use("Article")
 
@@ -355,7 +355,7 @@ if server_version >= (1, 39):
     # Enabling a searchable index always requires a tokenization.
     task = collection.config.update_property_index(
         "title",
-        "searchable",
+        PropertyIndexType.SEARCHABLE,
         tokenization=Tokenization.WORD,
     )
     # highlight-end
@@ -367,7 +367,7 @@ if server_version >= (1, 39):
     # highlight-start
     status = collection.config.update_property_index(
         "chunk_number",
-        "rangeFilters",
+        PropertyIndexType.RANGE_FILTERS,
         wait_for_completion=True,
     )
     # highlight-end
@@ -381,13 +381,13 @@ if server_version >= (1, 39):
 
     # Re-issuing the same update is a no-op
     repeat = collection.config.update_property_index(
-        "chunk_number", "rangeFilters", wait_for_completion=False
+        "chunk_number", PropertyIndexType.RANGE_FILTERS, wait_for_completion=False
     )
     assert repeat.status.value == "NO_OP"
     assert repeat.task_id is None
 
     # START ChangePropertyIndexTokenization
-    from weaviate.classes.config import Tokenization
+    from weaviate.classes.config import Tokenization, PropertyIndexType
 
     collection = client.collections.use("Article")
 
@@ -395,7 +395,7 @@ if server_version >= (1, 39):
     # Change the tokenization of the "title" searchable index
     status = collection.config.update_property_index(
         "title",
-        "searchable",
+        PropertyIndexType.SEARCHABLE,
         tokenization=Tokenization.FIELD,
         wait_for_completion=True,
     )
@@ -439,18 +439,22 @@ if server_version >= (1, 39):
     assert {i.type for i in title_indexes.indexes} == {"filterable", "searchable"}
 
     # START RebuildPropertyIndex
+    from weaviate.classes.config import PropertyIndexType
+
     collection = client.collections.use("Article")
 
     # highlight-start
     # Rebuild an index from scratch without changing its configuration
-    task = collection.config.rebuild_property_index("title", "searchable")
+    task = collection.config.rebuild_property_index("title", PropertyIndexType.SEARCHABLE)
     # highlight-end
 
     print(task.task_id)  # "Article:rebuild-searchable:title:38c6"
 
     # highlight-start
     # Stop a rebuild that is still running
-    cancelled = collection.config.cancel_property_index_task("title", "searchable")
+    cancelled = collection.config.cancel_property_index_task(
+        "title", PropertyIndexType.SEARCHABLE
+    )
     # highlight-end
 
     print(cancelled.status)  # PropertyIndexTaskStatus.CANCELLED
