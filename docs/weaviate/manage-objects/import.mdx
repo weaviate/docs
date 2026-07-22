@@ -44,6 +44,9 @@ The following example adds objects to a collection named `MyCollection`.
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
+
+In TypeScript, `data.ingest()` is the server-side batching API, with no separate streaming context. It accepts any `Iterable`, so passing a generator streams objects to the server without building the full list in memory.
+
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ServerSideBatchImportExample"
@@ -92,12 +95,12 @@ In the Python and TypeScript clients, `ingest` is the safe replacement for passi
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
 
-In TypeScript, `data.ingest()` is the server-side batching API, with no separate streaming context. It accepts any `Iterable`, so you can also pass a lazy source instead of a list.
+When your objects are already in an array, pass the array directly to `data.ingest()` to import the whole list in a single call.
 
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START ServerSideBatchImportExample"
-      endMarker="// END ServerSideBatchImportExample"
+      startMarker="// START ServerSideIngestExample"
+      endMarker="// END ServerSideIngestExample"
       language="ts"
     />
   </TabItem>
@@ -408,6 +411,7 @@ For details, see [auto-tenant](/weaviate/manage-collections/multi-tenancy#automa
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How-to: Create objects](./create.mdx)
 - [Python client: batch import notes and best practices](../client-libraries/python/notes-best-practices.mdx)
+- [Blog: Data import best practices](https://weaviate.io/blog/data-import-best-practices)
 - <SkipLink href="/weaviate/api/rest#tag/batch">
     References: REST - /v1/batch
   </SkipLink>
