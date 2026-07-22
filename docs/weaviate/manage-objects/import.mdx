@@ -25,17 +25,18 @@ import SsbStatus from '/_includes/feature-notes/ssb-status.mdx';
 
 With [server-side batch imports](../concepts/data-import.mdx#server-side-batching) (also called "automatic" batching), the client sends data in batch sizes determined by feedback from the server. This simplifies your code and helps the server manage its own load. Server-side batching offers two entry points:
 
-- **Stream from a data source** (recommended for large datasets): Open a batching context (`batch.stream()` in Python) and add objects one at a time as you read them, so the full dataset never has to fit in memory.
-- **[Ingest an in-memory list](#ingest-an-in-memory-list)**: If your objects are already in a list, call `data.ingest()` to import the whole list in a single call. The client streams the list to the server using server-side batching under the hood.
+- **Stream from a data source** (recommended for large datasets): Add objects to the import one at a time as you read them from the source, so the full dataset never has to fit in memory.
+- **[Ingest an in-memory list](#ingest-an-in-memory-list)**: Import a list of objects that you already hold in memory with a single call.
 
 Server-side batching uses the [gRPC API](../api/index.mdx), which current client versions enable by default. If you use the Go client, configure its gRPC connection parameters as described on the [connection configuration page](../connections/connect-custom.mdx).
-
-The [async Python client](../client-libraries/python/async.md#bulk-data-insertion) also supports server-side batching through the `stream()` method and the one-shot `ingest()` method.
 
 The following example adds objects to a collection named `MyCollection`.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
+
+Open the `batch.stream()` context manager and add objects one at a time; the client sends them at the pace the server requests. The [async Python client](../client-libraries/python/async.md#bulk-data-insertion) also supports server-side batching through the `stream()` method and the one-shot `ingest()` method.
+
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ServerSideBatchImportExample"
@@ -60,6 +61,9 @@ The Go client does not support server-side batching; use [manual batching](#manu
 
   </TabItem>
   <TabItem value="java" label="Java">
+
+Open a streaming context with `collection.batch.start()` and add objects one at a time. The batch is flushed and closed automatically when the try-with-resources block exits.
+
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ServerSideBatchImportExample"
@@ -68,6 +72,9 @@ The Go client does not support server-side batching; use [manual batching](#manu
     />
   </TabItem>
   <TabItem value="csharp" label="C#">
+
+Open a streaming batch with `collection.Batch.StartBatch()` and add objects one at a time with `Add`. Call `Close` to flush the batch.
+
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ServerSideBatchImportExample"
@@ -79,12 +86,12 @@ The Go client does not support server-side batching; use [manual batching](#manu
 
 ### Ingest an in-memory list
 
-In the Python and TypeScript clients, `ingest` is the safe replacement for passing a large list to `insert_many`. `insert_many` sends all objects in a single request, which fails if the request exceeds the server's [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit, while `ingest` splits the list into server-paced batches.
+If your objects are already in memory, you can import the whole list with a single call. The client sends the list using server-side batching, so the import is safe for large lists that would exceed the server's [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit if sent as one request.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
 
-`ingest` accepts plain property dicts or `DataObject` instances (to set object IDs, vectors, or references) and returns the same return object as `insert_many`.
+`data.ingest()` is the safe replacement for passing a large list to `insert_many`, which sends all objects in a single request. `ingest` accepts plain property dicts or `DataObject` instances (to set object IDs, vectors, or references) and returns the same return object as `insert_many`.
 
     <FilteredTextBlock
       text={PyCode}
@@ -178,13 +185,39 @@ Use manual (client-side) batching when you want to control the batch size and co
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "reference page" -->
 
-Errors are reported the same way in server-side and manual batching. During a batch import, any failed objects or references are stored and can be inspected after the batching context closes. In the Python client:
+Batch imports report failures per object: a problem with one object does not abort the rest of the import. Errors are reported the same way in server-side and manual batching. Inspect the failed items during and after the import to catch data issues early.
 
-- Within the context manager, `batch.number_errors` holds a running count of failed objects and references. You can use this counter to stop the import process and investigate the failures.
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+
+- Within a batching context manager, `batch.number_errors` holds a running count of failed objects and references. You can use this counter to stop the import process and investigate the failures.
 - After the context closes, `collection.batch.failed_objects` and `collection.batch.failed_references` contain the failed items.
 - The one-shot `data.ingest()` method returns the same result object as `insert_many`: its `errors` dict maps the original index of each failed object to its error.
 
 Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python).
+
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+
+`data.ingest()` returns a result object. Inspect its `errors` field for the objects that failed to import.
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+Inspect the per-object errors on the result returned by the batcher.
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+Within a `batch.start()` streaming context, `batch.numberOfErrors()` reports the number of objects that could not be imported. The response returned by `insertMany` exposes the failed objects through its `errors()` method.
+
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+
+The response returned by `Batch.InsertMany` is a collection of per-object entries. Filter for entries where `Error` is not null to find the failed objects. With `Batch.StartBatch()`, each `Add` returns a handle whose result reports whether the object succeeded.
+
+  </TabItem>
+</Tabs>
 
 ## Customize imported objects
 
