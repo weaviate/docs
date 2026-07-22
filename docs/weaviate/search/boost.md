@@ -10,9 +10,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.boost.py';
-import BoostPreview from '/_includes/feature-notes/boost.mdx';
+import BoostNote from '/_includes/feature-notes/boost.mdx';
 
-<BoostPreview/>
+<BoostNote/>
 
 **Boost** soft-ranks search results — promote or demote matching documents without removing them from the result set. Matching documents move up. Non-matching documents stay in the results but rank lower.
 
