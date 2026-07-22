@@ -10,6 +10,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
 import PyTokenizeEndpoint from "!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.py";
 
 The **[inverted index](../../concepts/indexing/inverted-index.md)** maps values (like words or numbers) to the objects that contain them. It is the backbone for all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
@@ -72,6 +73,14 @@ This code example shows how to configure inverted index parameters through a cli
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="go"
     />
   </TabItem>
 </Tabs>
