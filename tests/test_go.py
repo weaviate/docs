@@ -45,7 +45,7 @@ def test_connection(empty_weaviates, run_pattern):
 @pytest.mark.parametrize(
     "run_pattern",
     [
-        "TestCreateCollection",
+        "TestCreateCollection$",
     ],
 )
 def test_manage_collections(empty_weaviates, run_pattern):
