@@ -282,14 +282,6 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `schema_reads_leader_seconds`     | Duration of schema reads that are passed to the leader        | `type` | `Summary` |
 | `schema_wait_for_version_seconds` | Duration of waiting for a schema version to be reached        | `type` | `Summary` |
 
-#### Schema transactions (deprecated)
-
-| Metric                       | Description                                                                             | Labels                | Type      |
-| ---------------------------- | --------------------------------------------------------------------------------------- | --------------------- | --------- |
-| `schema_tx_opened_total`     | Total number of opened schema transactions                                              | `ownership`           | `Counter` |
-| `schema_tx_closed_total`     | Total number of closed schema transactions. A close must be either successful or failed | `ownership`, `status` | `Counter` |
-| `schema_tx_duration_seconds` | Mean duration of a tx by status                                                         | `ownership`, `status` | `Summary` |
-
 #### RAFT metrics (internal)
 
 | Metric                                                        | Description                                                                                                                          | Labels                    | Type      |

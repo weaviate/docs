@@ -16,7 +16,7 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-h
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchHybridTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchHybridTest.cs";
 import GQLCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.gql.py';
-import BoostPreview from '/_includes/feature-notes/boost.mdx';
+import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 `Hybrid` search combines the results of a vector search and a keyword (BM25F) search by fusing the two result sets.
 
@@ -1041,7 +1041,7 @@ import TokenizationNote from '/\_includes/tokenization.mdx'
 
 ## Soft-rank with Boost
 
-<BoostPreview/>
+<BoostNote/>
 
 Hybrid queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property.
 
