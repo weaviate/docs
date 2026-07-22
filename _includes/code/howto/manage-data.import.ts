@@ -111,7 +111,10 @@ let dataObjects = [
 ]
 
 const myCollection = client.collections.use('MyCollection')
-await myCollection.data.insertMany(dataObject)
+// highlight-start
+// `ingest` imports the list using server-side batching
+await myCollection.data.ingest(dataObjects)
+// highlight-end
 // END BatchImportWithIDExample
 
 // result = await client.graphql.aggregate().withClassName(className).withFields('meta { count }').do();
@@ -146,7 +149,10 @@ let dataObjects = [
   // ...
 ]
 
-await jeopardy.data.insertMany(dataObjects)
+// highlight-start
+// `ingest` imports the list using server-side batching
+await myCollection.data.ingest(dataObjects)
+// highlight-end
 // END BatchImportWithVectorExample
 
 // result = await client.graphql.aggregate().withClassName(className).withFields('meta { count }').do();
@@ -204,7 +210,10 @@ let dataObjects = [
   // ...
 ]
 
-await myCollection.data.insertMany(dataObjects)
+// highlight-start
+// `ingest` imports the list using server-side batching
+await myCollection.data.ingest(dataObjects)
+// highlight-end
 }
 // END BatchImportWithNamedVectors
 

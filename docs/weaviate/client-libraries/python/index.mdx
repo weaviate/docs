@@ -116,6 +116,20 @@ For more code examples, check out the [How-to manuals & Guides](../../guides.mdx
 
 The Python client library provides a synchronous API by default through the `WeaviateClient` class, which is covered on this page. An asynchronous API is also available through the `WeaviateAsyncClient` class (from `weaviate-client` `v4.7.0` and up). See the [async client API page](./async.md) for further details.
 
+## Batch imports
+
+The client provides several ways to [import data in bulk](../../manage-objects/import.mdx):
+
+- `collection.batch.stream()`: [Server-side batching](../../concepts/data-import.mdx#server-side-batching), the recommended starting point. The server tells the client how much data to send next, so you don't have to tune batch parameters yourself.
+- `collection.data.ingest()`: A one-shot convenience for importing a list of objects that you already hold in memory. It uses server-side batching under the hood and returns the same return object as `insert_many`.
+- `collection.batch.dynamic()`, `fixed_size()`, and `rate_limit()`: Client-side batching methods for when you want manual control over batch size and concurrency, or when server-side batching is not available.
+
+:::caution `insert_many` and large lists
+`collection.data.insert_many()` sends all objects in a **single request**. The server rejects requests larger than its [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit, so the whole call fails for large lists. Use `collection.data.ingest()` instead: it is a drop-in replacement that splits the list into server-paced batches.
+:::
+
+For guidance on choosing a batching method, see the [best practices page](./notes-best-practices.mdx#batch-imports).
+
 ## Releases
 
 Go to the [GitHub releases page](https://github.com/weaviate/weaviate-python-client/releases) to see the history of the Python client library releases and change logs.

@@ -202,6 +202,8 @@ There are four methods to configure the batching behavior. They are `stream`, `d
 | `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user.                                                                                                                                     | When you want to specify fixed parameters.                                |
 | `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute).                                                                                                                                    | When you want to avoid hitting third-party vectorization API rate limits. |
 
+If your objects are already in an in-memory list, `collection.data.ingest(objs)` is a one-shot convenience that uses server-side batching under the hood (no batching context required). It accepts plain property dicts or `DataObject` instances and returns the same `BatchObjectReturn` object as `insert_many`, making it a drop-in replacement for `insert_many` for large lists.
+
 #### Usage
 
 We recommend using a context manager as shown below.
