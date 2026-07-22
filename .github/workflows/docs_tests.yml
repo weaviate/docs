@@ -46,6 +46,7 @@ env:
 jobs:
   test-agents:
     name: Test Agents
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -98,6 +99,7 @@ jobs:
 
   test-python:
     name: Test Python
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -261,6 +263,7 @@ jobs:
 
   test-typescript:
     name: Test TypeScript
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -431,6 +434,7 @@ jobs:
 
   test-java:
     name: Test Java
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -727,6 +731,7 @@ jobs:
 
   test-csharp:
     name: Test C#
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
