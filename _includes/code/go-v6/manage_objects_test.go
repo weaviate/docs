@@ -105,10 +105,9 @@ func TestReplaceObject(t *testing.T) {
 func TestPartialUpdate(t *testing.T) {
 	t.Skip("partial update (merge) is not yet available in the v6 Go client; use Data.Replace for a full update")
 
+	// TODO[g-despot]: partial update (merge) snippet pending v6 client support
 	// START UpdateMerge
 	// Coming soon
-	//
-	// TODO[g-despot]: partial update (merge) snippet pending v6 client support
 	// END UpdateMerge
 }
 
@@ -179,9 +178,8 @@ func TestDeleteMany(t *testing.T) {
 func TestReadObjectByID(t *testing.T) {
 	t.Skip("fetch-object-by-id is not yet available in the v6 Go client")
 
+	// TODO[g-despot]: fetch-object-by-id snippet pending v6 client support
 	// START ReadObject
 	// Coming soon
-	//
-	// TODO[g-despot]: fetch-object-by-id snippet pending v6 client support
 	// END ReadObject
 }

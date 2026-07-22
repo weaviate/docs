@@ -228,7 +228,7 @@ The `v6` client is a ground-up redesign. The most visible changes are:
 - **Grouped sub-clients.** Cluster-wide concerns, such as collections, roles, users, backups, and replication, and per-collection concerns, such as data, query, aggregation, and tenants, are grouped under dedicated sub-clients.
 - **Typed results.** Query results can be decoded into your own types.
 
-The `v6` client currently covers a focused subset of the full feature set. Where an operation is not yet available, the `Go v6` tab shows a short "Coming soon" note. To compare the two clients side by side, open the [connection](/weaviate/connections/index.mdx) and [how-to](../../guides.mdx) pages and switch between the `Go` and `Go v6` tabs.
+The `v6` client currently covers a focused subset of the full feature set. Where an operation is not yet available, the `Go v6` tab shows a short "Coming soon" note. To compare the two clients side by side, open the [connection](/weaviate/connections/index.mdx) and [how-to](../guides.mdx) pages and switch between the `Go` and `Go v6` tabs.
 
 ## Design
 

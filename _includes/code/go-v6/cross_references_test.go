@@ -86,10 +86,9 @@ func TestAddOneWayCrossReference(t *testing.T) {
 func TestDeleteCrossReference(t *testing.T) {
 	t.Skip("deleting a cross-reference is not yet available in the v6 Go client")
 
+	// TODO[g-despot]: cross-reference delete snippet pending v6 client support
 	// Delete Go
 	// Coming soon
-	//
-	// TODO[g-despot]: cross-reference delete snippet pending v6 client support
 	// END Delete Go
 }
 
@@ -98,9 +97,8 @@ func TestDeleteCrossReference(t *testing.T) {
 func TestUpdateCrossReference(t *testing.T) {
 	t.Skip("updating a cross-reference is not yet available in the v6 Go client")
 
+	// TODO[g-despot]: cross-reference update snippet pending v6 client support
 	// Update Go
 	// Coming soon
-	//
-	// TODO[g-despot]: cross-reference update snippet pending v6 client support
 	// END Update Go
 }
