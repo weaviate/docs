@@ -13,6 +13,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.create.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
 
 The examples on this page demonstrate how to create individual objects in Weaviate.
@@ -47,6 +48,14 @@ This example creates an object in the `JeopardyQuestion` collection.
       text={GoCode}
       startMarker="// CreateObject START"
       endMarker="// CreateObject END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CreateObject"
+      endMarker="// END CreateObject"
       language="go"
     />
   </TabItem>

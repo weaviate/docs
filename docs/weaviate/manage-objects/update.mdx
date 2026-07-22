@@ -13,6 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.update.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsUpdateTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsUpdateTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import RestObjectsCRUDClassnameNote from "/_includes/rest-objects-crud-classname-note.md";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -63,6 +64,14 @@ However, if you add a _new_ property to your collection definition, Weaviate onl
       text={GoCode}
       startMarker="// UpdateProps START"
       endMarker="// UpdateProps END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateMerge"
+      endMarker="// END UpdateMerge"
       language="go"
     />
   </TabItem>
@@ -154,6 +163,14 @@ The entire object can be replaced by providing the collection name, id and the n
       text={GoCode}
       startMarker="// Replace START"
       endMarker="// Replace END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateReplace"
+      endMarker="// END UpdateReplace"
       language="go"
     />
   </TabItem>
