@@ -106,7 +106,7 @@ func TestGetNearVector(t *testing.T) {
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Single: vector},
+		Target: &types.Vector{Name: "default", Single: vector},
 		Limit:  2,
 		ReturnMetadata: query.ReturnMetadata{
 			Distance: true,
@@ -166,7 +166,7 @@ func TestGetWithDistance(t *testing.T) {
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target:     &types.Vector{Single: vector},
+		Target:     &types.Vector{Name: "default", Single: vector},
 		Similarity: query.Distance(0.25),
 		ReturnMetadata: query.ReturnMetadata{
 			Distance: true,
@@ -195,7 +195,7 @@ func TestGetLimitOffset(t *testing.T) {
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Single: vector},
+		Target: &types.Vector{Name: "default", Single: vector},
 		Limit:  2,
 		Offset: 1,
 	})
@@ -222,7 +222,7 @@ func TestAutocut(t *testing.T) {
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Single: vector},
+		Target: &types.Vector{Name: "default", Single: vector},
 		// Return objects from the first similarity cluster only.
 		AutoLimit: 1,
 	})
@@ -250,7 +250,7 @@ func TestGetWithGroupBy(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector.GroupBy(ctx,
 		query.NearVector{
-			Target: &types.Vector{Single: vector},
+			Target: &types.Vector{Name: "default", Single: vector},
 			Limit:  10,
 		},
 		query.GroupBy{
@@ -282,7 +282,7 @@ func TestGetWithFilter(t *testing.T) {
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Single: vector},
+		Target: &types.Vector{Name: "default", Single: vector},
 		Limit:  2,
 		Filter: &filter.Cond{
 			Target:   "category",

@@ -200,13 +200,15 @@ func TestPropModuleSettings(t *testing.T) {
 // TestDistanceMetric sets the distance metric for a collection that stores
 // user-supplied vectors.
 func TestDistanceMetric(t *testing.T) {
-	// Skipped in docs CI: the distance metric is set on the vector index, and the
-	// v6 client only registers the experimental HFresh index. The CI server
-	// (WEAVIATE_VERSION 1.35.0) predates HFresh and rejects it at create time with
-	// HTTP 422 "invalid vector index 'hfresh'". There is no HNSW index type in the
-	// v6 client to substitute, so this needs a server that supports HFresh (>= 1.37).
-	// The snippet is still compiled and rendered.
-	t.Skip("v6 client's only vector index is the experimental HFresh; the docs-CI server (1.35.0) does not support it — re-enable on a newer server")
+	// HFresh IS supported by the docs-CI server (Weaviate 1.38; the WEAVIATE_VERSION
+	// "1.35.0" workflow var is stale and unused — the compose files pin 1.38.0). The
+	// remaining blocker is the snippet itself: HFresh requires maxPostingSizeKB >= 8,
+	// but the displayed snippet leaves it at the zero value, so the server rejects the
+	// create with HTTP 422 "invalid hfresh config: maxPostingSizeKB is '0' but must be
+	// at least 8". Adding an explicit MaxPostingSizeKB to HFresh in the DisplayedSnippet
+	// (rendered on manage-collections/vector-config.mdx) is a published-content change
+	// pending sign-off; verified that MaxPostingSizeKB: 8 makes the create succeed.
+	t.Skip("HFresh needs maxPostingSizeKB >= 8; adding it to the published snippet needs sign-off (see comment)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
