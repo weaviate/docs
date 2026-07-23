@@ -24,6 +24,7 @@ This enables an enhanced developed experience, such as the ability to:
 | [Cohere](./cohere/index.md) | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md) | [Text](./cohere/generative.md) | [Reranker](./cohere/reranker.md) |
 | [Contextual AI](./contextualai/index.md) | - | [Text](./contextualai/generative.md) | [Reranker](./contextualai/reranker.md) |
 | [Databricks](./databricks/index.md) | [Text](./databricks/embeddings.md) | [Text](./databricks/generative.md) | - |
+| [DeepSeek](./deepseek/index.md) | - | [Text](./deepseek/generative.md) | - |
 | [DigitalOcean](./digitalocean/index.md) | [Text](./digitalocean/embeddings.md) | - | - |
 | [FriendliAI](./friendliai/index.md) | - | [Text](./friendliai/generative.md) | - |
 | [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
