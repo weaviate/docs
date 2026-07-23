@@ -13,6 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
 
 ## Replication settings
 
@@ -48,6 +49,14 @@ Configure replication settings, such as [async replication](/deploy/configuratio
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -175,6 +184,14 @@ Configure sharding per collection.
       startMarker="// START ShardingSettings"
       endMarker="// END ShardingSettings"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">

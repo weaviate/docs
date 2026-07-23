@@ -13,6 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
 Instead of querying your database, you can use an ID to retrieve individual objects.
@@ -50,6 +51,14 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       text={GoCode}
       startMarker="// ReadObject START"
       endMarker="// ReadObject END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ReadObject"
+      endMarker="// END ReadObject"
       language="go"
     />
   </TabItem>

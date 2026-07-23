@@ -39,6 +39,12 @@ DOC_SYSTEMS.tsindent = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
 DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;
+DOC_SYSTEMS.go6 = {
+    baseUrl:
+        'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v6',
+    constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
+    icon: '/img/site/logo-go.svg',
+};
 DOC_SYSTEMS.javaraw = DOC_SYSTEMS.java;
 DOC_SYSTEMS.csharpraw = DOC_SYSTEMS.csharp;
 

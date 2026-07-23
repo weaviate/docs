@@ -13,6 +13,7 @@ import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.delete-v3.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.delete.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsDeleteTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.delete_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsDeleteTest.cs";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -56,6 +57,14 @@ To delete by id, specify the collection name and the object id.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START DeleteObject"
+      endMarker="// END DeleteObject"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START DeleteObject"
       endMarker="// END DeleteObject"
       language="go"
@@ -123,6 +132,14 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       text={GoCode}
       startMarker="// START DeleteBatch"
       endMarker="// END DeleteBatch"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START DeleteMany"
+      endMarker="// END DeleteMany"
       language="go"
     />
   </TabItem>

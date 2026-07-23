@@ -14,6 +14,8 @@ import PyCodeNested from '!!raw-loader!/\_includes/code/howto/search.filters.nes
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.filters-v3.py';
 import JavaScriptCode from '!!raw-loader!/\_includes/code/howto/search.filters.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
+import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/filters_test.go';
+import GoV6PlaceholderCode from '!!raw-loader!/\_includes/code/go-v6/search_placeholders_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchFiltersTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchFiltersTest.cs";
 
@@ -47,6 +49,14 @@ Add a `filter` to your query, to limit the result set.
       startMarker="// START SingleFilter"
       endMarker="// END SingleFilter"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START SingleFilter"
+      endMarker="// END SingleFilter"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -157,6 +167,14 @@ These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To 
       language="gonew"
     />
 </TabItem>
+<TabItem value="go6" label="Go v6">
+<FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START MultipleFiltersAnd"
+      endMarker="// END MultipleFiltersAnd"
+      language="go"
+    />
+</TabItem>
 <TabItem value="java" label="Java">
 <FilteredTextBlock
       text={JavaV6Code}
@@ -224,6 +242,14 @@ Group and nest filter conditions with `And` and `Or` operators to express compou
       startMarker="// START MultipleFiltersNested"
       endMarker="// END MultipleFiltersNested"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START MultipleFiltersNested"
+      endMarker="// END MultipleFiltersNested"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -309,6 +335,14 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START NearTextWithFilter"
+      endMarker="// END NearTextWithFilter"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -376,6 +410,14 @@ The `ContainsAny` operator works on text properties and take an array of values 
       startMarker="// START ContainsAnyFilter"
       endMarker="// END ContainsAnyFilter"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ContainsAnyFilter"
+      endMarker="// END ContainsAnyFilter"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -447,6 +489,14 @@ The `ContainsAll` operator works on text properties and take an array of values 
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ContainsAllFilter"
+      endMarker="// END ContainsAllFilter"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -514,6 +564,14 @@ The `ContainsNone` operator works on text properties and take an array of values
       startMarker="// START ContainsNoneFilter"
       endMarker="// END ContainsNoneFilter"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -612,6 +670,14 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START LikeFilter"
+      endMarker="// END LikeFilter"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -697,6 +763,14 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CrossReferenceFilter"
+      endMarker="// END CrossReferenceFilter"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -768,6 +842,14 @@ import GeoLimitations from '/\_includes/geo-limitations.mdx';
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6PlaceholderCode}
+      startMarker="// START GeoFilter"
+      endMarker="// END GeoFilter"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -823,6 +905,14 @@ To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START FilterByDate"
+      endMarker="// END FilterByDate"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -872,6 +962,14 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
       startMarker="// START FilterById"
       endMarker="// END FilterById"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START FilterById"
+      endMarker="// END FilterById"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -929,6 +1027,14 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START FilterByTimestamp"
+      endMarker="// END FilterByTimestamp"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -984,6 +1090,14 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START FilterByPropertyLength"
+      endMarker="// END FilterByPropertyLength"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -1037,6 +1151,14 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
       startMarker="// START FilterByPropertyNullState"
       endMarker="// END FilterByPropertyNullState"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START FilterByPropertyNullState"
+      endMarker="// END FilterByPropertyNullState"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">

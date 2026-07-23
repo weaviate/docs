@@ -24,6 +24,14 @@ The latest Go client is version `v||site.go_client_version||`.
 
 :::
 
+:::info Go client v6
+
+A new generation of the Go client, `v6`, is in active development. It is a ground-up redesign built around a collections-first API: you obtain a handle for a collection and run data, query, and aggregation operations through that handle, instead of composing requests with the older builder pattern.
+
+The `v6` client is an early preview and its API can still change. It is not yet published to the public Go module proxy, so the current client remains the right choice for production today. On pages that support it, a `Go v6` tab appears beside the `Go` tab so you can preview the new API for that operation. For a summary of the differences, see [What changed in the v6 client](#what-changed-in-the-v6-client).
+
+:::
+
 The Weaviate Go client is compatible with Go 1.16+.
 
 ## Installation
@@ -209,6 +217,18 @@ if err != nil{
 ## References
 
 All [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](/weaviate/api) references covered by the Go client, and explained on those reference pages in the code blocks.
+
+## What changed in the v6 client
+
+The `v6` client is a ground-up redesign. The most visible changes are:
+
+- **Collections-first.** Operations are organized around collections. You get a handle for a collection once, then read, write, and search through it, rather than naming the collection on every request.
+- **Context first, with no terminator call.** Every operation takes a request context and returns a result and an error directly. The trailing call that executed a builder chain is gone.
+- **Named vectors by default.** Vectors are represented as named vectors throughout, which keeps single-vector and multi-vector collections consistent.
+- **Grouped sub-clients.** Cluster-wide concerns, such as collections, roles, users, backups, and replication, and per-collection concerns, such as data, query, aggregation, and tenants, are grouped under dedicated sub-clients.
+- **Typed results.** Query results can be decoded into your own types.
+
+The `v6` client currently covers a focused subset of the full feature set. Where an operation is not yet available, the `Go v6` tab shows a short "Coming soon" note. To compare the two clients side by side, open the [connection](/weaviate/connections/index.mdx) and [how-to](../guides.mdx) pages and switch between the `Go` and `Go v6` tabs.
 
 ## Design
 

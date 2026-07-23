@@ -14,6 +14,7 @@ import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.b
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
+import BackupGoV6Code from '!!raw-loader!/_includes/code/go-v6/backup_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
@@ -75,6 +76,14 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START CreateBackup"
+      endMarker="// END CreateBackup"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
       language="go"
@@ -349,6 +358,14 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START CreateBackup"
+      endMarker="// END CreateBackup"
+      language="go"
+    />
+  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -428,6 +445,14 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START StatusCreateBackup"
+      endMarker="// END StatusCreateBackup"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
       startMarker="// START StatusCreateBackup"
       endMarker="// END StatusCreateBackup"
       language="go"
@@ -555,6 +580,14 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START CancelBackup"
+      endMarker="// END CancelBackup"
+      language="go"
+    />
+  </TabItem>
 </Tabs>
 
 This operation is particularly useful if you have started a backup by accident, or if you would like to stop a backup that is taking too long.
@@ -603,6 +636,14 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START RestoreBackup"
+      endMarker="// END RestoreBackup"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
       startMarker="// START RestoreBackup"
       endMarker="// END RestoreBackup"
       language="go"
@@ -661,6 +702,14 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START StatusRestoreBackup"
+      endMarker="// END StatusRestoreBackup"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
       startMarker="// START StatusRestoreBackup"
       endMarker="// END StatusRestoreBackup"
       language="go"

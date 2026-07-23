@@ -13,6 +13,8 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.similarity.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.similarity-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
+import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/search_test.go';
+import GoV6PlaceholderCode from '!!raw-loader!/\_includes/code/go-v6/search_placeholders_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
 import BoostPreview from '/_includes/feature-notes/boost.mdx';
@@ -50,6 +52,14 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       startMarker="// START GetNearText"
       endMarker="// END GetNearText"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetNearText"
+      endMarker="// END GetNearText"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -169,6 +179,14 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6PlaceholderCode}
+      startMarker="// START NearObject"
+      endMarker="// END NearObject"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -243,6 +261,14 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 </details>
 
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetNearVector"
+      endMarker="// END GetNearVector"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -296,6 +322,14 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START NamedVectorNearText"
+      endMarker="// END NamedVectorNearText"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -367,6 +401,14 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetWithDistance"
+      endMarker="// END GetWithDistance"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -433,6 +475,14 @@ Optionally, use `offset` to paginate the results.
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetLimitOffset"
+      endMarker="// END GetLimitOffset"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -486,6 +536,14 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       startMarker="// START Autocut"
       endMarker="// END Autocut"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Autocut"
+      endMarker="// END Autocut"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -557,6 +615,14 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetWithGroupBy"
+      endMarker="// END GetWithGroupBy"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -624,6 +690,14 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       startMarker="// START GetWithFilter"
       endMarker="// END GetWithFilter"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetWithFilter"
+      endMarker="// END GetWithFilter"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">

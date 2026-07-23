@@ -13,6 +13,8 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.aggregate.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.aggregate-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.aggregate.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
+import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/aggregate_test.go';
+import GoV6PlaceholderCode from '!!raw-loader!/\_includes/code/go-v6/search_placeholders_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchAggregateTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchAggregateTest.cs";
 
@@ -65,6 +67,14 @@ Return the number of objects matched by the query.
       startMarker="// START MetaCount"
       endMarker="// END MetaCount"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START MetaCount"
+      endMarker="// END MetaCount"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -136,6 +146,14 @@ This example counts occurrence frequencies:
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START TextProp"
+      endMarker="// END TextProp"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -203,6 +221,14 @@ This example shows aggregation with integers.
       startMarker="// START IntProp"
       endMarker="// END IntProp"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START IntProp"
+      endMarker="// END IntProp"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -274,6 +300,14 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       startMarker="// START groupBy"
       endMarker="// END groupBy"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START groupBy"
+      endMarker="// END groupBy"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -353,6 +387,14 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6PlaceholderCode}
+      startMarker="// START AggregateNearText"
+      endMarker="// END AggregateNearText"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -428,6 +470,14 @@ Use `distance` to specify how similar the objects should be.
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6PlaceholderCode}
+      startMarker="// START AggregateNearText"
+      endMarker="// END AggregateNearText"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -497,6 +547,14 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6PlaceholderCode}
+      startMarker="// START AggregateHybrid"
+      endMarker="// END AggregateHybrid"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -564,6 +622,14 @@ For more specific results, use a `filter` to narrow your search.
       startMarker="// START whereFilter"
       endMarker="// END whereFilter"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6PlaceholderCode}
+      startMarker="// START AggregateWhereFilter"
+      endMarker="// END AggregateWhereFilter"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">

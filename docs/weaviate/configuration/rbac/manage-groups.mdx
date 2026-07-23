@@ -13,6 +13,7 @@ import OidcGroupPyCode from "!!raw-loader!/_includes/code/python/howto.configure
 import OidcGroupTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.groups.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
+import RbacGoV6Code from "!!raw-loader!/_includes/code/go-v6/rbac_test.go";
 
 
 import RbacGroups from '/_includes/feature-notes/rbac-groups.mdx';
@@ -56,6 +57,14 @@ This example assigns the `testRole` and `viewer` roles to the `/admin-group`.
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AssignOidcGroupRoles"
+      endMarker="// END AssignOidcGroupRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -105,6 +114,14 @@ This example removes the `testRole` and `viewer` roles from the `/admin-group`.
 ```
 
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START RevokeOidcGroupRoles"
+      endMarker="// END RevokeOidcGroupRoles"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -150,6 +167,14 @@ Retrieve a list of all roles that have been assigned to a specific OIDC group.
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START GetOidcGroupRoles"
+      endMarker="// END GetOidcGroupRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -205,6 +230,14 @@ This example shows how to get a list of all OIDC groups that Weaviate is aware o
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START GetKnownOidcGroups"
+      endMarker="// END GetKnownOidcGroups"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -262,6 +295,14 @@ This example shows which groups have the `testRole` assigned to them.
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START GetGroupAssignments"
+      endMarker="// END GetGroupAssignments"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock

@@ -10,6 +10,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
 import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
@@ -585,6 +586,14 @@ This code example shows how to configure the vectorizer parameters for a single 
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="go"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
@@ -626,6 +635,14 @@ This code example shows how to configure multiple named vectors through a client
       startMarker="// START CreateCollectionWithNamedVectors"
       endMarker="// END CreateCollectionWithNamedVectors"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="go"
     />
   </TabItem>
 </Tabs>

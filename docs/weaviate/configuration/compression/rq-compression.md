@@ -11,6 +11,7 @@ import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
@@ -54,6 +55,14 @@ RQ can be enabled at collection creation time through the collection definition:
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
+        startMarker="// START EnableRQ"
+        endMarker="// END EnableRQ"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
         startMarker="// START EnableRQ"
         endMarker="// END EnableRQ"
         language="go"
@@ -159,6 +168,14 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START 1BitEnableRQ"
+        endMarker="// END 1BitEnableRQ"
+        language="go"
+      />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -252,6 +269,14 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
+        startMarker="// START RQWithOptions"
+        endMarker="// END RQWithOptions"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
         startMarker="// START RQWithOptions"
         endMarker="// END RQWithOptions"
         language="go"

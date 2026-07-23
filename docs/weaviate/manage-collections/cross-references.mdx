@@ -16,6 +16,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsCrossReferencesTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsCrossReferencesTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/cross_references_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
 Use cross-references to establish directional relationships between collections.
@@ -175,6 +176,14 @@ Specify the required id and properties for the source and the target.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START OneWay"
+      endMarker="// END OneWay"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START OneWay"
       endMarker="// END OneWay"
       language="go"
@@ -473,6 +482,14 @@ Deleting a cross-reference with the same parameters used to define the cross-ref
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// Delete Go"
+      endMarker="// END Delete Go"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -525,6 +542,14 @@ The targets of a cross-reference can be updated.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// Update Go"
+      endMarker="// END Update Go"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// Update Go"
       endMarker="// END Update Go"
       language="go"

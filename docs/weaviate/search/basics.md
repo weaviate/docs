@@ -13,6 +13,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.basics.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.basics-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.basics.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
+import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/search_basic_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchBasicTest.cs";
 
@@ -48,6 +49,14 @@ You can get objects without specifying any parameters. This returns objects in a
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START BasicGet"
+      endMarker="// END BasicGet"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START BasicGet"
       endMarker="// END BasicGet"
       language="go"
@@ -129,6 +138,14 @@ Use `limit` to set a fixed maximum number of objects to return.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetWithLimit"
+      endMarker="// END GetWithLimit"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -193,6 +210,14 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START GetWithOffset"
+      endMarker="// END GetWithOffset"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START GetWithOffset"
       endMarker="// END GetWithOffset"
       language="go"
@@ -269,6 +294,14 @@ You can specify which object properties to return. By default, all properties an
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetProperties"
+      endMarker="// END GetProperties"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -338,6 +371,14 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetObjectVector"
+      endMarker="// END GetObjectVector"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -402,6 +443,14 @@ You can retrieve the object `id` (uuid).
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START GetObjectId"
+      endMarker="// END GetObjectId"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START GetObjectId"
       endMarker="// END GetObjectId"
       language="go"
@@ -484,6 +533,14 @@ To retrieve properties from cross-referenced objects, specify:
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetWithCrossRefs"
+      endMarker="// END GetWithCrossRefs"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -553,6 +610,14 @@ You can specify metadata fields to be returned.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GetWithMetadata"
+      endMarker="// END GetWithMetadata"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -609,6 +674,14 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START MultiTenancy"
+      endMarker="// END MultiTenancy"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START MultiTenancy"
       endMarker="// END MultiTenancy"
       language="go"

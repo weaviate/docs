@@ -29,10 +29,15 @@ on:
         description: 'C# client branch (leave empty to use the workflow default below)'
         required: false
         default: ''
+      go_client_branch:
+        description: 'Go client branch (leave empty to use the workflow default below)'
+        required: false
+        default: ''
 
 env:
   # Centralize versions for easier maintenance
   PYTHON_VERSION: "3.10"
+  GO_VERSION: "1.25"
   WEAVIATE_VERSION: "1.35.0"
   OLLAMA_VERSION: "0.9.6"
   CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
@@ -41,6 +46,7 @@ env:
 jobs:
   test-agents:
     name: Test Agents
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -93,6 +99,7 @@ jobs:
 
   test-python:
     name: Test Python
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -256,6 +263,7 @@ jobs:
 
   test-typescript:
     name: Test TypeScript
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -426,6 +434,7 @@ jobs:
 
   test-java:
     name: Test Java
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -592,8 +601,137 @@ jobs:
           done
           docker system prune -f --volumes 2>/dev/null || true
 
+  test-go:
+    name: Test Go
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Smoke lane for the Go v6 client (_includes/code/go-v6). Mirrors "Test Java"
+    # but intentionally omits the Ollama-model and Keycloak steps: the smoke set
+    # (connect / create-collection / insert / basic fetch) needs neither an
+    # embedding provider nor OIDC. Broaden this when the Go docs breadth lands.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
+          sudo rm -rf /usr/local/lib/android &
+          wait
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: _includes/code/go-v6/go.sum
+
+      - name: Clone Go client and wire replace
+        run: |
+          GO_BRANCH="${{ inputs.go_client_branch || 'v6' }}"
+          echo "📦 Wiring Go client from branch: $GO_BRANCH"
+          # v6 is not published to the module proxy yet, so the committed go.mod
+          # requires a placeholder version and CI redirects it to a fresh clone.
+          git clone --depth 1 -b "$GO_BRANCH" https://github.com/weaviate/weaviate-go-client.git /tmp/go-client
+          cd _includes/code/go-v6
+          go mod edit -replace github.com/weaviate/weaviate-go-client/v6=/tmp/go-client
+          go mod tidy
+          echo "✅ Go client wired via replace directive"
+
+      - name: Start services
+        run: |
+          echo "🚀 Starting Weaviate and Ollama services..."
+          mkdir -p ~/.ollama
+          ./tests/start-weaviate.sh
+
+          sleep 5
+          echo "✅ Services started:"
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+      - name: Wait for all services to be ready
+        run: |
+          echo "⏳ Waiting for services to be ready..."
+
+          declare -A services=(
+            ["8099"]="Weaviate Main"
+            ["8580"]="Weaviate RBAC"
+            ["8080"]="Weaviate Instance 1"
+            ["8090"]="Weaviate Instance 2"
+            ["8280"]="Weaviate Instance 3"
+            ["8180"]="Weaviate Instance 4"
+            ["8181"]="Weaviate Instance 5"
+            ["8182"]="Weaviate Instance 6"
+          )
+
+          for port in "${!services[@]}"; do
+            service_name="${services[$port]}"
+            echo -n "Checking $service_name (port $port)... "
+
+            if timeout 60 bash -c "until curl -sf http://localhost:$port/v1/.well-known/ready &>/dev/null; do sleep 2; done"; then
+              echo "✅ Ready"
+            else
+              echo "⚠️ Not responding (may be optional)"
+            fi
+          done
+
+          echo "✅ Service check completed"
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run Go tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+        run: |
+          echo "🧪 Running Go tests..."
+          uv run pytest -m "go" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Go'
+          languages-tested: 'Go'
+          slack-bot-token: ${{ secrets.TESTING_CI_SLACK_BOT }}
+
+      - name: Stop services
+        if: always()
+        run: |
+          echo "🛑 Stopping services..."
+          ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
+
+      - name: Cleanup Docker resources
+        if: always()
+        run: |
+          for compose_file in tests/docker-compose*.yml; do
+            if [[ -f "$compose_file" ]]; then
+              docker compose -f "$compose_file" down -v --remove-orphans 2>/dev/null || true
+            fi
+          done
+          docker system prune -f --volumes 2>/dev/null || true
+
   test-csharp:
     name: Test C#
+    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 

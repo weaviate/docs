@@ -14,6 +14,7 @@ import TSCodeV3 from "!!raw-loader!/\_includes/code/howto/search.multi-target-v3
 import GoCode from "!!raw-loader!/\_includes/code/howto/search.multi-target.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchMultiTargetTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchMultiTargetTest.cs";
+import MultiTargetGoV6Code from "!!raw-loader!/\_includes/code/go-v6/multi_target_test.go";
 
 In a multi-target vector search, Weaviate searches multiple target vector spaces concurrently. These results are combined using a ["join strategy"](#available-join-strategies) to produce a single set of search results.
 
@@ -75,6 +76,14 @@ As a minimum, specify the target vector names as an array of named vectors. This
       />
     </details>
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiBasic"
+      endMarker="// END MultiBasic"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -112,6 +121,14 @@ You can specify multiple query vectors in the search query with a `nearVector` s
       startMarker="// START MultiTargetNearVector"
       endMarker="// END MultiTargetNearVector"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiTargetNearVector"
+      endMarker="// END MultiTargetNearVector"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -161,6 +178,14 @@ The target vectors can be specified as an array as shown here.
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiTargetMultipleNearVectorsV1"
+      endMarker="// END MultiTargetMultipleNearVectorsV1"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -198,6 +223,14 @@ If you want to provide weights for each target vector you can do it as shown her
       startMarker="// START MultiTargetMultipleNearVectorsV2"
       endMarker="// END MultiTargetMultipleNearVectorsV2"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiTargetMultipleNearVectorsV2"
+      endMarker="// END MultiTargetMultipleNearVectorsV2"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -239,6 +272,14 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
       startMarker="// START MultiTargetWithSimpleJoin"
       endMarker="// END MultiTargetWithSimpleJoin"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiTargetWithSimpleJoin"
+      endMarker="// END MultiTargetWithSimpleJoin"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -287,6 +328,14 @@ Each distance between the query vector and the target vector is multiplied by th
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiTargetManualWeights"
+      endMarker="// END MultiTargetManualWeights"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -333,6 +382,14 @@ For a more detailed explanation of how scores are normalized, see the blog post 
       startMarker="// START MultiTargetRelativeScore"
       endMarker="// END MultiTargetRelativeScore"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={MultiTargetGoV6Code}
+      startMarker="// START MultiTargetRelativeScore"
+      endMarker="// END MultiTargetRelativeScore"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -20,6 +20,7 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Conne
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
 import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/connect_test.go";
 
 Follow these steps to connect to a locally hosted Weaviate instance.
 
@@ -53,6 +54,14 @@ To connect to a local instance without authentication, follow these examples.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START LocalNoAuth"
+      endMarker="// END LocalNoAuth"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START LocalNoAuth"
       endMarker="// END LocalNoAuth"
       language="go"
@@ -113,6 +122,14 @@ To change the default URL or port number, follow these examples.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CustomURL"
+      endMarker="// END CustomURL"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -163,6 +180,14 @@ To authenticate with a Weaviate API key, follow these examples.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START LocalAuth"
+      endMarker="// END LocalAuth"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START LocalAuth"
       endMarker="// END LocalAuth"
       language="go"
@@ -222,6 +247,14 @@ Integrations that use external APIs often need API keys. To add third party API 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START LocalThirdPartyAPIKeys"
+      endMarker="// END LocalThirdPartyAPIKeys"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START LocalThirdPartyAPIKeys"
       endMarker="// END LocalThirdPartyAPIKeys"
       language="go"

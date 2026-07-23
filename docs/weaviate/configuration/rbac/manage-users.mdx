@@ -22,6 +22,7 @@ import OidcUserTSCode from "!!raw-loader!/_includes/code/typescript/howto.config
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.users_test.go";
 import OidcUserGoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.oidc.users_test.go";
+import RbacGoV6Code from "!!raw-loader!/_includes/code/go-v6/rbac_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
 import RbacUserManagement from '/_includes/feature-notes/rbac-user-management.mdx';
@@ -70,6 +71,14 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
       startMarker="// START ListAllUsers"
       endMarker="// END ListAllUsers"
       language="go"
@@ -134,6 +143,14 @@ This example creates a user called `custom-user`.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -190,6 +207,14 @@ This example deletes a user called `custom-user`.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START DeleteUser"
+      endMarker="// END DeleteUser"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -232,6 +257,14 @@ This example updates (rotates) the API key for `custom-user`.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
       startMarker="// START RotateApiKey"
       endMarker="// END RotateApiKey"
       language="go"
@@ -297,6 +330,14 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AssignRole"
+      endMarker="// END AssignRole"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -346,6 +387,14 @@ This example removes the role `testRole` from the user `custom-user`.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -388,6 +437,14 @@ Retrieve the role information for any user.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
       startMarker="// START ListUserRoles"
       endMarker="// END ListUserRoles"
       language="go"
@@ -456,6 +513,14 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -505,6 +570,14 @@ This example removes the role `testRole` from the user `custom-user`.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -547,6 +620,14 @@ Retrieve the role information for an OIDC user.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={OidcUserGoCode}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
       startMarker="// START ListOidcUserRoles"
       endMarker="// END ListOidcUserRoles"
       language="go"
