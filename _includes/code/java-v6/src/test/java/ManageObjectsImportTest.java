@@ -7,7 +7,6 @@ import io.weaviate.client6.v1.api.collections.batch.BatchContext;
 import io.weaviate.client6.v1.api.collections.data.BatchReference;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
 
 import org.junit.jupiter.api.AfterAll;
@@ -158,32 +157,35 @@ class ManageObjectsImportTest {
         col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithIDExample
-    List<WeaviateObject<Map<String, Object>>> dataObjects = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
-      UUID objUuid = generateUuid5(dataRow.toString());
-
-      dataObjects.add(WeaviateObject.<Map<String, Object>>of(
-          obj -> obj.properties(dataRow).uuid(objUuid.toString())));
-    }
-
     var collection = client.collections.use("MyCollection");
 
+    // Add objects with custom IDs to a server-side batch import.
     // highlight-start
-    var response = collection.data.insertMany(dataObjects);
+    BatchContext<Map<String, Object>> batch = collection.batch.start();
+    try (batch) {
+      for (int i = 0; i < 5; i++) {
+        Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
+        UUID objUuid = generateUuid5(dataRow.toString());
+
+        batch.add(WeaviateObject.<Map<String, Object>>of(
+            obj -> obj.properties(dataRow).uuid(objUuid.toString())));
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
     // highlight-end
 
-    if (!response.errors().isEmpty()) {
+    if (batch.numberOfErrors() > 0) {
       System.err
-          .println("Number of failed imports: " + response.errors().size());
-      System.err.println("First failed object: " + response.errors().get(0));
+          .println("Number of failed imports: " + batch.numberOfErrors());
     }
     // END BatchImportWithIDExample
 
     var result =
         collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
     assertThat(result.totalCount()).isEqualTo(5);
-    String lastUuid = dataObjects.get(4).uuid();
+    String lastUuid =
+        generateUuid5(Map.of("title", "Object 5").toString()).toString();
     assertThat(collection.data.exists(lastUuid)).isTrue();
 
     client.collections.delete("MyCollection");
@@ -195,30 +197,29 @@ class ManageObjectsImportTest {
         col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithVectorExample
-    List<WeaviateObject<Map<String, Object>>> dataObjects = new ArrayList<>();
     float[] vector = new float[10]; // Using a small vector for demonstration
     Arrays.fill(vector, 0.1f);
 
-    for (int i = 0; i < 5; i++) {
-      Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
-      UUID objUuid = generateUuid5(dataRow.toString());
-
-      dataObjects.add(
-          WeaviateObject.<Map<String, Object>>of(obj -> obj.properties(dataRow)
-              .uuid(objUuid.toString())
-              .vectors(Vectors.of(vector))));
-    }
-
     var collection = client.collections.use("MyCollection");
 
+    // Add objects with custom vectors to a server-side batch import.
     // highlight-start
-    var response = collection.data.insertMany(dataObjects);
+    BatchContext<Map<String, Object>> batch = collection.batch.start();
+    try (batch) {
+      for (int i = 0; i < 5; i++) {
+        Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
+
+        batch.add(WeaviateObject.<Map<String, Object>>of(
+            obj -> obj.properties(dataRow).vectors(Vectors.of(vector))));
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
     // highlight-end
 
-    if (!response.errors().isEmpty()) {
+    if (batch.numberOfErrors() > 0) {
       System.err
-          .println("Number of failed imports: " + response.errors().size());
-      System.err.println("First failed object: " + response.errors().get(0));
+          .println("Number of failed imports: " + batch.numberOfErrors());
     }
     // END BatchImportWithVectorExample
 
@@ -297,32 +298,26 @@ class ManageObjectsImportTest {
     CollectionHandle<Map<String, Object>> collection =
         client.collections.use("MyCollection");
 
-    List<WeaviateObject<Map<String, Object>>> objectsToInsert =
-        new ArrayList<>();
-    for (int i = 0; i < dataRows.size(); i++) {
-      int index = i;
-      objectsToInsert.add(
-          // highlight-start
-          // Use the Builder with the EXACT matching generic types
-          WeaviateObject
-              .<Map<String, Object>>of(v -> v.properties(dataRows.get(index))
-                  .vectors(Vectors.of("title", titleVectors.get(index)))
-                  .vectors(Vectors.of("body", bodyVectors.get(index)))));
-      // highlight-end
-
-    }
-
-    // Insert the data using insertMany with the List
+    // Add objects with named vectors to a server-side batch import.
     // highlight-start
-    InsertManyResponse response = collection.data.insertMany(objectsToInsert);
+    BatchContext<Map<String, Object>> batch = collection.batch.start();
+    try (batch) {
+      for (int i = 0; i < dataRows.size(); i++) {
+        int index = i;
+        batch.add(WeaviateObject
+            .<Map<String, Object>>of(v -> v.properties(dataRows.get(index))
+                .vectors(Vectors.of("title", titleVectors.get(index)))
+                .vectors(Vectors.of("body", bodyVectors.get(index)))));
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
     // highlight-end
 
     // Check for errors
-    if (!response.errors().isEmpty()) {
+    if (batch.numberOfErrors() > 0) {
       System.err.printf("Number of failed imports: %d\n",
-          response.errors().size());
-      System.err.printf("First failed object error: %s\n",
-          response.errors().get(0));
+          batch.numberOfErrors());
     }
     // END BatchImportWithNamedVectors
   }

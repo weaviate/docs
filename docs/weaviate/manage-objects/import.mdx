@@ -9,9 +9,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
-import PySuppCode from '!!raw-loader!/_includes/code/howto/sample-data.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
-import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
 import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsImportTest.java';
 import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportTest.cs';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
@@ -25,12 +23,20 @@ import SsbStatus from '/_includes/feature-notes/ssb-status.mdx';
 
 <SsbStatus/>
 
-With [server-side batch imports](../concepts/data-import.mdx#server-side-batching) (also called "automatic" batching), the client sends data in batch sizes determined by feedback from the server. This simplifies your code and helps the server manage its own load. The following example adds objects to a collection named `MyCollection`.
+With [server-side batch imports](../concepts/data-import.mdx#server-side-batching) (also called "automatic" batching), the client sends data in batch sizes determined by feedback from the server. This simplifies your code and helps the server manage its own load. Server-side batching offers two entry points:
 
-Server-side batching uses the [gRPC API](#use-the-grpc-api), which current client versions enable by default.
+- **Stream from a data source** (recommended for large datasets): Add objects to the import one at a time as you read them from the source, so the full dataset never has to fit in memory.
+- **[Ingest an in-memory list](#ingest-an-in-memory-list)**: Import a list of objects that you already hold in memory with a single call.
+
+Server-side batching uses the [gRPC API](../api/index.mdx), which current client versions enable by default.
+
+The following example adds objects to a collection named `MyCollection`.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
+
+Open the `batch.stream()` context manager and add objects one at a time; the client sends them at the pace the server requests. The [async Python client](../client-libraries/python/async.md#bulk-data-insertion) also supports server-side batching through the `stream()` method and the one-shot `ingest()` method.
+
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ServerSideBatchImportExample"
@@ -39,6 +45,9 @@ Server-side batching uses the [gRPC API](#use-the-grpc-api), which current clien
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
+
+In TypeScript, `data.ingest()` is the server-side batching API, with no separate streaming context. It accepts any `Iterable`, so passing a generator streams objects to the server without building the full list in memory.
+
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ServerSideBatchImportExample"
@@ -52,6 +61,9 @@ The Go client does not support server-side batching; use [manual batching](#manu
 
   </TabItem>
   <TabItem value="java" label="Java">
+
+Open a streaming context with `collection.batch.start()` and add objects one at a time. The batch is flushed and closed automatically when the try-with-resources block exits.
+
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ServerSideBatchImportExample"
@@ -60,6 +72,9 @@ The Go client does not support server-side batching; use [manual batching](#manu
     />
   </TabItem>
   <TabItem value="csharp" label="C#">
+
+Open a streaming batch with `collection.Batch.StartBatch()` and add objects one at a time with `Add`. Call `Close` to flush the batch.
+
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START ServerSideBatchImportExample"
@@ -69,20 +84,59 @@ The Go client does not support server-side batching; use [manual batching](#manu
   </TabItem>
 </Tabs>
 
+### Ingest an in-memory list
+
+If your objects are already in memory, you can import the whole list with a single call. The client sends the list using server-side batching, so the import is safe for large lists that would exceed the server's [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit if sent as one request.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+
+`data.ingest()` is the safe replacement for passing a large list to `insert_many`, which sends all objects in a single request. `ingest` accepts plain property dicts or `DataObject` instances (to set object IDs, vectors, or references) and returns the same return object as `insert_many`.
+
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ServerSideIngestExample"
+      endMarker="# END ServerSideIngestExample"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+
+When your objects are already in an array, pass the array directly to `data.ingest()` to import the whole list in a single call.
+
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ServerSideIngestExample"
+      endMarker="// END ServerSideIngestExample"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+The Go client does not support server-side batching; use [manual batching](#manual-batching) instead.
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+The Java client does not provide a one-shot ingest method. Use the streaming context `collection.batch.start()` shown in the [server-side batching example](#server-side-batching) above. Note that `collection.data.insertMany(...)` sends all objects in a single request and does not use server-side batching.
+
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+
+In the C# client, `Batch.InsertMany` uses server-side batching under the hood.
+
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ServerSideIngestExample"
+      endMarker="// END ServerSideIngestExample"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
+
 ## Manual batching
 
 Use manual (client-side) batching when you want to control the batch size and concurrency yourself, or when using a client that does not yet support server-side batching (such as the Go client). The following example adds objects to the `MyCollection` collection.
-
-<details>
-  <summary>Additional information</summary>
-
-To create a bulk import job manually, follow these steps:
-
-1. Initialize a batch object.
-1. Add items to the batch object.
-1. Ensure that the last batch is sent (flushed).
-
-</details>
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -92,17 +146,6 @@ To create a bulk import job manually, follow these steps:
       endMarker="# END BasicBatchImportExample"
       language="py"
     />
-
-### Error handling
-
-<!-- TODO[g-despot]: Add link to external Python references once created for "reference page" -->
-
-During a batch import, any failed objects or references will be stored and can be obtained through `batch.failed_objects` and `batch.failed_references`.
-Additionally, a running count of failed objects and references is maintained and can be accessed through `batch.number_errors` within the context manager.
-This counter can be used to stop the import process in order to investigate the failed objects or references.
-
-Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python).
-
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
@@ -113,6 +156,9 @@ Find out more about error handling on the Python client [reference page](/weavia
     />
   </TabItem>
   <TabItem value="go" label="Go">
+
+Configure the Go client's gRPC connection parameters as described on the [connection configuration](../connections/connect-custom.mdx) page.
+
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START BasicBatchImportExample"
@@ -138,85 +184,49 @@ Find out more about error handling on the Python client [reference page](/weavia
   </TabItem>
 </Tabs>
 
-## Use the gRPC API
+## Error handling
 
-The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
+<!-- TODO[g-despot]: Add link to external Python references once created for "reference page" -->
+
+Batch imports report failures per object: a problem with one object does not abort the rest of the import. Errors are reported the same way in server-side and manual batching. Inspect the failed items during and after the import to catch data issues early.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
+  <TabItem value="py" label="Python">
 
-<!-- TODO[g-despot]: Add link to external Python references once created for "batch import configuration options" -->
-<!-- See the client page for additional batch import [configuration options](/weaviate/client-libraries/python#batch-imports). -->
+- Within a batching context manager, `batch.number_errors` holds a running count of failed objects and references. You can use this counter to stop the import process and investigate the failures.
+- After the context closes, `collection.batch.failed_objects` and `collection.batch.failed_references` contain the failed items.
+- The one-shot `data.ingest()` method returns the same result object as `insert_many`: its `errors` dict maps the original index of each failed object to its error.
 
-The Python client uses gRPC by default.
+Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python).
 
-<br />
-The legacy Python client does not support gRPC.
-
-</TabItem>
+  </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
 
-The TypeScript client v3 uses gRPC by default.
+`data.ingest()` returns a result object. Inspect its `errors` field for the objects that failed to import.
 
-<br />
-The legacy TypeScript client does not support gRPC.
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+Inspect the per-object errors on the result returned by the batcher.
 
   </TabItem>
   <TabItem value="java" label="Java">
 
-The Java client v6 uses gRPC by default.
-  
-  </TabItem>
-  <TabItem value="go" label="Go">
-
-To use the gRPC API with the Go client, add the `GrpcConfig` field to your client connection code. Update `Secured` if you use an encrypted connection.<br/><br/>
-
-```go
-cfg := weaviate.Config{
-  Host:   fmt.Sprintf("localhost:%v", "8080"),
-  Scheme: "http",
-  // highlight-start
-	 GrpcConfig: &grpc.Config{
-      Host: "localhost:50051",
-      Secured: false,
-	 },
-  // highlight-end
-}
-
-client, err := weaviate.NewClient(cfg)
-if err != nil {
-  require.Nil(t, err)
-  }
-```
+Within a `batch.start()` streaming context, `batch.numberOfErrors()` reports the number of objects that could not be imported. The response returned by `insertMany` exposes the failed objects through its `errors()` method.
 
   </TabItem>
-    <TabItem value="csharp" label="C#">
+  <TabItem value="csharp" label="C#">
 
-The C# uses gRPC by default.
-  
-  </TabItem>
-  <TabItem value="spark" label="Spark">
-
-To use the gRPC API with the [Spark connector](https://github.com/weaviate/spark-connector), add the `grpc:host` field to your client connection code. Update `grpc:secured` if you use an encrypted connection.<br/><br/>
-
-```java
-  df.write
-      .format("io.weaviate.spark.Weaviate")
-      .option("scheme", "http")
-      .option("host", "localhost:8080")
-      // highlight-start
-      .option("grpc:host", "localhost:50051")
-      .option("grpc:secured", "false")
-      // highlight-start
-      .option("className", className)
-      .mode("append")
-      .save()
-```
+The response returned by `Batch.InsertMany` is a collection of per-object entries. Filter for entries where `Error` is not null to find the failed objects. With `Batch.StartBatch()`, each `Add` returns a handle whose result reports whether the object succeeded.
 
   </TabItem>
 </Tabs>
 
-## Specify an ID value
+## Customize imported objects
+
+Batch-imported objects support the same parameters as individually created objects, such as custom IDs, vectors, and cross-references. These parameters work the same way in server-side and manual batching.
+
+### Specify an ID value
 
 Weaviate generates an UUID for each object. Object IDs must be unique. If you set object IDs, use one of these deterministic UUID methods to prevent duplicate IDs:
 
@@ -266,7 +276,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
   </TabItem>
 </Tabs>
 
-## Specify a vector
+### Specify a vector
 
 Use the `vector` property to specify a vector for each object.
 
@@ -313,7 +323,7 @@ Use the `vector` property to specify a vector for each object.
   </TabItem>
 </Tabs>
 
-## Specify named vectors
+### Specify named vectors
 
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
@@ -352,15 +362,15 @@ When you create an object, you can specify named vectors (if [configured in your
   </TabItem>
 </Tabs>
 
-## Import with references
+### Import with references
 
-You can batch create links from an object to another other object through cross-references.
+You can batch create links from an object to another object through cross-references.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# BatchImportWithRefExample"
+      startMarker="# START BatchImportWithRefExample"
       endMarker="# END BatchImportWithRefExample"
       language="py"
     />
@@ -383,142 +393,15 @@ You can batch create links from an object to another other object through cross-
   </TabItem>
 </Tabs>
 
-## Python-specific considerations
-
-The Python clients have built-in batching methods to help you optimize import speed. For details, see the client documentation:
-
-<!-- TODO[g-despot]: Add link to external Python references once created for "Python client `v4`" -->
-- [Python client](../client-libraries/python/notes-best-practices.mdx)
-
-### Async Python client and batching
-
-The [async Python client](../client-libraries/python/async.md#bulk-data-insertion) supports server-side batching through the `stream()` method. For client-side batching, use the sync Python client.
-
 ## Stream data from large files
 
-If your dataset is large, consider streaming the import to avoid out-of-memory issues.
+If your dataset does not fit in memory, do not load it all at once. Instead, read the source file lazily and add objects to the import as you go:
 
-To try the example code, download the sample data and create the sample input files.
+- With the server-side streaming context (`batch.stream()` in Python), add each object as you read it from the file. The client sends data at the pace the server requests, so memory usage stays flat.
+- In TypeScript, `data.ingest()` accepts any `Iterable`, so you can pass a lazy source (such as a generator that reads the file record by record) instead of a fully loaded array.
+- With manual batching, apply the same pattern: add objects to the batch as you read them.
 
-<details>
-  <summary>Get the sample data</summary>
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="pycsv" label="Python">
-    <FilteredTextBlock
-      text={PySuppCode}
-      startMarker="# START GetData"
-      endMarker="# END GetData"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="tscsv" label="TypeScript">
-    <FilteredTextBlock
-      text={TsSuppCode}
-      startMarker="// START GetData"
-      endMarker="// END GetData"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START GetData"
-      endMarker="// END GetData"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="csharp" label="C#">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START GetData"
-      endMarker="// END GetData"
-      language="csharp"
-    />
-  </TabItem>
-</Tabs>
-
-</details>
-
-<details>
-  <summary>Stream JSON files example code</summary>
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-  <FilteredTextBlock
-    text={PyCode}
-    startMarker="# START JSON streaming"
-    endMarker="# END JSON streaming"
-    language="py"
-  />
-  </TabItem>
-  <TabItem value="ts" label="TypeScript">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START JSON streaming"
-      endMarker="// END JSON streaming"
-      language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START JSON streaming"
-      endMarker="// END JSON streaming"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="csharp" label="C#">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START JSON streaming"
-      endMarker="// END JSON streaming"
-      language="csharp"
-    />
-  </TabItem>
-</Tabs>
-
-</details>
-
-<details>
-  <summary>Stream CSV files example code</summary>
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="pycsv" label="Python">
-  <FilteredTextBlock
-    text={PyCode}
-    startMarker="# START CSV streaming"
-    endMarker="# END CSV streaming"
-    language="py"
-  />
-  </TabItem>
-  <TabItem value="ts" label="TypeScript">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START CSV streaming"
-      endMarker="// END CSV streaming"
-      language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START CSV streaming"
-      endMarker="// END CSV streaming"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="csharp" label="C#">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START CSV streaming"
-      endMarker="// END CSV streaming"
-      language="csharp"
-    />
-  </TabItem>
-</Tabs>
-
-</details>
+For JSON files, use a streaming parser that yields one object at a time (such as `ijson` in Python). For CSV files, read the file in chunks (such as `pandas` with the `chunksize` parameter) rather than loading it whole.
 
 ## Batch vectorization
 
@@ -541,22 +424,6 @@ Note that each provider exposes different configuration options.
       language="py"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START BatchVectorizationClientModify"
-      endMarker="// END BatchVectorizationClientModify"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="csharp" label="C#">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START BatchVectorizationClientModify"
-      endMarker="// END BatchVectorizationClientModify"
-      language="csharp"
-    />
-  </TabItem>
 </Tabs>
 
 ## Additional considerations
@@ -565,22 +432,7 @@ Data imports can be resource intensive. Consider the following when you import l
 
 ### Asynchronous imports
 
-:::caution Experimental
-Available starting in `v1.22`. This is an experimental feature. Use with caution.
-:::
-
-To maximize import speed, enable [asynchronous indexing](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing).
-
-To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration file.
-
-```yaml
-weaviate:
-  image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
-  ...
-  environment:
-    ASYNC_INDEXING: 'true'
-  ...
-```
+To maximize import speed, enable [asynchronous indexing](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing) by setting the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration. This decouples vector index construction from object creation, so imports are not slowed down by index building.
 
 ### Automatically add new tenants
 
@@ -594,6 +446,8 @@ For details, see [auto-tenant](/weaviate/manage-collections/multi-tenancy#automa
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How-to: Create objects](./create.mdx)
+- [Python client: batch import notes and best practices](../client-libraries/python/notes-best-practices.mdx)
+- [Blog: Data import best practices](https://weaviate.io/blog/data-import-best-practices)
 - <SkipLink href="/weaviate/api/rest#tag/batch">
     References: REST - /v1/batch
   </SkipLink>

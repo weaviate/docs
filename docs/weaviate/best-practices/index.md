@@ -295,14 +295,24 @@ When importing any significant amount of data (i.e. more than 10 objects), use b
 for obj in objects:
     collection.data.insert(properties=obj)
 
-# ✅ Do this
-with collection.batch.fixed_size(batch_size=200) as batch:
+# ✅ Do this: server-side batching (recommended) - the server
+# tells the client how much data to send next
+with collection.batch.stream() as batch:
     for obj in objects:
         batch.add_object(properties=obj)
+
+# ✅ Or, if your objects are already in an in-memory list,
+# ingest the whole list with a single call
+result = collection.data.ingest(objects)
 ```
+
+[Server-side batching](../concepts/data-import.mdx#server-side-batching) requires Weaviate `v1.36` or later and a client that supports it. If it is not available, use a client-side batching method such as `collection.batch.fixed_size(batch_size=200)` or `collection.batch.dynamic()` instead.
+
+Avoid passing large lists to `collection.data.insert_many()`. It sends all objects in a single request, which fails if the request exceeds the server's [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit. `collection.data.ingest()` is a drop-in replacement that does not have this limitation.
 
 :::tip Further resources
 - [How-to: Batch import data](../manage-objects/import.mdx)
+- [Concepts: Data import](../concepts/data-import.mdx)
 :::
 
 ### Minimize costs by offloading inactive tenants

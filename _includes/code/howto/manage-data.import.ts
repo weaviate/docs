@@ -111,7 +111,10 @@ let dataObjects = [
 ]
 
 const myCollection = client.collections.use('MyCollection')
-await myCollection.data.insertMany(dataObject)
+// highlight-start
+// `ingest` imports the list using server-side batching
+await myCollection.data.ingest(dataObjects)
+// highlight-end
 // END BatchImportWithIDExample
 
 // result = await client.graphql.aggregate().withClassName(className).withFields('meta { count }').do();
@@ -146,7 +149,10 @@ let dataObjects = [
   // ...
 ]
 
-await jeopardy.data.insertMany(dataObjects)
+// highlight-start
+// `ingest` imports the list using server-side batching
+await myCollection.data.ingest(dataObjects)
+// highlight-end
 // END BatchImportWithVectorExample
 
 // result = await client.graphql.aggregate().withClassName(className).withFields('meta { count }').do();
@@ -204,7 +210,10 @@ let dataObjects = [
   // ...
 ]
 
-await myCollection.data.insertMany(dataObjects)
+// highlight-start
+// `ingest` imports the list using server-side batching
+await myCollection.data.ingest(dataObjects)
+// highlight-end
 }
 // END BatchImportWithNamedVectors
 
@@ -334,20 +343,19 @@ try {
 
 {
 // START ServerSideBatchImportExample
-const dataObjects = [
-  { properties: { title: 'Object 1' } },
-  { properties: { title: 'Object 2' } },
-  { properties: { title: 'Object 3' } },
-  { properties: { title: 'Object 4' } },
-  { properties: { title: 'Object 5' } },
-]
-
 const myCollection = client.collections.use('MyCollection')
 
 // highlight-start
-// Use `ingest` for server-side batching. The client sends data
-// in batches at a rate controlled by the server.
-const result = await myCollection.data.ingest(dataObjects)
+// `ingest` is the TypeScript server-side batching API. It accepts any
+// Iterable, so passing a generator streams objects to the server
+// without building the full list in memory.
+function* generateData(): Generator<{ properties: { title: string } }> {
+  for (let i = 1; i <= 5; i++) {
+    yield { properties: { title: `Object ${i}` } }
+  }
+}
+
+const result = await myCollection.data.ingest(generateData())
 // highlight-end
 
 console.log(result)
@@ -360,6 +368,53 @@ if (check.objects.length !== 5)
   throw new Error(`SSB import: expected 5 objects, got ${check.objects.length}`)
 if (!check.objects.every((o) => typeof o.properties.title === 'string' && o.properties.title.length > 0))
   throw new Error('SSB import did not persist the title property')
+}
+
+await client.collections.delete('MyCollection');
+
+// ==================================================
+// ===== Server-side one-shot ingest =====
+// ==================================================
+
+// Clean slate
+try {
+  await client.collections.delete('MyCollection');
+} catch (e) {
+  // ignore error if class doesn't exist
+} finally {
+  await client.collections.create({
+    name: 'MyCollection',
+    vectorizers: weaviate.configure.vectors.selfProvided(),
+  })
+}
+
+{
+// START ServerSideIngestExample
+const dataObjects = [
+  { properties: { title: 'Object 1' } },
+  { properties: { title: 'Object 2' } },
+  { properties: { title: 'Object 3' } },
+  { properties: { title: 'Object 4' } },
+  { properties: { title: 'Object 5' } },
+]
+
+const myCollection = client.collections.use('MyCollection')
+
+// highlight-start
+// `ingest` imports the whole list with server-side batching in a single call
+const result = await myCollection.data.ingest(dataObjects)
+// highlight-end
+
+console.log(result)
+// END ServerSideIngestExample
+
+// Verify the import (not shown in the docs snippet): all 5 objects and
+// their `title` property must have persisted.
+const check = await myCollection.query.fetchObjects({ limit: 5 })
+if (check.objects.length !== 5)
+  throw new Error(`Ingest import: expected 5 objects, got ${check.objects.length}`)
+if (!check.objects.every((o) => typeof o.properties.title === 'string' && o.properties.title.length > 0))
+  throw new Error('Ingest import did not persist the title property')
 }
 
 await client.collections.delete('MyCollection');

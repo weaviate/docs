@@ -157,38 +157,43 @@ client.collections.delete(collection.name)
 # ===== Insert many with custom ID =====
 # =======================================
 
+# Re-create the collection
+client.collections.delete("MyCollection")
+client.collections.create(
+    "MyCollection",
+    vector_config=Configure.Vectors.self_provided()
+)
+
 # START BatchImportWithIDExample
 # highlight-start
 from weaviate.util import generate_uuid5  # Generate a deterministic ID
+from weaviate.classes.data import DataObject
 # highlight-end
 
-# START BatchImportWithIDExample
 data_rows = [{"title": f"Object {i+1}"} for i in range(5)]
 
 collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.fixed_size(batch_size=200) as batch:
-    for data_row in data_rows:
-        obj_uuid = generate_uuid5(data_row)
-        batch.add_object(
-            properties=data_row,
-            uuid=obj_uuid
-        )
-# highlight-end
-        if batch.number_errors > 10:
-            print("Batch import stopped due to excessive errors.")
-            break
+data_objects = [
+    DataObject(
+        properties=data_row,
+        uuid=generate_uuid5(data_row)
+    )
+    for data_row in data_rows
+]
 
-failed_objects = collection.batch.failed_objects
-if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
-    print(f"First failed object: {failed_objects[0]}")
+result = collection.data.ingest(data_objects)
+# highlight-end
+
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
 # END BatchImportWithIDExample
 
-result = collection.aggregate.over_all(total_count=True)
-assert result.total_count == 5
-resp_obj = collection.query.fetch_object_by_id(obj_uuid)
+# Tests
+agg_result = collection.aggregate.over_all(total_count=True)
+assert agg_result.total_count == 5
+resp_obj = collection.query.fetch_object_by_id(generate_uuid5(data_rows[-1]))
 assert resp_obj != None
 # Clean up
 client.collections.delete(collection.name)
@@ -197,32 +202,40 @@ client.collections.delete(collection.name)
 # ===== Batch import with custom vector =====
 # ===========================================
 
+# Re-create the collection
+client.collections.delete("MyCollection")
+client.collections.create(
+    "MyCollection",
+    vector_config=Configure.Vectors.self_provided()
+)
+
 # START BatchImportWithVectorExample
+from weaviate.classes.data import DataObject
+
 data_rows = [{"title": f"Object {i+1}"} for i in range(5)]
 vectors = [[0.1] * 1536 for i in range(5)]
 
 collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.fixed_size(batch_size=200) as batch:
-    for i, data_row in enumerate(data_rows):
-        batch.add_object(
-            properties=data_row,
-            vector=vectors[i]
-        )
-# highlight-end
-        if batch.number_errors > 10:
-            print("Batch import stopped due to excessive errors.")
-            break
+data_objects = [
+    DataObject(
+        properties=data_row,
+        vector=vectors[i]
+    )
+    for i, data_row in enumerate(data_rows)
+]
 
-failed_objects = collection.batch.failed_objects
-if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
-    print(f"First failed object: {failed_objects[0]}")
+result = collection.data.ingest(data_objects)
+# highlight-end
+
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
 # END BatchImportWithVectorExample
 
-result = collection.aggregate.over_all(total_count=True)
-assert result.total_count == 5
+# Tests
+agg_result = collection.aggregate.over_all(total_count=True)
+assert agg_result.total_count == 5
 # Clean up
 client.collections.delete(collection.name)
 
@@ -255,6 +268,8 @@ client.collections.create(
 )
 
 # START BatchImportWithNamedVectors
+from weaviate.classes.data import DataObject
+
 data_rows = [{
     "title": f"Object {i+1}",
     "body": f"Body {i+1}"
@@ -266,24 +281,22 @@ body_vectors = [[0.34] * 1536 for _ in range(5)]
 collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.fixed_size(batch_size=200) as batch:
-    for i, data_row in enumerate(data_rows):
-        batch.add_object(
-            properties=data_row,
-            vector={
-                "title": title_vectors[i],
-                "body": body_vectors[i],
-            }
-        )
-# highlight-end
-        if batch.number_errors > 10:
-            print("Batch import stopped due to excessive errors.")
-            break
+data_objects = [
+    DataObject(
+        properties=data_row,
+        vector={
+            "title": title_vectors[i],
+            "body": body_vectors[i],
+        }
+    )
+    for i, data_row in enumerate(data_rows)
+]
 
-failed_objects = collection.batch.failed_objects
-if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
-    print(f"First failed object: {failed_objects[0]}")
+result = collection.data.ingest(data_objects)
+# highlight-end
+
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
 # END BatchImportWithNamedVectors
 
 response = collection.query.fetch_objects(include_vector=True)
@@ -318,36 +331,37 @@ authors = client.collections.create(
     ]
 )
 
-from_uuid = authors.data.insert(
-    properties={"name": "Jane Austen"}
-)
-
 publications.data.insert(
     {"title": "Ye Olde Times"}
 )
 target_uuid = publications.query.fetch_objects(limit=1).objects[0].uuid
 
-# BatchImportWithRefExample
+# START BatchImportWithRefExample
+from weaviate.classes.data import DataObject
+
 collection = client.collections.use("Author")
 
-with collection.batch.fixed_size(batch_size=100) as batch:
-    batch.add_reference(
-        from_property="writesFor",
-        from_uuid=from_uuid,
-        to=target_uuid,
-    )
+# highlight-start
+data_objects = [
+    DataObject(
+        properties={"name": "Jane Austen"},
+        references={"writesFor": target_uuid},
+    ),
+]
 
-failed_references = collection.batch.failed_references
-if failed_references:
-    print(f"Number of failed imports: {len(failed_references)}")
-    print(f"First failed reference: {failed_references[0]}")
+result = collection.data.ingest(data_objects)
+# highlight-end
+
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
 # END BatchImportWithRefExample
 
 # Tests
 from weaviate.classes.query import QueryReference
 
+new_uuid = result.uuids[0]
 response = collection.query.fetch_object_by_id(
-    from_uuid,
+    new_uuid,
     return_references=QueryReference(link_on="writesFor", return_properties=["title"])
 )
 
@@ -597,6 +611,48 @@ if failed_objects:
 
 result = collection.aggregate.over_all(total_count=True)
 assert result.total_count == 5
+
+# Clean up
+client.collections.delete(collection.name)
+
+
+# ==================================================
+# ===== Server-side one-shot ingest =====
+# ==================================================
+
+# Re-create the collection
+client.collections.delete("MyCollection")
+client.collections.create(
+    "MyCollection",
+    vector_config=Configure.Vectors.self_provided()
+)
+
+# START ServerSideIngestExample
+data_rows = [
+    {"title": f"Object {i+1}"} for i in range(5)
+]
+
+collection = client.collections.use("MyCollection")
+
+# highlight-start
+# `ingest` imports the whole list with server-side batching in a single call
+result = collection.data.ingest(data_rows)
+# highlight-end
+
+# The return object is the same as for `insert_many`
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
+    # `errors` is a dict keyed by the index of the failed object
+    for index, error in result.errors.items():
+        print(f"Failed object at index {index}: {error.message}")
+# END ServerSideIngestExample
+
+# Tests
+assert len(result.errors) == 0
+assert len(result.uuids) == 5
+
+agg_result = collection.aggregate.over_all(total_count=True)
+assert agg_result.total_count == 5
 
 # Clean up
 client.collections.delete(collection.name)
