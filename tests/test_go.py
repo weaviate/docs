@@ -15,14 +15,25 @@ def run_go_suite():
     env = dict(os.environ)
 
     try:
-        result = subprocess.run(
+        subprocess.run(
             command, cwd=GO_V6_CWD, env=env,
             capture_output=True, text=True, check=True,
         )
     except subprocess.CalledProcessError as error:
         details = [f"Go tests failed (exit code {error.returncode})"]
-        if error.stdout:
-            details.append(f"\n--- STDOUT (last 80 lines) ---\n{chr(10).join(error.stdout.splitlines()[-80:])}")
+
+        stdout = error.stdout or ""
+
+        # Surface the COMPLETE set of failing tests first. `go test -v` prints a
+        # `--- FAIL: TestName` line per failure, but those can scroll off the top
+        # of the tail below, hiding failures that occurred early in the run.
+        # Grepping the full captured stdout guarantees every failure is listed.
+        failing = [line.strip() for line in stdout.splitlines() if "--- FAIL:" in line]
+        if failing:
+            details.append(f"\n--- FAILING TESTS ({len(failing)}) ---\n" + "\n".join(failing))
+
+        if stdout:
+            details.append(f"\n--- STDOUT (last 200 lines) ---\n{chr(10).join(stdout.splitlines()[-200:])}")
         if error.stderr:
             details.append(f"\n--- STDERR (last 40 lines) ---\n{chr(10).join(error.stderr.splitlines()[-40:])}")
         pytest.fail("\n".join(details))
