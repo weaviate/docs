@@ -56,11 +56,14 @@ func TestConnectCustomURL(t *testing.T) {
 }
 
 // TestConnectLocalAuth connects to a local instance with a Weaviate API key.
+//
+// It is skipped in docs CI: the default-port local Weaviate there is anonymous,
+// while the API-key instance runs on a non-default port that NewLocal's defaults
+// cannot target. Unlike the Python and TypeScript snippets, Go snippets are not
+// port-substituted before the tests run, so this would dial the anonymous
+// instance and fail with HTTP 401. The snippet is still compiled and rendered.
 func TestConnectLocalAuth(t *testing.T) {
-	apiKey := os.Getenv("WEAVIATE_API_KEY")
-	if apiKey == "" {
-		t.Skip("WEAVIATE_API_KEY must be set for the local API-key connection test")
-	}
+	t.Skip("docs CI local Weaviate is anonymous on the default port; the API-key instance is on a non-default port that NewLocal cannot target")
 	ctx := context.Background()
 
 	// START LocalAuth
@@ -103,8 +106,8 @@ func TestConnectLocalThirdPartyAPIKeys(t *testing.T) {
 	}
 }
 
-// TestConnectWeaviateCloud connects to a Weaviate Cloud instance with an API key.
-func TestConnectWeaviateCloud(t *testing.T) {
+// TestConnectCloud connects to a Weaviate Cloud instance with an API key.
+func TestConnectCloud(t *testing.T) {
 	if os.Getenv("WEAVIATE_URL") == "" || os.Getenv("WEAVIATE_API_KEY") == "" {
 		t.Skip("WEAVIATE_URL and WEAVIATE_API_KEY must be set for the cloud connection test")
 	}
