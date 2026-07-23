@@ -28,7 +28,7 @@ With [server-side batch imports](../concepts/data-import.mdx#server-side-batchin
 - **Stream from a data source** (recommended for large datasets): Add objects to the import one at a time as you read them from the source, so the full dataset never has to fit in memory.
 - **[Ingest an in-memory list](#ingest-an-in-memory-list)**: Import a list of objects that you already hold in memory with a single call.
 
-Server-side batching uses the [gRPC API](../api/index.mdx), which current client versions enable by default. If you use the Go client, configure its gRPC connection parameters as described on the [connection configuration page](../connections/connect-custom.mdx).
+Server-side batching uses the [gRPC API](../api/index.mdx), which current client versions enable by default.
 
 The following example adds objects to a collection named `MyCollection`.
 
@@ -156,6 +156,9 @@ Use manual (client-side) batching when you want to control the batch size and co
     />
   </TabItem>
   <TabItem value="go" label="Go">
+
+Configure the Go client's gRPC connection parameters as described on the [connection configuration](../connections/connect-custom.mdx) page.
+
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START BasicBatchImportExample"
