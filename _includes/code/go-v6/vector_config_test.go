@@ -200,6 +200,13 @@ func TestPropModuleSettings(t *testing.T) {
 // TestDistanceMetric sets the distance metric for a collection that stores
 // user-supplied vectors.
 func TestDistanceMetric(t *testing.T) {
+	// Skipped in docs CI: the distance metric is set on the vector index, and the
+	// v6 client only registers the experimental HFresh index. The CI server
+	// (WEAVIATE_VERSION 1.35.0) predates HFresh and rejects it at create time with
+	// HTTP 422 "invalid vector index 'hfresh'". There is no HNSW index type in the
+	// v6 client to substitute, so this needs a server that supports HFresh (>= 1.37).
+	// The snippet is still compiled and rendered.
+	t.Skip("v6 client's only vector index is the experimental HFresh; the docs-CI server (1.35.0) does not support it — re-enable on a newer server")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

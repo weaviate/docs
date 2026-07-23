@@ -7,6 +7,7 @@ import (
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
+	"github.com/weaviate/weaviate-go-client/v6/modules/selfprovided"
 	"github.com/weaviate/weaviate-go-client/v6/query"
 	"github.com/weaviate/weaviate-go-client/v6/query/filter"
 	"github.com/weaviate/weaviate-go-client/v6/types"
@@ -32,10 +33,11 @@ func setupJeopardySearch(t *testing.T, client *weaviate.Client) {
 			{Name: "category", DataType: collections.DataTypeText},
 			{Name: "points", DataType: collections.DataTypeInt},
 		},
-		// An empty VectorConfig registers a named vector with no vectorizer, so
-		// vectors must be supplied at insert time.
+		// A named vector that brings its own vectors: the server requires every
+		// vector config to name a vectorizer, so use the "none" vectorizer
+		// (selfprovided) and supply the vectors explicitly at insert time.
 		Vectors: map[string]collections.VectorConfig{
-			"default": {},
+			"default": {Vectorizer: selfprovided.Vectorizer},
 		},
 	}); err != nil {
 		t.Fatalf("create JeopardyQuestion collection: %v", err)
