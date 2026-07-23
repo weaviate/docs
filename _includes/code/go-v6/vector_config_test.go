@@ -200,15 +200,11 @@ func TestPropModuleSettings(t *testing.T) {
 // TestDistanceMetric sets the distance metric for a collection that stores
 // user-supplied vectors.
 func TestDistanceMetric(t *testing.T) {
-	// HFresh IS supported by the docs-CI server (Weaviate 1.38; the WEAVIATE_VERSION
-	// "1.35.0" workflow var is stale and unused — the compose files pin 1.38.0). The
-	// remaining blocker is the snippet itself: HFresh requires maxPostingSizeKB >= 8,
-	// but the displayed snippet leaves it at the zero value, so the server rejects the
-	// create with HTTP 422 "invalid hfresh config: maxPostingSizeKB is '0' but must be
-	// at least 8". Adding an explicit MaxPostingSizeKB to HFresh in the DisplayedSnippet
-	// (rendered on manage-collections/vector-config.mdx) is a published-content change
-	// pending sign-off; verified that MaxPostingSizeKB: 8 makes the create succeed.
-	t.Skip("HFresh needs maxPostingSizeKB >= 8; adding it to the published snippet needs sign-off (see comment)")
+	// Runs against the docs-CI server (Weaviate 1.38; the WEAVIATE_VERSION "1.35.0"
+	// workflow var is stale and unused — the compose files pin 1.38.0), which supports
+	// the HFresh vector index. HFresh requires maxPostingSizeKB >= 8, so the snippet
+	// sets it explicitly; otherwise the server rejects the create with HTTP 422
+	// "invalid hfresh config: maxPostingSizeKB is '0' but must be at least 8".
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -218,7 +214,7 @@ func TestDistanceMetric(t *testing.T) {
 
 	// START DistanceMetric
 	// Bring your own vectors and set the distance metric on the index.
-	index := vectorindex.HFresh{Distance: vectorindex.DistanceCosine}
+	index := vectorindex.HFresh{Distance: vectorindex.DistanceCosine, MaxPostingSizeKB: 8}
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{
