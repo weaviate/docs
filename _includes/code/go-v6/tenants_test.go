@@ -16,7 +16,6 @@ import (
 
 // TestEnableMultiTenancy creates a collection with multi-tenancy turned on.
 func TestEnableMultiTenancy(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -39,7 +38,6 @@ func TestEnableMultiTenancy(t *testing.T) {
 // TestEnableAutoMT creates a multi-tenancy collection that also creates and
 // activates tenants automatically when data is inserted for an unknown tenant.
 func TestEnableAutoMT(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

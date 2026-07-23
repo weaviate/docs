@@ -200,7 +200,6 @@ func TestPropModuleSettings(t *testing.T) {
 // TestDistanceMetric sets the distance metric for a collection that stores
 // user-supplied vectors.
 func TestDistanceMetric(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

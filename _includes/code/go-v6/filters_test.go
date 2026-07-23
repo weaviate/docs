@@ -15,6 +15,7 @@ import (
 // the only variable.
 
 func TestSingleFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -39,6 +40,7 @@ func TestSingleFilter(t *testing.T) {
 }
 
 func TestMultipleFiltersAnd(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -70,6 +72,7 @@ func TestMultipleFiltersAnd(t *testing.T) {
 }
 
 func TestMultipleFiltersNested(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -108,6 +111,7 @@ func TestMultipleFiltersNested(t *testing.T) {
 }
 
 func TestContainsAnyFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -135,6 +139,7 @@ func TestContainsAnyFilter(t *testing.T) {
 }
 
 func TestContainsAllFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -161,6 +166,7 @@ func TestContainsAllFilter(t *testing.T) {
 }
 
 func TestContainsNoneFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -187,6 +193,7 @@ func TestContainsNoneFilter(t *testing.T) {
 }
 
 func TestLikeFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -212,6 +219,7 @@ func TestLikeFilter(t *testing.T) {
 }
 
 func TestCrossReferenceFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -237,6 +245,7 @@ func TestCrossReferenceFilter(t *testing.T) {
 }
 
 func TestFilterByDate(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -262,6 +271,7 @@ func TestFilterByDate(t *testing.T) {
 }
 
 func TestFilterById(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -286,6 +296,7 @@ func TestFilterById(t *testing.T) {
 }
 
 func TestFilterByTimestamp(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -311,6 +322,7 @@ func TestFilterByTimestamp(t *testing.T) {
 }
 
 func TestFilterByPropertyLength(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -336,6 +348,7 @@ func TestFilterByPropertyLength(t *testing.T) {
 }
 
 func TestFilterByPropertyNullState(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -362,6 +375,7 @@ func TestFilterByPropertyNullState(t *testing.T) {
 // TestNearTextWithFilter combines a semantic search with a filter. It queries a
 // collection whose vectorizer turns the query text into a vector server-side.
 func TestNearTextWithFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

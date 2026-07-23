@@ -15,6 +15,7 @@ import (
 // collection.
 
 func TestHybridBasic(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -35,6 +36,7 @@ func TestHybridBasic(t *testing.T) {
 }
 
 func TestHybridWithScore(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -64,6 +66,7 @@ func TestHybridWithScore(t *testing.T) {
 }
 
 func TestHybridWithAlpha(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -86,6 +89,7 @@ func TestHybridWithAlpha(t *testing.T) {
 }
 
 func TestHybridWithFusionType(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -107,6 +111,7 @@ func TestHybridWithFusionType(t *testing.T) {
 }
 
 func TestHybridWithProperties(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -129,6 +134,7 @@ func TestHybridWithProperties(t *testing.T) {
 }
 
 func TestHybridWithPropertyWeighting(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -151,6 +157,7 @@ func TestHybridWithPropertyWeighting(t *testing.T) {
 }
 
 func TestHybridWithVector(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -178,6 +185,7 @@ func TestHybridWithVector(t *testing.T) {
 }
 
 func TestHybridLimit(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -198,6 +206,7 @@ func TestHybridLimit(t *testing.T) {
 }
 
 func TestHybridAutocut(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -218,6 +227,7 @@ func TestHybridAutocut(t *testing.T) {
 }
 
 func TestHybridWithFilter(t *testing.T) {
+	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

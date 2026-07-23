@@ -7,9 +7,11 @@ import os
 GO_V6_CWD = "_includes/code/go-v6"
 
 
-def run_go_test(run_pattern, empty_weaviates):
+def run_go_suite():
     # -count=1 disables the test cache so each run actually hits Weaviate.
-    command = shlex.split(f"go test ./... -run {run_pattern} -v -count=1")
+    # No -run filter: t.Skip (not a run pattern) is the selection mechanism, so
+    # every test WITHOUT a t.Skip executes and every test WITH one is excluded.
+    command = shlex.split("go test ./... -v -count=1")
     env = dict(os.environ)
 
     try:
@@ -18,7 +20,7 @@ def run_go_test(run_pattern, empty_weaviates):
             capture_output=True, text=True, check=True,
         )
     except subprocess.CalledProcessError as error:
-        details = [f"Go tests matching {run_pattern!r} failed (exit code {error.returncode})"]
+        details = [f"Go tests failed (exit code {error.returncode})"]
         if error.stdout:
             details.append(f"\n--- STDOUT (last 80 lines) ---\n{chr(10).join(error.stdout.splitlines()[-80:])}")
         if error.stderr:
@@ -26,49 +28,13 @@ def run_go_test(run_pattern, empty_weaviates):
         pytest.fail("\n".join(details))
 
 
-# Smoke set for the Go v6 client. Each op is a standalone `go test` target so a
-# failure points at the exact snippet. The cloud connection case skips itself
-# when WEAVIATE_URL / WEAVIATE_API_KEY are unset; every other test dials the
-# local docker stack on :8080 / :50051.
+# Run the whole Go v6 snippet suite live. Selection is by t.Skip, not a `-run`
+# pattern: every test without a t.Skip executes against the local docker stack on
+# :8080 / :50051 and self-seeds via helpers like setupArticle / setupJeopardy /
+# setupJeopardySearch (bring-your-own vectors, no vectorizer). Tests that need
+# provisioning not yet available in this CI tier (auth, a vectorizer, or an
+# external seed) guard themselves with t.Skip and are excluded; the cloud, OIDC,
+# and third-party-key connection snippets self-skip when their env vars are unset.
 @pytest.mark.go
-@pytest.mark.parametrize(
-    "run_pattern",
-    [
-        "TestConnectLocal|TestConnectCloud",
-    ],
-)
-def test_connection(empty_weaviates, run_pattern):
-    run_go_test(run_pattern, empty_weaviates)
-
-
-@pytest.mark.go
-@pytest.mark.parametrize(
-    "run_pattern",
-    [
-        "TestCreateCollection$",
-    ],
-)
-def test_manage_collections(empty_weaviates, run_pattern):
-    run_go_test(run_pattern, empty_weaviates)
-
-
-@pytest.mark.go
-@pytest.mark.parametrize(
-    "run_pattern",
-    [
-        "TestCreateObject",
-    ],
-)
-def test_manage_objects(empty_weaviates, run_pattern):
-    run_go_test(run_pattern, empty_weaviates)
-
-
-@pytest.mark.go
-@pytest.mark.parametrize(
-    "run_pattern",
-    [
-        "TestBasicQuery",
-    ],
-)
-def test_search(empty_weaviates, run_pattern):
-    run_go_test(run_pattern, empty_weaviates)
+def test_go_v6_suite(empty_weaviates):
+    run_go_suite()

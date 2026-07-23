@@ -15,7 +15,6 @@ import (
 // TestEnableInvertedIndex turns on property-level inverted indexes for
 // filtering, searching, and range filtering.
 func TestEnableInvertedIndex(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -40,7 +39,6 @@ func TestEnableInvertedIndex(t *testing.T) {
 // TestSetInvertedIndexParams configures collection-level inverted index
 // parameters, including BM25 tuning and stopwords.
 func TestSetInvertedIndexParams(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -108,7 +106,6 @@ func TestAllReplicationSettings(t *testing.T) {
 
 // TestShardingSettings configures sharding for the collection.
 func TestShardingSettings(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

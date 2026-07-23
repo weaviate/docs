@@ -35,7 +35,6 @@ func TestCreateCollection(t *testing.T) {
 // TestBasicCreateCollection creates a collection with only a name. Missing
 // properties are added by auto-schema when data is first inserted.
 func TestBasicCreateCollection(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -56,7 +55,6 @@ func TestBasicCreateCollection(t *testing.T) {
 // TestCreateCollectionWithProperties defines the collection properties and
 // their data types up front instead of relying on auto-schema.
 func TestCreateCollectionWithProperties(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -80,7 +78,6 @@ func TestCreateCollectionWithProperties(t *testing.T) {
 
 // TestCheckIfExists reports whether a collection is defined in the schema.
 func TestCheckIfExists(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -112,7 +109,6 @@ func TestReadOneCollection(t *testing.T) {
 
 // TestReadAllCollections reads every collection definition in the schema.
 func TestReadAllCollections(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
