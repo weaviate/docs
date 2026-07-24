@@ -102,4 +102,15 @@ for (const obj of filteringResponse.searchResults.objects) {
 }
 // END FilteringExample
 
+// START RankingInstructions
+const rankingResponse = await qa.search("wireless headphones", {
+    rankingInstructions: "Prioritize products with recent reviews and in-stock availability over price.",
+    limit: 10,
+});
+
+for (const obj of rankingResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - $${obj.properties['price']}`);
+}
+// END RankingInstructions
+
 await client.close();

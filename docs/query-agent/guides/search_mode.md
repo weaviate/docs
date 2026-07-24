@@ -69,6 +69,7 @@ The `.search()` method accepts several arguments:
 | `limit` | `int` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `Literal["recall", "precision"]` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversity_weight` | `float \| None` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
+| `ranking_instructions` | `str \| None` | Natural-language instructions that guide the reranker on which aspects of relevance to prioritize (e.g., `"Prioritize products with recent reviews and in-stock availability over price."`). Only affects the ordering of the retrieved results, not which results are retrieved. Limited to 500 tokens. See [Ranking instructions](#ranking-instructions) below. |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -79,6 +80,7 @@ The `.search()` method accepts several arguments:
 | `limit` | `number` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `"recall" \| "precision"` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversityWeight` | `number` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
+| `rankingInstructions` | `string` | Natural-language instructions that guide the reranker on which aspects of relevance to prioritize (e.g., `"Prioritize products with recent reviews and in-stock availability over price."`). Only affects the ordering of the retrieved results, not which results are retrieved. Limited to 500 tokens. See [Ranking instructions](#ranking-instructions) below. |
 
 </TabItem>
 </Tabs>
@@ -133,6 +135,35 @@ To use diversity ranking with target vectors, set the single target vector you w
             text={TSCode}
             startMarker="// START DiversityRanking"
             endMarker="// END DiversityRanking"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+### Ranking instructions
+
+Search Mode uses reranking to improve the relevancy of results. You can pass natural-language ranking instructions to guide the instruction-following reranker on which aspects of relevance to prioritize, for example, recency or availability.
+
+Ranking instructions are reused when [paginating](#pagination) with `.next()`, so the ordering stays consistent across pages.
+
+:::note Length limit
+Ranking instructions are limited to 500 tokens. Requests with longer instructions fail validation.
+:::
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START RankingInstructions"
+            endMarker="# END RankingInstructions"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START RankingInstructions"
+            endMarker="// END RankingInstructions"
             language="ts"
         />
     </TabItem>
