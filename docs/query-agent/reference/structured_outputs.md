@@ -20,7 +20,7 @@ Structured outputs are supported in **[Ask Mode](../guides/ask_mode.md) only.**
 Structured outputs require `weaviate-agents` **1.7.0 or later** in Python, and **1.6.0 or later** in JavaScript/TypeScript. The JavaScript/TypeScript examples that use a Zod schema also require **Zod 4 or later**. [See the installation page](../installation.md).
 :::
 
-The example outputs on this page are illustrative. The Query Agent is non-deterministic, so the wording, the level of detail, and the specific records it selects will vary between runs, even for an identical query and schema. The *shape* of the response is what the schema guarantees.
+The example outputs on this page will not match yours exactly. The Query Agent is non-deterministic, so the wording and the records it picks vary between runs. Your schema controls the shape of the response, not the content.
 
 ## Basic usage
 
@@ -146,7 +146,7 @@ The examples below use structured outputs to generate a set of metadata associat
         ```
         </details>
 
-        The `additionalProperties: false` entry above is what Zod's own JSON Schema conversion emits, so the two examples describe the same schema. It is optional — the Query Agent accepts a schema with or without it.
+        Zod adds `additionalProperties: false` when it converts a schema to JSON Schema, so both examples above describe the same thing. The field is optional. The Query Agent accepts a schema with or without it.
 
     </TabItem>
 </Tabs>
@@ -399,7 +399,7 @@ The Query Agent natively supports subsetting and evaluating the quality of the r
 |---------|:----------:|-------|
 | Min / max number of items in an array | ✅ | |
 | Min / max value of a number property | ✅ | E.g. constrain a value to be within a certain range. |
-| String formats: `uuid`, `date-time`, `time`, `date`, `duration`, `email`, `hostname`, `ipv4`, `ipv6` | ✅ | Constrains the model to generate a string in the shape of the given format. The value is not validated against the full specification for that format after generation, so ask for a field the retrieved data can actually populate. |
+| String formats: `uuid`, `date-time`, `time`, `date`, `duration`, `email`, `hostname`, `ipv4`, `ipv6` | ✅ | Guides the model to produce a string in that format. The result is not checked afterwards, so a field your data cannot fill may still come back invalid. |
 | Regular expression (pattern) on a string | ✅ | |
 | Recursive schemas (a schema referencing itself) | ✅ | |
 | Default values (e.g. `x: int = 1`) | ❌ | The schema is accepted, but the field is always populated by the model, so the default is never used. Consider using nullable entries and transforming them afterwards. |

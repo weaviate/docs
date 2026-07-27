@@ -102,7 +102,7 @@ The `AskModeResponse` class has the following properties:
 
 [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.AskModeResponse)
 
-If you provide the `output_format` parameter (`qa.ask(..., output_format=...)`), Ask Mode returns a `ParsedAskModeResponse` instead. This is a subclass of `AskModeResponse`, so it keeps every field above — including `final_answer`, which still holds the raw string from the model — and adds one more:
+If you provide the `output_format` parameter (`qa.ask(..., output_format=...)`), Ask Mode returns a `ParsedAskModeResponse` instead. It is a subclass of `AskModeResponse`, so it keeps every field above and adds one more. `final_answer` still holds the raw string from the model.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -126,7 +126,7 @@ The type of `final_answer_parsed` is a `dict` if a dictionary was supplied to `o
 
 [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/AskModeResponse.html)
 
-If you provide the `outputFormat` parameter (`qa.ask(..., { outputFormat: ... })`), Ask Mode returns a `ParsedAskModeResponse<T>` instead. This is an `AskModeResponse` extended with one more field, so it keeps every field above — including `finalAnswer`, which still holds the raw string from the model:
+If you provide the `outputFormat` parameter (`qa.ask(..., { outputFormat: ... })`), Ask Mode returns a `ParsedAskModeResponse<T>` instead. It is an `AskModeResponse` with one more field, so it keeps every field above. `finalAnswer` still holds the raw string from the model.
 
 | Field | Type | Description |
 | --- | --- | --- |
