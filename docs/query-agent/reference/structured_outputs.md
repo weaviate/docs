@@ -1,5 +1,5 @@
 ---
-title: Structured Outputs
+title: Structured outputs
 description: "Conform the final response to a particular schema."
 image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'configuration']
@@ -12,17 +12,46 @@ import PyCode from '!!raw-loader!/docs/query-agent/_includes/code/structured_out
 import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/structured_outputs.mts';
 
 
-Structured outputs ensure that the model's final response will adhere to a given schema. This means you can easily access aspects of a response which is customised to your use-case.
+Structured outputs ensure that the Query Agent's final response adheres to a schema that you provide. Instead of parsing a free-text answer, you get back an object whose fields are customized to your use case.
 
-## Basic Usage
+Structured outputs are supported in **[Ask Mode](../guides/ask_mode.md) only.**
+
+:::info Client versions
+Structured outputs require `weaviate-agents` **1.7.0 or later** in Python, and **1.6.0 or later** in JavaScript/TypeScript. The JavaScript/TypeScript examples that use a Zod schema also require **Zod 4 or later**. [See the installation page](../installation.md).
+:::
+
+The example outputs on this page will not match yours exactly. The Query Agent is non-deterministic, so the wording and the records it picks vary between runs. Your schema controls the shape of the response, not the content.
+
+## Basic usage
+
+Set the schema per request, with the `output_format` argument of `.ask()` (`outputFormat` in JavaScript/TypeScript). The examples on this page use a Query Agent instantiated over a `FinancialContracts` collection ([see the class instantiation page for more detail](./instantiation.md)):
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SOInstantiate"
+            endMarker="# END SOInstantiate"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SOInstantiate"
+            endMarker="// END SOInstantiate"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+The examples below use structured outputs to generate a set of metadata associated with a single retrieved item.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         In Python, you can either provide a Pydantic `BaseModel` or a raw dictionary conforming to the [Draft 2020-12 JSON Schema](https://json-schema.org/draft/2020-12) specification.
 
-        In the below examples, we use structured outputs to generate a set of metadata associated with a single retrieved item.
-
-        The structured output can be accessed by a new field, `final_answer_parsed`, which appears only when the `output_format` argument is not `None`. The raw string from the model can still be accessed at `final_answer`.
+        The structured output is available on a new field, `final_answer_parsed`, which appears when you provide `output_format`. The raw string from the model can still be accessed at `final_answer`.
 
         **Pydantic BaseModel**
         <FilteredTextBlock
@@ -36,10 +65,10 @@ Structured outputs ensure that the model's final response will adhere to a given
         <summary>Example output</summary>
         ```python
         ContractSummary(
-            contract_id='46',
+            contract_id='46.0',
             contract_title='Employment Contract',
             auto_renew=False,
-            parties_involved=['Weaviate', 'Mark Robson'],
+            parties_involved=['Weaviate (Employer)', 'Mark Robson (Employee)', 'Hans Zimmer (Chief Executive Officer/signatory)'],
             requires_action=True
         )
         ```
@@ -58,10 +87,10 @@ Structured outputs ensure that the model's final response will adhere to a given
         <summary>Example output</summary>
         ```python
         {
-            'contract_id': '46',
+            'contract_id': '46.0',
             'contract_title': 'Employment Contract',
             'auto_renew': False,
-            'parties_involved': ['Weaviate', 'Mark Robson'],
+            'parties_involved': ['Weaviate (Employer)', 'Mark Robson (Employee)', 'Hans Zimmer, Chief Executive Officer'],
             'requires_action': True
         }
         ```
@@ -71,9 +100,7 @@ Structured outputs ensure that the model's final response will adhere to a given
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
         In JavaScript/TypeScript, you can either provide a [Zod](https://zod.dev/) schema or a raw object conforming to the [Draft 2020-12 JSON Schema](https://json-schema.org/draft/2020-12) specification.
 
-        In the below examples, we use structured outputs to generate a set of metadata associated with a single retrieved item.
-
-        The structured output can be accessed by a new field, `finalAnswerParsed`, which appears only when the `outputFormat` argument is not null. The raw string from the model can still be accessed at `finalAnswer`.
+        The structured output is available on a new field, `finalAnswerParsed`, which appears when you provide `outputFormat`. The raw string from the model can still be accessed at `finalAnswer`.
 
         **Zod schema**
         <FilteredTextBlock
@@ -86,10 +113,10 @@ Structured outputs ensure that the model's final response will adhere to a given
         <summary>Example output</summary>
         ```typescript
         {
-            contract_id: '46',
+            contract_id: '46.0',
             contract_title: 'Employment Contract',
             auto_renew: false,
-            parties_involved: [ 'Weaviate', 'Mark Robson' ],
+            parties_involved: [ 'Weaviate (Employer)', 'Mark Robson (Employee)' ],
             requires_action: true
         }
         ```
@@ -106,14 +133,20 @@ Structured outputs ensure that the model's final response will adhere to a given
         <summary>Example output</summary>
         ```typescript
         {
-            contract_id: '46.0',
+            contract_id: '46',
             contract_title: 'Employment Contract',
             auto_renew: false,
-            parties_involved: [ 'Weaviate', 'Mark Robson' ],
+            parties_involved: [
+                'Weaviate (Employer)',
+                'Mark Robson (Employee)',
+                'Hans Zimmer (Chief Executive Officer and signatory)'
+            ],
             requires_action: true
         }
         ```
         </details>
+
+        Zod adds `additionalProperties: false` when it converts a schema to JSON Schema, so both examples above describe the same thing. The field is optional. The Query Agent accepts a schema with or without it.
 
     </TabItem>
 </Tabs>
@@ -134,8 +167,8 @@ As a basic example, consider adding an additional field `reasoning` to the respo
         <summary>Example output</summary>
         ```python
         FinalAnswer(
-            reasoning='The most recent contract mentioning AI is the sales agreement dated 2024-03-15, but it does not mention AI in the text. The most recent contract that is actually about AI is the partnership agreement dated 2023-11-15 between Weaviate and FictionalSoft, which explicitly states it is for artificial intelligence research and development. No later AI-related contract is present in the provided data.',
-            final_answer='The most recent contract about AI is the partnership agreement dated 2023-11-15 between Weaviate and FictionalSoft. It is specifically for collaboration on artificial intelligence research and development. No more recent AI-related contract appears in the provided data.'
+            reasoning='Among the provided contracts, the latest one explicitly concerning AI is dated November 15, 2023. It is a partnership agreement between Weaviate and OpenAI for collaboration on artificial intelligence research and development. The March 15, 2024 contracts are sales and lease agreements and do not concern AI.',
+            final_answer='The most recent AI-related contract is a **Partnership Agreement dated November 15, 2023**, between **Weaviate and OpenAI**. It establishes a three-year partnership to collaborate on **artificial intelligence research and development**. Weaviate is responsible for marketing and promotion, while OpenAI provides technical expertise and development support; profits are to be split equally.\n\n- **Contract type:** Partnership agreement\n- **Date:** November 15, 2023\n- **Author/signatory:** Johnathan Smith, CEO of Weaviate\n- **Document ID:** 60'
         )
         ```
         </details>
@@ -151,17 +184,15 @@ As a basic example, consider adding an additional field `reasoning` to the respo
         <summary>Example output</summary>
         ```typescript
         {
-            reasoning: 'The most recent contract related to AI is the partnership agreement dated 2024-03-15 at 10:30 UTC. It specifically mentions collaboration on artificial intelligence research and development.',
-            final_answer: 'The most recent AI-related contract is a **Partnership Agreement** dated **2024-03-15 10:30 UTC** between **Weaviate** and **FictionalSoft**. It says the parties wish to establish a partnership to collaborate on **artificial intelligence research and development**. It has a **2-year term** and includes financial contributions of **$244.46 from Weaviate** and **$151.01 from FictionalSoft**, with profits split **50/50**.\n' +
-                '\n' +
-                'If you want, I can also summarize the next most recent AI-related contract.'
+            reasoning: 'The latest dated contract explicitly concerning AI is dated May 15, 2023. Later contracts in the provided data are dated November 15, 2023 and March 15, 2024, but do not concern AI. There are multiple duplicate records for the May 15 contract; the matching record identifies doc_id 56.0 and author Alice Johnson.',
+            final_answer: 'The most recent AI-related contract is a **Partnership Agreement** dated **May 15, 2023**.\n\n- **Author:** Alice Johnson\n- **Doc ID:** 56.0\n- **Summary:** Weaviate and OpenAI agree to collaborate on developing AI-driven solutions to improve data management and retrieval. Weaviate contributes $391.74, OpenAI contributes $302.40, profits are split 60/40, and the agreement lasts three years.\n\nNo later contract in the provided records explicitly concerns AI.'
         }
         ```
         </details>
     </TabItem>
 </Tabs>
 
-## Example: Nested Schemas
+## Example: Nested schemas
 
 Nested schemas are supported, for example, you can define two schemas and have one reference the other, allowing more complex structured outputs to be crafted.
 
@@ -175,115 +206,71 @@ In the below example, the final response will generate a list of information for
             endMarker="# END SONestedExampleBaseModel"
             language="py"
         />
+        A `Field` can be used to provide additional metadata, such as a `description`, or even constraints on numeric objects. A `Literal` can be used to constrain a field to produce only one of a few different objects.
         <details>
         <summary>Example output</summary>
         ```python
         ContractInfoResponse(
             contract_infos=[
                 ContractInfo(
-                    names_mentioned=['Hans Zimmer', 'Weaviate', 'Mark Robson'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Mark Robson', 'Kaladin Stormblessed'],
                     contract_type='other',
-                    summary='Loan agreement between Weaviate and Mark Robson for $342.00, dated 2023-03-15.',
-                    contract_uuid=UUID('b2c4ffdc-411c-423a-9040-b7cbf5439bd0')
+                    summary='Partnership Agreement dated March 15, 2023, establishing collaboration between Weaviate and OpenAI on artificial intelligence research and development. Weaviate contributes technology resources valued at $112.85 and staff time valued at $550.09; OpenAI contributes research expertise and project-management support valued at $98.14. Net profits are split 60% to Weaviate and 40% to OpenAI.',
+                    contract_uuid=UUID('8ec8f74a-2d38-4aca-80ca-e66f12ae0cb6')
                 ),
                 ContractInfo(
-                    names_mentioned=['John Smith', 'Weaviate'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Alice Johnson', 'Mark Robson'],
                     contract_type='other',
-                    summary='Non-disclosure agreement between Weaviate and John Smith, dated 2022-03-15.',
-                    contract_uuid=UUID('c126e3d3-db85-4a77-b49c-2a87fe48cd52')
+                    summary='Partnership Agreement dated March 15, 2023, for collaboration on artificial intelligence projects. Weaviate contributes $210.97 toward initial project costs, while OpenAI contributes $194.05 toward research and development. OpenAI is responsible for technical development and AI research expertise.',
+                    contract_uuid=UUID('056b6b5c-d6d3-4235-9003-4822dbbef9ef')
                 ),
                 ContractInfo(
-                    names_mentioned=['Johnathan Smith', 'Weaviate', 'John Smith'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Arthur Penndragon', 'Mark Robson', 'Danny Williams'],
                     contract_type='other',
-                    summary='Lease agreement for office space between Weaviate and John Smith, dated 2024-03-15.',
-                    contract_uuid=UUID('6bbca4b9-fea1-4275-889a-1f5d4591ecbb')
+                    summary='Partnership Agreement dated March 15, 2023, for artificial intelligence research and development, with shared resources and expertise. Weaviate contributes technology resources and staff time; OpenAI contributes research expertise and project-management support. Profits are divided 60% to Weaviate and 40% to OpenAI.',
+                    contract_uuid=UUID('c50c3b9b-339a-4830-b2f7-4b0b9b84bc56')
                 ),
                 ContractInfo(
-                    names_mentioned=['Arthur Penndragon', 'Weaviate', 'Mark Robson'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Edward Elric', 'Mark Robson'],
                     contract_type='other',
-                    summary='Loan agreement between Weaviate and Mark Robson for $620.41, dated 2023-03-15.',
-                    contract_uuid=UUID('93213fd4-4c55-4a7c-a190-2e4c9d808566')
+                    summary='Partnership Agreement dated March 15, 2023, to develop advanced data-processing technologies. Weaviate provides technological support and resources valued at $416.56; OpenAI contributes AI and machine-learning expertise valued at $567.91. Revenue is split 60% to Weaviate and 40% to OpenAI.',
+                    contract_uuid=UUID('3cec1521-3d26-46b3-b63f-1af2ddaa3db4')
                 ),
                 ContractInfo(
-                    names_mentioned=['Alice Johnson', 'Weaviate', 'Danny Williams'],
+                    names_mentioned=['Weaviate', 'OpenAI'],
                     contract_type='other',
-                    summary='Service agreement for digital marketing services between Weaviate and Danny Williams, dated 
-        2023-03-15, with total compensation of $961.89.',
-                    contract_uuid=UUID('eed7d7f9-b06a-4d7b-b19a-f0f3782e49fd')
+                    summary='Partnership Agreement dated March 15, 2023, focused on collaborative projects in AI technology development. Weaviate contributes $234.12 toward project funding, and OpenAI contributes $173.25 for marketing and promotion. Weaviate handles technical development, while OpenAI conducts research and data analysis.',
+                    contract_uuid=UUID('3d2afbc4-24c1-4f64-b676-193e4dccb451')
                 ),
                 ContractInfo(
-                    names_mentioned=['Weaviate', 'John Smith'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Johnathan Smith', 'Mark Robson'],
                     contract_type='other',
-                    summary='Loan agreement between Weaviate and John Smith for $403.65, dated 2022-03-15.',
-                    contract_uuid=UUID('5f75ec7e-ca7f-415c-9f5d-7d3a1518fad8')
+                    summary='Partnership Agreement dated March 15, 2023, to advance artificial intelligence technologies and develop innovative AI solutions. Weaviate contributes $177.98 and OpenAI contributes $67.09; each party is responsible for roles specified in an attached exhibit.',
+                    contract_uuid=UUID('8ac31eff-9936-4a1b-a5a4-8e148a4596bf')
                 ),
                 ContractInfo(
-                    names_mentioned=['Hans Zimmer', 'Weaviate', 'Mark Robson'],
-                    contract_type='sales',
-                    summary='Sales agreement between Weaviate and Mark Robson for software licenses and support services, 
-        dated 2023-04-24, with a total purchase price of $420.03.',
-                    contract_uuid=UUID('174b1a9a-e9b2-4f48-960d-283a0fbbe3ab')
-                ),
-                ContractInfo(
-                    names_mentioned=['John Williams', 'Weaviate', 'Mark Robson'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Alice Johnson', 'Mark Robson'],
                     contract_type='other',
-                    summary='Service agreement between Weaviate and Mark Robson for consultation, software development, and
-        project management services, dated 2023-04-15, with total compensation of $744.35.',
-                    contract_uuid=UUID('65848d82-e38e-4bed-b0bb-0c2830af8b27')
+                    summary='Partnership Agreement dated October 15, 2023, for development of innovative AI solutions. Weaviate contributes $726.88 and project resources, while OpenAI contributes $251.09 and technical expertise. Profits are shared 60% to Weaviate and 40% to OpenAI.',
+                    contract_uuid=UUID('aa3c40bc-8bea-42d3-9692-75a417a99a0d')
                 ),
                 ContractInfo(
-                    names_mentioned=['John Williams', 'Weaviate'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Johnathan Smith', 'Mark Robson'],
                     contract_type='other',
-                    summary='Invoice from Weaviate to John Williams for data analysis, API integration, system maintenance,
-        technical support, and consultation services, dated 2023-10-15, totaling $873.17.',
-                    contract_uuid=UUID('5b5544f9-7092-45d0-830d-dd211b0f3a70')
+                    summary='Partnership Agreement dated November 15, 2023, covering projects including artificial intelligence research and development. Weaviate contributes $244.46 and handles marketing; OpenAI contributes $151.01 and provides technical expertise. Profits are shared equally.',
+                    contract_uuid=UUID('1e85f2b6-f2f7-4e52-86ba-c4f508f6c06d')
                 ),
                 ContractInfo(
-                    names_mentioned=['Kaladin Stormblessed', 'Weaviate', 'John Smith'],
+                    names_mentioned=['Weaviate', 'OpenAI', 'Alice Johnson', 'Danny Williams'],
                     contract_type='other',
-                    summary='Lease agreement between Weaviate and John Smith for office space, dated 2023-07-15.',
-                    contract_uuid=UUID('f3f3730b-f3c4-4b2f-aa7a-1bc07b5814d8')
-                ),
-                ContractInfo(
-                    names_mentioned=['Johnathan Smith', 'Weaviate', 'Mark Robson'],
-                    contract_type='other',
-                    summary='Non-disclosure agreement between Weaviate and Mark Robson, dated 2023-09-15.',
-                    contract_uuid=UUID('3d4d802d-1820-4a5f-b8fe-6c5e189de1e6')
-                ),
-                ContractInfo(
-                    names_mentioned=['John Williams', 'Weaviate', 'Danny Williams'],
-                    contract_type='sales',
-                    summary='Sales agreement between Weaviate and Danny Williams for products A, B, and C, dated 
-        2023-11-15, with a total purchase price of $270.68.',
-                    contract_uuid=UUID('e645324e-14a4-4ca4-aeae-da146d55a3bb')
-                ),
-                ContractInfo(
-                    names_mentioned=['John Williams', 'Weaviate', 'Mark Robson'],
-                    contract_type='other',
-                    summary='Invoice from Weaviate to Mark Robson dated 2023-04-15 for consultation, software development, 
-        and project management services, totaling $744.35.',
-                    contract_uuid=UUID('48a58d82-e38e-4bed-b0bb-0c2830af8b27')
-                ),
-                ContractInfo(
-                    names_mentioned=['John Williams', 'Weaviate', 'John Smith'],
-                    contract_type='other',
-                    summary='Invoice from Weaviate to John Smith dated 2023-10-15 for consultation, development, and 
-        additional charges, totaling $296.36.',
-                    contract_uuid=UUID('03c0f5bb-f999-4b8b-86f3-271405de0037')
-                ),
-                ContractInfo(
-                    names_mentioned=['Johnathan Smith', 'Weaviate', 'Danny Williams'],
-                    contract_type='other',
-                    summary='Service agreement between Weaviate and Danny Williams for software development, technical 
-        support, and consultation services, dated 2023-03-15, with compensation of $273.86.',
-                    contract_uuid=UUID('d68e20a9-4bd4-42d0-8986-d16425c3444a')
+                    summary='Service Agreement dated March 15, 2023, for AI development and consulting services. The total fee is $249.44, payable in two installments of $124.72.',
+                    contract_uuid=UUID('1363c2ae-83e6-4049-8f95-cd6c873a997e')
                 )
             ],
-            overall_summary='There are multiple 2023 contracts related to AI, including two partnership agreements about artificial intelligence research and development, plus other 2023 contracts mentioning AI-adjacent services. Some listed contracts are not directly about AI but were returned from the available matching set.'
+            overall_summary='Nine distinct contracts concerning AI, artificial intelligence research and development, AI technology development, AI solutions, or AI development and consulting were identified in 2023. Several duplicate records in the provided data were consolidated by document identity.'
         )
         ```
         </details>
-        A `Field` can be used to provide additional metadata, such as a `description`, or even constraints on numeric objects. A `Literal` can be used to constrain a field to produce only one of a few different objects.
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
         <FilteredTextBlock
@@ -299,49 +286,55 @@ In the below example, the final response will generate a list of information for
         {
             contract_infos: [
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'OpenAI', 'Alice Johnson', 'Mark Robson' ],
                     contract_type: 'other',
-                    summary: 'Partnership agreement to collaborate on artificial intelligence research and development, including shared contributions, responsibilities, and profit or revenue sharing. Date: 2023-03-15.',
-                    contract_uuid: '583a63f9-f71b-4926-8075-2ade04a689c3'
+                    summary: 'Partnership agreement dated March 15, 2023, between Weaviate and OpenAI to collaborate on artificial intelligence projects. Weaviate contributes $210.97 and OpenAI contributes $194.05; OpenAI is responsible for technical development and AI research expertise.',
+                    contract_uuid: '056b6b5c-d6d3-4235-9003-4822dbbef9ef'
                 },
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'Danny Williams', 'Alice Johnson' ],
                     contract_type: 'other',
-                    summary: 'Partnership agreement to collaborate on artificial intelligence projects and develop innovative AI solutions, with financial contributions, roles, and termination terms. Date: 2022-03-15.',
-                    contract_uuid: '301d007b-53b4-4ce5-9913-a4b3f28fae2f'
+                    summary: 'Service agreement dated March 15, 2023, for AI development and consulting services. The total compensation is $249.44, payable in two installments, with a two-year term ending March 15, 2025.',
+                    contract_uuid: '1363c2ae-83e6-4049-8f95-cd6c873a997e'
                 },
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'Danny Williams', 'Kaladin Stormblessed' ],
                     contract_type: 'other',
-                    summary: 'Partnership agreement focused on artificial intelligence and machine learning collaboration, including resource contributions, revenue sharing, confidentiality, and termination terms. Date: 2023-03-15.',
-                    contract_uuid: 'c2d4620b-db64-4b20-ac10-dd805d9b135d'
+                    summary: 'Service agreement dated March 15, 2023, for consulting on artificial intelligence and data management systems, including implementation, training, and technical support. The total fee is $428.14, with a two-year term ending March 15, 2025.',
+                    contract_uuid: 'dbc30467-5f6a-4630-b7ea-7a17ade8b70a'
                 },
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'Danny Williams', 'Kaladin Stormblessed' ],
                     contract_type: 'other',
-                    summary: 'Partnership agreement to advance artificial intelligence technologies through combined resources and expertise, with defined contributions, responsibilities, and termination provisions. Date: 2023-03-15.',
-                    contract_uuid: 'bbfd975d-85e8-47f1-acae-8d46ff028272'
+                    summary: 'Duplicate record of the service agreement for artificial intelligence and data management systems consulting, implementation, training, and technical support. Total fee: $428.14; term ends March 15, 2025.',
+                    contract_uuid: '010aeced-3328-415c-b93d-c19dc4baeefa'
                 },
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'OpenAI', 'Edward Elric', 'Mark Robson' ],
                     contract_type: 'other',
-                    summary: 'Partnership agreement to collaborate on artificial intelligence projects, with project management, technical development, funding contributions, and termination terms. Date: 2023-03-15.',
-                    contract_uuid: '6e2f283c-0e29-4daa-979f-800dffe476fb'
+                    summary: 'Partnership agreement dated March 15, 2023, for developing advanced data processing technologies. OpenAI contributes AI and machine-learning expertise valued at $567.91, while Weaviate provides technological support and resources valued at $416.56. Revenue is split 60% to Weaviate and 40% to OpenAI.',
+                    contract_uuid: '3cec1521-3d26-46b3-b63f-1af2ddaa3db4'
                 },
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'OpenAI', 'Johnathan Smith', 'Mark Robson' ],
                     contract_type: 'other',
-                    summary: 'Service agreement for data analysis, cloud computing, software development, technical support, and consultation services. It includes compensation, confidentiality, and termination terms. Date: 2023-03-15 to 2023-09-15 depending on the agreement.',
-                    contract_uuid: '8cab56ce-512e-47ef-9a38-5d5fa829444e'
+                    summary: 'Partnership agreement dated March 15, 2023, to collaborate on advancements in artificial intelligence technologies and develop innovative AI solutions. Weaviate contributes $177.98 and OpenAI contributes $67.09.',
+                    contract_uuid: '8ac31eff-9936-4a1b-a5a4-8e148a4596bf'
                 },
                 {
-                    names_mentioned: [Array],
+                    names_mentioned: [ 'Weaviate', 'OpenAI', 'Johnathan Smith', 'Mark Robson' ],
                     contract_type: 'other',
-                    summary: 'Service agreement providing consulting on artificial intelligence and data management systems, including implementation, training, and technical support. Date: 2023-03-15.',
-                    contract_uuid: '24541d4f-d84c-4cbe-b935-60cbc64c170e'
+                    summary: 'Duplicate record of the partnership agreement to collaborate on artificial intelligence technologies and develop AI solutions. Weaviate contributes $177.98 and OpenAI contributes $67.09.',
+                    contract_uuid: '6fcb6899-6344-41e0-8963-10b49bd17625'
+                },
+                {
+                    names_mentioned: [ 'Weaviate', 'OpenAI', 'Alice Johnson', 'Mark Robson' ],
+                    contract_type: 'other',
+                    summary: 'Partnership agreement dated May 15, 2023, for developing AI-driven solutions to improve data management and retrieval. Weaviate contributes $391.74 and OpenAI contributes $302.40; profits are split 60% and 40%, respectively.',
+                    contract_uuid: 'e32c13b7-b552-45f6-b58b-3f0c325715ab'
                 }
             ],
-            overall_summary: 'The AI-related contracts available are partnership and service agreements from 2022–2023, with one purchase order and several invoices that mention AI or related services.'
+            overall_summary: 'Eight unique 2023 contracts concern AI or artificial intelligence-related services and projects. Several duplicate records were omitted from the main list. The matching documents include five partnership agreements and three AI-related service-agreement records; no invoice was explicitly identified as AI-related based on its text.'
         }
         ```
         </details>
@@ -353,7 +346,7 @@ In the below example, the final response will generate a list of information for
 For a custom implementation of citing text (for example, if you want citations in-line), you could create a schema that iteratively builds a response from objects consisting of pairs of text and source IDs.
 
 :::note Supported Citations
-The Query Agent natively supports subsetting and evaluating the quality of the response via the `result_evaluation` parameter in ask mode. [See here for more details](../guides/ask_mode.md#parameters)
+The Query Agent natively supports subsetting and evaluating the quality of the response via the `result_evaluation` parameter in Ask Mode. [See the Ask Mode parameters for more details](../guides/ask_mode.md#parameters).
 :::
 
 <Tabs className="code" groupId="languages">
@@ -368,15 +361,15 @@ The Query Agent natively supports subsetting and evaluating the quality of the r
         <summary>Example output</summary>
         ```python
         CitedAnswer(
-            reasoning='The most recent contract mentioning AI is the partnership agreement dated 2024-03-15, which explicitly refers to AI-related work only in the contract text by implication? However, among the provided contracts, the latest one that clearly concerns AI is the partnership agreement from 2023-11-15, and another earlier partnership agreement from 2023-10-15 also mentions AI solutions. The 2024-03-15 sales agreement does not mention AI, so it is not relevant. The latest clearly AI-related contract in the data is the 2023-11-15 partnership agreement between Weaviate and FictionalSoft.',
+            reasoning='The latest dated contract in the provided records that explicitly concerns AI is dated March 15, 2024, but it is a sales agreement for unspecified products and does not mention AI. The latest contract that explicitly concerns artificial intelligence is the partnership agreement dated November 15, 2023 (doc_id 60.0), which covers collaboration on AI research and development.',
             final_answer=[
                 CitedText(
-                    sentence='The most recent contract about AI is the partnership agreement dated 2023-11-15 between Weaviate and FictionalSoft.',
-                    sources=[UUID('4601c407-7905-4bd5-a1b9-4234bf18e9b6')]
+                    sentence='The most recent contract explicitly about AI is a Partnership Agreement dated November 15, 2023, between Weaviate and OpenAI (doc_id 60.0), authored by Johnathan Smith.',
+                    sources=[UUID('a06ab40a-bcc3-4fc2-bb8a-b2b2598f706c')]
                 ),
                 CitedText(
-                    sentence='It says the parties will collaborate on projects including artificial intelligence research and development, with a three-year term and 50/50 profit sharing.',
-                    sources=[UUID('4601c407-7905-4bd5-a1b9-4234bf18e9b6')]
+                    sentence='It establishes a three-year collaboration on projects including artificial-intelligence research and development, with Weaviate contributing $244.46, OpenAI contributing $151.01, shared marketing and technical responsibilities, and profits split equally.',
+                    sources=[UUID('a06ab40a-bcc3-4fc2-bb8a-b2b2598f706c')]
                 )
             ]
         )
@@ -394,15 +387,15 @@ The Query Agent natively supports subsetting and evaluating the quality of the r
         <summary>Example output</summary>
         ```typescript
         {
-            reasoning: 'The most recent contract that explicitly concerns AI is the partnership agreement dated 2023-11-15 between Weaviate and FictionalSoft, which states that the parties wish to collaborate on artificial intelligence research and development. Among the provided contracts, no later agreement mentions AI, and later-dated documents are sales or lease agreements without AI-related terms.',
+            reasoning: 'The latest dated contract in the provided records that explicitly concerns AI is dated May 15, 2023. It is a partnership agreement for developing AI-driven solutions; the later March 15, 2024 contracts do not mention AI.',
             final_answer: [
                 {
-                    sentence: 'The most recent AI-related contract is the partnership agreement dated November 15, 2023, between Weaviate and FictionalSoft, which is for collaboration on artificial intelligence research and development.',
-                    sources: [Array]
+                    sentence: 'The most recent AI-related contract is a Partnership Agreement dated May 15, 2023, authored by Alice Johnson, with document ID 56.0.',
+                    sources: [ 'e32c13b7-b552-45f6-b58b-3f0c325715ab' ]
                 },
                 {
-                    sentence: 'No later contract in the provided set mentions AI; the newer 2024 documents are a sales agreement and lease agreements that do not reference artificial intelligence.',
-                    sources: [Array]
+                    sentence: 'It establishes a partnership between Weaviate and OpenAI to develop AI-driven solutions for improving data management and retrieval, with Weaviate contributing $391.74, OpenAI contributing $302.40, and profits split 60% to Weaviate and 40% to OpenAI over a three-year term.',
+                    sources: [ 'e32c13b7-b552-45f6-b58b-3f0c325715ab' ]
                 }
             ]
         }
@@ -418,22 +411,22 @@ The Query Agent natively supports subsetting and evaluating the quality of the r
 |---------|:----------:|-------|
 | Min / max number of items in an array | ✅ | |
 | Min / max value of a number property | ✅ | E.g. constrain a value to be within a certain range. |
-| String formats: `uuid`, `date-time`, `time`, `date`, `duration`, `email`, `hostname`, `ipv4`, `ipv6` | ✅ | Validated as a string with the given format. |
+| String formats: `uuid`, `date-time`, `time`, `date`, `duration`, `email`, `hostname`, `ipv4`, `ipv6` | ✅ | Guides the model to produce a string in that format. The result is not checked afterwards, so a field your data cannot fill may still come back invalid. |
 | Regular expression (pattern) on a string | ✅ | |
 | Recursive schemas (a schema referencing itself) | ✅ | |
-| Default values (e.g. `x: int = 1`) | ❌ | The field is always populated by the model, so the default is never used. Consider using nullable entries and transforming them afterwards. |
-| Schemas with 5000+ properties | ❌ |  |
-| 1000 or more enum values across all properties | ❌ |  |
-| More than 10 levels of nesting in a single property | ❌ |  |
+| Default values (e.g. `x: int = 1`) | ❌ | The schema is accepted, but the field is always populated by the model, so the default is never used. Consider using nullable entries and transforming them afterwards. |
+| Schemas with 5000+ properties | ❌ | Rejected with a `SCHEMA_VALIDATION_ERROR` before the agent runs. |
+| 1000 or more enum values across all properties | ❌ | Rejected with a `SCHEMA_VALIDATION_ERROR` before the agent runs. |
+| More than 10 levels of nesting in a single property | ❌ | Rejected with a `SCHEMA_VALIDATION_ERROR` before the agent runs. The error names the offending field path and its depth. |
 
 
 ## Streaming
 
-Structured outputs are supported with [streaming ask mode](../guides/ask_mode.md#streaming).
+Structured outputs are supported with [streaming in Ask Mode](../guides/ask_mode.md#streaming).
 
-When streaming, the structured output is delivered incrementally as raw string fragments through `StreamedTokens` instances. No special parsing is applied during the stream — each token is simply a piece of the final output. To use the partial result, accumulate the streamed tokens into a single string, then partially validate the string against your schema. 
+When streaming, the structured output is delivered incrementally as raw string fragments through `StreamedTokens` instances. No special parsing is applied during the stream — each token is a fragment of the final output. To use the partial result, accumulate the streamed tokens into a single string, then partially validate the string against your schema.
 
-To use the final result after completion, you do not need to use the streamed tokens. Simply access the `final_answer_parsed` attribute (`finalAnswerParsed` in TypeScript) of the [`AskModeResponse` final state output](../guides/ask_mode.md#responses).
+To use the final result after completion, you do not need to use the streamed tokens. Read the `final_answer_parsed` attribute (`finalAnswerParsed` in TypeScript) of the [final state output](../guides/ask_mode.md#responses).
 
 ## Questions and feedback
 

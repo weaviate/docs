@@ -1,19 +1,20 @@
 import 'dotenv/config'
-const { loadClientInternally } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
+const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 
 const client = await loadClientInternally();
+await populateWeaviate(client, false);
 
 
 // START SOInstantiate
 import { QueryAgent } from 'weaviate-agents';
+import { z } from 'zod';
 
 const qa = new QueryAgent(client, { collections: ['FinancialContracts'] });
 // END SOInstantiate
 
 
+{
 // START SOBasicExampleBaseModel
-import { z } from 'zod';
-
 const ContractSummary = z.object({
     contract_id: z.string(),
     contract_title: z.string(),
@@ -29,10 +30,12 @@ const res = await qa.ask(
 
 console.log(res.finalAnswerParsed);
 // END SOBasicExampleBaseModel
+}
 
 
+{
 // START SOBasicDictExample
-const res2 = await qa.ask(
+const res = await qa.ask(
     "Find the oldest contract and include if it automatically renews, who is involved, and if user action is needed",
     {
         outputFormat: {
@@ -51,22 +54,26 @@ const res2 = await qa.ask(
     }
 );
 
-console.log(res2.finalAnswerParsed);
+console.log(res.finalAnswerParsed);
 // END SOBasicDictExample
+}
 
 
+{
 // START SOReasoningExample
 const FinalAnswer = z.object({
     reasoning: z.string(),
     final_answer: z.string(),
 });
 
-const res3 = await qa.ask("What is the most recent contract about AI?", { outputFormat: FinalAnswer });
+const res = await qa.ask("What is the most recent contract about AI?", { outputFormat: FinalAnswer });
 
-console.log(res3.finalAnswerParsed);
+console.log(res.finalAnswerParsed);
 // END SOReasoningExample
+}
 
 
+{
 // START SONestedExampleBaseModel
 const ContractInfo = z.object({
     names_mentioned: z.array(z.string()).describe("All names within the contract text"),
@@ -80,12 +87,14 @@ const ContractInfoResponse = z.object({
     overall_summary: z.string(),
 });
 
-const res4 = await qa.ask("Find and return all contracts about AI in 2023", { outputFormat: ContractInfoResponse });
+const res = await qa.ask("Find and return all contracts about AI in 2023", { outputFormat: ContractInfoResponse });
 
-console.log(res4.finalAnswerParsed);
+console.dir(res.finalAnswerParsed, { depth: null });
 // END SONestedExampleBaseModel
+}
 
 
+{
 // START SOCitationExample
 const CitedText = z.object({
     sentence: z.string().describe("A single sentence from your answer, to be combined with other sentences"),
@@ -99,10 +108,11 @@ const CitedAnswer = z.object({
     ),
 });
 
-const res5 = await qa.ask("What is the most recent contract about AI?", { outputFormat: CitedAnswer });
+const res = await qa.ask("What is the most recent contract about AI?", { outputFormat: CitedAnswer });
 
-console.log(res5.finalAnswerParsed);
+console.dir(res.finalAnswerParsed, { depth: null });
 // END SOCitationExample
+}
 
 
 await client.close();
