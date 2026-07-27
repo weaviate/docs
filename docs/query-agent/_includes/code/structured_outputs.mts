@@ -89,8 +89,6 @@ const ContractInfoResponse = z.object({
 
 const res = await qa.ask("Find and return all contracts about AI in 2023", { outputFormat: ContractInfoResponse });
 
-// `console.dir` with `depth: null` prints nested values in full;
-// `console.log` would abbreviate them to `[Array]`.
 console.dir(res.finalAnswerParsed, { depth: null });
 // END SONestedExampleBaseModel
 }
