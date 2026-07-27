@@ -304,6 +304,12 @@ In the below example, the final response will generate a list of information for
                     contract_uuid: 'dbc30467-5f6a-4630-b7ea-7a17ade8b70a'
                 },
                 {
+                    names_mentioned: [ 'Weaviate', 'Danny Williams', 'Kaladin Stormblessed' ],
+                    contract_type: 'other',
+                    summary: 'Duplicate record of the service agreement for artificial intelligence and data management systems consulting, implementation, training, and technical support. Total fee: $428.14; term ends March 15, 2025.',
+                    contract_uuid: '010aeced-3328-415c-b93d-c19dc4baeefa'
+                },
+                {
                     names_mentioned: [ 'Weaviate', 'OpenAI', 'Edward Elric', 'Mark Robson' ],
                     contract_type: 'other',
                     summary: 'Partnership agreement dated March 15, 2023, for developing advanced data processing technologies. OpenAI contributes AI and machine-learning expertise valued at $567.91, while Weaviate provides technological support and resources valued at $416.56. Revenue is split 60% to Weaviate and 40% to OpenAI.',
@@ -316,13 +322,19 @@ In the below example, the final response will generate a list of information for
                     contract_uuid: '8ac31eff-9936-4a1b-a5a4-8e148a4596bf'
                 },
                 {
+                    names_mentioned: [ 'Weaviate', 'OpenAI', 'Johnathan Smith', 'Mark Robson' ],
+                    contract_type: 'other',
+                    summary: 'Duplicate record of the partnership agreement to collaborate on artificial intelligence technologies and develop AI solutions. Weaviate contributes $177.98 and OpenAI contributes $67.09.',
+                    contract_uuid: '6fcb6899-6344-41e0-8963-10b49bd17625'
+                },
+                {
                     names_mentioned: [ 'Weaviate', 'OpenAI', 'Alice Johnson', 'Mark Robson' ],
                     contract_type: 'other',
                     summary: 'Partnership agreement dated May 15, 2023, for developing AI-driven solutions to improve data management and retrieval. Weaviate contributes $391.74 and OpenAI contributes $302.40; profits are split 60% and 40%, respectively.',
                     contract_uuid: 'e32c13b7-b552-45f6-b58b-3f0c325715ab'
                 }
             ],
-            overall_summary: 'Several 2023 contracts concern AI or artificial-intelligence-related services and projects, comprising partnership agreements and AI-related service agreements. Duplicate records were consolidated by document identity.'
+            overall_summary: 'Eight unique 2023 contracts concern AI or artificial intelligence-related services and projects. Several duplicate records were omitted from the main list. The matching documents include five partnership agreements and three AI-related service-agreement records; no invoice was explicitly identified as AI-related based on its text.'
         }
         ```
         </details>
@@ -349,7 +361,7 @@ The Query Agent natively supports subsetting and evaluating the quality of the r
         <summary>Example output</summary>
         ```python
         CitedAnswer(
-            reasoning='The latest dated contract in the provided records that explicitly concerns AI is the partnership agreement dated November 15, 2023 (doc_id 60.0), which covers collaboration on AI research and development. The March 15, 2024 contract is a sales agreement for unspecified products and does not mention AI.',
+            reasoning='The latest dated contract in the provided records that explicitly concerns AI is dated March 15, 2024, but it is a sales agreement for unspecified products and does not mention AI. The latest contract that explicitly concerns artificial intelligence is the partnership agreement dated November 15, 2023 (doc_id 60.0), which covers collaboration on AI research and development.',
             final_answer=[
                 CitedText(
                     sentence='The most recent contract explicitly about AI is a Partnership Agreement dated November 15, 2023, between Weaviate and OpenAI (doc_id 60.0), authored by Johnathan Smith.',
