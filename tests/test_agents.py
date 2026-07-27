@@ -18,6 +18,7 @@ from pathlib import Path
         "./docs/query-agent/_includes/code/query_agent.py",
         "./docs/query-agent/_includes/code/quickstart.py",
         "./docs/query-agent/_includes/code/search_mode.py",
+        "./docs/query-agent/_includes/code/structured_outputs.py",
         "./docs/query-agent/_includes/code/suggest_queries.py",
         "./docs/query-agent/_includes/code/system_prompt.py",
         # Recipe walkthroughs (Weaviate Cloud + Weaviate Embeddings only)
@@ -61,6 +62,7 @@ def test_recipes_requiring_openai_pyv4(script_loc):
         "./docs/query-agent/_includes/code/query_agent.mts",
         "./docs/query-agent/_includes/code/quickstart.mts",
         "./docs/query-agent/_includes/code/search_mode.mts",
+        "./docs/query-agent/_includes/code/structured_outputs.mts",
         "./docs/query-agent/_includes/code/suggest_queries.mts",
         "./docs/query-agent/_includes/code/system_prompt.mts",
     ],

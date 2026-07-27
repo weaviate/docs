@@ -1,8 +1,9 @@
 import sys
 sys.path.insert(0, "docs/query-agent/_includes/code")
-from util import load_client_internally
+from util import load_client_internally, populate_weaviate
 
 client = load_client_internally()
+populate_weaviate(client, False)
 
 
 # START SOInstantiate
@@ -32,7 +33,7 @@ print(res.final_answer_parsed)
 
 # START SOBasicDictExample
 res = qa.ask(
-    "Find the oldest contract and include if it automatically renews, who is involved, and if user action is needed", 
+    "Find the oldest contract and include if it automatically renews, who is involved, and if user action is needed",
     output_format={
         'properties': {
             'contract_id': {'title': 'Contract Id', 'type': 'string'},
@@ -83,7 +84,7 @@ print(res.final_answer_parsed)
 # END SONestedExampleBaseModel
 
 # START SOCitationExample
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from uuid import UUID
 
 class CitedText(BaseModel):
@@ -100,3 +101,5 @@ res = qa.ask("What is the most recent contract about AI?", output_format=CitedAn
 
 print(res.final_answer_parsed)
 # END SOCitationExample
+
+client.close()
