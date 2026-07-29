@@ -360,6 +360,33 @@ finally:
 # END BatchRateLimit
 
 
+# START BatchIngestGenerator
+import weaviate
+
+client = weaviate.connect_to_local()
+
+# A generator produces objects one at a time instead of building a list
+def article_titles():
+    for title in ["Multitenancy", "Database schema"]:
+        yield {"title": title}
+
+try:
+    articles = client.collections.use("WikiArticle")
+    # `ingest` accepts any iterable, so nothing is held in memory in full
+    result = articles.data.ingest(article_titles())
+
+    if result.errors:
+        print(f"Number of failed imports: {len(result.errors)}")
+
+finally:
+    client.close()
+# END BatchIngestGenerator
+
+# Tests
+assert len(result.errors) == 0
+assert len(result.uuids) == 2
+
+
 import weaviate
 
 client = weaviate.connect_to_local()

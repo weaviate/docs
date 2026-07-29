@@ -202,7 +202,16 @@ There are four methods to configure the batching behavior. They are `stream`, `d
 | `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user.                                                                                                                                     | When you want to specify fixed parameters.                                |
 | `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute).                                                                                                                                    | When you want to avoid hitting third-party vectorization API rate limits. |
 
-If your objects are already in an in-memory list, `collection.data.ingest(objs)` is a one-shot convenience that uses server-side batching under the hood (no batching context required). It accepts plain property dicts or `DataObject` instances and returns the same `BatchObjectReturn` object as `insert_many`, making it a drop-in replacement for `insert_many` for large lists.
+`collection.data.ingest(objs)` is a one-shot convenience that uses server-side batching under the hood (no batching context required). It takes any iterable of plain property dicts or `DataObject` instances, and returns the same `BatchObjectReturn` object as `insert_many`. Pass a list of objects that you already hold in memory, which makes it a drop-in replacement for `insert_many` for large lists. Pass a generator, or any other lazy iterable, to import from a source that does not fit in memory: objects are sent to the server as the generator produces them.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START BatchIngestGenerator"
+  endMarker="# END BatchIngestGenerator"
+  language="py"
+/>
+
+For a generator that reads a source file line by line, see [batch import](../../manage-objects/import.mdx#server-side-batching).
 
 #### Usage
 
