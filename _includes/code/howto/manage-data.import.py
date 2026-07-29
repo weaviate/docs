@@ -588,7 +588,7 @@ data_rows = [
     {"title": f"Object {i+1}"} for i in range(5)
 ]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
 # Use `stream` for server-side batching. The client will send data
@@ -614,6 +614,59 @@ assert result.total_count == 5
 
 # Clean up
 client.collections.delete(collection.name)
+
+
+# ==================================================
+# ===== Server-side ingest from a generator =====
+# ==================================================
+
+# Re-create the collection
+client.collections.delete("MyCollection")
+client.collections.create(
+    "MyCollection",
+    vector_config=Configure.Vectors.self_provided()
+)
+
+# Create the source file used by the example below
+with open("my-data.jsonl", "w") as f:
+    for i in range(5):
+        f.write(json.dumps({"title": f"Object {i+1}"}) + "\n")
+    f.write("\n")  # A blank line, to show that the generator skips it
+
+# START ServerSideIngestGeneratorExample
+import json
+
+# Each line of the source file holds one JSON object
+def read_objects(path):
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:  # Skip blank lines
+                continue
+            record = json.loads(line)
+            yield {"title": record["title"]}
+
+collection = client.collections.use("MyCollection")
+
+# highlight-start
+# `ingest` pulls objects from the generator as it goes
+result = collection.data.ingest(read_objects("my-data.jsonl"))
+# highlight-end
+
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
+# END ServerSideIngestGeneratorExample
+
+# Tests
+assert len(result.errors) == 0
+assert len(result.uuids) == 5
+
+agg_result = collection.aggregate.over_all(total_count=True)
+assert agg_result.total_count == 5
+
+# Clean up
+client.collections.delete(collection.name)
+os.remove("my-data.jsonl")
 
 
 # ==================================================
