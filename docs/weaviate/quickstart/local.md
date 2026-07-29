@@ -152,10 +152,6 @@ import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart
 </TabItem>
 </Tabs>
 
-:::note Requirement: Weaviate v1.36 or later
-The `docker-compose.yml` file on this page runs a current Weaviate release, so the examples in this step work as written. The Python and JavaScript/TypeScript examples [import a list of objects in a single call](../manage-objects/import.mdx#ingest-an-in-memory-list), which relies on [server-side batching](../manage-objects/import.mdx#server-side-batching) and needs Weaviate `v1.36` or later. Check the version first if you point the examples at an existing instance.
-:::
-
 ## Step 2: Semantic (vector) search {#semantic-search}
 
 <Tabs groupId="import" queryString="import" className="hidden-tabs">

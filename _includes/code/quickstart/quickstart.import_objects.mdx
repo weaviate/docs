@@ -22,7 +22,7 @@ Every import returns a result that reports which objects failed, if any. Check i
   />
 
 
-`data.ingest()` returns a `BatchObjectReturn`. Read `result.has_errors` for a quick check, and `result.errors` for one entry per failed object, keyed by its position in the input. For more, see [error handling in the Python client reference](/weaviate/client-libraries/python/notes-best-practices#error-handling).
+`data.ingest()` returns a `BatchObjectReturn`. Read `result.errors` to check for failures. It holds one entry per failed object, keyed by its position in the input. For more, see [error handling in the Python client reference](/weaviate/client-libraries/python/notes-best-practices#error-handling).
 
 </TabItem>
 
