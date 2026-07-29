@@ -25,6 +25,7 @@ async function importQuestions() {
   const data = await getJsonData();
 
   // highlight-start
+  // `ingest` imports the list using server-side batching
   const result = await questions.data.ingest(
     data.map((properties) => ({ properties }))
   );

@@ -24,6 +24,7 @@ result = questions.data.ingest(
 )
 # highlight-end
 
+# Also check `errors` directly; it is populated for every failed object
 if result.has_errors or result.errors:
     print(f"Number of failed imports: {len(result.errors)}")
     # `errors` is keyed by the position of the object in the input

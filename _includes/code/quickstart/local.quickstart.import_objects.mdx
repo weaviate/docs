@@ -8,6 +8,8 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Quick
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartLocalTest.cs";
 
 
+Every import returns a result that reports which objects failed, if any. Check it in your own code to catch problems such as malformed data or a misconfigured model provider.
+
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
@@ -19,7 +21,7 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartLocalTest.
     title="quickstart_import.py"
   />
 
-The import returns a result object that reports whether anything failed, along with an entry for each failed object keyed by its position in the input. Check it after every import so that problems such as malformed data or a misconfigured model provider do not go unnoticed. Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python/notes-best-practices#error-handling).
+`data.ingest()` returns a `BatchObjectReturn`. Read `result.has_errors` for a quick check, and `result.errors` for one entry per failed object, keyed by its position in the input. For more, see [error handling in the Python client reference](/weaviate/client-libraries/python/notes-best-practices#error-handling).
 
 </TabItem>
 
@@ -32,6 +34,8 @@ The import returns a result object that reports whether anything failed, along w
   language="ts"
   title="quickstart_import.ts"
 />
+
+`data.ingest()` returns a result object. Read `result.hasErrors` for a quick check, and `result.errors` for one entry per failed object, keyed by its position in the input.
 
 </TabItem>
 
