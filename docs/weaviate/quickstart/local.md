@@ -126,6 +126,10 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.md
 
 ## Step 1: Create a collection & import data {#create-a-collection}
 
+:::info Minimum Weaviate version
+The Python and JavaScript/TypeScript examples below import data with [server-side batching](../manage-objects/import.mdx#server-side-batching), which requires Weaviate `v1.36` or later. The Docker Compose file above runs a current release, so this is only a concern if you point the examples at an older instance.
+:::
+
 There are two paths you can choose from when importing data:
 
 <CardsSection items={quickstartOptions} className={styles.smallCards} />

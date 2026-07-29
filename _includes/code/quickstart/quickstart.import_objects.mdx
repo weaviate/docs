@@ -20,7 +20,7 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
   />
 
 
-During a batch import, any failed objects can be obtained through `batch.failed_objects`. Additionally, a running count of failed objects is maintained and can be accessed through `batch.number_errors` within the context manager. This counter can be used to stop the import process in order to investigate the failed objects or references. Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python/notes-best-practices#error-handling).
+The import returns a result object that reports whether anything failed, along with an entry for each failed object keyed by its position in the input. Check it after every import so that problems such as malformed data or a misconfigured model provider do not go unnoticed. Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python/notes-best-practices#error-handling).
 
 </TabItem>
 
