@@ -44,7 +44,7 @@ Open the `batch.stream()` context manager and add objects one at a time; the cli
       language="py"
     />
 
-You can also stream from a data source with the one-shot import method. It accepts any iterable, so you can hand it a generator that reads a source file record by record. Objects go to the server as the generator produces them, so the source never has to fit in memory. To import objects that you already hold in a list, see [Ingest an in-memory list](#ingest-an-in-memory-list).
+You can also stream from a data source with `data.ingest()`. It accepts any iterable, so you can pass a generator that reads a source file record by record. Objects go to the server as the generator produces them, so the source never has to fit in memory. To import objects that you already hold in a list, see [Ingest an in-memory list](#ingest-an-in-memory-list).
 
     <FilteredTextBlock
       text={PyCode}
@@ -406,7 +406,7 @@ You can batch create links from an object to another object through cross-refere
 
 If your dataset does not fit in memory, do not load it all at once. Instead, read the source file lazily and add objects to the import as you go:
 
-- With the server-side streaming context (`batch.stream()` in Python), add each object as you read it from the file. The client sends data at the pace the server requests, so memory usage stays flat.
+- With the [server-side streaming context](#server-side-batching), add each object as you read it from the file. The client sends data at the pace the server requests, so memory usage stays flat.
 - In Python and TypeScript, the [one-shot import method](#server-side-batching) accepts any iterable, so you can pass a lazy source, such as a generator that reads the file record by record, instead of a fully loaded list.
 - With manual batching, apply the same pattern: add objects to the batch as you read them.
 

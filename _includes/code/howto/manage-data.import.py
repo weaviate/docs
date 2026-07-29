@@ -588,7 +588,7 @@ data_rows = [
     {"title": f"Object {i+1}"} for i in range(5)
 ]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
 # Use `stream` for server-side batching. The client will send data
@@ -649,8 +649,7 @@ def read_objects(path):
 collection = client.collections.use("MyCollection")
 
 # highlight-start
-# `ingest` accepts any iterable, so the generator supplies objects one at a
-# time and the file is never loaded into memory in full
+# `ingest` pulls objects from the generator as it goes
 result = collection.data.ingest(read_objects("my-data.jsonl"))
 # highlight-end
 

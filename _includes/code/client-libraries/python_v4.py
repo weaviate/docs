@@ -372,7 +372,7 @@ def article_titles():
 
 try:
     articles = client.collections.use("WikiArticle")
-    # `ingest` accepts any iterable, so nothing is held in memory in full
+    # `ingest` accepts any iterable, including a generator
     result = articles.data.ingest(article_titles())
 
     if result.errors:
