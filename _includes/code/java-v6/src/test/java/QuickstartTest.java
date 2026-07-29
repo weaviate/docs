@@ -59,7 +59,7 @@ class QuickstartTest {
         collectionName,
         col -> col
             .vectorConfig(VectorConfig.text2vecWeaviate()) // Configure the Weaviate Embeddings integration
-            .generativeModule(Generative.cohere()) // Configure the Cohere generative AI integration
+            .generativeModule(Generative.openai()) // Configure the OpenAI generative AI integration
     );
     CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);
     // highlight-end

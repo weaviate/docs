@@ -56,7 +56,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.anthropic({
-    model: 'claude-3-opus-20240229'
+    model: 'claude-haiku-4-5'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -73,7 +73,7 @@ await client.collections.create({
   generative: weaviate.configure.generative.anthropic({
     // These parameters are optional
     // baseURL: 'https://api.anthropic.com',
-    // model: 'claude-3-opus-20240229',
+    // model: 'claude-haiku-4-5',
     // maxTokens: 512,
     // temperature: 0.7,
     // stopSequences: ['\n\n'],
@@ -103,7 +103,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   config: generativeParameters.anthropic({
     // These parameters are optional
     // baseURL: "https://api.anthropic.com",
-    // model: "claude-3-opus-20240229",
+    // model: "claude-haiku-4-5",
     // maxTokens: 512,
     // temperature: 0.7,
     // stopSequences: ["\n\n"],
@@ -201,7 +201,7 @@ response = myCollection.generate.nearText("A holiday film", {
   config: generativeParameters.anthropic({
     // These parameters are optional
     // baseURL: "https://api.anthropic.com",
-    // model: "claude-3-opus-20240229",
+    // model: "claude-haiku-4-5",
     // maxTokens: 512,
     // temperature: 0.7,
     // stopSequences: ["\n\n"],

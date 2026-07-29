@@ -63,7 +63,7 @@ public class QuickstartTest
                     Property.Text("category"),
                 ],
                 VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()), // Configure the Weaviate Embeddings integration
-                GenerativeConfig = Configure.Generative.Cohere(), // Configure the Cohere generative AI integration
+                GenerativeConfig = Configure.Generative.OpenAI(), // Configure the OpenAI generative AI integration
             }
         );
         // highlight-end

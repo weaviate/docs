@@ -22,6 +22,7 @@ func Test_ManageDataReadAllObjects(t *testing.T) {
 	t.Run("Read all objects", func(t *testing.T) {
 		// CursorExample  // Retrieve data
 
+		// START ReadAllProps
 		sourceClient, err := weaviate.NewClient(weaviate.Config{
 			Scheme: "https",
 			Host:   "WEAVIATE_INSTANCE_URL", // Replace WEAVIATE_INSTANCE_URL with your instance URL
@@ -59,6 +60,7 @@ func Test_ManageDataReadAllObjects(t *testing.T) {
 			}
 			return get.Do(context.Background())
 		}
+		// END ReadAllProps
 		// Use this function to retrieve data
 
 		// START FetchClassDefinition
