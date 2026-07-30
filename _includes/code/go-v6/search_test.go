@@ -65,10 +65,12 @@ func setupJeopardySearch(t *testing.T, client *weaviate.Client) {
 // TestGetNearText runs a semantic search over a collection whose vectorizer
 // turns the query text into a vector server-side.
 func TestGetNearText(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START GetNearText
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -127,10 +129,12 @@ func TestGetNearVector(t *testing.T) {
 // TestNamedVectorNearText searches a named vector by passing the vector name as
 // the search target.
 func TestNamedVectorNearText(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupWineReviewNV(t, client)
+	defer client.Collections.Delete(ctx, "WineReviewNV")
 
 	// START NamedVectorNearText
 	reviews := client.Collections.Use("WineReviewNV")

@@ -15,10 +15,12 @@ import (
 // collection.
 
 func TestHybridBasic(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridBasic
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -36,10 +38,12 @@ func TestHybridBasic(t *testing.T) {
 }
 
 func TestHybridWithScore(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithScore
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -66,10 +70,12 @@ func TestHybridWithScore(t *testing.T) {
 }
 
 func TestHybridWithAlpha(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithAlpha
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -89,10 +95,12 @@ func TestHybridWithAlpha(t *testing.T) {
 }
 
 func TestHybridWithFusionType(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithFusionType
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -111,10 +119,12 @@ func TestHybridWithFusionType(t *testing.T) {
 }
 
 func TestHybridWithProperties(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithProperties
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -134,10 +144,12 @@ func TestHybridWithProperties(t *testing.T) {
 }
 
 func TestHybridWithPropertyWeighting(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithPropertyWeighting
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -157,10 +169,12 @@ func TestHybridWithPropertyWeighting(t *testing.T) {
 }
 
 func TestHybridWithVector(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithVector
 	// A query vector, for example an embedding produced by your model.
@@ -171,7 +185,7 @@ func TestHybridWithVector(t *testing.T) {
 		Query: "food",
 		// Supply the vector for the vector-search half of the query.
 		NearVector: &query.NearVector{
-			Target: &types.Vector{Single: vector},
+			Target: &types.Vector{Name: "default", Single: vector},
 		},
 		Limit: 3,
 	})
@@ -185,10 +199,12 @@ func TestHybridWithVector(t *testing.T) {
 }
 
 func TestHybridLimit(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridLimit
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -206,10 +222,12 @@ func TestHybridLimit(t *testing.T) {
 }
 
 func TestHybridAutocut(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridAutocut
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -227,10 +245,12 @@ func TestHybridAutocut(t *testing.T) {
 }
 
 func TestHybridWithFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithFilter
 	jeopardy := client.Collections.Use("JeopardyQuestion")

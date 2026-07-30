@@ -401,10 +401,12 @@ func TestFilterByPropertyNullState(t *testing.T) {
 // TestNearTextWithFilter combines a semantic search with a filter. It queries a
 // collection whose vectorizer turns the query text into a vector server-side.
 func TestNearTextWithFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START NearTextWithFilter
 	jeopardy := client.Collections.Use("JeopardyQuestion")

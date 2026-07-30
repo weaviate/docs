@@ -329,3 +329,166 @@ func setupMultiTenancyJeopardy(t *testing.T, client *weaviate.Client) {
 
 	waitForCount(t, tenantA, 2)
 }
+
+// contextionaryVectorizer is a test-only Vectorizer that selects the
+// text2vec-contextionary module, which is enabled on the docs test instance
+// (deterministic, no model download, no API key). The v6 client encodes any
+// modules.Module by reflection from its Name, so a struct that only reports the
+// module name is enough to request server-side vectorization; the module does
+// not need to be registered with the client because these seeds only create
+// collections (the write path) and never decode the module config back.
+//
+// It carries no configuration, so it serializes to
+// {"text2vec-contextionary": {}} and the module vectorizes every text property
+// of the collection by default. The near-text and hybrid snippets rely on this
+// to turn their query text into a vector server-side.
+type contextionaryVectorizer struct{}
+
+func (contextionaryVectorizer) Name() string { return "text2vec-contextionary" }
+
+// setupJeopardyVectorized (re)creates a JeopardyQuestion collection whose
+// "default" vector is produced server-side by text2vec-contextionary, then
+// seeds it. Because the server vectorizes the objects on import (and the query
+// text at search time), this unblocks the near-text and hybrid snippets, which
+// do not supply their own vectors. Every object gets a fixed, non-leading-zero
+// id so the run stays deterministic and no seeded id trips the id_as_bytes
+// leading-zero bug (see filterByIdSeedUUID).
+func setupJeopardyVectorized(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyQuestion")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyQuestion",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+			{Name: "category", DataType: collections.DataTypeText},
+			{Name: "round", DataType: collections.DataTypeText},
+			{Name: "points", DataType: collections.DataTypeInt},
+		},
+		// The "default" vector is filled in by the server via
+		// text2vec-contextionary, so objects are inserted without vectors and
+		// near-text/hybrid queries can vectorize their query text server-side.
+		Vectors: map[string]collections.VectorConfig{
+			"default": {Vectorizer: contextionaryVectorizer{}},
+		},
+	}); err != nil {
+		t.Fatalf("create vectorized JeopardyQuestion collection: %v", err)
+	}
+
+	q1 := uuid.MustParse("a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f")
+	q2 := uuid.MustParse("b2c3d4e5-f6a7-4b5c-8d9e-2a3b4c5d6e7f")
+	q3 := uuid.MustParse("c3d4e5f6-a7b8-4c5d-8e9f-3a4b5c6d7e80")
+	q4 := uuid.MustParse("d4e5f6a7-b8c9-4d5e-8f90-4b5c6d7e8f90")
+	q5 := uuid.MustParse("e5f6a7b8-c9d0-4e5f-8a01-5c6d7e8f9012")
+	q6 := uuid.MustParse("f6a7b8c9-d0e1-4f5a-8b02-6d7e8f901234")
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	if _, err := jeopardy.Data.Insert(ctx,
+		&data.Object{UUID: &q1, Properties: map[string]any{
+			"question": "This organ removes excess glucose from the blood and stores it as glycogen",
+			"answer":   "Liver", "category": "SCIENCE", "round": "Jeopardy!", "points": 100,
+		}},
+		&data.Object{UUID: &q2, Properties: map[string]any{
+			"question": "This large animal is the only living mammal in the order Proboscidea",
+			"answer":   "Elephant", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 200,
+		}},
+		&data.Object{UUID: &q3, Properties: map[string]any{
+			"question": "This tall animal has a long neck and roams the African savanna",
+			"answer":   "Giraffe", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 500,
+		}},
+		&data.Object{UUID: &q4, Properties: map[string]any{
+			"question": "Bees make this sweet food and store it in a hive",
+			"answer":   "Honey", "category": "NATURE", "round": "Jeopardy!", "points": 200,
+		}},
+		&data.Object{UUID: &q5, Properties: map[string]any{
+			"question": "This racket sport holds its most famous tournament at Wimbledon",
+			"answer":   "Tennis", "category": "SPORTS", "round": "Final Jeopardy!", "points": 800,
+		}},
+		&data.Object{UUID: &q6, Properties: map[string]any{
+			"question": "This yellow fruit is a favorite food of monkeys",
+			"answer":   "Banana", "category": "FOOD", "round": "Double Jeopardy!", "points": 300,
+		}},
+	); err != nil {
+		t.Fatalf("seed vectorized JeopardyQuestion: %v", err)
+	}
+
+	waitForCount(t, jeopardy, 6)
+}
+
+// setupWineReviewNV (re)creates a WineReviewNV collection with a single named
+// vector, "title_country", produced server-side by text2vec-contextionary from
+// the collection's text properties (title and country). It seeds a few reviews
+// so the named-vector near-text snippet has a target vector to search.
+func setupWineReviewNV(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "WineReviewNV")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "WineReviewNV",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+			{Name: "country", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"title_country": {Vectorizer: contextionaryVectorizer{}},
+		},
+	}); err != nil {
+		t.Fatalf("create WineReviewNV collection: %v", err)
+	}
+
+	w1 := uuid.MustParse("1a2b3c4d-5e6f-4a5b-8c9d-1a2b3c4d5e6f")
+	w2 := uuid.MustParse("2b3c4d5e-6f7a-4b5c-8d9e-2b3c4d5e6f7a")
+	w3 := uuid.MustParse("3c4d5e6f-7a8b-4c5d-8e9f-3c4d5e6f7a8b")
+	w4 := uuid.MustParse("4d5e6f7a-8b9c-4d5e-8f90-4d5e6f7a8b9c")
+	reviews := client.Collections.Use("WineReviewNV")
+	if _, err := reviews.Data.Insert(ctx,
+		&data.Object{UUID: &w1, Properties: map[string]any{"title": "A sweet white Riesling wine", "country": "Germany"}},
+		&data.Object{UUID: &w2, Properties: map[string]any{"title": "A dry white Chardonnay wine", "country": "France"}},
+		&data.Object{UUID: &w3, Properties: map[string]any{"title": "A bold red Cabernet Sauvignon wine", "country": "United States"}},
+		&data.Object{UUID: &w4, Properties: map[string]any{"title": "A crisp white Sauvignon Blanc wine", "country": "New Zealand"}},
+	); err != nil {
+		t.Fatalf("seed WineReviewNV: %v", err)
+	}
+
+	waitForCount(t, reviews, 4)
+}
+
+// setupJeopardyTinyVectorized (re)creates JeopardyTiny with two named vectors,
+// "jeopardy_questions_vector" and "jeopardy_answers_vector", both produced
+// server-side by text2vec-contextionary. It is the vectorized companion to
+// setupJeopardyTiny (which brings its own vectors): the multi-target near-text
+// snippets need server-side vectors so the query text can be vectorized against
+// each named target, whereas the multi-target near-vector snippets supply their
+// own vectors and use setupJeopardyTiny.
+func setupJeopardyTinyVectorized(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyTiny")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyTiny",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"jeopardy_questions_vector": {Vectorizer: contextionaryVectorizer{}},
+			"jeopardy_answers_vector":   {Vectorizer: contextionaryVectorizer{}},
+		},
+	}); err != nil {
+		t.Fatalf("create vectorized JeopardyTiny collection: %v", err)
+	}
+
+	t1 := uuid.MustParse("5e6f7a8b-9c0d-4e5f-8a01-5e6f7a8b9c0d")
+	t2 := uuid.MustParse("6f7a8b9c-0d1e-4f5a-8b02-6f7a8b9c0d1e")
+	t3 := uuid.MustParse("7a8b9c0d-1e2f-4a5b-8c03-7a8b9c0d1e2f")
+	jeopardy := client.Collections.Use("JeopardyTiny")
+	if _, err := jeopardy.Data.Insert(ctx,
+		&data.Object{UUID: &t1, Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver"}},
+		&data.Object{UUID: &t2, Properties: map[string]any{"question": "This large animal is the only living mammal in the order Proboscidea", "answer": "Elephant"}},
+		&data.Object{UUID: &t3, Properties: map[string]any{"question": "This tall animal has a long neck and roams the savanna", "answer": "Giraffe"}},
+	); err != nil {
+		t.Fatalf("seed vectorized JeopardyTiny: %v", err)
+	}
+
+	waitForCount(t, jeopardy, 3)
+}

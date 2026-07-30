@@ -71,10 +71,12 @@ func setupJeopardyTiny(t *testing.T, client *weaviate.Client) {
 // TestMultiBasic searches several target vectors by name. With no join strategy
 // specified, Weaviate combines the results using the default (minimum) strategy.
 func TestMultiBasic(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTinyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	// START MultiBasic
 	jeopardy := client.Collections.Use("JeopardyTiny")
@@ -204,10 +206,12 @@ func TestMultiTargetMultipleNearVectorsV2(t *testing.T) {
 // TestMultiTargetWithSimpleJoin selects a named join strategy for the target
 // vectors.
 func TestMultiTargetWithSimpleJoin(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTinyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	// START MultiTargetWithSimpleJoin
 	jeopardy := client.Collections.Use("JeopardyTiny")
@@ -233,10 +237,12 @@ func TestMultiTargetWithSimpleJoin(t *testing.T) {
 
 // TestMultiTargetManualWeights weights the raw distance to each target vector.
 func TestMultiTargetManualWeights(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTinyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	// START MultiTargetManualWeights
 	jeopardy := client.Collections.Use("JeopardyTiny")
@@ -261,10 +267,12 @@ func TestMultiTargetManualWeights(t *testing.T) {
 // TestMultiTargetRelativeScore weights the normalized distance to each target
 // vector.
 func TestMultiTargetRelativeScore(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTinyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	// START MultiTargetRelativeScore
 	jeopardy := client.Collections.Use("JeopardyTiny")
