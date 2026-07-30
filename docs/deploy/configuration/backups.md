@@ -316,7 +316,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
 | name | type | required | default | description |
 | ---- | ---- | ---- | ---- |---- |
 | `CPUPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
-| `ChunkSize`       | number | no | - | **Deprecated. This option has no effect.** Weaviate ignores any value sent here, so it neither sets nor caps the chunk size. Chunk sizing is now controlled by the [`BACKUP_CHUNK_TARGET_SIZE`](#how-it-works) environment variable, which replaced it. |
+| `ChunkSize`       | number | no | - | **Deprecated. This option has no effect.** Weaviate ignores any value sent here, so it neither sets nor caps the chunk size. Chunk sizing is now controlled by the [`BACKUP_CHUNK_TARGET_SIZE`](#chunking-and-file-splitting) environment variable, which replaced it. |
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
 | `incremental_base_backup_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.37`. |
@@ -468,27 +468,7 @@ This can result in dramatically smaller backups and much faster backup times.
 
 When creating a backup, Weaviate splits large files into individual chunks. During an incremental backup, Weaviate compares each file against the base backup. Files that haven't changed are stored as pointers to the base backup rather than being copied again. On restore, Weaviate automatically fetches the referenced files from the base backup.
 
-Only files that are large enough to get a chunk of their own can be referenced individually. Smaller files are packed together into shared chunks, so a change to any one of them means the whole chunk is written again. Three environment variables control the packing: `BACKUP_MIN_CHUNK_SIZE` sets which files count as large, `BACKUP_CHUNK_TARGET_SIZE` sets how much data is packed into one shared chunk, and `BACKUP_SPLIT_FILE_SIZE` sets when a single very large file is spread across several chunks.
-
-Lowering `BACKUP_MIN_CHUNK_SIZE` allows more files to be referenced individually, at the cost of more chunks per backup.
-
-The following environment variables control chunking. All three accept a plain number of bytes or a number with a unit suffix (`B`, `KB`, `MB`, `GB`, `TB`, `KiB`, `MiB`, `GiB`, `TiB`), for example `4MiB`, and all three are applied at startup, so a restart is required to change them.
-
-| Environment variable | Required | Description |
-| --- | --- | --- |
-| `BACKUP_MIN_CHUNK_SIZE` | no | The minimum size a file must reach before it is stored in its own chunk and can be referenced individually by a later incremental backup. Defaults to `1MiB`. |
-| `BACKUP_CHUNK_TARGET_SIZE` | no | The size Weaviate aims for when packing several small files into a single chunk. Defaults to `10MiB`. |
-| `BACKUP_SPLIT_FILE_SIZE` | no | The size above which a single file is split across multiple chunks instead of being written to one. Defaults to `50GiB`. |
-
-:::note Minimum values are raised automatically
-
-These three settings are lower bounds, not exact values, and Weaviate raises them when a smaller value would have no useful effect:
-
-- The threshold for treating a file as large is the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the 100th largest file in the shard, so roughly the 100 largest files in a shard can get their own chunk, and lowering `BACKUP_MIN_CHUNK_SIZE` below that point has no further effect.
-- `BACKUP_CHUNK_TARGET_SIZE` is raised to that threshold if you set it lower, since a chunk that packs small files must still be able to hold one large file.
-- `BACKUP_SPLIT_FILE_SIZE` is likewise raised to that threshold if you set it lower; otherwise no file would ever be large enough to split.
-
-:::
+Only files that are large enough to get a chunk of their own can be referenced individually. Smaller files are packed together into shared chunks, so a change to any one of them means the whole chunk is written again. How Weaviate decides which files get their own chunk, and the environment variables that control it, are described in [Chunking and file splitting](#chunking-and-file-splitting).
 
 #### Create a full (base) backup
 
@@ -799,6 +779,37 @@ It is not just safe - but even recommended - to create backups on live productio
 The backup API is built in a way that no long-running network requests are required. The request to create a new backup returns immediately. It does some basic validation, then returns to the user. The backup is now in status `STARTED`. To get the status of a running backup you can poll the [status endpoint](#asynchronous-status-checking). This makes the backup itself resilient to network or client failures.
 
 If you would like your application to wait for the background backup process to complete, you can use the "wait for completion" feature that is present in all language clients. The clients will poll the status endpoint in the background and block until the status is either `SUCCESS` or `FAILED`. This makes it easy to write simple synchronous backup scripts, even with the async nature of the API.
+
+### Chunking and file splitting
+
+Weaviate does not upload a shard's files one by one. It packs them into chunks, and the way files are grouped into chunks determines how much of a backup a later [incremental backup](#incremental-backups) can reuse. Chunking runs on every backup, not only on incremental ones.
+
+Weaviate gives each of a shard's biggest files a chunk of its own, and only a file that gets its own chunk can be referenced individually by a later incremental backup. All remaining files are packed together into shared chunks, so changing any one of them means the whole chunk is written again. A file above the split threshold is spread across several chunks instead of being written into one.
+
+The size a file must reach to get its own chunk is the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the Nth largest file in the shard, where N is `BACKUP_MAX_INDIVIDUAL_FILES`. `BACKUP_MIN_CHUNK_SIZE` is therefore a floor on that size rather than a dial. Lowering it never reduces how many files get their own chunk, but it only increases that number while the shard holds fewer than `BACKUP_MAX_INDIVIDUAL_FILES` files above its current value. At the defaults, a shard with 100 or more files of at least `1MiB` is unaffected by a lower `BACKUP_MIN_CHUNK_SIZE`, because the size of the 100th largest file wins the comparison. To have more files referenced individually in that case, raise `BACKUP_MAX_INDIVIDUAL_FILES` instead, at the cost of more chunks per backup.
+
+A chunk that carries part of a split file holds nothing else, because Weaviate deliberately leaves the rest of that chunk empty rather than mixing split parts with regular files. Backups dominated by very large files therefore produce chunks noticeably smaller than `BACKUP_CHUNK_TARGET_SIZE`.
+
+The three size variables below accept a plain number of bytes or a number with a unit suffix (`B`, `KB`, `MB`, `GB`, `TB`, `KiB`, `MiB`, `GiB`, `TiB`), for example `4MiB`. The decimal and binary suffixes are distinct: `MB` is 1,000,000 bytes while `MiB` is 1,048,576 bytes. They also accept `unlimited` or `nolimit`, which is how you disable file splitting through `BACKUP_SPLIT_FILE_SIZE`. All three are read at startup, so a restart is required to change them. `BACKUP_MAX_INDIVIDUAL_FILES` is a plain count instead of a size, and it is read for each backup, so it can also be changed without a restart.
+
+| Environment variable | Required | Description |
+| --- | --- | --- |
+| `BACKUP_MIN_CHUNK_SIZE` | no | The floor on the size a file must reach before it is stored in its own chunk and can be referenced individually by a later incremental backup. Defaults to `1MiB`. |
+| `BACKUP_CHUNK_TARGET_SIZE` | no | The size Weaviate aims for when packing several smaller files into a single chunk. Defaults to `10MiB`. |
+| `BACKUP_SPLIT_FILE_SIZE` | no | The size above which a single file is split across multiple chunks instead of being written to one. Set it to `unlimited` to disable splitting. Defaults to `50GiB`. |
+| `BACKUP_MAX_INDIVIDUAL_FILES` | no | How many of a shard's biggest files are targeted to get their own chunk, and can therefore be referenced individually by a later incremental backup. A count rather than a size, and it must be greater than `0`. Defaults to `100`. Also settable without a restart through the `backup_max_individual_files` [runtime configuration](./env-vars/runtime-config.md) key.<br/><br/>Added in `v1.37.14` and `v1.38.7`. Not available in `v1.36`. |
+
+:::note Values are raised automatically
+
+These settings are lower bounds, not exact values, and Weaviate raises them when a smaller value would have no useful effect:
+
+- `BACKUP_CHUNK_TARGET_SIZE` is raised to the size that qualifies a file for its own chunk if you set it lower, since a chunk that packs smaller files must still be able to hold one big file.
+- `BACKUP_SPLIT_FILE_SIZE` is likewise raised to that size if you set it lower; otherwise no file would ever be big enough to split.
+- If a shard holds fewer files than `BACKUP_MAX_INDIVIDUAL_FILES`, the qualifying size falls back to the size of the shard's smallest file, still raised to `BACKUP_MIN_CHUNK_SIZE` if that is larger.
+
+:::
+
+On an incremental backup, the `BACKUP_MAX_INDIVIDUAL_FILES` budget is reduced by the number of files that are reused from the base backup, so it is shared across a whole backup chain rather than being renewed for each backup in it.
 
 ### Skip the storage access check
 
