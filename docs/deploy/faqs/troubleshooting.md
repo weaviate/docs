@@ -39,7 +39,7 @@ To confirm and identify the issue, you'll want to first run the same query multi
 
 #### Resolving the issue
 
-Check your settings to check if you have asynchronous replication enabled. If `ASYNC_REPLICATION_DISABLED` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes.
+Check whether asynchronous replication is enabled. If `ASYNC_REPLICATION_DISABLED` is set to `true`, set it to `false`. Once async replication is enabled, the logs will show successful peer checks and node synchronization.
 
 </details>
 

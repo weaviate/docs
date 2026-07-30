@@ -288,8 +288,8 @@ func main() {
 			"title_vector": {
 				Vectorizer: map[string]interface{}{
 					"text2vec-google": map[string]interface{}{
-						"project_id": "<google-cloud-project-id>",
-						"model_id":   "gemini-embedding-001", // (Optional) To manually set the model ID
+						"projectId": "<google-cloud-project-id>",
+						"modelId":   "gemini-embedding-001", // (Optional) To manually set the model ID
 					},
 				},
 			},
@@ -323,7 +323,7 @@ func main() {
 					"text2vec-google": map[string]interface{}{
 						"properties":  []string{"title"},
 						"apiEndpoint": "generativelanguage.googleapis.com",
-						"model_id":    "gemini-embedding-001", // (Optional) To manually set the model ID
+						"modelId":     "gemini-embedding-001", // (Optional) To manually set the model ID
 					},
 				},
 			},
@@ -355,10 +355,10 @@ func main() {
 			"title_vector": {
 				Vectorizer: map[string]interface{}{
 					"text2vec-google": map[string]interface{}{
-						"properties":   []string{"title"},
-						"project_id":   "<google-cloud-project-id>",  // Required for Vertex AU
-						"model_id":     "textembedding-gecko@latest", // (Optional) To manually set the model ID
-						"api_endpoint": "<google-api-endpoint>",      // (Optional) To manually set the API endpoint
+						"properties":  []string{"title"},
+						"projectId":   "<google-cloud-project-id>",  // Required for Vertex AI
+						"modelId":     "textembedding-gecko@latest", // (Optional) To manually set the model ID
+						"apiEndpoint": "<google-api-endpoint>",      // (Optional) To manually set the API endpoint
 					},
 				},
 			},
