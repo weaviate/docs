@@ -4,13 +4,69 @@ import (
 	"context"
 	"testing"
 
+	weaviate "github.com/weaviate/weaviate-go-client/v6"
+	"github.com/weaviate/weaviate-go-client/v6/collections"
+	"github.com/weaviate/weaviate-go-client/v6/data"
+	"github.com/weaviate/weaviate-go-client/v6/modules/selfprovided"
 	"github.com/weaviate/weaviate-go-client/v6/query"
 	"github.com/weaviate/weaviate-go-client/v6/types"
 )
 
-// The multi-target vector snippets below require a collection ("JeopardyTiny")
-// with multiple named vectors and a configured vectorizer. They are kept out of
-// the CI run set (compile-only) and skip when executed directly.
+// The multi-target vector snippets query a "JeopardyTiny" collection with two
+// named vectors. The bring-your-own-vector (NearVector) variants run live via
+// setupJeopardyTiny; the near-text variants stay skipped until a vectorizer is
+// available in this CI lane.
+
+// setupJeopardyTiny (re)creates JeopardyTiny with two bring-your-own named
+// vectors and seeds objects that carry both. The vector-config keys match the
+// target names used by the multi-target near-vector snippets.
+func setupJeopardyTiny(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyTiny")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyTiny",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"jeopardy_questions_vector": {Vectorizer: selfprovided.Vectorizer},
+			"jeopardy_answers_vector":   {Vectorizer: selfprovided.Vectorizer},
+		},
+	}); err != nil {
+		t.Fatalf("create JeopardyTiny collection: %v", err)
+	}
+
+	jeopardy := client.Collections.Use("JeopardyTiny")
+	if _, err := jeopardy.Data.Insert(ctx,
+		&data.Object{
+			Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver"},
+			Vectors: []types.Vector{
+				{Name: "jeopardy_questions_vector", Single: []float32{0.10, 0.21, 0.32}},
+				{Name: "jeopardy_answers_vector", Single: []float32{0.20, 0.11, 0.30}},
+			},
+		},
+		&data.Object{
+			Properties: map[string]any{"question": "The only living mammal in the order Proboscidea", "answer": "Elephant"},
+			Vectors: []types.Vector{
+				{Name: "jeopardy_questions_vector", Single: []float32{0.11, 0.20, 0.34}},
+				{Name: "jeopardy_answers_vector", Single: []float32{0.14, 0.19, 0.30}},
+			},
+		},
+		&data.Object{
+			Properties: map[string]any{"question": "This tall animal has a long neck and roams the savanna", "answer": "Giraffe"},
+			Vectors: []types.Vector{
+				{Name: "jeopardy_questions_vector", Single: []float32{0.14, 0.19, 0.30}},
+				{Name: "jeopardy_answers_vector", Single: []float32{0.11, 0.20, 0.34}},
+			},
+		},
+	); err != nil {
+		t.Fatalf("seed JeopardyTiny: %v", err)
+	}
+
+	waitForCount(t, jeopardy, 3)
+}
 
 // TestMultiBasic searches several target vectors by name. With no join strategy
 // specified, Weaviate combines the results using the default (minimum) strategy.
@@ -44,10 +100,12 @@ func TestMultiBasic(t *testing.T) {
 // TestMultiTargetNearVector supplies a separate query vector for each target
 // vector.
 func TestMultiTargetNearVector(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTiny(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	v1 := []float32{0.12, 0.20, 0.33}
 	v2 := []float32{0.14, 0.19, 0.30}
@@ -75,10 +133,12 @@ func TestMultiTargetNearVector(t *testing.T) {
 // TestMultiTargetMultipleNearVectorsV1 targets the same vector more than once by
 // listing it twice with different query vectors.
 func TestMultiTargetMultipleNearVectorsV1(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTiny(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	v1 := []float32{0.12, 0.20, 0.33}
 	v2 := []float32{0.14, 0.19, 0.30}
@@ -107,10 +167,12 @@ func TestMultiTargetMultipleNearVectorsV1(t *testing.T) {
 
 // TestMultiTargetMultipleNearVectorsV2 assigns a weight to each query vector.
 func TestMultiTargetMultipleNearVectorsV2(t *testing.T) {
-	t.Skip("requires a collection with multiple named vectors and a configured vectorizer")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyTiny(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyTiny")
 
 	v1 := []float32{0.12, 0.20, 0.33}
 	v2 := []float32{0.14, 0.19, 0.30}

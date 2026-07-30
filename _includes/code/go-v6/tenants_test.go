@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
 	"github.com/weaviate/weaviate-go-client/v6/query"
@@ -73,10 +72,13 @@ func TestUpdateAutoMT(t *testing.T) {
 
 // TestAddTenantsToClass adds tenants to a multi-tenancy collection.
 func TestAddTenantsToClass(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	// A fresh collection with no tenants; the snippet creates them.
+	createMultiTenancyCollection(t, client)
+	defer cleanupMultiTenancy(ctx, client)
 
 	// START AddTenantsToClass
 	collection := client.Collections.Use("MultiTenancyCollection")
@@ -92,10 +94,12 @@ func TestAddTenantsToClass(t *testing.T) {
 
 // TestListTenants lists every tenant in a multi-tenancy collection.
 func TestListTenants(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupMultiTenancy(t, client)
+	defer cleanupMultiTenancy(ctx, client)
 
 	// START ListTenants
 	collection := client.Collections.Use("MultiTenancyCollection")
@@ -112,10 +116,12 @@ func TestListTenants(t *testing.T) {
 
 // TestRemoveTenants deletes tenants (and their data) from a collection.
 func TestRemoveTenants(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupMultiTenancy(t, client)
+	defer cleanupMultiTenancy(ctx, client)
 
 	// START RemoveTenants
 	collection := client.Collections.Use("MultiTenancyCollection")
@@ -131,10 +137,12 @@ func TestRemoveTenants(t *testing.T) {
 // bound once on the collection handle and applies to every operation made with
 // it.
 func TestCreateMtObject(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupMultiTenancy(t, client)
+	defer cleanupMultiTenancy(ctx, client)
 
 	// START CreateMtObject
 	// Bind the tenant to the collection handle.
@@ -154,10 +162,12 @@ func TestCreateMtObject(t *testing.T) {
 
 // TestMtSearch runs a query scoped to a single tenant.
 func TestMtSearch(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupMultiTenancy(t, client)
+	defer cleanupMultiTenancy(ctx, client)
 
 	// START Search
 	collection := client.Collections.Use("MultiTenancyCollection",
@@ -178,13 +188,17 @@ func TestMtSearch(t *testing.T) {
 // TestMtAddCrossRef adds a cross-reference from an object that belongs to a
 // tenant. The tenant is bound on the handle used to make the request.
 func TestMtAddCrossRef(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	sourceID := uuid.New()
-	targetID := uuid.New()
+	setupMultiTenancy(t, client)
+	defer cleanupMultiTenancy(ctx, client)
+
+	// Reference a seeded MultiTenancyCollection question (in tenantA) as the
+	// source and a seeded JeopardyCategory row as the target.
+	sourceID := mtSourceID
+	targetID := mtCategoryID
 
 	// START AddCrossRef
 	collection := client.Collections.Use("MultiTenancyCollection",

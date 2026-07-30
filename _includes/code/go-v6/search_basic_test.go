@@ -180,10 +180,12 @@ func TestGetObjectId(t *testing.T) {
 
 // TestGetWithCrossRefs returns properties from cross-referenced objects.
 func TestGetWithCrossRefs(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START GetWithCrossRefs
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -236,10 +238,12 @@ func TestGetWithMetadata(t *testing.T) {
 
 // TestMultiTenancy queries a specific tenant of a multi-tenant collection.
 func TestMultiTenancy(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupMultiTenancyJeopardy(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START MultiTenancy
 	// Bind the tenant once when you take the collection handle.

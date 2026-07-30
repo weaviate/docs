@@ -15,10 +15,12 @@ import (
 // the only variable.
 
 func TestSingleFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START SingleFilter
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -40,10 +42,12 @@ func TestSingleFilter(t *testing.T) {
 }
 
 func TestMultipleFiltersAnd(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START MultipleFiltersAnd
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -72,10 +76,12 @@ func TestMultipleFiltersAnd(t *testing.T) {
 }
 
 func TestMultipleFiltersNested(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START MultipleFiltersNested
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -111,10 +117,12 @@ func TestMultipleFiltersNested(t *testing.T) {
 }
 
 func TestContainsAnyFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START ContainsAnyFilter
 	// The tokens to match against the tokenized "question" property.
@@ -139,10 +147,12 @@ func TestContainsAnyFilter(t *testing.T) {
 }
 
 func TestContainsAllFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START ContainsAllFilter
 	tokens := []string{"blood", "glucose"}
@@ -166,10 +176,12 @@ func TestContainsAllFilter(t *testing.T) {
 }
 
 func TestContainsNoneFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START ContainsNoneFilter
 	tokens := []string{"animal", "elephant"}
@@ -193,10 +205,12 @@ func TestContainsNoneFilter(t *testing.T) {
 }
 
 func TestLikeFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START LikeFilter
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -219,10 +233,12 @@ func TestLikeFilter(t *testing.T) {
 }
 
 func TestCrossReferenceFilter(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START CrossReferenceFilter
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -245,10 +261,12 @@ func TestCrossReferenceFilter(t *testing.T) {
 }
 
 func TestFilterByDate(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START FilterByDate
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -271,10 +289,12 @@ func TestFilterByDate(t *testing.T) {
 }
 
 func TestFilterById(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START FilterById
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -296,10 +316,12 @@ func TestFilterById(t *testing.T) {
 }
 
 func TestFilterByTimestamp(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START FilterByTimestamp
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -322,10 +344,12 @@ func TestFilterByTimestamp(t *testing.T) {
 }
 
 func TestFilterByPropertyLength(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START FilterByPropertyLength
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -348,10 +372,12 @@ func TestFilterByPropertyLength(t *testing.T) {
 }
 
 func TestFilterByPropertyNullState(t *testing.T) {
-	t.Skip("enabled in a later CI tier")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
 
 	// START FilterByPropertyNullState
 	jeopardy := client.Collections.Use("JeopardyQuestion")
