@@ -3,7 +3,8 @@ import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Generative;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
+import io.weaviate.client6.v1.api.collections.batch.BatchContext;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -115,16 +116,21 @@ class QuickstartTest {
       questionsToInsert.add(properties);
     });
 
-    // Call insertMany with the list of objects
-    InsertManyResponse insertResponse = questions.data.insertMany(questionsToInsert.toArray(new Map[0]));
+    // `batch.start()` opens a server-side batch
+    BatchContext<Map<String, Object>> batch = questions.batch.start();
+    // Closing the batch sends the remaining objects and waits for the results
+    try (batch) {
+      for (Map<String, Object> properties : questionsToInsert) {
+        batch.add(WeaviateObject.<Map<String, Object>>of(o -> o.properties(properties)));
+      }
+    }
     // highlight-end
 
     // Check for errors
-    if (!insertResponse.errors().isEmpty()) {
-      System.err.printf("Number of failed imports: %d\n", insertResponse.errors().size());
-      System.err.printf("First failed object error: %s\n", insertResponse.errors().get(0));
+    if (batch.numberOfErrors() > 0) {
+      System.err.printf("Number of failed imports: %d\n", batch.numberOfErrors());
     } else {
-      System.out.printf("Successfully inserted %d objects.\n", insertResponse.uuids().size());
+      System.out.printf("Successfully inserted %d objects.\n", questionsToInsert.size());
     }
     // END Import
     // client.collections.delete(collectionName);

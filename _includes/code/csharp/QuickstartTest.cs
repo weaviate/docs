@@ -95,21 +95,25 @@ public class QuickstartTest
             );
         }
 
-        // Call InsertMany with the list of objects converted to an array
-        var insertResponse = await questions.Data.InsertMany(questionsToInsert.ToArray());
+        // `Batch.InsertMany` imports the list using server-side batching
+        var insertResponse = await questions.Batch.InsertMany(questionsToInsert);
         // highlight-end
-        // END Import
 
         // Check for errors
         if (insertResponse.HasErrors)
         {
             Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
-            Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
+            // `Objects` holds one entry per object; `Index` is the position of the object in the input
+            foreach (var entry in insertResponse.Objects.Where(o => o.Error is not null))
+            {
+                Console.WriteLine($"Failed object at index {entry.Index}: {entry.Error.Message}");
+            }
         }
         else
         {
-            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+            Console.WriteLine($"Successfully inserted {insertResponse.Count} objects.");
         }
+        // END Import
 
         // START NearText
         // highlight-start

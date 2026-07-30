@@ -9,27 +9,26 @@ resp = requests.get(
 )
 data = json.loads(resp.text)
 
-# highlight-start
 questions = client.collections.use("Question")
 
-with questions.batch.fixed_size(batch_size=200) as batch:
-    for d in data:
-        batch.add_object(
-            {
-                "answer": d["Answer"],
-                "question": d["Question"],
-                "category": d["Category"],
-            }
-        )
-        # highlight-end
-        if batch.number_errors > 10:
-            print("Batch import stopped due to excessive errors.")
-            break
+# highlight-start
+result = questions.data.ingest(
+    [
+        {
+            "answer": d["Answer"],
+            "question": d["Question"],
+            "category": d["Category"],
+        }
+        for d in data
+    ]
+)
+# highlight-end
 
-failed_objects = questions.batch.failed_objects
-if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
-    print(f"First failed object: {failed_objects[0]}")
+# `errors` holds one entry per failed object, keyed by its position in the input
+if result.errors:
+    print(f"Number of failed imports: {len(result.errors)}")
+    for index, error in result.errors.items():
+        print(f"Failed object at index {index}: {error.message}")
 
 client.close()  # Free up resources
 # END Import

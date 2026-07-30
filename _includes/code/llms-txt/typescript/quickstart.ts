@@ -36,7 +36,7 @@ if (!(await client.collections.exists('Movie__QuickstartTs'))) {
 const movies = client.collections.use('Movie__QuickstartTs');
 
 // Import objects
-await movies.data.insertMany(dataObjects);
+await movies.data.ingest(dataObjects.map((properties) => ({ properties })));
 
 console.log(`Imported & vectorized ${dataObjects.length} objects into the Movie collection`);
 
