@@ -1,5 +1,6 @@
 ---
 title: DeepSeek + Weaviate
+description: "DeepSeek offers a range of models for natural language processing and generation. Weaviate seamlessly integrates with the DeepSeek API, allowing users to leverage DeepSeek's generative models directly from the Weaviate Database."
 sidebar_position: 10
 image: og/docs/model-provider-integrations.jpg
 # tags: ['model providers', 'deepseek']

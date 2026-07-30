@@ -19,7 +19,7 @@ Weaviate's integration with DeepSeek's API allows you to access their generative
 More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the DeepSeek generative model to generate outputs.
 
 :::info Code examples are Python-only for now
-This page currently shows Python examples only. The typed builder syntax shown below (`Configure.Generative.deepseek()`) is the intended Python client API; client support is being implemented to match it. Other client languages will be added once the corresponding client support ships.
+Examples for the other client languages will follow.
 :::
 
 ## Requirements
@@ -29,7 +29,7 @@ This page currently shows Python examples only. The typed builder syntax shown b
 Your Weaviate instance must be configured with the DeepSeek generative AI integration (`generative-deepseek`) module.
 
 :::info Added in `v1.36.19`, `v1.37.10`, and `v1.38.2`
-The `generative-deepseek` module was added as a coordinated backport across the `v1.36`, `v1.37`, and `v1.38` release lines. It is available from `v1.36.19` (on the `v1.36` line), `v1.37.10` (on the `v1.37` line), and `v1.38.2` (on the `v1.38` line). Earlier patch releases on these lines do not include the module.
+The `generative-deepseek` module is available from `v1.36.19` on the `v1.36` line, `v1.37.10` on the `v1.37` line, and `v1.38.2` on the `v1.38` line. Earlier patch releases on these lines do not include it.
 :::
 
 <details>
@@ -70,18 +70,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
+Always set `model` explicitly. The module's built-in default is a retired model alias, so a collection configured without a `model` points at a model that DeepSeek no longer serves. See [Available models](#available-models) for the current model names.
+
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use a DeepSeek generative model:
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START BasicGenerativeDeepseek"
-  endMarker="# END BasicGenerativeDeepseek"
-  language="pyindent"
-/>
-
-### Select a model
-
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <FilteredTextBlock
   text={PyCode}
@@ -90,7 +81,11 @@ You can specify one of the [available models](#available-models) for Weaviate to
   language="pyindent"
 />
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+### Select a model
+
+Specify any current DeepSeek model name. See [Available models](#available-models) for the current names, and [Generative parameters](#generative-parameters) for the other settings you can configure alongside it.
+
+You can also [override the model at query time](#select-a-model-at-runtime).
 
 ### Generative parameters
 
@@ -102,6 +97,8 @@ Configure the following generative parameters to customize the model behavior.
   endMarker="# END FullGenerativeDeepseek"
   language="pyindent"
 />
+
+Weaviate checks `maxTokens` against a built-in ceiling only for the retired `deepseek-chat` and `deepseek-reasoner` aliases. For any current model, a `maxTokens` above the model's limit is accepted when you create the collection and fails later, as an error from DeepSeek at query time.
 
 For further details on model parameters, see the [DeepSeek API documentation](https://api-docs.deepseek.com/).
 
@@ -123,7 +120,9 @@ You can provide the API key as well as some optional parameters at runtime throu
 - `X-Deepseek-Api-Key`: The DeepSeek API key.
 - `X-Deepseek-Baseurl`: The base URL to use (e.g. a proxy) instead of the default DeepSeek URL.
 
-These headers are case-insensitive on the wire. Any additional headers provided at runtime will override the existing Weaviate configuration.
+`X-Deepseek-Api-Key` takes precedence over the `DEEPSEEK_APIKEY` environment variable. The API key is never part of the collection configuration, so if neither the header nor the environment variable is set, the request fails with `api key: no api key found`.
+
+`X-Deepseek-Baseurl` takes precedence over a `baseURL` set at query time, which in turn takes precedence over the `baseURL` in the collection configuration. If none of them are set, Weaviate uses `https://api.deepseek.com`. Provide an API root rather than a full endpoint path, because Weaviate appends `/chat/completions` to it.
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
@@ -163,22 +162,21 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-Weaviate forwards the configured model name to DeepSeek as-is; there is no allowlist on the Weaviate side, so any current DeepSeek model id is accepted. We recommend setting `model` explicitly to one of the current models:
+Weaviate forwards the configured model name to DeepSeek as-is. There is no allowlist on the Weaviate side, so any current DeepSeek model name is accepted.
 
-* `deepseek-v4-flash` (recommended; verified with this integration)
-* `deepseek-v4-pro`
+The current model names are `deepseek-v4-flash` and `deepseek-v4-pro`. For the full list of models and pricing, see the [DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing) and the [DeepSeek API documentation](https://api-docs.deepseek.com/).
 
-The module's built-in default model is `deepseek-chat`.
+:::caution The module default is a retired model
+The `deepseek-chat` and `deepseek-reasoner` aliases are retired and DeepSeek no longer serves them. They previously pointed at `deepseek-v4-flash` in its non-thinking and thinking modes respectively.
 
-:::caution Legacy model aliases scheduled for deprecation
-According to [DeepSeek's pricing page](https://api-docs.deepseek.com/quick_start/pricing), `deepseek-chat` and `deepseek-reasoner` are legacy aliases scheduled for deprecation on **2026-07-24**, and they currently map to `deepseek-v4-flash` (in non-thinking and thinking modes, respectively). To avoid disruption, set `model` explicitly to a current `deepseek-v4-*` model id rather than relying on the default.
+The built-in default model of the `generative-deepseek` module is still `deepseek-chat`, so a collection created without a `model` points at a retired alias. Set `model` on every collection you create.
 :::
 
-:::note Reasoning output is not returned
-The `generative-deepseek` module returns only the model's message content. If you use a reasoning/thinking model, the separate reasoning (chain-of-thought) output is not surfaced through the integration.
-:::
+### Reasoning models
 
-For the full list of models and pricing, see the [DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing) and the [DeepSeek API documentation](https://api-docs.deepseek.com/).
+The `generative-deepseek` module returns only the model's message content. If you use a reasoning model, its separate reasoning (chain-of-thought) output is not surfaced through the integration.
+
+Reasoning models can take much longer to respond than non-reasoning models. Weaviate applies the [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT) environment variable to the whole request, including reading the response, and it defaults to 50 seconds. If reasoning queries time out, raise this value on your Weaviate instance.
 
 ## Further resources
 
