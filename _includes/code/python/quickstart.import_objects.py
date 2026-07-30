@@ -32,10 +32,9 @@ result = questions.data.ingest(
 )
 # highlight-end
 
-# `errors` is the reliable failure check for `ingest`
+# `errors` holds one entry per failed object, keyed by its position in the input
 if result.errors:
     print(f"Number of failed imports: {len(result.errors)}")
-    # `errors` is keyed by the position of the object in the input
     for index, error in result.errors.items():
         print(f"Failed object at index {index}: {error.message}")
 
