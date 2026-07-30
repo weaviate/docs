@@ -16,6 +16,8 @@ This integration empowers developers to build sophisticated AI-driven applicatio
 
 ### Generative AI models for RAG
 
+![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_deepseek_rag_single.png)
+
 DeepSeek's generative AI models can generate human-like text based on given prompts and contexts.
 
 [Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with DeepSeek's generative AI models to generate personalized and context-aware responses.

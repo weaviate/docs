@@ -18,6 +18,8 @@ Weaviate's integration with DeepSeek's API allows you to access their generative
 
 More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the DeepSeek generative model to generate outputs.
 
+![RAG integration illustration](../_includes/integration_deepseek_rag.png)
+
 :::info Code examples are Python-only for now
 Examples for the other client languages will follow.
 :::
@@ -132,6 +134,8 @@ After configuring the generative AI integration, perform RAG operations, either 
 
 ### Single prompt
 
+![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_deepseek_rag_single.png)
+
 To generate text for each object in the search results, use the single prompt method.
 
 The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
@@ -146,6 +150,8 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 />
 
 ### Grouped task
+
+![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_deepseek_rag_grouped.png)
 
 To generate one text for the entire set of search results, use the grouped task method.
 
