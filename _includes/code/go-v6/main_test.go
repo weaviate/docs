@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -22,6 +25,67 @@ func connectLocal(t *testing.T) *weaviate.Client {
 	client, err := weaviate.NewLocal(ctx)
 	if err != nil {
 		t.Fatalf("connect to local Weaviate: %v", err)
+	}
+	return client
+}
+
+// getenvOr returns the value of environment variable key, or fallback when the
+// variable is unset or empty.
+func getenvOr(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
+// getenvPortOr returns the integer value of environment variable key, or fallback
+// when the variable is unset, empty, or not a valid integer.
+func getenvPortOr(key string, fallback int) int {
+	if v := os.Getenv(key); v != "" {
+		if p, err := strconv.Atoi(v); err == nil {
+			return p
+		}
+	}
+	return fallback
+}
+
+// connectRBACAdmin returns a client connected as the RBAC root user to the
+// RBAC-enabled Weaviate instance the docs CI stack runs (service weaviate_rbac in
+// tests/docker-compose-rbac.yml: HTTP :8580 / gRPC :50551, root user "root-user"
+// with API key "root-user-key", RBAC + OIDC + DB-users enabled). Host, ports and
+// key are overridable by environment variable so the same helper works on a
+// laptop and in CI. The RBAC snippets dial through this instead of connectLocal
+// (which reaches the anonymous default-port instance that does not enforce RBAC),
+// so the role, database-user and OIDC snippets run against an instance that
+// actually authorizes them. This helper sits outside every snippet marker, so it
+// never appears in a rendered snippet.
+//
+// The root key is sent as a Bearer Authorization header rather than via
+// weaviate.WithAPIKey(...). WithAPIKey attaches the key as a gRPC per-RPC
+// credential (oauth.TokenSource) whose RequireTransportSecurity() reports true, so
+// against this plaintext-http instance grpc.NewClient() refuses to build the
+// channel ("credentials require transport level security") and NewClient fails to
+// connect at all — a v6-client bug (internal/transports/grpc.go attaches the
+// per-RPC credential even when it selected insecure transport creds; still present
+// on origin/v6 @8a70091). Every RBAC endpoint is REST, so an Authorization header
+// authenticates all of them as root-user while sidestepping the broken gRPC path.
+// The rendered AdminClient snippet still shows weaviate.WithAPIKey, which is the
+// correct pattern for a TLS deployment where the bug does not bite. See the tier-4
+// escalation notes.
+func connectRBACAdmin(t *testing.T) *weaviate.Client {
+	t.Helper()
+	ctx := context.Background()
+	apiKey := getenvOr("WEAVIATE_RBAC_API_KEY", "root-user-key")
+	client, err := weaviate.NewClient(ctx,
+		weaviate.WithScheme("http"),
+		weaviate.WithHTTPHost(getenvOr("WEAVIATE_RBAC_HTTP_HOST", "localhost")),
+		weaviate.WithHTTPPort(getenvPortOr("WEAVIATE_RBAC_HTTP_PORT", 8580)),
+		weaviate.WithGRPCHost(getenvOr("WEAVIATE_RBAC_GRPC_HOST", "localhost")),
+		weaviate.WithGRPCPort(getenvPortOr("WEAVIATE_RBAC_GRPC_PORT", 50551)),
+		weaviate.WithHeader(http.Header{"Authorization": []string{"Bearer " + apiKey}}),
+	)
+	if err != nil {
+		t.Fatalf("connect to RBAC Weaviate: %v", err)
 	}
 	return client
 }

@@ -8,10 +8,75 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/rbac"
 )
 
-// The RBAC snippets below require a Weaviate instance with RBAC enabled and an
-// admin API key. They are kept out of the CI run set (compile-only) and skip
-// when executed directly.
-const rbacSkip = "requires a Weaviate instance with RBAC enabled and an admin API key"
+// The RBAC snippets run against the RBAC-enabled instance (connectRBACAdmin,
+// service weaviate_rbac on :8580). TestRBACAdminClient stays skipped: its connect
+// is INSIDE the snippet marker (weaviate.NewLocal + WithAPIKey), so it cannot be
+// redirected to the non-default RBAC port without leaking the port into the
+// rendered snippet — the same class as TestConnectLocalAuth.
+const rbacSkip = "connect is inside the snippet marker (NewLocal+WithAPIKey); cannot redirect to the non-default RBAC port without leaking it into the rendered snippet"
+
+// -----------------------------------------------------------------------------
+// Test-only isolation helpers. They live outside every snippet marker, so the
+// rendered snippets are unaffected.
+//
+// Roles, database users and OIDC role assignments are cluster-global, not scoped
+// to a collection, and these tests run sequentially against one shared RBAC
+// instance. Each test therefore deletes the role/user it touches BEFORE it runs
+// (clearing anything a previous failed run leaked) and AFTER (via defer, while the
+// client is still open), and seeds any prerequisite a snippet assumes already
+// exists. Every RBAC operation is a REST call, so none of them hit the gRPC
+// transport-switch panic path (unlike Tenants.Get / batch-delete).
+// -----------------------------------------------------------------------------
+
+// deleteRoleIfExists best-effort removes a role, ignoring a missing role. Safe to
+// call for delete-before-create isolation and as deferred cleanup.
+func deleteRoleIfExists(client *weaviate.Client, roleID string) {
+	ctx := context.Background()
+	if exists, err := client.Roles.Exists(ctx, roleID); err == nil && exists {
+		_ = client.Roles.Delete(ctx, roleID)
+	}
+}
+
+// seedRole (re)creates roleID with a known permission set so snippets that expect
+// the role to already exist (add/remove permissions, inspect, assign, delete) have
+// something to act on. The set is a superset of the permissions
+// TestRBACRemovePermissions removes, plus a cluster-read permission it does not
+// remove, so the role never ends up empty.
+func seedRole(t *testing.T, client *weaviate.Client, roleID string) {
+	t.Helper()
+	ctx := context.Background()
+	deleteRoleIfExists(client, roleID)
+	if err := client.Roles.Create(ctx, rbac.Role{
+		ID: roleID,
+		Permissions: rbac.Permissions{
+			Collections: []rbac.CollectionPermission{
+				{Collection: "TargetCollection*", Create: true, Read: true, Update: true, Delete: true},
+			},
+			Data: []rbac.DataPermission{
+				{Collection: "TargetCollection*", Read: true},
+			},
+			Cluster: []rbac.ClusterPermission{{Read: true}},
+		},
+	}); err != nil {
+		t.Fatalf("seed role %q: %v", roleID, err)
+	}
+}
+
+// deleteDBUserIfExists best-effort removes a database user, ignoring a missing
+// user. Safe for delete-before-create isolation and deferred cleanup.
+func deleteDBUserIfExists(client *weaviate.Client, userID string) {
+	_ = client.Users.DB.Delete(context.Background(), userID)
+}
+
+// seedDBUser (re)creates a database user so snippets that expect the user to
+// already exist (delete, rotate key, assign/revoke/list roles) have a target.
+func seedDBUser(t *testing.T, client *weaviate.Client, userID string) {
+	t.Helper()
+	deleteDBUserIfExists(client, userID)
+	if _, err := client.Users.DB.Create(context.Background(), userID); err != nil {
+		t.Fatalf("seed database user %q: %v", userID, err)
+	}
+}
 
 // -----------------------------------------------------------------------------
 // Requirements
@@ -40,10 +105,11 @@ func TestRBACAdminClient(t *testing.T) {
 
 // TestRBACAddManageRolesPermission creates a role that can manage other roles.
 func TestRBACAddManageRolesPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddManageRolesPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -71,10 +137,11 @@ func TestRBACAddManageRolesPermission(t *testing.T) {
 
 // TestRBACAddManageUsersPermission creates a role that can manage users.
 func TestRBACAddManageUsersPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddManageUsersPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -100,10 +167,11 @@ func TestRBACAddManageUsersPermission(t *testing.T) {
 
 // TestRBACAddCollectionsPermission creates a role with collection permissions.
 func TestRBACAddCollectionsPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddCollectionsPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -128,10 +196,11 @@ func TestRBACAddCollectionsPermission(t *testing.T) {
 
 // TestRBACAddTenantPermission creates a role with tenant permissions.
 func TestRBACAddTenantPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddTenantPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -157,10 +226,11 @@ func TestRBACAddTenantPermission(t *testing.T) {
 
 // TestRBACAddDataObjectPermission creates a role with data object permissions.
 func TestRBACAddDataObjectPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddDataObjectPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -186,10 +256,11 @@ func TestRBACAddDataObjectPermission(t *testing.T) {
 
 // TestRBACAddBackupPermission creates a role with backup permissions.
 func TestRBACAddBackupPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddBackupPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -211,10 +282,11 @@ func TestRBACAddBackupPermission(t *testing.T) {
 
 // TestRBACAddClusterPermission creates a role with cluster read permission.
 func TestRBACAddClusterPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddClusterPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -233,10 +305,11 @@ func TestRBACAddClusterPermission(t *testing.T) {
 
 // TestRBACAddNodesPermission creates a role with node read permission.
 func TestRBACAddNodesPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddNodesPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -259,10 +332,11 @@ func TestRBACAddNodesPermission(t *testing.T) {
 
 // TestRBACAddAliasPermission creates a role with alias permissions.
 func TestRBACAddAliasPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddAliasPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -288,10 +362,11 @@ func TestRBACAddAliasPermission(t *testing.T) {
 
 // TestRBACAddReplicationsPermission creates a role with replication permissions.
 func TestRBACAddReplicationsPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddReplicationsPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -317,10 +392,11 @@ func TestRBACAddReplicationsPermission(t *testing.T) {
 
 // TestRBACAddGroupsPermission creates a role with group permissions.
 func TestRBACAddGroupsPermission(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteRoleIfExists(client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddGroupsPermission
 	err := client.Roles.Create(ctx, rbac.Role{
@@ -348,10 +424,11 @@ func TestRBACAddGroupsPermission(t *testing.T) {
 
 // TestRBACAddRoles grants additional permissions to an existing role.
 func TestRBACAddRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AddRoles
 	err := client.Roles.AddPermissions(ctx, rbac.AddPermissions{
@@ -370,10 +447,11 @@ func TestRBACAddRoles(t *testing.T) {
 
 // TestRBACRemovePermissions removes permissions from a role.
 func TestRBACRemovePermissions(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START RemovePermissions
 	err := client.Roles.RemovePermissions(ctx, rbac.RemovePermissions{
@@ -395,9 +473,8 @@ func TestRBACRemovePermissions(t *testing.T) {
 
 // TestRBACCheckRoleExists checks whether a role exists.
 func TestRBACCheckRoleExists(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
 
 	// START CheckRoleExists
@@ -411,10 +488,11 @@ func TestRBACCheckRoleExists(t *testing.T) {
 
 // TestRBACInspectRole retrieves a role and its permissions.
 func TestRBACInspectRole(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START InspectRole
 	role, err := client.Roles.Get(ctx, "testRole")
@@ -429,9 +507,8 @@ func TestRBACInspectRole(t *testing.T) {
 
 // TestRBACListAllRoles lists every role in the instance.
 func TestRBACListAllRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
 
 	// START ListAllRoles
@@ -447,10 +524,11 @@ func TestRBACListAllRoles(t *testing.T) {
 
 // TestRBACAssignedUsers lists the users that have a given role.
 func TestRBACAssignedUsers(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AssignedUsers
 	userIDs, err := client.Roles.AssignedUserIDs(ctx, "testRole")
@@ -465,10 +543,11 @@ func TestRBACAssignedUsers(t *testing.T) {
 
 // TestRBACDeleteRole deletes a role.
 func TestRBACDeleteRole(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START DeleteRole
 	err := client.Roles.Delete(ctx, "testRole")
@@ -484,9 +563,8 @@ func TestRBACDeleteRole(t *testing.T) {
 
 // TestRBACListAllUsers lists all database users.
 func TestRBACListAllUsers(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
 
 	// START ListAllUsers
@@ -502,10 +580,11 @@ func TestRBACListAllUsers(t *testing.T) {
 
 // TestRBACCreateUser creates a database user and prints its API key.
 func TestRBACCreateUser(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	deleteDBUserIfExists(client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
 
 	// START CreateUser
 	// Create returns the new user's API key. Store it securely; it cannot be
@@ -520,10 +599,11 @@ func TestRBACCreateUser(t *testing.T) {
 
 // TestRBACDeleteUser deletes a database user.
 func TestRBACDeleteUser(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
 
 	// START DeleteUser
 	err := client.Users.DB.Delete(ctx, "custom-user")
@@ -535,10 +615,11 @@ func TestRBACDeleteUser(t *testing.T) {
 
 // TestRBACRotateApiKey rotates a database user's API key.
 func TestRBACRotateApiKey(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
 
 	// START RotateApiKey
 	newAPIKey, err := client.Users.DB.RotateKey(ctx, "custom-user")
@@ -551,10 +632,13 @@ func TestRBACRotateApiKey(t *testing.T) {
 
 // TestRBACAssignRole assigns roles to a database user.
 func TestRBACAssignRole(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	seedRole(t, client, "testRole") // "viewer" is a built-in role.
+	defer deleteDBUserIfExists(client, "custom-user")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START AssignRole
 	err := client.Users.DB.AssignRoles(ctx, rbac.AssignRolesOptions{
@@ -569,10 +653,20 @@ func TestRBACAssignRole(t *testing.T) {
 
 // TestRBACRevokeRoles revokes roles from a database user.
 func TestRBACRevokeRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	seedRole(t, client, "testRole")
+	// Assign the role first so the snippet has something to revoke.
+	if err := client.Users.DB.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "custom-user",
+		Roles: []string{"testRole"},
+	}); err != nil {
+		t.Fatalf("seed role assignment: %v", err)
+	}
+	defer deleteDBUserIfExists(client, "custom-user")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START RevokeRoles
 	err := client.Users.DB.RevokeRoles(ctx, rbac.RevokeRolesOptions{
@@ -587,10 +681,11 @@ func TestRBACRevokeRoles(t *testing.T) {
 
 // TestRBACListUserRoles lists the roles assigned to a database user.
 func TestRBACListUserRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
 
 	// START ListUserRoles
 	roles, err := client.Users.DB.AssignedRoles(ctx, rbac.AssignedRolesOptions{
@@ -611,10 +706,16 @@ func TestRBACListUserRoles(t *testing.T) {
 
 // TestRBACAssignOidcUserRole assigns roles to an OIDC user.
 func TestRBACAssignOidcUserRole(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole") // "viewer" is a built-in role.
+	defer deleteRoleIfExists(client, "testRole")
+	defer func() {
+		_ = client.Users.OIDC.RevokeRoles(ctx, rbac.RevokeRolesOptions{
+			ID: "custom-user", Roles: []string{"testRole", "viewer"},
+		})
+	}()
 
 	// START AssignOidcUserRole
 	err := client.Users.OIDC.AssignRoles(ctx, rbac.AssignRolesOptions{
@@ -629,10 +730,18 @@ func TestRBACAssignOidcUserRole(t *testing.T) {
 
 // TestRBACRevokeOidcUserRoles revokes roles from an OIDC user.
 func TestRBACRevokeOidcUserRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	// Assign the role first so the snippet has something to revoke.
+	if err := client.Users.OIDC.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "custom-user",
+		Roles: []string{"testRole"},
+	}); err != nil {
+		t.Fatalf("seed OIDC role assignment: %v", err)
+	}
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START RevokeOidcUserRoles
 	err := client.Users.OIDC.RevokeRoles(ctx, rbac.RevokeRolesOptions{
@@ -647,9 +756,8 @@ func TestRBACRevokeOidcUserRoles(t *testing.T) {
 
 // TestRBACListOidcUserRoles lists the roles assigned to an OIDC user.
 func TestRBACListOidcUserRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
 
 	// START ListOidcUserRoles
@@ -671,10 +779,16 @@ func TestRBACListOidcUserRoles(t *testing.T) {
 
 // TestRBACAssignOidcGroupRoles assigns roles to an OIDC group.
 func TestRBACAssignOidcGroupRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole") // "viewer" is a built-in role.
+	defer deleteRoleIfExists(client, "testRole")
+	defer func() {
+		_ = client.Groups.RevokeRoles(ctx, rbac.RevokeRolesOptions{
+			ID: "/admin-group", Roles: []string{"testRole", "viewer"},
+		})
+	}()
 
 	// START AssignOidcGroupRoles
 	err := client.Groups.AssignRoles(ctx, rbac.AssignRolesOptions{
@@ -689,10 +803,18 @@ func TestRBACAssignOidcGroupRoles(t *testing.T) {
 
 // TestRBACRevokeOidcGroupRoles revokes roles from an OIDC group.
 func TestRBACRevokeOidcGroupRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	// Assign the role first so the snippet has something to revoke.
+	if err := client.Groups.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "/admin-group",
+		Roles: []string{"testRole"},
+	}); err != nil {
+		t.Fatalf("seed group role assignment: %v", err)
+	}
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START RevokeOidcGroupRoles
 	err := client.Groups.RevokeRoles(ctx, rbac.RevokeRolesOptions{
@@ -707,10 +829,22 @@ func TestRBACRevokeOidcGroupRoles(t *testing.T) {
 
 // TestRBACGetOidcGroupRoles lists the roles assigned to an OIDC group.
 func TestRBACGetOidcGroupRoles(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	if err := client.Groups.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "/admin-group",
+		Roles: []string{"testRole"},
+	}); err != nil {
+		t.Fatalf("seed group role assignment: %v", err)
+	}
+	defer deleteRoleIfExists(client, "testRole")
+	defer func() {
+		_ = client.Groups.RevokeRoles(ctx, rbac.RevokeRolesOptions{
+			ID: "/admin-group", Roles: []string{"testRole"},
+		})
+	}()
 
 	// START GetOidcGroupRoles
 	roles, err := client.Groups.AssignedRoles(ctx, rbac.AssignedRolesOptions{
@@ -739,10 +873,11 @@ func TestRBACGetKnownOidcGroups(t *testing.T) {
 
 // TestRBACGetGroupAssignments lists the groups assigned to a role.
 func TestRBACGetGroupAssignments(t *testing.T) {
-	t.Skip(rbacSkip)
 	ctx := context.Background()
-	client := connectLocal(t)
+	client := connectRBACAdmin(t)
 	defer client.Close()
+	seedRole(t, client, "testRole")
+	defer deleteRoleIfExists(client, "testRole")
 
 	// START GetGroupAssignments
 	groups, err := client.Roles.GroupAssignments(ctx, "testRole")
