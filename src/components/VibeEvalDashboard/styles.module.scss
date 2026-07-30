@@ -1,0 +1,152 @@
+.dashboard {
+  margin: 1rem 0;
+}
+
+.metadata {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-600);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--ifm-color-primary);
+  }
+}
+
+.tabActive {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th, td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--ifm-color-emphasis-700);
+    background: var(--ifm-color-emphasis-100);
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+
+    &:hover {
+      background: var(--ifm-color-emphasis-200);
+    }
+  }
+
+  tr:hover td {
+    background: var(--ifm-color-emphasis-50);
+  }
+}
+
+.pass {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.fail {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.passRate {
+  font-weight: 600;
+}
+
+.passRateHigh {
+  color: #16a34a;
+}
+
+.passRateMedium {
+  color: #ca8a04;
+}
+
+.passRateLow {
+  color: #dc2626;
+}
+
+.rank {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-500);
+}
+
+.provider {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-500);
+  text-transform: capitalize;
+}
+
+.expandBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ifm-color-primary);
+  font-size: 0.85rem;
+  padding: 0.2rem 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.analysisRow td {
+  background: var(--ifm-color-emphasis-50);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.analysisLabel {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+  margin-right: 0.5rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ifm-color-emphasis-500);
+  font-size: 1rem;
+}
+
+.sortArrow {
+  margin-left: 0.3rem;
+  font-size: 0.75rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+}
