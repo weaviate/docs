@@ -378,7 +378,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectors.text2VecGoogle({
+    weaviate.configure.vectors.text2VecGoogleGemini({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID

@@ -47,8 +47,8 @@ The following code iterates through all objects, providing the properties and id
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
-      startMarker="// Retrieve data"
-      endMarker="// Use this function to retrieve data"
+      startMarker="// START ReadAllProps"
+      endMarker="// END ReadAllProps"
       language="go"
     />
   </TabItem>
@@ -95,14 +95,6 @@ Read through all data including the vectors. (Also applicable where [named vecto
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START ReadAllVectors"
-      endMarker="// END ReadAllVectors"
-      language="go"
-    />
-  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -144,14 +136,6 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
       startMarker="// START ReadAllTenants"
       endMarker="// END ReadAllTenants"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START ReadAllTenants"
-      endMarker="// END ReadAllTenants"
-      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">

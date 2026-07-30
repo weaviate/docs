@@ -150,7 +150,7 @@ You can [specify](#vectorizer-parameters) one of the [available models](#availab
 
 ### Google AI Studio (Gemini API)
 
-For Google AI Studio, use the `text2vec_google_gemini()` vectorizer. No `project_id` or `api_endpoint` is required.
+For Google AI Studio, use the Gemini-specific vectorizer. A Google Cloud project ID is not required. The Python and TypeScript clients set the Gemini API endpoint for you.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

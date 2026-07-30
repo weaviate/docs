@@ -58,9 +58,9 @@ flowchart LR
 
 ### Prerequisites
 
-In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need a [Cohere](https://dashboard.cohere.com/) account. You can use a free Cohere trial API key.
+In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need an [OpenAI](https://platform.openai.com/) account and an OpenAI API key.
 
-If you have another preferred [model provider](/weaviate/model-providers), you can use that instead of Cohere.
+If you have another preferred [model provider](/weaviate/model-providers), you can use that instead of OpenAI.
 
 <hr />
 
@@ -377,9 +377,9 @@ import QueryRAG from "/_includes/code/quickstart/quickstart.query.rag.mdx";
 
 <QueryRAG />
 
-:::info Cohere API key in the header
+:::info OpenAI API key in the header
 
-Note that this code includes an additional header for the Cohere API key. Weaviate uses this key to access the Cohere generative AI model and perform retrieval augmented generation (RAG).
+Note that this code includes an additional header for the OpenAI API key. Weaviate uses this key to access the OpenAI generative AI model and perform retrieval augmented generation (RAG).
 
 :::
 

@@ -59,7 +59,7 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Quick
 # Best practice: store your credentials in environment variables
 # export WEAVIATE_URL="YOUR_INSTANCE_URL"    # Your Weaviate instance URL
 # export WEAVIATE_API_KEY="YOUR_API_KEY"     # Your Weaviate instance API key
-# export COHERE_API_KEY="YOUR_API_KEY"   # Your Cohere API key
+# export OPENAI_API_KEY="YOUR_API_KEY"       # Your OpenAI API key
 
 echo '{
   "query": "{
@@ -92,7 +92,7 @@ echo '{
     -X POST \
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer $WEAVIATE_API_KEY" \
-    -H "X-Cohere-Api-Key: $COHERE_API_KEY" \
+    -H "X-OpenAI-Api-Key: $OPENAI_API_KEY" \
     -d @- \
     $WEAVIATE_URL/v1/graphql
 ```

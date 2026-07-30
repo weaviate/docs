@@ -317,7 +317,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="gemini-embedding-2",
+        model="gemini-embedding-2",
     ),
     # highlight-end
     # Additional parameters not shown

@@ -68,7 +68,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.anthropic(
-        model="claude-3-opus-20240229"
+        model="claude-haiku-4-5"
     )
     # highlight-end
     # Additional parameters not shown
@@ -87,7 +87,7 @@ client.collections.create(
     generative_config=Configure.Generative.anthropic(
         # # These parameters are optional
         # base_url="https://api.anthropic.com",
-        # model="claude-3-opus-20240229",
+        # model="claude-haiku-4-5",
         # max_tokens=512,
         # temperature=0.7,
         # stop_sequences=["\n\n"],
@@ -116,7 +116,7 @@ response = collection.generate.near_text(
     generative_provider=GenerativeConfig.anthropic(
         # # These parameters are optional
         # base_url="https://api.anthropic.com",
-        # model="claude-3-opus-20240229",
+        # model="claude-haiku-4-5",
         # max_tokens=512,
         # temperature=0.7,
         # stop_sequences=["\n\n"],
