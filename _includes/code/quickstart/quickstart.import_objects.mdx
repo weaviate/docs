@@ -8,7 +8,7 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Quick
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
 
 
-Every import returns a result that reports which objects failed, if any. Check it in your own code to catch problems such as malformed data or a misconfigured model provider.
+Every import returns a result that reports whether any objects failed. Check it in your own code to catch problems such as malformed data or a misconfigured model provider.
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -57,6 +57,9 @@ Every import returns a result that reports which objects failed, if any. Check i
   endMarker="// END Import"
   language="java"
 />
+
+`batch.start()` opens a server-side batch. Closing the batch sends any remaining objects and waits for the server to report the results, so read `batch.numberOfErrors()` afterwards for the number of objects that failed.
+
 </TabItem>
 
   <TabItem value="csharp" label="C#">
@@ -66,6 +69,9 @@ Every import returns a result that reports which objects failed, if any. Check i
       endMarker="// END Import"
       language="csharp"
     />
+
+`Batch.InsertMany()` returns a `BatchInsertResponse`. Read `HasErrors` for a quick check, and `Objects` for one entry per object, each carrying the `Error` that failed it.
+
   </TabItem>
 
 <TabItem value="curl" label="Curl">
