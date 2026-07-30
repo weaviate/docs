@@ -95,7 +95,7 @@ public class QuickstartLocalTest
         if (insertResponse.HasErrors)
         {
             Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
-            // `Objects` holds one entry per object, in the order they were sent
+            // `Objects` holds one entry per object; `Index` is the position of the object in the input
             foreach (var entry in insertResponse.Objects.Where(o => o.Error is not null))
             {
                 Console.WriteLine($"Failed object at index {entry.Index}: {entry.Error.Message}");
@@ -103,7 +103,7 @@ public class QuickstartLocalTest
         }
         else
         {
-            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+            Console.WriteLine($"Successfully inserted {insertResponse.Count} objects.");
         }
         // END Import
 
