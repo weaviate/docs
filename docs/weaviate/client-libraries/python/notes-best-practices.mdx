@@ -275,7 +275,7 @@ Note that these lists are reset when a batching process is initialized. So make 
   language="py"
 />
 
-`collection.data.ingest()` does not use a batching context, so it reports failures through its return value instead. The `BatchObjectReturn` object that it returns exposes `result.has_errors` as a summary flag, and `result.errors` as a dictionary keyed by the position of each failed object in the input. Check `result.errors` directly, because it holds an entry for every failed object. The [one-shot ingest](#one-shot-ingest) example above shows this pattern.
+`collection.data.ingest()` does not use a batching context, so it reports failures through its return value instead. Check `result.errors`, a dictionary that holds one entry per failed object, keyed by the position of the object in the input. The [one-shot ingest](#one-shot-ingest) example above shows this pattern.
 
 ### Batch vectorization
 
