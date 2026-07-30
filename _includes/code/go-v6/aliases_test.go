@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/uuid"
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
@@ -34,9 +35,13 @@ func setupArticleForAliases(t *testing.T, client *weaviate.Client) {
 		}
 	}
 	articles := client.Collections.Use("Article")
+	// Fixed, non-leading-zero ids keep the alias query deterministic (a
+	// server-assigned 0x00-leading id flakes gRPC queries; see filterByIdSeedUUID).
+	a1 := uuid.MustParse("b1c2d3e4-f5a6-4b7c-8d9e-1f2a3b4c5d6e")
+	a2 := uuid.MustParse("c1d2e3f4-a5b6-4c7d-8e9f-2a3b4c5d6e7f")
 	if _, err := articles.Data.Insert(ctx,
-		&data.Object{Properties: map[string]any{"title": "Weaviate", "body": "An open-source vector database"}},
-		&data.Object{Properties: map[string]any{"title": "Vectors", "body": "Numeric representations of data"}},
+		&data.Object{UUID: &a1, Properties: map[string]any{"title": "Weaviate", "body": "An open-source vector database"}},
+		&data.Object{UUID: &a2, Properties: map[string]any{"title": "Vectors", "body": "Numeric representations of data"}},
 	); err != nil {
 		t.Fatalf("seed Article: %v", err)
 	}

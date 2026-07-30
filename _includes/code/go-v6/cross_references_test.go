@@ -43,14 +43,14 @@ func TestAddOneWayCrossReference(t *testing.T) {
 	categories := client.Collections.Use("JeopardyCategory")
 	questions := client.Collections.Use("JeopardyQuestion")
 
-	categoryID := uuid.New()
+	categoryID := uuid.MustParse("c2d3e4f5-a6b7-4c8d-8e9f-8a9b0c1d2e3f")
 	if _, err := categories.Data.Insert(ctx, &data.Object{
 		UUID:       &categoryID,
 		Properties: map[string]any{"title": "SCIENCE"},
 	}); err != nil {
 		t.Fatal(err)
 	}
-	questionID := uuid.New()
+	questionID := uuid.MustParse("d2e3f4a5-b6c7-4d8e-8f9a-9b0c1d2e3f4a")
 	if _, err := questions.Data.Insert(ctx, &data.Object{
 		UUID:       &questionID,
 		Properties: map[string]any{"question": "This vector database is written in Go"},

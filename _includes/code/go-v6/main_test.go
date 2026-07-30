@@ -280,6 +280,7 @@ func cleanupJeopardyDemo(ctx context.Context, client *weaviate.Client) {
 // object (a JeopardyCategory row) instead of dangling random ids.
 var (
 	mtSourceID   = uuid.MustParse("44444444-4444-4444-8444-444444444444")
+	mtSourceID2  = uuid.MustParse("66666666-6666-4666-8666-666666666666")
 	mtCategoryID = uuid.MustParse("55555555-5555-4555-8555-555555555555")
 )
 
@@ -340,7 +341,9 @@ func setupMultiTenancy(t *testing.T, client *weaviate.Client) {
 		&data.Object{UUID: &mtSourceID, Properties: map[string]any{
 			"question": "This vector DB is OSS and supports automatic property type inference on import",
 		}},
-		&data.Object{Properties: map[string]any{
+		// Fixed, non-leading-zero id: a server-assigned 0x00-leading id truncates in
+		// the gRPC id_as_bytes reply and flakes tenant queries (see filterByIdSeedUUID).
+		&data.Object{UUID: &mtSourceID2, Properties: map[string]any{
 			"question": "This organ removes excess glucose from the blood & stores it as glycogen",
 		}},
 	); err != nil {
@@ -384,9 +387,13 @@ func setupMultiTenancyJeopardy(t *testing.T, client *weaviate.Client) {
 	}
 
 	tenantA := client.Collections.Use("JeopardyQuestion", collections.WithTenant("tenantA"))
+	// Fixed, non-leading-zero ids keep the tenant read/search snippets deterministic
+	// (a server-assigned 0x00-leading id flakes gRPC queries; see filterByIdSeedUUID).
+	mtjLiver := uuid.MustParse("77777777-7777-4777-8777-777777777777")
+	mtjElephant := uuid.MustParse("88888888-8888-4888-8888-888888888888")
 	if _, err := tenantA.Data.Insert(ctx,
-		&data.Object{Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver", "category": "SCIENCE", "points": 100}},
-		&data.Object{Properties: map[string]any{"question": "The only living mammal in the order Proboscidea", "answer": "Elephant", "category": "ANIMALS", "points": 200}},
+		&data.Object{UUID: &mtjLiver, Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver", "category": "SCIENCE", "points": 100}},
+		&data.Object{UUID: &mtjElephant, Properties: map[string]any{"question": "The only living mammal in the order Proboscidea", "answer": "Elephant", "category": "ANIMALS", "points": 200}},
 	); err != nil {
 		t.Fatalf("seed tenantA: %v", err)
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/uuid"
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
@@ -39,8 +40,16 @@ func setupJeopardyTiny(t *testing.T, client *weaviate.Client) {
 	}
 
 	jeopardy := client.Collections.Use("JeopardyTiny")
+	// Fixed, non-leading-zero ids keep the near-vector run deterministic: a
+	// server-assigned id beginning 0x00 truncates to 15 bytes in the gRPC
+	// id_as_bytes reply field and the client rejects the whole SearchReply. See
+	// the filterByIdSeedUUID note in main_test.go.
+	t1 := uuid.MustParse("8d9e0f1a-2b3c-4d5e-8f60-4d5e6f7a8b9c")
+	t2 := uuid.MustParse("9e0f1a2b-3c4d-4e5f-8061-5e6f7a8b9c0d")
+	t3 := uuid.MustParse("af1a2b3c-4d5e-4f6a-8b62-6f7a8b9c0d1e")
 	if _, err := jeopardy.Data.Insert(ctx,
 		&data.Object{
+			UUID:       &t1,
 			Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver"},
 			Vectors: []types.Vector{
 				{Name: "jeopardy_questions_vector", Single: []float32{0.10, 0.21, 0.32}},
@@ -48,6 +57,7 @@ func setupJeopardyTiny(t *testing.T, client *weaviate.Client) {
 			},
 		},
 		&data.Object{
+			UUID:       &t2,
 			Properties: map[string]any{"question": "The only living mammal in the order Proboscidea", "answer": "Elephant"},
 			Vectors: []types.Vector{
 				{Name: "jeopardy_questions_vector", Single: []float32{0.11, 0.20, 0.34}},
@@ -55,6 +65,7 @@ func setupJeopardyTiny(t *testing.T, client *weaviate.Client) {
 			},
 		},
 		&data.Object{
+			UUID:       &t3,
 			Properties: map[string]any{"question": "This tall animal has a long neck and roams the savanna", "answer": "Giraffe"},
 			Vectors: []types.Vector{
 				{Name: "jeopardy_questions_vector", Single: []float32{0.14, 0.19, 0.30}},

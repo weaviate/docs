@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
 	"github.com/weaviate/weaviate-go-client/v6/query"
@@ -18,7 +19,11 @@ func TestBasicQuery(t *testing.T) {
 	defer client.Collections.Delete(ctx, "Article")
 
 	articles := client.Collections.Use("Article")
+	// Fixed, non-leading-zero id keeps the query deterministic (a server-assigned
+	// 0x00-leading id flakes the gRPC reply; see filterByIdSeedUUID in main_test.go).
+	id := uuid.MustParse("d1e2f3a4-b5c6-4d7e-8f9a-3b4c5d6e7f8a")
 	if _, err := articles.Data.Insert(ctx, &data.Object{
+		UUID:       &id,
 		Properties: map[string]any{"title": "Hello", "body": "World"},
 	}); err != nil {
 		t.Fatal(err)

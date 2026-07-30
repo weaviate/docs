@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/uuid"
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
@@ -44,22 +45,34 @@ func setupJeopardySearch(t *testing.T, client *weaviate.Client) {
 	}
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// Fixed, non-leading-zero ids keep the run deterministic. A server-assigned id
+	// beginning 0x00 comes back from gRPC search as 15 bytes (the id_as_bytes reply
+	// field drops leading zero bytes) and the client's uuid.FromBytes then rejects
+	// the whole SearchReply, flaking every query over this collection. See the
+	// filterByIdSeedUUID note in main_test.go.
+	s1 := uuid.MustParse("5a6b7c8d-9e0f-4a1b-8c2d-1a2b3c4d5e6f")
+	s2 := uuid.MustParse("6b7c8d9e-0f1a-4b2c-8d3e-2b3c4d5e6f7a")
+	s3 := uuid.MustParse("7c8d9e0f-1a2b-4c3d-8e4f-3c4d5e6f7a8b")
 	if _, err := jeopardy.Data.Insert(ctx,
 		&data.Object{
+			UUID:       &s1,
 			Properties: map[string]any{"question": "This organ removes excess glucose from the blood & stores it as glycogen", "answer": "Liver", "category": "SCIENCE", "points": 100},
 			Vectors:    []types.Vector{{Name: "default", Single: []float32{0.10, 0.21, 0.32}}},
 		},
 		&data.Object{
+			UUID:       &s2,
 			Properties: map[string]any{"question": "It's the only living mammal in the order Proboscidea", "answer": "Elephant", "category": "ANIMALS", "points": 200},
 			Vectors:    []types.Vector{{Name: "default", Single: []float32{0.11, 0.20, 0.34}}},
 		},
 		&data.Object{
+			UUID:       &s3,
 			Properties: map[string]any{"question": "The gavial looks very much like a crocodile except for this bodily feature", "answer": "the nose or snout", "category": "ANIMALS", "points": 400},
 			Vectors:    []types.Vector{{Name: "default", Single: []float32{0.14, 0.19, 0.30}}},
 		},
 	); err != nil {
 		t.Fatalf("seed JeopardyQuestion: %v", err)
 	}
+	waitForCount(t, jeopardy, 3)
 }
 
 // TestGetNearText runs a semantic search over a collection whose vectorizer

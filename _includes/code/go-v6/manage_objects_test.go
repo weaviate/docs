@@ -78,7 +78,7 @@ func TestReplaceObject(t *testing.T) {
 
 	questions := client.Collections.Use("JeopardyQuestion")
 
-	id := uuid.New()
+	id := uuid.MustParse("e1f2a3b4-c5d6-4e7f-8a9b-4c5d6e7f8a9b")
 	if _, err := questions.Data.Insert(ctx, &data.Object{
 		UUID: &id,
 		Properties: map[string]any{
@@ -128,7 +128,7 @@ func TestDeleteObject(t *testing.T) {
 
 	questions := client.Collections.Use("JeopardyQuestion")
 
-	id := uuid.New()
+	id := uuid.MustParse("f1a2b3c4-d5e6-4f7a-8b9c-5d6e7f8a9b0c")
 	if _, err := questions.Data.Insert(ctx, &data.Object{
 		UUID:       &id,
 		Properties: map[string]any{"question": "This object will be deleted"},
@@ -159,9 +159,11 @@ func TestDeleteMany(t *testing.T) {
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	questions := client.Collections.Use("JeopardyQuestion")
+	dm1 := uuid.MustParse("a2b3c4d5-e6f7-4a8b-8c9d-6e7f8a9b0c1d")
+	dm2 := uuid.MustParse("b2c3d4e5-f6a7-4b8c-8d9e-7f8a9b0c1d2e")
 	if _, err := questions.Data.Insert(ctx,
-		&data.Object{Properties: map[string]any{"answer": "Hawaii", "category": "GEOGRAPHY"}},
-		&data.Object{Properties: map[string]any{"answer": "Kilauea", "category": "GEOGRAPHY"}},
+		&data.Object{UUID: &dm1, Properties: map[string]any{"answer": "Hawaii", "category": "GEOGRAPHY"}},
+		&data.Object{UUID: &dm2, Properties: map[string]any{"answer": "Kilauea", "category": "GEOGRAPHY"}},
 	); err != nil {
 		t.Fatal(err)
 	}
