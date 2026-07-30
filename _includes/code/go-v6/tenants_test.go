@@ -94,6 +94,8 @@ func TestAddTenantsToClass(t *testing.T) {
 
 // TestListTenants lists every tenant in a multi-tenancy collection.
 func TestListTenants(t *testing.T) {
+	t.Skip("go-client v6 Tenants.Get panics — *api.GetTenantsRequest is not wired into the gRPC transport MessageMarshaler switch (internal/api/transport/transport.go), so Tenants.Get(ctx) hits the default dev.Assert(false) and panics, aborting the whole test binary; deferred pending a client fix")
+
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

@@ -71,7 +71,14 @@ func waitForCount(t *testing.T, handle *collections.Handle, n int) {
 
 // filterByIdSeedUUID is the id filtered on by TestFilterById; setupJeopardyDemo
 // seeds one question with this id so that snippet returns a deterministic match.
-const filterByIdSeedUUID = "00037775-1432-35e5-bc59-443baaef7d80"
+//
+// The first byte must be non-zero. Weaviate's gRPC search reply carries the
+// object id in the `id_as_bytes` field, which drops leading zero bytes: an id
+// beginning 0x00 comes back as 15 bytes and the client's uuid.FromBytes rejects
+// the whole reply with "invalid UUID (got 15 bytes)", failing every query over
+// the collection. The previous value ("00037775-…") began 0x00 and did exactly
+// that. Keep every seeded id's first byte non-zero.
+const filterByIdSeedUUID = "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f"
 
 // Fixed ids for the demo JeopardyCategory rows so questions can be linked to
 // them with AddReferences during seeding.
@@ -136,8 +143,16 @@ func setupJeopardyDemo(t *testing.T, client *weaviate.Client) {
 		t.Fatalf("seed JeopardyCategory: %v", err)
 	}
 
+	// Every question gets a fixed, non-leading-zero id so the run is deterministic
+	// and no seeded object trips the id_as_bytes leading-zero bug (see
+	// filterByIdSeedUUID). Random or server-assigned ids carry a ~1/256 chance of a
+	// leading 0x00 byte, which would flake the whole collection's queries.
 	q1 := uuid.MustParse(filterByIdSeedUUID)
-	q2, q3, q5 := uuid.New(), uuid.New(), uuid.New()
+	q2 := uuid.MustParse("b2c3d4e5-f6a7-4b5c-8d9e-2a3b4c5d6e7f")
+	q3 := uuid.MustParse("c3d4e5f6-a7b8-4c5d-8e9f-3a4b5c6d7e80")
+	q4 := uuid.MustParse("d4e5f6a7-b8c9-4d5e-8f90-4b5c6d7e8f90")
+	q5 := uuid.MustParse("e5f6a7b8-c9d0-4e5f-8a01-5c6d7e8f9012")
+	q6 := uuid.MustParse("f6a7b8c9-d0e1-4f5a-8b02-6d7e8f901234")
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	if _, err := jeopardy.Data.Insert(ctx,
 		&data.Object{UUID: &q1, Properties: map[string]any{
@@ -155,7 +170,7 @@ func setupJeopardyDemo(t *testing.T, client *weaviate.Client) {
 			"answer":   "Giraffe", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 500,
 			"dateRecorded": "2023-03-03T00:00:00Z",
 		}},
-		&data.Object{Properties: map[string]any{
+		&data.Object{UUID: &q4, Properties: map[string]any{
 			"question": "Bees build these six-sided structures to store honey in a hive",
 			"answer":   "A honeycomb nest built by bees", "category": "NATURE", "round": "Jeopardy!", "points": 200,
 			"dateRecorded": "2020-06-06T00:00:00Z",
@@ -166,7 +181,7 @@ func setupJeopardyDemo(t *testing.T, client *weaviate.Client) {
 			"dateRecorded": "2021-09-09T00:00:00Z",
 		}},
 		// A question with no answer so FilterByPropertyNullState has a match.
-		&data.Object{Properties: map[string]any{
+		&data.Object{UUID: &q6, Properties: map[string]any{
 			"question": "This open-source vector database is written in Go",
 			"category": "TECH", "round": "Double Jeopardy!", "points": 400,
 			"dateRecorded": "2024-04-04T00:00:00Z",

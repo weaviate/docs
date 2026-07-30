@@ -303,7 +303,7 @@ func TestFilterById(t *testing.T) {
 			// filter.UUID targets the object's own id.
 			Target:   filter.UUID,
 			Operator: filter.Equal,
-			Value:    "00037775-1432-35e5-bc59-443baaef7d80",
+			Value:    "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f",
 		},
 	})
 	if err != nil {
