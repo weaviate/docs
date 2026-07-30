@@ -251,12 +251,45 @@ def _is_decorative_image(img) -> bool:
     # Skip language/site logo SVGs (e.g., /img/site/logo-py.svg)
     if src.endswith(".svg") and "/img/site/" in src:
         return True
-    # Skip analytics tracking pixels (e.g., Scarf)
+    # Skip images that carry no content by construction: analytics beacons,
+    # spacers, and anything hidden from both rendering and the accessibility
+    # tree. Such an image conveys nothing to a reader, a screen reader, or a
+    # crawler, so requiring alt text on it is meaningless. This is matched
+    # structurally rather than by hostname on purpose: the previous
+    # "static.scarf.sh" check went stale the moment the beacon moved to our own
+    # CNAME, and any hostname list will go stale again on the next move.
+    if _is_hidden_non_content(img):
+        return True
+    # Retained for the Scarf-hosted pixel, in case it is ever embedded without
+    # the hidden styling that the structural check above relies on.
     if "static.scarf.sh" in src:
         return True
     # Skip very small images (likely icons)
     width = img.get("width")
     if width and str(width).isdigit() and int(width) < 30:
+        return True
+
+    return False
+
+
+def _is_hidden_non_content(img) -> bool:
+    """Check if an image is hidden from users and from the accessibility tree.
+
+    Covers the ways a non-content image announces itself:
+    - inline `display: none` / `visibility: hidden` (removed from the render
+      tree, and therefore from the accessibility tree)
+    - `aria-hidden="true"` (explicitly withheld from assistive technology)
+    - 1x1 dimensions (a tracking pixel or a spacer)
+    """
+    style = (img.get("style") or "").lower().replace(" ", "")
+    if "display:none" in style or "visibility:hidden" in style:
+        return True
+
+    if str(img.get("aria-hidden", "")).lower() == "true":
+        return True
+
+    dims = (img.get("width"), img.get("height"))
+    if all(d is not None and str(d).strip().isdigit() and int(d) <= 1 for d in dims):
         return True
 
     return False
