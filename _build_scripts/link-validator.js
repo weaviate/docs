@@ -45,6 +45,7 @@ const domainsToIgnore = [
     'medium.com', // TODO[g-despot]: started throwing Forbidden 403 (incl. subdomains, e.g. *.medium.com)
     'https://www.npmjs.com',
     'https://openai.com',
+    'https://platform.deepseek.com', // 403s automated requests (site loads fine in a browser)
     'https://platform.openai.com',
     'https://www.researchgate.net',
     'https://simple/',
