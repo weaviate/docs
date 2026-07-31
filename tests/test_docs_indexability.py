@@ -34,11 +34,30 @@ TEST_PAGES = [
     ("/weaviate/concepts/data-import", {"images"}),
     ("/cloud/quickstart", {"code", "images"}),
     ("/cloud/manage-clusters/create", {"images"}),
+    ("/cloud/tools/query-tool", {"images"}),
+    ("/weaviate/manage-collections/tenant-states", {"images"}),
     ("/query-agent/recipes/query-agent-ecommerce-assistant", {"code"}),
     ("/weaviate/search", set()),  # landing page
 ]
 
 ALL_PATHS = [path for path, _ in TEST_PAGES]
+
+# Pages labelled "images" that carry no content images of their own today.
+#
+# The label is kept on purpose: these pages walk a reader through a UI, so they
+# are the pages that most want screenshots, and the label records that intent.
+# Until the screenshots exist there is nothing on the page for the alt-text
+# check to assert, so it skips them by name and says so, rather than passing on
+# the strength of the navbar chrome that used to leak into the check.
+#
+# Drop a page from this set the moment it gains a real content image; the
+# alt-text check then enforces alt text on it. Any *other* page labelled
+# "images" with no content images fails, so the label cannot go stale silently.
+PAGES_MISSING_CONTENT_IMAGES = {
+    "/weaviate/concepts/data-import",
+    "/cloud/quickstart",
+    "/cloud/manage-clusters/create",
+}
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -214,17 +233,22 @@ def test_details_content_present(path):
     ids=[p for p, f in TEST_PAGES if "images" in f],
 )
 def test_images_have_alt_text(path):
-    """Content images have alt text (excludes SVG icons and badges)."""
+    """The page's own images have alt text (excludes SVG icons and badges)."""
     soup = _get_soup(path)
+    content_images = _content_images(soup)
 
-    # Find content images, excluding decorative ones
-    images = soup.find_all("img")
-    content_images = [
-        img for img in images
-        if not _is_decorative_image(img)
-    ]
-
-    assert len(content_images) > 0, f"{path}: no content images found"
+    if not content_images:
+        if path in PAGES_MISSING_CONTENT_IMAGES:
+            pytest.skip(
+                f"{path}: labelled 'images' but has no content image in the main "
+                "content region, so there is nothing here to assert on. This is a "
+                "content gap, tracked in PAGES_MISSING_CONTENT_IMAGES."
+            )
+        pytest.fail(
+            f"{path}: labelled 'images' but has no content image in the main "
+            "content region. Either the page lost its images, or the 'images' "
+            "label in TEST_PAGES is wrong."
+        )
 
     missing_alt = [
         img.get("src", "unknown")
@@ -234,6 +258,26 @@ def test_images_have_alt_text(path):
     assert len(missing_alt) == 0, (
         f"{path}: {len(missing_alt)} images missing alt text: {missing_alt[:5]}"
     )
+
+
+def _main_content(soup):
+    """The page's main content region.
+
+    Global navbar and footer chrome lives outside it. Scoping to this region
+    keeps site furniture (the site logo, the Ask AI button logo) from standing
+    in for the page's own images: that chrome is identical on every page, so
+    counting it made the alt-text check assert on the layout instead of the
+    page, and a single navbar change could flip it.
+    """
+    return soup.find("main") or soup.find("article") or soup
+
+
+def _content_images(soup):
+    """Images that carry the page's own content."""
+    return [
+        img for img in _main_content(soup).find_all("img")
+        if not _is_decorative_image(img)
+    ]
 
 
 def _is_decorative_image(img) -> bool:
