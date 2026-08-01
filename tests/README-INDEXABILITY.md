@@ -21,7 +21,7 @@ Documentation content that is hidden behind JavaScript interactions (tabs, colla
 
 ### HTML structure tests (Part 1)
 
-These tests fetch ~11 representative pages from all doc sections and check:
+These tests fetch ~13 representative pages from all doc sections and check:
 
 | Test | What it checks |
 |------|---------------|
@@ -81,7 +81,7 @@ HTML structure tests always run. Agent tests only run if `ANTHROPIC_API_KEY` and
 
 ## Test pages
 
-The suite tests 11 representative URLs covering all doc sections:
+The suite tests 13 representative URLs covering all doc sections:
 
 | Page | Features tested |
 |------|----------------|
@@ -91,9 +91,11 @@ The suite tests 11 representative URLs covering all doc sections:
 | `/weaviate/search/hybrid` | tabs, code |
 | `/weaviate/connections/connect-cloud` | tabs, code |
 | `/weaviate/config-refs/collections` | details, table |
-| `/weaviate/concepts/data-import` | images |
-| `/cloud/quickstart` | code, images |
-| `/cloud/manage-clusters/create` | images |
+| `/weaviate/concepts/data-import` | no structural features (200, meta tags, headings, LLM notice only) |
+| `/cloud/quickstart` | code |
+| `/cloud/manage-clusters/create` | no structural features (200, meta tags, headings, LLM notice only) |
+| `/cloud/tools/query-tool` | images |
+| `/weaviate/manage-collections/tenant-states` | images |
 | `/query-agent/recipes/query-agent-ecommerce-assistant` | code |
 | `/weaviate/search` | landing page |
 
@@ -129,4 +131,4 @@ TEST_PAGES = [
 ]
 ```
 
-Available feature tags: `tabs`, `code`, `details`, `images`, `table`. Pages are parametrized — each feature tag enables the corresponding structural test for that page.
+Available feature tags: `tabs`, `code`, `details`, `images`, `table`. Pages are parametrized — each feature tag enables the corresponding structural test for that page. Tag only what the page actually has: a page tagged `images` with no content image fails rather than passing quietly, which is what keeps the tags from going stale.

@@ -31,33 +31,25 @@ TEST_PAGES = [
     ("/weaviate/search/hybrid", {"tabs", "code"}),
     ("/weaviate/connections/connect-cloud", {"tabs", "code"}),
     ("/weaviate/config-refs/collections", {"details", "table"}),
-    ("/weaviate/concepts/data-import", {"images"}),
-    ("/cloud/quickstart", {"code", "images"}),
-    ("/cloud/manage-clusters/create", {"images"}),
+    ("/weaviate/concepts/data-import", set()),
+    ("/cloud/quickstart", {"code"}),
+    ("/cloud/manage-clusters/create", set()),
     ("/cloud/tools/query-tool", {"images"}),
     ("/weaviate/manage-collections/tenant-states", {"images"}),
     ("/query-agent/recipes/query-agent-ecommerce-assistant", {"code"}),
-    ("/weaviate/search", set()),  # landing page
+    ("/weaviate/search", set()),
 ]
 
 ALL_PATHS = [path for path, _ in TEST_PAGES]
 
-# Pages labelled "images" that carry no content images of their own today.
+# Pages that route readers onward instead of carrying content of their own, and
+# so are exempt from the "content pages have h2 headings" rule.
 #
-# The label is kept on purpose: these pages walk a reader through a UI, so they
-# are the pages that most want screenshots, and the label records that intent.
-# Until the screenshots exist there is nothing on the page for the alt-text
-# check to assert, so it skips them by name and says so, rather than passing on
-# the strength of the navbar chrome that used to leak into the check.
-#
-# Drop a page from this set the moment it gains a real content image; the
-# alt-text check then enforces alt text on it. Any *other* page labelled
-# "images" with no content images fails, so the label cannot go stale silently.
-PAGES_MISSING_CONTENT_IMAGES = {
-    "/weaviate/concepts/data-import",
-    "/cloud/quickstart",
-    "/cloud/manage-clusters/create",
-}
+# This is tracked separately from the feature sets because an empty feature set
+# says only that a page has none of the structural features the checks below
+# assert on. A page can be plain prose, with no tabs, code, details, table or
+# image, and still be a content page that owes the reader h2 headings.
+LANDING_PAGES = {"/weaviate/search"}
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -88,13 +80,6 @@ def _fetch_page(path: str) -> requests.Response:
 def _get_soup(path: str) -> BeautifulSoup:
     resp = _fetch_page(path)
     return BeautifulSoup(resp.text, "html.parser")
-
-
-def _features_for(path: str) -> set[str]:
-    for p, features in TEST_PAGES:
-        if p == path:
-            return features
-    return set()
 
 
 # ---------------------------------------------------------------------------
@@ -139,8 +124,7 @@ def test_heading_hierarchy(path):
     assert len(h1s) == 1, f"{path}: expected 1 h1, found {len(h1s)}"
 
     # Content pages (not landing pages) should have h2s
-    features = _features_for(path)
-    if features:  # non-empty features means it's a content page
+    if path not in LANDING_PAGES:
         h2s = soup.find_all("h2")
         assert len(h2s) > 0, f"{path}: content page has no h2 headings"
 
@@ -238,12 +222,6 @@ def test_images_have_alt_text(path):
     content_images = _content_images(soup)
 
     if not content_images:
-        if path in PAGES_MISSING_CONTENT_IMAGES:
-            pytest.skip(
-                f"{path}: labelled 'images' but has no content image in the main "
-                "content region, so there is nothing here to assert on. This is a "
-                "content gap, tracked in PAGES_MISSING_CONTENT_IMAGES."
-            )
         pytest.fail(
             f"{path}: labelled 'images' but has no content image in the main "
             "content region. Either the page lost its images, or the 'images' "
