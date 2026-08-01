@@ -132,3 +132,20 @@ TEST_PAGES = [
 ```
 
 Available feature tags: `tabs`, `code`, `details`, `images`, `table`. Pages are parametrized — each feature tag enables the corresponding structural test for that page. Tag only what the page actually has: a page tagged `images` with no content image fails rather than passing quietly, which is what keeps the tags from going stale.
+
+### Landing pages
+
+If the page you are adding routes readers onward instead of carrying content of its own — a hub page that is essentially a list of links to its children — also add its path to the `LANDING_PAGES` set in the same file:
+
+```python
+LANDING_PAGES = {"/weaviate/search"}
+```
+
+`LANDING_PAGES` is the **only** thing that exempts a page from the "content pages have h2 headings" assertion in `test_heading_hierarchy`. An empty feature set does not exempt it. The two mean different things:
+
+- an empty feature set says the page has none of the structural features listed above (no tabs, no code, no details, no table, no images);
+- `LANDING_PAGES` says the page owes the reader no h2 headings at all.
+
+A page can be plain prose with an empty feature set and still be a content page that must have h2s, which is why the exemption is tracked separately.
+
+So if you add a landing page with `set()` and leave it out of `LANDING_PAGES`, it fails with `content page has no h2 headings` — a confusing failure, because the feature set already looks like it says "this page has nothing". Add the path to `LANDING_PAGES` instead.

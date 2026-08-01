@@ -11,10 +11,13 @@ This script answers one question at PR time: once this PR merges, which `llms.tx
 blocks would that weekly coverage test no longer find? Those blocks, and only those, are
 the ones `weaviate-io/static/llms.txt` has to update in lockstep.
 
-It is deliberately advisory and **always exits 0**. A legitimate snippet PR cannot have a
-matching live `llms.txt` yet, because weaviate-io has not merged or deployed, so a
-blocking check here would fail every honest PR and get routinely overridden. Findings are
-reported as GitHub warning annotations plus a job summary instead.
+It is deliberately advisory: **once it runs it never fails the job**, because every
+reporting path exits 0. (Only a malformed invocation, such as omitting `--base`, exits
+non-zero, and that comes from argparse before any checking happens.) A legitimate snippet
+PR cannot have a matching live `llms.txt` yet, because weaviate-io has not merged or
+deployed, so a blocking check here would fail every honest PR and get routinely
+overridden. Findings are reported as GitHub warning annotations plus a job summary
+instead.
 
 Usage:
 

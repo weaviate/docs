@@ -223,7 +223,7 @@ about what "matches" means. Findings surface as GitHub warning annotations on th
 changed snippet lines, plus a job summary carrying the new block to paste into
 `llms.txt`.
 
-**It is advisory and always exits 0.** When a snippet PR is opened, weaviate-io has
+**It is advisory and never fails the job once it runs.** When a snippet PR is opened, weaviate-io has
 not merged or deployed yet, so the live `llms.txt` legitimately cannot match yet; a
 blocking check would fire on every honest PR and would just get overridden. It also
 stays quiet whenever there is nothing to do: weaviate-io shipped first and `llms.txt`
@@ -237,7 +237,8 @@ uv run python tests/check_llms_txt_drift.py --base HEAD
 ```
 
 The reverse direction (an `llms.txt` edit in weaviate-io that no longer matches these
-snippets) is checked by a workflow in the weaviate-io repo.
+snippets) is the companion check that lands with weaviate-io PR #3669, as a workflow in
+that repo. Until it merges there, this direction is the only one that is automated.
 
 ## Per-language gotchas
 
