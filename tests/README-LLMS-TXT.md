@@ -237,8 +237,10 @@ uv run python tests/check_llms_txt_drift.py --base HEAD
 ```
 
 The reverse direction (an `llms.txt` edit in weaviate-io that no longer matches these
-snippets) is the companion check that lands with weaviate-io PR #3669, as a workflow in
-that repo. Until it merges there, this direction is the only one that is automated.
+snippets) is not automated. There is no check in weaviate-io; this repo's PR-time warning
+and the weekly `llms_txt_tests.yml` job are the only automation. An `llms.txt` edit made
+directly in weaviate-io that breaks the verbatim match is not caught until the weekly job
+runs.
 
 ## Per-language gotchas
 
