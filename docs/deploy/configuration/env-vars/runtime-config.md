@@ -11,7 +11,7 @@ import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
 
 Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 
-Most runtime configurations correspond to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable. A few settings are available only as runtime overrides and have no environment variable equivalent.
+Most runtime configurations correspond to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable. A few runtime configurations are available only as overrides and have no environment variable equivalent.
 
 ## How to set up runtime configuration
 
@@ -86,7 +86,7 @@ The following overrides are currently supported:
 | `tenant_activity_read_log_level`                 | `TENANT_ACTIVITY_READ_LOG_LEVEL`             |
 | `tenant_activity_write_log_level`                | `TENANT_ACTIVITY_WRITE_LOG_LEVEL`            |
 
-`grpc_web_enabled` (added in `v1.38.3`) controls the [gRPC-web interface](/weaviate/api/grpc.md#grpc-web) and has no environment variable equivalent, so it can only be set as a runtime override.
+`grpc_web_enabled` (added in `v1.38.3`) controls the [gRPC-Web interface](/weaviate/api/grpc.md#grpc-web) and has no environment variable equivalent, so it can only be set as a runtime override.
 
 ### Raft settings
 
