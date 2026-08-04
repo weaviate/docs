@@ -538,9 +538,8 @@ response = collection.query.fetch_objects(
     filters=Filter.by_property("country").is_none(True)  # Find objects where the `country` property is null
     # highlight-end
 )
-print("despot. othing") 
 for o in response.objects:
-    print("despot"+o.properties)  # Inspect returned objects
+    print(o.properties)  # Inspect returned objects
 # END FilterByPropertyNullState
 
 
@@ -572,6 +571,24 @@ publications.data.insert(
         }
     },
 )
+
+# Test scaffolding below; not rendered in the docs.
+# This block used to run against a local instance, where a write is queryable
+# the moment `insert` returns. It now runs against a remote cluster, where it is
+# not, so the example could query the collection before the object was visible
+# and get back nothing. Wait (bounded) for the write to land, so the assertion
+# tests the geo filter and not write visibility. The assertion stays exact.
+import time
+from weaviate.classes.query import Filter, GeoCoordinate
+
+readiness_filter = Filter.by_property("headquartersGeoLocation").within_geo_range(
+    coordinate=GeoCoordinate(latitude=52.39, longitude=4.84),
+    distance=1000
+)
+for _ in range(30):
+    if len(publications.query.fetch_objects(filters=readiness_filter).objects) >= 1:
+        break
+    time.sleep(1)
 
 # START FilterbyGeolocation
 from weaviate.classes.query import Filter

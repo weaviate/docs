@@ -120,6 +120,62 @@ def test_llms_txt_snippets_are_covered():
         )
 
 
+# The PR-time drift check only runs when the PR touches a path in this workflow's
+# `paths:` filter, so a SNIPPET_GLOBS entry outside that filter disables the check
+# for that language without any visible failure. Java and C# snippets already live
+# outside `_includes/code/llms-txt/`, so a fifth language landing outside it is a
+# realistic way to lose coverage silently.
+SNIPPET_SYNC_WORKFLOW = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    ".github", "workflows", "llms_txt_snippet_sync.yml",
+)
+
+
+def _glob_to_regex(pattern):
+    """Compile a GitHub `paths:` filter, where `**` spans directories and `*` does not."""
+    out, i = [], 0
+    while i < len(pattern):
+        if pattern.startswith("**", i):
+            out.append(".*")
+            i += 2
+        elif pattern[i] == "*":
+            out.append("[^/]*")
+            i += 1
+        else:
+            out.append(re.escape(pattern[i]))
+            i += 1
+    return re.compile("".join(out) + r"\Z")
+
+
+@pytest.mark.llms_txt
+def test_snippet_globs_are_covered_by_workflow_paths():
+    """Every SNIPPET_GLOBS pattern must trigger the snippet-sync workflow."""
+    # Imported here, not at module scope: check_llms_txt_drift.py imports this
+    # module in a workflow that installs pytest and nothing else.
+    import yaml
+
+    with open(SNIPPET_SYNC_WORKFLOW, encoding="utf-8") as handle:
+        workflow = yaml.safe_load(handle)
+
+    # PyYAML reads the bare `on:` key as the YAML 1.1 boolean True.
+    triggers = workflow.get("on", workflow.get(True))
+    filters = [_glob_to_regex(path) for path in triggers["pull_request"]["paths"]]
+
+    uncovered = [
+        pattern
+        for patterns in SNIPPET_GLOBS.values()
+        for pattern in patterns
+        if not any(filt.match(pattern) for filt in filters)
+    ]
+
+    assert not uncovered, (
+        "SNIPPET_GLOBS pattern(s) not covered by the `paths:` filter in "
+        f"{os.path.basename(SNIPPET_SYNC_WORKFLOW)}: {uncovered}. A snippet change under "
+        "these paths would not trigger the sync check, so llms.txt could drift unnoticed. "
+        "Add a matching entry to the workflow's `paths:` list."
+    )
+
+
 # Each library: (weaviate/* GitHub repo, regex matching the
 # "**Library**: vX.Y.Z+" bullet in llms.txt). The regex anchors to the bullet's
 # prefix so adding new libraries to llms.txt doesn't break it.

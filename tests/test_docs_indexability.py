@@ -31,14 +31,25 @@ TEST_PAGES = [
     ("/weaviate/search/hybrid", {"tabs", "code"}),
     ("/weaviate/connections/connect-cloud", {"tabs", "code"}),
     ("/weaviate/config-refs/collections", {"details", "table"}),
-    ("/weaviate/concepts/data-import", {"images"}),
-    ("/cloud/quickstart", {"code", "images"}),
-    ("/cloud/manage-clusters/create", {"images"}),
+    ("/weaviate/concepts/data-import", set()),
+    ("/cloud/quickstart", {"code"}),
+    ("/cloud/manage-clusters/create", set()),
+    ("/cloud/tools/query-tool", {"images"}),
+    ("/weaviate/manage-collections/tenant-states", {"images"}),
     ("/query-agent/recipes/query-agent-ecommerce-assistant", {"code"}),
-    ("/weaviate/search", set()),  # landing page
+    ("/weaviate/search", set()),
 ]
 
 ALL_PATHS = [path for path, _ in TEST_PAGES]
+
+# Pages that route readers onward instead of carrying content of their own, and
+# so are exempt from the "content pages have h2 headings" rule.
+#
+# This is tracked separately from the feature sets because an empty feature set
+# says only that a page has none of the structural features the checks below
+# assert on. A page can be plain prose, with no tabs, code, details, table or
+# image, and still be a content page that owes the reader h2 headings.
+LANDING_PAGES = {"/weaviate/search"}
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -69,13 +80,6 @@ def _fetch_page(path: str) -> requests.Response:
 def _get_soup(path: str) -> BeautifulSoup:
     resp = _fetch_page(path)
     return BeautifulSoup(resp.text, "html.parser")
-
-
-def _features_for(path: str) -> set[str]:
-    for p, features in TEST_PAGES:
-        if p == path:
-            return features
-    return set()
 
 
 # ---------------------------------------------------------------------------
@@ -120,8 +124,7 @@ def test_heading_hierarchy(path):
     assert len(h1s) == 1, f"{path}: expected 1 h1, found {len(h1s)}"
 
     # Content pages (not landing pages) should have h2s
-    features = _features_for(path)
-    if features:  # non-empty features means it's a content page
+    if path not in LANDING_PAGES:
         h2s = soup.find_all("h2")
         assert len(h2s) > 0, f"{path}: content page has no h2 headings"
 
@@ -214,17 +217,16 @@ def test_details_content_present(path):
     ids=[p for p, f in TEST_PAGES if "images" in f],
 )
 def test_images_have_alt_text(path):
-    """Content images have alt text (excludes SVG icons and badges)."""
+    """The page's own images have alt text (excludes SVG icons and badges)."""
     soup = _get_soup(path)
+    content_images = _content_images(soup)
 
-    # Find content images, excluding decorative ones
-    images = soup.find_all("img")
-    content_images = [
-        img for img in images
-        if not _is_decorative_image(img)
-    ]
-
-    assert len(content_images) > 0, f"{path}: no content images found"
+    if not content_images:
+        pytest.fail(
+            f"{path}: labelled 'images' but has no content image in the main "
+            "content region. Either the page lost its images, or the 'images' "
+            "label in TEST_PAGES is wrong."
+        )
 
     missing_alt = [
         img.get("src", "unknown")
@@ -234,6 +236,26 @@ def test_images_have_alt_text(path):
     assert len(missing_alt) == 0, (
         f"{path}: {len(missing_alt)} images missing alt text: {missing_alt[:5]}"
     )
+
+
+def _main_content(soup):
+    """The page's main content region.
+
+    Global navbar and footer chrome lives outside it. Scoping to this region
+    keeps site furniture (the site logo, the Ask AI button logo) from standing
+    in for the page's own images: that chrome is identical on every page, so
+    counting it made the alt-text check assert on the layout instead of the
+    page, and a single navbar change could flip it.
+    """
+    return soup.find("main") or soup.find("article") or soup
+
+
+def _content_images(soup):
+    """Images that carry the page's own content."""
+    return [
+        img for img in _main_content(soup).find_all("img")
+        if not _is_decorative_image(img)
+    ]
 
 
 def _is_decorative_image(img) -> bool:
@@ -251,12 +273,45 @@ def _is_decorative_image(img) -> bool:
     # Skip language/site logo SVGs (e.g., /img/site/logo-py.svg)
     if src.endswith(".svg") and "/img/site/" in src:
         return True
-    # Skip analytics tracking pixels (e.g., Scarf)
+    # Skip images that carry no content by construction: analytics beacons,
+    # spacers, and anything hidden from both rendering and the accessibility
+    # tree. Such an image conveys nothing to a reader, a screen reader, or a
+    # crawler, so requiring alt text on it is meaningless. This is matched
+    # structurally rather than by hostname on purpose: the previous
+    # "static.scarf.sh" check went stale the moment the beacon moved to our own
+    # CNAME, and any hostname list will go stale again on the next move.
+    if _is_hidden_non_content(img):
+        return True
+    # Retained for the Scarf-hosted pixel, in case it is ever embedded without
+    # the hidden styling that the structural check above relies on.
     if "static.scarf.sh" in src:
         return True
     # Skip very small images (likely icons)
     width = img.get("width")
     if width and str(width).isdigit() and int(width) < 30:
+        return True
+
+    return False
+
+
+def _is_hidden_non_content(img) -> bool:
+    """Check if an image is hidden from users and from the accessibility tree.
+
+    Covers the ways a non-content image announces itself:
+    - inline `display: none` / `visibility: hidden` (removed from the render
+      tree, and therefore from the accessibility tree)
+    - `aria-hidden="true"` (explicitly withheld from assistive technology)
+    - 1x1 dimensions (a tracking pixel or a spacer)
+    """
+    style = (img.get("style") or "").lower().replace(" ", "")
+    if "display:none" in style or "visibility:hidden" in style:
+        return True
+
+    if str(img.get("aria-hidden", "")).lower() == "true":
+        return True
+
+    dims = (img.get("width"), img.get("height"))
+    if all(d is not None and str(d).strip().isdigit() and int(d) <= 1 for d in dims):
         return True
 
     return False
