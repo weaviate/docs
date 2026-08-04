@@ -533,7 +533,6 @@ const sidebars = {
             "weaviate/configuration/compression/multi-vectors",
           ],
         },
-        "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
         {
           type: "doc",
