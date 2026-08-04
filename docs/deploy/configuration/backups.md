@@ -126,7 +126,7 @@ Note multiple providers can be enabled simultaneously.
 
 ### S3 (AWS or S3-compatible)
 
-- Works with AWS S3 and S3-compatible services (e.g., MinIO)
+- Works with Amazon S3 and any S3-compatible object store (for example, Backblaze B2, Cloudflare R2, or MinIO)
 - Supports multi-node deployments
 - Recommended for production use
 
@@ -148,24 +148,41 @@ This configuration applies to any S3-compatible backend.
 | --- | --- | --- |
 | `BACKUP_S3_BUCKET` | yes | The name of the S3 bucket for all backups. |
 | `BACKUP_S3_PATH` | no | The root path inside your bucket that all your backups will be copied into and retrieved from. <br/><br/>Optional, defaults to `""` which means that the backups will be stored in the bucket root instead of a sub-folder. |
-| `BACKUP_S3_ENDPOINT` | no | The S3 endpoint to be used. <br/><br/>Optional, defaults to `"s3.amazonaws.com"`. |
+| `BACKUP_S3_ENDPOINT` | no | The S3 endpoint host to use, optionally including a port. Do not include an `http://` or `https://` scheme; TLS is controlled by `BACKUP_S3_USE_SSL`. <br/><br/>Optional, defaults to `"s3.amazonaws.com"`. |
 | `BACKUP_S3_USE_SSL` | no | Whether the connection should be secured with SSL/TLS. <br/><br/>Optional, defaults to `"true"`. |
 
-#### S3 Configuration (AWS-specific)
+#### S3 authentication
 
-For AWS, provide Weaviate with authentication details. You can choose between access-key or ARN-based authentication:
+For Amazon S3, provide Weaviate with authentication details. You can choose between AWS IAM/ARN-based authentication or access-key authentication. For S3-compatible object stores, use access-key authentication.
 
-#### Option 1: With IAM and ARN roles
+#### Option 1: With AWS IAM and ARN roles
 
-The backup module will first try to authenticate itself using AWS IAM. If the authentication fails then it will try to authenticate with `Option 2`.
+The backup module first tries to authenticate using AWS IAM. If IAM authentication fails, it falls back to the configured access key and secret access key.
 
 #### Option 2: With access key and secret access key
+
+These environment variables are named for AWS, but they also apply to S3-compatible object stores that issue access-key credentials.
 
 | Environment variable | Description |
 | --- | --- |
 | `AWS_ACCESS_KEY_ID` | The id of the AWS access key for the desired account. |
 | `AWS_SECRET_ACCESS_KEY` | The secret AWS access key for the desired account. |
 | `AWS_REGION` | (Optional) The AWS Region. If not provided, the module will try to parse `AWS_DEFAULT_REGION`. |
+
+#### S3-compatible endpoints
+
+To use an S3-compatible object store, set `BACKUP_S3_ENDPOINT` to the provider's S3 endpoint host, optionally including a port, and authenticate with `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. Set `AWS_REGION` if your provider requires one.
+
+```
+ENABLE_MODULES=backup-s3
+BACKUP_S3_BUCKET=weaviate-backups
+BACKUP_S3_ENDPOINT=your-s3-endpoint.example.com   # host[:port], no scheme
+BACKUP_S3_USE_SSL=true
+AWS_ACCESS_KEY_ID=<your-access-key-id>
+AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+# Optional: set if your provider requires a region.
+# AWS_REGION=<your-region>
+```
 
 
 ### GCS (Google Cloud Storage)
