@@ -55,6 +55,19 @@ Alternatively, you can use other tools, such as the `grpcurl` command-line tool,
 - `grpcurl` command-line tool ([GitHub repo](https://github.com/fullstorydev/grpcurl))
 - Postman ([How to send a gRPC request with Postman](https://learning.postman.com/docs/sending-requests/grpc/grpc-request-interface/))
 
+## gRPC-Web
+
+:::info Added in `v1.38.3`
+:::
+
+Browsers cannot speak plain gRPC. To reach the gRPC API from a browser, Weaviate also serves a gRPC-Web interface over ordinary HTTP. It is served under the `/v1/grpc-web/` path prefix on the same port as the REST API (default `8080`), not on the gRPC port, so there is no second port to expose.
+
+The gRPC-Web interface is enabled by default. **[Runtime configuration](/deploy/configuration/env-vars/runtime-config.md) override:** set `grpc_web_enabled` to `false`. Note the snake_case. This takes effect without a restart.
+
+This setting has no environment variable equivalent. When the interface is disabled, requests to `/v1/grpc-web/` fall through to the REST handler, so other REST endpoints keep working as usual.
+
+The Weaviate client libraries connect over plain gRPC, so they do not use the gRPC-Web interface yet.
+
 ## Questions and feedback
 
 import DocsFeedback from "/\_includes/docs-feedback.mdx";
