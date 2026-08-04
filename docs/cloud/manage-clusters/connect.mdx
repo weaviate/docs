@@ -80,6 +80,8 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 
 :::note REST Endpoint vs gRPC Endpoint
 When using an official Weaviate [client library](/weaviate/client-libraries), you need to authenticate using the `REST Endpoint` and your API key. The client will infer the gRPC endpoint automatically and use the more performant gRPC protocol when available.
+
+To reach the [gRPC-Web interface](/weaviate/api/grpc.md#grpc-web), use the `REST Endpoint` URL, not the `gRPC Endpoint` URL, because gRPC-Web is served on the REST port.
 :::
 
 ### Environment variables
