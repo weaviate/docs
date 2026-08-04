@@ -53,7 +53,7 @@ services:
 
 Browsers cannot speak plain gRPC. To reach the gRPC API from a browser, Weaviate also serves a gRPC-web interface over ordinary HTTP. It is served under the `/v1/grpc-web/` path prefix on the same port as the REST API (default `8080`), not on the gRPC port, so there is no second port to expose.
 
-The gRPC-web interface is enabled by default. To turn it off, set the `grpc_web_enabled` [runtime configuration](/deploy/configuration/env-vars/runtime-config.md) override, which takes effect without a restart. While it is disabled, requests under `/v1/grpc-web/` fall through to the REST handler, so the rest of the REST API keeps working as usual.
+The gRPC-web interface is enabled by default. To turn it off, set the `grpc_web_enabled` [runtime configuration](/deploy/configuration/env-vars/runtime-config.md) override, which takes effect without a restart. There is no environment variable equivalent. While it is disabled, requests under `/v1/grpc-web/` fall through to the REST handler, so the rest of the REST API keeps working as usual.
 
 No Weaviate client library uses this interface yet.
 
