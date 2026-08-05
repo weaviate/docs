@@ -13,13 +13,21 @@ import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/search_mode.mt
 
 <CloudOnlyBadge />
 
-Search Mode transforms your query into actionable searches and returns the matching Weaviate objects directly.
+Search Mode combines AI-powered semantic search with structured filtering and returns the matching Weaviate objects directly.
 
 For example, you could ask:
 
 > "Find me some vintage shoes under $70"
 
 And the agent will perform semantic search for `vintage shoes`, apply a filter for `price < 70`, and return the matching objects from your collections, ready for you to render or post-process.
+
+You could also ask:
+
+> "Something comfortable to wear on a long flight"
+
+And the agent will use AI-powered search to find relevant objects, even when terms like `comfortable` or `long flight` never appear in your data.
+
+Under the hood, Search Mode does more than embed your query as-is. The agent writes one or more optimized semantic and structured queries, executes them against your collections, and reranks the retrieved objects by how well each one matches your original request.
 
 For more details, see the page for [the Python client](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/weaviate_agents.query.html#weaviate_agents.query.QueryAgent.search) or [the Typescript Client](https://weaviate.github.io/agents-typescript-client/classes/QueryAgent.html#search).
 
