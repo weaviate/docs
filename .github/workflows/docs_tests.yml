@@ -638,8 +638,9 @@ jobs:
         run: |
           GO_BRANCH="${{ inputs.go_client_branch || 'v6' }}"
           echo "📦 Wiring Go client from branch: $GO_BRANCH"
-          # v6 is not published to the module proxy yet, so the committed go.mod
-          # requires a placeholder version and CI redirects it to a fresh clone.
+          # v6 IS on the module proxy (newest tag: v6.0.0-beta.1), but the committed
+          # go.mod requires a placeholder version that does not exist there, so CI
+          # redirects it to a fresh clone and snippets test against branch HEAD.
           git clone --depth 1 -b "$GO_BRANCH" https://github.com/weaviate/weaviate-go-client.git /tmp/go-client
           cd _includes/code/go-v6
           go mod edit -replace github.com/weaviate/weaviate-go-client/v6=/tmp/go-client

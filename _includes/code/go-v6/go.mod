@@ -2,13 +2,15 @@ module weaviate.io/docs-go-v6
 
 go 1.25.8
 
-// The v6 Go client IS published to the public Go module proxy (v6.0.0-beta.1 and
-// later), so this module needs no `replace` directive to build. The docs CI
-// `test-go` job still injects
+// The v6 Go client IS published to the public Go module proxy — v6.0.0-beta.1 is
+// the newest tag there. The version required below is deliberately a PLACEHOLDER:
+// v6.0.0 does not exist on the proxy, so this module cannot resolve the dependency
+// on its own (and go.sum carries no entry for it). The docs CI `test-go` job
+// injects
 // `go mod edit -replace github.com/weaviate/weaviate-go-client/v6=/tmp/go-client`
-// from a fresh clone of the client's `v6` branch, so that the snippets are tested
-// against the branch tip rather than the last published pre-release. Do not add a
-// replace directive here.
+// from a fresh clone of the client's `v6` branch, so the snippets are always tested
+// against branch HEAD rather than the last published pre-release. Do not add a
+// replace directive here — CI supplies it.
 require github.com/weaviate/weaviate-go-client/v6 v6.0.0
 
 require (

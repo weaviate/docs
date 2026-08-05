@@ -16,6 +16,14 @@ export const goCardsData = [
   },
 ];
 
+:::info Go client v6
+
+A new generation of the Go client, `v6`, is in active development. It is a ground-up redesign built around a collections-first API: you obtain a handle for a collection and run data, query, and aggregation operations through that handle, instead of composing requests with the older builder pattern.
+
+The `v6` client is a pre-release and its API can still change, so the client documented on this page remains the right choice for production today. On pages that support it, a `Go v6` tab appears beside the `Go` tab so you can preview the new API for that operation. For more details, see the [Go client v6](./go-v6.md) page.
+
+:::
+
 :::note Go client (SDK)
 
 The latest Go client is version `v||site.go_client_version||`.
@@ -24,13 +32,7 @@ The latest Go client is version `v||site.go_client_version||`.
 
 :::
 
-:::info Go client v6
-
-A new generation of the Go client, `v6`, is in active development. It is a ground-up redesign built around a collections-first API: you obtain a handle for a collection and run data, query, and aggregation operations through that handle, instead of composing requests with the older builder pattern.
-
-The `v6` client is a pre-release and its API can still change, so the client documented on this page remains the right choice for production today. On pages that support it, a `Go v6` tab appears beside the `Go` tab so you can preview the new API for that operation. For more details, see the [Go client v6](./go-v6.md) page.
-
-:::
+This page covers the Weaviate Go client (`v5` release).
 
 The Weaviate Go client is compatible with Go 1.16+.
 

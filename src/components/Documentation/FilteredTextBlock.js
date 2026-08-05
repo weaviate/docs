@@ -112,6 +112,12 @@ const FilteredTextBlock = ({
                     .replace(/\t/g, '    ');
             break;
         case 'gonew':
+        // `go6` snippets are extracted from inside test functions, so every line
+        // carries a base indent. Reuse the `gonew` formatter: it converts tabs to
+        // spaces and strips one level, which preserves nesting. The `go` case
+        // below cannot be used — it strips two tabs from doubly-indented lines and
+        // one from singly-indented lines, collapsing both to column 0.
+        case 'go6':
             format = (input) =>
                 input
                     // replace remaining tabs with 2 spaces
