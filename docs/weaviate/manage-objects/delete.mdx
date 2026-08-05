@@ -207,6 +207,22 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
 ```
 
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+
+```go
+  questions := client.Collections.Use("EphemeralObject")
+  res, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
+    Filter: &filter.Cond{
+      Target: "name",
+      // highlight-start
+      Operator: filter.ContainsAny, // Or filter.ContainsAll / filter.ContainsNone
+      Value:    []string{"asia", "europe"}, // Note the slice value
+      // highlight-end
+    },
+  })
+```
+
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -273,6 +289,26 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
 ```
 
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+
+```go
+  questions := client.Collections.Use("EphemeralObject")
+  res, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
+    Filter: &filter.Cond{
+      Target: filter.UUID, // The object id ("_id") field
+      // highlight-start
+      Operator: filter.ContainsAny,
+      Value: []string{ // Note the slice value
+        "12c88739-7a4e-49fd-bf53-d6a829ba0261",
+        "3022b8be-a6dd-4ef4-b213-821f65cee53b",
+        "30de68c1-dd53-4bed-86ea-915f34faea63",
+      },
+      // highlight-end
+    },
+  })
+```
+
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -324,6 +360,14 @@ You can configure automatic deletion of objects after a specified time period us
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START DryRun"
+      endMarker="// END DryRun"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START DryRun"
       endMarker="// END DryRun"
       language="go"

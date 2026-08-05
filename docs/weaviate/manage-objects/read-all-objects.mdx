@@ -14,6 +14,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-obje
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadAllTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadAllTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/read_all_objects_test.go";
 
 Weaviate provides the necessary APIs to iterate through all your data. This is useful when you want to manually copy/migrate your data (and vector embeddings) from one place to another.
 
@@ -49,6 +50,14 @@ The following code iterates through all objects, providing the properties and id
       text={GoCode}
       startMarker="// Retrieve data"
       endMarker="// Use this function to retrieve data"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ReadAllProps"
+      endMarker="// END ReadAllProps"
       language="go"
     />
   </TabItem>
@@ -103,6 +112,14 @@ Read through all data including the vectors. (Also applicable where [named vecto
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ReadAllVectors"
+      endMarker="// END ReadAllVectors"
+      language="go"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -149,6 +166,14 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
+      startMarker="// START ReadAllTenants"
+      endMarker="// END ReadAllTenants"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
       startMarker="// START ReadAllTenants"
       endMarker="// END ReadAllTenants"
       language="go"
