@@ -125,7 +125,7 @@ Connect to Weaviate Cloud with an API key. Pass the cluster hostname only, witho
 
 :::caution Bearer credentials require TLS
 
-API keys and OIDC tokens are sent as bearer credentials over gRPC, which requires transport-level security. Passing `WithAPIKey`, `WithBearerToken`, or any other token source alongside a plaintext `http` endpoint fails while the client is being constructed, in `NewClient`, with `credentials require transport level security`. Authenticate against an `https` endpoint. Note that `NewLocal` sets the `http` scheme for you, so it cannot be combined with these options.
+API keys and OIDC tokens are sent as bearer credentials over gRPC, which requires transport-level security. Passing `WithAPIKey`, `WithBearerToken`, or any other token source alongside a plaintext `http` endpoint fails while the client is being constructed, in `NewClient`, with `credentials require transport level security`. Authenticate against an `https` endpoint. `NewLocal` defaults to `http`, so a local instance needs both `weaviate.WithScheme("https")` and TLS terminated in front of Weaviate.
 
 :::
 
