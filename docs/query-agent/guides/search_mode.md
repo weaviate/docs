@@ -13,7 +13,7 @@ import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/search_mode.mt
 
 <CloudOnlyBadge />
 
-Search Mode transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
+Search Mode transforms your query into actionable searches and returns the matching Weaviate objects directly.
 
 For example, you could ask:
 
@@ -69,7 +69,7 @@ The `.search()` method accepts several arguments:
 | `limit` | `int` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `Literal["recall", "precision"]` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversity_weight` | `float \| None` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
-| `effort` | `Literal["low", "medium", "high"] \| None` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Search effort](#search-effort) below. |
+| `effort` | `Literal["low", "medium", "high"] \| None` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Effort](#effort) below. |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -80,12 +80,37 @@ The `.search()` method accepts several arguments:
 | `limit` | `number` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `"recall" \| "precision"` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversityWeight` | `number` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
-| `effort` | `"low" \| "medium" \| "high"` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Search effort](#search-effort) below. |
+| `effort` | `"low" \| "medium" \| "high"` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Effort](#effort) below. |
 
 </TabItem>
 </Tabs>
 
 For more advanced searches, you can also specify _additional filters_ within the collection configuration. [See the page on additional filters for more detail](../reference/additional_filters.md).
+
+### Effort
+
+The optional `effort` parameter controls the amount of effort the agent puts into the search. It accepts one of `"low"`, `"medium"`, or `"high"` — higher effort may improve result quality at the expense of increased latency and cost. When omitted, the search behaves as if the parameter did not exist.
+
+The effort value is fixed for the lifetime of a search: paginating with [`.next()`](#pagination) reuses the same effort value on every page, just as the underlying searches are reused to keep the result set consistent.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START EffortExample"
+            endMarker="# END EffortExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START EffortExample"
+            endMarker="// END EffortExample"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
 
 ### Customized filtering
 
@@ -135,31 +160,6 @@ To use diversity ranking with target vectors, set the single target vector you w
             text={TSCode}
             startMarker="// START DiversityRanking"
             endMarker="// END DiversityRanking"
-            language="ts"
-        />
-    </TabItem>
-</Tabs>
-
-### Search effort
-
-The optional `effort` parameter controls the amount of effort the agent puts into the search. It accepts one of `"low"`, `"medium"`, or `"high"` — higher effort may improve result quality at the expense of increased latency and cost. When omitted, the search behaves as if the parameter did not exist.
-
-The effort value is fixed for the lifetime of a search: paginating with [`.next()`](#pagination) reuses the same effort value on every page, just as the underlying searches are reused to keep the result set consistent.
-
-<Tabs className="code" groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START EffortExample"
-            endMarker="# END EffortExample"
-            language="py"
-        />
-    </TabItem>
-    <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START EffortExample"
-            endMarker="// END EffortExample"
             language="ts"
         />
     </TabItem>
