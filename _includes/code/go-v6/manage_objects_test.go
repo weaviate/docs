@@ -196,14 +196,33 @@ func TestDeleteMany(t *testing.T) {
 	}
 }
 
-// TestReadObjectByID is a placeholder: the v6 Go client does not yet expose a
-// fetch-object-by-id call. Retrieve objects through a search query for now.
+// TestReadObjectByID retrieves a single object by its id. The v6 Go client has no
+// fetch-object-by-id call, so the object is selected by a filter on its id.
 func TestReadObjectByID(t *testing.T) {
-	t.Skip("fetch-object-by-id is not yet available in the v6 Go client")
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
 
-	// TODO[g-despot]: fetch-object-by-id snippet pending v6 client support
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
+
 	// START ReadObject
-	// Coming soon
+	questions := client.Collections.Use("JeopardyQuestion")
+	// The v6 client has no fetch-by-id call; select an object by its id.
+	response, err := questions.Query.OverAll(ctx, query.OverAll{
+		Filter: &filter.Cond{
+			Target:   filter.UUID, // The object's own id.
+			Operator: filter.Equal,
+			Value:    "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f",
+		},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%s: %v\n", obj.UUID, obj.Properties)
+	}
 	// END ReadObject
 }
 
@@ -230,7 +249,7 @@ func setupJeopardyBYOV(t *testing.T, client *weaviate.Client) {
 	}
 }
 
-func TestCreateObjectWithVector(t *testing.T) {
+func TestCreateWithVector(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -240,7 +259,7 @@ func TestCreateObjectWithVector(t *testing.T) {
 
 	questions := client.Collections.Use("JeopardyQuestion")
 
-	// START CreateObjectWithVector
+	// START CreateWithVector
 	res, err := questions.Data.Insert(ctx, &data.Object{
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
@@ -257,7 +276,7 @@ func TestCreateObjectWithVector(t *testing.T) {
 		// handle error
 		panic(err)
 	}
-	// END CreateObjectWithVector
+	// END CreateWithVector
 
 	for id, msg := range res.Errors {
 		if msg != "" {
@@ -266,7 +285,7 @@ func TestCreateObjectWithVector(t *testing.T) {
 	}
 }
 
-func TestCreateObjectWithId(t *testing.T) {
+func TestCreateWithId(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -276,7 +295,7 @@ func TestCreateObjectWithId(t *testing.T) {
 
 	questions := client.Collections.Use("JeopardyQuestion")
 
-	// START CreateObjectWithId
+	// START CreateWithId
 	id := uuid.MustParse("12345678-9abc-4def-8123-456789abcdef")
 	res, err := questions.Data.Insert(ctx, &data.Object{
 		UUID: &id,
@@ -290,7 +309,7 @@ func TestCreateObjectWithId(t *testing.T) {
 		// handle error
 		panic(err)
 	}
-	// END CreateObjectWithId
+	// END CreateWithId
 
 	for oid, msg := range res.Errors {
 		if msg != "" {
@@ -299,15 +318,15 @@ func TestCreateObjectWithId(t *testing.T) {
 	}
 }
 
-// TestCreateObjectWithDeterministicId is a placeholder: the v6 Go client does not
+// TestCreateWithDeterministicId is a placeholder: the v6 Go client does not
 // yet provide a deterministic (UUID5) id helper.
-func TestCreateObjectWithDeterministicId(t *testing.T) {
+func TestCreateWithDeterministicId(t *testing.T) {
 	t.Skip("deterministic id generation is not yet available in the v6 Go client")
 
 	// TODO[g-despot]: deterministic-id snippet pending v6 client support
-	// START CreateObjectWithDeterministicId
+	// START CreateWithDeterministicId
 	// Coming soon
-	// END CreateObjectWithDeterministicId
+	// END CreateWithDeterministicId
 }
 
 // TestValidateObject is a placeholder: the v6 Go client does not yet expose an
@@ -321,10 +340,10 @@ func TestValidateObject(t *testing.T) {
 	// END ValidateObject
 }
 
-// TestReadObjectWithVector retrieves a single object together with its vector.
+// TestReadWithVector retrieves a single object together with its vector.
 // The v6 Go client has no fetch-object-by-id call, so the object is selected by a
 // filter on its id and the vector is requested explicitly.
-func TestReadObjectWithVector(t *testing.T) {
+func TestReadWithVector(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -332,7 +351,7 @@ func TestReadObjectWithVector(t *testing.T) {
 	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
-	// START ReadObjectWithVector
+	// START ReadWithVector
 	questions := client.Collections.Use("JeopardyQuestion")
 	// The v6 client has no fetch-by-id call; select an object by its id and
 	// request the vector to retrieve an object together with its embedding.
@@ -352,7 +371,7 @@ func TestReadObjectWithVector(t *testing.T) {
 	for _, obj := range response.Objects {
 		fmt.Printf("%s: %v\n", obj.UUID, obj.Vectors["default"].Single)
 	}
-	// END ReadObjectWithVector
+	// END ReadWithVector
 }
 
 // TestUpdateVector is a placeholder: updating only an object's vector needs a
