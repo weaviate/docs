@@ -4,6 +4,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.query.neartext.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.query.neartext.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_2/quickstart.short.query.neartext.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/quickstart_test.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartQueryNearText.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/QuickstartQueryNearText.cs";
 
@@ -30,6 +31,14 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/Quickstar
       startMarker="// START NearText"
       endMarker="// END NearText"
       language="goraw"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CloudNearText"
+      endMarker="// END CloudNearText"
+      language="go"
     />
   </TabItem>
   <TabItem value="java" label="Java">
