@@ -160,6 +160,10 @@ const FilteredTextBlock = ({
             break;
         case 'gonew':
         case 'goraw':
+        // `go6` selects the v6 doc system above (pkg.go.dev .../v6) for docRefs,
+        // but Prism has no `go6` grammar, so it must highlight as plain `go`.
+        // Without this the whole block renders unhighlighted.
+        case 'go6':
             language2 = 'go';
             break;
         case 'javaraw':

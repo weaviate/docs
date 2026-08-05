@@ -821,9 +821,14 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "weaviate/client-libraries/go",
+          type: "category",
+          label: "Go",
           className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/go/index",
+          },
+          items: ["weaviate/client-libraries/go/go-v6"],
         },
         {
           type: "doc",

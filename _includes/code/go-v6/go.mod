@@ -2,11 +2,13 @@ module weaviate.io/docs-go-v6
 
 go 1.25.8
 
-// The v6 Go client is not yet published to the Go module proxy, so this module
-// intentionally declares NO `replace` directive. The docs CI `test-go` job injects
+// The v6 Go client IS published to the public Go module proxy (v6.0.0-beta.1 and
+// later), so this module needs no `replace` directive to build. The docs CI
+// `test-go` job still injects
 // `go mod edit -replace github.com/weaviate/weaviate-go-client/v6=/tmp/go-client`
-// from a fresh clone of the client's `v6` branch before building (mirrors the Java
-// lane's unpublished-client approach). Do not add a replace directive here.
+// from a fresh clone of the client's `v6` branch, so that the snippets are tested
+// against the branch tip rather than the last published pre-release. Do not add a
+// replace directive here.
 require github.com/weaviate/weaviate-go-client/v6 v6.0.0
 
 require (
