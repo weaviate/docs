@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -102,10 +103,11 @@ func TestMultiBasic(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiBasic
 }
@@ -135,10 +137,11 @@ func TestMultiTargetNearVector(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTargetNearVector
 }
@@ -170,10 +173,11 @@ func TestMultiTargetMultipleNearVectorsV1(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTargetMultipleNearVectorsV1
 }
@@ -206,10 +210,11 @@ func TestMultiTargetMultipleNearVectorsV2(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTargetMultipleNearVectorsV2
 }
@@ -238,10 +243,11 @@ func TestMultiTargetWithSimpleJoin(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTargetWithSimpleJoin
 }
@@ -267,10 +273,11 @@ func TestMultiTargetManualWeights(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTargetManualWeights
 }
@@ -297,10 +304,11 @@ func TestMultiTargetRelativeScore(t *testing.T) {
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTargetRelativeScore
 }

@@ -50,7 +50,8 @@ func TestCreateObject(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END CreateObject
 
@@ -102,7 +103,8 @@ func TestReplaceObject(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END UpdateReplace
 }
@@ -139,7 +141,8 @@ func TestDeleteObject(t *testing.T) {
 	// START DeleteObject
 	err := questions.Data.Delete(ctx, id)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END DeleteObject
 }
@@ -177,7 +180,8 @@ func TestDeleteMany(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END DeleteMany
 

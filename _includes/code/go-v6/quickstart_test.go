@@ -60,7 +60,8 @@ func TestQuickstartLocal(t *testing.T) {
 	// Step 1.1: Connect to your local Weaviate instance.
 	client, err := weaviate.NewLocal(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END LocalCreate
@@ -83,7 +84,8 @@ func TestQuickstartLocal(t *testing.T) {
 			"default": {Vectorizer: text2vecContextionary{}},
 		},
 	}); err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 
 	// Step 1.3: Import a few objects. The server vectorizes each one on import.
@@ -108,7 +110,8 @@ func TestQuickstartLocal(t *testing.T) {
 			"genre":       "Fantasy",
 		}},
 	); err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	fmt.Println("Imported & vectorized 3 objects into the Movie collection")
 	// END LocalCreate
@@ -132,7 +135,8 @@ func TestQuickstartLocal(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)
@@ -161,7 +165,8 @@ func TestQuickstartCloud(t *testing.T) {
 		os.Getenv("WEAVIATE_API_KEY"), // an admin API key
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 
@@ -178,7 +183,8 @@ func TestQuickstartCloud(t *testing.T) {
 			"default": {Vectorizer: wembed.Text2Vec{}},
 		},
 	}); err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 
 	// Step 1.3: Import a few objects. Weaviate Embeddings vectorizes each on import.
@@ -199,7 +205,8 @@ func TestQuickstartCloud(t *testing.T) {
 			"genre":       "Fantasy",
 		}},
 	); err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END CloudCreate
 
@@ -212,7 +219,8 @@ func TestQuickstartCloud(t *testing.T) {
 		Limit:    2,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)

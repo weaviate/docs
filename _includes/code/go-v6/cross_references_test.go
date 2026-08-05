@@ -70,7 +70,8 @@ func TestAddOneWayCrossReference(t *testing.T) {
 		UUID: categoryID,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END OneWay
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -25,16 +26,18 @@ func TestCreateBackup(t *testing.T) {
 		ID:      "my-backup",
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 
 	// Block until the backup finishes. The default polling interval is one
 	// second; override it with backup.WithPollingInterval.
 	info, err = backup.AwaitCompletion(ctx, info, backup.WithPollingInterval(2*time.Second))
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("backup %q finished with status %s", info.ID, info.Status)
+	fmt.Printf("backup %q finished with status %s\n", info.ID, info.Status)
 	// END CreateBackup
 }
 
@@ -51,9 +54,10 @@ func TestStatusCreateBackup(t *testing.T) {
 		ID:      "my-backup",
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("backup %q status: %s", info.ID, info.Status)
+	fmt.Printf("backup %q status: %s\n", info.ID, info.Status)
 	// END StatusCreateBackup
 }
 
@@ -88,14 +92,16 @@ func TestRestoreBackup(t *testing.T) {
 		ID:      "my-backup",
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 
 	info, err = backup.AwaitCompletion(ctx, info)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("restore of %q finished with status %s", info.ID, info.Status)
+	fmt.Printf("restore of %q finished with status %s\n", info.ID, info.Status)
 	// END RestoreBackup
 }
 
@@ -112,8 +118,9 @@ func TestStatusRestoreBackup(t *testing.T) {
 		ID:      "my-backup",
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("restore of %q status: %s", info.ID, info.Status)
+	fmt.Printf("restore of %q status: %s\n", info.ID, info.Status)
 	// END StatusRestoreBackup
 }

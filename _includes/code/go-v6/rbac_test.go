@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
@@ -93,7 +94,8 @@ func TestRBACAdminClient(t *testing.T) {
 		weaviate.WithAPIKey("admin-api-key"),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END AdminClient
@@ -480,9 +482,10 @@ func TestRBACCheckRoleExists(t *testing.T) {
 	// START CheckRoleExists
 	exists, err := client.Roles.Exists(ctx, "testRole")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("testRole exists: %t", exists)
+	fmt.Printf("testRole exists: %t\n", exists)
 	// END CheckRoleExists
 }
 
@@ -497,11 +500,12 @@ func TestRBACInspectRole(t *testing.T) {
 	// START InspectRole
 	role, err := client.Roles.Get(ctx, "testRole")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("role: %s", role.ID)
-	t.Logf("collection permissions: %+v", role.Collections)
-	t.Logf("data permissions: %+v", role.Data)
+	fmt.Printf("role: %s\n", role.ID)
+	fmt.Printf("collection permissions: %+v\n", role.Collections)
+	fmt.Printf("data permissions: %+v\n", role.Data)
 	// END InspectRole
 }
 
@@ -514,10 +518,11 @@ func TestRBACListAllRoles(t *testing.T) {
 	// START ListAllRoles
 	roles, err := client.Roles.List(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, role := range roles {
-		t.Logf("%s", role.ID)
+		fmt.Printf("%s\n", role.ID)
 	}
 	// END ListAllRoles
 }
@@ -533,10 +538,11 @@ func TestRBACAssignedUsers(t *testing.T) {
 	// START AssignedUsers
 	userIDs, err := client.Roles.AssignedUserIDs(ctx, "testRole")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, id := range userIDs {
-		t.Logf("assigned user: %s", id)
+		fmt.Printf("assigned user: %s\n", id)
 	}
 	// END AssignedUsers
 }
@@ -570,10 +576,11 @@ func TestRBACListAllUsers(t *testing.T) {
 	// START ListAllUsers
 	users, err := client.Users.DB.List(ctx, rbac.ListUsersOptions{})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, u := range users {
-		t.Logf("%s (active: %t)", u.ID, u.Active)
+		fmt.Printf("%s (active: %t)\n", u.ID, u.Active)
 	}
 	// END ListAllUsers
 }
@@ -591,9 +598,10 @@ func TestRBACCreateUser(t *testing.T) {
 	// retrieved again later.
 	apiKey, err := client.Users.DB.Create(ctx, "custom-user")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("new API key: %s", apiKey)
+	fmt.Printf("new API key: %s\n", apiKey)
 	// END CreateUser
 }
 
@@ -624,9 +632,10 @@ func TestRBACRotateApiKey(t *testing.T) {
 	// START RotateApiKey
 	newAPIKey, err := client.Users.DB.RotateKey(ctx, "custom-user")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("rotated API key: %s", newAPIKey)
+	fmt.Printf("rotated API key: %s\n", newAPIKey)
 	// END RotateApiKey
 }
 
@@ -692,10 +701,11 @@ func TestRBACListUserRoles(t *testing.T) {
 		ID: "custom-user",
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, role := range roles {
-		t.Logf("%s", role.ID)
+		fmt.Printf("%s\n", role.ID)
 	}
 	// END ListUserRoles
 }
@@ -765,10 +775,11 @@ func TestRBACListOidcUserRoles(t *testing.T) {
 		ID: "custom-user",
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, role := range roles {
-		t.Logf("%s", role.ID)
+		fmt.Printf("%s\n", role.ID)
 	}
 	// END ListOidcUserRoles
 }
@@ -852,10 +863,11 @@ func TestRBACGetOidcGroupRoles(t *testing.T) {
 		IncludePermissions: true,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, role := range roles {
-		t.Logf("%s", role.ID)
+		fmt.Printf("%s\n", role.ID)
 	}
 	// END GetOidcGroupRoles
 }
@@ -882,10 +894,11 @@ func TestRBACGetGroupAssignments(t *testing.T) {
 	// START GetGroupAssignments
 	groups, err := client.Roles.GroupAssignments(ctx, "testRole")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, g := range groups {
-		t.Logf("group ID: %s, type: %s", g.ID, g.Type)
+		fmt.Printf("group ID: %s, type: %s\n", g.ID, g.Type)
 	}
 	// END GetGroupAssignments
 }

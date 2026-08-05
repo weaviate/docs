@@ -44,7 +44,8 @@ func TestServerSideBatchImport(t *testing.T) {
 	// highlight-start
 	b, err := collection.Batch(ctx, batch.WithRetryTimes(1))
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 
 	// Stream each object. Object() returns a task; the object is written in the
@@ -65,21 +66,24 @@ func TestServerSideBatchImport(t *testing.T) {
 			Properties: map[string]any{"title": fmt.Sprintf("Object %d", i+1)},
 		})
 		if err != nil {
-			t.Fatal(err)
+			// handle error
+			panic(err)
 		}
 		tasks = append(tasks, task)
 	}
 
 	// Close blocks until every streamed object has been written to the server.
 	if err := b.Close(); err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// highlight-end
 
 	// After the stream drains, Wait reports whether that object failed to import.
 	for _, task := range tasks {
 		if err := task.Wait(); err != nil {
-			t.Fatalf("import object %s: %v", task.ID(), err)
+			// handle error
+			panic(err)
 		}
 	}
 	// END ServerSideBatchImportExample

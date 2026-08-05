@@ -42,7 +42,8 @@ func TestVectorizerWeaviate(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END BasicVectorizerWeaviate
 }
@@ -78,7 +79,8 @@ func TestVectorizerWeaviateCustomModel(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END VectorizerWeaviateCustomModel
 }

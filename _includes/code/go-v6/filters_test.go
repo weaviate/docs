@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -33,10 +34,11 @@ func TestSingleFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END SingleFilter
 }
@@ -67,10 +69,11 @@ func TestMultipleFiltersAnd(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultipleFiltersAnd
 }
@@ -108,10 +111,11 @@ func TestMultipleFiltersNested(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultipleFiltersNested
 }
@@ -138,10 +142,11 @@ func TestContainsAnyFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END ContainsAnyFilter
 }
@@ -167,10 +172,11 @@ func TestContainsAllFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END ContainsAllFilter
 }
@@ -196,10 +202,11 @@ func TestContainsNoneFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END ContainsNoneFilter
 }
@@ -224,10 +231,11 @@ func TestLikeFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END LikeFilter
 }
@@ -252,10 +260,11 @@ func TestCrossReferenceFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END CrossReferenceFilter
 }
@@ -280,10 +289,11 @@ func TestFilterByDate(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END FilterByDate
 }
@@ -307,10 +317,11 @@ func TestFilterById(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END FilterById
 }
@@ -335,10 +346,11 @@ func TestFilterByTimestamp(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END FilterByTimestamp
 }
@@ -363,10 +375,11 @@ func TestFilterByPropertyLength(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END FilterByPropertyLength
 }
@@ -390,10 +403,11 @@ func TestFilterByPropertyNullState(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END FilterByPropertyNullState
 }
@@ -420,10 +434,11 @@ func TestNearTextWithFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END NearTextWithFilter
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/aggregate"
@@ -26,10 +27,11 @@ func TestAggregateMetaCount(t *testing.T) {
 		TotalCount: true,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	if result.TotalCount != nil {
-		t.Logf("object count: %d", *result.TotalCount)
+		fmt.Printf("object count: %d\n", *result.TotalCount)
 	}
 	// END MetaCount
 }
@@ -50,11 +52,12 @@ func TestAggregateTextProp(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	category := result.Text["category"]
 	for _, occ := range category.TopOccurrences {
-		t.Logf("%s occurs %d times", occ.Value, occ.OccursTimes)
+		fmt.Printf("%s occurs %d times\n", occ.Value, occ.OccursTimes)
 	}
 	// END TextProp
 }
@@ -75,11 +78,12 @@ func TestAggregateIntProp(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	points := result.Integer["points"]
 	if points.Sum != nil {
-		t.Logf("total points: %d", *points.Sum)
+		fmt.Printf("total points: %d\n", *points.Sum)
 	}
 	// END IntProp
 }
@@ -103,12 +107,13 @@ func TestAggregateGroupBy(t *testing.T) {
 		aggregate.GroupBy{Property: "category", Limit: 10},
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, group := range result.Groups {
-		t.Logf("group %v", group.Value)
+		fmt.Printf("group %v\n", group.Value)
 		if points := group.Integer["points"]; points.Count != nil {
-			t.Logf("  count: %d", *points.Count)
+			fmt.Printf("  count: %d\n", *points.Count)
 		}
 	}
 	// END groupBy
@@ -145,10 +150,11 @@ func TestAggregateNearVector(t *testing.T) {
 		TotalCount:  true,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	if result.TotalCount != nil {
-		t.Logf("matched object count: %d", *result.TotalCount)
+		fmt.Printf("matched object count: %d\n", *result.TotalCount)
 	}
 	// END AggregateNearVector
 }

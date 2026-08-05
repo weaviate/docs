@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/collections"
@@ -108,10 +109,11 @@ func TestListTenants(t *testing.T) {
 	// Passing no tenant names returns every tenant in the collection.
 	tenants, err := collection.Tenants.Get(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, tn := range tenants {
-		t.Logf("%s: %s", tn.Name, tn.Status)
+		fmt.Printf("%s: %s\n", tn.Name, tn.Status)
 	}
 	// END ListTenants
 }
@@ -179,10 +181,11 @@ func TestMtSearch(t *testing.T) {
 		Limit: 2,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END Search
 }
@@ -215,7 +218,8 @@ func TestMtAddCrossRef(t *testing.T) {
 		UUID: targetID,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// END AddCrossRef
 	for ref, msg := range res.Errors {

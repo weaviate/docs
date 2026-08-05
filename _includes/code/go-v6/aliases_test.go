@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -102,10 +103,11 @@ func TestListAllAliases(t *testing.T) {
 	// START ListAllAliases
 	aliases, err := client.Alias.List(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, a := range aliases {
-		t.Logf("alias %q -> collection %q", a.Alias, a.Collection)
+		fmt.Printf("alias %q -> collection %q\n", a.Alias, a.Collection)
 	}
 	// END ListAllAliases
 }
@@ -123,12 +125,13 @@ func TestListCollectionAliases(t *testing.T) {
 	// START ListCollectionAliases
 	aliases, err := client.Alias.List(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	// The client lists all aliases; filter by the target collection.
 	for _, a := range aliases {
 		if a.Collection == "Article" {
-			t.Logf("alias %q -> collection %q", a.Alias, a.Collection)
+			fmt.Printf("alias %q -> collection %q\n", a.Alias, a.Collection)
 		}
 	}
 	// END ListCollectionAliases
@@ -147,9 +150,10 @@ func TestGetAlias(t *testing.T) {
 	// START GetAlias
 	alias, err := client.Alias.Get(ctx, "ArticlesProd")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("alias %q -> collection %q", alias.Alias, alias.Collection)
+	fmt.Printf("alias %q -> collection %q\n", alias.Alias, alias.Collection)
 	// END GetAlias
 }
 
@@ -210,10 +214,11 @@ func TestUseAlias(t *testing.T) {
 		Limit: 2,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END UseAlias
 }

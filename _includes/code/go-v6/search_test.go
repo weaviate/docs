@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -95,12 +96,13 @@ func TestGetNearText(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 		if obj.Metadata.Distance != nil {
-			t.Logf("distance: %v", *obj.Metadata.Distance)
+			fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 		}
 	}
 	// END GetNearText
@@ -128,12 +130,13 @@ func TestGetNearVector(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 		if obj.Metadata.Distance != nil {
-			t.Logf("distance: %v", *obj.Metadata.Distance)
+			fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 		}
 	}
 	// END GetNearVector
@@ -161,10 +164,11 @@ func TestNamedVectorNearText(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END NamedVectorNearText
 }
@@ -190,10 +194,11 @@ func TestGetWithDistance(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetWithDistance
 }
@@ -217,10 +222,11 @@ func TestGetLimitOffset(t *testing.T) {
 		Offset: 1,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetLimitOffset
 }
@@ -244,10 +250,11 @@ func TestAutocut(t *testing.T) {
 		AutoLimit: 1,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END Autocut
 }
@@ -277,10 +284,11 @@ func TestGetWithGroupBy(t *testing.T) {
 		},
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for name, group := range response.Groups {
-		t.Logf("group %q holds %d objects", name, group.Size)
+		fmt.Printf("group %q holds %d objects\n", name, group.Size)
 	}
 	// END GetWithGroupBy
 }
@@ -308,10 +316,11 @@ func TestGetWithFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetWithFilter
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -55,10 +56,11 @@ func TestBasicGet(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END BasicGet
 }
@@ -78,10 +80,11 @@ func TestGetWithLimit(t *testing.T) {
 		Limit: 1,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetWithLimit
 }
@@ -102,10 +105,11 @@ func TestGetWithOffset(t *testing.T) {
 		Offset: 1,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetWithOffset
 }
@@ -126,10 +130,11 @@ func TestGetProperties(t *testing.T) {
 		ReturnProperties: []string{"question", "answer", "points"},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetProperties
 }
@@ -151,10 +156,11 @@ func TestGetObjectVector(t *testing.T) {
 		ReturnVectors: []string{"default"},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Vectors["default"].Single)
+		fmt.Printf("%v\n", obj.Vectors["default"].Single)
 	}
 	// END GetObjectVector
 }
@@ -174,11 +180,12 @@ func TestGetObjectId(t *testing.T) {
 		Limit: 1,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
 		// The object id is always returned.
-		t.Logf("%v", obj.UUID)
+		fmt.Printf("%v\n", obj.UUID)
 	}
 	// END GetObjectId
 }
@@ -205,10 +212,11 @@ func TestGetWithCrossRefs(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END GetWithCrossRefs
 }
@@ -231,11 +239,12 @@ func TestGetWithMetadata(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
 		if obj.CreatedAt != nil {
-			t.Logf("created at: %v", *obj.CreatedAt)
+			fmt.Printf("created at: %v\n", *obj.CreatedAt)
 		}
 	}
 	// END GetWithMetadata
@@ -259,10 +268,11 @@ func TestMultiTenancy(t *testing.T) {
 		Limit: 2,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTenancy
 }

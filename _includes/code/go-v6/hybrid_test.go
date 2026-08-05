@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/query"
@@ -29,10 +30,11 @@ func TestHybridBasic(t *testing.T) {
 		Limit: 3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridBasic
 }
@@ -56,14 +58,15 @@ func TestHybridWithScore(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
 		if obj.Metadata.Score != nil {
-			t.Logf("score: %v", *obj.Metadata.Score)
+			fmt.Printf("score: %v\n", *obj.Metadata.Score)
 		}
 		if obj.Metadata.ExplainScore != nil {
-			t.Logf("explain: %v", *obj.Metadata.ExplainScore)
+			fmt.Printf("explain: %v\n", *obj.Metadata.ExplainScore)
 		}
 	}
 	// END HybridWithScore
@@ -86,10 +89,11 @@ func TestHybridWithAlpha(t *testing.T) {
 		Limit: 3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithAlpha
 }
@@ -110,10 +114,11 @@ func TestHybridWithFusionType(t *testing.T) {
 		Limit:  3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithFusionType
 }
@@ -135,10 +140,11 @@ func TestHybridWithProperties(t *testing.T) {
 		Limit:           3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithProperties
 }
@@ -160,10 +166,11 @@ func TestHybridWithPropertyWeighting(t *testing.T) {
 		Limit:           3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithPropertyWeighting
 }
@@ -188,10 +195,11 @@ func TestHybridWithVector(t *testing.T) {
 		Limit: 3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithVector
 }
@@ -211,10 +219,11 @@ func TestHybridLimit(t *testing.T) {
 		Limit: 3,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridLimit
 }
@@ -234,10 +243,11 @@ func TestHybridAutocut(t *testing.T) {
 		AutoLimit: 1,
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridAutocut
 }
@@ -262,10 +272,11 @@ func TestHybridWithFilter(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithFilter
 }

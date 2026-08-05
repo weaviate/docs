@@ -18,7 +18,8 @@ func TestConnectLocalNoAuth(t *testing.T) {
 	// START LocalNoAuth
 	client, err := weaviate.NewLocal(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END LocalNoAuth
@@ -45,7 +46,8 @@ func TestConnectCustomURL(t *testing.T) {
 		weaviate.WithGRPCPort(50051),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END CustomURL
@@ -71,7 +73,8 @@ func TestConnectLocalAuth(t *testing.T) {
 		weaviate.WithAPIKey(os.Getenv("WEAVIATE_API_KEY")),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END LocalAuth
@@ -96,7 +99,8 @@ func TestConnectLocalThirdPartyAPIKeys(t *testing.T) {
 		}),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END LocalThirdPartyAPIKeys
@@ -120,7 +124,8 @@ func TestConnectCloud(t *testing.T) {
 		os.Getenv("WEAVIATE_API_KEY"),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END APIKeyWCD
@@ -148,7 +153,8 @@ func TestConnectCloudThirdPartyAPIKeys(t *testing.T) {
 		}),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END ThirdPartyAPIKeys
@@ -184,7 +190,8 @@ func TestConnectOIDC(t *testing.T) {
 		}),
 	)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	defer client.Close()
 	// END OIDCConnect
