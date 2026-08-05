@@ -89,9 +89,7 @@ For more advanced searches, you can also specify _additional filters_ within the
 
 ### Effort
 
-The optional `effort` parameter controls the amount of effort the agent puts into the search. It accepts one of `"low"`, `"medium"`, or `"high"` — higher effort may improve result quality at the expense of increased latency and cost. When omitted, the search behaves as if the parameter did not exist.
-
-The effort value is fixed for the lifetime of a search: paginating with [`.next()`](#pagination) reuses the same effort value on every page, just as the underlying searches are reused to keep the result set consistent.
+The optional `effort` parameter controls the amount of effort the agent puts into the search. It accepts one of `"low"`, `"medium"`, or `"high"`. Higher effort may improve result quality at the expense of increased latency and cost.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
