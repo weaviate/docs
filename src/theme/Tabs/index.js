@@ -27,7 +27,7 @@ const LANGUAGE_CONFIG = {
     icon: "/img/site/logo-ts.svg",
   },
   go: { label: "Go", icon: "/img/site/logo-go.svg" },
-  go6: { label: "Go v6", icon: "/img/site/logo-go.svg" },
+  go6: { label: "Go v6 (beta)", icon: "/img/site/logo-go.svg" },
   java: { label: "Java", icon: "/img/site/logo-java.svg" },
   csharp: { label: "C#", icon: "/img/site/logo-csharp.svg" },
   curl: { label: "Curl", icon: "/img/site/logo-curl.svg" },

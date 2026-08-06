@@ -116,7 +116,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="goraw"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START BasicVectorizerWeaviate"
@@ -171,7 +171,7 @@ You can specify one of the [available models](#available-models) for the vectori
       language="goraw"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START VectorizerWeaviateCustomModel"

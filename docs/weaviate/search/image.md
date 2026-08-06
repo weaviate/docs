@@ -63,7 +63,7 @@ If your query image is stored in a file, you can use the client library to searc
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ImageByPath"
@@ -130,7 +130,7 @@ You can search by a base64 representation of an image:
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ImageByBase64"
@@ -197,7 +197,7 @@ You can create a base64 representation of an online image, and use it as input f
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ImageBase64Helper"

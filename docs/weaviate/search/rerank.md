@@ -71,7 +71,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START RerankNamedVectorNearText"
@@ -123,7 +123,7 @@ To rerank the results of a vector search, configure the object properties to sor
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START RerankVectorResults"
@@ -189,7 +189,7 @@ To rerank the results of a keyword search, configure the object properties to so
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START RerankKeywordResults"

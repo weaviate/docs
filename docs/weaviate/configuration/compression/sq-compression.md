@@ -44,7 +44,7 @@ SQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START EnableSQ"
@@ -95,7 +95,7 @@ SQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START SQUpdateSchema"
@@ -146,7 +146,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START SQWithOptions"

@@ -59,7 +59,7 @@ BQ can be enabled at collection creation time through the collection definition:
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6CompressionCode}
       startMarker="// START EnableBQ"
@@ -110,7 +110,7 @@ BQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START BQUpdateSchema"
@@ -171,7 +171,7 @@ For example:
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6CompressionCode}
       startMarker="// START BQWithOptions"

@@ -145,7 +145,7 @@ Follow these steps to manually enable PQ.
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6CompressionCode}
       startMarker="// START PQInitialSchema"
@@ -214,7 +214,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6CompressionCode}
       startMarker="// START PQUpdateSchema"
@@ -313,7 +313,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6CompressionCode}
       startMarker="// START PQGetSchema"

@@ -81,7 +81,7 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START CreateBackup"
@@ -358,7 +358,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START CreateBackup"
@@ -450,7 +450,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START StatusCreateBackup"
@@ -580,7 +580,7 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START CancelBackup"
@@ -641,7 +641,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START RestoreBackup"
@@ -707,7 +707,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START StatusRestoreBackup"

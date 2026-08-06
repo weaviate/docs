@@ -197,7 +197,7 @@ The properties you use in the prompt do not have to be among the properties you 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GenerativeSinglePrompt"
@@ -352,7 +352,7 @@ Grouped task search returns one response that includes all of the query results.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GenerativeGroupedTask"
@@ -424,7 +424,7 @@ Define object `properties` to use in the prompt. This limits the information in 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GenerativeGroupedProperties"

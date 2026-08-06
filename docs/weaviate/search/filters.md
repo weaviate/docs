@@ -51,7 +51,7 @@ Add a `filter` to your query, to limit the result set.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START SingleFilter"
@@ -167,7 +167,7 @@ These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To 
       language="gonew"
     />
 </TabItem>
-<TabItem value="go6" label="Go v6">
+<TabItem value="go6" label="Go v6 (beta)">
 <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START MultipleFiltersAnd"
@@ -244,7 +244,7 @@ Group and nest filter conditions with `And` and `Or` operators to express compou
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START MultipleFiltersNested"
@@ -335,7 +335,7 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START NearTextWithFilter"
@@ -412,7 +412,7 @@ The `ContainsAny` operator works on text properties and take an array of values 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ContainsAnyFilter"
@@ -489,7 +489,7 @@ The `ContainsAll` operator works on text properties and take an array of values 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ContainsAllFilter"
@@ -566,7 +566,7 @@ The `ContainsNone` operator works on text properties and take an array of values
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ContainsNoneFilter"
@@ -670,7 +670,7 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START LikeFilter"
@@ -763,7 +763,7 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CrossReferenceFilter"
@@ -842,7 +842,7 @@ import GeoLimitations from '/\_includes/geo-limitations.mdx';
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6PlaceholderCode}
       startMarker="// START GeoFilter"
@@ -905,7 +905,7 @@ To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByDate"
@@ -964,7 +964,7 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterById"
@@ -1027,7 +1027,7 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByTimestamp"
@@ -1090,7 +1090,7 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByPropertyLength"
@@ -1153,7 +1153,7 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByPropertyNullState"

@@ -56,7 +56,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridBasic"
@@ -194,7 +194,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithScore"
@@ -274,7 +274,7 @@ Hybrid search results can favor the keyword component or the vector component. T
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithAlpha"
@@ -354,7 +354,7 @@ The output is like this:
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithFusionType"
@@ -542,7 +542,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithProperties"
@@ -619,7 +619,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithPropertyWeighting"
@@ -696,7 +696,7 @@ The vector component of hybrid search can use a query string or a query vector. 
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithVector"
@@ -918,7 +918,7 @@ Optionally, use `offset` to paginate the results.
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridLimit"
@@ -989,7 +989,7 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridAutocut"
@@ -1066,7 +1066,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6">
+  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithFilter"
