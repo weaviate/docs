@@ -44,6 +44,7 @@ To configure Embedded Weaviate, set these variables in your instantiation code o
 | :-- | :-- | :-- | :-- |
 | `additional_env_vars` | string | None. | Pass additional environment variables, such as API keys, to the server. |
 | `binary_path` | string | varies | Binary download directory. If the binary is not present, the client downloads the binary. <br/><br/> If `XDG_CACHE_HOME` is set, its value is used verbatim as the default. No subdirectory is appended, so `XDG_CACHE_HOME=/foo` makes the default exactly `/foo`.<br/><br/>If `XDG_CACHE_HOME` is not set, the default is: `~/.cache/weaviate-embedded/` |
+| `grpc_port` | integer | 50060 | The Weaviate server gRPC port. The client passes this value to the server as `GRPC_PORT`. |
 | `hostname` | string | 127.0.0.1 | Hostname or IP address  |
 | `persistence_data_path` | string | varies | Data storage directory.<br/><br/> If `XDG_DATA_HOME` is set, its value is used verbatim as the default. No subdirectory is appended, so `XDG_DATA_HOME=/foo` makes the default exactly `/foo`.<br/><br/>If `XDG_DATA_HOME` is not set, the default is: `~/.local/share/weaviate` |
 | `port` | integer | 8079 | The Weaviate server request port. |
@@ -71,7 +72,7 @@ The following modules are enabled by default:
 - `text2vec-huggingface`
 - `text2vec-openai`
 
-To enabled additional modules, add them to your instantiation code.
+To enable additional modules, add them to your instantiation code.
 
 For example, to add the `backup-s3` module, instantiate your client like this:
 
@@ -130,7 +131,7 @@ Embedded Weaviate is supported for Python and TypeScript clients.
 
 ### Python clients
 
-[Python](docs/weaviate/client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client v4 requires server version v1.23.7 or higher.
+[Python](docs/weaviate/client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client requires Weaviate `v1.23.7` or later.
 
 ### TypeScript clients
 
