@@ -24,7 +24,7 @@ The latest Go client is version `v||site.go_client_version||`.
 
 :::
 
-The Weaviate Go client is compatible with Go 1.16+.
+The Weaviate Go client requires Go `1.25` and later, as declared by the `go` directive in `go.mod` for client `v||site.go_client_version||`. Newer client releases can raise this requirement, so check `go.mod` for the release you install.
 
 ## Installation
 The client doesn't support the old Go modules system. Create a repository for your code before you import the Weaviate client.
