@@ -326,8 +326,8 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `gemini-embedding-2` (Vertex AI and Gemini API, added in 1.36.13) — Vertex AI and Gemini API; supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
-- `multimodalembedding@001` (Vertex AI only) — supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
+- `gemini-embedding-2` (Vertex AI and Gemini API, added in 1.36.13). Supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
+- `multimodalembedding@001` (Vertex AI only). Supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
 
 ## Further resources
 

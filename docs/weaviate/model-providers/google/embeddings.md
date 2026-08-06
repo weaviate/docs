@@ -399,10 +399,13 @@ The query below returns the `n` best scoring objects from the database, set by `
 - `gemini-embedding-001` (default)
 
 **Vertex AI:**
+
+`gemini-embedding-001`, `text-embedding-005`, and `text-multilingual-embedding-002` were added in `v1.31.5`, and backported to `v1.30.11`.
+
 - `gemini-embedding-2`
-- `gemini-embedding-001` (default, added in 1.30.11, 1.31.5 and onwards)
-- `text-embedding-005` (added in 1.30.11, 1.31.5 and onwards)
-- `text-multilingual-embedding-002` (added in 1.30.11, 1.31.5 and onwards)
+- `gemini-embedding-001` (default)
+- `text-embedding-005`
+- `text-multilingual-embedding-002`
 
 <details>
   <summary>Deprecated models</summary>

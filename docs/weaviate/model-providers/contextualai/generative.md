@@ -163,7 +163,7 @@ Configure the following generative parameters to customize the model behavior.
 
 For further details on model parameters, see the [Contextual AI API documentation](https://docs.contextual.ai/api-reference/generate/generate).
 
-If a parameter is not specified, Weaviate uses the server-side default for that parameter. They are:
+If a parameter is not specified, Weaviate uses the server default for that parameter. They are:
 
 - model           = `"v2"`
 - temperature     = `0.0`

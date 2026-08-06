@@ -163,7 +163,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-From Weaviate `v1.31.15`, `v1.32.9`, `v1.33.0` and later, two additional parameters are available for reasoning models such as the `gpt-5` family:
+Two additional parameters are available for reasoning models such as the `gpt-5` family. They were added in `v1.33.0`, and backported to `v1.31.15` and `v1.32.9`:
 
 - `reasoningEffort`: How much reasoning the model does before it answers. One of `minimal`, `low`, `medium`, or `high`. If not set, the model provider default applies.
 - `verbosity`: How detailed the generated answer is. One of `low`, `medium`, or `high`. If not set, the model provider default applies.
@@ -301,12 +301,16 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-From Weaviate `v1.31.17`, `v1.32.10`, `v1.33.0` and later, Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach. The following models are recognized by Weaviate's token limit table:
+Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
+
+The server default is `gpt-5-mini`. It changed in `v1.32.3`, and was backported to `v1.30.16` and `v1.31.10`. Earlier releases on each of those lines default to `gpt-3.5-turbo`.
+
+The following models are recognized by Weaviate's token limit table:
 
 * [gpt-5](https://platform.openai.com/docs/models/gpt-5)
-* [gpt-5-mini](https://platform.openai.com/docs/models/gpt-5-mini) (server default in `v1.30.16`, `v1.31.10`, `v1.32.3` and later)
+* [gpt-5-mini](https://platform.openai.com/docs/models/gpt-5-mini) (server default)
 * [gpt-5-nano](https://platform.openai.com/docs/models/gpt-5-nano)
-* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (server default before `v1.30.16`, `v1.31.10` and `v1.32.3`)
+* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (previous server default)
 * [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-4](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)

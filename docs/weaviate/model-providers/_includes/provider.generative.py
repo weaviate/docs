@@ -824,6 +824,7 @@ client.collections.create(
         # model="mistral-large",
         # temperature=0.7,
         # max_tokens=500,
+        # base_url="<custom_mistral_url>",
     )
     # highlight-end
 )
