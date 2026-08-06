@@ -18,7 +18,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import XRefCrudPythonCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
-import XRefCrudTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
+import XRefCrudTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts';
 import XRefCrudGoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go';
 
 import SearchBasicsPythonCode from '!!raw-loader!/_includes/code/howto/search.basics.py';
@@ -37,7 +37,7 @@ We will refer to the originating object as the **source** object, and the object
 
 ### Prerequisites
 
-This tutorial assumes that you have completed the [QuickStart tutorial](docs/weaviate/quickstart/index.md) and have access to a Weaviate instance with write access.
+This tutorial assumes that you have completed the [QuickStart tutorial](../quickstart/index.md) and have access to a Weaviate instance with write access.
 
 ## When to use cross-references
 
@@ -112,6 +112,14 @@ An example syntax is shown below:
 
   </TabItem>
 
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={XRefCrudTSCode}
+      startMarker="// START OneWay"
+      endMarker="// END OneWay"
+      language="ts"
+    />
+  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

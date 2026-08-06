@@ -673,7 +673,7 @@ import V137Preview from '/\_includes/feature-notes/v137-preview.mdx';
 
 <V137Preview/>
 
-Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity — each selected result must add something new to the result set.
+Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity: each selected result must add something new to the result set.
 
 Add the `diversity_selection` parameter to any vector search query:
 
@@ -721,7 +721,7 @@ A larger candidate set (higher top-level `limit`) gives MMR more results to choo
 
 <BoostPreview/>
 
-Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
+Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them. This is useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
 
 See [Boost](./boost.md) for the supported condition types (filter, property value, time decay, numeric decay), curve choices, blending semantics, and depth tuning.
 
