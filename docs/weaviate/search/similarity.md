@@ -749,7 +749,7 @@ import V137Preview from '/\_includes/feature-notes/v137-preview.mdx';
 
 Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity — each selected result must add something new to the result set.
 
-Add the `selection` parameter to any vector search query:
+Add the `diversity_selection` parameter to any vector search query:
 
 <FilteredTextBlock
   text={MMRPyCode}
@@ -764,7 +764,7 @@ Add the `selection` parameter to any vector search query:
 2. The most relevant candidate is selected first
 3. For each remaining candidate, MMR computes a score that balances query similarity against maximum similarity to already-selected results, weighted by `balance`
 4. The candidate with the highest MMR score is selected next
-5. Steps 3–4 repeat until the `Diversity.MMR(limit)` is reached
+5. Steps 3–4 repeat until the `Diversity.mmr(limit)` is reached
 
 #### Parameters
 

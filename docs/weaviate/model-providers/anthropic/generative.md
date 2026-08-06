@@ -301,12 +301,7 @@ The default base URL is `https://api.anthropic.com`.
 
 ### Available models
 
-Any model available in the Anthropic API can be used with Weaviate. As of July 2024, the following models are available:
-
-- `claude-3-5-sonnet-20240620` (default)
-- `claude-3-opus-20240229`
-- `claude-3-sonnet-20240229`
-- `claude-3-haiku-20240307`
+Any model available in the Anthropic API can be used with Weaviate. If you do not specify a model, Weaviate uses `claude-haiku-4-5` by default.
 
 See the [Anthropic API documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-names) for the most up-to-date list of available models.
 

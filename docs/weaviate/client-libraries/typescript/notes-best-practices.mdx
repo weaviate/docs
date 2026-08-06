@@ -124,7 +124,7 @@ You can set `skipInitChecks` to `true` to skip these checks.
 
 ```js
 import weaviate from 'weaviate-client';
-Add commentMore actions
+
 const client = await weaviate.connectToLocal({
   skipInitChecks: true,
 })
@@ -147,7 +147,7 @@ type Article = {
   wordcount: number,
 };
 
-const collection = client.collections.get < Article > "Article";
+const collection = client.collections.get<Article>("Article");
 await collection.data.insert({
   // compiler error since 'body' field is missing in '.insert'
   title: "TS is awesome!",

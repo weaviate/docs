@@ -541,6 +541,31 @@ client.collections.create(
 
 </details>
 
+#### Q: Why does `insert_many` fail with a "message larger than max" (`RESOURCE_EXHAUSTED`) error?
+
+<details>
+  <summary>Answer</summary>
+
+`insert_many` (Python) and `insertMany` (TypeScript, Java) send all objects in a **single gRPC request**. Requests larger than the server's [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit are rejected with the gRPC status `RESOURCE_EXHAUSTED`, so a sufficiently large list fails as a whole with an error similar to:
+
+```text
+WeaviateBatchError: Query call with protocol GRPC batch failed with message
+CLIENT: Sent message larger than max (3002340 vs. 1000000).
+```
+
+The two numbers are the size of your request and the server's limit (the values shown here are from a test with a 1 MB limit). Recent Python clients read the server's limit at connect time and reject oversized requests before sending them. With older clients, the server-side variant `grpc: received message larger than max` may appear instead.
+
+For large lists, use [server-side batching](../manage-objects/import.mdx#server-side-batching) instead, which splits the data into server-paced batches:
+
+- **Python**: Use `collection.data.ingest(objects)`, a drop-in replacement for `insert_many` that returns the same return object. Alternatively, use the `collection.batch.stream()` context manager.
+- **TypeScript**: `collection.data.ingest(objects)`.
+- **Java** (`v6`): the `collection.batch.start()` streaming context.
+- **C#**: `collection.Batch.InsertMany(items)` (already uses server-side batching).
+
+Alternatively, you can raise the `GRPC_MAX_MESSAGE_SIZE` [environment variable](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) on the server, but batching is the recommended solution.
+
+</details>
+
 ## Miscellaneous
 
 #### Q: Can I request a feature in Weaviate?

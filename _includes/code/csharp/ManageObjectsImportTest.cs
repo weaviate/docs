@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using CsvHelper;
 using Weaviate.Client;
+using Weaviate.Client.Batch;
 using Weaviate.Client.Models;
 using Xunit;
 
@@ -146,8 +147,55 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         var collection = client.Collections.Use("MyCollection");
 
-        // Use `Batch.InsertMany` for server-side batching. The client sends
-        // data in batches at a rate controlled by the server.
+        // Use `Batch.StartBatch` for server-side batching. The client streams
+        // objects to the server, which paces the import based on its own load.
+        // highlight-start
+        await using var batch = await collection.Batch.StartBatch();
+
+        var handles = new List<TaskHandle>();
+        foreach (var dataRow in dataRows)
+        {
+            handles.Add(await batch.Add(dataRow));
+        }
+
+        await batch.Close();
+        // highlight-end
+
+        var results = await Task.WhenAll(handles.Select(h => h.Result));
+        var failedObjects = results.Where(r => !r.Success).ToList();
+        if (failedObjects.Any())
+        {
+            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
+        }
+        // END ServerSideBatchImportExample
+
+        var result = await collection.Aggregate.OverAll(totalCount: true);
+        Assert.Equal(5, result.TotalCount);
+    }
+
+    [Fact]
+    public async Task TestServerSideIngest()
+    {
+        await BeforeEach();
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                VectorConfig = Configure.Vector("default", v => v.SelfProvided()),
+            }
+        );
+
+        // START ServerSideIngestExample
+        var dataRows = Enumerable
+            .Range(0, 5)
+            .Select(i => new { title = $"Object {i + 1}" })
+            .ToList();
+
+        var collection = client.Collections.Use("MyCollection");
+
+        // `Batch.InsertMany` is the one-shot server-side ingest of an
+        // in-memory list. The client streams the list to the server
+        // using server-side batching under the hood.
         // highlight-start
         var response = await collection.Batch.InsertMany(dataRows);
         // highlight-end
@@ -158,7 +206,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
             Console.WriteLine($"First failed object: {failedObjects.First().Error}");
         }
-        // END ServerSideBatchImportExample
+        // END ServerSideIngestExample
 
         var result = await collection.Aggregate.OverAll(totalCount: true);
         Assert.Equal(5, result.TotalCount);
@@ -194,8 +242,9 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         var collection = client.Collections.Use("MyCollection");
 
+        // `Batch.InsertMany` imports the list using server-side batching.
         // highlight-start
-        var response = await collection.Data.InsertMany(dataToInsert);
+        var response = await collection.Batch.InsertMany(dataToInsert);
         // highlight-end
 
         var failedObjects = response.Where(r => r.Error != null).ToList();
@@ -245,13 +294,17 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         var collection = client.Collections.Use("MyCollection");
 
-        var response = await collection.Data.InsertMany(dataToInsert);
+        // `Batch.InsertMany` imports the list using server-side batching.
+        // highlight-start
+        var response = await collection.Batch.InsertMany(dataToInsert);
+        // highlight-end
 
         // Handle errors
-        if (response.HasErrors)
+        var failedObjects = response.Where(r => r.Error != null).ToList();
+        if (failedObjects.Any())
         {
-            Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
-            Console.WriteLine($"First failed object: {response.Errors.First().Message}");
+            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
+            Console.WriteLine($"First failed object: {failedObjects.First().Error}");
         }
         // END BatchImportWithVectorExample
 
@@ -342,16 +395,17 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         var collection = client.Collections.Use("MyCollection");
 
-        // Insert the data using InsertMany
+        // `Batch.InsertMany` imports the list using server-side batching.
         // highlight-start
-        var response = await collection.Data.InsertMany(dataToInsert);
+        var response = await collection.Batch.InsertMany(dataToInsert);
         // highlight-end
 
         // Handle errors
-        if (response.HasErrors)
+        var failedObjects = response.Where(r => r.Error != null).ToList();
+        if (failedObjects.Any())
         {
-            Console.WriteLine($"Number of failed imports: {response.Errors.Count()}");
-            Console.WriteLine($"First failed object error: {response.Errors.First().Message}");
+            Console.WriteLine($"Number of failed imports: {failedObjects.Count}");
+            Console.WriteLine($"First failed object error: {failedObjects.First().Error}");
         }
         // END BatchImportWithNamedVectors
     }

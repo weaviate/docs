@@ -5,7 +5,8 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
-import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
+import io.weaviate.client6.v1.api.collections.WeaviateObject;
+import io.weaviate.client6.v1.api.collections.batch.BatchContext;
 
 import java.util.List;
 import java.util.Map;
@@ -53,18 +54,24 @@ public class QuickstartLocalCreate {
               "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.",
               "genre", "Fantasy"));
 
-      // Insert objects using insertMany
+      // Insert the objects using server-side batching
       CollectionHandle<Map<String, Object>> movies =
           client.collections.use(collectionName);
-      InsertManyResponse insertResponse =
-          movies.data.insertMany(dataObjects.toArray(new Map[0]));
+      BatchContext<Map<String, Object>> batch = movies.batch.start();
+      // Closing the batch sends the remaining objects and waits for the results
+      try (batch) {
+        for (Map<String, Object> properties : dataObjects) {
+          batch.add(
+              WeaviateObject.<Map<String, Object>>of(o -> o.properties(properties)));
+        }
+      }
 
-      if (!insertResponse.errors().isEmpty()) {
-        System.err.println("Errors during import: " + insertResponse.errors());
+      if (batch.numberOfErrors() > 0) {
+        System.err
+            .println("Number of failed imports: " + batch.numberOfErrors());
       } else {
-        System.out
-            .println("Imported & vectorized " + insertResponse.uuids().size()
-                + " objects into the Movie collection");
+        System.out.println("Imported & vectorized " + dataObjects.size()
+            + " objects into the Movie collection");
       }
     } finally {
       if (client != null) {

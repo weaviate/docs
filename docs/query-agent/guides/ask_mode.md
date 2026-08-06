@@ -66,7 +66,8 @@ The `.ask()` method accepts several arguments:
 | --- | --- | --- |
 | `query` | `str \| list[ChatMessage]` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | `list[str \| QueryAgentCollectionConfig] \| None` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
-| `result_evaluation` | `Literal["llm", "none"]` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
+| `result_evaluation` | `Literal["llm", "none"]` | Controls whether the agent will ask an LLM to "evaluate" the result based on all retrieved context. Accepts either:<br/>• `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
+| `output_format` | `dict \| type[BaseModel] \| None` | Optional schema for structured output in the final response. When set, `.ask()` returns a `ParsedAskModeResponse` instead of an `AskModeResponse`: the parsed result is added on a new `final_answer_parsed` field, and `final_answer` still holds the raw model output. See [the response class](#response) and [the page on structured outputs for more details](../reference/structured_outputs.md). |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -74,8 +75,8 @@ The `.ask()` method accepts several arguments:
 | --- | --- | --- |
 | `query` | `string \| ChatMessage[]` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | `(string \| QueryAgentCollectionConfig)[]` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. [See the page on collection configuration for more detail](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. |
-| `resultEvaluation` | `"llm" \| "none"` | Controls whether the agent will ask an LLM to "evaluate" (i.e., rewrite or rephrase) the result based on all retrieved context. Accepts either:<br/>• `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
-
+| `resultEvaluation` | `"llm" \| "none"` | Controls whether the agent will ask an LLM to "evaluate" the result based on all retrieved context. Accepts either:<br/>• `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
+| `outputFormat` | `ZodType \| object` | Optional schema for structured output in the final response. Pass a [Zod](https://zod.dev/) schema (parsed and validated) or a raw [Draft 2020-12 JSON Schema](https://json-schema.org/draft/2020-12) object (parsed only). When set, `.ask()` returns a `ParsedAskModeResponse<T>` instead of an `AskModeResponse`: the typed result is added on a new `finalAnswerParsed` field, and `finalAnswer` still holds the raw model output. See [the response class](#response) and [the page on structured outputs for more details](../reference/structured_outputs.md). |
 </TabItem>
 </Tabs>
 
@@ -100,6 +101,14 @@ The `AskModeResponse` class has the following properties:
 | `sources` | `list[Source] \| None` | A list of `Source` objects, which have an `object_id` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `result_evaluation` is `"llm"`, these are subset to only those that are relevant to the `final_answer`. |
 
 [See the client documentation for more detail.](https://weaviate-python-client.readthedocs.io/en/latest/weaviate-agents-python-client/docs/weaviate_agents.classes.html#weaviate_agents.classes.AskModeResponse)
+
+If you provide the `output_format` parameter (`qa.ask(..., output_format=...)`), Ask Mode returns a `ParsedAskModeResponse` instead. It is a subclass of `AskModeResponse`, so it keeps every field above and adds one more. `final_answer` still holds the raw string from the model.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `final_answer_parsed` | `<given_type>` | The final response, parsed into the schema given in `output_format`. |
+
+The type of `final_answer_parsed` is a `dict` if a dictionary was supplied to `output_format`, otherwise it will be the exact type of the `BaseModel` given.
 </TabItem>
 
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -116,6 +125,16 @@ The `AskModeResponse` class has the following properties:
 | `sources` | `Source[]` | A list of `Source` objects, which have an `objectId` property correlating to the UUID of the Weaviate object that was retrieved during the run. If `resultEvaluation` is `"llm"`, these are subset to only those that are relevant to the `finalAnswer`. |
 
 [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/AskModeResponse.html)
+
+If you provide the `outputFormat` parameter (`qa.ask(..., { outputFormat: ... })`), Ask Mode returns a `ParsedAskModeResponse<T>` instead. It is an `AskModeResponse` with one more field, so it keeps every field above. `finalAnswer` still holds the raw string from the model.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `finalAnswerParsed` | `<given_type>` | The final response, parsed into the schema given in `outputFormat`. |
+
+The type of `finalAnswerParsed` is `Record<string, unknown>` if a raw JSON Schema object was supplied to `outputFormat`, otherwise it will be the inferred type of the Zod schema given (`z.infer<typeof schema>`).
+
+[See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/ParsedAskModeResponse.html)
 </TabItem>
     
 </Tabs>

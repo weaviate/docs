@@ -1,0 +1,57 @@
+name: llms.txt Snippet Sync
+
+# llms.txt is hand-maintained in the weaviate-io repo, so a snippet change here can
+# strand a block in the published file. Only the weekly llms_txt_tests.yml job notices,
+# which means the break surfaces days later. This gives the author the signal at PR time.
+#
+# It is advisory by design and never fails: when a snippet PR is opened, weaviate-io has
+# not merged or deployed yet, so the live llms.txt legitimately cannot match. A blocking
+# check would fire on every honest PR and would just be overridden.
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    paths:
+      # Kept in step with SNIPPET_GLOBS in tests/test_llms_txt_code.py. Java and C#
+      # snippets live with their language suites, not under _includes/code/llms-txt/.
+      - "_includes/code/llms-txt/**"
+      - "_includes/code/java-v6/src/test/java/LlmsTxtTest.java"
+      - "_includes/code/csharp/LlmsTxtTest.cs"
+      - "tests/test_llms_txt_code.py"
+      - "tests/check_llms_txt_drift.py"
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  check-snippet-sync:
+    name: Check llms.txt snippet sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch the PR base commit
+        # Shallow single-commit fetch: the check only needs the base tree to read the
+        # pre-change snippet files. If it fails the check reports a degraded warning
+        # rather than blocking.
+        continue-on-error: true
+        run: git fetch --no-tags --depth=1 origin ${{ github.event.pull_request.base.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install pytest
+        # The check imports tests/test_llms_txt_code.py to reuse its matching logic, and
+        # that module imports pytest. Nothing else from the test suite is needed, so this
+        # stays far cheaper than the full setup-test-env composite.
+        run: python -m pip install --quiet "pytest>=8.3.5"
+
+      - name: Check llms.txt snippet sync
+        run: python tests/check_llms_txt_drift.py --base "${{ github.event.pull_request.base.sha }}"
