@@ -15,7 +15,7 @@ import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportT
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
-[Batch imports](../tutorials/import.mdx) are an efficient way to add multiple data objects and cross-references. For most use cases, we recommend **server-side batching** as the starting point: the server tells the client how much data to send next, so you don't have to tune batch parameters yourself. When you need manual control over the batch size and concurrency — or you are using a client that does not yet support server-side batching — use [manual batching](#manual-batching) instead.
+[Batch imports](../tutorials/import.mdx) are an efficient way to add multiple data objects and cross-references. For most use cases, we recommend **server-side batching** as the starting point: the server tells the client how much data to send next, so you don't have to tune batch parameters yourself. When you need manual control over the batch size and concurrency, or you are using a client that does not yet support server-side batching, use [manual batching](#manual-batching) instead.
 
 ## Server-side batching
 
