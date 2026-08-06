@@ -127,3 +127,15 @@ func TestShardingSettings(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+// TestDropInvertedIndex is a placeholder: dropping an inverted index from a
+// property mutates an existing collection definition, which the v6 Go client
+// cannot yet do.
+func TestDropInvertedIndex(t *testing.T) {
+	t.Skip("dropping an inverted index is not yet available in the v6 Go client")
+
+	// TODO[g-despot]: drop-inverted-index snippet pending v6 client support
+	// START DropInvertedIndex
+	// Coming soon
+	// END DropInvertedIndex
+}

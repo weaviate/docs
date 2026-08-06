@@ -11,6 +11,9 @@ import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collectio
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
+import GoV6ManageCode from "!!raw-loader!/_includes/code/go-v6/manage_collections_test.go";
+import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
+import GoV6TenantsCode from "!!raw-loader!/_includes/code/go-v6/tenants_test.go";
 import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
@@ -118,6 +121,14 @@ This code example shows how to configure the collection parameters through a cli
       language="py"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6ManageCode}
+      startMarker="// START CreateCollectionExample"
+      endMarker="// END CreateCollectionExample"
+      language="go"
+    />
+  </TabItem>
   <!-- <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -221,6 +232,14 @@ This code example shows how to configure the property parameters through a clien
       startMarker="# START CreateCollectionWithProperties"
       endMarker="# END CreateCollectionWithProperties"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6ManageCode}
+      startMarker="// START CreateCollectionWithProperties"
+      endMarker="// END CreateCollectionWithProperties"
+      language="go"
     />
   </TabItem>
   <!-- <TabItem value="ts" label="JavaScript/TypeScript">
@@ -763,6 +782,14 @@ This code example shows how to configure the replication parameters through a cl
       language="py"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="go"
+    />
+  </TabItem>
   <!-- <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -837,6 +864,14 @@ This code example shows how to configure the sharding parameters through a clien
       language="py"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="go"
+    />
+  </TabItem>
   <!-- <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -892,6 +927,14 @@ This code example shows how to configure the multi-tenancy parameters through a 
       startMarker="# START EnableMultiTenancy"
       endMarker="# END EnableMultiTenancy"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6TenantsCode}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="go"
     />
   </TabItem>
   <!-- <TabItem value="ts" label="JavaScript/TypeScript">

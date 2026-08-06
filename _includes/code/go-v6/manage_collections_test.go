@@ -5,9 +5,15 @@ import (
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/collections"
+	"github.com/weaviate/weaviate-go-client/v6/collections/vectorindex"
+	"github.com/weaviate/weaviate-go-client/v6/modules/selfprovided"
 )
 
-func TestCreateCollection(t *testing.T) {
+// TestCreateCollectionExample creates a collection that exercises the main
+// top-level configuration parameters at once — properties, a named vector,
+// sharding, replication, and multi-tenancy. It backs the "how to create a
+// collection" reference example.
+func TestCreateCollectionExample(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -15,15 +21,32 @@ func TestCreateCollection(t *testing.T) {
 	_ = client.Collections.Delete(ctx, "Article")
 	defer client.Collections.Delete(ctx, "Article")
 
-	// START CreateCollection
+	// START CreateCollectionExample
 	_, err := client.Collections.Create(ctx, collections.Collection{
-		Name: "Article",
+		Name:        "Article",
+		Description: "A collection of articles",
 		Properties: []collections.Property{
 			{Name: "title", DataType: collections.DataTypeText},
 			{Name: "body", DataType: collections.DataTypeText},
 		},
+		Vectors: map[string]collections.VectorConfig{
+			"default": {
+				Index: vectorindex.HFresh{
+					Distance:         vectorindex.DistanceCosine,
+					MaxPostingSizeKB: 8,
+				},
+				Vectorizer: selfprovided.Vectorizer,
+			},
+		},
+		Replication: &collections.ReplicationConfig{Factor: 1},
+		Sharding: &collections.ShardingConfig{
+			VirtualPerPhysical:  128,
+			DesiredCount:        1,
+			DesiredVirtualCount: 128,
+		},
+		MultiTenancy: &collections.MultiTenancyConfig{Enabled: false},
 	})
-	// END CreateCollection
+	// END CreateCollectionExample
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,4 +145,16 @@ func TestReadAllCollections(t *testing.T) {
 	for _, config := range configs {
 		t.Logf("%s", config.Name)
 	}
+}
+
+// TestUpdateCollection is a placeholder: the v6 Go client cannot yet update an
+// existing collection definition. Collection settings must be chosen at
+// creation time; to change an immutable setting, recreate the collection.
+func TestUpdateCollection(t *testing.T) {
+	t.Skip("updating a collection definition is not yet available in the v6 Go client")
+
+	// TODO[g-despot]: update-collection snippet pending v6 client support
+	// START UpdateCollection
+	// Coming soon
+	// END UpdateCollection
 }

@@ -109,6 +109,18 @@ func TestCreateCollectionWithNamedVectors(t *testing.T) {
 	}
 }
 
+// TestAddNamedVectors is a placeholder: adding a new named vector to an existing
+// collection mutates its definition, which the v6 Go client cannot yet do. Named
+// vectors must be declared when the collection is created.
+func TestAddNamedVectors(t *testing.T) {
+	t.Skip("adding named vectors to an existing collection is not yet available in the v6 Go client")
+
+	// TODO[g-despot]: add-named-vectors snippet pending v6 client support
+	// START AddNamedVectors
+	// Coming soon
+	// END AddNamedVectors
+}
+
 // TestSetVectorIndexType selects the vector index type for a named vector.
 func TestSetVectorIndexType(t *testing.T) {
 	t.Skip("requires a running Weaviate instance")
