@@ -135,7 +135,7 @@ func TestSetVectorIndexType(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{
-			"default": {Index: vectorindex.HFresh{}, Vectorizer: model2vec.Text2Vec{}},
+			"default": {Index: vectorindex.HFresh{MaxPostingSizeKB: 8}, Vectorizer: model2vec.Text2Vec{}},
 		},
 	})
 	// END SetVectorIndexType

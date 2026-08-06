@@ -73,7 +73,7 @@ func TestRQWithOptions(t *testing.T) {
 
 	// START RQWithOptions
 	vectorConfig := collections.VectorConfig{
-		Index: vectorindex.HFresh{Distance: vectorindex.DistanceCosine},
+		Index: vectorindex.HFresh{Distance: vectorindex.DistanceCosine, MaxPostingSizeKB: 8},
 		Compression: compression.RQ{
 			Bits:         8,
 			RescoreLimit: 20,
