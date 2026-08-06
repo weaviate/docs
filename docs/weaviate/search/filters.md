@@ -1069,7 +1069,7 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
 
 :::caution Preview feature
 
-Available from Weaviate `v1.38` as a preview, gated by the `WEAVIATE_PREVIEW_NESTED_FILTERING=on` environment variable on the server. The path syntax and operator semantics are stable, but the on-disk encoding may change before GA — don't rely on persistent state from preview clusters carrying over to the GA release. The env var is removed at GA and the feature is enabled unconditionally.
+Available from Weaviate `v1.38` as a preview, gated by the `WEAVIATE_PREVIEW_NESTED_FILTERING=on` environment variable on the server. The path syntax and operator semantics are stable, but the on-disk encoding may change before GA. Don't rely on persistent state from preview clusters carrying over to the GA release. The env var is removed at GA and the feature is enabled unconditionally.
 
 :::
 
@@ -1094,7 +1094,7 @@ The filter property is a single dotted path. The dot is the only separator. An o
 | `cars.tires.width` | Any tire on any car (recursive across two `object[]` levels) |
 | `cars[1].tires[2].brand` | The second car's third tire's `brand` (positional through nesting) |
 
-`[N]` on a segment requires that segment to be an `object[]` (array). Every intermediate segment must be `object` or `object[]` — you cannot pivot through a scalar. The leaf may be any supported scalar type.
+`[N]` on a segment requires that segment to be an `object[]` (array). Every intermediate segment must be `object` or `object[]`. You cannot pivot through a scalar. The leaf may be any supported scalar type.
 
 ### Match any element (default)
 
@@ -1128,7 +1128,7 @@ Use `[N]` to pin a path segment to a specific array index. Indices are 0-based.
 
 ### Same-element correlation across leaves
 
-Combining two leaf filters with `And` matches when **the same element** in the parent array satisfies both. A document with one car `(Toyota, blue)` and another `(Honda, red)` would not match `cars.make = "Toyota" AND cars.color = "red"` — both conditions must hold on the **same** car.
+Combining two leaf filters with `And` matches when **the same element** in the parent array satisfies both. A document with one car `(Toyota, blue)` and another `(Honda, red)` would not match `cars.make = "Toyota" AND cars.color = "red"`. Both conditions must hold on the **same** car.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -1176,7 +1176,7 @@ Pointing a path at an `object` or `object[]` segment (rather than a scalar leaf)
 :::note
 
 - **Allowed leaf data types**: `text`, `int`, `number`, `boolean`, `date`, `uuid`, and their array variants. `blob`, `blobHash`, `geoCoordinates`, `phoneNumber`, and cross-references (`cref`) are not allowed inside nested objects for nested filtering.
-- **`IndexFilterable` is required**: nested filtering uses the filterable inverted index on each leaf. `IndexRangeFilters` and `IndexSearchable` flags exist on nested-property definitions but are not yet exercised by the nested searcher — range filters on nested numeric leaves currently use the filterable bucket.
+- **`IndexFilterable` is required**: nested filtering uses the filterable inverted index on each leaf. `IndexRangeFilters` and `IndexSearchable` flags exist on nested-property definitions but are not yet exercised by the nested searcher. Range filters on nested numeric leaves currently use the filterable bucket.
 - **Tokenization matters**: nested `text` leaves use the same tokenization options as flat properties. For exact-match filters on names, codes, or identifiers, set `tokenization: field` on the leaf so the value is stored as a single token.
 - **Reference-path vs nested-path**: a reference-path filter is a multi-element `Path` (`["inCity", "City", "name"]`) traversing cross-references; a nested-path filter is a **single-element** path with dots inside it (`["cars.make"]`).
 
