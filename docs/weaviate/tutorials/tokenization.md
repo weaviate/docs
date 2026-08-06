@@ -348,14 +348,14 @@ We create three properties: one without folding (`text_default`), one with full 
 **Key observations:**
 - Without folding, only exact accented forms match
 - With `asciiFold: true`, both accented and unaccented queries match
-- `asciiFoldIgnore` lets you preserve specific characters — `"cafe"` no longer matches `"Café"` when `é` is ignored
+- `asciiFoldIgnore` lets you preserve specific characters: `"cafe"` no longer matches `"Café"` when `é` is ignored
 - `asciiFoldIgnore` is immutable after property creation
 
 ## Example 5: Custom and per-property stopword presets
 
 <TokenizerPreview/>
 
-The default stopword presets are `en` and `none`. For a French property, neither is appropriate — `la`, `le`, and `et` should be filtered, but they are not in the English list. Define a custom preset on the collection and assign it to specific properties.
+The default stopword presets are `en` and `none`. For a French property, neither is appropriate: `la`, `le`, and `et` should be filtered, but they are not in the English list. Define a custom preset on the collection and assign it to specific properties.
 
 ### Create a collection with custom stopwords
 
@@ -483,7 +483,7 @@ The default stopword presets are `en` and `none`. For a French property, neither
 **Key observations:**
 - The `fr` preset filters out `la`, `le`, and `et` from BM25 scoring on the French property
 - The same words are not filtered on the English property (they are not English stopwords)
-- Stopwords are still indexed — only filtered at query time — so changing presets does not require reindexing
+- Stopwords are still indexed (they are only filtered at query time), so changing presets does not require reindexing
 - A preset name that matches a built-in (`en`, `none`) replaces the built-in for this collection. To tweak a built-in with `additions`/`removals`, use the collection-level `invertedIndexConfig.stopwords` field instead
 
 ## Example 6: Inspecting tokenization with the tokenize endpoint
