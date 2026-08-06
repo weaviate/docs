@@ -798,7 +798,7 @@ Chunking matters because it determines how much a later [incremental backup](#in
 - A big file that Weaviate keeps rewriting has its own chunk but is still re-uploaded on every backup.
 - Shared chunks are re-uploaded on every incremental backup, even if nothing in them changed.
 
-A file gets its own chunk when it reaches the **qualifying size**: the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the shard's Nth largest file, where N is `BACKUP_MAX_INDIVIDUAL_FILES`, reduced on an incremental backup by the number of files already reused from the base backup. This budget is shared across a whole backup chain rather than renewed for each backup in it. Because the larger value wins, `BACKUP_MIN_CHUNK_SIZE` is only a floor — lowering it never reduces how many files qualify. Which knob qualifies more files depends on the shard: with `BACKUP_MAX_INDIVIDUAL_FILES` or more files above the floor, raise `BACKUP_MAX_INDIVIDUAL_FILES`; with fewer, lower `BACKUP_MIN_CHUNK_SIZE`.
+A file gets its own chunk when it reaches the **qualifying size**: the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the shard's Nth largest file, where N is `BACKUP_MAX_INDIVIDUAL_FILES`, reduced on an incremental backup by the number of files already reused from the base backup. This budget is shared across a whole backup chain rather than renewed for each backup in it. Because the larger value wins, `BACKUP_MIN_CHUNK_SIZE` is only a floor — lowering it never reduces how many files qualify. Which knob qualifies more files depends on the shard: with N or more files above the floor, raise `BACKUP_MAX_INDIVIDUAL_FILES`; with fewer, lower `BACKUP_MIN_CHUNK_SIZE`.
 
 ```mermaid
 flowchart TD
