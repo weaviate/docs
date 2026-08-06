@@ -270,8 +270,8 @@ from weaviate.classes.config import Property, DataType
 client.collections.create(
     name="WikiArticle",
     properties=[
-        Property(name="title", data_type=DataType.TEXT)
-        Property(name="category", data_type=DataType.TEXT)
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="category", data_type=DataType.TEXT),
     ],
 )
 ```

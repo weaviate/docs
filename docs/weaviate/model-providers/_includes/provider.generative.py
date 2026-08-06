@@ -1026,7 +1026,10 @@ client.collections.create(
         # presence_penalty=0,
         # temperature=0.7,
         # top_p=0.7,
-        # base_url="<custom_openai_url>"
+        # base_url="<custom_openai_url>",
+        # # For reasoning models such as the gpt-5 family:
+        # reasoning_effort="medium",  # One of "minimal", "low", "medium", "high"
+        # verbosity="medium",  # One of "low", "medium", "high"
     )
     # highlight-end
     # Additional parameters not shown

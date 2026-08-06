@@ -547,10 +547,10 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecHuggingFace({
       name: 'title_vector',
       sourceProperties: ['title'],
+      // NOTE: Use only one of `model`, `passageModel`, or `endpointURL`
       model: 'sentence-transformers/all-MiniLM-L6-v2',
       // endpointURL: <custom_huggingface_url>,
-      // passageModel: 'sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base',    // Required if using `query_model`
-      // queryModel: 'sentence-transformers/facebook-dpr-question_encoder-single-nq-base', // Required if using `passage_model`
+      // passageModel: 'sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base',
       // waitForModel: true,
       // useCache: true,
       // useGPU: true,

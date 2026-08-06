@@ -82,7 +82,7 @@ With `relativeScoreFusion` (default from `v1.24`), each object is scored by *nor
 
 With `rankedFusion` (default for `v1.23` and lower), each object is scored according to its position in the results for the given search, starting from the highest score for the top-ranked object and decreasing down the order. The total score is calculated by adding these rank-based scores from the vector and keyword searches.
 
-Generally, `relativeScoreFusion` might be a a good choice, which is why it is the default.
+Generally, `relativeScoreFusion` might be a good choice, which is why it is the default.
 
 The main reason is that `relativeScoreFusion` retains more information from the original searches than `rankedFusion`, which only retains the rankings. More generally we believe that the nuances captured in the vector and keyword search metrics are more likely to be reflected in rankings produced by `relativeScoreFusion`.
 
@@ -161,9 +161,19 @@ In contrast, for `rankedFusion`, the object **ID 2** is the top result, closely 
 
 The alpha value determines the weight of the vector search results in the final hybrid search results. The alpha value can range from 0 to 1:
 
-- `alpha = 0.5` (default): Equal weight to both searches
-- `alpha > 0.5`: More weight to vector search
+- `alpha = 0`: Keyword search only
 - `alpha < 0.5`: More weight to keyword search
+- `alpha = 0.5`: Equal weight to both searches
+- `alpha > 0.5`: More weight to vector search (`0.75` is the default)
+- `alpha = 1`: Vector search only
+
+Lower `alpha` towards `0` to give the keyword component more influence.
+
+:::caution Set `alpha` explicitly
+`0.75` is the server default. It applies only when a request reaches Weaviate with no `alpha` value, which is the case for GraphQL, and over gRPC from Weaviate `v1.36.7` and later, which added the ability for a client to leave `alpha` unset.
+
+Client libraries do not all leave `alpha` unset. Depending on your client and your server version, the effective weighting can differ from `0.75`, and in some cases can be a pure keyword search. Set `alpha` explicitly whenever the weighting matters, and check your client library page for its behavior.
+:::
 
 ## Search thresholds
 

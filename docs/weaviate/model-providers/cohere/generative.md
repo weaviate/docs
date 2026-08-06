@@ -52,7 +52,7 @@ You must provide a valid Cohere API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `COHERE_API_KEY` environment variable that is available to Weaviate.
+- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -264,8 +264,11 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
+From Weaviate `v1.31.17`, `v1.32.10`, `v1.33.0` and later, Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. The following models are commonly used:
+
+- `command-a-03-2025` (server default in `v1.31.17`, `v1.32.10`, `v1.33.0` and later)
 - `command-r-plus`
-- `command-r` (default)
+- `command-r` (server default before `v1.31.17`, `v1.32.10` and `v1.33.0`)
 - `command-xlarge`
 - `command-xlarge-beta`
 - `command-xlarge-nightly`

@@ -704,7 +704,6 @@ const sidebars = {
         "weaviate/tutorials/cross-references",
         "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/vector-provision-options",
-        //"weaviate/tutorials/query",
         //"weaviate/tutorials/wikipedia",
         //"weaviate/tutorials/modules",
       ],
