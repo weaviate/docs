@@ -11,6 +11,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compress
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression-v3.ts';
 import TSCodeSQOptions from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression.options-v3.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.sq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureSQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureSQTest.cs";
 
@@ -41,6 +42,14 @@ SQ can be enabled at collection creation time through the collection definition:
         startMarker="// START EnableSQ"
         endMarker="// END EnableSQ"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START EnableSQ"
+        endMarker="// END EnableSQ"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -86,6 +95,14 @@ SQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START SQUpdateSchema"
+        endMarker="// END SQUpdateSchema"
+        language="go6"
+      />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -127,6 +144,14 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         startMarker="// START SQWithOptions"
         endMarker="// END SQWithOptions"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START SQWithOptions"
+        endMarker="// END SQWithOptions"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">

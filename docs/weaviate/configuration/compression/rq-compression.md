@@ -131,6 +131,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQUpdateSchema"
+        endMarker="// END RQUpdateSchema"
+        language="go6"
+      />
+  </TabItem>
 </Tabs>
 
 ## 1-bit RQ
@@ -221,6 +229,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         startMarker="// START 1BitUpdateSchema"
         endMarker="// END 1BitUpdateSchema"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQ1BitUpdateSchema"
+        endMarker="// END RQ1BitUpdateSchema"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
