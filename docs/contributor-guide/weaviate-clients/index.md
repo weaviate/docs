@@ -9,7 +9,7 @@ There are currently four clients developed for Weaviate's APIs:
 - **[Python](/weaviate/client-libraries/python/index.mdx)**
 - **[TypeScript/JavaScript](../../weaviate/client-libraries/typescript/index.mdx)**
 - **[Java](/weaviate/client-libraries/java/index.mdx)**
-- **[Go](/weaviate/client-libraries/go.md)**
+- **[Go](/weaviate/client-libraries/go/index.md)**
 
 These clients, and all future clients are and will be developed according to the following guidelines:
 
@@ -80,7 +80,7 @@ closest and get inspried.
 
 For example, if you plan to implement a client in C#, it might make sense to look at the
 [Java](/weaviate/client-libraries/java/index.mdx) and
-[Go](/weaviate/client-libraries/go.md) clients.
+[Go](/weaviate/client-libraries/go/index.md) clients.
 
 Then we recommend to start porting one of the existing test suites and start
 implementing the client methods until all tests are passed. If you use the same

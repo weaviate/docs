@@ -4,6 +4,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.local.query.rag.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.local.query.rag.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_local_3/quickstart.short.local.query.rag.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/quickstart/rag/main.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartLocalQueryNearTextRAG.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/QuickstartLocalQueryNearTextRAG.cs";
 
@@ -30,6 +31,19 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/Quickstar
       startMarker="// START RAG"
       endMarker="// END RAG"
       language="goraw"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+
+:::note Go client `v6` (pre-release)
+Generative (RAG) queries are not yet available in the pre-release [`v6` Go client](https://github.com/weaviate/weaviate-go-client/tree/v6). This step is coming soon.
+:::
+
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START RAG"
+      endMarker="// END RAG"
+      language="go6full"
     />
   </TabItem>
   <TabItem value="java" label="Java">

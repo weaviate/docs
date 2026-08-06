@@ -13,6 +13,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/aliases_test.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsAliasTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsAliasTest.cs";
 
@@ -100,6 +101,14 @@ First, connect to your Weaviate instance using your preferred client library.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ConnectToWeaviate"
+      endMarker="// END ConnectToWeaviate"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -145,6 +154,14 @@ Let's create our initial products collection and populate it with data.
       startMarker="// START Step1CreateOriginal"
       endMarker="// END Step1CreateOriginal"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Step1CreateOriginal"
+      endMarker="// END Step1CreateOriginal"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -194,6 +211,14 @@ Now create an alias that your application will use. This decouples your applicat
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Step2CreateAlias"
+      endMarker="// END Step2CreateAlias"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -239,6 +264,14 @@ Your application code should reference the alias, not the underlying collection.
       startMarker="// START MigrationUseAlias"
       endMarker="// END MigrationUseAlias"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START MigrationUseAlias"
+      endMarker="// END MigrationUseAlias"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -290,6 +323,14 @@ Now let's create a new version of the collection with an additional field (e.g.,
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Step3NewCollection"
+      endMarker="// END Step3NewCollection"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -335,6 +376,14 @@ Copy data from the old collection to the new one, adding default values for new 
       startMarker="// START Step4MigrateData"
       endMarker="// END Step4MigrateData"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Step4MigrateData"
+      endMarker="// END Step4MigrateData"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -384,6 +433,14 @@ This is the magic moment - update the alias to point to the new collection. This
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Step5UpdateAlias"
+      endMarker="// END Step5UpdateAlias"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -429,6 +486,14 @@ After verifying that everything works correctly with the new collection, you can
       startMarker="// START Step6Cleanup"
       endMarker="// END Step6Cleanup"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START Step6Cleanup"
+      endMarker="// END Step6Cleanup"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

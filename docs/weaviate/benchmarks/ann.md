@@ -268,7 +268,7 @@ We use Go to measure the concurrent (multi-threaded) queries.
 Each language has its own performance characteristics.
 You may get different results if you use a different language to send your queries.
 
-For maximum throughput, we recommend using the [Go](/weaviate/client-libraries/go.md) or
+For maximum throughput, we recommend using the [Go](/weaviate/client-libraries/go/index.md) or
 [Java](/weaviate/client-libraries/java/index.mdx) client libraries.
 
 The complete import and test scripts are available [here](https://github.com/weaviate/weaviate-benchmarking).

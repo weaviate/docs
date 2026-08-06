@@ -13,6 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/generative_reranker_test.go";
 
 :::tip Embedding models / Vectorizers
 
@@ -52,6 +53,14 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
       startMarker="// START SetReranker"
       endMarker="// END SetReranker"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -103,6 +112,14 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
       startMarker="// START UpdateReranker"
       endMarker="// END UpdateReranker"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateReranker"
+      endMarker="// END UpdateReranker"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -157,6 +174,14 @@ Specify a `generative` model integration for a collection (for RAG).
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -206,6 +231,14 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
       startMarker="// START UpdateGenerative"
       endMarker="// END UpdateGenerative"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateGenerative"
+      endMarker="// END UpdateGenerative"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

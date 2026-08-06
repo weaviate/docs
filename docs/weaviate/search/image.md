@@ -12,6 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/search.image.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.image.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-image_test.go';
+import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/search_image_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchImageTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchImageTest.cs";
 
@@ -60,6 +61,14 @@ If your query image is stored in a file, you can use the client library to searc
       startMarker="// START ImageFileSearch"
       endMarker="// END ImageFileSearch"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ImageByPath"
+      endMarker="// END ImageByPath"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -121,6 +130,14 @@ You can search by a base64 representation of an image:
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ImageByBase64"
+      endMarker="// END ImageByBase64"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -178,6 +195,14 @@ You can create a base64 representation of an online image, and use it as input f
       startMarker="// START helper base64 functions"
       endMarker="// END helper base64 functions"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ImageBase64Helper"
+      endMarker="// END ImageBase64Helper"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

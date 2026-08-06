@@ -17,6 +17,7 @@ import GoConnect from "!!raw-loader!/\_includes/code/howto/go/docs/model-provide
 import PyCode from "!!raw-loader!../\_includes/provider.vectorizer.py";
 import TSCode from "!!raw-loader!../\_includes/provider.vectorizer.ts";
 import GoCode from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
+import GoV6Code from "!!raw-loader!/\_includes/code/go-v6/embeddings_test.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.cs";
 
@@ -115,6 +116,14 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="goraw"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START BasicVectorizerWeaviate"
+      endMarker="// END BasicVectorizerWeaviate"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -160,6 +169,14 @@ You can specify one of the [available models](#available-models) for the vectori
       startMarker="// START VectorizerWeaviateCustomModel"
       endMarker="// END VectorizerWeaviateCustomModel"
       language="goraw"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START VectorizerWeaviateCustomModel"
+      endMarker="// END VectorizerWeaviateCustomModel"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

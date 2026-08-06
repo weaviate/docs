@@ -1,0 +1,278 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"testing"
+
+	"github.com/google/uuid"
+	"github.com/weaviate/weaviate-go-client/v6/collections"
+	"github.com/weaviate/weaviate-go-client/v6/data"
+	"github.com/weaviate/weaviate-go-client/v6/query"
+)
+
+func TestBasicQuery(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupArticle(t, client)
+	defer client.Collections.Delete(ctx, "Article")
+
+	articles := client.Collections.Use("Article")
+	// Fixed, non-leading-zero id keeps the query deterministic (a server-assigned
+	// 0x00-leading id flakes the gRPC reply; see filterByIdSeedUUID in main_test.go).
+	id := uuid.MustParse("d1e2f3a4-b5c6-4d7e-8f9a-3b4c5d6e7f8a")
+	if _, err := articles.Data.Insert(ctx, &data.Object{
+		UUID:       &id,
+		Properties: map[string]any{"title": "Hello", "body": "World"},
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	// START BasicQuery
+	response, err := articles.Query.OverAll(ctx, query.OverAll{
+		Limit: 2,
+	})
+	// END BasicQuery
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, obj := range response.Objects {
+		t.Logf("%v", obj.Properties)
+	}
+}
+
+// TestBasicGet lists objects without any search parameters.
+func TestBasicGet(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START BasicGet
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END BasicGet
+}
+
+// TestGetWithLimit caps the number of returned objects.
+func TestGetWithLimit(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START GetWithLimit
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit: 1,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END GetWithLimit
+}
+
+// TestGetWithOffset paginates with limit and offset.
+func TestGetWithOffset(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START GetWithOffset
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit:  1,
+		Offset: 1,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END GetWithOffset
+}
+
+// TestGetProperties returns a subset of object properties.
+func TestGetProperties(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START GetProperties
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit:            1,
+		ReturnProperties: []string{"question", "answer", "points"},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END GetProperties
+}
+
+// TestGetObjectVector returns the object vector alongside the results.
+func TestGetObjectVector(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START GetObjectVector
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit: 1,
+		// Name the vectors to return; use "default" for a single unnamed vector.
+		ReturnVectors: []string{"default"},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Vectors["default"].Single)
+	}
+	// END GetObjectVector
+}
+
+// TestGetObjectId reads the object id (uuid) from the results.
+func TestGetObjectId(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START GetObjectId
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit: 1,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		// The object id is always returned.
+		fmt.Printf("%v\n", obj.UUID)
+	}
+	// END GetObjectId
+}
+
+// TestGetWithCrossRefs returns properties from cross-referenced objects.
+func TestGetWithCrossRefs(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardyDemo(t, client)
+	defer cleanupJeopardyDemo(ctx, client)
+
+	// START GetWithCrossRefs
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit: 2,
+		ReturnReferences: []query.Reference{
+			{
+				PropertyName:     "hasCategory",
+				TargetCollection: "JeopardyCategory",
+				ReturnProperties: []string{"title"},
+			},
+		},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END GetWithCrossRefs
+}
+
+// TestGetWithMetadata returns object metadata such as the creation timestamp.
+func TestGetWithMetadata(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START GetWithMetadata
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit: 1,
+		ReturnMetadata: query.ReturnMetadata{
+			CreatedAt: true,
+		},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		if obj.CreatedAt != nil {
+			fmt.Printf("created at: %v\n", *obj.CreatedAt)
+		}
+	}
+	// END GetWithMetadata
+}
+
+// TestMultiTenancy queries a specific tenant of a multi-tenant collection.
+func TestMultiTenancy(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupMultiTenancyJeopardy(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START MultiTenancy
+	// Bind the tenant once when you take the collection handle.
+	jeopardy := client.Collections.Use("JeopardyQuestion",
+		collections.WithTenant("tenantA"),
+	)
+	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		Limit: 2,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END MultiTenancy
+}

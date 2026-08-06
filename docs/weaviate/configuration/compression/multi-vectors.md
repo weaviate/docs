@@ -10,6 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.ts';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ManageCollectionsTest.cs";
 
 Multi-vector embeddings represent a single data object, like a document or image, using a set of multiple vectors rather than a single vector. This approach allows for a more granular capture of semantic information, as each vector can represent different parts of the object. However, this leads to a significant increase in memory consumption, as multiple vectors are stored for each item.
@@ -58,6 +59,14 @@ The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/em
 ```
 
 </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START MuveraEncoding"
+      endMarker="// END MuveraEncoding"
+      language="go6"
+    />
+  </TabItem>
 <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}

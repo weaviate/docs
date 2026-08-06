@@ -1,0 +1,565 @@
+package main
+
+import (
+	"context"
+	"net/http"
+	"os"
+	"strconv"
+	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	weaviate "github.com/weaviate/weaviate-go-client/v6"
+	"github.com/weaviate/weaviate-go-client/v6/aggregate"
+	"github.com/weaviate/weaviate-go-client/v6/collections"
+	"github.com/weaviate/weaviate-go-client/v6/data"
+	"github.com/weaviate/weaviate-go-client/v6/tenant"
+)
+
+// connectLocal returns a client connected to a local Weaviate instance
+// (localhost:8080 REST, localhost:50051 gRPC). This is the connection the
+// docs test stack exposes; the insert and query smoke tests dial through it.
+func connectLocal(t *testing.T) *weaviate.Client {
+	t.Helper()
+	ctx := context.Background()
+	client, err := weaviate.NewLocal(ctx)
+	if err != nil {
+		t.Fatalf("connect to local Weaviate: %v", err)
+	}
+	return client
+}
+
+// getenvOr returns the value of environment variable key, or fallback when the
+// variable is unset or empty.
+func getenvOr(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
+// getenvPortOr returns the integer value of environment variable key, or fallback
+// when the variable is unset, empty, or not a valid integer.
+func getenvPortOr(key string, fallback int) int {
+	if v := os.Getenv(key); v != "" {
+		if p, err := strconv.Atoi(v); err == nil {
+			return p
+		}
+	}
+	return fallback
+}
+
+// connectRBACAdmin returns a client connected as the RBAC root user to the
+// RBAC-enabled Weaviate instance the docs CI stack runs (service weaviate_rbac in
+// tests/docker-compose-rbac.yml: HTTP :8580 / gRPC :50551, root user "root-user"
+// with API key "root-user-key", RBAC + OIDC + DB-users enabled). Host, ports and
+// key are overridable by environment variable so the same helper works on a
+// laptop and in CI. The RBAC snippets dial through this instead of connectLocal
+// (which reaches the anonymous default-port instance that does not enforce RBAC),
+// so the role, database-user and OIDC snippets run against an instance that
+// actually authorizes them. This helper sits outside every snippet marker, so it
+// never appears in a rendered snippet.
+//
+// The root key is sent as a Bearer Authorization header rather than via
+// weaviate.WithAPIKey(...). WithAPIKey attaches the key as a gRPC per-RPC
+// credential (oauth.TokenSource) whose RequireTransportSecurity() reports true, so
+// against this plaintext-http instance grpc.NewClient() refuses to build the
+// channel ("credentials require transport level security") and NewClient fails to
+// connect at all — a v6-client bug (internal/transports/grpc.go attaches the
+// per-RPC credential even when it selected insecure transport creds; still present
+// on origin/v6 @8a70091). Every RBAC endpoint is REST, so an Authorization header
+// authenticates all of them as root-user while sidestepping the broken gRPC path.
+// The rendered AdminClient snippet still shows weaviate.WithAPIKey, which is the
+// correct pattern for a TLS deployment where the bug does not bite. See the tier-4
+// escalation notes.
+func connectRBACAdmin(t *testing.T) *weaviate.Client {
+	t.Helper()
+	ctx := context.Background()
+	apiKey := getenvOr("WEAVIATE_RBAC_API_KEY", "root-user-key")
+	client, err := weaviate.NewClient(ctx,
+		weaviate.WithScheme("http"),
+		weaviate.WithHTTPHost(getenvOr("WEAVIATE_RBAC_HTTP_HOST", "localhost")),
+		weaviate.WithHTTPPort(getenvPortOr("WEAVIATE_RBAC_HTTP_PORT", 8580)),
+		weaviate.WithGRPCHost(getenvOr("WEAVIATE_RBAC_GRPC_HOST", "localhost")),
+		weaviate.WithGRPCPort(getenvPortOr("WEAVIATE_RBAC_GRPC_PORT", 50551)),
+		weaviate.WithHeader(http.Header{"Authorization": []string{"Bearer " + apiKey}}),
+	)
+	if err != nil {
+		t.Fatalf("connect to RBAC Weaviate: %v", err)
+	}
+	return client
+}
+
+// setupArticle (re)creates a minimal Article collection used by the object and
+// query smoke tests. It has no vectorizer, so objects are inserted with
+// explicit properties only and read back with a plain fetch.
+func setupArticle(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	// Start from a clean slate; ignore the error when the collection is absent.
+	_ = client.Collections.Delete(ctx, "Article")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "Article",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+			{Name: "body", DataType: collections.DataTypeText},
+		},
+	}); err != nil {
+		t.Fatalf("create Article collection: %v", err)
+	}
+}
+
+// waitForCount polls a collection handle until it reports at least n objects,
+// then returns. The docs test instance runs with ASYNC_INDEXING enabled, so
+// objects are not guaranteed to be queryable the instant Insert returns; polling
+// the aggregate object count settles that race and keeps the seeded tests
+// deterministic. For a multi-tenant collection, pass a tenant-bound handle so
+// the aggregate is scoped to that tenant.
+func waitForCount(t *testing.T, handle *collections.Handle, n int) {
+	t.Helper()
+	ctx := context.Background()
+	deadline := time.Now().Add(30 * time.Second)
+	var last int64
+	for time.Now().Before(deadline) {
+		res, err := handle.Aggregate.OverAll(ctx, aggregate.OverAll{TotalCount: true})
+		if err == nil && res.TotalCount != nil {
+			last = *res.TotalCount
+			if last >= int64(n) {
+				return
+			}
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
+	t.Fatalf("waitForCount: %q reached %d/%d objects before timeout", handle.CollectionName(), last, n)
+}
+
+// filterByIdSeedUUID is the id filtered on by TestFilterById; setupJeopardyDemo
+// seeds one question with this id so that snippet returns a deterministic match.
+//
+// The first byte must be non-zero. Weaviate's gRPC search reply carries the
+// object id in the `id_as_bytes` field, which drops leading zero bytes: an id
+// beginning 0x00 comes back as 15 bytes and the client's uuid.FromBytes rejects
+// the whole reply with "invalid UUID (got 15 bytes)", failing every query over
+// the collection. The previous value ("00037775-…") began 0x00 and did exactly
+// that. Keep every seeded id's first byte non-zero.
+const filterByIdSeedUUID = "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f"
+
+// Fixed ids for the demo JeopardyCategory rows so questions can be linked to
+// them with AddReferences during seeding.
+var (
+	demoCatAnimals = uuid.MustParse("11111111-1111-4111-8111-111111111111")
+	demoCatSports  = uuid.MustParse("22222222-2222-4222-8222-222222222222")
+	demoCatScience = uuid.MustParse("33333333-3333-4333-8333-333333333333")
+)
+
+// setupJeopardyDemo (re)creates the full JeopardyQuestion demo collection used by
+// the filter and cross-reference snippets: a question/answer/category/round/
+// points/dateRecorded schema plus a hasCategory reference to a seeded
+// JeopardyCategory. It has no vectorizer, so the filter examples run on a plain
+// fetch (Query.OverAll) with the filter as the only variable.
+//
+// The inverted index turns on the null-state, property-length and timestamp
+// indexes because the FilterByPropertyNullState, FilterByPropertyLength and
+// FilterByTimestamp snippets query those indexes and error without them.
+func setupJeopardyDemo(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyQuestion")
+	_ = client.Collections.Delete(ctx, "JeopardyCategory")
+
+	// The reference target must exist before the collection that points to it.
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyCategory",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+		},
+	}); err != nil {
+		t.Fatalf("create JeopardyCategory collection: %v", err)
+	}
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyQuestion",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+			{Name: "category", DataType: collections.DataTypeText},
+			{Name: "round", DataType: collections.DataTypeText},
+			{Name: "points", DataType: collections.DataTypeInt},
+			{Name: "dateRecorded", DataType: collections.DataTypeDate},
+		},
+		References: []collections.Reference{
+			{Name: "hasCategory", Collections: []string{"JeopardyCategory"}},
+		},
+		InvertedIndex: &collections.InvertedIndexConfig{
+			IndexNullState:      true,
+			IndexPropertyLength: true,
+			IndexTimestamps:     true,
+		},
+	}); err != nil {
+		t.Fatalf("create JeopardyQuestion collection: %v", err)
+	}
+
+	categories := client.Collections.Use("JeopardyCategory")
+	if _, err := categories.Data.Insert(ctx,
+		&data.Object{UUID: &demoCatAnimals, Properties: map[string]any{"title": "Animals"}},
+		&data.Object{UUID: &demoCatSports, Properties: map[string]any{"title": "Sports"}},
+		&data.Object{UUID: &demoCatScience, Properties: map[string]any{"title": "Science"}},
+	); err != nil {
+		t.Fatalf("seed JeopardyCategory: %v", err)
+	}
+
+	// Every question gets a fixed, non-leading-zero id so the run is deterministic
+	// and no seeded object trips the id_as_bytes leading-zero bug (see
+	// filterByIdSeedUUID). Random or server-assigned ids carry a ~1/256 chance of a
+	// leading 0x00 byte, which would flake the whole collection's queries.
+	q1 := uuid.MustParse(filterByIdSeedUUID)
+	q2 := uuid.MustParse("b2c3d4e5-f6a7-4b5c-8d9e-2a3b4c5d6e7f")
+	q3 := uuid.MustParse("c3d4e5f6-a7b8-4c5d-8e9f-3a4b5c6d7e80")
+	q4 := uuid.MustParse("d4e5f6a7-b8c9-4d5e-8f90-4b5c6d7e8f90")
+	q5 := uuid.MustParse("e5f6a7b8-c9d0-4e5f-8a01-5c6d7e8f9012")
+	q6 := uuid.MustParse("f6a7b8c9-d0e1-4f5a-8b02-6d7e8f901234")
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	if _, err := jeopardy.Data.Insert(ctx,
+		&data.Object{UUID: &q1, Properties: map[string]any{
+			"question": "This organ removes excess glucose from the blood & stores it as glycogen",
+			"answer":   "Liver", "category": "SCIENCE", "round": "Jeopardy!", "points": 100,
+			"dateRecorded": "2021-05-05T00:00:00Z",
+		}},
+		&data.Object{UUID: &q2, Properties: map[string]any{
+			"question": "This large animal, the elephant, is the only living member of Proboscidea",
+			"answer":   "Elephant", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 200,
+			"dateRecorded": "2022-01-01T00:00:00Z",
+		}},
+		&data.Object{UUID: &q3, Properties: map[string]any{
+			"question": "This tall animal has a long neck and roams the African savanna",
+			"answer":   "Giraffe", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 500,
+			"dateRecorded": "2023-03-03T00:00:00Z",
+		}},
+		&data.Object{UUID: &q4, Properties: map[string]any{
+			"question": "Bees build these six-sided structures to store honey in a hive",
+			"answer":   "A honeycomb nest built by bees", "category": "NATURE", "round": "Jeopardy!", "points": 200,
+			"dateRecorded": "2020-06-06T00:00:00Z",
+		}},
+		&data.Object{UUID: &q5, Properties: map[string]any{
+			"question": "This racket sport holds its most famous tournament at Wimbledon",
+			"answer":   "Tennis", "category": "SPORTS", "round": "Final Jeopardy!", "points": 800,
+			"dateRecorded": "2021-09-09T00:00:00Z",
+		}},
+		// A question with no answer so FilterByPropertyNullState has a match.
+		&data.Object{UUID: &q6, Properties: map[string]any{
+			"question": "This open-source vector database is written in Go",
+			"category": "TECH", "round": "Double Jeopardy!", "points": 400,
+			"dateRecorded": "2024-04-04T00:00:00Z",
+		}},
+	); err != nil {
+		t.Fatalf("seed JeopardyQuestion: %v", err)
+	}
+
+	// Link a few questions to their categories so the cross-reference filter has
+	// data to traverse. Best-effort: only a transport error is fatal.
+	if _, err := jeopardy.Data.AddReferences(ctx,
+		data.Reference{Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: q1}, UUID: demoCatScience},
+		data.Reference{Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: q2}, UUID: demoCatAnimals},
+		data.Reference{Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: q3}, UUID: demoCatAnimals},
+		data.Reference{Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: q5}, UUID: demoCatSports},
+	); err != nil {
+		t.Fatalf("seed JeopardyQuestion references: %v", err)
+	}
+
+	waitForCount(t, jeopardy, 6)
+}
+
+// cleanupJeopardyDemo removes the collections created by setupJeopardyDemo. Call
+// it with defer so the delete runs while the client is still open.
+func cleanupJeopardyDemo(ctx context.Context, client *weaviate.Client) {
+	_ = client.Collections.Delete(ctx, "JeopardyQuestion")
+	_ = client.Collections.Delete(ctx, "JeopardyCategory")
+}
+
+// Fixed ids for the multi-tenancy seed so TestMtAddCrossRef can reference a real
+// source object (a MultiTenancyCollection question in tenantA) and a real target
+// object (a JeopardyCategory row) instead of dangling random ids.
+var (
+	mtSourceID   = uuid.MustParse("44444444-4444-4444-8444-444444444444")
+	mtSourceID2  = uuid.MustParse("66666666-6666-4666-8666-666666666666")
+	mtCategoryID = uuid.MustParse("55555555-5555-4555-8555-555555555555")
+)
+
+// createMultiTenancyCollection (re)creates the MultiTenancyCollection schema used
+// by the multi-tenancy snippets: a multi-tenant question collection with a
+// hasCategory reference to a (non-tenant) JeopardyCategory, mirroring the docs
+// demo. It creates no tenants and seeds no data, so the AddTenantsToClass snippet
+// can create tenantA/tenantB itself.
+func createMultiTenancyCollection(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "MultiTenancyCollection")
+	_ = client.Collections.Delete(ctx, "JeopardyCategory")
+
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyCategory",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+		},
+	}); err != nil {
+		t.Fatalf("create JeopardyCategory collection: %v", err)
+	}
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "MultiTenancyCollection",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+		},
+		References: []collections.Reference{
+			{Name: "hasCategory", Collections: []string{"JeopardyCategory"}},
+		},
+		MultiTenancy: &collections.MultiTenancyConfig{Enabled: true},
+	}); err != nil {
+		t.Fatalf("create MultiTenancyCollection: %v", err)
+	}
+}
+
+// setupMultiTenancy (re)creates MultiTenancyCollection, adds tenantA and seeds it
+// with a question (plus a JeopardyCategory row) so the tenant read/search and
+// cross-reference snippets have data to work with.
+func setupMultiTenancy(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	createMultiTenancyCollection(t, client)
+
+	if _, err := client.Collections.Use("JeopardyCategory").Data.Insert(ctx,
+		&data.Object{UUID: &mtCategoryID, Properties: map[string]any{"title": "Software"}},
+	); err != nil {
+		t.Fatalf("seed JeopardyCategory: %v", err)
+	}
+
+	collection := client.Collections.Use("MultiTenancyCollection")
+	if err := collection.Tenants.Create(ctx, tenant.Tenant{Name: "tenantA"}); err != nil {
+		t.Fatalf("create tenantA: %v", err)
+	}
+
+	tenantA := client.Collections.Use("MultiTenancyCollection", collections.WithTenant("tenantA"))
+	if _, err := tenantA.Data.Insert(ctx,
+		&data.Object{UUID: &mtSourceID, Properties: map[string]any{
+			"question": "This vector DB is OSS and supports automatic property type inference on import",
+		}},
+		// Fixed, non-leading-zero id: a server-assigned 0x00-leading id truncates in
+		// the gRPC id_as_bytes reply and flakes tenant queries (see filterByIdSeedUUID).
+		&data.Object{UUID: &mtSourceID2, Properties: map[string]any{
+			"question": "This organ removes excess glucose from the blood & stores it as glycogen",
+		}},
+	); err != nil {
+		t.Fatalf("seed tenantA: %v", err)
+	}
+
+	waitForCount(t, tenantA, 2)
+}
+
+// cleanupMultiTenancy removes the collections created for the multi-tenancy
+// snippets. Call it with defer so the delete runs while the client is still open.
+func cleanupMultiTenancy(ctx context.Context, client *weaviate.Client) {
+	_ = client.Collections.Delete(ctx, "MultiTenancyCollection")
+	_ = client.Collections.Delete(ctx, "JeopardyCategory")
+}
+
+// setupMultiTenancyJeopardy (re)creates a multi-tenant JeopardyQuestion
+// collection and seeds tenantA. The "read all objects" multi-tenancy search
+// snippet binds tenantA on a JeopardyQuestion handle, so this seeds that exact
+// collection name (distinct from the non-tenant JeopardyQuestion demo).
+func setupMultiTenancyJeopardy(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyQuestion")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyQuestion",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+			{Name: "category", DataType: collections.DataTypeText},
+			{Name: "points", DataType: collections.DataTypeInt},
+		},
+		MultiTenancy: &collections.MultiTenancyConfig{Enabled: true},
+	}); err != nil {
+		t.Fatalf("create multi-tenant JeopardyQuestion: %v", err)
+	}
+
+	collection := client.Collections.Use("JeopardyQuestion")
+	if err := collection.Tenants.Create(ctx, tenant.Tenant{Name: "tenantA"}); err != nil {
+		t.Fatalf("create tenantA: %v", err)
+	}
+
+	tenantA := client.Collections.Use("JeopardyQuestion", collections.WithTenant("tenantA"))
+	// Fixed, non-leading-zero ids keep the tenant read/search snippets deterministic
+	// (a server-assigned 0x00-leading id flakes gRPC queries; see filterByIdSeedUUID).
+	mtjLiver := uuid.MustParse("77777777-7777-4777-8777-777777777777")
+	mtjElephant := uuid.MustParse("88888888-8888-4888-8888-888888888888")
+	if _, err := tenantA.Data.Insert(ctx,
+		&data.Object{UUID: &mtjLiver, Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver", "category": "SCIENCE", "points": 100}},
+		&data.Object{UUID: &mtjElephant, Properties: map[string]any{"question": "The only living mammal in the order Proboscidea", "answer": "Elephant", "category": "ANIMALS", "points": 200}},
+	); err != nil {
+		t.Fatalf("seed tenantA: %v", err)
+	}
+
+	waitForCount(t, tenantA, 2)
+}
+
+// contextionaryVectorizer is a test-only Vectorizer that selects the
+// text2vec-contextionary module, which is enabled on the docs test instance
+// (deterministic, no model download, no API key). The v6 client encodes any
+// modules.Module by reflection from its Name, so a struct that only reports the
+// module name is enough to request server-side vectorization; the module does
+// not need to be registered with the client because these seeds only create
+// collections (the write path) and never decode the module config back.
+//
+// It carries no configuration, so it serializes to
+// {"text2vec-contextionary": {}} and the module vectorizes every text property
+// of the collection by default. The near-text and hybrid snippets rely on this
+// to turn their query text into a vector server-side.
+type contextionaryVectorizer struct{}
+
+func (contextionaryVectorizer) Name() string { return "text2vec-contextionary" }
+
+// setupJeopardyVectorized (re)creates a JeopardyQuestion collection whose
+// "default" vector is produced server-side by text2vec-contextionary, then
+// seeds it. Because the server vectorizes the objects on import (and the query
+// text at search time), this unblocks the near-text and hybrid snippets, which
+// do not supply their own vectors. Every object gets a fixed, non-leading-zero
+// id so the run stays deterministic and no seeded id trips the id_as_bytes
+// leading-zero bug (see filterByIdSeedUUID).
+func setupJeopardyVectorized(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyQuestion")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyQuestion",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+			{Name: "category", DataType: collections.DataTypeText},
+			{Name: "round", DataType: collections.DataTypeText},
+			{Name: "points", DataType: collections.DataTypeInt},
+		},
+		// The "default" vector is filled in by the server via
+		// text2vec-contextionary, so objects are inserted without vectors and
+		// near-text/hybrid queries can vectorize their query text server-side.
+		Vectors: map[string]collections.VectorConfig{
+			"default": {Vectorizer: contextionaryVectorizer{}},
+		},
+	}); err != nil {
+		t.Fatalf("create vectorized JeopardyQuestion collection: %v", err)
+	}
+
+	q1 := uuid.MustParse("a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f")
+	q2 := uuid.MustParse("b2c3d4e5-f6a7-4b5c-8d9e-2a3b4c5d6e7f")
+	q3 := uuid.MustParse("c3d4e5f6-a7b8-4c5d-8e9f-3a4b5c6d7e80")
+	q4 := uuid.MustParse("d4e5f6a7-b8c9-4d5e-8f90-4b5c6d7e8f90")
+	q5 := uuid.MustParse("e5f6a7b8-c9d0-4e5f-8a01-5c6d7e8f9012")
+	q6 := uuid.MustParse("f6a7b8c9-d0e1-4f5a-8b02-6d7e8f901234")
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	if _, err := jeopardy.Data.Insert(ctx,
+		&data.Object{UUID: &q1, Properties: map[string]any{
+			"question": "This organ removes excess glucose from the blood and stores it as glycogen",
+			"answer":   "Liver", "category": "SCIENCE", "round": "Jeopardy!", "points": 100,
+		}},
+		&data.Object{UUID: &q2, Properties: map[string]any{
+			"question": "This large animal is the only living mammal in the order Proboscidea",
+			"answer":   "Elephant", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 200,
+		}},
+		&data.Object{UUID: &q3, Properties: map[string]any{
+			"question": "This tall animal has a long neck and roams the African savanna",
+			"answer":   "Giraffe", "category": "ANIMALS", "round": "Double Jeopardy!", "points": 500,
+		}},
+		&data.Object{UUID: &q4, Properties: map[string]any{
+			"question": "Bees make this sweet food and store it in a hive",
+			"answer":   "Honey", "category": "NATURE", "round": "Jeopardy!", "points": 200,
+		}},
+		&data.Object{UUID: &q5, Properties: map[string]any{
+			"question": "This racket sport holds its most famous tournament at Wimbledon",
+			"answer":   "Tennis", "category": "SPORTS", "round": "Final Jeopardy!", "points": 800,
+		}},
+		&data.Object{UUID: &q6, Properties: map[string]any{
+			"question": "This yellow fruit is a favorite food of monkeys",
+			"answer":   "Banana", "category": "FOOD", "round": "Double Jeopardy!", "points": 300,
+		}},
+	); err != nil {
+		t.Fatalf("seed vectorized JeopardyQuestion: %v", err)
+	}
+
+	waitForCount(t, jeopardy, 6)
+}
+
+// setupWineReviewNV (re)creates a WineReviewNV collection with a single named
+// vector, "title_country", produced server-side by text2vec-contextionary from
+// the collection's text properties (title and country). It seeds a few reviews
+// so the named-vector near-text snippet has a target vector to search.
+func setupWineReviewNV(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "WineReviewNV")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "WineReviewNV",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+			{Name: "country", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"title_country": {Vectorizer: contextionaryVectorizer{}},
+		},
+	}); err != nil {
+		t.Fatalf("create WineReviewNV collection: %v", err)
+	}
+
+	w1 := uuid.MustParse("1a2b3c4d-5e6f-4a5b-8c9d-1a2b3c4d5e6f")
+	w2 := uuid.MustParse("2b3c4d5e-6f7a-4b5c-8d9e-2b3c4d5e6f7a")
+	w3 := uuid.MustParse("3c4d5e6f-7a8b-4c5d-8e9f-3c4d5e6f7a8b")
+	w4 := uuid.MustParse("4d5e6f7a-8b9c-4d5e-8f90-4d5e6f7a8b9c")
+	reviews := client.Collections.Use("WineReviewNV")
+	if _, err := reviews.Data.Insert(ctx,
+		&data.Object{UUID: &w1, Properties: map[string]any{"title": "A sweet white Riesling wine", "country": "Germany"}},
+		&data.Object{UUID: &w2, Properties: map[string]any{"title": "A dry white Chardonnay wine", "country": "France"}},
+		&data.Object{UUID: &w3, Properties: map[string]any{"title": "A bold red Cabernet Sauvignon wine", "country": "United States"}},
+		&data.Object{UUID: &w4, Properties: map[string]any{"title": "A crisp white Sauvignon Blanc wine", "country": "New Zealand"}},
+	); err != nil {
+		t.Fatalf("seed WineReviewNV: %v", err)
+	}
+
+	waitForCount(t, reviews, 4)
+}
+
+// setupJeopardyTinyVectorized (re)creates JeopardyTiny with two named vectors,
+// "jeopardy_questions_vector" and "jeopardy_answers_vector", both produced
+// server-side by text2vec-contextionary. It is the vectorized companion to
+// setupJeopardyTiny (which brings its own vectors): the multi-target near-text
+// snippets need server-side vectors so the query text can be vectorized against
+// each named target, whereas the multi-target near-vector snippets supply their
+// own vectors and use setupJeopardyTiny.
+func setupJeopardyTinyVectorized(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "JeopardyTiny")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "JeopardyTiny",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"jeopardy_questions_vector": {Vectorizer: contextionaryVectorizer{}},
+			"jeopardy_answers_vector":   {Vectorizer: contextionaryVectorizer{}},
+		},
+	}); err != nil {
+		t.Fatalf("create vectorized JeopardyTiny collection: %v", err)
+	}
+
+	t1 := uuid.MustParse("5e6f7a8b-9c0d-4e5f-8a01-5e6f7a8b9c0d")
+	t2 := uuid.MustParse("6f7a8b9c-0d1e-4f5a-8b02-6f7a8b9c0d1e")
+	t3 := uuid.MustParse("7a8b9c0d-1e2f-4a5b-8c03-7a8b9c0d1e2f")
+	jeopardy := client.Collections.Use("JeopardyTiny")
+	if _, err := jeopardy.Data.Insert(ctx,
+		&data.Object{UUID: &t1, Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver"}},
+		&data.Object{UUID: &t2, Properties: map[string]any{"question": "This large animal is the only living mammal in the order Proboscidea", "answer": "Elephant"}},
+		&data.Object{UUID: &t3, Properties: map[string]any{"question": "This tall animal has a long neck and roams the savanna", "answer": "Giraffe"}},
+	); err != nil {
+		t.Fatalf("seed vectorized JeopardyTiny: %v", err)
+	}
+
+	waitForCount(t, jeopardy, 3)
+}

@@ -13,6 +13,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
 import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsImportTest.java';
 import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportTest.cs';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
+import GoV6ImportCode from '!!raw-loader!/_includes/code/go-v6/batch_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
 [Batch imports](../tutorials/import.mdx) are an efficient way to add multiple data objects and cross-references. For most use cases, we recommend **server-side batching** as the starting point: the server tells the client how much data to send next, so you don't have to tune batch parameters yourself. When you need manual control over the batch size and concurrency — or you are using a client that does not yet support server-side batching — use [manual batching](#manual-batching) instead.
@@ -66,8 +67,16 @@ In TypeScript, `data.ingest()` is the server-side batching API, with no separate
   </TabItem>
   <TabItem value="go" label="Go">
 
-The Go client does not support server-side batching; use [manual batching](#manual-batching) instead.
+The Go client (v5) does not support server-side batching; use [manual batching](#manual-batching) instead, or the `Go v6` tab.
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6ImportCode}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="go6"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
 
@@ -145,7 +154,7 @@ In the C# client, `Batch.InsertMany` uses server-side batching under the hood.
 
 ## Manual batching
 
-Use manual (client-side) batching when you want to control the batch size and concurrency yourself, or when using a client that does not yet support server-side batching (such as the Go client). The following example adds objects to the `MyCollection` collection.
+Use manual (client-side) batching when you want to control the batch size and concurrency yourself, or when using a client that does not yet support server-side batching (such as the Go v5 client). The following example adds objects to the `MyCollection` collection.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

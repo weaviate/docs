@@ -13,6 +13,7 @@ import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.delete-v3.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.delete.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsDeleteTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.delete_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsDeleteTest.cs";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -59,6 +60,14 @@ To delete by id, specify the collection name and the object id.
       startMarker="// START DeleteObject"
       endMarker="// END DeleteObject"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START DeleteObject"
+      endMarker="// END DeleteObject"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -126,6 +135,14 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START DeleteMany"
+      endMarker="// END DeleteMany"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -187,6 +204,22 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
       WithValueText("asia", "europe")).  // Note the array syntax
       // highlight-end
     Do(ctx)
+```
+
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+
+```go
+  questions := client.Collections.Use("EphemeralObject")
+  res, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
+    Filter: &filter.Cond{
+      Target: "name",
+      // highlight-start
+      Operator: filter.ContainsAny, // Or filter.ContainsAll / filter.ContainsNone
+      Value:    []string{"asia", "europe"}, // Note the slice value
+      // highlight-end
+    },
+  })
 ```
 
   </TabItem>
@@ -256,6 +289,26 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
 ```
 
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+
+```go
+  questions := client.Collections.Use("EphemeralObject")
+  res, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
+    Filter: &filter.Cond{
+      Target: filter.UUID, // The object id ("_id") field
+      // highlight-start
+      Operator: filter.ContainsAny,
+      Value: []string{ // Note the slice value
+        "12c88739-7a4e-49fd-bf53-d6a829ba0261",
+        "3022b8be-a6dd-4ef4-b213-821f65cee53b",
+        "30de68c1-dd53-4bed-86ea-915f34faea63",
+      },
+      // highlight-end
+    },
+  })
+```
+
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -310,6 +363,14 @@ You can configure automatic deletion of objects after a specified time period us
       startMarker="// START DryRun"
       endMarker="// END DryRun"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START DryRun"
+      endMarker="// END DryRun"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
