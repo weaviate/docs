@@ -734,7 +734,8 @@ await client.collections.create({
     // These parameters are optional
     // model: 'mistral-large',
     // temperature: 0.7,
-    // maxTokens: 500
+    // maxTokens: 500,
+    // baseURL: '<custom_mistral_url>',
   }),
   // highlight-end
 });

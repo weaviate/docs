@@ -7,6 +7,9 @@
 OctoAI announced that they are winding down the commercial availability of its services by **31 October 2024**. Accordingly, the Weaviate OctoAI integrations are deprecated. Do not use these integrations for new projects.
 <br/>
 
+From Weaviate `v1.25.22`, `v1.26.8`, and `v1.27.1`, the `text2vec-octoai` and `generative-octoai` modules are inactive. Every vectorization and generation request they receive fails server-side with the error `OctoAI is permanently shut down`. The configuration, import, search, and RAG examples on these pages therefore no longer run against OctoAI, and are kept only as a record of how the integrations used to be configured. Of the options below, only "bring your own vectors" (Option 1) keeps an existing OctoAI collection usable.
+<br/>
+
 If you have a collection that is using an OctoAI integration, consider your options depending on whether you are using OctoAI's embedding models ([your options](#for-collections-with-octoai-embedding-integrations)) or generative models ([your options](#for-collections-with-octoai-generative-ai-integrations)).
 
 #### For collections with OctoAI embedding integrations

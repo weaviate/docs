@@ -388,7 +388,7 @@ The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https:
 ### Other integrations
 
 - [Voyage AI multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
-- [Voyage AI reranker models + Weaviate](./embeddings.md).
+- [Voyage AI reranker models + Weaviate](./reranker.md).
 
 ### Code examples
 

@@ -689,7 +689,9 @@ client.collections.create(
         Configure.Vectors.text2vec_mistral(
             name="title_vector",
             source_properties=["title"],
-            model="mistral-embed"
+            model="mistral-embed",
+            # # Further options
+            # base_url="<custom_mistral_url>",
         )
     ],
     # highlight-end
@@ -966,7 +968,7 @@ client.collections.create(
     # highlight-start
     vector_config=[
         Configure.Vectors.text2vec_digitalocean(
-            model="qwen3-embedding-0.6b",  # Required — choose from the DigitalOcean Serverless Inference catalogue
+            model="qwen3-embedding-0.6b",  # Required. Choose from the DigitalOcean Serverless Inference catalogue
             name="title_vector",
             source_properties=["title"],
         )

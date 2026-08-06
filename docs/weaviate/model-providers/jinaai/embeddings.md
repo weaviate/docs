@@ -329,13 +329,13 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-The server default changed in `v1.31.6` and `v1.32.0`.
+The server default changed in `v1.32.0`, and was backported to `v1.31.6`. Earlier releases on each of those lines default to `jina-embeddings-v2-base-en`.
 
-- `jina-embeddings-v4` (server default in `v1.31.6`, `v1.32.0` and later)
+- `jina-embeddings-v4` (server default)
     - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
 - `jina-embeddings-v3`
     - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
-- `jina-embeddings-v2-base-en` (server default before `v1.31.6` and `v1.32.0`)
+- `jina-embeddings-v2-base-en` (previous server default)
 - `jina-embeddings-v2-small-en`
 - `jina-embeddings-v2-base-zh`
 - `jina-embeddings-v2-base-es`
