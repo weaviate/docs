@@ -11,24 +11,24 @@ const collectionName = 'MyCollection';
 // Prep
 await client.collections.delete(collectionName);
 
-// START BQWithOptions
+// START SQWithOptions
 const collection = await client.collections.create({
   name: 'MyCollection',
   vectorizers: weaviate.configure.vectors.selfProvided({
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw({
-      quantizer: weaviate.configure.vectorIndex.quantizer.bq({
-        cache: true,     // Enable caching
-        rescoreLimit: 200, // The minimum number of candidates to fetch before rescoring
+      quantizer: weaviate.configure.vectorIndex.quantizer.sq({
+        rescoreLimit: 200,    // The minimum number of candidates to fetch before rescoring
+        trainingLimit: 50000, // The size of the training set used to determine the bucket boundaries
       }),
-      vectorCacheMaxObjects: 10000 // Cache size (used if `cache` enabled)
+      vectorCacheMaxObjects: 100000 // Maximum number of objects in the vector cache
     })
   })
 })
-// END BQWithOptions
+// END SQWithOptions
 
 let collectionConfig = await collection.config.get();
 
-assert.equal(collectionConfig.vectorizers.default.indexConfig.quantizer.type, "bq")
+assert.equal(collectionConfig.vectorizers.default.indexConfig.quantizer.type, "sq")
 
 // Clean-up
 await client.collections.delete(collectionName);

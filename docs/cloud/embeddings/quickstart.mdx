@@ -80,14 +80,40 @@ import PromptStarter from "/src/components/PromptStarter";
 
 To use Weaviate Embeddings, you will need:
 
-<!-- TODO[g-despot]: Update prerequisites with correct client versions -->
+- A Weaviate Cloud free cluster running Weaviate `v1.28.5` and later
+- A Weaviate client library that supports Weaviate Embeddings. Install a supported release:
 
-- A Weaviate Cloud free cluster running at least Weaviate `1.28.5`
-- A Weaviate client library that supports Weaviate Embeddings:
-  - **Python** client version `4.9.5` or higher
-  - **JavaScript/TypeScript** client version `3.2.5` or higher
-  - **Java** or **C#** clients
-  - **Go** client is not yet officially supported; you must pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually upon instantiation as shown below.
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+
+```bash
+pip install -U "weaviate-client>=4.9.5"
+```
+
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+
+```bash
+npm install weaviate-client@^3.2.5
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+The Java client supports Weaviate Embeddings. Install it as shown in the [client library page](/weaviate/client-libraries/java).
+
+</TabItem>
+<TabItem value="csharp" label="C#">
+
+The C# client supports Weaviate Embeddings. Install it as shown in the [client library page](/weaviate/client-libraries/csharp).
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+The Go client does not support Weaviate Embeddings directly. Install it as shown in the [client library page](/weaviate/client-libraries/go), then pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually upon instantiation, as shown below.
+
+</TabItem>
+</Tabs>
 
 ## Step 1: Set up Weaviate
 
