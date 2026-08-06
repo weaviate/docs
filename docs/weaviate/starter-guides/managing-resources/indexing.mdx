@@ -100,7 +100,7 @@ import HFreshStatus from '/_includes/feature-notes/hfresh_status.mdx';
 HFresh indexes are well-suited when memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids. Only the compressed centroid index is kept in memory. The posting lists live on disk, so memory usage stays low even as the collection grows. The trade-off is lower peak query throughput than HNSW, so HFresh is a good fit when you can tolerate higher query latency in exchange for smaller memory requirements.
 
 :::tip Tuning
-Start with the default parameters. If recall is too low, increase `searchProbe` or the RQ `rescoreLimit` — both take effect at runtime.
+Start with the default parameters. If recall is too low, increase `searchProbe` or the RQ `rescoreLimit`. Both take effect at runtime.
 :::
 
 :::note

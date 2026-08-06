@@ -105,7 +105,7 @@ export CACHE_DIR=<YOUR_CHOICE_OF_CACHE_DIR>
 # Optionally you can set the batch size (if not specified by default 200)
 export BATCH_SIZE=<YOUR_CHOICE_OF_BATCH_SIZE>
 # Make sure to replace WEAVIATE_ORIGIN with the Weaviate origin as mentioned in the basics above
-docker run -it -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir-$CACHE_DIR -e batch_size=$BATCH_SIZE semitechnologies/weaviate-demo-newspublications:latest
+docker run -it -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir=$CACHE_DIR -e batch_size=$BATCH_SIZE semitechnologies/weaviate-demo-newspublications:latest
 
 ```
 
@@ -125,7 +125,7 @@ export CACHE_DIR=<YOUR_CHOICE_OF_CACHE_DIR>
 # Optionally you can set the batch size (if not specified by default 200)
 export BATCH_SIZE=<YOUR_CHOICE_OF_BATCH_SIZE>
 # Run docker
-docker run -it --network=$WEAVIATE_NETWORK -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir-$CACHE_DIR -e batch_size=$BATCH_SIZE  semitechnologies/weaviate-demo-newspublications:latest
+docker run -it --network=$WEAVIATE_NETWORK -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir=$CACHE_DIR -e batch_size=$BATCH_SIZE  semitechnologies/weaviate-demo-newspublications:latest
 ```
 
 ## Questions and feedback
