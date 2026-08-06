@@ -798,7 +798,7 @@ Chunking matters because it determines how much a later [incremental backup](#in
 - A big file that Weaviate keeps rewriting has its own chunk but is still re-uploaded on every backup.
 - Shared chunks are re-uploaded on every incremental backup, even if nothing in them changed.
 
-A file gets its own chunk when it reaches the **qualifying size**: the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the shard's Nth largest file, where N is `BACKUP_MAX_INDIVIDUAL_FILES`, reduced on an incremental backup by the number of files already reused from the base backup. This budget is shared across a whole backup chain rather than renewed for each backup in it. Because the larger value wins, `BACKUP_MIN_CHUNK_SIZE` is a floor, not a dial: to have more files referenced individually, raise `BACKUP_MAX_INDIVIDUAL_FILES`.
+A file gets its own chunk when it reaches the **qualifying size**: the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the shard's Nth largest file, where N is `BACKUP_MAX_INDIVIDUAL_FILES`, reduced on an incremental backup by the number of files already reused from the base backup. This budget is shared across a whole backup chain rather than renewed for each backup in it. Because the larger value wins, `BACKUP_MIN_CHUNK_SIZE` is only a floor — lowering it never reduces how many files qualify. Which knob qualifies more files depends on the shard: with `BACKUP_MAX_INDIVIDUAL_FILES` or more files above the floor, raise `BACKUP_MAX_INDIVIDUAL_FILES`; with fewer, lower `BACKUP_MIN_CHUNK_SIZE`.
 
 ```mermaid
 flowchart TD
@@ -834,7 +834,7 @@ flowchart TD
     style Reuploaded fill:#ffffff,stroke:#B9C8DF,color:#130C49
 ```
 
-The parts of a split file are sized by `BACKUP_SPLIT_FILE_SIZE`, not by the chunk target: Weaviate divides the file into roughly equal parts that are each at least half and at most the full split size. At the defaults, a chunk carrying a split part is therefore around `50GiB` — far larger than the `10MiB` chunk target, not smaller.
+The parts of a split file are sized by `BACKUP_SPLIT_FILE_SIZE`, not by the chunk target: Weaviate divides the file into roughly equal parts that are each at least half and at most the full split size. At the defaults, a chunk carrying a split part is therefore up to `50GiB` — far larger than the `10MiB` chunk target, not smaller.
 
 The three size variables accept a plain number of bytes or a number with a case-sensitive unit suffix (`B`, `KB`, `MB`, `GB`, `TB`, `KiB`, `MiB`, `GiB`, `TiB`), for example `4MiB`. Decimal and binary suffixes are distinct: `MB` is 1,000,000 bytes while `MiB` is 1,048,576 bytes. They also accept `unlimited` or `nolimit`, which is how you disable file splitting through `BACKUP_SPLIT_FILE_SIZE`. All three are read at startup, so changing them requires a restart.
 
@@ -850,7 +850,7 @@ The three size variables accept a plain number of bytes or a number with a case-
 These settings are lower bounds rather than exact values:
 
 - `BACKUP_CHUNK_TARGET_SIZE` and `BACKUP_SPLIT_FILE_SIZE` are raised to the qualifying size if you set them lower.
-- If a shard holds fewer files than the `BACKUP_MAX_INDIVIDUAL_FILES` budget, the qualifying size falls back to the size of the shard's smallest file, still raised to `BACKUP_MIN_CHUNK_SIZE` if that is larger.
+- If a shard holds fewer files than the `BACKUP_MAX_INDIVIDUAL_FILES` budget (after subtracting files already reused on an incremental backup), the qualifying size falls back to the size of the shard's smallest file, still raised to `BACKUP_MIN_CHUNK_SIZE` if that is larger.
 
 :::
 
