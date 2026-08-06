@@ -782,34 +782,75 @@ If you would like your application to wait for the background backup process to 
 
 ### Chunking and file splitting
 
-Weaviate does not upload a [shard's](/weaviate/concepts/storage.md#logical-storage-units-indexes-shards-stores) files one by one. It packs them into chunks, and the way files are grouped into chunks determines how much of that backup a later [incremental backup](#incremental-backups) can reuse. Chunking runs on every backup, not only on incremental ones.
+:::info Added in `v1.36.0`
+Chunking and `BACKUP_CHUNK_TARGET_SIZE` were backported to `v1.33.14`, `v1.34.11`, and `v1.35.4`. The other variables were added later — see the table below.
+:::
 
-Weaviate gives each of a shard's biggest files a chunk of its own, and only a file that gets its own chunk can be referenced individually by a later incremental backup. A chunk of its own is a requirement rather than a guarantee, because Weaviate only reuses files that it treats as immutable, so a large file that it keeps rewriting is uploaded again with every backup. All remaining files are packed together into shared chunks, and a shared chunk is uploaded again on every incremental backup whether or not anything in it changed, because only a chunk that holds a single big file can be skipped. A file larger than `BACKUP_SPLIT_FILE_SIZE` is spread across several chunks instead of being written into one.
+On every backup, full or incremental, Weaviate packs each [shard's](/weaviate/concepts/storage.md#logical-storage-units-indexes-shards-stores) files into chunks:
 
-A file gets its own chunk once it reaches the qualifying size: the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the Nth largest file in the shard, where N is `BACKUP_MAX_INDIVIDUAL_FILES`.
+- Each of the shard's biggest files gets a **chunk of its own**.
+- The remaining smaller files are packed together into **shared chunks** of roughly `BACKUP_CHUNK_TARGET_SIZE`.
+- A file larger than `BACKUP_SPLIT_FILE_SIZE` is **split into parts**, and each part gets a chunk of its own that holds nothing else.
 
-Because the larger of the two wins, `BACKUP_MIN_CHUNK_SIZE` is a floor on the qualifying size rather than a dial for it. Lowering it never reduces how many files get their own chunk, and it only increases that number while the shard holds fewer than `BACKUP_MAX_INDIVIDUAL_FILES` files above its current value. At the defaults, a shard with 100 or more files of at least `1MiB` is unaffected by a lower `BACKUP_MIN_CHUNK_SIZE`, because the size of the 100th largest file wins the comparison. To have more files referenced individually in that case, raise `BACKUP_MAX_INDIVIDUAL_FILES` instead, at the cost of more chunks per backup.
+Chunking matters because it determines how much a later [incremental backup](#incremental-backups) can reuse:
 
-On an incremental backup, the `BACKUP_MAX_INDIVIDUAL_FILES` budget is reduced by the number of files that are reused from the base backup, so it is shared across a whole backup chain rather than being renewed for each backup in it.
+- Only a file with a chunk of its own can be referenced from the base backup instead of copied again — and only if Weaviate treats the file as immutable.
+- A big file that Weaviate keeps rewriting has its own chunk but is still re-uploaded on every backup.
+- Shared chunks are re-uploaded on every incremental backup, even if nothing in them changed.
 
-A chunk that carries part of a split file holds nothing else, because Weaviate deliberately leaves the rest of that chunk empty rather than mixing split parts with regular files. The size of such a chunk is governed by `BACKUP_SPLIT_FILE_SIZE` rather than by `BACKUP_CHUNK_TARGET_SIZE`: Weaviate divides the file into roughly equal parts that are each at least half of the split size and no larger than the split size, so at the defaults these chunks are far larger than the target, not smaller.
+A file gets its own chunk when it reaches the **qualifying size**: the larger of `BACKUP_MIN_CHUNK_SIZE` and the size of the shard's Nth largest file, where N is `BACKUP_MAX_INDIVIDUAL_FILES`, reduced on an incremental backup by the number of files already reused from the base backup. This budget is shared across a whole backup chain rather than renewed for each backup in it. Because the larger value wins, `BACKUP_MIN_CHUNK_SIZE` is a floor, not a dial: to have more files referenced individually, raise `BACKUP_MAX_INDIVIDUAL_FILES`.
 
-The three size variables below accept a plain number of bytes or a number with a unit suffix (`B`, `KB`, `MB`, `GB`, `TB`, `KiB`, `MiB`, `GiB`, `TiB`), for example `4MiB`. The decimal and binary suffixes are distinct: `MB` is 1,000,000 bytes while `MiB` is 1,048,576 bytes. They also accept `unlimited` or `nolimit`, which is how you disable file splitting through `BACKUP_SPLIT_FILE_SIZE`. All three are read at startup, so a restart is required to change them. `BACKUP_MAX_INDIVIDUAL_FILES` is a plain count instead of a size, and Weaviate reads it for each backup, so you can change it without a restart through the `backup_max_individual_files` [runtime configuration](./env-vars/runtime-config.md) key.
+```mermaid
+flowchart TD
+    File["Shard file"]
+    Qualifies{"Reaches the<br>qualifying size?"}
+    OverSplit{"Larger than<br>the split size?"}
+    Own["Own chunk"]
+    Parts["Split into parts,<br>one chunk per part"]
+    Shared["Packed into a<br>shared chunk"]
+    Immutable{"Immutable<br>file?"}
+    Reusable["Reusable by later<br>incremental backups"]
+    Reuploaded["Re-uploaded on<br>every backup"]
+
+    File --> Qualifies
+    Qualifies -->|"No"| Shared
+    Qualifies -->|"Yes"| OverSplit
+    OverSplit -->|"No"| Own
+    OverSplit -->|"Yes"| Parts
+    Own --> Immutable
+    Parts --> Immutable
+    Immutable -->|"Yes"| Reusable
+    Immutable -->|"No"| Reuploaded
+    Shared --> Reuploaded
+
+    style File fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Qualifies fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style OverSplit fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Own fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Parts fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Shared fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Immutable fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Reusable fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style Reuploaded fill:#ffffff,stroke:#B9C8DF,color:#130C49
+```
+
+The parts of a split file are sized by `BACKUP_SPLIT_FILE_SIZE`, not by the chunk target: Weaviate divides the file into roughly equal parts that are each at least half and at most the full split size. At the defaults, a chunk carrying a split part is therefore around `50GiB` — far larger than the `10MiB` chunk target, not smaller.
+
+The three size variables accept a plain number of bytes or a number with a case-sensitive unit suffix (`B`, `KB`, `MB`, `GB`, `TB`, `KiB`, `MiB`, `GiB`, `TiB`), for example `4MiB`. Decimal and binary suffixes are distinct: `MB` is 1,000,000 bytes while `MiB` is 1,048,576 bytes. They also accept `unlimited` or `nolimit`, which is how you disable file splitting through `BACKUP_SPLIT_FILE_SIZE`. All three are read at startup, so changing them requires a restart.
 
 | Environment variable | Required | Description |
 | --- | --- | --- |
-| `BACKUP_MIN_CHUNK_SIZE` | no | The floor on the qualifying size a file must reach before it is stored in its own chunk and becomes eligible to be referenced individually by a later incremental backup. Defaults to `1MiB`. |
-| `BACKUP_CHUNK_TARGET_SIZE` | no | The size Weaviate aims for when packing several smaller files into a single chunk. Defaults to `10MiB`. |
-| `BACKUP_SPLIT_FILE_SIZE` | no | The size above which a single file is split across multiple chunks instead of being written to one. Set it to `unlimited` to disable splitting. Defaults to `50GiB`. |
-| `BACKUP_MAX_INDIVIDUAL_FILES` | no | How many of a shard's biggest files Weaviate aims to give a chunk of their own, and therefore how many become eligible to be referenced individually by a later incremental backup. This is a count rather than a size, and it must be greater than `0`. Defaults to `100`. Also settable without a restart through the `backup_max_individual_files` [runtime configuration](./env-vars/runtime-config.md) key.<br/><br/>Added in `v1.37.14` and `v1.38.7`. |
+| `BACKUP_MIN_CHUNK_SIZE` | no | A floor on the qualifying size a file must reach to get a chunk of its own. Defaults to `1MiB`.<br/><br/>Added in `v1.36.3` (backported to `v1.34.18`, `v1.35.13`). |
+| `BACKUP_CHUNK_TARGET_SIZE` | no | The size Weaviate aims for when packing several smaller files into a shared chunk. Defaults to `10MiB`.<br/><br/>Added in `v1.36.0` (backported to `v1.33.14`, `v1.34.11`, `v1.35.4`). |
+| `BACKUP_SPLIT_FILE_SIZE` | no | The size above which a file is split into parts. Set it to `unlimited` to disable splitting. Defaults to `50GiB`.<br/><br/>Added in `v1.36.5` (backported to `v1.35.15`). |
+| `BACKUP_MAX_INDIVIDUAL_FILES` | no | How many of a shard's biggest files Weaviate aims to give a chunk of their own — a target rather than a hard cap. This is a count, not a size, and it must be greater than `0`. Defaults to `100`. Settable without a restart through the `backup_max_individual_files` [runtime configuration](./env-vars/runtime-config.md) key.<br/><br/>Added in `v1.37.14` and `v1.38.7`. |
 
 :::note How Weaviate adjusts these values
 
-These settings are lower bounds, not exact values, and Weaviate raises them when a smaller value would have no useful effect:
+These settings are lower bounds rather than exact values:
 
-- `BACKUP_CHUNK_TARGET_SIZE` is raised to the qualifying size if you set it lower, since a chunk that packs smaller files must still be able to hold one big file.
-- `BACKUP_SPLIT_FILE_SIZE` is likewise raised to that size if you set it lower; otherwise no file would ever be big enough to split.
-- If a shard holds fewer files than `BACKUP_MAX_INDIVIDUAL_FILES`, or than the reduced budget on an incremental backup, the qualifying size falls back to the size of the shard's smallest file, still raised to `BACKUP_MIN_CHUNK_SIZE` if that is larger.
+- `BACKUP_CHUNK_TARGET_SIZE` and `BACKUP_SPLIT_FILE_SIZE` are raised to the qualifying size if you set them lower.
+- If a shard holds fewer files than the `BACKUP_MAX_INDIVIDUAL_FILES` budget, the qualifying size falls back to the size of the shard's smallest file, still raised to `BACKUP_MIN_CHUNK_SIZE` if that is larger.
 
 :::
 
