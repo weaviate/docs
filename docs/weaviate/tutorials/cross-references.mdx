@@ -20,6 +20,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import XRefCrudPythonCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
 import XRefCrudTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
 import XRefCrudGoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go';
+import XRefCrudGoV6Code from '!!raw-loader!/_includes/code/go-v6/cross_references_test.go';
 
 import SearchBasicsPythonCode from '!!raw-loader!/_includes/code/howto/search.basics.py';
 import SearchBasicsTSCode from '!!raw-loader!/_includes/code/howto/search.basics.ts';
@@ -119,6 +120,14 @@ An example syntax is shown below:
       startMarker="// START OneWay"
       endMarker="// END OneWay"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={XRefCrudGoV6Code}
+      startMarker="// START OneWay"
+      endMarker="// END OneWay"
+      language="go6"
     />
   </TabItem>
 </Tabs>

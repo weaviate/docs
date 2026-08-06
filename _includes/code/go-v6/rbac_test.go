@@ -902,3 +902,202 @@ func TestRBACGetGroupAssignments(t *testing.T) {
 	}
 	// END GetGroupAssignments
 }
+
+// -----------------------------------------------------------------------------
+// RBAC tutorial: role definitions and assignments
+//
+// The tutorial walks through three roles (read-and-write, viewer, tenant
+// manager), each created and then assigned to the "custom-user" database user.
+// The connect and create-user steps reuse the AdminClient and CreateUser markers
+// above. Each test seeds any prerequisite (a database user, or the target role)
+// outside the snippet marker and cleans it up afterwards.
+// -----------------------------------------------------------------------------
+
+// TestRBACReadWritePermissionDefinition creates the tutorial's read-and-write
+// role: full collection and collection-data access to collections starting with
+// "TargetCollection", plus backup, node and cluster reads.
+func TestRBACReadWritePermissionDefinition(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	deleteRoleIfExists(client, "rw_role")
+	defer deleteRoleIfExists(client, "rw_role")
+
+	// START ReadWritePermissionDefinition
+	// Confer read and write rights to collections starting with "TargetCollection",
+	// plus read access to backups, nodes and cluster metadata.
+	err := client.Roles.Create(ctx, rbac.Role{
+		ID: "rw_role",
+		Permissions: rbac.Permissions{
+			Collections: []rbac.CollectionPermission{
+				{
+					Collection: "TargetCollection*",
+					Create:     true, // Allow creating collections.
+					Read:       true, // Allow reading collection config.
+					Update:     true, // Allow updating collection config.
+					Delete:     true, // Allow deleting collections.
+				},
+			},
+			Data: []rbac.DataPermission{
+				{
+					Collection: "TargetCollection*",
+					Create:     true, // Allow data inserts.
+					Read:       true, // Allow query and fetch operations.
+					Update:     true, // Allow data updates.
+					// Delete is left false, disallowing data deletes.
+				},
+			},
+			Backups: []rbac.BackupsPermission{
+				{Collection: "TargetCollection*", Manage: true},
+			},
+			Nodes: []rbac.NodesPermission{
+				{Collection: "TargetCollection*", Verbosity: rbac.NodeVerbosityVerbose, Read: true},
+			},
+			Cluster: []rbac.ClusterPermission{{Read: true}},
+		},
+	})
+	// END ReadWritePermissionDefinition
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// TestRBACReadWritePermissionAssignment assigns the read-and-write role to the
+// tutorial's custom user.
+func TestRBACReadWritePermissionAssignment(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	seedRole(t, client, "rw_role")
+	defer deleteDBUserIfExists(client, "custom-user")
+	defer deleteRoleIfExists(client, "rw_role")
+
+	// START ReadWritePermissionAssignment
+	// Assign the role to a user.
+	err := client.Users.DB.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "custom-user",
+		Roles: []string{"rw_role"},
+	})
+	// END ReadWritePermissionAssignment
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// TestRBACViewerPermissionDefinition creates the tutorial's viewer role:
+// read-only access to collections starting with "TargetCollection".
+func TestRBACViewerPermissionDefinition(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	deleteRoleIfExists(client, "viewer_role")
+	defer deleteRoleIfExists(client, "viewer_role")
+
+	// START ViewerPermissionDefinition
+	// Confer viewer (read-only) rights to collections starting with
+	// "TargetCollection".
+	err := client.Roles.Create(ctx, rbac.Role{
+		ID: "viewer_role",
+		Permissions: rbac.Permissions{
+			Collections: []rbac.CollectionPermission{
+				{Collection: "TargetCollection*", Read: true},
+			},
+			Data: []rbac.DataPermission{
+				{Collection: "TargetCollection*", Read: true},
+			},
+		},
+	})
+	// END ViewerPermissionDefinition
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// TestRBACViewerPermissionAssignment assigns the viewer role to the tutorial's
+// custom user.
+func TestRBACViewerPermissionAssignment(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	seedRole(t, client, "viewer_role")
+	defer deleteDBUserIfExists(client, "custom-user")
+	defer deleteRoleIfExists(client, "viewer_role")
+
+	// START ViewerPermissionAssignment
+	// Assign the role to a user.
+	err := client.Users.DB.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "custom-user",
+		Roles: []string{"viewer_role"},
+	})
+	// END ViewerPermissionAssignment
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// TestRBACMTPermissionsExample creates the tutorial's tenant-manager role: full
+// tenant management and full data access for tenants starting with
+// "TargetTenant" in collections starting with "TargetCollection".
+func TestRBACMTPermissionsExample(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	deleteRoleIfExists(client, "tenant_manager")
+	defer deleteRoleIfExists(client, "tenant_manager")
+
+	// START MTPermissionsExample
+	err := client.Roles.Create(ctx, rbac.Role{
+		ID: "tenant_manager",
+		Permissions: rbac.Permissions{
+			Tenants: []rbac.TenantPermission{
+				{
+					Collection: "TargetCollection*", // Applies to all matching collections.
+					Tenant:     "TargetTenant*",      // Applies to all matching tenants.
+					Create:     true,                 // Allow creating tenants.
+					Read:       true,                 // Allow reading tenant info.
+					Update:     true,                 // Allow updating tenant states.
+					Delete:     true,                 // Allow deleting tenants.
+				},
+			},
+			Data: []rbac.DataPermission{
+				{
+					Collection: "TargetCollection*", // Applies to all matching collections.
+					Tenant:     "TargetTenant*",      // Applies to all matching tenants.
+					Create:     true,                 // Allow data inserts.
+					Read:       true,                 // Allow query and fetch operations.
+					Update:     true,                 // Allow data updates.
+					Delete:     true,                 // Allow data deletes.
+				},
+			},
+		},
+	})
+	// END MTPermissionsExample
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// TestRBACMTPermissionsAssignment assigns the tenant-manager role to the
+// tutorial's custom user.
+func TestRBACMTPermissionsAssignment(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	seedRole(t, client, "tenant_manager")
+	defer deleteDBUserIfExists(client, "custom-user")
+	defer deleteRoleIfExists(client, "tenant_manager")
+
+	// START MTPermissionsAssignment
+	// Assign the role to a user.
+	err := client.Users.DB.AssignRoles(ctx, rbac.AssignRolesOptions{
+		ID:    "custom-user",
+		Roles: []string{"tenant_manager"},
+	})
+	// END MTPermissionsAssignment
+	if err != nil {
+		t.Fatal(err)
+	}
+}
