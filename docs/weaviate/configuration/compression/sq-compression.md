@@ -35,6 +35,14 @@ SQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START EnableSQ"
+        endMarker="// END EnableSQ"
+        language="ts"
+      />
+  </TabItem>
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -68,6 +76,10 @@ import SqPostCreation from '/_includes/feature-notes/sq-post-creation.mdx';
 <SqPostCreation/>
 
 SQ can also be enabled for an existing collection by updating the collection definition:
+
+:::note
+A TypeScript example is not available for this operation yet. Use `collections.update()` in the [TypeScript client](/weaviate/client-libraries/typescript/index.mdx).
+:::
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -119,6 +131,14 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         startMarker="# START SQWithOptions"
         endMarker="# END SQWithOptions"
         language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCodeSQOptions}
+        startMarker="// START SQWithOptions"
+        endMarker="// END SQWithOptions"
+        language="ts"
       />
   </TabItem>
   <TabItem value="go" label="Go">

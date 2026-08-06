@@ -103,7 +103,7 @@ Here, the image tag is overridden to `1.25.0`. You can also modify this value di
 helm upgrade weaviate weaviate/weaviate \
   --namespace weaviate \
   --values ./values.yaml \
-  --set image.tag="1.25.0" \
+  --set image.tag="1.25.0"
 ```
 
 ### 4. Verify update

@@ -43,7 +43,7 @@ Reader or Generator modules can be used on top of a Vectorizer module. These mod
 
 ### Other modules
 
-These include those such as `gcs-backup` or `text-spellcheck`.
+These include those such as `backup-gcs` or `text-spellcheck`.
 
 ## Dependencies
 
