@@ -177,7 +177,7 @@ The default model is `nvidia/rerank-qa-mistral-4b`.
 ### Other integrations
 
 - [NVIDIA text embedding models + Weaviate](./embeddings.md).
-- [NVIDIA multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [NVIDIA multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [NVIDIA generative models + Weaviate](./generative.md).
 
 ### Code examples

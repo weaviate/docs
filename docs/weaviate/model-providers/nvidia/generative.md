@@ -260,7 +260,7 @@ The default model is `nvidia/llama-3.1-nemotron-51b-instruct`.
 ### Other integrations
 
 - [NVIDIA text embedding models + Weaviate](./embeddings.md).
-- [NVIDIA multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [NVIDIA multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [NVIDIA reranker models + Weaviate](./reranker.md).
 
 ### Code examples
