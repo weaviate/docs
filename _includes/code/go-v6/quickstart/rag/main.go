@@ -6,8 +6,7 @@ package main
 // collection-level generative config and no generate query), so there is nothing
 // runnable to show yet — the rendered quickstart tab shows the note below. This
 // file stays a valid `package main` so the go6 build/vet lane keeps compiling
-// this directory. The RAG marker holds only a comment, so (unlike the sibling
-// programs) it needs no indent offset to render at column 0.
+// this directory.
 func main() {}
 
 // START RAG

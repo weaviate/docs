@@ -45,6 +45,8 @@ DOC_SYSTEMS.go6 = {
     constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
     icon: '/img/site/logo-go.svg',
 };
+// `go6full` renders complete standalone v6 programs (with the v6 doc links).
+DOC_SYSTEMS.go6full = DOC_SYSTEMS.go6;
 DOC_SYSTEMS.javaraw = DOC_SYSTEMS.java;
 DOC_SYSTEMS.csharpraw = DOC_SYSTEMS.csharp;
 
@@ -111,6 +113,12 @@ const FilteredTextBlock = ({
                     // replace remaining tabs with 2 spaces
                     .replace(/\t/g, '    ');
             break;
+        case 'go6full':
+            // Standalone complete programs: package/imports/func main start at
+            // column 0, so (unlike go6) do NOT strip a leading indent level —
+            // just convert tabs to 2 spaces.
+            format = (input) => input.replace(/\t/g, '  ');
+            break;
         case 'gonew':
         // `go6` snippets are extracted from inside test functions, so every line
         // carries a base indent. Reuse the `gonew` formatter: it converts tabs to
@@ -164,11 +172,12 @@ const FilteredTextBlock = ({
         case 'tsindent':
             language2 = 'ts';
             break;
+        case 'go6full':
         case 'gonew':
         case 'goraw':
         // `go6` selects the v6 doc system above (pkg.go.dev .../v6) for docRefs,
-        // but Prism has no `go6` grammar, so it must highlight as plain `go`.
-        // Without this the whole block renders unhighlighted.
+        // but Prism has no `go6`/`go6full` grammar, so it must highlight as plain
+        // `go`. Without this the whole block renders unhighlighted.
         case 'go6':
             language2 = 'go';
             break;
