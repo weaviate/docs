@@ -14,6 +14,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/search.generative.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.generative-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
+import GoV6Code from '!!raw-loader!/_includes/code/go-v6/search_generative_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchGenerativeTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchGenerativeTest.cs";
 
@@ -196,6 +197,14 @@ The properties you use in the prompt do not have to be among the properties you 
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GenerativeSinglePrompt"
+      endMarker="// END GenerativeSinglePrompt"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -343,6 +352,14 @@ Grouped task search returns one response that includes all of the query results.
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GenerativeGroupedTask"
+      endMarker="// END GenerativeGroupedTask"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -405,6 +422,14 @@ Define object `properties` to use in the prompt. This limits the information in 
       startMarker="// START GroupedGenerativeProperties"
       endMarker="// END GroupedGenerativeProperties"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START GenerativeGroupedProperties"
+      endMarker="// END GenerativeGroupedProperties"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
