@@ -61,7 +61,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
       text={GoV6Code}
       startMarker="// START HybridBasic"
       endMarker="// END HybridBasic"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -199,7 +199,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
       text={GoV6Code}
       startMarker="// START HybridWithScore"
       endMarker="// END HybridWithScore"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -279,7 +279,7 @@ Hybrid search results can favor the keyword component or the vector component. T
       text={GoV6Code}
       startMarker="// START HybridWithAlpha"
       endMarker="// END HybridWithAlpha"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -359,7 +359,7 @@ The output is like this:
       text={GoV6Code}
       startMarker="// START HybridWithFusionType"
       endMarker="// END HybridWithFusionType"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -547,7 +547,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
       text={GoV6Code}
       startMarker="// START HybridWithProperties"
       endMarker="// END HybridWithProperties"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -624,7 +624,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       text={GoV6Code}
       startMarker="// START HybridWithPropertyWeighting"
       endMarker="// END HybridWithPropertyWeighting"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -701,7 +701,7 @@ The vector component of hybrid search can use a query string or a query vector. 
       text={GoV6Code}
       startMarker="// START HybridWithVector"
       endMarker="// END HybridWithVector"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -923,7 +923,7 @@ Optionally, use `offset` to paginate the results.
       text={GoV6Code}
       startMarker="// START HybridLimit"
       endMarker="// END HybridLimit"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -994,7 +994,7 @@ To learn more about the different fusion algorithms, visit the [search operators
       text={GoV6Code}
       startMarker="// START HybridAutocut"
       endMarker="// END HybridAutocut"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -1071,7 +1071,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       text={GoV6Code}
       startMarker="// START HybridWithFilter"
       endMarker="// END HybridWithFilter"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

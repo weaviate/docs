@@ -81,7 +81,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
       text={MultiTargetGoV6Code}
       startMarker="// START MultiBasic"
       endMarker="// END MultiBasic"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -128,7 +128,7 @@ You can specify multiple query vectors in the search query with a `nearVector` s
       text={MultiTargetGoV6Code}
       startMarker="// START MultiTargetNearVector"
       endMarker="// END MultiTargetNearVector"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -183,7 +183,7 @@ The target vectors can be specified as an array as shown here.
       text={MultiTargetGoV6Code}
       startMarker="// START MultiTargetMultipleNearVectorsV1"
       endMarker="// END MultiTargetMultipleNearVectorsV1"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -230,7 +230,7 @@ If you want to provide weights for each target vector you can do it as shown her
       text={MultiTargetGoV6Code}
       startMarker="// START MultiTargetMultipleNearVectorsV2"
       endMarker="// END MultiTargetMultipleNearVectorsV2"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -279,7 +279,7 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
       text={MultiTargetGoV6Code}
       startMarker="// START MultiTargetWithSimpleJoin"
       endMarker="// END MultiTargetWithSimpleJoin"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -333,7 +333,7 @@ Each distance between the query vector and the target vector is multiplied by th
       text={MultiTargetGoV6Code}
       startMarker="// START MultiTargetManualWeights"
       endMarker="// END MultiTargetManualWeights"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -389,7 +389,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
       text={MultiTargetGoV6Code}
       startMarker="// START MultiTargetRelativeScore"
       endMarker="// END MultiTargetRelativeScore"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -74,7 +74,7 @@ Return the number of objects matched by the query.
       text={GoV6Code}
       startMarker="// START MetaCount"
       endMarker="// END MetaCount"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -151,7 +151,7 @@ This example counts occurrence frequencies:
       text={GoV6Code}
       startMarker="// START TextProp"
       endMarker="// END TextProp"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -228,7 +228,7 @@ This example shows aggregation with integers.
       text={GoV6Code}
       startMarker="// START IntProp"
       endMarker="// END IntProp"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -307,7 +307,7 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       text={GoV6Code}
       startMarker="// START groupBy"
       endMarker="// END groupBy"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -392,7 +392,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       text={GoV6PlaceholderCode}
       startMarker="// START AggregateNearText"
       endMarker="// END AggregateNearText"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -475,7 +475,7 @@ Use `distance` to specify how similar the objects should be.
       text={GoV6PlaceholderCode}
       startMarker="// START AggregateNearText"
       endMarker="// END AggregateNearText"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -552,7 +552,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       text={GoV6PlaceholderCode}
       startMarker="// START AggregateHybrid"
       endMarker="// END AggregateHybrid"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -629,7 +629,7 @@ For more specific results, use a `filter` to narrow your search.
       text={GoV6PlaceholderCode}
       startMarker="// START AggregateWhereFilter"
       endMarker="// END AggregateWhereFilter"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

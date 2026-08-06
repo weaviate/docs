@@ -121,7 +121,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       text={GoV6Code}
       startMarker="// START BasicVectorizerWeaviate"
       endMarker="// END BasicVectorizerWeaviate"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -176,7 +176,7 @@ You can specify one of the [available models](#available-models) for the vectori
       text={GoV6Code}
       startMarker="// START VectorizerWeaviateCustomModel"
       endMarker="// END VectorizerWeaviateCustomModel"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

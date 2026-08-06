@@ -65,7 +65,7 @@ RQ can be enabled at collection creation time through the collection definition:
         text={GoV6CompressionCode}
         startMarker="// START EnableRQ"
         endMarker="// END EnableRQ"
-        language="go"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -173,7 +173,7 @@ RQ can be enabled at collection creation time through the collection definition:
         text={GoV6CompressionCode}
         startMarker="// START 1BitEnableRQ"
         endMarker="// END 1BitEnableRQ"
-        language="go"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -279,7 +279,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         text={GoV6CompressionCode}
         startMarker="// START RQWithOptions"
         endMarker="// END RQWithOptions"
-        language="go"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -86,7 +86,7 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
       text={BackupGoV6Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
-      language="go"
+      language="go6"
     />
   </TabItem>
 
@@ -363,7 +363,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
       text={BackupGoV6Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
-      language="go"
+      language="go6"
     />
   </TabItem>
 
@@ -455,7 +455,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       text={BackupGoV6Code}
       startMarker="// START StatusCreateBackup"
       endMarker="// END StatusCreateBackup"
-      language="go"
+      language="go6"
     />
   </TabItem>
 
@@ -585,7 +585,7 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       text={BackupGoV6Code}
       startMarker="// START CancelBackup"
       endMarker="// END CancelBackup"
-      language="go"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -646,7 +646,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       text={BackupGoV6Code}
       startMarker="// START RestoreBackup"
       endMarker="// END RestoreBackup"
-      language="go"
+      language="go6"
     />
   </TabItem>
 
@@ -712,7 +712,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       text={BackupGoV6Code}
       startMarker="// START StatusRestoreBackup"
       endMarker="// END StatusRestoreBackup"
-      language="go"
+      language="go6"
     />
   </TabItem>
 

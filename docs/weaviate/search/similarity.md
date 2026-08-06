@@ -59,7 +59,7 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       text={GoV6Code}
       startMarker="// START GetNearText"
       endMarker="// END GetNearText"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -184,7 +184,7 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       text={GoV6PlaceholderCode}
       startMarker="// START NearObject"
       endMarker="// END NearObject"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -266,7 +266,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
       text={GoV6Code}
       startMarker="// START GetNearVector"
       endMarker="// END GetNearVector"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -329,7 +329,7 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       text={GoV6Code}
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -406,7 +406,7 @@ To set a similarity threshold between the search and target vectors, define a ma
       text={GoV6Code}
       startMarker="// START GetWithDistance"
       endMarker="// END GetWithDistance"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -480,7 +480,7 @@ Optionally, use `offset` to paginate the results.
       text={GoV6Code}
       startMarker="// START GetLimitOffset"
       endMarker="// END GetLimitOffset"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -543,7 +543,7 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       text={GoV6Code}
       startMarker="// START Autocut"
       endMarker="// END Autocut"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -620,7 +620,7 @@ Use a property or a cross-reference to group results. To group returned objects,
       text={GoV6Code}
       startMarker="// START GetWithGroupBy"
       endMarker="// END GetWithGroupBy"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -697,7 +697,7 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       text={GoV6Code}
       startMarker="// START GetWithFilter"
       endMarker="// END GetWithFilter"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

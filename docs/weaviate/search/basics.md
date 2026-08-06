@@ -59,7 +59,7 @@ You can get objects without specifying any parameters. This returns objects in a
       text={GoV6Code}
       startMarker="// START BasicGet"
       endMarker="// END BasicGet"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -143,7 +143,7 @@ Use `limit` to set a fixed maximum number of objects to return.
       text={GoV6Code}
       startMarker="// START GetWithLimit"
       endMarker="// END GetWithLimit"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -220,7 +220,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
       text={GoV6Code}
       startMarker="// START GetWithOffset"
       endMarker="// END GetWithOffset"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -299,7 +299,7 @@ You can specify which object properties to return. By default, all properties an
       text={GoV6Code}
       startMarker="// START GetProperties"
       endMarker="// END GetProperties"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -376,7 +376,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       text={GoV6Code}
       startMarker="// START GetObjectVector"
       endMarker="// END GetObjectVector"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -453,7 +453,7 @@ You can retrieve the object `id` (uuid).
       text={GoV6Code}
       startMarker="// START GetObjectId"
       endMarker="// END GetObjectId"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -538,7 +538,7 @@ To retrieve properties from cross-referenced objects, specify:
       text={GoV6Code}
       startMarker="// START GetWithCrossRefs"
       endMarker="// END GetWithCrossRefs"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -615,7 +615,7 @@ You can specify metadata fields to be returned.
       text={GoV6Code}
       startMarker="// START GetWithMetadata"
       endMarker="// END GetWithMetadata"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -684,7 +684,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
       text={GoV6Code}
       startMarker="// START MultiTenancy"
       endMarker="// END MultiTenancy"
-      language="go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
