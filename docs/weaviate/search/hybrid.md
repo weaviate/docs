@@ -376,7 +376,7 @@ The output is like this:
     Additional information
   </summary>
 
-For a discussion of fusion methods, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms) and [this reference page](../api/graphql/search-operators.md#variables-2)
+For a discussion of fusion methods, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms) and [this reference page](../api/graphql/search-operators.md#fusion-algorithms).
 
 </details>
 
@@ -1045,7 +1045,7 @@ import TokenizationNote from '/\_includes/tokenization.mdx'
 
 <BoostPreview/>
 
-Hybrid queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property.
+Hybrid queries accept an optional `boost` argument that promotes or demotes matching documents without removing them. This is useful for biasing results by recency, popularity, a soft filter, or another property.
 
 The boost runs once over the **fused** hybrid result. The BM25 and vector sub-search legs do not see the boost themselves. Hybrid's own `alpha` blend runs first, and the boost rescores the fused candidate pool on top.
 
