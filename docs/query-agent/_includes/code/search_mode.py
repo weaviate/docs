@@ -111,7 +111,7 @@ for obj in search_response.search_results.objects:
 search_response = qa.search(
     "What are Setwise Rerankers?",
     limit=10,
-    effort="high",
+    effort="ultrahigh",
 )
 
 for obj in search_response.search_results.objects:

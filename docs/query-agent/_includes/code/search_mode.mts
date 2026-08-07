@@ -105,7 +105,7 @@ for (const obj of filteringResponse.searchResults.objects) {
 // START EffortExample
 const effortResponse = await qa.search("What are Setwise Rerankers?", {
     limit: 10,
-    effort: "high",
+    effort: "ultrahigh",
 });
 
 for (const obj of effortResponse.searchResults.objects) {
