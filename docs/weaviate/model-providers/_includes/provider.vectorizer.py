@@ -690,7 +690,7 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             model="mistral-embed",
-            # # Further options
+            # Further options
             # base_url="<custom_mistral_url>",
         )
     ],
