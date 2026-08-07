@@ -32,9 +32,7 @@ As a result, to migrate from a pre-`1.25` version of Weaviate to `1.25` on kuber
 
 For more details, refer to the [upgrade instructions](#upgrade-instructions) below.
 
-Downgrading from `1.25` to a pre-`1.25` version required a matching metadata step, performed with a `POST` request to the `v1/cluster/schema-v1` endpoint, followed by deleting the deployed `StatefulSet` and downgrading Weaviate to the desired version.
-
-That endpoint only exists in `v1.25.0` through `v1.34.20`. It was removed in `v1.35.0`, and there is no supported way to downgrade a `v1.35.0` or later instance to a pre-`1.25` version.
+To downgrade from `1.25` to a pre-`1.25` version, you must perform a `POST` request to the `v1/cluster/schema-v1` endpoint to downgrade the metadata. Then, you must similarly delete the deployed `StatefulSet` and downgrade Weaviate to the desired version.
 
 For more details, refer to the [downgrade instructions](#downgrade-instructions) below.
 
@@ -103,7 +101,7 @@ Here, the image tag is overridden to `1.25.0`. You can also modify this value di
 helm upgrade weaviate weaviate/weaviate \
   --namespace weaviate \
   --values ./values.yaml \
-  --set image.tag="1.25.0"
+  --set image.tag="1.25.0" \
 ```
 
 ### 4. Verify update
@@ -162,26 +160,17 @@ If the number of objects under `statistics` matches the number of replicas you h
 
 ## Downgrade instructions
 
-:::caution Applies to `v1.25.0` through `v1.34.20` only
-
-The procedure below depends on the `v1/cluster/schema-v1` endpoint, which converted the Raft cluster metadata back into the pre-`1.25` format.
-
-- On `v1.25.0` through `v1.34.20`, follow the steps below.
-- On `v1.35.0` and later, the endpoint no longer exists. A `POST` request to it returns `404`, and the code that writes the pre-`1.25` metadata store was removed at the same time. Weaviate provides no supported path to downgrade a `v1.35.0` or later instance to a pre-`1.25` version. If you need to run a pre-`1.25` version again, deploy it separately and restore a [backup](/deploy/configuration/backups.md) that was created before the upgrade.
-
-:::
-
-If you need to downgrade from `1.25` to a pre-`1.25` version, and your cluster runs `v1.25.0` through `v1.34.20`, you must perform a `POST` request to the `v1/cluster/schema-v1` endpoint (a payload is not required) to downgrade the cluster metadata.
+If you need to downgrade from `1.25` to a pre-`1.25` version, you must perform a `POST` request to the `v1/cluster/schema-v1` (a payload is not required) to downgrade the cluster metadata.
 
 ### 1. Downgrade cluster metadata
 
 Perform the following request to downgrade the cluster metadata. This will prepare the cluster for a downgrade to a pre-`1.25` version. (Remember to replace `localhost:8080` with the correct URL & port.)
 
 ```bash
-curl -X POST -s -o /dev/null -w "%{http_code}\n" localhost:8080/v1/cluster/schema-v1
+curl -X POST -s -o /dev/null -w "%{http_code}" localhost:8080/v1/cluster/schema-v1
 ```
 
-This should return a `200` status code. A `404` status code means the endpoint is not present, which is the case on `v1.35.0` and later. Do not continue with the downgrade in that case, because the cluster metadata has not been converted.
+This should return a `200` status code.
 
 ### 2. Delete StatefulSet
 
