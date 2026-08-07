@@ -28,27 +28,6 @@ Before starting the migration process, be aware of the following:
 - If possible, schedule migration to avoid large data imports/updates/deletes, especially during the re-indexing stage
 - BlockMax WAND may return slightly different scores than WAND if you search on multiple properties or have a delete-heavy workflow, as it computes term statistics differently
 
-## Debug endpoints used in this guide
-
-Several steps below call Weaviate's debug endpoints under `/debug/index/rebuild/inverted/`. These endpoints have two requirements that differ from the regular REST API:
-
-- They are served by the debug HTTP listener on the Go profiling port, which defaults to `6060` and is set with [`GO_PROFILING_PORT`](/deploy/configuration/env-vars/index.md). They are **not** available on the main API port, which defaults to `8080`. A request to a debug route on the main port returns `404`.
-- In `v1.36.18`, `v1.37.9`, `v1.38.1` and later, every debug route returns `404` unless [`DEBUG_ENDPOINTS_ENABLED`](/deploy/configuration/env-vars/index.md) is set to `true`. In earlier releases on each of those lines, the routes are served whenever profiling is not switched off with `GO_PROFILING_DISABLE`.
-
-To open the debug listener, restart the node with:
-
-```bash
-DEBUG_ENDPOINTS_ENABLED=true
-```
-
-:::warning The debug listener is unauthenticated
-
-Anything that can reach the profiling port can call these endpoints, including the ones that change migration state. Keep the port reachable only from inside your cluster network, and set `DEBUG_ENDPOINTS_ENABLED` back to `false` when the migration is finished.
-
-:::
-
-In the examples below, replace `<node_name>` with the address of the Weaviate node you are targeting, `<collection_name>` with the collection you are migrating, and `6060` with your `GO_PROFILING_PORT` if you changed it.
-
 ## Migration process
 
 The migration involves three main stages:
@@ -71,7 +50,7 @@ During this stage:
 
 1. Restart your Weaviate instance with the following configuration:
 
-```bash
+```
 REINDEX_MAP_TO_BLOCKMAX_AT_STARTUP=weaviate
 ```
 
@@ -81,15 +60,18 @@ If your node has a different name than "weaviate", replace it with your actual n
 
 :::
 
-2. Monitor the migration progress by checking the status endpoint:
+2. Monitor the migration progress by checking:
 
-   ```bash
-   curl -s "http://<node_name>:6060/debug/index/rebuild/inverted/status?collection=<collection_name>"
+   ```
+   http://<node_name>:<<debug_endpoint_port>/debug/index/rebuild/inverted/status?collection=<collection_name>
    ```
 
 :::note
 
-This endpoint is served on the debug listener, not on the main API port. See [Debug endpoints used in this guide](#debug-endpoints-used-in-this-guide) for the port and the flag that enables it.
+Replace:
+- `<node_name>` with the name of your Weaviate node
+- `<debug_endpoint_port>` with the actual port (default is `6060`)
+- `<collection_name>` with the name of the collection being migrated.
 
 :::
 
@@ -300,91 +282,25 @@ The migration process progresses through several stages, which can be monitored 
 
 ### Aborting migration and rolling back
 
-:::caution The `abort` endpoint was removed
+If you have issues with the reindexing process and want to stop it:
 
-Earlier versions of this guide called `/debug/index/rebuild/inverted/abort`. That endpoint was removed in `v1.30.11`, `v1.31.5` and `v1.32.0`, so it returns `404` on every release covered by this guide. Use `cancelReindexContext` below instead.
+1. Call the abort endpoint:
 
-:::
+   ```
+   http://<node_name>:<<debug_endpoint_port>/debug/index/rebuild/inverted/abort
+   ```
 
-All of the endpoints in this section are served on the debug listener, not on the main API port. See [Debug endpoints used in this guide](#debug-endpoints-used-in-this-guide) for the port and the flag that enables them.
+2. To fully stop and rollback data to the initial stage, restart the server with:
+   ```
+   REINDEX_MAP_TO_BLOCKMAX_AT_STARTUP=true
+   REINDEX_MAP_TO_BLOCKMAX_ROLLBACK=true
+   ```
 
-#### Stop the reindexing work
+:::caution
 
-To cancel the node-wide reindex context, which stops the reindexing work on that node:
-
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" -X POST \
-  "http://<node_name>:6060/debug/index/rebuild/inverted/cancelReindexContext"
-```
-
-This returns `202`. It is the direct replacement for the removed `abort` endpoint: it takes no parameters and applies to the whole node.
-
-To pause one collection instead, so that the task stops cleanly at its next checkpoint and can be resumed later:
-
-```bash
-curl -s "http://<node_name>:6060/debug/index/rebuild/inverted/suspend?collection=<collection_name>"
-```
-
-Add `&shards=<shard_a>,<shard_b>` to pause only specific shards. Omit `shards` to pause every shard in the collection. To resume:
-
-```bash
-curl -s "http://<node_name>:6060/debug/index/rebuild/inverted/resume?collection=<collection_name>"
-```
-
-:::note Read the response body, not only the status code
-
-`suspend`, `resume`, `rollback` and `unrollback` return `200` even when they do nothing. Failures are reported in the body, for example `{"error":"shard not found or not ready"}`, which is what you get when no migration has been started for that collection.
+Rolling back is only possible before cleanup!
 
 :::
-
-#### Roll back to the old format
-
-To roll a collection back to the `mapcollection` format:
-
-```bash
-curl -s "http://<node_name>:6060/debug/index/rebuild/inverted/rollback?collection=<collection_name>"
-```
-
-This marks the collection for rollback. The rollback itself is applied the next time each shard is loaded, which means on the next node restart, or on tenant reactivation for multi-tenant collections. When it runs, Weaviate unswaps the ingest and backup buckets if they were already swapped, removes the reindex bucket directories, and clears the migration files.
-
-To cancel a rollback that you requested but that has not been applied yet:
-
-```bash
-curl -s "http://<node_name>:6060/debug/index/rebuild/inverted/unrollback?collection=<collection_name>"
-```
-
-:::caution Cleanup is the point of no return
-
-Rollback restores the old format from the `mapcollection` buckets that Stage 3 deletes. Once a shard has been tidied, there is nothing left to restore, and the rollback fails when the shard is loaded. The node logs an error:
-
-- `rollback: backup buckets are deleted, can not restore` in `v1.38.0` and later
-- `rollback: searchable map buckets are deleted, can not restore` in earlier releases
-
-After cleanup, the only way back to the old format is to restore a [backup](/deploy/configuration/backups.md) that was created before the migration. Validate your BM25 and hybrid search results and performance before you run Stage 3.
-
-:::
-
-#### Endpoint availability
-
-These endpoints are not all present in every release covered by this guide. Check the release you run before you depend on one.
-
-| Endpoint | Purpose | Available in |
-| :-- | :-- | :-- |
-| `status?collection=<collection_name>` | Report the migration status per shard | All releases in this guide |
-| `cancelReindexContext` | Cancel the node-wide reindex context | `v1.30.11`, `v1.31.5`, `v1.32.0` and later |
-| `suspend`, `resume` | Pause and resume a collection | `v1.30.11`, `v1.31.5`, `v1.32.0` and later |
-| `rollback`, `unrollback` | Request and cancel a rollback | `v1.30.11`, `v1.31.5`, `v1.32.0` and later |
-| `start`, `unstart` | Set and clear the start trigger | `v1.30.11`, `v1.31.5`, `v1.32.0` and later |
-| `overrides`, `set_overrides` | Read and write per-shard overrides | `v1.30.11`, `v1.31.5`, `v1.32.0` and later |
-| `reset`, `unreset` | Set and clear the reset trigger | `v1.30.18`, `v1.31.11`, `v1.32.4` and later |
-| `setProperties?properties=<a>,<b>` | Choose which properties to migrate | `v1.30.18`, `v1.31.11`, `v1.32.4` and later |
-| `reload` | Reinitialize the selected shards without restarting the node | `v1.30.11`, `v1.31.5`, `v1.32.0` and later, up to `v1.37`. Removed in `v1.38.0` |
-
-Where a row lists several versions, the endpoint is present from that patch onwards on each of those release lines. A release earlier than the listed patch on its own line does not have it, even if it is numerically higher than a patch listed for an older line.
-
-`suspend`, `resume`, `rollback`, `unrollback`, `start`, `unstart`, `reset` and `unreset` work by creating or deleting a marker file in the migration directory of each selected shard, at `<PERSISTENCE_DATA_PATH>/<collection_name>/<shard_name>/lsm/.migrations/searchable_map_to_blockmax/`. `setProperties` writes the property list into a file in the same directory. Newer releases append a generation suffix to the directory name, for example `searchable_map_to_blockmax_1`.
-
-The migration task reads these files at its checkpoints, which is why a pause takes effect at the next checkpoint and a rollback at the next shard load, rather than immediately.
 
 ## Environment variable reference
 
