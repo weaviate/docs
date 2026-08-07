@@ -164,7 +164,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keywo
 
 ### Available models
 
-DigitalOcean's Serverless Inference catalogue includes several embedding-capable models. See the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the live list — model availability and dimensions can change.
+DigitalOcean's Serverless Inference catalogue includes several embedding-capable models. See the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the live list, as model availability and dimensions can change.
 
 :::note Dimensions parameter currently not supported
 
@@ -180,7 +180,7 @@ DigitalOcean's `/v1/embeddings` endpoint does not accept a `dimensions` request 
 
 ### Code examples
 
-Once the vectorizer is configured, Weaviate handles model inference transparently. The standard [client library how-tos](../../client-libraries/index.mdx) apply unchanged — no DigitalOcean-specific code is required at query or import time beyond the configuration shown above.
+Once the vectorizer is configured, Weaviate handles model inference transparently. The standard [client library how-tos](../../client-libraries/index.mdx) apply unchanged. No DigitalOcean-specific code is required at query or import time beyond the configuration shown above.
 
 ## Questions and feedback
 

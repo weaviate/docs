@@ -327,7 +327,7 @@ await client.collections.create({
   // highlight-start
   vectorizers: [
     weaviate.configure.vectors.text2VecDigitalOcean({
-      model: 'qwen3-embedding-0.6b',  // Required — choose from the DigitalOcean Serverless Inference catalogue
+      model: 'qwen3-embedding-0.6b',  // Required. Choose from the DigitalOcean Serverless Inference catalogue
       name: 'title_vector',
       sourceProperties: ['title'],
     })
@@ -838,7 +838,9 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecMistral({
       name: 'title_vector',
       sourceProperties: ['title'],
-      model: 'mistral-embed'
+      model: 'mistral-embed',
+      // Further options
+      // baseURL: '<custom_mistral_url>',
     },
     ),
   ],

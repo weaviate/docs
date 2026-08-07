@@ -294,6 +294,7 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
+- `embed-v4.0`
 - `embed-multilingual-v3.0` (Default)
 - `embed-multilingual-light-v3.0`
 - `embed-english-v3.0`

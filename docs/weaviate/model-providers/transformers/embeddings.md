@@ -188,7 +188,7 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
 
 #### Additional parameters
 
-- `poolingStrategy` – the pooling strategy to use when the input exceeds the model's context window.
+- `poolingStrategy`: the pooling strategy to use when the input exceeds the model's context window.
   - Default: `masked_mean`. Allowed values: `masked_mean` or `cls`. ([Read more on this topic.](https://arxiv.org/abs/1908.10084))
 
 <Tabs className="code" groupId="languages">

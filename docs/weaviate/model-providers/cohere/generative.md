@@ -264,11 +264,15 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-From Weaviate `v1.31.17`, `v1.32.10`, `v1.33.0` and later, Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. The following models are commonly used:
+Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
 
-- `command-a-03-2025` (server default in `v1.31.17`, `v1.32.10`, `v1.33.0` and later)
+The server default is `command-a-03-2025`. It changed in `v1.33.0`, and was backported to `v1.31.17` and `v1.32.10`. Earlier releases on each of those lines default to `command-r`.
+
+The following models are commonly used:
+
+- `command-a-03-2025` (server default)
 - `command-r-plus`
-- `command-r` (server default before `v1.31.17`, `v1.32.10` and `v1.33.0`)
+- `command-r` (previous server default)
 - `command-xlarge`
 - `command-xlarge-beta`
 - `command-xlarge-nightly`

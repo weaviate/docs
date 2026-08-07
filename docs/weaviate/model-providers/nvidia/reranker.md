@@ -170,7 +170,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 You can use any reranker model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
 
-The default model is `nnvidia/rerank-qa-mistral-4b`.
+The default model is `nvidia/rerank-qa-mistral-4b`.
 
 ## Further resources
 
