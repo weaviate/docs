@@ -644,7 +644,6 @@ import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx'
 
 - [Connect to Weaviate](/weaviate/connections)
 - [API References: GraphQL: Get](../api/graphql/get.md)
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md)
 
 ## Questions and feedback

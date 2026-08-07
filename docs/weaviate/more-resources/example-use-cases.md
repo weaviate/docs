@@ -37,7 +37,6 @@ Vector databases help to address some of large language models (LLMs) limitation
 
 |Title | Description | Modality | Code |
 | --- | --- | --- | --- |
-
 | Verba, the golden RAGtriever ([Video](https://www.youtube.com/watch?v=OSt3sFT1i18)) | Retrieval-Augmented Generation (RAG) system to chat with Weaviate documentation and blog posts. | Text | [Python](https://github.com/weaviate/Verba) |
 | HealthSearch ([Blog](https://weaviate.io/blog/healthsearch-demo)) | Recommendation system of health products based on symptoms. | Text  | [Python](https://github.com/weaviate/healthsearch-demo) |
 | Magic Chat | Search through Magic The Gathering cards | Text | [Python](https://github.com/weaviate/st-weaviate-connection/tree/main) |

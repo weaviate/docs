@@ -57,7 +57,7 @@ You must provide a valid OpenAI API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `OPENAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -162,6 +162,13 @@ Configure the following generative parameters to customize the model behavior.
   </TabItem>
 
 </Tabs>
+
+From Weaviate `v1.31.15`, `v1.32.9`, `v1.33.0` and later, two additional parameters are available for reasoning models such as the `gpt-5` family:
+
+- `reasoningEffort`: How much reasoning the model does before it answers. One of `minimal`, `low`, `medium`, or `high`. If not set, the model provider default applies.
+- `verbosity`: How detailed the generated answer is. One of `low`, `medium`, or `high`. If not set, the model provider default applies.
+
+The Python client exposes these as the `reasoning_effort` and `verbosity` arguments, both when you configure the collection and when you [select a model at runtime](#select-a-model-at-runtime). The TypeScript client does not expose them yet, so set them with another client or through the REST collection configuration API.
 
 For further details on model parameters, see the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/chat).
 
@@ -294,7 +301,12 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (default)
+From Weaviate `v1.31.17`, `v1.32.10`, `v1.33.0` and later, Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach. The following models are recognized by Weaviate's token limit table:
+
+* [gpt-5](https://platform.openai.com/docs/models/gpt-5)
+* [gpt-5-mini](https://platform.openai.com/docs/models/gpt-5-mini) (server default in `v1.30.16`, `v1.31.10`, `v1.32.3` and later)
+* [gpt-5-nano](https://platform.openai.com/docs/models/gpt-5-nano)
+* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (server default before `v1.30.16`, `v1.31.10` and `v1.32.3`)
 * [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-4](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)

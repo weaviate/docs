@@ -349,7 +349,7 @@ For configurable deployments, you can specify enabled modules. For example, in a
 services:
   weaviate:
     environment:
-      ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles"
+      ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-google"
 ```
 
 Check the specific documentation for your deployment method ([Docker](/deploy/installation-guides/docker-installation.md), [Kubernetes](/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](/deploy/installation-guides/embedded.md)) for more information on how to configure it.

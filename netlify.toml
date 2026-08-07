@@ -1226,3 +1226,11 @@ status = 301
 from = "/agents/*"
 to   = "/query-agent/:splat"
 status = 301
+
+# "Queries in detail" tutorial retired. It was written against a removed Python
+# client API, so none of its examples could run. Send readers to the search docs
+# until a replacement querying tutorial is published.
+[[redirects]]
+from = "/weaviate/tutorials/query"
+to   = "/weaviate/search"
+status = 301

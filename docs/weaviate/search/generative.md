@@ -338,24 +338,24 @@ Grouped task search returns one response that includes all of the query results.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
-      startMarker="// START GroupedGenerative"
-      endMarker="// END GroupedGenerative"
+      startMarker="// START GroupedGenerativeBasic"
+      endMarker="// END GroupedGenerativeBasic"
       language="gonew"
     />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START GroupedGenerative"
-      endMarker="// END GroupedGenerative"
+      startMarker="// START GroupedGenerativeBasic"
+      endMarker="// END GroupedGenerativeBasic"
       language="java"
     />
   </TabItem>
   <TabItem value="csharp" label="C#">
     <FilteredTextBlock
       text={CSharpCode}
-      startMarker="// START GroupedGenerative"
-      endMarker="// END GroupedGenerative"
+      startMarker="// START GroupedGenerativeBasic"
+      endMarker="// END GroupedGenerativeBasic"
       language="csharp"
     />
   </TabItem>

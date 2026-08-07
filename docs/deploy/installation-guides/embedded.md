@@ -47,7 +47,15 @@ To configure Embedded Weaviate, set these variables in your instantiation code o
 | `hostname` | string | 127.0.0.1 | Hostname or IP address  |
 | `persistence_data_path` | string | varies | Data storage directory.<br/><br/> If `XDG_DATA_HOME` is set, the default is: `XDG_DATA_HOME/weaviate/`<br/><br/>If `XDG_DATA_HOME` is not set, the default is: `~/.local/share/weaviate` |
 | `port` | integer | 8079 | The Weaviate server request port. |
-| `version` | string | Latest stable | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/deploy/installation-guides/embedded.md#file-url)) |
+| `version` | string | A version pinned in the client (see note) | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/deploy/installation-guides/embedded.md#file-url)) |
+
+:::note Set `version` explicitly
+
+If you do not set `version`, Embedded Weaviate does not run the latest Weaviate release. The client falls back to a single Weaviate version that is fixed in the client source code when that client release is published. That pin only moves when the client is released again, so it can be several Weaviate minor releases behind the current one, and upgrading your client can also change which Weaviate version your embedded instance runs.
+
+Set `version` explicitly so you control which server version you get. Use `"latest"` to resolve the newest Weaviate release at startup, or pin a version number such as `"1.19.6"` for a reproducible environment. The version in use is printed in the embedded server startup logs.
+
+:::
 
 :::warning Do not modify `XDG_CACHE_HOME` or `XDG_DATA_HOME`
 The `XDG_DATA_HOME` and `XDG_CACHE_HOME` environment variables are widely used system variables. If you modify them, you may break other applications.

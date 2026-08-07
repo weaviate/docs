@@ -18,7 +18,7 @@ This page documents significant known issues in Weaviate, their symptoms, and re
 
 | Issue                                                                                 | Affected Versions                                                   | Resolution    | Fixed In                         |
 | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------- | -------------------------------- |
-| [Empty collections panic](#empty-collections-panic)                                   | 1.28 - 1.31                                                         | In Progress   | -                                |
+| [Empty collections panic](#empty-collections-panic)                                   | 1.28 (all), 1.29.0-8, 1.30.0-8, 1.31.0, 1.31.1                      | Fixed         | 1.29.9+, 1.30.9+, 1.31.2+, 1.32.0+ |
 | [Database restoration blocked](#database-restoration-blocked)                         | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3                            | Fixed         | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
 | [RAFT snapshot compatibility on downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed         | 1.27.26                          |
 | [RAFT bootstrap timeout](#raft-bootstrap-timeout)                                     | 1.25 - 1.28                                                         | Workaround    | -                                |
@@ -426,8 +426,8 @@ echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
 
 :::info Impact summary
 
-- **Affected versions:** 1.28, 1.29, 1.30, 1.31
-- **Resolution:** In progress
+- **Affected versions:** 1.28 (all patch releases), 1.29.0 - 1.29.8, 1.30.0 - 1.30.8, 1.31.0 and 1.31.1
+- **Resolution:** Fixed in 1.29.9, 1.30.9, 1.31.2 and 1.32.0
 
 :::
 
@@ -447,12 +447,23 @@ RAFT snapshots with no collections (previously called classes) cause a nil map a
 
 #### Resolution
 
-**Option 1: Upgrade (when available)**
-Upgrade to patched version containing the fix.
+**Option 1: Upgrade (recommended)**
+
+Upgrade to a release that contains the fix:
+
+- 1.29.9 and later 1.29 releases
+- 1.30.9 and later 1.30 releases
+- 1.31.2 and later 1.31 releases
+- 1.32.0 and later
+
+Two points to watch when you choose a target release:
+
+- 1.31.0 and 1.31.1 do **not** contain the fix. Within the 1.31 line, upgrade to 1.31.2 or later.
+- The 1.28 line was never patched. If you run 1.28, upgrade to one of the releases listed above.
 
 **Option 2: Remove empty snapshot**
 
-Identify and remove the problematic snapshot:
+If you cannot upgrade yet, identify and remove the problematic snapshot:
 
 ```bash
 # Navigate to RAFT directory

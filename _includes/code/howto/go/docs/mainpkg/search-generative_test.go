@@ -21,7 +21,7 @@ func TestSingleGenerative(t *testing.T) {
 	client := setupClient()
 	ctx := context.Background()
 
-	// START SingleGenerativeProperties Go
+	// START SingleGenerativeBasic Go
 	generatePrompt := "Convert the following into a question for twitter. Include emojis for fun, but do not include the answer: {question}."
 
 	gs := graphql.NewGenerativeSearch().SingleResult(generatePrompt)
@@ -36,7 +36,7 @@ func TestSingleGenerative(t *testing.T) {
 			WithConcepts([]string{"World history"})).
 		WithLimit(2).
 		Do(ctx)
-	// END SingleGenerativeProperties Go
+	// END SingleGenerativeBasic Go
 
 	require.NoError(t, err)
 
@@ -109,7 +109,7 @@ func TestGroupedGenerative(t *testing.T) {
 	client := setupClient()
 	ctx := context.Background()
 
-	// START GroupedGenerative Go
+	// START GroupedGenerativeBasic Go
 	generatePrompt := "What do these animals have in common, if anything?"
 
 	gs := graphql.NewGenerativeSearch().GroupedResult(generatePrompt)
@@ -124,7 +124,7 @@ func TestGroupedGenerative(t *testing.T) {
 			WithConcepts([]string{"Cute animals"})).
 		WithLimit(3).
 		Do(ctx)
-	// END GroupedGenerative Go
+	// END GroupedGenerativeBasic Go
 
 	require.NoError(t, err)
 

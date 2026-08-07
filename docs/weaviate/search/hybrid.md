@@ -232,6 +232,8 @@ Hybrid search results can favor the keyword component or the vector component. T
 - An `alpha` of `1` is a pure vector search.
 - An `alpha` of `0` is a pure keyword search.
 
+If you do not set `alpha`, the effective weighting depends on your client. See [Alpha parameter](/weaviate/concepts/search/hybrid-search.md#alpha-parameter).
+
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
@@ -1054,7 +1056,6 @@ See [Boost](./boost.md) for the supported condition types (filter, property valu
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
 - About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).
 
 ## Questions and feedback

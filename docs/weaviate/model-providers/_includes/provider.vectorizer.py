@@ -422,10 +422,9 @@ client.collections.create(
         Configure.Vectors.text2vec_huggingface(
             name="title_vector",
             source_properties=["title"],
-            # NOTE: Use only one of (`model`), (`passage_model` and `query_model`), or (`endpoint_url`)
+            # NOTE: Use only one of (`model`), (`passage_model`), or (`endpoint_url`)
             model="sentence-transformers/all-MiniLM-L6-v2",
-            # passage_model="sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",    # Required if using `query_model`
-            # query_model="sentence-transformers/facebook-dpr-question_encoder-single-nq-base", # Required if using `passage_model`
+            # passage_model="sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",
             # endpoint_url="<custom_huggingface_url>",
             #
             # wait_for_model=True,

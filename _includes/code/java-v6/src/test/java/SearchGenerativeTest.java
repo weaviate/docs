@@ -163,7 +163,7 @@ class GenerativeSearchTest {
 
   @Test
   void testGroupedGenerative() {
-    // START GroupedGenerativePython
+    // START GroupedGenerativeBasic
     // highlight-start
     String task = "What do these animals have in common, if anything?";
     // highlight-end
@@ -179,7 +179,7 @@ class GenerativeSearchTest {
     // print the generated response
     System.out.printf("Grouped task result: %s\n",
         response.generative().text());
-    // END GroupedGenerativePython
+    // END GroupedGenerativeBasic
   }
 
   @Test

@@ -57,7 +57,7 @@ const azureApiKey = process.env.AZURE_API_KEY || '';  // Replace with your infer
 // START VoyageAIInstantiation
 const voyageaiApiKey = process.env.VOYAGEAI_API_KEY || '';  // Replace with your inference API key
 // END VoyageAIInstantiation
-// START Xainstantiation
+// START XaiInstantiation
 const xaiApiKey = process.env.XAI_API_KEY || '';  // Replace with your inference API key
 // END XaiInstantiation
 

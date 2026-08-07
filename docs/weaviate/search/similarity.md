@@ -729,7 +729,6 @@ See [Boost](./boost.md) for the supported condition types (filter, property valu
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - For image search, see [Image search](/weaviate/search/image).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md).
 - For search using the GraphQL API, see [GraphQL API](/weaviate/api).
 
 ## Questions and feedback

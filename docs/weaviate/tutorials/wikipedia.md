@@ -182,7 +182,7 @@ In this tutorial, we've learned
 ## Suggested reading
 
 - [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
-- [Tutorial: Queries in detail](./query.md)
+- [How-to: Query and search](../search/index.mdx)
 - [Tutorial: Introduction to modules](./modules.md)
 
 
