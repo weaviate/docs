@@ -316,7 +316,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
 | name | type | required | default | description |
 | ---- | ---- | ---- | ---- |---- |
 | `CPUPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
-| `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB. This is a per-request setting. The operator-level chunking defaults are set separately with the [`BACKUP_MIN_CHUNK_SIZE`, `BACKUP_CHUNK_TARGET_SIZE` and `BACKUP_SPLIT_FILE_SIZE`](/deploy/configuration/env-vars/index.md#general) environment variables.|
+| `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional [compression level](#compression-levels) to be used. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
 | `incremental_base_backup_id` | string | no | `None` | The ID of a previous backup to use as the base for an [incremental backup](#incremental-backups). Files unchanged since the base backup are stored as references rather than copied. Introduced in Weaviate `v1.37`. |
