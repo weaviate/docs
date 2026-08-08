@@ -64,3 +64,48 @@ assert.equal(collectionConfig.vectorizers.default.indexConfig.quantizer.type, "s
 await client.collections.delete(collectionName);
 
 client.close();
+
+
+// UPDATE SCHEMA
+{
+const client = await weaviate.connectToLocal();
+
+const collectionName = 'MyCollection';
+
+// Prep
+await client.collections.delete(collectionName);
+await client.collections.create({
+  name: collectionName,
+  vectorizers: weaviate.configure.vectors.selfProvided({
+    vectorIndexConfig: weaviate.configure.vectorIndex.hnsw({
+      quantizer: weaviate.configure.vectorIndex.quantizer.none(),
+    })
+  })
+})
+
+// START UpdateSchema
+const collection = client.collections.use('MyCollection');
+
+await collection.config.update({
+  vectorizers: [
+    weaviate.reconfigure.vectors.update({
+      name: 'default',
+      vectorIndexConfig: weaviate.reconfigure.vectorIndex.hnsw({
+        quantizer: weaviate.reconfigure.vectorIndex.quantizer.sq({
+          rescoreLimit: 20,
+        }),
+      }),
+    }),
+  ],
+})
+// END UpdateSchema
+
+let collectionConfig = await collection.config.get();
+
+assert.equal(collectionConfig.vectorizers.default.indexConfig.quantizer.type, "sq")
+
+// Clean-up
+await client.collections.delete(collectionName);
+
+client.close();
+}
