@@ -61,7 +61,7 @@ RUN CLIP_MODEL_NAME=clip-ViT-B-32 TEXT_MODEL_NAME=clip-ViT-B-32 ./download.py
 </TabItem>
 <TabItem value="private" label="Private/local model">
 
-You can also build a custom image with any model that is compatible with the Transformer library's `SentenceTransformers` and `CLIPModel` classes. To ensure that text embeddings will output compatible vectors to image embeddings, you must only use models that have been specifically trained for use with CLIP models. (Note that a CLIP model is in reality two models: one for text and one for images.)
+You can also build a custom image with models compatible with the `SentenceTransformer` class from the Sentence Transformers library and the `CLIPModel` class from the Transformers library. To ensure that text embeddings will output compatible vectors to image embeddings, you must only use models that have been specifically trained for use with CLIP models. (Note that a CLIP model is in reality two models: one for text and one for images.)
 <br/>
 
 To build an image with a local, custom model, create a new `Dockerfile` similar to the following, replacing `./my-text-model` and `./my-clip-model` with the paths to your model folders.
