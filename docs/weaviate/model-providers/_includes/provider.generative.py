@@ -858,6 +858,107 @@ response = collection.generate.near_text(
 # clean up
 client.collections.delete("DemoCollection")
 
+# ---------------------------------------------------------------------------
+# DeepSeek generative integration (generative-deepseek).
+#
+# `Configure.Generative.deepseek()` and `GenerativeConfig.deepseek()` are
+# merged upstream on the Python client's main branch (PR #2084, commit
+# afc0e0eb, 2026-06-28), and the calls below match those signatures exactly
+# (keyword-only: base_url, model, temperature, max_tokens, frequency_penalty,
+# presence_penalty, top_p, stop). They are not in a released client yet: the
+# newest tag is v4.22.0 (2026-06-18), which predates that commit, and this
+# repo pins weaviate-client==4.22.0 in pyproject.toml.
+#
+# So the blocks below stay DISPLAY-ONLY: they are rendered in the docs via
+# FilteredTextBlock (with `language="pyindent"`, which strips the 4-space guard
+# indent) and are intentionally kept out of the test runner's allowlist in
+# tests/test_python.py. The `if DEEPSEEK_CLIENT_AVAILABLE:` guard is a
+# belt-and-suspenders measure so that even if this file is ever executed
+# end-to-end, the `deepseek()` calls the pinned client lacks can never run.
+# TODO: once pyproject.toml pins a weaviate-client release that contains
+# afc0e0eb, set DEEPSEEK_CLIENT_AVAILABLE = True, unindent these blocks and
+# switch their FilteredTextBlock `language` from `pyindent` back to `py`, and
+# add this file to the allowlist in tests/test_python.py.
+# ---------------------------------------------------------------------------
+DEEPSEEK_CLIENT_AVAILABLE = False
+
+if DEEPSEEK_CLIENT_AVAILABLE:
+    # NOTE: there is deliberately no "basic" no-model block for DeepSeek. The
+    # module's built-in default model is the retired `deepseek-chat` alias, so
+    # `Configure.Generative.deepseek()` with no arguments is not a usable
+    # example. Every documented DeepSeek block sets `model` explicitly.
+
+    # START GenerativeDeepseekCustomModel
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.deepseek(
+            model="deepseek-v4-flash"
+        )
+        # highlight-end
+        # Additional parameters not shown
+    )
+    # END GenerativeDeepseekCustomModel
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
+    # START FullGenerativeDeepseek
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.deepseek(
+            model="deepseek-v4-flash",
+            # # These parameters are optional
+            # temperature=0.7,
+            # max_tokens=500,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
+            # top_p=1.0,
+            # base_url="https://api.deepseek.com",
+            # stop=["\n\n"],
+        )
+        # highlight-end
+    )
+    # END FullGenerativeDeepseek
+
+    # clean up
+    client.collections.delete("DemoCollection")
+    import_data()
+
+    # START RuntimeModelSelectionDeepseek
+    from weaviate.classes.config import Configure
+    from weaviate.classes.generate import GenerativeConfig
+
+    collection = client.collections.use("DemoCollection")
+    response = collection.generate.near_text(
+        query="A holiday film",
+        limit=2,
+        grouped_task="Write a tweet promoting these two movies",
+        # highlight-start
+        generative_provider=GenerativeConfig.deepseek(
+            # # These parameters are optional
+            # model="deepseek-v4-flash",
+            # temperature=0.7,
+            # max_tokens=500,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
+            # top_p=1.0,
+            # base_url="https://api.deepseek.com",
+            # stop=["\n\n"],
+        ),
+        # Additional parameters not shown
+        # highlight-end
+    )
+    # END RuntimeModelSelectionDeepseek
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
 # START BasicGenerativeNVIDIA
 from weaviate.classes.config import Configure
 

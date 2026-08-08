@@ -240,6 +240,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "DeepSeek",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/deepseek/index",
+              },
+              items: ["weaviate/model-providers/deepseek/generative"],
+            },
+            {
+              type: "category",
               label: "DigitalOcean",
               className: "sidebar-item",
               link: {
