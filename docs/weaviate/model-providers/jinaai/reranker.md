@@ -167,7 +167,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-- `jina-reranker-v2-base-multilingual` (default)
+- `jina-reranker-v2-base-multilingual` (server default)
 - `jina-reranker-v1-base-en`
 - `jina-reranker-v1-turbo-en`
 - `jina-reranker-v1-tiny-en`

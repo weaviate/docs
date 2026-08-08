@@ -40,7 +40,11 @@ This enables an enhanced developed experience, such as the ability to:
 
 #### Enable all API-based modules
 
-All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`.
+All API-based model integrations are available by default starting with Weaviate `v1.33`.
+
+To opt out, for example in an air-gapped or otherwise restricted deployment, set the [`API_BASED_MODULES_DISABLED` environment variable](/deploy/configuration/env-vars#API_BASED_MODULES_DISABLED) to `true`. Weaviate then loads only the modules that you list in [`ENABLE_MODULES`](/deploy/configuration/env-vars#ENABLE_MODULES). This variable was added in `v1.33`.
+
+For releases before `v1.33`, enable all API-based modules by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`. Weaviate stopped reading that variable in `v1.33`.
 
 ### Locally hosted
 
