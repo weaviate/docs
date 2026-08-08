@@ -536,7 +536,7 @@ For example, a `Person` collection could have an `address` property as an object
 
 :::note Indexing and filtering
 
-`object` and `object[]` properties are not vectorized: only their leaf scalars are stored in the inverted index. From Weaviate `v1.38` (preview), you can filter on nested-object leaves using a dotted path syntax. See [Filter on nested object properties](../search/filters.md#filter-on-nested-object-properties).
+`object` and `object[]` properties are not vectorized by default, and only their leaf scalars are stored in the inverted index. If you list an object property in the vector configuration's [`properties` field](indexing/vector-index.mdx#specify-which-properties-to-vectorize), it is converted to a string (its JSON representation) and concatenated into the vectorizer's input text. From Weaviate `v1.38` (preview), you can filter on nested-object leaves using a dotted path syntax. See [Filter on nested object properties](../search/filters.md#filter-on-nested-object-properties).
 
 :::
 
