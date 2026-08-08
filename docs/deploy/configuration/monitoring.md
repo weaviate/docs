@@ -500,10 +500,10 @@ Added in `v1.38`. These metrics track tool traffic, latency, auth failures, and 
 
 Label values:
 
-- **`tool`** — the MCP tool name (e.g. `weaviate-query-hybrid`, `weaviate-objects-upsert`).
-- **`status`** — `success` · `error` · `denied` · `write_disabled`. `denied` covers authorization failures classified via the `Forbidden` / `Unauthenticated` error families. `write_disabled` is emitted when a write call hits the runtime guard.
-- **`reason`** — `missing_token` · `invalid_token` · `forbidden` · `unauthenticated`. `missing_token` and `invalid_token` are detected at the principal-extraction step; `forbidden` and `unauthenticated` are detected at authorization time.
-- **`write_access`** — `enabled` / `disabled`, matching the live state of `MCP_SERVER_WRITE_ACCESS_ENABLED` at the time of the `tools/list` call.
+- **`tool`**: the MCP tool name (e.g. `weaviate-query-hybrid`, `weaviate-objects-upsert`).
+- **`status`**: `success` · `error` · `denied` · `write_disabled`. `denied` covers authorization failures classified via the `Forbidden` / `Unauthenticated` error families. `write_disabled` is emitted when a write call hits the runtime guard.
+- **`reason`**: `missing_token` · `invalid_token` · `forbidden` · `unauthenticated`. `missing_token` and `invalid_token` are detected at the principal-extraction step; `forbidden` and `unauthenticated` are detected at authorization time.
+- **`write_access`**: `enabled` / `disabled`, matching the live state of `MCP_SERVER_WRITE_ACCESS_ENABLED` at the time of the `tools/list` call.
 
 ---
 
@@ -530,7 +530,7 @@ your uses perfectly:
 
 ## Query profiling
 
-For per-query performance analysis, Weaviate provides [query profiling](/weaviate/search/query-profile.md). Unlike Prometheus metrics which show aggregate performance, query profiling provides per-shard timing breakdowns for individual queries — useful for diagnosing specific slow queries.
+For per-query performance analysis, Weaviate provides [query profiling](/weaviate/search/query-profile.md). Unlike Prometheus metrics which show aggregate performance, query profiling provides per-shard timing breakdowns for individual queries, which is useful for diagnosing specific slow queries.
 
 ## `nodes` API Endpoint
 

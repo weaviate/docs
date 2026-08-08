@@ -35,6 +35,14 @@ SQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START EnableSQ"
+        endMarker="// END EnableSQ"
+        language="ts"
+      />
+  </TabItem>
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -78,6 +86,14 @@ SQ can also be enabled for an existing collection by updating the collection def
         language="py"
       />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateSchema"
+        endMarker="// END UpdateSchema"
+        language="ts"
+      />
+  </TabItem>
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -119,6 +135,14 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         startMarker="# START SQWithOptions"
         endMarker="# END SQWithOptions"
         language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCodeSQOptions}
+        startMarker="// START SQWithOptions"
+        endMarker="// END SQWithOptions"
+        language="ts"
       />
   </TabItem>
   <TabItem value="go" label="Go">

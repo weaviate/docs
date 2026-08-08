@@ -263,6 +263,23 @@ Additionally, we strongly recommend that you do not use the following words as p
 - `vector`
 - `_vector`
 
+##### Reserved suffixes
+
+A property name may also not *end* in one of the following suffixes, because each would collide with an internal index that Weaviate derives from another property:
+
+- `_searchable`
+- `_rangeable`
+- `_temp`
+- `__meta_count`
+- `_propertyLength`
+- `_nullState`
+
+A property whose name ends in one of these suffixes, such as `comments_temp`, is rejected with a validation error: `'comments_temp' is not a valid property name: suffix '_temp' is reserved for internal indices`.
+
+This check runs when you create a collection or add a property to an existing collection. It is not applied when an existing collection definition is loaded, so a collection created before the check was introduced continues to work, and a backup that contains such a property still restores.
+
+The check was added in `v1.38.0`, and backported to `v1.35.20`, `v1.36.15`, and `v1.37.5`.
+
 #### `tokenization`
 
 You can customize how `text` data is tokenized and indexed in the inverted index. Tokenization influences the results returned by the [`bm25`](../api/graphql/search-operators.md#bm25) and [`hybrid`](../api/graphql/search-operators.md#hybrid) operators, and [`where` filters](../api/graphql/filters.md).

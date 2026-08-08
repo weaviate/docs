@@ -113,7 +113,7 @@ In addition to the above, there are other modules such as:
 - [qna-transformers](./qna-transformers.md): Question-answering (answer extraction) capability using transformers models.
 - [qna-openai](./qna-openai.md): Question-answering (answer extraction) capability using OpenAI models.
 - [ner-transformers](./ner-transformers.md): Named entity recognition capability using transformers models.
-- [text-spellcheck](./ner-transformers.md): Spell checking capability for GraphQL queries.
+- [text-spellcheck](./spellcheck.md): Spell checking capability for GraphQL queries.
 - [sum-transformers](./sum-transformers.md): Summarize text using transformer models.
 - [usage-modules](./usage-modules.md): Collect and upload usage analytics to GCS or S3 for the purposes of billing.
 

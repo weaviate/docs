@@ -69,12 +69,12 @@ The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/em
 </Tabs>
 
 The final dimensionality of the MUVERA encoded vector will be
-`repetition * 2^ksim * dprojections`. Carefully tuning these parameters
+`repetitions * 2^ksim * dprojections`. Carefully tuning these parameters
 is crucial to balance memory usage and retrieval accuracy.
 
 These parameters can be used to fine-tune MUVERA:
 
-- **`ksim`** (`int`):
+- **`ksim`** (`int`, default: `4`):
   The number of Gaussian vectors sampled for the SimHash partitioning function.
   This parameter determines the number of bits in the hash, and consequently,
   the number of buckets created in the space partitioning step. The total
@@ -83,7 +83,7 @@ These parameters can be used to fine-tune MUVERA:
   the accuracy of the approximation but also increasing the dimensionality
   of the intermediate encoded vectors.
 
-- **`dprojections`** (`int`):
+- **`dprojections`** (`int`, default: `16`):
   The dimensionality of the sub-vectors after the random linear projection
   in the dimensionality reduction step. After partitioning the multi-vector
   embedding into buckets, each bucket's aggregated vector is projected down
@@ -92,9 +92,9 @@ These parameters can be used to fine-tune MUVERA:
   fixed-dimensional encoding, leading to lower memory consumption but potentially
   at the cost of some information loss and retrieval accuracy.
 
-- **`repetition`** (`int`):
+- **`repetitions`** (`int`, default: `10`):
   The number of times the space partitioning and dimensionality reduction
-  steps are repeated. This repetition allows for capturing different perspectives
+  steps are repeated. Each repetition captures a different perspective
   of the multi-vector embedding and can improve the robustness and accuracy
   of the final fixed-dimensional encoding. The resulting single vectors from
   each repetition are concatenated. A higher number of repetitions increases
