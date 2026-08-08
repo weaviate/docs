@@ -262,9 +262,9 @@ Standard vector search returns the closest matches to a query, which often means
 - **Diversity**: how different is the item from the results already selected?
 
 The algorithm works iteratively. It selects the most relevant item first, then for each subsequent pick it scores candidates by weighing their query similarity against their maximum similarity to any already-selected result. The `balance` parameter (λ) controls the trade-off:
-- **λ = 0.0**: Pure diversity — maximizes difference from already-selected items
-- **λ = 0.5**: Balanced — each result must be both relevant and distinct
-- **λ = 1.0**: Pure relevance — equivalent to standard vector search
+- **λ = 0.0**: Pure diversity (maximizes difference from already-selected items)
+- **λ = 0.5**: Balanced (each result must be both relevant and distinct)
+- **λ = 1.0**: Pure relevance (equivalent to standard vector search)
 
 MMR is applied at query time as a reranking step on top of standard search. No reindexing is needed. The typical pattern is to retrieve a larger candidate set via regular vector search, then rerank a subset using MMR.
 
