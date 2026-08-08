@@ -159,8 +159,8 @@ As this integration runs a local container with the Transformers model, no addit
 
 </Tabs>
 
-:::note Chose a container image to select a model
-To chose a model, select the [container image](#configure-the-integration) that hosts it.
+:::note Choose a container image to select a model
+To choose a model, select the [container image](#configure-the-integration) that hosts it.
 :::
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';

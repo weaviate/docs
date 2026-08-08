@@ -356,7 +356,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 - `embed-v4.0`
-- `embed-multilingual-v3.0` (Default)
+- `embed-multilingual-v3.0` (server default)
 - `embed-multilingual-light-v3.0`
 - `embed-multilingual-v2.0` (previously `embed-multilingual-22-12`)
 - `embed-english-v3.0`
@@ -379,7 +379,7 @@ The following models are available, but deprecated:
 
 ### Other integrations
 
-- [Cohere multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [Cohere multimodal embedding models + Weaviate](./embeddings-multimodal.md)
 - [Cohere generative models + Weaviate](./generative.md)
 - [Cohere reranker models + Weaviate](./reranker.md)
 

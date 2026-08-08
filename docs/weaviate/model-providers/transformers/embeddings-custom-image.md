@@ -70,7 +70,7 @@ To build an image with a local, custom model, create a new `Dockerfile` similar 
 Save the `Dockerfile` as `my-inference-image.Dockerfile`. (You can name it anything you like.)
 <br/>
 
-This will creates a custom image for a model stored in a local folder `my-model` on your machine.
+This will create a custom image for a model stored in a local folder `my-model` on your machine.
 <br/>
 
 ```yaml

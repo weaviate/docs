@@ -288,7 +288,7 @@ The following models are commonly used:
 ### Other integrations
 
 - [Cohere text embedding models + Weaviate](./embeddings.md).
-- [Cohere multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [Cohere multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [Cohere reranker models + Weaviate](./reranker.md).
 
 ### Code examples
