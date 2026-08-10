@@ -131,7 +131,7 @@ Embedded Weaviate is supported for Python and TypeScript clients.
 
 ### Python clients
 
-[Python](docs/weaviate/client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client requires Weaviate `v1.23.7` or later.
+Embedded Weaviate is built into the [Python client](docs/weaviate/client-libraries/python/index.mdx), so there is no separate package to install. The Python client requires Weaviate `v1.23.7` or later.
 
 ### TypeScript clients
 
