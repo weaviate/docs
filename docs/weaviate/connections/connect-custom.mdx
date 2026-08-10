@@ -15,7 +15,7 @@ import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts"
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 
-The [Python Client v4](/weaviate/client-libraries/python) and the [TypeScript Client v3](../client-libraries/typescript/index.mdx) provide helper methods for common connection types. They also provide custom methods for when you need additional connection configuration.
+The [Python client](/weaviate/client-libraries/python) and the [TypeScript client](../client-libraries/typescript/index.mdx) provide helper methods for common connection types. They also provide custom methods for when you need additional connection configuration.
 
 If you are using one of the other clients, the standard connection methods are configurable for all connections.
 
@@ -121,11 +121,11 @@ import WCDOIDCWarning from "/_includes/wcd-oidc.mdx";
 
 The examples below assume you already have a bearer access token. Set the following environment variables before running them:
 
-- `WEAVIATE_HTTP_HOST` — host:port of the Weaviate REST endpoint (e.g., `localhost:8080`)
-- `WEAVIATE_GRPC_HOST` — host:port of the Weaviate gRPC endpoint (e.g., `localhost:50051`)
-- `WEAVIATE_OIDC_ACCESS_TOKEN` — the access token from your IdP
-- `WEAVIATE_OIDC_REFRESH_TOKEN` — *(optional)* refresh token for automatic renewal
-- `WEAVIATE_OIDC_EXPIRES_IN` — *(optional)* token lifetime in seconds
+- `WEAVIATE_HTTP_HOST`: host:port of the Weaviate REST endpoint (e.g., `localhost:8080`)
+- `WEAVIATE_GRPC_HOST`: host:port of the Weaviate gRPC endpoint (e.g., `localhost:50051`)
+- `WEAVIATE_OIDC_ACCESS_TOKEN`: the access token from your IdP
+- `WEAVIATE_OIDC_REFRESH_TOKEN`: *(optional)* refresh token for automatic renewal
+- `WEAVIATE_OIDC_EXPIRES_IN`: *(optional)* token lifetime in seconds
 
 import OIDCExamples from "/_includes/code/connections/oidc-connect.mdx";
 
