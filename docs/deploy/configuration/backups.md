@@ -468,6 +468,8 @@ This can result in dramatically smaller backups and much faster backup times.
 
 When creating a backup, Weaviate packs a shard's files into chunks. During an incremental backup, Weaviate compares each file against the base backup. Files that haven't changed are stored as pointers to the base backup rather than being copied again. On restore, Weaviate automatically fetches the referenced files from the base backup.
 
+The base backup can itself be an incremental backup, so you can build a [chain of incremental backups](#chained-incremental-backups) that ends at a full backup. Weaviate walks the whole chain to find unchanged files, so every backup in the chain must remain available.
+
 Only a file large enough to get a chunk of its own can be referenced individually, so the way Weaviate groups files into chunks determines how much an incremental backup can reuse. For how Weaviate decides which files get their own chunk, and the environment variables that control chunking, see [Chunking and file splitting](#chunking-and-file-splitting).
 
 #### Create a full (base) backup
@@ -789,8 +791,8 @@ Chunking and `BACKUP_CHUNK_TARGET_SIZE` were backported to `v1.33.14`, `v1.34.11
 On every backup, full or incremental, Weaviate packs each [shard's](/weaviate/concepts/storage.md#logical-storage-units-indexes-shards-stores) files into chunks:
 
 - Each of the shard's biggest files gets a **chunk of its own**.
-- The remaining smaller files are packed together into **shared chunks** of roughly `BACKUP_CHUNK_TARGET_SIZE`.
 - A file larger than `BACKUP_SPLIT_FILE_SIZE` is **split into parts**, and each part gets a chunk of its own that holds nothing else.
+- The remaining smaller files are packed together into **shared chunks** of roughly `BACKUP_CHUNK_TARGET_SIZE`.
 
 Chunking matters because it determines how much a later [incremental backup](#incremental-backups) can reuse:
 
