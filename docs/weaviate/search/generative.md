@@ -52,7 +52,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
   </TabItem>
   <TabItem value="go" label="Go">
 
-```ts
+```go
 // Go support coming soon
 ```
 
@@ -96,7 +96,7 @@ The second review is for the Stadt Krems 2009 Steinterrassen Riesling from Austr
 
 :::tip
 
-For more information on the available modeld and their additional options, see the [model providers section](../model-providers/index.md).
+For more information on the available models and their additional options, see the [model providers section](../model-providers/index.md).
 
 :::
 ## Named vectors
@@ -168,7 +168,7 @@ The second review is for the Stadt Krems 2009 Steinterrassen Riesling from Austr
 ## Single prompt search
 
 Single prompt search returns a generated response for each object in the query results.<br/>
-Define object `properties` – using `{prop-name}` syntax – to interpolate retrieved content in the prompt.<br/>
+Define object `properties` with the `{prop-name}` syntax to interpolate retrieved content in the prompt.<br/>
 The properties you use in the prompt do not have to be among the properties you retrieve in the query.
 
 <Tabs className="code" groupId="languages">
@@ -268,8 +268,8 @@ You can use *generative parameters* to specify additional options when performin
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SingleGenerativeParametersTS"
-      endMarker="// END SingleGenerativeParametersTS"
+      startMarker="// START SingleGenerativeParameters"
+      endMarker="// END SingleGenerativeParameters"
       language="java"
     />
   </TabItem>
