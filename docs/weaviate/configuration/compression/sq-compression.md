@@ -77,10 +77,6 @@ import SqPostCreation from '/_includes/feature-notes/sq-post-creation.mdx';
 
 SQ can also be enabled for an existing collection by updating the collection definition:
 
-:::note
-A TypeScript example is not available for this operation yet. Use `collections.update()` in the [TypeScript client](/weaviate/client-libraries/typescript/index.mdx).
-:::
-
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
@@ -88,6 +84,14 @@ A TypeScript example is not available for this operation yet. Use `collections.u
         startMarker="# START UpdateSchema"
         endMarker="# END UpdateSchema"
         language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateSchema"
+        endMarker="// END UpdateSchema"
+        language="ts"
       />
   </TabItem>
   <TabItem value="go" label="Go">

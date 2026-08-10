@@ -80,40 +80,14 @@ import PromptStarter from "/src/components/PromptStarter";
 
 To use Weaviate Embeddings, you will need:
 
-- A Weaviate Cloud free cluster running Weaviate `v1.28.5` and later
-- A Weaviate client library that supports Weaviate Embeddings. Install a supported release:
+- A Weaviate Cloud free cluster
+- A Weaviate client library that supports Weaviate Embeddings
 
-<Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
+import CodeClientInstall from "/\_includes/code/quickstart/clients.install.new.mdx";
 
-```bash
-pip install -U "weaviate-client>=4.9.5"
-```
+<CodeClientInstall />
 
-</TabItem>
-<TabItem value="ts" label="JavaScript/TypeScript">
-
-```bash
-npm install weaviate-client@^3.2.5
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-The Java client supports Weaviate Embeddings. Install it as shown in the [client library page](/weaviate/client-libraries/java).
-
-</TabItem>
-<TabItem value="csharp" label="C#">
-
-The C# client supports Weaviate Embeddings. Install it as shown in the [client library page](/weaviate/client-libraries/csharp).
-
-</TabItem>
-<TabItem value="go" label="Go">
-
-The Go client does not support Weaviate Embeddings directly. Install it as shown in the [client library page](/weaviate/client-libraries/go), then pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually upon instantiation, as shown below.
-
-</TabItem>
-</Tabs>
+The Go client does not support Weaviate Embeddings directly. Pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually when you instantiate the client.
 
 ## Step 1: Set up Weaviate
 
@@ -128,8 +102,6 @@ import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 ### 1.2 Install a client library
 
 We recommend using a [client library](/weaviate/client-libraries) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](/weaviate/client-libraries/python), [JavaScript/TypeScript](/weaviate/client-libraries/typescript), [Go](/weaviate/client-libraries/go), and [Java](/weaviate/client-libraries/java).
-
-import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
 <CodeClientInstall />
 
