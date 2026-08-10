@@ -136,7 +136,7 @@ class GenerativeSearchTest {
 
   @Test
   void testSingleGenerativeParameters() {
-    // START SingleGenerativeParametersPython
+    // START SingleGenerativeParameters
     CollectionHandle<Map<String, Object>> jeopardy =
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.generate.nearText("World history", q -> q.limit(2),
@@ -158,7 +158,7 @@ class GenerativeSearchTest {
       System.out.printf("Debug: %s\n", o.generative().debug());
       System.out.printf("Metadata: %s\n", o.generative().metadata());
     }
-    // END SingleGenerativeParametersPython
+    // END SingleGenerativeParameters
   }
 
   @Test

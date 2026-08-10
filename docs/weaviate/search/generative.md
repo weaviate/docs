@@ -268,8 +268,8 @@ You can use *generative parameters* to specify additional options when performin
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
-      startMarker="// START SingleGenerativeParametersPython"
-      endMarker="// END SingleGenerativeParametersPython"
+      startMarker="// START SingleGenerativeParameters"
+      endMarker="// END SingleGenerativeParameters"
       language="java"
     />
   </TabItem>
