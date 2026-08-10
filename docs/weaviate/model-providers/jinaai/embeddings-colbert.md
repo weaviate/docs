@@ -328,7 +328,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-- `jina-colbert-v2`
+- `jina-colbert-v2` (server default)
     - By default, Weaviate uses `128` dimensions
 - `jina-colbert-v1`
 

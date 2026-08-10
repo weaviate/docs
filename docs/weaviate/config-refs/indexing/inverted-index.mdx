@@ -191,19 +191,19 @@ A preset name that matches a built-in (`"en"`, `"none"`) fully replaces the buil
 
 </details>
 
-The existing [`stopwords`](#stopwords) configuration remains as the default for properties that do not specify a `textAnalyzer.stopwordPreset` override. For extending a built-in preset with `additions`/`removals`, use [`stopwords`](#stopwords) instead — it is the only stopword config that accepts that object form.
+The existing [`stopwords`](#stopwords) configuration remains as the default for properties that do not specify a `textAnalyzer.stopwordPreset` override. For extending a built-in preset with `additions`/`removals`, use [`stopwords`](#stopwords) instead. It is the only stopword config that accepts that object form.
 
 #### `textAnalyzer` {#textanalyzer}
 
 <TokenizerPreview />
 
-Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties. The accent-folding options (`asciiFold`, `asciiFoldIgnore`) are supported on properties with tokenization `word`, `lowercase`, `whitespace`, `field`, or `trigram` — not on the language-specific tokenizers (`gse`, `gse_ch`, `kagome_ja`, `kagome_kr`). The `stopwordPreset` option is only supported on properties with `tokenization: "word"`.
+Part of a **property definition** (not `invertedIndexConfig`). Configures text analysis behavior for individual `text` properties. The accent-folding options (`asciiFold`, `asciiFoldIgnore`) are supported on properties with tokenization `word`, `lowercase`, `whitespace`, `field`, or `trigram`. They are not supported on the language-specific tokenizers (`gse`, `gse_ch`, `kagome_ja`, and `kagome_kr`). The `stopwordPreset` option is only supported on properties with `tokenization: "word"`.
 
 | Parameter         | Type       | Default | Details                                                                                                                                                                                                                                  |
 | :---------------- | :--------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `asciiFold`       | `boolean`  | `false` | Normalizes accented Latin characters to ASCII equivalents during indexing and querying. Uses Unicode NFD decomposition. **Immutable** after the property is created.                                                                     |
 | `asciiFoldIgnore` | `string[]` | `[]`    | Characters exempt from ASCII folding. Each entry must be a single character. **Immutable** after the property is created.                                                                                                               |
-| `stopwordPreset`  | `string`   | (none)  | Name of a built-in (`en`, `none`) or collection-level stopword preset to use for this property, overriding the default `stopwords` config. **Only supported on properties with `tokenization: "word"`** — schema validation rejects it on other tokenizers. |
+| `stopwordPreset`  | `string`   | (none)  | Name of a built-in (`en`, `none`) or collection-level stopword preset to use for this property, overriding the default `stopwords` config. **Only supported on properties with `tokenization: "word"`**. Schema validation rejects it on other tokenizers. |
 
 <details>
   <summary>Example <code>textAnalyzer</code> configuration - JSON object</summary>
@@ -225,7 +225,7 @@ Part of a **property definition** (not `invertedIndexConfig`). Configures text a
 
 :::note
 
-`asciiFoldIgnore` changes which tokens are written to disk. It cannot be modified after the property is created — schema updates that change the ignore list are rejected. To change it, create a new property and reindex.
+`asciiFoldIgnore` changes which tokens are written to disk. It cannot be modified after the property is created. Schema updates that change the ignore list are rejected. To change it, create a new property and reindex.
 
 :::
 
@@ -253,7 +253,7 @@ Using these features requires more resources, as the additional inverted indexes
 
 ## Drop an inverted index
 
-You can drop (delete) an inverted index from a property. This is a destructive operation — the index data is removed from disk. To use the index again, it must be regenerated.
+You can drop (delete) an inverted index from a property. This is a destructive operation: the index data is removed from disk. To use the index again, it must be regenerated.
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
@@ -306,7 +306,7 @@ Two REST endpoints let you test tokenization without modifying your schema.
 
 :::note
 
-`stopwords` and `stopwordPresets` are mutually exclusive — pass one or the other, not both. Use `stopwords` for a single preset optionally tweaked with additions/removals; use `stopwordPresets` to define named presets and select one via `analyzerConfig.stopwordPreset`.
+`stopwords` and `stopwordPresets` are mutually exclusive. Pass one or the other, not both. Use `stopwords` for a single preset optionally tweaked with additions/removals; use `stopwordPresets` to define named presets and select one via `analyzerConfig.stopwordPreset`.
 
 :::
 
@@ -386,7 +386,7 @@ curl -X POST http://localhost:8080/v1/tokenize -d '{
 
 ### Property-based tokenization
 
-`POST /v1/schema/{className}/properties/{propertyName}/tokenize` resolves the full analyzer config from an existing property. The property's tokenization method, `textAnalyzer` settings, and the collection's stopword configuration are applied automatically — nothing else needs to be passed.
+`POST /v1/schema/{className}/properties/{propertyName}/tokenize` resolves the full analyzer config from an existing property. The property's tokenization method, `textAnalyzer` settings, and the collection's stopword configuration are applied automatically. Nothing else needs to be passed.
 
 **Request body:**
 

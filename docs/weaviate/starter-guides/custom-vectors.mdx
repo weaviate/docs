@@ -71,13 +71,13 @@ Weaviate is open source. You can [run Weaviate](/deploy/index.mdx) locally, in t
 
 ### Client library
 
-[Client libraries](/weaviate/client-libraries) simplify working with Weaviate. Clients are available for multiple programming languages. This guide provides examples in Python, Typescript, and cURL.
+[Client libraries](/weaviate/client-libraries) simplify working with Weaviate. Clients are available for multiple programming languages. This guide provides examples in Python, TypeScript, Java, C#, and cURL.
 
 To install a client library, use the installer for the client language:
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
-The v4 client requires Weaviate `v1.23.7` and later.<br/><br/>
+The Python client requires Weaviate `v1.23.7` and later.<br/><br/>
 
 ```bash
 pip install -U weaviate-client
@@ -99,6 +99,13 @@ npm install weaviate-client
   <artifactId>client6</artifactId>
   <version>||site.java_client_version||</version> <!-- Check latest version: https://github.com/weaviate/java-client  -->
 </dependency>
+```
+
+</TabItem>
+<TabItem value="csharp" label="C#">
+
+```bash
+dotnet add package Weaviate.Client --version ||site.csharp_client_version||
 ```
 
 </TabItem>

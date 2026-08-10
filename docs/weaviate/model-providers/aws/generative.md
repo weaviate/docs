@@ -147,7 +147,7 @@ For SageMaker, you must provide the endpoint address in the generative AI config
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) which [model](#available-models) Weaviate uses.
 
 ### Generative parameters
 
@@ -272,31 +272,11 @@ You can also supply images as a part of the input when performing retrieval augm
 
 #### Bedrock
 
-- `ai21.j2-ultra-v1`
-- `ai21.j2-mid-v1`
-- `amazon.titan-text-lite-v1`
-- `amazon.titan-text-express-v1`
-- `amazon.titan-text-premier-v1:0`
-- `anthropic.claude-v2`
-- `anthropic.claude-v2:1`
-- `anthropic.claude-instant-v1`
-- `anthropic.claude-3-sonnet-20240229-v1:0`
-- `anthropic.claude-3-haiku-20240307-v1:0`
-- `cohere.command-text-v14`
-- `cohere.command-light-text-v14`
-- `cohere.command-r-v1:0`
-- `cohere.command-r-plus-v1:0`
-- `meta.llama3-8b-instruct-v1:0`
-- `meta.llama3-70b-instruct-v1:0`
-- `meta.llama2-13b-chat-v1`
-- `meta.llama2-70b-chat-v1`
-- `mistral.mistral-7b-instruct-v0:2`
-- `mistral.mixtral-8x7b-instruct-v0:1`
-- `mistral.mistral-large-2402-v1:0`
+Weaviate passes the `model` value through to Amazon Bedrock, so any Bedrock text generation model that your AWS account and region has access to can be used. Weaviate recognizes the model families offered by AI21 Labs, Amazon (Titan and Nova), Anthropic, Cohere, Meta, and Mistral AI, including their cross-region inference profile IDs.
 
-Refer to the [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+For the current model IDs, see the [Amazon Bedrock supported foundation models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html) documentation. Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how to request access to a model.
 
-### SageMaker
+#### SageMaker
 
 Any custom SageMaker URL can be used as an endpoint.
 

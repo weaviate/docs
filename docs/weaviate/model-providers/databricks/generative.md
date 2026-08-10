@@ -48,10 +48,10 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 You must provide a valid Databricks Personal Access Token (PAT) to Weaviate for this integration. Refer to the [Databricks documentation](https://docs.databricks.com/en/dev-tools/auth/pat.html) for instructions on generating your PAT in your workspace.
 
-Provide the Dataricks token to Weaviate using one of the following methods:
+Provide the Databricks token to Weaviate using one of the following methods:
 
 - Set the `DATABRICKS_TOKEN` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Provide the token at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
 
@@ -156,7 +156,7 @@ Aside from setting the default model provider when creating the collection, you 
 
 ## Header parameters
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+You can provide the token as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
 
 - `X-Databricks-Token`: The Databricks API token.
 - `X-Databricks-Endpoint`: The endpoint to use for the Databricks model.

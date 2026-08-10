@@ -125,7 +125,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+The [default model](#available-models) is used if you do not specify one.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -139,6 +139,10 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 ### Vectorizer parameters
 
 The following examples show how to configure Jina AI-specific options.
+
+- `model`: The model name.
+- `dimensions`: The number of dimensions for the model.
+  - Note that [not all models](#available-models) support this parameter.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -160,12 +164,6 @@ The following examples show how to configure Jina AI-specific options.
   </TabItem>
 
 </Tabs>
-
-### Vectorizer parameters
-
-- `model`: The model name.
-- `dimensions`: The number of dimensions for the model.
-  - Note that [not all models](#available-models) support this parameter.
 
 ## Data import
 
@@ -297,7 +295,7 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `jina-clip-v2`
+- `jina-clip-v2` (server default)
     - This model is a multilingual, multimodal model using [Matryoshka Representation Learning](https://arxiv.org/abs/2205.13147).
     - It will accept a `dimensions` parameter, which can be any integer between (and including) 64 and 1024. The default value is 1024.
 - `jina-clip-v1`
