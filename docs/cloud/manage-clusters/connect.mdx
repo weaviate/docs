@@ -193,7 +193,7 @@ weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be
 
 **Solution**: Verify the cluster URL is correct and update the URL if needed.
 
-When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections work, however the new gRPC and the old HTTP URLs are different so connections that require gRPC fail.
+When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections continue to work. However, the new gRPC URL and the old HTTP URL are different, so connections that require gRPC fail.
 
 To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match. Compare the Cluster URL with the connection URL in your application. The old URL and the new URL are similar, but the new one may have an extra subdomain such as `.c0.region`. If the URLs are different, update your application's connection code to use the new Cluster URL.
 
