@@ -207,6 +207,16 @@ Any additional headers provided at runtime will override the existing Weaviate c
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
+:::note How Weaviate builds the request URL
+
+Use the `X-OpenAI-Baseurl` header, or the `baseURL` parameter, to target an OpenAI-compatible service. Weaviate builds the request URL by appending `/v1/chat/completions` to the base URL, or `/v1/completions` for the legacy `text-davinci-002` and `text-davinci-003` models.
+
+The generative integration has no `endpoint` parameter to override this path, unlike the [OpenAI embeddings integration](./embeddings.md#header-parameters). If your provider expects a different path, point the base URL at a proxy that rewrites `/v1/chat/completions` to your provider's path.
+
+The [Azure OpenAI integration](../openai-azure/generative.md) builds a deployment-specific path and ignores the paths above.
+
+:::
+
 ## Retrieval augmented generation
 
 After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
