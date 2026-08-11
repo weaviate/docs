@@ -5,6 +5,7 @@ import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.batch.BatchContext;
+import io.weaviate.client6.v1.api.collections.generate.GenerativeProvider;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -170,31 +171,67 @@ class QuickstartTest {
     // END NearText
   }
 
-  // @Test
-  // void testRagQuery() {
-  // // Best practice: store your credentials in environment variables
-  // String weaviateUrl = System.getenv("WEAVIATE_URL");
-  // String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+  @Test
+  void testRagQuery() throws Exception {
+    // Setup, not shown in the docs: build the `Question` collection this example
+    // queries, so the test does not depend on the order the other tests run in.
+    // The collection is deliberately left in place: `testCreateCollection` and
+    // `testImportDataWorkflow` both delete it before they recreate it.
+    WeaviateClient setupClient = WeaviateClient.connectToWeaviateCloud(
+        System.getenv("WEAVIATE_URL"),
+        System.getenv("WEAVIATE_API_KEY"));
+    String setupCollectionName = "Question";
+    if (setupClient.collections.exists(setupCollectionName)) {
+      setupClient.collections.delete(setupCollectionName);
+    }
+    setupClient.collections.create(setupCollectionName, col -> col
+        .properties(
+            Property.text("answer"),
+            Property.text("question"),
+            Property.text("category"))
+        .vectorConfig(VectorConfig.text2vecWeaviate()));
+    setupClient.collections.use(setupCollectionName).data.insertMany(
+        Map.of("answer", "DNA",
+            "question", "In 1953 Watson & Crick built a model of the molecular structure of this, the gene-carrying substance",
+            "category", "SCIENCE"),
+        Map.of("answer", "Liver",
+            "question", "This organ removes excess glucose from the blood & stores it as glycogen",
+            "category", "SCIENCE"));
+    Thread.sleep(3000); // Give the vectorizer time to index the new objects
+    setupClient.close();
 
-  // WeaviateClient client = WeaviateClient.connectToWeaviateCloud(
-  // weaviateUrl, // Replace with your Weaviate Cloud URL
-  // weaviateApiKey // Replace with your Weaviate Cloud key
-  // );
+    // START RAG
+    // Best practice: store your credentials in environment variables
+    String weaviateUrl = System.getenv("WEAVIATE_URL");
+    String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+    String openaiApiKey = System.getenv("OPENAI_API_KEY");
 
-  // var questions = client.collections.use("Question");
+    // highlight-start
+    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(
+        weaviateUrl, // Replace with your Weaviate Cloud URL
+        weaviateApiKey, // Replace with your Weaviate Cloud key
+        config -> config.setHeaders(
+            Map.of("X-OpenAI-Api-Key", openaiApiKey)) // Replace with your OpenAI API key
+    );
+    // highlight-end
 
-  // // highlight-start
-  // var response = questions.generate.nearText(
-  // q -> q
-  // .query("biology")
-  // .limit(2),
-  // g -> g.groupedTask("Write a tweet with emojis about these facts."));
-  // // highlight-end
+    CollectionHandle<Map<String, Object>> questions = client.collections.use("Question");
 
-  // System.out.println(response.generative().text()); // Inspect the generated
-  // text
-  // }
-  // START RAG
-  // Coming soon
-  // END RAG
+    // highlight-start
+    var response = questions.generate.nearText(
+        "biology",
+        // Query configuration (nearText and limit)
+        q -> q.limit(2),
+        // Generative configuration (the RAG task)
+        g -> g.groupedTask(
+            "Write a tweet with emojis about these facts.",
+            c -> c.generativeProvider(GenerativeProvider.openai(o -> o))));
+    // highlight-end
+
+    // Use `.generative()` to access the generated text
+    System.out.println(response.generative().text());
+
+    client.close(); // Free up resources
+    // END RAG
+  }
 }
