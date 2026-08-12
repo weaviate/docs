@@ -8,10 +8,10 @@ faq:
       Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
   - question: Is the MCP server an external library?
     answer: >-
-      No — it's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
+      No. It's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
   - question: Which tools does the Weaviate MCP server expose?
     answer: >-
-      Four tools, gated by RBAC permissions — weaviate-collections-get-config (inspect collection schemas), weaviate-tenants-list (list tenants in a multi-tenant collection), weaviate-query-hybrid (run hybrid vector + keyword searches), and weaviate-objects-upsert (create or update objects, requires write access).
+      Four tools, gated by RBAC permissions. They are weaviate-collections-get-config (inspect collection schemas), weaviate-tenants-list (list tenants in a multi-tenant collection), weaviate-query-hybrid (run hybrid vector + keyword searches), and weaviate-objects-upsert (create or update objects, requires write access).
   - question: How do I request a new MCP tool or feature?
     answer: >-
       Open a feature request on the Weaviate GitHub repo at https://github.com/weaviate/weaviate/issues/new/choose. Pick the "Feature request" template and describe the tool, parameter, or capability you'd like the MCP server to expose, with a concrete use case.
@@ -244,7 +244,7 @@ Lists tenants for multi-tenant collections.
 
 - `collection_name` (string, required): The collection to inspect.
 
-**Returns:** List of tenants and their activity status (HOT/COLD).
+**Returns:** List of tenants and their activity status (`ACTIVE` or `INACTIVE`, and `OFFLOADED` for tenants that have been offloaded to cold storage).
 
 ### `weaviate-query-hybrid`
 
@@ -260,7 +260,10 @@ Performs a hybrid search combining vector similarity and keyword matching (BM25)
 - `target_vectors` (array, optional): Named vectors to use for vector search.
 - `target_properties` (array, optional): Properties to search with BM25. If omitted, searches all text properties.
 - `return_properties` (array, optional): Properties to include in results.
-- `return_metadata` (array, optional): Metadata fields to return (e.g., `id`, `distance`, `score`, `creationTimeUnix`).
+- `return_metadata` (array, optional): Metadata fields to return (e.g., `id`, `vector`, `distance`, `score`, `creationTimeUnix`, `lastUpdateTimeUnix`).
+- `filters` (object, optional): A [where filter](/weaviate/api/graphql/filters.md) applied before scoring.
+
+A leaf filter is an object with `path` (an array of property names), `operator`, and a typed value field. The typed value field is one of `valueText`, `valueInt`, `valueNumber`, `valueBoolean`, `valueDate`, the corresponding `value*Array` field for a `Contains*` operator, or `valueGeoRange` for `WithinGeoRange`. Combine leaves with `{"operator": "And" | "Or", "operands": [ ... ]}`, nested to any depth. The supported operators are `And`, `Or`, `Not`, `Equal`, `NotEqual`, `Like`, `GreaterThan`, `GreaterThanEqual`, `LessThan`, `LessThanEqual`, `ContainsAny`, `ContainsAll`, `ContainsNone`, `WithinGeoRange`, and `IsNull`. See [Concepts: Filtering](/weaviate/concepts/filtering.md) for how filters interact with search.
 
 **Returns:** Ranked objects with similarity scores and distances.
 

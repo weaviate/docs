@@ -51,7 +51,7 @@ You must provide a valid Cohere API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `COHERE_API_KEY` environment variable that is available to Weaviate.
+- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -294,7 +294,8 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `embed-multilingual-v3.0` (Default)
+- `embed-v4.0`
+- `embed-multilingual-v3.0` (server default)
 - `embed-multilingual-light-v3.0`
 - `embed-english-v3.0`
 - `embed-english-light-v3.0`

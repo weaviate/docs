@@ -1,6 +1,7 @@
 # START CreateCollection
 import weaviate
 from weaviate.classes.config import Configure
+from weaviate.classes.data import DataObject
 
 # Step 1.1: Connect to your local Weaviate instance
 with weaviate.connect_to_local() as client:
@@ -38,9 +39,10 @@ with weaviate.connect_to_local() as client:
 
     # Insert the objects with vectors
     movies = client.collections.get("Movie")
-    with movies.batch.fixed_size(batch_size=200) as batch:
-        for obj in data_objects:
-            batch.add_object(properties=obj["properties"], vector=obj["vector"])
+    movies.data.ingest(
+        DataObject(properties=obj["properties"], vector=obj["vector"])
+        for obj in data_objects
+    )
 
     print(
         f"Imported {len(data_objects)} objects with vectors into the Movie collection"

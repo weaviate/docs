@@ -70,8 +70,8 @@ namespace WeaviateProject.Examples
                 },
             };
 
-            // Insert objects using InsertMany
-            var insertResponse = await movies.Data.InsertMany(dataObjects.ToArray());
+            // Insert the objects using server-side batching
+            var insertResponse = await movies.Batch.InsertMany(dataObjects);
 
             if (insertResponse.HasErrors)
             {

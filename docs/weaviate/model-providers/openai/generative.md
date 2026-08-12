@@ -57,7 +57,7 @@ You must provide a valid OpenAI API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `OPENAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -163,6 +163,13 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
+Two additional parameters are available for reasoning models such as the `gpt-5` family. They were added in `v1.33.0`, and backported to `v1.31.15` and `v1.32.9`:
+
+- `reasoningEffort`: How much reasoning the model does before it answers. One of `minimal`, `low`, `medium`, or `high`. If not set, the model provider default applies.
+- `verbosity`: How detailed the generated answer is. One of `low`, `medium`, or `high`. If not set, the model provider default applies.
+
+The Python client exposes these as the `reasoning_effort` and `verbosity` arguments, both when you configure the collection and when you [select a model at runtime](#select-a-model-at-runtime). The TypeScript client does not expose them yet, so set them with another client or through the REST collection configuration API.
+
 For further details on model parameters, see the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/chat).
 
 ## Select a model at runtime
@@ -199,6 +206,16 @@ You can provide the API key as well as some optional parameters at runtime throu
 Any additional headers provided at runtime will override the existing Weaviate configuration.
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+
+:::note How Weaviate builds the request URL
+
+Use the `X-OpenAI-Baseurl` header, or the `baseURL` parameter, to target an OpenAI-compatible service. Weaviate builds the request URL by appending `/v1/chat/completions` to the base URL, or `/v1/completions` for the legacy `text-davinci-002` and `text-davinci-003` models.
+
+The generative integration has no `endpoint` parameter to override this path, unlike the [OpenAI embeddings integration](./embeddings.md#header-parameters). If your provider expects a different path, point the base URL at a proxy that rewrites `/v1/chat/completions` to your provider's path.
+
+The [Azure OpenAI integration](../openai-azure/generative.md) builds a deployment-specific path and ignores the paths above.
+
+:::
 
 ## Retrieval augmented generation
 
@@ -294,7 +311,16 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (default)
+Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
+
+The server default is `gpt-5-mini`. It changed in `v1.32.3`, and was backported to `v1.30.16` and `v1.31.10`. Earlier releases on each of those lines default to `gpt-3.5-turbo`.
+
+The following models are recognized by Weaviate's token limit table:
+
+* [gpt-5](https://platform.openai.com/docs/models/gpt-5)
+* [gpt-5-mini](https://platform.openai.com/docs/models/gpt-5-mini) (server default)
+* [gpt-5-nano](https://platform.openai.com/docs/models/gpt-5-nano)
+* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (previous server default)
 * [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-4](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)

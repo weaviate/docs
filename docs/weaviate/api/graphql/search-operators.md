@@ -268,13 +268,13 @@ This operator allows you to combine [BM25](#bm25) and vector search to get a "be
 | `bm25SearchOperator` | no | `object` | set how many of the (bm25) query tokens must be present within a single searched property for an object to be considered a match. (available from `v1.31.0`) |
 
 * Notes:
-    * `alpha` can be any number from 0 to 1, defaulting to 0.75.
+    * `alpha` can be any number from 0 to 1, defaulting to 0.75. See [Alpha parameter](/weaviate/concepts/search/hybrid-search.md#alpha-parameter).
         * `alpha` = 0 forces using a pure **keyword** search method (BM25)
         * `alpha` = 1 forces using a pure **vector** search method
         * `alpha` = 0.5 weighs the BM25 and vector methods evenly
     * `fusionType` can be `rankedFusion` or `relativeScoreFusion`
-        * `rankedFusion` (default) adds inverted ranks of the BM25 and vector search methods
-        * `relativeScoreFusion` adds normalized scores of the BM25 and vector search methods
+        * `relativeScoreFusion` (default from `v1.24`) adds normalized scores of the BM25 and vector search methods
+        * `rankedFusion` (default for `v1.23` and lower) adds inverted ranks of the BM25 and vector search methods
 
 ### Fusion algorithms
 
@@ -435,9 +435,15 @@ To mitigate this effect, Weaviate automatically performs a search with a higher 
 
 <SearchOperators/>
 
-Use `bm25SearchOperator` to set how many of the query tokens must be present within a single searched property for an object to be considered a match in the keyword (bm25) search portion of the hybrid search. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
+Use `bm25SearchOperator` to set how the query tokens must match for an object to be considered a match in the keyword (bm25) search portion of the hybrid search. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
 
-The available options are `And`, or `Or`. With `And`, all of the query tokens must appear together within a single searched property; tokens spread across different properties do not match. If `Or` is set, an additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must be present within a single searched property for the object to be considered a match.
+The available options are `And`, `Or`, and `AndCross`:
+
+| Option | Description |
+| ------ | ----------- |
+| `And` | All of the query tokens must appear together within a single searched property. Tokens spread across different properties do not match. |
+| `Or` | An additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must be present within a single searched property for the object to be considered a match. |
+| `AndCross` | Every query token must be matched by at least one of the searched properties, so the tokens can be spread across different properties. All searched properties must share the same tokenization and analyzer settings, otherwise the query fails with an error. (available from `v1.38.8`) |
 
 If not set, the keyword search behaves as if `Or` was set with a `minimumOrTokensMatch` of `1`.
 
@@ -458,7 +464,7 @@ The `bm25` operator supports the following variables:
 | --------- | -------- | ----------- |
 | `query`   | yes      | The keyword search query. |
 | `properties` | no    | Array of properties (fields) to search in, defaulting to all properties in the collection. |
-| `searchOperator` | no | set how many of the query tokens must be present within a single searched property for an object to be considered a match. (available from `v1.31.0`) |
+| `searchOperator` | no | Set how the query tokens must match for an object to be considered a match. See [Search operator](#search-operator) for the available options. (available from `v1.31.0`) |
 
 :::info Boosting properties
 Specific properties can be boosted by a factor specified as a number after the caret sign, for example `properties: ["title^3", "summary"]`.
@@ -537,11 +543,38 @@ import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm2
 
 <SearchOperators/>
 
-Use `searchOperator` to set how many of the query tokens must be present within a single searched property for an object to be considered a match. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
+Use `searchOperator` to set how the query tokens must match for an object to be considered a match. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
 
-The available options are `And`, or `Or`. With `And`, all of the query tokens must appear together within a single searched property; tokens spread across different properties do not match. If `Or` is set, an additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must be present within a single searched property for the object to be considered a match.
+The available options are `And`, `Or`, and `AndCross`:
+
+| Option | Description |
+| ------ | ----------- |
+| `And` | All of the query tokens must appear together within a single searched property. Tokens spread across different properties do not match. |
+| `Or` | An additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must be present within a single searched property for the object to be considered a match. |
+| `AndCross` | Every query token must be matched by at least one of the searched properties, so the tokens can be spread across different properties. All searched properties must share the same tokenization and analyzer settings, otherwise the query fails with an error. (available from `v1.38.8`) |
 
 If not set, the keyword search behaves as if `Or` was set with a `minimumOrTokensMatch` of `1`.
+
+An `AndCross` query example:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3
+      bm25: {
+        query: "African desert wind"
+        searchOperator: {
+          operator: AndCross
+        }
+      }
+    ) {
+      question
+      answer
+    }
+  }
+}
+```
 
 ## ask
 

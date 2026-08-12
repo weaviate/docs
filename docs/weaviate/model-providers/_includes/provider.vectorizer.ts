@@ -327,7 +327,7 @@ await client.collections.create({
   // highlight-start
   vectorizers: [
     weaviate.configure.vectors.text2VecDigitalOcean({
-      model: 'qwen3-embedding-0.6b',  // Required — choose from the DigitalOcean Serverless Inference catalogue
+      model: 'qwen3-embedding-0.6b',  // Required. Choose from the DigitalOcean Serverless Inference catalogue
       name: 'title_vector',
       sourceProperties: ['title'],
     })
@@ -378,7 +378,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectors.text2VecGoogle({
+    weaviate.configure.vectors.text2VecGoogleGemini({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID
@@ -547,10 +547,10 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecHuggingFace({
       name: 'title_vector',
       sourceProperties: ['title'],
+      // NOTE: Use only one of `model`, `passageModel`, or `endpointURL`
       model: 'sentence-transformers/all-MiniLM-L6-v2',
       // endpointURL: <custom_huggingface_url>,
-      // passageModel: 'sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base',    // Required if using `query_model`
-      // queryModel: 'sentence-transformers/facebook-dpr-question_encoder-single-nq-base', // Required if using `passage_model`
+      // passageModel: 'sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base',
       // waitForModel: true,
       // useCache: true,
       // useGPU: true,
@@ -838,7 +838,9 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecMistral({
       name: 'title_vector',
       sourceProperties: ['title'],
-      model: 'mistral-embed'
+      model: 'mistral-embed',
+      // Further options
+      // baseURL: '<custom_mistral_url>',
     },
     ),
   ],

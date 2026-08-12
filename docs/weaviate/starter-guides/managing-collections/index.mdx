@@ -39,104 +39,162 @@ The returned configuration looks similar to this:
 
 ```json
 {
-  "classes": [
+  "class": "Question",
+  "invertedIndexConfig": {
+    "bm25": {
+      "b": 0.75,
+      "k1": 1.2
+    },
+    "cleanupIntervalSeconds": 60,
+    "stopwords": {
+      "additions": null,
+      "preset": "en",
+      "removals": null
+    },
+    "usingBlockMaxWAND": true
+  },
+  "moduleConfig": {
+    "generative-cohere": {}
+  },
+  "multiTenancyConfig": {
+    "autoTenantActivation": false,
+    "autoTenantCreation": false,
+    "enabled": false
+  },
+  "properties": [
     {
-      "class": "Question",
-      "description": "Information from a Jeopardy! question",
-      "invertedIndexConfig": {
-        "bm25": {
-          "b": 0.75,
-          "k1": 1.2
-        },
-        "cleanupIntervalSeconds": 60,
-        "stopwords": {
-          "additions": null,
-          "preset": "en",
-          "removals": null
-        }
-      },
+      "dataType": [
+        "text"
+      ],
+      "indexFilterable": true,
+      "indexRangeFilters": false,
+      "indexSearchable": true,
       "moduleConfig": {
         "text2vec-openai": {
-          "model": "ada",
-          "modelVersion": "002",
-          "type": "text",
-          "vectorizeClassName": true
+          "skip": false,
+          "vectorizePropertyName": false
         }
       },
-      "properties": [
-        {
-          "dataType": ["text"],
-          "description": "The question",
-          "moduleConfig": {
-            "text2vec-openai": {
-              "skip": false,
-              "vectorizePropertyName": false
-            }
-          },
-          "name": "question",
-          "tokenization": "word"
-        },
-        {
-          "dataType": ["text"],
-          "description": "The answer",
-          "moduleConfig": {
-            "text2vec-openai": {
-              "skip": false,
-              "vectorizePropertyName": false
-            }
-          },
-          "name": "answer",
-          "tokenization": "word"
-        },
-        {
-          "dataType": ["text"],
-          "description": "The category",
-          "moduleConfig": {
-            "text2vec-openai": {
-              "skip": false,
-              "vectorizePropertyName": false
-            }
-          },
-          "name": "category",
-          "tokenization": "word"
-        }
+      "name": "question",
+      "tokenization": "word"
+    },
+    {
+      "dataType": [
+        "text"
       ],
-      "replicationConfig": {
-        "factor": 1
+      "indexFilterable": true,
+      "indexRangeFilters": false,
+      "indexSearchable": true,
+      "moduleConfig": {
+        "text2vec-openai": {
+          "skip": false,
+          "vectorizePropertyName": false
+        }
       },
-      "shardingConfig": {
-        "virtualPerPhysical": 128,
-        "desiredCount": 1,
-        "actualCount": 1,
-        "desiredVirtualCount": 128,
-        "actualVirtualCount": 128,
-        "key": "_id",
-        "strategy": "hash",
-        "function": "murmur3"
+      "name": "answer",
+      "tokenization": "word"
+    },
+    {
+      "dataType": [
+        "text"
+      ],
+      "indexFilterable": true,
+      "indexRangeFilters": false,
+      "indexSearchable": true,
+      "moduleConfig": {
+        "text2vec-openai": {
+          "skip": false,
+          "vectorizePropertyName": false
+        }
       },
+      "name": "category",
+      "tokenization": "word"
+    }
+  ],
+  "shardingConfig": {
+    "actualCount": 1,
+    "actualVirtualCount": 128,
+    "desiredCount": 1,
+    "desiredVirtualCount": 128,
+    "function": "murmur3",
+    "key": "_id",
+    "strategy": "hash",
+    "virtualPerPhysical": 128
+  },
+  "vectorConfig": {
+    "default": {
       "vectorIndexConfig": {
-        "skip": false,
+        "bq": {
+          "enabled": false
+        },
         "cleanupIntervalSeconds": 300,
-        "maxConnections": 32,
-        "efConstruction": 128,
-        "ef": -1,
-        "dynamicEfMin": 100,
-        "dynamicEfMax": 500,
+        "distance": "cosine",
         "dynamicEfFactor": 8,
-        "vectorCacheMaxObjects": 1000000000000,
+        "dynamicEfMax": 500,
+        "dynamicEfMin": 100,
+        "ef": -1,
+        "efConstruction": 128,
+        "filterStrategy": "acorn",
         "flatSearchCutoff": 40000,
-        "distance": "cosine"
+        "maxConnections": 32,
+        "multivector": {
+          "aggregation": "maxSim",
+          "enabled": false,
+          "muvera": {
+            "dprojections": 16,
+            "enabled": false,
+            "ksim": 4,
+            "repetitions": 10
+          }
+        },
+        "pq": {
+          "bitCompression": false,
+          "centroids": 256,
+          "enabled": false,
+          "encoder": {
+            "distribution": "log-normal",
+            "type": "kmeans"
+          },
+          "segments": 0,
+          "trainingLimit": 100000
+        },
+        "rq": {
+          "bits": 8,
+          "enabled": false,
+          "rescoreLimit": 20
+        },
+        "skip": false,
+        "skipDefaultQuantization": false,
+        "sq": {
+          "enabled": false,
+          "rescoreLimit": 20,
+          "trainingLimit": 100000
+        },
+        "trackDefaultQuantization": false,
+        "vectorCacheMaxObjects": 1000000000000
       },
       "vectorIndexType": "hnsw",
-      "vectorizer": "text2vec-openai"
+      "vectorizer": {
+        "text2vec-openai": {
+          "baseURL": "https://api.openai.com",
+          "isAzure": false,
+          "model": "text-embedding-3-small",
+          "vectorizeClassName": true
+        }
+      }
     }
-  ]
+  },
+  "replicationConfig": {
+    "deletionStrategy": "TimeBasedResolution",
+    "factor": 1,
+    "asyncEnabled": false
+  }
 }
 ```
 
 </details>
 
-Although we only specified the collection name and properties, the returned definition includes much more information.
+Although we only specified the collection name, its properties, the vectorizer and the generative module, the returned definition includes much more information.
 
 This is because Weaviate infers the definition based on the data schema and default settings. Each of these options can be specified manually at collection creation time.
 

@@ -63,7 +63,7 @@ public class QuickstartTest
                     Property.Text("category"),
                 ],
                 VectorConfig = Configure.Vector("default", v => v.Text2VecWeaviate()), // Configure the Weaviate Embeddings integration
-                GenerativeConfig = Configure.Generative.Cohere(), // Configure the Cohere generative AI integration
+                GenerativeConfig = Configure.Generative.OpenAI(), // Configure the OpenAI generative AI integration
             }
         );
         // highlight-end
@@ -95,21 +95,25 @@ public class QuickstartTest
             );
         }
 
-        // Call InsertMany with the list of objects converted to an array
-        var insertResponse = await questions.Data.InsertMany(questionsToInsert.ToArray());
+        // `Batch.InsertMany` imports the list using server-side batching
+        var insertResponse = await questions.Batch.InsertMany(questionsToInsert);
         // highlight-end
-        // END Import
 
         // Check for errors
         if (insertResponse.HasErrors)
         {
             Console.WriteLine($"Number of failed imports: {insertResponse.Errors.Count()}");
-            Console.WriteLine($"First failed object error: {insertResponse.Errors.First()}");
+            // `Objects` holds one entry per object; `Index` is the position of the object in the input
+            foreach (var entry in insertResponse.Objects.Where(o => o.Error is not null))
+            {
+                Console.WriteLine($"Failed object at index {entry.Index}: {entry.Error.Message}");
+            }
         }
         else
         {
-            Console.WriteLine($"Successfully inserted {insertResponse.Objects.Count()} objects.");
+            Console.WriteLine($"Successfully inserted {insertResponse.Count} objects.");
         }
+        // END Import
 
         // START NearText
         // highlight-start

@@ -46,9 +46,7 @@ with weaviate.connect_to_weaviate_cloud(
     movies = client.collections.use("Movie__QuickstartPy")
 
     # Import objects
-    with movies.batch.fixed_size(batch_size=200) as batch:
-        for obj in data_objects:
-            batch.add_object(properties=obj)
+    movies.data.ingest(data_objects)
 
     print(f"Imported & vectorized {len(data_objects)} objects into the Movie collection")
 

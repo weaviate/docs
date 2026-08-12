@@ -37,7 +37,7 @@ collection = client.collections.get("MMRDemo")
 response = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(
+    diversity_selection=Diversity.mmr(
         limit=5,
         balance=0.5,
     ),
@@ -75,7 +75,7 @@ query_vector = sample.objects[0].vector["default"]
 response = collection.query.near_vector(
     near_vector=query_vector,
     limit=20,
-    selection=Diversity.MMR(
+    diversity_selection=Diversity.mmr(
         limit=5,
         balance=0.5,
     ),
@@ -98,21 +98,21 @@ collection = client.collections.get("MMRDemo")
 response_diverse = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(limit=5, balance=0.0),
+    diversity_selection=Diversity.mmr(limit=5, balance=0.0),
 )
 
 # Balanced — equal weight on relevance and diversity
 response_balanced = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(limit=5, balance=0.5),
+    diversity_selection=Diversity.mmr(limit=5, balance=0.5),
 )
 
 # Pure relevance — equivalent to standard vector search
 response_relevant = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(limit=5, balance=1.0),
+    diversity_selection=Diversity.mmr(limit=5, balance=1.0),
 )
 # END MMRBalanceExamples
 
@@ -125,6 +125,83 @@ assert len(response_relevant.objects) == 5
 diverse_questions = [o.properties["question"] for o in response_diverse.objects]
 relevant_questions = [o.properties["question"] for o in response_relevant.objects]
 assert diverse_questions != relevant_questions, "Pure diversity and pure relevance should differ"
+
+# START MMRHybridExample
+from weaviate.classes.query import Diversity
+
+collection = client.collections.get("MMRDemo")
+
+# Fuse the keyword and vector results into 20 candidates, then select 5 diverse results
+response = collection.query.hybrid(
+    query="Question",
+    vector=base_vec,
+    limit=20,
+    # highlight-start
+    diversity_selection=Diversity.mmr(
+        limit=5,
+        balance=0.5,
+    ),
+    # highlight-end
+)
+
+for o in response.objects:
+    print(o.properties["question"])
+# END MMRHybridExample
+
+# Test
+assert len(response.objects) == 5
+hybrid_mmr_questions = [o.properties["question"] for o in response.objects]
+
+hybrid_standard = collection.query.hybrid(
+    query="Question",
+    vector=base_vec,
+    limit=5,
+)
+hybrid_standard_questions = [o.properties["question"] for o in hybrid_standard.objects]
+assert set(hybrid_standard_questions) != set(
+    hybrid_mmr_questions
+), "MMR should select different items than standard hybrid search"
+
+# START MMRPagination
+from weaviate.classes.query import Diversity
+
+collection = client.collections.get("MMRDemo")
+
+# The query limit is the size of the window that gets diversified.
+# The diversity limit is the page size.
+query_limit = 10
+page_size = 3
+
+# Advance offset by the query limit, NOT by the number of returned objects
+for offset in range(0, 30, query_limit):
+    page = collection.query.near_vector(
+        near_vector=base_vec,
+        limit=query_limit,
+        # highlight-start
+        offset=offset,
+        diversity_selection=Diversity.mmr(limit=page_size, balance=0.5),
+        # highlight-end
+    )
+
+    for o in page.objects:
+        print(offset, o.properties["question"])
+# END MMRPagination
+
+# Test
+paged_questions = []
+for offset in range(0, 30, query_limit):
+    page = collection.query.near_vector(
+        near_vector=base_vec,
+        limit=query_limit,
+        offset=offset,
+        diversity_selection=Diversity.mmr(limit=page_size, balance=0.5),
+    )
+    paged_questions += [o.properties["question"] for o in page.objects]
+
+assert len(paged_questions) == 9
+assert len(set(paged_questions)) == len(
+    paged_questions
+), "Advancing offset by the query limit must not repeat objects across pages"
 
 # Cleanup
 client.collections.delete("MMRDemo")

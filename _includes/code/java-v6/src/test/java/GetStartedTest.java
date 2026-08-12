@@ -39,7 +39,11 @@ class GetStartedTest {
           col -> col.properties(Property.text("answer"),
               Property.text("question"),
               Property.text("category"))
-              .vectorConfig(VectorConfig.text2vecTransformers()) // Configure the Contextionary embedding model
+              .vectorConfig(VectorConfig.text2vecOllama(v -> v
+                  // If using Docker you might need: http://host.docker.internal:11434
+                  .apiEndpoint("http://ollama:11434")
+                  .model("nomic-embed-text") // The model to use
+              )) // Configure the Ollama embedding model
       );
       CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);
       // highlight-end

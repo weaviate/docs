@@ -130,7 +130,8 @@ Methods that involve sending requests to Weaviate will be async functions. For e
 
 - `async_client.connect()`: Connect to a Weaviate server
 - `async_client.collections.create()`: Create a new collection
-- `<collection_object>.data.insert_many()`: Insert a list of objects into a collection
+- `<collection_object>.data.insert_many()`: Insert a list of objects into a collection in a single request
+- `<collection_object>.data.ingest()`: Insert a list of objects into a collection using [server-side batching](../../manage-objects/import.mdx#server-side-batching)
 
 ### Example sync methods
 
@@ -193,7 +194,11 @@ Note the use of a context manager in the async function. The context manager is 
 
 The async client supports server-side batching through the `stream()` method, which uses the same feedback-based flow as the synchronous client. For client-side batching methods (`dynamic`, `fixed_size`, `rate_limit`), use the synchronous client.
 
-The async client also offers `insert` and `insert_many` methods for data insertion, which can be used in an async context.
+The async client also offers `insert` and `insert_many` methods for data insertion, which can be used in an async context. The one-shot `data.ingest()` method is also available on the async client and is preferred over `insert_many` for large lists.
+
+:::caution `insert_many` and large lists
+`insert_many` sends all objects in a **single request**. The server rejects requests larger than its [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit, so the whole call fails for large lists. Use `data.ingest()` instead: it is a drop-in replacement that splits the list into server-paced batches.
+:::
 
 ### Application-level example
 

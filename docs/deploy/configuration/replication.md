@@ -48,7 +48,7 @@ When Weaviate detects inconsistent data across nodes, it attempts to repair the 
 
 Weaviate offers [async replication](/weaviate/concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
 
-Repair-on-read is automatic. As of Weaviate `v1.38`, async replication is also **enabled by default** for any collection with a replication factor greater than `1` — there is no longer a per-collection flag to switch it on. To turn it off cluster-wide, set the [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#async-replication) environment variable to `true`. The `replicationConfig` section is used to set the replication factor and to fine-tune async replication via `asyncConfig`:
+Repair-on-read is automatic. As of Weaviate `v1.38`, async replication is also **enabled by default** for any collection with a replication factor greater than `1`. There is no longer a per-collection flag to switch it on. To turn it off cluster-wide, set the [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#async-replication) environment variable to `true`. The `replicationConfig` section is used to set the replication factor and to fine-tune async replication via `asyncConfig`:
 
 import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/replication-consistency.mdx';
 

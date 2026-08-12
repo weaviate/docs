@@ -6,8 +6,6 @@ description: "Multiple connection options and methods for accessing your Weaviat
 image: og/wcd/user_guides.jpg
 ---
 
-import CompareURLs from "/docs/cloud/img/wcs-console-url-check.jpg";
-
 [Weaviate Cloud (WCD)](/go/console?utm_content=cloud) offers multiple options on how to connect to your cluster:
 
 - **[Connect with APIs](#connect-with-an-api-programmatically)**:
@@ -149,7 +147,7 @@ This section has solutions for some common problems. For additional help, [conta
 To reset your Weaviate Cloud password, follow these steps:
 
 1. Go to the Weaviate Cloud [login page](/go/console?utm_content=cloud).
-1. Click on click the login button.
+1. Click the login button.
 1. Click `Forgot Password`.
 1. Check your email account for a password reset email from Weaviate Cloud.
 1. Click the link and follow the instructions to reset your password. The link is only valid for five minutes.
@@ -197,7 +195,7 @@ weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be
 
 **Solution**: Verify the cluster URL is correct and update the URL if needed.
 
-When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections work, however the new gRPC and the old HTTP URLS are different so connections that require gRCP fail.
+When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections continue to work. However, the new gRPC URL and the old HTTP URL are different, so connections that require gRPC fail.
 
 To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match. Compare the Cluster URL with the connection URL in your application. The old URL and the new URL are similar, but the new one may have an extra subdomain such as `.c0.region`. If the URLs are different, update your application's connection code to use the new Cluster URL.
 

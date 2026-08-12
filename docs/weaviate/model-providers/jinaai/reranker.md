@@ -50,7 +50,7 @@ You must provide a valid JinaAI API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `JINAAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `JINAAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -167,7 +167,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-- `jina-reranker-v2-base-multilingual` (default)
+- `jina-reranker-v2-base-multilingual` (server default)
 - `jina-reranker-v1-base-en`
 - `jina-reranker-v1-turbo-en`
 - `jina-reranker-v1-tiny-en`

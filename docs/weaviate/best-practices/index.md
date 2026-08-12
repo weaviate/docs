@@ -99,7 +99,7 @@ As the size of your dataset grows, the accompanying vector indexes can lead to h
 
 If you have a large number of vectors, consider using vector quantization to reduce the memory footprint of the vector index. This will reduce the required memory, and allow you to scale more effectively at lower costs.
 
-If memory is your priority, you can also consider the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) — an index-level alternative to quantization for reducing the memory footprint.
+If memory is your priority, you can also consider the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index), an index-level alternative to quantization for reducing the memory footprint.
 
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
@@ -270,8 +270,8 @@ from weaviate.classes.config import Property, DataType
 client.collections.create(
     name="WikiArticle",
     properties=[
-        Property(name="title", data_type=DataType.TEXT)
-        Property(name="category", data_type=DataType.TEXT)
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="category", data_type=DataType.TEXT),
     ],
 )
 ```
@@ -295,14 +295,24 @@ When importing any significant amount of data (i.e. more than 10 objects), use b
 for obj in objects:
     collection.data.insert(properties=obj)
 
-# ✅ Do this
-with collection.batch.fixed_size(batch_size=200) as batch:
+# ✅ Do this: server-side batching (recommended) - the server
+# tells the client how much data to send next
+with collection.batch.stream() as batch:
     for obj in objects:
         batch.add_object(properties=obj)
+
+# ✅ Or, if your objects are already in an in-memory list,
+# ingest the whole list with a single call
+result = collection.data.ingest(objects)
 ```
+
+[Server-side batching](../concepts/data-import.mdx#server-side-batching) requires Weaviate `v1.36` or later and a client that supports it. If it is not available, use a client-side batching method such as `collection.batch.fixed_size(batch_size=200)` or `collection.batch.dynamic()` instead.
+
+Avoid passing large lists to `collection.data.insert_many()`. It sends all objects in a single request, which fails if the request exceeds the server's [`GRPC_MAX_MESSAGE_SIZE`](/deploy/configuration/env-vars/index.md#GRPC_MAX_MESSAGE_SIZE) limit. `collection.data.ingest()` is a drop-in replacement that does not have this limitation.
 
 :::tip Further resources
 - [How-to: Batch import data](../manage-objects/import.mdx)
+- [Concepts: Data import](../concepts/data-import.mdx)
 :::
 
 ### Minimize costs by offloading inactive tenants
@@ -352,11 +362,11 @@ When using Weaviate in an asynchronous environment, consider using the asynchron
 
 #### Python
 
-The Weaviate Python client `4.7.0` and higher includes an [asynchronous client API (`WeaviateAsyncClient`)](../client-libraries/python/async.md).
+The Weaviate Python client includes an [asynchronous client API (`WeaviateAsyncClient`)](../client-libraries/python/async.md).
 
 #### Java
 
-The Weaviate Java client `5.0.0` and higher includes an [asynchronous client API (`WeaviateAsyncClient`)](https://javadoc.io/doc/io.weaviate/client/latest/io/weaviate/client/v1/async/WeaviateAsyncClient.html).
+The Weaviate Java client includes an [asynchronous client API (`WeaviateClientAsync`)](https://javadoc.io/doc/io.weaviate/client6/latest/io/weaviate/client6/v1/api/WeaviateClientAsync.html).
 
 ## Questions and feedback
 

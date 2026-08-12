@@ -7,7 +7,7 @@ image: og/docs/integrations/provider_integrations_kubeai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-[KubeAI](https://github.com/substratusai/kubeai) provides offers a wide range of models for natural language processing and generation through OpenAI-style API endpoints. Weaviate seamlessly integrates with KubeAI's APIs, allowing users to leverage any KubeAI models directly from the Weaviate Database.
+[KubeAI](https://github.com/substratusai/kubeai) offers a wide range of models for natural language processing and generation through OpenAI-style API endpoints. Weaviate seamlessly integrates with KubeAI's APIs, allowing users to leverage any KubeAI models directly from the Weaviate Database.
 
 These integrations empower developers to build sophisticated AI-driven applications with ease.
 

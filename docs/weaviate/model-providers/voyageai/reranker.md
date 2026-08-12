@@ -52,7 +52,7 @@ You must provide a valid Voyage AI API key to Weaviate for this integration. Go 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `VOYAGEAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -184,7 +184,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 ### Other integrations
 
 - [Voyage AI embedding models + Weaviate](./embeddings.md).
-- [Voyage AI multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [Voyage AI multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 
 ### Code examples
 

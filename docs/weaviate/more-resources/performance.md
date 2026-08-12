@@ -26,7 +26,7 @@ Inverted indexes are used often in document retrieval systems and search engines
 The inverted index currently does not do any weighing (e.g. tf-idf) for sorting, since the vector index is used for these features like sorting. The inverted index is thus, at the moment, rather a binary operation: including or excluding data objects from the query result list, which results in an 'allow list'.
 
 ## Vector index
-Everything that has a vector, thus every data object in Weaviate, is also indexed in the vector index. Weaviate currently supports [HNSW](https://arxiv.org/abs/1603.09320) and flat vector indexes.
+Everything that has a vector, thus every data object in Weaviate, is also indexed in the vector index. Weaviate supports several vector index types, which trade off search speed, recall and resource use in different ways. The default is [HNSW](https://arxiv.org/abs/1603.09320).
 
 See [Concepts: vector index](../concepts/indexing/vector-index.md) for more information about the vector index.
 
@@ -54,7 +54,7 @@ A tip is to avoid deeply nested filters in the queries. Additionally, try to mak
 
 ## Profiling query performance
 
-To diagnose slow queries, use [query profiling](/weaviate/search/query-profile.md) to get per-shard timing breakdowns. This shows exactly how long each phase takes — vector search, keyword scoring, filter evaluation, object retrieval — broken down by shard and cluster node.
+To diagnose slow queries, use [query profiling](/weaviate/search/query-profile.md) to get per-shard timing breakdowns. This shows exactly how long each phase takes (vector search, keyword scoring, filter evaluation, and object retrieval), broken down by shard and cluster node.
 
 ## Questions and feedback
 

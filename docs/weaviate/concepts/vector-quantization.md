@@ -197,7 +197,7 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 ### With a flat index
 
-[RQ](#rotational-quantization) and [BQ](#binary-quantization) can be applied to a [flat index](./indexing/inverted-index.md). As a flat index search is a brute-force method, compression reduces the amount of data Weaviate has to read and increases speed.
+[RQ](#rotational-quantization) and [BQ](#binary-quantization) can be applied to a [flat index](./indexing/vector-index.md#flat-index). As a flat index search is a brute-force method, compression reduces the amount of data Weaviate has to read and increases speed.
 
 ## Rescoring
 

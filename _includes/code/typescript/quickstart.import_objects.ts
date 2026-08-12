@@ -20,18 +20,27 @@ async function getJsonData() {
   return file.json();
 }
 
-// highlight-start
-// Note: The TS client does not have a `batch` method yet
-// We use `insertMany` instead, which sends all of the data in one request
 async function importQuestions() {
   const questions = client.collections.use('Question');
   const data = await getJsonData();
-  const result = await questions.data.insertMany(data);
-  console.log('Insertion response: ', result);
+
+  // highlight-start
+  // `ingest` imports the list using server-side batching
+  const result = await questions.data.ingest(
+    data.map((properties) => ({ properties }))
+  );
+  // highlight-end
+
+  if (result.hasErrors) {
+    console.log(`Number of failed imports: ${Object.keys(result.errors).length}`);
+    // `errors` is keyed by the position of the object in the input
+    for (const [index, error] of Object.entries(result.errors)) {
+      console.log(`Failed object at index ${index}: ${error.message}`);
+    }
+  }
 }
 
 await importQuestions();
-// highlight-end
 
 client.close(); // Close the client connection
 // END Import

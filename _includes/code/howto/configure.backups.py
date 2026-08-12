@@ -191,6 +191,24 @@ assert result.status == "SUCCESS"
 assert client.collections.exists("Article")
 assert client.collections.exists("Publication")
 
+# START ListBackups
+backups = client.backup.list_backups(
+    backend="filesystem",
+    sort_by_starting_time_asc=True,
+)
+
+for backup in backups:
+    print(backup.backup_id, backup.status, backup.incremental_base_backup_id)
+# END ListBackups
+
+# Test
+backup_ids = [backup.backup_id for backup in backups]
+assert {"base-backup", "incremental-backup-1", "incremental-backup-2"}.issubset(backup_ids)
+bases = {backup.backup_id: backup.incremental_base_backup_id for backup in backups}
+assert bases["base-backup"] is None
+assert bases["incremental-backup-1"] == "base-backup"
+assert bases["incremental-backup-2"] == "incremental-backup-1"
+
 # Clean up
 client.collections.delete(["Article", "Publication"])
 

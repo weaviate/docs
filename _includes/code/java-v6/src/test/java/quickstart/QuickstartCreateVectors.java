@@ -7,7 +7,8 @@ import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
+import io.weaviate.client6.v1.api.collections.batch.BatchContext;
+import java.util.List;
 import java.util.Map;
 
 public class QuickstartCreateVectors {
@@ -63,20 +64,30 @@ public class QuickstartCreateVectors {
       float[] vector3 =
           new float[] {0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f};
 
-      // Insert the objects with vectors
+      // Insert the objects with vectors using server-side batching
       CollectionHandle<Map<String, Object>> movies =
           client.collections.use(collectionName);
-      InsertManyResponse insertResponse = movies.data.insertMany(
+      List<WeaviateObject<Map<String, Object>>> objectsToInsert = List.of(
           WeaviateObject.of(v -> v.properties(props1)
               .vectors(Vectors.of(vector1))),
           WeaviateObject.of(v -> v.properties(props2)
               .vectors(Vectors.of(vector2))),
           WeaviateObject.of(v -> v.properties(props3)
               .vectors(Vectors.of(vector3))));
-      if (!insertResponse.errors().isEmpty()) {
-        System.err.println("Errors during import: " + insertResponse.errors());
+
+      BatchContext<Map<String, Object>> batch = movies.batch.start();
+      // Closing the batch sends the remaining objects and waits for the results
+      try (batch) {
+        for (WeaviateObject<Map<String, Object>> object : objectsToInsert) {
+          batch.add(object);
+        }
+      }
+
+      if (batch.numberOfErrors() > 0) {
+        System.err
+            .println("Number of failed imports: " + batch.numberOfErrors());
       } else {
-        System.out.println("Imported " + insertResponse.uuids().size()
+        System.out.println("Imported " + objectsToInsert.size()
             + " objects with vectors into the Movie collection");
       }
     } finally {

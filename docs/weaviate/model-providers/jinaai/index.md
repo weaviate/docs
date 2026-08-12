@@ -25,6 +25,16 @@ Jina AI's embedding models transform text data into vector embeddings, capturing
 [Jina AI ColBERT embedding integration page](./embeddings-colbert.md)
 [Jina AI multimodal embedding integration page](./embeddings-multimodal.md)
 
+### Reranker models
+
+![Reranker integration illustration](../_includes/integration_jinaai_reranker.png)
+
+Jina AI's reranker models are designed to improve the relevance and ranking of search results.
+
+[The Weaviate reranker integration](./reranker.md) allows users to easily refine their search results by leveraging Jina AI's reranker models.
+
+[Jina AI reranker integration page](./reranker.md)
+
 ## Summary
 
 These integrations enable developers to leverage Jina AI's powerful models directly within Weaviate.
@@ -40,7 +50,7 @@ Then, go to the relevant integration page to learn how to configure Weaviate wit
 - [Text Embeddings](./embeddings.md)
 - [ColBERT embeddings](./embeddings-colbert.md)
 - [Multimodal embeddings](./embeddings-multimodal.md)
-- [Rerankers](./reranker.md)
+- [Reranker](./reranker.md)
 
 ## Questions and feedback
 

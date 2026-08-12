@@ -36,7 +36,7 @@ const dataObjects = [
 
 // Insert the objects with vectors
 const movieCollection = client.collections.get('Movie');
-const response = await movieCollection.data.insertMany(dataObjects);
+await movieCollection.data.ingest(dataObjects);
 
 console.log(`Imported ${dataObjects.length} objects with vectors into the Movie collection`);
 

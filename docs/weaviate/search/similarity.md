@@ -673,9 +673,9 @@ import V137Preview from '/\_includes/feature-notes/v137-preview.mdx';
 
 <V137Preview/>
 
-Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity — each selected result must add something new to the result set.
+Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity: each selected result must add something new to the result set.
 
-Add the `selection` parameter to any vector search query:
+Add the `diversity_selection` parameter to any vector search query:
 
 <FilteredTextBlock
   text={MMRPyCode}
@@ -690,13 +690,13 @@ Add the `selection` parameter to any vector search query:
 2. The most relevant candidate is selected first
 3. For each remaining candidate, MMR computes a score that balances query similarity against maximum similarity to already-selected results, weighted by `balance`
 4. The candidate with the highest MMR score is selected next
-5. Steps 3–4 repeat until the `Diversity.MMR(limit)` is reached
+5. Steps 3–4 repeat until the `Diversity.mmr(limit)` is reached
 
 #### Parameters
 
 | Parameter | Type  | Description                                                                                                                                             |
 | :-------- | :---- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `limit`   | int   | Number of results to return after MMR reranking. Must be less than or equal to the query's top-level `limit` (the candidate set size).                  |
+| `limit`   | int   | Number of results to return after MMR reranking. Must be at least `1` and no larger than the query's top-level `limit` (the candidate set size). Weaviate returns an error if it is omitted or out of range. |
 | `balance` | float | Controls the relevance-diversity trade-off (0.0–1.0). `0.0` = pure diversity, `0.5` = balanced, `1.0` = pure relevance (equivalent to standard search). |
 
 <FilteredTextBlock
@@ -710,18 +710,45 @@ Important notes:
 
 - **Result ordering**: Results are ordered by MMR score, not query similarity. The first result is the most relevant, but subsequent results may have lower query similarity because they were chosen for diversity.
 - **No reindexing needed**: MMR is applied at query time. You can use it on any existing collection without schema changes.
-- **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`.
-- **Not supported**: hybrid search and multi-vector collections.
+- **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`. Hybrid search is also supported, from `v1.38.6`. See [Diversity selection with hybrid search](./hybrid.md#diversity-selection-mmr).
+- **Not supported**: multi-vector collections. Weaviate rejects these queries with an error instead of ignoring the diversity settings.
 
 :::tip
 A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
 :::
 
+#### Pagination
+
+Diversity selection changes what `offset` means. `offset` moves the candidate window rather than the page, so it must advance by the query's top-level `limit`, not by the page size or the number of objects returned. Weaviate does not validate the relationship between `offset` and `limit`, so a wrong `offset` produces no error and no warning. The only symptoms are objects that repeat across pages and objects that are never returned at all.
+
+<details>
+  <summary>Candidate window, worked example, and deep pages</summary>
+
+A diversified query works with two limits:
+
+- the query's top-level `limit` is the **candidate window** that gets diversified, and
+- the diversity `limit` is the **page size**, or how many objects come back.
+
+Each page is taken from the slice `[offset, offset + limit)` of the relevance-ranked results, so `offset` must advance by the query `limit`:
+
+<FilteredTextBlock
+  text={MMRPyCode}
+  startMarker="# START MMRPagination"
+  endMarker="# END MMRPagination"
+  language="python"
+/>
+
+The usual pagination idiom, adding the number of returned objects to `offset`, is the failing case here. The page size is always smaller than or equal to the candidate window, so consecutive windows overlap. With a query `limit` of `10` and a diversity `limit` of `3`, advancing `offset` by `3` reads the windows `[0:10]`, `[3:13]`, and `[6:16]`, which is how objects come back twice while others are skipped.
+
+When diversity selection is combined with a boost or with hybrid search, deep pages are also not stable slices of one fixed ranking. Both the boost pool and the two hybrid search legs fetch more candidates as `offset` grows, so which objects can reach a given page depends on how deep you have paged.
+
+</details>
+
 ## Soft-rank with Boost
 
 <BoostNote/>
 
-Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
+Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them. This is useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
 
 See [Boost](./boost.md) for the supported condition types (filter, property value, time decay, numeric decay), curve choices, blending semantics, and depth tuning.
 
@@ -729,7 +756,6 @@ See [Boost](./boost.md) for the supported condition types (filter, property valu
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - For image search, see [Image search](/weaviate/search/image).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md).
 - For search using the GraphQL API, see [GraphQL API](/weaviate/api).
 
 ## Questions and feedback

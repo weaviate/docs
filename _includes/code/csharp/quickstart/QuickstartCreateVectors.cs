@@ -92,8 +92,8 @@ namespace WeaviateProject.Examples
                 ),
             };
 
-            // Insert the objects with vectors
-            var insertResponse = await movies.Data.InsertMany(dataToInsert);
+            // Insert the objects with vectors using server-side batching
+            var insertResponse = await movies.Batch.InsertMany(dataToInsert);
 
             if (insertResponse.HasErrors)
             {

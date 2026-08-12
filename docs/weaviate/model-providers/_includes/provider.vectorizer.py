@@ -25,7 +25,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",
-            model="titan-embed-text-v2:0",
+            model="amazon.titan-embed-text-v2:0",
         )
     ],
     # highlight-end
@@ -62,17 +62,40 @@ client.collections.delete("DemoCollection")
 # START FullVectorizerAWS
 from weaviate.classes.config import Configure
 
+# For Bedrock
 client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2vec_aws(
+        Configure.Vectors.text2vec_aws_bedrock(
             name="title_vector",
             region="us-east-1",
             source_properties=["title"],
-            service="bedrock",                      # `bedrock` or `sagemaker`
-            model="titan-embed-text-v2:0",          # If using `bedrock`, this is required
-            # endpoint="<sagemaker_endpoint>",        # If using `sagemaker`, this is required
+            model="amazon.titan-embed-text-v2:0",   # Required
+            # Further options
+            # dimensions=512,                       # Amazon models only
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# For SageMaker
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_aws_sagemaker(
+            name="title_vector",
+            region="us-east-1",
+            source_properties=["title"],
+            endpoint="<sagemaker_endpoint>",        # Required
+            # Further options
+            # target_model="<sagemaker_target_model>",
+            # target_variant="<sagemaker_target_variant>",
         )
     ],
     # highlight-end
@@ -294,12 +317,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_google(
+    vector_config=Configure.Vectors.text2vec_google_vertex(
         name="title_vector",
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # Further options
         # model="<google-model-id>",
+        # location="<google-cloud-region>",
         # api_endpoint="<google-api-endpoint>",
     ),
     # highlight-end
@@ -317,7 +341,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="gemini-embedding-2",
+        model="gemini-embedding-2",
     ),
     # highlight-end
     # Additional parameters not shown
@@ -422,10 +446,9 @@ client.collections.create(
         Configure.Vectors.text2vec_huggingface(
             name="title_vector",
             source_properties=["title"],
-            # NOTE: Use only one of (`model`), (`passage_model` and `query_model`), or (`endpoint_url`)
+            # NOTE: Use only one of (`model`), (`passage_model`), or (`endpoint_url`)
             model="sentence-transformers/all-MiniLM-L6-v2",
-            # passage_model="sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",    # Required if using `query_model`
-            # query_model="sentence-transformers/facebook-dpr-question_encoder-single-nq-base", # Required if using `passage_model`
+            # passage_model="sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",
             # endpoint_url="<custom_huggingface_url>",
             #
             # wait_for_model=True,
@@ -690,7 +713,9 @@ client.collections.create(
         Configure.Vectors.text2vec_mistral(
             name="title_vector",
             source_properties=["title"],
-            model="mistral-embed"
+            model="mistral-embed",
+            # Further options
+            # base_url="<custom_mistral_url>",
         )
     ],
     # highlight-end
@@ -967,7 +992,7 @@ client.collections.create(
     # highlight-start
     vector_config=[
         Configure.Vectors.text2vec_digitalocean(
-            model="qwen3-embedding-0.6b",  # Required — choose from the DigitalOcean Serverless Inference catalogue
+            model="qwen3-embedding-0.6b",  # Required. Choose from the DigitalOcean Serverless Inference catalogue
             name="title_vector",
             source_properties=["title"],
         )

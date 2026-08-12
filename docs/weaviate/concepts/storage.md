@@ -81,7 +81,7 @@ This change improves reliability during rolling restarts and upgrades. Eager loa
 
 The [`HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE`](/deploy/configuration/env-vars#HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE) environment variable controls whether vector cache prefill is synchronous (blocking) or asynchronous (background) at startup. Its default changed to `true` in v1.36.6.
 
-For collections where lazy shard loading is active, vector cache prefill is always **asynchronous** — the `HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE` value is overridden to `false` regardless of the configured value. For eagerly-loaded collections, the configured value applies (default: `true`, meaning synchronous prefill).
+For collections where lazy shard loading is active, vector cache prefill is always **asynchronous**: the `HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE` value is overridden to `false` regardless of the configured value. For eagerly-loaded collections, the configured value applies (default: `true`, meaning synchronous prefill).
 
 :::note Behavior change from v1.36.6
 Prior to v1.36.6, lazy shard loading was enabled by default for all collections. From v1.36.6 onward, shards are **eagerly loaded by default** until a multi-tenant collection crosses the count or size threshold. This may increase startup time for smaller deployments but provides better reliability during rollouts.

@@ -349,7 +349,7 @@ For configurable deployments, you can specify enabled modules. For example, in a
 services:
   weaviate:
     environment:
-      ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles"
+      ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-google"
 ```
 
 Check the specific documentation for your deployment method ([Docker](/deploy/installation-guides/docker-installation.md), [Kubernetes](/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](/deploy/installation-guides/embedded.md)) for more information on how to configure it.
@@ -359,37 +359,48 @@ Check the specific documentation for your deployment method ([Docker](/deploy/in
 <details>
 <summary>How to configure the language model</summary>
 
-Model properties are exposed through the Weaviate module configuration. Accordingly, you can customize them through the `moduleConfig` parameter in the collection definition.
+Model parameters are exposed through the generative model provider configuration. You can set them when you create the collection, alongside the generative integration itself.
 
-For example, the `generative-cohere` module has the following properties:
+For example, the `generative-cohere` integration can be configured as follows:
 
-```json
-    "moduleConfig": {
-        "generative-cohere": {
-            "model": "command-xlarge-nightly",  // Optional - Defaults to `command-xlarge-nightly`. Can also use`command-xlarge-beta` and `command-xlarge`
-            "temperatureProperty": <temperature>,  // Optional
-            "maxTokensProperty": <maxTokens>,  // Optional
-            "kProperty": <k>, // Optional
-            "stopSequencesProperty": <stopSequences>, // Optional
-            "returnLikelihoodsProperty": <returnLikelihoods>, // Optional
-        }
-    }
+```python
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    generative_config=Configure.Generative.cohere(
+        # # These parameters are optional
+        # model="command-a-03-2025",
+        # temperature=0.7,
+        # max_tokens=500,
+        # k=5,
+        # stop_sequences=["\n\n"],
+    )
+    # Additional parameters not shown
+)
 ```
 
-And the `generative-openai` module may be configured as follows:
+And the `generative-openai` integration can be configured as follows:
 
-```json
-    "moduleConfig": {
-        "generative-openai": {
-            "model": "gpt-3.5-turbo",  // Optional - Defaults to `gpt-3.5-turbo`
-            "temperatureProperty": <temperature>,  // Optional, applicable to both OpenAI and Azure OpenAI
-            "maxTokensProperty": <max_tokens>,  // Optional, applicable to both OpenAI and Azure OpenAI
-            "frequencyPenaltyProperty": <frequency_penalty>,  // Optional, applicable to both OpenAI and Azure OpenAI
-            "presencePenaltyProperty": <presence_penalty>,  // Optional, applicable to both OpenAI and Azure OpenAI
-            "topPProperty": <top_p>,  // Optional, applicable to both OpenAI and Azure OpenAI
-        },
-    }
+```python
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    generative_config=Configure.Generative.openai(
+        # # These parameters are optional
+        # model="gpt-5-mini",
+        # temperature=0.7,
+        # max_tokens=500,
+        # frequency_penalty=0,
+        # presence_penalty=0,
+        # top_p=0.7,
+    )
+    # Additional parameters not shown
+)
 ```
+
+Each parameter is optional. If you do not set a parameter, Weaviate applies the server-defined default. For the available models, the default model and the full parameter list, see the model provider pages for [Cohere](../model-providers/cohere/generative.md) and [OpenAI](../model-providers/openai/generative.md).
 
 See the [documentation](../model-providers/index.md) for various model provider integrations.
 

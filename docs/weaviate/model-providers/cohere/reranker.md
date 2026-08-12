@@ -52,7 +52,7 @@ You must provide a valid Cohere API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `COHERE_API_KEY` environment variable that is available to Weaviate.
+- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -180,7 +180,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-- `rerank-v3.5` (default)
+- `rerank-v3.5` (server default)
 - `rerank-english-v3.0`
 - `rerank-multilingual-v3.0`
 - `rerank-english-v2.0`
@@ -199,7 +199,7 @@ For further details on model parameters, see the [Cohere API documentation](http
 ### Other integrations
 
 - [Cohere text embedding models + Weaviate](./embeddings.md).
-- [Cohere multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [Cohere multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [Cohere generative models + Weaviate](./generative.md).
 
 ### Code examples

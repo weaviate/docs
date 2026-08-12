@@ -39,7 +39,7 @@ To confirm and identify the issue, you'll want to first run the same query multi
 
 #### Resolving the issue
 
-Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes.
+Check whether asynchronous replication is enabled. If `ASYNC_REPLICATION_DISABLED` is set to `true`, set it to `false`. Once async replication is enabled, the logs will show successful peer checks and node synchronization.
 
 </details>
 
@@ -51,11 +51,21 @@ Check your settings to check if you have asynchronous replication enabled. If `a
 
 #### Identifying the issue
 
-To confirm and identify the issue, you'll want to first run the same query multiple times to confirm that the results are inconsistent. If the inconsistent results are persisting, then you probably have asynchronous replication disabled for your deployment.
+Start with the logs of a node that is failing to join. A membership problem reads differently from a data problem: you'll see repeated attempts to contact the founding member, gossip timeouts, or Raft messages about an election that never settles on a leader. A node in this state can still pass its own health checks, so if the <SkipLink href="/weaviate/api/rest#tag/well-known/GET/.well-known/live">live endpoint</SkipLink> answers while the node stays outside the cluster, the process is healthy and the problem is membership.
+
+To confirm it, query the <SkipLink href="/weaviate/api/rest#tag/cluster/get/cluster/statistics">`/v1/cluster/statistics`</SkipLink> endpoint. If it reports fewer nodes than you expect, or the top-level `synchronized` field is `false`, then your cluster has not reached consensus.
 
 #### Resolving the issue
 
-Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. Additionally, test the <SkipLink href="/weaviate/api/rest#tag/well-known/GET/.well-known/live">live and ready REST endpoints</SkipLink>. and check the network configuration of the nodes.
+Work outward from each node's own identity to the network between the nodes.
+
+- Point every joining node at the founding member with [`CLUSTER_JOIN`](/deploy/configuration/env-vars/index.md#CLUSTER_JOIN). The value is the service name and gossip port of that founding member, such as `weaviate-node-1:7100`, and every joining node must name the same one.
+- Set [`CLUSTER_HOSTNAME`](/deploy/configuration/env-vars/index.md#CLUSTER_HOSTNAME) explicitly on every node. If you leave the hostname to the operating system and it changes across a restart, the node rejoins under a new name while the cluster is still holding a place for the old one. If the hostname cannot be resolved through DNS, set [`CLUSTER_ADVERTISE_ADDR`](/deploy/configuration/env-vars/index.md#CLUSTER_ADVERTISE_ADDR) to advertise the node's address directly.
+- Give each node a [`CLUSTER_GOSSIP_BIND_PORT`](/deploy/configuration/env-vars/index.md#CLUSTER_GOSSIP_BIND_PORT), used to exchange network state information, and a [`CLUSTER_DATA_BIND_PORT`](/deploy/configuration/env-vars/index.md#CLUSTER_DATA_BIND_PORT), used to exchange data. By convention the data port is one higher than the gossip port. Then confirm that every node can actually reach every other node on both of those ports. A firewall rule, an unpublished container port, or a network policy that only exposes the HTTP port will let a node start up perfectly well and still leave it unable to find anyone.
+- For consensus specifically, check the Raft settings. [`RAFT_JOIN`](/deploy/configuration/env-vars/index.md#RAFT_JOIN) names the voter nodes, and [`RAFT_BOOTSTRAP_EXPECT`](/deploy/configuration/env-vars/index.md#RAFT_BOOTSTRAP_EXPECT) sets how many voters the cluster waits for at bootstrap. If you set `RAFT_JOIN`, you must adjust `RAFT_BOOTSTRAP_EXPECT` by hand to match the number of voters you listed. When the two disagree, the cluster waits for a member that will never arrive.
+
+Once the nodes are talking, check `/v1/cluster/statistics` again. Every node should appear in the response, and `synchronized` should be `true`.
+
 </details>
 
 ### You've downgraded and now your clusters won't reach the `Ready` state.

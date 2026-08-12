@@ -84,7 +84,7 @@ If your query image is stored in a file, you can use the client library to searc
   <summary>Example response</summary>
 
 <FilteredTextBlock
-    text={TSCode}
+    text={PyCode}
     startMarker="# START Expected base64 results"
     endMarker="# END Expected base64 results"
     language="json"
