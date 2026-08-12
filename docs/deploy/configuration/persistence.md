@@ -107,6 +107,7 @@ You can configure automatic deletion of objects after a specified time period us
 
 ## Related pages
 - [Configuration: Backups](/deploy/configuration/backups.md)
+- [Concepts: Storage - HNSW snapshots](/weaviate/concepts/storage.md#hnsw-snapshots)
 
 ## Questions and feedback
 
