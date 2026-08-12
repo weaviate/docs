@@ -16,6 +16,7 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-h
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchHybridTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchHybridTest.cs";
 import GQLCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.gql.py';
+import MMRPyCode from '!!raw-loader!/\_includes/code/howto/search.similarity.mmr.py';
 import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 `Hybrid` search combines the results of a vector search and a keyword (BM25F) search by fusing the two result sets.
@@ -386,7 +387,9 @@ import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
 
 <SearchOperators/>
 
-Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present within a single searched property for an object to be returned. The options are `and`, or `or` (default).
+Keyword (BM25) search operators define how many of the query [tokens](#tokenization) must match, and whether they must all match within a single searched property. The options are `or` (default), `and`, and `and_cross`.
+
+The keyword leg of a hybrid query accepts the same operators as a standalone keyword search. For `and_cross`, which matches every token across the searched properties combined, see [BM25 search: `and_cross`](./bm25.md#and_cross).
 
 ### `or`
 
@@ -1050,6 +1053,38 @@ Hybrid queries accept an optional `boost` argument that promotes or demotes matc
 The boost runs once over the **fused** hybrid result. The BM25 and vector sub-search legs do not see the boost themselves. Hybrid's own `alpha` blend runs first, and the boost rescores the fused candidate pool on top.
 
 See [Boost](./boost.md) for the supported condition types (filter, property value, time decay, numeric decay), curve choices, blending semantics, and depth tuning.
+
+## Diversity selection (MMR)
+
+:::info Added in `v1.38.6`
+:::
+
+Hybrid search fuses a keyword result set and a vector result set, which often means the top of the fused list is a cluster of near-duplicates. **Maximum Marginal Relevance (MMR)** reranks that list to balance relevance with diversity, so that each selected object adds something new to the result set.
+
+Diversity selection runs after fusion. Both search legs run first, their results are fused with the configured `alpha` and fusion method, and the diversity pass then picks a diverse subset of the fused candidates.
+
+The examples in this section are Python only, because diversity selection is currently available in the Python client and not yet in the TypeScript, Go, Java, or C# clients. There is no GraphQL equivalent.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={MMRPyCode}
+      startMarker="# START MMRHybridExample"
+      endMarker="# END MMRHybridExample"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+Important notes:
+
+- **Top-level only**: set diversity selection on the hybrid query itself. Setting it on a sub-search is rejected with an error.
+- **Two limits**: the query's top-level `limit` is the candidate window that gets diversified, and the diversity `limit` is the number of results returned. The diversity `limit` must be at least `1` and no larger than the query `limit`.
+- **Ordering**: results come back in MMR order, not fused-score order.
+- **Pagination**: `offset` moves the candidate window, so it must advance by the query `limit`, not by the number of returned objects. Weaviate does not validate this, and getting it wrong silently repeats some objects across pages while skipping others. See [Pagination](./similarity.md#pagination).
+- **Not supported**: multi-vector collections. Weaviate rejects these queries with an error.
+
+For the parameters, the relevance and diversity trade-off, and vector search examples, see [Diversity selection (MMR)](./similarity.md#diversity-selection-mmr).
 
 ## Related pages
 

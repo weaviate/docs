@@ -107,6 +107,36 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # End test
 
 
+# ============================
+# ===== BM25 w/ AND_CROSS =====
+# ============================
+
+# START BM25OperatorCrossPropertyAnd
+# highlight-start
+from weaviate.classes.query import BM25Operator
+# highlight-end
+
+jeopardy = client.collections.use("JeopardyQuestion")
+response = jeopardy.query.bm25(
+    # highlight-start
+    query="African desert wind",
+    # Each token must be matched by at least one searched property,
+    # but not necessarily all by the same property
+    operator=BM25Operator.and_cross(),
+    # highlight-end
+    limit=3,
+)
+
+for o in response.objects:
+    print(o.properties)
+# END BM25OperatorCrossPropertyAnd
+
+
+# Tests
+assert response.objects[0].collection == "JeopardyQuestion"
+# End test
+
+
 # ================================================
 # ===== BM25 Query with score / explainScore =====
 # ================================================

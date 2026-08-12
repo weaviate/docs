@@ -522,6 +522,77 @@ Base backups (and any intermediate incremental backups in a chain) must remain a
 
 :::
 
+### List Backups
+
+You can list the backups that are stored in a backup backend. The listing reports the status of each backup, the collections it holds, its size, and, for an incremental backup, the backup it was built on. This is how you inspect an existing [chain of incremental backups](#chained-incremental-backups) and confirm that every backup the chain depends on is still present.
+
+```js
+GET /v1/backups/{backend}
+```
+
+#### Parameters
+
+##### URL Parameters
+
+| Name | Type | Required | Description |
+| ---- | ---- | ---- | ---- |
+| `backend` | string | yes | The name of the backup provider module without the `backup-` prefix, for example `s3`, `gcs`, or `filesystem`. |
+
+##### Query Parameters
+
+| Name | Type | Required | Default | Description |
+| ---- | ---- | ---- | ---- | ---- |
+| `order` | string | no | `desc` | Sort the returned backups by start time, either `asc` (oldest first) or `desc` (newest first). |
+
+##### Response fields
+
+| name | type | description |
+| ---- | ---- | ---- |
+| `id` | string | The identifier of the backup. |
+| `classes` | array | The collections the backup contains. |
+| `status` | string | The status of the backup, such as `SUCCESS` or `FAILED`. |
+| `startedAt` | date | When the backup started. |
+| `completedAt` | date | When the backup finished, successfully or not. |
+| `size` | number | The size of the backup in GiB, measured before compression. |
+| `incremental_base_backup_id` | string | The identifier of the backup that this [incremental backup](#incremental-backups) was built on. Empty when the backup is a full backup. Only returned to root users, see below. Introduced in Weaviate `v1.37.6`. |
+
+The listing only includes backups whose collections you are authorized to read. Backups you have no read access to are left out rather than causing an error.
+
+:::caution One name, two different things
+
+`incremental_base_backup_id` appears on both sides of the backup API, and the two are not interchangeable:
+
+- On the **create** side it is an input that you supply. It names the backup that the new backup should build on, as described under [Create an incremental backup](#create-an-incremental-backup).
+- On the **list** side it is a read-only output. It reports the backup that an already-created backup was built on, which is what lets you walk a chain back to its full base backup.
+
+You cannot choose a base backup through the list API. The value it returns reflects a decision that was made when that backup was created.
+
+:::
+
+:::info The base backup identifier is only returned to root users
+
+The list-side `incremental_base_backup_id` is treated as sensitive. Weaviate only fills it in when it has confirmed that the caller is a [root user](/docs/deploy/configuration/configuring-rbac.md). Any other caller receives an empty value for this field, even one with full backup permissions and even when the backup really is incremental. If you are auditing a backup chain and every entry comes back empty, check the identity you are connecting with before concluding that no incremental backups exist.
+
+:::
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ListBackups"
+  endMarker="# END ListBackups"
+  language="py"
+/>
+
+<details>
+  <summary>Code output</summary>
+
+```
+base-backup BackupStatus.SUCCESS None
+incremental-backup-1 BackupStatus.SUCCESS base-backup
+incremental-backup-2 BackupStatus.SUCCESS incremental-backup-1
+```
+
+</details>
+
 ### Cancel Backup
 
 An ongoing backup can be cancelled at any time. The backup process will be stopped, and the backup will be marked as `CANCELLED`.

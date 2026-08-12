@@ -25,7 +25,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",
-            model="titan-embed-text-v2:0",
+            model="amazon.titan-embed-text-v2:0",
         )
     ],
     # highlight-end
@@ -62,17 +62,40 @@ client.collections.delete("DemoCollection")
 # START FullVectorizerAWS
 from weaviate.classes.config import Configure
 
+# For Bedrock
 client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2vec_aws(
+        Configure.Vectors.text2vec_aws_bedrock(
             name="title_vector",
             region="us-east-1",
             source_properties=["title"],
-            service="bedrock",                      # `bedrock` or `sagemaker`
-            model="titan-embed-text-v2:0",          # If using `bedrock`, this is required
-            # endpoint="<sagemaker_endpoint>",        # If using `sagemaker`, this is required
+            model="amazon.titan-embed-text-v2:0",   # Required
+            # Further options
+            # dimensions=512,                       # Amazon models only
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# For SageMaker
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_aws_sagemaker(
+            name="title_vector",
+            region="us-east-1",
+            source_properties=["title"],
+            endpoint="<sagemaker_endpoint>",        # Required
+            # Further options
+            # target_model="<sagemaker_target_model>",
+            # target_variant="<sagemaker_target_variant>",
         )
     ],
     # highlight-end
@@ -294,12 +317,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_google(
+    vector_config=Configure.Vectors.text2vec_google_vertex(
         name="title_vector",
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # Further options
         # model="<google-model-id>",
+        # location="<google-cloud-region>",
         # api_endpoint="<google-api-endpoint>",
     ),
     # highlight-end

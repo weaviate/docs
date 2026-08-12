@@ -696,7 +696,7 @@ Add the `diversity_selection` parameter to any vector search query:
 
 | Parameter | Type  | Description                                                                                                                                             |
 | :-------- | :---- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `limit`   | int   | Number of results to return after MMR reranking. Must be less than or equal to the query's top-level `limit` (the candidate set size).                  |
+| `limit`   | int   | Number of results to return after MMR reranking. Must be at least `1` and no larger than the query's top-level `limit` (the candidate set size). Weaviate returns an error if it is omitted or out of range. |
 | `balance` | float | Controls the relevance-diversity trade-off (0.0–1.0). `0.0` = pure diversity, `0.5` = balanced, `1.0` = pure relevance (equivalent to standard search). |
 
 <FilteredTextBlock
@@ -710,12 +710,39 @@ Important notes:
 
 - **Result ordering**: Results are ordered by MMR score, not query similarity. The first result is the most relevant, but subsequent results may have lower query similarity because they were chosen for diversity.
 - **No reindexing needed**: MMR is applied at query time. You can use it on any existing collection without schema changes.
-- **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`.
-- **Not supported**: hybrid search and multi-vector collections.
+- **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`. Hybrid search is also supported, from `v1.38.6`. See [Diversity selection with hybrid search](./hybrid.md#diversity-selection-mmr).
+- **Not supported**: multi-vector collections. Weaviate rejects these queries with an error instead of ignoring the diversity settings.
 
 :::tip
 A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
 :::
+
+#### Pagination
+
+Diversity selection changes what `offset` means. `offset` moves the candidate window rather than the page, so it must advance by the query's top-level `limit`, not by the page size or the number of objects returned. Weaviate does not validate the relationship between `offset` and `limit`, so a wrong `offset` produces no error and no warning. The only symptoms are objects that repeat across pages and objects that are never returned at all.
+
+<details>
+  <summary>Candidate window, worked example, and deep pages</summary>
+
+A diversified query works with two limits:
+
+- the query's top-level `limit` is the **candidate window** that gets diversified, and
+- the diversity `limit` is the **page size**, or how many objects come back.
+
+Each page is taken from the slice `[offset, offset + limit)` of the relevance-ranked results, so `offset` must advance by the query `limit`:
+
+<FilteredTextBlock
+  text={MMRPyCode}
+  startMarker="# START MMRPagination"
+  endMarker="# END MMRPagination"
+  language="python"
+/>
+
+The usual pagination idiom, adding the number of returned objects to `offset`, is the failing case here. The page size is always smaller than or equal to the candidate window, so consecutive windows overlap. With a query `limit` of `10` and a diversity `limit` of `3`, advancing `offset` by `3` reads the windows `[0:10]`, `[3:13]`, and `[6:16]`, which is how objects come back twice while others are skipped.
+
+When diversity selection is combined with a boost or with hybrid search, deep pages are also not stable slices of one fixed ranking. Both the boost pool and the two hybrid search legs fetch more candidates as `offset` grows, so which objects can reach a given page depends on how deep you have paged.
+
+</details>
 
 ## Soft-rank with Boost
 
