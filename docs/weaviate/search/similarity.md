@@ -673,9 +673,9 @@ import V137Preview from '/\_includes/feature-notes/v137-preview.mdx';
 
 <V137Preview/>
 
-Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity — each selected result must add something new to the result set.
+Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity: each selected result must add something new to the result set.
 
-Add the `selection` parameter to any vector search query:
+Add the `diversity_selection` parameter to any vector search query:
 
 <FilteredTextBlock
   text={MMRPyCode}
@@ -690,7 +690,7 @@ Add the `selection` parameter to any vector search query:
 2. The most relevant candidate is selected first
 3. For each remaining candidate, MMR computes a score that balances query similarity against maximum similarity to already-selected results, weighted by `balance`
 4. The candidate with the highest MMR score is selected next
-5. Steps 3–4 repeat until the `Diversity.MMR(limit)` is reached
+5. Steps 3–4 repeat until the `Diversity.mmr(limit)` is reached
 
 #### Parameters
 
@@ -721,7 +721,7 @@ A larger candidate set (higher top-level `limit`) gives MMR more results to choo
 
 <BoostNote/>
 
-Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
+Vector search queries accept an optional `boost` argument that promotes or demotes matching documents without removing them. This is useful for biasing results by recency, popularity, a soft filter, or another property. Matching documents move up. Everything else stays in the results but ranks lower.
 
 See [Boost](./boost.md) for the supported condition types (filter, property value, time decay, numeric decay), curve choices, blending semantics, and depth tuning.
 
@@ -729,7 +729,6 @@ See [Boost](./boost.md) for the supported condition types (filter, property valu
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - For image search, see [Image search](/weaviate/search/image).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md).
 - For search using the GraphQL API, see [GraphQL API](/weaviate/api).
 
 ## Questions and feedback

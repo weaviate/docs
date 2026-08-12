@@ -475,4 +475,112 @@ public class RBACTest : IAsyncLifetime
         var usersAfterDelete = await client.Users.Db.List();
         Assert.DoesNotContain(usersAfterDelete, u => u.UserId == testUser);
     }
+
+    [Fact]
+    public async Task TestOidcUserLifecycle()
+    {
+        // An OIDC user is authenticated by the identity provider, so it is never
+        // created in Weaviate. Only its role assignments are managed here.
+        string testUser = "custom-user";
+        string testRole = "testRole";
+
+        var permissions = new PermissionScope[]
+        {
+            new Permissions.Collections("TargetCollection*") { Read = true },
+        };
+        await client.Roles.Create(testRole, permissions);
+
+        // START AssignOidcUserRole
+        await client.Users.Oidc.AssignRoles(testUser, new[] { testRole, "viewer" });
+        // END AssignOidcUserRole
+
+        // START ListOidcUserRoles
+        var oidcUserRoles = await client.Users.Oidc.GetRoles(testUser);
+        foreach (var role in oidcUserRoles)
+        {
+            Console.WriteLine(role.Name);
+        }
+        // END ListOidcUserRoles
+
+        var oidcRoleNames = oidcUserRoles.Select(r => r.Name).ToList();
+        Assert.Contains(testRole, oidcRoleNames);
+        Assert.Contains("viewer", oidcRoleNames);
+
+        // START RevokeOidcUserRoles
+        await client.Users.Oidc.RevokeRoles(testUser, new[] { testRole });
+        // END RevokeOidcUserRoles
+
+        var rolesAfterRevoke = await client.Users.Oidc.GetRoles(testUser);
+        var namesAfterRevoke = rolesAfterRevoke.Select(r => r.Name).ToList();
+        Assert.DoesNotContain(testRole, namesAfterRevoke);
+        Assert.Contains("viewer", namesAfterRevoke);
+
+        // Leave no assignment behind for the next test run
+        await client.Users.Oidc.RevokeRoles(testUser, new[] { "viewer" });
+    }
+
+    [Fact]
+    public async Task TestOidcGroupLifecycle()
+    {
+        string testGroup = "/admin-group";
+        string testRole = "testRole";
+
+        var permissions = new PermissionScope[]
+        {
+            new Permissions.Collections("TargetCollection*") { Read = true },
+        };
+        await client.Roles.Create(testRole, permissions);
+
+        // START AssignOidcGroupRoles
+        await client.Groups.Oidc.AssignRoles(testGroup, new[] { testRole, "viewer" });
+        // END AssignOidcGroupRoles
+
+        // START GetOidcGroupRoles
+        var groupRoles = await client.Groups.Oidc.GetRoles(testGroup, includeFullRoles: true);
+        foreach (var role in groupRoles)
+        {
+            Console.WriteLine(role.Name);
+        }
+        // END GetOidcGroupRoles
+
+        var groupRoleNames = groupRoles.Select(r => r.Name).ToList();
+        Assert.Contains(testRole, groupRoleNames);
+        Assert.Contains("viewer", groupRoleNames);
+
+        // START GetKnownOidcGroups
+        var knownGroups = await client.Groups.Oidc.GetKnownGroupNames();
+        Console.WriteLine($"Known OIDC groups ({knownGroups.Count()}): {string.Join(", ", knownGroups)}");
+        // END GetKnownOidcGroups
+
+        // The C# client writes the group ID straight into the request path without
+        // URL-encoding it, so a leading slash collapses and Weaviate registers
+        // "/admin-group" as "admin-group". Compare the normalized form so this
+        // assertion keeps holding once the client encodes the path segment.
+        Assert.Contains(testGroup.TrimStart('/'), knownGroups.Select(g => g.TrimStart('/')));
+
+        // Known client defect: the DTO behind GetGroupAssignments declares its
+        // groupType as an enum without a string-enum converter, so decoding a
+        // non-empty response throws. The call below is the correct usage and
+        // starts passing as soon as the client adds the converter.
+        // START GetGroupAssignments
+        var groupAssignments = await client.Roles.GetGroupAssignments(testRole);
+        Console.WriteLine($"Groups assigned to role '{testRole}':");
+        foreach (var assignment in groupAssignments)
+        {
+            Console.WriteLine($"  - Group ID: {assignment.GroupId}, Type: {assignment.GroupType}");
+        }
+        // END GetGroupAssignments
+        Assert.Contains(
+            groupAssignments,
+            a => a.GroupId.TrimStart('/') == testGroup.TrimStart('/')
+        );
+        Assert.Contains(groupAssignments, a => a.GroupType == RbacGroupType.Oidc);
+
+        // START RevokeOidcGroupRoles
+        await client.Groups.Oidc.RevokeRoles(testGroup, new[] { testRole, "viewer" });
+        // END RevokeOidcGroupRoles
+
+        var rolesAfterRevoke = await client.Groups.Oidc.GetRoles(testGroup);
+        Assert.Empty(rolesAfterRevoke);
+    }
 }

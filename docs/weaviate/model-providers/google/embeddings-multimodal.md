@@ -144,9 +144,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for the vectorizer to use.
-
-<!-- The default model (`textembedding-gecko@001` for Vertex AI, `embedding-001` for Gemini API) is used if no model is specified. -->
+You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for the vectorizer to use. The [default model](#available-models) is used if no model is specified.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -326,8 +324,8 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `gemini-embedding-2` (Vertex AI and Gemini API, added in 1.36.13) — Vertex AI and Gemini API; supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
-- `multimodalembedding@001` (Vertex AI only) — supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
+- `gemini-embedding-2` (Vertex AI and Gemini API, added in 1.36.13). Supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
+- `multimodalembedding@001` (default, Vertex AI only). Supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
 
 ## Further resources
 

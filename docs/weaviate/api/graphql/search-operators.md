@@ -268,13 +268,13 @@ This operator allows you to combine [BM25](#bm25) and vector search to get a "be
 | `bm25SearchOperator` | no | `object` | set how many of the (bm25) query tokens must be present within a single searched property for an object to be considered a match. (available from `v1.31.0`) |
 
 * Notes:
-    * `alpha` can be any number from 0 to 1, defaulting to 0.75.
+    * `alpha` can be any number from 0 to 1, defaulting to 0.75. See [Alpha parameter](/weaviate/concepts/search/hybrid-search.md#alpha-parameter).
         * `alpha` = 0 forces using a pure **keyword** search method (BM25)
         * `alpha` = 1 forces using a pure **vector** search method
         * `alpha` = 0.5 weighs the BM25 and vector methods evenly
     * `fusionType` can be `rankedFusion` or `relativeScoreFusion`
-        * `rankedFusion` (default) adds inverted ranks of the BM25 and vector search methods
-        * `relativeScoreFusion` adds normalized scores of the BM25 and vector search methods
+        * `relativeScoreFusion` (default from `v1.24`) adds normalized scores of the BM25 and vector search methods
+        * `rankedFusion` (default for `v1.23` and lower) adds inverted ranks of the BM25 and vector search methods
 
 ### Fusion algorithms
 

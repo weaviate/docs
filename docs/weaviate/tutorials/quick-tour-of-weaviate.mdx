@@ -58,9 +58,9 @@ flowchart LR
 
 ### Prerequisites
 
-In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need a [Cohere](https://dashboard.cohere.com/) account. You can use a free Cohere trial API key.
+In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need an [OpenAI](https://platform.openai.com/) account and an OpenAI API key.
 
-If you have another preferred [model provider](/weaviate/model-providers), you can use that instead of Cohere.
+If you have another preferred [model provider](/weaviate/model-providers), you can use that instead of OpenAI.
 
 <hr />
 
@@ -212,11 +212,11 @@ We can now add data to our collection.
 The following example:
 
 - Loads objects, and
-- Adds objects to the target collection (`Question`) using a batch process.
+- Adds objects to the target collection (`Question`) with a batch import.
 
 :::tip Batch imports
 
-([Batch imports](../manage-objects/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-objects/import.mdx) guide for more information.
+Batch imports are the most efficient way to add large amounts of data, because they send objects in groups instead of one request per object. See the [How-to: Batch import](../manage-objects/import.mdx) guide for the available methods, including [server-side batching](../manage-objects/import.mdx#server-side-batching), where the server tells the client how much data to send next.
 
 :::
 
@@ -245,20 +245,18 @@ import QueryNearText from "/_includes/code/quickstart/quickstart.query.neartext.
 Run this code to perform the query. Our query found entries for `DNA` and `species`.
 
 <details>
-  <summary>Example full response in JSON format</summary>
+  <summary>Example response</summary>
 
 ```json
 {
-  {
-    "answer": "DNA",
-    "question": "In 1953 Watson & Crick built a model of the molecular structure of this, the gene-carrying substance",
-    "category": "SCIENCE"
-  },
-  {
-    "answer": "species",
-    "question": "2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new one of this classification",
-    "category": "SCIENCE"
-  }
+  "answer": "DNA",
+  "question": "In 1953 Watson & Crick built a model of the molecular structure of this, the gene-carrying substance",
+  "category": "SCIENCE"
+}
+{
+  "answer": "species",
+  "question": "2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new one of this classification",
+  "category": "SCIENCE"
 }
 ```
 
@@ -377,9 +375,9 @@ import QueryRAG from "/_includes/code/quickstart/quickstart.query.rag.mdx";
 
 <QueryRAG />
 
-:::info Cohere API key in the header
+:::info OpenAI API key in the header
 
-Note that this code includes an additional header for the Cohere API key. Weaviate uses this key to access the Cohere generative AI model and perform retrieval augmented generation (RAG).
+Note that this code includes an additional header for the OpenAI API key. Weaviate uses this key to access the OpenAI generative AI model and perform retrieval augmented generation (RAG).
 
 :::
 

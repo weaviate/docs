@@ -6,7 +6,7 @@ image: og/docs/concepts.jpg
 # tags: ['architecture', 'interface', 'API design']
 ---
 
-You can manage and use Weaviate through its APIs. Weaviate has a RESTful API and a GraphQL API. The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. Additionally, the APIs are intuitive, so it is easy to integrate into your existing data landscape.
+You can manage and use Weaviate through its APIs. Weaviate has RESTful, GraphQL, and gRPC APIs. The client libraries broadly mirror this API surface, although feature coverage can vary by language; see the [client library pages](/weaviate/client-libraries/index.mdx) for what each one supports. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. Additionally, the APIs are intuitive, so it is easy to integrate into your existing data landscape.
 
 This page contains information on how Weaviate's APIs are designed, and how you can use Weaviate Console to search through your Weaviate instance with GraphQL.
 
@@ -27,8 +27,8 @@ Weaviate has both a RESTful API and a GraphQL API. Currently, there is no featur
 - **Data search** -> GraphQL API
 - **Explorative data search** -> GraphQL API
 - **Data analysis (meta data)** -> GraphQL API
-- **Near real time on very large datasets in production** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
-- **Easy to integrate in applications** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
+- **Near real time on very large datasets in production** -> Client libraries (Python, Go, Java, JavaScript, C#) using both APIs under the hood
+- **Easy to integrate in applications** -> Client libraries (Python, Go, Java, JavaScript, C#) using both APIs under the hood
 
 ## GraphQL
 
@@ -125,9 +125,11 @@ There are currently three main functions in a GraphQL request: "Get{}", "Explore
 
 ## gRPC API support
 
-Starting with version `1.19`, Weaviate is introducing support for the gRPC (gRPC Remote Procedure Calls) API, with the aim of making Weaviate even faster over time.
+Alongside the RESTful and GraphQL APIs, Weaviate serves a gRPC API. gRPC is built on HTTP/2 and Protocol Buffers, which makes it faster and more efficient than sending the equivalent request as JSON over HTTP. It was introduced in Weaviate `v1.19.0` and has been considered stable since `v1.23.7`.
 
-This will not result in any user-facing API changes. As of May 2023, gRPC has been added at a very small scale, with the goal of rolling it out further over time to the core library as well as the clients.
+gRPC carries most of the search and batch import traffic that the client libraries generate, so a Weaviate deployment usually exposes a gRPC port (`50051` by default, configurable with the `GRPC_PORT` [environment variable](/deploy/configuration/env-vars/index.md)) in addition to the REST port. Client coverage is not uniform: the [Python](/weaviate/client-libraries/python/index.mdx), [TypeScript](/weaviate/client-libraries/typescript/index.mdx), [Java](/weaviate/client-libraries/java/index.mdx), and [C#](/weaviate/client-libraries/csharp.mdx) clients use gRPC for queries and batch operations, while the [Go](/weaviate/client-libraries/go.md) client uses it for batch imports and reaches gRPC search through its experimental API.
+
+For the Protobuf definitions and for ways to call the API without a client library, see the [gRPC API reference](../api/grpc.md).
 
 ## Weaviate Console
 
@@ -137,7 +139,7 @@ The [Weaviate Console](/go/console?utm_content=others) is a dashboard to manage 
 
 ## Weaviate Clients
 
-Weaviate has several client libraries: in [Go](/weaviate/client-libraries/go.md), [Java](/weaviate/client-libraries/java/index.mdx), [Python](/weaviate/client-libraries/python/index.mdx) and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx). The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. The APIs are intuitive to use, so it is easy to integrate Weaviate into your existing data landscape.
+Weaviate has several client libraries: in [C#](/weaviate/client-libraries/csharp.mdx), [Go](/weaviate/client-libraries/go.md), [Java](/weaviate/client-libraries/java/index.mdx), [Python](/weaviate/client-libraries/python/index.mdx), and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx). The client libraries broadly mirror the server API surface, although feature coverage varies by language. See the [client library pages](/weaviate/client-libraries/index.mdx) for what each one supports. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. The APIs are intuitive to use, so it is easy to integrate Weaviate into your existing data landscape.
 
 ## Further resources
 

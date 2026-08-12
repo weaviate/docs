@@ -1826,16 +1826,16 @@ wheels = [
 
 [[package]]
 name = "weaviate-agents"
-version = "1.6.0"
+version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx-sse" },
     { name = "rich" },
     { name = "weaviate-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6e/a5/bd394d83a86153bcb54c297052558b312a247368c04ed08149850f0dcf71/weaviate_agents-1.6.0.tar.gz", hash = "sha256:a30c9c5120df3bc55ba1fa2384a4ebf5a3654d427a758294d9fa712cb5791576", size = 107790, upload-time = "2026-06-16T19:38:56.386Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/99/750d7d2e33f610bad0d4b1d77e2a7f0c73dbab5459876fa51c7a4a440a3a/weaviate_agents-1.7.0.tar.gz", hash = "sha256:f033085cbde7123424f5579dfab553df5e0128d395dfea3b58c5aea6602340cb", size = 111884, upload-time = "2026-07-27T08:31:58.622Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/96/69/9c5876da7925332d63151bcc61990e272cb8140a6dc7c6e887c905a3aede/weaviate_agents-1.6.0-py3-none-any.whl", hash = "sha256:e68723e3c14bf9639feadf307a55b7af4ddf2010e4d382e87b70766aeec8dae4", size = 50262, upload-time = "2026-06-16T19:38:55.445Z" },
+    { url = "https://files.pythonhosted.org/packages/5e/d3/30952e1a4ca1556beb73e756d1f514c0bd62db53c21bdc65cdd6c5c6b78e/weaviate_agents-1.7.0-py3-none-any.whl", hash = "sha256:052e37ad9114424149b29deb8ba96159fce69f54e45874a4d6e42b1831643931", size = 54505, upload-time = "2026-07-27T08:31:57.755Z" },
 ]
 
 [[package]]
@@ -1884,6 +1884,7 @@ dependencies = [
     { name = "playwright" },
     { name = "pytest" },
     { name = "python-dotenv" },
+    { name = "pyyaml" },
     { name = "requests" },
     { name = "tqdm" },
     { name = "weaviate-agents" },
@@ -1903,9 +1904,10 @@ requires-dist = [
     { name = "playwright", specifier = ">=1.40.0" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
+    { name = "pyyaml", specifier = ">=6.0" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "tqdm", specifier = ">=4.67.1" },
-    { name = "weaviate-agents", specifier = ">=1.6.0" },
+    { name = "weaviate-agents", specifier = ">=1.7.0" },
     { name = "weaviate-client", specifier = "==4.22.0" },
     { name = "weaviate-demo-datasets", specifier = ">=0.8.1" },
     { name = "weaviate-engram", specifier = ">=0.3.0" },

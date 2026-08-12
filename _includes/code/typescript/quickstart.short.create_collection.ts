@@ -41,7 +41,9 @@ const dataObjects = [
 
 // START CreateCollection
 const movieCollection = client.collections.get('Movie');
-const response = await movieCollection.data.insertMany(dataObjects);
+await movieCollection.data.ingest(
+  dataObjects.map((properties) => ({ properties }))
+);
 
 console.log(`Imported & vectorized ${dataObjects.length} objects into the Movie collection`);
 

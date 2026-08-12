@@ -703,7 +703,6 @@ const sidebars = {
         "weaviate/tutorials/cross-references",
         "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/vector-provision-options",
-        //"weaviate/tutorials/query",
         //"weaviate/tutorials/wikipedia",
         //"weaviate/tutorials/modules",
       ],
@@ -1368,6 +1367,11 @@ const sidebars = {
         {
           type: "doc",
           id: "query-agent/reference/advanced_collections",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "query-agent/reference/structured_outputs",
           className: "sidebar-item",
         },
       ],

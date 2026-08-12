@@ -37,7 +37,7 @@ collection = client.collections.get("MMRDemo")
 response = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(
+    diversity_selection=Diversity.mmr(
         limit=5,
         balance=0.5,
     ),
@@ -75,7 +75,7 @@ query_vector = sample.objects[0].vector["default"]
 response = collection.query.near_vector(
     near_vector=query_vector,
     limit=20,
-    selection=Diversity.MMR(
+    diversity_selection=Diversity.mmr(
         limit=5,
         balance=0.5,
     ),
@@ -98,21 +98,21 @@ collection = client.collections.get("MMRDemo")
 response_diverse = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(limit=5, balance=0.0),
+    diversity_selection=Diversity.mmr(limit=5, balance=0.0),
 )
 
 # Balanced — equal weight on relevance and diversity
 response_balanced = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(limit=5, balance=0.5),
+    diversity_selection=Diversity.mmr(limit=5, balance=0.5),
 )
 
 # Pure relevance — equivalent to standard vector search
 response_relevant = collection.query.near_vector(
     near_vector=base_vec,
     limit=20,
-    selection=Diversity.MMR(limit=5, balance=1.0),
+    diversity_selection=Diversity.mmr(limit=5, balance=1.0),
 )
 # END MMRBalanceExamples
 

@@ -47,7 +47,7 @@ Tokenization for keyword searches refers to how each source text is split up int
 
 The default tokenization method is `word`.
 
-Other tokenization methods such as `whitespace`, `lowercase`, and `field` are available, as well as specialized ones such as `GSE` or `kagome_kr` for other languages ([more details](../../config-refs/collections.mdx#tokenization)).
+Other tokenization methods such as `whitespace`, `lowercase`, and `field` are available, as well as specialized ones such as `gse` or `kagome_kr` for other languages ([more details](../../config-refs/collections.mdx#tokenization)).
 
 Set the tokenization option [in the inverted index configuration](../../search/bm25.md#set-tokenization) for a collection.
 
@@ -67,7 +67,7 @@ Weaviate uses configurable stopwords in calculating the BM25 score. Any tokens t
 
 See the [reference page](../../config-refs/indexing/inverted-index.mdx#stopwords) for more details.
 
-Stopword lists are also configurable per collection **and** per property. You can define custom presets on `invertedIndexConfig.stopwordPresets` and assign them to individual text properties via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections — for example, English and French properties using different stopword lists. Stopwords are still indexed and only filtered at query time, so changing your stopword configuration does not require reindexing. See [Inverted index: Custom stopword presets](../indexing/inverted-index.md#custom-stopword-presets) for details.
+Stopword lists are also configurable per collection **and** per property. You can define custom presets on `invertedIndexConfig.stopwordPresets` and assign them to individual text properties via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections. For example, English and French properties can use different stopword lists. Stopwords are still indexed and only filtered at query time, so changing your stopword configuration does not require reindexing. See [Inverted index: Custom stopword presets](../indexing/inverted-index.md#custom-stopword-presets) for details.
 
 ### BM25 parameters
 
@@ -142,7 +142,7 @@ Conceptually, it works as though a filter is applied to the results of the BM25 
 - `and`: All tokens must be present within a single searched property
 - `or`: At least one token must be present within a single searched property, with the minimum number of tokens being configurable (`minimumOrTokensMatch`)
 
-As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects where all of the tokens `computer`, `networking`, and `guide` appear together within a single searched property. If the tokens are spread across different properties — for example, `computer` in `title` and `networking` in `description` — the object does not match under `and`. In contrast, the same query with the `or` operator would return objects where at least one of those tokens appears in a searched property. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present within a single searched property.
+As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects where all of the tokens `computer`, `networking`, and `guide` appear together within a single searched property. If the tokens are spread across different properties (for example, `computer` in `title` and `networking` in `description`), the object does not match under `and`. In contrast, the same query with the `or` operator would return objects where at least one of those tokens appears in a searched property. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present within a single searched property.
 
 If not specified, the default operator is `or`, with a `minimumOrTokensMatch` of `1`. This means that at least one token must be present in a searched property for the object to be returned.
 
@@ -194,7 +194,7 @@ Here are some key considerations when using keyword search:
 
 1. **Tokenization Choice**
    - Choose based on your data and search requirements. For example, use `word` tokenization for natural language text, but consider `field` for URLs or email addresses that need exact matching as a whole.
-   - For multilingual content, consider specialized tokenizers like `GSE` for Chinese/Japanese or `kagome_kr` for Korean
+   - For multilingual content, consider specialized tokenizers like `gse` for Chinese/Japanese or `kagome_kr` for Korean
    - Consider special characters and case sensitivity needs
    - Test your tokenization choice with subsets of your data and queries to ensure it handles special characters and case sensitivity as expected. You could perform these experiments with vectorization disabled to save resources/costs, as the two processes are independent.
 

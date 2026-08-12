@@ -245,6 +245,19 @@ These methods return a new context manager for each batch. Attributes that are r
 
 If the background thread that is responsible for sending the batches raises an exception during batch processing, the error is raised to the main thread.
 
+### One-shot ingest
+
+`collection.data.ingest(objs)` is a one-shot convenience that uses server-side batching under the hood (no batching context required). It accepts any iterable of plain property dicts or `DataObject` instances, and returns the same `BatchObjectReturn` object as `insert_many`. Pass a list of objects that you already hold in memory to use `ingest` as a drop-in replacement for `insert_many` on large lists. Pass a generator, or any other lazy iterable, to import from a source that does not fit in memory: the client sends each object to the server as the generator produces it.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START BatchIngestGenerator"
+  endMarker="# END BatchIngestGenerator"
+  language="py"
+/>
+
+For a generator that reads a source file line by line, see [Batch import](../../manage-objects/import.mdx#server-side-batching).
+
 ### Error handling
 
 During a batch import, any failed objects or references will be stored for retrieval. Additionally, a running count of failed objects and references is maintained.
@@ -261,6 +274,8 @@ Note that these lists are reset when a batching process is initialized. So make 
   endMarker="# END BatchErrorHandling"
   language="py"
 />
+
+`collection.data.ingest()` does not use a batching context, so it reports failures through its return value instead. Check `result.errors`, a dictionary that holds one entry per failed object, keyed by the position of the object in the input. The [one-shot ingest](#one-shot-ingest) example above shows this pattern.
 
 ### Batch vectorization
 

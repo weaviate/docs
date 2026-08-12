@@ -316,7 +316,7 @@ response = collection.query.near_text(query="animal",limit=2, include_vector=Tru
 for o in response.objects:
     print(o.vector)
 
-# Hybrid search	client.close()
+# Hybrid search
 response = collection.query.hybrid(
     query="animals",
     limit=5

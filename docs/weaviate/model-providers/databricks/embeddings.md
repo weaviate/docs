@@ -50,7 +50,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 You must provide a valid Databricks Personal Access Token (PAT) to Weaviate for this integration. Refer to the [Databricks documentation](https://docs.databricks.com/en/dev-tools/auth/pat.html) for instructions on generating your PAT in your workspace.
 
-Provide the Dataricks token to Weaviate using one of the following methods:
+Provide the Databricks token to Weaviate using one of the following methods:
 
 - Set the `DATABRICKS_TOKEN` environment variable that is available to Weaviate.
 - Provide the token at runtime, as shown in the examples below.
@@ -125,13 +125,13 @@ This will configure Weaviate to use the vectorizer served through the endpoint y
 ### Vectorizer parameters
 
 - `endpoint`: The URL of the embedding model hosted on Databricks.
-- `instruction`:An optional instruction to pass to the embedding model.
+- `instruction`: An optional instruction to pass to the embedding model.
 
 For further details on model parameters, see the [Databricks documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#embedding-request).
 
 ## Header parameters
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+You can provide the token as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
 
 - `X-Databricks-Token`: The Databricks API token.
 - `X-Databricks-Endpoint`: The endpoint to use for the Databricks model.

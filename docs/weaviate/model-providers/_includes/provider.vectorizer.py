@@ -317,7 +317,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model_id="gemini-embedding-2",
+        model="gemini-embedding-2",
     ),
     # highlight-end
     # Additional parameters not shown
@@ -422,10 +422,9 @@ client.collections.create(
         Configure.Vectors.text2vec_huggingface(
             name="title_vector",
             source_properties=["title"],
-            # NOTE: Use only one of (`model`), (`passage_model` and `query_model`), or (`endpoint_url`)
+            # NOTE: Use only one of (`model`), (`passage_model`), or (`endpoint_url`)
             model="sentence-transformers/all-MiniLM-L6-v2",
-            # passage_model="sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",    # Required if using `query_model`
-            # query_model="sentence-transformers/facebook-dpr-question_encoder-single-nq-base", # Required if using `passage_model`
+            # passage_model="sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",
             # endpoint_url="<custom_huggingface_url>",
             #
             # wait_for_model=True,
@@ -690,7 +689,9 @@ client.collections.create(
         Configure.Vectors.text2vec_mistral(
             name="title_vector",
             source_properties=["title"],
-            model="mistral-embed"
+            model="mistral-embed",
+            # Further options
+            # base_url="<custom_mistral_url>",
         )
     ],
     # highlight-end
@@ -967,7 +968,7 @@ client.collections.create(
     # highlight-start
     vector_config=[
         Configure.Vectors.text2vec_digitalocean(
-            model="qwen3-embedding-0.6b",  # Required — choose from the DigitalOcean Serverless Inference catalogue
+            model="qwen3-embedding-0.6b",  # Required. Choose from the DigitalOcean Serverless Inference catalogue
             name="title_vector",
             source_properties=["title"],
         )

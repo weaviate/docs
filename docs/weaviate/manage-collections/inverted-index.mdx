@@ -32,13 +32,13 @@ You can [enable inverted indexes](#enable-inverted-index-for-keyword-searches-an
 <details>
 <summary>Enabling inverted index</summary>
 
-The inverted index in Weaviate can be enabled through parameters at the property level:
+The inverted index in Weaviate can be enabled through parameters at the property level. The names below are the REST and camelCase client spellings; the Python client uses the snake_case equivalent, so `indexFilterable` is `index_filterable`, `indexSearchable` is `index_searchable` and `indexRangeFilters` is `index_range_filters`.
 
-**`index_filterable`** - Controls whether a property can be used in where filters. When set to `true`, the property values are indexed for efficient filtering operations. Disable this for properties that don't need filtering to save storage space.
+**`indexFilterable`** - Controls whether a property can be used in where filters. When set to `true`, the property values are indexed for efficient filtering operations. Disable this for properties that don't need filtering to save storage space.
 
-**`index_searchable`** - Determines whether a property participates in keyword search queries. When `true`, the property's text content is tokenized and indexed for search. Set to `false` for properties that shouldn't be searchable to improve performance.
+**`indexSearchable`** - Determines whether a property participates in keyword search queries. When `true`, the property's text content is tokenized and indexed for search. Set to `false` for properties that shouldn't be searchable to improve performance.
 
-**`index_range_filters`** - Enables range filtering capabilities (greater than, less than, etc.) for numerical and date properties. When enabled, additional indexing structures are created to support efficient range queries.
+**`indexRangeFilters`** - Enables range filtering capabilities (greater than, less than, etc.) for numerical and date properties. When enabled, additional indexing structures are created to support efficient range queries.
 
 </details>
 
@@ -92,17 +92,17 @@ The inverted index in Weaviate can be enabled through parameters at the property
 <details>
 <summary>Inverted index parameters</summary>
 
-The inverted index in Weaviate can be configured through various parameters at the collection level:
+The inverted index in Weaviate can be configured through various parameters at the collection level. The names below are the REST and camelCase client spellings. In REST, `b` and `k1` are members of the `bm25` object. The Python client uses the snake_case equivalent, so they are `bm25_b`, `bm25_k1`, `index_null_state`, `index_property_length` and `index_timestamps`.
 
-**`bm25_b`** - Controls the degree of normalization by document length in the BM25 ranking algorithm. Values range from 0 to 1, where 0 means no length normalization and 1 means full normalization. Higher values favor shorter documents.
+**`bm25`: `b`** - Controls the degree of normalization by document length in the BM25 ranking algorithm. Values range from 0 to 1, where 0 means no length normalization and 1 means full normalization. Higher values favor shorter documents.
 
-**`bm25_k1`** - Controls term frequency saturation in BM25. Higher values make term frequency more important, while lower values reduce the impact of term frequency on scoring.
+**`bm25`: `k1`** - Controls term frequency saturation in BM25. Higher values make term frequency more important, while lower values reduce the impact of term frequency on scoring.
 
-**`index_null_state`** - Determines whether null values are indexed. When enabled, you can filter for objects that have null values in specific properties.
+**`indexNullState`** - Determines whether null values are indexed. When enabled, you can filter for objects that have null values in specific properties.
 
-**`index_property_length`** - Controls whether the length of text properties is indexed. When enabled, allows filtering based on text length and can improve certain ranking algorithms.
+**`indexPropertyLength`** - Controls whether the length of text properties is indexed. When enabled, allows filtering based on text length and can improve certain ranking algorithms.
 
-**`index_timestamps`** - Enables indexing of creation and update timestamps for objects, allowing filtering and sorting operations.
+**`indexTimestamps`** - Enables indexing of creation and update timestamps for objects, allowing filtering and sorting operations.
 
 </details>
 
@@ -151,7 +151,7 @@ The inverted index in Weaviate can be configured through various parameters at t
 
 ## Drop an inverted index
 
-Drop (delete) an inverted index from a property. This is a destructive operation — the index data is removed from disk. To use the index again, it must be regenerated.
+Drop (delete) an inverted index from a property. This is a destructive operation: the index data is removed from disk. To use the index again, it must be regenerated.
 
 The following index types can be dropped: `searchable`, `filterable`, `rangeFilters`.
 
@@ -201,7 +201,7 @@ Tokenization determines how text content is broken down into individual terms th
 
 **`word`** - The default tokenization that splits text on whitespace and punctuation, converting to lowercase. Best for general text search where you want to match individual words.
 
-**`lowercase`** - Splits text on whitespace only, then lowercases each token. Preserves symbols (like `&`, `@`, `_`) that `word` tokenization would strip. Good for case-insensitive matching where punctuation is meaningful — e.g. code snippets or email addresses.
+**`lowercase`** - Splits text on whitespace only, then lowercases each token. Preserves symbols (like `&`, `@`, `_`) that `word` tokenization would strip. Good for case-insensitive matching where punctuation is meaningful, such as code snippets or email addresses.
 
 **`whitespace`** - Splits text only on whitespace characters, preserving punctuation and case. Good when punctuation is meaningful for search.
 
@@ -211,7 +211,7 @@ Tokenization determines how text content is broken down into individual terms th
 
 **`gse`** - Language-aware tokenization for Chinese and Japanese text. Disabled by default. Enable with the `ENABLE_TOKENIZER_GSE` environment variable. For Korean text, see the `kagome_kr` option.
 
-For the full list of supported tokenizers — including `kagome_ja`, `kagome_kr`, and the per-property text-analyzer options — see the [tokenization reference](../config-refs/collections.mdx#tokenization).
+For the full list of supported tokenizers (including `kagome_ja`, `kagome_kr`, and the per-property text-analyzer options), see the [tokenization reference](../config-refs/collections.mdx#tokenization).
 
 </details>
 

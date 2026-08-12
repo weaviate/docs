@@ -136,7 +136,7 @@ class GenerativeSearchTest {
 
   @Test
   void testSingleGenerativeParameters() {
-    // START SingleGenerativeParametersPython
+    // START SingleGenerativeParameters
     CollectionHandle<Map<String, Object>> jeopardy =
         client.collections.use("JeopardyQuestion");
     var response = jeopardy.generate.nearText("World history", q -> q.limit(2),
@@ -158,12 +158,12 @@ class GenerativeSearchTest {
       System.out.printf("Debug: %s\n", o.generative().debug());
       System.out.printf("Metadata: %s\n", o.generative().metadata());
     }
-    // END SingleGenerativeParametersPython
+    // END SingleGenerativeParameters
   }
 
   @Test
   void testGroupedGenerative() {
-    // START GroupedGenerativePython
+    // START GroupedGenerativeBasic
     // highlight-start
     String task = "What do these animals have in common, if anything?";
     // highlight-end
@@ -179,7 +179,7 @@ class GenerativeSearchTest {
     // print the generated response
     System.out.printf("Grouped task result: %s\n",
         response.generative().text());
-    // END GroupedGenerativePython
+    // END GroupedGenerativeBasic
   }
 
   @Test

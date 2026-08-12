@@ -52,7 +52,7 @@ You must provide a valid Jina AI API key to Weaviate for this integration. Go to
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `JINAAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `JINAAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -328,7 +328,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-- `jina-colbert-v2`
+- `jina-colbert-v2` (server default)
     - By default, Weaviate uses `128` dimensions
 - `jina-colbert-v1`
 

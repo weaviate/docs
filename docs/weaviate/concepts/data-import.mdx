@@ -50,7 +50,7 @@ This architecture centralizes the complex batching logic on the server, resultin
 
 - **Simplified client code**: No need to tweak the batch size and the number of concurrent requests manually. The server determines the optimal batch size based on its current workload.
 - **Improved stability**: The system automatically applies **backpressure**. If the server is busy, it will instruct the client to send less data, preventing overloads and request timeouts, which is especially useful during long-running vectorization tasks.
-- **Enhanced resilience**: It's designed to handle cluster events like node scaling more gracefully, reducing the risk of interrupted batches.
+- **Enhanced resilience**: It's designed to handle cluster events like node scaling more gracefully, reducing the risk of interrupted batches. Because the server paces the client, the import load tracks the actual server capacity, which behaves well on autoscaling clusters and under memory pressure.
 
 :::
 

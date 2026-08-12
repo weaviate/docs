@@ -232,6 +232,8 @@ Hybrid search results can favor the keyword component or the vector component. T
 - An `alpha` of `1` is a pure vector search.
 - An `alpha` of `0` is a pure keyword search.
 
+If you do not set `alpha`, the effective weighting depends on your client. See [Alpha parameter](/weaviate/concepts/search/hybrid-search.md#alpha-parameter).
+
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
@@ -374,7 +376,7 @@ The output is like this:
     Additional information
   </summary>
 
-For a discussion of fusion methods, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms) and [this reference page](../api/graphql/search-operators.md#variables-2)
+For a discussion of fusion methods, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms) and [this reference page](../api/graphql/search-operators.md#fusion-algorithms).
 
 </details>
 
@@ -1043,7 +1045,7 @@ import TokenizationNote from '/\_includes/tokenization.mdx'
 
 <BoostNote/>
 
-Hybrid queries accept an optional `boost` argument that promotes or demotes matching documents without removing them — useful for biasing results by recency, popularity, a soft filter, or another property.
+Hybrid queries accept an optional `boost` argument that promotes or demotes matching documents without removing them. This is useful for biasing results by recency, popularity, a soft filter, or another property.
 
 The boost runs once over the **fused** hybrid result. The BM25 and vector sub-search legs do not see the boost themselves. Hybrid's own `alpha` blend runs first, and the boost rescores the fused candidate pool on top.
 
@@ -1054,7 +1056,6 @@ See [Boost](./boost.md) for the supported condition types (filter, property valu
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
 - About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).
 
 ## Questions and feedback

@@ -150,7 +150,7 @@ You can [specify](#vectorizer-parameters) one of the [available models](#availab
 
 ### Google AI Studio (Gemini API)
 
-For Google AI Studio, use the `text2vec_google_gemini()` vectorizer. No `project_id` or `api_endpoint` is required.
+For Google AI Studio, use the Gemini-specific vectorizer. A Google Cloud project ID is not required. The Python and TypeScript clients set the Gemini API endpoint for you.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -234,8 +234,11 @@ The following examples show how to configure Google-specific options.
 
 **Vertex AI parameters:**
 - `projectId` (Required): Your Google Cloud project ID, e.g. `cloud-large-language-models`
+- `location` (Optional): The Google Cloud region to send requests to, e.g. `europe-west1`.
 - `apiEndpoint` (Optional): Regional endpoint, e.g. `us-central1-aiplatform.googleapis.com`
 - `modelId` (Optional): e.g. `gemini-embedding-001`, `text-embedding-005`
+
+Set `location` together with a matching `apiEndpoint` to keep data in a specific region.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -399,10 +402,13 @@ The query below returns the `n` best scoring objects from the database, set by `
 - `gemini-embedding-001` (default)
 
 **Vertex AI:**
+
+`gemini-embedding-001`, `text-embedding-005`, and `text-multilingual-embedding-002` were added in `v1.31.5`, and backported to `v1.30.11`.
+
 - `gemini-embedding-2`
-- `gemini-embedding-001` (default, added in 1.30.11, 1.31.5 and onwards)
-- `text-embedding-005` (added in 1.30.11, 1.31.5 and onwards)
-- `text-multilingual-embedding-002` (added in 1.30.11, 1.31.5 and onwards)
+- `gemini-embedding-001` (default)
+- `text-embedding-005`
+- `text-multilingual-embedding-002`
 
 <details>
   <summary>Deprecated models</summary>

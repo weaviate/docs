@@ -116,6 +116,8 @@ no Weaviate cluster.
 2. Run that language's `test_llms_txt` and confirm it passes — **never** hand-write
    a snippet without running it.
 3. Copy the verified marked region **verbatim** into `weaviate-io/static/llms.txt`.
+   The PR-time sync warning (see *CI* below) flags this for you and prints the exact
+   block to paste.
 4. New file? Add its path to the `test_llms_txt` parametrize list in the matching
    `tests/test_*.py`.
 
@@ -182,12 +184,13 @@ after the matching `weaviate-io` change is live; otherwise mark with
 
 ## CI
 
-Two separate workflows cover this directory:
+Three separate workflows cover this directory:
 
 | Workflow | What it runs |
 |---|---|
 | `.github/workflows/docs_tests.yml` | Per-language **execution** tests — `test_llms_txt*` in `test_python.py`, `test_typescript.py`, `test_java.py`, `test_csharp.py`. Rides the existing `pyv4` / `ts` / `java` / `csharp` / `agents` markers, so no separate job for these. |
 | `.github/workflows/llms_txt_tests.yml` | The three **guard tests** in `test_llms_txt_code.py` — snippet coverage, version freshness, link validity. Single job `test-llms-txt`, runs `uv run pytest tests/test_llms_txt_code.py -m "llms_txt"`. |
+| `.github/workflows/llms_txt_snippet_sync.yml` | The **PR-time warning** (`check_llms_txt_drift.py`). Advisory only, see below. |
 
 The guard workflow triggers on:
 
@@ -203,6 +206,41 @@ so the job is fast (≈ 30-60s end-to-end).
 Results post to Slack via the shared `./.github/actions/handle-test-results`
 composite under `test-type: 'llms.txt'`, with `continue-on-error: true` on the
 pytest step so the notification still fires when a guard fails.
+
+### PR-time snippet sync warning
+
+The guard workflow runs weekly, so a snippet change here can break the published
+`llms.txt` days before anyone notices. `tests/check_llms_txt_drift.py` closes that
+gap on the docs side. `.github/workflows/llms_txt_snippet_sync.yml` runs it on every
+PR touching a file that matches `SNIPPET_GLOBS`, and it answers one question: once
+this PR merges, which `llms.txt` code blocks would `test_llms_txt_snippets_are_covered`
+no longer find? Those, and only those, are the blocks `weaviate-io/static/llms.txt`
+has to update in lockstep.
+
+It reuses this directory's matching logic (`SNIPPET_GLOBS`, the marker and fence
+regexes, `_normalize`, `_load_llms_txt`), so it cannot disagree with the weekly job
+about what "matches" means. Findings surface as GitHub warning annotations on the
+changed snippet lines, plus a job summary carrying the new block to paste into
+`llms.txt`.
+
+**It is advisory and never fails the job once it runs.** When a snippet PR is opened, weaviate-io has
+not merged or deployed yet, so the live `llms.txt` legitimately cannot match yet; a
+blocking check would fire on every honest PR and would just get overridden. It also
+stays quiet whenever there is nothing to do: weaviate-io shipped first and `llms.txt`
+already carries the new block, only scaffolding outside the markers changed, or a
+region was moved or renamed without its code changing.
+
+Run it locally against uncommitted edits:
+
+```bash
+uv run python tests/check_llms_txt_drift.py --base HEAD
+```
+
+The reverse direction (an `llms.txt` edit in weaviate-io that no longer matches these
+snippets) is not automated. There is no check in weaviate-io; this repo's PR-time warning
+and the weekly `llms_txt_tests.yml` job are the only automation. An `llms.txt` edit made
+directly in weaviate-io that breaks the verbatim match is not caught until the weekly job
+runs.
 
 ## Per-language gotchas
 

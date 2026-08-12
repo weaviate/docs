@@ -201,7 +201,7 @@ The response should look like this:
 
 <BoostNote/>
 
-For lightweight result reordering based on filters, property values, or time / numeric decay — without calling an external rerank model — use [Boost](./boost.md). Rerank and Boost can be used independently. Pick rerank when you need a smarter model to re-rank the top-N, and Boost when you want to bias by simple signals already on the objects.
+For lightweight result reordering based on filters, property values, or time / numeric decay (without calling an external rerank model), use [Boost](./boost.md). Rerank and Boost can be used independently. Pick rerank when you need a smarter model to re-rank the top-N, and Boost when you want to bias by simple signals already on the objects.
 
 ## Related pages
 

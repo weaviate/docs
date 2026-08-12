@@ -261,7 +261,7 @@ In some systems, the cluster hostname may change over time. This is known to cre
 
 ```yaml
 env:
-  - CLUSTER_HOSTNAME: "node-1"
+  CLUSTER_HOSTNAME: "node-1"
 ```
 
 ## Questions and feedback
