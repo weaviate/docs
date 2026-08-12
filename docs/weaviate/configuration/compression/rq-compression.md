@@ -119,8 +119,8 @@ RQ can also be enabled for an existing collection by updating the collection def
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
-        startMarker="// START UpdateSchema"
-        endMarker="// END UpdateSchema"
+        startMarker="// START 8BitUpdateSchema"
+        endMarker="// END 8BitUpdateSchema"
         language="go"
       />
   </TabItem>
@@ -200,14 +200,6 @@ Set `rescoreLimit` explicitly. Start at `50`, and raise it to at least the large
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
-      <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START 4BitUpdateSchema"
-        endMarker="// END 4BitUpdateSchema"
-        language="ts"
-      />
-  </TabItem>
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -236,7 +228,7 @@ Set `rescoreLimit` explicitly. Start at `50`, and raise it to at least the large
 
 ### 4-bit RQ limitations
 
-- **`hnsw` index only.** A `flat` index rejects `bits` set to `4` with `RQ bits must be either 1 or 8`. A `dynamic` index starts on its flat portion and switches to HNSW once the collection passes the threshold, so 4-bit RQ can only be configured on the `hnsw` portion of a dynamic index. The flat portion of that collection stays uncompressed or uses another quantizer, and the collection is only compressed with 4-bit RQ after it converts to HNSW.
+- **`hnsw` index only.** A `flat` index rejects `bits` set to `4` with `RQ bits must be either 1 or 8`, and an `hfresh` index rejects it with `rq only supports 1 bit, got 4`. A `dynamic` index starts on its flat portion and switches to HNSW once the collection passes the threshold, so 4-bit RQ can only be configured on the `hnsw` portion of a dynamic index. The flat portion of that collection stays uncompressed or uses another quantizer, and the collection is only compressed with 4-bit RQ after it converts to HNSW.
 - **`bits` cannot be changed later.** Once RQ is enabled, the number of bits is fixed. A request that changes it fails with `rq bits is immutable`. To move between bit widths, recreate the collection and reimport. Enabling RQ on an existing uncompressed `hnsw` collection is supported, and that is the point at which `bits` is fixed.
 - **`rescoreLimit` stays mutable.** You can change it at any time without reindexing.
 - **Supported distance metrics.** RQ supports `cosine`, `dot` and `l2-squared`. Other distance metrics are not supported.

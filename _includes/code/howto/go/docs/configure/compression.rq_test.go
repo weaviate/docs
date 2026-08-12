@@ -267,7 +267,7 @@ func TestRQConfiguration(t *testing.T) {
 			Do(context.Background())
 		require.NoError(t, err)
 
-		// START UpdateSchemaToEnableRQ
+		// START 8BitUpdateSchema
 		// Get the existing collection configuration
 		class, err := client.Schema().ClassGetter().
 			WithClassName(className).Do(context.Background())
@@ -294,7 +294,7 @@ func TestRQConfiguration(t *testing.T) {
 		if err != nil {
 			log.Fatalf("update class to use rq: %v", err)
 		}
-		// END UpdateSchemaToEnableRQ
+		// END 8BitUpdateSchema
 
 		// Verify the RQ configuration was applied
 		updatedClass, err := client.Schema().ClassGetter().
