@@ -42,6 +42,31 @@ client.collections.create(
 # END EnableRQ
 
 # ==============================
+# =====  EnableRQ 4-BIT ========
+# ==============================
+
+client.collections.delete("MyCollection")
+
+# START 4BitEnableRQ
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    name="MyCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.rq(
+            bits=4,
+            rescore_limit=50,  # Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+        )
+        # highlight-end
+    ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+)
+# END 4BitEnableRQ
+
+# ==============================
 # =====  EnableRQ 1-BIT ========
 # ==============================
 
@@ -144,6 +169,38 @@ collection.config.update(
     )
 )
 # END UpdateSchema
+
+# ================================
+# =====  UPDATE SCHEMA 4-BIT =====
+# ================================
+
+client.collections.delete("MyCollection")
+client.collections.create(
+    name="MyCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        quantizer=Configure.VectorIndex.Quantizer.none(),
+    ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+)
+
+# START 4BitUpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.use("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(
+                bits=4,
+                rescore_limit=50,
+            ),
+        ),
+    )
+)
+# END 4BitUpdateSchema
 
 # ================================
 # =====  UPDATE SCHEMA 1-BIT =====

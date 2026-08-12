@@ -56,6 +56,35 @@ public class ConfigureRQTest : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Test4BitEnableRQ()
+    {
+        // START 4BitEnableRQ
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector(
+                    "default",
+                    v => v.Text2VecTransformers(),
+                    index: new VectorIndex.HNSW
+                    {
+                        // highlight-start
+                        Quantizer = new VectorIndex.Quantizers.RQ
+                        {
+                            Bits = 4,
+                            // Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+                            RescoreLimit = 50,
+                        },
+                        // highlight-end
+                    }
+                ),
+            }
+        );
+        // END 4BitEnableRQ
+    }
+
+    [Fact]
     public async Task Test1BitEnableRQ()
     {
         // START 1BitEnableRQ
@@ -155,6 +184,29 @@ public class ConfigureRQTest : IAsyncLifetime
             );
         });
         // END UpdateSchema
+    }
+
+    [Fact]
+    public async Task Test4BitUpdateSchema()
+    {
+        var collection = await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "MyCollection",
+                Properties = [Property.Text("title")],
+                VectorConfig = Configure.Vector("default", v => v.Text2VecTransformers()),
+            }
+        );
+
+        // START 4BitUpdateSchema
+        await collection.Config.Update(c =>
+        {
+            var vectorConfig = c.VectorConfig["default"];
+            vectorConfig.VectorIndexConfig.UpdateHNSW(h =>
+                h.Quantizer = new VectorIndex.Quantizers.RQ { Bits = 4, RescoreLimit = 50 }
+            );
+        });
+        // END 4BitUpdateSchema
     }
 
     [Fact]

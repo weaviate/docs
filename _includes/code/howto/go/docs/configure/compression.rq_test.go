@@ -89,6 +89,59 @@ func TestRQConfiguration(t *testing.T) {
 		assert.Equal(t, true, rqConfig["enabled"])
 	})
 
+	t.Run("Enable 4-bit RQ", func(t *testing.T) {
+		className := "MyCollectionRQDefault"
+		// Delete the collection if it already exists to ensure a clean start
+		err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Background())
+		if err != nil {
+			// This is not a fatal error, the collection might not exist
+			log.Printf("Could not delete collection '%s', it might not exist: %v\n", className, err)
+		}
+
+		// START 4BitEnableRQ
+		// Define the configuration for RQ. 'bits' set to 4 requires an hnsw index
+		// highlight-start
+		rq_config := map[string]interface{}{
+			"enabled": true,
+			"bits":    4,
+			// Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+			"rescoreLimit": 50,
+		}
+		// highlight-end
+
+		// Define the class schema
+		class := &models.Class{
+			Class:      className,
+			Vectorizer: "text2vec-openai",
+			// highlight-start
+			// Assign the RQ configuration to the vector index config
+			VectorIndexConfig: map[string]interface{}{
+				"rq": rq_config,
+			},
+			// highlight-end
+		}
+
+		// Create the collection in Weaviate
+		err = client.Schema().ClassCreator().
+			WithClass(class).
+			Do(context.Background())
+		// END 4BitEnableRQ
+		require.NoError(t, err)
+
+		// Assertions to verify the configuration
+		classInfo, err := client.Schema().ClassGetter().WithClassName(className).Do(ctx)
+		require.NoError(t, err)
+		require.NotNil(t, classInfo)
+
+		vic, ok := classInfo.VectorIndexConfig.(map[string]interface{})
+		require.True(t, ok)
+		rqConfig, ok := vic["rq"].(map[string]interface{})
+		require.True(t, ok)
+		assert.Equal(t, true, rqConfig["enabled"])
+		assert.Equal(t, float64(4), rqConfig["bits"])
+		assert.Equal(t, float64(50), rqConfig["rescoreLimit"])
+	})
+
 	t.Run("Enable 1-bit RQ", func(t *testing.T) {
 		className := "MyCollectionRQDefault"
 		// Delete the collection if it already exists to ensure a clean start
@@ -255,6 +308,76 @@ func TestRQConfiguration(t *testing.T) {
 		require.True(t, ok)
 		assert.Equal(t, true, rqConfig["enabled"])
 		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
+	})
+
+	t.Run("Enable 4-bit RQ on Existing Collection", func(t *testing.T) {
+		className := "MyExistingCollection"
+
+		// First, create a collection without RQ
+		err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Background())
+		if err != nil {
+			log.Printf("Could not delete collection '%s', it might not exist: %v\n", className, err)
+		}
+
+		// Create initial collection without RQ
+		initialClass := &models.Class{
+			Class:      className,
+			Vectorizer: "text2vec-openai",
+			VectorIndexConfig: map[string]interface{}{
+				"distance": "cosine",
+			},
+		}
+
+		err = client.Schema().ClassCreator().
+			WithClass(initialClass).
+			Do(context.Background())
+		require.NoError(t, err)
+
+		// START 4BitUpdateSchema
+		// Get the existing collection configuration
+		class, err := client.Schema().ClassGetter().
+			WithClassName(className).Do(context.Background())
+
+		if err != nil {
+			log.Fatalf("get class for vec idx cfg update: %v", err)
+		}
+
+		// Get the current vector index configuration
+		cfg := class.VectorIndexConfig.(map[string]interface{})
+
+		// Add RQ configuration to enable 4-bit quantization
+		cfg["rq"] = map[string]interface{}{
+			"enabled": true,
+			"bits":    4,
+			// Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+			"rescoreLimit": 50,
+		}
+
+		// Update the class configuration
+		class.VectorIndexConfig = cfg
+
+		// Apply the updated configuration to the collection
+		err = client.Schema().ClassUpdater().
+			WithClass(class).Do(context.Background())
+
+		if err != nil {
+			log.Fatalf("update class to use rq: %v", err)
+		}
+		// END 4BitUpdateSchema
+
+		// Verify the RQ configuration was applied
+		updatedClass, err := client.Schema().ClassGetter().
+			WithClassName(className).Do(context.Background())
+		require.NoError(t, err)
+
+		vic, ok := updatedClass.VectorIndexConfig.(map[string]interface{})
+		require.True(t, ok)
+
+		rqConfig, ok := vic["rq"].(map[string]interface{})
+		require.True(t, ok)
+		assert.Equal(t, true, rqConfig["enabled"])
+		assert.Equal(t, float64(4), rqConfig["bits"])
+		assert.Equal(t, float64(50), rqConfig["rescoreLimit"])
 	})
 
 	t.Run("Enable 1-bit RQ on Existing Collection", func(t *testing.T) {

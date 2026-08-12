@@ -5,9 +5,9 @@
 // ==============================
 
 import assert from 'assert';
-// START EnableRQ // START 1BitEnableRQ // START RQWithOptions // START Uncompressed
+// START EnableRQ // START 4BitEnableRQ // START 1BitEnableRQ // START RQWithOptions // START Uncompressed
 import weaviate, { configure } from 'weaviate-client';
-// END EnableRQ // END 1BitEnableRQ // END RQWithOptions // END Uncompressed
+// END EnableRQ // END 4BitEnableRQ // END 1BitEnableRQ // END RQWithOptions // END Uncompressed
 
 
 const client = await weaviate.connectToLocal({
@@ -38,6 +38,30 @@ await client.collections.create({
     ]
 })
 // END EnableRQ
+
+// ==============================
+// =====  EnableRQ 4-BIT ========
+// ==============================
+
+await client.collections.delete("MyCollection")
+
+// START 4BitEnableRQ
+
+await client.collections.create({
+    name: "MyCollection",
+    vectorizers: configure.vectors.text2VecOpenAI({
+        // highlight-start
+        quantizer: configure.vectorIndex.quantizer.rq({
+            bits: 4,
+            rescoreLimit: 50,  // Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+        })
+        // highlight-end
+    }),
+    properties: [
+        { name: "title", dataType: weaviate.configure.dataType.TEXT }
+    ]
+})
+// END 4BitEnableRQ
 
 // ==============================
 // =====  EnableRQ 1-BIT ========

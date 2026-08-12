@@ -7,6 +7,7 @@ image: og/docs/concepts.jpg
 ---
 
 import Rq8bit from '/_includes/feature-notes/rq-8bit.mdx';
+import Rq4bit from '/_includes/feature-notes/rq-4bit.mdx';
 import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
 
 **Vector quantization** reduces the memory footprint of the [vector index](./indexing/vector-index.md) by compressing the vector embeddings, and thus reduces deployment costs and improves the speed of the vector similarity search process.
@@ -121,7 +122,7 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ## Rotational quantization
 
-**Rotational quantization (RQ)** provides significant compression while maintaining high recall. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in: **8-bit** and **1-bit** variants.
+**Rotational quantization (RQ)** provides significant compression while maintaining high recall. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in: **8-bit**, **4-bit** and **1-bit** variants.
 
 ### 8-bit RQ
 
@@ -132,6 +133,24 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 1. **Fast pseudorandom rotation**: The input vector is transformed using a fast rotation based on the Walsh Hadamard Transform. This rotation takes approximately 7-10 microseconds for a 1536-dimensional vector. The output dimension is rounded up to the nearest multiple of 64.
 
 2. **Scalar quantization**: Each entry of the rotated vector is quantized to an 8-bit integer. The minimum and maximum values of each individual rotated vector define the quantization interval.
+
+### 4-bit RQ
+
+<Rq4bit/>
+
+4-bit RQ stores each dimension of the rotated vector in 4 bits, so a compressed vector is about half the size of the 8-bit equivalent and roughly 8x smaller than the uncompressed vector. It sits between 8-bit RQ and 1-bit RQ: it gives up some accuracy in the compressed distance calculation in exchange for a smaller index.
+
+The method works as follows:
+
+1. **Fast pseudorandom rotation**: The same rotation process as 8-bit RQ is applied to the input vector, and the output dimension is rounded up to the nearest multiple of 64. Because the output dimension is always a multiple of 64, two codes always pack cleanly into one byte.
+
+2. **Asymmetric quantization**:
+   - **Data vectors**: Quantized to 4 bits per dimension, over the minimum and maximum values of each individual rotated vector. Two dimensions are packed into each stored byte.
+   - **Query vectors**: Scalar quantized using 8 bits per dimension during search.
+
+Quantizing the query at a higher precision than the stored data costs no extra storage and recovers much of the accuracy that the coarser data codes give up. This is the same asymmetric idea used by 1-bit RQ.
+
+Because the compressed distances are coarser, 4-bit RQ depends more heavily on [rescoring](#over-fetching--re-scoring) than 8-bit RQ does. In internal testing on 1536-dimensional data, 4-bit RQ reaches around 94-95% recall from the compressed distances alone, compared with around 99% for 8-bit RQ. Rescoring the top 50 candidates against the uncompressed vectors brings both variants to 99.8% or better. The default rescore limit is not high enough to reach those figures, so set it explicitly. See [Configuration: 4-bit RQ](../configuration/compression/rq-compression.md#4-bit-rq).
 
 ### 1-bit RQ
 
@@ -155,12 +174,14 @@ This asymmetric approach improves recall compared to symmetric 1-bit schemes (su
 
 The rotation step provides multiple benefits. It tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly. It also distributes the distance information more evenly across all dimensions, providing a better starting point for distance estimation.
 
-Both RQ variants round up the number of dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression. Additionally, several factors affect the actual compression rates:
+All RQ variants round up the number of dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression. Additionally, several factors affect the actual compression rates:
 
-- **Auxiliary data storage**: 16 bytes for 8-bit RQ and 8 bytes for 1-bit RQ are stored with the compressed codes
+- **Auxiliary data storage**: 16 bytes for 8-bit and 4-bit RQ and 8 bytes for 1-bit RQ are stored with the compressed codes
 - **Dimension rounding**: Dimensionality is rounded up to the nearest multiple of 64 and 1-bit RQ is also padded to at least 256 bits
 
-Due to these factors, the 4x and 32x compression rates are only approached as dimensionality increases. These effects are more pronounced for low-dimensional vectors.
+Due to these factors, the 4x, 8x and 32x compression rates are only approached as dimensionality increases. These effects are more pronounced for low-dimensional vectors.
+
+For a 1536-dimensional vector, which is already a multiple of 64, a compressed vector takes 1552 bytes with 8-bit RQ and 784 bytes with 4-bit RQ, against 6144 bytes uncompressed. Both figures include the 16 bytes of auxiliary data.
 
 While inspired by extended [RaBitQ](https://arxiv.org/abs/2405.12497), this implementation differs significantly for performance reasons. It uses fast pseudorandom rotations instead of truly random rotations.
 :::tip
@@ -180,7 +201,7 @@ The query retrieves compressed objects until the object count reaches whichever 
 For example, if a query is made with a limit of 10, and a rescore limit of 200, Weaviate fetches 200 objects. After rescoring, the query returns top 10 objects. This process offsets the loss in search quality (recall) that is caused by compression.
 
 :::note RQ optimization
-With RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to 0) for maximum query performance with minimal impact on search quality.
+With 8-bit RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to `0`) for maximum query performance with minimal impact on search quality. Do not do this for 4-bit RQ or 1-bit RQ, which both rely on rescoring to reach their reported recall.
 :::
 
 ## Vector compression with vector indexing
@@ -198,6 +219,8 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 ### With a flat index
 
 [RQ](#rotational-quantization) and [BQ](#binary-quantization) can be applied to a [flat index](./indexing/vector-index.md#flat-index). As a flat index search is a brute-force method, compression reduces the amount of data Weaviate has to read and increases speed.
+
+A flat index accepts 8-bit and 1-bit RQ. [4-bit RQ](#4-bit-rq) is available for the HNSW index only.
 
 ## Rescoring
 
