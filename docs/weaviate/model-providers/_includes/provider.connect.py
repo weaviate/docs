@@ -79,6 +79,10 @@ openai_key = os.getenv("OPENAI_API_KEY")
 # Recommended: save sensitive data as environment variables
 azure_key = os.getenv("AZURE_API_KEY")
 # END AzureOpenAIInstantiation
+# START TwelveLabsInstantiation
+# Recommended: save sensitive data as environment variables
+twelvelabs_key = os.getenv("TWELVELABS_APIKEY")
+# END TwelveLabsInstantiation
 # START VoyageAIInstantiation
 # Recommended: save sensitive data as environment variables
 voyageai_key = os.getenv("VOYAGEAI_API_KEY")
@@ -150,6 +154,10 @@ headers = {
 # START AzureOpenAIInstantiation
     "X-Azure-Api-Key": azure_key,
 # END AzureOpenAIInstantiation
+# START TwelveLabsInstantiation
+    "X-Twelvelabs-Api-Key": twelvelabs_key,
+    "X-Twelvelabs-Baseurl": "https://api.twelvelabs.io/v1.3",  # Optional; for providing a custom base URL
+# END TwelveLabsInstantiation
 # START VoyageAIInstantiation
     "X-VoyageAI-Api-Key": voyageai_key,
 # END VoyageAIInstantiation
