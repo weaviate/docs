@@ -890,7 +890,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'morph-embedding-v3',
-      baseURL: 'https://api.morphllm.com',  // Scheme and host only
+      baseURL: 'https://api.morphllm.com',  // Base URL; an existing path is preserved
     }),
   ],
   // highlight-end
