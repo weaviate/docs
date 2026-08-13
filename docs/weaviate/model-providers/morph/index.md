@@ -10,7 +10,7 @@ image: og/docs/model-provider-integrations.jpg
 [Morph](https://morphllm.com/) serves code and text embedding models behind an OpenAI-compatible API. Weaviate integrates with Morph's embedding endpoint so you can vectorize and search data using Morph-hosted models directly from your Weaviate instance.
 
 :::caution Morph lists the Embedding API as legacy
-Morph's own documentation labels the [Embedding API](https://docs.morphllm.com/api-reference/endpoint/embedding) as legacy and planned for deprecation. Check the current status with Morph before you build on this integration.
+Morph's own documentation labels the Embedding API as legacy and planned for deprecation. Check the current status in [Morph's documentation](https://docs.morphllm.com/) before you build on this integration.
 :::
 
 ## Integrations with Morph

@@ -17,7 +17,7 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ModelProvidersTest.cs";
 
-Weaviate's integration with [Morph's API](https://docs.morphllm.com/api-reference/endpoint/embedding) lets you access Morph-hosted embedding models directly from Weaviate.
+Weaviate's integration with [Morph's API](https://docs.morphllm.com/) lets you access Morph-hosted embedding models directly from Weaviate.
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use a Morph embedding model, and Weaviate generates embeddings for imports and searches automatically using your Morph API key. This is the *vectorizer*.
 
@@ -26,7 +26,7 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 ![Embedding integration illustration](../_includes/integration_morph_embedding.png)
 
 :::caution Morph lists the Embedding API as legacy
-Morph's own documentation labels the [Embedding API](https://docs.morphllm.com/api-reference/endpoint/embedding) as legacy and planned for deprecation. Check the current status with Morph before you build on this integration.
+Morph's own documentation labels the Embedding API as legacy and planned for deprecation. Check the current status in [Morph's documentation](https://docs.morphllm.com/) before you build on this integration.
 :::
 
 ## Requirements
@@ -260,7 +260,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keywo
 
 ### Available models
 
-Weaviate does not restrict which model id you can set, so any model the Morph API accepts can be used. `morph-embedding-v3` is the default. See the [Morph Embedding API documentation](https://docs.morphllm.com/api-reference/endpoint/embedding) for the current catalogue, as availability and dimensions can change.
+Weaviate does not restrict which model id you can set, so any model the Morph API accepts can be used. `morph-embedding-v3` is the default. Morph's [list models endpoint](https://docs.morphllm.com/api-reference/endpoint/models) returns the model ids your key can use. Check it before you rely on a model id, as availability and dimensions can change.
 
 ## Further resources
 
