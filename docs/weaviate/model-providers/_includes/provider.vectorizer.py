@@ -757,7 +757,7 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             model="morph-embedding-v3",
-            base_url="https://api.morphllm.com",  # Scheme and host only
+            base_url="https://api.morphllm.com",  # Base URL; an existing path is preserved
             endpoint="/v1/embeddings",            # Path appended to the base URL
         )
     ],
