@@ -68,7 +68,9 @@ See the [REST API reference](/engram/api/rest) for the full list of endpoints, a
 
 The [`engram` plugin](https://github.com/weaviate/engram-plugins) gives [Claude Code](https://claude.com/claude-code) long-term memory backed by Engram. It recalls relevant memories before each answer and stores each completed turn — everything happens automatically via hooks, with no tools for the agent to call. Memory is best-effort and never blocks a session.
 
-Set your API key in your shell (or a shell profile so it persists), then install the plugin inside a Claude Code session:
+When creating your Engram project, you choose [topics](concepts/topics.md) that control what memories get extracted. Select the **Coding Assistant** template for topics tailored to coding sessions — you can also define custom topics for a more tailored experience.
+
+Once the project is created, set your API key in your shell profile (e.g. `~/.zshrc` or `~/.bashrc`), then install the plugin inside a Claude Code session:
 
 ```bash
 export ENGRAM_API_KEY=...
