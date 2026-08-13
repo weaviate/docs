@@ -181,8 +181,6 @@ All RQ variants round up the number of dimensions to multiples of 64, which mean
 
 Due to these factors, the 4x, 8x and 32x compression rates are only approached as dimensionality increases. These effects are more pronounced for low-dimensional vectors.
 
-For a 1536-dimensional vector, which is already a multiple of 64, a compressed vector takes 1552 bytes with 8-bit RQ and 784 bytes with 4-bit RQ, against 6144 bytes uncompressed. Both figures include the 16 bytes of auxiliary data.
-
 While inspired by extended [RaBitQ](https://arxiv.org/abs/2405.12497), this implementation differs significantly for performance reasons. It uses fast pseudorandom rotations instead of truly random rotations.
 :::tip
 
