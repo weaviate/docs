@@ -851,6 +851,56 @@ await client.collections.create({
 // Clean up
 await client.collections.delete('DemoCollection');
 
+// START BasicVectorizerMorph
+await client.collections.create({
+  name: 'DemoCollection',
+  properties: [
+    {
+      name: 'title',
+      dataType: 'text' as const,
+    },
+  ],
+  // highlight-start
+  vectorizers: [
+    weaviate.configure.vectors.text2VecMorph({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    }),
+  ],
+  // highlight-end
+  // Additional parameters not shown
+});
+// END BasicVectorizerMorph
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START FullVectorizerMorph
+await client.collections.create({
+  name: 'DemoCollection',
+  properties: [
+    {
+      name: 'title',
+      dataType: 'text' as const,
+    },
+  ],
+  // highlight-start
+  vectorizers: [
+    weaviate.configure.vectors.text2VecMorph({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: 'morph-embedding-v3',
+      baseURL: 'https://api.morphllm.com',  // Base URL; an existing path is preserved
+    }),
+  ],
+  // highlight-end
+  // Additional parameters not shown
+});
+// END FullVectorizerMorph
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
 // START BasicVectorizerNVIDIA
 await client.collections.create({
   name: 'DemoCollection',
