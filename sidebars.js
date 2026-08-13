@@ -312,6 +312,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "Morph",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/morph/index",
+              },
+              items: ["weaviate/model-providers/morph/embeddings"],
+            },
+            {
+              type: "category",
               label: "NVIDIA",
               className: "sidebar-item",
               link: {

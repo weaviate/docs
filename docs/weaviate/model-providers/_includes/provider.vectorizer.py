@@ -726,6 +726,49 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicVectorizerMorph
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_morph(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerMorph
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerMorph
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_morph(
+            name="title_vector",
+            source_properties=["title"],
+            model="morph-embedding-v3",
+            base_url="https://api.morphllm.com",  # Scheme and host only
+            endpoint="/v1/embeddings",            # Path appended to the base URL
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerMorph
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerNVIDIA
 from weaviate.classes.config import Configure
 

@@ -63,6 +63,10 @@ jinaai_key = os.getenv("JINAAI_API_KEY")
 # Recommended: save sensitive data as environment variables
 mistral_key = os.getenv("MISTRAL_API_KEY")
 # END MistralInstantiation
+# START MorphInstantiation
+# Recommended: save sensitive data as environment variables
+morph_key = os.getenv("MORPH_APIKEY")
+# END MorphInstantiation
 # START NVIDIAInstantiation
 # Recommended: save sensitive data as environment variables
 nvidia_key = os.getenv("NVIDIA_API_KEY")
@@ -138,6 +142,11 @@ headers = {
 # START MistralInstantiation
     "X-Mistral-Api-Key": mistral_key,
 # END MistralInstantiation
+# START MorphInstantiation
+    # Morph requests are built by Weaviate's OpenAI-compatible client,
+    # so the Morph key is supplied under the OpenAI header name.
+    "X-Openai-Api-Key": morph_key,
+# END MorphInstantiation
 # START NVIDIAInstantiation
     "X-NVIDIA-Api-Key": nvidia_key,
 # END NVIDIAInstantiation
