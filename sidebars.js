@@ -376,6 +376,18 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "TwelveLabs",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/twelvelabs/index",
+              },
+              items: [
+                "weaviate/model-providers/twelvelabs/embeddings-multimodal",
+              ],
+            },
+            {
+              type: "category",
               label: "VoyageAI",
               className: "sidebar-item",
               link: {

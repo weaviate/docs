@@ -1191,6 +1191,100 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicMMVectorizerTwelveLabs
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.Vectors.multi2vec_twelvelabs(
+            name="title_vector",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicMMVectorizerTwelveLabs
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START MMVectorizerTwelveLabsCustomModel
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.Vectors.multi2vec_twelvelabs(
+            name="title_vector",
+            model="marengo3.0",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END MMVectorizerTwelveLabsCustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullMMVectorizerTwelveLabs
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.Vectors.multi2vec_twelvelabs(
+            name="title_vector",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+            # Further options
+            # model="marengo3.0",
+            # base_url="https://api.twelvelabs.io/v1.3",
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullMMVectorizerTwelveLabs
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerVoyageAI
 from weaviate.classes.config import Configure
 
