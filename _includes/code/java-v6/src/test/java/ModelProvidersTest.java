@@ -172,7 +172,7 @@ class ModelProvidersTest {
             .vectorConfig(VectorConfig.text2vecMorph("title_vector",
                 c -> c.sourceProperties("title")
                     .model("morph-embedding-v3")
-                    .baseUrl("https://api.morphllm.com") // Scheme and host only
+                    .baseUrl("https://api.morphllm.com") // Base URL; an existing path is preserved
                     .endpoint("/v1/embeddings"))) // Path appended to the base URL
             .properties(Property.text("title"), Property.text("description")));
     // END FullVectorizerMorph
