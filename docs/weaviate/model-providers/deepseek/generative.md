@@ -80,7 +80,7 @@ Always set `model` explicitly. The module's built-in default is a retired model 
   text={PyCode}
   startMarker="# START GenerativeDeepseekCustomModel"
   endMarker="# END GenerativeDeepseekCustomModel"
-  language="pyindent"
+  language="py"
 />
 
 ### Select a model
@@ -97,7 +97,7 @@ Configure the following generative parameters to customize the model behavior.
   text={PyCode}
   startMarker="# START FullGenerativeDeepseek"
   endMarker="# END FullGenerativeDeepseek"
-  language="pyindent"
+  language="py"
 />
 
 Weaviate checks `maxTokens` against a built-in ceiling only for the retired `deepseek-chat` and `deepseek-reasoner` aliases. For any current model, a `maxTokens` above the model's limit is accepted when you create the collection and fails later, as an error from DeepSeek at query time.
@@ -112,7 +112,7 @@ Aside from setting the default model provider when creating the collection, you 
   text={PyCode}
   startMarker="# START RuntimeModelSelectionDeepseek"
   endMarker="# END RuntimeModelSelectionDeepseek"
-  language="pyindent"
+  language="py"
 />
 
 ## Header parameters
