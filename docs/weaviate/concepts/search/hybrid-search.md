@@ -191,7 +191,7 @@ This is because BM25 scores are not normalized or bounded like vector distances,
 
 ## Keyword (BM25) search parameters
 
-Hybrid search in Weaviate supports all the parameters available for keyword (BM25) search. This includes, for example, the ability to set the tokenization method, stopwords, BM25 parameters (k1, b), search operators (`and` or `or`), specific properties to search and/or to boost particular properties.
+Hybrid search in Weaviate supports all the parameters available for keyword (BM25) search. This includes, for example, the ability to set the tokenization method, stopwords, BM25 parameters (k1, b), [search operators](./keyword-search.md#keyword-search-operators) (`and`, `or`, or `and_cross`), specific properties to search and/or to boost particular properties.
 
 For more information on these parameters, see the [keyword search page](./keyword-search.md).
 

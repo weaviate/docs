@@ -387,7 +387,7 @@ import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
 
 <SearchOperators/>
 
-Keyword (BM25) search operators define how many of the query [tokens](#tokenization) must match, and whether they must all match within a single searched property. The options are `or` (default), `and`, and `and_cross`.
+Keyword (BM25) search operators define how many of the query [tokens](#tokenization) must match, and whether they must all match within a single searched property. The options are `or` (default), `and`, and `and_cross` (available from `v1.38.8`).
 
 The keyword leg of a hybrid query accepts the same operators as a standalone keyword search. For `and_cross`, which matches every token across the searched properties combined, see [BM25 search: `and_cross`](./bm25.md#and_cross).
 
