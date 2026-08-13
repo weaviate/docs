@@ -159,7 +159,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 ### Vectorizer parameters
 
 - `model`: The Morph model id. Defaults to `morph-embedding-v3`.
-- `baseURL`: The scheme and host that requests are sent to. Defaults to `https://api.morphllm.com`.
+- `baseURL`: The base URL prefix that requests are sent to. Any existing path is preserved when `endpoint` is appended. Defaults to `https://api.morphllm.com`.
 - `endpoint`: The API path that Weaviate appends to the base URL. Defaults to `/v1/embeddings`. Set it if the service you target uses a different path.
 
 For how Weaviate combines `baseURL` and `endpoint` into a request URL, see [Header parameters](#header-parameters).
