@@ -929,7 +929,7 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.deepseek(
         # # These parameters are optional
-        # model="deepseek-v4-flash",
+        model="deepseek-v4-pro",
         # temperature=0.7,
         # max_tokens=500,
         # frequency_penalty=0.0,
