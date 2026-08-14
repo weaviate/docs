@@ -33,6 +33,10 @@ contextual_key = os.getenv("CONTEXTUAL_API_KEY")
 # Recommended: save sensitive data as environment variables
 databricks_token = os.getenv("DATABRICKS_TOKEN")
 # END DatabricksInstantiation
+# START DeepseekInstantiation
+# Recommended: save sensitive data as environment variables
+deepseek_key = os.getenv("DEEPSEEK_APIKEY")
+# END DeepseekInstantiation
 # START DigitalOceanInstantiation
 # Recommended: save sensitive data as environment variables
 digitalocean_key = os.getenv("DIGITALOCEAN_APIKEY")
@@ -63,6 +67,10 @@ jinaai_key = os.getenv("JINAAI_API_KEY")
 # Recommended: save sensitive data as environment variables
 mistral_key = os.getenv("MISTRAL_API_KEY")
 # END MistralInstantiation
+# START MorphInstantiation
+# Recommended: save sensitive data as environment variables
+morph_key = os.getenv("MORPH_APIKEY")
+# END MorphInstantiation
 # START NVIDIAInstantiation
 # Recommended: save sensitive data as environment variables
 nvidia_key = os.getenv("NVIDIA_API_KEY")
@@ -79,6 +87,10 @@ openai_key = os.getenv("OPENAI_API_KEY")
 # Recommended: save sensitive data as environment variables
 azure_key = os.getenv("AZURE_API_KEY")
 # END AzureOpenAIInstantiation
+# START TwelveLabsInstantiation
+# Recommended: save sensitive data as environment variables
+twelvelabs_key = os.getenv("TWELVELABS_APIKEY")
+# END TwelveLabsInstantiation
 # START VoyageAIInstantiation
 # Recommended: save sensitive data as environment variables
 voyageai_key = os.getenv("VOYAGEAI_API_KEY")
@@ -114,6 +126,10 @@ headers = {
 # START DatabricksInstantiation
     "X-Databricks-Token": databricks_token,
 # END DatabricksInstantiation
+# START DeepseekInstantiation
+    "X-Deepseek-Api-Key": deepseek_key,
+    # "X-Deepseek-Baseurl": "https://api.deepseek.com",  # Optional; for providing a custom base URL
+# END DeepseekInstantiation
 # START DigitalOceanInstantiation
     "X-Digitalocean-Api-Key": digitalocean_key,
 # END DigitalOceanInstantiation
@@ -138,6 +154,11 @@ headers = {
 # START MistralInstantiation
     "X-Mistral-Api-Key": mistral_key,
 # END MistralInstantiation
+# START MorphInstantiation
+    # Morph requests are built by Weaviate's OpenAI-compatible client,
+    # so the Morph key is supplied under the OpenAI header name.
+    "X-Openai-Api-Key": morph_key,
+# END MorphInstantiation
 # START NVIDIAInstantiation
     "X-NVIDIA-Api-Key": nvidia_key,
 # END NVIDIAInstantiation
@@ -150,6 +171,10 @@ headers = {
 # START AzureOpenAIInstantiation
     "X-Azure-Api-Key": azure_key,
 # END AzureOpenAIInstantiation
+# START TwelveLabsInstantiation
+    "X-Twelvelabs-Api-Key": twelvelabs_key,
+    "X-Twelvelabs-Baseurl": "https://api.twelvelabs.io/v1.3",  # Optional; for providing a custom base URL
+# END TwelveLabsInstantiation
 # START VoyageAIInstantiation
     "X-VoyageAI-Api-Key": voyageai_key,
 # END VoyageAIInstantiation

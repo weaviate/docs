@@ -507,6 +507,11 @@ to   = "/deploy/configuration/persistence"
 status = 301
 
 [[redirects]]
+from = "/weaviate/configuration/hnsw-snapshots"
+to   = "/weaviate/concepts/storage#hnsw-snapshots"
+status = 301
+
+[[redirects]]
 from = "/weaviate/configuration/monitoring"
 to   = "/deploy/configuration/monitoring"
 status = 301

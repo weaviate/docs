@@ -42,6 +42,9 @@ const jinaaiApiKey = process.env.JINAAI_API_KEY || '';  // Replace with your inf
 // START MistralInstantiation
 const mistralApiKey = process.env.MISTRAL_API_KEY || '';  // Replace with your inference API key
 // END MistralInstantiation
+// START MorphInstantiation
+const morphApiKey = process.env.MORPH_APIKEY || '';  // Replace with your inference API key
+// END MorphInstantiation
 // START NVIDIAInstantiation
 const nvidiaApiKey = process.env.NVIDIA_API_KEY || '';  // Replace with your inference API key
 // END NVIDIAInstantiation
@@ -113,6 +116,11 @@ const client = await weaviate.connectToWeaviateCloud(
       // START MistralInstantiation
       'X-Mistral-Api-Key': mistralApiKey,
       // END MistralInstantiation
+      // START MorphInstantiation
+      // Morph requests are built by Weaviate's OpenAI-compatible client,
+      // so the Morph key is supplied under the OpenAI header name.
+      'X-Openai-Api-Key': morphApiKey,
+      // END MorphInstantiation
       // START NVIDIAInstantiation
       'X-NVIDIA-Api-Key': nvidiaApiKey,
       // END NVIDIAInstantiation

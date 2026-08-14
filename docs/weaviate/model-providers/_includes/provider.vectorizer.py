@@ -25,7 +25,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",
-            model="titan-embed-text-v2:0",
+            model="amazon.titan-embed-text-v2:0",
         )
     ],
     # highlight-end
@@ -62,17 +62,40 @@ client.collections.delete("DemoCollection")
 # START FullVectorizerAWS
 from weaviate.classes.config import Configure
 
+# For Bedrock
 client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2vec_aws(
+        Configure.Vectors.text2vec_aws_bedrock(
             name="title_vector",
             region="us-east-1",
             source_properties=["title"],
-            service="bedrock",                      # `bedrock` or `sagemaker`
-            model="titan-embed-text-v2:0",          # If using `bedrock`, this is required
-            # endpoint="<sagemaker_endpoint>",        # If using `sagemaker`, this is required
+            model="amazon.titan-embed-text-v2:0",   # Required
+            # Further options
+            # dimensions=512,                       # Amazon models only
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# For SageMaker
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_aws_sagemaker(
+            name="title_vector",
+            region="us-east-1",
+            source_properties=["title"],
+            endpoint="<sagemaker_endpoint>",        # Required
+            # Further options
+            # target_model="<sagemaker_target_model>",
+            # target_variant="<sagemaker_target_variant>",
         )
     ],
     # highlight-end
@@ -294,12 +317,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_google(
+    vector_config=Configure.Vectors.text2vec_google_vertex(
         name="title_vector",
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # Further options
         # model="<google-model-id>",
+        # location="<google-cloud-region>",
         # api_endpoint="<google-api-endpoint>",
     ),
     # highlight-end
@@ -698,6 +722,49 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullVectorizerMistral
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicVectorizerMorph
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_morph(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerMorph
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerMorph
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_morph(
+            name="title_vector",
+            source_properties=["title"],
+            model="morph-embedding-v3",
+            base_url="https://api.morphllm.com",  # Base URL; an existing path is preserved
+            endpoint="/v1/embeddings",            # Path appended to the base URL
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerMorph
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -1120,6 +1187,100 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullVectorizerAzureOpenAI
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicMMVectorizerTwelveLabs
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.Vectors.multi2vec_twelvelabs(
+            name="title_vector",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicMMVectorizerTwelveLabs
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START MMVectorizerTwelveLabsCustomModel
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.Vectors.multi2vec_twelvelabs(
+            name="title_vector",
+            model="marengo3.0",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END MMVectorizerTwelveLabsCustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullMMVectorizerTwelveLabs
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=[
+        Configure.Vectors.multi2vec_twelvelabs(
+            name="title_vector",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+            # Further options
+            # model="marengo3.0",
+            # base_url="https://api.twelvelabs.io/v1.3",
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullMMVectorizerTwelveLabs
 
 # clean up
 client.collections.delete("DemoCollection")

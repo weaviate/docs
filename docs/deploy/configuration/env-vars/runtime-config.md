@@ -11,7 +11,7 @@ import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
 
 Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 
-Each runtime configuration corresponds to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable.
+Most runtime configurations correspond to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable.
 
 ## How to set up runtime configuration
 
@@ -70,6 +70,7 @@ The following overrides are currently supported:
 | `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
 | `export_enabled`                                 | `EXPORT_ENABLED`                             |
 | `export_parallelism`                             | `EXPORT_PARALLELISM`                         |
+| `grpc_web_enabled`                               | _(not applicable)_                           |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
 | `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
 | `objects_ttl_batch_size`                          | `OBJECTS_TTL_BATCH_SIZE`                     |

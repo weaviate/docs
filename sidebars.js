@@ -240,6 +240,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "DeepSeek",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/deepseek/index",
+              },
+              items: ["weaviate/model-providers/deepseek/generative"],
+            },
+            {
+              type: "category",
               label: "DigitalOcean",
               className: "sidebar-item",
               link: {
@@ -312,6 +322,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "Morph",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/morph/index",
+              },
+              items: ["weaviate/model-providers/morph/embeddings"],
+            },
+            {
+              type: "category",
               label: "NVIDIA",
               className: "sidebar-item",
               link: {
@@ -362,6 +382,18 @@ const sidebars = {
               items: [
                 "weaviate/model-providers/openai-azure/embeddings",
                 "weaviate/model-providers/openai-azure/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "TwelveLabs",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/twelvelabs/index",
+              },
+              items: [
+                "weaviate/model-providers/twelvelabs/embeddings-multimodal",
               ],
             },
             {
@@ -533,7 +565,6 @@ const sidebars = {
             "weaviate/configuration/compression/multi-vectors",
           ],
         },
-        "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
         {
           type: "doc",

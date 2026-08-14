@@ -136,13 +136,14 @@ import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
 
 <SearchOperators/>
 
-Search operators define the minimum number of query [tokens](../../search/bm25.md#set-tokenization) that must be present within a single searched property for an object to be returned.
+Search operators define how many of the query [tokens](../../search/bm25.md#set-tokenization) must match, and whether they must all match within a single searched property.
 
 Conceptually, it works as though a filter is applied to the results of the BM25 score calculation. The available operators are:
 - `and`: All tokens must be present within a single searched property
 - `or`: At least one token must be present within a single searched property, with the minimum number of tokens being configurable (`minimumOrTokensMatch`)
+- `and_cross`: Every token must be matched by at least one of the searched properties, so the tokens can be spread across different properties. All searched properties must share the same tokenization and analyzer settings, otherwise the query fails with an error. (available from `v1.38.8`)
 
-As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects where all of the tokens `computer`, `networking`, and `guide` appear together within a single searched property. If the tokens are spread across different properties (for example, `computer` in `title` and `networking` in `description`), the object does not match under `and`. In contrast, the same query with the `or` operator would return objects where at least one of those tokens appears in a searched property. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present within a single searched property.
+As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects where all of the tokens `computer`, `networking`, and `guide` appear together within a single searched property. If the tokens are spread across different properties (for example, `computer` in `title` and `networking guide` in `description`), the object does not match under `and`. That restriction is specific to `and`; the same object does match under `and_cross`, which requires each token to appear in at least one of the searched properties rather than all of them in the same one. In contrast, the same query with the `or` operator would return objects where at least one of those tokens appears in a searched property. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present within a single searched property.
 
 If not specified, the default operator is `or`, with a `minimumOrTokensMatch` of `1`. This means that at least one token must be present in a searched property for the object to be returned.
 
