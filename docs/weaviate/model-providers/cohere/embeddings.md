@@ -134,7 +134,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify which [model](#available-models) the vectorizer uses, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -167,7 +167,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) which [model](#available-models) Weaviate uses. If you do not specify a model, Weaviate uses the server default.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -355,33 +355,19 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-- `embed-v4.0`
-- `embed-multilingual-v3.0` (server default)
-- `embed-multilingual-light-v3.0`
-- `embed-multilingual-v2.0` (previously `embed-multilingual-22-12`)
-- `embed-english-v3.0`
-- `embed-english-light-v3.0`
-- `embed-english-v2.0`
-- `embed-english-light-v2.0`
+Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
 
-<details>
-  <summary>Deprecated models</summary>
+The server default is `embed-multilingual-v3.0`.
 
-The following models are available, but deprecated:
-- `multilingual-22-12`
-- `large`
-- `medium`
-- `small`
-
-</details>
+See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 
 ## Further resources
 
 ### Other integrations
 
-- [Cohere multimodal embedding models + Weaviate](./embeddings-multimodal.md)
-- [Cohere generative models + Weaviate](./generative.md)
-- [Cohere reranker models + Weaviate](./reranker.md)
+- [Cohere multimodal embedding models + Weaviate](./embeddings-multimodal.md).
+- [Cohere generative models + Weaviate](./generative.md).
+- [Cohere reranker models + Weaviate](./reranker.md).
 
 ### Code examples
 

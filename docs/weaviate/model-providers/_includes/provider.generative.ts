@@ -343,12 +343,11 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.cohere({
     // These parameters are optional
-    model: 'command-r',
+    // model: 'command-r',
     // temperature: 0.7,
     // maxTokens: 500,
     // k: 5,
     // stopSequences: ['\n\n'],
-    // returnLikelihoods: 'GENERATION'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -366,8 +365,6 @@ response = await myCollection.generate.nearText("A holiday film", {
     // maxTokens: 500,
     // k: 5,
     // stopSequences: ['\n\n'],
-    // returnLikelihoods: 'GENERATION' // coming soon
-
   }),
   // highlight-end
 }, {

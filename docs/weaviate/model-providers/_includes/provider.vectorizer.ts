@@ -229,7 +229,7 @@ await client.collections.create({
   vectorizers: [
     weaviate.configure.vectors.multi2VecCohere({
       name: "title_vector",
-      model: "embed-multilingual-v3.0",
+      model: "embed-v4.0",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
         name: "poster",
@@ -275,7 +275,7 @@ await client.collections.create({
         weight: 0.1
       }],
       // Further options
-      // model: "embed-multilingual-v3.0",
+      // model: "embed-v4.0",
       // dimensions: 1024,
       // truncate: "END",  // "NONE", "START" or "END"
       // baseURL: "<custom_cohere_url>"

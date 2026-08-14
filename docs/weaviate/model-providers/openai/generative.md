@@ -285,7 +285,7 @@ In other words, when you have `n` search results, the generative model generates
 
 ### RAG with images
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
 
 <Tabs className="code" groupId="languages">
 
@@ -315,7 +315,12 @@ Weaviate does not validate the model name, so you can set any model that your Op
 
 The server default is `gpt-5-mini`. It changed in `v1.32.3`, and was backported to `v1.30.16` and `v1.31.10`. Earlier releases on each of those lines default to `gpt-3.5-turbo`.
 
-The following models are recognized by Weaviate's token limit table:
+See the [OpenAI model documentation](https://platform.openai.com/docs/models) for the list of available models.
+
+Weaviate stores a token limit for the models below. The limit caps the `maxTokens` value you can set for those models; it does not restrict which models you can use.
+
+<details>
+  <summary>Models with a stored token limit</summary>
 
 * [gpt-5](https://platform.openai.com/docs/models/gpt-5)
 * [gpt-5-mini](https://platform.openai.com/docs/models/gpt-5-mini) (server default)
@@ -329,10 +334,7 @@ The following models are recognized by Weaviate's token limit table:
 * [gpt-4o](https://platform.openai.com/docs/models#gpt-4o)
 * [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini)
 
-<details>
-  <summary>Older models</summary>
-
-The following models are available, but not recommended:
+These older models also have a stored limit, but are not recommended:
 
 * [davinci 002](https://platform.openai.com/docs/models/overview)
 * [davinci 003](https://platform.openai.com/docs/models/overview)

@@ -129,7 +129,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples.
+You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples. If you do not set a model, Weaviate uses the server default, `text-embedding-3-small`.
 
 #### For `text-embedding-3` model family
 
@@ -199,7 +199,7 @@ For older models such as `text-embedding-ada-002`, provide the model name (`ada`
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. If no model is specified, Weaviate uses `text-embedding-3-small`.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -212,7 +212,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 ### Vectorizer parameters
 
-- `model`: The OpenAI model name or family.
+- `model`: The OpenAI model name or family. Defaults to `text-embedding-3-small`.
 - `dimensions`: The number of dimensions for the model.
 - `modelVersion`: The version string for the model.
 - `type`: The model type, either `text` or `code`.
@@ -412,10 +412,12 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-You can use any OpenAI embedding model with `text2vec-openai`. For document embeddings, choose from the following [embedding model families](https://platform.openai.com/docs/models/embeddings):
+The server default is `text-embedding-3-small`.
+
+For document embeddings, choose from the following [embedding model families](https://platform.openai.com/docs/models/embeddings):
 
 * `text-embedding-3`
-    * Available dimensions:
+    * Available `dimensions` values:
         * `text-embedding-3-large`: `256`, `1024`, `3072` (default)
         * `text-embedding-3-small`: `512`, `1536` (default)
 * `ada`

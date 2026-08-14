@@ -383,7 +383,6 @@ client.collections.create(
         # max_tokens=500,
         # k=5,
         # stop_sequences=["\n\n"],
-        # return_likelihoods="GENERATION"
     )
     # highlight-end
     # Additional parameters not shown
@@ -411,7 +410,6 @@ response = collection.generate.near_text(
         # max_tokens=500,
         # k=5,
         # stop_sequences=["\n\n"],
-        # return_likelihoods="GENERATION"
     ),
     # Additional parameters not shown
     # highlight-end
