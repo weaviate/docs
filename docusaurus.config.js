@@ -64,7 +64,10 @@ const config = {
         cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
           spec: {
-            url: "https://raw.githubusercontent.com/weaviate/weaviate/v1-39/openapi-for-docs/openapi-specs/schema.json",
+            // The committed copy is the single source of truth: this page and
+            // /openapi.json render the same file. Do not point this back at a
+            // raw.githubusercontent branch URL — see static/specs/README.md.
+            url: "/specs/weaviate-openapi.json",
           },
           hideModels: true,
           showSidebar: true,

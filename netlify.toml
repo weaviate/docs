@@ -8,6 +8,17 @@
 [functions]
   directory = ".netlify/functions/"
 
+## Serve the committed REST API spec at /openapi.json, the conventional
+## discovery path (status 200, so the document is returned at that URL rather
+## than redirecting). Do NOT turn this into a proxy to raw.githubusercontent:
+## a proxied response keeps the origin's text/plain content type and [[headers]]
+## rules cannot correct it. Rationale, refresh and local test: static/specs/README.md
+[[redirects]]
+from   = "/openapi.json"
+to     = "/specs/weaviate-openapi.json"
+status = 200
+force  = true  # take precedence over anything the build puts at this path
+
 ## Remove /current from the path
 [[redirects]]
 from = "/weaviate/current/*"

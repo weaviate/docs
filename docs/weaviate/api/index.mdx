@@ -10,6 +10,7 @@ Weaviate provides multiple Application Programming Interfaces (APIs) to interact
 - **[RESTful API](/weaviate/api/rest)**: Enables almost complete management of a Weaviate instance.
 
   - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
+  - The machine-readable specification behind this reference is published at <SkipValidationLink href="/openapi.json">`https://docs.weaviate.io/openapi.json`</SkipValidationLink>. See [Machine-readable API specification](#machine-readable-api-specification) below.
 
 - **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
 
@@ -18,6 +19,23 @@ Weaviate provides multiple Application Programming Interfaces (APIs) to interact
 - **[Search API - gRPC](./grpc.md)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
 
   - gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
+
+## Machine-readable API specification
+
+The [RESTful API reference](/weaviate/api/rest) is rendered from the same specification file that Weaviate builds its REST server from: the request handlers, models, and generated Go client are all produced from it. The specification therefore defines the API rather than describing it after the fact.
+
+For tools, code generators, and agents, that specification is published at the conventional discovery URL <SkipValidationLink href="/openapi.json">`https://docs.weaviate.io/openapi.json`</SkipValidationLink>, which is where most tooling looks for it. The document is written in **Swagger 2.0** (OpenAPI 2.0) format, not OpenAPI 3.x, so a consumer that only accepts 3.x needs to convert it first.
+
+<details>
+  <summary>Alternative URL, versioning, and scope</summary>
+
+`/openapi.json` serves a rewrite of <SkipValidationLink href="/specs/weaviate-openapi.json">`https://docs.weaviate.io/specs/weaviate-openapi.json`</SkipValidationLink>. Both URLs return the same document, so request whichever suits your tooling.
+
+The published document is a copy of the specification taken from a Weaviate release branch, and it is updated periodically rather than on every release. Read its `info.version` field to see which Weaviate version it describes, and compare that with the version you are running.
+
+The specification describes the REST API only. The [GraphQL](./graphql/index.md) and [gRPC](./grpc.md) search APIs are documented separately, and Weaviate's gRPC service is defined by its protocol buffer files rather than by this document.
+
+</details>
 
 ## Client libraries and API usage
 
