@@ -1,0 +1,171 @@
+name: OpenAPI Spec Refresh
+
+# static/specs/weaviate-openapi.json is a committed copy of a file that lives in
+# weaviate/weaviate. It is what /openapi.json serves and what the reference page at
+# /weaviate/api/rest renders, so when core ships a release and nobody re-downloads it,
+# this site publishes a stale API contract — and no build or test here fails, because
+# a stale-but-valid JSON document looks exactly like a fresh one.
+#
+# This job removes the human from that loop: it resolves the newest
+# `v*/openapi-for-docs` branch upstream, downloads the spec, and opens a PR only when
+# the bytes differ. A human still reviews and merges, so the site never changes
+# contract unattended; the PR body carries the info.version and path-count delta so
+# that review is a glance rather than a diff of 11,000 lines.
+#
+# Weekly, because the upstream file only moves when core cuts a release branch (roughly
+# every 6-8 weeks). Weekly bounds staleness at 7 days for one API call and a ~400 KB
+# download; daily would just add 6 more no-op runs per week.
+#
+# TWO THINGS TO KNOW IF THIS JOB APPEARS TO DO NOTHING:
+#   1. It needs "Allow GitHub Actions to create and approve pull requests" enabled for
+#      the repository or organization. Without it the final step fails with a 403 from
+#      `gh pr create`. It uses the built-in GITHUB_TOKEN rather than a PAT on purpose —
+#      a PAT is one more secret to rotate, and an expired one has already broken a
+#      version-fetch job in this repo.
+#   2. A push made with GITHUB_TOKEN does not start other workflows, so the PR it opens
+#      arrives without the usual build and link checks. Close and reopen the PR to run
+#      them before merging.
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # Every Sunday at 21:00 UTC, an hour ahead of the indexability job's 22:00 slot.
+    - cron: "0 21 * * 0"
+  workflow_dispatch:
+
+env:
+  SPEC_PATH: static/specs/weaviate-openapi.json
+  UPSTREAM_REPO: weaviate/weaviate
+  UPSTREAM_FILE: openapi-specs/schema.json
+  PR_BRANCH: chore/refresh-openapi-spec
+
+jobs:
+  refresh-spec:
+    name: Refresh the Weaviate OpenAPI spec
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      # Least privilege for "commit a branch and open a PR": nothing else is touched.
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Resolve the newest openapi-for-docs branch
+        id: branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Release branches are named `v1-39/openapi-for-docs` — the branch name
+          # itself contains a slash, and the version segment uses a dash, not a dot.
+          # Sort NUMERICALLY on (major, minor): lexically, v1-9 sorts ABOVE v1-10 and
+          # the job would pin itself to an old release forever.
+          branch=$(gh api "repos/${UPSTREAM_REPO}/git/matching-refs/heads/v" --jq '
+            [ .[].ref
+              | sub("^refs/heads/"; "")
+              | select(test("^v[0-9]+-[0-9]+/openapi-for-docs$")) ]
+            | map({name: ., key: (capture("^v(?<maj>[0-9]+)-(?<min>[0-9]+)/")
+                                  | [(.maj | tonumber), (.min | tonumber)])})
+            | sort_by(.key) | last | .name // empty')
+
+          if [ -z "${branch}" ]; then
+            echo "::error::No v*/openapi-for-docs branch found in ${UPSTREAM_REPO}."
+            exit 1
+          fi
+          echo "Newest upstream branch: ${branch}"
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"
+
+      - name: Download the upstream spec
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
+        run: |
+          set -euo pipefail
+          # Via the contents API rather than a raw.githubusercontent URL: the ?ref=
+          # parameter takes the slash-containing branch name as a discrete value, so
+          # there is no branch/path join to get wrong.
+          gh api "repos/${UPSTREAM_REPO}/contents/${UPSTREAM_FILE}?ref=${BRANCH}" \
+            -H "Accept: application/vnd.github.raw" > /tmp/upstream-spec.json
+
+          # Refuse to propose anything that is not a Swagger document with paths, so a
+          # rate-limit page or truncated download cannot be committed over the spec.
+          jq -e '.swagger and .info.version and (.paths | length > 0)' \
+            /tmp/upstream-spec.json > /dev/null
+
+      - name: Compare against the committed copy
+        id: diff
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+        run: |
+          set -euo pipefail
+          if cmp -s /tmp/upstream-spec.json "${SPEC_PATH}"; then
+            echo "The committed spec is identical to ${BRANCH}. Nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          {
+            echo "old_version=$(jq -r '.info.version' "${SPEC_PATH}")"
+            echo "old_paths=$(jq -r '.paths | length' "${SPEC_PATH}")"
+            echo "new_version=$(jq -r '.info.version' /tmp/upstream-spec.json)"
+            echo "new_paths=$(jq -r '.paths | length' /tmp/upstream-spec.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the refresh PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          OLD_VERSION: ${{ steps.diff.outputs.old_version }}
+          OLD_PATHS: ${{ steps.diff.outputs.old_paths }}
+          NEW_VERSION: ${{ steps.diff.outputs.new_version }}
+          NEW_PATHS: ${{ steps.diff.outputs.new_paths }}
+        run: |
+          set -euo pipefail
+          cp /tmp/upstream-spec.json "${SPEC_PATH}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # One long-lived branch, force-pushed: a second release landing before the
+          # first PR merges updates that PR instead of opening a competing one.
+          git checkout -B "${PR_BRANCH}"
+          git add "${SPEC_PATH}"
+          git commit -m "chore(specs): refresh Weaviate OpenAPI spec to ${NEW_VERSION}"
+          git push --force origin "${PR_BRANCH}"
+
+          body=$(cat <<EOF
+          Automated refresh of \`${SPEC_PATH}\` from \`${UPSTREAM_REPO}\`, branch
+          \`${BRANCH}\`, file \`${UPSTREAM_FILE}\`.
+
+          | | Committed | Upstream |
+          | :-- | :-- | :-- |
+          | \`info.version\` | \`${OLD_VERSION}\` | \`${NEW_VERSION}\` |
+          | Paths | ${OLD_PATHS} | ${NEW_PATHS} |
+
+          This file is served at \`/openapi.json\` and renders the REST reference at
+          \`/weaviate/api/rest\`, so merging changes the published API contract. Check
+          that the version delta is the one you expect before merging.
+
+          Opened by \`.github/workflows/openapi_spec_refresh.yml\`. Pushes made with
+          \`GITHUB_TOKEN\` do not start other workflows, so the usual PR checks will not
+          have run here — close and reopen this PR to trigger them.
+          EOF
+          )
+
+          if [ "$(gh pr list --head "${PR_BRANCH}" --state open --json number --jq 'length')" -gt 0 ]; then
+            gh pr edit "${PR_BRANCH}" \
+              --title "chore(specs): refresh Weaviate OpenAPI spec to ${NEW_VERSION}" \
+              --body "${body}"
+          else
+            gh pr create --base main --head "${PR_BRANCH}" \
+              --title "chore(specs): refresh Weaviate OpenAPI spec to ${NEW_VERSION}" \
+              --body "${body}"
+          fi
