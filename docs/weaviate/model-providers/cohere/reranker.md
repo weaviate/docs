@@ -108,7 +108,7 @@ Configure a Weaviate collection to use a Cohere reranker model as follows:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify which [model](#available-models) Weaviate uses, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -180,17 +180,13 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-- `rerank-v3.5` (server default)
-- `rerank-english-v3.0`
-- `rerank-multilingual-v3.0`
-- `rerank-english-v2.0`
-- `rerank-multilingual-v2.0`
+Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
 
-You can also select a fine-tuned reranker model_id, such as:
+The server default is `rerank-v3.5`.
 
-- `500df123-afr3-...`
+See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 
-See [this blog post](https://weaviate.io/blog/fine-tuning-coheres-reranker) for more information.
+You can also specify a fine-tuned reranker by its model ID, for example `500df123-afr3-...`. For details, see [Fine-Tuning Cohere's Reranker](https://weaviate.io/blog/fine-tuning-coheres-reranker).
 
 For further details on model parameters, see the [Cohere API documentation](https://docs.cohere.com/reference/rerank).
 

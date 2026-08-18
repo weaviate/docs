@@ -108,7 +108,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify which [model](#available-models) Weaviate uses, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -131,7 +131,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) which [model](#available-models) Weaviate uses. If you do not specify a model, Weaviate uses the server default.
 
 ### Generative parameters
 
@@ -268,20 +268,7 @@ Weaviate does not validate the model name, so you can set any model that your Co
 
 The server default is `command-a-03-2025`. It changed in `v1.33.0`, and was backported to `v1.31.17` and `v1.32.10`. Earlier releases on each of those lines default to `command-r`.
 
-The following models are commonly used:
-
-- `command-a-03-2025` (server default)
-- `command-r-plus`
-- `command-r` (previous server default)
-- `command-xlarge`
-- `command-xlarge-beta`
-- `command-xlarge-nightly`
-- `command-medium`
-- `command-medium-nightly`
-- `command`
-- `command-nightly`
-- `command-light`
-- `command-light-nightly`
+See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 
 ## Further resources
 

@@ -159,7 +159,7 @@ client.collections.create(
             source_properties=["title"],
             # Further options
             # model="embed-v4.0",
-            # dimensions=512,
+            # dimensions=1024,
             # truncate="END",  # "NONE", "START" or "END"
             # base_url="<custom_cohere_url>"
         )
@@ -216,7 +216,6 @@ client.collections.create(
         Configure.Vectors.multi2vec_cohere(
             name="title_vector",
             model="embed-v4.0",
-            dimensions=1024,
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
                 Multi2VecField(name="poster", weight=0.9)
@@ -1109,7 +1108,7 @@ client.collections.create(
             # model="text-embedding-3-large",
             # model_version="002",  # Parameter only applicable for `ada` model family and older
             # dimensions=1024,      # Parameter only applicable for `v3` model family and newer
-            # type="text",
+            # type_="text",
             # base_url="<custom_openai_url>",
         )
     ],
