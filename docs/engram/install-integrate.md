@@ -1,6 +1,6 @@
 ---
 title: Install & integrate
-description: "Ways to use Engram: the Python SDK, the REST API, and agent integrations such as the Hermes memory plugin."
+description: "Ways to use Engram: the Python SDK, the REST API, and agent integrations such as the Claude Code and Hermes memory plugins."
 image: og/docs/engram.png
 ---
 
@@ -11,6 +11,7 @@ There are several ways to use Engram, from calling the API directly to dropping 
 
 - **[Python SDK](#python-sdk)** — the `weaviate-engram` client for Python applications.
 - **[REST API](#rest-api)** — call Engram over HTTP from any language.
+- **[Claude Code plugin](#claude-code-plugin)** — persistent, cross-session memory for Claude Code through the `engram` plugin.
 - **[Hermes Agent](#hermes-agent)** — long-term memory for the Hermes Agent through the `hermes-weaviate-engram` plugin.
 
 Every method authenticates with an [Engram API key](quickstart.md#step-2-create-an-api-key).
@@ -62,6 +63,25 @@ curl -X POST "https://api.engram.weaviate.io/v1/memories" \
 ```
 
 See the [REST API reference](/engram/api/rest) for the full list of endpoints, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories.
+
+## Claude Code plugin
+
+The [`engram` plugin](https://github.com/weaviate/engram-plugins) gives [Claude Code](https://claude.com/claude-code) long-term memory backed by Engram. It recalls relevant memories before each answer and stores each completed turn — everything happens automatically via hooks, with no tools for the agent to call. Memory is best-effort and never blocks a session.
+
+When creating your Engram project, you choose [topics](concepts/topics.md) that control what memories get extracted. Select the **Coding Assistant** template for topics tailored to coding sessions — you can also define custom topics for a more tailored experience.
+
+Once the project is created, set your API key in your shell profile (e.g. `~/.zshrc` or `~/.bashrc`), then install the plugin inside a Claude Code session:
+
+```bash
+export ENGRAM_API_KEY=...
+```
+
+```bash
+/plugin marketplace add weaviate/engram-plugins
+/plugin install engram@weaviate-engram
+```
+
+That's it — memory starts working on your next prompt. See the [plugin README](https://github.com/weaviate/engram-plugins) for more info and optional customization.
 
 ## Hermes Agent
 
