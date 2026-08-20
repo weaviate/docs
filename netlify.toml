@@ -1267,10 +1267,16 @@ status = 301
 # ID FORMAT: <origin>-<category><nnn>, lowercase.
 #   origin   = py | ts | go | java | csharp | core
 #   category = auth | bat | con | dep | grpc | rbac | mem | ...
-# The origin prefix exists because the categories are universal: core and every
-# client will each want a "deprecation" bucket, and a flat namespace collides by
-# default. It is not hypothetical -- the Python client already collides with
-# itself (see the note on the alias table below).
+# The origin prefix exists to prevent CROSS-ORIGIN collision, and that reason
+# stands on its own: the categories are semantic, not proprietary, so core and
+# every client will each want a "deprecation" bucket. Core would naturally reach
+# for Dep0xx, and the Python client already owns 19 of them. Without the prefix
+# the second origin to allocate an id collides by default.
+#
+# What the prefix does NOT do is fix a WITHIN-origin collision: py-con004 would
+# still name two different messages. That is a separate rule, and the Python
+# client is the cautionary example for it -- ids must be ASSIGNED FROM A
+# REGISTRY, not harvested from whatever prefixes a client already happens to use.
 #
 # LOWERCASE ONLY. Netlify matches paths case-sensitively. Messages print the id
 # in mixed case for readability ("Dep004:") but MUST emit the URL lowercased
@@ -1349,9 +1355,17 @@ from = "/e/py-dep005"
 to   = "/weaviate/client-libraries/python#installation"
 status = 301
 
+# Not client-libraries/python#library-imports, the obvious-looking match: that
+# heading is nested in a collapsed <details> ("Migration guides - beta releases").
+# Docusaurus renders <details> React-controlled and does NOT act on the URL hash,
+# so the browser's native auto-expand never fires -- the anchor resolves, the page
+# returns 200, and the reader sees nothing. It is also a historical v4.4b7 beta
+# migration note, a poor destination for a warning still emitted today. This
+# section is current guidance and teaches the exact fix the message asks for
+# (import from the submodule, not the weaviate root).
 [[redirects]]
 from = "/e/py-dep010"
-to   = "/weaviate/client-libraries/python#library-imports"
+to   = "/weaviate/client-libraries/python/notes-best-practices#helper-classes"
 status = 301
 
 [[redirects]]
@@ -1457,9 +1471,12 @@ status = 301
 # rule below is permanent. This list is closed as of the client release that
 # adopts the prefixed form -- do not add to it.
 #
-# Two of the 32 are overloaded inside the client itself (con004 and dep026 each
-# label two different messages). That is the concrete reason the namespace grew
-# an origin prefix: it could not stay unique with a single origin in it.
+# Two of the 32 are overloaded inside the client itself: con004 and dep026 each
+# label two different messages. Note what that is and is not evidence for. It is
+# NOT the reason for the origin prefix -- a prefix cannot help here, since
+# py-con004 is just as ambiguous as con004. It is the reason ids must be assigned
+# from a registry rather than harvested ad hoc from the prefixes already in use,
+# which is how two messages ended up sharing a number in the first place.
 
 [[redirects]]
 from = "/e/auth001"
