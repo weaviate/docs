@@ -119,7 +119,9 @@ The collection definition is only half of the change. The header that carries yo
 | Vertex AI | `X-Goog-Vertex-Api-Key` | `X-Google-Vertex-Api-Key`, `X-Google-Api-Key`, `X-PaLM-Api-Key` |
 | Gemini API | `X-Goog-Studio-Api-Key` | `X-Google-Studio-Api-Key`, `X-Google-Api-Key`, `X-PaLM-Api-Key` |
 
-The deprecated headers still work, so a running application does not break the moment you change the collection definition. Move both in the same change and you will not have to come back to it.
+The current headers need a server on v1.27.7, v1.26.12 or v1.25.27 at the least. Check your server version before you switch: a cluster old enough to still be running the PaLM integration may be old enough to reject the new header, and it will answer with an authentication error rather than a helpful one. On an older server, stay on the deprecated header until you upgrade.
+
+The deprecated headers still work everywhere, so a running application does not break the moment you change the collection definition. Where your server is new enough, move both in the same change and you will not have to come back to it.
 
 One thing to notice when you diff the snippets above: the current forms also move the model onto the single vector definition, which is a separate deprecation covered in [deprecated vector configuration arguments](/errors/collection-configuration#deprecated-vector-configuration). That change is not part of the Google rename. Both land in the same edit because the current builders only exist in the new shape.
 

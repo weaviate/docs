@@ -149,7 +149,7 @@ collection.config.add_vector(
 )
 ```
 
-For a multi-vector embedding, such as ColBERT or ColPali, use the multi-vector builders instead. This id is also printed for a second, related deprecation covered in [deprecated multi-vector index settings](#deprecated-multi-vector-settings).
+For a multi-vector embedding, such as ColBERT or ColPali, use the multi-vector builders instead. If your warning names the `encoding` argument rather than the named vector syntax, it is the other message that ships under this same id: see [deprecated multi-vector index settings](#deprecated-multi-vector-settings).
 
 **Learn more**
 
@@ -173,6 +173,8 @@ Dep026: You are using the `encoding` argument in `Configure.VectorIndex.MultiVec
 ```
 
 The second one is a different message that ships under the same id as [deprecated named vector syntax](#deprecated-named-vector-syntax). It has the same cause and the same fix as the one above it, so both are answered here. You get both warnings at once if you set an encoding inside the index configuration, because that nests one deprecated argument inside the other.
+
+The second message is quoted exactly as it prints, and the path inside it is wrong. It names `Configure.VectorIndex.MultiVectors`, plural, which does not exist. The real one is `Configure.VectorIndex.MultiVector`, singular. The plural spelling is easy to reach for because `Configure.MultiVectors` does exist at the top level, so copying the path out of the warning fails. The working form is in the snippets below.
 
 **Why it happens**
 

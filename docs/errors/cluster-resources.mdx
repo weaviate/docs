@@ -25,13 +25,13 @@ memory pressure: cannot load shard: not enough memory mappings
 
 Which entry carries it depends on the operation that hit the limit. These are three separate log entries, and you may see any of them:
 
-| Log message | `action` field | Where the text above appears |
+| Log message | `action` field | Where to find `not enough memory mappings` |
 | --- | --- | --- |
-| `failed to load shard: memory pressure: cannot load shard: not enough memory mappings` | `load_shard` | In the message itself |
-| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | In the entry's separate `error` field |
-| `failed to reload local index` | (none) | In the entry's separate `error` field |
+| `failed to load shard: memory pressure: cannot load shard: not enough memory mappings` | `load_shard` | In the message |
+| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | Either appended to that message or in a separate `error` field, depending on your version |
+| `failed to reload local index` | (none) | In a separate `error` field |
 
-Weaviate logs JSON by default, so in the last two cases search the `error` field rather than the message. Only the first entry contains the whole sentence on one line.
+Weaviate logs JSON by default, so for the second and third entries the cause can sit in a sibling `error` field rather than in the message. Search the `error` field as well as the message, and search for `not enough memory mappings` rather than for a whole line: that phrase is the one part that appears somewhere in the entry on every version.
 
 Collections or tenants whose shards did not load are unavailable for reads and writes, and the failure often shows up alongside replication errors such as `broadcast: cannot reach enough replicas`.
 
@@ -73,6 +73,7 @@ If the limit is already high and the error keeps coming back, the node is holdin
 - [Resource planning](/weaviate/concepts/resources)
 - [Tenant states and offloading](/weaviate/manage-collections/tenant-states)
 - [Deployment troubleshooting](/deploy/faqs/troubleshooting)
+- [Improve your cluster](/improve-your-cluster)
 
 ## Questions and feedback
 

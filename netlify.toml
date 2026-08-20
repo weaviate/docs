@@ -1670,7 +1670,21 @@ status = 301
 # This does NOT make it safe to skip writing a rule. A reader who lands on the
 # index has to find their own message; a reader sent to an entry has already been
 # answered. The catch-all is a floor, not a destination.
+#
+# 302, AND IT IS THE ONLY RULE HERE THAT IS. Every specific rule above is a 301
+# because its destination is a promise: an id means one thing forever, so caching
+# it in a browser for good is exactly right. This rule is the opposite. It fires
+# for ids whose entry is not written YET, so its destination changes the moment
+# one is -- and a 301 already in someone's browser cache would keep sending them
+# to the index long after their id got a real entry, with nothing we could deploy
+# to fix it. Do not "make it consistent" with the rules above.
+#
+# ENFORCED, not merely requested: _build_scripts/validate-redirects.js checks
+# that this rule is last and 302, that every rule above it is 301 and lowercase
+# and unique, and that every /errors destination resolves to a real page and a
+# real {#anchor}. It runs in CI on every PR and needs no build:
+#   node _build_scripts/validate-redirects.js
 [[redirects]]
 from = "/e/*"
 to   = "/errors"
-status = 301
+status = 302
