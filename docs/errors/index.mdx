@@ -1,0 +1,76 @@
+---
+title: Error and warning messages
+description: "Look up a Weaviate error, warning, or log message by its text or its message id, and get the cause and the fix on one page."
+image: og/default.jpg
+hide_table_of_contents: true
+side_panel: improve-cluster
+---
+
+import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+
+<ClusterIdNotice/>
+
+The Weaviate Python client prints a short id at the front of many of its warnings, such as `Dep024`. Weaviate Database does not print the id as a prefix. Instead, a log entry that has a documented cause is gaining a `docs_url` field that carries the id inside a link. Weaviate logs JSON by default, so it arrives as a key on the entry:
+
+```json
+"docs_url": "https://docs.weaviate.io/e/core-mem001"
+```
+
+With `LOG_FORMAT=text` the same field prints as `docs_url=https://docs.weaviate.io/e/core-mem001`.
+
+The database side of that is not released yet, and the other clients do not carry ids at all so far. Only the link field is pending: the messages themselves are not new, so the entries below describe what current releases already print.
+
+Either way the id resolves here. Each entry below shows the message as it appears in your logs or console, explains what caused it, and gives the fix, so you can act without reading anything else first.
+
+You do not need a link to use this section. If you have the message text but no id, search for a distinctive phrase from it, or open the page for the area the message came from.
+
+## Message groups
+
+import CardsSection from "/src/components/CardsSection";
+
+export const errorGroups = [
+  {
+    title: "Cluster resources",
+    description:
+      "Shards that will not load, and other messages that mean the node has run out of memory, memory mappings, or disk.",
+    link: "/errors/cluster-resources",
+    icon: "fa fa-server",
+  },
+  {
+    title: "Collection configuration",
+    description:
+      "Deprecated ways of describing vectors, vector indexes, and multi-vector embeddings when you create or update a collection.",
+    link: "/errors/collection-configuration",
+    icon: "fa fa-sliders",
+  },
+  {
+    title: "Model integrations",
+    description:
+      "Renamed and retired embedding, multimodal, and generative model integrations.",
+    link: "/errors/model-integrations",
+    icon: "fa fa-diagram-project",
+  },
+];
+
+<CardsSection items={errorGroups} />
+
+<br />
+
+This section is being filled in message by message. An id whose entry is not written yet lands you on this page rather than on a dead link, so if you arrived here from a message and cannot find it above, that is why. The message is still on the list, and the [support channels](/support) can help in the meantime.
+
+## Reading a message id
+
+An id looks like `core-mem001` or `py-dep024`. It has two parts:
+
+- The **origin**: `core` for Weaviate Database itself, and a client library short name, such as `py`, for a message raised before the request ever left your application.
+- The **category and number**: a topic such as `mem` for memory, `dep` for a deprecation, or `auth` for authentication, plus a number that is unique within that origin.
+
+Ids are permanent. The message text and the page it points to can both change, but an id that shipped in a release keeps meaning the same thing forever, so it is safe to search for, to alert on, and to quote in a support ticket.
+
+Released versions of the Python client print the id **without** the origin, so what you see today is `Dep024`, not `py-dep024`. Those bare ids are permanent: they are already inside published packages and can never be reassigned. The prefixed form is what new messages use, so that the database and each client can number their own categories without colliding. Both forms lead to the same entry.
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
