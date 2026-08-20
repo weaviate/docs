@@ -5,7 +5,7 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes', 'known issues']
 ---
 
-:::info Last Updated: October 2025
+:::info Last Updated: August 2026
 :::
 
 # Known issues
@@ -18,6 +18,7 @@ This page documents significant known issues in Weaviate, their symptoms, and re
 
 | Issue                                                                                 | Affected Versions                                                   | Resolution    | Fixed In                         |
 | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------- | -------------------------------- |
+| [Read repair can write partial objects](#read-repair-can-write-partial-objects)       | 1.36 and earlier, 1.37.0-1.37.13, 1.38.0-1.38.6                     | Fixed         | 1.37.14+, 1.38.7+, 1.39.0+       |
 | [Empty collections panic](#empty-collections-panic)                                   | 1.28 (all), 1.29.0-8, 1.30.0-8, 1.31.0, 1.31.1                      | Fixed         | 1.29.9+, 1.30.9+, 1.31.2+, 1.32.0+ |
 | [Database restoration blocked](#database-restoration-blocked)                         | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3                            | Fixed         | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
 | [RAFT snapshot compatibility on downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed         | 1.27.26                          |
@@ -73,6 +74,51 @@ A bug in the handling of multiple vectors with quantization causes the same vect
 #### Resolution
 
 The Weaviate team is actively working on a fix. A patched version will be released as soon as possible. -->
+
+### Read repair can write partial objects
+
+:::info Impact summary
+
+- **Affected versions:** 1.36 and earlier, 1.37.0 - 1.37.13, 1.38.0 - 1.38.6
+- **Resolution:** Fixed in 1.37.14 and 1.38.7
+
+:::
+
+#### Symptoms
+
+On a replicated cluster, an object can lose data on one or more replicas after it is read:
+
+- An affected replica keeps only the properties that the query returned. The object's remaining properties are gone from that replica.
+- An affected replica also loses the object's vector, so the object no longer matches vector searches that the replica answers.
+- The object still exists and keeps its ID, and aggregate counts are unchanged, so object counts and existence checks still look correct.
+- At consistency level `ONE`, the same object can come back with a different set of properties from one read to the next, depending on which replica answers.
+
+#### Root cause
+
+In affected versions, when replicas disagreed about an object, Weaviate could repair that object at read time. If the query that triggered the repair asked for only some of the object's properties, the coordinator could treat that partial view as the source of truth and write it back to the replicas being repaired, replacing the stored object with the subset of properties the query returned.
+
+This issue occurs when:
+
+- Replicas hold different states for the object, for example because a node was offline while writes continued.
+- The read uses consistency level `QUORUM` or `ALL`. Reads at `ONE` do not trigger [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read).
+- A query that returns only some of the object's properties matches the object.
+
+A cluster whose replicas report that they are fully in sync is not exempt: the problem has been observed on clusters where background synchronization had already brought every replica up to date.
+
+#### Resolution
+
+**Upgrade to a release that contains the fix:**
+
+- If on 1.37.x → upgrade to 1.37.14 or higher
+- If on 1.38.x → upgrade to 1.38.7 or higher
+
+All 1.39 releases contain the fix.
+
+The 1.36 line and earlier were never patched, and fall outside the [supported version range](/weaviate/release-notes/index.md#version-support-policy). If you run 1.36 or earlier, upgrade to one of the releases listed above.
+
+These conditions are narrow, but the resulting data loss is easy to miss: a truncated object keeps its ID and still counts toward aggregates. Upgrade even if your object counts and health checks look normal.
+
+---
 
 ### Database restoration blocked
 
