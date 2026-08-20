@@ -45,21 +45,26 @@ Follow this interactive walkthrough to create a project with the **Personalizati
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe
     id="xrg3yooiwk"
+    title="Create an Engram project walkthrough"
     src="https://app.guideflow.com/embed/xrg3yooiwk"
     width="100%"
     height="100%"
     style={{overflow: "hidden", position: "absolute", border: "none"}}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
-    webKitAllowFullScreen
-    mozAllowFullScreen
     allowFullScreen
-    allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="xrg3yooiwk"></script>
 </div>
 
-You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
+The same steps in text, if the walkthrough above does not load:
+
+1. Sign in to [Weaviate Cloud](https://console.weaviate.cloud) and select **Engram** in the top navigation.
+2. Select **Create project** and give the project a name.
+3. Choose the **Personalization** template.
+4. Create the project, then open **API Keys** in the left-hand menu.
+5. Select **Create key** and copy the key — it is shown only once.
+
+The [Engram console](console.md) page covers each of those pages in more detail.
 
 The template sets up the project's `default` [group](concepts/groups.md) with default [topics](concepts/topics.md), such as `UserKnowledge` for general information about the user. This is enough to get started.
 
@@ -82,7 +87,6 @@ Visit the [concepts section](concepts/index.md) to learn more about how these wo
 ## Step 2: Create an API key
 
 Generate an API key for your project in the Weaviate Cloud console. The full key is only shown once — save it securely.
-
 
 Set it as an environment variable for the examples below:
 
@@ -204,24 +208,24 @@ Search for relevant memories using a natural language query.
     {
       "id": "memory-uuid",
       "project_id": "project-uuid",
-      "user_id": "user-uuid",
+      "user_id": "alice",
       "content": "The user prefers dark mode.",
       "topic": "UserKnowledge",
       "group": "default",
       "created_at": "2025-01-01T00:00:01Z",
       "updated_at": "2025-01-01T00:00:01Z",
-      "score": 1
+      "score": 0.92
     },
     {
       "id": "memory-uuid-2",
       "project_id": "project-uuid",
-      "user_id": "user-uuid",
+      "user_id": "alice",
       "content": "The user uses VS Code as their primary editor.",
       "topic": "UserKnowledge",
       "group": "default",
       "created_at": "2025-01-01T00:00:01Z",
       "updated_at": "2025-01-01T00:00:01Z",
-      "score": 1
+      "score": 0.74
     }
   ],
   "total": 2

@@ -120,7 +120,7 @@ Only `completed` and `failed` count as terminal. A run parked at a [buffer step]
   "run_id": "run-uuid",
   "status": "completed",
   "group_id": "group-uuid",
-  "user_id": "user-uuid",
+  "user_id": "alice",
   "starting_step": 1,
   "input_type": "string",
   "committed_operations": {
@@ -164,7 +164,7 @@ If a run fails, the `error` field contains a description of what went wrong.
   "run_id": "run-uuid",
   "status": "failed",
   "group_id": "group-uuid",
-  "user_id": "user-uuid",
+  "user_id": "alice",
   "starting_step": 1,
   "input_type": "string",
   "error": "extraction failed: invalid input format",

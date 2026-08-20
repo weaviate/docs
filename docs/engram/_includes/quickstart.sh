@@ -17,12 +17,12 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
         ]
       }
     },
-    "user_id": "user-uuid"
+    "user_id": "alice"
   }'
 # END AddMemory
 
 # START CheckRun
-curl https://api.engram.weaviate.io/v1/runs/{run-id} \
+curl https://api.engram.weaviate.io/v1/runs/<run-id> \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END CheckRun
 
@@ -32,7 +32,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What editor does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "retrieval_config": {
       "retrieval_type": "hybrid",
       "limit": 5

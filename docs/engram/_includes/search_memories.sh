@@ -11,7 +11,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",
@@ -26,7 +26,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "vector",
@@ -41,7 +41,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "Python",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "bm25",
@@ -56,7 +56,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",
@@ -72,7 +72,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -d '{
     "query": "unused",
     "topics": ["ConversationSummary"],
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "properties": {"conversation_id": "abc-123"},
     "group": "default",
     "retrieval_config": {
@@ -89,7 +89,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   -d '{
     "query": "user preferences",
     "topics": ["UserKnowledge"],
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",

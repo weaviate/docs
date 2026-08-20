@@ -93,7 +93,7 @@ Provide a query and Engram returns the most relevant memories.
     {
       "id": "memory-uuid",
       "project_id": "project-uuid",
-      "user_id": "user-uuid",
+      "user_id": "alice",
       "content": "The user works primarily in Python.",
       "topic": "UserKnowledge",
       "group": "default",

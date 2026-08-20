@@ -18,7 +18,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
         ]
       }
     },
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default"
   }'
 # END StoreString
@@ -36,7 +36,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
         ]
       }
     },
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default"
   }'
 # END StorePreExtracted
@@ -64,7 +64,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
         ]
       }
     },
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default"
   }'
 # END StoreConversation

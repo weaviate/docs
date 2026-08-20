@@ -100,7 +100,7 @@ Retrieve a single memory by its ID.
 {
   "id": "memory-uuid",
   "project_id": "project-uuid",
-  "user_id": "user-uuid",
+  "user_id": "alice",
   "content": "The user prefers dark mode.",
   "topic": "UserKnowledge",
   "group": "default",
@@ -188,7 +188,7 @@ The endpoint has no pagination, so `limit` is a ceiling rather than a page size:
     {
       "id": "memory-uuid",
       "project_id": "project-uuid",
-      "user_id": "user-uuid",
+      "user_id": "alice",
       "content": "The user prefers dark mode.",
       "topic": "UserKnowledge",
       "group": "default",

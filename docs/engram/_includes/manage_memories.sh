@@ -6,12 +6,12 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START GetMemory
-curl "https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default" \
+curl "https://api.engram.weaviate.io/v1/memories/<memory-id>?user_id=alice&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END GetMemory
 
 # START DeleteMemory
-curl -X DELETE "https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default" \
+curl -X DELETE "https://api.engram.weaviate.io/v1/memories/<memory-id>?user_id=alice&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END DeleteMemory
 
@@ -20,7 +20,7 @@ curl -X POST "https://api.engram.weaviate.io/v1/memories/list" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "limit": 50
   }'

@@ -6,7 +6,7 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START PollRun
-curl https://api.engram.weaviate.io/v1/runs/{run-id} \
+curl https://api.engram.weaviate.io/v1/runs/<run-id> \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END PollRun
 DOCSNIPPETS
