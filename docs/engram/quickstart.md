@@ -56,13 +56,14 @@ Follow this interactive walkthrough to create a project with the **Personalizati
   />
 </div>
 
-The same steps in text, if the walkthrough above does not load:
+The same steps in text:
 
 1. Sign in to [Weaviate Cloud](https://console.weaviate.cloud) and select **Engram** in the top navigation.
 2. Select **Create project** and give the project a name.
 3. Choose the **Personalization** template.
-4. Create the project, then open **API Keys** in the left-hand menu.
-5. Select **Create key** and copy the key — it is shown only once.
+4. Review the group and its topics. The template pre-fills the `default` group with the `UserKnowledge` topic. Leave **Include Conversation Summary Topic** cleared unless you want per-conversation summaries — enabling it makes `conversation_id` required on every write.
+5. Create the project, then open **API Keys** in the left-hand menu.
+6. Select **Create key** and copy the key — it is shown only once (this is [Step 2](#step-2-create-an-api-key)).
 
 The [Engram console](console.md) page covers each of those pages in more detail.
 
@@ -271,7 +272,7 @@ Search for relevant memories using a natural language query.
 
 - Learn about [core concepts](concepts/index.md) like topics, groups, and pipelines.
 - Explore different ways to [store memories](guides/store-memories.md), including conversations and pre-extracted data.
-- See all [search options](guides/search-memories.md) including vector, BM25, and hybrid retrieval.
+- See all [search options](guides/search-memories.md), including vector, BM25, hybrid, and fetch retrieval.
 
 ## Questions and feedback
 

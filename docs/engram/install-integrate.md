@@ -141,7 +141,19 @@ A property value's JSON shape decides how it resolves:
 - An **object** is a dynamic source — `{"from": "<token>"}` for a built-in value, where the tokens are `git-repo`, `cwd`, and `session_id`; or `{"cmd": ["prog", "arg"]}` to run a command directly, with no shell.
 - An **array** is a cascade: entries are tried in order and the first non-empty value wins.
 
-A `search` object narrows what gets recalled — `search.properties` restricts recall to memories matching those scope keys, and `search.topics` restricts it to named topics, each with its own optional filter. Search is broad by default.
+A `search` object narrows what gets recalled — `search.properties` restricts recall to memories matching those scope keys, and `search.topics` restricts it to named topics, each with its own optional filter.
+
+Recall is **not** broad by default. Cross-topic `properties` default to `repo_name`, so out of the box the plugin recalls only what it learned in the repository you are currently working in. To change that, set `search.properties` yourself, or set it to an empty array to clear the default and recall across every repository:
+
+```json
+{
+  "search": {
+    "properties": []
+  }
+}
+```
+
+This default only bites when `repo_name` is one of the scope properties of your project's group. If no topic in the group is scoped by `repo_name`, there is nothing to filter on and recall is broad already.
 
 The plugin caches your project's scope requirements after the first fetch, so reinstall it if you repoint the key at a differently configured project. Configuration always overrides the cache.
 

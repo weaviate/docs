@@ -157,7 +157,7 @@ The assistant remembers the user's location and coffee preferences from the prev
 
 - **[Context window management](context-window-management.md)** — Learn how memory search replaces full conversation history to reduce token costs.
 - **[Personalized RAG with per-user memory](personalized-rag-multi-tenant.md)** — Combine a Weaviate knowledge base with per-user memory for personalized responses.
-- **[Search memories](../guides/search-memories.md)** — Explore vector, BM25, and hybrid retrieval options.
+- **[Search memories](../guides/search-memories.md)** — Explore vector, BM25, hybrid, and fetch retrieval.
 
 ## Questions and feedback
 

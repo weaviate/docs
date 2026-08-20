@@ -12,7 +12,7 @@ Use Engram to give your agents persistent memory that they can write to and sear
 ## Key capabilities
 
 - **Automatic memory extraction** — Send raw text, pre-extracted facts, or full conversations. Engram's [pipeline](concepts/pipelines.md) extracts and stores structured [memories](concepts/memories.md) automatically.
-- **Semantic search** — Find relevant memories using vector similarity, BM25 keyword search, or [hybrid retrieval](concepts/search.md).
+- **Semantic search** — Find relevant memories with vector, BM25, or [hybrid retrieval](concepts/search.md), or fetch a whole scope with no query.
 - **Scoped memory** — Isolate memories by project, user, and any custom scope properties (e.g. `conversation_id`). [Topics](concepts/topics.md) let you categorize memories within a [group](concepts/groups.md).
 - **Async processing** — Memory storage runs asynchronously through a pipeline. Poll [run status](guides/check-run-status.md) to track when memories are committed.
 
@@ -39,7 +39,7 @@ A pipeline can chain these steps in other orders too — see [pipelines](concept
 
 You can poll the [`run_id`](guides/check-run-status.md) to check when processing is complete.
 
-**[Searching memories](guides/search-memories.md):** You send a query to the API with a [retrieval type](concepts/search.md) (vector, BM25, or hybrid). Engram searches the memory store and returns ranked results.
+**[Searching memories](guides/search-memories.md):** You send a query to the API with a [retrieval type](concepts/search.md) (vector, BM25, hybrid, or fetch). Engram searches the memory store and returns ranked results.
 
 ## Get started
 
