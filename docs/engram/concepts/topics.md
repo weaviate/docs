@@ -10,7 +10,7 @@ Each topic has:
 
 | Property | Description |
 |----------|-------------|
-| `name` | Unique identifier within the group (e.g. `user_facts`) |
+| `topic_name` | Unique identifier within the group (e.g. `user_facts`). This is the name you send in a `topics` filter, and the field `GET /v1/groups` returns. |
 | `description` | Natural language description used in LLM prompts during extraction (e.g. "What food the user likes to eat") |
 | `scoping` | Which scopes the topic requires: `user_scoped` (requires `user_id`) and a list of custom `scope_properties` keys (e.g. `conversation_id`). See [scopes](scopes.md). |
 | `is_bounded` | If true, the topic holds at most **one** memory per [scope](scopes.md). Useful for things like running conversation summaries or per-user profiles. |

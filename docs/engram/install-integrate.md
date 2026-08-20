@@ -48,6 +48,12 @@ client = EngramClient(api_key=os.environ["ENGRAM_API_KEY"])
 
 For an async client, use `AsyncEngramClient` instead. The [Quickstart](quickstart.md) has a full walkthrough, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories. The source is on [GitHub](https://github.com/weaviate/engram-python-sdk).
 
+### Errors
+
+The SDK raises typed exceptions rather than returning status codes: `AuthenticationError` for a rejected API key, `APIError` — carrying `status_code` and the parsed response `body` — for every other failed request, `ValidationError` when the client rejects your arguments before sending anything, and `EngramTimeoutError` when `runs.wait()` gives up on a run. All of them derive from `EngramError`, and all are importable from `engram`.
+
+See [Errors in the Python SDK](api-overview.md#errors-in-the-python-sdk) for the full table and a `try`/`except` example.
+
 ## REST API
 
 Engram is a REST service at `https://api.engram.weaviate.io/v1`. Every path carries the `/v1` prefix, and requests are scoped by the API key rather than by a project ID in the URL. Authenticate every request with your API key as a bearer token:
@@ -176,7 +182,7 @@ The plugin exposes three tools to the agent:
 | `engram_store` | Store a memory. This is also how the agent "forgets" — it stores a correcting memory, and Engram's reconcile pipeline supersedes the old one. |
 | `engram_fetch` | Profile-shaped recall, such as "what do you know about me?" |
 
-Optional settings live in `~/.hermes/weaviate_engram.json` (for example `auto_recall`, `auto_capture`, and `max_recall_results`). Set `ENGRAM_BASE_URL` to point at a staging or self-hosted endpoint. See the [plugin README](https://github.com/weaviate/hermes-weaviate-engram) for the full configuration reference.
+Optional settings live in `~/.hermes/weaviate_engram.json` (for example `auto_recall`, `auto_capture`, and `max_recall_results`). Set `ENGRAM_BASE_URL` to point at a non-default Engram endpoint, such as a staging deployment. See the [plugin README](https://github.com/weaviate/hermes-weaviate-engram) for the full configuration reference.
 
 ## Questions and feedback
 

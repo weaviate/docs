@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!./_includes/quickstart.py';
 import CurlCode from '!!raw-loader!./_includes/quickstart.sh';
 
-Engram is a memory server for LLM agents and applications. It automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
+Engram is a managed memory service for LLM agents and applications. It automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
 This guide walks you through the core Engram workflow: create a project, get an API key, store a memory, and search for it.
 

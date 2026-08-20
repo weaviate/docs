@@ -1,11 +1,11 @@
 ---
 title: Engram
 sidebar_label: Introduction
-description: "Engram is a memory server for LLM agents and applications that provides persistent, semantically searchable memory through a REST API."
+description: "Engram is a managed memory service for LLM agents and applications that provides persistent, semantically searchable memory through a REST API."
 image: og/docs/engram.png
 ---
 
-Engram is a memory server for LLM agents and applications. It provides a [REST API](/engram/api/rest) and [Python SDK](https://github.com/weaviate/engram-python-sdk) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
+Engram is a managed memory service for LLM agents and applications. It provides a [REST API](/engram/api/rest) and [Python SDK](https://github.com/weaviate/engram-python-sdk) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
 Use Engram to give your agents persistent memory that they can write to and search across conversations, users, and [topics](concepts/topics.md).
 
@@ -32,7 +32,10 @@ Your app communicates with Engram through the REST API or Python SDK.
 
 1. **Extract** — Pull individual facts from the input.
 2. **Transform** — Deduplicate and merge with existing [memories](concepts/memories.md).
-3. **Commit** — Persist the results to the memory store.
+3. **Buffer** (optional) — Hold memories until a count or time trigger fires, so a batch can be processed together.
+4. **Commit** — Persist the results to the memory store.
+
+A pipeline can chain these steps in other orders too — see [pipelines](concepts/pipelines.md) for the full picture.
 
 You can poll the [`run_id`](guides/check-run-status.md) to check when processing is complete.
 
