@@ -1250,3 +1250,382 @@ status = 301
 from = "/weaviate/tutorials/query"
 to   = "/weaviate/search"
 status = 301
+
+### ==================== ERROR-MESSAGE REDIRECTOR (/e/<id>) ==================== ###
+#
+# Stable short links carried in error and warning messages emitted by Weaviate
+# core and the client libraries, e.g. "Dep004: ... see https://docs.weaviate.io/e/py-dep004".
+#
+# THE ID IS THE CONTRACT. THE DESTINATION IS NOT.
+# A message string ships inside a released binary and can never be changed for
+# users already running it. A docs URL changes every time the IA moves. So the
+# message carries only the id, and the id-to-page mapping lives here. When a page
+# moves or is renamed, edit the `to` below -- that is a one-line docs change
+# instead of six client releases, and readers on old client versions are fixed
+# retroactively. Never delete a rule; repoint it.
+#
+# ID FORMAT: <origin>-<category><nnn>, lowercase.
+#   origin   = py | ts | go | java | csharp | core
+#   category = auth | bat | con | dep | grpc | rbac | mem | ...
+# The origin prefix exists because the categories are universal: core and every
+# client will each want a "deprecation" bucket, and a flat namespace collides by
+# default. It is not hypothetical -- the Python client already collides with
+# itself (see the note on the alias table below).
+#
+# LOWERCASE ONLY. Netlify matches paths case-sensitively. Messages print the id
+# in mixed case for readability ("Dep004:") but MUST emit the URL lowercased
+# ("/e/py-dep004"). Do not add mixed-case duplicates here; fix the emitter.
+#
+# Adding a row: verify the target page file exists and that the anchor is a real,
+# unique heading slug (or an explicit {#anchor}, or an <APITable> row id) on that
+# page. Docusaurus is configured with onBrokenLinks: "warn" and no onBrokenAnchors
+# setting, so a bad fragment here will not fail the build -- it will just 404 a
+# user who is already having a bad day.
+
+## ---- Python client (weaviate-python-client) ----
+
+[[redirects]]
+from = "/e/py-auth001"
+to   = "/deploy/configuration/authentication#anonymous-access"
+status = 301
+
+[[redirects]]
+from = "/e/py-auth005"
+to   = "/deploy/configuration/oidc"
+status = 301
+
+# py-auth006 is the runtime AuthenticationFailedError raised in
+# weaviate/connect/v4.py ("No login credentials provided..."). It has no bare
+# legacy id because it has never shipped with one, so it gets no alias below.
+[[redirects]]
+from = "/e/py-auth006"
+to   = "/weaviate/connections/connect-local#authentication-enabled"
+status = 301
+
+[[redirects]]
+from = "/e/py-bat003"
+to   = "/weaviate/client-libraries/python/notes-best-practices#batch-sizing"
+status = 301
+
+[[redirects]]
+from = "/e/py-bat005"
+to   = "/weaviate/client-libraries/python/notes-best-practices#batch-sizing"
+status = 301
+
+[[redirects]]
+from = "/e/py-con001"
+to   = "/deploy/configuration/oidc#configuring-the-oidc-token-issuer"
+status = 301
+
+[[redirects]]
+from = "/e/py-con002"
+to   = "/weaviate/config-refs/datatypes#date"
+status = 301
+
+# py-con004 is overloaded in the client: it labels BOTH the unclosed-connection
+# ResourceWarning and the year-zero date warning. This points at the former,
+# which is by far the more frequently hit. Renumbering the latter to the free
+# Con003 is tracked on board ac9a24a8; its redirect is deliberately not written
+# here until that client change ships.
+[[redirects]]
+from = "/e/py-con004"
+to   = "/weaviate/client-libraries/python/notes-best-practices#connection-termination"
+status = 301
+
+# Anchor is an <APITable> row id, not a heading slug: src/components/APITable/index.jsx
+# sets <tr id={firstCellText}> for every row, verbatim and case-preserving.
+[[redirects]]
+from = "/e/py-con005"
+to   = "/deploy/configuration/env-vars#GRPC_MAX_MESSAGE_SIZE"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep004"
+to   = "/weaviate/release-notes#version-support-policy"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep005"
+to   = "/weaviate/client-libraries/python#installation"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep010"
+to   = "/weaviate/client-libraries/python#library-imports"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep011"
+to   = "/weaviate/model-providers/google/embeddings#weaviate-configuration"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep012"
+to   = "/weaviate/model-providers/google/embeddings-multimodal#weaviate-configuration"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep013"
+to   = "/weaviate/model-providers/google/generative#weaviate-configuration"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep017"
+to   = "/weaviate/manage-collections/vector-config#set-vector-index-parameters"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep018"
+to   = "/weaviate/config-refs/collections#sharding"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep019"
+to   = "/weaviate/configuration/compression/pq-compression#pq-parameters"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep020"
+to   = "/weaviate/client-libraries/python/notes-best-practices#error-handling"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep021"
+to   = "/weaviate/manage-collections/tenant-states#tenant-states-overview"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep022"
+to   = "/cloud/manage-clusters/connect#connect-with-an-api-programmatically"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep023"
+to   = "/weaviate/client-libraries/python#vectorizer-api-changes-v4160"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep024"
+to   = "/weaviate/manage-collections/vector-config#specify-a-vectorizer"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep025"
+to   = "/weaviate/manage-collections/vector-config#set-vector-index-parameters"
+status = 301
+
+# py-dep026 is the second overloaded id: it labels both the named-vector syntax
+# in config.add_vector() and the `encoding` argument in
+# Configure.VectorIndex.MultiVectors.multi_vector(). This destination covers the
+# NamedVectors -> Vectors/MultiVectors rename, which is the common denominator.
+# Splitting the second message onto a free number is tracked on board ac9a24a8.
+[[redirects]]
+from = "/e/py-dep026"
+to   = "/weaviate/client-libraries/python#vectorizer-api-changes-v4160"
+status = 301
+
+[[redirects]]
+from = "/e/py-dep027"
+to   = "/weaviate/manage-collections/vector-config#define-multi-vector-embeddings-eg-colbert-colpali"
+status = 301
+
+# Anchor is an explicit {#async-config} override on the "`asyncConfig` parameters"
+# heading, which wins over the derived slug (asyncconfig-parameters).
+[[redirects]]
+from = "/e/py-dep029"
+to   = "/weaviate/config-refs/collections#async-config"
+status = 301
+
+[[redirects]]
+from = "/e/py-rbac001"
+to   = "/weaviate/configuration/rbac#available-permissions"
+status = 301
+
+## ---- Weaviate core ----
+
+[[redirects]]
+from = "/e/core-mem001"
+to   = "/weaviate/release-notes/known-issues#memory-pressure-shard-init-failure"
+status = 301
+
+## ---- FROZEN: bare legacy ids shipped by weaviate-python-client ----
+#
+# These 32 ids ship TODAY inside released weaviate-client wheels, printed at the
+# front of the warning text ("Dep004: You are connected to Weaviate ..."). They
+# predate the <origin>- prefix and can NEVER be renamed or removed: the strings
+# are baked into versions users are still running, and will be for years. Every
+# rule below is permanent. This list is closed as of the client release that
+# adopts the prefixed form -- do not add to it.
+#
+# Two of the 32 are overloaded inside the client itself (con004 and dep026 each
+# label two different messages). That is the concrete reason the namespace grew
+# an origin prefix: it could not stay unique with a single origin in it.
+
+[[redirects]]
+from = "/e/auth001"
+to   = "/e/py-auth001"
+status = 301
+
+[[redirects]]
+from = "/e/auth005"
+to   = "/e/py-auth005"
+status = 301
+
+[[redirects]]
+from = "/e/bat003"
+to   = "/e/py-bat003"
+status = 301
+
+[[redirects]]
+from = "/e/bat005"
+to   = "/e/py-bat005"
+status = 301
+
+[[redirects]]
+from = "/e/con001"
+to   = "/e/py-con001"
+status = 301
+
+[[redirects]]
+from = "/e/con002"
+to   = "/e/py-con002"
+status = 301
+
+[[redirects]]
+from = "/e/con004"
+to   = "/e/py-con004"
+status = 301
+
+[[redirects]]
+from = "/e/con005"
+to   = "/e/py-con005"
+status = 301
+
+[[redirects]]
+from = "/e/dep004"
+to   = "/e/py-dep004"
+status = 301
+
+[[redirects]]
+from = "/e/dep005"
+to   = "/e/py-dep005"
+status = 301
+
+[[redirects]]
+from = "/e/dep010"
+to   = "/e/py-dep010"
+status = 301
+
+[[redirects]]
+from = "/e/dep011"
+to   = "/e/py-dep011"
+status = 301
+
+[[redirects]]
+from = "/e/dep012"
+to   = "/e/py-dep012"
+status = 301
+
+[[redirects]]
+from = "/e/dep013"
+to   = "/e/py-dep013"
+status = 301
+
+[[redirects]]
+from = "/e/dep017"
+to   = "/e/py-dep017"
+status = 301
+
+[[redirects]]
+from = "/e/dep018"
+to   = "/e/py-dep018"
+status = 301
+
+[[redirects]]
+from = "/e/dep019"
+to   = "/e/py-dep019"
+status = 301
+
+[[redirects]]
+from = "/e/dep020"
+to   = "/e/py-dep020"
+status = 301
+
+[[redirects]]
+from = "/e/dep021"
+to   = "/e/py-dep021"
+status = 301
+
+[[redirects]]
+from = "/e/dep022"
+to   = "/e/py-dep022"
+status = 301
+
+[[redirects]]
+from = "/e/dep023"
+to   = "/e/py-dep023"
+status = 301
+
+[[redirects]]
+from = "/e/dep024"
+to   = "/e/py-dep024"
+status = 301
+
+[[redirects]]
+from = "/e/dep025"
+to   = "/e/py-dep025"
+status = 301
+
+[[redirects]]
+from = "/e/dep026"
+to   = "/e/py-dep026"
+status = 301
+
+[[redirects]]
+from = "/e/dep027"
+to   = "/e/py-dep027"
+status = 301
+
+[[redirects]]
+from = "/e/dep029"
+to   = "/e/py-dep029"
+status = 301
+
+[[redirects]]
+from = "/e/rbac001"
+to   = "/e/py-rbac001"
+status = 301
+
+# The five below are frozen aliases too, but their canonical py-* id has NO
+# destination rule yet: the docs do not currently cover what these messages tell
+# the user to do (board 7ece4ca8), and py-dep028's only candidate page still
+# demonstrates the very argument the warning deprecates (board 4090df96). They
+# resolve to a 404 today -- exactly as the bare ids already do, with one extra
+# hop. Do NOT "fix" that by pointing them at an approximately-related page; a
+# wrong page in an error message is worse than no page. Write the content, add
+# the single /e/py-<id> rule above, and these start working.
+
+[[redirects]]
+from = "/e/auth002"
+to   = "/e/py-auth002"
+status = 301
+
+[[redirects]]
+from = "/e/auth003"
+to   = "/e/py-auth003"
+status = 301
+
+[[redirects]]
+from = "/e/auth004"
+to   = "/e/py-auth004"
+status = 301
+
+[[redirects]]
+from = "/e/dep028"
+to   = "/e/py-dep028"
+status = 301
+
+[[redirects]]
+from = "/e/grpc002"
+to   = "/e/py-grpc002"
+status = 301
