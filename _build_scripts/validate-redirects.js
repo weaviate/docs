@@ -28,16 +28,70 @@ if (markerAt === -1) {
   process.exit(1)
 }
 
-// Parse only the /e/ rules, in file order. Netlify matches first-to-last, so
-// order is semantics here, not formatting.
-const RULE = /\[\[redirects\]\]\nfrom = "(\/e\/[^"]+)"\nto {3}= "([^"]+)"\nstatus = (\d+)/g
-const rules = [...toml.slice(markerAt).matchAll(RULE)].map(([, from, to, status]) => ({
-  from,
-  to,
-  status,
-}))
+// Comments are stripped first so that prose in the block (which discusses these
+// very rules, and quotes them) can never be read as a rule or counted as one.
+const block = toml
+  .slice(markerAt)
+  .split('\n')
+  .filter((line) => !/^[ \t]*#/.test(line))
+  .join('\n')
+
+/**
+ * Parse [[redirects]] tables into plain objects.
+ *
+ * Deliberately NOT one regex over from/to/status in a fixed order with fixed
+ * spacing. TOML does not care about key order or whitespace, and this file is
+ * hand-edited, so a checker that only recognises today's formatting would go
+ * quietly blind on exactly the edit it exists to catch. Reads whatever keys are
+ * present, in any order, single- or double-quoted.
+ */
+const parseRedirectTables = (text) =>
+  text
+    .split(/\[\[redirects\]\]/)
+    .slice(1)
+    .map((chunk) => {
+      // A table ends at the next TOML header of any kind.
+      const body = chunk.split(/\n[ \t]*\[/)[0]
+      const KV = /^[ \t]*([A-Za-z_][A-Za-z0-9_-]*)[ \t]*=[ \t]*(?:"([^"]*)"|'([^']*)'|([^\s#]+))/gm
+      const entry = {}
+      for (const m of body.matchAll(KV)) {
+        entry[m[1]] = m[2] !== undefined ? m[2] : m[3] !== undefined ? m[3] : m[4]
+      }
+      return entry
+    })
+
+const tables = parseRedirectTables(block)
+const rules = tables.filter((t) => typeof t.from === 'string' && t.from.startsWith('/e/'))
+
+// ---------------------------------------------------------------------------
+// 0. THE PARSE ITSELF MUST BE COMPLETE.
+//
+// Every check below reasons over `rules`. If the parser silently drops a rule,
+// each of them still passes, and the script reports success over a set it never
+// examined. That is a worse outcome than having no checker at all, and it is
+// the same failure shape as a link checker that validates zero files. So count
+// the rules independently, as loosely as possible, and refuse to continue if
+// the two numbers disagree.
+// ---------------------------------------------------------------------------
+const declared = (block.match(/^[ \t]*from[ \t]*=[ \t]*["']?\/e\//gm) || []).length
+if (declared !== rules.length) {
+  console.error(
+    `\nnetlify.toml /e/ redirector: PARSE GAP.\n\n` +
+      `  ${declared} rule(s) declare a /e/ source, but only ${rules.length} parsed.\n` +
+      `  Every check in this script reasons over the parsed set, so it cannot be\n` +
+      `  trusted until they agree. Fix the parser in ${path.basename(__filename)}\n` +
+      `  rather than reformatting netlify.toml to suit it.\n`
+  )
+  process.exit(1)
+}
 
 if (rules.length === 0) fail('No /e/ redirect rules found.')
+
+// Each rule must actually be a rule.
+for (const r of rules) {
+  if (!r.to) fail(`"${r.from}" has no "to" target.`)
+  if (!r.status) fail(`"${r.from}" has no "status".`)
+}
 
 const splats = rules.filter((r) => r.from.includes('*'))
 const specific = rules.filter((r) => !r.from.includes('*'))
@@ -73,10 +127,10 @@ for (const r of rules) {
 
 // 4. No duplicate sources: a second rule for the same id is dead, because the
 //    first one always wins, and it reads as if it were in effect.
-const seen = new Map()
+const seen = new Set()
 for (const r of rules) {
   if (seen.has(r.from)) fail(`Duplicate rule for "${r.from}" (the later one can never match).`)
-  seen.set(r.from, r.to)
+  seen.add(r.from)
 }
 
 // 5. Destinations inside /errors must resolve to a real page AND a real anchor.
@@ -91,14 +145,16 @@ const docsPath = (route) => {
   return null
 }
 
+let checkedDestinations = 0
 for (const r of rules) {
-  if (!r.to.startsWith('/errors')) continue
+  if (!r.to || !r.to.startsWith('/errors')) continue
   const [route, fragment] = r.to.split('#')
   const file = docsPath(route)
   if (!file) {
     fail(`"${r.from}" points at "${route}", which has no page under docs/.`)
     continue
   }
+  checkedDestinations++
   if (!fragment) continue
   const body = fs.readFileSync(file, 'utf8')
   // Entries use explicit {#anchor} overrides, so several ids can share one
@@ -116,7 +172,7 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `netlify.toml /e/ redirector OK: ${specific.length} specific rules (301), ` +
-    `1 catch-all (302, last), ` +
-    `${rules.filter((r) => r.to.startsWith('/errors')).length} destinations in /errors verified to a real page and anchor.`
+  `netlify.toml /e/ redirector OK: ${rules.length} rules parsed (all ${declared} declared), ` +
+    `${specific.length} specific (301), 1 catch-all (302, last), ` +
+    `${checkedDestinations} destinations in /errors verified to a real page and anchor.`
 )

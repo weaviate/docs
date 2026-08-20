@@ -6,11 +6,13 @@ hide_table_of_contents: true
 side_panel: improve-cluster
 ---
 
-The Weaviate Python client prints a short id at the front of many of its warnings, such as `Dep024`. Weaviate Database does not print the id as a prefix. Instead, a log entry that has a documented cause is gaining a `docs_url` field that carries the id inside a link:
+The Weaviate Python client prints a short id at the front of many of its warnings, such as `Dep024`. Weaviate Database does not print the id as a prefix. Instead, a log entry that has a documented cause is gaining a `docs_url` field that carries the id inside a link. Weaviate logs JSON by default, so it arrives as a key on the entry:
 
-```text
-docs_url=https://docs.weaviate.io/e/core-mem001
+```json
+"docs_url": "https://docs.weaviate.io/e/core-mem001"
 ```
+
+With `LOG_FORMAT=text` the same field prints as `docs_url=https://docs.weaviate.io/e/core-mem001`.
 
 The database side of that is not released yet, and the other clients do not carry ids at all so far. Only the link field is pending: the messages themselves are not new, so the entries below describe what current releases already print.
 
