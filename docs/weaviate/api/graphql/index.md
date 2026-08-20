@@ -6,6 +6,7 @@ image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---
 
+import RestSearchNote from '/_includes/rest-search-note.mdx';
 
 ## API
 
@@ -14,6 +15,8 @@ Weaviate offers [GraphQL](https://graphql.org/) and gRPC APIs for queries.
 We recommend using a Weaviate [client library](../../client-libraries/index.mdx), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
 
 However, you can query Weaviate directly using GraphQL with a POST request to the `/graphql` endpoint, or write your own `gRPC` calls based on the [gRPC](../grpc.md) protobuf specification.
+
+<RestSearchNote />
 
 
 ## All references
