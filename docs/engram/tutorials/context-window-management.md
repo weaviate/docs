@@ -24,6 +24,24 @@ This tutorial builds on the [Add long-term memory to a chat app](memory-chat-app
 - An [Anthropic](https://console.anthropic.com/) or [OpenAI](https://platform.openai.com/) API key
 - Python packages: `pip install weaviate-engram anthropic openai`
 
+Set your environment variables:
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
+```
+
+## Set up the client
+
+Every snippet below uses this client and `user_id`:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Setup"
+  endMarker="# END Setup"
+  language="py"
+/>
+
 ## Step 1: The naive approach
 
 The most common pattern is to append every message to a list and send the full list with each API call. This works for short conversations but becomes expensive fast.
@@ -52,6 +70,15 @@ The most common pattern is to append every message to a list and send the full l
 </Tabs>
 
 The `messages` list grows by two entries every turn (user + assistant). By turn 50, you're sending 100 messages in every request. Token usage grows linearly with the naive approach and you're paying for the same messages over and over. Turn 1's messages are re-sent at turn 2, 3, 4, and every subsequent turn.
+
+Put a number on it with a rough count of one token per four characters:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START TokenCount"
+  endMarker="# END TokenCount"
+  language="py"
+/>
 
 ## Step 2: Store conversations as memories
 

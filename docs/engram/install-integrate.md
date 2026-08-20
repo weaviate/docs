@@ -80,7 +80,7 @@ The [`engram` plugin](https://github.com/weaviate/engram-plugins) gives [Claude 
 
 ### Install
 
-Create an Engram project in the [console](https://console.weaviate.cloud) and set its API key in a shell profile that persists (`~/.zshenv`, `~/.zshrc`, or `~/.bashrc`):
+Create an Engram project in the [Engram console](https://console.weaviate.cloud) and set its API key in a shell profile that persists (`~/.zshenv`, `~/.zshrc`, or `~/.bashrc`):
 
 ```bash
 export ENGRAM_API_KEY=...

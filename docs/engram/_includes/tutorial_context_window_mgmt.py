@@ -3,14 +3,18 @@ from engram import HybridRetrieval, FetchRetrieval
 
 # START Setup
 import os
-import uuid
 from engram import EngramClient
 
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
 )
-user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
+user_id = "alice"  # any stable, unique string per user
 # END Setup
+
+# The tested run uses a throwaway user so repeat runs stay isolated.
+import uuid
+
+user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
 
 
 # START NaiveChatAnthropic

@@ -1,6 +1,6 @@
 ---
-title: Engram Web Console
-description: "Browse and manage Engram projects, memories, users, runs, and API keys from the Weaviate Cloud console."
+title: Engram console
+description: "Browse and manage Engram projects, memories, users, runs, and API keys from the Engram console in Weaviate Cloud."
 image: og/docs/engram.png
 ---
 

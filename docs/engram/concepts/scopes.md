@@ -105,6 +105,12 @@ results = client.memories.search(
 
 Topics that don't use a given parameter simply ignore it — `user_facts` doesn't filter on `conversation_id`, but `conversation_summary` uses it to pick the right summary.
 
+## How this relates to Weaviate
+
+Engram stores memories in Weaviate, and each distinct scope becomes its own [tenant](/weaviate/concepts/data#multi-tenancy) of the collection behind your project. Isolation between users is therefore the same isolation a multi-tenant Weaviate collection gives you, enforced in storage rather than filtered in application code.
+
+You don't manage any of that: there is no collection to define, no tenant to create, and no vectorizer to configure. If you want to model memory yourself on top of Weaviate collections and multi-tenancy instead, the [product page](https://weaviate.io/product/engram) is the place to compare the two approaches.
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';

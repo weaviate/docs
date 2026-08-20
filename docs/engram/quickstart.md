@@ -38,7 +38,7 @@ uv add weaviate-engram
 
 ## Step 1: Create a project
 
-Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud console](https://console.weaviate.cloud).
+Every memory in Engram belongs to a project. Create one in the [Engram console](https://console.weaviate.cloud), the Engram section of Weaviate Cloud.
 
 Follow this interactive walkthrough to create a project with the **Personalization** template, set up its group and the `UserKnowledge` topic, and generate an API key to connect to it:
 
@@ -86,7 +86,7 @@ Visit the [concepts section](concepts/index.md) to learn more about how these wo
 
 ## Step 2: Create an API key
 
-Generate an API key for your project in the Weaviate Cloud console. The full key is only shown once — save it securely.
+Generate an API key for your project in the Engram console. The full key is only shown once — save it securely.
 
 Set it as an environment variable for the examples below:
 
@@ -168,6 +168,39 @@ Engram processes memories asynchronously and immediately returns a `run_id`. In 
   "status": "running"
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Confirm the run finished</summary>
+
+If you do want to wait — on a first run, or while debugging — poll the run until it reaches a terminal status:
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CheckRun"
+  endMarker="# END CheckRun"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START CheckRun"
+  endMarker="# END CheckRun"
+  language="bash"
+/>
+
+</TabItem>
+</Tabs>
+
+[Check run status](guides/check-run-status.md) covers the response fields, and `runs.get` versus `runs.wait`.
 
 </details>
 

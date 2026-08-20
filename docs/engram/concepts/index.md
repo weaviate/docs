@@ -34,6 +34,6 @@ import ConceptsImg from '/docs/engram/_includes/concepts.png';
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

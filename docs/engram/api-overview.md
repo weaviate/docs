@@ -183,7 +183,7 @@ except APIError as err:
 For each topic, `is_bounded` tells you whether a scope holds at most one memory, `scoping.user_scoped` whether a `user_id` is required, and `scoping.scope_properties` which `properties` keys you must send.
 
 :::info Groups and topics are created in the console
-`GET /v1/groups` is read-only, and it is the only groups endpoint. There is no public API for creating or editing a project, group, or topic — you configure those in the [Weaviate Cloud console](console.md) when you create the project. Nor is there an API for adding or removing a topic afterwards.
+`GET /v1/groups` is read-only, and it is the only groups endpoint. There is no public API for creating or editing a project, group, or topic — you configure those in the [Engram console](console.md) when you create the project. Nor is there an API for adding or removing a topic afterwards.
 :::
 
 ### Service health
