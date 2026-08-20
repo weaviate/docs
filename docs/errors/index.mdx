@@ -6,13 +6,15 @@ hide_table_of_contents: true
 side_panel: improve-cluster
 ---
 
-The Weaviate client libraries print a short id at the front of many of their warnings, and Weaviate Database is adding the same ids to its log messages. Where a message carries a link, the link looks like this:
+The Weaviate Python client prints a short id at the front of many of its warnings, such as `Dep024`. Weaviate Database does not print the id as a prefix. Instead, a log entry that has a documented cause is gaining a `docs_url` field that carries the id inside a link:
 
 ```text
-https://docs.weaviate.io/e/core-mem001
+docs_url=https://docs.weaviate.io/e/core-mem001
 ```
 
-That link resolves to the entry for the message on one of the pages below. Each entry shows the message as it appears in your logs or console, explains what caused it, and gives the fix, so you can act without reading anything else first.
+The database side of that is not released yet, and the other clients do not carry ids at all so far.
+
+Either way the id resolves here. Each entry below shows the message as it appears in your logs or console, explains what caused it, and gives the fix, so you can act without reading anything else first.
 
 You do not need a link to use this section. If you have the message text but no id, search for a distinctive phrase from it, or open the page for the area the message came from.
 
@@ -48,7 +50,7 @@ export const errorGroups = [
 
 <br />
 
-This section is being filled in message by message. If a link brought you to a page that does not cover your message yet, the message is still on the list, and the [support channels](/support) can help in the meantime.
+This section is being filled in message by message. An id whose entry is not written yet lands you on this page rather than on a dead link, so if you arrived here from a message and cannot find it above, that is why. The message is still on the list, and the [support channels](/support) can help in the meantime.
 
 ## Reading a message id
 
@@ -59,7 +61,7 @@ An id looks like `core-mem001` or `py-dep024`. It has two parts:
 
 Ids are permanent. The message text and the page it points to can both change, but an id that shipped in a release keeps meaning the same thing forever, so it is safe to search for, to alert on, and to quote in a support ticket.
 
-Older releases of the Python client print the id without the origin, for example `Dep024` instead of `py-dep024`. Both forms lead to the same entry.
+Released versions of the Python client print the id **without** the origin, so what you see today is `Dep024`, not `py-dep024`. Those bare ids are permanent: they are already inside published packages and can never be reassigned. The prefixed form is what new messages use, so that the database and each client can number their own categories without colliding. Both forms lead to the same entry.
 
 ## Questions and feedback
 

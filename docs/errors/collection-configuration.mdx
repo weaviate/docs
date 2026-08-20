@@ -8,13 +8,15 @@ side_panel: improve-cluster
 
 Messages on this page are deprecation warnings from the Weaviate Python client. Nothing has failed: the collection was created or updated as you asked. They warn that the way the request described its vectors is on its way out and will stop working in a future release, so the fix is always a rewrite of the configuration, never a change to your data.
 
+If your message is not here, the [message index](/errors) lists the other groups.
+
 ## Deprecated vector configuration arguments {#deprecated-vector-configuration}
 
 Message ids: `py-dep017`, `py-dep023`, `py-dep024`, `py-dep025`
 
 **What you see**
 
-One or more of these warnings when a collection is created or updated:
+One or more of these warnings when you create or update a collection:
 
 ```text
 Dep024: You are using the `vectorizer_config` argument in `collection.config.create()`, which is deprecated.
@@ -82,6 +84,14 @@ client.collections.get("Article").config.update(
 
 Only a collection that was created with the current argument has a named vector for the current update form to address. A collection created with the deprecated arguments keeps the older shape, so updating it goes on raising the warning until the collection is recreated.
 
+The two forms are not interchangeable, and using the wrong one for a collection's shape fails rather than warns. If an update raised one of these, it tells you which shape you have:
+
+| What you got back | What it means | What to do |
+| --- | --- | --- |
+| `KeyError: 'vectorConfig'` | The collection has no named vectors, because it was created with the deprecated arguments | Keep using the deprecated argument for this collection until you recreate it |
+| `KeyError: 'vectorIndexConfig'` | The opposite: the collection has named vectors, so the deprecated argument has nothing to address | Switch this call to the current form |
+| `WeaviateInvalidInputError: Invalid input provided: Vector config with name default does not exist in the existing vector config.` | The collection has named vectors, but none by that name | Use the name the collection gave its vector, which is only `default` if none was set |
+
 Change the code that creates collections first. That is where the deprecation actually bites, because it is the form that will stop working.
 
 :::
@@ -100,7 +110,7 @@ Message ids: `py-dep026`
 
 **What you see**
 
-A warning when a vector is added to an existing collection:
+A warning when you add a vector to an existing collection:
 
 ```text
 Dep026: You are using the named vector syntax for vector title_vector, e.g. `Configure.NamedVectors` in `collection.config.add_vector()`, which is deprecated.
@@ -148,16 +158,21 @@ For a multi-vector embedding, such as ColBERT or ColPali, use the multi-vector b
 
 ## Deprecated multi-vector index settings {#deprecated-multi-vector-settings}
 
-Message ids: `py-dep027`
+Message ids: `py-dep026`, `py-dep027`
 
 **What you see**
 
-A warning when a collection with a multi-vector embedding is created:
+One or both of these warnings when you create a collection with a multi-vector embedding:
 
 ```text
 Dep027: You are using the `multi_vector` argument in `Configure.VectorIndex.hnsw()`, which is deprecated.
             Use the `multi_vector` argument inside `Configure.MultiVectors.module()` instead.
+
+Dep026: You are using the `encoding` argument in `Configure.VectorIndex.MultiVectors.multi_vector()`, which is deprecated.
+            Use the `encoding` argument inside `Configure.MultiVectors.module()` instead.
 ```
+
+The second one is a different message that ships under the same id as [deprecated named vector syntax](#deprecated-named-vector-syntax). It has the same cause and the same fix as the one above it, so both are answered here. You get both warnings at once if you set an encoding inside the index configuration, because that nests one deprecated argument inside the other.
 
 **Why it happens**
 

@@ -1654,3 +1654,23 @@ status = 301
 from = "/e/grpc002"
 to   = "/e/py-grpc002"
 status = 301
+
+## ---- CATCH-ALL: an id with no row of its own ----
+#
+# MUST STAY LAST IN THE FILE. Netlify matching is first-match, so every specific
+# rule above still wins; this only fires for an id nothing else claimed.
+#
+# Two populations land here. An id shipped by a release that is ahead of the docs,
+# and the handful of frozen aliases whose canonical `py-*` id deliberately has no
+# destination yet because the content does not exist (auth002, auth003, auth004,
+# dep028, grpc002 -- board 7ece4ca8 and 4090df96). Both used to get a 404. The
+# /errors index is a strictly better answer: it explains what an id is, lists the
+# groups, and says outright that the section is still being filled in.
+#
+# This does NOT make it safe to skip writing a rule. A reader who lands on the
+# index has to find their own message; a reader sent to an entry has already been
+# answered. The catch-all is a floor, not a destination.
+[[redirects]]
+from = "/e/*"
+to   = "/errors"
+status = 301
