@@ -1,5 +1,5 @@
 ---
-title: "Personalized RAG with Per-User Memory"
+title: "Personalized RAG with per-user memory"
 description: "Build a multi-tenant RAG application that combines a Weaviate knowledge base with per-user Engram memory for personalized responses."
 image: og/docs/engram.png
 ---
@@ -27,6 +27,19 @@ You'll learn how to:
 - An [Anthropic](https://console.anthropic.com/) or [OpenAI](https://platform.openai.com/) API key
 - Python packages: `pip install weaviate-engram weaviate-client anthropic openai`
 
+Set your environment variables:
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+export WEAVIATE_URL="https://your-cluster.weaviate.cloud"
+export WEAVIATE_API_KEY="..."
+export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
+```
+
+:::note The knowledge-base half is illustrative
+Every Engram snippet on this page runs against a live project when the docs are tested. The two Weaviate snippets — connecting to a cluster below, and creating and filling `ProductDocs` in [Step 2](#step-2-populate-the-knowledge-base) — are not tested, so treat them as a sketch to adapt to your own collection. Everything after Step 2 takes the knowledge-base hits as a plain list of strings, so it does not care how you retrieved them. The [Weaviate quickstart](/weaviate/quickstart) has a working ingestion example.
+:::
+
 ## Step 1: Set up both clients
 
 Initialize the Engram client for user memory and the Weaviate client for your knowledge base.
@@ -39,17 +52,19 @@ Initialize the Engram client for user memory and the Weaviate client for your kn
 />
 
 ```python
+import os
 import weaviate
+from weaviate.classes.init import Auth
 
 weaviate_client = weaviate.connect_to_weaviate_cloud(
     cluster_url=os.environ["WEAVIATE_URL"],
-    auth_credentials=weaviate.auth.AuthApiKey(os.environ["WEAVIATE_API_KEY"]),
+    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
 )
 ```
 
 ## Step 2: Populate the knowledge base
 
-Create a Weaviate collection with sample product documentation. This represents your shared knowledge base — the same docs are available to all users.
+Create a Weaviate collection with sample product documentation. This represents your shared knowledge base — the same docs are available to all users. Adapt it to your own collection; the rest of the tutorial only needs the retrieved text.
 
 <FilteredTextBlock
   text={PyCode}
@@ -201,8 +216,8 @@ Use `memories.search()` to find all memories for a user, then `memories.delete()
 
 ## Next steps
 
-- **[Memory Chat App](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
-- **[Context Window Management](context-window-management.md)** — Reduce token costs by replacing conversation history with memory.
+- **[Add long-term memory to a chat app](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
+- **[Context window management](context-window-management.md)** — Reduce token costs by replacing conversation history with memory.
 - **[Manage memories](../guides/manage-memories.md)** — API reference for get and delete operations.
 - **[Core concepts](../concepts/index.md)** — Learn about topics, groups, scoping, and pipelines.
 

@@ -1,5 +1,5 @@
 ---
-title: "Add Long-Term Memory to a Chat App"
+title: "Add long-term memory to a chat app"
 description: "Build a chatbot with persistent memory across sessions using Engram with Anthropic or OpenAI."
 image: og/docs/engram.png
 ---
@@ -31,7 +31,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
 
 ## Step 1: Set up the Engram client
 
-Initialize the Engram client with your API key. The `user_id` parameter scopes all memories to a specific user, so different users get isolated memory stores.
+Initialize the Engram client with your API key. The `user_id` parameter scopes all memories to a specific user, so different users get isolated memory stores. It can be any stable string that identifies the person — a username, an account ID, an email — and Engram creates the user the first time you write with it.
 
 <FilteredTextBlock
   text={PyCode}
@@ -155,8 +155,8 @@ The assistant remembers the user's location and coffee preferences from the prev
 
 ## Next steps
 
-- **[Context Window Management](context-window-management.md)** — Learn how memory search replaces full conversation history to reduce token costs.
-- **[Personalized RAG](personalized-rag-multi-tenant.md)** — Combine a Weaviate knowledge base with per-user memory for personalized responses.
+- **[Context window management](context-window-management.md)** — Learn how memory search replaces full conversation history to reduce token costs.
+- **[Personalized RAG with per-user memory](personalized-rag-multi-tenant.md)** — Combine a Weaviate knowledge base with per-user memory for personalized responses.
 - **[Search memories](../guides/search-memories.md)** — Explore vector, BM25, and hybrid retrieval options.
 
 ## Questions and feedback

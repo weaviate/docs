@@ -1,5 +1,5 @@
 ---
-title: "Context Window Management"
+title: "Context window management"
 description: "Reduce LLM token usage and cost by replacing full conversation history with Engram memory search."
 image: og/docs/engram.png
 ---
@@ -13,7 +13,7 @@ Every time you call an LLM, you pay for every token in the request — including
 
 Engram solves this by extracting discrete facts from conversations and storing them as searchable memories. Instead of sending the entire history, you search for relevant memories and send only those — keeping context size flat regardless of conversation length.
 
-This tutorial builds on the [Memory Chat App](memory-chat-app.md) pattern and shows you how to:
+This tutorial builds on the [Add long-term memory to a chat app](memory-chat-app.md) pattern and shows you how to:
 - Measure the token cost of sending full conversation history
 - Replace history with memory search for constant-size context
 - Compare the two approaches side-by-side
@@ -107,7 +107,16 @@ The context window now contains:
 
 ## Step 4: Compare side-by-side
 
-Here's a comparison of token usage as conversation length grows:
+The two approaches diverge quickly. This model prices a turn at ~25 user tokens plus ~100 assistant tokens, and gives the memory-augmented version a fixed window of the last three exchanges plus ~50 tokens of retrieved memory:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SideBySide"
+  endMarker="# END SideBySide"
+  language="py"
+/>
+
+It prints:
 
 ```text
 Turn   Naive (tokens)     Memory (tokens)    Savings
@@ -175,12 +184,12 @@ For the best balance of continuity and context, combine both approaches:
 1. **Recent messages** (last 2-3 exchanges) — Maintains conversational flow
 2. **Engram memory search** — Provides relevant historical context
 
-This is the pattern used in Step 4. The recent messages handle references like "that" and "it", while Engram provides the long-term context that makes the assistant feel like it truly remembers.
+This is the pattern used in [Step 3](#step-3-replace-history-with-memory-search). The recent messages handle references like "that" and "it", while Engram provides the long-term context that makes the assistant feel like it truly remembers.
 
 ## Next steps
 
-- **[Memory Chat App](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
-- **[Personalized RAG](personalized-rag-multi-tenant.md)** — Add a knowledge base alongside per-user memory.
+- **[Add long-term memory to a chat app](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
+- **[Personalized RAG with per-user memory](personalized-rag-multi-tenant.md)** — Add a knowledge base alongside per-user memory.
 - **[Store memories](../guides/store-memories.md)** — Learn about all three content types (string, conversation, pre-extracted).
 
 ## Questions and feedback
