@@ -50,6 +50,10 @@ const runPRValidationFromBuildDev = async () => {
         `/cloud`,
         `/engram`,
         `/contributor-guide`,
+        // Out of the site navigation, so nothing links down into it from the
+        // sections above and the crawler would otherwise never reach it.
+        `/errors`,
+        `/improve-your-cluster`,
     ]
     
     const success = await validator.validateLinks(paths);

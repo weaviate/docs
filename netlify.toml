@@ -1284,9 +1284,17 @@ status = 301
 #
 # Adding a row: verify the target page file exists and that the anchor is a real,
 # unique heading slug (or an explicit {#anchor}, or an <APITable> row id) on that
-# page. Docusaurus is configured with onBrokenLinks: "warn" and no onBrokenAnchors
-# setting, so a bad fragment here will not fail the build -- it will just 404 a
-# user who is already having a bad day.
+# page. Docusaurus warns rather than fails on a broken anchor, and its check only
+# sees links written inside the site's own pages -- it never reads this file. So a
+# bad fragment here will not fail the build. It will just 404 a user who is
+# already having a bad day.
+#
+# DESTINATIONS ARE MIGRATING TO /errors. That section is written for exactly this
+# arrival: one entry per message, with the message text, the cause and the fix on
+# the page the reader lands on, no table of contents to scroll past. Ids that
+# already have an entry point there. The rest still point at the nearest existing
+# docs page and get repointed as their entry is written -- an approximate page
+# beats no page, but a purpose-built entry beats both.
 
 ## ---- Python client (weaviate-python-client) ----
 
@@ -1370,22 +1378,22 @@ status = 301
 
 [[redirects]]
 from = "/e/py-dep011"
-to   = "/weaviate/model-providers/google/embeddings#weaviate-configuration"
+to   = "/errors/model-integrations#google-renamed-from-palm"
 status = 301
 
 [[redirects]]
 from = "/e/py-dep012"
-to   = "/weaviate/model-providers/google/embeddings-multimodal#weaviate-configuration"
+to   = "/errors/model-integrations#google-renamed-from-palm"
 status = 301
 
 [[redirects]]
 from = "/e/py-dep013"
-to   = "/weaviate/model-providers/google/generative#weaviate-configuration"
+to   = "/errors/model-integrations#google-renamed-from-palm"
 status = 301
 
 [[redirects]]
 from = "/e/py-dep017"
-to   = "/weaviate/manage-collections/vector-config#set-vector-index-parameters"
+to   = "/errors/collection-configuration#deprecated-vector-configuration"
 status = 301
 
 [[redirects]]
@@ -1415,17 +1423,17 @@ status = 301
 
 [[redirects]]
 from = "/e/py-dep023"
-to   = "/weaviate/client-libraries/python#vectorizer-api-changes-v4160"
+to   = "/errors/collection-configuration#deprecated-vector-configuration"
 status = 301
 
 [[redirects]]
 from = "/e/py-dep024"
-to   = "/weaviate/manage-collections/vector-config#specify-a-vectorizer"
+to   = "/errors/collection-configuration#deprecated-vector-configuration"
 status = 301
 
 [[redirects]]
 from = "/e/py-dep025"
-to   = "/weaviate/manage-collections/vector-config#set-vector-index-parameters"
+to   = "/errors/collection-configuration#deprecated-vector-configuration"
 status = 301
 
 # py-dep026 is the second overloaded id: it labels both the named-vector syntax
@@ -1435,12 +1443,12 @@ status = 301
 # Splitting the second message onto a free number is tracked on board ac9a24a8.
 [[redirects]]
 from = "/e/py-dep026"
-to   = "/weaviate/client-libraries/python#vectorizer-api-changes-v4160"
+to   = "/errors/collection-configuration#deprecated-named-vector-syntax"
 status = 301
 
 [[redirects]]
 from = "/e/py-dep027"
-to   = "/weaviate/manage-collections/vector-config#define-multi-vector-embeddings-eg-colbert-colpali"
+to   = "/errors/collection-configuration#deprecated-multi-vector-settings"
 status = 301
 
 # Anchor is an explicit {#async-config} override on the "`asyncConfig` parameters"
@@ -1459,7 +1467,7 @@ status = 301
 
 [[redirects]]
 from = "/e/core-mem001"
-to   = "/weaviate/release-notes/known-issues#memory-pressure-shard-init-failure"
+to   = "/errors/cluster-resources#not-enough-memory-mappings"
 status = 301
 
 ## ---- FROZEN: bare legacy ids shipped by weaviate-python-client ----

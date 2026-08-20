@@ -1,0 +1,77 @@
+---
+title: Improve your cluster
+description: "A short checklist for making a Weaviate cluster harder to break: headroom, replication, monitoring, backups, and staying current."
+image: og/default.jpg
+---
+
+Most of the messages in the [error message reference](/errors) are not really about the moment they were printed. They are the point at which a cluster that was already short on headroom, unmonitored, or behind on versions finally ran out of room.
+
+This page is the short version of what to change so the next one does not happen. Work through it once when you set a cluster up, and again whenever the shape of your workload changes: a new collection, a jump in tenants, or a much larger import.
+
+## Give the cluster headroom
+
+Weaviate fails safely when it runs out of a resource. Shards go read-only, or refuse to load, rather than corrupting data. That is the behavior you want, but it is still an outage, and every one of these limits is knowable in advance.
+
+- **Memory.** Size the node for the whole working set, not the average. Tell the Go runtime what it may use with `GOMEMLIMIT`, or set `LIMIT_RESOURCES` and let Weaviate derive it. Without one of them, the runtime assumes it can use the whole machine and gets killed by the container limit instead of collecting garbage harder.
+- **Disk.** Weaviate warns above 80% disk usage and marks shards read-only above 90%, both tunable. Compaction and backups both need free space, so treat 90% as the ceiling and not the target.
+- **Memory mappings.** Every shard costs kernel memory mappings, and the limit is a host setting, not a container one. Thousands of active tenants on one node will pass a distribution default. See [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings).
+- **Vector memory.** Vector indexes are the largest consumer, and quantization is the biggest single lever you have. Compression trades a small amount of recall for a large reduction in memory, and it can be enabled on a collection you already have.
+- **Inactive tenants.** In a multi-tenant collection, tenants you are not serving should not be resident. Deactivating or offloading them returns memory, mappings, and file handles.
+
+Further reading: [resource planning](/weaviate/concepts/resources) · [environment variables](/deploy/configuration/env-vars) · [compression](/weaviate/configuration/compression) · [tenant states](/weaviate/manage-collections/tenant-states)
+
+## Survive the loss of a node
+
+A single-node cluster has no bad days, only outages. If Weaviate holds data you cannot rebuild quickly from somewhere else, it needs more than one copy.
+
+- **Set a replication factor above one** on collections that matter. Set it when you create the collection: raising it later is possible, but it copies data across the network at a moment you probably did not choose.
+- **Use an odd number of nodes** so the cluster can still form a majority when one is lost.
+- **Choose consistency levels deliberately.** Weaviate lets you pick per request, so the write path and the read path can make different trade-offs.
+- **Turn on async replication** so replicas that fall behind, or that miss writes while restarting, repair themselves in the background instead of serving stale results until someone notices.
+
+Further reading: [replication](/deploy/configuration/replication) · [async replication](/deploy/configuration/async-rep) · [consistency](/weaviate/concepts/replication-architecture/consistency)
+
+## Find out before your users do
+
+Every resource limit above announces itself in the logs and in the metrics well before it becomes an outage. That warning is only worth having if something is reading it.
+
+- **Scrape the metrics endpoint.** Weaviate exposes Prometheus metrics, and there is a ready-made Grafana setup to start from.
+- **Alert on the leading indicators**, not on request failures: heap usage against the limit, disk usage against the read-only threshold, and shards reporting a read-only status.
+- **Collect the logs somewhere searchable.** Weaviate logs JSON by default, so the fields are queryable without parsing message text. Alert on the `action` field rather than on message wording, which changes between releases.
+- **Watch the cluster node data** for shards that are not ready. It is the fastest way to tell a slow cluster from a partly broken one.
+
+Further reading: [monitoring](/deploy/configuration/monitoring) · [cluster status](/deploy/configuration/status#cluster-node-data) · [logging](/deploy/configuration/logging)
+
+## Be able to go back
+
+Replication protects you from losing a node. It does not protect you from a bad import, a mistaken deletion, or a schema change you want to undo, because all three replicate perfectly.
+
+- **Configure a backup backend** and take backups on a schedule, to storage that is not the cluster's own disk.
+- **Restore one.** An untested backup is a hypothesis. Restore into a scratch cluster and query it, at least once, before you need it to work.
+- **Check what a backup covers** against what you would need to rebuild, including collection configuration and inactive tenants.
+- **Keep persistence on a volume that outlives the container.** A container restart should not be a data-loss event.
+
+Further reading: [backups](/deploy/configuration/backups) · [persistence](/deploy/configuration/persistence)
+
+## Stay current
+
+Running a version that is a year old means carrying every bug that has since been fixed, and paying for the upgrade later anyway, in one larger jump.
+
+- **Read the release notes** before upgrading, and the migration guide when there is one.
+- **Check the known issues page** when you hit something strange. A surprising number of one-off mysteries are documented there with a version number attached.
+- **Keep clients within the supported range** of the server. Client and server versions move independently, and a large gap between them is a common source of confusing errors.
+
+Further reading: [release notes](/weaviate/release-notes) · [known issues](/weaviate/release-notes/known-issues) · [migration guides](/deploy/migration)
+
+## Further resources
+
+- [Production readiness checklist](/deploy/production/kubernetes/production-readiness)
+- [Getting to production on Kubernetes](/deploy/production/kubernetes/get-to-production)
+- [Managing resources starter guide](/weaviate/starter-guides/managing-resources)
+- [Error message reference](/errors)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

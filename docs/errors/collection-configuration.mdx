@@ -1,0 +1,221 @@
+---
+title: Collection configuration messages
+description: "Deprecation warnings raised when a collection describes its vectors, vector index, or multi-vector settings in a retired way, with the current form for each."
+image: og/default.jpg
+hide_table_of_contents: true
+side_panel: improve-cluster
+---
+
+Messages on this page are deprecation warnings from the Weaviate Python client. Nothing has failed: the collection was created or updated as you asked. They warn that the way the request described its vectors is on its way out and will stop working in a future release, so the fix is always a rewrite of the configuration, never a change to your data.
+
+## Deprecated vector configuration arguments {#deprecated-vector-configuration}
+
+Message ids: `py-dep017`, `py-dep023`, `py-dep024`, `py-dep025`
+
+**What you see**
+
+One or more of these warnings when a collection is created or updated:
+
+```text
+Dep024: You are using the `vectorizer_config` argument in `collection.config.create()`, which is deprecated.
+            Use the `vector_config` argument instead.
+
+Dep025: You are using the `vector_index_config` argument in `collection.config.create()`, which is deprecated.
+            Use the `vector_config` argument instead defining `vector_index_config` as a sub-argument.
+
+Dep017: You are using the `vector_index_config` argument in the `collection.config.update()` method, which is deprecated.
+            Use the `vector_config` argument instead.
+
+Dep023: You are using the `vectorizer_config` argument in the `collection.config.update()` method with a collection with named vectors, which is deprecated.
+            Use the `vector_config` argument instead.
+```
+
+**Why it happens**
+
+A collection used to describe its embeddings as two independent settings: one for the model that produces the vector, and one for the index that stores it. That shape cannot express a collection with several differently configured vectors, which Weaviate supports. Both settings now live inside a single vector definition, and a collection holds one or more of them, each with a name.
+
+The old arguments still work, and a collection created with them keeps the older single-vector shape.
+
+**How to fix it**
+
+Move the model and the index settings into one vector definition when you create the collection:
+
+```python
+from weaviate.classes.config import Configure
+
+# Deprecated
+client.collections.create(
+    "Article",
+    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_index_config=Configure.VectorIndex.hnsw(),
+)
+
+# Current
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_weaviate(
+        vector_index_config=Configure.VectorIndex.hnsw(),
+    ),
+)
+```
+
+Updates name the vector they change. A collection created with the current argument, and no explicit vector name, has a single vector called `default`:
+
+```python
+from weaviate.classes.config import Reconfigure
+
+# Deprecated
+client.collections.get("Article").config.update(
+    vector_index_config=Reconfigure.VectorIndex.hnsw(ef=128),
+)
+
+# Current
+client.collections.get("Article").config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(ef=128),
+    ),
+)
+```
+
+:::caution An existing collection is not converted in place
+
+Only a collection that was created with the current argument has a named vector for the current update form to address. A collection created with the deprecated arguments keeps the older shape, so updating it goes on raising the warning until the collection is recreated.
+
+Change the code that creates collections first. That is where the deprecation actually bites, because it is the form that will stop working.
+
+:::
+
+Rewriting a collection definition does not re-embed anything and does not touch stored vectors. It changes how the collection is described, so the same request keeps working once the old arguments are removed.
+
+**Learn more**
+
+- [Configure vectors for a collection](/weaviate/manage-collections/vector-config)
+- [Collection configuration reference](/weaviate/config-refs/collections)
+- [Python client: vectorizer API changes](/weaviate/client-libraries/python#vectorizer-api-changes-v4160)
+
+## Deprecated named vector syntax {#deprecated-named-vector-syntax}
+
+Message ids: `py-dep026`
+
+**What you see**
+
+A warning when a vector is added to an existing collection:
+
+```text
+Dep026: You are using the named vector syntax for vector title_vector, e.g. `Configure.NamedVectors` in `collection.config.add_vector()`, which is deprecated.
+            Use `Configure.Vectors` or `Configure.MultiVectors` instead.`
+```
+
+The vector name in the message is your own, so it differs from the one shown here.
+
+**Why it happens**
+
+When named vectors were introduced they had a separate set of builders, kept apart from the single-vector ones. Every vector is now a named vector, so the two sets were merged into one, split instead by whether the vector is a single vector or a multi-vector. The old builders are aliases that still work.
+
+**How to fix it**
+
+Use the current builder for the kind of vector you are adding. The arguments are unchanged:
+
+```python
+from weaviate.classes.config import Configure
+
+collection = client.collections.get("Article")
+
+# Deprecated
+collection.config.add_vector(
+    vector_config=Configure.NamedVectors.text2vec_weaviate(
+        name="title_vector",
+        source_properties=["title"],
+    ),
+)
+
+# Current
+collection.config.add_vector(
+    vector_config=Configure.Vectors.text2vec_weaviate(
+        name="title_vector",
+        source_properties=["title"],
+    ),
+)
+```
+
+For a multi-vector embedding, such as ColBERT or ColPali, use the multi-vector builders instead. This id is also printed for a second, related deprecation covered in [deprecated multi-vector index settings](#deprecated-multi-vector-settings).
+
+**Learn more**
+
+- [Configure vectors for a collection](/weaviate/manage-collections/vector-config)
+- [Add a vector to an existing collection](/weaviate/manage-collections/vector-config#add-new-named-vectors)
+
+## Deprecated multi-vector index settings {#deprecated-multi-vector-settings}
+
+Message ids: `py-dep027`
+
+**What you see**
+
+A warning when a collection with a multi-vector embedding is created:
+
+```text
+Dep027: You are using the `multi_vector` argument in `Configure.VectorIndex.hnsw()`, which is deprecated.
+            Use the `multi_vector` argument inside `Configure.MultiVectors.module()` instead.
+```
+
+**Why it happens**
+
+Whether a vector is a multi-vector is a property of the vector, not of the index that stores it, and it is already implied by the multi-vector builder you chose. Declaring it a second time on the index left two places that could disagree, so the setting moved onto the vector definition.
+
+**How to fix it**
+
+Move the setting out of the index configuration and onto the vector definition. In the message, the second part of the name stands for whichever multi-vector builder you are using, such as a self-provided vector or a specific model integration:
+
+```python
+from weaviate.classes.config import Configure
+
+# Deprecated
+client.collections.create(
+    "Document",
+    vector_config=Configure.MultiVectors.self_provided(
+        name="page_vector",
+        vector_index_config=Configure.VectorIndex.hnsw(
+            multi_vector=Configure.VectorIndex.MultiVector.multi_vector(),
+        ),
+    ),
+)
+
+# Current
+client.collections.create(
+    "Document",
+    vector_config=Configure.MultiVectors.self_provided(
+        name="page_vector",
+        multi_vector_config=Configure.VectorIndex.MultiVector.multi_vector(),
+        vector_index_config=Configure.VectorIndex.hnsw(),
+    ),
+)
+```
+
+An encoding such as MUVERA moves the same way, onto the vector definition:
+
+```python
+from weaviate.classes.config import Configure
+
+# Current
+client.collections.create(
+    "Document",
+    vector_config=Configure.MultiVectors.self_provided(
+        name="page_vector",
+        encoding=Configure.VectorIndex.MultiVector.Encoding.muvera(),
+        vector_index_config=Configure.VectorIndex.hnsw(),
+    ),
+)
+```
+
+**Learn more**
+
+- [Multi-vector embeddings](/weaviate/manage-collections/vector-config#define-multi-vector-embeddings-eg-colbert-colpali)
+- [Multi-vector embeddings tutorial](/weaviate/tutorials/multi-vector-embeddings)
+- [Multi-vector compression](/weaviate/configuration/compression/multi-vectors)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

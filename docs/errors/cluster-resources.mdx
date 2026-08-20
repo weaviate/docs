@@ -1,0 +1,77 @@
+---
+title: Cluster resource messages
+description: "Weaviate log messages that mean a node has run out of a resource, such as memory mappings, with the cause and the fix for each one."
+image: og/default.jpg
+hide_table_of_contents: true
+side_panel: improve-cluster
+---
+
+Messages on this page mean that a Weaviate node asked the operating system for a resource and was refused. The data is intact, but the node cannot open the files it needs until the limit is raised or the load is reduced.
+
+## Not enough memory mappings {#not-enough-memory-mappings}
+
+Message ids: `core-mem001`
+
+**What you see**
+
+An error in the node's logs, ending in `not enough memory mappings`:
+
+```text
+memory pressure: cannot init shard: not enough memory mappings
+memory pressure: cannot load shard: not enough memory mappings
+```
+
+The entry that carries it names the operation that failed. In a multi-tenant cluster it is usually a tenant activation:
+
+```text
+loading shard "MyTenant" failed
+failed to load shard: memory pressure: cannot load shard: not enough memory mappings
+failed to reload local index
+```
+
+Collections or tenants whose shards did not load are unavailable for reads and writes, and the failure often shows up alongside replication errors such as `broadcast: cannot reach enough replicas`.
+
+**Why it happens**
+
+Every shard memory-maps several files, and the Linux kernel caps how many mappings one process may hold. That cap is `vm.max_map_count`. Weaviate reads it at startup and budgets 70% of it, leaving room for other processes on the host, then refuses to open a shard that would take it past that budget. Refusing early is deliberate: exhausting the kernel limit outright would fail unpredictably somewhere else in the process.
+
+The usual trigger is scale rather than a bug. Distribution defaults for `vm.max_map_count` were chosen for ordinary workloads, and a node holding thousands of active tenants or collections passes them.
+
+**How to fix it**
+
+1. Read the current limit on the node that logged the error:
+
+   ```bash
+   sysctl vm.max_map_count
+   ```
+
+2. Raise it. Three to four times the current value is a reasonable first step, and the value is a count, not an amount of memory, so raising it costs nothing on its own:
+
+   ```bash
+   sysctl -w vm.max_map_count=8388608
+   ```
+
+3. Make it survive a reboot:
+
+   ```bash
+   echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
+   ```
+
+4. Restart the affected node, or the affected pod on Kubernetes, so Weaviate reads the new limit.
+
+On Kubernetes the setting belongs to the host kernel, not to the container, so apply it on each node through your node configuration, a `DaemonSet`, or a privileged init container. Setting it inside an unprivileged container has no effect. On Weaviate Cloud the host configuration is not yours to change, so open a support ticket instead.
+
+If the limit is already high and the error keeps coming back, the node is holding more shards than it was sized for. Deactivate or offload tenants that are not in use, or add nodes and rebalance.
+
+**Learn more**
+
+- [Known issues: memory pressure, shard init failure](/weaviate/release-notes/known-issues#memory-pressure-shard-init-failure)
+- [Resource planning](/weaviate/concepts/resources)
+- [Tenant states and offloading](/weaviate/manage-collections/tenant-states)
+- [Deployment troubleshooting](/deploy/faqs/troubleshooting)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,115 @@
+---
+title: Model integration messages
+description: "Warnings about renamed or retired Weaviate model integrations, with the current way to configure the same provider."
+image: og/default.jpg
+hide_table_of_contents: true
+side_panel: improve-cluster
+---
+
+Messages on this page are raised when a collection asks for a model integration under a name that has been renamed or retired. The provider is still supported. Only the name it is configured under has changed.
+
+## Google integrations renamed from PaLM {#google-renamed-from-palm}
+
+Message ids: `py-dep011`, `py-dep012`, `py-dep013`
+
+**What you see**
+
+One of these warnings when a collection is configured, printed as soon as the configuration object is built, before any request reaches Weaviate:
+
+```text
+Dep011: text2vec-palm is deprecated and will be removed in Q2 25. Use text2vec-google instead.
+Dep012: multi2vec-palm is deprecated and will be removed in Q2 25. Use multi2vec-google instead.
+Dep013: generative.palm is deprecated and will be removed in Q2 25. Use generative.google instead.
+```
+
+They usually arrive together with a generic deprecation notice naming the same replacement.
+
+**Why it happens**
+
+Google retired the PaLM name and reorganized these models under Vertex AI and the Gemini API. Weaviate followed, first by renaming the integrations from `palm` to `google`, and then by splitting the Google embedding and generative integrations by service, because Vertex AI and the Gemini API authenticate differently and expose different models.
+
+So the replacement quoted in the message is itself a step behind. Configuring the plain Google integration works, and raises a second deprecation warning asking you to pick a service. Go straight to the service-specific form and you are done in one edit.
+
+The removal date quoted in the message has passed, and the old names still work, so nothing is broken while you migrate. Treat them as removable at any time.
+
+**How to fix it**
+
+Choose the integration for the Google service you actually use, then configure it in place of the PaLM one.
+
+For text embeddings, Vertex AI needs the Google Cloud project that owns the model, and the Gemini API does not:
+
+```python
+from weaviate.classes.config import Configure
+
+# Deprecated
+client.collections.create(
+    "Article",
+    vectorizer_config=Configure.Vectorizer.text2vec_palm(project_id="my-project"),
+)
+
+# Current, Vertex AI
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_google_vertex(project_id="my-project"),
+)
+
+# Current, Gemini API
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_google_gemini(),
+)
+```
+
+For multimodal embeddings, the Google integration is not split by service:
+
+```python
+from weaviate.classes.config import Configure
+
+# Current
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.multi2vec_google(
+        project_id="my-project",
+        location="us-central1",
+        text_fields=["title"],
+    ),
+)
+```
+
+For generative search, pick the same service you use for embeddings:
+
+```python
+from weaviate.classes.config import Configure
+
+# Current, Vertex AI
+client.collections.create(
+    "Article",
+    generative_config=Configure.Generative.google_vertex(project_id="my-project"),
+)
+
+# Current, Gemini API
+client.collections.create(
+    "Article",
+    generative_config=Configure.Generative.google_gemini(),
+)
+```
+
+Do not be alarmed when the collection reports the old name back. Weaviate stores these integrations under their original module names, so a collection configured this way still reads back as `text2vec-palm`, `multi2vec-palm`, or `generative-palm`. That is the storage name, not the name you configure, and it does not need fixing.
+
+The collection definition is only half of the change. The header that carries your Google credentials was renamed alongside the integration, and the PaLM-era header name is deprecated even though it still works. Check which header your application sends when you make the change, because the right one now depends on the service you picked.
+
+Existing collections are unaffected: the integration is recorded when the collection is created, and a collection created under the old name goes on working. Change the name in the code that creates new collections. Rewriting an existing collection would mean re-embedding its objects, which is only worth doing if you also want to change the model.
+
+**Learn more**
+
+- [Google embeddings](/weaviate/model-providers/google/embeddings#configure-the-vectorizer)
+- [Google multimodal embeddings](/weaviate/model-providers/google/embeddings-multimodal#configure-the-vectorizer)
+- [Google generative models](/weaviate/model-providers/google/generative#configure-collection)
+- [Google API credentials and headers](/weaviate/model-providers/google/embeddings#api-credentials)
+- [All Google integrations](/weaviate/model-providers/google)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
