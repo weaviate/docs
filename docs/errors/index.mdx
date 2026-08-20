@@ -6,6 +6,10 @@ hide_table_of_contents: true
 side_panel: improve-cluster
 ---
 
+import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+
+<ClusterIdNotice/>
+
 The Weaviate Python client prints a short id at the front of many of its warnings, such as `Dep024`. Weaviate Database does not print the id as a prefix. Instead, a log entry that has a documented cause is gaining a `docs_url` field that carries the id inside a link. Weaviate logs JSON by default, so it arrives as a key on the entry:
 
 ```json

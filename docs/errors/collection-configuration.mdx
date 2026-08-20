@@ -6,6 +6,10 @@ hide_table_of_contents: true
 side_panel: improve-cluster
 ---
 
+import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+
+<ClusterIdNotice/>
+
 Messages on this page are deprecation warnings from the Weaviate Python client. Nothing has failed: the collection was created or updated as you asked. They warn that the way the request described its vectors is on its way out and will stop working in a future release, so the fix is always a rewrite of the configuration, never a change to your data.
 
 If your message is not here, the [message index](/errors) lists the other groups.

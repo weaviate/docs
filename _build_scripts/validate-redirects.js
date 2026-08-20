@@ -133,7 +133,74 @@ for (const r of rules) {
   seen.add(r.from)
 }
 
-// 5. Destinations inside /errors must resolve to a real page AND a real anchor.
+// 5. No destination may carry a query string of its own.
+//
+//    Netlify forwards an incoming query to the destination only when the
+//    destination has none. Measured with `netlify dev` and confirmed against
+//    production:
+//
+//      to = "/errors/x#a"          + ?clusterid=U  ->  /errors/x?clusterid=U#a
+//      to = "/errors/x?src=id#a"   + ?clusterid=U  ->  /errors/x?src=id#a
+//
+//    So a `?` here silently throws away the query the request arrived with,
+//    including the `?clusterid=<uuid>` Weaviate puts on these links, with no
+//    build error and no broken link to notice. The message id is added by
+//    netlify/edge-functions/error-link-src.ts instead, which is why every
+//    destination below can stay plain.
+for (const r of rules) {
+  if (r.to && r.to.includes('?')) {
+    fail(
+      `"${r.from}" has a query string in its destination ("${r.to}"). ` +
+        `Netlify drops the reader's own query when the destination has one, ` +
+        `so this would discard ?clusterid=. Let error-link-src.ts add the id instead.`
+    )
+  }
+}
+
+// 6. At most one fragment. (Check 5 already covers the other half of this:
+//    "/x#a?b" is not a URL with a query, the "?b" is part of the fragment and
+//    never reaches the server, and it trips the "?" test above.)
+for (const r of rules) {
+  if (!r.to) continue
+  const hashes = (r.to.match(/#/g) || []).length
+  if (hashes > 1) fail(`"${r.from}" has ${hashes} "#" in its destination ("${r.to}"). A URL has at most one fragment.`)
+}
+
+// 7. The edge function must be present and wired to /e/*.
+//
+//    It is the only thing that puts `src=<id>` on the destination URL, since no
+//    `to` value here may carry a query string (check 5). Deleting or unwiring
+//    the file leaves the redirects working and the parameter silently gone, and
+//    nothing else would notice.
+const EDGE_FN = path.join(ROOT, 'netlify', 'edge-functions', 'error-link-src.ts')
+if (!fs.existsSync(EDGE_FN)) {
+  fail(
+    'netlify/edge-functions/error-link-src.ts is missing. It is what puts the ' +
+      'message id on the destination URL as ?src=<id>; without it the /e/ links ' +
+      'still resolve but the parameter is gone.'
+  )
+} else {
+  // Comments are stripped first. The file's header quotes these settings
+  // verbatim, so a check run over the raw source passes on the documentation of
+  // a setting that has been deleted -- which is how this check failed its own
+  // negative test the first time it was written.
+  const fn = fs
+    .readFileSync(EDGE_FN, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^[ \t]*\/\/.*$/gm, '')
+  if (!/path:\s*["']\/e\/\*["']/.test(fn)) {
+    fail('error-link-src.ts no longer declares path: "/e/*", so it will not run for these rules.')
+  }
+  if (!/onError:\s*["']bypass["']/.test(fn)) {
+    fail(
+      'error-link-src.ts no longer sets onError: "bypass". Without it a thrown ' +
+        'error turns every /e/ link into a 500 instead of falling through to the ' +
+        'redirect rules below.'
+    )
+  }
+}
+
+// 8. Destinations inside /errors must resolve to a real page AND a real anchor.
 //    Nothing downstream catches a bad fragment: the build only warns on broken
 //    anchors it finds in page links, and it never sees this file at all.
 const docsPath = (route) => {

@@ -1296,6 +1296,26 @@ status = 301
 # docs page and get repointed as their entry is written -- an approximate page
 # beats no page, but a purpose-built entry beats both.
 
+# NO `to` VALUE IN THIS BLOCK MAY CARRY A QUERY STRING. This is the one rule
+# here that is not a style preference, and it is enforced by
+# _build_scripts/validate-redirects.js. Measured with `netlify dev` and
+# confirmed against production docs.weaviate.io:
+#
+#   to = "/errors/x#anchor"     + request ?clusterid=U  ->  /errors/x?clusterid=U#anchor
+#   to = "/errors/x?src=py-dep011#anchor" + ?clusterid=U ->  /errors/x?src=py-dep011#anchor
+#
+# The first line is what you want and Netlify orders the query before the
+# fragment for you. The second is the trap: once a destination has a query
+# string of its own, the request's own query is DROPPED, not merged. Weaviate
+# appends `?clusterid=<uuid>` to these links, and a `?` added here would throw
+# it away silently -- no build error, no broken link, just a parameter that
+# stops arriving.
+#
+# The message id is added instead by netlify/edge-functions/error-link-src.ts,
+# which reads it from the path and sets `src=<id>` before these rules run, which
+# is why the destinations below stay plain. Read that file before changing
+# anything in this block.
+
 ## ---- Python client (weaviate-python-client) ----
 
 [[redirects]]
@@ -1338,9 +1358,9 @@ status = 301
 
 # py-con004 is overloaded in the client: it labels BOTH the unclosed-connection
 # ResourceWarning and the year-zero date warning. This points at the former,
-# which is by far the more frequently hit. Renumbering the latter to the free
-# Con003 is tracked on board ac9a24a8; its redirect is deliberately not written
-# here until that client change ships.
+# which is by far the more frequently hit. Renumbering the latter onto the free
+# Con003 needs a client change; until that ships there is no second id to point
+# at anything, so no rule is written for one.
 [[redirects]]
 from = "/e/py-con004"
 to   = "/weaviate/client-libraries/python/notes-best-practices#connection-termination"
@@ -1440,7 +1460,8 @@ status = 301
 # in config.add_vector() and the `encoding` argument in
 # Configure.VectorIndex.MultiVectors.multi_vector(). This destination covers the
 # NamedVectors -> Vectors/MultiVectors rename, which is the common denominator.
-# Splitting the second message onto a free number is tracked on board ac9a24a8.
+# Splitting the second message onto a free id needs a client change, the same as
+# py-con004; until it ships both messages share this destination.
 [[redirects]]
 from = "/e/py-dep026"
 to   = "/errors/collection-configuration#deprecated-named-vector-syntax"
@@ -1623,12 +1644,12 @@ status = 301
 
 # The five below are frozen aliases too, but their canonical py-* id has NO
 # destination rule yet: the docs do not currently cover what these messages tell
-# the user to do (board 7ece4ca8), and py-dep028's only candidate page still
-# demonstrates the very argument the warning deprecates (board 4090df96). They
-# resolve to a 404 today -- exactly as the bare ids already do, with one extra
-# hop. Do NOT "fix" that by pointing them at an approximately-related page; a
-# wrong page in an error message is worse than no page. Write the content, add
-# the single /e/py-<id> rule above, and these start working.
+# the user to do, and py-dep028's only candidate page still demonstrates the very
+# argument the warning deprecates. So they fall through to the catch-all and land
+# on the /errors index until the content exists. Do NOT "fix" that by pointing
+# them at an approximately-related page; a wrong page in an error message is
+# worse than no page. Write the content, add the single /e/py-<id> rule above,
+# and these start working.
 
 [[redirects]]
 from = "/e/auth002"
@@ -1663,9 +1684,9 @@ status = 301
 # Two populations land here. An id shipped by a release that is ahead of the docs,
 # and the handful of frozen aliases whose canonical `py-*` id deliberately has no
 # destination yet because the content does not exist (auth002, auth003, auth004,
-# dep028, grpc002 -- board 7ece4ca8 and 4090df96). Both used to get a 404. The
-# /errors index is a strictly better answer: it explains what an id is, lists the
-# groups, and says outright that the section is still being filled in.
+# dep028, grpc002). Both used to get a 404. The /errors index is a strictly
+# better answer: it explains what an id is, lists the groups, and says outright
+# that the section is still being filled in.
 #
 # This does NOT make it safe to skip writing a rule. A reader who lands on the
 # index has to find their own message; a reader sent to an entry has already been

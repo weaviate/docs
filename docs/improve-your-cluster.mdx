@@ -4,6 +4,10 @@ description: "A short checklist for making a Weaviate cluster harder to break: h
 image: og/default.jpg
 ---
 
+import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+
+<ClusterIdNotice/>
+
 Most of the messages in the [error message reference](/errors) are not really about the moment they were printed. They are the point at which a cluster that was already short on headroom, unmonitored, or behind on versions finally ran out of room.
 
 This page is the short version of what to change so the next one does not happen. Work through it once when you set a cluster up, and again whenever the shape of your workload changes: a new collection, a jump in tenants, or a much larger import.
