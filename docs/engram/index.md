@@ -39,7 +39,7 @@ A pipeline can chain these steps in other orders too — see [pipelines](concept
 
 You can poll the [`run_id`](guides/check-run-status.md) to check when processing is complete.
 
-**[Searching memories](guides/search-memories.md):** You send a query to the API with a [retrieval type](concepts/search.md) (vector, BM25, hybrid, or fetch). Engram searches the memory store and returns ranked results.
+**[Searching memories](guides/search-memories.md):** You send a query to the API with a [retrieval type](concepts/search.md). `vector`, `bm25`, and `hybrid` return memories ranked against that query; `fetch` ignores it and returns the memories in the scope you ask for.
 
 ## Get started
 

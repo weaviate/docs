@@ -160,7 +160,7 @@ Recall is **not** broad by default. Cross-topic `properties` default to `repo_na
 }
 ```
 
-This default only bites when `repo_name` is one of the scope properties of your project's group. If no topic in the group is scoped by `repo_name`, there is nothing to filter on and recall is broad already.
+This default only bites when `repo_name` is one of the scope properties of your project's group, or when you map `repo_name` yourself in a config file — an explicitly configured property is resolved and sent whatever the group's schema says. If neither holds, there is nothing to filter on and recall is broad already.
 
 The plugin caches your project's scope requirements after the first fetch, so reinstall it if you repoint the key at a differently configured project. Configuration always overrides the cache.
 
