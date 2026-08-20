@@ -1,6 +1,6 @@
 ---
 title: Input data types
-description: "The three content types Engram accepts: string, pre-extracted, and conversation."
+description: "The three content types Engram accepts: string, conversation, and pre_extracted."
 image: og/docs/engram.png
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Store memories
-description: "How to store memories in Engram using string, pre-extracted, or conversation content types."
+description: "How to store memories in Engram using string, conversation, or pre-extracted content types."
 image: og/docs/engram.png
 ---
 

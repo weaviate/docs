@@ -5,13 +5,13 @@ description: "Engram is a managed memory service for LLM agents and applications
 image: og/docs/engram.png
 ---
 
-Engram is a managed memory service for LLM agents and applications. It provides a [REST API](/engram/api/rest) and [Python SDK](https://github.com/weaviate/engram-python-sdk) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
+Engram is a managed memory service for LLM agents and applications. It provides a [REST API](/engram/api/rest) and [Python SDK](https://pypi.org/project/weaviate-engram/) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
 Use Engram to give your agents persistent memory that they can write to and search across conversations, users, and [topics](concepts/topics.md).
 
 ## Key capabilities
 
-- **Automatic memory extraction** — Send raw text, pre-extracted facts, or full conversations. Engram's [pipeline](concepts/pipelines.md) extracts and stores structured [memories](concepts/memories.md) automatically.
+- **Automatic memory extraction** — Send raw text, full conversations, or pre-extracted facts. Engram's [pipeline](concepts/pipelines.md) extracts and stores structured [memories](concepts/memories.md) automatically.
 - **Semantic search** — Find relevant memories with vector, BM25, or [hybrid retrieval](concepts/search.md), or fetch a whole scope with no query.
 - **Scoped memory** — Isolate memories by project, user, and any custom scope properties (e.g. `conversation_id`). [Topics](concepts/topics.md) let you categorize memories within a [group](concepts/groups.md).
 - **Async processing** — Memory storage runs asynchronously through a pipeline. Poll [run status](guides/check-run-status.md) to track when memories are committed.
@@ -44,10 +44,12 @@ You can poll the [`run_id`](guides/check-run-status.md) to check when processing
 ## Get started
 
 - **[Quickstart](quickstart.md)** — Create a project, get an API key, store your first memory, and search it.
+- **[Install & integrate](install-integrate.md)** — The Python SDK, the REST API, and the Claude Code and Hermes memory plugins.
 - **[Concepts](concepts/index.md)** — Understand memories, topics, groups, scoping, and pipelines.
 - **[Guides](guides/index.md)** — Step-by-step instructions for storing, searching, and managing memories.
 - **[API overview](api-overview.md)** — Base URL, authentication, error format and status codes, and plan limits.
 - **[REST API reference](/engram/api/rest)** — Full endpoint documentation with request and response schemas.
+- **[Engram console](console.md)** — Browse memories, users, and runs, and manage API keys, without writing code.
 
 ## Questions and feedback
 

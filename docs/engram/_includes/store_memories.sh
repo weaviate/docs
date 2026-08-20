@@ -7,7 +7,7 @@ CONVERSATION_ID=$(uuidgen | tr '[:upper:]' '[:lower:]')
 
 : <<'DOCSNIPPETS'
 # START StoreString
-curl -X POST https://api.engram.weaviate.io/v1/memories \
+curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -24,7 +24,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
 # END StoreString
 
 # START StorePreExtracted
-curl -X POST https://api.engram.weaviate.io/v1/memories \
+curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -42,7 +42,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
 # END StorePreExtracted
 
 # START StoreConversation
-curl -X POST https://api.engram.weaviate.io/v1/memories \
+curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

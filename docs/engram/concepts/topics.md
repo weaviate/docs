@@ -10,7 +10,7 @@ Each topic has:
 
 | Property | Description |
 |----------|-------------|
-| `topic_name` | Unique identifier within the group (e.g. `user_facts`). This is the name you send in a `topics` filter, and the field `GET /v1/groups` returns. |
+| `topic_name` | Unique identifier within the group (e.g. `UserFacts`). This is the name you send in a `topics` filter, and the field `GET /v1/groups` returns. |
 | `description` | Natural language description used in LLM prompts during extraction (e.g. "What food the user likes to eat") |
 | `scoping` | Which scopes the topic requires: `user_scoped` (requires `user_id`) and a list of custom `scope_properties` keys (e.g. `conversation_id`). See [scopes](scopes.md). |
 | `is_bounded` | If true, the topic holds at most **one** memory per [scope](scopes.md). Useful for things like running conversation summaries or per-user profiles. |
@@ -40,18 +40,18 @@ Topics are defined at project creation time as part of a group's configuration. 
 
 A **travel agent** might define three topics within a single group:
 
-- `"destinations"` — description: *"Places the user wants to visit or has visited"*
-- `"food_preferences"` — description: *"What food the user likes to eat"*
-- `"travel_style"` — description: *"How the user prefers to travel (budget, luxury, solo, group)"*
+- `Destinations` — description: *"Places the user wants to visit or has visited"*
+- `FoodPreferences` — description: *"What food the user likes to eat"*
+- `TravelStyle` — description: *"How the user prefers to travel (budget, luxury, solo, group)"*
 
-When a user says *"I love sushi and visit Tokyo every spring"*, the extraction pipeline reads each topic's description and routes the facts accordingly — "loves sushi" goes to `food_preferences` and "visits Tokyo every spring" goes to `destinations`.
+When a user says *"I love sushi and visit Tokyo every spring"*, the extraction pipeline reads each topic's description and routes the facts accordingly — "loves sushi" goes to `FoodPreferences` and "visits Tokyo every spring" goes to `Destinations`.
 
-At search time, you can restrict results to specific topics. Searching with `topics: ["food_preferences"]` only returns food-related memories, while omitting `topics` searches across all topics in the group.
+At search time, you can restrict results to specific topics. Searching with `topics: ["FoodPreferences"]` only returns food-related memories, while omitting `topics` searches across all topics in the group.
 
 A **coding assistant** might use topics differently:
 
-- `"UserKnowledge"` — *"Anything relating to the user personally: their personal details, preferences, what they've done or plan to do"*
-- `"tech_stack"` — *"Programming languages, frameworks, and libraries the user works with"*
+- `UserKnowledge` — *"Anything relating to the user personally: their personal details, preferences, what they've done or plan to do"*
+- `TechStack` — *"Programming languages, frameworks, and libraries the user works with"*
 
 This lets the assistant retrieve just the user's tech stack when helping with a code review, or just their personal context when configuring a new environment.
 

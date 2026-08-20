@@ -135,7 +135,7 @@ curl -sI http://localhost:8888/openapi.json   # 200, content-type: application/j
 
 ### What it is
 
-The [Engram](https://docs.weaviate.io/engram) memory server's REST API
+The [Engram](https://docs.weaviate.io/engram) managed memory service's REST API
 specification, in **OpenAPI 3.1** format. It is rendered as the human-readable
 reference at [`/engram/api/rest`](https://docs.weaviate.io/engram/api/rest) by
 the second Scalar plugin instance in
@@ -157,7 +157,7 @@ below to date a copy.
 | Repository | [weaviate/engram](https://github.com/weaviate/engram) (private) |
 | Path in that repo | `openapi.json` (repository root) |
 | Format | OpenAPI 3.1 |
-| This copy | commit `67a0248` — server release v0.0.40, the production build on 2026-08-20 |
+| This copy | commit `67a0248`, the dev-deploy commit copied on 2026-08-20. Byte-identical to the v0.0.40 production build (commit `f2e6cbb`). |
 
 Record the source commit in the pull request body whenever you refresh this file,
 because `info.version` cannot tell a reviewer which server build a copy describes.
@@ -202,7 +202,7 @@ not correct them in this file.
 As of commit `67a0248`:
 
 - **`info.description` documents the wrong error shape.** Its prose shows errors
-  as `{"status", "message"}`, while the server returns RFC 7807
+  as `{"status", "message"}`, while the server returns RFC 9457 (formerly RFC 7807)
   `application/problem+json` bodies — `title`, `status`, `detail`, and an optional
   `errors[]` array — which is what the `ErrorModel` schema in the same document
   correctly describes. The status-code table in that prose also omits `422`

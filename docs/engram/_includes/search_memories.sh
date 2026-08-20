@@ -6,7 +6,7 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START BasicSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -21,7 +21,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END BasicSearch
 
 # START VectorSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -36,7 +36,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END VectorSearch
 
 # START BM25Search
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -51,7 +51,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END BM25Search
 
 # START HybridSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -66,7 +66,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END HybridSearch
 
 # START FetchSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -83,7 +83,7 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END FetchSearch
 
 # START TopicFilter
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

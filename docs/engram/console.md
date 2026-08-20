@@ -140,7 +140,7 @@ import ApiKeysImg from '/docs/engram/_includes/console/api-keys.png';
 
 ## Plans
 
-The **Plans** page shows your current plan and lets you upgrade. Your plan determines limits such as the number of pipeline runs allowed per month and the number of projects you can create — the free plan allows **1,000 runs per month** and **1 project**. When a free plan reaches its monthly run cap, new runs are rejected with a `429` response until the next billing period. See the [pricing page](https://weaviate.io/pricing) (Engram tab) for every plan's limits, and the [API overview](api-overview.md#plan-limits) for how the cap surfaces in the API.
+The **Plans** page shows your current plan, your usage in the current billing period, and the option to upgrade. See [Plan limits](api-overview.md#plan-limits) for what a plan allows and what happens when you reach the cap, and the [pricing page](https://weaviate.io/pricing) (Engram tab) for every plan's limits and prices.
 
 ## Questions and feedback
 

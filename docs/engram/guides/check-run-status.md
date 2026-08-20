@@ -89,7 +89,7 @@ export ENGRAM_API_KEY="eng_..."
 </TabItem>
 </Tabs>
 
-### `get` versus `wait`
+### `runs.get` versus `runs.wait`
 
 The Python SDK offers two ways to read a run:
 

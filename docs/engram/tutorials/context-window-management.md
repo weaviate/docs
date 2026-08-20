@@ -128,13 +128,14 @@ Instead of sending the full conversation history, search Engram for relevant mem
 </Tabs>
 
 The context window now contains:
-- **System prompt**: ~5 retrieved memories (~50 tokens)
-- **Recent messages**: Last 2-3 exchanges (~4-6 messages, ~500-750 tokens)
-- **Total**: ~800 tokens — flat, regardless of conversation length
+
+- **System prompt** — ~5 retrieved memories (~50 tokens)
+- **Recent messages** — the last 2-3 exchanges (~4-6 messages, ~500-750 tokens)
+- **Total** — ~800 tokens, flat regardless of conversation length
 
 ## Step 4: Compare side-by-side
 
-The two approaches diverge quickly. This model prices a turn at ~25 user tokens plus ~100 assistant tokens, and gives the memory-augmented version a fixed window of the last three exchanges plus ~50 tokens of retrieved memory:
+The two approaches diverge quickly. The estimate below prices a turn at ~25 user tokens plus ~100 assistant tokens, and gives the memory-augmented version a fixed window of the last three exchanges plus ~50 tokens of retrieved memory:
 
 <FilteredTextBlock
   text={PyCode}
@@ -187,12 +188,12 @@ Fetch it with the `fetch` retrieval type — it returns the bounded memory direc
 
 The summary stays one memory regardless of how long the conversation runs, so the token cost of including it in your LLM call is constant — and the LLM still sees the full conversational context.
 
-### Hybrid search tuning
+### Choose a retrieval type
 
-Adjust the `retrieval_config` to control how memories are ranked:
+Pass a `retrieval_config` to control how memories are found and ranked:
 
 ```python
-from engram import VectorRetrieval, BM25Retrieval, HybridRetrieval
+from engram import VectorRetrieval, BM25Retrieval, HybridRetrieval, FetchRetrieval
 
 # Pure semantic search — best for conceptual similarity
 VectorRetrieval(limit=5)
@@ -202,7 +203,12 @@ BM25Retrieval(limit=5)
 
 # Hybrid (recommended) — combines both approaches
 HybridRetrieval(limit=10)
+
+# Fetch — return a scope's memories directly, ignoring the query
+FetchRetrieval(limit=1)
 ```
+
+`fetch` is the one used above to read a bounded `ConversationSummary`. See [search](../concepts/search.md) for how each type ranks.
 
 ### Dual-memory pattern
 

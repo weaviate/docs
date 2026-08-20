@@ -6,7 +6,7 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START AddMemory
-curl -X POST https://api.engram.weaviate.io/v1/memories \
+curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -22,12 +22,12 @@ curl -X POST https://api.engram.weaviate.io/v1/memories \
 # END AddMemory
 
 # START CheckRun
-curl https://api.engram.weaviate.io/v1/runs/<run-id> \
+curl "https://api.engram.weaviate.io/v1/runs/<run-id>" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END CheckRun
 
 # START SearchMemory
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

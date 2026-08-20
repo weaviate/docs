@@ -38,7 +38,7 @@ uv add weaviate-engram
 
 ## Step 1: Create a project
 
-Every memory in Engram belongs to a project. Create one in the [Engram console](https://console.weaviate.cloud), the Engram section of Weaviate Cloud.
+Every memory in Engram belongs to a project. Create one in the [Engram console](console.md), the Engram section of [Weaviate Cloud](https://console.weaviate.cloud).
 
 Follow this interactive walkthrough to create a project with the **Personalization** template, set up its group and the `UserKnowledge` topic, and generate an API key to connect to it:
 
@@ -65,7 +65,7 @@ The same steps in text:
 5. Create the project, then open **API Keys** in the left-hand menu.
 6. Select **Create key** and copy the key — it is shown only once (this is [Step 2](#step-2-create-an-api-key)).
 
-The [Engram console](console.md) page covers each of those pages in more detail.
+The [Engram console](console.md) page describes each of these screens in more detail.
 
 The template sets up the project's `default` [group](concepts/groups.md) with default [topics](concepts/topics.md), such as `UserKnowledge` for general information about the user. This is enough to get started.
 
@@ -201,7 +201,7 @@ If you do want to wait — on a first run, or while debugging — poll the run u
 </TabItem>
 </Tabs>
 
-[Check run status](guides/check-run-status.md) covers the response fields, and `runs.get` versus `runs.wait`.
+[Check run status](guides/check-run-status.md) covers the response fields, and [`runs.get` versus `runs.wait`](guides/check-run-status.md#runsget-versus-runswait).
 
 </details>
 

@@ -37,7 +37,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
 ```
 
 :::note The knowledge-base half is illustrative
-Every Engram snippet on this page runs against a live project when the docs are tested. The two Weaviate snippets — connecting to a cluster below, and creating and filling `ProductDocs` in [Step 2](#step-2-populate-the-knowledge-base) — are not tested, so treat them as a sketch to adapt to your own collection. Everything after Step 2 takes the knowledge-base hits as a plain list of strings, so it does not care how you retrieved them. The [Weaviate quickstart](/weaviate/quickstart) has a working ingestion example.
+Every Engram snippet on this page runs against a live project when the docs are tested. The two Weaviate snippets — connecting to a cluster below, and creating and filling `ProductDocs` in [Step 2](#step-2-populate-the-knowledge-base) — are not tested, so treat them as a sketch to adapt to your own collection. Everything after Step 2 takes the knowledge-base hits as a plain list of strings, so it does not care how you retrieved them. The [Weaviate quickstart](/weaviate/quickstart/index.md) has a working ingestion example.
 :::
 
 ## Step 1: Set up both clients
@@ -208,7 +208,7 @@ For privacy compliance (e.g. GDPR right to deletion), you can retrieve and delet
   language="py"
 />
 
-Use `memories.search()` to find all memories for a user, then `memories.delete()` each one. After deletion, subsequent searches return no results for that user.
+The snippet above uses `memories.search()`, which is enough for a demo. For a deletion request you need a complete listing — see below.
 
 :::caution A search is not a complete listing
 `memories.search()` ranks against a query and returns the top matches, so it can miss memories a deletion request has to cover. To enumerate everything stored for a user, use [`POST /v1/memories/list`](../guides/manage-memories.md#list-memories) with that `user_id`. The endpoint is REST-only — the Python SDK has no `list()` method yet — so call it directly and feed the IDs to `memories.delete()`.
@@ -218,7 +218,7 @@ Use `memories.search()` to find all memories for a user, then `memories.delete()
 
 - **[Add long-term memory to a chat app](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
 - **[Context window management](context-window-management.md)** — Reduce token costs by replacing conversation history with memory.
-- **[Manage memories](../guides/manage-memories.md)** — API reference for get and delete operations.
+- **[Manage memories](../guides/manage-memories.md)** — List the memories in a project, and get or delete individual ones by ID.
 - **[Core concepts](../concepts/index.md)** — Learn about topics, groups, scoping, and pipelines.
 
 ## Questions and feedback

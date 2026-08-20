@@ -11,7 +11,7 @@ Engram supports four retrieval types for finding memories:
 | `vector` | Pure semantic search using embeddings | Finding conceptually related memories |
 | `bm25` | Full-text keyword search | Exact term matching |
 | `hybrid` | Combination of vector and BM25 | General-purpose search (recommended) |
-| `fetch` | No query at all — returns the memories in the scope you ask for | Reading a [bounded topic](topics.md) such as `ConversationSummary`, where there is one memory per scope and ranking is pointless |
+| `fetch` | No query at all — returns the memories in the scope you ask for | Reading a [bounded topic](topics.md#bounded-topics) such as `ConversationSummary`, where there is one memory per scope and ranking is pointless |
 
 You specify the retrieval type in the `retrieval_config` when [searching](../guides/search-memories.md).
 
@@ -19,7 +19,7 @@ You specify the retrieval type in the `retrieval_config` when [searching](../gui
 
 `vector`, `bm25`, and `hybrid` all rank memories against your query. `fetch` does not: it applies the [scope](scopes.md) and topic filters you pass and returns what matches, with no embedding, no keyword scoring, and no ordering by relevance.
 
-That makes it the right choice when the scope already identifies the memory you want. A [bounded topic](topics.md) holds at most one memory per scope, so searching it with a query only adds latency and a chance of ranking the wrong thing — `fetch` with the topic and scope returns exactly that memory. The [Context window management](../tutorials/context-window-management.md) tutorial uses it to pull a `ConversationSummary` for the current conversation.
+That makes it the right choice when the scope already identifies the memory you want. A [bounded topic](topics.md#bounded-topics) holds at most one memory per scope, so searching it with a query only adds latency and a chance of ranking the wrong thing — `fetch` with the topic and scope returns exactly that memory. The [Context window management](../tutorials/context-window-management.md) tutorial uses it to pull a `ConversationSummary` for the current conversation.
 
 The `query` field is still required by the API and must not be empty, even though `fetch` ignores its value. Send any placeholder.
 

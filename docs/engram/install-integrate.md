@@ -50,7 +50,14 @@ For an async client, use `AsyncEngramClient` instead. The [Quickstart](quickstar
 
 ### Errors
 
-The SDK raises typed exceptions rather than returning status codes: `AuthenticationError` for a rejected API key, `APIError` — carrying `status_code` and the parsed response `body` — for every other failed request, `ValidationError` when the client rejects your arguments before sending anything, and `EngramTimeoutError` when `runs.wait()` gives up on a run. All of them derive from `EngramError`, and all are importable from `engram`.
+The SDK raises typed exceptions rather than returning status codes:
+
+- `AuthenticationError` — a rejected API key.
+- `APIError` — every other failed request. Carries `status_code` and the parsed response `body`.
+- `ValidationError` — the client rejected your arguments before sending anything.
+- `EngramTimeoutError` — `runs.wait()` gave up on a run.
+
+All derive from `EngramError` and all are importable from `engram`.
 
 See [Errors in the Python SDK](api-overview.md#errors-in-the-python-sdk) for the full table and a `try`/`except` example.
 
@@ -80,7 +87,7 @@ The [`engram` plugin](https://github.com/weaviate/engram-plugins) gives [Claude 
 
 ### Install
 
-Create an Engram project in the [Engram console](https://console.weaviate.cloud) and set its API key in a shell profile that persists (`~/.zshenv`, `~/.zshrc`, or `~/.bashrc`):
+Create an Engram project in the [Engram console](console.md) and set its API key in a shell profile that persists (`~/.zshenv`, `~/.zshrc`, or `~/.bashrc`):
 
 ```bash
 export ENGRAM_API_KEY=...
@@ -95,7 +102,7 @@ Then install the plugin inside a Claude Code session:
 
 That's it — memory starts working on your next prompt.
 
-Which [topics](concepts/topics.md) get extracted is decided by the project you point the key at, so pick the template whose topics suit coding sessions when you create it. Note that only the personalization pipeline is available on the free plan; the other presets start at the Starter plan (see the [pricing page](https://weaviate.io/pricing), Engram tab).
+Which [topics](concepts/topics.md) get extracted is decided by the project you point the key at, so when you create that project pick the template whose topics suit coding sessions. The free plan runs the personalization [pipeline](concepts/pipelines.md) only; the other preset pipelines start at the Starter plan (see the [pricing page](https://weaviate.io/pricing), Engram tab).
 
 ### Identity
 

@@ -74,7 +74,7 @@ Error responses are problem documents ([RFC 9457](https://www.rfc-editor.org/rfc
 Read `detail` for the human-readable cause and `status` for the code. Validation failures add an `errors` array, where each entry has a `message`, the `location` of the offending field, and the `value` that was rejected.
 
 :::note
-The prose in `info.description` of the OpenAPI document still describes errors as `{"status", "message"}`. That is out of date — the `ErrorModel` schema in the same document, and the server itself, use the problem-document shape above.
+The overview text on the [REST API reference](/engram/api/rest) page still describes errors as `{"status", "message"}`. That text is out of date — the server returns the problem document shown above.
 :::
 
 ### Status codes
@@ -89,7 +89,7 @@ The prose in `info.description` of the OpenAPI document still describes errors a
 | `429` | Too many requests | The plan's monthly run cap is exhausted. See [Plan limits](#plan-limits). |
 | `500` | Internal server error | A server-side failure. |
 
-Topic and group names are matched case-sensitively, so `userknowledge` is a `422` where `UserKnowledge` succeeds.
+Topic and group names are matched case-sensitively, so `userknowledge` is a `422` where `UserKnowledge` succeeds. `user_id` is the exception — it is case-*in*sensitive.
 
 ### Errors in the Python SDK
 
