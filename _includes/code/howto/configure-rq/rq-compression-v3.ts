@@ -53,7 +53,7 @@ await client.collections.create({
         // highlight-start
         quantizer: configure.vectorIndex.quantizer.rq({
             bits: 4,
-            rescoreLimit: 50,  // Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+            rescoreLimit: 20,  // Optional: Number of candidates to fetch before rescoring
         })
         // highlight-end
     }),

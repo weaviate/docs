@@ -130,23 +130,11 @@ RQ can also be enabled for an existing collection by updating the collection def
 
 <Rq4bit/>
 
-[4-bit RQ](../../concepts/vector-quantization.md#4-bit-rq) stores each dimension in 4 bits instead of 8, so a compressed vector is about half the size of the 8-bit equivalent and roughly 8x smaller than the uncompressed vector. It sits between 8-bit RQ and 1-bit RQ: it trades some accuracy in the compressed distance calculation for a smaller index, and it makes up the difference by rescoring more candidates against the uncompressed vectors.
+[4-bit RQ](../../concepts/vector-quantization.md#4-bit-rq) stores each dimension in 4 bits instead of 8, so a compressed vector is about half the size of the 8-bit equivalent and roughly 8x smaller than the uncompressed vector. It sits between 8-bit RQ and 1-bit RQ: it trades some accuracy in the compressed distance calculation for a smaller index, and it depends more heavily on rescoring against the uncompressed vectors to recover that accuracy.
 
 :::note 4-bit RQ requires the `hnsw` index
 
 4-bit RQ is supported on the `hnsw` index type only. The `flat` and `hfresh` index types reject `bits` set to `4`, and a `dynamic` index only uses 4-bit RQ after it converts to HNSW. For the bit widths that each index type accepts, see [RQ parameters](#rq-parameters).
-
-:::
-
-:::caution Raise `rescoreLimit` when you use 4-bit RQ
-
-When `bits` is set to `4`, `rescoreLimit` defaults to `20`, the same default as 8-bit RQ. That window is too small for 4-bit RQ to reach the recall it is capable of, and Weaviate does not warn you about it.
-
-Rescoring re-ranks a pool of candidates against the uncompressed vectors and returns the best `limit` of them, so it can only recover a true neighbor that the compressed distances ranked too low if that pool holds more than `limit` candidates. When `rescoreLimit` is the same as the query `limit`, the pool holds exactly `limit` candidates, so the objects you get back are the ones the compressed distances chose, only reordered. A query with a `limit` of `20` against the 4-bit default of `20` is exactly that case.
-
-Set `rescoreLimit` higher than the largest `limit` you expect to query with, so that rescoring has spare candidates to promote, then tune upward from there until recall is high enough. `50` is a reasonable starting point for queries that return 10 to 20 objects. Each extra candidate costs one distance calculation against an uncompressed vector, and there is a ceiling: rescoring never sees more candidates than the graph search returned, which is bounded by [`ef`](/weaviate/config-refs/indexing/vector-index#hnsw-index-parameters).
-
-Never set `rescoreLimit` to `0` with 4-bit RQ. A value of `0` disables rescoring entirely and leaves the coarse compressed distances as the final ranking.
 
 :::
 

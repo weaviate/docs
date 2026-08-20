@@ -56,7 +56,7 @@ client.collections.create(
         # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.rq(
             bits=4,
-            rescore_limit=50,  # Raise the rescore limit; the default of 20 is too low for 4-bit RQ
+            rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
         )
         # highlight-end
     ),
@@ -195,7 +195,7 @@ collection.config.update(
         vector_index_config=Reconfigure.VectorIndex.hnsw(
             quantizer=Reconfigure.VectorIndex.Quantizer.rq(
                 bits=4,
-                rescore_limit=50,
+                rescore_limit=20,
             ),
         ),
     )

@@ -150,7 +150,7 @@ The method works as follows:
 
 Quantizing the query at a higher precision than the stored data costs no extra storage and recovers much of the accuracy that the coarser data codes give up. This is the same asymmetric idea used by 1-bit RQ.
 
-Because the compressed distances are coarser, 4-bit RQ depends more heavily on [rescoring](#over-fetching--re-scoring) than 8-bit RQ does. In internal testing on 1536-dimensional data, 4-bit RQ reaches around 94-95% recall from the compressed distances alone, compared with around 99% for 8-bit RQ. Rescoring the top 50 candidates against the uncompressed vectors brings both variants to 99.8% or better. The default rescore limit is not high enough to reach those figures, so set it explicitly. See [Configuration: 4-bit RQ](../configuration/compression/rq-compression.md#4-bit-rq).
+Because the compressed distances are coarser, 4-bit RQ depends more heavily on [rescoring](#over-fetching--re-scoring) than 8-bit RQ does. In internal testing on 1536-dimensional data, 4-bit RQ reaches around 94-95% recall from the compressed distances alone, compared with around 99% for 8-bit RQ. In the same tests, rescoring the top 50 candidates against the uncompressed vectors brought both variants to 99.8% or better. See [Configuration: 4-bit RQ](../configuration/compression/rq-compression.md#4-bit-rq).
 
 ### 1-bit RQ
 
@@ -199,7 +199,7 @@ The query retrieves compressed objects until the object count reaches whichever 
 For example, if a query is made with a limit of 10, and a rescore limit of 200, Weaviate fetches 200 objects. After rescoring, the query returns top 10 objects. This process offsets the loss in search quality (recall) that is caused by compression.
 
 :::note RQ optimization
-With 8-bit RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to `0`) for maximum query performance with minimal impact on search quality. Do not do this for 4-bit RQ or 1-bit RQ, which both rely on rescoring to reach their reported recall.
+With 8-bit RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to `0`) for maximum query performance with minimal impact on search quality.
 :::
 
 ## Vector compression with vector indexing

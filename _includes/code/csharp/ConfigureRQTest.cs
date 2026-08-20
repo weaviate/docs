@@ -73,8 +73,7 @@ public class ConfigureRQTest : IAsyncLifetime
                         Quantizer = new VectorIndex.Quantizers.RQ
                         {
                             Bits = 4,
-                            // Raise the rescore limit; the default of 20 is too low for 4-bit RQ
-                            RescoreLimit = 50,
+                            RescoreLimit = 20, // Optional: Number of candidates to fetch before rescoring
                         },
                         // highlight-end
                     }
@@ -203,7 +202,7 @@ public class ConfigureRQTest : IAsyncLifetime
         {
             var vectorConfig = c.VectorConfig["default"];
             vectorConfig.VectorIndexConfig.UpdateHNSW(h =>
-                h.Quantizer = new VectorIndex.Quantizers.RQ { Bits = 4, RescoreLimit = 50 }
+                h.Quantizer = new VectorIndex.Quantizers.RQ { Bits = 4, RescoreLimit = 20 }
             );
         });
         // END 4BitUpdateSchema

@@ -102,10 +102,9 @@ func TestRQConfiguration(t *testing.T) {
 		// Define the configuration for RQ. 'bits' set to 4 requires an hnsw index
 		// highlight-start
 		rq_config := map[string]interface{}{
-			"enabled": true,
-			"bits":    4,
-			// Raise the rescore limit; the default of 20 is too low for 4-bit RQ
-			"rescoreLimit": 50,
+			"enabled":      true,
+			"bits":         4,
+			"rescoreLimit": 20, // Optional: Number of candidates to fetch before rescoring
 		}
 		// highlight-end
 
@@ -139,7 +138,7 @@ func TestRQConfiguration(t *testing.T) {
 		require.True(t, ok)
 		assert.Equal(t, true, rqConfig["enabled"])
 		assert.Equal(t, float64(4), rqConfig["bits"])
-		assert.Equal(t, float64(50), rqConfig["rescoreLimit"])
+		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
 	})
 
 	t.Run("Enable 1-bit RQ", func(t *testing.T) {
@@ -347,10 +346,9 @@ func TestRQConfiguration(t *testing.T) {
 
 		// Add RQ configuration to enable 4-bit quantization
 		cfg["rq"] = map[string]interface{}{
-			"enabled": true,
-			"bits":    4,
-			// Raise the rescore limit; the default of 20 is too low for 4-bit RQ
-			"rescoreLimit": 50,
+			"enabled":      true,
+			"bits":         4,
+			"rescoreLimit": 20, // Optional: Number of candidates to fetch before rescoring
 		}
 
 		// Update the class configuration
@@ -377,7 +375,7 @@ func TestRQConfiguration(t *testing.T) {
 		require.True(t, ok)
 		assert.Equal(t, true, rqConfig["enabled"])
 		assert.Equal(t, float64(4), rqConfig["bits"])
-		assert.Equal(t, float64(50), rqConfig["rescoreLimit"])
+		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
 	})
 
 	t.Run("Enable 1-bit RQ on Existing Collection", func(t *testing.T) {
