@@ -72,31 +72,99 @@ The Python SDK is the only official client. There is no Weaviate-published npm p
 
 The [`engram` plugin](https://github.com/weaviate/engram-plugins) gives [Claude Code](https://claude.com/claude-code) long-term memory backed by Engram. It recalls relevant memories before each answer and stores each completed turn — everything happens automatically via hooks, with no tools for the agent to call. Memory is best-effort and never blocks a session.
 
-When creating your Engram project, you choose [topics](concepts/topics.md) that control what memories get extracted. Select the **Coding Assistant** template for topics tailored to coding sessions — you can also define custom topics for a more tailored experience.
+### Install
 
-Once the project is created, set your API key in your shell profile (e.g. `~/.zshrc` or `~/.bashrc`), then install the plugin inside a Claude Code session:
+Create an Engram project in the [console](https://console.weaviate.cloud) and set its API key in a shell profile that persists (`~/.zshenv`, `~/.zshrc`, or `~/.bashrc`):
 
 ```bash
 export ENGRAM_API_KEY=...
 ```
+
+Then install the plugin inside a Claude Code session:
 
 ```bash
 /plugin marketplace add weaviate/engram-plugins
 /plugin install engram@weaviate-engram
 ```
 
-That's it — memory starts working on your next prompt. See the [plugin README](https://github.com/weaviate/engram-plugins) for more info and optional customization.
+That's it — memory starts working on your next prompt.
+
+Which [topics](concepts/topics.md) get extracted is decided by the project you point the key at, so pick the template whose topics suit coding sessions when you create it. Note that only the personalization pipeline is available on the free plan; the other presets start at the Starter plan (see the [pricing page](https://weaviate.io/pricing), Engram tab).
+
+### Identity
+
+The plugin sends a `user_id` so memories stay separate per person. It defaults to your `git config user.email`; set `ENGRAM_USER_ID` to override it.
+
+### Scope properties
+
+Before each store, the plugin reads your project's [scope](concepts/scopes.md) requirements from [`GET /v1/groups`](api-overview.md#groups-and-topics) and resolves the properties it knows about:
+
+| Property | Resolved from |
+|----------|---------------|
+| `repo_name` | The git remote's owner-scoped repository name, falling back to the working directory when there is no remote |
+| `session_id` | The Claude Code session ID |
+
+Those two are the only built-ins.
+
+:::caution A topic scoped by anything else needs a mapping
+If any topic in your project's group is scoped by another property — a `ConversationSummary` topic scoped by `conversation_id`, for example — the plugin has nothing to resolve it from, the store request is rejected for insufficient scope, and **every turn** ends with an `Engram · saving memory failed` notice until you map it.
+
+Map it in a `.engram.json` in the project directory:
+
+```json
+{
+  "properties": {
+    "conversation_id": { "from": "session_id" }
+  }
+}
+```
+:::
+
+### Configuration
+
+Two optional files configure scope resolution and how recall is narrowed:
+
+| File | Scope | What it may contain |
+|------|-------|---------------------|
+| `~/.engram/config.json` | Your machine, everywhere | Everything below, including `cmd` sources |
+| `.engram.json` | One project directory, safe to commit | Literals and `from` tokens only — a `cmd` here is ignored, so a cloned repository cannot run a command on your machine |
+
+A property value's JSON shape decides how it resolves:
+
+- A **string** is a literal, used verbatim: `"payments"`.
+- An **object** is a dynamic source — `{"from": "<token>"}` for a built-in value, where the tokens are `git-repo`, `cwd`, and `session_id`; or `{"cmd": ["prog", "arg"]}` to run a command directly, with no shell.
+- An **array** is a cascade: entries are tried in order and the first non-empty value wins.
+
+A `search` object narrows what gets recalled — `search.properties` restricts recall to memories matching those scope keys, and `search.topics` restricts it to named topics, each with its own optional filter. Search is broad by default.
+
+The plugin caches your project's scope requirements after the first fetch, so reinstall it if you repoint the key at a differently configured project. Configuration always overrides the cache.
+
+### Environment variables
+
+| Variable | Purpose |
+|----------|---------|
+| `ENGRAM_API_KEY` | Your Engram API key. Required. |
+| `ENGRAM_USER_ID` | Override the identity memories are stored under. Defaults to `git config user.email`. |
+| `ENGRAM_BASE_URL` | Point the plugin at a different Engram endpoint. |
+
+### When something is wrong
+
+Because memory is best-effort, the plugin never fails a session. When it needs attention — a bad API key, an unresolvable scope property — Claude surfaces a short `Engram · …` note at the top of its reply. See the [plugin README](https://github.com/weaviate/engram-plugins) for the full configuration reference.
 
 ## Hermes Agent
 
 [`hermes-weaviate-engram`](https://github.com/weaviate/hermes-weaviate-engram) is a memory provider plugin that gives the [Hermes Agent](https://github.com/NousResearch/hermes-agent) long-term memory backed by Engram. It recalls relevant memories into the system prompt before each turn, and stores each completed turn through Engram's pipeline.
 
-Install the plugin and run the setup wizard, which prompts for your API key:
+The plugin is not published on PyPI, so install it from the repository, then run the setup wizard, which prompts for your API key:
 
 ```bash
-pip install hermes-weaviate-engram
+pip install git+https://github.com/weaviate/hermes-weaviate-engram
 hermes memory setup        # choose weaviate_engram
 ```
+
+:::note It pins an older SDK
+The plugin requires `weaviate-engram>=0.6,<1`, so installing it into an environment that already has the current 1.x [Python SDK](#python-sdk) downgrades that SDK. Install it into its own virtual environment if you also write against the SDK directly.
+:::
 
 The wizard saves `ENGRAM_API_KEY` to `~/.hermes/.env` and sets `memory.provider` in your Hermes config.
 
