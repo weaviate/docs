@@ -1,9 +1,11 @@
-import os
 import time
-import uuid
-from engram import EngramClient, HybridRetrieval, FetchRetrieval
+from engram import HybridRetrieval, FetchRetrieval
 
 # START Setup
+import os
+import uuid
+from engram import EngramClient
+
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
 )
@@ -132,7 +134,9 @@ time.sleep(5)  # Allow tenant indexing to complete
 # START MemoryAugmentedChatAnthropic
 def memory_augmented_chat_anthropic():
     """Memory-augmented approach: use Engram instead of full history."""
+    import os
     import anthropic
+    from engram import EngramClient, HybridRetrieval
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
@@ -191,7 +195,9 @@ Relevant context from previous conversations:
 # START MemoryAugmentedChatOpenAI
 def memory_augmented_chat_openai():
     """Memory-augmented approach: use Engram instead of full history."""
+    import os
     from openai import OpenAI
+    from engram import EngramClient, HybridRetrieval
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
@@ -281,6 +287,8 @@ for _retry in range(5):
         time.sleep(3)
 
 # START TopicFiltering
+from engram import HybridRetrieval
+
 results = client.memories.search(
     query="What tech stack does the user prefer?",
     topics=["UserKnowledge"],
@@ -299,6 +307,10 @@ assert all(m.topic == "UserKnowledge" for m in results), (
 )
 
 # START ConversationSummary
+import uuid
+from engram import FetchRetrieval
+from engram.errors import APIError
+
 conversation_id = f"session-{uuid.uuid4().hex[:8]}"
 
 # Add messages tied to a conversation_id. If the project enabled the

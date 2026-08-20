@@ -1,12 +1,12 @@
-import os
 import time
-from engram import EngramClient, HybridRetrieval
+from engram import HybridRetrieval
 from engram.errors import APIError
 
 # START Connect
-client = EngramClient(
-    api_key=os.environ["ENGRAM_API_KEY"]
-)
+import os
+from engram import EngramClient
+
+client = EngramClient(api_key=os.environ["ENGRAM_API_KEY"])
 # END Connect
 
 

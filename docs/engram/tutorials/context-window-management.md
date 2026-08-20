@@ -156,6 +156,8 @@ The summary stays one memory regardless of how long the conversation runs, so th
 Adjust the `retrieval_config` to control how memories are ranked:
 
 ```python
+from engram import VectorRetrieval, BM25Retrieval, HybridRetrieval
+
 # Pure semantic search — best for conceptual similarity
 VectorRetrieval(limit=5)
 

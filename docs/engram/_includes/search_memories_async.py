@@ -37,6 +37,8 @@ async def main():
     assert len(results) >= 1
 
     # START VectorSearch
+    from engram import VectorRetrieval
+
     results = await client.memories.search(
         query="What programming language does the user prefer?",
         user_id=test_user_id,
@@ -47,6 +49,8 @@ async def main():
     assert len(results) >= 1
 
     # START BM25Search
+    from engram import BM25Retrieval
+
     results = await client.memories.search(
         query="What programming language does the user prefer?",
         user_id=test_user_id,
@@ -57,6 +61,8 @@ async def main():
     assert len(results) >= 1
 
     # START HybridSearch
+    from engram import HybridRetrieval
+
     results = await client.memories.search(
         query="What programming language does the user prefer?",
         user_id=test_user_id,
@@ -80,6 +86,8 @@ async def main():
     assert len(results) >= 1
 
     # START TopicFilter
+    from engram import HybridRetrieval
+
     results = await client.memories.search(
         query="user preferences",
         topics=["UserKnowledge"],
