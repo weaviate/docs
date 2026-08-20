@@ -1,6 +1,6 @@
 ---
 title: Search memories
-description: "How to search memories in Engram using vector, BM25, and hybrid retrieval with filtering and scoping."
+description: "How to search memories in Engram using vector, BM25, hybrid, and fetch retrieval with filtering and scoping."
 image: og/docs/engram.png
 ---
 
@@ -108,7 +108,9 @@ Provide a query and Engram returns the most relevant memories.
 
 ## Retrieval types
 
-Set the [retrieval type](../concepts/search.md) with `retrieval_config`. Pass a retrieval model — `VectorRetrieval`, `BM25Retrieval`, or `HybridRetrieval` — each with an optional `limit`. To use a type with its default settings, you can also pass its name as a string (`"vector"`, `"bm25"`, `"hybrid"`, or `"fetch"`).
+Set the [retrieval type](../concepts/search.md) with `retrieval_config`. Pass a retrieval model — `VectorRetrieval`, `BM25Retrieval`, `HybridRetrieval`, or `FetchRetrieval` — each with an optional `limit`. To use a type with its default settings, you can also pass its name as a string (`"vector"`, `"bm25"`, `"hybrid"`, or `"fetch"`).
+
+Omit `retrieval_config` and the search runs as **hybrid** with a **limit of 10**. `limit` accepts **1 to 100**, defaults to 10, and is rejected with a `422` outside that range. There is no pagination, so 100 memories is the most a single search can return.
 
 ### Vector search
 
@@ -220,6 +222,47 @@ Combines vector and BM25 for the best of both approaches. This is the recommende
 
 </TabItem>
 </Tabs>
+
+### Fetch
+
+Returns the memories in the scope you ask for without ranking them: no embedding, no keyword scoring. Use it for [bounded topics](../concepts/topics.md), where a scope holds a single memory and ranking has nothing to choose between.
+
+The `query` field is still required and must be non-empty, but `fetch` ignores its value.
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START FetchSearch"
+  endMarker="# END FetchSearch"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="py_engram_async" label="Python (Async)">
+
+<FilteredTextBlock
+  text={AsyncPyCode}
+  startMarker="# START FetchSearch"
+  endMarker="# END FetchSearch"
+  language="pyindent"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START FetchSearch"
+  endMarker="# END FetchSearch"
+  language="bash"
+/>
+
+</TabItem>
+</Tabs>
+
+The [Context window management](../tutorials/context-window-management.md) tutorial shows this pattern end to end, fetching a `ConversationSummary` for the current conversation.
 
 ## Filter by topic
 

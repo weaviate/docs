@@ -62,6 +62,19 @@ results = client.memories.search(
 
 assert len(results) >= 1
 
+# START FetchSearch
+from engram import FetchRetrieval
+
+results = client.memories.search(
+    query="unused",  # fetch ignores the query, but the field is still required
+    topics=["UserKnowledge"],
+    user_id=test_user_id,
+    retrieval_config=FetchRetrieval(limit=10),
+)
+# END FetchSearch
+
+assert len(results) >= 1
+
 # START TopicFilter
 results = client.memories.search(
     query="user preferences",

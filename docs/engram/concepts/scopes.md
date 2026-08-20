@@ -85,7 +85,7 @@ A single request can target multiple topics at once.
 
 **When adding memories**, you must provide the scope parameters that every targeted topic requires, which is the **union** of their requirements. If any targeted topic needs `user_id`, you must pass `user_id`. If any needs `properties.conversation_id`, you must pass `properties.conversation_id`. If you omit a parameter that a targeted topic requires, the request is rejected.
 
-**When searching**, scope parameters are optional. They act as filters that narrow results to a specific user or property value, so you only pass the ones you want to filter by.
+**When searching**, `user_id` follows the same union rule: if any topic you target is user-scoped, you must pass `user_id`, and a request that omits it is rejected. Only `properties` are optional filters — pass a property key to narrow results to that value, or omit it to search across all values of that key.
 
 For example, imagine a customer support agent with two topics in the same group:
 
