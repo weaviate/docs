@@ -19,6 +19,12 @@ Each project can have multiple named groups, but most use cases only need the `d
 
 When you create a project, Engram provisions a group named `default`. All API requests use this group unless you specify another with the `group` parameter. Project templates may seed the default group with a starter set of topics — the [Personalization template](../quickstart.md), for example, seeds it with a `UserKnowledge` topic.
 
+## Creating and reading groups
+
+Groups and their topics are configured in the [Weaviate Cloud console](../console.md) when you create a project. There is no public API for creating a project, a group, or a topic, and none for adding or removing a topic later — so an application cannot provision a group at runtime.
+
+Applications can *read* the configuration. [`GET /v1/groups`](../api-overview.md#groups-and-topics) returns every group in the project with its topics, each topic's description, whether it is bounded, and the [scope](scopes.md) it requires. Use it to discover the exact topic names and required properties to send, rather than hard-coding what you saw in the console.
+
 ## When to create additional groups
 
 Create additional groups when you have distinct use cases that need different topic definitions or pipeline configurations. For example, a customer support agent might have one group for tracking user preferences and another for learning resolution patterns.

@@ -1747,6 +1747,7 @@ const sidebars = {
       ],
     },
     { type: "html", value: "<hr class='sidebar-divider' />" },
+    "engram/api-overview",
     {
       type: "link",
       label: "REST API reference",

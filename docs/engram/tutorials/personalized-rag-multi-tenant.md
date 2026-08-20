@@ -195,6 +195,10 @@ For privacy compliance (e.g. GDPR right to deletion), you can retrieve and delet
 
 Use `memories.search()` to find all memories for a user, then `memories.delete()` each one. After deletion, subsequent searches return no results for that user.
 
+:::caution A search is not a complete listing
+`memories.search()` ranks against a query and returns the top matches, so it can miss memories a deletion request has to cover. To enumerate everything stored for a user, use [`POST /v1/memories/list`](../guides/manage-memories.md#list-memories) with that `user_id`. The endpoint is REST-only — the Python SDK has no `list()` method yet — so call it directly and feed the IDs to `memories.delete()`.
+:::
+
 ## Next steps
 
 - **[Memory Chat App](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.

@@ -113,11 +113,15 @@ Initialize the client with your API key.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+Every endpoint lives under `https://api.engram.weaviate.io/v1` — the `/v1` prefix is required, and there is no project ID in the path, because the API key identifies the project.
+
 All `curl` commands authenticate via the `Authorization` header with a Bearer token:
 
 ```bash
 -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
+
+`Bearer` is case-sensitive and the key must start with `eng_`. See the [API overview](api-overview.md) for the full request contract and what each `401` means.
 
 </TabItem>
 </Tabs>

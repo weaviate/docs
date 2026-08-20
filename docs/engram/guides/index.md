@@ -10,7 +10,7 @@ These guides cover common Engram operations with detailed examples.
 
 - **[Store memories](store-memories.md)** — Send string, pre-extracted, or conversation content to Engram.
 - **[Search memories](search-memories.md)** — Query memories using vector, BM25, or hybrid search with filtering and scoping.
-- **[Manage memories](manage-memories.md)** — Get and delete individual memories by ID.
+- **[Manage memories](manage-memories.md)** — List the memories in a project, and get or delete individual ones by ID.
 - **[Check run status](check-run-status.md)** — Poll pipeline runs and interpret committed operations.
 
 ## Questions and feedback

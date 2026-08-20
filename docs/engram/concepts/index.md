@@ -13,7 +13,7 @@ Engram organizes and processes memories for your AI applications. Here's how the
 | [Topics](topics.md)                     | A category of memory within a group. Each topic defines what kind of information to extract, like `UserKnowledge` or `ConversationSummary`.                                                |
 | [Scopes](scopes.md)                     | Controls memory visibility. Every memory belongs to a project. Topics can additionally require a `user_id` and custom `properties` (e.g. `conversation_id`) for isolation.                 |
 | [Input data types](input-data-types.md) | The three content formats Engram accepts: `string`, `pre-extracted`, and `conversation`.                                                                                                   |
-| [Pipelines](pipelines.md)               | The processing flow that turns raw input into stored memories. Steps include extracting facts, transforming with context, and committing to storage. _Configurable pipelines are available on enterprise plans._ |
+| [Pipelines](pipelines.md)               | The processing flow that turns raw input into stored memories. Steps include extracting facts, transforming with context, and committing to storage. _Which pipelines you can use [depends on your plan](https://weaviate.io/pricing)._ |
 | [Search](search.md)                     | Search retrieval strategies for finding memories: vector, BM25, and hybrid.                                                                                                                |
 
 ## How concepts relate

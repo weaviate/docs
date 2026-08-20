@@ -30,6 +30,8 @@ The **Groups** section lists the project's [groups](concepts/groups.md) and the 
 
 :::note
 Groups and topics are defined when a project is created. Editing them in the console is read-only for now, and creating new groups from the console is coming soon.
+
+The console is the only place they are created: there is no public API for creating or editing a project, group, or topic, and none for adding or removing a topic afterwards. Your application can read the configuration with [`GET /v1/groups`](api-overview.md#groups-and-topics).
 :::
 
 ## Users
@@ -138,7 +140,7 @@ import ApiKeysImg from '/docs/engram/_includes/console/api-keys.png';
 
 ## Plans
 
-The **Plans** page shows your current plan and lets you upgrade. Your plan determines limits such as the number of pipeline runs allowed per month. When a free plan reaches its monthly run cap, new runs are rejected until the cap resets.
+The **Plans** page shows your current plan and lets you upgrade. Your plan determines limits such as the number of pipeline runs allowed per month and the number of projects you can create — the free plan allows **1,000 runs per month** and **1 project**. When a free plan reaches its monthly run cap, new runs are rejected with a `429` response until the next billing period. See the [pricing page](https://weaviate.io/pricing) (Engram tab) for every plan's limits, and the [API overview](api-overview.md#plan-limits) for how the cap surfaces in the API.
 
 ## Questions and feedback
 

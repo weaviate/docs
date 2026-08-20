@@ -43,6 +43,7 @@ You can poll the [`run_id`](guides/check-run-status.md) to check when processing
 - **[Quickstart](quickstart.md)** — Create a project, get an API key, store your first memory, and search it.
 - **[Concepts](concepts/index.md)** — Understand memories, topics, groups, scoping, and pipelines.
 - **[Guides](guides/index.md)** — Step-by-step instructions for storing, searching, and managing memories.
+- **[API overview](api-overview.md)** — Base URL, authentication, error format and status codes, and plan limits.
 - **[REST API reference](/engram/api/rest)** — Full endpoint documentation with request and response schemas.
 
 ## Questions and feedback

@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 There are several ways to use Engram, from calling the API directly to dropping it into an agent framework as a memory provider.
 
 - **[Python SDK](#python-sdk)** — the `weaviate-engram` client for Python applications.
-- **[REST API](#rest-api)** — call Engram over HTTP from any language.
+- **[REST API](#rest-api)** — call Engram over HTTP from any language. Start with the [API overview](api-overview.md).
 - **[Claude Code plugin](#claude-code-plugin)** — persistent, cross-session memory for Claude Code through the `engram` plugin.
 - **[Hermes Agent](#hermes-agent)** — long-term memory for the Hermes Agent through the `hermes-weaviate-engram` plugin.
 
@@ -50,7 +50,7 @@ For an async client, use `AsyncEngramClient` instead. The [Quickstart](quickstar
 
 ## REST API
 
-Engram is a REST service at `https://api.engram.weaviate.io`. Authenticate every request with your API key as a bearer token:
+Engram is a REST service at `https://api.engram.weaviate.io/v1`. Every path carries the `/v1` prefix, and requests are scoped by the API key rather than by a project ID in the URL. Authenticate every request with your API key as a bearer token:
 
 ```bash
 curl -X POST "https://api.engram.weaviate.io/v1/memories" \
@@ -62,7 +62,11 @@ curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   }'
 ```
 
-See the [REST API reference](/engram/api/rest) for the full list of endpoints, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories.
+The [API overview](api-overview.md) covers the base URL, authentication and the `401` responses that trip people up, the error format and status codes, and your plan's limits. The [REST API reference](/engram/api/rest) has the schema of every endpoint, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories.
+
+:::note TypeScript and other languages
+The Python SDK is the only official client. There is no Weaviate-published npm package for Engram — the `engram-sdk` package on npm is an unrelated third-party project — so from TypeScript, Go, or anything else, call the REST API directly.
+:::
 
 ## Claude Code plugin
 
