@@ -317,26 +317,26 @@ from engram.errors import APIError
 
 conversation_id = f"session-{uuid.uuid4().hex[:8]}"
 
-# Add messages tied to a conversation_id. If the project enabled the
-# `ConversationSummary` topic, the pipeline maintains one summary memory
-# per conversation_id and rewrites it in place on each add.
-run = client.memories.add(
-    [
-        {"role": "user", "content": "I'm planning a trip to Lisbon next month."},
-        {"role": "assistant", "content": "Great choice! Any specific neighborhoods?"},
-        {"role": "user", "content": "I'd love to stay in Alfama for the historic vibe."},
-    ],
-    user_id=user_id,
-    group="default",
-    properties={"conversation_id": conversation_id},
-)
-client.runs.wait(run.run_id)
-
-# Fetch the running summary — `fetch` returns the bounded memory directly
-# by topic + scope, without ranking by query relevance. The topic must be
-# enabled in the project; otherwise the search returns a "topic not found"
-# error.
+# Both halves need the `ConversationSummary` topic to be enabled in the
+# project: the add is rejected if no topic declares `conversation_id`, and
+# the search reports "topic not found". Guard the whole sequence.
 try:
+    # If the topic is enabled, the pipeline maintains one summary memory
+    # per conversation_id and rewrites it in place on each add.
+    run = client.memories.add(
+        [
+            {"role": "user", "content": "I'm planning a trip to Lisbon next month."},
+            {"role": "assistant", "content": "Great choice! Any specific neighborhoods?"},
+            {"role": "user", "content": "I'd love to stay in Alfama for the historic vibe."},
+        ],
+        user_id=user_id,
+        group="default",
+        properties={"conversation_id": conversation_id},
+    )
+    client.runs.wait(run.run_id)
+
+    # `fetch` returns the bounded memory directly by topic + scope, without
+    # ranking by query relevance.
     summary_results = client.memories.search(
         query="conversation summary",  # ignored by fetch retrieval
         user_id=user_id,
