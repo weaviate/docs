@@ -67,7 +67,11 @@ Send already-structured items when you've done your own extraction. Each item ca
 
 ## Timestamps and metadata
 
-By default Engram stamps input with the time it arrives. When you backfill history — importing an old chat log, replaying an event stream — pass the real times instead, so memories are ordered by when they happened rather than when you uploaded them.
+By default Engram treats input as having just arrived. When you backfill history — importing an old chat log, replaying an event stream — send the real times instead, so extraction resolves relative expressions against them. Send a conversation dated 1 May 2026 and "last week" is extracted as the week of 22 April 2026, not the week before you ran the import.
+
+:::note Input timestamps steer extraction; they are not stored
+A memory's own `created_at` and `updated_at` are set when Engram ingests it, and no field on the memory carries the time you sent. So these fields change what gets extracted — you cannot sort or filter memories by when the underlying input happened.
+:::
 
 | Input | Fields |
 |-------|--------|

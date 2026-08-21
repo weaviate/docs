@@ -71,7 +71,7 @@ Error responses are problem documents ([RFC 9457](https://www.rfc-editor.org/rfc
 }
 ```
 
-Read `detail` for the human-readable cause and `status` for the code. Validation failures add an `errors` array, where each entry has a `message`, the `location` of the offending field, and the `value` that was rejected.
+Read `detail` for the human-readable cause and `status` for the code. Validation failures add an `errors` array, where each entry has a `message`, the `location` of the offending field, and the `value` that was rejected — `value` is omitted when the rejected value was `null`.
 
 :::note
 The overview text on the [REST API reference](/engram/api/rest) page still describes errors as `{"status", "message"}`. That text is out of date — the server returns the problem document shown above.
@@ -90,6 +90,10 @@ The overview text on the [REST API reference](/engram/api/rest) page still descr
 | `500` | Internal server error | A server-side failure. |
 
 Topic and group names are matched case-sensitively, so `userknowledge` is a `422` where `UserKnowledge` succeeds. `user_id` is the exception — it is case-*in*sensitive.
+
+:::caution A bad topic name is silent until the scope has data
+Topic validation only runs once the user scope resolves. Search a `user_id` that has no memories yet and a mistyped — or entirely made-up — topic returns `200` with an empty list instead of `422`. An empty result is therefore not proof that the topic name is right. Group names are validated either way, so a bad `group` always `422`s.
+:::
 
 ### Errors in the Python SDK
 
@@ -159,8 +163,7 @@ except APIError as err:
           "description": "General information about the user.",
           "is_bounded": false,
           "scoping": {
-            "user_scoped": true,
-            "scope_properties": []
+            "user_scoped": true
           }
         },
         {
@@ -180,7 +183,7 @@ except APIError as err:
 
 </details>
 
-For each topic, `is_bounded` tells you whether a scope holds at most one memory, `scoping.user_scoped` whether a `user_id` is required, and `scoping.scope_properties` which `properties` keys you must send.
+For each topic, `is_bounded` tells you whether a scope holds at most one memory, `scoping.user_scoped` whether a `user_id` is required, and `scoping.scope_properties` which `properties` keys you must send. `scope_properties` is **omitted entirely** for a topic that has none, as `UserKnowledge` shows above — read it defensively rather than expecting an empty array.
 
 :::info Groups and topics are created in the console
 `GET /v1/groups` is read-only, and it is the only groups endpoint. There is no public API for creating or editing a project, group, or topic — you configure those in the [Engram console](console.md) when you create the project. Nor is there an API for adding or removing a topic afterwards.
@@ -198,7 +201,11 @@ For each topic, `is_bounded` tells you whether a scope holds at most one memory,
 />
 
 ```json
-{ "status": "healthy", "service": "engram-memory-server" }
+{
+  "$schema": "https://api.engram.weaviate.io/schemas/HealthResponseBody.json",
+  "status": "healthy",
+  "service": "engram-memory-server"
+}
 ```
 
 Because it is unauthenticated, it tells you nothing about your key or your project — use [`GET /v1/auth/verify`](#verify-a-key) for that.

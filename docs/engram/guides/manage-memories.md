@@ -89,14 +89,26 @@ The endpoint has no pagination, so `limit` is a ceiling rather than a page size:
       "content": "The user prefers dark mode.",
       "topic": "UserKnowledge",
       "group": "default",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "memory-uuid-2",
+      "project_id": "project-uuid",
+      "user_id": "alice",
+      "content": "The user is planning a trip to Lisbon.",
+      "topic": "ConversationSummary",
+      "group": "default",
       "properties": { "conversation_id": "abc-123" },
       "created_at": "2025-01-01T00:00:00Z",
       "updated_at": "2025-01-01T00:00:00Z"
     }
   ],
-  "total": 1
+  "total": 2
 }
 ```
+
+`properties` appears only on memories whose [topic](../concepts/topics.md) declares those scope properties. `UserKnowledge` is user-scoped only, so it has no `properties` key at all — even when the request that created it carried a `conversation_id`.
 
 `total` is the number of memories in this response, not the number that exist.
 
@@ -154,11 +166,12 @@ Retrieve a single memory by its ID.
   "content": "The user prefers dark mode.",
   "topic": "UserKnowledge",
   "group": "default",
-  "properties": { "conversation_id": "abc-123" },
   "created_at": "2025-01-01T00:00:00Z",
   "updated_at": "2025-01-01T00:00:00Z"
 }
 ```
+
+A `UserKnowledge` memory is user-scoped only, so there is no `properties` key. It is present only on memories whose [topic](../concepts/topics.md) declares scope properties, such as `ConversationSummary`.
 
 ## Delete a memory
 
