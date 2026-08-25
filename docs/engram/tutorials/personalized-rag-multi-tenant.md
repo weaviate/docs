@@ -36,10 +36,6 @@ export WEAVIATE_API_KEY="..."
 export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
 ```
 
-:::note The knowledge-base half is illustrative
-Every Engram snippet on this page runs against a live project when the docs are tested. The two Weaviate snippets — connecting to a cluster below, and creating and filling `ProductDocs` in [Step 2](#step-2-populate-the-knowledge-base) — are not tested, so treat them as a sketch to adapt to your own collection. Everything after Step 2 takes the knowledge-base hits as a plain list of strings, so it does not care how you retrieved them. The [Weaviate quickstart](/weaviate/quickstart/index.md) has a working ingestion example.
-:::
-
 ## Step 1: Set up both clients
 
 Initialize the Engram client for user memory and the Weaviate client for your knowledge base.
@@ -54,11 +50,10 @@ Initialize the Engram client for user memory and the Weaviate client for your kn
 ```python
 import os
 import weaviate
-from weaviate.classes.init import Auth
 
 weaviate_client = weaviate.connect_to_weaviate_cloud(
     cluster_url=os.environ["WEAVIATE_URL"],
-    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
+    auth_credentials=os.environ["WEAVIATE_API_KEY"],
 )
 ```
 

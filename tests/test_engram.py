@@ -38,7 +38,6 @@ def test_engram(script_loc):
         "./docs/engram/_includes/search_memories.sh",
         "./docs/engram/_includes/manage_memories.sh",
         "./docs/engram/_includes/check_run_status.sh",
-        "./docs/engram/_includes/api_overview.sh",
     ],
 )
 def test_engram_curl(script_loc):

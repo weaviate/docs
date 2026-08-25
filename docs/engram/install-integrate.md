@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 There are several ways to use Engram, from calling the API directly to dropping it into an agent framework as a memory provider.
 
 - **[Python SDK](#python-sdk)** — the `weaviate-engram` client for Python applications.
-- **[REST API](#rest-api)** — call Engram over HTTP from any language. Start with the [API overview](api-overview.md).
+- **[REST API](#rest-api)** — call Engram over HTTP from any language.
 - **[Claude Code plugin](#claude-code-plugin)** — persistent, cross-session memory for Claude Code through the `engram` plugin.
 - **[Hermes Agent](#hermes-agent)** — long-term memory for the Hermes Agent through the `hermes-weaviate-engram` plugin.
 
@@ -48,19 +48,6 @@ client = EngramClient(api_key=os.environ["ENGRAM_API_KEY"])
 
 For an async client, use `AsyncEngramClient` instead. The [Quickstart](quickstart.md) has a full walkthrough, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories. The source is on [GitHub](https://github.com/weaviate/engram-python-sdk).
 
-### Errors
-
-The SDK raises typed exceptions rather than returning status codes:
-
-- `AuthenticationError` — a rejected API key.
-- `APIError` — every other failed request. Carries `status_code` and the parsed response `body`.
-- `ValidationError` — the client rejected your arguments before sending anything.
-- `EngramTimeoutError` — `runs.wait()` gave up on a run.
-
-All derive from `EngramError` and all are importable from `engram`.
-
-See [Errors in the Python SDK](api-overview.md#errors-in-the-python-sdk) for the full table and a `try`/`except` example.
-
 ## REST API
 
 Engram is a REST service at `https://api.engram.weaviate.io/v1`. Every path carries the `/v1` prefix, and requests are scoped by the API key rather than by a project ID in the URL. Authenticate every request with your API key as a bearer token:
@@ -75,19 +62,15 @@ curl -X POST "https://api.engram.weaviate.io/v1/memories" \
   }'
 ```
 
-The [API overview](api-overview.md) covers the base URL, authentication and the `401` responses that trip people up, the error format and status codes, and your plan's limits. The [REST API reference](/engram/api/rest) has the schema of every endpoint, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories.
-
-:::note TypeScript and other languages
-The Python SDK is the only official client. There is no Weaviate-published npm package for Engram — the `engram-sdk` package on npm is an unrelated third-party project — so from TypeScript, Go, or anything else, call the REST API directly.
-:::
+See the [REST API reference](/engram/api/rest) for the full list of endpoints, and the [guides](guides/store-memories.md) cover storing, searching, and managing memories.
 
 ## Claude Code plugin
 
 The [`engram` plugin](https://github.com/weaviate/engram-plugins) gives [Claude Code](https://claude.com/claude-code) long-term memory backed by Engram. It recalls relevant memories before each answer and stores each completed turn — everything happens automatically via hooks, with no tools for the agent to call. Memory is best-effort and never blocks a session.
 
-### Install
+When creating your Engram project, you choose [topics](concepts/topics.md) that control what memories get extracted. Select the **Coding Assistant** template for topics tailored to coding sessions — you can also define custom topics for a more tailored experience.
 
-Create an Engram project in the [Engram console](console.md) and set its API key in a shell profile that persists (`~/.zshenv`, `~/.zshrc`, or `~/.bashrc`):
+Once the project is created, set your API key in your shell profile (e.g. `~/.zshrc` or `~/.bashrc`), then install the plugin inside a Claude Code session:
 
 ```bash
 export ENGRAM_API_KEY=...
@@ -100,81 +83,7 @@ Then install the plugin inside a Claude Code session:
 /plugin install engram@weaviate-engram
 ```
 
-That's it — memory starts working on your next prompt.
-
-Which [topics](concepts/topics.md) get extracted is decided by the project you point the key at, so when you create that project pick the template whose topics suit coding sessions. The free plan runs the personalization [pipeline](concepts/pipelines.md) only; the other preset pipelines start at the Starter plan (see the [pricing page](https://weaviate.io/pricing), Engram tab).
-
-### Identity
-
-The plugin sends a `user_id` so memories stay separate per person. It defaults to your `git config user.email`; set `ENGRAM_USER_ID` to override it.
-
-### Scope properties
-
-Before each store, the plugin reads your project's [scope](concepts/scopes.md) requirements from [`GET /v1/groups`](api-overview.md#groups-and-topics) and resolves the properties it knows about:
-
-| Property | Resolved from |
-|----------|---------------|
-| `repo_name` | The git remote's owner-scoped repository name, falling back to the working directory when there is no remote |
-| `session_id` | The Claude Code session ID |
-
-Those two are the only built-ins.
-
-:::caution A topic scoped by anything else needs a mapping
-If any topic in your project's group is scoped by another property — a `ConversationSummary` topic scoped by `conversation_id`, for example — the plugin has nothing to resolve it from, the store request is rejected for insufficient scope, and **every turn** ends with an `Engram · saving memory failed` notice until you map it.
-
-Map it in a `.engram.json` in the project directory:
-
-```json
-{
-  "properties": {
-    "conversation_id": { "from": "session_id" }
-  }
-}
-```
-:::
-
-### Configuration
-
-Two optional files configure scope resolution and how recall is narrowed:
-
-| File | Scope | What it may contain |
-|------|-------|---------------------|
-| `~/.engram/config.json` | Your machine, everywhere | Everything below, including `cmd` sources |
-| `.engram.json` | One project directory, safe to commit | Literals and `from` tokens only — a `cmd` here is ignored, so a cloned repository cannot run a command on your machine |
-
-A property value's JSON shape decides how it resolves:
-
-- A **string** is a literal, used verbatim: `"payments"`.
-- An **object** is a dynamic source — `{"from": "<token>"}` for a built-in value, where the tokens are `git-repo`, `cwd`, and `session_id`; or `{"cmd": ["prog", "arg"]}` to run a command directly, with no shell.
-- An **array** is a cascade: entries are tried in order and the first non-empty value wins.
-
-A `search` object narrows what gets recalled — `search.properties` restricts recall to memories matching those scope keys, and `search.topics` restricts it to named topics, each with its own optional filter.
-
-Recall is **not** broad by default. Cross-topic `properties` default to `repo_name`, so out of the box the plugin recalls only what it learned in the repository you are currently working in. To change that, set `search.properties` yourself, or set it to an empty array to clear the default and recall across every repository:
-
-```json
-{
-  "search": {
-    "properties": []
-  }
-}
-```
-
-This default only bites when `repo_name` is one of the scope properties of your project's group, or when you map `repo_name` yourself in a config file — an explicitly configured property is resolved and sent whatever the group's schema says. If neither holds, there is nothing to filter on and recall is broad already.
-
-The plugin caches your project's scope requirements after the first fetch, so reinstall it if you repoint the key at a differently configured project. Configuration always overrides the cache.
-
-### Environment variables
-
-| Variable | Purpose |
-|----------|---------|
-| `ENGRAM_API_KEY` | Your Engram API key. Required. |
-| `ENGRAM_USER_ID` | Override the identity memories are stored under. Defaults to `git config user.email`. |
-| `ENGRAM_BASE_URL` | Point the plugin at a different Engram endpoint. |
-
-### When something is wrong
-
-Because memory is best-effort, the plugin never fails a session. When it needs attention — a bad API key, an unresolvable scope property — Claude surfaces a short `Engram · …` note at the top of its reply. See the [plugin README](https://github.com/weaviate/engram-plugins) for the full configuration reference.
+That's it — memory starts working on your next prompt. By default the plugin recalls only memories from the repository you are working in, filtering on the `repo_name` property; set `search.properties` to `[]` in a `.engram.json` to recall across all of them. See the [plugin README](https://github.com/weaviate/engram-plugins) for more info and optional customization.
 
 ## Hermes Agent
 

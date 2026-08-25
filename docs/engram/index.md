@@ -47,8 +47,7 @@ You can poll the [`run_id`](guides/check-run-status.md) to check when processing
 - **[Install & integrate](install-integrate.md)** — The Python SDK, the REST API, and the Claude Code and Hermes memory plugins.
 - **[Concepts](concepts/index.md)** — Understand memories, topics, groups, scoping, and pipelines.
 - **[Guides](guides/index.md)** — Step-by-step instructions for storing, searching, and managing memories.
-- **[API overview](api-overview.md)** — Base URL, authentication, error format and status codes, and plan limits.
-- **[REST API reference](/engram/api/rest)** — Full endpoint documentation with request and response schemas.
+- **[REST API reference](/engram/api/rest)** — Every endpoint, with request and response schemas. The base URL and authentication are in [Install & integrate](install-integrate.md#rest-api).
 - **[Engram console](console.md)** — Browse memories, users, and runs, and manage API keys, without writing code.
 
 ## Questions and feedback

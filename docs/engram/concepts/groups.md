@@ -23,7 +23,7 @@ When you create a project, Engram provisions a group named `default`. All API re
 
 Groups and their topics are configured in the [Engram console](../console.md) when you create a project. There is no public API for creating a project, a group, or a topic, and none for adding or removing a topic later — so an application cannot provision a group at runtime.
 
-Applications can *read* the configuration. [`GET /v1/groups`](../api-overview.md#groups-and-topics) returns every group in the project with its topics, each topic's description, whether it is bounded, and the [scope](scopes.md) it requires. Use it to discover the exact topic names and required properties to send, rather than hard-coding what you saw in the console.
+Applications can *read* the configuration. [`GET /v1/groups`](/engram/api/rest) returns every group in the project with its topics, each topic's description, whether it is bounded, and the [scope](scopes.md) it requires. Use it to discover the exact topic names and required properties to send, rather than hard-coding what you saw in the console.
 
 ## When to create additional groups
 

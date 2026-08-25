@@ -56,7 +56,8 @@ Follow this interactive walkthrough to create a project with the **Personalizati
   />
 </div>
 
-The same steps in text:
+<details>
+  <summary>The same steps in text:</summary>
 
 1. Sign in to [Weaviate Cloud](https://console.weaviate.cloud) and select **Engram** in the top navigation.
 2. Select **Create project** and give the project a name.
@@ -66,6 +67,8 @@ The same steps in text:
 6. Select **Create key** and copy the key — it is shown only once (this is [Step 2](#step-2-create-an-api-key)).
 
 The [Engram console](console.md) page describes each of these screens in more detail.
+
+</details>
 
 The template sets up the project's `default` [group](concepts/groups.md) with default [topics](concepts/topics.md), such as `UserKnowledge` for general information about the user. This is enough to get started.
 
@@ -126,7 +129,7 @@ All `curl` commands authenticate via the `Authorization` header with a Bearer to
 -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
 
-`Bearer` is case-sensitive and the key must start with `eng_`. See the [API overview](api-overview.md) for the full request contract and what each `401` means.
+`Bearer` is case-sensitive and the key must start with `eng_`.
 
 </TabItem>
 </Tabs>
