@@ -555,7 +555,7 @@ The available options are `And`, `Or`, and `AndCross`:
 
 If not set, the keyword search behaves as if `Or` was set with a `minimumOrTokensMatch` of `1`.
 
-An `AndCross` query example:
+An `AndCross` query example, restricted to `question` and `answer` because the `JeopardyQuestion` collection mixes tokenizations across its properties:
 
 ```graphql
 {
@@ -564,6 +564,7 @@ An `AndCross` query example:
       limit: 3
       bm25: {
         query: "African desert wind"
+        properties: ["question", "answer"]
         searchOperator: {
           operator: AndCross
         }

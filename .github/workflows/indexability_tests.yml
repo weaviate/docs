@@ -37,6 +37,9 @@ jobs:
       - name: Run HTML structure tests
         id: html-tests
         continue-on-error: true
+        env:
+          # This job manages no containers of its own — skip conftest's docker startup.
+          DOCS_GITHUB_ENV: "true"
         run: |
           echo "Running HTML indexability tests..."
           uv run pytest -m "indexability" -v --tb=short --junitxml=pytest-results.xml
@@ -46,6 +49,8 @@ jobs:
         continue-on-error: true
         if: env.ANTHROPIC_API_KEY != '' && env.OPENAI_API_KEY != ''
         env:
+          # This job manages no containers of its own — skip conftest's docker startup.
+          DOCS_GITHUB_ENV: "true"
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
