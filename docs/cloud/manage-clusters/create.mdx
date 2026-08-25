@@ -66,6 +66,8 @@ The following advanced configuration settings are available:
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
 
+The [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) switches (`Enable MCP server` and `Enable MCP server write access`) are not part of the free cluster creation form. Enable them after creation from the cluster's `Advanced configuration`; no restart is needed.
+
 </details>
 
 :::note Free cluster lifecycle
@@ -117,7 +119,7 @@ To create a Shared Cloud cluster, follow these steps:
 4. Select an [optimization profile](#optimization-profile) (`Cost Optimized` or `Performance Optimized`).
 5. Select a cloud provider (GCP by default).
 6. Select if you need high-availability (enabled by default).
-7. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
+7. Configure the `Advanced configuration` settings if needed (auto schema generation, CORS, and MCP server settings).
 8. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
@@ -126,6 +128,10 @@ The following advanced configuration settings are available:
 
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
+- [`Enable MCP server`](/weaviate/configuration/mcp-server#weaviate-cloud) (`MCP_SERVER_ENABLED`)
+- [`Enable MCP server write access`](/weaviate/configuration/mcp-server#weaviate-cloud) (`MCP_SERVER_WRITE_ACCESS_ENABLED`)
+
+The MCP server switches are off by default and can be changed at any time after creation without a restart.
 
 </details>
 

@@ -99,7 +99,7 @@ Weaviate comes with a set of predefined roles. These roles are:
 
 The `root` role can be assigned to a user through the Weaviate configuration file using the [`AUTHORIZATION_RBAC_ROOT_USERS`](/deploy/configuration/env-vars/index.md#rbac-authorization) environment variable. A predefined role cannot be modified. The user can, however, be assigned additional roles through the Weaviate API.
 
-All roles can also be assigned through the Weaviate API, including the predefined role. The predefined roles cannot be modified, but they can be assigned to or revoked from users.
+Custom roles and the predefined `viewer` role can be assigned to or revoked from users through the Weaviate API. The `root` role cannot: it is bound only through the `AUTHORIZATION_RBAC_ROOT_USERS` environment variable, and an API request that assigns or revokes it is rejected with HTTP `403`.
 
 Refer to the [RBAC: Configuration](/deploy/configuration/configuring-rbac.md) page for more information on how to assign predefined roles to users.
 

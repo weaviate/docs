@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 faq:
   - question: Does Weaviate offer an MCP server?
     answer: >-
-      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable; it runs on the same port as the REST API at /v1/mcp.
+      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable, or on Weaviate Cloud with the "Enable MCP server" switch in the cluster's advanced configuration; it runs on the same port as the REST API at /v1/mcp.
   - question: Is the MCP server an external library?
     answer: >-
       No. It's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
@@ -34,10 +34,10 @@ Instead of pasting context manually, MCP allows compatible clients (like Claude 
 
 ## Using the Weaviate MCP server
 
-The Weaviate MCP server by default runs at `http://localhost:8080/v1/mcp` if enabled and supports authentication via Bearer tokens (API Keys).
+The Weaviate MCP server runs at `/v1/mcp` on the REST API port if enabled (`http://localhost:8080/v1/mcp` on a default self-hosted instance, `https://<your-cluster-host>/v1/mcp` on Weaviate Cloud) and supports authentication via Bearer tokens (API Keys).
 To get started:
 
-1. [Enable the MCP server](#environment-variables) (and optionally write access) through environment variables.
+1. Enable the MCP server (and optionally write access) through the [Weaviate Cloud console](#weaviate-cloud) or [environment variables](#environment-variables).
 2. [Ensure your API key has the right permissions](#permissions) if using RBAC.
 3. [Connect your MCP client](#mcp-client) using the REST API host and port.
 
@@ -146,15 +146,48 @@ Standard JSON configuration format:
 </TabItem>
 </Tabs>
 
+:::caution Connecting to a Weaviate Cloud cluster
+
+Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL. Without it, every hybrid search with `alpha` above `0` and every upsert that does not supply `vectors` fails with `no cluster URL found in request header: X-Weaviate-Cluster-Url`, because the vectorizer cannot be reached. The Weaviate client libraries add this header for you; MCP clients do not.
+
+```json
+{
+  "mcpServers": {
+    "weaviate-cloud": {
+      "type": "streamable-http",
+      "url": "https://<your-cluster-host>/v1/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY",
+        "X-Weaviate-Cluster-Url": "https://<your-cluster-host>"
+      }
+    }
+  }
+}
+```
+
+The same `headers` object goes into the Claude Code `add-json` command and the VS Code `servers` entry shown above.
+
+:::
+
 ---
 
 ## Configuration
 
 The MCP server is built into Weaviate but is **disabled by default** for security. It is served at the `/v1/mcp` endpoint on the same port as the REST API (default `8080`).
 
+### Weaviate Cloud
+
+On Weaviate Cloud, the MCP server is switched on from the cluster's advanced configuration. No environment variables are involved and no restart is needed:
+
+1. Open the cluster details page in the [Weaviate Cloud console](https://console.weaviate.cloud/) and click `Show advanced options`.
+2. Under `Advanced configuration`, switch on `Enable MCP server`. To make `weaviate-objects-upsert` available, also switch on `Enable MCP server write access` (it has no effect while the MCP server is off).
+3. Click `Save Configuration`. The change applies after a short delay (see [Toggle without restart](#toggle-without-restart)).
+
+Both switches are off by default and correspond to `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` below. The same switches are on the Shared Cloud cluster creation form under `Advanced configuration` (see [Create a cluster](/cloud/manage-clusters/create#shared-cloud-clusters)).
+
 ### Environment variables
 
-To enable and configure the server, set the following [environment variables](/docs/deploy/configuration/env-vars/index.md) in your Weaviate configuration (e.g., `docker-compose.yml`):
+On a self-hosted instance, set the following [environment variables](/deploy/configuration/env-vars/index.md) in your Weaviate configuration (e.g., `docker-compose.yml`):
 
 | Environment Variable                                                                                | Default | Runtime-configurable | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
 | --------------------------------------------------------------------------------------------------- | ------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -162,21 +195,37 @@ To enable and configure the server, set the following [environment variables](/d
 | [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars#MCP_SERVER_WRITE_ACCESS_ENABLED) | `false` | from `v1.38`         | When `true`, enables write tools (`weaviate-objects-upsert`). Default is read-only.                                                                                                                                                                                                                                                                                                                               |
 | [`MCP_SERVER_CONFIG_PATH`](/deploy/configuration/env-vars#MCP_SERVER_CONFIG_PATH)                   | `""`    | No                   | Path to a YAML file for customizing tool descriptions (useful for prompt engineering the LLM's understanding of your specific data). If not provided or file malformed, the default descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used. Tool descriptions are baked into the tool schemas at registration, so this flag remains startup-only. |
 
+### Toggle without restart
+
+From `v1.38`, `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` are [runtime-configurable](/deploy/configuration/env-vars/runtime-config.md#mcp): change them in the runtime overrides file on a self-hosted instance, or with the [Weaviate Cloud switches](#weaviate-cloud), and the new value applies without a restart. On Weaviate Cloud, a saved change takes roughly 40 to 80 seconds to reach the cluster.
+
+Both flags are checked on every request, so a change has these effects:
+
+- **MCP server off:** every request to `/v1/mcp` returns HTTP `503` with a JSON body, `{"error": "MCP server is not enabled. ..."}`. Authentication still runs first, so a request with an invalid API key gets HTTP `401` rather than `503`.
+- **Write access off:** `weaviate-objects-upsert` is removed from the `tools/list` response, and calling it returns a tool result with `isError: true` and the text `MCP write access is disabled: ...`. The read tools are unaffected.
+- **Sessions survive:** neither change terminates existing MCP sessions. A session opened before the server was switched off works again once it is switched back on. The server sends no tools-changed notification, so a client that cached the tool list has to call `tools/list` again to see the write tool appear or disappear.
+
 ### Permissions
 
-If you use [RBAC](/weaviate/configuration/rbac/index.mdx) with fine-grained permissions instead of root access, the role assigned to your API key must include the appropriate MCP permissions. Without them, tool calls are rejected.
+If you use [RBAC](/weaviate/configuration/rbac/index.mdx) with fine-grained permissions instead of root access, the role assigned to your API key must include the appropriate MCP permissions. Without them, most tool calls are rejected.
 
 <details>
   <summary>Per-tool permissions</summary>
 
-| Tool                              | MCP permissions required   | Additional collection permissions |
-| --------------------------------- | -------------------------- | --------------------------------- |
-| `weaviate-collections-get-config` | `read_mcp`                 | `read_collections`                |
-| `weaviate-tenants-list`           | `read_mcp`                 | `read_data`                       |
-| `weaviate-query-hybrid`           | `read_mcp`                 | `read_data`                       |
-| `weaviate-objects-upsert`         | `create_mcp`, `update_mcp` | `create_data`, `update_data`      |
+| Tool                              | MCP permissions required   | Additional permissions                                      |
+| --------------------------------- | -------------------------- | ----------------------------------------------------------- |
+| `weaviate-collections-get-config` | `read_mcp`                 | `read_collections`                                          |
+| `weaviate-tenants-list`           | `read_mcp`                 | `read_tenants`                                              |
+| `weaviate-query-hybrid`           | `read_mcp`                 | `read_data`; also `read_collections` when `filters` is used |
+| `weaviate-objects-upsert`         | `create_mcp`, `update_mcp` | `create_data`, `update_data`                                |
+
+`weaviate-tenants-list` does not fail without `read_tenants`: it returns only the tenants the key may read, so a key without the permission gets an empty list.
 
 </details>
+
+For a read-only key, assign the predefined `viewer` role, the assignable read-only role for database users: it includes `read_mcp` together with read access to collections, data, and tenants. On Weaviate Cloud, the `admin` role includes all three MCP permissions; pick the role when you [create the API key](/cloud/manage-clusters/authentication).
+
+Permissions are enforced when a tool is called, not when tools are listed. `tools/list` shows every tool to every authenticated key (only the write-access flag hides `weaviate-objects-upsert`). A call the key is not allowed to make returns HTTP `200` with a tool result whose `isError` is `true` and whose text contains `insufficient permissions to read_mcp []` (or `create_mcp`, `read_data`, and so on). It is neither an HTTP `403` nor a JSON-RPC error.
 
 ### Custom tool descriptions
 
@@ -226,6 +275,8 @@ The server exposes different tools depending on your configuration. These are al
 - `weaviate-query-hybrid`
 - `weaviate-objects-upsert`
 
+For every tool, `collection_name` is matched after uppercasing only its first character: `article` resolves to the collection `Article`, but `ARTICLE` does not.
+
 ### `weaviate-collections-get-config`
 
 Retrieves the schema configuration for collections.
@@ -244,7 +295,7 @@ Lists tenants for multi-tenant collections.
 
 - `collection_name` (string, required): The collection to inspect.
 
-**Returns:** List of tenants and their activity status (`ACTIVE` or `INACTIVE`, and `OFFLOADED` for tenants that have been offloaded to cold storage).
+**Returns:** List of tenants with their `activityStatus`. The status is reported with the legacy names: `HOT` is [`ACTIVE`](/weaviate/manage-collections/tenant-states.mdx#active), `COLD` is [`INACTIVE`](/weaviate/manage-collections/tenant-states.mdx#inactive), and `FROZEN` is [`OFFLOADED`](/weaviate/manage-collections/tenant-states.mdx#offloaded) (a tenant offloaded to cloud storage); `FREEZING` and `UNFREEZING` are the transitional `OFFLOADING` and `ONLOADING` states. Calling the tool on a collection without multi-tenancy returns an error.
 
 ### `weaviate-query-hybrid`
 
@@ -255,35 +306,50 @@ Performs a hybrid search combining vector similarity and keyword matching (BM25)
 - `query` (string, required): The natural language search text.
 - `collection_name` (string, required): The collection to search.
 - `tenant_name` (string, optional): Tenant to search within for multi-tenant collections.
-- `alpha` (float, optional): Weighting. `0.0` = pure keyword search, `1.0` = pure vector search. Default is `0.75`, the same default as a regular [hybrid search](/weaviate/api/graphql/search-operators#hybrid).
-- `limit` (int, optional): Max results.
+- `alpha` (float, optional): Weighting between the two searches. `0.0` = pure keyword search, `1.0` = pure vector search. Defaults to `0.75`.
+- `limit` (int, optional): Maximum number of results. Defaults to `100`; `0` returns no results.
 - `target_vectors` (array, optional): Named vectors to use for vector search.
 - `target_properties` (array, optional): Properties to search with BM25. If omitted, searches all text properties.
-- `return_properties` (array, optional): Properties to include in results.
-- `return_metadata` (array, optional): Metadata fields to return (e.g., `id`, `vector`, `distance`, `score`, `creationTimeUnix`, `lastUpdateTimeUnix`).
+- `return_properties` (array, optional): Properties to include in results. If omitted, every property is returned in full, long text included, so set this to keep responses small.
+- `return_metadata` (array, optional): Metadata fields to return (e.g., `id`, `vector`, `distance`, `score`, `creationTimeUnix`, `lastUpdateTimeUnix`). Values are case-insensitive; unknown values are ignored.
 - `filters` (object, optional): A [where filter](/weaviate/api/graphql/filters.md) applied before scoring.
 
 A leaf filter is an object with `path` (an array of property names), `operator`, and a typed value field. The typed value field is one of `valueText`, `valueInt`, `valueNumber`, `valueBoolean`, `valueDate`, the corresponding `value*Array` field for a `Contains*` operator, or `valueGeoRange` for `WithinGeoRange`. Combine leaves with `{"operator": "And" | "Or", "operands": [ ... ]}`, nested to any depth. The supported operators are `And`, `Or`, `Not`, `Equal`, `NotEqual`, `Like`, `GreaterThan`, `GreaterThanEqual`, `LessThan`, `LessThanEqual`, `ContainsAny`, `ContainsAll`, `ContainsNone`, `WithinGeoRange`, and `IsNull`. See [Concepts: Filtering](/weaviate/concepts/filtering.md) for how filters interact with search.
 
-**Returns:** Ranked objects with similarity scores and distances.
+**Returns:** Ranked objects. Each result carries the object's properties at the top level, its `id`, and an `_additional` object with the requested metadata.
 
 ### `weaviate-objects-upsert`
 
 :::info MCP write access
 
-This tool is only available if `MCP_SERVER_WRITE_ACCESS_ENABLED=true`.
+This tool is only available if `MCP_SERVER_WRITE_ACCESS_ENABLED=true` (on Weaviate Cloud, the `Enable MCP server write access` switch).
 
 :::
 
-Batch inserts or updates objects.
+Batch inserts or updates objects. An update **replaces** the stored object rather than merging into it: properties you leave out are dropped, and a property set to `null` is removed. If the update supplies no `vectors`, the object is re-vectorized on a collection with a vectorizer, and on a collection without one the stored vector is dropped. To change a single property, send the complete object.
+
+:::caution Upserts can change the schema
+
+With [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) enabled (the default, including on Weaviate Cloud), an object with an unknown property adds that property to the collection, and a `collection_name` that does not exist creates a new collection with default settings. A mistyped collection name therefore creates a collection instead of failing. If the MCP server must not change your schema, turn auto-schema off (`AUTOSCHEMA_ENABLED=false`; on Weaviate Cloud, the `Enable auto schema generation` switch next to the MCP switches).
+
+:::
 
 **Arguments:**
 
 - `collection_name` (string, required): The collection to upsert into.
 - `tenant_name` (string, optional): Tenant for multi-tenant collections.
-- `objects` (array, required): List of objects containing `properties` and optional `uuid` or `vectors`.
+- `objects` (array, required): List of objects containing `properties` and optional `uuid` or `vectors`. `vectors` maps vector names to arrays; there is no singular `vector` field. If `uuid` is omitted, one is generated. If any `uuid` is invalid, the whole call is rejected and nothing is written.
 
-**Returns:** Array of results containing UUIDs or error messages per object.
+**Returns:** Array of results containing UUIDs or error messages per object, in input order. Partial success is normal: one object can fail while the rest are written.
+
+---
+
+## Errors and limits
+
+- **Authentication:** when anonymous access is disabled, a missing or invalid API key is rejected by the REST layer with HTTP `401` and a JSON body before the request reaches the MCP server: for example, `{"code": 401, "message": "unauthorized: invalid api key"}` for an invalid key, or a `message` of `anonymous access not enabled. Please authenticate through one of the available methods: [API-keys, OIDC]` for a missing one. This applies to `initialize` and `tools/list` as well as to tool calls.
+- **Authorization:** a permission failure is a tool result, not an HTTP error: HTTP `200` with `isError: true` and the RBAC message as text (see [Permissions](#permissions)).
+- **Server or write access disabled:** see [Toggle without restart](#toggle-without-restart).
+- **Request duration:** on Weaviate Cloud, a request that takes longer than about 60 seconds from its first byte to the response is cut off by the server's write timeout and surfaces as a plain-text HTTP `503` from the ingress (`upstream connect error or disconnect/reset before headers ...`), not as a JSON-RPC error. Nothing from a cut-off upsert is written. Weaviate does not enforce a request-size limit on `/v1/mcp`, so size `weaviate-objects-upsert` batches by how long they take to upload and process, not by bytes, and keep each call well under a minute.
 
 ---
 
