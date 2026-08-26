@@ -198,6 +198,17 @@ if (!fs.existsSync(EDGE_FN)) {
         'redirect rules below.'
     )
   }
+  // The deploy is `netlify deploy --dir=build`, and on that path the CLI only
+  // bundles edge functions declared in netlify.toml; the in-file config is not
+  // enough. Without this table the function is simply not deployed.
+  const declared = /\[\[edge_functions\]\][^[]*?path[ \t]*=[ \t]*["']\/e\/\*["'][^[]*?function[ \t]*=[ \t]*["']error-link-src["']/s.test(block)
+  if (!declared) {
+    fail(
+      'netlify.toml does not declare [[edge_functions]] path = "/e/*" function = "error-link-src". ' +
+        'The site is deployed with `netlify deploy --dir`, which bundles edge functions only when ' +
+        'they are declared here; without it the function is not deployed and ?src= is never set.'
+    )
+  }
 }
 
 // 8. Every destination must resolve to a real page AND a real anchor.

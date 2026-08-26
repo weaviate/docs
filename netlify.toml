@@ -1315,6 +1315,17 @@ status = 301
 # which reads it from the path and sets `src=<id>` before these rules run, which
 # is why the destinations below stay plain. Read that file before changing
 # anything in this block.
+#
+# THE DECLARATION BELOW IS WHAT DEPLOYS THE FUNCTION. The site is published
+# with `netlify deploy --dir=build` (no `--build`), and on that path the CLI
+# bundles edge functions only when this file declares them (netlify-cli
+# deploy.js: `if (!options.build && config.edge_functions.length)`). The
+# in-file `export const config` alone is silently ignored, which is how the
+# first preview deploy shipped every redirect and no `src` parameter.
+
+[[edge_functions]]
+  path = "/e/*"
+  function = "error-link-src"
 
 # /improve-your-cluster IS ALSO A CONTRACT. Weaviate prints it in the startup
 # banner of every release from v1.40 as a readable URL rather than an /e/ id, so

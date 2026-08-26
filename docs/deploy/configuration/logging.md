@@ -86,9 +86,9 @@ A log entry whose cause has a documented fix carries a `docs_url` field. The lin
 
 The field is separate from the message, so alerts and filters that match on message text keep working, and in JSON logs you can select on it directly. The error returned to the client for the same failure carries the same link at the end of its message, as `(see https://docs.weaviate.io/e/core-mem001)`. Added in `v1.40`.
 
-Weaviate also logs a banner as its first entry on startup, with the version and a link to [Improve your cluster](/improve-your-cluster), and repeats it every [`BANNER_INTERVAL`](./env-vars/index.md#BANNER_INTERVAL) (24 hours by default). The repeat banner fetches its art from `https://weaviate.io/banner/v1.json` and, once the cluster has an id, carries it on the link as `?clusterid=<uuid>`; both happen only while telemetry is enabled. Set [`DISABLE_STARTUP_BANNER`](./env-vars/index.md#DISABLE_STARTUP_BANNER) to turn the banner off entirely.
+Weaviate also logs a banner with the version, a link to [Improve your cluster](/improve-your-cluster) and this node's `/v1/meta` URL, as soon as the cluster has an id, and again every [`BANNER_INTERVAL`](./env-vars/index.md#BANNER_INTERVAL) (24 hours by default). The link carries the id as `?clusterid=<uuid>`, and the art is fetched from `https://weaviate.io/banner/v1.json` when it can be. The id only exists while telemetry is enabled, so a cluster with `DISABLE_TELEMETRY=true` never logs a banner. Set [`DISABLE_STARTUP_BANNER`](./env-vars/index.md#DISABLE_STARTUP_BANNER) to turn it off on a cluster that would.
 
-From the same point in startup, every `docs_url` and every link in an error message carries the cluster id the same way, so a docs page can tell which cluster the reader came from. A cluster with telemetry disabled never has an id, and no link carries one in the first seconds after start, before the cluster has elected a leader.
+From the same point in startup, every `docs_url` and every link in an error message carries the cluster id the same way, so a docs page can tell which cluster the reader came from. In the first seconds after start, before the cluster has elected a leader, links go out without one.
 
 ## Accessing Logs
 
