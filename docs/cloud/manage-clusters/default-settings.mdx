@@ -19,8 +19,8 @@ import AdvancedOptions from "/docs/cloud/img/weaviate-cloud-cluster-advanced-set
 | --- | --- | --- | --- |
 | [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 | No |
 | [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes (<span class="callout">2</span>) |
-| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_ENABLED) | No | false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
-| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_WRITE_ACCESS_ENABLED) | No | false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
+| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_ENABLED) | No | Free: true · Shared Cloud: false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
+| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_WRITE_ACCESS_ENABLED) | No | Free: true · Shared Cloud: false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
 | [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
 | [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
 | [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | Yes (<span class="callout">1</span>) |
@@ -45,6 +45,12 @@ import AdvancedOptions from "/docs/cloud/img/weaviate-cloud-cluster-advanced-set
 `DEFAULT_VECTOR_INDEX` is not set directly. It is determined by the [optimization profile](/cloud/manage-clusters/create#optimization-profile) you pick when you create the cluster: the `Cost Optimized` profile makes HFresh the default vector index, and the `Performance Optimized` profile makes HNSW the default. Free clusters support the `Cost Optimized` profile only.
 
 The profile only sets the default for new collections. An explicit vector index in a [collection definition](/weaviate/manage-collections/vector-config) always takes precedence.
+
+:::
+
+:::note MCP server defaults by cluster type
+
+Free clusters are created with the MCP server and MCP write access enabled; new Shared Cloud clusters have both disabled, with the option to enable them. A Free cluster that is upgraded to a paid plan keeps its settings. See [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud).
 
 :::
 

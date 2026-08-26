@@ -66,7 +66,7 @@ The following advanced configuration settings are available:
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
 
-The [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) switches (`Enable MCP server` and `Enable MCP server write access`) are not part of the free cluster creation form. Enable them after creation from the cluster's `Advanced configuration`; no restart is needed.
+Free clusters are created with the [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) and MCP write access enabled. The two switches (`Enable MCP server` and `Enable MCP server write access`) are not part of the free cluster creation form; adjust them after creation from the cluster's `Advanced configuration`, no restart needed. A free cluster that is upgraded to a paid plan keeps these settings.
 
 </details>
 
@@ -131,7 +131,7 @@ The following advanced configuration settings are available:
 - [`Enable MCP server`](/weaviate/configuration/mcp-server#weaviate-cloud) (`MCP_SERVER_ENABLED`)
 - [`Enable MCP server write access`](/weaviate/configuration/mcp-server#weaviate-cloud) (`MCP_SERVER_WRITE_ACCESS_ENABLED`)
 
-The MCP server switches are off by default and can be changed at any time after creation without a restart.
+The MCP server switches are disabled by default and can be enabled on the creation form or at any time after creation without a restart.
 
 </details>
 

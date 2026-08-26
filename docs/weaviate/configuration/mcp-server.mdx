@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 faq:
   - question: Does Weaviate offer an MCP server?
     answer: >-
-      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable, or on Weaviate Cloud with the "Enable MCP server" switch in the cluster's advanced configuration; it runs on the same port as the REST API at /v1/mcp.
+      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable, or on Weaviate Cloud with the "Enable MCP server" switch in the cluster's advanced configuration (on by default on Free clusters, off by default on Shared Cloud clusters); it runs on the same port as the REST API at /v1/mcp.
   - question: Is the MCP server an external library?
     answer: >-
       No. It's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
@@ -173,17 +173,22 @@ The same `headers` object goes into the Claude Code `add-json` command and the V
 
 ## Configuration
 
-The MCP server is built into Weaviate but is **disabled by default** for security. It is served at the `/v1/mcp` endpoint on the same port as the REST API (default `8080`).
+The MCP server is built into Weaviate. On a self-hosted instance it is **disabled by default** for security; on Weaviate Cloud the default depends on the cluster type (see [Weaviate Cloud](#weaviate-cloud)). It is served at the `/v1/mcp` endpoint on the same port as the REST API (default `8080`).
 
 ### Weaviate Cloud
 
-On Weaviate Cloud, the MCP server is switched on from the cluster's advanced configuration. No environment variables are involved and no restart is needed:
+On Weaviate Cloud, the MCP server is controlled by two switches in the cluster's advanced configuration, `Enable MCP server` and `Enable MCP server write access`. They correspond to `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` below; no environment variables are involved and no restart is needed. The defaults depend on the cluster type:
+
+- **Free clusters:** both switches are **on** by default, so the MCP server and its write tool are available as soon as the cluster is created. A Free cluster that is upgraded to a paid plan keeps these settings.
+- **Shared Cloud clusters:** both switches are **off** by default. You can enable them on the cluster creation form under `Advanced configuration` (see [Create a cluster](/cloud/manage-clusters/create#shared-cloud-clusters)) or at any time afterwards.
+
+To change either switch on an existing cluster:
 
 1. Open the cluster details page in the [Weaviate Cloud console](https://console.weaviate.cloud/) and click `Show advanced options`.
-2. Under `Advanced configuration`, switch on `Enable MCP server`. To make `weaviate-objects-upsert` available, also switch on `Enable MCP server write access` (it has no effect while the MCP server is off).
+2. Under `Advanced configuration`, set `Enable MCP server`. `weaviate-objects-upsert` is only available while `Enable MCP server write access` is also on (it has no effect while the MCP server is off).
 3. Click `Save Configuration`. The change applies after a short delay (see [Toggle without restart](#toggle-without-restart)).
 
-Both switches are off by default and correspond to `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` below. The same switches are on the Shared Cloud cluster creation form under `Advanced configuration` (see [Create a cluster](/cloud/manage-clusters/create#shared-cloud-clusters)).
+Because write access is on by default on Free clusters, connect agents that should not modify data with an API key that has the read-only `viewer` role: it keeps the agent's access read-only regardless of the switch (see [Permissions](#permissions)).
 
 ### Environment variables
 
