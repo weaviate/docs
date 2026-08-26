@@ -2,7 +2,7 @@
 title: Model integration messages
 description: "Warnings about renamed or retired Weaviate model integrations, with the current way to configure the same provider."
 image: og/default.jpg
-hide_table_of_contents: true
+toc_max_heading_level: 2
 side_panel: improve-cluster
 ---
 
@@ -18,7 +18,7 @@ If your message is not here, the [message index](/errors) lists the other groups
 
 Message ids: `py-dep011`, `py-dep012`, `py-dep013`
 
-**What you see**
+### What you see
 
 One of these warnings when you configure a collection. It prints as soon as the configuration object is built, before any request reaches Weaviate:
 
@@ -36,7 +36,7 @@ Do the rename the message asks for and you get a second deprecation warning, bec
 
 :::
 
-**Why it happens**
+### Why it happens
 
 Google retired the PaLM name and reorganized these models under Vertex AI and the Gemini API. Weaviate followed, first by renaming the integrations from `palm` to `google`, and then by splitting the Google embedding and generative integrations by service, because Vertex AI and the Gemini API authenticate differently and expose different models.
 
@@ -44,7 +44,7 @@ That second split is why the message's own advice is out of date rather than wro
 
 The removal date quoted in the message has passed, and the old names still work, so nothing is broken while you migrate. Treat them as removable at any time.
 
-**How to fix it**
+### How to fix it
 
 Choose the integration for the Google service you actually use, then configure it in place of the PaLM one.
 
@@ -120,8 +120,8 @@ The collection definition is only half of the change. The header that carries yo
 
 | Service | Current header | Deprecated headers it replaces |
 | --- | --- | --- |
-| Vertex AI | `X-Goog-Vertex-Api-Key` | `X-Google-Vertex-Api-Key`, `X-Google-Api-Key`, `X-PaLM-Api-Key` |
-| Gemini API | `X-Goog-Studio-Api-Key` | `X-Google-Studio-Api-Key`, `X-Google-Api-Key`, `X-PaLM-Api-Key` |
+| Vertex AI | `X-Goog-Vertex-Api-Key` | `X-Google-Vertex-Api-Key`, `X-Google-Api-Key`, `X-Palm-Api-Key` |
+| Gemini API | `X-Goog-Studio-Api-Key` | `X-Google-Studio-Api-Key`, `X-Google-Api-Key`, `X-Palm-Api-Key` |
 
 The current headers need a server on v1.27.7, v1.26.12 or v1.25.27 at the least. Check your server version before you switch: a cluster old enough to still be running the PaLM integration may be old enough to reject the new header, and it will answer with an authentication error rather than a helpful one. On an older server, stay on the deprecated header until you upgrade.
 
@@ -131,7 +131,7 @@ One thing to notice when you diff the snippets above: the current forms also mov
 
 Existing collections are unaffected: the integration is recorded when the collection is created, and a collection created under the old name goes on working. Change the name in the code that creates new collections. Rewriting an existing collection would mean re-embedding its objects, which is only worth doing if you also want to change the model.
 
-**Learn more**
+### Learn more
 
 - [Google embeddings](/weaviate/model-providers/google/embeddings#configure-the-vectorizer)
 - [Google multimodal embeddings](/weaviate/model-providers/google/embeddings-multimodal#configure-the-vectorizer)

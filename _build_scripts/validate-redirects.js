@@ -200,9 +200,16 @@ if (!fs.existsSync(EDGE_FN)) {
   }
 }
 
-// 8. Destinations inside /errors must resolve to a real page AND a real anchor.
+// 8. Every destination must resolve to a real page AND a real anchor.
 //    Nothing downstream catches a bad fragment: the build only warns on broken
 //    anchors it finds in page links, and it never sees this file at all.
+//
+//    Inside /errors the anchor must be an explicit {#anchor}: entries use
+//    overrides so that several ids can share one heading without the anchor
+//    being tied to the heading's wording. Elsewhere the rule points at pages
+//    the section does not own, so any anchor Docusaurus would render counts:
+//    an explicit {#anchor}, a heading's generated slug, or an <APITable> row id
+//    (the row's first cell, verbatim -- see src/components/APITable).
 const docsPath = (route) => {
   const rel = route.replace(/^\//, '')
   for (const candidate of [`docs/${rel}.mdx`, `docs/${rel}.md`, `docs/${rel}/index.mdx`, `docs/${rel}/index.md`]) {
@@ -212,9 +219,32 @@ const docsPath = (route) => {
   return null
 }
 
+// github-slugger, as Docusaurus applies it to headings: lowercase, drop
+// punctuation, spaces to hyphens. Inline code marks are dropped first since
+// the slug is built from the rendered text.
+const slugify = (text) =>
+  text
+    .replace(/`/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+
+const anchorsIn = (body) => {
+  const anchors = new Set()
+  for (const m of body.matchAll(/\{#([^}\s]+)\}/g)) anchors.add(m[1])
+  for (const m of body.matchAll(/^#{1,6}[ \t]+(.+?)(?:[ \t]+\{#[^}]+\})?[ \t]*$/gm)) anchors.add(slugify(m[1]))
+  // APITable rows: <tr id={firstCellText}>, first cell verbatim minus code marks.
+  for (const m of body.matchAll(/^\|[ \t]*`?([^|`]+?)`?[ \t]*\|/gm)) anchors.add(m[1].trim())
+  return anchors
+}
+
 let checkedDestinations = 0
+let checkedAnchors = 0
 for (const r of rules) {
-  if (!r.to || !r.to.startsWith('/errors')) continue
+  if (!r.to || r.to === '/errors' && r.status === '302') continue
+  if (!r.to.startsWith('/')) continue
+  if (r.to.startsWith('/e/')) continue // alias onto another rule, checked through that rule
   const [route, fragment] = r.to.split('#')
   const file = docsPath(route)
   if (!file) {
@@ -223,11 +253,15 @@ for (const r of rules) {
   }
   checkedDestinations++
   if (!fragment) continue
+  checkedAnchors++
   const body = fs.readFileSync(file, 'utf8')
-  // Entries use explicit {#anchor} overrides, so several ids can share one
-  // heading without the anchor being tied to the heading's wording.
-  if (!body.includes(`{#${fragment}}`)) {
-    fail(`"${r.from}" points at "#${fragment}", which is not an explicit {#...} anchor in ${path.relative(ROOT, file)}.`)
+  const rel = path.relative(ROOT, file)
+  if (route.startsWith('/errors')) {
+    if (!body.includes(`{#${fragment}}`)) {
+      fail(`"${r.from}" points at "#${fragment}", which is not an explicit {#...} anchor in ${rel}.`)
+    }
+  } else if (!anchorsIn(body).has(fragment)) {
+    fail(`"${r.from}" points at "#${fragment}", which is not a heading slug, {#...} anchor, or APITable row id in ${rel}.`)
   }
 }
 
@@ -241,5 +275,5 @@ if (failures.length > 0) {
 console.log(
   `netlify.toml /e/ redirector OK: ${rules.length} rules parsed (all ${declared} declared), ` +
     `${specific.length} specific (301), 1 catch-all (302, last), ` +
-    `${checkedDestinations} destinations in /errors verified to a real page and anchor.`
+    `${checkedDestinations} destinations verified to a real page, ${checkedAnchors} of them to a real anchor.`
 )

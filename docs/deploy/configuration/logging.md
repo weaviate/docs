@@ -76,6 +76,20 @@ time="2026-01-06T15:55:01Z" level=info action=authorize build_git_commit=5f0048c
 - Debugging issues locally
 - Easier visual scanning is preferred over machine parsing
 
+### Messages with a docs link
+
+A log entry whose cause has a documented fix carries a `docs_url` field. The link is a stable short id, `https://docs.weaviate.io/e/<id>`, that resolves to the entry for that message in the [error message reference](/errors), where the cause and the fix are on one page:
+
+```json
+{"action":"tenant_activation_lazy_load_shard","docs_url":"https://docs.weaviate.io/e/core-mem001","level":"error","msg":"loading shard \"t1\" failed: memory pressure: cannot init shard: not enough memory mappings","shard":"t1","time":"2026-08-25T09:53:26Z"}
+```
+
+The field is separate from the message, so alerts and filters that match on message text keep working, and in JSON logs you can select on it directly. The error returned to the client for the same failure carries the same link at the end of its message, as `(see https://docs.weaviate.io/e/core-mem001)`. Added in `v1.40`.
+
+Weaviate also logs a banner as its first entry on startup, with the version and a link to [Improve your cluster](/improve-your-cluster), and repeats it every [`BANNER_INTERVAL`](./env-vars/index.md#BANNER_INTERVAL) (24 hours by default). The repeat banner fetches its art from `https://weaviate.io/banner/v1.json` and, once the cluster has an id, carries it on the link as `?clusterid=<uuid>`; both happen only while telemetry is enabled. Set [`DISABLE_STARTUP_BANNER`](./env-vars/index.md#DISABLE_STARTUP_BANNER) to turn the banner off entirely.
+
+From the same point in startup, every `docs_url` and every link in an error message carries the cluster id the same way, so a docs page can tell which cluster the reader came from. A cluster with telemetry disabled never has an id, and no link carries one in the first seconds after start, before the cluster has elected a leader.
+
 ## Accessing Logs
 
 Weaviate logs can be accessed using standard container logging commands. For example:

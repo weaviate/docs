@@ -21,12 +21,11 @@ import ContextualMenu from "@site/src/components/ContextualMenu";
 import ErrorSidePanel from "@site/src/components/ErrorSidePanel";
 /* ---- END: Customizations ---- */
 
-// Opt-in replacement for the right-hand column, keyed on the `side_panel`
-// frontmatter field. Only the /errors pages set it: they hide the table of
-// contents (a reader arriving from an error message wants one anchor, not a
-// list of the others) and put a pointer to /improve-your-cluster there
-// instead. A page that does not set `side_panel` takes the original path
-// unchanged.
+// Opt-in addition to the right-hand column, keyed on the `side_panel`
+// frontmatter field. Only the /errors pages set it: a pointer to
+// /improve-your-cluster renders under the table of contents, or in its place
+// when the page hides it. A page that does not set `side_panel` takes the
+// original path unchanged.
 const SIDE_PANELS = {
   "improve-cluster": ErrorSidePanel,
 };
@@ -92,13 +91,11 @@ export default function DocItemLayout({ children }) {
   const showMobileFeedback =
     !docTOC.hidden && !docTOC.desktop && docTOC.mobile && feedbackEnabled;
 
-  // Same viewport rule the desktop TOC uses, so the panel and the TOC can never
-  // both claim the column.
+  // Same viewport rule the desktop TOC uses, so the panel appears exactly where
+  // the TOC would, whether or not the TOC is there too.
   const SidePanel = SIDE_PANELS[frontMatter.side_panel];
   const showSidePanel =
-    Boolean(SidePanel) &&
-    !docTOC.desktop &&
-    (windowSize === "desktop" || windowSize === "ssr");
+    Boolean(SidePanel) && (windowSize === "desktop" || windowSize === "ssr");
 
   return (
     <>

@@ -1316,6 +1316,11 @@ status = 301
 # is why the destinations below stay plain. Read that file before changing
 # anything in this block.
 
+# /improve-your-cluster IS ALSO A CONTRACT. Weaviate prints it in the startup
+# banner of every release from v1.40 as a readable URL rather than an /e/ id, so
+# it is compiled into binaries the same way the ids are. If the page ever moves,
+# add a 301 from /improve-your-cluster here; never let it 404.
+
 ## ---- Python client (weaviate-python-client) ----
 
 [[redirects]]

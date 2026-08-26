@@ -6,7 +6,11 @@ import styles from "./styles.module.scss";
  * Shows the cluster identity a reader arrived with, when they arrived with one.
  *
  * Weaviate can append `?clusterid=<uuid>` to the docs links it prints, so the
- * reader lands holding it. This renders it.
+ * reader lands holding it. This renders it. From Weaviate v1.40 the repeat
+ * banner, the docs_url log field and the link in error messages all carry it
+ * once the cluster has an id (telemetry enabled, leader elected); the startup
+ * banner never can, since raft has not committed an id that early. The
+ * redirect rules pass the parameter through.
  *
  * Rendered on the four /errors entry pages, which is where a message link
  * actually lands, and on /improve-your-cluster, which is one link further on.

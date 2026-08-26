@@ -2,7 +2,7 @@
 title: Cluster resource messages
 description: "Weaviate log messages that mean a node has run out of a resource, such as memory mappings, with the cause and the fix for each one."
 image: og/default.jpg
-hide_table_of_contents: true
+toc_max_heading_level: 2
 side_panel: improve-cluster
 ---
 
@@ -18,7 +18,7 @@ If your message is not here, the [message index](/errors) lists the other groups
 
 Message ids: `core-mem001`
 
-**What you see**
+### What you see
 
 An error in the node's logs, ending in `not enough memory mappings`:
 
@@ -27,25 +27,35 @@ memory pressure: cannot init shard: not enough memory mappings
 memory pressure: cannot load shard: not enough memory mappings
 ```
 
-Which entry carries it depends on the operation that hit the limit. These are three separate log entries, and you may see any of them:
+If the failure happened inside a request you made, the same text comes back as the error, with this page's link on the end. Activating a tenant, for example, answers:
 
-| Log message | `action` field | Where to find `not enough memory mappings` |
-| --- | --- | --- |
-| `failed to load shard: memory pressure: cannot load shard: not enough memory mappings` | `load_shard` | In the message |
-| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | Either appended to that message or in a separate `error` field, depending on your version |
-| `failed to reload local index` | (none) | In a separate `error` field |
+```json
+{"error":[{"message":"updating db: TYPE_UPDATE_TENANT: memory pressure: cannot init shard: not enough memory mappings (see https://docs.weaviate.io/e/core-mem001)"}]}
+```
 
-Weaviate logs JSON by default, so for the second and third entries the cause can sit in a sibling `error` field rather than in the message. Search the `error` field as well as the message, and search for `not enough memory mappings` rather than for a whole line: that phrase is the one part that appears somewhere in the entry on every version.
+A query or a batch import through the gRPC or GraphQL API fails the same way, with the same suffix.
+
+Which log entry carries it depends on the operation that hit the limit. These are separate entries, and you may see any of them:
+
+| Log message | `action` field | Level | Where to find `not enough memory mappings` |
+| --- | --- | --- | --- |
+| `failed to load shard: memory pressure: cannot load shard: not enough memory mappings` | `load_shard` | error | In the message |
+| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | error | Either appended to that message or in a separate `error` field, depending on your version |
+| `failed to reload local index` | (none) | error | In a separate `error` field |
+| `failure while loading shard: memory pressure: cannot init shard: not enough memory mappings` | replication engine | error | In the message, while a replica is being moved or copied |
+| `drop-vector: load lazy shard: memory pressure: cannot load shard: not enough memory mappings` | (none) | warning | In the message, while a vector index is being dropped |
+
+Weaviate logs JSON by default, so for the second and third entries the cause can sit in a sibling `error` field rather than in the message. Search the `error` field as well as the message, and search for `not enough memory mappings` rather than for a whole line: that phrase is the one part that appears somewhere in the entry on every version. On versions that carry it, every one of these entries also has a `docs_url` field pointing here.
 
 Collections or tenants whose shards did not load are unavailable for reads and writes, and the failure often shows up alongside replication errors such as `broadcast: cannot reach enough replicas`.
 
-**Why it happens**
+### Why it happens
 
 Every shard memory-maps several files, and the Linux kernel caps how many mappings one process may hold. That cap is `vm.max_map_count`. Weaviate reads it at startup and budgets 70% of it, leaving room for other processes on the host, then refuses to open a shard that would take it past that budget. Refusing early is deliberate: exhausting the kernel limit outright would fail unpredictably somewhere else in the process.
 
 The usual trigger is scale rather than a bug. Distribution defaults for `vm.max_map_count` were chosen for ordinary workloads, and a node holding thousands of active tenants or collections passes them.
 
-**How to fix it**
+### How to fix it
 
 1. Read the current limit on the node that logged the error:
 
@@ -53,16 +63,18 @@ The usual trigger is scale rather than a bug. Distribution defaults for `vm.max_
    sysctl vm.max_map_count
    ```
 
-2. Raise it. Three to four times the current value is a reasonable first step, and the value is a count, not an amount of memory, so raising it costs nothing on its own:
+   Most distributions ship `65530`, which is sized for ordinary desktop and server workloads, not for a database that maps a file per segment.
+
+2. Raise it. The value is a count, not an amount of memory, so a high value costs nothing on its own. `262144` is the floor that other memory-mapped databases ask for and is enough for a node with a few hundred shards; a node holding thousands of active tenants needs the millions, and `4194304` leaves room to grow:
 
    ```bash
-   sysctl -w vm.max_map_count=8388608
+   sysctl -w vm.max_map_count=4194304
    ```
 
 3. Make it survive a reboot:
 
    ```bash
-   echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
+   echo "vm.max_map_count=4194304" >> /etc/sysctl.conf
    ```
 
 4. Restart the affected node, or the affected pod on Kubernetes, so Weaviate reads the new limit.
@@ -71,7 +83,7 @@ On Kubernetes the setting belongs to the host kernel, not to the container, so a
 
 If the limit is already high and the error keeps coming back, the node is holding more shards than it was sized for. Deactivate or offload tenants that are not in use, or add nodes and rebalance.
 
-**Learn more**
+### Learn more
 
 - [Known issues: memory pressure, shard init failure](/weaviate/release-notes/known-issues#memory-pressure-shard-init-failure)
 - [Resource planning](/weaviate/concepts/resources)

@@ -439,6 +439,7 @@ Upgrade to fixed version:
 ```
 
 - Tenant activation failures
+- From `v1.40`, these entries carry `docs_url=https://docs.weaviate.io/e/core-mem001`, and the error returned to the client ends in the same link. Both lead to [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings), which has the fix.
 
 #### Root cause
 

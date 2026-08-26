@@ -5,11 +5,12 @@ import styles from "./styles.module.scss";
 /**
  * Right-hand panel for the /errors section.
  *
- * Error pages set `hide_table_of_contents: true` (readers arrive at one
- * anchor from a message link, so a list of the other anchors is noise) and
- * `side_panel: improve-cluster`. src/theme/DocItem/Layout renders this in the
- * column the table of contents would otherwise occupy. Nothing else on the
- * site sets `side_panel`, so no normal docs page is affected.
+ * Error pages set `side_panel: improve-cluster`, and src/theme/DocItem/Layout
+ * renders this under the table of contents, or in its place on a page that
+ * hides it. The group pages keep their table of contents, limited to the entry
+ * headings, because a reader who found the page through a search for message
+ * text needs to see which entries it holds. Nothing else on the site sets
+ * `side_panel`, so no normal docs page is affected.
  */
 export default function ErrorSidePanel() {
   return (

@@ -8,6 +8,12 @@ import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
 
 <ClusterIdNotice/>
 
+:::tip Just started Weaviate?
+
+This page is linked from the banner Weaviate logs on every start. If you are here because you just ran it for the first time, the checklist below is for later. Start with the [quickstart](/weaviate/quickstart), [connect a client](/weaviate/connections), and come back once you have data you would mind losing.
+
+:::
+
 Most of the messages in the [error message reference](/errors) are not really about the moment they were printed. They are the point at which a cluster that was already short on headroom, unmonitored, or behind on versions finally ran out of room.
 
 This page is the short version of what to change so the next one does not happen. Work through it once when you set a cluster up, and again whenever the shape of your workload changes: a new collection, a jump in tenants, or a much larger import.
@@ -66,6 +72,14 @@ Running a version that is a year old means carrying every bug that has since bee
 - **Keep clients within the supported range** of the server. Client and server versions move independently, and a large gap between them is a common source of confusing errors.
 
 Further reading: [release notes](/weaviate/release-notes) · [known issues](/weaviate/release-notes/known-issues) · [migration guides](/deploy/migration)
+
+## More ways to run and extend Weaviate
+
+Everything above applies to a cluster you run yourself. If running it is not the part you want to own, or you want more than the database:
+
+- **Weaviate Cloud** runs the cluster for you, with a free sandbox to start from: [create a cluster and connect](/cloud/quickstart), then point your existing client at it with [the same connection code](/cloud/manage-clusters/connect).
+- **Managed and enterprise options**: [deployment options](https://weaviate.io/deployment) compares Weaviate Cloud, [Weaviate on DigitalOcean](/deploy/installation-guides/digitalocean), and [Enterprise](https://weaviate.io/enterprise) support for clusters you keep in your own environment. [Pricing](https://weaviate.io/pricing) is public.
+- **Add-ons**: the [Embedding Service](/cloud/embeddings) generates vectors without running a model yourself, the [Query Agent](/query-agent) answers questions over your collections, and [Engram](/engram) gives agents long-term memory on top of Weaviate.
 
 ## Further resources
 

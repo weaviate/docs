@@ -2,7 +2,7 @@
 title: Collection configuration messages
 description: "Deprecation warnings raised when a collection describes its vectors, vector index, or multi-vector settings in a retired way, with the current form for each."
 image: og/default.jpg
-hide_table_of_contents: true
+toc_max_heading_level: 2
 side_panel: improve-cluster
 ---
 
@@ -18,7 +18,7 @@ If your message is not here, the [message index](/errors) lists the other groups
 
 Message ids: `py-dep017`, `py-dep023`, `py-dep024`, `py-dep025`
 
-**What you see**
+### What you see
 
 One or more of these warnings when you create or update a collection:
 
@@ -36,13 +36,13 @@ Dep023: You are using the `vectorizer_config` argument in the `collection.config
             Use the `vector_config` argument instead.
 ```
 
-**Why it happens**
+### Why it happens
 
 A collection used to describe its embeddings as two independent settings: one for the model that produces the vector, and one for the index that stores it. That shape cannot express a collection with several differently configured vectors, which Weaviate supports. Both settings now live inside a single vector definition, and a collection holds one or more of them, each with a name.
 
 The old arguments still work, and a collection created with them keeps the older single-vector shape.
 
-**How to fix it**
+### How to fix it
 
 Move the model and the index settings into one vector definition when you create the collection:
 
@@ -102,7 +102,7 @@ Change the code that creates collections first. That is where the deprecation ac
 
 Rewriting a collection definition does not re-embed anything and does not touch stored vectors. It changes how the collection is described, so the same request keeps working once the old arguments are removed.
 
-**Learn more**
+### Learn more
 
 - [Configure vectors for a collection](/weaviate/manage-collections/vector-config)
 - [Collection configuration reference](/weaviate/config-refs/collections)
@@ -112,7 +112,7 @@ Rewriting a collection definition does not re-embed anything and does not touch 
 
 Message ids: `py-dep026`
 
-**What you see**
+### What you see
 
 A warning when you add a vector to an existing collection:
 
@@ -123,11 +123,11 @@ Dep026: You are using the named vector syntax for vector title_vector, e.g. `Con
 
 The vector name in the message is your own, so it differs from the one shown here.
 
-**Why it happens**
+### Why it happens
 
 When named vectors were introduced they had a separate set of builders, kept apart from the single-vector ones. Every vector is now a named vector, so the two sets were merged into one, split instead by whether the vector is a single vector or a multi-vector. The old builders are aliases that still work.
 
-**How to fix it**
+### How to fix it
 
 Use the current builder for the kind of vector you are adding. The arguments are unchanged:
 
@@ -155,7 +155,7 @@ collection.config.add_vector(
 
 For a multi-vector embedding, such as ColBERT or ColPali, use the multi-vector builders instead. If your warning names the `encoding` argument rather than the named vector syntax, it is the other message that ships under this same id: see [deprecated multi-vector index settings](#deprecated-multi-vector-settings).
 
-**Learn more**
+### Learn more
 
 - [Configure vectors for a collection](/weaviate/manage-collections/vector-config)
 - [Add a vector to an existing collection](/weaviate/manage-collections/vector-config#add-new-named-vectors)
@@ -164,7 +164,7 @@ For a multi-vector embedding, such as ColBERT or ColPali, use the multi-vector b
 
 Message ids: `py-dep026`, `py-dep027`
 
-**What you see**
+### What you see
 
 One or both of these warnings when you create a collection with a multi-vector embedding:
 
@@ -180,11 +180,11 @@ The second one is a different message that ships under the same id as [deprecate
 
 The second message is quoted exactly as it prints, and the path inside it is wrong. It names `Configure.VectorIndex.MultiVectors`, plural, which does not exist. The real one is `Configure.VectorIndex.MultiVector`, singular. The plural spelling is easy to reach for because `Configure.MultiVectors` does exist at the top level, so copying the path out of the warning fails. The working form is in the snippets below.
 
-**Why it happens**
+### Why it happens
 
 Whether a vector is a multi-vector is a property of the vector, not of the index that stores it, and it is already implied by the multi-vector builder you chose. Declaring it a second time on the index left two places that could disagree, so the setting moved onto the vector definition.
 
-**How to fix it**
+### How to fix it
 
 Move the setting out of the index configuration and onto the vector definition. In the message, the second part of the name stands for whichever multi-vector builder you are using, such as a self-provided vector or a specific model integration:
 
@@ -229,7 +229,7 @@ client.collections.create(
 )
 ```
 
-**Learn more**
+### Learn more
 
 - [Multi-vector embeddings](/weaviate/manage-collections/vector-config#define-multi-vector-embeddings-eg-colbert-colpali)
 - [Multi-vector embeddings tutorial](/weaviate/tutorials/multi-vector-embeddings)
