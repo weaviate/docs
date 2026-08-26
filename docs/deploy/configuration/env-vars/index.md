@@ -49,6 +49,7 @@ import APITable from '@site/src/components/APITable';
 | `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_JA` | Enable the [`Kagome` tokenizer for Japanese](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_KR` | Enable the [`Kagome` tokenizer for Korean](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
+| `EXPERIMENTAL_REST_SEARCH_ENABLED` | (EXPERIMENTAL) Enable the [REST Search API](/weaviate/api/rest): the `POST /v1/search/{collection}/near-text`, `/bm25`, `/hybrid` and `/near-object` endpoints, and the sibling `POST /v1/aggregate/{collection}` endpoint. While disabled, these endpoints reject requests with a `422` status. Default: `false` | `boolean` | `true` |
 | `EXPORT_DEFAULT_BUCKET` | Storage bucket name for [collection exports](/docs/deploy/configuration/export.md). Required for S3, GCS, and Azure backends.<br/>Added in `v1.37` | `string` | `my-export-bucket` |
 | `EXPORT_DEFAULT_PATH` | Optional base path prefix for exported files within the bucket for [collection exports](/docs/deploy/configuration/export.md). Defaults to `""` (no prefix). _Changed in `v1.37.1`: previously required to be explicitly set._<br/>Added in `v1.37` | `string` | `exports/my-cluster` |
 | `EXPORT_ENABLED` | Enable the [collection export](/docs/deploy/configuration/export.md) API. Default: `false`<br/>Added in `v1.37` | `boolean` | `true` |
