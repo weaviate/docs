@@ -22,7 +22,9 @@ For asynchronous operations, use the `WeaviateAsyncClient` async client, availab
 
 The `WeaviateAsyncClient` async client largely supports the same functions and methods as the `WeaviateClient` [synchronous client](./index.mdx), with the key difference that the async client is designed to be used in an `async` function running in an [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop).
 
-<!-- TODO[g-despot] Uncomment when available 
+<!-- TODO[g-despot] Uncomment when available. Also re-add the "async-python-client-usage"
+entry to src/components/AcademyAdmonition/courses.json. It was removed because
+https://academy.weaviate.io/courses/wa280-py does not exist yet (404).
 import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
 
 <AcademyAdmonition 

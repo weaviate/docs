@@ -1,7 +1,7 @@
 [
   {
     "id": "quick-tour-of-weaviate",
-    "title": "A Quick Tour of Weaviate",
+    "title": "Key Concepts & Architecture",
     "description": "Become familiar with Weaviate's architecture, core concepts, and key capabilities. Understand how its features and integrations map to AI builders' needs.",
     "url": "https://academy.weaviate.io/courses/wa050-py"
   },
@@ -30,15 +30,33 @@
     "url": "https://academy.weaviate.io/courses/wa210-py"
   },
   {
+    "id": "search-strategies-in-depth",
+    "title": "Search Strategies: In Depth",
+    "description": "Gain deep, practical knowledge of search strategies in Weaviate. Dive deeper into different search types, tokenization and its impact, and search optimization techniques.",
+    "url": "https://academy.weaviate.io/courses/wa220-py"
+  },
+  {
+    "id": "data-ingestion-in-depth",
+    "title": "Data Ingestion: In Depth",
+    "description": "How you prepare and ingest data has big impact on the quality of your search and downstream applications. Learn about the key options and decisions to make, and some best practices.",
+    "url": "https://academy.weaviate.io/courses/wa230-py"
+  },
+  {
     "id": "embedding-model-evaluation",
     "title": "Embedding Model Evaluation & Selection",
     "description": "Embedding models are the heart of vector search. Learn how to evaluate and select appropriate embedding models for your use case.",
-    "url": "https://academy.weaviate.io/courses/wa150-py"
+    "url": "https://academy.weaviate.io/courses/wa260-py"
   },
   {
-    "id": "async-python-client-usage",
-    "title": "Async Python Client Usage",
-    "description": "Learn how to use Weaviate's async capabilities to handle concurrent operations and large-scale data processing efficiently.",
-    "url": "https://academy.weaviate.io/courses/wa280-py"
+    "id": "multimodal-data-in-focus",
+    "title": "Multimodal Data: In Focus",
+    "description": "A lot of our world is multimodal. Learn how to work with multimodal data, combining the right embedding and generative models with Weaviate.",
+    "url": "https://academy.weaviate.io/courses/wa910-py"
+  },
+  {
+    "id": "document-chunking-strategies",
+    "title": "Document Chunking Strategies",
+    "description": "Learn effective chunking strategies for different types of documents and use cases.",
+    "url": "https://academy.weaviate.io/courses/wa921-py"
   }
 ]
