@@ -80,6 +80,7 @@ gql_query = """
       limit: 3
       bm25: {
         query: "Australian mammal cute"
+        properties: ["question", "answer"]
         # highlight-start
         searchOperator: {
           operator: AndCross,

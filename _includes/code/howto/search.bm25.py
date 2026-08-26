@@ -120,6 +120,8 @@ jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
     query="African desert wind",
+    # and_cross errors unless every searched property shares tokenization settings
+    query_properties=["question", "answer"],
     # Each token must be matched by at least one searched property,
     # but not necessarily all by the same property
     operator=BM25Operator.and_cross(),
