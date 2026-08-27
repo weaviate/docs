@@ -673,7 +673,7 @@ import V137Preview from '/\_includes/feature-notes/v137-preview.mdx';
 
 <V137Preview/>
 
-Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximum Marginal Relevance (MMR)** reranks results to balance relevance with diversity: each selected result must add something new to the result set.
+Standard vector search returns the closest matches to the query, which often means a cluster of near-duplicate results. **Maximal Marginal Relevance (MMR)** reranks results to balance relevance with diversity: each selected result must add something new to the result set.
 
 Add the `diversity_selection` parameter to any vector search query:
 

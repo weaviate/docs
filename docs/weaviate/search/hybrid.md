@@ -1059,11 +1059,11 @@ See [Boost](./boost.md) for the supported condition types (filter, property valu
 :::info Added in `v1.38.6`
 :::
 
-Hybrid search fuses a keyword result set and a vector result set, which often means the top of the fused list is a cluster of near-duplicates. **Maximum Marginal Relevance (MMR)** reranks that list to balance relevance with diversity, so that each selected object adds something new to the result set.
+Hybrid search fuses a keyword result set and a vector result set, which often means the top of the fused list is a cluster of near-duplicates. **Maximal Marginal Relevance (MMR)** reranks that list to balance relevance with diversity, so that each selected object adds something new to the result set.
 
 Diversity selection runs after fusion. Both search legs run first, their results are fused with the configured `alpha` and fusion method, and the diversity pass then picks a diverse subset of the fused candidates.
 
-The examples in this section are Python only, because diversity selection is currently available in the Python client and not yet in the TypeScript, Go, Java, or C# clients. There is no GraphQL equivalent.
+The examples in this section are Python only. Diversity selection on hybrid search is available in the Python (`v4.23.0`), Java (`v6.3.1`), and C# (`v1.2.0`) clients, but not yet in the TypeScript or Go clients. There is no GraphQL equivalent.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
