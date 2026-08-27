@@ -1761,6 +1761,28 @@ const sidebars = {
       label: "Overview",
     },
   ],
+  // /improve-your-cluster and /errors share one sidebar: the checklist is the
+  // page every error entry points to, so it sits above the messages.
+  errorsSidebar: [
+    {
+      type: "doc",
+      id: "improve-your-cluster",
+      label: "Improve your cluster",
+    },
+    {
+      type: "category",
+      label: "Errors",
+      link: {
+        type: "doc",
+        id: "errors/index",
+      },
+      items: [
+        "errors/cluster-resources",
+        "errors/collection-configuration",
+        "errors/model-integrations",
+      ],
+    },
+  ],
 };
 
 module.exports = sidebars;

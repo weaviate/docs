@@ -1,71 +1,80 @@
 ---
 title: Cluster resource messages
+sidebar_label: Cluster resources
 description: "Weaviate log messages that mean a node has run out of a resource, such as memory mappings, with the cause and the fix for each one."
 image: og/default.jpg
 toc_max_heading_level: 2
 side_panel: improve-cluster
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+import QuickLinks from '@site/src/components/QuickLinks';
+import { EntryFacts } from '@site/src/components/ErrorDocs';
 
 <ClusterIdNotice/>
 
-Messages on this page mean that a Weaviate node asked the operating system for a resource and was refused. The data is intact, but the node cannot open the files it needs until the limit is raised or the load is reduced.
-
-If your message is not here, the [message index](/errors) lists the other groups.
+Messages on this page mean that a Weaviate node asked the operating system for a resource and was refused. The data is intact, but the node cannot open the files it needs until the limit is raised or the load is reduced. If your message is not here, the [message index](/errors) lists the other groups.
 
 ## Not enough memory mappings {#not-enough-memory-mappings}
 
-Message ids: `core-mem001`
+<EntryFacts
+  ids={["core-mem001"]}
+  raisedBy="Weaviate Database"
+  severity="error"
+  impact="A shard refused to open, so its collection or tenant is unavailable for reads and writes. Nothing is corrupted."
+  fix="Raise vm.max_map_count on the host and restart the node."
+/>
 
 ### What you see
 
-An error in the node's logs, ending in `not enough memory mappings`:
+An error in the node's logs ending in `not enough memory mappings`, and the same text in the error your client receives when the failure happened inside a request you made:
 
 ```text
 memory pressure: cannot init shard: not enough memory mappings
-memory pressure: cannot load shard: not enough memory mappings
 ```
-
-If the failure happened inside a request you made, the same text comes back as the error, with this page's link on the end. Activating a tenant, for example, answers:
 
 ```json
 {"error":[{"message":"updating db: TYPE_UPDATE_TENANT: memory pressure: cannot init shard: not enough memory mappings (see https://docs.weaviate.io/e/core-mem001)"}]}
 ```
 
-A query or a batch import through the gRPC or GraphQL API fails the same way, with the same suffix.
+Which log entry carries it depends on the operation that hit the limit:
 
-Which log entry carries it depends on the operation that hit the limit. These are separate entries, and you may see any of them:
-
-| Log message | `action` field | Level | Where to find `not enough memory mappings` |
+| Log message | `action` field | Level | Where the phrase is |
 | --- | --- | --- | --- |
 | `failed to load shard: memory pressure: cannot load shard: not enough memory mappings` | `load_shard` | error | In the message |
-| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | error | Either appended to that message or in a separate `error` field, depending on your version |
+| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | error | Appended to the message, or in a separate `error` field on older versions |
 | `failed to reload local index` | (none) | error | In a separate `error` field |
-| `failure while loading shard: memory pressure: cannot init shard: not enough memory mappings` | replication engine | error | In the message, while a replica is being moved or copied |
-| `drop-vector: load lazy shard: memory pressure: cannot load shard: not enough memory mappings` | (none) | warning | In the message, while a vector index is being dropped |
+| `failure while loading shard: memory pressure: cannot init shard: not enough memory mappings` | replication engine | error | In the message, while a replica is moved or copied |
+| `drop-vector: load lazy shard: memory pressure: cannot load shard: not enough memory mappings` | (none) | warning | In the message, while a vector index is dropped |
 
-Weaviate logs JSON by default, so for the second and third entries the cause can sit in a sibling `error` field rather than in the message. Search the `error` field as well as the message, and search for `not enough memory mappings` rather than for a whole line: that phrase is the one part that appears somewhere in the entry on every version. On versions that carry it, every one of these entries also has a `docs_url` field pointing here.
+:::tip Search for the phrase, not the line
+`not enough memory mappings` is the one part that appears somewhere in the entry on every version, sometimes in a sibling `error` field rather than the message. On versions that carry it, every one of these entries also has a `docs_url` field pointing here.
+:::
 
-Collections or tenants whose shards did not load are unavailable for reads and writes, and the failure often shows up alongside replication errors such as `broadcast: cannot reach enough replicas`.
+The failure often shows up next to replication errors such as `broadcast: cannot reach enough replicas`, because the shard those requests needed is the one that did not load.
 
 ### Why it happens
 
-Every shard memory-maps several files, and the Linux kernel caps how many mappings one process may hold. That cap is `vm.max_map_count`. Weaviate reads it at startup and budgets 70% of it, leaving room for other processes on the host, then refuses to open a shard that would take it past that budget. Refusing early is deliberate: exhausting the kernel limit outright would fail unpredictably somewhere else in the process.
+Every shard memory-maps several files, and the Linux kernel caps how many mappings one process may hold: `vm.max_map_count`. Weaviate reads that cap at startup, budgets 70% of it to leave room for other processes, and refuses to open a shard that would take it past the budget. Refusing early is deliberate: exhausting the kernel limit outright fails unpredictably somewhere else in the process.
 
-The usual trigger is scale rather than a bug. Distribution defaults for `vm.max_map_count` were chosen for ordinary workloads, and a node holding thousands of active tenants or collections passes them.
+The usual trigger is scale, not a bug. Distribution defaults were chosen for ordinary workloads, and a node holding thousands of active tenants or collections passes them.
 
 ### How to fix it
 
-1. Read the current limit on the node that logged the error:
+The limit belongs to the host kernel, so where you set it depends on how you run Weaviate.
+
+<Tabs groupId="platform">
+<TabItem value="linux" label="Linux host">
+
+1. Read the current limit on the node that logged the error. Most distributions ship `65530`:
 
    ```bash
    sysctl vm.max_map_count
    ```
 
-   Most distributions ship `65530`, which is sized for ordinary desktop and server workloads, not for a database that maps a file per segment.
-
-2. Raise it. The value is a count, not an amount of memory, so a high value costs nothing on its own. `262144` is the floor that other memory-mapped databases ask for and is enough for a node with a few hundred shards; a node holding thousands of active tenants needs the millions, and `4194304` leaves room to grow:
+2. Raise it. The value is a count, not an amount of memory, so a high value costs nothing on its own. `262144` is the floor other memory-mapped databases ask for; a node holding thousands of active tenants needs the millions, and `4194304` leaves room to grow:
 
    ```bash
    sysctl -w vm.max_map_count=4194304
@@ -77,19 +86,38 @@ The usual trigger is scale rather than a bug. Distribution defaults for `vm.max_
    echo "vm.max_map_count=4194304" >> /etc/sysctl.conf
    ```
 
-4. Restart the affected node, or the affected pod on Kubernetes, so Weaviate reads the new limit.
+4. Restart the affected node so Weaviate reads the new limit.
 
-On Kubernetes the setting belongs to the host kernel, not to the container, so apply it on each node through your node configuration, a `DaemonSet`, or a privileged init container. Setting it inside an unprivileged container has no effect. On Weaviate Cloud the host configuration is not yours to change, so open a support ticket instead.
+</TabItem>
+<TabItem value="kubernetes" label="Kubernetes">
 
-If the limit is already high and the error keeps coming back, the node is holding more shards than it was sized for. Deactivate or offload tenants that are not in use, or add nodes and rebalance.
+The setting belongs to the host kernel, not to the container, so setting it inside an unprivileged pod has no effect. Apply it on every node that can schedule a Weaviate pod, through one of:
+
+- your node configuration or image, with `vm.max_map_count=4194304` in `/etc/sysctl.conf`
+- a `DaemonSet` that runs `sysctl -w vm.max_map_count=4194304` on each node
+- a privileged init container on the Weaviate pod that sets it before Weaviate starts
+
+Then restart the affected pod so Weaviate reads the new limit.
+
+</TabItem>
+<TabItem value="cloud" label="Weaviate Cloud">
+
+The host configuration is not yours to change. Open a [support ticket](/support) with the message text.
+
+</TabItem>
+</Tabs>
+
+If the limit is already high and the error keeps coming back, the node holds more shards than it was sized for: deactivate or offload tenants that are not in use, or add nodes and rebalance.
 
 ### Learn more
 
-- [Known issues: memory pressure, shard init failure](/weaviate/release-notes/known-issues#memory-pressure-shard-init-failure)
-- [Resource planning](/weaviate/concepts/resources)
-- [Tenant states and offloading](/weaviate/manage-collections/tenant-states)
-- [Deployment troubleshooting](/deploy/faqs/troubleshooting)
-- [Improve your cluster](/improve-your-cluster)
+<QuickLinks items={[
+  { title: "Known issue: shard init failure", link: "/weaviate/release-notes/known-issues#memory-pressure-shard-init-failure", icon: "fa fa-triangle-exclamation" },
+  { title: "Resource planning", link: "/weaviate/concepts/resources", icon: "fa fa-gauge-high" },
+  { title: "Tenant states and offloading", link: "/weaviate/manage-collections/tenant-states", icon: "fa fa-layer-group" },
+  { title: "Deployment troubleshooting", link: "/deploy/faqs/troubleshooting", icon: "fa fa-wrench" },
+  { title: "Improve your cluster", link: "/improve-your-cluster", icon: "fa fa-list-check" },
+]}/>
 
 ## Questions and feedback
 
