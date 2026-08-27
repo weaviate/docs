@@ -256,7 +256,7 @@ import V137Preview from '/_includes/feature-notes/v137-preview.mdx';
 
 Standard vector search returns the closest matches to a query, which often means a cluster of near-duplicate results. For example, searching for "Italian food" in a product catalog might return five images of pizza instead of a diverse spread of Italian dishes.
 
-**Maximum Marginal Relevance (MMR)** solves this by reranking results to balance two objectives:
+**Maximal Marginal Relevance (MMR)** solves this by reranking results to balance two objectives:
 
 - **Relevance**: how well does the item match the query?
 - **Diversity**: how different is the item from the results already selected?
