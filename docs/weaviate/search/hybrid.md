@@ -1063,8 +1063,6 @@ Hybrid search fuses a keyword result set and a vector result set, which often me
 
 Diversity selection runs after fusion. Both search legs run first, their results are fused with the configured `alpha` and fusion method, and the diversity pass then picks a diverse subset of the fused candidates.
 
-The examples in this section are Python only. Diversity selection on hybrid search is available in the Python (`v4.23.0`), Java (`v6.3.1`), and C# (`v1.2.0`) clients, but not yet in the TypeScript or Go clients. There is no GraphQL equivalent.
-
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock

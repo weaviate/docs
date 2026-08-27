@@ -18,8 +18,6 @@ import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 Apply boost to vector, hybrid, BM25, near-text, near-vector, near-object, near-image, and near-media queries.
 
-The examples on this page are Python only. `boost` is available in the Python (`v4.22.0`), TypeScript (`v3.14.0`), Java (`v6.3.0`), and C# (`v1.2.0`) clients, but not yet in the Go client.
-
 ## How it works
 
 A boost is a **post-retrieval rescorer**:
