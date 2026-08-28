@@ -6,14 +6,25 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START GetMemory
-curl "https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default" \
+curl "https://api.engram.weaviate.io/v1/memories/<memory-id>?user_id=alice&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END GetMemory
 
 # START DeleteMemory
-curl -X DELETE "https://api.engram.weaviate.io/v1/memories/{memory-id}?user_id=user-uuid&group=default" \
+curl -X DELETE "https://api.engram.weaviate.io/v1/memories/<memory-id>?user_id=alice&group=default" \
   -H "Authorization: Bearer $ENGRAM_API_KEY"
 # END DeleteMemory
+
+# START ListMemories
+curl -X POST "https://api.engram.weaviate.io/v1/memories/list" \
+  -H "Authorization: Bearer $ENGRAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "alice",
+    "group": "default",
+    "limit": 50
+  }'
+# END ListMemories
 DOCSNIPPETS
 
 # --- Test execution below ---
@@ -66,6 +77,16 @@ GOT_ID=$(curl -s "$BASE_URL/v1/memories/$MEMORY_ID?user_id=$USER_ID&group=defaul
   -H "Authorization: Bearer $ENGRAM_API_KEY" | jq -r '.id')
 [ "$GOT_ID" = "$MEMORY_ID" ] || { echo "FAIL: get returned wrong memory"; exit 1; }
 echo "Get memory: OK"
+
+# Test list memories
+LIST=$(curl -s -X POST "$BASE_URL/v1/memories/list" \
+  -H "Authorization: Bearer $ENGRAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "'"$USER_ID"'", "group": "default", "limit": 50}')
+LIST_COUNT=$(echo "$LIST" | jq '.memories | length')
+[ "$LIST_COUNT" -ge 1 ] || { echo "FAIL: list returned $LIST_COUNT memories, expected at least 1"; exit 1; }
+echo "$LIST" | jq -e 'has("total")' > /dev/null || { echo "FAIL: list response has no total"; exit 1; }
+echo "List memories: $LIST_COUNT results"
 
 # Test delete memory
 curl -s -X DELETE "$BASE_URL/v1/memories/$MEMORY_ID?user_id=$USER_ID&group=default" \

@@ -34,7 +34,7 @@ results = client.memories.search(
 
 ## Custom property scopes
 
-Topics can declare additional `properties` they are scoped by. For example, a `conversation_summary` topic might be scoped by `conversation_id`, or a `tenant_facts` topic might be scoped by `tenant_id`. The property key is arbitrary — it just has to match what the topic was configured with.
+Topics can declare additional `properties` they are scoped by. For example, a `ConversationSummary` topic might be scoped by `conversation_id`, or a `TenantFacts` topic might be scoped by `tenant_id`. The property key is arbitrary — it just has to match what the topic was configured with.
 
 When storing or searching memories for a property-scoped topic, pass the values in the `properties` map:
 
@@ -72,9 +72,9 @@ results = client.memories.search(
     user_id="alice",
     properties={"conversation_id": "abc-123"},  # default for all topics
     topics=[
-        "user_facts",                                          # not conversation-scoped, ignores the filter
-        Topic(name="conversation_summary"),                    # uses the global filter (abc-123)
-        Topic(name="messages", properties={"conversation_id": None}),  # clear filter — search all conversations
+        "UserFacts",                                          # not conversation-scoped, ignores the filter
+        Topic(name="ConversationSummary"),                    # uses the global filter (abc-123)
+        Topic(name="Messages", properties={"conversation_id": None}),  # clear filter — search all conversations
     ],
 )
 ```
@@ -85,12 +85,12 @@ A single request can target multiple topics at once.
 
 **When adding memories**, you must provide the scope parameters that every targeted topic requires, which is the **union** of their requirements. If any targeted topic needs `user_id`, you must pass `user_id`. If any needs `properties.conversation_id`, you must pass `properties.conversation_id`. If you omit a parameter that a targeted topic requires, the request is rejected.
 
-**When searching**, scope parameters are optional. They act as filters that narrow results to a specific user or property value, so you only pass the ones you want to filter by.
+**When searching**, `user_id` follows the same union rule: if any topic you target is user-scoped, you must pass `user_id`, and a request that omits it is rejected. Only `properties` are optional filters — pass a property key to narrow results to that value, or omit it to search across all values of that key.
 
 For example, imagine a customer support agent with two topics in the same group:
 
-- `user_facts` — user-scoped, stores per-user facts like "prefers email over phone".
-- `conversation_summary` — scoped by `conversation_id`, keeps a running summary of each conversation.
+- `UserFacts` — user-scoped, stores per-user facts like "prefers email over phone".
+- `ConversationSummary` — scoped by `conversation_id`, keeps a running summary of each conversation.
 
 To search across both for a specific user and conversation, pass `user_id` and `properties.conversation_id` as filters:
 
@@ -99,11 +99,17 @@ results = client.memories.search(
     query="What does the user want and where did we leave off?",
     user_id="alice",
     properties={"conversation_id": "abc-123"},
-    topics=["user_facts", "conversation_summary"],
+    topics=["UserFacts", "ConversationSummary"],
 )
 ```
 
-Topics that don't use a given parameter simply ignore it — `user_facts` doesn't filter on `conversation_id`, but `conversation_summary` uses it to pick the right summary.
+Topics that don't use a given parameter ignore it — `UserFacts` doesn't filter on `conversation_id`, but `ConversationSummary` uses it to pick the right summary.
+
+## How this relates to Weaviate
+
+Engram stores memories in Weaviate, and each distinct scope becomes its own [tenant](/weaviate/concepts/data.md#multi-tenancy) of the collection behind your project. Isolation between users is therefore the same isolation a multi-tenant Weaviate collection gives you, enforced in storage rather than filtered in application code.
+
+You don't manage any of that: there is no collection to define, no tenant to create, and no vectorizer to configure. If you want to model memory yourself on top of Weaviate collections and multi-tenancy instead, the [product page](https://weaviate.io/product/engram) is the place to compare the two approaches.
 
 ## Questions and feedback
 

@@ -1,9 +1,11 @@
-import os
 import uuid
 import asyncio
-from engram import EngramClient, AsyncEngramClient, HybridRetrieval
+from engram import HybridRetrieval
 
 # START SetupClients
+import os
+from engram import EngramClient
+
 engram = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
 )
@@ -80,6 +82,8 @@ for _retry in range(5):
 
 
 # START DualSearch
+from engram import HybridRetrieval
+
 def dual_search(query, user_id, kb_results=None):
     """Search both a knowledge base and Engram user memory."""
     # Search Engram for user-specific memories
@@ -160,6 +164,8 @@ Tailor your response to the user's background and preferences."""
 # END BuildPromptOpenAI
 
 # START TwoUserDemo
+from engram import HybridRetrieval
+
 query = "How do I access the API?"
 
 # Alice's personalized search
@@ -247,12 +253,18 @@ for m in bob_cross_search:
     )
 
 # START AsyncSetup
+import os
+from engram import AsyncEngramClient
+
 async_client = AsyncEngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
 )
 # END AsyncSetup
 
 # START ConcurrentUsers
+import asyncio
+from engram import HybridRetrieval
+
 async def search_for_user(async_engram, user_id, query):
     """Search memories for a single user."""
     results = await async_engram.memories.search(

@@ -14,7 +14,7 @@ import CurlCode from '!!raw-loader!../_includes/check_run_status.sh';
 When you [store memories](store-memories.md), Engram processes them asynchronously through a [pipeline](../concepts/pipelines.md). Each request returns a `run_id` that you can use to track progress.
 
 :::tip
-In most cases, you don't need to poll for completion — memories are eventually consistent and will be available for search once the pipeline finishes. Check the initial response from `memories.add` to catch immediate errors. Use `runs.get` only when you need to confirm that a specific run has completed, such as during testing or debugging.
+In most cases, you don't need to poll for completion — memories are eventually consistent and will be available for search once the pipeline finishes. Check the initial response from `memories.add` to catch immediate errors. Poll a run only when you need to confirm that a specific run has completed, such as during testing or debugging.
 :::
 
 <details>
@@ -89,6 +89,30 @@ export ENGRAM_API_KEY="eng_..."
 </TabItem>
 </Tabs>
 
+### `runs.get` versus `runs.wait`
+
+The Python SDK offers two ways to read a run:
+
+| Call | What it does |
+|------|--------------|
+| `client.runs.get(run_id)` | A single request that returns the run's current status, whatever it is. Use it for a snapshot, or when you drive your own polling loop. |
+| `client.runs.wait(run_id)` | Calls `get` repeatedly until the run reaches a terminal status (`completed` or `failed`), then returns it. Defaults to `timeout=30.0` seconds and `interval=0.5` seconds, and raises `EngramTimeoutError` when the timeout expires first. |
+
+The snippets above use `wait` because they need a finished run. Both methods exist on `AsyncEngramClient` too, as `await client.runs.get(...)` and `await client.runs.wait(...)`.
+
+```python
+from engram import EngramTimeoutError
+
+try:
+    status = client.runs.wait(run.run_id, timeout=120.0, interval=2.0)
+except EngramTimeoutError:
+    ...  # not finished yet — check again later with runs.get
+```
+
+:::caution `wait` does not return on `in_buffer`
+Only `completed` and `failed` count as terminal. A run parked at a [buffer step](../concepts/pipelines.md#pipeline-steps) stays `in_buffer` until its trigger fires — which can be hours — so `wait` raises `EngramTimeoutError` rather than returning. Use `runs.get` for those.
+:::
+
 ### Response
 
 ```json
@@ -96,7 +120,7 @@ export ENGRAM_API_KEY="eng_..."
   "run_id": "run-uuid",
   "status": "completed",
   "group_id": "group-uuid",
-  "user_id": "user-uuid",
+  "user_id": "alice",
   "starting_step": 1,
   "input_type": "string",
   "committed_operations": {
@@ -140,7 +164,7 @@ If a run fails, the `error` field contains a description of what went wrong.
   "run_id": "run-uuid",
   "status": "failed",
   "group_id": "group-uuid",
-  "user_id": "user-uuid",
+  "user_id": "alice",
   "starting_step": 1,
   "input_type": "string",
   "error": "extraction failed: invalid input format",
