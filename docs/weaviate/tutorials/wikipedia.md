@@ -128,9 +128,9 @@ Two quick sanity checks that the import went as expected:
 1. Get the number of articles
 2. Get 5 articles
 
-- Open the [Weaviate Query app](/cloud/tools/query-tool)
-- Connect to your Weaviate endpoint, either `http://localhost:8080` or `https://WEAVIATE_INSTANCE_URL`. (Replace WEAVIATE_INSTANCE_URL with your instance URL.)
-- Run this GraphQL query:
+If your instance runs in Weaviate Cloud, open the [Explorer tool](/cloud/tools/explorer-tool) in the console and select the `Article` collection. The Explorer tool shows the total number of objects in the collection, and lists the articles with their properties, including `title` and `url`.
+
+You can also run this GraphQL query against your instance:
 
 ```graphql
 query {
@@ -143,6 +143,14 @@ query {
     }
   }
 }
+```
+
+To run it against a locally hosted instance, post it to the `/v1/graphql` endpoint:
+
+```bash
+curl -s -X POST http://localhost:8080/v1/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ Aggregate { Article { meta { count } } } Get { Article(limit: 5) { title url } } }"}' | jq
 ```
 
 You should see the `Aggregate.Article.meta.count` field equal to the number of articles you've imported (e.g. 25,000), as well as five random articles with their `title` and `url` fields.
