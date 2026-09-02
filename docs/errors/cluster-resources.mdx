@@ -29,11 +29,13 @@ Messages on this page mean that a Weaviate node asked the operating system for a
 
 ### What you see
 
-An error in the node's logs ending in `not enough memory mappings`, and the same text in the error your client receives when the failure happened inside a request you made:
+In the node's logs, an error ending in `not enough memory mappings`:
 
 ```text
 memory pressure: cannot init shard: not enough memory mappings
 ```
+
+In the response your client gets when the failure happened inside a request you made (REST shown; gRPC and GraphQL carry the same suffix):
 
 ```json
 {"error":[{"message":"updating db: TYPE_UPDATE_TENANT: memory pressure: cannot init shard: not enough memory mappings (see https://docs.weaviate.io/e/core-mem001)"}]}
@@ -44,9 +46,9 @@ Which log entry carries it depends on the operation that hit the limit:
 | Log message | `action` field | Level | Where the phrase is |
 | --- | --- | --- | --- |
 | `failed to load shard: memory pressure: cannot load shard: not enough memory mappings` | `load_shard` | error | In the message |
-| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | error | Appended to the message, or in a separate `error` field on older versions |
+| `loading shard "MyTenant" failed` | `tenant_activation_lazy_load_shard` | error | Appended to the message, or in a separate `error` field before v1.40 |
 | `failed to reload local index` | (none) | error | In a separate `error` field |
-| `failure while loading shard: memory pressure: cannot init shard: not enough memory mappings` | replication engine | error | In the message, while a replica is moved or copied |
+| `failure while loading shard: memory pressure: cannot init shard: not enough memory mappings` | `replication_engine` | error | In the message, while a replica is moved or copied |
 | `drop-vector: load lazy shard: memory pressure: cannot load shard: not enough memory mappings` | (none) | warning | In the message, while a vector index is dropped |
 
 :::tip Search for the phrase, not the line
@@ -74,7 +76,7 @@ The limit belongs to the host kernel, so where you set it depends on how you run
    sysctl vm.max_map_count
    ```
 
-2. Raise it. The value is a count, not an amount of memory, so a high value costs nothing on its own. `262144` is the floor other memory-mapped databases ask for; a node holding thousands of active tenants needs the millions, and `4194304` leaves room to grow:
+2. Raise it. The value is a count, not an amount of memory, so a high value costs nothing on its own. `262144` is the floor other memory-mapped databases ask for; a node holding thousands of active tenants needs a value in the millions, and `4194304` leaves room to grow:
 
    ```bash
    sysctl -w vm.max_map_count=4194304
@@ -102,7 +104,7 @@ Then restart the affected pod so Weaviate reads the new limit.
 </TabItem>
 <TabItem value="cloud" label="Weaviate Cloud">
 
-The host configuration is not yours to change. Open a [support ticket](/support) with the message text.
+The host configuration is not yours to change. Open a [support ticket](/support) with the message text and your cluster URL.
 
 </TabItem>
 </Tabs>

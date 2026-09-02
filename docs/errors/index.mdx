@@ -14,7 +14,7 @@ import { LinkFlow, IdAnatomy } from '@site/src/components/ErrorDocs';
 <ArrivedFromNotice/>
 <ClusterIdNotice/>
 
-A Weaviate message with a documented cause carries a link, and the link ends in a message id. The id resolves here, to an entry that shows the message as it prints, what caused it, and how to fix it.
+Arrived from a link in a message? Its entry is one click below. Have only the message text? Search this section for a phrase from it, or open the group it belongs to. Every entry shows the message as it prints, what caused it, and how to fix it.
 
 <LinkFlow steps={[
   {
@@ -33,10 +33,6 @@ A Weaviate message with a documented cause carries a link, and the link ends in 
     code: '/e/core-mem001 → /errors/cluster-resources#not-enough-memory-mappings',
   },
 ]}/>
-
-:::info Rolling out
-The `docs_url` field and the link suffix ship with Weaviate Database v1.40. The Python client prints a bare id such as `Dep024` today, and the other clients none yet. The messages themselves are not new: the entries below describe what current releases already print.
-:::
 
 ## Message groups
 
@@ -85,7 +81,11 @@ Released Python clients print the id without the origin, so what you see today i
 
 ## Missing an entry?
 
-This section is being filled in message by message. An id whose entry is not written yet lands you on this page rather than on a dead link. The message is on the list, and the [support channels](/support) know the id.
+This section is being filled in message by message. An id whose entry is not written yet lands you on this page rather than on a dead link. Every id printed by a released version is tracked for an entry; until it exists, quote the id to [support](/support), it identifies the message exactly.
+
+:::info Rolling out
+The `docs_url` field and the link suffix ship with Weaviate Database v1.40. The Python client prints a bare id such as `Dep024` today, and the other clients none yet. The messages themselves are not new: the entries describe what current releases already print.
+:::
 
 ## Questions and feedback
 

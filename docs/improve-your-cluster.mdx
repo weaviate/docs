@@ -15,7 +15,7 @@ import { Checklist } from '@site/src/components/ErrorDocs';
 This page is linked from the banner Weaviate logs once a cluster is up. If you just ran it for the first time, the checklist is for later: start with the [quickstart](/weaviate/quickstart) and [connect a client](/weaviate/connections), and come back once you have data you would mind losing.
 :::
 
-Most of the messages in the [error reference](/errors) are the moment a cluster that was already short on headroom, unmonitored, or behind on versions ran out of room. This page is the short version of what to change so the next one does not happen. Work through it once when you set a cluster up, and again whenever the shape of your workload changes: a new collection, a jump in tenants, or a much larger import.
+Most errors in the [error messages](/errors) reference come from clusters that were short on headroom, unmonitored, or behind on versions. This page lists what to change so the next one does not happen. Do it once at setup and again when the workload changes shape: a new collection, many more tenants, a much larger import.
 
 export const pillars = [
   { title: "Give it headroom", description: "Memory, disk, memory mappings, and vector memory are all knowable in advance.", link: "#give-the-cluster-headroom", icon: "fa fa-gauge-high" },
@@ -33,7 +33,7 @@ Weaviate fails safely when it runs out of a resource: shards go read-only or ref
 
 <Checklist items={[
   { title: "Size memory for the working set, not the average", text: "Set GOMEMLIMIT, or LIMIT_RESOURCES and let Weaviate derive it. Without one, the runtime assumes it may use the whole machine and gets killed by the container limit instead of collecting garbage harder.", link: "/weaviate/concepts/resources", linkText: "Resource planning" },
-  { title: "Treat 90% disk as the ceiling, not the target", text: "Weaviate warns above 80% and marks shards read-only above 90%, both tunable. Compaction and backups need free space too.", link: "/deploy/configuration/env-vars", linkText: "Thresholds" },
+  { title: "Treat 90% disk as the ceiling, not the target", text: "Weaviate warns above 80% and marks shards read-only above 90%, both tunable. Compaction and backups need free space too.", link: "/deploy/configuration/persistence#disk-pressure-warnings-and-limits", linkText: "Disk thresholds" },
   { title: "Raise the memory-mapping limit", text: "Every shard costs kernel memory mappings, and the limit is a host setting, not a container one. Thousands of active tenants on one node pass a distribution default.", link: "/errors/cluster-resources#not-enough-memory-mappings", linkText: "The fix" },
   { title: "Compress vectors", text: "Vector indexes are the largest consumer and quantization is the biggest single lever: a small amount of recall for a large reduction in memory, and it can be enabled on a collection you already have.", link: "/weaviate/configuration/compression", linkText: "Compression" },
   { title: "Keep inactive tenants out of memory", text: "Tenants you are not serving should not be resident. Deactivating or offloading them returns memory, mappings, and file handles.", link: "/weaviate/manage-collections/tenant-states", linkText: "Tenant states" },
@@ -56,7 +56,7 @@ Every resource limit above announces itself in the logs and in the metrics well 
 
 <Checklist items={[
   { title: "Scrape the metrics endpoint", text: "Weaviate exposes Prometheus metrics, and there is a ready-made Grafana setup to start from.", link: "/deploy/configuration/monitoring", linkText: "Monitoring" },
-  { title: "Alert on the leading indicators", text: "Heap usage against the limit, disk usage against the read-only threshold, and shards reporting a read-only status, not request failures." },
+  { title: "Alert on the leading indicators", text: "Alert on heap usage against the limit, disk usage against the read-only threshold, and shards reporting read-only. Request failures come last; by then users have noticed." },
   { title: "Collect the logs somewhere searchable", text: "Weaviate logs JSON by default, so the fields are queryable without parsing message text. Alert on the action field rather than on wording, which changes between releases.", link: "/deploy/configuration/logging", linkText: "Logging" },
   { title: "Watch the cluster node data for shards that are not ready", text: "It is the fastest way to tell a slow cluster from a partly broken one.", link: "/deploy/configuration/status#cluster-node-data", linkText: "Cluster status" },
 ]}/>
@@ -79,7 +79,7 @@ Running a version that is a year old means carrying every bug that has since bee
 <Checklist items={[
   { title: "Read the release notes before upgrading", text: "And the migration guide when there is one.", link: "/weaviate/release-notes", linkText: "Release notes" },
   { title: "Check the known issues page when something is strange", text: "A surprising number of one-off mysteries are documented there with a version number attached.", link: "/weaviate/release-notes/known-issues", linkText: "Known issues" },
-  { title: "Keep clients within the server's supported range", text: "Client and server versions move independently, and a large gap between them is a common source of confusing errors.", link: "/deploy/migration", linkText: "Migration guides" },
+  { title: "Keep clients within the server's supported range", text: "Client and server versions move independently, and a large gap between them is a common source of confusing errors.", link: "/weaviate/release-notes#version-support-policy", linkText: "Support policy" },
 ]}/>
 
 ## More ways to run and extend Weaviate
@@ -88,7 +88,7 @@ Everything above applies to a cluster you run yourself. If running it is not the
 
 export const options = [
   { title: "Weaviate Cloud", description: "Runs the cluster for you, with a free sandbox to start from. Point your existing client at it with the same connection code.", link: "/cloud/quickstart", icon: "fa fa-cloud" },
-  { title: "Managed and enterprise", description: "Weaviate Cloud, Weaviate on DigitalOcean, or Enterprise support for clusters you keep in your own environment. Pricing is public.", link: "https://weaviate.io/deployment", icon: "fa fa-building" },
+  { title: "Managed and enterprise", description: "Weaviate on DigitalOcean, or Enterprise support for clusters you keep in your own environment. Pricing is public.", link: "https://weaviate.io/deployment", icon: "fa fa-building" },
   { title: "Weaviate Embeddings", description: "Generates vectors for your collections inside Weaviate Cloud, so there is no embedding model to run, host, or pay for separately.", link: "/cloud/embeddings", icon: "fa fa-vector-square" },
   { title: "Query Agent", description: "Answers questions over your collections in natural language, choosing the searches, filters, and aggregations itself.", link: "/query-agent", icon: "fa fa-robot" },
   { title: "Engram", description: "Long-term memory for AI agents, built on Weaviate: agents remember across sessions without you designing the storage.", link: "/engram", icon: "fa fa-brain" },
@@ -102,7 +102,7 @@ export const options = [
   { title: "Production readiness checklist", link: "/deploy/production/kubernetes/production-readiness", icon: "fa fa-list-check" },
   { title: "Getting to production on Kubernetes", link: "/deploy/production/kubernetes/get-to-production", icon: "fa fa-dharmachakra" },
   { title: "Managing resources starter guide", link: "/weaviate/starter-guides/managing-resources", icon: "fa fa-gauge-high" },
-  { title: "Error message reference", link: "/errors", icon: "fa fa-triangle-exclamation" },
+  { title: "Error messages", link: "/errors", icon: "fa fa-triangle-exclamation" },
 ]}/>
 
 ## Questions and feedback

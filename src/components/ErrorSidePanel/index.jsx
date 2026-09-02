@@ -20,9 +20,9 @@ export default function ErrorSidePanel() {
       data-copy-exclude=""
     >
       <p className={styles.eyebrow}>Next step</p>
-      <h2 className={styles.title} id="error-side-panel-title">
+      <p className={styles.title} role="heading" aria-level="2" id="error-side-panel-title">
         Improve your cluster
-      </h2>
+      </p>
       <p className={styles.body}>
         Most messages in this section are symptoms of a cluster that is short on
         headroom, unmonitored, or behind on versions. Work through the checklist

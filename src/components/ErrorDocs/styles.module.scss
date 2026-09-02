@@ -76,6 +76,9 @@ $label-size: 0.7rem;
   .warning {
     color: #ffd666;
   }
+  .stepNumber {
+    color: #111827;
+  }
 }
 
 /* ---- LinkFlow ---- */
@@ -137,6 +140,8 @@ $label-size: 0.7rem;
 
 .anatomy {
   display: inline-grid;
+  max-width: 100%;
+  overflow-x: auto;
   grid-template-columns: auto auto auto auto;
   column-gap: 0.1rem;
   row-gap: 0.15rem;

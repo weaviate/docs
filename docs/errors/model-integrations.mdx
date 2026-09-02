@@ -17,6 +17,10 @@ import { EntryFacts } from '@site/src/components/ErrorDocs';
 
 Messages on this page are deprecation warnings from the Weaviate Python client, raised when a collection asks for a model integration under a name that has been renamed or retired. The provider is still supported; only the name it is configured under has changed. If your message is not here, the [message index](/errors) lists the other groups.
 
+:::tip Not seeing the warning?
+Python hides `DeprecationWarning` raised inside a library by default. Run with `python -W default::DeprecationWarning` to see them all.
+:::
+
 ## Google integrations renamed from PaLM {#google-renamed-from-palm}
 
 <EntryFacts
@@ -55,6 +59,8 @@ Pick the Google service you actually use, then configure every integration for i
 ```python
 from weaviate.classes.config import Configure
 
+# Each call creates its own collection: pick the ones you need.
+
 # Text embeddings (was text2vec_palm)
 client.collections.create(
     "Article",
@@ -85,6 +91,8 @@ Send the credential header for Vertex AI, `X-Goog-Vertex-Api-Key`. It replaces `
 
 ```python
 from weaviate.classes.config import Configure
+
+# Each call creates its own collection: pick the ones you need.
 
 # Text embeddings (was text2vec_palm)
 client.collections.create(

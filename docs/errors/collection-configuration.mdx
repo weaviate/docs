@@ -17,6 +17,10 @@ import { EntryFacts } from '@site/src/components/ErrorDocs';
 
 Messages on this page are deprecation warnings from the Weaviate Python client. Nothing has failed: the collection was created or updated as you asked. The way the request described its vectors is on its way out, so the fix is always a rewrite of the configuration, never a change to your data. If your message is not here, the [message index](/errors) lists the other groups.
 
+:::tip Not seeing the warning?
+Python hides `DeprecationWarning` raised inside a library by default. Run with `python -W default::DeprecationWarning` to see them all.
+:::
+
 ## Deprecated vector configuration arguments {#deprecated-vector-configuration}
 
 <EntryFacts
@@ -53,7 +57,7 @@ A collection used to describe its embeddings as two independent settings: the mo
 
 Move the model and the index settings into one vector definition when you create the collection:
 
-<Tabs groupId="form">
+<Tabs>
 <TabItem value="current" label="Current">
 
 ```python
@@ -85,7 +89,7 @@ client.collections.create(
 
 Updates name the vector they change. A collection created with the current argument, and no explicit vector name, has a single vector called `default`:
 
-<Tabs groupId="form">
+<Tabs>
 <TabItem value="current" label="Current">
 
 ```python
@@ -149,7 +153,7 @@ Rewriting a collection definition does not re-embed anything and does not touch 
 
 ### What you see
 
-A warning when you add a vector to an existing collection. The vector name in it is your own:
+A warning when you add a vector to an existing collection, quoted exactly as the client prints it, stray backtick included. The vector name in it is your own:
 
 ```text
 Dep026: You are using the named vector syntax for vector title_vector, e.g. `Configure.NamedVectors` in `collection.config.add_vector()`, which is deprecated.
@@ -162,7 +166,7 @@ When named vectors were introduced they had their own set of builders, kept apar
 
 ### How to fix it
 
-<Tabs groupId="form">
+<Tabs>
 <TabItem value="current" label="Current">
 
 ```python
@@ -238,7 +242,7 @@ Whether a vector is a multi-vector is a property of the vector, not of the index
 
 Move the setting onto the vector definition. The `self_provided` builder below stands for whichever multi-vector builder you use:
 
-<Tabs groupId="form">
+<Tabs>
 <TabItem value="current" label="Current">
 
 ```python

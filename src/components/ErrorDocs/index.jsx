@@ -35,7 +35,7 @@ export function EntryFacts({ ids = [], raisedBy, severity, impact, fix }) {
       )}
       {severity && (
         <div>
-          <p className={styles.factLabel}>Level</p>
+          <p className={styles.factLabel}>Kind</p>
           <p className={styles.factValue}>
             <span className={`${styles.severity} ${styles[severity] || ""}`}>
               {SEVERITY_LABEL[severity] || severity}
@@ -80,7 +80,7 @@ export function LinkFlow({ steps }) {
 /** A message id taken apart: origin, category and number, each labelled. */
 export function IdAnatomy({ origin, category, number, originHint, categoryHint, numberHint }) {
   return (
-    <div className={styles.anatomy} role="img" aria-label={`${origin}-${category}${number}: origin, category, number`}>
+    <div className={styles.anatomy}>
       <span className={`${styles.part} ${styles.partOrigin}`}>{origin}</span>
       <span className={styles.dash} aria-hidden="true">-</span>
       <span className={`${styles.part} ${styles.partCategory}`}>{category}</span>
