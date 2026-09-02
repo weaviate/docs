@@ -1291,7 +1291,7 @@ status = 301
 #
 # DESTINATIONS ARE MIGRATING TO /errors. That section is written for exactly this
 # arrival: one entry per message, with the message text, the cause and the fix on
-# the page the reader lands on, no table of contents to scroll past. Ids that
+# the page the reader lands on, with a table of contents limited to entry headings.
 # already have an entry point there. The rest still point at the nearest existing
 # docs page and get repointed as their entry is written -- an approximate page
 # beats no page, but a purpose-built entry beats both.
