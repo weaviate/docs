@@ -1,150 +1,198 @@
 ---
 title: Explorer tool
 sidebar_position: 30
-description: "Graphical interface for browsing collections, examining objects, and inspecting metadata and vectors."
+description: "Browse collections and run keyword, semantic, hybrid, and aggregation searches in the Weaviate Cloud console, without writing a query."
 image: og/wcd/user_guides.jpg
 ---
 
-The *Explorer* tool provides a graphical interface for inspecting your Weaviate instance that is connected to Weaviate Cloud. Browse collections, examine objects, and inspect metadata and vectors - all without writing code.
+The Explorer tool is a graphical interface for working with the data in a Weaviate Cloud cluster. Browse [collections](/weaviate/concepts/data.md#collections), examine [objects](/weaviate/concepts/data.md#data-object-concepts), inspect metadata and vectors, and run keyword, semantic, hybrid, and aggregation searches, all without writing a query.
 
-## Navigating the Interface
+:::info Moving from the Query tool
 
-The Explorer tool is organized hierarchically, guiding you from clusters down to individual objects. Follow these steps to navigate through your data.
+The [Query tool](./query-tool.mdx) is being removed from the Weaviate Cloud console on **September 14, 2026**. Nothing changes for your clusters. This is console tooling only, so they keep running exactly as they are, with no downtime and nothing you need to do on your end.
 
-### Select a cluster
+The Explorer tool covers the everyday Query tool tasks without writing a query: [keyword](#keyword-search), [semantic](#semantic-search), and [hybrid](#hybrid-search) search, [aggregations](#aggregate), [filters](#filter-and-sort), and [inference keys](#inference-keys). For anything beyond that, use a [client library](/weaviate/client-libraries/index.mdx) to query your data from your application code.
 
-import ExplorerImg1 from '/docs/cloud/img/explorer-1.png';
-import ExplorerImg2 from '/docs/cloud/img/explorer-2.png';
+:::
 
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg1} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>To begin, select the <code>Explorer</code> tool from the left-hand menu as shown below (item <span class="callout">1</span>).</p>
-        </div>
-    </div>
+## Open the Explorer tool
+
+The Explorer tool is available for collections that are hosted in Weaviate Cloud.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="dr9vvzmtop"
+    src="https://app.guideflow.com/embed/dr9vvzmtop"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="dr9vvzmtop"
+  ></script>
 </div>
-<br/>
 
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg2} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>This will load a list of available clusters (item <span class="callout">2</span>). Select a cluster from the list (item <span class="callout">3</span>) to view the collections and objects within that cluster.</p>
-        </div>
-    </div>
+<br />
+
+<details>
+  <summary>Open the Explorer tool step by step</summary>
+
+1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
+2. Select a cluster from the list.
+3. Select the `Explorer` tool from the left sidebar.
+4. Select a collection to see its objects.
+
+</details>
+
+If you don't see any available clusters, select the `Clusters` option from the left sidebar and follow the steps to [create a new cluster](/cloud/manage-clusters/create).
+
+To review how the collection itself is configured, click the `View collection details` button in the page header.
+
+## Search and explore
+
+The `Search & explore` panel sits above the results and has five modes:
+
+| Mode | What it does |
+| :-- | :-- |
+| `Browse` | Lists the objects in the collection, page by page. |
+| `Hybrid` | Blends keyword and vector search in a single search. |
+| `Semantic` | Ranks objects by meaning, from a description or from a vector. |
+| `Keyword` | Ranks objects by keyword relevance. |
+| `Aggregate` | Calculates a metric over the collection instead of returning objects. |
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="5pvnnvxtwk"
+    src="https://app.guideflow.com/embed/5pvnnvxtwk"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="5pvnnvxtwk"
+  ></script>
 </div>
-<br/>
 
-### Explore collections and objects
+<br />
 
-Once you've selected a cluster, you can dive into your [collections](/weaviate/concepts/data.md#collections) and examine its [objects](/weaviate/concepts/data.md#data-object-concepts).
+### Browse
 
-import ExplorerImg3 from '/docs/cloud/img/explorer-3.png';
-import ExplorerImg4 from '/docs/cloud/img/explorer-4.png';
-import ExplorerImg5 from '/docs/cloud/img/explorer-5.png';
-
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg3} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>Selecting a cluster shows a list of available collections (item <span class="callout">4</span>). Select a collection (item <span class="callout">5</span>) to view its objects.</p>
-        </div>
-    </div>
-</div>
-<br/>
-
-#### Examining Objects
-
-When you select a collection, Explorer displays its objects in an easy-to-read format. Each object is shown with its:
+`Browse` mode lists the objects in the collection. Each object is shown with its:
 
 - Unique identifier (UUID)
 - Properties and their values
-- Metadata (expandable)
+- Metadata
 - Vector embeddings
 
-Some details are initially shown as collapsed. Click on the color-coded property group to expand and view the details.
+Some details are initially collapsed. Click a color-coded property group, such as metadata or vectors, to expand it and view the details. Hover over a property name to see the property type.
 
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg4} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>Objects in the selected collection is shown (item <span class="callout">6</span>) as a list of objects. </p>
-            <br/>
-            <p>Each object is listed with its unique ID and its properties (item <span class="callout">7</span>), including the property name and value. Hover over the property name as (item <span class="callout">7a</span>) to see the property type.</p>
-        </div>
-    </div>
-</div>
-<br/>
+Vectors are shown initially by name, where [named vectors](/weaviate/concepts/data.md#multiple-vector-embeddings-named-vectors) are used, and by their number of dimensions. Expand the entry to see part of the vector, or click `copy` to copy the entire vector to your clipboard.
 
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg5} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>Click on the color-coded property group such as metadata (item <span class="callout">8</span>) or vectors (item <span class="callout">9</span>) to expand collapsed details.</p>
-            <br/>
-            <p>Vectors are shown initially by its name where <Link to="/weaviate/concepts/data#multiple-vector-embeddings-named-vectors">named vectors</Link> are used and number of dimensions. Expand the item further to see some of the vectors, or click `copy` (item <span class="callout">10</span>) to copy the entire vector to clipboard.</p>
-        </div>
-    </div>
-</div>
-<br/>
+Pagination controls at the bottom of the list step through the objects. A dropdown next to them sets the number of objects per page and shows the total number of objects in the collection. The refresh button at the top of the page reloads the list.
 
-### View as JSON
+### Hybrid search
 
-Explorer offers both a structured view and a raw JSON format.
+`Hybrid` mode blends keyword and vector search in a single search, so an object can rank highly because it matches your search terms, because it matches your meaning, or both. For each half on its own, see [semantic search](#semantic-search) and [keyword search](#keyword-search).
 
-Toggle between the standard formatted view and JSON view for any object:
+Search with either of:
 
-- Click the `{}` icon to switch to JSON view
-- Click again to return to the formatted view
-- The JSON view shows the complete object structure, including all nested properties, metadata, and vectors
+- `Text`: describe what you are looking for.
+- `Vector`: provide a raw vector to search with.
 
-import ExplorerImg6 from '/docs/cloud/img/explorer-6.png';
+Use the `in:` selector to choose which properties are searched.
 
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg6} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>View an object in JSON format (item <span class="callout">11</span>) by clicking the <code>{}</code> icon (item <span class="callout">12</span>). Return to the object view by clicking the same icon again.</p>
-        </div>
-    </div>
-</div>
-<br/>
+Under `Advanced options`, the `Keyword ↔ vector balance (alpha)` slider sets how much each half of the search contributes. In the Explorer tool the slider starts at `0.5`, which weights the keyword and vector components equally. See the [alpha parameter](/weaviate/concepts/search/hybrid-search.md#alpha-parameter) for what the value means.
 
-### Pagination & Refresh
+If the panel asks for a model provider key, see [inference keys](#inference-keys).
 
-When viewing a collection with many objects, pagination controls are available at the bottom of the list. Use these controls to navigate through the objects.
+For the equivalent query in application code, see [hybrid search](/weaviate/search/hybrid.md).
 
-Additionally, the refresh button at the top of the page allows you to update the list of objects in the collection.
+### Semantic search
 
-import ExplorerImg7 from '/docs/cloud/img/explorer-7.png';
+`Semantic` mode ranks results by meaning rather than by exact words, so a relevant object can rank highly even if it shares no words with your search.
 
-<div class="row">
-    <div class="card">
-        <div class="card__image">
-            <img src={ExplorerImg7} alt="Explorer Tool"/>
-        </div>
-        <div class="card__body">
-            <p>When viewing a collection with many objects, pagination controls (item <span class="callout">13</span>) are available at the bottom of the list. Use these controls to navigate through the objects.</p>
-            <br/>
-            <p>The number of objects per page can be adjusted using the dropdown (item <span class="callout">14</span>), where the total number of objects in the collection is also shown.</p>
-            <br/>
-            <p>The "refresh" button (item <span class="callout">15</span>) at the top right of the page allows you to update the list of objects in the collection.</p>
-        </div>
-    </div>
-</div>
+Search with either of:
+
+- `Text`: describe what you are looking for.
+- `Vector`: provide a raw vector to search with.
+
+If the panel asks for a model provider key, see [inference keys](#inference-keys).
+
+For the equivalent query in application code, see [vector similarity search](/weaviate/search/similarity.md), and for the underlying idea, see [vector search](/weaviate/concepts/search/vector-search.md).
+
+### Keyword search
+
+`Keyword` mode ranks results by [BM25](/weaviate/concepts/search/keyword-search.md) relevance, so the objects that match your search terms most strongly come first.
+
+A keyword search reads every property by default. To narrow it, use the `in:` selector to choose which properties are searched.
+
+For the equivalent query in application code, see [keyword search](/weaviate/search/bm25.md).
+
+### Aggregate
+
+`Aggregate` mode calculates a metric over the collection instead of returning objects. The controls read as a sentence: `Show <metric> of <target> grouped by <property>`.
+
+- **Metric**: one of `Count`, `Minimum`, `Maximum`, `Mean`, `Median`, `Mode`, or `Sum`.
+- **Target**: all objects in the collection, or a single property.
+- **Grouped by**: optional. Select a property to break the result down by that property's values.
+
+Click `Calculate` to run the aggregation.
+
+For the equivalent query in application code, see [aggregate](/weaviate/search/aggregate.md).
+
+## Filter and sort
+
+Filters are available in every mode, including `Browse`. Click `Add condition` to build a [filter](/weaviate/search/filters.md) condition, then click `Apply` to run it.
+
+Sorting is available in `Browse` only. `Browse` offers a `Filter & Sort` control, while the search modes offer `Filter` alone, since those modes order the results by relevance.
+
+## Inference keys
+
+`Semantic` and `Hybrid` searches vectorize your search text with the [model provider](/weaviate/model-providers/index.md) that the collection is configured to use. Where that provider needs an API key, the `Search & explore` panel prompts you for one before the search runs.
+
+Enter the key in the panel. The field is named for that provider, for example `OpenAI API key`, and the key is used for this search only and never stored.
+
+## Work with a result
+
+Hover over a result card to reveal two buttons:
+
+- `Find similar` searches for the nearest neighbors of that object, so you can pivot from one result to the objects most like it.
+- `Show JSON` shows the raw JSON for that object.
+
+## Further resources
+
+- [Collections tool](./collections-tool.mdx)
+- [Query Agent](./query-agent.mdx)
+- [Search: keyword (BM25)](/weaviate/search/bm25.md)
+- [Search: hybrid](/weaviate/search/hybrid.md)
+- [Search: aggregate](/weaviate/search/aggregate.md)
+- [Model provider integrations](/weaviate/model-providers/index.md)
 
 ## Support
 
