@@ -4,8 +4,7 @@ import Link from "@docusaurus/Link";
 import styles from "./styles.module.scss";
 
 /**
- * Tells a reader which message brought them here when the index is where
- * they landed.
+ * Names the message id in the link when the index is where the link lands.
  *
  * netlify/edge-functions/error-link-src.ts puts `src=<id>` on every /e/<id>
  * request before the redirect rules run. A reader reaches the index with it
@@ -41,14 +40,15 @@ export default function ArrivedFromNotice() {
 
   return (
     <aside className={styles.notice} aria-label="Message id">
-      <p className={styles.label}>You followed a link for message</p>
+      <p className={styles.label}>Message id</p>
       <p className={styles.value}>
         <code>{id}</code>
       </p>
       <p className={styles.body}>
-        Its entry is not written yet, so the link brought you to the index.
-        The message groups below cover the area it came from, and the{" "}
-        <Link to="/support">support channels</Link> know the id.
+        This message has no entry yet, so its link leads to this index. The
+        message groups below cover the area it belongs to. If you need help
+        before the entry exists, quote the id in a{" "}
+        <Link to="/support">support request</Link>.
       </p>
     </aside>
   );

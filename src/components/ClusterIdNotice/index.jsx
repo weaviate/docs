@@ -3,7 +3,7 @@ import { useLocation } from "@docusaurus/router";
 import styles from "./styles.module.scss";
 
 /**
- * Shows the cluster identity a reader arrived with, when they arrived with one.
+ * Shows the cluster id carried in the link, when the link carried one.
  *
  * Weaviate can append `?clusterid=<uuid>` to the docs links it prints, so the
  * reader lands holding it. This renders it. From Weaviate v1.40 the banner
@@ -27,7 +27,7 @@ import styles from "./styles.module.scss";
  * IT NEVER LOOKS THE ID UP. The check is a format check and nothing more: no
  * request, no 404 on an unknown id, no difference in what renders between an id
  * that exists and one that does not. Anything else would be an unauthenticated
- * oracle for guessing cluster identities. It is also why the id is validated
+ * oracle for guessing cluster ids. It is also why the id is validated
  * before it is rendered rather than passed through -- an arbitrary path segment
  * should never reach the DOM, React escaping or not.
  *
@@ -59,12 +59,15 @@ export default function ClusterIdNotice() {
   if (!clusterId) return null;
 
   return (
-    <aside className={styles.notice} aria-label="Cluster identity">
+    <aside className={styles.notice} aria-label="Cluster id">
       <p className={styles.label}>Cluster id</p>
       <p className={styles.value}>
         <code>{clusterId}</code>
       </p>
-      <p className={styles.body}>This came from the link you followed.</p>
+      <p className={styles.body}>
+        Weaviate put this id in the link you opened. Include it if you contact
+        support; this page does nothing else with it.
+      </p>
     </aside>
   );
 }

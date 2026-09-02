@@ -86,7 +86,9 @@ A log entry whose cause has a documented fix carries a `docs_url` field. The lin
 
 The field is separate from the message, so alerts and filters that match on message text keep working, and in JSON logs you can select on it directly. The error returned to the client for the same failure carries the same link at the end of its message, as `(see https://docs.weaviate.io/e/core-mem001)`. Added in `v1.40`.
 
-Weaviate also logs a banner with the version, a link to [Improve your cluster](/improve-your-cluster) and this node's `/v1/meta` URL shortly after startup, and again every [`BANNER_INTERVAL`](./env-vars/index.md#BANNER_INTERVAL) (24 hours by default). The art is fetched from `https://weaviate.io/banner/v1.json` when it can be, and when that file carries a `message`, such as a release announcement, the banner prints it as a `► News:` line (at most three lines). The banner is part of telemetry, so a cluster with `DISABLE_TELEMETRY=true` never logs one. Set [`DISABLE_STARTUP_BANNER`](./env-vars/index.md#DISABLE_STARTUP_BANNER) to turn it off on a cluster that would.
+When telemetry is enabled, the link also carries the cluster id as `?clusterid=<uuid>`, the same id telemetry reports. The docs page shows it back to you so you can quote it to support, and does nothing else with it. With `DISABLE_TELEMETRY=true` the link is bare.
+
+Weaviate also logs a banner with the version, a link to [Improve your cluster](/improve-your-cluster) and this node's `/v1/meta` URL shortly after startup, and again every [`BANNER_INTERVAL`](./env-vars/index.md#BANNER_INTERVAL) (24 hours by default). The art is fetched from `https://weaviate.io/banner/v1.json` when it can be, and when that file carries a `message`, such as a release announcement, the banner prints it as a `► News:` line (at most three lines). The banner runs only while telemetry is enabled, because it fetches its art from weaviate.io, so a cluster with `DISABLE_TELEMETRY=true` never logs one. Set [`DISABLE_STARTUP_BANNER`](./env-vars/index.md#DISABLE_STARTUP_BANNER) to turn it off on a cluster that would.
 
 ## Accessing Logs
 
