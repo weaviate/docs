@@ -79,8 +79,8 @@ Provide the API key to Weaviate using one of the following methods:
       endMarker="// END CohereInstantiation"
       language="ts"
       docRefs={[
-        "functions/connectToWeaviateCloud",
-        "classes/ApiKey",
+        "functions/core_src.helpers.connectToWeaviateCloud",
+        "classes/core_src.ApiKey",
       ]}
     />
   </TabItem>
