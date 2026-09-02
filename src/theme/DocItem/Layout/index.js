@@ -18,7 +18,17 @@ import styles from "./styles.module.css";
 import FeedbackComponent from "@site/src/components/Feedback";
 import PageRatingWidget from "@site/src/components/PageRatingWidget";
 import ContextualMenu from "@site/src/components/ContextualMenu";
+import ErrorSidePanel from "@site/src/components/ErrorSidePanel";
 /* ---- END: Customizations ---- */
+
+// Opt-in addition to the right-hand column, keyed on the `side_panel`
+// frontmatter field. Only the /errors pages set it: a pointer to
+// /improve-your-cluster renders under the table of contents, or in its place
+// when the page hides it. A page that does not set `side_panel` takes the
+// original path unchanged.
+const SIDE_PANELS = {
+  "improve-cluster": ErrorSidePanel,
+};
 
 // Emit a schema.org FAQPage JSON-LD block when the page's frontmatter declares
 // a `faq:` list. Google reads this for entity understanding; rich-result FAQ
@@ -81,11 +91,22 @@ export default function DocItemLayout({ children }) {
   const showMobileFeedback =
     !docTOC.hidden && !docTOC.desktop && docTOC.mobile && feedbackEnabled;
 
+  // Same viewport rule the desktop TOC uses, so the panel appears exactly where
+  // the TOC would, whether or not the TOC is there too.
+  const SidePanel = SIDE_PANELS[frontMatter.side_panel];
+  const showSidePanel =
+    Boolean(SidePanel) && (windowSize === "desktop" || windowSize === "ssr");
+
   return (
     <>
       <FaqJsonLd faq={frontMatter.faq} />
       <div className="row">
-        <div className={clsx("col", !docTOC.hidden && styles.docItemCol)}>
+        <div
+          className={clsx(
+            "col",
+            (!docTOC.hidden || showSidePanel) && styles.docItemCol
+          )}
+        >
           <ContentVisibility metadata={metadata} />
           <DocVersionBanner />
           <div className={styles.docItemContainer}>
@@ -107,13 +128,14 @@ export default function DocItemLayout({ children }) {
           </div>
           {/* ---- REMOVED: Feedback component from main column ---- */}
         </div>
-        {docTOC.desktop && (
+        {(docTOC.desktop || showSidePanel) && (
           <div className="col col--3">
             {/* ---- START: Customizations ---- */}
             <div className={styles.customTocStickyContainer}>
               {docTOC.desktop}
+              {showSidePanel && <SidePanel />}
               {/* TODO: Temporarily hidden while debugging env vars */}
-              <PageRatingWidget />
+              {docTOC.desktop && <PageRatingWidget />}
             </div>
             {/* Feedback component back in TOC column */}
             {showFeedback && (

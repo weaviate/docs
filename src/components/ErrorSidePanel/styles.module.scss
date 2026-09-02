@@ -1,0 +1,47 @@
+/* src/components/ErrorSidePanel/styles.module.scss */
+
+.panel {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 1.1rem 1.15rem;
+  background: var(--ifm-background-surface-color);
+  margin-top: 1.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.title {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.body {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary-contrast-background);
+  background: var(--ifm-color-primary);
+
+  &:hover {
+    color: var(--ifm-color-primary-contrast-background);
+    background: var(--ifm-color-primary-dark);
+    text-decoration: none;
+  }
+}

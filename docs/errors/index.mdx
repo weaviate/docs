@@ -1,0 +1,94 @@
+---
+title: Error and warning messages
+description: "Look up a Weaviate error, warning, or log message by its text or its message id, and get the cause and the fix on one page."
+image: og/default.jpg
+hide_table_of_contents: true
+side_panel: improve-cluster
+---
+
+import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+import ArrivedFromNotice from '@site/src/components/ArrivedFromNotice';
+import CardsSection from '@site/src/components/CardsSection';
+import { LinkFlow, IdAnatomy } from '@site/src/components/ErrorDocs';
+
+<ArrivedFromNotice/>
+<ClusterIdNotice/>
+
+Arrived from a link in a message? Its entry is one click below. Have only the message text? Search this section for a phrase from it, or open the group it belongs to. Every entry shows the message as it prints, what caused it, and how to fix it.
+
+<LinkFlow steps={[
+  {
+    title: "Weaviate logs it",
+    body: "A log entry with a documented cause carries a docs_url field. Weaviate logs JSON by default; with LOG_FORMAT=text the same field prints as docs_url=\"…\".",
+    code: '"docs_url": "https://docs.weaviate.io/e/core-mem001"',
+  },
+  {
+    title: "Your client gets it too",
+    body: "The error returned for the same failure ends in the link, on REST, gRPC and GraphQL, so it reaches the person who made the request and not only the operator reading the logs.",
+    code: 'cannot init shard: not enough memory mappings (see https://docs.weaviate.io/e/core-mem001)',
+  },
+  {
+    title: "The id lands on the fix",
+    body: "Follow the link, or search this section for a phrase from the message. Each entry shows the message as it prints, what caused it, and how to fix it.",
+    code: '/e/core-mem001 → /errors/cluster-resources#not-enough-memory-mappings',
+  },
+]}/>
+
+## Message groups
+
+export const errorGroups = [
+  {
+    title: "Cluster resources",
+    description:
+      "Shards that will not load, and other messages that mean the node has run out of memory, memory mappings, or disk.",
+    link: "/errors/cluster-resources",
+    icon: "fa fa-server",
+  },
+  {
+    title: "Collection configuration",
+    description:
+      "Deprecated ways of describing vectors, vector indexes, and multi-vector embeddings when you create or update a collection.",
+    link: "/errors/collection-configuration",
+    icon: "fa fa-sliders",
+  },
+  {
+    title: "Model integrations",
+    description:
+      "Renamed and retired embedding, multimodal, and generative model integrations.",
+    link: "/errors/model-integrations",
+    icon: "fa fa-diagram-project",
+  },
+];
+
+<CardsSection items={errorGroups} />
+
+## Reading a message id
+
+<IdAnatomy
+  origin="core"
+  category="mem"
+  number="001"
+  originHint="core is Weaviate Database. A client short name such as py means the message was raised before the request left your application."
+  categoryHint="The topic: mem for memory, dep for a deprecation, auth for authentication."
+  numberHint="Unique within its origin and category."
+/>
+
+Ids are permanent. The message text and the page it points to can both change, but an id that shipped in a release keeps meaning the same thing forever, so it is safe to search for, to alert on, and to quote in a support ticket.
+
+:::note Bare legacy ids
+Released Python clients print the id without the origin, so what you see today is `Dep024`, not `py-dep024`. Both forms lead to the same entry, and bare ids are never reassigned.
+:::
+
+## Missing an entry?
+
+This section is being filled in message by message. An id whose entry is not written yet lands you on this page rather than on a dead link. Every id printed by a released version has an entry planned. Until it exists, quote the id in a [support request](/support); it names the message exactly.
+
+:::info Rolling out
+The `docs_url` field and the link suffix ship with Weaviate Database v1.40. The Python client prints a bare id such as `Dep024` today, and the other clients none yet. The messages themselves are not new: the entries describe what current releases already print.
+:::
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

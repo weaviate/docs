@@ -10,6 +10,8 @@ Consider every error message a clue to solving the mystery you're encountering. 
 
 ## Common issues and solutions
 
+Looking up one specific message? The [error message reference](/errors) lists Weaviate's error and warning messages by text and by message id, with the cause and the fix for each. Newer Weaviate versions link to it straight from the log entry, through a `docs_url` field, and from the error a client receives.
+
 ### The cluster is not accepting new information and there are disk space or `read-only` error messages in the logs.
 
 <details>
