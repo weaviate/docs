@@ -945,29 +945,12 @@ response = collection.generate.near_text(
 client.collections.delete("DemoCollection")
 
 # ---------------------------------------------------------------------------
-# DigitalOcean generative integration (generative-digitalocean).
-#
-# The Weaviate server has shipped this module since v1.37.15 / v1.38.13 /
-# v1.39.2, but Python client support is still open upstream
-# (weaviate/weaviate-python-client PR #2153), so
-# `Configure.Generative.digitalocean()` and `GenerativeConfig.digitalocean()`
-# do not exist in the client release pinned by pyproject.toml. The calls below
-# follow that PR's parameter list (base_url, model, temperature, max_tokens,
-# frequency_penalty, presence_penalty, top_p, stop), which the core module
-# accepts in full.
-#
-# So the blocks below stay DISPLAY-ONLY: they are rendered in the docs via
-# FilteredTextBlock (with `language="pyindent"`, which strips the 4-space guard
-# indent) and are intentionally kept out of the test runner's allowlist in
-# tests/test_python.py. The `if DIGITALOCEAN_GENERATIVE_CLIENT_AVAILABLE:`
-# guard is a belt-and-suspenders measure so that even if this file is ever
-# executed end-to-end, the `digitalocean()` calls the pinned client lacks can
-# never run.
-# TODO: when PR #2153 merges AND pyproject.toml pins a weaviate-client release
-# that contains it, re-check the merged signature against these calls (the PR
-# is still in review, so the parameter names can still change), then set
-# DIGITALOCEAN_GENERATIVE_CLIENT_AVAILABLE = True, unindent these blocks, and
-# switch their FilteredTextBlock `language` from `pyindent` back to `py`.
+# DigitalOcean generative integration (generative-digitalocean). Python client
+# support is still pending upstream, so `Configure.Generative.digitalocean()`
+# is absent from the pinned client and the guard below keeps these calls
+# unreachable. The blocks are display-only, rendered via `pyindent`, which
+# strips the guard indent. TODO: when the client ships and pyproject.toml pins
+# it, re-check the signature, flip the flag to True, unindent, pyindent -> py.
 # ---------------------------------------------------------------------------
 DIGITALOCEAN_GENERATIVE_CLIENT_AVAILABLE = False
 
@@ -1027,7 +1010,7 @@ if DIGITALOCEAN_GENERATIVE_CLIENT_AVAILABLE:
         grouped_task="Write a tweet promoting these two movies",
         # highlight-start
         generative_provider=GenerativeConfig.digitalocean(
-            model="openai-gpt-4o",  # Any model your DigitalOcean account can serve
+            model="llama-4-maverick",  # Any model your DigitalOcean account can serve
             # # These parameters are optional
             # temperature=0.7,
             # top_p=0.9,

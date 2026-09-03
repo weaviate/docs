@@ -176,6 +176,7 @@ DigitalOcean's `/v1/embeddings` endpoint does not accept a `dimensions` request 
 
 ### Other integrations
 
+- [DigitalOcean generative AI models + Weaviate](./generative.md)
 - [Weaviate model providers overview](../index.md)
 
 ### Code examples
