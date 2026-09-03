@@ -23,6 +23,10 @@ Search Mode gained an optional `effort` parameter, letting you choose how much w
 
 The Query Agent was upgraded to OpenAI's latest Luna and Terra models, delivering improved results on our internal Search Mode benchmarks along with better query understanding across all modes.
 
+### Added automatic data exploration for filters
+
+Ask mode and search mode now have an automatic step which explores the structure of your data before making any queries. This helps to narrow down specific values for properties, so it can filter on exact strings or values without guessing.
+
 ### Ranking instructions in Search Mode
 
 Search Mode now accepts a `ranking_instructions` argument, giving you direct control over how results are ranked — independent of the system prompt used for query writing. See the [Search Mode guide](./guides/search_mode.md) for details.
