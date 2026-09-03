@@ -256,7 +256,10 @@ const sidebars = {
                 type: "doc",
                 id: "weaviate/model-providers/digitalocean/index",
               },
-              items: ["weaviate/model-providers/digitalocean/embeddings"],
+              items: [
+                "weaviate/model-providers/digitalocean/embeddings",
+                "weaviate/model-providers/digitalocean/generative",
+              ],
             },
             {
               type: "category",
