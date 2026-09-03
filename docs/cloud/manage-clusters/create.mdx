@@ -66,6 +66,8 @@ The following advanced configuration settings are available:
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
 
+The [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) is always enabled on Weaviate Cloud clusters. The `Enable MCP Read-Only` switch, which restricts it to its read tools, is off by default (so the write tool is available) and is not part of the free cluster creation form. Set it after creation from the cluster's `Advanced configuration`, no restart needed.
+
 </details>
 
 :::note Free cluster lifecycle
@@ -117,7 +119,7 @@ To create a Shared Cloud cluster, follow these steps:
 4. Select an [optimization profile](#optimization-profile) (`Cost Optimized` or `Performance Optimized`).
 5. Select a cloud provider (GCP by default).
 6. Select if you need high-availability (enabled by default).
-7. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
+7. Configure the `Advanced configuration` settings if needed (auto schema generation, CORS, and the MCP read-only setting).
 8. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
@@ -126,6 +128,9 @@ The following advanced configuration settings are available:
 
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
+- [`Enable MCP Read-Only`](/weaviate/configuration/mcp-server#weaviate-cloud)
+
+The [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) is always enabled on Weaviate Cloud clusters. `Enable MCP Read-Only` is off by default, so the write tool is available. Turn it on to restrict the server to its read tools, on the creation form or at any time after creation without a restart.
 
 </details>
 

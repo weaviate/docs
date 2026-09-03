@@ -1676,6 +1676,12 @@ const sidebars = {
           id: "cloud/tools/query-tool",
           className: "sidebar-item",
         },
+        {
+          type: "ref",
+          id: "weaviate/configuration/mcp-server",
+          label: "MCP server",
+          className: "sidebar-item",
+        },
       ],
     },
     {
