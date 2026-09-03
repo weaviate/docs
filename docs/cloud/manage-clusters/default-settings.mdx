@@ -19,8 +19,8 @@ import AdvancedOptions from "/docs/cloud/img/weaviate-cloud-cluster-advanced-set
 | --- | --- | --- | --- |
 | [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 | No |
 | [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes (<span class="callout">2</span>) |
-| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_ENABLED) | No | Free: true · Shared Cloud: false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
-| [`MCP_SERVER_WRITE_ACCESS_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_WRITE_ACCESS_ENABLED) | No | Free: true · Shared Cloud: false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
+| [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_ENABLED) | No | true (always enabled on Weaviate Cloud) | No |
+| `Enable MCP Read-Only` (console setting) | No | false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
 | [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
 | [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
 | [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | Yes (<span class="callout">1</span>) |
@@ -48,9 +48,9 @@ The profile only sets the default for new collections. An explicit vector index 
 
 :::
 
-:::note MCP server defaults by cluster type
+:::note MCP server settings
 
-Free clusters are created with the MCP server and MCP write access enabled; new Shared Cloud clusters have both disabled, with the option to enable them. A Free cluster that is upgraded to a paid plan keeps its settings. See [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud).
+The MCP server is always enabled on Weaviate Cloud clusters. `Enable MCP Read-Only` is a console setting with no matching environment variable: it drives the [`mcp_server_write_access_enabled` runtime override](/deploy/configuration/env-vars/runtime-config.md#mcp) (inverted — switch on means write access off), so changes apply without a restart. The switch is off by default on all cluster types, which means the write tool is available by default. See [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud).
 
 :::
 

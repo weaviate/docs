@@ -66,7 +66,7 @@ The following advanced configuration settings are available:
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
 
-Free clusters are created with the [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) and MCP write access enabled. The two switches (`Enable MCP server` and `Enable MCP server write access`) are not part of the free cluster creation form; adjust them after creation from the cluster's `Advanced configuration`, no restart needed. A free cluster that is upgraded to a paid plan keeps these settings.
+The [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) is always enabled on Weaviate Cloud clusters. The `Enable MCP Read-Only` switch, which restricts it to its read tools, is off by default (so the write tool is available) and is not part of the free cluster creation form. Set it after creation from the cluster's `Advanced configuration`, no restart needed.
 
 </details>
 
@@ -119,7 +119,7 @@ To create a Shared Cloud cluster, follow these steps:
 4. Select an [optimization profile](#optimization-profile) (`Cost Optimized` or `Performance Optimized`).
 5. Select a cloud provider (GCP by default).
 6. Select if you need high-availability (enabled by default).
-7. Configure the `Advanced configuration` settings if needed (auto schema generation, CORS, and MCP server settings).
+7. Configure the `Advanced configuration` settings if needed (auto schema generation, CORS, and the MCP read-only setting).
 8. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
@@ -128,10 +128,9 @@ The following advanced configuration settings are available:
 
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
-- [`Enable MCP server`](/weaviate/configuration/mcp-server#weaviate-cloud) (`MCP_SERVER_ENABLED`)
-- [`Enable MCP server write access`](/weaviate/configuration/mcp-server#weaviate-cloud) (`MCP_SERVER_WRITE_ACCESS_ENABLED`)
+- [`Enable MCP Read-Only`](/weaviate/configuration/mcp-server#weaviate-cloud)
 
-The MCP server switches are disabled by default and can be enabled on the creation form or at any time after creation without a restart.
+The [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) is always enabled on Weaviate Cloud clusters. `Enable MCP Read-Only` is off by default, so the write tool is available. Turn it on to restrict the server to its read tools, on the creation form or at any time after creation without a restart.
 
 </details>
 

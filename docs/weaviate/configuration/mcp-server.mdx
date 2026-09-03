@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 faq:
   - question: Does Weaviate offer an MCP server?
     answer: >-
-      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). Enable it with the MCP_SERVER_ENABLED=true environment variable, or on Weaviate Cloud with the "Enable MCP server" switch in the cluster's advanced configuration (on by default on Free clusters, off by default on Shared Cloud clusters); it runs on the same port as the REST API at /v1/mcp.
+      Yes. Weaviate ships a built-in Model Context Protocol (MCP) server (generally available as of v1.38; introduced in v1.37.1). On a self-hosted instance, enable it with the MCP_SERVER_ENABLED=true environment variable; on Weaviate Cloud it is always enabled, and the "Enable MCP Read-Only" switch in the cluster's advanced configuration controls write access. It runs on the same port as the REST API at /v1/mcp.
   - question: Is the MCP server an external library?
     answer: >-
       No. It's built into the Weaviate Server binary, not a separate package you install. Setting MCP_SERVER_ENABLED=true exposes the MCP endpoint on the same port as the REST API; nothing extra to run or deploy. The separate "Weaviate Docs MCP server" (Kapa-powered, serves documentation to LLMs) is a distinct product.
@@ -37,7 +37,7 @@ Instead of pasting context manually, MCP allows compatible clients (like Claude 
 The Weaviate MCP server runs at `/v1/mcp` on the REST API port if enabled (`http://localhost:8080/v1/mcp` on a default self-hosted instance, `https://<your-cluster-host>/v1/mcp` on Weaviate Cloud) and supports authentication via Bearer tokens (API Keys).
 To get started:
 
-1. Enable the MCP server (and optionally write access) through the [Weaviate Cloud console](#weaviate-cloud) or [environment variables](#environment-variables).
+1. On a self-hosted instance, enable the MCP server (and optionally write access) with [environment variables](#environment-variables). On Weaviate Cloud it is already enabled (see [Weaviate Cloud](#weaviate-cloud) for the write-access switch).
 2. [Ensure your API key has the right permissions](#permissions) if using RBAC.
 3. [Connect your MCP client](#mcp-client) using the REST API host and port.
 
@@ -148,7 +148,7 @@ Standard JSON configuration format:
 
 :::caution Connecting to a Weaviate Cloud cluster
 
-Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL. Without it, every hybrid search with `alpha` above `0` and every upsert that does not supply `vectors` fails with `no cluster URL found in request header: X-Weaviate-Cluster-Url`, because the vectorizer cannot be reached. The Weaviate client libraries add this header for you; MCP clients do not.
+Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL. Without it, every hybrid search with `alpha` above `0` and every upsert that does not supply `vectors` fails with `no cluster URL found in request header: X-Weaviate-Cluster-Url`, because the vectorizer cannot be reached. The Weaviate client libraries add this header for you, MCP clients do not.
 
 ```json
 {
@@ -173,22 +173,21 @@ The same `headers` object goes into the Claude Code `add-json` command and the V
 
 ## Configuration
 
-The MCP server is built into Weaviate. On a self-hosted instance it is **disabled by default** for security; on Weaviate Cloud the default depends on the cluster type (see [Weaviate Cloud](#weaviate-cloud)). It is served at the `/v1/mcp` endpoint on the same port as the REST API (default `8080`).
+The MCP server is built into Weaviate. On a self-hosted instance it is **disabled by default** for security; on Weaviate Cloud it is **always enabled** (see [Weaviate Cloud](#weaviate-cloud)). It is served at the `/v1/mcp` endpoint on the same port as the REST API (default `8080`).
 
 ### Weaviate Cloud
 
-On Weaviate Cloud, the MCP server is controlled by two switches in the cluster's advanced configuration, `Enable MCP server` and `Enable MCP server write access`. They correspond to `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` below; no environment variables are involved and no restart is needed. The defaults depend on the cluster type:
+On Weaviate Cloud, the MCP server is always enabled. There is no console setting to turn it off. What you control is write access, with a single switch in the cluster's advanced configuration: `Enable MCP Read-Only`. The switch is **off by default** on all Weaviate Cloud clusters, so `weaviate-objects-upsert` is available out of the box. Turning it on restricts the server to its read tools. No environment variables are involved and no restart is needed: a saved change applies after a short delay, from under a minute to a few minutes (see [Toggle without restart](#toggle-without-restart)).
 
-- **Free clusters:** both switches are **on** by default, so the MCP server and its write tool are available as soon as the cluster is created. A Free cluster that is upgraded to a paid plan keeps these settings.
-- **Shared Cloud clusters:** both switches are **off** by default. You can enable them on the cluster creation form under `Advanced configuration` (see [Create a cluster](/cloud/manage-clusters/create#shared-cloud-clusters)) or at any time afterwards.
-
-To change either switch on an existing cluster:
+To change the switch on an existing cluster:
 
 1. Open the cluster details page in the [Weaviate Cloud console](https://console.weaviate.cloud/) and click `Show advanced options`.
-2. Under `Advanced configuration`, set `Enable MCP server`. `weaviate-objects-upsert` is only available while `Enable MCP server write access` is also on (it has no effect while the MCP server is off).
-3. Click `Save Configuration`. The change applies after a short delay (see [Toggle without restart](#toggle-without-restart)).
+2. Under `Advanced configuration`, set `Enable MCP Read-Only`.
+3. Click `Save Configuration`.
 
-Because write access is on by default on Free clusters, connect agents that should not modify data with an API key that has the read-only `viewer` role: it keeps the agent's access read-only regardless of the switch (see [Permissions](#permissions)).
+On Shared Cloud clusters, the switch is also available on the cluster creation form under `Advanced configuration` (see [Create a cluster](/cloud/manage-clusters/create#shared-cloud-clusters)).
+
+The switch is cluster-wide, while a `viewer` API key is per-credential: to keep one agent read-only without restricting the whole cluster, connect it with an API key that has the read-only `viewer` role (see [Permissions](#permissions)).
 
 ### Environment variables
 
@@ -202,7 +201,7 @@ On a self-hosted instance, set the following [environment variables](/deploy/con
 
 ### Toggle without restart
 
-From `v1.38`, `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` are [runtime-configurable](/deploy/configuration/env-vars/runtime-config.md#mcp): change them in the runtime overrides file on a self-hosted instance, or with the [Weaviate Cloud switches](#weaviate-cloud), and the new value applies without a restart. On Weaviate Cloud, a saved change takes roughly 40 to 80 seconds to reach the cluster.
+From `v1.38`, `MCP_SERVER_ENABLED` and `MCP_SERVER_WRITE_ACCESS_ENABLED` are [runtime-configurable](/deploy/configuration/env-vars/runtime-config.md#mcp): change them in the runtime overrides file on a self-hosted instance and the new value applies without a restart. On Weaviate Cloud, the [`Enable MCP Read-Only` switch](#weaviate-cloud) toggles the write-access flag the same way. A saved change takes from under a minute to a few minutes to reach the cluster.
 
 Both flags are checked on every request, so a change has these effects:
 
@@ -282,6 +281,8 @@ The server exposes different tools depending on your configuration. These are al
 
 For every tool, `collection_name` is matched after uppercasing only its first character: `article` resolves to the collection `Article`, but `ARTICLE` does not.
 
+From `v1.39`, each tool carries MCP tool annotations in the `tools/list` response (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`), the read tools are annotated read-only, and `weaviate-objects-upsert` is marked destructive.
+
 ### `weaviate-collections-get-config`
 
 Retrieves the schema configuration for collections.
@@ -327,7 +328,7 @@ A leaf filter is an object with `path` (an array of property names), `operator`,
 
 :::info MCP write access
 
-This tool is only available if `MCP_SERVER_WRITE_ACCESS_ENABLED=true` (on Weaviate Cloud, the `Enable MCP server write access` switch).
+This tool is only available if `MCP_SERVER_WRITE_ACCESS_ENABLED=true`. On Weaviate Cloud it is available by default and the `Enable MCP Read-Only` switch removes it.
 
 :::
 
@@ -335,7 +336,7 @@ Batch inserts or updates objects. An update **replaces** the stored object rathe
 
 :::caution Upserts can change the schema
 
-With [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) enabled (the default, including on Weaviate Cloud), an object with an unknown property adds that property to the collection, and a `collection_name` that does not exist creates a new collection with default settings. A mistyped collection name therefore creates a collection instead of failing. If the MCP server must not change your schema, turn auto-schema off (`AUTOSCHEMA_ENABLED=false`; on Weaviate Cloud, the `Enable auto schema generation` switch next to the MCP switches).
+With [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) enabled (the default, including on Weaviate Cloud), an object with an unknown property adds that property to the collection, and a `collection_name` that does not exist creates a new collection with default settings. A mistyped collection name therefore creates a collection instead of failing. If the MCP server must not change your schema, turn auto-schema off (`AUTOSCHEMA_ENABLED=false`. On Weaviate Cloud, the `Enable auto schema generation` switch in the cluster's `Advanced configuration`).
 
 :::
 
