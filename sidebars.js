@@ -1318,6 +1318,7 @@ const sidebars = {
     "query-agent/index",
     "query-agent/installation",
     "query-agent/quickstart",
+    "query-agent/changelog",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
