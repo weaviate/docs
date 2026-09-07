@@ -56,7 +56,7 @@
     "@types/node": "^20.10.0",
     "ag-grid-react": "^33.0.4",
     "linkinator": "^6.1.2",
-    "netlify-cli": "19.0.2",
+    "netlify-cli": "27.5.0",
     "node-fetch": "3.3.2",
     "raw-loader": "^4.0.2",
     "react-player": "^2.16.0",
