@@ -44,20 +44,17 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 <details>
   <summary>For self-hosted users</summary>
 
-- This is an [API-based module](../index.md#enable-all-api-based-modules), so a Weaviate instance of a supported version loads it without any extra configuration.
 - Check the [cluster metadata](/deploy/configuration/status.md#cluster-metadata) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide if API-based modules have been disabled on your instance.
+- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
 
-### API credentials {#api-credentials}
+### API credentials
 
 You must provide a valid DigitalOcean API key to Weaviate for this integration. Generate one in the [DigitalOcean Cloud console](https://cloud.digitalocean.com/) and supply it via one of:
 
 - Set the `DIGITALOCEAN_APIKEY` environment variable on the Weaviate server.
 - Provide the `X-Digitalocean-Api-Key` header at request time, as shown below.
-
-The same API key serves both this integration and the [DigitalOcean embedding integration](./embeddings.md).
 
 <FilteredTextBlock
   text={PyConnect}
@@ -78,14 +75,12 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
   text={PyCode}
   startMarker="# START GenerativeDigitalOceanCustomModel"
   endMarker="# END GenerativeDigitalOceanCustomModel"
-  language="pyindent"
+  language="py"
 />
 
 ### Select a model
 
 Set `model` to any model that DigitalOcean Serverless Inference serves for your account. See [Available models](#available-models) for where to find the current names, and [Generative parameters](#generative-parameters) for the other settings you can configure alongside it.
-
-If you omit `model`, Weaviate uses the module default, `llama-4-maverick`. The examples on this page set the model explicitly so that a collection does not silently depend on that default.
 
 You can also [override the model at query time](#select-a-model-at-runtime).
 
@@ -97,29 +92,8 @@ Configure the following generative parameters to customize the model behavior.
   text={PyCode}
   startMarker="# START FullGenerativeDigitalOcean"
   endMarker="# END FullGenerativeDigitalOcean"
-  language="pyindent"
+  language="py"
 />
-
-The collection configuration accepts these keys, and no others:
-
-- `baseURL`: The API root that Weaviate sends requests to. Defaults to `https://inference.do-ai.run`. Override only if you are proxying or running against a non-default endpoint. Provide an API root rather than a full endpoint path, because Weaviate appends `/v1/chat/completions` to it.
-- `model`: The model to generate with. Defaults to `llama-4-maverick`.
-- `temperature`: Sampling temperature. Must be between `0.0` and `2.0`.
-- `topP`: Nucleus sampling cutoff. Must be between `0.0` and `1.0`.
-- `maxTokens`: The maximum number of tokens to generate. Must be at least `1`.
-- `frequencyPenalty`: Must be between `-2.0` and `2.0`.
-- `presencePenalty`: Must be between `-2.0` and `2.0`.
-- `stop`: A list of strings that stop generation when the model produces them.
-
-Only `baseURL` and `model` have Weaviate-side defaults. Weaviate omits every other unset key from the request, so DigitalOcean's own default applies.
-
-Weaviate checks the ranges above when you create or update the collection, and rejects a configuration that falls outside them.
-
-:::caution Configuration keys are case-sensitive
-Weaviate matches these keys exactly as spelled above. A key written with different casing, such as `baseUrl` instead of `baseURL`, is not recognized, and neither is a value of the wrong type, such as a number for `model`. In both cases Weaviate falls back to the default instead of reporting an error, so the setting is lost silently.
-:::
-
-This matters when you configure a collection through the REST API or another raw-JSON path, where you spell the keys yourself. The client libraries send the correct keys for you.
 
 For further details on model parameters, see the [DigitalOcean chat completions documentation](https://docs.digitalocean.com/products/inference/how-to/use-chat-completions-api/).
 
@@ -131,14 +105,8 @@ Aside from setting the default model provider when creating the collection, you 
   text={PyCode}
   startMarker="# START RuntimeModelSelectionDigitalOcean"
   endMarker="# END RuntimeModelSelectionDigitalOcean"
-  language="pyindent"
+  language="py"
 />
-
-Every parameter listed under [Generative parameters](#generative-parameters) is also available at query time. Each one that you set at query time takes precedence over the collection configuration, which in turn takes precedence over the module default.
-
-:::note Ranges are not re-checked at query time
-The range checks listed under [Generative parameters](#generative-parameters) apply when you create or update a collection. A query-time value is passed straight through to DigitalOcean, so an out-of-range value surfaces as an error from DigitalOcean rather than from Weaviate.
-:::
 
 ## Header parameters
 
@@ -147,19 +115,15 @@ You can provide the API key as well as some optional parameters at runtime throu
 - `X-Digitalocean-Api-Key`: The DigitalOcean API key.
 - `X-Digitalocean-Baseurl`: The base URL to use (e.g. a proxy) instead of the default DigitalOcean URL.
 
-`X-Digitalocean-Api-Key` takes precedence over the `DIGITALOCEAN_APIKEY` environment variable. The API key is never part of the collection configuration, so if neither the header nor the environment variable is set, the request fails with `api key: no api key found neither in request header: X-Digitalocean-Api-Key nor in environment variable under DIGITALOCEAN_APIKEY`.
+`X-Digitalocean-Api-Key` takes precedence over the `DIGITALOCEAN_APIKEY` environment variable. The API key is never part of the collection configuration, so if neither the header nor the environment variable is set, the request fails with `api key: no api key found`.
 
-`X-Digitalocean-Baseurl` takes precedence over a `baseURL` set at query time, which in turn takes precedence over the `baseURL` in the collection configuration. If none of them are set, Weaviate uses `https://inference.do-ai.run`.
+`X-Digitalocean-Baseurl` takes precedence over a `baseURL` set at query time, which in turn takes precedence over the `baseURL` in the collection configuration. If none of them are set, Weaviate uses `https://inference.do-ai.run`. Provide an API root rather than a full endpoint path, because Weaviate appends `/v1/chat/completions` to it.
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
 ## Retrieval augmented generation
 
 After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
-
-:::note Text-only integration
-This integration sends the retrieved objects to DigitalOcean as a single text prompt. It does not support image inputs, separate system prompts, streaming responses, or tool calling.
-:::
 
 ### Single prompt
 
@@ -169,7 +133,7 @@ To generate text for each object in the search results, use the single prompt me
 
 The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query. The property must exist and have a value on every retrieved object; otherwise, the query fails.
+When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
 
 <FilteredTextBlock
   text={PyCode}
@@ -198,10 +162,6 @@ In other words, when you have `n` search results, the generative model generates
 ### Available models
 
 Weaviate forwards the configured model name to DigitalOcean as-is. The `generative-digitalocean` module keeps no list of model names and does not check the name, so a name that DigitalOcean does not serve is accepted when you create the collection and fails later, as an error from DigitalOcean at query time.
-
-:::note Different from the embedding integration
-The [DigitalOcean embedding integration](./embeddings.md) does check the model name against `GET /v1/models` when a server-side `DIGITALOCEAN_APIKEY` is set. The generative integration never checks it, so verify the name against the catalogue yourself.
-:::
 
 For the models available to your account, query `GET /v1/models` on the inference endpoint, or see the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the live list, as model availability can change.
 
