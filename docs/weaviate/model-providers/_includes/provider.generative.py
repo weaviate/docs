@@ -856,23 +856,6 @@ response = collection.generate.near_text(
 # clean up
 client.collections.delete("DemoCollection")
 
-# ---------------------------------------------------------------------------
-# DeepSeek generative integration (generative-deepseek).
-#
-# `Configure.Generative.deepseek()` and `GenerativeConfig.deepseek()` (merged
-# upstream in PR #2084, commit afc0e0eb) ship in the client release pinned by
-# pyproject.toml, so the guard that kept these blocks unreachable is gone. The
-# calls below match the released keyword-only signatures exactly: base_url,
-# model, temperature, max_tokens, frequency_penalty, presence_penalty, top_p,
-# stop.
-# ---------------------------------------------------------------------------
-DEEPSEEK_CLIENT_AVAILABLE = True
-
-# NOTE: there is deliberately no "basic" no-model block for DeepSeek. The
-# module's built-in default model is the retired `deepseek-chat` alias, so
-# `Configure.Generative.deepseek()` with no arguments is not a usable
-# example. Every documented DeepSeek block sets `model` explicitly.
-
 # START GenerativeDeepseekCustomModel
 from weaviate.classes.config import Configure
 
@@ -944,89 +927,74 @@ response = collection.generate.near_text(
 # clean up
 client.collections.delete("DemoCollection")
 
-# ---------------------------------------------------------------------------
-# DigitalOcean generative integration (generative-digitalocean). Python client
-# support is still pending upstream, so `Configure.Generative.digitalocean()`
-# is absent from the pinned client and the guard below keeps these calls
-# unreachable. The blocks are display-only, rendered via `pyindent`, which
-# strips the guard indent. TODO: when the client ships and pyproject.toml pins
-# it, re-check the signature, flip the flag to True, unindent, pyindent -> py.
-# ---------------------------------------------------------------------------
-DIGITALOCEAN_GENERATIVE_CLIENT_AVAILABLE = False
+# START GenerativeDigitalOceanCustomModel
+from weaviate.classes.config import Configure
 
-if DIGITALOCEAN_GENERATIVE_CLIENT_AVAILABLE:
-    # NOTE: as with DeepSeek, there is deliberately no "basic" no-model block.
-    # Every documented DigitalOcean block sets `model` explicitly so that the
-    # example does not silently depend on the module's built-in default.
-
-    # START GenerativeDigitalOceanCustomModel
-    from weaviate.classes.config import Configure
-
-    client.collections.create(
-        "DemoCollection",
-        # highlight-start
-        generative_config=Configure.Generative.digitalocean(
-            model="llama-4-maverick"
-        )
-        # highlight-end
-        # Additional parameters not shown
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.digitalocean(
+        model="llama-4-maverick"
     )
-    # END GenerativeDigitalOceanCustomModel
+    # highlight-end
+    # Additional parameters not shown
+)
+# END GenerativeDigitalOceanCustomModel
 
-    # clean up
-    client.collections.delete("DemoCollection")
+# clean up
+client.collections.delete("DemoCollection")
 
-    # START FullGenerativeDigitalOcean
-    from weaviate.classes.config import Configure
+# START FullGenerativeDigitalOcean
+from weaviate.classes.config import Configure
 
-    client.collections.create(
-        "DemoCollection",
-        # highlight-start
-        generative_config=Configure.Generative.digitalocean(
-            model="llama-4-maverick",
-            # # These parameters are optional
-            # temperature=0.7,
-            # top_p=0.9,
-            # max_tokens=500,
-            # frequency_penalty=0.0,
-            # presence_penalty=0.0,
-            # stop=["\n\n"],
-            # base_url="https://inference.do-ai.run",
-        )
-        # highlight-end
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.digitalocean(
+        model="llama-4-maverick",
+        # # These parameters are optional
+        # temperature=0.7,
+        # top_p=0.9,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # stop=["\n\n"],
+        # base_url="https://inference.do-ai.run",
     )
-    # END FullGenerativeDigitalOcean
+    # highlight-end
+)
+# END FullGenerativeDigitalOcean
 
-    # clean up
-    client.collections.delete("DemoCollection")
+# clean up
+client.collections.delete("DemoCollection")
 
-    # START RuntimeModelSelectionDigitalOcean
-    from weaviate.classes.generate import GenerativeConfig
+# START RuntimeModelSelectionDigitalOcean
+from weaviate.classes.generate import GenerativeConfig
 
-    collection = client.collections.use("DemoCollection")
-    response = collection.generate.near_text(
-        query="A holiday film",
-        limit=2,
-        grouped_task="Write a tweet promoting these two movies",
-        # highlight-start
-        generative_provider=GenerativeConfig.digitalocean(
-            model="llama-4-maverick",  # Any model your DigitalOcean account can serve
-            # # These parameters are optional
-            # temperature=0.7,
-            # top_p=0.9,
-            # max_tokens=500,
-            # frequency_penalty=0.0,
-            # presence_penalty=0.0,
-            # stop=["\n\n"],
-            # base_url="https://inference.do-ai.run",
-        ),
-        # Additional parameters not shown
-        # highlight-end
-    )
-    # END RuntimeModelSelectionDigitalOcean
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="A holiday film",
+    limit=2,
+    grouped_task="Write a tweet promoting these two movies",
+    # highlight-start
+    generative_provider=GenerativeConfig.digitalocean(
+        model="llama-4-maverick",  # Any model your DigitalOcean account can serve
+        # # These parameters are optional
+        # temperature=0.7,
+        # top_p=0.9,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # stop=["\n\n"],
+        # base_url="https://inference.do-ai.run",
+    ),
+    # Additional parameters not shown
+    # highlight-end
+)
+# END RuntimeModelSelectionDigitalOcean
 
-    # clean up
-    client.collections.delete("DemoCollection")
+# clean up
+client.collections.delete("DemoCollection")
 
 # START BasicGenerativeNVIDIA
 from weaviate.classes.config import Configure
