@@ -122,7 +122,7 @@ The following overrides are currently supported:
 
 ### MCP
 
-Added in `v1.38`. Toggling these at runtime does not require a cluster restart: the HTTP handlers stay registered and per-request checks pick up the new value. See [MCP server: Toggle without restart](/weaviate/configuration/mcp-server.mdx#toggle-without-restart) for behavior details.
+Added in `v1.38`. Toggling these at runtime does not require a cluster restart: the HTTP handlers stay registered and per-request checks pick up the new value. See [MCP server](/weaviate/configuration/mcp-server.mdx) for behavior details.
 
 | Runtime override name             | Environment variable name           |
 | :-------------------------------- | :---------------------------------- |
