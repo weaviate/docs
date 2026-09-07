@@ -15,8 +15,7 @@ commit_message=${commit_message//>/&gt;}
 echo "3" $commit_message
 
 # Extract Netlify URL
-NETLIFY_LOC=$(grep -r 'Website draft URL:' netlify.out)
-NETLIFY_URL=$(echo ${NETLIFY_LOC:20})
+NETLIFY_URL=$(jq -r '.deploy_url' netlify.out)
 
 # echo "---|" $NETLIFY_URL "|---"
 

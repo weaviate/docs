@@ -32,7 +32,19 @@ jobs:
       - name: Build Docusarus project
         run: |
           yarn build
+      # netlify deploy bundles the edge functions, and the bundler downloads a
+      # Deno binary into ~/.config/netlify/deno-cli on first use. Cache it so
+      # every run does not depend on that download; a version mismatch after a
+      # netlify-cli upgrade just falls back to a fresh download.
+      - name: Cache the edge-function Deno runtime
+        uses: actions/cache@v4
+        with:
+          path: ~/.config/netlify/deno-cli
+          key: ${{ runner.os }}-deno-cli-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-deno-cli-
       - name: Deploy draft to Netlify
+        timeout-minutes: 10
         run: |
           source _build_scripts/publish-draft-to-netlify.sh
       - name: Send Slack Message for branch build
@@ -42,6 +54,7 @@ jobs:
           source _build_scripts/slack-netlify-message.sh
       - name: Deploy to Production Netlify
         if: ${{ github.ref_name == 'main' }}
+        timeout-minutes: 15
         run: |
           source _build_scripts/publish-prod-to-netlify.sh
           source _build_scripts/slack-find-author.sh
