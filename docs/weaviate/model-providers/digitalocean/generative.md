@@ -31,7 +31,6 @@ Examples for the other client languages will follow.
 Your Weaviate instance must be configured with the DigitalOcean generative AI integration (`generative-digitalocean`) module.
 
 :::info Added in `v1.37.15`, `v1.38.13`, and `v1.39.2`
-The `generative-digitalocean` module is available from `v1.37.15` on the `v1.37` line, `v1.38.13` on the `v1.38` line, and `v1.39.2` on the `v1.39` line. Earlier patch releases on these lines do not include it.
 :::
 
 <details>

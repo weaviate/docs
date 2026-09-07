@@ -31,7 +31,6 @@ Examples for the other client languages will follow.
 Your Weaviate instance must be configured with the DeepSeek generative AI integration (`generative-deepseek`) module.
 
 :::info Added in `v1.36.19`, `v1.37.10`, and `v1.38.2`
-The `generative-deepseek` module is available from `v1.36.19` on the `v1.36` line, `v1.37.10` on the `v1.37` line, and `v1.38.2` on the `v1.38` line. Earlier patch releases on these lines do not include it.
 :::
 
 <details>
