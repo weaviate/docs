@@ -439,13 +439,15 @@ Upgrade to fixed version:
 ```
 
 - Tenant activation failures
-- From `v1.40`, these entries carry `docs_url=https://docs.weaviate.io/e/core-mem001`, and the error returned to the client ends in the same link. Both lead to [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings), which has the fix.
+- On versions that carry it, these entries have a `docs_url=https://docs.weaviate.io/e/core-mem001` field, and the error returned to the client ends in the same link. Both lead to [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings), which has the fix.
 
 #### Root cause
 
 The system has reached the operating system limit for memory-mapped files (`vm.max_map_count`). Each shard requires multiple memory mappings, and the default OS limit may be insufficient for large multi-tenant deployments.
 
 #### Resolution
+
+Platform-specific steps (Linux, Docker, Kubernetes, Weaviate Cloud) are in [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings). In short:
 
 **Increase the system memory mapping limit:**
 
@@ -454,15 +456,15 @@ The system has reached the operating system limit for memory-mapped files (`vm.m
 sysctl vm.max_map_count
 
 # Increase to 3-4x current value
-# Example: 2097152 → 8388608
-sysctl -w vm.max_map_count=8388608
+# Example: 1048576 → 4194304
+sysctl -w vm.max_map_count=4194304
 ```
 
 **Make the change persistent:**
 
 ```bash
 # Add to /etc/sysctl.conf
-echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
+echo "vm.max_map_count=4194304" >> /etc/sysctl.conf
 ```
 
 **Restart affected pods to apply the new configuration.**
