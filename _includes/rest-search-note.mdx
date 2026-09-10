@@ -1,0 +1,19 @@
+{/*
+  SINGLE SOURCE OF TRUTH: this partial is the one place the "REST Search API"
+  signal is worded. It is imported wherever the signal appears, so the wording
+  is edited here once and updates every page that shows it.
+
+  PHASE TRANSITIONS (kept explicit so the future edit is mechanical):
+
+  (a) GA SWAP: When REST Search + gRPC-Web reach GA, replace this file's body
+      with the contents of rest-search-note.ga.mdx (drop 'experimental'/'off by
+      default'; frame REST Search as recommended for HTTP-only stacks).
+
+  (b) gRPC-WEB LINE: When the TypeScript gRPC-Web client (TS PR #307, package
+      @weaviate/web) ships, change 'is also coming to the TypeScript client' to
+      present tense and link the package.
+*/}
+
+:::info Querying over plain HTTP
+Weaviate's client libraries query over gRPC. If your environment can't use a client library, for example no-code and BI tools, or languages without an official client such as PHP and Ruby, an **experimental REST Search API** (v1.39+) offers plain-HTTP search endpoints that mirror these GraphQL queries. Browser and edge (for example Cloudflare Workers) support via gRPC-Web is also coming to the TypeScript client. See the [REST Search API](/weaviate/api/rest) to try it.
+:::
