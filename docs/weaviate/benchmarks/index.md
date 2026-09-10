@@ -7,12 +7,13 @@ image: og/docs/benchmarks.jpg
 ---
 
 
-You can find the following vector database performance benchmarks:
+You can find the following benchmarks:
 
 1. [ANN (unfiltered vector search) latencies and throughput](./ann.md)
-2. Filtered ANN (benchmark coming soon)
-2. Scalar filters / Inverted Index (benchmark coming soon)
-3. Large-scale ANN (benchmark coming soon)
+2. [LLM Weaviate code generation](./vibe-coding-evaluation.mdx) — how well LLMs generate correct Weaviate v4 Python client code
+3. Filtered ANN (benchmark coming soon)
+4. Scalar filters / Inverted Index (benchmark coming soon)
+5. Large-scale ANN (benchmark coming soon)
 
 ## Benchmark code
 
