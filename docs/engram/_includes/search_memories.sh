@@ -6,12 +6,12 @@ USER_ID="test-curl-$(uuidgen | tr '[:upper:]' '[:lower:]' | head -c 8)"
 
 : <<'DOCSNIPPETS'
 # START BasicSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",
@@ -21,12 +21,12 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END BasicSearch
 
 # START VectorSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "vector",
@@ -36,12 +36,12 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END VectorSearch
 
 # START BM25Search
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "Python",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "bm25",
@@ -51,12 +51,12 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
 # END BM25Search
 
 # START HybridSearch
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What programming language does the user prefer?",
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",
@@ -65,14 +65,31 @@ curl -X POST https://api.engram.weaviate.io/v1/memories/search \
   }'
 # END HybridSearch
 
+# START FetchSearch
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
+  -H "Authorization: Bearer $ENGRAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "unused",
+    "topics": ["ConversationSummary"],
+    "user_id": "alice",
+    "properties": {"conversation_id": "abc-123"},
+    "group": "default",
+    "retrieval_config": {
+      "retrieval_type": "fetch",
+      "limit": 10
+    }
+  }'
+# END FetchSearch
+
 # START TopicFilter
-curl -X POST https://api.engram.weaviate.io/v1/memories/search \
+curl -X POST "https://api.engram.weaviate.io/v1/memories/search" \
   -H "Authorization: Bearer $ENGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "user preferences",
     "topics": ["UserKnowledge"],
-    "user_id": "user-uuid",
+    "user_id": "alice",
     "group": "default",
     "retrieval_config": {
       "retrieval_type": "hybrid",
@@ -196,6 +213,19 @@ if [ -n "$FIRST_TOPIC" ]; then
 else
   echo "Topic filter search: skipped (no topics found)"
 fi
+
+# Test fetch retrieval — returns memories for the scope without query ranking
+COUNT=$(curl -s -X POST "$BASE_URL/v1/memories/search" \
+  -H "Authorization: Bearer $ENGRAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "unused",
+    "user_id": "'"$USER_ID"'",
+    "group": "default",
+    "retrieval_config": {"retrieval_type": "fetch", "limit": 10}
+  }' | jq '.memories | length')
+[ "$COUNT" -ge 1 ] || { echo "FAIL: fetch returned 0 results"; exit 1; }
+echo "Fetch retrieval: $COUNT results"
 
 # Differential check: BM25 with no lexical overlap should return 0 results.
 # Catches the regression where the server silently ignores retrieval_type.
