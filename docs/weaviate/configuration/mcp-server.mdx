@@ -168,7 +168,7 @@ The switch is cluster-wide, while a `viewer` API key is per-credential: to keep 
 
 :::caution Connecting to a Weaviate Cloud cluster
 
-Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL. Without it, every hybrid search with `alpha` above `0` and every upsert that does not supply `vectors` fails with `no cluster URL found in request header: X-Weaviate-Cluster-Url`, because the vectorizer cannot be reached. The Weaviate client libraries add this header for you, MCP clients do not.
+Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL:
 
 ```json
 {
@@ -184,8 +184,6 @@ Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key]
   }
 }
 ```
-
-The same `headers` object goes into the Claude Code `add-json` command and the VS Code `servers` entry shown under [Connect your MCP client](#mcp-client).
 
 :::
 
