@@ -27,10 +27,12 @@ func TestBM25Basic(t *testing.T) {
 
 	// START BM25Basic
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// highlight-start
 	response, err := jeopardy.Query.BM25(ctx, query.BM25{
 		Query: "food",
 		Limit: 3,
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -54,9 +56,11 @@ func TestBM25Score(t *testing.T) {
 	response, err := jeopardy.Query.BM25(ctx, query.BM25{
 		Query: "food",
 		Limit: 3,
+		// highlight-start
 		ReturnMetadata: query.ReturnMetadata{
 			Score: true,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -85,8 +89,10 @@ func TestBM25Properties(t *testing.T) {
 		Query: "safety",
 		// Search these properties only. By default every searchable text
 		// property is considered.
+		// highlight-start
 		QueryProperties: []string{"question"},
-		Limit:           3,
+		// highlight-end
+		Limit: 3,
 		ReturnMetadata: query.ReturnMetadata{
 			Score: true,
 		},
@@ -118,8 +124,10 @@ func TestBM25Boost(t *testing.T) {
 		Query: "food",
 		// Weight a property with the ^ operator: a match in "question"
 		// counts double a match in "answer".
+		// highlight-start
 		QueryProperties: []string{"question^2", "answer"},
-		Limit:           3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -191,8 +199,10 @@ func TestBM25OperatorOrWithMin(t *testing.T) {
 	response, err := jeopardy.Query.BM25(ctx, query.BM25{
 		Query: "African desert wind",
 		// Return objects that match at least this many of the query tokens.
+		// highlight-start
 		KeywordSimilarity: query.MinimumTokensMatch(1),
-		Limit:             3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -223,8 +233,10 @@ func TestBM25OperatorAnd(t *testing.T) {
 		Query: "African desert wind",
 		// Every token ("african", "desert", "wind") must appear together
 		// in a single searched property.
+		// highlight-start
 		KeywordSimilarity: query.AllTokensMatch,
-		Limit:             3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -256,11 +268,15 @@ func TestBM25OperatorCrossPropertyAnd(t *testing.T) {
 		// Every token must be matched by at least one searched property, but not
 		// all by the same one. Requires Weaviate 1.37.15, 1.38.8 or 1.39.0 or
 		// newer; older servers ignore this silently and search as a plain OR.
+		// highlight-start
 		KeywordSimilarity: query.AllTokensMatchCross,
+		// highlight-end
 		// and_cross errors unless every searched property shares the same
 		// tokenization and analyzer settings.
+		// highlight-start
 		QueryProperties: []string{"question", "answer"},
-		Limit:           3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -311,8 +327,10 @@ func TestBM25Limit(t *testing.T) {
 	response, err := jeopardy.Query.BM25(ctx, query.BM25{
 		Query: "safety",
 		// Return at most 3 objects, skipping the first match.
+		// highlight-start
 		Limit:  3,
 		Offset: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -337,7 +355,9 @@ func TestBM25Autocut(t *testing.T) {
 	response, err := jeopardy.Query.BM25(ctx, query.BM25{
 		Query: "safety",
 		// Return objects from the first N groups of closely-scoring results.
+		// highlight-start
 		AutoLimit: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -361,11 +381,13 @@ func TestBM25Filter(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.BM25(ctx, query.BM25{
 		Query: "food",
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "round",
 			Operator: filter.Equal,
 			Value:    "Double Jeopardy!",
 		},
+		// highlight-end
 		// Return these properties only.
 		ReturnProperties: []string{"answer", "question", "round"},
 		Limit:            3,

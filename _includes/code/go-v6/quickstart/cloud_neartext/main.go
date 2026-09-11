@@ -31,10 +31,12 @@ func main() {
 	// Step 2.2: Semantic (vector) search. Weaviate Embeddings vectorizes the query
 	// text server-side and returns the closest matches.
 	movies := client.Collections.Use("Movie")
+	// highlight-start
 	response, err := movies.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"science fiction movie"},
 		Limit:    2,
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)

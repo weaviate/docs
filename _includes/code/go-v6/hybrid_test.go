@@ -25,10 +25,12 @@ func TestHybridBasic(t *testing.T) {
 
 	// START HybridBasic
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// highlight-start
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		Limit: 3,
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -52,10 +54,12 @@ func TestHybridWithScore(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		Limit: 3,
+		// highlight-start
 		ReturnMetadata: query.ReturnMetadata{
 			Score:        true,
 			ExplainScore: true,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -85,7 +89,9 @@ func TestHybridWithAlpha(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		// Alpha of 0 is pure keyword search, 1 is pure vector search.
+		// highlight-start
 		Alpha: query.Alpha(0.25),
+		// highlight-end
 		Limit: 3,
 	})
 	if err != nil {
@@ -109,9 +115,11 @@ func TestHybridWithFusionType(t *testing.T) {
 	// START HybridWithFusionType
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
-		Query:  "food",
+		Query: "food",
+		// highlight-start
 		Fusion: query.HybridFusionRelativeScore,
-		Limit:  3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -136,8 +144,10 @@ func TestHybridWithProperties(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		// Restrict the keyword search to these properties.
+		// highlight-start
 		QueryProperties: []string{"question", "answer"},
-		Limit:           3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -162,8 +172,10 @@ func TestHybridWithPropertyWeighting(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		// Boost the "question" property with the ^ operator.
+		// highlight-start
 		QueryProperties: []string{"question^2", "answer"},
-		Limit:           3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -189,8 +201,10 @@ func TestHybridWithBM25OperatorOrWithMin(t *testing.T) {
 		Query: "Australian mammal cute",
 		// The keyword half matches objects containing at least this many of
 		// the query tokens. The vector half is unaffected.
+		// highlight-start
 		KeywordSimilarity: query.MinimumTokensMatch(2),
-		Limit:             3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -216,8 +230,10 @@ func TestHybridWithBM25OperatorAnd(t *testing.T) {
 		Query: "Australian mammal cute",
 		// Every token must appear together in a single searched property for
 		// the keyword half to match.
+		// highlight-start
 		KeywordSimilarity: query.AllTokensMatch,
-		Limit:             3,
+		// highlight-end
+		Limit: 3,
 	})
 	if err != nil {
 		// handle error
@@ -247,9 +263,11 @@ func TestHybridWithVector(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		// Supply the vector for the vector-search half of the query.
+		// highlight-start
 		NearVector: &query.NearVector{
 			Target: &types.Vector{Name: "default", Single: vector},
 		},
+		// highlight-end
 		Limit: 3,
 	})
 	if err != nil {
@@ -274,7 +292,9 @@ func TestHybridLimit(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
+		// highlight-start
 		Limit: 3,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -297,8 +317,10 @@ func TestHybridAutocut(t *testing.T) {
 	// START HybridAutocut
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
-		Query:     "food",
+		Query: "food",
+		// highlight-start
 		AutoLimit: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -323,11 +345,13 @@ func TestHybridWithFilter(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "round",
 			Operator: filter.Equal,
 			Value:    "Double Jeopardy!",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error

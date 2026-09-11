@@ -88,10 +88,12 @@ func TestCreateCollectionWithProperties(t *testing.T) {
 	// START CreateCollectionWithProperties
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
+		// highlight-start
 		Properties: []collections.Property{
 			{Name: "title", DataType: collections.DataTypeText},
 			{Name: "body", DataType: collections.DataTypeText},
 		},
+		// highlight-end
 	})
 	// END CreateCollectionWithProperties
 	if err != nil {

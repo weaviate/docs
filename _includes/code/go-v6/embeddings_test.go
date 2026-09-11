@@ -33,6 +33,7 @@ func TestVectorizerWeaviate(t *testing.T) {
 		Properties: []collections.Property{
 			{Name: "title", DataType: collections.DataTypeText},
 		},
+		// highlight-start
 		Vectors: map[string]collections.VectorConfig{
 			"title_vector": {
 				Vectorizer: wembed.Text2Vec{
@@ -40,6 +41,7 @@ func TestVectorizerWeaviate(t *testing.T) {
 				},
 			},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -72,8 +74,10 @@ func TestVectorizerWeaviateCustomModel(t *testing.T) {
 			"title_vector": {
 				Vectorizer: wembed.Text2Vec{
 					Properties: []string{"title"},
+					// highlight-start
 					Model:      wembed.SnowflakeArcticEmbedLv2_0,
 					Dimensions: 256,
+					// highlight-end
 				},
 			},
 		},

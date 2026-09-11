@@ -67,7 +67,9 @@ func TestAddOneWayCrossReference(t *testing.T) {
 			Property:   "hasCategory",
 			UUID:       questionID,
 		},
+		// highlight-start
 		UUID: categoryID,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -138,6 +140,7 @@ func TestAddMultipleCrossReferences(t *testing.T) {
 	// Add several cross-references from one source object (a JeopardyQuestion)
 	// to multiple target objects (two JeopardyCategory objects) through the
 	// "hasCategory" reference property.
+	// highlight-start
 	res, err := questions.Data.AddReferences(ctx,
 		data.Reference{
 			Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: questionID},
@@ -148,6 +151,7 @@ func TestAddMultipleCrossReferences(t *testing.T) {
 			UUID:   museumsID,
 		},
 	)
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -182,6 +186,7 @@ func TestAddTwoWayCrossReferences(t *testing.T) {
 
 	// TwoWay Go
 	// Reference the category from the question...
+	// highlight-start
 	if _, err := questions.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: questionID},
 		UUID:   categoryID,
@@ -189,8 +194,10 @@ func TestAddTwoWayCrossReferences(t *testing.T) {
 		// handle error
 		panic(err)
 	}
+	// highlight-end
 
 	// ...then reference the question back from the category.
+	// highlight-start
 	if _, err := categories.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{Collection: "JeopardyCategory", Property: "hasQuestion", UUID: categoryID},
 		UUID:   questionID,
@@ -198,6 +205,7 @@ func TestAddTwoWayCrossReferences(t *testing.T) {
 		// handle error
 		panic(err)
 	}
+	// highlight-end
 	// END TwoWay Go
 }
 

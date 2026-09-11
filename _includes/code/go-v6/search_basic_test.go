@@ -54,7 +54,9 @@ func TestBasicGet(t *testing.T) {
 
 	// START BasicGet
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// highlight-start
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -77,7 +79,9 @@ func TestGetWithLimit(t *testing.T) {
 	// START GetWithLimit
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		// highlight-start
 		Limit: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -101,8 +105,10 @@ func TestGetWithOffset(t *testing.T) {
 	// START GetWithOffset
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		// highlight-start
 		Limit:  1,
 		Offset: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -126,8 +132,10 @@ func TestGetProperties(t *testing.T) {
 	// START GetProperties
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		// highlight-start
 		Limit:            1,
 		ReturnProperties: []string{"question", "answer", "points"},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -153,7 +161,9 @@ func TestGetObjectVector(t *testing.T) {
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 1,
 		// Name the vectors to return; use "default" for a single unnamed vector.
+		// highlight-start
 		ReturnVectors: []string{"default"},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -185,7 +195,9 @@ func TestGetObjectId(t *testing.T) {
 	}
 	for _, obj := range response.Objects {
 		// The object id is always returned.
+		// highlight-start
 		fmt.Printf("%v\n", obj.UUID)
+		// highlight-end
 	}
 	// END GetObjectId
 }
@@ -203,6 +215,7 @@ func TestGetWithCrossRefs(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 2,
+		// highlight-start
 		ReturnReferences: []query.Reference{
 			{
 				PropertyName:     "hasCategory",
@@ -210,6 +223,7 @@ func TestGetWithCrossRefs(t *testing.T) {
 				ReturnProperties: []string{"title"},
 			},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -234,9 +248,11 @@ func TestGetWithMetadata(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 1,
+		// highlight-start
 		ReturnMetadata: query.ReturnMetadata{
 			CreatedAt: true,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -261,9 +277,11 @@ func TestMultiTenancy(t *testing.T) {
 
 	// START MultiTenancy
 	// Bind the tenant once when you take the collection handle.
+	// highlight-start
 	jeopardy := client.Collections.Use("JeopardyQuestion",
 		collections.WithTenant("tenantA"),
 	)
+	// highlight-end
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 2,
 	})

@@ -25,7 +25,9 @@ func TestReadAllProps(t *testing.T) {
 	// START ReadAllProps
 	questions := client.Collections.Use("JeopardyQuestion")
 	// The v6 client wraps the cursor (`after`) API in an ObjectIterator.
+	// highlight-start
 	iter := query.NewObjectIterator(ctx, questions.Query)
+	// highlight-end
 	for {
 		obj, err := iter.Next()
 		if err == iterator.Done {
@@ -60,7 +62,9 @@ func TestReadAllVectors(t *testing.T) {
 			Limit: 100,
 			After: after,
 			// Name the vectors to return; use "default" for a single unnamed vector.
+			// highlight-start
 			ReturnVectors: []string{"default"},
+			// highlight-end
 		})
 		if err != nil {
 			// handle error
@@ -70,7 +74,9 @@ func TestReadAllVectors(t *testing.T) {
 			break
 		}
 		for _, obj := range res.Objects {
+			// highlight-start
 			fmt.Printf("%s: %v\n", obj.UUID, obj.Vectors["default"].Single)
+			// highlight-end
 		}
 		after = res.Objects[len(res.Objects)-1].UUID
 	}
@@ -89,14 +95,18 @@ func TestReadAllTenants(t *testing.T) {
 	// START ReadAllTenants
 	questions := client.Collections.Use("JeopardyQuestion")
 	// List every tenant, then iterate each tenant's objects in turn.
+	// highlight-start
 	tenants, err := questions.Tenants.Get(ctx)
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
 	}
 	for _, tn := range tenants {
+		// highlight-start
 		scoped := client.Collections.Use("JeopardyQuestion", collections.WithTenant(tn.Name))
 		iter := query.NewObjectIterator(ctx, scoped.Query)
+		// highlight-end
 		for {
 			obj, err := iter.Next()
 			if err == iterator.Done {

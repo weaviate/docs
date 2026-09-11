@@ -88,6 +88,7 @@ func TestGetNearText(t *testing.T) {
 
 	// START GetNearText
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// highlight-start
 	response, err := jeopardy.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"animals in movies"},
 		Limit:    2,
@@ -95,6 +96,7 @@ func TestGetNearText(t *testing.T) {
 			Distance: true,
 		},
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -122,6 +124,7 @@ func TestGetNearVector(t *testing.T) {
 	vector := []float32{0.12, 0.20, 0.33}
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// highlight-start
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		Target: &types.Vector{Name: "default", Single: vector},
 		Limit:  2,
@@ -129,6 +132,7 @@ func TestGetNearVector(t *testing.T) {
 			Distance: true,
 		},
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -157,8 +161,10 @@ func TestNamedVectorNearText(t *testing.T) {
 	response, err := reviews.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"a sweet German white wine"},
 		// Select the named vector to search against.
+		// highlight-start
 		Target: query.VectorName("title_country"),
-		Limit:  2,
+		// highlight-end
+		Limit: 2,
 		ReturnMetadata: query.ReturnMetadata{
 			Distance: true,
 		},
@@ -187,8 +193,10 @@ func TestGetWithDistance(t *testing.T) {
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target:     &types.Vector{Name: "default", Single: vector},
+		Target: &types.Vector{Name: "default", Single: vector},
+		// highlight-start
 		Similarity: query.Distance(0.25),
+		// highlight-end
 		ReturnMetadata: query.ReturnMetadata{
 			Distance: true,
 		},
@@ -218,8 +226,10 @@ func TestGetLimitOffset(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		Target: &types.Vector{Name: "default", Single: vector},
+		// highlight-start
 		Limit:  2,
 		Offset: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -247,7 +257,9 @@ func TestAutocut(t *testing.T) {
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		Target: &types.Vector{Name: "default", Single: vector},
 		// Return objects from the first similarity cluster only.
+		// highlight-start
 		AutoLimit: 1,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -277,11 +289,13 @@ func TestGetWithGroupBy(t *testing.T) {
 			Target: &types.Vector{Name: "default", Single: vector},
 			Limit:  10,
 		},
+		// highlight-start
 		query.GroupBy{
 			Property:       "category",
 			NumberOfGroups: 2,
 			ObjectLimit:    2,
 		},
+		// highlight-end
 	)
 	if err != nil {
 		// handle error
@@ -308,6 +322,7 @@ func TestGetNearObject(t *testing.T) {
 	id := uuid.MustParse("5a6b7c8d-9e0f-4a1b-8c2d-1a2b3c4d5e6f")
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
+	// highlight-start
 	response, err := jeopardy.Query.NearObject(ctx, query.NearObject{
 		UUID:  id,
 		Limit: 2,
@@ -315,6 +330,7 @@ func TestGetNearObject(t *testing.T) {
 			Distance: true,
 		},
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -344,11 +360,13 @@ func TestGetWithFilter(t *testing.T) {
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		Target: &types.Vector{Name: "default", Single: vector},
 		Limit:  2,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "category",
 			Operator: filter.Equal,
 			Value:    "ANIMALS",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error

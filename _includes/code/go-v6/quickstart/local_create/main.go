@@ -33,6 +33,7 @@ func main() {
 
 	// Step 1.2: Create a collection. Its text properties are vectorized
 	// server-side by the text2vec-contextionary module (see the type above).
+	// highlight-start
 	if _, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Movie",
 		Properties: []collections.Property{
@@ -47,6 +48,7 @@ func main() {
 		// handle error
 		panic(err)
 	}
+	// highlight-end
 
 	// Step 1.3: Import a few objects. The server vectorizes each one on import.
 	if _, err := client.Collections.Use("Movie").Data.Insert(ctx,

@@ -133,7 +133,9 @@ func TestSearchImageByPath(t *testing.T) {
 	response, err := dogs.Query.NearMedia(ctx, query.NearMedia{
 		// Always name the media kind. A NearMedia with no Media runs no search
 		// at all: it returns arbitrary objects and drops any distance cutoff.
-		Media:            query.Image(base64.StdEncoding.EncodeToString(img)),
+		// highlight-start
+		Media: query.Image(base64.StdEncoding.EncodeToString(img)),
+		// highlight-end
 		ReturnProperties: []string{"breed"},
 		Limit:            1,
 		// Target: query.VectorName("vector_name"), // required with multiple named vectors
@@ -158,13 +160,17 @@ func TestSearchImageByBase64(t *testing.T) {
 
 	// START ImageByBase64
 	// imgBytes holds the raw image; the v6 client wants it base64-encoded.
+	// highlight-start
 	base64String := base64.StdEncoding.EncodeToString(imgBytes)
+	// highlight-end
 
 	dogs := client.Collections.Use("Dog")
 	response, err := dogs.Query.NearMedia(ctx, query.NearMedia{
 		// query.Image marks the string as an image. The other media kinds are
 		// query.Audio, query.Video, query.Depth, query.Thermal and query.IMU.
-		Media:            query.Image(base64String),
+		// highlight-start
+		Media: query.Image(base64String),
+		// highlight-end
 		ReturnProperties: []string{"breed"},
 		Limit:            1,
 		// Target: query.VectorName("vector_name"), // required with multiple named vectors

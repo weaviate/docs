@@ -26,6 +26,7 @@ func main() {
 	// Step 2.2: Semantic (vector) search. text2vec-contextionary turns the query
 	// text into a vector server-side and returns the closest matches.
 	movies := client.Collections.Use("Movie")
+	// highlight-start
 	response, err := movies.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"science fiction movie"},
 		Limit:    2,
@@ -33,6 +34,7 @@ func main() {
 			Distance: true,
 		},
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)

@@ -25,9 +25,11 @@ func TestEnableMultiTenancy(t *testing.T) {
 	// START EnableMultiTenancy
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "MultiTenancyCollection",
+		// highlight-start
 		MultiTenancy: &collections.MultiTenancyConfig{
 			Enabled: true,
 		},
+		// highlight-end
 	})
 	// END EnableMultiTenancy
 	if err != nil {
@@ -47,11 +49,13 @@ func TestEnableAutoMT(t *testing.T) {
 	// START EnableAutoMT
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "MultiTenancyCollection",
+		// highlight-start
 		MultiTenancy: &collections.MultiTenancyConfig{
 			Enabled:              true,
 			AutoTenantCreation:   true,
 			AutoTenantActivation: true,
 		},
+		// highlight-end
 	})
 	// END EnableAutoMT
 	if err != nil {
@@ -83,10 +87,12 @@ func TestAddTenantsToClass(t *testing.T) {
 
 	// START AddTenantsToClass
 	collection := client.Collections.Use("MultiTenancyCollection")
+	// highlight-start
 	err := collection.Tenants.Create(ctx,
 		tenant.Tenant{Name: "tenantA"},                          // Active by default.
 		tenant.Tenant{Name: "tenantB", Status: tenant.Inactive}, // Created on disk, not loaded.
 	)
+	// highlight-end
 	// END AddTenantsToClass
 	if err != nil {
 		t.Fatal(err)
@@ -105,7 +111,9 @@ func TestListTenants(t *testing.T) {
 	// START ListTenants
 	collection := client.Collections.Use("MultiTenancyCollection")
 	// Passing no tenant names returns every tenant in the collection.
+	// highlight-start
 	tenants, err := collection.Tenants.Get(ctx)
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -128,7 +136,9 @@ func TestRemoveTenants(t *testing.T) {
 	// START RemoveTenants
 	collection := client.Collections.Use("MultiTenancyCollection")
 	// Unknown tenant names are ignored.
+	// highlight-start
 	err := collection.Tenants.Delete(ctx, "tenantB", "tenantX")
+	// highlight-end
 	// END RemoveTenants
 	if err != nil {
 		t.Fatal(err)
@@ -148,9 +158,11 @@ func TestCreateMtObject(t *testing.T) {
 
 	// START CreateMtObject
 	// Bind the tenant to the collection handle.
+	// highlight-start
 	collection := client.Collections.Use("MultiTenancyCollection",
 		collections.WithTenant("tenantA"),
 	)
+	// highlight-end
 	_, err := collection.Data.Insert(ctx, &data.Object{
 		Properties: map[string]any{
 			"question": "This vector DB is OSS and supports automatic property type inference on import",
@@ -172,9 +184,11 @@ func TestMtSearch(t *testing.T) {
 	defer cleanupMultiTenancy(ctx, client)
 
 	// START Search
+	// highlight-start
 	collection := client.Collections.Use("MultiTenancyCollection",
 		collections.WithTenant("tenantA"),
 	)
+	// highlight-end
 	response, err := collection.Query.OverAll(ctx, query.OverAll{
 		Limit: 2,
 	})
@@ -204,9 +218,11 @@ func TestMtAddCrossRef(t *testing.T) {
 	targetID := mtCategoryID
 
 	// START AddCrossRef
+	// highlight-start
 	collection := client.Collections.Use("MultiTenancyCollection",
 		collections.WithTenant("tenantA"),
 	)
+	// highlight-end
 	res, err := collection.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{
 			Collection: "MultiTenancyCollection",

@@ -95,10 +95,12 @@ func TestMultiBasic(t *testing.T) {
 	response, err := jeopardy.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"a wild animal"},
 		// Minimum is the default join strategy when combining target vectors.
+		// highlight-start
 		Target: query.Min([]query.VectorName{
 			"jeopardy_questions_vector",
 			"jeopardy_answers_vector",
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
@@ -129,10 +131,12 @@ func TestMultiTargetNearVector(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		// Pair each named target vector with its own query vector.
+		// highlight-start
 		Target: query.Min([]types.Vector{
 			{Name: "jeopardy_questions_vector", Single: v1},
 			{Name: "jeopardy_answers_vector", Single: v2},
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
@@ -164,11 +168,13 @@ func TestMultiTargetMultipleNearVectorsV1(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		// A target vector name may appear more than once, each with its own vector.
+		// highlight-start
 		Target: query.Min([]types.Vector{
 			{Name: "jeopardy_questions_vector", Single: v1},
 			{Name: "jeopardy_answers_vector", Single: v2},
 			{Name: "jeopardy_answers_vector", Single: v3},
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
@@ -199,11 +205,13 @@ func TestMultiTargetMultipleNearVectorsV2(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		// Weight each query vector; repeated targets are weighted independently.
+		// highlight-start
 		Target: query.ManualWeights([]query.WeightedVector[types.Vector]{
 			query.Weighted(types.Vector{Name: "jeopardy_questions_vector", Single: v1}, 10),
 			query.Weighted(types.Vector{Name: "jeopardy_answers_vector", Single: v2}, 30),
 			query.Weighted(types.Vector{Name: "jeopardy_answers_vector", Single: v3}, 30),
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
@@ -233,10 +241,12 @@ func TestMultiTargetWithSimpleJoin(t *testing.T) {
 		Concepts: []string{"a wild animal"},
 		// query.Sum, query.Min, query.ManualWeights, and query.RelativeScore
 		// are also available.
+		// highlight-start
 		Target: query.Average([]query.VectorName{
 			"jeopardy_questions_vector",
 			"jeopardy_answers_vector",
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
@@ -263,10 +273,12 @@ func TestMultiTargetManualWeights(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"a wild animal"},
+		// highlight-start
 		Target: query.ManualWeights([]query.WeightedVector[query.VectorName]{
 			query.Weighted(query.VectorName("jeopardy_questions_vector"), 10),
 			query.Weighted(query.VectorName("jeopardy_answers_vector"), 50),
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})
@@ -294,10 +306,12 @@ func TestMultiTargetRelativeScore(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"a wild animal"},
+		// highlight-start
 		Target: query.RelativeScore([]query.WeightedVector[query.VectorName]{
 			query.Weighted(query.VectorName("jeopardy_questions_vector"), 10),
 			query.Weighted(query.VectorName("jeopardy_answers_vector"), 10),
 		}),
+		// highlight-end
 		Limit:          2,
 		ReturnMetadata: query.ReturnMetadata{Distance: true},
 	})

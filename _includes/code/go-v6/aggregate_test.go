@@ -24,7 +24,9 @@ func TestAggregateMetaCount(t *testing.T) {
 	// START MetaCount
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	result, err := jeopardy.Aggregate.OverAll(ctx, aggregate.OverAll{
+		// highlight-start
 		TotalCount: true,
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -47,9 +49,11 @@ func TestAggregateTextProp(t *testing.T) {
 	// START TextProp
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	result, err := jeopardy.Aggregate.OverAll(ctx, aggregate.OverAll{
+		// highlight-start
 		Text: []aggregate.Text{
 			{Property: "category", Count: true, TopOccurrences: true},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -73,9 +77,11 @@ func TestAggregateIntProp(t *testing.T) {
 	// START IntProp
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	result, err := jeopardy.Aggregate.OverAll(ctx, aggregate.OverAll{
+		// highlight-start
 		Integer: []aggregate.Integer{
 			{Property: "points", Count: true, Sum: true, Min: true, Max: true, Mean: true},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -104,7 +110,9 @@ func TestAggregateGroupBy(t *testing.T) {
 				{Property: "points", Count: true, Sum: true},
 			},
 		},
+		// highlight-start
 		aggregate.GroupBy{Property: "category", Limit: 10},
+		// highlight-end
 	)
 	if err != nil {
 		// handle error

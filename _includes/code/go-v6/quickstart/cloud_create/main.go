@@ -33,6 +33,7 @@ func main() {
 
 	// Step 1.2: Create a collection vectorized by Weaviate Embeddings
 	// (the text2vec-weaviate module).
+	// highlight-start
 	if _, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Movie",
 		Properties: []collections.Property{
@@ -47,6 +48,7 @@ func main() {
 		// handle error
 		panic(err)
 	}
+	// highlight-end
 
 	// Step 1.3: Import a few objects. Weaviate Embeddings vectorizes each on import.
 	if _, err := client.Collections.Use("Movie").Data.Insert(ctx,

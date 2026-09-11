@@ -27,11 +27,13 @@ func TestSingleFilter(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "round",
 			Operator: filter.Equal,
 			Value:    "Double Jeopardy!",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -55,6 +57,7 @@ func TestMultipleFiltersAnd(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: filter.And{
 			&filter.Cond{
 				Target:   "round",
@@ -67,6 +70,7 @@ func TestMultipleFiltersAnd(t *testing.T) {
 				Value:    int64(600),
 			},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -90,6 +94,7 @@ func TestMultipleFiltersNested(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: filter.And{
 			&filter.Cond{
 				Target:   "answer",
@@ -109,6 +114,7 @@ func TestMultipleFiltersNested(t *testing.T) {
 				},
 			},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -130,16 +136,20 @@ func TestContainsAnyFilter(t *testing.T) {
 
 	// START ContainsAnyFilter
 	// The tokens to match against the tokenized "question" property.
+	// highlight-start
 	tokens := []string{"animal", "elephant"}
+	// highlight-end
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "question",
 			Operator: filter.ContainsAny,
 			Value:    tokens,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -160,16 +170,20 @@ func TestContainsAllFilter(t *testing.T) {
 	defer cleanupJeopardyDemo(ctx, client)
 
 	// START ContainsAllFilter
+	// highlight-start
 	tokens := []string{"blood", "glucose"}
+	// highlight-end
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "question",
 			Operator: filter.ContainsAll,
 			Value:    tokens,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -190,16 +204,20 @@ func TestContainsNoneFilter(t *testing.T) {
 	defer cleanupJeopardyDemo(ctx, client)
 
 	// START ContainsNoneFilter
+	// highlight-start
 	tokens := []string{"animal", "elephant"}
+	// highlight-end
 
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "question",
 			Operator: filter.ContainsNone,
 			Value:    tokens,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -223,12 +241,14 @@ func TestLikeFilter(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "answer",
 			Operator: filter.Like,
 			// "*" matches zero or more characters, "?" matches exactly one.
 			Value: "*giraffe*",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -252,12 +272,14 @@ func TestCrossReferenceFilter(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			// Build a path into the referenced collection with Reference().
 			Target:   filter.Reference("hasCategory").Property("title"),
 			Operator: filter.Like,
 			Value:    "*Sport*",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -281,12 +303,14 @@ func TestFilterByDate(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "dateRecorded",
 			Operator: filter.GreaterThan,
 			// Compare date properties against a time.Time value.
 			Value: time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC),
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -309,12 +333,14 @@ func TestFilterById(t *testing.T) {
 	// START FilterById
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
+		// highlight-start
 		Filter: &filter.Cond{
 			// filter.UUID targets the object's own id.
 			Target:   filter.UUID,
 			Operator: filter.Equal,
 			Value:    "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -338,12 +364,14 @@ func TestFilterByTimestamp(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			// filter.CreatedAt and filter.LastUpdatedAt target internal timestamps.
 			Target:   filter.CreatedAt,
 			Operator: filter.GreaterThanEqual,
 			Value:    time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC),
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -367,12 +395,14 @@ func TestFilterByPropertyLength(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			// filter.Len wraps a property in a len(property) target.
 			Target:   filter.Len("answer"),
 			Operator: filter.GreaterThan,
 			Value:    int64(20),
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -396,11 +426,13 @@ func TestFilterByPropertyNullState(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
 		Limit: 3,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "answer",
 			Operator: filter.IsNull,
 			Value:    true,
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -427,11 +459,13 @@ func TestNearTextWithFilter(t *testing.T) {
 	response, err := jeopardy.Query.NearText(ctx, query.NearText{
 		Concepts: []string{"large animals"},
 		Limit:    2,
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "round",
 			Operator: filter.Equal,
 			Value:    "Double Jeopardy!",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error

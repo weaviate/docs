@@ -1068,21 +1068,21 @@ func TestRBACMTPermissionsExample(t *testing.T) {
 			Tenants: []rbac.TenantPermission{
 				{
 					Collection: "TargetCollection*", // Applies to all matching collections.
-					Tenant:     "TargetTenant*",      // Applies to all matching tenants.
-					Create:     true,                 // Allow creating tenants.
-					Read:       true,                 // Allow reading tenant info.
-					Update:     true,                 // Allow updating tenant states.
-					Delete:     true,                 // Allow deleting tenants.
+					Tenant:     "TargetTenant*",     // Applies to all matching tenants.
+					Create:     true,                // Allow creating tenants.
+					Read:       true,                // Allow reading tenant info.
+					Update:     true,                // Allow updating tenant states.
+					Delete:     true,                // Allow deleting tenants.
 				},
 			},
 			Data: []rbac.DataPermission{
 				{
 					Collection: "TargetCollection*", // Applies to all matching collections.
-					Tenant:     "TargetTenant*",      // Applies to all matching tenants.
-					Create:     true,                 // Allow data inserts.
-					Read:       true,                 // Allow query and fetch operations.
-					Update:     true,                 // Allow data updates.
-					Delete:     true,                 // Allow data deletes.
+					Tenant:     "TargetTenant*",     // Applies to all matching tenants.
+					Create:     true,                // Allow data inserts.
+					Read:       true,                // Allow query and fetch operations.
+					Update:     true,                // Allow data updates.
+					Delete:     true,                // Allow data deletes.
 				},
 			},
 		},

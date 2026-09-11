@@ -46,7 +46,9 @@ func TestCreateObject(t *testing.T) {
 	questions := client.Collections.Use("JeopardyQuestion")
 
 	// START CreateObject
+	// highlight-start
 	_, err := questions.Data.Insert(ctx, &data.Object{
+		// highlight-end
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
 			"answer":   "Weaviate",
@@ -89,7 +91,9 @@ func TestReplaceObject(t *testing.T) {
 	// START UpdateReplace
 	// Replace overwrites the whole object. Properties that are omitted here are
 	// removed from the stored object, so include every value you want to keep.
+	// highlight-start
 	err := questions.Data.Replace(ctx, data.Object{
+		// highlight-end
 		UUID: &id,
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
@@ -134,7 +138,9 @@ func TestDeleteObject(t *testing.T) {
 	}
 
 	// START DeleteObject
+	// highlight-start
 	err := questions.Data.Delete(ctx, id)
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -162,11 +168,13 @@ func TestDeleteMany(t *testing.T) {
 
 	// START DeleteMany
 	res, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
+		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "category",
 			Operator: filter.Equal,
 			Value:    "GEOGRAPHY",
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -194,6 +202,7 @@ func TestReadObjectByID(t *testing.T) {
 	// START ReadObject
 	questions := client.Collections.Use("JeopardyQuestion")
 	// The v6 client has no fetch-by-id call; select an object by its id.
+	// highlight-start
 	response, err := questions.Query.OverAll(ctx, query.OverAll{
 		Filter: &filter.Cond{
 			Target:   filter.UUID, // The object's own id.
@@ -201,6 +210,7 @@ func TestReadObjectByID(t *testing.T) {
 			Value:    "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f",
 		},
 	})
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
@@ -253,9 +263,11 @@ func TestCreateWithVector(t *testing.T) {
 		},
 		// Supply the object's vector under the matching vector name
 		// ("default" for a single, unnamed vector).
+		// highlight-start
 		Vectors: []types.Vector{
 			{Name: "default", Single: []float32{0.12345, 0.6789, 0.9876}},
 		},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -275,9 +287,13 @@ func TestCreateWithId(t *testing.T) {
 	questions := client.Collections.Use("JeopardyQuestion")
 
 	// START CreateWithId
+	// highlight-start
 	id := uuid.MustParse("12345678-9abc-4def-8123-456789abcdef")
+	// highlight-end
 	_, err := questions.Data.Insert(ctx, &data.Object{
+		// highlight-start
 		UUID: &id,
+		// highlight-end
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
 			"answer":   "Weaviate",
@@ -335,7 +351,9 @@ func TestReadWithVector(t *testing.T) {
 			Value:    "a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f",
 		},
 		// Name the vectors to return; use "default" for a single unnamed vector.
+		// highlight-start
 		ReturnVectors: []string{"default"},
+		// highlight-end
 	})
 	if err != nil {
 		// handle error
@@ -422,8 +440,10 @@ func TestDeleteDryRun(t *testing.T) {
 			Operator: filter.Like,
 			Value:    "*bird*",
 		},
+		// highlight-start
 		DryRun:  true, // Report matches without deleting them.
 		Verbose: true, // Include the id and status of each match.
+		// highlight-end
 	})
 	if err != nil {
 		// handle error

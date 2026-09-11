@@ -29,7 +29,9 @@ func TestEnableRQ(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{
+			// highlight-start
 			"default": {Vectorizer: model2vec.Text2Vec{}, Compression: compression.RQ{Bits: 8}},
+			// highlight-end
 		},
 	})
 	// END EnableRQ
@@ -52,7 +54,9 @@ func TestEnableRQ1Bit(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{
+			// highlight-start
 			"default": {Vectorizer: model2vec.Text2Vec{}, Compression: compression.RQ{Bits: 1}},
+			// highlight-end
 		},
 	})
 	// END 1BitEnableRQ
@@ -75,11 +79,13 @@ func TestRQWithOptions(t *testing.T) {
 	// START RQWithOptions
 	vectorConfig := collections.VectorConfig{
 		Index: vectorindex.HFresh{Distance: vectorindex.DistanceCosine, MaxPostingSizeKB: 8},
+		// highlight-start
 		Compression: compression.RQ{
 			Bits:         8,
 			RescoreLimit: 20,
 			Cache:        true,
 		},
+		// highlight-end
 		Vectorizer: model2vec.Text2Vec{},
 	}
 	_, err := client.Collections.Create(ctx, collections.Collection{

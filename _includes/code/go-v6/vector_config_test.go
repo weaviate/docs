@@ -34,9 +34,11 @@ func TestCreateCollectionWithVectorizer(t *testing.T) {
 			{Name: "title", DataType: collections.DataTypeText},
 			{Name: "body", DataType: collections.DataTypeText},
 		},
+		// highlight-start
 		Vectors: map[string]collections.VectorConfig{
 			"default": {Vectorizer: model2vec.Text2Vec{}},
 		},
+		// highlight-end
 	})
 	// END CreateCollectionWithVectorizer
 	if err != nil {
@@ -58,10 +60,12 @@ func TestVectorizerSettings(t *testing.T) {
 	// START VectorizerSettings
 	// Point the vectorizer at a remote inference service and embed only the
 	// listed properties.
+	// highlight-start
 	vectorizer := model2vec.Text2Vec{
 		URL:        "http://text2vec-model2vec:8080",
 		Properties: []string{"title"},
 	}
+	// highlight-end
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Properties: []collections.Property{
@@ -96,12 +100,14 @@ func TestCreateCollectionWithNamedVectors(t *testing.T) {
 			{Name: "title", DataType: collections.DataTypeText},
 			{Name: "body", DataType: collections.DataTypeText},
 		},
+		// highlight-start
 		Vectors: map[string]collections.VectorConfig{
 			// A vector generated from the title only.
 			"title": {Vectorizer: model2vec.Text2Vec{Properties: []string{"title"}}},
 			// A vector you supply yourself at import time.
 			"custom": {Vectorizer: selfprovided.Vectorizer},
 		},
+		// highlight-end
 	})
 	// END CreateCollectionWithNamedVectors
 	if err != nil {
@@ -135,7 +141,9 @@ func TestSetVectorIndexType(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{
+			// highlight-start
 			"default": {Index: vectorindex.HFresh{MaxPostingSizeKB: 8}, Vectorizer: model2vec.Text2Vec{}},
+			// highlight-end
 		},
 	})
 	// END SetVectorIndexType
@@ -157,6 +165,7 @@ func TestSetVectorIndexParams(t *testing.T) {
 
 	// START SetVectorIndexParams
 	vectorConfig := collections.VectorConfig{
+		// highlight-start
 		Index: vectorindex.HFresh{
 			Distance:         vectorindex.DistanceCosine,
 			MaxPostingSizeKB: 1024,
@@ -168,6 +177,7 @@ func TestSetVectorIndexParams(t *testing.T) {
 			RescoreLimit: 20,
 			Cache:        true,
 		},
+		// highlight-end
 		Vectorizer: model2vec.Text2Vec{},
 	}
 	_, err := client.Collections.Create(ctx, collections.Collection{
@@ -195,8 +205,10 @@ func TestPropModuleSettings(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Properties: []collections.Property{
+			// highlight-start
 			{Name: "title", DataType: collections.DataTypeText, Tokenization: collections.TokenizationWord},
 			{Name: "chunk", DataType: collections.DataTypeText, Tokenization: collections.TokenizationWhitespace},
+			// highlight-end
 		},
 		Vectors: map[string]collections.VectorConfig{
 			// Embed the title only; chunk is left out of the vector.
@@ -222,7 +234,9 @@ func TestDistanceMetric(t *testing.T) {
 
 	// START DistanceMetric
 	// Bring your own vectors and set the distance metric on the index.
+	// highlight-start
 	index := vectorindex.HFresh{Distance: vectorindex.DistanceCosine, MaxPostingSizeKB: 8}
+	// highlight-end
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{

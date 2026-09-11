@@ -26,8 +26,10 @@ func TestEnableInvertedIndex(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Properties: []collections.Property{
+			// highlight-start
 			{Name: "title", DataType: collections.DataTypeText, IndexFilterable: true, IndexSearchable: true},
 			{Name: "wordCount", DataType: collections.DataTypeInt, IndexRangeFilters: true},
+			// highlight-end
 		},
 	})
 	// END EnableInvertedIndex
@@ -47,6 +49,7 @@ func TestSetInvertedIndexParams(t *testing.T) {
 	defer client.Collections.Delete(ctx, "Article")
 
 	// START SetInvertedIndexParams
+	// highlight-start
 	invertedIndex := &collections.InvertedIndexConfig{
 		BM25: &collections.BM25Config{
 			B:  0.75,
@@ -61,6 +64,7 @@ func TestSetInvertedIndexParams(t *testing.T) {
 		IndexPropertyLength: true,
 		IndexTimestamps:     true,
 	}
+	// highlight-end
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 		Properties: []collections.Property{
@@ -86,6 +90,7 @@ func TestAllReplicationSettings(t *testing.T) {
 	defer client.Collections.Delete(ctx, "Article")
 
 	// START AllReplicationSettings
+	// highlight-start
 	replication := &collections.ReplicationConfig{
 		Factor:           3,
 		DeletionStrategy: collections.TimeBasedResolution,
@@ -94,6 +99,7 @@ func TestAllReplicationSettings(t *testing.T) {
 			ReplicationFrequency: 30 * time.Second,
 		},
 	}
+	// highlight-end
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name:        "Article",
 		Replication: replication,
@@ -116,11 +122,13 @@ func TestShardingSettings(t *testing.T) {
 	// START ShardingSettings
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
+		// highlight-start
 		Sharding: &collections.ShardingConfig{
 			VirtualPerPhysical:  128,
 			DesiredCount:        1,
 			DesiredVirtualCount: 128,
 		},
+		// highlight-end
 	})
 	// END ShardingSettings
 	if err != nil {
