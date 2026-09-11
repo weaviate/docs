@@ -4,6 +4,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.create_collection.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.create_collection.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_1/quickstart.short.create_collection.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/quickstart/cloud_create/main.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartCreate.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/QuickstartCreate.cs";
 
@@ -36,6 +37,19 @@ The collection also contains a configuration for the generative (RAG) integratio
   startMarker="// START CreateCollection"
   endMarker="// END CreateCollection"
   language="goraw"
+/>
+</TabItem>
+<TabItem value="go6" label="Go v6 (beta)">
+
+:::note Go client `v6` (pre-release)
+This tab uses the pre-release [`v6` Go client](https://github.com/weaviate/weaviate-go-client/tree/v6). It vectorizes data with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings) (the `text2vec-weaviate` module). Collection-level generative (RAG) configuration is not yet available in `v6`, so it is omitted here (see Step 3).
+:::
+
+<FilteredTextBlock
+  text={GoV6Code}
+  startMarker="// START CloudCreate"
+  endMarker="// END CloudCreate"
+  language="go6full"
 />
 </TabItem>
 <TabItem value="java" label="Java">

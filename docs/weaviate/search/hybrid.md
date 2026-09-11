@@ -13,6 +13,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.hybrid-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
+import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/hybrid_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchHybridTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchHybridTest.cs";
 import GQLCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.gql.py';
@@ -54,6 +55,14 @@ Combine the results of a vector search and a keyword search. The search uses a s
       startMarker="// START Basic"
       endMarker="// END Basic"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridBasic"
+      endMarker="// END HybridBasic"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -186,6 +195,14 @@ To see the object rankings, set the `explain score` field in your query. The sea
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithScore"
+      endMarker="// END HybridWithScore"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -260,6 +277,14 @@ If you do not set `alpha`, the effective weighting depends on your client. See [
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithAlpha"
+      endMarker="// END HybridWithAlpha"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -330,6 +355,14 @@ The output is like this:
       startMarker="// START WithFusionType"
       endMarker="// END WithFusionType"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithFusionType"
+      endMarker="// END HybridWithFusionType"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -412,6 +445,14 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -457,6 +498,14 @@ With the `and` operator, the search returns objects where all tokens in the sear
       startMarker="// START HybridWithBM25OperatorAnd"
       endMarker="// END HybridWithBM25OperatorAnd"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -512,6 +561,14 @@ The keyword search portion of hybrid search can be directed to only search a sub
       startMarker="// START WithProperties"
       endMarker="// END WithProperties"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithProperties"
+      endMarker="// END HybridWithProperties"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -583,6 +640,14 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithPropertyWeighting"
+      endMarker="// END HybridWithPropertyWeighting"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -650,6 +715,14 @@ The vector component of hybrid search can use a query string or a query vector. 
       startMarker="// START WithVector"
       endMarker="// END WithVector"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithVector"
+      endMarker="// END HybridWithVector"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -866,6 +939,14 @@ Optionally, use `offset` to paginate the results.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridLimit"
+      endMarker="// END HybridLimit"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -927,6 +1008,14 @@ To learn more about the different fusion algorithms, visit the [search operators
       startMarker="// START autocut"
       endMarker="// END autocut"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridAutocut"
+      endMarker="// END HybridAutocut"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -996,6 +1085,14 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       startMarker="// START WithFilter"
       endMarker="// END WithFilter"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithFilter"
+      endMarker="// END HybridWithFilter"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

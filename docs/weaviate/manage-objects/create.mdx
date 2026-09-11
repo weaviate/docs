@@ -13,6 +13,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.create.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
 
 The examples on this page demonstrate how to create individual objects in Weaviate.
@@ -48,6 +49,14 @@ This example creates an object in the `JeopardyQuestion` collection.
       startMarker="// CreateObject START"
       endMarker="// CreateObject END"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CreateObject"
+      endMarker="// END CreateObject"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -110,6 +119,14 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       startMarker="// CreateObjectWithVector START"
       endMarker="// CreateObjectWithVector END"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CreateWithVector"
+      endMarker="// END CreateWithVector"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -202,6 +219,14 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CreateWithId"
+      endMarker="// END CreateWithId"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -251,6 +276,14 @@ Object IDs are not randomly generated. The same value always generates the same 
 // This feature is under development
 ```
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START CreateWithDeterministicId"
+      endMarker="// END CreateWithDeterministicId"
+      language="go6"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -371,6 +404,14 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       startMarker="// ValidateObject START"
       endMarker="// ValidateObject END"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ValidateObject"
+      endMarker="// END ValidateObject"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
