@@ -312,7 +312,7 @@ Beyond the built-in `en` and `none` presets, you can declare custom stopword pre
 
 #### Per-property stopword overrides
 
-Each text property can override the collection-level stopword behavior via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections where different properties contain text in different languages. The override is only supported on properties with `tokenization: "word"` — schema validation rejects it on other tokenizers.
+Each text property can override the collection-level stopword behavior via `textAnalyzer.stopwordPreset`. This is useful for multilingual collections where different properties contain text in different languages. The override is only supported on properties with `tokenization: "word"`. Schema validation rejects it on other tokenizers.
 
 ```json
 "properties": [
@@ -331,7 +331,7 @@ Each text property can override the collection-level stopword behavior via `text
 ]
 ```
 
-Stopwords are still **indexed** — they are only filtered at query time. Changing the stopword configuration does **not** require reindexing your data.
+Stopwords are still **indexed**: they are only filtered at query time. Changing the stopword configuration does **not** require reindexing your data.
 
 See the [custom stopwords tutorial](../../tutorials/tokenization.md#example-5-custom-and-per-property-stopword-presets) for a worked example and the [stopwordPresets configuration reference](../../config-refs/indexing/inverted-index.mdx#stopwordpresets) for all options.
 

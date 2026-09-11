@@ -154,6 +154,95 @@ public class ModelProvidersTest : IAsyncLifetime
         await client.Collections.Delete("DemoCollection");
     }
 
+    [Fact(Skip = "Requires MORPH_APIKEY, not configured in CI")]
+    public async Task TestMorphInstantiation()
+    {
+        // START MorphInstantiation
+        // Best practice: store your credentials in environment variables
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string morphApiKey = Environment.GetEnvironmentVariable("MORPH_APIKEY");
+
+        // highlight-start
+        // Morph requests are built by Weaviate's OpenAI-compatible client,
+        // so the Morph key is supplied under the OpenAI header name.
+        using var client = await Connect.Cloud(
+            weaviateUrl,
+            weaviateApiKey,
+            headers: new Dictionary<string, string>
+            {
+                ["X-Openai-Api-Key"] = morphApiKey,
+            }
+        );
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta.Version);
+        // highlight-end
+        // END MorphInstantiation
+    }
+
+    [Fact(Skip = "Requires MORPH_APIKEY, not configured in CI")]
+    public async Task TestMorphVectorizer()
+    {
+        if (await client.Collections.Exists("DemoCollection"))
+            await client.Collections.Delete("DemoCollection");
+
+        // START BasicVectorizerMorph
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "DemoCollection",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title_vector",
+                        v => v.Text2VecMorph(),
+                        sourceProperties: ["title"]
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("description")],
+            }
+        );
+        // END BasicVectorizerMorph
+
+        var config = await client.Collections.Export("DemoCollection");
+        Assert.True(config.VectorConfig.ContainsKey("title_vector"));
+        Assert.Equal("text2vec-morph", config.VectorConfig["title_vector"].Vectorizer.Identifier);
+
+        await client.Collections.Delete("DemoCollection");
+    }
+
+    [Fact(Skip = "Requires MORPH_APIKEY, not configured in CI")]
+    public async Task TestMorphVectorizerFull()
+    {
+        if (await client.Collections.Exists("DemoCollection"))
+            await client.Collections.Delete("DemoCollection");
+
+        // START FullVectorizerMorph
+        await client.Collections.Create(
+            new CollectionCreateParams
+            {
+                Name = "DemoCollection",
+                VectorConfig = new VectorConfigList
+                {
+                    Configure.Vector(
+                        "title_vector",
+                        v => v.Text2VecMorph(model: "morph-embedding-v3"),
+                        sourceProperties: ["title"]
+                    ),
+                },
+                Properties = [Property.Text("title"), Property.Text("description")],
+            }
+        );
+        // END FullVectorizerMorph
+
+        var config = await client.Collections.Export("DemoCollection");
+        Assert.True(config.VectorConfig.ContainsKey("title_vector"));
+        Assert.Equal("text2vec-morph", config.VectorConfig["title_vector"].Vectorizer.Identifier);
+
+        await client.Collections.Delete("DemoCollection");
+    }
+
     [Fact]
     public async Task TestWeaviateVectorizerModel()
     {

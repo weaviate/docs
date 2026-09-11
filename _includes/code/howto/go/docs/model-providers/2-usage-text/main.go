@@ -424,10 +424,9 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-huggingface": map[string]interface{}{
 						"properties": []string{"title"},
-						//  Note: Use only one of (`model`), (`passage_model` and `query_model`), or (`endpoint_url`)
+						//  Note: Use only one of (`model`), (`passage_model`), or (`endpoint_url`)
 						"model": "sentence-transformers/all-MiniLM-L6-v2",
-						// "passage_model":  "sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",      // Required if using `query_model`
-						// "query_model":    "sentence-transformers/facebook-dpr-question_encoder-single-nq-base", // Required if using `passage_model`
+						// "passage_model":  "sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base",
 						// "endpoint_url":   "<custom_huggingface_url>",
 						// // Optional parameters
 						// "wait_for_model": true,

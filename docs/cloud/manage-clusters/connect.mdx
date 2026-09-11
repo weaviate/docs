@@ -6,8 +6,6 @@ description: "Multiple connection options and methods for accessing your Weaviat
 image: og/wcd/user_guides.jpg
 ---
 
-import CompareURLs from "/docs/cloud/img/wcs-console-url-check.jpg";
-
 [Weaviate Cloud (WCD)](/go/console?utm_content=cloud) offers multiple options on how to connect to your cluster:
 
 - **[Connect with APIs](#connect-with-an-api-programmatically)**:
@@ -80,6 +78,8 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 
 :::note REST Endpoint vs gRPC Endpoint
 When using an official Weaviate [client library](/weaviate/client-libraries), you need to authenticate using the `REST Endpoint` and your API key. The client will infer the gRPC endpoint automatically and use the more performant gRPC protocol when available.
+
+To reach the [gRPC-Web interface](/weaviate/api/grpc.md#grpc-web), use the `REST Endpoint` URL, not the `gRPC Endpoint` URL, because gRPC-Web is served on the REST port.
 :::
 
 ### Environment variables
@@ -109,34 +109,11 @@ To connect to the console, follow these steps:
 1. Enter your email address and click `Continue`.
 1. Enter your password and click `Login`.
 
-## Connect an instance with the Query Tool
+Once you are logged in, the console has built-in tools for working with your data:
 
-The built-in [Query tool](/cloud/tools/query-tool) connects directly to clusters in your Weaviate Cloud organization without any additional authentication.
-
-import APIKeyInHeader from "/docs/cloud/img/wcs-auth-header.jpg";
-
-<div class="row">
-  <div class="col col--6">
-    <p>
-      To connect the Query tool to a Weaviate instance that is not part of your
-      Weaviate Cloud organization, provide an API key for the remote instance.{" "}
-      <br />
-      <br />
-      Add the API key to the connection <code>Headers</code> at the bottom of
-      the Query tool tab.
-    </p>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={APIKeyInHeader} alt="Create a cluster" />
-      </div>
-      <div class="card__body">
-        Copy the appropriate API key for your cluster.
-      </div>
-    </div>
-  </div>
-</div>
+- The [Explorer tool](/cloud/tools/explorer-tool) browses a collection and runs keyword, semantic, hybrid, and aggregation searches, without writing a query.
+- The [Collections tool](/cloud/tools/collections-tool) creates, configures, and deletes collections.
+- The [Query Agent](/cloud/tools/query-agent) answers natural language questions about your data.
 
 ## Troubleshooting
 
@@ -147,7 +124,7 @@ This section has solutions for some common problems. For additional help, [conta
 To reset your Weaviate Cloud password, follow these steps:
 
 1. Go to the Weaviate Cloud [login page](/go/console?utm_content=cloud).
-1. Click on click the login button.
+1. Click the login button.
 1. Click `Forgot Password`.
 1. Check your email account for a password reset email from Weaviate Cloud.
 1. Click the link and follow the instructions to reset your password. The link is only valid for five minutes.
@@ -195,7 +172,7 @@ weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be
 
 **Solution**: Verify the cluster URL is correct and update the URL if needed.
 
-When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections work, however the new gRPC and the old HTTP URLS are different so connections that require gRCP fail.
+When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections continue to work. However, the new gRPC URL and the old HTTP URL are different, so connections that require gRPC fail.
 
 To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match. Compare the Cluster URL with the connection URL in your application. The old URL and the new URL are similar, but the new one may have an extra subdomain such as `.c0.region`. If the URLs are different, update your application's connection code to use the new Cluster URL.
 

@@ -5,7 +5,7 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes', 'known issues']
 ---
 
-:::info Last Updated: October 2025
+:::info Last Updated: August 2026
 :::
 
 # Known issues
@@ -18,7 +18,8 @@ This page documents significant known issues in Weaviate, their symptoms, and re
 
 | Issue                                                                                 | Affected Versions                                                   | Resolution    | Fixed In                         |
 | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------- | -------------------------------- |
-| [Empty collections panic](#empty-collections-panic)                                   | 1.28 - 1.31                                                         | In Progress   | -                                |
+| [Read repair can write partial objects](#read-repair-can-write-partial-objects)       | 1.36 and earlier, 1.37.0-1.37.13, 1.38.0-1.38.6                     | Fixed         | 1.37.14+, 1.38.7+, 1.39.0+       |
+| [Empty collections panic](#empty-collections-panic)                                   | 1.28 (all), 1.29.0-8, 1.30.0-8, 1.31.0, 1.31.1                      | Fixed         | 1.29.9+, 1.30.9+, 1.31.2+, 1.32.0+ |
 | [Database restoration blocked](#database-restoration-blocked)                         | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3                            | Fixed         | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
 | [RAFT snapshot compatibility on downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed         | 1.27.26                          |
 | [RAFT bootstrap timeout](#raft-bootstrap-timeout)                                     | 1.25 - 1.28                                                         | Workaround    | -                                |
@@ -73,6 +74,51 @@ A bug in the handling of multiple vectors with quantization causes the same vect
 #### Resolution
 
 The Weaviate team is actively working on a fix. A patched version will be released as soon as possible. -->
+
+### Read repair can write partial objects
+
+:::info Impact summary
+
+- **Affected versions:** 1.36 and earlier, 1.37.0 - 1.37.13, 1.38.0 - 1.38.6
+- **Resolution:** Fixed in 1.37.14 and 1.38.7
+
+:::
+
+#### Symptoms
+
+On a replicated cluster, an object can lose data on one or more replicas after it is read:
+
+- An affected replica keeps only the properties that the query returned. The object's remaining properties are gone from that replica.
+- An affected replica also loses the object's vector, so the object no longer matches vector searches that the replica answers.
+- The object still exists and keeps its ID, and aggregate counts are unchanged, so object counts and existence checks still look correct.
+- At consistency level `ONE`, the same object can come back with a different set of properties from one read to the next, depending on which replica answers.
+
+#### Root cause
+
+In affected versions, when replicas disagreed about an object, Weaviate could repair that object at read time. If the query that triggered the repair asked for only some of the object's properties, the coordinator could treat that partial view as the source of truth and write it back to the replicas being repaired, replacing the stored object with the subset of properties the query returned.
+
+This issue occurs when:
+
+- Replicas hold different states for the object, for example because a node was offline while writes continued.
+- The read uses consistency level `QUORUM` or `ALL`. Reads at `ONE` do not trigger [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read).
+- A query that returns only some of the object's properties matches the object.
+
+A cluster whose replicas report that they are fully in sync is not exempt: the problem has been observed on clusters where background synchronization had already brought every replica up to date.
+
+#### Resolution
+
+**Upgrade to a release that contains the fix:**
+
+- If on 1.37.x → upgrade to 1.37.14 or higher
+- If on 1.38.x → upgrade to 1.38.7 or higher
+
+All 1.39 releases contain the fix.
+
+The 1.36 line and earlier were never patched, and fall outside the [supported version range](/weaviate/release-notes/index.md#version-support-policy). If you run 1.36 or earlier, upgrade to one of the releases listed above.
+
+These conditions are narrow, but the resulting data loss is easy to miss: a truncated object keeps its ID and still counts toward aggregates. Upgrade even if your object counts and health checks look normal.
+
+---
 
 ### Database restoration blocked
 
@@ -393,12 +439,15 @@ Upgrade to fixed version:
 ```
 
 - Tenant activation failures
+- On versions that carry it, these entries have a `docs_url=https://docs.weaviate.io/e/core-mem001` field, and the error returned to the client ends in the same link. Both lead to [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings), which has the fix.
 
 #### Root cause
 
 The system has reached the operating system limit for memory-mapped files (`vm.max_map_count`). Each shard requires multiple memory mappings, and the default OS limit may be insufficient for large multi-tenant deployments.
 
 #### Resolution
+
+Platform-specific steps (Linux, Docker, Kubernetes, Weaviate Cloud) are in [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings). In short:
 
 **Increase the system memory mapping limit:**
 
@@ -407,15 +456,15 @@ The system has reached the operating system limit for memory-mapped files (`vm.m
 sysctl vm.max_map_count
 
 # Increase to 3-4x current value
-# Example: 2097152 → 8388608
-sysctl -w vm.max_map_count=8388608
+# Example: 1048576 → 4194304
+sysctl -w vm.max_map_count=4194304
 ```
 
 **Make the change persistent:**
 
 ```bash
 # Add to /etc/sysctl.conf
-echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
+echo "vm.max_map_count=4194304" >> /etc/sysctl.conf
 ```
 
 **Restart affected pods to apply the new configuration.**
@@ -426,8 +475,8 @@ echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
 
 :::info Impact summary
 
-- **Affected versions:** 1.28, 1.29, 1.30, 1.31
-- **Resolution:** In progress
+- **Affected versions:** 1.28 (all patch releases), 1.29.0 - 1.29.8, 1.30.0 - 1.30.8, 1.31.0 and 1.31.1
+- **Resolution:** Fixed in 1.29.9, 1.30.9, 1.31.2 and 1.32.0
 
 :::
 
@@ -447,12 +496,23 @@ RAFT snapshots with no collections (previously called classes) cause a nil map a
 
 #### Resolution
 
-**Option 1: Upgrade (when available)**
-Upgrade to patched version containing the fix.
+**Option 1: Upgrade (recommended)**
+
+Upgrade to a release that contains the fix:
+
+- 1.29.9 and later 1.29 releases
+- 1.30.9 and later 1.30 releases
+- 1.31.2 and later 1.31 releases
+- 1.32.0 and later
+
+Two points to watch when you choose a target release:
+
+- 1.31.0 and 1.31.1 do **not** contain the fix. Within the 1.31 line, upgrade to 1.31.2 or later.
+- The 1.28 line was never patched. If you run 1.28, upgrade to one of the releases listed above.
 
 **Option 2: Remove empty snapshot**
 
-Identify and remove the problematic snapshot:
+If you cannot upgrade yet, identify and remove the problematic snapshot:
 
 ```bash
 # Navigate to RAFT directory

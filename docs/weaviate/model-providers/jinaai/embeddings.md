@@ -53,7 +53,7 @@ You must provide a valid Jina AI API key to Weaviate for this integration. Go to
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `JINAAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `JINAAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -329,13 +329,19 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
+The server default changed in `v1.32.0`, and was backported to `v1.31.6`. Earlier releases on each of those lines default to `jina-embeddings-v2-base-en`.
+
+- `jina-embeddings-v4` (server default)
+    - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
 - `jina-embeddings-v3`
     - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
-    - By default, Weaviate uses `1024` dimensions
-- `jina-embeddings-v2-base-en` (Default)
+- `jina-embeddings-v2-base-en` (previous server default)
 - `jina-embeddings-v2-small-en`
+- `jina-embeddings-v2-base-zh`
+- `jina-embeddings-v2-base-es`
+- `jina-embeddings-v2-base-code`
 
-Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
+If you do not set `dimensions`, Weaviate does not send a dimension count and the Jina AI API applies its own default for the model. Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
 
 ## Further resources
 

@@ -641,9 +641,14 @@ def test_chatgpt_can_search_code_tabs():
     text = response.output_text
     text_lower = text.lower()
 
-    # Must find the correct quickstart URL
-    assert "docs.weaviate.io/weaviate/quickstart" in text, (
-        f"ChatGPT didn't find the quickstart URL. Response:\n{text[:1000]}"
+    # The live web-search model cites either /weaviate/quickstart or /cloud/quickstart,
+    # so the URL is not a reliable assertion target; the content assertions below carry the signal.
+    found_quickstart_url = (
+        "docs.weaviate.io/weaviate/quickstart" in text
+        or "docs.weaviate.io/cloud/quickstart" in text
+    )
+    assert found_quickstart_url, (
+        f"ChatGPT didn't find a quickstart URL. Response:\n{text[:1000]}"
     )
 
     # Must identify multiple programming languages from the code tabs

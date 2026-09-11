@@ -23,7 +23,7 @@ Which modules to use in a Weaviate instance can be specified in the `Docker Comp
 
 ```yaml
 ---
-services:html
+services:
   weaviate:
     command:
     - --host

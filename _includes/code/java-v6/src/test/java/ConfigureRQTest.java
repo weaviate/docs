@@ -46,6 +46,23 @@ class ConfigureRQTest {
   }
 
   @Test
+  void test4BitEnableRQ() throws IOException {
+    String collectionName = "MyCollection";
+    if (client.collections.exists(collectionName)) {
+      client.collections.delete(collectionName);
+    }
+
+    // START 4BitEnableRQ
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
+            // highlight-start
+            .quantization(Quantization.rq(q -> q.bits(4)))
+        // highlight-end
+        )).properties(Property.text("title")));
+    // END 4BitEnableRQ
+  }
+
+  @Test
   void test1BitEnableRQ() throws IOException {
     String collectionName = "MyCollection";
     if (client.collections.exists(collectionName)) {
@@ -119,6 +136,27 @@ class ConfigureRQTest {
     collection.config.update(c -> c.vectorConfig(VectorConfig
         .text2vecTransformers(vc -> vc.quantization(Quantization.rq()))));
     // END UpdateSchema
+  }
+
+  @Test
+  void test4BitUpdateSchema() throws IOException {
+    String collectionName = "MyCollection";
+    if (client.collections.exists(collectionName)) {
+      client.collections.delete(collectionName);
+    }
+    client.collections.create(collectionName,
+        col -> col
+            .vectorConfig(VectorConfig.text2vecTransformers(
+                vc -> vc.quantization(Quantization.uncompressed())))
+            .properties(Property.text("title")));
+
+    // START 4BitUpdateSchema
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("MyCollection");
+    collection.config
+        .update(c -> c.vectorConfig(VectorConfig.text2vecTransformers(
+            vc -> vc.quantization(Quantization.rq(q -> q.bits(4))))));
+    // END 4BitUpdateSchema
   }
 
   @Test

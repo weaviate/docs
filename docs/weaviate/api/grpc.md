@@ -7,7 +7,7 @@ image: og/docs/api.jpg
 
 Starting with Weaviate `v1.19.0`, a gRPC interface has been progressively added to Weaviate. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
 
-As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python (`v4` version)](../client-libraries/python/index.mdx) and [TypeScript (`v3` version)](../client-libraries/typescript/index.mdx) client libraries support gRPC, and the other client libraries will follow.
+As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries use gRPC. The [Go](../client-libraries/go/index.md) client uses gRPC for batch imports, and offers gRPC search through its experimental API.
 
 ## Protocol Buffer (Protobuf) definitions
 
@@ -33,8 +33,6 @@ We suggest using the default port `50051` for gRPC calls. It can be modified thr
 Note that [Weaviate Cloud](/go/console?utm_content=api) uses port `443` for gRPC.
 :::
 
-````yaml:
-
 ```yaml
 ---
 services:
@@ -44,16 +42,29 @@ services:
      - "8080:8080"  # REST calls
      - "50051:50051"  # gRPC calls
   # ... Other settings
-````
+```
 
 ### Client-side
 
-You can use the gRPC interface through the [Python (`v4` version)](../client-libraries/python/index.mdx) and [TypeScript (`v3` version)](../client-libraries/typescript/index.mdx) client libraries. Other client libraries will also introduce gRPC support in the near future.
+You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The [Go](../client-libraries/go/index.md) client sends batch imports over gRPC. Its gRPC search API is still experimental, and is reached through `Experimental().Search()` rather than the regular query builder.
 
 Alternatively, you can use other tools, such as the `grpcurl` command-line tool, to interact with the gRPC API. Some options include:
 
 - `grpcurl` command-line tool ([GitHub repo](https://github.com/fullstorydev/grpcurl))
 - Postman ([How to send a gRPC request with Postman](https://learning.postman.com/docs/sending-requests/grpc/grpc-request-interface/))
+
+## gRPC-Web
+
+:::info Added in `v1.38.3`
+:::
+
+Browsers cannot speak plain gRPC. To reach the gRPC API from a browser, Weaviate also serves a gRPC-Web interface over ordinary HTTP. It is served under the `/v1/grpc-web/` path prefix on the same port as the REST API (default `8080`), not on the gRPC port, so there is no second port to expose.
+
+The gRPC-Web interface is enabled by default. **[Runtime configuration](/deploy/configuration/env-vars/runtime-config.md) override:** set `grpc_web_enabled` to `false`. Note the snake_case. This takes effect without a restart.
+
+This setting has no environment variable equivalent. When the interface is disabled, requests to `/v1/grpc-web/` fall through to the REST handler, so other REST endpoints keep working as usual.
+
+The Weaviate client libraries connect over plain gRPC, so they do not use the gRPC-Web interface yet.
 
 ## Questions and feedback
 

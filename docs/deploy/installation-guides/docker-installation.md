@@ -418,7 +418,7 @@ Alternatively you can run docker compose entirely detached with `docker compose 
 
 ### Set `CLUSTER_HOSTNAME` if it may change over time
 
-In some systems, the cluster hostname may change over time. This is known to create issues with a single-node Weaviate deployment. To avoid this, set the `CLUSTER_HOSTNAME` environment variable in the `values.yaml` file to the cluster hostname.
+In some systems, the cluster hostname may change over time. This is known to create issues with a single-node Weaviate deployment. To avoid this, set the `CLUSTER_HOSTNAME` environment variable in your `docker-compose.yml` file to the cluster hostname.
 
 ```yaml
 ---

@@ -53,12 +53,12 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.wea
   <summary> An example of RBAC enabled on your Helm chart </summary>
 
 ```yaml
-  authorization:
+authorization:
   rbac:
     enabled: true
-     root_users:
-    - admin_user1
-    - admin_user2
+    root_users:
+      - admin_user1
+      - admin_user2
 ```
 
 </details>

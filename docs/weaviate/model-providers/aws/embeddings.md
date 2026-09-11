@@ -185,12 +185,34 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 ### Vectorizer parameters
 
-The following examples show how to configure AWS-specific options.
+**Common parameters:**
+- `service` (Optional): The AWS service to use, either `bedrock` or `sagemaker`. Defaults to `bedrock`.
+- `region` (Required): The AWS region to send requests to, e.g. `us-east-1`.
 
-The AWS region setting is required for all AWS integrations.
+**Bedrock parameters:**
+- `model` (Required): The full Bedrock model identifier, e.g. `amazon.titan-embed-text-v2:0`.
+- `dimensions` (Optional): The size of the embedding to request from the model, e.g. `512`.
 
-- Bedrock users must set `service` to `bedrock` and provide the `model` name.
-- SageMaker users must set `service` to `sagemaker` and provide the `endpoint` address.
+**SageMaker parameters:**
+- `endpoint` (Required): The name of the SageMaker endpoint to invoke, e.g. `tei-xxx`.
+- `targetModel` (Optional): The model to target on a multi-model endpoint.
+- `targetVariant` (Optional): The production variant to target on the endpoint.
+
+#### `service`
+
+Weaviate falls back to `bedrock` when `service` is not set, so a SageMaker configuration has to set it to `sagemaker`. Any value other than `bedrock` or `sagemaker` is rejected when the collection is created.
+
+Some clients offer service-specific constructors, such as `text2vec_aws_bedrock` and `text2vec_aws_sagemaker`, which select the service for you. Examples built on those constructors do not pass `service` at all. Every other example on this page sets it explicitly, as does any configuration written directly against the collection definition.
+
+#### `dimensions`
+
+`dimensions` was added in `v1.36.19`, and is also available from `v1.37.10`, `v1.38.2`, and `v1.39.0` onward.
+
+Weaviate only forwards `dimensions` to Amazon models on Bedrock, such as the Titan and Nova embedding families. Cohere models on Bedrock, and SageMaker endpoints, accept the setting in the collection configuration but ignore it when embeddings are generated, so their vectors keep the model's default size. Check the model's documentation for the sizes it supports.
+
+#### Example configuration
+
+The following examples show how to configure AWS-specific options for each service.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

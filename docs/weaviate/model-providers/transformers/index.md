@@ -25,6 +25,16 @@ Transformers-compatible embedding models transform text data into vector embeddi
 
 [Hugging Face Transformers embedding integration page](./embeddings.md)
 
+### Reranker models
+
+![Reranker integration illustration](../_includes/integration_transformers_reranker.png)
+
+Transformers-compatible reranker models are designed to improve the relevance and ranking of search results.
+
+[The Weaviate reranker integration](./reranker.md) allows users to easily refine their search results with a locally hosted Hugging Face Transformers reranker model.
+
+[Hugging Face Transformers reranker integration page](./reranker.md)
+
 ## Summary
 
 These integrations enable developers to leverage powerful Hugging Face Transformers models from directly within Weaviate.
@@ -41,6 +51,7 @@ Go to the relevant integration page to learn how to configure Weaviate with the 
 - [Text Embeddings (custom image)](./embeddings-custom-image.md)
 - [Multimodal Embeddings](./embeddings-multimodal.md)
 - [Multimodal Embeddings (custom image)](./embeddings-multimodal-custom-image.md)
+- [Reranker](./reranker.md)
 
 ## Questions and feedback
 

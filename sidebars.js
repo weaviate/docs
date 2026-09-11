@@ -240,13 +240,26 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "DeepSeek",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/deepseek/index",
+              },
+              items: ["weaviate/model-providers/deepseek/generative"],
+            },
+            {
+              type: "category",
               label: "DigitalOcean",
               className: "sidebar-item",
               link: {
                 type: "doc",
                 id: "weaviate/model-providers/digitalocean/index",
               },
-              items: ["weaviate/model-providers/digitalocean/embeddings"],
+              items: [
+                "weaviate/model-providers/digitalocean/embeddings",
+                "weaviate/model-providers/digitalocean/generative",
+              ],
             },
             {
               type: "category",
@@ -312,6 +325,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "Morph",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/morph/index",
+              },
+              items: ["weaviate/model-providers/morph/embeddings"],
+            },
+            {
+              type: "category",
               label: "NVIDIA",
               className: "sidebar-item",
               link: {
@@ -362,6 +385,18 @@ const sidebars = {
               items: [
                 "weaviate/model-providers/openai-azure/embeddings",
                 "weaviate/model-providers/openai-azure/generative",
+              ],
+            },
+            {
+              type: "category",
+              label: "TwelveLabs",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/twelvelabs/index",
+              },
+              items: [
+                "weaviate/model-providers/twelvelabs/embeddings-multimodal",
               ],
             },
             {
@@ -533,7 +568,6 @@ const sidebars = {
             "weaviate/configuration/compression/multi-vectors",
           ],
         },
-        "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
         {
           type: "doc",
@@ -704,7 +738,6 @@ const sidebars = {
         "weaviate/tutorials/cross-references",
         "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/vector-provision-options",
-        //"weaviate/tutorials/query",
         //"weaviate/tutorials/wikipedia",
         //"weaviate/tutorials/modules",
       ],
@@ -1651,6 +1684,12 @@ const sidebars = {
           id: "cloud/tools/query-tool",
           className: "sidebar-item",
         },
+        {
+          type: "ref",
+          id: "weaviate/configuration/mcp-server",
+          label: "MCP server",
+          className: "sidebar-item",
+        },
       ],
     },
     {
@@ -1734,6 +1773,28 @@ const sidebars = {
       type: "doc",
       id: "support/index",
       label: "Overview",
+    },
+  ],
+  // /improve-your-cluster and /errors share one sidebar: the checklist is the
+  // page every error entry points to, so it sits above the messages.
+  errorsSidebar: [
+    {
+      type: "doc",
+      id: "improve-your-cluster",
+      label: "Improve your cluster",
+    },
+    {
+      type: "category",
+      label: "Errors",
+      link: {
+        type: "doc",
+        id: "errors/index",
+      },
+      items: [
+        "errors/cluster-resources",
+        "errors/collection-configuration",
+        "errors/model-integrations",
+      ],
     },
   ],
 };

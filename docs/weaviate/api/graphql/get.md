@@ -229,8 +229,8 @@ The following search operators are available.
 | --- | --- | --- | --- |
 | `nearObject` | Vector search using a Weaviate object | *none* | [Learn more](./search-operators.md#nearobject) |
 | `nearVector` | Vector search using a raw vector | *none* | [Learn more](./search-operators.md#nearvector) |
-| `nearText` | Vector search using a text query | Text embedding model |  |
-| `nearImage` | Vector search using an image | Multi-modal embedding model |
+| `nearText` | Vector search using a text query | Text embedding model | [Learn more](./search-operators.md#neartext) |
+| `nearImage` | Vector search using an image | Multi-modal embedding model | [Learn more](./search-operators.md#multimodal-search) |
 | `hybrid` | Combine vector and BM25 search results |  *none* | [Learn more](../graphql/search-operators.md#hybrid) |
 | `bm25`   | Keyword search with BM25F ranking  | *none* | [Learn more](../graphql/search-operators.md#bm25) |
 

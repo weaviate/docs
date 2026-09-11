@@ -24,23 +24,30 @@ This enables an enhanced developed experience, such as the ability to:
 | [Cohere](./cohere/index.md) | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md) | [Text](./cohere/generative.md) | [Reranker](./cohere/reranker.md) |
 | [Contextual AI](./contextualai/index.md) | - | [Text](./contextualai/generative.md) | [Reranker](./contextualai/reranker.md) |
 | [Databricks](./databricks/index.md) | [Text](./databricks/embeddings.md) | [Text](./databricks/generative.md) | - |
-| [DigitalOcean](./digitalocean/index.md) | [Text](./digitalocean/embeddings.md) | - | - |
+| [DeepSeek](./deepseek/index.md) | - | [Text](./deepseek/generative.md) | - |
+| [DigitalOcean](./digitalocean/index.md) | [Text](./digitalocean/embeddings.md) | [Text](./digitalocean/generative.md) | - |
 | [FriendliAI](./friendliai/index.md) | - | [Text](./friendliai/generative.md) | - |
 | [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
 | [Hugging Face](./huggingface/index.md) | [Text](./huggingface/embeddings.md) | - | - |
 | [Jina AI](./jinaai/index.md) | [Text](./jinaai/embeddings.md), [Multimodal](./jinaai/embeddings-multimodal.md) | - | [Reranker](./jinaai/reranker.md) |
 | [Mistral](./mistral/index.md) | [Text](./mistral/embeddings.md) | [Text](./mistral/generative.md) | - |
+| [Morph](./morph/index.md) | [Text](./morph/embeddings.md) | - | - |
 | [NVIDIA](./nvidia/index.md) | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md) | [Text](./nvidia/generative.md) | [Reranker](./nvidia/reranker.md) |
 | [OctoAI (Deprecated)](./octoai/index.md) | [Text](./octoai/embeddings.md) | [Text](./octoai/generative.md) | - |
 | [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
 | [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
+| [TwelveLabs](./twelvelabs/index.md) | [Multimodal](./twelvelabs/embeddings-multimodal.md) | - | - |
 | [Voyage AI](./voyageai/index.md) | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | - | [Reranker](./voyageai/reranker.md) |
 | [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md), [Multimodal](./weaviate/embeddings-multimodal.md) | - | - |
 | [xAI](./xai/index.md) | - | [Text](./xai/generative.md) | - |
 
 #### Enable all API-based modules
 
-All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`.
+All API-based model integrations are available by default starting with Weaviate `v1.33`.
+
+To opt out, for example in an air-gapped or otherwise restricted deployment, set the [`API_BASED_MODULES_DISABLED` environment variable](/deploy/configuration/env-vars#API_BASED_MODULES_DISABLED) to `true`. Weaviate then loads only the modules that you list in [`ENABLE_MODULES`](/deploy/configuration/env-vars#ENABLE_MODULES). This variable was added in `v1.33`.
+
+For releases before `v1.33`, enable all API-based modules by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`. Weaviate stopped reading that variable in `v1.33`.
 
 ### Locally hosted
 

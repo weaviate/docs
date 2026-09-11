@@ -25,11 +25,11 @@ Databricks' embedding models transform text data into vector embeddings, capturi
 
 ### Generative AI models for RAG
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_openai_rag_single.png)
+![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_databricks_rag_single.png)
 
-Databrick' generative AI models can generate human-like text based on given prompts and contexts.
+Databricks' generative AI models can generate human-like text based on given prompts and contexts.
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate' efficient storage and fast retrieval capabilities with Databrick' generative AI models to generate personalized and context-aware responses.
+[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with Databricks' generative AI models to generate personalized and context-aware responses.
 
 [Databricks generative AI integration page](./generative.md)
 
@@ -43,7 +43,7 @@ In turn, they simplify the process of building AI-driven applications to speed u
 
 You must provide a valid Databricks personal access token to Weaviate for these integrations. Refer to the [Databricks documentation](https://docs.databricks.com/en/dev-tools/auth/pat.html) for instructions on generating your personal access token in your workspace.
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the OpenAI models and start using them in your applications.
+Then, go to the relevant integration page to learn how to configure Weaviate with the Databricks models and start using them in your applications.
 
 - [Text Embeddings](./embeddings.md)
 - [Generative AI](./generative.md)

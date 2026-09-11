@@ -353,16 +353,16 @@ In all other searches where a vector embedding is to be specifically provided, i
  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START ColBERTHybrid"
-      endMarker="# END ColBERTHybrid"
+      startMarker="# START ColBERTManualHybrid"
+      endMarker="# END ColBERTManualHybrid"
       language="py"
     />
   </TabItem>
    <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START ColBERTHybrid"
-      endMarker="// END ColBERTHybrid"
+      startMarker="// START ColBERTManualHybrid"
+      endMarker="// END ColBERTManualHybrid"
       language="ts"
     />
   </TabItem>
@@ -553,16 +553,16 @@ To perform a hybrid search with user-provided embeddings, provide the query vect
  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START ColBERTHybrid"
-      endMarker="# END ColBERTHybrid"
+      startMarker="# START UserEmbeddingHybrid"
+      endMarker="# END UserEmbeddingHybrid"
       language="py"
     />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START ColBERTHybrid"
-      endMarker="// END ColBERTHybrid"
+      startMarker="// START UserEmbeddingHybrid"
+      endMarker="// END UserEmbeddingHybrid"
       language="ts"
     />
   </TabItem>

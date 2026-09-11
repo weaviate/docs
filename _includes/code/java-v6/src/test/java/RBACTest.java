@@ -14,6 +14,7 @@ import io.weaviate.client6.v1.api.rbac.RolesPermission;
 import io.weaviate.client6.v1.api.rbac.TenantsPermission;
 import io.weaviate.client6.v1.api.rbac.UsersPermission;
 import io.weaviate.client6.v1.api.rbac.groups.GroupType;
+import io.weaviate.client6.v1.api.rbac.roles.GroupAssignment;
 import io.weaviate.client6.v1.api.rbac.users.DbUser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -427,5 +428,86 @@ class RBACTest {
     client.users.db.delete(testUser);
     // END DeleteUser
     assertThat(client.users.db.byName(testUser)).isEmpty();
+  }
+
+  @Test
+  void testOidcUserLifecycle() throws IOException {
+    // An OIDC user is authenticated by the identity provider, so it is never
+    // created in Weaviate. Only its role assignments are managed here.
+    String testUser = "custom-user";
+    String testRole = "testRole";
+
+    Permission[] permissions = new Permission[] {Permission
+        .collections("TargetCollection*", CollectionsPermission.Action.READ),};
+    client.roles.create(testRole, permissions);
+
+    // START AssignOidcUserRole
+    client.users.oidc.assignRoles(testUser, testRole, "viewer");
+    // END AssignOidcUserRole
+
+    // START ListOidcUserRoles
+    var oidcUserRoles = client.users.oidc.assignedRoles(testUser);
+    for (Role role : oidcUserRoles) {
+      System.out.println(role.name());
+    }
+    // END ListOidcUserRoles
+    assertThat(oidcUserRoles).extracting(Role::name).contains(testRole, "viewer");
+
+    // START RevokeOidcUserRoles
+    client.users.oidc.revokeRoles(testUser, testRole);
+    // END RevokeOidcUserRoles
+    assertThat(client.users.oidc.assignedRoles(testUser)).extracting(Role::name)
+        .doesNotContain(testRole)
+        .contains("viewer");
+
+    // Leave no assignment behind for the next test run
+    client.users.oidc.revokeRoles(testUser, "viewer");
+  }
+
+  @Test
+  void testOidcGroupLifecycle() throws IOException {
+    String testGroup = "/admin-group";
+    String testRole = "testRole";
+
+    Permission[] permissions = new Permission[] {Permission
+        .collections("TargetCollection*", CollectionsPermission.Action.READ),};
+    client.roles.create(testRole, permissions);
+
+    // START AssignOidcGroupRoles
+    client.groups.assignRoles(testGroup, testRole, "viewer");
+    // END AssignOidcGroupRoles
+
+    // START GetOidcGroupRoles
+    List<Role> groupRoles = client.groups.assignedRoles(testGroup,
+        g -> g.includePermissions(true));
+    for (Role role : groupRoles) {
+      System.out.println(role.name());
+    }
+    // END GetOidcGroupRoles
+    assertThat(groupRoles).extracting(Role::name).contains(testRole, "viewer");
+
+    // START GetKnownOidcGroups
+    List<String> knownGroups = client.groups.knownGroupNames();
+    System.out.println("Known OIDC groups (" + knownGroups.size() + "): " + knownGroups);
+    // END GetKnownOidcGroups
+    assertThat(knownGroups).contains(testGroup);
+
+    // START GetGroupAssignments
+    List<GroupAssignment> groupAssignments = client.roles.groupAssignments(testRole);
+    System.out.println("Groups assigned to role '" + testRole + "':");
+    for (GroupAssignment assignment : groupAssignments) {
+      System.out.println("  - Group ID: " + assignment.groupId() + ", Type: "
+          + assignment.groupType());
+    }
+    // END GetGroupAssignments
+    assertThat(groupAssignments).extracting(GroupAssignment::groupId)
+        .contains(testGroup);
+    assertThat(groupAssignments).extracting(GroupAssignment::groupType)
+        .contains(GroupType.OIDC);
+
+    // START RevokeOidcGroupRoles
+    client.groups.revokeRoles(testGroup, testRole, "viewer");
+    // END RevokeOidcGroupRoles
+    assertThat(client.groups.assignedRoles(testGroup)).isEmpty();
   }
 }

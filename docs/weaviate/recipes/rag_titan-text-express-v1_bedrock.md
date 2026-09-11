@@ -7,7 +7,7 @@ integration: False
 agent: False
 tags: ['Generative Search', 'RAG', 'AWS']
 ---
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-features/model-providers/aws/rag_titan-text-express-v1_bedrock.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/aws/rag_titan-text-express-v1_bedrock.ipynb)
 
 ## Dependencies
 
@@ -57,7 +57,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_aws(
+    vector_config=wc.Configure.Vectors.text2vec_aws(
         service="bedrock",   #this is crucial
         model="cohere.embed-english-v3", # select the model, make sure it is enabled for your account
         # model="amazon.titan-embed-text-v1", # select the model, make sure it is enabled for your account

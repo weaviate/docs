@@ -355,6 +355,8 @@ Each replica movement operation progresses through a workflow designed to mainta
 
 - **FINALIZING**: The bulk data transfer is complete, and the new replica is catching up on any writes that occurred during the transfer. This ensures the replica is fully synchronized with the latest data. You can use the [`REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT) to adjust the wait time which ensures that any in progress writes have been completed and replicated to the target node.
 
+- **INTEGRATING** (added in `v1.38.0`): The new replica has joined the shard's replica set and is being brought into the write path on every node. The operation waits until all nodes agree that the new replica is a write target, so that no node can acknowledge a write that skips it. Each node reports that it reached this state only after its own in-flight writes to the shard have drained, which prevents a write that was already accepted from being lost. Once the cluster agrees, the last writes recorded on the source during the transition are applied to the new replica, and the source stops recording further changes for this operation. For copy operations, the next state is **READY**. For move operations, the next state is **DEHYDRATING**.
+
 - **DEHYDRATING**: For move operations, after the new replica is ready, the original replica on the source node is being removed. 
 
 - **READY**: The operation has completed successfully. The new replica is fully synchronized and ready to serve traffic. For move operations, the source replica has been removed.

@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.export.py';
 import CsCode from '!!raw-loader!/\_includes/code/csharp/ManageDataExportTest.cs';
 
-:::caution Preview — added in `v1.37`
+:::caution Preview (added in `v1.37`)
 This is a preview feature. The API may change in future releases.
 :::
 
@@ -206,7 +206,7 @@ Files are named `{collection}_{shard}_{rangeIndex}.parquet`. Collection and tena
 | COLD         | Exported directly from disk without loading into memory (remains COLD). |
 | OFFLOADED    | Skipped. The skip reason is recorded in the shard status.               |
 
-The tenant list is snapshotted when the export is created — tenants created during the export are not included.
+The tenant list is snapshotted when the export is created. Tenants created during the export are not included.
 
 ## Permissions
 

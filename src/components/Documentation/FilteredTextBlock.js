@@ -17,7 +17,8 @@ export const DOC_SYSTEMS = {
     },
     ts: {
         baseUrl: 'https://weaviate.github.io/typescript-client',
-        constructUrl: (baseUrl, ref) => `${baseUrl}/${ref}`,
+        // TypeDoc serves each symbol as a `.html` page, so refs stay extensionless.
+        constructUrl: (baseUrl, ref) => `${baseUrl}/${ref}.html`,
         icon: '/img/site/logo-ts.svg',
     },
     go: {

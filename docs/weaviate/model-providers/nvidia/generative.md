@@ -50,7 +50,7 @@ You must provide a valid API key to Weaviate for this integration. Go to [NVIDIA
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `NVIDIA_API_KEY` environment variable that is available to Weaviate.
+- Set the `NVIDIA_APIKEY` environment variable that is available to Weaviate.
 - Provide the token at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -260,7 +260,7 @@ The default model is `nvidia/llama-3.1-nemotron-51b-instruct`.
 ### Other integrations
 
 - [NVIDIA text embedding models + Weaviate](./embeddings.md).
-- [NVIDIA multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [NVIDIA multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [NVIDIA reranker models + Weaviate](./reranker.md).
 
 ### Code examples

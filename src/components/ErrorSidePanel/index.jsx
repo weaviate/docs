@@ -1,0 +1,36 @@
+import React from "react";
+import Link from "@docusaurus/Link";
+import styles from "./styles.module.scss";
+
+/**
+ * Right-hand panel for the /errors section.
+ *
+ * Error pages set `side_panel: improve-cluster`, and src/theme/DocItem/Layout
+ * renders this under the table of contents, or in its place on a page that
+ * hides it. The group pages keep their table of contents, limited to the entry
+ * headings, because a reader who found the page through a search for message
+ * text needs to see which entries it holds. Nothing else on the site sets
+ * `side_panel`, so no normal docs page is affected.
+ */
+export default function ErrorSidePanel() {
+  return (
+    <aside
+      className={styles.panel}
+      aria-labelledby="error-side-panel-title"
+      data-copy-exclude=""
+    >
+      <p className={styles.eyebrow}>Next step</p>
+      <p className={styles.title} role="heading" aria-level="2" id="error-side-panel-title">
+        Improve your cluster
+      </p>
+      <p className={styles.body}>
+        Most messages in this section are symptoms of a cluster that is short on
+        headroom, unmonitored, or behind on versions. Work through the checklist
+        to stop the next one before it reaches your logs.
+      </p>
+      <Link className={styles.cta} to="/improve-your-cluster">
+        Open the checklist
+      </Link>
+    </aside>
+  );
+}

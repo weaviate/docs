@@ -182,6 +182,10 @@ assert result.properties["question"] == properties["question"]
 # WithGeoCoordinates
 # ========================================
 
+# Test scaffolding; not rendered in the docs. Start from an empty collection so
+# the exact count asserted below cannot pick up an object left by an earlier run.
+client.collections.delete("Publication")
+
 # START WithGeoCoordinates
 publications = client.collections.use("Publication")
 
@@ -196,22 +200,33 @@ publications.data.insert(
 # END WithGeoCoordinates
 
 # TEST - Confirm insert & delete object
+# Test scaffolding below; not rendered in the docs.
+# A geo property is backed by its own index, and that index is filled in the
+# background when the server runs with ASYNC_INDEXING enabled (the test
+# instance does), so a geo filter does not see the object the moment insert
+# returns. Wait (bounded) for the write to become visible, so the assertion
+# tests the geo range and not index visibility. The assertion stays exact.
+import time
 from weaviate.classes.data import GeoCoordinate
 from weaviate.classes.query import Filter
 
-response = publications.query.fetch_objects(
-    filters=(
-        Filter
-        .by_property("headquartersGeoLocation")
-        .within_geo_range(
-            coordinate=GeoCoordinate(
-                latitude=52.39,
-                longitude=4.84
-            ),
-            distance=1000  # In meters
-        )
+geo_range_filter = (
+    Filter
+    .by_property("headquartersGeoLocation")
+    .within_geo_range(
+        coordinate=GeoCoordinate(
+            latitude=52.39,
+            longitude=4.84
+        ),
+        distance=1000  # In meters
     )
 )
+
+for _ in range(30):
+    response = publications.query.fetch_objects(filters=geo_range_filter)
+    if len(response.objects) >= 1:
+        break
+    time.sleep(1)
 
 assert len(response.objects) == 1
 obj_uuid = response.objects[0].uuid

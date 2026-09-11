@@ -59,7 +59,7 @@ You must provide a valid OpenAI API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `OPENAI_API_KEY` environment variable that is available to Weaviate.
+- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -129,7 +129,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples.
+You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples. If you do not set a model, Weaviate uses the server default, `text-embedding-3-small`.
 
 #### For `text-embedding-3` model family
 
@@ -199,7 +199,7 @@ For older models such as `text-embedding-ada-002`, provide the model name (`ada`
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. If no model is specified, Weaviate uses `text-embedding-3-small`.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -212,11 +212,14 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 ### Vectorizer parameters
 
-- `model`: The OpenAI model name or family.
+- `model`: The OpenAI model name or family. Defaults to `text-embedding-3-small`.
 - `dimensions`: The number of dimensions for the model.
 - `modelVersion`: The version string for the model.
 - `type`: The model type, either `text` or `code`.
 - `baseURL`: The URL to use (e.g. a proxy) instead of the default OpenAI URL.
+- `endpoint`: The API path that Weaviate appends to the base URL. Defaults to `/v1/embeddings`. Set it if an OpenAI-compatible service uses a different path.
+
+For how Weaviate combines `baseURL` and `endpoint` into a request URL, see [Header parameters](#header-parameters).
 
 #### (`model` & `dimensions`) or (`model` & `modelVersion`)
 
@@ -272,9 +275,13 @@ Any additional headers provided at runtime will override the existing Weaviate c
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
-:::note
+:::note How Weaviate builds the request URL
 
-By passing the `X-OpenAI-Baseurl`, you can use an endpoint compatible with the OpenAI API. Weaviate appends `/v1/embeddings` to this base URL. If this doesn't match your endpoint, you can rewrite the path with a proxy (e.g., `your.domain.com/v1/embeddings` -> `api.deepinfra.com/v1/openai/embeddings`).
+Use the `X-OpenAI-Baseurl` header, or the `baseURL` parameter, to target an OpenAI-compatible service. Weaviate builds the request URL by appending the `endpoint` path (`/v1/embeddings` by default) to the base URL.
+
+If your provider uses a different path, set [`endpoint`](#vectorizer-parameters) to that path, or rewrite the path with a proxy.
+
+The [Azure OpenAI integration](../openai-azure/embeddings.md) builds a deployment-specific path and ignores `endpoint`.
 
 :::
 
@@ -405,10 +412,12 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-You can use any OpenAI embedding model with `text2vec-openai`. For document embeddings, choose from the following [embedding model families](https://platform.openai.com/docs/models/embeddings):
+The server default is `text-embedding-3-small`.
+
+For document embeddings, choose from the following [embedding model families](https://platform.openai.com/docs/models/embeddings):
 
 * `text-embedding-3`
-    * Available dimensions:
+    * Available `dimensions` values:
         * `text-embedding-3-large`: `256`, `1024`, `3072` (default)
         * `text-embedding-3-small`: `512`, `1536` (default)
 * `ada`

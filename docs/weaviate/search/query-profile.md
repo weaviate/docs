@@ -16,7 +16,7 @@ import QueryProfileNote from '/_includes/feature-notes/query-profile.mdx';
 
 <QueryProfileNote/>
 
-Query profiling provides per-shard timing breakdowns for search queries. Enable it on any search request to see how long each phase takes — vector search, keyword scoring, filter evaluation, object retrieval — broken down by shard and cluster node.
+Query profiling provides per-shard timing breakdowns for search queries. Enable it on any search request to see how long each phase takes (vector search, keyword scoring, filter evaluation, object retrieval), broken down by shard and cluster node.
 
 Profiling uses the same instrumentation as [slow query logging](/deploy/configuration/logging.md#slow-query-logging). It adds minimal overhead when enabled and zero overhead when disabled.
 

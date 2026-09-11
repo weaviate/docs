@@ -120,9 +120,17 @@ This only applies when creating a new class, rather than when adding more data t
 
 ## Consistency and current limitations
 
-* Weaviate adopts the [Raft consensus algorithm](https://raft.github.io/) which is a log-based algorithm coordinated by an elected leader. This brings an additional benefit in that concurrent schema changes are now supported.<br/>If you are a Kubernetes user, see the [`1.25 migration guide`](/deploy/migration/weaviate-1-25.md) before you upgrade. To upgrade, you have to delete your existing StatefulSet.
-* As of `v1.8.0`, the process of broadcasting schema changes across the cluster uses a form of two-phase transaction that as of now cannot tolerate node failures during the lifetime of the transaction.
-* As of `v1.8.0`, dynamically scaling a cluster is not fully supported yet. New nodes can be added to an existing cluster, however it does not affect the ownership of shards. Existing nodes can not yet be removed if data is present, as shards are not yet being moved to other nodes prior to a removal of a node.
+* From `v1.25`, Weaviate uses the [Raft consensus algorithm](https://raft.github.io/) for cluster metadata such as collection definitions and tenant activity statuses. Raft is a log-based algorithm coordinated by an elected leader, so cluster metadata changes remain consistent even if a minority of nodes fail, and concurrent schema changes are supported. For details, see [Replication architecture: Cluster metadata](/weaviate/concepts/replication-architecture/consistency.md#cluster-metadata).<br/>If you are a Kubernetes user, see the [`1.25 migration guide`](/deploy/migration/weaviate-1-25.md) before you upgrade. To upgrade, you have to delete your existing StatefulSet.
+* Adding a node to an existing cluster does not by itself change the ownership of existing shards. To rebalance data across nodes, or to drain a node before you remove it, move its shard replicas with [replica movement](/deploy/configuration/replica-movement.mdx) as described in [Shard replica movement](#shard-replica-movement) above.
+
+<details>
+  <summary>Behavior before `v1.25` and `v1.32`</summary>
+
+Prior to `v1.25`, schema changes were broadcast across the cluster with a form of two-phase transaction that could not tolerate node failures during the lifetime of the transaction. Raft replaced this mechanism. See [Replication architecture: Cluster metadata](/weaviate/concepts/replication-architecture/consistency.md#cluster-metadata) for the comparison.
+
+Prior to `v1.32`, shard replicas could not be moved between nodes, so a node that still held data could not be removed from a cluster. [Replica movement](/deploy/configuration/replica-movement.mdx) removes that limitation.
+
+</details>
 
 ## Questions and feedback
 

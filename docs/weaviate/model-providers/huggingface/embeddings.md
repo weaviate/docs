@@ -53,7 +53,7 @@ You must provide a valid Hugging Face API key to Weaviate for this integration. 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `HUGGINGFACE_API_KEY` environment variable that is available to Weaviate.
+- Set the `HUGGINGFACE_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -119,7 +119,7 @@ Provide the API key to Weaviate using one of the following methods:
   </TabItem>
 </Tabs>
 
-You must specify one of the [available models](#available-models) for the vectorizer to use.
+You can specify one of the [available models](#available-models) for the vectorizer to use. If you do not specify a model, Weaviate uses the server default, `sentence-transformers/msmarco-bert-base-dot-v5`.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -169,13 +169,17 @@ The following examples show how to configure Hugging Face-specific options.
 Only select one of the following parameters to specify the model:
 
 - `model`,
-- `passageModel` and `queryModel`, or
+- `passageModel`, or
 - `endpointURL`
 
-:::note Differences between `model`, `passageModel`/`queryModel` and `endpointURL`
-The `passageModel` and `queryModel` parameters are used together to specify a [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) passage and query model.
+:::note Differences between `model`, `passageModel` and `endpointURL`
+`model` and `passageModel` name the same thing. Weaviate reads `model` first and falls back to `passageModel`, then uses that model for both object and query vectorization. Setting both raises a validation error.
 
-The `endpointURL` parameter is used to specify a [custom Hugging Face Inference Endpoint](https://huggingface.co/inference-endpoints). This parameter overrides the `model`, `passageModel`, and `queryModel` parameters.
+The `endpointURL` parameter is used to specify a [custom Hugging Face Inference Endpoint](https://huggingface.co/inference-endpoints). This parameter overrides the `model` and `passageModel` parameters.
+:::
+
+:::caution `queryModel` no longer has any effect
+Weaviate no longer reads the `queryModel` parameter. Support for a separate [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) query model was removed in `v1.26.9`, `v1.27.2` and `v1.28.0`. The client libraries still accept `queryModel` (`query_model` in Python) and send it to the server without an error, so any value you set there is silently ignored. Remove it from your collection configuration and use `model` or `passageModel` instead.
 :::
 
 #### Additional parameters

@@ -9,7 +9,7 @@ image: og/docs/modules/_title.jpg
 This section describes Weaviate's individual modules, including their capabilities and how to use them.
 
 :::tip Looking for vectorizer, generative AI, or reranker integration docs?
-They have moved to our [model provider integrations](../model-providers/index.md) section, for a more focussed, user-centric look at these integrations.
+They have moved to our [model provider integrations](../model-providers/index.md) section, for a more focused, user-centric look at these integrations.
 :::
 
 ## General
@@ -25,7 +25,7 @@ Weaviate modules can be divided into the following categories:
 - [Generative AI](#vectorizer-reranker-and-generative-ai-integrations): Integrate generative AI models for retrieval augmented generation (RAG).
 - [Backup](#backup-modules): Facilitate backup and restore operations in Weaviate.
 - [Offloading](#offloading-modules): Facilitate offloading of tenant data to external storage.
-- [Others]: Modules that provide additional functionalities.
+- [Others](#other-modules): Modules that provide additional functionalities.
 
 #### Vectorizer, reranker, and generative AI integrations
 
@@ -113,9 +113,18 @@ In addition to the above, there are other modules such as:
 - [qna-transformers](./qna-transformers.md): Question-answering (answer extraction) capability using transformers models.
 - [qna-openai](./qna-openai.md): Question-answering (answer extraction) capability using OpenAI models.
 - [ner-transformers](./ner-transformers.md): Named entity recognition capability using transformers models.
-- [text-spellcheck](./ner-transformers.md): Spell checking capability for GraphQL queries.
+- [text-spellcheck](./spellcheck.md): Spell checking capability for GraphQL queries.
 - [sum-transformers](./sum-transformers.md): Summarize text using transformer models.
 - [usage-modules](./usage-modules.md): Collect and upload usage analytics to GCS or S3 for the purposes of billing.
+- [custom-modules](./custom-modules.md): Attach your own machine learning model to Weaviate as a module.
+
+### Other vectorizer modules
+
+The following vectorizer modules are not covered by the [model provider integration](../model-providers/index.md) pages:
+
+- [text2vec-contextionary](./text2vec-contextionary.md) (deprecated): Vectorize text locally with the lightweight Contextionary model.
+- [img2vec-neural](./img2vec-neural.md): Vectorize images locally with a `resnet50` model.
+- [ref2vec-centroid](./ref2vec-centroid.md): Calculate an object's vector from the centroid of its referenced objects' vectors.
 
 ## Related pages
 

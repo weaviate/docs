@@ -124,8 +124,10 @@ To create a collection with the `HFresh` index using default settings, simply pa
 
 - `distance_metric`: `cosine`
 - `replicas`: `4` (number of posting lists per vector)
-- `search_probe`: `64` (number of posting lists to search)
+- `search_probe`: `256` (number of posting lists to search)
 - `max_posting_size_kb`: `48`
+
+The `search_probe` default is `256` in `v1.36.20`, `v1.37.10`, `v1.38.2` and later. Earlier releases on each of those lines default to `64`.
 
 <FilteredTextBlock
   text={PyCode}
@@ -140,7 +142,7 @@ You can tune HFresh by adjusting its parameters:
 
 - `max_posting_size_kb`: The maximum allowed size for a posting list in KB. Default: `48`.
 - `replicas`: The number of posting lists in which a vector is stored. A higher value increases recall but uses more storage.
-- `search_probe`: The number of posting lists to search during a query. A higher value increases recall but slows down searches.
+- `search_probe`: The number of posting lists to search during a query. A higher value increases recall but slows down searches. The example below sets `64`, which is below the current default, to favor speed over recall.
 
 <FilteredTextBlock
   text={PyCode}

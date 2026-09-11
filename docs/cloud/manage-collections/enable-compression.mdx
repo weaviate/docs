@@ -85,6 +85,10 @@ Replace `YOUR-WEAVIATE-CLOUD-URL` with your cluster URL (e.g., `https://your-clu
 
 The update syntax depends on your collection's **vector index type** (HNSW, flat, or dynamic) and whether it uses **named vectors**.
 
+:::note HFresh collections are already compressed
+This procedure does not apply to collections that use the [HFresh index](/weaviate/concepts/vector-index#hfresh-index), which is the index behind the **Cost Optimized** optimization profile and therefore the only index available on [free clusters](../manage-clusters/create.mdx#optimization-profile). HFresh has [rotational quantization (RQ)](../../weaviate/configuration/compression/rq-compression.md) built in and always on: the in-memory centroid index uses 8-bit RQ and the on-disk posting lists use 1-bit RQ. Weaviate rejects a request that tries to add PQ, SQ or BQ to an HFresh index, or that tries to disable its RQ, so there is nothing to enable. HFresh collections are also not listed by the categorization example below.
+:::
+
 #### HNSW index (default)
 
 Most collections use the HNSW index. To enable compression:

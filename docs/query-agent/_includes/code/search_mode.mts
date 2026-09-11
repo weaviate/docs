@@ -102,4 +102,15 @@ for (const obj of filteringResponse.searchResults.objects) {
 }
 // END FilteringExample
 
+// START EffortExample
+const effortResponse = await qa.search("What are Setwise Rerankers?", {
+    limit: 10,
+    effort: "ultrahigh",
+});
+
+for (const obj of effortResponse.searchResults.objects) {
+    console.log(obj.properties);
+}
+// END EffortExample
+
 await client.close();

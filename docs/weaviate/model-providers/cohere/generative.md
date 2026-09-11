@@ -52,7 +52,7 @@ You must provide a valid Cohere API key to Weaviate for this integration. Go to 
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `COHERE_API_KEY` environment variable that is available to Weaviate.
+- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -108,7 +108,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify which [model](#available-models) Weaviate uses, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -131,7 +131,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) which [model](#available-models) Weaviate uses. If you do not specify a model, Weaviate uses the server default.
 
 ### Generative parameters
 
@@ -264,24 +264,18 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-- `command-r-plus`
-- `command-r` (default)
-- `command-xlarge`
-- `command-xlarge-beta`
-- `command-xlarge-nightly`
-- `command-medium`
-- `command-medium-nightly`
-- `command`
-- `command-nightly`
-- `command-light`
-- `command-light-nightly`
+Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
+
+The server default is `command-a-03-2025`. It changed in `v1.33.0`, and was backported to `v1.31.17` and `v1.32.10`. Earlier releases on each of those lines default to `command-r`.
+
+See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 
 ## Further resources
 
 ### Other integrations
 
 - [Cohere text embedding models + Weaviate](./embeddings.md).
-- [Cohere multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [Cohere multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [Cohere reranker models + Weaviate](./reranker.md).
 
 ### Code examples

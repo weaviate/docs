@@ -22,6 +22,7 @@ Google's embedding models transform text data into vector embeddings, capturing 
 [Weaviate integrates with Google's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
 
 [Google embedding integration page](./embeddings.md)
+
 [Google multimodal embedding integration page](./embeddings-multimodal.md)
 
 ### Generative AI models for RAG
@@ -42,11 +43,11 @@ In turn, they simplify the process of building AI-driven applications to speed u
 
 ## Credentials
 
-You must provide a valid Googles API credentials to Weaviate for these integrations.
+You must provide valid Google API credentials to Weaviate for these integrations.
 
 ### Vertex AI
 
-##### Automatic token generation
+#### Automatic token generation
 
 import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.mdx';
 
@@ -54,7 +55,7 @@ import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.
 
 ## Get started
 
-Weaviate integrates with both [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) or [Google Vertex AI](https://cloud.google.com/vertex-ai).
+Weaviate integrates with both the [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai).
 
 Go to the relevant integration page to learn how to configure Weaviate with the Google models and start using them in your applications.
 

@@ -444,7 +444,7 @@ Python output:
 True
 ```
 
-For this tutorial, you will need the Weaviate `v1.29.0` or higher.
+This tutorial requires Weaviate `v1.29.0` and later.
 Let's make sure we have the required version:
 
 ```python
@@ -576,16 +576,6 @@ As an example of what we are going to build, consider the following actual demo 
 
 ```python
 query = "How does DeepSeek-V2 compare against the LLaMA family of LLMs?"
-```
-
-Python output:
-
-```text
-Running cells with 'Python 3.13.5' requires the ipykernel package.
-
-Install 'ipykernel' into the Python environment.
-
-Command: '/opt/homebrew/bin/python3 -m pip install ipykernel -U --user --force-reinstall'
 ```
 
 By inspecting the first page of the [DeepSeek-V2 paper](https://arxiv.org/abs/2405.04434), we see that it does indeed contain a figure that is relevant for answering our query:

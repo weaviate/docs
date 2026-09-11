@@ -229,7 +229,7 @@ await client.collections.create({
   vectorizers: [
     weaviate.configure.vectors.multi2VecCohere({
       name: "title_vector",
-      model: "embed-multilingual-v3.0",
+      model: "embed-v4.0",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
         name: "poster",
@@ -275,7 +275,7 @@ await client.collections.create({
         weight: 0.1
       }],
       // Further options
-      // model: "embed-multilingual-v3.0",
+      // model: "embed-v4.0",
       // dimensions: 1024,
       // truncate: "END",  // "NONE", "START" or "END"
       // baseURL: "<custom_cohere_url>"
@@ -327,7 +327,7 @@ await client.collections.create({
   // highlight-start
   vectorizers: [
     weaviate.configure.vectors.text2VecDigitalOcean({
-      model: 'qwen3-embedding-0.6b',  // Required — choose from the DigitalOcean Serverless Inference catalogue
+      model: 'qwen3-embedding-0.6b',  // Required. Choose from the DigitalOcean Serverless Inference catalogue
       name: 'title_vector',
       sourceProperties: ['title'],
     })
@@ -547,10 +547,10 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecHuggingFace({
       name: 'title_vector',
       sourceProperties: ['title'],
+      // NOTE: Use only one of `model`, `passageModel`, or `endpointURL`
       model: 'sentence-transformers/all-MiniLM-L6-v2',
       // endpointURL: <custom_huggingface_url>,
-      // passageModel: 'sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base',    // Required if using `query_model`
-      // queryModel: 'sentence-transformers/facebook-dpr-question_encoder-single-nq-base', // Required if using `passage_model`
+      // passageModel: 'sentence-transformers/facebook-dpr-ctx_encoder-single-nq-base',
       // waitForModel: true,
       // useCache: true,
       // useGPU: true,
@@ -838,13 +838,65 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecMistral({
       name: 'title_vector',
       sourceProperties: ['title'],
-      model: 'mistral-embed'
+      model: 'mistral-embed',
+      // Further options
+      // baseURL: '<custom_mistral_url>',
     },
     ),
   ],
   // highlight-end
   // Additional parameters not shown
 });// END FullVectorizerMistral
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START BasicVectorizerMorph
+await client.collections.create({
+  name: 'DemoCollection',
+  properties: [
+    {
+      name: 'title',
+      dataType: 'text' as const,
+    },
+  ],
+  // highlight-start
+  vectorizers: [
+    weaviate.configure.vectors.text2VecMorph({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    }),
+  ],
+  // highlight-end
+  // Additional parameters not shown
+});
+// END BasicVectorizerMorph
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START FullVectorizerMorph
+await client.collections.create({
+  name: 'DemoCollection',
+  properties: [
+    {
+      name: 'title',
+      dataType: 'text' as const,
+    },
+  ],
+  // highlight-start
+  vectorizers: [
+    weaviate.configure.vectors.text2VecMorph({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: 'morph-embedding-v3',
+      baseURL: 'https://api.morphllm.com',  // Base URL; an existing path is preserved
+    }),
+  ],
+  // highlight-end
+  // Additional parameters not shown
+});
+// END FullVectorizerMorph
 
 // Clean up
 await client.collections.delete('DemoCollection');

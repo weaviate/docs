@@ -55,7 +55,7 @@ You must provide a valid Contextual AI API key to Weaviate for this integration.
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `CONTEXTUAL_API_KEY` environment variable that is available to Weaviate.
+- Set the `CONTEXTUALAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">

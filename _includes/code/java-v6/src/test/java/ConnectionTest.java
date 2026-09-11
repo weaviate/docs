@@ -151,7 +151,7 @@ class ConnectionTest {
     System.out.println(client.isReady()); // Should print: `True`
 
     client.close(); // Free up resources
-    // // END ConnectWithApiKeyExample
+    // END ConnectWithApiKeyExample
   }
 
   @Test

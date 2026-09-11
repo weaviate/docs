@@ -13,13 +13,21 @@ import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/search_mode.mt
 
 <CloudOnlyBadge />
 
-Search Mode transforms your query into actionable searches and returns the matching Weaviate objects directly — without generating an LLM-authored answer.
+Search Mode combines AI-powered semantic search with structured filtering and returns the matching Weaviate objects directly.
 
 For example, you could ask:
 
 > "Find me some vintage shoes under $70"
 
 And the agent will perform semantic search for `vintage shoes`, apply a filter for `price < 70`, and return the matching objects from your collections, ready for you to render or post-process.
+
+You could also ask:
+
+> "Something comfortable to wear on a long flight"
+
+And the agent will use AI-powered search to find relevant objects, even when terms like `comfortable` or `long flight` never appear in your data.
+
+Under the hood, Search Mode does more than embed your query as-is. The agent writes one or more optimized semantic and structured queries, executes them against your collections, and reranks the retrieved objects by how well each one matches your original request.
 
 For more details, see the page for [the Python client](https://weaviate-python-client.readthedocs.io/en/stable/weaviate-agents-python-client/docs/weaviate_agents.query.html#weaviate_agents.query.QueryAgent.search) or [the Typescript Client](https://weaviate.github.io/agents-typescript-client/classes/QueryAgent.html#search).
 
@@ -69,6 +77,7 @@ The `.search()` method accepts several arguments:
 | `limit` | `int` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `Literal["recall", "precision"]` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversity_weight` | `float \| None` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
+| `effort` | `Literal["medium", "high", "ultrahigh"] \| None` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Effort](#effort) below. |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -79,11 +88,35 @@ The `.search()` method accepts several arguments:
 | `limit` | `number` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `"recall" \| "precision"` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversityWeight` | `number` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
+| `effort` | `"medium" \| "high" \| "ultrahigh"` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Effort](#effort) below. |
 
 </TabItem>
 </Tabs>
 
 For more advanced searches, you can also specify _additional filters_ within the collection configuration. [See the page on additional filters for more detail](../reference/additional_filters.md).
+
+### Effort
+
+The optional `effort` parameter controls the amount of effort the agent puts into the search. It accepts one of `"medium"`, `"high"`, or `"ultrahigh"`. Higher effort may improve result quality at the expense of increased latency and cost.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START EffortExample"
+            endMarker="# END EffortExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START EffortExample"
+            endMarker="// END EffortExample"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
 
 ### Customized filtering
 

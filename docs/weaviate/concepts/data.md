@@ -459,8 +459,12 @@ When a tenant is offloaded, the entire tenant shard is moved to cloud storage. T
 
 ### Backups
 
-:::caution Backups do not include inactive or offloaded tenants
-Backups of multi-tenant collections will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](../manage-collections/multi-tenancy.mdx#manage-tenant-states) before creating a backup to ensure all data is included.
+:::caution Backups do not include offloaded tenants
+Backups of multi-tenant collections include both `active` and `inactive` tenants. Inactive tenants are read directly from disk, so you do not need to activate them before creating a backup.
+
+`Offloaded` tenants are not included, because their data is not held on local disk. The tenant status is preserved, but the tenant's data is not part of the backup. [Activate offloaded tenants](../manage-collections/multi-tenancy.mdx#manage-tenant-states) before creating a backup to include their data.
+
+Support for backing up `inactive` tenants was added in `v1.37.0`, and backported to `v1.35.17` and `v1.36.10`. In earlier releases, backups include only `active` tenants.
 :::
 
 ### Tenancy and IDs

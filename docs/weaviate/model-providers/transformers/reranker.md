@@ -160,8 +160,8 @@ Configure a Weaviate collection to use a Transformer reranker model as follows:
 
 </Tabs>
 
-:::note Chose a container image to select a model
-To chose a model, select the [container image](#configure-the-integration) that hosts it.
+:::note Choose a container image to select a model
+To choose a model, select the [container image](#configure-the-integration) that hosts it.
 :::
 
 ## Reranking query

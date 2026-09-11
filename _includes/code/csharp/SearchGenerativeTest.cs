@@ -188,7 +188,7 @@ public class SearchGenerativeTest : IDisposable
     [Fact]
     public async Task TestGroupedGenerative()
     {
-        // START GroupedGenerative
+        // START GroupedGenerativeBasic
         // highlight-start
         var task = "What do these animals have in common, if anything?";
         // highlight-end
@@ -204,7 +204,7 @@ public class SearchGenerativeTest : IDisposable
 
         // print the generated response
         Console.WriteLine($"Grouped task result: {response.Generative?.Values.First()}");
-        // END GroupedGenerative
+        // END GroupedGenerativeBasic
     }
 
     [Fact]

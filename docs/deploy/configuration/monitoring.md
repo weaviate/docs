@@ -282,14 +282,6 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `schema_reads_leader_seconds`     | Duration of schema reads that are passed to the leader        | `type` | `Summary` |
 | `schema_wait_for_version_seconds` | Duration of waiting for a schema version to be reached        | `type` | `Summary` |
 
-#### Schema transactions (deprecated)
-
-| Metric                       | Description                                                                             | Labels                | Type      |
-| ---------------------------- | --------------------------------------------------------------------------------------- | --------------------- | --------- |
-| `schema_tx_opened_total`     | Total number of opened schema transactions                                              | `ownership`           | `Counter` |
-| `schema_tx_closed_total`     | Total number of closed schema transactions. A close must be either successful or failed | `ownership`, `status` | `Counter` |
-| `schema_tx_duration_seconds` | Mean duration of a tx by status                                                         | `ownership`, `status` | `Summary` |
-
 #### RAFT metrics (internal)
 
 | Metric                                                        | Description                                                                                                                          | Labels                    | Type      |
@@ -500,10 +492,10 @@ Added in `v1.38`. These metrics track tool traffic, latency, auth failures, and 
 
 Label values:
 
-- **`tool`** — the MCP tool name (e.g. `weaviate-query-hybrid`, `weaviate-objects-upsert`).
-- **`status`** — `success` · `error` · `denied` · `write_disabled`. `denied` covers authorization failures classified via the `Forbidden` / `Unauthenticated` error families. `write_disabled` is emitted when a write call hits the runtime guard.
-- **`reason`** — `missing_token` · `invalid_token` · `forbidden` · `unauthenticated`. `missing_token` and `invalid_token` are detected at the principal-extraction step; `forbidden` and `unauthenticated` are detected at authorization time.
-- **`write_access`** — `enabled` / `disabled`, matching the live state of `MCP_SERVER_WRITE_ACCESS_ENABLED` at the time of the `tools/list` call.
+- **`tool`**: the MCP tool name (e.g. `weaviate-query-hybrid`, `weaviate-objects-upsert`).
+- **`status`**: `success` · `error` · `denied` · `write_disabled`. `denied` covers authorization failures classified via the `Forbidden` / `Unauthenticated` error families. `write_disabled` is emitted when a write call hits the runtime guard.
+- **`reason`**: `missing_token` · `invalid_token` · `forbidden` · `unauthenticated`. `missing_token` and `invalid_token` are detected at the principal-extraction step; `forbidden` and `unauthenticated` are detected at authorization time.
+- **`write_access`**: `enabled` / `disabled`, matching the live state of `MCP_SERVER_WRITE_ACCESS_ENABLED` at the time of the `tools/list` call.
 
 ---
 
@@ -530,7 +522,7 @@ your uses perfectly:
 
 ## Query profiling
 
-For per-query performance analysis, Weaviate provides [query profiling](/weaviate/search/query-profile.md). Unlike Prometheus metrics which show aggregate performance, query profiling provides per-shard timing breakdowns for individual queries — useful for diagnosing specific slow queries.
+For per-query performance analysis, Weaviate provides [query profiling](/weaviate/search/query-profile.md). Unlike Prometheus metrics which show aggregate performance, query profiling provides per-shard timing breakdowns for individual queries, which is useful for diagnosing specific slow queries.
 
 ## `nodes` API Endpoint
 

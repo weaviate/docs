@@ -28,7 +28,7 @@ Access control is the cornerstone of this network security strategy. It implemen
 
 #### Private subnet strategy
 
-Network isolation is the foundation of our this strategy. Critical infrastructure should reside in private subnets with no direct internet connectivity. This eliminates internet-based attacks and forces all access through controlled entry points.
+Network isolation is the foundation of this strategy. Critical infrastructure should reside in private subnets with no direct internet connectivity. This eliminates internet-based attacks and forces all access through controlled entry points.
 
 #### Core components
 
@@ -124,8 +124,6 @@ Data transfer for backups and application data can be secured, this is what is n
 
 ### Scaling and performance strategies
 
-#### Application load balancer (ALB) configuration
-
 #### SSL/TLS management
 
 - Automated certificate provisioning through AWS Certificate Manager.
@@ -166,8 +164,6 @@ Secure scaling policies maintains security posture during capacity changes.
 
 ### High availability and disaster recovery
 
-#### Multi-AZ architecture
-
 #### Weaviate configuration
 
 - **Minimum** 3 replicas distributed across AZs.
@@ -185,7 +181,7 @@ Secure scaling policies maintains security posture during capacity changes.
 #### Network visibility
 
 - VPC flow logs to capture traffic metadata for security analysis.
-- Real0time streaming to SIEMs.
+- Real-time streaming to SIEMs.
 - Baseline establishment and anomaly detection.
 
 #### Security monitoring

@@ -51,7 +51,7 @@ You must provide a valid NVIDIA NIM API key to Weaviate for this integration. Go
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `NVIDIA_API_KEY` environment variable that is available to Weaviate.
+- Set the `NVIDIA_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -170,14 +170,14 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 You can use any reranker model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
 
-The default model is `nnvidia/rerank-qa-mistral-4b`.
+The default model is `nvidia/rerank-qa-mistral-4b`.
 
 ## Further resources
 
 ### Other integrations
 
 - [NVIDIA text embedding models + Weaviate](./embeddings.md).
-- [NVIDIA multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [NVIDIA multimodal embedding models + Weaviate](./embeddings-multimodal.md).
 - [NVIDIA generative models + Weaviate](./generative.md).
 
 ### Code examples

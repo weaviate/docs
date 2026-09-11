@@ -8,7 +8,7 @@ agent: False
 tags: ["Weaviate Embeddings", "Weaviate Cloud"]
 ---
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb)
 
 # Weaviate Embedding Service
 

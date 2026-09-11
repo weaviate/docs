@@ -243,7 +243,7 @@ The `ContainsAny`, `ContainsAll` and `ContainsNone` operators filter objects usi
 
 These operators expect an array of values and return objects that match based on the input values.
 
-They are not limited to text. They work on `text`/`string`, `int`, `number`, `boolean`, `date`, and `uuid` properties — and on the array variants of each (`int[]`, `number[]`, etc.). A scalar property is treated as a single-element set: the object matches if its value satisfies the operator against the candidate list.
+They are not limited to text. They work on `text`/`string`, `int`, `number`, `boolean`, `date`, and `uuid` properties, and on the array variants of each (`int[]`, `number[]`, etc.). A scalar property is treated as a single-element set: the object matches if its value satisfies the operator against the candidate list.
 
 Pass the candidate values using the argument that matches the property's data type: `valueText` for `text`/`string`, `valueInt` for `int`, `valueNumber` for `number`, `valueBoolean` for `boolean`, and `valueDate` for `date`. For `uuid`/`uuid[]` properties, pass the UUIDs as strings using `valueText` (there is no `valueUuid` argument). For example, a `ContainsAny` query on an `int` property with a value of `[10, 20, 30]` returns objects whose property holds at least one of those integers.
 
@@ -588,8 +588,11 @@ Using the `IsNull` operator allows you to do filter for objects where given prop
   Get {
     <Class>(where: {
         operator: IsNull,
-        valueBoolean: <true/false>
+        valueBoolean: <true/false>,
         path: [<property>]
+      }) {
+      <property>
+    }
   }
 }
 ```

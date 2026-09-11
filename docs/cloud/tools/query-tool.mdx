@@ -1,17 +1,23 @@
 ---
 title: Query tool
 sidebar_position: 60
-description: "Browser-based GraphQL IDE for interactive querying and testing with Weaviate Cloud clusters."
+description: "The Query tool is being removed from the Weaviate Cloud console on September 14, 2026; use the Explorer tool to work with your data in the console instead."
 image: og/wcd/user_guides.jpg
 ---
 
-:::tip Query Agent Tool
+:::warning The Query tool is being removed
 
-You can query your collection using natural language with the [Query Agent](./query-agent.mdx).
+The Query tool is being removed from the Weaviate Cloud console on **September 14, 2026**. Nothing changes for your clusters. They keep running exactly as they are, so there is no downtime and nothing you need to do on your end.
+
+This is console tooling only. To keep working with your data, use one of these instead:
+
+- The [Explorer tool](./explorer-tool.mdx) to browse your data and run keyword, semantic, or hybrid searches and aggregations, without writing a query.
+- The [Query Agent](./query-agent.mdx) to ask questions about your data in natural language.
+- A [client library](/weaviate/client-libraries/index.mdx) to query your data from your application code.
 
 :::
 
-The Weaviate Cloud (WCD) query tool is a browser-based GraphQL IDE. Use the query tool to work interactively with your Weaviate Cloud clusters.
+The Weaviate Cloud (WCD) Query tool is a browser-based GraphQL IDE. Use the Query tool to work interactively with your Weaviate Cloud clusters.
 
 import QueryToolPreview from "/docs/cloud/img/weaviate-cloud-query-tool-preview.png";
 
@@ -21,7 +27,7 @@ import QueryToolPreview from "/docs/cloud/img/weaviate-cloud-query-tool-preview.
       <Link to="https://github.com/graphql/graphiql/tree/main/packages/graphiql">
         GraphiQL
       </Link>{" "}
-      is built into the query tool. GraphiQL provides many features that make
+      is built into the Query tool. GraphiQL provides many features that make
       GraphQL easier to use interactively:
     </p>
     <br />
@@ -44,9 +50,9 @@ import QueryToolPreview from "/docs/cloud/img/weaviate-cloud-query-tool-preview.
   </div>
 </div>
 
-## Open the query tool
+## Open the Query tool
 
-To open the query tool for a cluster:
+To open the Query tool for a cluster:
 
 import QueryTool from "/docs/cloud/img/weaviate-cloud-query-tool.png";
 
@@ -75,7 +81,7 @@ import QueryTool from "/docs/cloud/img/weaviate-cloud-query-tool.png";
 
 ## Query tool console
 
-The query tool has the following components:
+The Query tool has the following components:
 
 import QueryToolConsole from "/docs/cloud/img/weaviate-cloud-query-tool-console.png";
 
@@ -110,7 +116,7 @@ import QueryToolConsole from "/docs/cloud/img/weaviate-cloud-query-tool-console.
 
 ### Authentication
 
-The query tool connects to Weaviate Cloud free and Shared Cloud clusters without any additional authentication details.
+The Query tool connects to Weaviate Cloud free and Shared Cloud clusters without any additional authentication details.
 
 ### Pass inference keys {#pass-inference-keys}
 

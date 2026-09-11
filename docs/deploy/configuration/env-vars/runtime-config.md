@@ -11,7 +11,7 @@ import RuntimeConfig from '/_includes/feature-notes/runtime-config.mdx';
 
 Weaviate supports runtime configuration management, allowing some configurations to be changed without any further restarts.
 
-Each runtime configuration corresponds to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable.
+Most runtime configurations correspond to an existing environment variable. When a runtime configuration is updated, it overrides the value set by the corresponding environment variable.
 
 ## How to set up runtime configuration
 
@@ -61,6 +61,7 @@ The following overrides are currently supported:
 | `async_replication_hashtree_init_concurrency`    | `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY`|
 | `async_replication_cluster_max_workers` _(removed in `v1.38`)_ | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` _(removed in `v1.38`)_ |
 | `autoschema_enabled`                             | `AUTOSCHEMA_ENABLED`                         |
+| `backup_max_individual_files`                    | `BACKUP_MAX_INDIVIDUAL_FILES`                |
 | `debug_endpoints_enabled`                        | `DEBUG_ENDPOINTS_ENABLED`                    |
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
@@ -69,6 +70,7 @@ The following overrides are currently supported:
 | `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
 | `export_enabled`                                 | `EXPORT_ENABLED`                             |
 | `export_parallelism`                             | `EXPORT_PARALLELISM`                         |
+| `grpc_web_enabled`                               | _(not applicable)_                           |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
 | `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
 | `objects_ttl_batch_size`                          | `OBJECTS_TTL_BATCH_SIZE`                     |
@@ -120,14 +122,14 @@ The following overrides are currently supported:
 
 ### MCP
 
-Added in `v1.38`. Toggling these at runtime does not require a cluster restart — the HTTP handlers stay registered and per-request checks pick up the new value. See [MCP server — Toggle without restart](/weaviate/configuration/mcp-server.mdx#toggle-without-restart) for behavior details.
+Added in `v1.38`. Toggling these at runtime does not require a cluster restart: the HTTP handlers stay registered and per-request checks pick up the new value. See [MCP server](/weaviate/configuration/mcp-server.mdx) for behavior details.
 
 | Runtime override name             | Environment variable name           |
 | :-------------------------------- | :---------------------------------- |
 | `mcp_server_enabled`              | `MCP_SERVER_ENABLED`                |
 | `mcp_server_write_access_enabled` | `MCP_SERVER_WRITE_ACCESS_ENABLED`   |
 
-`MCP_SERVER_CONFIG_PATH` is intentionally **not** runtime-configurable — tool descriptions are baked into the tool schemas at registration.
+`MCP_SERVER_CONFIG_PATH` is intentionally **not** runtime-configurable, because tool descriptions are baked into the tool schemas at registration.
 
 Refer to the [Environment variables](./index.md) page for descriptions on each configuration option
 

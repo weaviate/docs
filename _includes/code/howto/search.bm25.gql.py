@@ -72,4 +72,30 @@ gql_query = """
 
 gqlresponse = client.graphql_raw_query(gql_query)
 
+gql_query = """
+# START BM25OperatorCrossPropertyAnd
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3
+      bm25: {
+        query: "Australian mammal cute"
+        properties: ["question", "answer"]
+        # highlight-start
+        searchOperator: {
+          operator: AndCross,
+        }
+        # highlight-end
+      }
+    ) {
+      question
+      answer
+    }
+  }
+}
+# END BM25OperatorCrossPropertyAnd
+"""
+
+gqlresponse = client.graphql_raw_query(gql_query)
+
 client.close()

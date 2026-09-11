@@ -24,6 +24,10 @@ jobs:
           GH_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node _build_scripts/update-config-versions.js
+      # Structural checks on the /e/ error-message redirector. No build needed,
+      # so it runs first and fails fast.
+      - name: Validate the error-message redirects
+        run: node _build_scripts/validate-redirects.js
       - name: Build a dev version
         run: yarn build-dev
       - name: Validate links from the build.dev folder

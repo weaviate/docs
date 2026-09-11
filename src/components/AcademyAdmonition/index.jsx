@@ -118,13 +118,13 @@ import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
 <AcademyAdmonition courseId="quick-tour-of-weaviate" />
 
 // With custom button text
-<AcademyAdmonition 
-  courseId="movie-recommendation-api" 
+<AcademyAdmonition
+  courseId="fast-api-weaviate-rag"
   buttonText="Start Learning"
 />
 
 // Override with custom content (for courses not in JSON)
-<AcademyAdmonition 
+<AcademyAdmonition
   customTitle="Custom Course Title"
   customDescription="This is a custom course description."
   customUrl="https://academy.weaviate.io/courses/custom"

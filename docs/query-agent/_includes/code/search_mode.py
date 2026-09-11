@@ -107,6 +107,17 @@ for obj in search_response.search_results.objects:
     print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
 # END FilteringExample
 
+# START EffortExample
+search_response = qa.search(
+    "What are Setwise Rerankers?",
+    limit=10,
+    effort="ultrahigh",
+)
+
+for obj in search_response.search_results.objects:
+    print(obj.properties)
+# END EffortExample
+
 # --- Async code examples in string as top-level await doesn't work, full code will be executed in 
 # asyncio.run below
 

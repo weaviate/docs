@@ -120,6 +120,71 @@ class ModelProvidersTest {
   }
 
   @Test
+  @Disabled("Requires MORPH_APIKEY, not configured in CI")
+  void testMorphInstantiation() throws Exception {
+    // START MorphInstantiation
+    // Best practice: store your credentials in environment variables
+    String weaviateUrl = System.getenv("WEAVIATE_URL");
+    String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+    String morphApiKey = System.getenv("MORPH_APIKEY");
+
+    // highlight-start
+    // Morph requests are built by Weaviate's OpenAI-compatible client,
+    // so the Morph key is supplied under the OpenAI header name.
+    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(
+        weaviateUrl,
+        weaviateApiKey,
+        config -> config.setHeaders(Map.of("X-Openai-Api-Key", morphApiKey)));
+
+    System.out.println(client.isReady()); // Should print: `True`
+    // highlight-end
+
+    client.close(); // Free up resources
+    // END MorphInstantiation
+  }
+
+  @Test
+  @Disabled("Requires MORPH_APIKEY, not configured in CI")
+  void testMorphVectorizer() throws IOException {
+    client.collections.delete("DemoCollection");
+    // START BasicVectorizerMorph
+    client.collections.create("DemoCollection",
+        col -> col
+            .vectorConfig(
+                VectorConfig.text2vecMorph("title_vector", c -> c.sourceProperties("title")))
+            .properties(Property.text("title"), Property.text("description")));
+    // END BasicVectorizerMorph
+
+    var config = client.collections.getConfig("DemoCollection").get();
+    assertThat(config.vectors()).containsKey("title_vector");
+    assertThat(config.vectors().get("title_vector").getClass().getSimpleName())
+        .isEqualTo("Text2VecMorphVectorizer");
+    client.collections.delete("DemoCollection");
+  }
+
+  @Test
+  @Disabled("Requires MORPH_APIKEY, not configured in CI")
+  void testMorphVectorizerFull() throws IOException {
+    client.collections.delete("DemoCollection");
+    // START FullVectorizerMorph
+    client.collections.create("DemoCollection",
+        col -> col
+            .vectorConfig(VectorConfig.text2vecMorph("title_vector",
+                c -> c.sourceProperties("title")
+                    .model("morph-embedding-v3")
+                    .baseUrl("https://api.morphllm.com") // Base URL; an existing path is preserved
+                    .endpoint("/v1/embeddings"))) // Path appended to the base URL
+            .properties(Property.text("title"), Property.text("description")));
+    // END FullVectorizerMorph
+
+    var config = client.collections.getConfig("DemoCollection").get();
+    assertThat(config.vectors()).containsKey("title_vector");
+    assertThat(config.vectors().get("title_vector").getClass().getSimpleName())
+        .isEqualTo("Text2VecMorphVectorizer");
+    client.collections.delete("DemoCollection");
+  }
+
+  @Test
   void testWeaviateVectorizerModel() throws IOException {
     // START VectorizerWeaviateCustomModel
     client.collections

@@ -99,6 +99,7 @@ const appendVersionsToConfig = async (config) => {
     config.go_client_version = await getRepoVersion('weaviate-go-client');
     config.java_client_version = await getRepoVersion('weaviate-java-client');
     config.typescript_client_version = await getRepoVersion('typescript-client');
+    config.csharp_client_version = await getRepoVersion('csharp-client');
     config.helm_version = await getRepoVersion('weaviate-helm');
     config.weaviate_cli_version = await getRepoVersion('weaviate-cli');
     config.agents_python_version = await getRepoVersion('weaviate-agents-python-client');

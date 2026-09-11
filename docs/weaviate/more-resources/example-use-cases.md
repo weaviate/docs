@@ -37,7 +37,6 @@ Vector databases help to address some of large language models (LLMs) limitation
 
 |Title | Description | Modality | Code |
 | --- | --- | --- | --- |
-
 | Verba, the golden RAGtriever ([Video](https://www.youtube.com/watch?v=OSt3sFT1i18)) | Retrieval-Augmented Generation (RAG) system to chat with Weaviate documentation and blog posts. | Text | [Python](https://github.com/weaviate/Verba) |
 | HealthSearch ([Blog](https://weaviate.io/blog/healthsearch-demo)) | Recommendation system of health products based on symptoms. | Text  | [Python](https://github.com/weaviate/healthsearch-demo) |
 | Magic Chat | Search through Magic The Gathering cards | Text | [Python](https://github.com/weaviate/st-weaviate-connection/tree/main) |
@@ -54,7 +53,7 @@ Weaviate can leverage its vectorization capabilities to enable automatic, real-t
 |Title | Description | Modality | Code |
 | --- | --- | --- | --- |
 | Toxic Comment Classification | Classify whether a comment is toxic or non-toxic. | Text | [Python](https://github.com/weaviate-tutorials/DEMO-classification-toxic-comment) |
-| Audio Genre Classification | Classify the music genre of an audio file. | Image | [Python](https://github.com/weaviate-tutorials/DEMO-classification-audio-genre/) |
+| Audio Genre Classification | Classify the music genre of an audio file. | Audio | [Python](https://github.com/weaviate-tutorials/DEMO-classification-audio-genre/) |
 
 ## Other use cases
 
@@ -62,7 +61,7 @@ Weaviate's [modular ecosystem](../modules/index.md) unlocks many other use cases
 
 |Title | Description | Code |
 | --- | --- | --- |
-| Named Entity Recognition (NER)| tbd |  [Python](https://github.com/weaviate/weaviate-examples/tree/main/example-with-NER-module) |
+| Named Entity Recognition (NER)| Extract named entities, such as people, organizations and locations, from text stored in Weaviate. |  [Python](https://github.com/weaviate/weaviate-examples/tree/main/example-with-NER-module) |
 
 
 ## Questions and feedback

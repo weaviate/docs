@@ -102,13 +102,15 @@ export default function RecipesCards({ path }) {
         const filteredRecipes = recipes.filter((recipe) => {
           if (!recipe.notebook) return false;
           let recipeCategory;
-          if (recipe.agent === true) recipeCategory = "agents";
+          // Each value must name a real top-level docs section: it is compared
+          // against the first segment of the page URL.
+          if (recipe.agent === true) recipeCategory = "query-agent";
           else if (recipe.integration === true) recipeCategory = "integrations";
           else recipeCategory = "weaviate"; // Default or base category
 
           const normalizedPathCategory = pathCategory.replace(/\/$/, "");
 
-          // Match recipe category with current path category (allow for plurals like 'agent' vs 'agents')
+          // Match recipe category with current path category (tolerate singular/plural, e.g. 'integration' vs 'integrations')
           return (
             normalizedPathCategory === recipeCategory ||
             normalizedPathCategory === recipeCategory.replace(/s$/, "") || // Handle singular vs plural
@@ -119,6 +121,12 @@ export default function RecipesCards({ path }) {
         console.log(
           `Filtered to ${filteredRecipes.length} recipes for category ${pathCategory}`
         );
+
+        if (filteredRecipes.length === 0) {
+          console.error(
+            `RecipesCards: no entries in /static/config/index.toml match category "${pathCategory}".`
+          );
+        }
 
         const uniqueTags = new Set();
         const cards = filteredRecipes.map((recipe) => {
@@ -211,10 +219,10 @@ export default function RecipesCards({ path }) {
     // Check !loading to avoid brief flash
     return (
       <div>
-        <p>No recipes found for category: "{pathCategory}"</p>
         <p>
-          Check if <code>/static/config/index.toml</code> contains recipe entries
-          matching this category.
+          No recipes are available here yet. Browse the{" "}
+          <a href="https://github.com/weaviate/recipes">Weaviate Recipes</a>{" "}
+          repository for the full set of code examples.
         </p>
       </div>
     );

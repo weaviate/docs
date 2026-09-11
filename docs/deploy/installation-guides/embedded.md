@@ -43,11 +43,20 @@ To configure Embedded Weaviate, set these variables in your instantiation code o
 | Parameter | Type | Default | Description |
 | :-- | :-- | :-- | :-- |
 | `additional_env_vars` | string | None. | Pass additional environment variables, such as API keys, to the server. |
-| `binary_path` | string | varies | Binary download directory. If the binary is not present, the client downloads the binary. <br/><br/> If `XDG_CACHE_HOME` is set, the default is: `XDG_CACHE_HOME/weaviate-embedded/`<br/><br/>If `XDG_CACHE_HOME` is not set, the default is: `~/.cache/weaviate-embedded` |
+| `binary_path` | string | varies | Binary download directory. If the binary is not present, the client downloads the binary. <br/><br/> If `XDG_CACHE_HOME` is set, its value is used verbatim as the default. No subdirectory is appended, so `XDG_CACHE_HOME=/foo` makes the default exactly `/foo`.<br/><br/>If `XDG_CACHE_HOME` is not set, the default is: `~/.cache/weaviate-embedded/` |
+| `grpc_port` | integer | 50060 | The Weaviate server gRPC port. The client passes this value to the server as `GRPC_PORT`. |
 | `hostname` | string | 127.0.0.1 | Hostname or IP address  |
-| `persistence_data_path` | string | varies | Data storage directory.<br/><br/> If `XDG_DATA_HOME` is set, the default is: `XDG_DATA_HOME/weaviate/`<br/><br/>If `XDG_DATA_HOME` is not set, the default is: `~/.local/share/weaviate` |
+| `persistence_data_path` | string | varies | Data storage directory.<br/><br/> If `XDG_DATA_HOME` is set, its value is used verbatim as the default. No subdirectory is appended, so `XDG_DATA_HOME=/foo` makes the default exactly `/foo`.<br/><br/>If `XDG_DATA_HOME` is not set, the default is: `~/.local/share/weaviate` |
 | `port` | integer | 8079 | The Weaviate server request port. |
-| `version` | string | Latest stable | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/deploy/installation-guides/embedded.md#file-url)) |
+| `version` | string | A version pinned in the client (see note) | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/deploy/installation-guides/embedded.md#file-url)) |
+
+:::note Set `version` explicitly
+
+If you do not set `version`, Embedded Weaviate does not run the latest Weaviate release. The client falls back to a single Weaviate version that is fixed in the client source code when that client release is published. That pin only moves when the client is released again, so it can be several Weaviate minor releases behind the current one, and upgrading your client can also change which Weaviate version your embedded instance runs.
+
+Set `version` explicitly so you control which server version you get. Use `"latest"` to resolve the newest Weaviate release at startup, or pin a version number such as `"1.19.6"` for a reproducible environment. The version in use is printed in the embedded server startup logs.
+
+:::
 
 :::warning Do not modify `XDG_CACHE_HOME` or `XDG_DATA_HOME`
 The `XDG_DATA_HOME` and `XDG_CACHE_HOME` environment variables are widely used system variables. If you modify them, you may break other applications.
@@ -63,7 +72,7 @@ The following modules are enabled by default:
 - `text2vec-huggingface`
 - `text2vec-openai`
 
-To enabled additional modules, add them to your instantiation code.
+To enable additional modules, add them to your instantiation code.
 
 For example, to add the `backup-s3` module, instantiate your client like this:
 
@@ -122,7 +131,7 @@ Embedded Weaviate is supported for Python and TypeScript clients.
 
 ### Python clients
 
-[Python](docs/weaviate/client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client v4 requires server version v1.23.7 or higher.
+Embedded Weaviate is built into the [Python client](docs/weaviate/client-libraries/python/index.mdx), so there is no separate package to install. The Python client requires Weaviate `v1.23.7` or later.
 
 ### TypeScript clients
 

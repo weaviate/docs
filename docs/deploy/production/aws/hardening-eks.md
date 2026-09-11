@@ -4,7 +4,7 @@ sidebar_label: Hardening EKS deployments
 description: Harden your self-hosted Weaviate deployment on Amazon EKS.
 ---
 
-You've got a Weaviate deployment running on EKS—awesome! Now it's time to make it production-ready and secure.
+You've got a Weaviate deployment running on EKS. Awesome! Now it's time to make it production-ready and secure.
 
 While Weaviate is a powerful vector database, like any self-hosted service, it needs proper security hardening. Your first deployment focused on getting things running; for production, we need to tighten things up.
 
@@ -254,7 +254,7 @@ Set up alerts for issues that matter:
 - 🚨 Backup failures
 
 :::tip Alert Fatigue
-Don't go overboard—alert fatigue is real. Focus on actionable, critical alerts.
+Don't go overboard. Alert fatigue is real. Focus on actionable, critical alerts.
 :::
 
 ### Use proper dashboards

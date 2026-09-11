@@ -203,7 +203,7 @@ replicas: 3
 ```bash
 helm upgrade --install weaviate weaviate/weaviate \
   --namespace weaviate \
-  --values values.yaml \
+  --values values.yaml
 ```
 
 #### Verify your deployment

@@ -57,15 +57,16 @@ services:
 
 The list of API-based modules can be found on the [model provider integrations page](../model-providers/index.md#api-based). You can also inspect the [source code](https://github.com/weaviate/weaviate/blob/main/adapters/handlers/rest/configure_api.go) where the list is defined.
 
-This can be combined with enabling individual modules. For example, the example below enables all API-based modules, Ollama modules and the `backup-s3` module.
+Enabling individual modules can be combined with the API-based modules. For example, since API-based modules are enabled by default from `v1.33`, the example below enables the Ollama modules and the `backup-s3` module alongside them.
 
 ```yaml
 services:
   weaviate:
     environment:
-      ENABLE_API_BASED_MODULES: 'true'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-s3'
 ```
+
+To opt out of the API-based modules from `v1.33` onwards, set `API_BASED_MODULES_DISABLED` to `true`. The older `ENABLE_API_BASED_MODULES` variable is no longer read.
 
 Note that enabling multiple vectorizer (e.g. `text2vec`, `multi2vec`) modules will disable the [`Explore` functionality](../api/graphql/explore.md). If you need to use `Explore`, you should only enable one vectorizer module.
 

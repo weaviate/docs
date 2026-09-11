@@ -24,6 +24,7 @@ class StarterGuidesGenerativeTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
+  // START ChunkText
   private List<String> downloadAndChunk(String srcUrl, int chunkSize,
       int overlapSize) throws Exception {
     // Retrieve source text
@@ -64,12 +65,14 @@ class StarterGuidesGenerativeTest {
       // === Connect to Local and Setup GitBookChunk Collection ========
       // =================================================================
 
-      // Re-instantiate for writing data (Connect to Local)
+      // START Instantiation
+      // Pass the API key for your LLM provider, OpenAI in this case, as a header
       client = WeaviateClient.connectToLocal(config -> config.setHeaders(
           Map.of("X-OpenAI-Api-Key", System.getenv("OPENAI_API_KEY"))));
+      // END Instantiation
       assertThat(client.isReady()).isTrue();
 
-      // ChunkText
+      // Download and chunk the source text
       String proGitChapterUrl =
           "https://raw.githubusercontent.com/progit/progit2/main/book/01-introduction/sections/what-is-git.asc";
       List<String> chunkedText = downloadAndChunk(proGitChapterUrl, 150, 25);

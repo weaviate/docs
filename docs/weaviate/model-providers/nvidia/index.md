@@ -54,7 +54,7 @@ In turn, it simplifies the process of building AI-driven applications to speed u
 
 You must provide a valid NVIDIA API key to Weaviate for this integration. Go to [NVIDIA](https://build.nvidia.com/) to sign up and obtain an API key.
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Cohere models and start using them in your applications.
+Then, go to the relevant integration page to learn how to configure Weaviate with the NVIDIA models and start using them in your applications.
 
 - [Text Embeddings](./embeddings.md)
 - [Multimodal Embeddings](./embeddings-multimodal.md)

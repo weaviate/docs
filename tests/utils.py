@@ -21,6 +21,8 @@ TRANSIENT_MARKERS = (
     "rate limit", "overloaded", "temporarily unavailable",
     "error while connecting", "connection error",
     "weaviate_cloud_connection_error",
+    # Embedded Weaviate's gRPC port is fixed but ephemeral-range, so a transient holder can free it before a retry.
+    "address already in use", "did not start listening",
 )
 
 

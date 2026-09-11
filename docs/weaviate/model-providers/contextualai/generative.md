@@ -55,7 +55,7 @@ You must provide a valid Contextual AI API key to Weaviate for this integration.
 
 Provide the API key to Weaviate using one of the following methods:
 
-- Set the `CONTEXTUAL_API_KEY` environment variable that is available to Weaviate.
+- Set the `CONTEXTUALAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
 <Tabs className="code" groupId="languages">
@@ -163,7 +163,7 @@ Configure the following generative parameters to customize the model behavior.
 
 For further details on model parameters, see the [Contextual AI API documentation](https://docs.contextual.ai/api-reference/generate/generate).
 
-If a parameter is not specified, Weaviate uses the server-side default for that parameter. They are:
+If a parameter is not specified, Weaviate uses the server default for that parameter. They are:
 
 - model           = `"v2"`
 - temperature     = `0.0`

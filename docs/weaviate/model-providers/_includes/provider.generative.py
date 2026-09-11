@@ -383,7 +383,6 @@ client.collections.create(
         # max_tokens=500,
         # k=5,
         # stop_sequences=["\n\n"],
-        # return_likelihoods="GENERATION"
     )
     # highlight-end
     # Additional parameters not shown
@@ -411,7 +410,6 @@ response = collection.generate.near_text(
         # max_tokens=500,
         # k=5,
         # stop_sequences=["\n\n"],
-        # return_likelihoods="GENERATION"
     ),
     # Additional parameters not shown
     # highlight-end
@@ -824,6 +822,7 @@ client.collections.create(
         # model="mistral-large",
         # temperature=0.7,
         # max_tokens=500,
+        # base_url="<custom_mistral_url>",
     )
     # highlight-end
 )
@@ -853,6 +852,146 @@ response = collection.generate.near_text(
     # highlight-end
 )
 # END RuntimeModelSelectionMistral
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START GenerativeDeepseekCustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.deepseek(
+        model="deepseek-v4-flash"
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END GenerativeDeepseekCustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullGenerativeDeepseek
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.deepseek(
+        model="deepseek-v4-flash",
+        # # These parameters are optional
+        # temperature=0.7,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # top_p=1.0,
+        # base_url="https://api.deepseek.com",
+        # stop=["\n\n"],
+    )
+    # highlight-end
+)
+# END FullGenerativeDeepseek
+
+# clean up
+client.collections.delete("DemoCollection")
+import_data()
+
+# START RuntimeModelSelectionDeepseek
+from weaviate.classes.config import Configure
+from weaviate.classes.generate import GenerativeConfig
+
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="A holiday film",
+    limit=2,
+    grouped_task="Write a tweet promoting these two movies",
+    # highlight-start
+    generative_provider=GenerativeConfig.deepseek(
+        # # These parameters are optional
+        model="deepseek-v4-pro",
+        # temperature=0.7,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # top_p=1.0,
+        # base_url="https://api.deepseek.com",
+        # stop=["\n\n"],
+    ),
+    # Additional parameters not shown
+    # highlight-end
+)
+# END RuntimeModelSelectionDeepseek
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START GenerativeDigitalOceanCustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.digitalocean(
+        model="llama-4-maverick"
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END GenerativeDigitalOceanCustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullGenerativeDigitalOcean
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.digitalocean(
+        model="llama-4-maverick",
+        # # These parameters are optional
+        # temperature=0.7,
+        # top_p=0.9,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # stop=["\n\n"],
+        # base_url="https://inference.do-ai.run",
+    )
+    # highlight-end
+)
+# END FullGenerativeDigitalOcean
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START RuntimeModelSelectionDigitalOcean
+from weaviate.classes.generate import GenerativeConfig
+
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="A holiday film",
+    limit=2,
+    grouped_task="Write a tweet promoting these two movies",
+    # highlight-start
+    generative_provider=GenerativeConfig.digitalocean(
+        model="llama-4-maverick",  # Any model your DigitalOcean account can serve
+        # # These parameters are optional
+        # temperature=0.7,
+        # top_p=0.9,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # stop=["\n\n"],
+        # base_url="https://inference.do-ai.run",
+    ),
+    # Additional parameters not shown
+    # highlight-end
+)
+# END RuntimeModelSelectionDigitalOcean
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -1026,7 +1165,10 @@ client.collections.create(
         # presence_penalty=0,
         # temperature=0.7,
         # top_p=0.7,
-        # base_url="<custom_openai_url>"
+        # base_url="<custom_openai_url>",
+        # # For reasoning models such as the gpt-5 family:
+        # reasoning_effort="medium",  # One of "minimal", "low", "medium", "high"
+        # verbosity="medium",  # One of "low", "medium", "high"
     )
     # highlight-end
     # Additional parameters not shown
