@@ -93,7 +93,7 @@ func TestRQWithOptions(t *testing.T) {
 }
 
 // TestBQCompression documents Binary Quantization (BQ). The v6 Go client
-// (v6.0.0-beta.1) registers only Rotational Quantization in
+// (v6.0.0-beta.2) registers only Rotational Quantization in
 // collections/compression, so a BQ quantizer cannot yet be configured, and
 // there is no collection-update API to enable it on an existing collection.
 func TestBQCompression(t *testing.T) {
@@ -114,7 +114,7 @@ func TestBQCompression(t *testing.T) {
 }
 
 // TestSQCompression documents Scalar Quantization (SQ). As with BQ, the v6 Go
-// client (v6.0.0-beta.1) registers only Rotational Quantization in
+// client (v6.0.0-beta.2) registers only Rotational Quantization in
 // collections/compression, so an SQ quantizer cannot yet be configured.
 func TestSQCompression(t *testing.T) {
 	t.Skip("Scalar Quantization is not yet available in the v6 Go client")

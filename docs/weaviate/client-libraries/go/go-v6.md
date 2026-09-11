@@ -32,7 +32,7 @@ The Go `v6` client is a pre-release: the API can still change, and `v6` does not
 
 :::note Go v6 client (SDK)
 
-The latest Go v6 client is version `v6.0.0-beta.1`.
+The latest Go v6 client is version `v6.0.0-beta.2`.
 
 <QuickLinks items={goV6CardsData} />
 
@@ -43,10 +43,16 @@ This page covers the Weaviate Go client `v6`, a ground-up redesign of the [Go cl
 ## Installation
 
 ```bash
-go get github.com/weaviate/weaviate-go-client/v6@v6.0.0-beta.1
+go get github.com/weaviate/weaviate-go-client/v6@v6.0.0-beta.2
 ```
 
 Pin the version. `v6` is published to the public Go module proxy, so a bare `go get` resolves to the newest pre-release today, but it will move you onto `v6.0.0` without warning the moment that version ships.
+
+:::info Which client version the examples target
+
+The `Go v6` code examples throughout the documentation are written against the client's `v6` branch at commit [`dc3715f`](https://github.com/weaviate/weaviate-go-client/tree/dc3715f). Features merged after `v6.0.0-beta.2` do not compile against the published beta.
+
+:::
 
 The client lives at the module root and its package is named `weaviate`:
 
@@ -165,14 +171,31 @@ Where an operation is not yet available, the `Go v6` tab shows a short "Coming s
 
 ## Known limitations
 
-Four exported methods compile but fail at runtime in `v6.0.0-beta.1`:
+The following behaviors are present in `v6.0.0-beta.2`.
 
-| Method | Failure | Workaround |
-| :----- | :------ | :--------- |
-| `Data.Replace` | The server rejects the request with HTTP 422 `field 'id' is immutable` | Delete the object with `Data.Delete`, then insert it again with the same ID |
-| `Data.DeleteSelected` | Panics | Query for the IDs you want to remove, then delete them one at a time with `Data.Delete` |
-| `Tenants.Get` | Panics | None in `v6` |
-| `Query.Hybrid`, when given a `NearVector` | Panics | Run the vector search on its own with `Query.NearVector`, which is unaffected |
+### Calls that crash or hang
+
+| Call | Failure | Workaround |
+| :--- | :------ | :--------- |
+| `Query.NearObject` with `ExcludeSelf: true` | Panics the calling process with `uuid.UUID are not supported`, on every call and for every input | Leave `ExcludeSelf` unset and drop the source object from the results yourself |
+| A batch stream (`collection.Batch(...)`) carrying a reference via `b.Reference(...)` | `Close()` never returns and the stream's goroutine leaks, even though the reference is written. Errors on this path are swallowed, and `Wait()` can report a failure for a reference that actually succeeded | Use the batch stream for objects only, and write references with `Data.AddReferences` |
+| `Query.Hybrid` with a nested `NearVector` whose `Target` is empty | Panics (nil dereference). A `NearVector` with a populated `Target` works | Set a vector target on the nested `NearVector`, or run the vector search on its own with `Query.NearVector` |
+
+### Calls that silently return the wrong thing
+
+| Call | Behavior | Workaround |
+| :--- | :------- | :--------- |
+| `Query.NearMedia` with an unset `Media` | Runs no similarity search at all: it returns arbitrary objects with a `nil` error, and any `Distance` or `Certainty` cutoff is dropped | Always set `Media`, using `query.Image`, `query.Audio`, `query.Video`, `query.Depth`, `query.Thermal`, or `query.IMU` |
+| Any query using `query.AllTokensMatchCross` or the `query/boost` package | The client sends these to every server without checking its version. `AllTokensMatchCross` is ignored below Weaviate `1.37.15` / `1.38.8` / `1.39.0` and the search silently behaves as plain OR; a `Boost` is ignored below `1.38.0`. Same rows, same scores, no error | Check your Weaviate version before relying on either feature |
+| Two objects with the same UUID inside one batch stream | Both `Add` calls succeed, one task is orphaned and blocks forever, `Close()` returns `nil`, and the write that survives is the *losing* one | Keep object IDs distinct within a single stream |
+| A batch delete (`Data.DeleteSelected`) | `Matches`, `Successful`, and `Failed` are discarded and `Took` is always `0s` | Set `Verbose: true` and read the `Errors` map to see which objects were affected |
+| `Tenants.Get` | Tenant activity statuses are not folded, so a HOT tenant compares equal to `tenant.Hot`, not to `tenant.Active` | Compare against the specific status values |
+
+### Other caveats
+
+- `Data.Replace` rejects an object that carries cross-references with HTTP 422 `invalid object: reference property is not a map`. Replace the object without its references, then add them back with `Data.AddReferences`.
+- When the client fails to marshal a request locally — for example an empty vector target, or a property whose type it does not know — the error message is prefixed with a long `%!s(int32=...)` dump of the request. Server-side errors are not affected.
+- The `Hybrid.Alpha` godoc published on pkg.go.dev has the semantics inverted. An `Alpha` of `0` is pure keyword search and `1` is pure vector search, as described in these docs and implemented by the server.
 
 Please [open an issue](https://github.com/weaviate/weaviate-go-client/issues) if you hit another.
 

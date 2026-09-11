@@ -46,7 +46,7 @@ func TestCreateObject(t *testing.T) {
 	questions := client.Collections.Use("JeopardyQuestion")
 
 	// START CreateObject
-	res, err := questions.Data.Insert(ctx, &data.Object{
+	_, err := questions.Data.Insert(ctx, &data.Object{
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
 			"answer":   "Weaviate",
@@ -58,22 +58,13 @@ func TestCreateObject(t *testing.T) {
 		panic(err)
 	}
 	// END CreateObject
-
-	for id, msg := range res.Errors {
-		if msg != "" {
-			t.Fatalf("insert %s: %s", id, msg)
-		}
-	}
 }
 
+// TestReplaceObject replaces a whole object. The object must not carry
+// cross-references: Data.Replace still rejects those with HTTP 422 "invalid object:
+// reference property is not a map". Replace the object without references, then use
+// Data.AddReferences.
 func TestReplaceObject(t *testing.T) {
-	// Deferred: this is a go-client v6 (alpha) bug, not a snippet bug. The client's
-	// Replace serializes the PUT body WITHOUT the object id (it sends the id only in
-	// the URL path), but Weaviate's class-scoped PUT handler requires the body id to
-	// equal the path id, so the server rejects it with HTTP 422 "field 'id' is
-	// immutable". The published UpdateReplace snippet below is already idiomatic and
-	// carries the object's UUID; re-enable this test once the client sends the id.
-	t.Skip("go-client v6 Data.Replace omits the object id from the PUT body; Weaviate requires body id == path id (HTTP 422 \"field 'id' is immutable\") — deferred pending a client fix")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -152,12 +143,6 @@ func TestDeleteObject(t *testing.T) {
 }
 
 func TestDeleteMany(t *testing.T) {
-	// Deferred: this is a go-client v6 (alpha) bug, not a snippet bug. Data.DeleteSelected
-	// panics because *api.DeleteObjectsRequest is not wired into the gRPC transport
-	// dispatch (internal/api/transport/transport.go has no BatchDeleteRequest case), so it
-	// falls through to dev.Assert(false, "...does not implement MessageMarshaler..."). The
-	// published DeleteMany snippet below is idiomatic; re-enable once the client wires it up.
-	t.Skip("go-client v6 Data.DeleteSelected panics — *api.DeleteObjectsRequest not wired to gRPC MessageMarshaler; deferred pending a client fix")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -260,7 +245,7 @@ func TestCreateWithVector(t *testing.T) {
 	questions := client.Collections.Use("JeopardyQuestion")
 
 	// START CreateWithVector
-	res, err := questions.Data.Insert(ctx, &data.Object{
+	_, err := questions.Data.Insert(ctx, &data.Object{
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
 			"answer":   "Weaviate",
@@ -277,12 +262,6 @@ func TestCreateWithVector(t *testing.T) {
 		panic(err)
 	}
 	// END CreateWithVector
-
-	for id, msg := range res.Errors {
-		if msg != "" {
-			t.Fatalf("insert %s: %s", id, msg)
-		}
-	}
 }
 
 func TestCreateWithId(t *testing.T) {
@@ -297,7 +276,7 @@ func TestCreateWithId(t *testing.T) {
 
 	// START CreateWithId
 	id := uuid.MustParse("12345678-9abc-4def-8123-456789abcdef")
-	res, err := questions.Data.Insert(ctx, &data.Object{
+	_, err := questions.Data.Insert(ctx, &data.Object{
 		UUID: &id,
 		Properties: map[string]any{
 			"question": "This vector database is open source and written in Go",
@@ -310,12 +289,6 @@ func TestCreateWithId(t *testing.T) {
 		panic(err)
 	}
 	// END CreateWithId
-
-	for oid, msg := range res.Errors {
-		if msg != "" {
-			t.Fatalf("insert %s: %s", oid, msg)
-		}
-	}
 }
 
 // TestCreateWithDeterministicId is a placeholder: the v6 Go client does not
@@ -375,10 +348,11 @@ func TestReadWithVector(t *testing.T) {
 }
 
 // TestUpdateVector is a placeholder: updating only an object's vector needs a
-// partial update, which the v6 Go client does not yet support (it can replace a
-// whole object but not merge a change into one).
+// partial update. Data.Replace does carry Vectors, so replacing a whole object
+// including its vector works; merging a new vector into an existing object without
+// resending its properties does not.
 func TestUpdateVector(t *testing.T) {
-	t.Skip("updating an object's vector is not yet available in the v6 Go client")
+	t.Skip("updating an object's vector on its own needs a partial update, which the v6 Go client does not support; use Data.Replace to rewrite the whole object with its vector")
 
 	// TODO[g-despot]: update-object-vector snippet pending v6 client support
 	// START UpdateVector
@@ -387,13 +361,8 @@ func TestUpdateVector(t *testing.T) {
 }
 
 // TestDeleteProperty removes a property value by replacing the object with a copy
-// that omits it. It is deferred for the same reason as TestReplaceObject: the v6
-// client's Data.Replace omits the object id from the PUT body, but Weaviate's
-// class-scoped PUT handler requires body id == path id, so it rejects the request
-// with HTTP 422 "field 'id' is immutable". The published DelProps snippet is
-// already idiomatic; re-enable once the client sends the id.
+// that omits it. Like TestReplaceObject, the object must not carry cross-references.
 func TestDeleteProperty(t *testing.T) {
-	t.Skip("go-client v6 Data.Replace omits the object id from the PUT body; Weaviate requires body id == path id (HTTP 422 \"field 'id' is immutable\") — deferred pending a client fix")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -433,13 +402,10 @@ func TestDeleteProperty(t *testing.T) {
 	// END DelProps
 }
 
-// TestDeleteDryRun previews a delete-by-filter without removing anything. It is
-// deferred for the same reason as TestDeleteMany: the v6 client's
-// Data.DeleteSelected panics because *api.DeleteObjectsRequest is not wired into
-// the gRPC transport dispatch. The published DryRun snippet is idiomatic;
-// re-enable once the client wires it up.
+// TestDeleteDryRun previews a delete-by-filter without removing anything.
+// DeleteSelected discards Matches/Successful/Failed and always reports Took: 0s, so
+// Verbose plus the Errors map is the only way to see which objects matched.
 func TestDeleteDryRun(t *testing.T) {
-	t.Skip("go-client v6 Data.DeleteSelected panics — *api.DeleteObjectsRequest not wired to gRPC MessageMarshaler; deferred pending a client fix")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

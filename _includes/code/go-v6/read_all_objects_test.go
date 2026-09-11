@@ -78,12 +78,7 @@ func TestReadAllVectors(t *testing.T) {
 }
 
 // TestReadAllTenants iterates every tenant, then every object within each tenant.
-// It is deferred for the same reason as TestListTenants: the v6 client's
-// Tenants.Get panics because *api.GetTenantsRequest is not wired into the gRPC
-// transport dispatch, so listing tenants aborts the test binary. The published
-// ReadAllTenants snippet is idiomatic; re-enable once the client wires it up.
 func TestReadAllTenants(t *testing.T) {
-	t.Skip("go-client v6 Tenants.Get panics — *api.GetTenantsRequest not wired to gRPC MessageMarshaler; deferred pending a client fix")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

@@ -2,7 +2,7 @@ module weaviate.io/docs-go-v6
 
 go 1.25.8
 
-// The v6 Go client IS published to the public Go module proxy — v6.0.0-beta.1 is
+// The v6 Go client IS published to the public Go module proxy — v6.0.0-beta.2 is
 // the newest tag there. The version required below is deliberately a PLACEHOLDER:
 // v6.0.0 does not exist on the proxy, so this module cannot resolve the dependency
 // on its own (and go.sum carries no entry for it). The docs CI `test-go` job
