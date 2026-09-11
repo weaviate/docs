@@ -230,7 +230,7 @@ func TestHybridWithBM25OperatorAnd(t *testing.T) {
 }
 
 func TestHybridWithVector(t *testing.T) {
-	t.Skip("hybrid search with a provided NearVector panics the server (Weaviate 1.38.0): rpc code=Unknown \"panic occurred: nil pointer dereference\". Reproduced live against a MATCHING-dimension bring-your-own-vector collection, so it is not a dimension mismatch; plain NearVector and plain Hybrid over the same collection both succeed, so the defect is specific to Hybrid.NearVector. The v6 client marshals proto.Hybrid.NearVector via marshalNearVector (internal/api/search.go:675) into VectorForTargets/Targets, a shape the 1.38 hybrid path mishandles. Snippet is idiomatic; deferred pending a client/server fix")
+	t.Skip("Query.Hybrid panics (nil dereference) when the nested NearVector.Target is empty; this snippet supplies a populated target, so re-enable after a live check on 1.39.x")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

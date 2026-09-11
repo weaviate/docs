@@ -83,7 +83,7 @@ func setupDogImages(t *testing.T, client *weaviate.Client) []byte {
 		t.Fatalf("create Dog collection: %v", err)
 	}
 
-	corgi := solidPNG(t, color.RGBA{R: 220, G: 150, B: 60, A: 255})
+	imgBytes := solidPNG(t, color.RGBA{R: 220, G: 150, B: 60, A: 255})
 	poodle := solidPNG(t, color.RGBA{R: 40, G: 60, B: 200, A: 255})
 
 	d1 := uuid.MustParse("11111111-1111-4111-8111-111111111111")
@@ -91,7 +91,7 @@ func setupDogImages(t *testing.T, client *weaviate.Client) []byte {
 	dogs := client.Collections.Use("Dog")
 	if _, err := dogs.Data.Insert(ctx,
 		&data.Object{UUID: &d1, Properties: map[string]any{
-			"breed": "Corgi", "image": base64.StdEncoding.EncodeToString(corgi),
+			"breed": "Corgi", "image": base64.StdEncoding.EncodeToString(imgBytes),
 		}},
 		&data.Object{UUID: &d2, Properties: map[string]any{
 			"breed": "Poodle", "image": base64.StdEncoding.EncodeToString(poodle),
@@ -101,7 +101,7 @@ func setupDogImages(t *testing.T, client *weaviate.Client) []byte {
 	}
 
 	waitForCount(t, dogs, 2)
-	return corgi
+	return imgBytes
 }
 
 func TestSearchImageByPath(t *testing.T) {
@@ -109,7 +109,7 @@ func TestSearchImageByPath(t *testing.T) {
 	client := connectLocal(t)
 	defer client.Close()
 
-	corgi := setupDogImages(t, client)
+	imgBytes := setupDogImages(t, client)
 	defer client.Collections.Delete(ctx, "Dog")
 
 	// Run from a scratch directory holding the image the snippet reads.
@@ -117,7 +117,7 @@ func TestSearchImageByPath(t *testing.T) {
 	if err := os.MkdirAll("images", 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join("images", "search-image.jpg"), corgi, 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join("images", "search-image.jpg"), imgBytes, 0o644); err != nil {
 		t.Fatal(err)
 	}
 
@@ -153,12 +153,13 @@ func TestSearchImageByBase64(t *testing.T) {
 	client := connectLocal(t)
 	defer client.Close()
 
-	corgi := setupDogImages(t, client)
+	imgBytes := setupDogImages(t, client)
 	defer client.Collections.Delete(ctx, "Dog")
 
-	base64String := base64.StdEncoding.EncodeToString(corgi)
-
 	// START ImageByBase64
+	// imgBytes holds the raw image; the v6 client wants it base64-encoded.
+	base64String := base64.StdEncoding.EncodeToString(imgBytes)
+
 	dogs := client.Collections.Use("Dog")
 	response, err := dogs.Query.NearMedia(ctx, query.NearMedia{
 		// query.Image marks the string as an image. The other media kinds are

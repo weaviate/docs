@@ -212,11 +212,7 @@ func TestPropModuleSettings(t *testing.T) {
 // TestDistanceMetric sets the distance metric for a collection that stores
 // user-supplied vectors.
 func TestDistanceMetric(t *testing.T) {
-	// Runs against the docs-CI server (Weaviate 1.38; the WEAVIATE_VERSION "1.35.0"
-	// workflow var is stale and unused — the compose files pin 1.38.0), which supports
-	// the HFresh vector index. HFresh requires maxPostingSizeKB >= 8, so the snippet
-	// sets it explicitly; otherwise the server rejects the create with HTTP 422
-	// "invalid hfresh config: maxPostingSizeKB is '0' but must be at least 8".
+	// HFresh rejects a maxPostingSizeKB below 8 with HTTP 422, so the snippet sets it.
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

@@ -14,7 +14,6 @@ import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.similarity-v3.p
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/search_test.go';
-import GoV6PlaceholderCode from '!!raw-loader!/\_includes/code/go-v6/search_placeholders_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
 import BoostNote from '/_includes/feature-notes/boost.mdx';

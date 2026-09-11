@@ -179,7 +179,7 @@ The following behaviors are present in `v6.0.0-beta.2`.
 | :--- | :------ | :--------- |
 | `Query.NearObject` with `ExcludeSelf: true` | Panics the calling process with `uuid.UUID are not supported`, on every call and for every input | Leave `ExcludeSelf` unset and drop the source object from the results yourself |
 | A batch stream (`collection.Batch(...)`) carrying a reference via `b.Reference(...)` | `Close()` never returns and the stream's goroutine leaks, even though the reference is written. Errors on this path are swallowed, and `Wait()` can report a failure for a reference that actually succeeded | Use the batch stream for objects only, and write references with `Data.AddReferences` |
-| `Query.Hybrid` with a nested `NearVector` whose `Target` is empty | Panics (nil dereference). A `NearVector` with a populated `Target` works | Set a vector target on the nested `NearVector`, or run the vector search on its own with `Query.NearVector` |
+| `Query.Hybrid` with a nested `NearVector` whose `Target` is empty | Panics (nil dereference). A `NearVector` with a populated `Target` works. A standalone `Query.NearVector` with the same empty or nil `Target` does not panic, but returns every object in the collection with the `Distance` cutoff dropped and no error | Set a vector target, on the nested `NearVector` or on the standalone one |
 
 ### Calls that silently return the wrong thing
 

@@ -38,7 +38,6 @@ env:
   # Centralize versions for easier maintenance
   PYTHON_VERSION: "3.10"
   GO_VERSION: "1.25"
-  WEAVIATE_VERSION: "1.35.0"
   OLLAMA_VERSION: "0.9.6"
   CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
   KEYCLOAK_VERSION: "24.0.3"

@@ -585,10 +585,8 @@ func TestRBACListAllUsers(t *testing.T) {
 	}
 	for _, u := range users {
 		fmt.Printf("%s (active: %t)\n", u.ID, u.Active)
-		// Both timestamps carry the zero time rather than a null value when the
-		// server has nothing to report: a user defined by an environment
-		// variable has no creation date, and a key that was never used has no
-		// last-use date. Test for it explicitly.
+		// When the server has nothing to report it sends the zero time, not a
+		// null value.
 		if !u.CreatedAt.IsZero() {
 			fmt.Printf("  created: %s\n", u.CreatedAt.Format(time.RFC3339))
 		}

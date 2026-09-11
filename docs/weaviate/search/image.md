@@ -36,7 +36,7 @@ To use images as search inputs, configure an image vectorizer integration for yo
 ## By local image path
 
 Use the `Near Image` operator to execute image search.<br/>
-If your query image is stored in a file, you can use the client library to search by its filename.
+If your query image is stored in a file, read the file and pass its contents to the client library. Most clients accept the file or its path directly; the Go `v6` client takes a base64 string, so encode the bytes first.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
