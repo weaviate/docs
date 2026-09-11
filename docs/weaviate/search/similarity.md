@@ -181,7 +181,7 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
   </TabItem>
   <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
-      text={GoV6PlaceholderCode}
+      text={GoV6Code}
       startMarker="// START NearObject"
       endMarker="// END NearObject"
       language="go6"

@@ -445,6 +445,14 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -490,6 +498,14 @@ With the `and` operator, the search returns objects where all tokens in the sear
       startMarker="// START HybridWithBM25OperatorAnd"
       endMarker="// END HybridWithBM25OperatorAnd"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

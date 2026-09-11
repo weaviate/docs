@@ -293,6 +293,41 @@ func TestGetWithGroupBy(t *testing.T) {
 	// END GetWithGroupBy
 }
 
+// TestGetNearObject searches for the objects most similar to an existing one,
+// using that object's own vector as the query.
+func TestGetNearObject(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START NearObject
+	// A UUID of an object in the collection.
+	id := uuid.MustParse("5a6b7c8d-9e0f-4a1b-8c2d-1a2b3c4d5e6f")
+
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.NearObject(ctx, query.NearObject{
+		UUID:  id,
+		Limit: 2,
+		ReturnMetadata: query.ReturnMetadata{
+			Distance: true,
+		},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+		if obj.Metadata.Distance != nil {
+			fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
+		}
+	}
+	// END NearObject
+}
+
 // TestGetWithFilter narrows a vector search with a property filter.
 func TestGetWithFilter(t *testing.T) {
 	ctx := context.Background()

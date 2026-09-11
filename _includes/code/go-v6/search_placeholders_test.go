@@ -7,17 +7,6 @@ import "testing"
 // "Coming soon" line so the docs render a clear placeholder in the Go v6 tab;
 // the surrounding test compiles and skips.
 
-// TestGetNearObject is a placeholder: the v6 Go client cannot yet search by an
-// existing object id (near-object).
-func TestGetNearObject(t *testing.T) {
-	t.Skip("near-object search is not yet available in the v6 Go client")
-
-	// TODO[g-despot]: near-object search snippet pending v6 client support
-	// START NearObject
-	// Coming soon
-	// END NearObject
-}
-
 // TestFilterByGeolocation is a placeholder: the v6 Go client does not yet
 // expose a geo-coordinate range filter operator.
 func TestFilterByGeolocation(t *testing.T) {

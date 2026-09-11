@@ -175,6 +175,60 @@ func TestHybridWithPropertyWeighting(t *testing.T) {
 	// END HybridWithPropertyWeighting
 }
 
+func TestHybridWithBM25OperatorOrWithMin(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START HybridWithBM25OperatorOrWithMin
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
+		Query: "Australian mammal cute",
+		// The keyword half matches objects containing at least this many of
+		// the query tokens. The vector half is unaffected.
+		KeywordSimilarity: query.MinimumTokensMatch(2),
+		Limit:             3,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END HybridWithBM25OperatorOrWithMin
+}
+
+func TestHybridWithBM25OperatorAnd(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	setupJeopardyVectorized(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+
+	// START HybridWithBM25OperatorAnd
+	jeopardy := client.Collections.Use("JeopardyQuestion")
+	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
+		Query: "Australian mammal cute",
+		// Every token must appear together in a single searched property for
+		// the keyword half to match.
+		KeywordSimilarity: query.AllTokensMatch,
+		Limit:             3,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END HybridWithBM25OperatorAnd
+}
+
 func TestHybridWithVector(t *testing.T) {
 	t.Skip("hybrid search with a provided NearVector panics the server (Weaviate 1.38.0): rpc code=Unknown \"panic occurred: nil pointer dereference\". Reproduced live against a MATCHING-dimension bring-your-own-vector collection, so it is not a dimension mismatch; plain NearVector and plain Hybrid over the same collection both succeed, so the defect is specific to Hybrid.NearVector. The v6 client marshals proto.Hybrid.NearVector via marshalNearVector (internal/api/search.go:675) into VectorForTargets/Targets, a shape the 1.38 hybrid path mishandles. Snippet is idiomatic; deferred pending a client/server fix")
 	ctx := context.Background()

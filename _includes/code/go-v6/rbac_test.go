@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/rbac"
@@ -574,13 +575,28 @@ func TestRBACListAllUsers(t *testing.T) {
 	defer client.Close()
 
 	// START ListAllUsers
-	users, err := client.Users.DB.List(ctx, rbac.ListUsersOptions{})
+	users, err := client.Users.DB.List(ctx, rbac.ListUsersOptions{
+		// Ask the server to report when each key was last used.
+		IncludeLastUsedAt: true,
+	})
 	if err != nil {
 		// handle error
 		panic(err)
 	}
 	for _, u := range users {
 		fmt.Printf("%s (active: %t)\n", u.ID, u.Active)
+		// Both timestamps carry the zero time rather than a null value when the
+		// server has nothing to report: a user defined by an environment
+		// variable has no creation date, and a key that was never used has no
+		// last-use date. Test for it explicitly.
+		if !u.CreatedAt.IsZero() {
+			fmt.Printf("  created: %s\n", u.CreatedAt.Format(time.RFC3339))
+		}
+		if u.LastUsedAt.IsZero() {
+			fmt.Println("  never used")
+		} else {
+			fmt.Printf("  last used: %s\n", u.LastUsedAt.Format(time.RFC3339))
+		}
 	}
 	// END ListAllUsers
 }
