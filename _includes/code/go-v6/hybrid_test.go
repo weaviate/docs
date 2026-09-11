@@ -230,10 +230,14 @@ func TestHybridWithBM25OperatorAnd(t *testing.T) {
 }
 
 func TestHybridWithVector(t *testing.T) {
-	t.Skip("Query.Hybrid panics (nil dereference) when the nested NearVector.Target is empty; this snippet supplies a populated target, so re-enable after a live check on 1.39.x")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	// The snippet's query vector is three-dimensional, so use the collection that
+	// takes caller-supplied vectors rather than the vectorized one.
+	setupJeopardySearch(t, client)
+	defer client.Collections.Delete(ctx, "JeopardyQuestion")
 
 	// START HybridWithVector
 	// A query vector, for example an embedding produced by your model.
