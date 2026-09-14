@@ -16,6 +16,7 @@ Weaviate provides multiple Application Programming Interfaces (APIs) to interact
 - **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
 
   - Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
+  - Not available on new Weaviate Cloud clusters. They are created with GraphQL disabled. Use a [client library](../client-libraries/index.mdx) or the [REST Search endpoints](/weaviate/api/rest) instead.
 
 - **[Search API - gRPC](./grpc.md)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
 

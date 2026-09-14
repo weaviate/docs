@@ -6,6 +6,9 @@ image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---
 
+:::note GraphQL on Weaviate Cloud
+New Weaviate Cloud clusters are created with GraphQL disabled (the `DISABLE_GRAPHQL` environment variable is set to `true`). To query your data on Weaviate Cloud, use a [client library](../../client-libraries/index.mdx) or the [REST Search endpoints](/weaviate/api/rest).
+:::
 
 ## API
 

@@ -106,6 +106,18 @@ Each user can have one (1) free cluster, and by default each organization can ha
 
 </details>
 
+#### Q: Can I use GraphQL with Weaviate Cloud? {#graphql}
+
+<details>
+<summary> Answer </summary>
+
+New Weaviate Cloud clusters are created with GraphQL disabled (the `DISABLE_GRAPHQL` environment variable is set to `true`). To query your data, use one of these alternatives:
+
+- A [client library](/weaviate/client-libraries) for your programming language.
+- The [REST Search endpoints](/weaviate/api/rest).
+
+</details>
+
 ## Infrastructure
 
 #### Q: What infrastructure does Weaviate Cloud run on?
