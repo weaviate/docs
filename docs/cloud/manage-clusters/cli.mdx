@@ -1,22 +1,24 @@
 ---
 title: Weaviate Cloud CLI (wcloud)
-sidebar_label: Command line (wcloud)
+sidebar_label: CLI (wcloud)
 sidebar_position: 4
-description: "Install the wcloud CLI and provision Weaviate Cloud clusters from the terminal or from an AI coding agent, including sign-in, machine-readable output, and product boundaries."
+description: "Install the wcloud CLI and create Weaviate Cloud clusters from the terminal or from an AI coding agent, with browser sign-in, JSON output, and exit codes. wcloud is in limited availability, so only allowlisted accounts can use it."
 image: og/wcd/user_guides.jpg
 ---
 
 :::caution Limited availability
 
-`wcloud` is restricted to Weaviate employees behind a server-side feature flag. If your account is not on the allowlist, any command that calls the Weaviate Cloud API fails with the error code `access_restricted` and exit code `5`. Public availability is planned for around October 2026.
+`wcloud` is available to allowlisted accounts only: if your account is not on the allowlist, any command that calls the Weaviate Cloud API fails with the error code `access_restricted` and exit code `5`.
+
+`wcloud` is also still under development, and its commands, flags, and output may change in future releases, including potential breaking changes. **We do not recommend using it in production environments at this time.** Public availability has not been announced.
 
 :::
 
 `wcloud` is a command-line interface for [Weaviate Cloud (WCD)](/go/console?utm_content=cloud). It provisions and inspects clusters, and it is built to be driven either by a person in a terminal or by an AI coding agent.
 
-Its scope is deliberately narrow. `wcloud` creates clusters, lists them, reads their details and status, and lists regions. It does not read or write data in a cluster: for that, connect a [client library](/weaviate/client-libraries) to the cluster it created. It also cannot delete a cluster, change a plan, or manage billing, users, or organizations — those live in the [Weaviate Cloud console](https://console.weaviate.cloud/).
+Its scope is deliberately narrow. `wcloud` creates clusters, lists them, reads their details and status, and lists regions. It does not read or write data in a cluster: for that, connect a [client library](/weaviate/client-libraries) to the cluster it created. It also cannot delete a cluster, change a plan, or manage billing, users, or organizations. Those actions live in the [Weaviate Cloud console](https://console.weaviate.cloud/).
 
-Agents do not need a separate integration. Install `wcloud` once, and an agent discovers how to use it by running [`wcloud guide` or `wcloud skill install`](#use-wcloud-from-an-ai-agent).
+AI coding agents do not need a separate integration. Install `wcloud` once, and an agent discovers how to use it by running [`wcloud guide` or `wcloud skill install`](#use-wcloud-from-an-ai-coding-agent).
 
 ## Install the wcloud CLI
 
@@ -36,7 +38,7 @@ This is the recommended channel on macOS and Linux. It installs the prebuilt, ch
 npm install -g weaviate-cloud
 ```
 
-The npm package wraps the same release binary that Homebrew installs, so the two are interchangeable. It installs the command under two names: `wcloud` and a `weaviate-cloud` alias.
+The npm package wraps the same release binary that Homebrew installs, so the two are interchangeable. It installs the command under two names: `wcloud` and a `weaviate-cloud` alias. On Windows, npm is the install route, because the Homebrew formula covers macOS and Linux only and the npm package ships a Windows binary for x64.
 
 ### Go
 
@@ -57,7 +59,7 @@ wcloud version
 
 If you install through more than one channel, the first `wcloud` on your `PATH` is the one that runs. Check with `which -a wcloud`.
 
-## Sign in to Weaviate Cloud
+## Sign in to Weaviate Cloud from the CLI
 
 ```bash
 wcloud auth login
@@ -81,7 +83,7 @@ wcloud auth logout
 
 Until you sign in, every command that calls the Weaviate Cloud API fails immediately, with exit code `3`:
 
-```
+```text
 Error: not signed in. Run 'wcloud auth login' to authenticate. (auth_required)
 ```
 
@@ -89,7 +91,7 @@ Error: not signed in. Run 'wcloud auth login' to authenticate. (auth_required)
 
 Browser sign-in is the only way to authenticate. There is no API key flag, no token flag, and no environment variable that supplies credentials.
 
-This has a consequence worth planning around: **`wcloud` cannot sign in on a headless machine**. The OAuth redirect has to reach `127.0.0.1` on the same machine that runs `wcloud`, so a remote SSH session, a container without a browser, or a CI runner cannot complete the flow. The sign-in URL is not transferable either — it is tied to the listener that the waiting command holds open. Run `wcloud auth login` on a workstation where you can open a browser.
+This has a consequence worth planning around: **`wcloud` cannot sign in on a headless machine**. The OAuth redirect has to reach `127.0.0.1` on the same machine that runs `wcloud`, so a remote SSH session, a container without a browser, or a CI runner cannot complete the flow. The sign-in URL is not transferable either, because it is tied to the listener that the waiting command holds open. Run `wcloud auth login` on a workstation where you can open a browser.
 
 Once you are signed in, `wcloud` refreshes the cached credential on its own, so subsequent commands do not prompt.
 
@@ -101,20 +103,21 @@ Once you are signed in, `wcloud` refreshes the cached credential on its own, so 
 | :-- | :-- |
 | macOS | `~/Library/Application Support/wcloud/` |
 | Linux | `~/.config/wcloud/` |
+| Windows | `%AppData%\wcloud\` |
 
-Credential files are written with `0600` permissions, in a directory created with `0700`.
+On macOS and Linux, credential files are written with `0600` permissions, in a directory created with `0700`.
 
-## Provision a Weaviate Cloud cluster from the command line
+## Create a Weaviate Cloud cluster from the command line
 
 ```bash
 wcloud cluster create --name my-cluster --wait
 ```
 
-`--name` is optional; without it, Weaviate Cloud generates a name. `--wait` blocks until the cluster reaches the `READY` state — up to 15 minutes by default — and writes progress to standard error while it polls. Without `--wait`, the command returns as soon as the cluster is accepted, and you check on it later with `wcloud cluster status`.
+`--name` is optional; without it, Weaviate Cloud generates a name. `--wait` blocks until the cluster reaches the `READY` state, for up to 15 minutes by default, and writes progress to standard error while it polls. It also stops early if the cluster lands in a terminal status that is not `READY` (`FAILED`, `DELETED`, `EXPIRED`, or `SUSPENDED`). Without `--wait`, the command returns as soon as the cluster is accepted, and you check on it later with `wcloud cluster status`.
 
-The result includes the cluster's REST and gRPC endpoints and a **one-time API key**. `wcloud` never stores that key — it prints it once and forgets it. Save it when you see it; a later `wcloud cluster get` returns the key field empty.
+The result includes the cluster's REST and gRPC endpoints and a **one-time API key**. The key is shown once, either by a `--wait` create when the cluster becomes `READY` or by the first `wcloud cluster get` after it is ready. `wcloud` never stores it, and every later call returns the key field empty, so save it when you see it. To add, rotate, or delete cluster API keys afterwards, see [Authentication](/cloud/manage-clusters/authentication).
 
-`wcloud` provisions with your account's defaults. To choose a paid cluster type, an optimization profile, or advanced settings, create the cluster in the console instead — see [Create a cluster](/cloud/manage-clusters/create).
+`wcloud` provisions with your account's defaults. It accepts `--tier` and `--region` if you want to choose them yourself; run `wcloud region list` to see the regions available to your account. To choose a paid cluster type, an optimization profile, or advanced settings, create the cluster in the console instead, as described in [Create a cluster](/cloud/manage-clusters/create).
 
 ### Inspect clusters and regions
 
@@ -125,9 +128,9 @@ wcloud cluster status <cluster-id>
 wcloud region list
 ```
 
-Once a cluster is `READY`, connect to it with a client library, as described in [Connect to Weaviate Cloud](/weaviate/connections/connect-cloud).
+Once a cluster is `READY`, [connect a client library to it](/weaviate/connections/connect-cloud).
 
-## What wcloud does not do
+## Limits and boundaries
 
 ### There is no delete command
 
@@ -137,7 +140,7 @@ Once a cluster is `READY`, connect to it with a client library, as described in 
 
 Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`. Retrying does not help, and because `wcloud` has no delete command, the way forward is the console: delete the existing cluster there, or [upgrade to a paid plan](https://weaviate.io/pricing). For the current free tier limits, see [Create a cluster](/cloud/manage-clusters/create#free-clusters).
 
-## Use wcloud from an AI agent
+## Use wcloud from an AI coding agent
 
 `wcloud` ships its own agent-facing documentation, which is always current with the installed binary. Rather than reproducing it here, point your agent at it.
 
@@ -155,13 +158,21 @@ wcloud skill install --all
 
 ## Machine-readable output for scripts and agents
 
-Every command that returns a result writes a stable JSON envelope to standard output: a `data` object on success or an `error` object on failure, plus a `metadata` object carrying the API version and a request ID. Pass `-o json` to force it. The default, `-o auto`, prints human-readable text only when all three of these are true — standard output is a terminal, the `CI` environment variable is unset or empty, and `TERM` is not `dumb` — and prints JSON otherwise. In CI and in most agent harnesses you therefore get JSON without asking for it. `wcloud guide` and the `--help` output are always plain text. Exit codes are part of the same contract; `wcloud guide` lists all of them.
+Every command that returns a result writes a stable JSON envelope to standard output: a `data` field on success or an `error` object on failure, plus a `metadata` object carrying the API version and a request ID. The shape of `data` depends on the command (an object, an array for `cluster list` and `region list`, or a bare string, as `cluster status` returns the status itself).
+
+Pass `-o json` to force JSON. The default, `-o auto`, prints human-readable text only when all three of these are true:
+
+- Standard output is a terminal.
+- The `CI` environment variable is unset or empty.
+- `TERM` is not `dumb`.
+
+Otherwise it prints JSON, so in CI and in most agent harnesses you get JSON without asking for it. `wcloud guide` and the `--help` output are always plain text. Exit codes are part of the same contract; `wcloud guide` lists all of them.
 
 ## Further resources
 
-- [Create a cluster](/cloud/manage-clusters/create) — cluster types, settings, and limits in the console
-- [Connect to Weaviate Cloud](/weaviate/connections/connect-cloud) — connect a client library to a cluster
-- [`weaviate/weaviate-cloud` on GitHub](https://github.com/weaviate/weaviate-cloud) — source, releases, and issues
+- [Create a cluster](/cloud/manage-clusters/create)
+- [Connect a client library to Weaviate Cloud](/weaviate/connections/connect-cloud)
+- [`weaviate/weaviate-cloud` on GitHub](https://github.com/weaviate/weaviate-cloud)
 
 ## Support
 
