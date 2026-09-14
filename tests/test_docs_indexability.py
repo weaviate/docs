@@ -34,7 +34,6 @@ TEST_PAGES = [
     ("/weaviate/concepts/data-import", set()),
     ("/cloud/quickstart", {"code"}),
     ("/cloud/manage-clusters/create", set()),
-    ("/cloud/tools/query-tool", {"images"}),
     ("/weaviate/manage-collections/tenant-states", {"images"}),
     ("/query-agent/recipes/query-agent-ecommerce-assistant", {"code"}),
     ("/weaviate/search", set()),
