@@ -45,7 +45,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/platform/ssconsole"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -55,7 +55,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/console"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -85,7 +85,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/guides/console"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -105,7 +105,7 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/tutorials/console"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -116,6 +116,11 @@ status = 301
 [[redirects]]
 from = "/cloud/tools/import-tool"
 to   = "/cloud/tools/collections-tool"
+status = 301
+
+[[redirects]]
+from = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
