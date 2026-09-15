@@ -16,7 +16,7 @@ image: og/wcd/user_guides.jpg
 
 `wcloud` is a command-line interface for [Weaviate Cloud (WCD)](/go/console?utm_content=cloud). It provisions and inspects clusters, and it is built to be driven either by a person in a terminal or by an AI coding agent.
 
-Its scope is deliberately narrow. `wcloud` creates clusters, lists them, reads their details and status, and lists regions. It does not read or write data in a cluster: for that, connect a [client library](/weaviate/client-libraries) to the cluster it created. It also cannot delete a cluster, change a plan, or manage billing, users, or organizations. Those actions live in the [Weaviate Cloud console](https://console.weaviate.cloud/).
+Its scope is deliberately narrow. `wcloud` creates clusters, lists them, reads their details and status, and lists regions. It does not read or write data in a cluster: for that, connect one of the [client libraries](/weaviate/client-libraries) to the cluster it created. It also cannot delete a cluster, change a plan, or manage billing, users, or organizations. Those actions live in the [Weaviate Cloud console](https://console.weaviate.cloud/).
 
 AI coding agents do not need a separate integration. Install `wcloud` once, and an agent discovers how to use it by running [`wcloud guide` or `wcloud skill install`](#use-wcloud-from-an-ai-coding-agent).
 
@@ -138,7 +138,9 @@ Once a cluster is `READY`, [connect a client library to it](/weaviate/connection
 
 ### One free cluster per user
 
-Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`. Retrying does not help, and because `wcloud` has no delete command, the way forward is the console: delete the existing cluster there, or [upgrade to a paid plan](https://weaviate.io/pricing). For the current free tier limits, see [Create a cluster](/cloud/manage-clusters/create#free-clusters).
+Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`. The limit is per account and spans every organization the account belongs to, while `wcloud cluster list` shows only the current organization's clusters, so a create can be refused with `quota_exceeded` even when the list shows no free cluster. The [Weaviate Cloud console](https://console.weaviate.cloud/) shows all of your organizations.
+
+Retrying does not help, and repeated create attempts are rate limited: the API returns the error code `rate_limited` and exit code `8`, with a `retry_after_seconds` hint in the error details. Because `wcloud` has no delete command, the way forward is the console: delete the existing cluster there, or [upgrade to a paid plan](https://weaviate.io/pricing). For the current free tier limits, see [Create a cluster](/cloud/manage-clusters/create#free-clusters).
 
 ## Use wcloud from an AI coding agent
 
@@ -155,6 +157,8 @@ wcloud skill install --all
 ```
 
 `wcloud skill install` writes that same document as a `SKILL.md` into your coding harnesses, so an agent picks it up without being told. Use `--harness` to pick specific harnesses (`claude-code`, `codex`, `cursor`, `gemini-cli`, `copilot`, or `opencode`), or `--project` to install into the current project instead of your user directory. `--all` writes two files rather than one per harness, because every harness except Claude Code reads from the same cross-vendor location.
+
+Cluster creation requests include an `X-Provisioned-By` header that records whether the request came from the CLI directly or from an AI coding agent.
 
 ## Machine-readable output for scripts and agents
 
