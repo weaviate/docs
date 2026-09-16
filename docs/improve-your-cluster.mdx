@@ -17,6 +17,10 @@ This page is linked from the banner Weaviate logs once a cluster is up. If you j
 
 Most errors in the [error messages](/errors) reference come from clusters that were short on headroom, unmonitored, or behind on versions. This page lists what to change so the next one does not happen. Do it once at setup and again when the workload changes shape: a new collection, many more tenants, a much larger import.
 
+:::info You can hand this list off
+Everything on this page is work you can choose not to own. [Weaviate Cloud](/cloud/quickstart) runs the cluster for you, this checklist included. If the cluster has to stay in your own environment, [Enterprise Assurance](https://weaviate.io/product/assurance) adds Weaviate's own engineers and support commitments to the one you run.
+:::
+
 export const pillars = [
   { title: "Give it headroom", description: "Memory, disk, memory mappings, and vector memory are all knowable in advance.", link: "#give-the-cluster-headroom", icon: "fa fa-gauge-high" },
   { title: "Survive losing a node", description: "More than one copy of anything you cannot rebuild quickly.", link: "#survive-the-loss-of-a-node", icon: "fa fa-clone" },
@@ -44,8 +48,9 @@ Weaviate fails safely when it runs out of a resource: shards go read-only or ref
 A single-node cluster has no bad days, only outages. If Weaviate holds data you cannot rebuild quickly from somewhere else, it needs more than one copy.
 
 <Checklist items={[
-  { title: "Set a replication factor above one", text: "On collections that matter, and when you create them: raising it later copies data across the network at a moment you probably did not choose.", link: "/deploy/configuration/replication", linkText: "Replication" },
-  { title: "Use an odd number of nodes", text: "So the cluster can still form a majority when one is lost." },
+  { title: "Set a replication factor above one", text: "On collections that matter, and when you create them: raising it later copies data across the network at a moment you probably did not choose.", link: "/deploy/configuration/replication", linkText: "Replication", subitems: [
+    { title: "Use an odd number of nodes", text: "so the cluster can still form a majority when one is lost." },
+  ] },
   { title: "Choose consistency levels deliberately", text: "Weaviate lets you pick per request, so the write path and the read path can make different trade-offs.", link: "/weaviate/concepts/replication-architecture/consistency", linkText: "Consistency" },
   { title: "Turn on async replication", text: "Replicas that fall behind, or miss writes while restarting, repair themselves in the background instead of serving stale results until someone notices.", link: "/deploy/configuration/async-rep", linkText: "Async replication" },
 ]}/>
@@ -55,8 +60,9 @@ A single-node cluster has no bad days, only outages. If Weaviate holds data you 
 Every resource limit above announces itself in the logs and in the metrics well before it becomes an outage. That warning is only worth having if something is reading it.
 
 <Checklist items={[
-  { title: "Scrape the metrics endpoint", text: "Weaviate exposes Prometheus metrics, and there is a ready-made Grafana setup to start from.", link: "/deploy/configuration/monitoring", linkText: "Monitoring" },
-  { title: "Alert on the leading indicators", text: "Alert on heap usage against the limit, disk usage against the read-only threshold, and shards reporting read-only. Request failures come last; by then users have noticed." },
+  { title: "Scrape the metrics endpoint", text: "Weaviate exposes Prometheus metrics, and there is a ready-made Grafana setup to start from.", link: "/deploy/configuration/monitoring", linkText: "Monitoring", subitems: [
+    { title: "Alert on the leading indicators", text: "heap usage against the limit, disk usage against the read-only threshold, and shards reporting read-only. Request failures come last; by then users have noticed." },
+  ] },
   { title: "Collect the logs somewhere searchable", text: "Weaviate logs JSON by default, so the fields are queryable without parsing message text. Alert on the action field rather than on wording, which changes between releases.", link: "/deploy/configuration/logging", linkText: "Logging" },
   { title: "Watch the cluster node data for shards that are not ready", text: "It is the fastest way to tell a slow cluster from a partly broken one.", link: "/deploy/configuration/status#cluster-node-data", linkText: "Cluster status" },
 ]}/>
@@ -66,9 +72,10 @@ Every resource limit above announces itself in the logs and in the metrics well 
 Replication protects you from losing a node. It does not protect you from a bad import, a mistaken deletion, or a schema change you want to undo, because all three replicate perfectly.
 
 <Checklist items={[
-  { title: "Configure a backup backend and a schedule", text: "To storage that is not the cluster's own disk.", link: "/deploy/configuration/backups", linkText: "Backups" },
-  { title: "Restore one", text: "An untested backup is a hypothesis. Restore into a scratch cluster and query it, at least once, before you need it to work." },
-  { title: "Check what a backup covers", text: "Against what you would need to rebuild, including collection configuration and inactive tenants." },
+  { title: "Configure a backup backend and a schedule", text: "To storage that is not the cluster's own disk.", link: "/deploy/configuration/backups", linkText: "Backups", subitems: [
+    { title: "Restore one", text: "an untested backup is a hypothesis. Restore into a scratch cluster and query it, at least once, before you need it to work." },
+    { title: "Check what a backup covers", text: "against what you would need to rebuild, including collection configuration and inactive tenants." },
+  ] },
   { title: "Keep persistence on a volume that outlives the container", text: "A container restart should not be a data-loss event.", link: "/deploy/configuration/persistence", linkText: "Persistence" },
 ]}/>
 
@@ -84,17 +91,25 @@ Running a version that is a year old means carrying every bug that has since bee
 
 ## More ways to run and extend Weaviate
 
-Everything above applies to a cluster you run yourself. If running it is not the part you want to own, or you want more than the database:
+Everything above applies to a cluster you run yourself. If running it is not the part you want to own:
 
-export const options = [
+export const managedOptions = [
   { title: "Weaviate Cloud", description: "Runs the cluster for you. Start with a Free cluster and point your existing client at it with the same connection code.", link: "/cloud/quickstart", icon: "fa fa-cloud" },
-  { title: "Managed and enterprise", description: "Weaviate on DigitalOcean, or Enterprise support for clusters you keep in your own environment. Pricing is public.", link: "https://weaviate.io/deployment", icon: "fa fa-building" },
+  { title: "Enterprise Assurance", description: "Support and response-time commitments for clusters you keep in your own environment, from the engineers who build Weaviate.", link: "https://weaviate.io/product/assurance", icon: "fa fa-handshake" },
+  { title: "Weaviate on DigitalOcean", description: "A managed Weaviate operated by DigitalOcean in their cloud. Pricing is public.", link: "https://weaviate.io/deployment", icon: "fa fa-water" },
+];
+
+<CardsSection items={managedOptions} />
+
+And if you want more than the database:
+
+export const addOns = [
   { title: "Weaviate Embeddings", description: "Generates vectors for your collections inside Weaviate Cloud, so there is no embedding model to run, host, or pay for separately.", link: "/cloud/embeddings", icon: "fa fa-vector-square" },
   { title: "Query Agent", description: "Answers questions over your collections in natural language, choosing the searches, filters, and aggregations itself.", link: "/query-agent", icon: "fa fa-robot" },
   { title: "Engram", description: "Long-term memory for AI agents, built on Weaviate: agents remember across sessions without you designing the storage.", link: "/engram", icon: "fa fa-brain" },
 ];
 
-<CardsSection items={options} />
+<CardsSection items={addOns} />
 
 ## Further resources
 

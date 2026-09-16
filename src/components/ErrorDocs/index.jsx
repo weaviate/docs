@@ -97,7 +97,10 @@ export function IdAnatomy({ origin, category, number, originHint, categoryHint, 
   );
 }
 
-/** Checklist items: a short lead, one line of why, and where to do it. */
+/** Checklist items: a short lead, one line of why, and where to do it.
+ *  An item may carry `subitems` ([{ title?, text }]): advice that belongs to
+ *  the item above it rather than at the top level. Optional; items without
+ *  it render exactly as before. */
 export function Checklist({ items }) {
   return (
     <ul className={styles.checklist}>
@@ -114,6 +117,19 @@ export function Checklist({ items }) {
               )}
             </p>
             <p className={styles.itemText}>{item.text}</p>
+            {item.subitems && (
+              <ul className={styles.subitems}>
+                {item.subitems.map((sub, j) => (
+                  <li key={j} className={styles.subitem}>
+                    {sub.title && (
+                      <span className={styles.subitemTitle}>{sub.title}</span>
+                    )}
+                    {sub.title && sub.text && " — "}
+                    {sub.text}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </li>
       ))}
