@@ -1,6 +1,6 @@
 ---
 title: Improve your cluster
-description: "A short checklist for making a Weaviate cluster harder to break: headroom, replication, monitoring, backups, and staying current."
+description: "A short checklist for making a Weaviate cluster harder to break: headroom, replication, monitoring, backups, staying current, and access control."
 image: og/default.jpg
 ---
 
@@ -27,6 +27,7 @@ export const pillars = [
   { title: "Find out first", description: "Every limit announces itself in the logs and metrics before it is an outage.", link: "#find-out-before-your-users-do", icon: "fa fa-bell" },
   { title: "Be able to go back", description: "Replication copies mistakes perfectly. Backups are how you undo them.", link: "#be-able-to-go-back", icon: "fa fa-clock-rotate-left" },
   { title: "Stay current", description: "Old versions carry every bug fixed since, and the upgrade comes anyway.", link: "#stay-current", icon: "fa fa-rotate" },
+  { title: "Lock the door", description: "An open cluster answers anyone who can reach it. That is a setting.", link: "#lock-the-door", icon: "fa fa-lock" },
 ];
 
 <CardsSection items={pillars} smallCards />
@@ -87,6 +88,17 @@ Running a version that is a year old means carrying every bug that has since bee
   { title: "Read the release notes before upgrading", text: "And the migration guide when there is one.", link: "/weaviate/release-notes", linkText: "Release notes" },
   { title: "Check the known issues page when something is strange", text: "A surprising number of one-off mysteries are documented there with a version number attached.", link: "/weaviate/release-notes/known-issues", linkText: "Known issues" },
   { title: "Keep clients within the server's supported range", text: "Client and server versions move independently, and a large gap between them is a common source of confusing errors.", link: "/weaviate/release-notes#version-support-policy", linkText: "Support policy" },
+]}/>
+
+## Lock the door
+
+Out of the box, Weaviate accepts anonymous requests: `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED` defaults to `true`, and a request without credentials runs as the user `anonymous`. That default is for development and evaluation, and it does not turn itself off when the cluster starts holding real data.
+
+<Checklist items={[
+  { title: "Turn authentication on", text: "API keys or OIDC, and both can be enabled at once. API keys are a few environment variables: enable them, list the keys, and name the user each key belongs to.", link: "/deploy/configuration/authentication", linkText: "Authentication" },
+  { title: "Turn anonymous access off", text: "Set AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED to false once authentication is on. A request without credentials then gets 401 Unauthorized instead of running as anonymous.", link: "/deploy/configuration/authentication#anonymous-access", linkText: "Anonymous access" },
+  { title: "Use RBAC when more than one person or service shares the cluster", text: "Roles scope each user to what it actually needs, instead of the admin list's choice between everything and read-only.", link: "/deploy/configuration/authorization", linkText: "Authorization" },
+  { title: "Limit who can reach the port", text: "Authentication decides who the cluster answers; the network decides who can ask. Keep a cluster that still allows anonymous access on localhost or a private network, and treat network policies as a second layer, not a substitute.", link: "/deploy/production/kubernetes/production-readiness#security", linkText: "Security checklist" },
 ]}/>
 
 ## More ways to run and extend Weaviate

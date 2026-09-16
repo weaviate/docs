@@ -13,8 +13,8 @@ const SEVERITY_LABEL = {
   deprecation: "Deprecation",
 };
 
-/** Facts strip at the top of a message entry: ids, origin, level, impact, fix. */
-export function EntryFacts({ ids = [], raisedBy, severity, impact, fix }) {
+/** Facts strip at the top of a message entry: ids, origin, level, since, impact, fix. */
+export function EntryFacts({ ids = [], raisedBy, severity, since, impact, fix }) {
   return (
     <div className={styles.facts} data-copy-exclude="">
       <div>
@@ -40,6 +40,14 @@ export function EntryFacts({ ids = [], raisedBy, severity, impact, fix }) {
             <span className={`${styles.severity} ${styles[severity] || ""}`}>
               {SEVERITY_LABEL[severity] || severity}
             </span>
+          </p>
+        </div>
+      )}
+      {since && (
+        <div>
+          <p className={styles.factLabel}>Since</p>
+          <p className={styles.factValue}>
+            <code>{since}</code>
           </p>
         </div>
       )}
