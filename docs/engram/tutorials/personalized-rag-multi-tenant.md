@@ -1,5 +1,5 @@
 ---
-title: "Personalized RAG with Per-User Memory"
+title: "Personalized RAG with per-user memory"
 description: "Build a multi-tenant RAG application that combines a Weaviate knowledge base with per-user Engram memory for personalized responses."
 image: og/docs/engram.png
 ---
@@ -27,6 +27,15 @@ You'll learn how to:
 - An [Anthropic](https://console.anthropic.com/) or [OpenAI](https://platform.openai.com/) API key
 - Python packages: `pip install weaviate-engram weaviate-client anthropic openai`
 
+Set your environment variables:
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+export WEAVIATE_URL="https://your-cluster.weaviate.cloud"
+export WEAVIATE_API_KEY="..."
+export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
+```
+
 ## Step 1: Set up both clients
 
 Initialize the Engram client for user memory and the Weaviate client for your knowledge base.
@@ -39,17 +48,18 @@ Initialize the Engram client for user memory and the Weaviate client for your kn
 />
 
 ```python
+import os
 import weaviate
 
 weaviate_client = weaviate.connect_to_weaviate_cloud(
     cluster_url=os.environ["WEAVIATE_URL"],
-    auth_credentials=weaviate.auth.AuthApiKey(os.environ["WEAVIATE_API_KEY"]),
+    auth_credentials=os.environ["WEAVIATE_API_KEY"],
 )
 ```
 
 ## Step 2: Populate the knowledge base
 
-Create a Weaviate collection with sample product documentation. This represents your shared knowledge base — the same docs are available to all users.
+Create a Weaviate collection with sample product documentation. This represents your shared knowledge base — the same docs are available to all users. Adapt it to your own collection; the rest of the tutorial only needs the retrieved text.
 
 <FilteredTextBlock
   text={PyCode}
@@ -193,13 +203,17 @@ For privacy compliance (e.g. GDPR right to deletion), you can retrieve and delet
   language="py"
 />
 
-Use `memories.search()` to find all memories for a user, then `memories.delete()` each one. After deletion, subsequent searches return no results for that user.
+The snippet above uses `memories.search()`, which is enough for a demo. For a deletion request you need a complete listing — see below.
+
+:::caution A search is not a complete listing
+`memories.search()` ranks against a query and returns the top matches, so it can miss memories a deletion request has to cover. To enumerate everything stored for a user, use [`POST /v1/memories/list`](../guides/manage-memories.md#list-memories) with that `user_id`. The endpoint is REST-only — the Python SDK has no `list()` method yet — so call it directly and feed the IDs to `memories.delete()`.
+:::
 
 ## Next steps
 
-- **[Memory Chat App](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
-- **[Context Window Management](context-window-management.md)** — Reduce token costs by replacing conversation history with memory.
-- **[Manage memories](../guides/manage-memories.md)** — API reference for get and delete operations.
+- **[Add long-term memory to a chat app](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
+- **[Context window management](context-window-management.md)** — Reduce token costs by replacing conversation history with memory.
+- **[Manage memories](../guides/manage-memories.md)** — List the memories in a project, and get or delete individual ones by ID.
 - **[Core concepts](../concepts/index.md)** — Learn about topics, groups, scoping, and pipelines.
 
 ## Questions and feedback

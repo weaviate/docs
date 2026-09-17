@@ -1,5 +1,5 @@
 ---
-title: "Context Window Management"
+title: "Context window management"
 description: "Reduce LLM token usage and cost by replacing full conversation history with Engram memory search."
 image: og/docs/engram.png
 ---
@@ -13,7 +13,7 @@ Every time you call an LLM, you pay for every token in the request — including
 
 Engram solves this by extracting discrete facts from conversations and storing them as searchable memories. Instead of sending the entire history, you search for relevant memories and send only those — keeping context size flat regardless of conversation length.
 
-This tutorial builds on the [Memory Chat App](memory-chat-app.md) pattern and shows you how to:
+This tutorial builds on the [Add long-term memory to a chat app](memory-chat-app.md) pattern and shows you how to:
 - Measure the token cost of sending full conversation history
 - Replace history with memory search for constant-size context
 - Compare the two approaches side-by-side
@@ -23,6 +23,24 @@ This tutorial builds on the [Memory Chat App](memory-chat-app.md) pattern and sh
 - An Engram project with an API key ([Quickstart](../quickstart.md))
 - An [Anthropic](https://console.anthropic.com/) or [OpenAI](https://platform.openai.com/) API key
 - Python packages: `pip install weaviate-engram anthropic openai`
+
+Set your environment variables:
+
+```bash
+export ENGRAM_API_KEY="eng_..."
+export ANTHROPIC_API_KEY="sk-ant-..."  # or OPENAI_API_KEY
+```
+
+## Set up the client
+
+Every snippet below uses this client and `user_id`:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START Setup"
+  endMarker="# END Setup"
+  language="py"
+/>
 
 ## Step 1: The naive approach
 
@@ -52,6 +70,15 @@ The most common pattern is to append every message to a list and send the full l
 </Tabs>
 
 The `messages` list grows by two entries every turn (user + assistant). By turn 50, you're sending 100 messages in every request. Token usage grows linearly with the naive approach and you're paying for the same messages over and over. Turn 1's messages are re-sent at turn 2, 3, 4, and every subsequent turn.
+
+Put a number on it with a rough count of one token per four characters:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START TokenCount"
+  endMarker="# END TokenCount"
+  language="py"
+/>
 
 ## Step 2: Store conversations as memories
 
@@ -101,13 +128,23 @@ Instead of sending the full conversation history, search Engram for relevant mem
 </Tabs>
 
 The context window now contains:
-- **System prompt**: ~5 retrieved memories (~50 tokens)
-- **Recent messages**: Last 2-3 exchanges (~4-6 messages, ~500-750 tokens)
-- **Total**: ~800 tokens — flat, regardless of conversation length
+
+- **System prompt** — ~5 retrieved memories (~50 tokens)
+- **Recent messages** — the last 2-3 exchanges (~4-6 messages, ~500-750 tokens)
+- **Total** — ~800 tokens, flat regardless of conversation length
 
 ## Step 4: Compare side-by-side
 
-Here's a comparison of token usage as conversation length grows:
+The two approaches diverge quickly. The estimate below prices a turn at ~25 user tokens plus ~100 assistant tokens, and gives the memory-augmented version a fixed window of the last three exchanges plus ~50 tokens of retrieved memory:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START SideBySide"
+  endMarker="# END SideBySide"
+  language="py"
+/>
+
+It prints:
 
 ```text
 Turn   Naive (tokens)     Memory (tokens)    Savings
@@ -151,11 +188,13 @@ Fetch it with the `fetch` retrieval type — it returns the bounded memory direc
 
 The summary stays one memory regardless of how long the conversation runs, so the token cost of including it in your LLM call is constant — and the LLM still sees the full conversational context.
 
-### Hybrid search tuning
+### Choose a retrieval type
 
-Adjust the `retrieval_config` to control how memories are ranked:
+Pass a `retrieval_config` to control how memories are found and ranked:
 
 ```python
+from engram import VectorRetrieval, BM25Retrieval, HybridRetrieval, FetchRetrieval
+
 # Pure semantic search — best for conceptual similarity
 VectorRetrieval(limit=5)
 
@@ -164,7 +203,12 @@ BM25Retrieval(limit=5)
 
 # Hybrid (recommended) — combines both approaches
 HybridRetrieval(limit=10)
+
+# Fetch — return a scope's memories directly, ignoring the query
+FetchRetrieval(limit=1)
 ```
+
+`fetch` is the one used above to read a bounded `ConversationSummary`. See [search](../concepts/search.md) for how each type ranks.
 
 ### Dual-memory pattern
 
@@ -173,12 +217,12 @@ For the best balance of continuity and context, combine both approaches:
 1. **Recent messages** (last 2-3 exchanges) — Maintains conversational flow
 2. **Engram memory search** — Provides relevant historical context
 
-This is the pattern used in Step 4. The recent messages handle references like "that" and "it", while Engram provides the long-term context that makes the assistant feel like it truly remembers.
+This is the pattern used in [Step 3](#step-3-replace-history-with-memory-search). The recent messages handle references like "that" and "it", while Engram provides the long-term context that makes the assistant feel like it truly remembers.
 
 ## Next steps
 
-- **[Memory Chat App](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
-- **[Personalized RAG](personalized-rag-multi-tenant.md)** — Add a knowledge base alongside per-user memory.
+- **[Add long-term memory to a chat app](memory-chat-app.md)** — The foundational tutorial for integrating Engram with a chat app.
+- **[Personalized RAG with per-user memory](personalized-rag-multi-tenant.md)** — Add a knowledge base alongside per-user memory.
 - **[Store memories](../guides/store-memories.md)** — Learn about all three content types (string, conversation, pre-extracted).
 
 ## Questions and feedback

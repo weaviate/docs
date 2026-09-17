@@ -12,9 +12,9 @@ Engram organizes and processes memories for your AI applications. Here's how the
 | [Groups](groups.md)                     | A named configuration bundle. Each group contains topics (what to remember) and a pipeline (how to process). Most projects start with a single group.                                      |
 | [Topics](topics.md)                     | A category of memory within a group. Each topic defines what kind of information to extract, like `UserKnowledge` or `ConversationSummary`.                                                |
 | [Scopes](scopes.md)                     | Controls memory visibility. Every memory belongs to a project. Topics can additionally require a `user_id` and custom `properties` (e.g. `conversation_id`) for isolation.                 |
-| [Input data types](input-data-types.md) | The three content formats Engram accepts: `string`, `pre-extracted`, and `conversation`.                                                                                                   |
-| [Pipelines](pipelines.md)               | The processing flow that turns raw input into stored memories. Steps include extracting facts, transforming with context, and committing to storage. _Configurable pipelines are available on enterprise plans._ |
-| [Search](search.md)                     | Search retrieval strategies for finding memories: vector, BM25, and hybrid.                                                                                                                |
+| [Input data types](input-data-types.md) | The three content formats Engram accepts: `string`, `conversation`, and `pre_extracted`.                                                                                                   |
+| [Pipelines and runs](pipelines.md)      | The processing flow that turns raw input into stored memories. Steps include extracting facts, transforming with context, and committing to storage. _Which pipelines you can use [depends on your plan](https://weaviate.io/pricing)._ |
+| [Search](search.md)                     | Retrieval types for finding memories: `vector`, `bm25`, `hybrid` (the default), and `fetch` for reading a scope without a query.                                                           |
 
 ## How concepts relate
 
@@ -34,6 +34,6 @@ import ConceptsImg from '/docs/engram/_includes/concepts.png';
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

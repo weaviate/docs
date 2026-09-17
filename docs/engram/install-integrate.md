@@ -50,7 +50,7 @@ For an async client, use `AsyncEngramClient` instead. The [Quickstart](quickstar
 
 ## REST API
 
-Engram is a REST service at `https://api.engram.weaviate.io`. Authenticate every request with your API key as a bearer token:
+Engram is a REST service at `https://api.engram.weaviate.io/v1`. Every path carries the `/v1` prefix, and requests are scoped by the API key rather than by a project ID in the URL. Authenticate every request with your API key as a bearer token:
 
 ```bash
 curl -X POST "https://api.engram.weaviate.io/v1/memories" \
@@ -76,23 +76,29 @@ Once the project is created, set your API key in your shell profile (e.g. `~/.zs
 export ENGRAM_API_KEY=...
 ```
 
+Then install the plugin inside a Claude Code session:
+
 ```bash
 /plugin marketplace add weaviate/engram-plugins
 /plugin install engram@weaviate-engram
 ```
 
-That's it — memory starts working on your next prompt. See the [plugin README](https://github.com/weaviate/engram-plugins) for more info and optional customization.
+That's it — memory starts working on your next prompt. By default the plugin recalls only memories from the repository you are working in, filtering on the `repo_name` property; set `search.properties` to `[]` in a `.engram.json` to recall across all of them. See the [plugin README](https://github.com/weaviate/engram-plugins) for more info and optional customization.
 
 ## Hermes Agent
 
 [`hermes-weaviate-engram`](https://github.com/weaviate/hermes-weaviate-engram) is a memory provider plugin that gives the [Hermes Agent](https://github.com/NousResearch/hermes-agent) long-term memory backed by Engram. It recalls relevant memories into the system prompt before each turn, and stores each completed turn through Engram's pipeline.
 
-Install the plugin and run the setup wizard, which prompts for your API key:
+The plugin is not published on PyPI, so install it from the repository, then run the setup wizard, which prompts for your API key:
 
 ```bash
-pip install hermes-weaviate-engram
+pip install git+https://github.com/weaviate/hermes-weaviate-engram
 hermes memory setup        # choose weaviate_engram
 ```
+
+:::note It pins an older SDK
+The plugin requires `weaviate-engram>=0.6,<1`, so installing it into an environment that already has the current 1.x [Python SDK](#python-sdk) downgrades that SDK. Install it into its own virtual environment if you also write against the SDK directly.
+:::
 
 The wizard saves `ENGRAM_API_KEY` to `~/.hermes/.env` and sets `memory.provider` in your Hermes config.
 
@@ -104,7 +110,7 @@ The plugin exposes three tools to the agent:
 | `engram_store` | Store a memory. This is also how the agent "forgets" — it stores a correcting memory, and Engram's reconcile pipeline supersedes the old one. |
 | `engram_fetch` | Profile-shaped recall, such as "what do you know about me?" |
 
-Optional settings live in `~/.hermes/weaviate_engram.json` (for example `auto_recall`, `auto_capture`, and `max_recall_results`). Set `ENGRAM_BASE_URL` to point at a staging or self-hosted endpoint. See the [plugin README](https://github.com/weaviate/hermes-weaviate-engram) for the full configuration reference.
+Optional settings live in `~/.hermes/weaviate_engram.json` (for example `auto_recall`, `auto_capture`, and `max_recall_results`). Set `ENGRAM_BASE_URL` to point at a non-default Engram endpoint, such as a staging deployment. See the [plugin README](https://github.com/weaviate/hermes-weaviate-engram) for the full configuration reference.
 
 ## Questions and feedback
 

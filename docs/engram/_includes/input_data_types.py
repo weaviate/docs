@@ -37,6 +37,47 @@ client.memories.add(
 )
 # END InputPreExtracted
 
+# START InputMultipleStrings
+from engram import StringInput
+
+client.memories.add(
+    StringInput(content=[
+        "The user prefers dark mode.",
+        "The user is based in Berlin.",
+    ]),
+    user_id=test_user_id,
+)
+# END InputMultipleStrings
+
+# START InputTimestamps
+from datetime import datetime, timezone
+
+from engram import ConversationInput, MessageInput, StringInput
+
+# A string input that happened in the past
+client.memories.add(
+    StringInput(
+        content=["The user booked a flight to Lisbon."],
+        created_at="2026-05-01T09:00:00Z",
+        updated_at=datetime(2026, 5, 2, 9, 0, tzinfo=timezone.utc),
+    ),
+    user_id=test_user_id,
+)
+
+# A conversation with its own timestamps and metadata
+client.memories.add(
+    ConversationInput(
+        messages=[
+            MessageInput(role="user", content="I moved to Lisbon last week."),
+            MessageInput(role="assistant", content="How are you finding it?"),
+        ],
+        created_at="2026-05-01T09:00:00Z",
+        metadata={"channel": "support", "locale": "en-GB"},
+    ),
+    user_id=test_user_id,
+)
+# END InputTimestamps
+
 # Confirm the inputs were processed and stored (memories are eventually consistent).
 results = []
 for _retry in range(10):

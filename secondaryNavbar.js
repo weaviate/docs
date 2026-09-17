@@ -105,7 +105,7 @@ const secondaryNavbarItems = {
   engram: {
     title: "Engram",
     icon: "fa fa-brain",
-    description: "Persistent memory for LLM agents and applications",
+    description: "Managed memory service for LLM agents and applications",
     link: "/engram",
     links: [
       { label: "Documentation", link: "/engram", sidebar: "engramSidebar" },
