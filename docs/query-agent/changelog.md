@@ -27,10 +27,6 @@ The Query Agent was upgraded to OpenAI's latest Luna and Terra models, deliverin
 
 Ask mode and search mode now have an automatic step which explores the structure of your data before making any queries. This helps to narrow down specific values for properties, so it can filter on exact strings or values without guessing.
 
-### Ranking instructions in Search Mode
-
-Search Mode now accepts a `ranking_instructions` argument, giving you direct control over how results are ranked — independent of the system prompt used for query writing. See the [Search Mode guide](./guides/search_mode.md) for details.
-
 ### Structured outputs in Ask Mode
 
 Ask Mode now supports structured outputs: provide an `output_format` schema and receive the final answer as a validated, typed object instead of free text. See the [structured outputs reference](./reference/structured_outputs.md).
@@ -38,3 +34,9 @@ Ask Mode now supports structured outputs: provide an `output_format` schema and 
 ### Follow-up query suggestions
 
 Suggest Queries mode can now take a conversation history and suggest follow-up queries that continue the user's current thread, rather than generic queries about the collection. See the [Suggest Queries guide](./guides/suggest_queries.md).
+
+## May 2026
+
+### Customizing the result evaluation
+
+You can toggle the degree of result evaluation in Ask Mode, allowing an LLM to look at the final answer and determine which sources were used to provide the answer (higher latency), or disabling this functionality (lower latency). See the [parameters table](./guides/ask_mode.md#parameters).
