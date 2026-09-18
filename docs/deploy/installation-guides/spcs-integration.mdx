@@ -47,13 +47,17 @@ GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE SYSADMIN;
 
 Create a role, and a user, for the Weaviate instance. The Jupyter server uses the Weaviate user.
 
+:::warning Set your own password
+Replace `<YOUR_STRONG_PASSWORD>` with a strong password before you run this. `MUST_CHANGE_PASSWORD` is `FALSE` because the service signs in with these credentials, so nothing prompts you to replace a weak password later.
+:::
+
 ```sql
 USE ROLE SECURITYADMIN;
 CREATE ROLE WEAVIATE_ROLE;
 
 USE ROLE USERADMIN;
 CREATE USER weaviate_user
-  PASSWORD='weaviate123'
+  PASSWORD='<YOUR_STRONG_PASSWORD>'
   DEFAULT_ROLE = WEAVIATE_ROLE
   DEFAULT_SECONDARY_ROLES = ('ALL')
   MUST_CHANGE_PASSWORD = FALSE;
