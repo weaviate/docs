@@ -65,6 +65,7 @@ services:
   weaviate:
     # Other Weaviate configuration
     environment:
+      ENABLE_MODULES: multi2vec-bind # Enable this module
       BIND_INFERENCE_API: http://multi2vec-bind:8080  # Set the inference API endpoint
   multi2vec-bind:  # Set the name of the inference container
     mem_limit: 12g

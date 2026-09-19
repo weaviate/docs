@@ -324,7 +324,7 @@ import GroupbyLimitations from '/\_includes/groupby-limitations.mdx';
 
 You can use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `Near` operators).
 
-<!-- Make sure to [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space).<br/> -->
+You must limit the search space. Set `objectLimit`, or set a `distance` (or `certainty`) on the search operator. If you set neither, the request fails with `must provide certainty or objectLimit with vector search`.
 
 Use `objectLimit` to specify the maximum number of objects to aggregate.
 
@@ -395,13 +395,7 @@ The output is like this:
 
 ### Set a similarity `distance`
 
-You can use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `Near` operators).
-
-<!-- Make sure to [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space).<br/> -->
-
-Use `distance` to specify how similar the objects should be.
-
-<!-- If you use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `nearXXX` operators), [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space). To specify how similar the objects should be, use the `distance` operator. -->
+Use `distance` to specify how similar the objects should be. A `distance` limits the search space, so a query that sets it does not also need an `objectLimit`.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -470,7 +464,7 @@ The output is like this:
 
 ## Aggregate with a `hybrid search`
 
-You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
+You can use `Aggregate` with a [hybrid search](./hybrid.md) operator. As with a similarity search, you must limit the search space: set `objectLimit`, or bound the vector leg with `max vector distance` (`distance` argument for hybrid).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -492,8 +486,8 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
-      startMarker="// START nearTextWithLimit"
-      endMarker="// END nearTextWithLimit"
+      startMarker="// HybridExample"
+      endMarker="// END HybridExample"
       language="gonew"
     />
   </TabItem>

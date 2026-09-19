@@ -27,6 +27,12 @@ On this page, you will find examples of how to programmatically **manage OIDC gr
 
 ## Group management <i class="fas fa-users-cog"></i> {#group-management}
 
+### Create a group
+
+Weaviate has no API to create a group, and groups are not stored in Weaviate. You create and populate a group in your identity provider, which then sends the user's group memberships to Weaviate in the OIDC token.
+
+Weaviate becomes aware of a group the first time you [assign a role to it](#assign-roles-to-an-oidc-group). Until then the group name is unknown to Weaviate, even if your identity provider already uses it.
+
 ### Assign roles to an OIDC group
 
 You can assign one or more Weaviate roles to an OIDC group. Any user belonging to this group will inherit the roles' permissions.

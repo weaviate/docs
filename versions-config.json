@@ -1,16 +1,20 @@
 {
   "COMMENT1": "These values are used for yarn local yarn builds",
   "COMMENT2": "Build time values are set in _build_scripts/update-config-versions.js",
-  "weaviate_version": "1.38.2",
-  "weaviate_recent_versions": ["1.38.2", "1.37.11", "1.36.19"],
-  "helm_version": "17.8.1",
-  "weaviate_cli_version": "3.4.1",
-  "agents_python_version": "1.6.0",
-  "agents_typescript_version": "1.5.0",
-  "python_client_version": "4.22.0",
-  "go_client_version": "5.7.2",
-  "java_client_version": "6.2.0",
-  "typescript_client_version": "3.13.1",
+  "weaviate_version": "1.39.5",
+  "weaviate_recent_versions": [
+    "1.39.5",
+    "1.38.15",
+    "1.37.17"
+  ],
+  "helm_version": "17.8.3",
+  "weaviate_cli_version": "3.4.2",
+  "agents_python_version": "1.8.0",
+  "agents_typescript_version": "1.7.0",
+  "python_client_version": "4.23.1",
+  "go_client_version": "5.7.3",
+  "java_client_version": "6.3.1",
+  "typescript_client_version": "3.14.0",
   "spark_connector_version": "1.4.0",
   "csharp_client_version": "1.2.0"
 }

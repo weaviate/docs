@@ -942,7 +942,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: "nvidia/nv-embed-v1",
-      baseURL: "https://integrate.api.nvidia.com/v1"
+      baseURL: "https://integrate.api.nvidia.com"
     })
   ],
   // Additional parameters not shown
@@ -1020,84 +1020,6 @@ await client.collections.create({
   // Additional parameters not shown
 })
 // END FullMMVectorizerNVIDIA
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
-// START BasicVectorizerOctoAI
-await client.collections.create({
-  name: 'DemoCollection',
-  properties: [
-    {
-      name: 'title',
-      dataType: 'text' as const,
-    },
-  ],
-  // highlight-start
-  vectorizers: [
-    weaviate.configure.vectors.text2VecOctoAI({
-      name: 'title_vector',
-      sourceProperties: ['title'],
-    },
-    ),
-  ],
-  // highlight-end
-  // Additional parameters not shown
-}); // END BasicVectorizerOctoAI
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
-// START VectorizerOctoAICustomModel
-await client.collections.create({
-  name: 'DemoCollection',
-  properties: [
-    {
-      name: 'title',
-      dataType: 'text' as const,
-    },
-  ],
-  // highlight-start
-  vectorizers: [
-    weaviate.configure.vectors.text2VecOctoAI({
-      name: 'title_vector',
-      sourceProperties: ['title'],
-      model: "thenlper/gte-large",
-    },
-    ),
-  ],
-  // highlight-end
-  // Additional parameters not shown
-});
-// END VectorizerOctoAICustomModel
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
-// START FullVectorizerOctoAI
-await client.collections.create({
-  name: 'DemoCollection',
-  properties: [
-    {
-      name: 'title',
-      dataType: 'text' as const,
-    },
-  ],
-  // highlight-start
-  vectorizers: [
-    weaviate.configure.vectors.text2VecOctoAI({
-      name: 'title_vector',
-      sourceProperties: ['title'],
-      // model: "thenlper/gte-large",
-      // vectorizeCollectionName: true,
-      // baseURL: "https://text.octoai.run",
-    },
-    ),
-  ],
-  // highlight-end
-  // Additional parameters not shown
-});
-// END FullVectorizerOctoAI
 
 // Clean up
 await client.collections.delete('DemoCollection');
@@ -2015,6 +1937,11 @@ for (let mmSrcObject of mmSrcObjects) {
   });
 }
 
+// The model provider integration will automatically vectorize the object
+const mmResponse = await myCollection.data.insertMany(multiModalObjects);
+
+console.log(mmResponse);
+// END MMBatchImportExample
 
 let mmDocObjects = [
   { doc_b64image: "<base64 encoded image>" },
@@ -2025,8 +1952,6 @@ let mmDocObjects = [
 ];
 
 // START MMBatchImportDocsExample
-// Coming soon
-// END MMBatchImportDocsExample
 let multiModalDocObjects = new Array();
 
 for (let mmDocObject of mmDocObjects) {
@@ -2036,7 +1961,7 @@ for (let mmDocObject of mmDocObjects) {
 }
 
 // The model provider integration will automatically vectorize the object
-const mmInsertResponse = await myCollection.data.insertMany(dataObjects);
+const mmInsertResponse = await myCollection.data.insertMany(multiModalDocObjects);
 
 console.log(mmInsertResponse);
 // END MMBatchImportDocsExample

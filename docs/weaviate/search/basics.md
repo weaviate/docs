@@ -173,6 +173,8 @@ The output is like this:
 
 To start in the middle of your result set, define an `offset`. Set a `limit` to return objects starting at the offset.
 
+`offset` + `limit` cannot exceed [`QUERY_MAXIMUM_RESULTS`](/deploy/configuration/env-vars/index.md#QUERY_MAXIMUM_RESULTS) (default `10000`). A query past that ceiling returns an error rather than a truncated result set.
+
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
@@ -471,8 +473,8 @@ To retrieve properties from cross-referenced objects, specify:
 <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
-        startMarker="// GetWithCrossRefs"
-        endMarker="// END GetWithCrossRefs"
+        startMarker="// GetWithCrossRefsJS"
+        endMarker="// END GetWithCrossRefsJS"
         language="ts"
       />
 </TabItem>

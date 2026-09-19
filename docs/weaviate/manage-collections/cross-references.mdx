@@ -20,6 +20,10 @@ import SkipLink from "/src/components/SkipValidationLink";
 
 Use cross-references to establish directional relationships between collections.
 
+:::info References are not returned by default
+A query never returns cross-referenced data unless you ask for it. Request it explicitly with `return_references`, `returnReferences`, or similar. If your results have no references in them, this is usually why. See [Read cross-references](#read-cross-references) below.
+:::
+
 <details>
   <summary>
     Additional information

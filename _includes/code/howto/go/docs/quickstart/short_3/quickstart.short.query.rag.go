@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// Best practice: store your credentials in environment variables
-	weaviateURL := os.Getenv("WEAVIATE_URL")
+	weaviateURL := os.Getenv("WEAVIATE_HOST")
 	weaviateAPIKey := os.Getenv("WEAVIATE_API_KEY")
 	anthropicAPIKey := os.Getenv("ANTHROPIC_API_KEY")
 

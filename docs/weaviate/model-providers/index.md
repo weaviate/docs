@@ -33,7 +33,6 @@ This enables an enhanced developed experience, such as the ability to:
 | [Mistral](./mistral/index.md) | [Text](./mistral/embeddings.md) | [Text](./mistral/generative.md) | - |
 | [Morph](./morph/index.md) | [Text](./morph/embeddings.md) | - | - |
 | [NVIDIA](./nvidia/index.md) | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md) | [Text](./nvidia/generative.md) | [Reranker](./nvidia/reranker.md) |
-| [OctoAI (Deprecated)](./octoai/index.md) | [Text](./octoai/embeddings.md) | [Text](./octoai/generative.md) | - |
 | [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
 | [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
 | [TwelveLabs](./twelvelabs/index.md) | [Multimodal](./twelvelabs/embeddings-multimodal.md) | - | - |
@@ -134,6 +133,29 @@ For Weaviate versions before `v1.27`, the string created above is lowercased bef
 If you prefer the text to be lowercased, you can do so by setting the `LOWERCASE_VECTORIZATION_INPUT` environment variable.
 The text is always lowercased for the `text2vec-contextionary` integration.
 :::
+
+## Rate limits for API-based embeddings
+
+Model providers throttle how fast you can call them, so a large import often ends in `429` errors. To keep Weaviate inside your quota, tell it what the quota is with two request headers:
+
+- `X-<Provider>-Ratelimit-RequestPM-Embedding`: the requests-per-minute limit
+- `X-<Provider>-Ratelimit-TokenPM-Embedding`: the tokens-per-minute limit
+
+`<Provider>` is the same name as in the API key header on the integration's page. A collection vectorized by Cohere, for example, takes `X-Cohere-Ratelimit-RequestPM-Embedding` next to `X-Cohere-Api-Key`. Set the headers when you connect, so every batch request carries them.
+
+The values must be whole numbers. Weaviate falls back to the integration's own default if a header is missing or cannot be parsed.
+
+The headers are read by the Cohere, Databricks, DigitalOcean, Jina AI, Mistral, OpenAI, Azure OpenAI, Voyage AI, and Weaviate Embeddings integrations. Other integrations ignore them.
+
+## Troubleshooting: a missing or misconfigured API key
+
+Every API-based integration reports a missing key the same way. If the key is absent, the request fails with:
+
+```
+no api key found neither in request header: X-<Provider>-Api-Key nor in environment variable under <PROVIDER>_APIKEY
+```
+
+The API key is never part of the collection configuration, so supply it as a request header when you connect, or set the environment variable on the Weaviate server. A key in the header takes precedence over the environment variable.
 
 ## Questions and feedback
 

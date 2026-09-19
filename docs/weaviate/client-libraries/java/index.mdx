@@ -28,7 +28,7 @@ export const javaCardsData = [
   },
   {
     title: "Reference manual",
-    link: "https://javadoc.io/doc/io.weaviate/client/latest/index.html",
+    link: "https://javadoc.io/doc/io.weaviate/client6/latest/index.html",
     icon: "fa-solid fa-book",
   },
 ];
@@ -41,7 +41,7 @@ The latest Java v6 client is version `v||site.java_client_version||`.
 
 :::
 
-This page broadly covers the Weaviate Java client (`v6` beta release). For usage information not specific to the Java client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
+This page broadly covers the Weaviate Java client (`v6` release). For usage information not specific to the Java client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
 ## Installation
 
@@ -124,9 +124,19 @@ For more code examples, check out the [How-to manuals & Guides](../../guides.mdx
 
 ## Asynchronous usage
 
-_Coming soon_
+The client has an asynchronous API. Call `client.async()` to get a [`WeaviateClientAsync`](https://javadoc.io/doc/io.weaviate/client6/latest/io/weaviate/client6/v1/api/WeaviateClientAsync.html), which mirrors the synchronous API without blocking:
 
-<!-- TODO[g-despot] Add section -->
+```java
+var client = WeaviateClient.connectToLocal();
+
+try (final var async = client.async()) {
+    async.collections.create("Things");
+}
+
+client.close();
+```
+
+If you only need the asynchronous API, create it directly with one of the `WeaviateClientAsync` static factories (`connectToLocal`, `connectToWeaviateCloud`, `connectToCustom`) instead. That way the client does not initialize resources it never uses.
 
 ## Releases
 

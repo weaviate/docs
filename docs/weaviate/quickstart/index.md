@@ -157,6 +157,27 @@ import CodeClientInstall from "/\_includes/code/quickstart/clients.install.new.m
 
 <CodeClientInstall />
 
+<details>
+  <summary>Verify your setup</summary>
+
+Before you create anything, you can also check that the client can reach your cluster:
+
+import QuickstartIsReady from "/\_includes/code/quickstart/quickstart.is_ready.mdx";
+
+<QuickstartIsReady />
+
+Some common first errors include:
+
+| What you see | What it means |
+| --- | --- |
+| `unauthorized: invalid api key` (HTTP 401) | The key is wrong or is not an admin key. Copy the **Admin** key from your cluster's **API keys** tab. |
+| `Unfortunately, the gRPC health check against Weaviate could not be completed.` | The client reached REST but not gRPC. Check the endpoint format for your client: the Go and C# clients want a bare hostname, without `https://`. On a self-hosted instance, also check that port `50051` is published and not blocked. |
+| `no vectorizer found for class "Movie"` | You ran a `nearText` query against a collection that has no vectorizer. Create the collection with a vectorizer, or query with `nearVector` and supply the vector yourself. |
+| `no api key found neither in request header: ... nor in environment variable under ...` | The model provider key never reached Weaviate. Pass it in the connection headers, as in the [model provider](../model-providers/index.md) examples. |
+| `Con004: The connection to Weaviate was not closed properly.` | The script finished without closing the client. Call `client.close()`, or use a context manager. |
+
+</details>
+
 ---
 
 ## Step 1: Create a collection & import data {#create-a-collection}

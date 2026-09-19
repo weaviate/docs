@@ -66,6 +66,7 @@ services:
   weaviate:
     # Other Weaviate configuration
     environment:
+      ENABLE_MODULES: multi2vec-clip # Enable this module
       CLIP_INFERENCE_API: http://multi2vec-clip:8080  # Set the inference API endpoint
   multi2vec-clip:  # Set the name of the inference container
     image: cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1

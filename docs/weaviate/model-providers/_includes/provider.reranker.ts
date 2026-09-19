@@ -98,7 +98,7 @@ await client.collections.create({
   // highlight-start
   reranker: weaviate.configure.reranker.nvidia({
     model: "nvidia/llama-3.2-nv-rerankqa-1b-v2",
-    baseURL: "https://integrate.api.nvidia.com/v1"
+    baseURL: "https://ai.api.nvidia.com"
   }),
   // highlight-end
 });
