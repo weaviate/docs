@@ -166,7 +166,7 @@ import QuickstartIsReady from "/\_includes/code/quickstart/quickstart.is_ready.m
 
 <QuickstartIsReady />
 
-A working setup prints `True` (or `true`). Anything else is a connection problem, not a broken cluster. Some common first errors include:
+Some common first errors include:
 
 | What you see | What it means |
 | --- | --- |

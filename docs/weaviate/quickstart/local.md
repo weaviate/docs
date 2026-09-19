@@ -132,7 +132,7 @@ import QuickstartIsReady from "/_includes/code/quickstart/local.quickstart.is_re
 
 <QuickstartIsReady />
 
-A working setup prints `True` (or `true`). Anything else is a connection problem, not a broken instance. Run `docker compose ps` to confirm both containers are up. Some common first errors include:
+Run `docker compose ps` to confirm both containers are up. Some common first errors include:
 
 | What you see | What it means |
 | --- | --- |

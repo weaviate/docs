@@ -2,7 +2,7 @@
 title: Boost
 sidebar_position: 76
 image: og/docs/howto.jpg
-description: Soft-rank vector, hybrid, and BM25 results by promoting or demoting matching documents without filtering them out. Worked Python and TypeScript examples for filter, property, time-decay, numeric-decay, and blended boosts.
+description: Soft-rank vector, hybrid, and BM25 results by promoting or demoting matching documents without filtering them out. 
 # tags: ['boost', 'search', 'ranking']
 ---
 
