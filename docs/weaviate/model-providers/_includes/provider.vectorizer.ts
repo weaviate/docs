@@ -1952,8 +1952,6 @@ let mmDocObjects = [
 ];
 
 // START MMBatchImportDocsExample
-// Coming soon
-// END MMBatchImportDocsExample
 let multiModalDocObjects = new Array();
 
 for (let mmDocObject of mmDocObjects) {

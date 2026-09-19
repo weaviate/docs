@@ -111,6 +111,7 @@ def test_datatypes(empty_weaviates, script_loc):
         "./_includes/code/howto/manage-data.multi-tenancy.ts",
         "./_includes/code/config-refs/reference.collections.ts",
         "./_includes/code/howto/manage-data.ttl.ts",
+        "./_includes/code/howto/search.boost.ts",
     ],
 )
 def test_manage_data(empty_weaviates, script_loc):

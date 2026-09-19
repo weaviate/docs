@@ -464,7 +464,7 @@ The output is like this:
 
 ## Aggregate with a `hybrid search`
 
-You can use `Aggregate` with a [hybrid search](./hybrid.md) operator. As with a similarity search, the query must set `objectLimit` or a `distance`.
+You can use `Aggregate` with a [hybrid search](./hybrid.md) operator. As with a similarity search, you must limit the search space: set `objectLimit`, or bound the vector leg with `max vector distance` (`distance` argument for hybrid).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
