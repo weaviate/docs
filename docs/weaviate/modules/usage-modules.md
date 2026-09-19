@@ -37,7 +37,7 @@ RUNTIME_OVERRIDES_LOAD_INTERVAL=30s
 
 # in tools/dev/config.runtime-overrides.yaml
 usage_scrape_interval: 1h
-usage_shard_jitter_interval: 100ms  #(optional)
+usage_shard_concurrency: 1  #(optional)
 usage_gcs_bucket: weaviate-usage
 usage_gcs_prefix: billing
 
@@ -77,8 +77,9 @@ TRACK_VECTOR_DIMENSIONS=true # won't be needed from 1.32.1
 # Collection interval (default: 1h)
 USAGE_SCRAPE_INTERVAL=2h
 
-# (optional) Shard loop jitter (default: 100ms)
-USAGE_SHARD_JITTER_INTERVAL=50ms
+# (optional) Number of shards read concurrently while collecting usage (default: 1)
+# Renamed from USAGE_SHARD_JITTER_INTERVAL in v1.37.12, backported to v1.36.21
+USAGE_SHARD_CONCURRENCY=4
 
 # (optional) Policy version (default: 2025-06-01)
 USAGE_POLICY_VERSION=2025-06-01
@@ -95,7 +96,7 @@ Enable runtime overrides to avoid needing to restart Weaviate when updating usag
 
 ```yaml
 usage_scrape_interval: 1s
-usage_shard_jitter_interval: 100ms # (optional)
+usage_shard_concurrency: 1 # (optional)
 usage_verify_permissions: true/false # (optional)
 
 # usage-gcs config

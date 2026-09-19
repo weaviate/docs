@@ -32,7 +32,7 @@ import APITable from '@site/src/components/APITable';
 | --- | --- | --- | --- |
 | `ASYNC_INDEXING` | If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
-| `BANNER_INTERVAL` | How often the banner is logged again after its first appearance. The banner draws its art, and a `► News:` line when there is one, from `https://weaviate.io/banner/v1.json` when it can be fetched. Banner and fetch happen only when telemetry is enabled. Default: `24h`. Values under `1h` are raised to `1h`.<br/>Added in `v1.40` | `string - duration` | `12h` |
+| `BANNER_INTERVAL` | How often the banner is logged again after its first appearance. The banner draws its art, and a `► News:` line when there is one, from `https://weaviate.io/banner/v1.json` when it can be fetched. Banner and fetch happen only when telemetry is enabled. Default: `24h`. Values under `1h` are raised to `1h`.<br/>Added in `v1.39.4` | `string - duration` | `12h` |
 | `CORS_ALLOW_HEADERS` | Value of the `Access-Control-Allow-Headers` response header on the REST API, which controls the request headers a browser may send cross-origin. The default is the long list of headers Weaviate itself reads, including `Content-Type`, `Authorization` and the per-provider API-key headers. Default: the built-in header list | `string - comma separated names` | `Content-Type, Authorization` |
 | `CORS_ALLOW_METHODS` | Value of the `Access-Control-Allow-Methods` response header on the REST API, which controls the HTTP methods a browser may use cross-origin. Default: `*` | `string - comma separated names` | `GET, POST, OPTIONS` |
 | `CORS_ALLOW_ORIGIN` | Value of the `Access-Control-Allow-Origin` response header on the REST API, which controls the origins a browser may call Weaviate from. Set this to reach Weaviate directly from browser code on a specific site. Default: `*` | `string` | `https://example.com` |
@@ -41,9 +41,9 @@ import APITable from '@site/src/components/APITable';
 | `DEFAULT_VECTOR_INDEX` | Default vector index type for new collections (and named vectors), used when the collection definition does not specify one. An explicit `vectorIndexType` in the collection definition still takes precedence. Available values: `hnsw`, `flat`, `dynamic`, and `hfresh`. Runtime-configurable. Default: `hnsw`<br/>Added in `v1.37.3` | `string` | `flat` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - can be overridden by the vectorizer in the collection definition. | `string` | `text2vec-contextionary` |
 | `API_BASED_MODULES_DISABLED` | Weaviate automatically enables the usage of all [API-based modules](../../../weaviate/model-providers/index.md#api-based). Set this variable to `true` in order to limit access and only allow specific modules through the [`ENABLE_MODULES`](#ENABLE_MODULES) variable. Default: `false`<br/> Added in `v1.33` | `boolean` | `true` |
-| `DISABLE_GRAPHQL` | Disable the GraphQL API (default: `false`). When `true`, the `/v1/graphql` endpoint is not served. New [Weaviate Cloud](/cloud/manage-clusters/default-settings) clusters are created with this set to `true`. | `boolean` | `true` |
+| `DISABLE_GRAPHQL` | Disable the GraphQL API (default: `false`). When `true`, the `/v1/graphql` endpoint is not served. New [Weaviate Cloud](/cloud/manage-clusters/default-settings) clusters are created with this set to `true`. See [Can I use GraphQL with Weaviate Cloud?](/cloud/faq#graphql) for the alternatives. | `boolean` | `true` |
 | `DISABLE_LAZY_LOAD_SHARDS` | When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. **Deprecated in `v1.36.6`.** Use `LAZY_LOAD_SHARD_COUNT_THRESHOLD` and `LAZY_LOAD_SHARD_SIZE_THRESHOLD_GB` instead. Weaviate now auto-detects when lazy loading is needed per collection. | `string` | `false` |
-| `DISABLE_STARTUP_BANNER` | Disable the banner Weaviate logs shortly after startup (`action=banner`, with the version, the link to [Improve your cluster](/improve-your-cluster), and this node's `/v1/meta` URL), and its repeat every `BANNER_INTERVAL`. The banner runs only while telemetry is enabled, because it fetches its art from weaviate.io, so a cluster with `DISABLE_TELEMETRY=true` never logs one. It is an `info` entry, so `LOG_LEVEL=warning` or stricter hides it as well. Default: `false`<br/>Added in `v1.40` | `boolean` | `true` |
+| `DISABLE_STARTUP_BANNER` | Disable the banner Weaviate logs shortly after startup (`action=banner`, with the version, the link to [Improve your cluster](/improve-your-cluster), and this node's `/v1/meta` URL), and its repeat every `BANNER_INTERVAL`. The banner runs only while telemetry is enabled, because it fetches its art from weaviate.io, so a cluster with `DISABLE_TELEMETRY=true` never logs one. It is an `info` entry, so `LOG_LEVEL=warning` or stricter hides it as well. Default: `false`<br/>Added in `v1.39.4` | `boolean` | `true` |
 | `DISABLE_TELEMETRY` | Disable [telemetry](/deploy/configuration/telemetry.md) data collection | boolean | `false` |
 | `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
 | `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
@@ -65,6 +65,8 @@ import APITable from '@site/src/components/APITable';
 | `GO_PROFILING_DISABLE` | If `true`, disables Go profiling. Default: `false`. | `boolean` | `false` |
 | `GO_PROFILING_PORT` | Sets the port for the Go profiler. Default: `6060` | `integer` | `6060` |
 | `DEBUG_ENDPOINTS_ENABLED` | Gate for the debug HTTP listener (the profiling port set by `GO_PROFILING_PORT`, default `6060`), which serves Weaviate's **unauthenticated** internal debug and profiling endpoints: `/debug/config`, Go profiling (`/debug/pprof/*`, `/debug/fgprof`), and various maintenance and diagnostic routes. [Runtime-configurable](/deploy/configuration/env-vars/runtime-config.md) via the `debug_endpoints_enabled` override. Default: `false`. `GO_PROFILING_DISABLE` still controls whether the listener binds at all. <br/>Added in `v1.37.9` | `boolean` | `true` |
+| `GRPC_CERT_FILE` | Path to the TLS certificate the gRPC server presents. Set it together with `GRPC_KEY_FILE` to serve gRPC over TLS. If either is unset, gRPC is served without TLS. | `string - file path` | `/etc/weaviate/tls/tls.crt` |
+| `GRPC_KEY_FILE` | Path to the private key matching `GRPC_CERT_FILE`. | `string - file path` | `/etc/weaviate/tls/tls.key` |
 | `GRPC_MAX_MESSAGE_SIZE` | Maximum gRPC message size in bytes. Requests larger than this limit (e.g. a large `insert_many` call) are rejected. Default: `104858000` (approximately 100 MB) | `string - number` | `2000000000` |
 | `GRPC_PORT` | The port on which Weaviate's gRPC server listens for incoming requests. Default: `50051` | `string - number` | `50052` |
 | `HNSW_GEO_INDEX_EF` | Balance geo index search speed and recall. This value controls the search depth for geo-based queries. Default: `800`<br/>Added in `v1.31.22` | `string - number` | `1000` |
@@ -76,12 +78,14 @@ import APITable from '@site/src/components/APITable';
 | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | Maximum allowed number of collections in a Weaviate node. A value of `-1` removes the limit. Default: `-1` (unlimited) <br/><br/>Instead of raising the collections count limit, consider [rethinking your architecture](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx).<br/>Added in `v1.30`| `string - number` | `20` |
 | `MAXIMUM_CONCURRENT_BUCKET_LOADS` | Maximum number of buckets that can be loaded concurrently during startup. This is a safeguard to prevent overwhelming the operating system when loading large numbers of collections. Default: `100`<br/>Added in `v1.31.22` | `string - number` | `50` |
 | `MAXIMUM_CONCURRENT_SHARD_LOADS` | Maximum number of shards that can be loaded concurrently during startup. This is a safeguard to prevent overwhelming the operating system when loading large numbers of collections. Default: `100` | `string - number` | `50` |
+| `MAX_MEMORY_MAPPINGS` | Overrides the memory-mapping limit Weaviate assumes for this node. Every shard costs several mappings, and Weaviate refuses to open a shard that would exceed its budget. By default it reads `vm.max_map_count` from the kernel. Set this only where that value cannot be read or is wrong. Raising `vm.max_map_count` itself is the fix for the underlying error — see [Not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings). | `string - number` | `4194304` |
 | `MCP_SERVER_CONFIG_PATH` | Path to a YAML file for customizing MCP tool descriptions. Useful for prompt engineering the LLM's understanding of your specific data. If not provided or file malformed, the default descriptions will be used. Default: `""` (default tool descriptions from the [source code](https://github.com/weaviate/weaviate/tree/main/adapters/handlers/mcp) will be used)<br/>Added in `v1.37.1` | `string` | `/etc/weaviate/mcp-config.yaml` |
 | `MCP_SERVER_ENABLED` | Enable the built-in MCP server. When enabled, the MCP endpoint is available at `/v1/mcp` on the REST API port. Default: `false`<br/>Added in `v1.37.1`. [Runtime-configurable](./runtime-config.md#mcp) from `v1.38`. | `boolean` | `true` |
 | `MCP_SERVER_WRITE_ACCESS_ENABLED` | Enable write tools (`weaviate-objects-upsert`) on the MCP server. When `false`, only read and query tools are available. Default: `false`<br/>Added in `v1.37.1`. [Runtime-configurable](./runtime-config.md#mcp) from `v1.38`. | `boolean` | `true` |
 | `MEMORY_READONLY_PERCENTAGE` | If memory usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. (Default: `0` - i.e. no limit) | `string - number` | `75` |
 | `MEMORY_WARNING_PERCENTAGE` | If memory usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. (Default: `0` - i.e. no limit) | `string - number` | `85` |
 | `MODULES_CLIENT_TIMEOUT` | Timeout for requests to Weaviate modules. Default: `50s` | `string - duration` | `5s`, `10m`, `1h` |
+| `MODULES_VALIDATE_BASE_URL` | Validate the `baseURL` a [model provider integration](/weaviate/model-providers/index.md) is pointed at, whether it comes from the collection definition or an `X-*-Baseurl` request header. When `true`, Weaviate rejects any URL that is not HTTPS or that resolves to a loopback, private or link-local address. Turn it on to block requests to your internal network. Leave it off if you deliberately route model traffic through an HTTP proxy or a private gateway, because those are exactly the URLs it rejects. Default: `false` | `boolean` | `true` |
 | `OBJECTS_TTL_BATCH_SIZE` | Number of objects deleted per batch during TTL cleanup. With the default pause settings, a pause occurs every `OBJECTS_TTL_BATCH_SIZE * OBJECTS_TTL_PAUSE_EVERY_NO_BATCHES` objects (100,000 by default). Can be modified at runtime. Default: `10000` <br/>Added in `v1.36` | `string - number` | `10000` |
 | `OBJECTS_TTL_CONCURRENCY_FACTOR` | Controls the concurrency of the TTL deletion process as a multiplier. Higher values use more resources but delete faster. Must be greater than 0. Can be modified at runtime. Default: `1` <br/>Added in `v1.36` | `string - number` | `1` |
 | `OBJECTS_TTL_DELETE_SCHEDULE` | Schedule for deleting expired objects. Accepts standard 5-field cron format, 6-field (with seconds), 7-field (with seconds and year), descriptors (`@yearly`, `@monthly`, `@weekly`, `@daily`, `@hourly`), or hash expressions. Default: `""` (disabled) <br/>Added in `v1.36` | `string - cron format` | `0 */6 * * *` (every 6 hours) |
@@ -98,8 +102,11 @@ import APITable from '@site/src/components/APITable';
 | `PERSISTENCE_HNSW_MAX_LOG_SIZE` | Maximum size of the HNSW [write-ahead-log](/weaviate/concepts/storage.md#hnsw-vector-index-storage). Increase this to improve log compaction efficiency, or decrease to reduce memory requirements. Default: 500MiB | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
 | `PERSISTENCE_LSM_ACCESS_STRATEGY` | Function used to access disk data in virtual memory. Default: `mmap` | `string` | `mmap` or `pread` |
 | `PERSISTENCE_LSM_MAX_SEGMENT_SIZE` | Maximum size of a segment in the [LSM store](/weaviate/concepts/storage.md#object-and-inverted-index-store). Set this to limit disk usage spikes during compaction to ~2x the segment size. Default: no limit | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
-| `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](/deploy/configuration/monitoring.md) | `boolean` | `false` |
+| `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](/deploy/configuration/monitoring.md). The other `PROMETHEUS_*` variables take effect only when this is `true`. | `boolean` | `false` |
 | `PROMETHEUS_MONITORING_GROUP` | If set, Weaviate groups metrics for the same class across all shards. | `boolean` | `true` |
+| `PROMETHEUS_MONITORING_METRIC_NAMESPACE` | Prefix added to every metric name. Empty by default, so metric names carry no prefix. | `string` | `weaviate` |
+| `PROMETHEUS_MONITORING_PORT` | Port the metrics endpoint listens on. Default: `2112` | `string - number` | `2112` |
+| `PROMETHEUS_MONITOR_CRITICAL_BUCKETS_ONLY` | Report per-segment LSM metrics only for the objects bucket and the compressed-vector buckets, instead of every bucket. Use it to cut metric cardinality on clusters with many collections or tenants. Default: `false` | `boolean` | `true` |
 | `QUERY_BOOST_DEFAULT_DEPTH` | Default candidate-pool size used when a [Boost](/weaviate/search/boost.md) query does not set its own `depth`. The primary search retrieves this many candidates before the boost rescorer runs. Must be a positive integer and is hard-capped by `QUERY_MAXIMUM_RESULTS`. Default: `100`<br/>Added in `v1.38` | `string - number` | `200` |
 | `QUERY_CROSS_REFERENCE_DEPTH_LIMIT` | Sets the maximum depth of cross-references to be resolved in a query. Defaults to 5. | `string - number` | `3` |
 | `QUERY_DEFAULTS_LIMIT` | Sets the default number of objects to be returned in a query. | `string - number` | `25` <br/> Defaults to `10`|
@@ -123,6 +130,37 @@ import APITable from '@site/src/components/APITable';
 </APITable>
 ```
 
+<!--
+
+## OpenTelemetry tracing
+
+:::caution Experimental
+OpenTelemetry tracing is experimental. The variables below, and the spans they produce, may change or be removed in any release.
+:::
+
+Weaviate can export traces over OTLP to a collector. Tracing is off by default; set `EXPERIMENTAL_OTEL_ENABLED` to `true` to turn it on. The other variables are read only when it is enabled.
+
+```mdx-code-block
+<APITable>
+```
+
+| Variable | Description | Type | Example Value |
+| --- | --- | --- | --- |
+| `EXPERIMENTAL_OTEL_ENABLED` | (EXPERIMENTAL) Enable OpenTelemetry tracing. Default: `false` | `boolean` | `true` |
+| `EXPERIMENTAL_OTEL_EXPORTER_OTLP_ENDPOINT` | (EXPERIMENTAL) Address of the OTLP collector. Weaviate adjusts the form to the protocol: it strips a `http://` or `https://` prefix for `grpc`, and adds `http://` for `http`. Default: `localhost:4317` | `string` | `otel-collector:4317` |
+| `EXPERIMENTAL_OTEL_EXPORTER_OTLP_PROTOCOL` | (EXPERIMENTAL) Transport used to reach the collector. Default: `grpc` | `string` | `grpc` or `http` |
+| `EXPERIMENTAL_OTEL_SERVICE_NAME` | (EXPERIMENTAL) Service name reported on every span. Default: `weaviate` | `string` | `weaviate-prod` |
+| `EXPERIMENTAL_OTEL_ENVIRONMENT` | (EXPERIMENTAL) Deployment environment reported on every span. Default: `development` | `string` | `production` |
+| `EXPERIMENTAL_OTEL_TRACES_SAMPLER_ARG` | (EXPERIMENTAL) Fraction of traces sampled, between `0.0` and `1.0`. A value outside that range, or one that is not a number, is ignored and the default is kept. Default: `0.01` (1%) | `string - number` | `0.1` |
+| `EXPERIMENTAL_OTEL_BSP_EXPORT_TIMEOUT` | (EXPERIMENTAL) How long the batch span processor waits before exporting the spans it has collected. Default: `5s` | `string - duration` | `10s` |
+| `EXPERIMENTAL_OTEL_BSP_MAX_EXPORT_BATCH_SIZE` | (EXPERIMENTAL) Maximum number of spans in one export batch. Default: `512` | `string - number` | `1024` |
+
+```mdx-code-block
+</APITable>
+```
+
+-->
+
 ## Module-specific
 
 ```mdx-code-block
@@ -137,7 +175,7 @@ import APITable from '@site/src/components/APITable';
 | `CLIP_INFERENCE_API` | The endpoint where to reach the clip module if enabled | `string` | `http://multi2vec-clip:8080` |
 | `CONTEXTIONARY_URL` | Service-Discovery for the contextionary container | `string - URL` | `http://contextionary` |
 | `IMAGE_INFERENCE_API` | The endpoint where to reach the img2vec-neural module if enabled | `string` | `http://localhost:8000` |
-| `LOWERCASE_VECTORIZATION_INPUT` | If `true`, Weaviate lowercases all input text before vectorization. <br/>For `text2vec-contextionary`, set this to `true` | `boolean` | `true` |
+| `LOWERCASE_VECTORIZATION_INPUT` | Force Weaviate to lowercase input text before vectorization, for every vectorizer and collection. Default: `false` — since `v1.27`, API-based vectorizers send the text as it is stored. Set it to `true` only for a vectorizer that needs lowercased input, such as `text2vec-contextionary`. | `boolean` | `true` |
 | `OFFLOAD_S3_BUCKET` | The S3 bucket to use for offloading (default: `weaviate-offload`) | `string` | `my-custom-offload-bucket` |
 | `OFFLOAD_S3_BUCKET_AUTO_CREATE` | Whether to automatically create the S3 bucket for offloading if it does not exist (default: `false`) | `boolean` | `true` |
 | `OFFLOAD_S3_CONCURRENCY` | The maximum number of parts that will be uploaded/downloaded in parallel during offloading operations (default: `25`) | `string - number` | `10` |
@@ -160,7 +198,8 @@ import APITable from '@site/src/components/APITable';
 | `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | `string` | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
 | `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config. Default: `2m` | `duration` | `2m` |
 | `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics. Default: `1h` | `duration` | `1h` |
-| `USAGE_SHARD_JITTER_INTERVAL` | Jitter interval for shard-level operations to avoid overwhelming the filesystem when there are thousands of shards. Default: `100ms` | `duration` | `100ms` |
+| `USAGE_SHARD_CONCURRENCY` | Number of shards read concurrently while collecting usage. Raise it to finish the scan faster on clusters with many shards, at the cost of more filesystem load. Default: `1`<br/>Added in `v1.37.12`, and backported to `v1.36.21`, replacing `USAGE_SHARD_JITTER_INTERVAL`. | `string - number` | `4` |
+| `USAGE_SHARD_JITTER_INTERVAL` | **Removed in `v1.37.12`**, and in `v1.36.21` on the `v1.36` patch line. Previously set a per-shard jitter interval to stagger shard reads and avoid overwhelming the filesystem when there are thousands of shards. Default was `100ms`. Replaced by `USAGE_SHARD_CONCURRENCY`, which bounds how many shards are read at once instead of spacing them out. <br/>Added in `v1.32.1` | `duration` | `100ms` |
 | `USAGE_POLICY_VERSION` | Policy version for usage tracking | `string` | `2025-06-01` |
 | `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start. Default: `false` | `boolean` | `true` |
 
@@ -244,7 +283,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_TIMEOUTS_MULTIPLIER` | Multiplier for Raft consensus timeouts and memberlist TCP timeouts. (Default: `5`) | `string - number` | `10` |
 | `REPLICA_MOVEMENT_ENABLED` | Enable replica movement and replication operations. When enabled, the replication engine starts and REST API endpoints for replica operations become available. Default: `false` <br/>Added in `v1.32` | `boolean` | `true` |
 | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
-| `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | Enable/disable the request queue buffer for replicated indices in multi-node clusters. Can be modified at runtime. Default: `false` | `boolean` | `true` |
+| `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED` | **Removed in `v1.37.10`**, and in `v1.36.18` on the `v1.36` patch line. Previously enabled a request queue buffer for replicated indices in multi-node clusters, and could be modified at runtime. Default was `false`. The feature was removed; there is no replacement. <br/>Added in `v1.30.19` | `boolean` | `true` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
 
@@ -265,7 +304,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `ASYNC_REPLICATION_HASHTREE_INIT_CONCURRENCY` | Number of shards that may build their hash tree concurrently when async replication starts up. Added in `v1.38`. Default: `100`<br/> [Read more.](/deploy/configuration/async-rep.md#async_replication_hashtree_init_concurrency) | `string - number` | `100` |
 | `ASYNC_REPLICATION_CLUSTER_MAX_WORKERS` | **Removed in `v1.38`.** Previously set the maximum number of concurrent async replication workers across the cluster. Replaced by `ASYNC_REPLICATION_SCHEDULER_WORKERS`. | `string - number` | `30` |
 | `ASYNC_REPLICATION_HASHTREE_HEIGHT` | Height of the hash tree used for data comparison between nodes. If the height is `0` each node will store just one digest per shard. Default: `16` (single-tenant) / `10` (multi-tenant), Min: `0`, Max: `20`<br/> [Read more about potentially increased memory consumption.](/weaviate/concepts/replication-architecture/consistency#memory-and-performance-considerations-for-async-replication) | `string - number` | `10` |
-| `ASYNC_REPLICATION_FREQUENCY` |  Frequency of periodic data comparison between nodes. Default: `30s` | `string - duration` | `60s` |
+| `ASYNC_REPLICATION_FREQUENCY` | Interval between periodic data comparisons between nodes. A larger value means comparisons run less often, so replicas converge more slowly. Default: `30s` | `string - duration` | `60s` |
 | `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING` | Frequency of data comparison between nodes while propagation is active. Default: `3s` | `string - duration` | `5s` |
 | `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY` | **Removed in `v1.38`.** Previously set how often the background process checked for changes in node availability. No longer used by the async replication scheduler. | `string - duration` | `5s` |
 | `ASYNC_REPLICATION_LOGGING_FREQUENCY` | Frequency of how often the background process logs any events. Default: `60s` | `string - duration` | `7s` |

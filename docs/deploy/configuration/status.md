@@ -5,6 +5,8 @@ image: og/docs/configuration.jpg
 # tags: ['status', 'nodes', 'metadata', 'reference', 'configuration']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
+
 Monitor the health, status, and metadata of your Weaviate cluster.
 
 ## Liveness
@@ -65,25 +67,10 @@ Each Weaviate node can be set to one of the following operational modes, limitin
 
 These modes can be configured using the `OPERATIONAL_MODE` [environment variable](./env-vars/index.md), or the equivalent `operational_mode` [runtime configuration](./env-vars/runtime-config.md).
 
-## Schema synchronization
+## Cluster synchronization
 
-The `v1/schema/cluster-status` endpoint displays the status of the schema synchronization. The endpoint returns the following fields:
+To check whether the nodes agree on the cluster state, use the <SkipLink href="/weaviate/api/rest#tag/cluster/GET/cluster/statistics">`/v1/cluster/statistics`</SkipLink> endpoint. It lists every node that has reported in, and a top-level `synchronized` field that is `true` when they have reached consensus.
 
-- `healthy`: The status of the schema synchronization.
-- `hostname`: The hostname of the Weaviate instance.
-- `ignoreSchemaSync`: Whether to ignore the cluster check at startup (for recovery from an out-of-sync situation).
-- `nodeCount`: The number of nodes in the cluster.
-
-Example response:
-
-```js
-{
-    "healthy": true,
-    "hostname": "node1",
-    "ignoreSchemaSync": false,
-    "nodeCount": 3
-}
-```
 
 ## Cluster node data
 

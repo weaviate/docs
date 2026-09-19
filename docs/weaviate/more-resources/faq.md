@@ -69,10 +69,12 @@ image: og/docs/more-resources.jpg
 <details>
   <summary>Answer</summary>
 
-> There are three levels:
-> 1. You have no volume configured (the default in our `Docker Compose` files), if the container restarts (e.g. due to a crash, or because of `docker stop/start`) your data is kept
-> 2. You have no volume configured (the default in our `Docker Compose` files), if the container is removed (e.g. from `docker compose down` or `docker rm`) your data is gone
-> 3. If a volume is configured, your data is persisted regardless of what happens to the container. They can be completely removed or replaced, next time they start up with a volume, all your data will be there
+> The sample [Docker Compose files](/deploy/installation-guides/docker-installation.md) mount a named volume, `weaviate_data`, at `/var/lib/weaviate`, so by default your data outlives the container. There are three cases:
+> 1. With a volume, as in the sample files: your data survives a crash, `docker stop/start`, `docker compose down` and `docker rm`. The container can be removed or replaced; the next one that mounts the same volume finds all the data.
+> 2. With a volume, but you run `docker compose down -v`: the `-v` flag removes the named volume along with the containers, and the data is gone.
+> 3. With no volume — for example a plain `docker run` with no `-v` flag: your data is kept across a restart, because the container's writable layer survives, but it is gone as soon as the container is removed.
+>
+> See [what survives a restart, `down`, and `down -v`](/deploy/installation-guides/docker-installation.md#what-survives-what) for the full table.
 
 </details>
 

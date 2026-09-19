@@ -101,7 +101,7 @@ Here, the image tag is overridden to `1.25.0`. You can also modify this value di
 helm upgrade weaviate weaviate/weaviate \
   --namespace weaviate \
   --values ./values.yaml \
-  --set image.tag="1.25.0" \
+  --set image.tag="1.25.0"
 ```
 
 ### 4. Verify update
@@ -159,6 +159,10 @@ If successful, you should see a response similar to this:
 If the number of objects under `statistics` matches the number of replicas you have set in your `values.yaml` file, and the `synchronized` flag is `true`, then the cluster is up and running.
 
 ## Downgrade instructions
+
+:::caution Only for servers before `v1.35`
+The `v1/cluster/schema-v1` endpoint used in step 1 was removed in `v1.35.0`. This procedure works only on a server running `v1.34.x` or earlier; on `v1.35` and later the request returns `404`, and there is no replacement endpoint. Do not delete the StatefulSet expecting the rest of the steps to work — contact support before downgrading a `v1.35` or later cluster.
+:::
 
 If you need to downgrade from `1.25` to a pre-`1.25` version, you must perform a `POST` request to the `v1/cluster/schema-v1` (a payload is not required) to downgrade the cluster metadata.
 

@@ -32,6 +32,20 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 - **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups include both `active` (HOT) and `inactive` (COLD) tenants. Inactive tenants are backed up directly from disk without activation. `Offloaded` (FROZEN) tenants are still skipped since they have no local data. Inactive tenant support was added in `v1.37.0`, and backported to `v1.35.17` and `v1.36.10`. In earlier releases only active tenants are included, so be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
 :::
 
+<details>
+  <summary>What a backup covers</summary>
+
+A backup is taken at instance or collection granularity. Tenants are not a backup unit in either direction.
+
+| Scope | In the backup | Restorable on its own |
+| --- | --- | --- |
+| Whole instance | Yes. This is the default when you set neither `include` nor `exclude`. | Yes. |
+| A collection | Yes. Name it in `include`, or leave it out of `exclude`. | Yes. On restore, `include` and `exclude` select from the collections the backup contains. |
+| A tenant | Yes, as part of its collection. Since `v1.37`, both `active` (HOT) and `inactive` (COLD) tenants are included; `offloaded` (FROZEN) tenants are skipped, because they hold no local data. | **No.** There is no tenant-level restore — restoring brings back the whole collection. If you need to restore one tenant at a time, give each tenant its own collection. |
+| RBAC roles and users | Yes, captured alongside the collections. | Not by default. Set `rolesOptions` and `usersOptions` to `"all"` when you [restore a backup](#restore-backup); see the backup API `include` parameters for narrowing what is captured. |
+
+</details>
+
 ## Backup Quickstart
 
 This quickstart demonstrates using backups in Weaviate using the local filesystem as a backup provider, which is suitable for development and testing environments.
