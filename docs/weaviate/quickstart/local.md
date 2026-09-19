@@ -85,7 +85,6 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama'
       CLUSTER_HOSTNAME: 'node1'
-      OLLAMA_API_ENDPOINT: 'http://ollama:11434'
     depends_on:
       - ollama
 
@@ -104,7 +103,7 @@ volumes:
 Run the following command to start a Weaviate instance and the Ollama server inside Docker containers:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Once the Ollama service starts, you can pull the required embedding model ([`nomic-embed-text`](https://ollama.com/library/nomic-embed-text)) and generative model ([`llama3.2`](https://ollama.com/library/llama3.2)) in the `ollama` container:
@@ -123,6 +122,29 @@ Follow the instructions below to install one of the official client libraries, a
 import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.mdx";
 
 <CodeClientInstall />
+
+<details>
+  <summary>Verify your setup</summary>
+
+Before you create anything, you can also check that the client can reach your cluster:
+
+import QuickstartIsReady from "/_includes/code/quickstart/local.quickstart.is_ready.mdx";
+
+<QuickstartIsReady />
+
+A working setup prints `True` (or `true`). Anything else is a connection problem, not a broken instance. Run `docker compose ps` to confirm both containers are up. Some common first errors include:
+
+| What you see | What it means |
+| --- | --- |
+| `Unfortunately, the gRPC health check against Weaviate could not be completed.` | The client reached REST on `8080` but not gRPC on `50051`. Check that the compose file publishes `50051:50051` and that nothing else holds the port. |
+| `unauthorized: invalid api key` (HTTP 401) | The instance expects a key. The compose file above enables anonymous access, so connect without credentials, or pass the key you configured. |
+| `no vectorizer found for class "Movie"` | You ran a `nearText` query against a collection that has no vectorizer. Create the collection with a vectorizer, or query with `nearVector` and supply the vector yourself. |
+| A connection error naming the Ollama endpoint | Weaviate could not reach Ollama. Inside Compose the endpoint is the service name, `http://ollama:11434`, not `localhost`. Confirm you pulled the models with `docker compose exec ollama ollama pull ...`. |
+| `Con004: The connection to Weaviate was not closed properly.` | The script finished without closing the client. Call `client.close()`, or use a context manager. |
+
+</details>
+
+---
 
 ## Step 1: Create a collection & import data {#create-a-collection}
 

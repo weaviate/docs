@@ -350,19 +350,6 @@ const sidebars = {
             },
             {
               type: "category",
-              label: "OctoAI (deprecated)",
-              className: "sidebar-item",
-              link: {
-                type: "doc",
-                id: "weaviate/model-providers/octoai/index",
-              },
-              items: [
-                "weaviate/model-providers/octoai/embeddings",
-                "weaviate/model-providers/octoai/generative",
-              ],
-            },
-            {
-              type: "category",
               label: "OpenAI",
               className: "sidebar-item",
               link: {

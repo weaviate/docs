@@ -841,6 +841,8 @@ Use `limit` to set a fixed maximum number of objects to return.
 
 Optionally, use `offset` to paginate the results.
 
+`offset` + `limit` cannot exceed [`QUERY_MAXIMUM_RESULTS`](/deploy/configuration/env-vars/index.md#QUERY_MAXIMUM_RESULTS) (default `10000`). A query past that ceiling returns an error rather than a truncated result set. To page through more objects than that, use a [cursor](../manage-objects/read-all-objects.mdx).
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock

@@ -820,7 +820,7 @@ client.collections.create(
             name="title_vector",
             source_properties=["title"],
             model="nvidia/nv-embed-v1",
-            base_url="https://integrate.api.nvidia.com/v1",
+            base_url="https://integrate.api.nvidia.com",
         )
     ],
     # highlight-end
@@ -920,64 +920,6 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullMMVectorizerNVIDIA
-
-# clean up
-client.collections.delete("DemoCollection")
-
-# START BasicVectorizerOctoAI
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "DemoCollection",
-    vector_config=[
-        Configure.Vectors.text2vec_octoai(
-            name="title_vector",
-            source_properties=["title"]
-        )
-    ],
-    # Additional parameters not shown
-)
-# END BasicVectorizerOctoAI
-
-# clean up
-client.collections.delete("DemoCollection")
-
-# START VectorizerOctoAICustomModel
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "DemoCollection",
-    vector_config=[
-        Configure.Vectors.text2vec_octoai(
-            name="title_vector",
-            source_properties=["title"],
-            model="thenlper/gte-large"
-        )
-    ],
-    # Additional parameters not shown
-)
-# END VectorizerOctoAICustomModel
-
-# clean up
-client.collections.delete("DemoCollection")
-
-# START FullVectorizerOctoAI
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "DemoCollection",
-    vector_config=[
-        Configure.Vectors.text2vec_octoai(
-            name="title_vector",
-            source_properties=["title"],
-            # # Further options
-            # model="thenlper/gte-large",
-            # vectorize_collection_name=True
-            # base_url="https://text.octoai.run",
-        )
-    ],
-)
-# END FullVectorizerOctoAI
 
 # clean up
 client.collections.delete("DemoCollection")

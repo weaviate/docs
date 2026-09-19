@@ -2,7 +2,7 @@
 title: Boost
 sidebar_position: 76
 image: og/docs/howto.jpg
-description: Soft-rank vector, hybrid, and BM25 results by promoting or demoting matching documents without filtering them out. Worked Python examples for filter, property, time-decay, numeric-decay, and blended boosts.
+description: Soft-rank vector, hybrid, and BM25 results by promoting or demoting matching documents without filtering them out. Worked Python and TypeScript examples for filter, property, time-decay, numeric-decay, and blended boosts.
 # tags: ['boost', 'search', 'ranking']
 ---
 
@@ -10,6 +10,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.boost.py';
+import TSCode from '!!raw-loader!/_includes/code/howto/search.boost.ts';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/SearchBoostTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/SearchBoostTest.cs';
 import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 <BoostNote/>
@@ -43,6 +46,30 @@ Score is `1` if the result matches the filter, `0` if not. Non-matching document
       language="py"
     />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BoostFilter"
+      endMarker="// END BoostFilter"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BoostFilter"
+      endMarker="// END BoostFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BoostFilter"
+      endMarker="// END BoostFilter"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Property-value condition
@@ -64,6 +91,30 @@ The `name` argument is required, only numeric properties (`int`, `number`) are s
       startMarker="# START BoostProperty"
       endMarker="# END BoostProperty"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BoostProperty"
+      endMarker="// END BoostProperty"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BoostProperty"
+      endMarker="// END BoostProperty"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BoostProperty"
+      endMarker="// END BoostProperty"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -92,6 +143,30 @@ Continuous `[0, 1]` score that **decays with distance from an origin time**. The
       language="py"
     />
   </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BoostTimeDecay"
+      endMarker="// END BoostTimeDecay"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BoostTimeDecay"
+      endMarker="// END BoostTimeDecay"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BoostTimeDecay"
+      endMarker="// END BoostTimeDecay"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Numeric decay {#numeric-decay}
@@ -107,6 +182,30 @@ Like time decay but for numeric (`int`, `number`) properties. Use this when "clo
       startMarker="# START BoostNumericDecay"
       endMarker="# END BoostNumericDecay"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BoostNumericDecay"
+      endMarker="// END BoostNumericDecay"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BoostNumericDecay"
+      endMarker="// END BoostNumericDecay"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BoostNumericDecay"
+      endMarker="// END BoostNumericDecay"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -136,6 +235,8 @@ final_score = (1 − weight) · primary_norm + weight · boost_norm
 - **Per-condition `weight`**: a `float` defaulting to `1.0`. Use it to balance multiple boosts ("recency twice as important as popularity").
 - **Negative per-condition `weight`**: *demotes* matching documents. They stay in the result set but rank lower than non-matching ones.
 
+Set `depth` on the blend itself. A boost passed into `Boost.blend()` that sets its own `depth` is rejected by the client before the request is sent.
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -143,6 +244,30 @@ final_score = (1 − weight) · primary_norm + weight · boost_norm
       startMarker="# START BoostBlend"
       endMarker="# END BoostBlend"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BoostBlend"
+      endMarker="// END BoostBlend"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BoostBlend"
+      endMarker="// END BoostBlend"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BoostBlend"
+      endMarker="// END BoostBlend"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -158,6 +283,30 @@ A condition with `weight: -1.0` (or `-2.0`, etc.) reverses the effect: documents
       startMarker="# START BoostNegativeWeight"
       endMarker="# END BoostNegativeWeight"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BoostNegativeWeight"
+      endMarker="// END BoostNegativeWeight"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BoostNegativeWeight"
+      endMarker="// END BoostNegativeWeight"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BoostNegativeWeight"
+      endMarker="// END BoostNegativeWeight"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

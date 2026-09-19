@@ -195,7 +195,7 @@ Here are some key considerations when using keyword search:
 
 1. **Tokenization Choice**
    - Choose based on your data and search requirements. For example, use `word` tokenization for natural language text, but consider `field` for URLs or email addresses that need exact matching as a whole.
-   - For multilingual content, consider specialized tokenizers like `gse` for Chinese/Japanese or `kagome_kr` for Korean
+   - For multilingual content, consider specialized tokenizers like `gse` for Japanese, `gse_ch` for Chinese, or `kagome_kr` for Korean
    - Consider special characters and case sensitivity needs
    - Test your tokenization choice with subsets of your data and queries to ensure it handles special characters and case sensitivity as expected. You could perform these experiments with vectorization disabled to save resources/costs, as the two processes are independent.
 

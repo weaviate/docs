@@ -421,6 +421,26 @@ Permissions can be defined with the following resources, access levels and optio
         </ul>
       </td>
     </tr>
+    <tr>
+      <td>
+        <Link to="/weaviate/configuration/rbac/manage-roles#mcp-permissions">
+          <strong>MCP</strong>
+        </Link>
+      </td>
+      <td>
+        <div class="access-level">Read through MCP tools (<code>read_mcp</code>)</div>
+        <div class="access-level">Create through MCP tools (<code>create_mcp</code>)</div>
+        <div class="access-level">Update through MCP tools (<code>update_mcp</code>)</div>
+      </td>
+      <td>
+        <p>
+          No resource filter. MCP permissions gate the{" "}
+          <Link to="/weaviate/configuration/mcp-server">MCP server</Link> tools,
+          and each tool also requires the matching collection, data or tenant
+          permission.
+        </p>
+      </td>
+    </tr>
   </tbody>
 </table>
 

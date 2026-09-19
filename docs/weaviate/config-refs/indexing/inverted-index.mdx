@@ -32,11 +32,15 @@ These parameters are set within the `invertedIndexConfig` object in your collect
 
 | Parameter                                     | Type      | Default                    | Details                                                                                                                                              |
 | :-------------------------------------------- | :-------- | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`bm25`](#bm25)                               | `object`  | `{ "k1": 1.2, "b": 0.75 }` | Sets the `k1` and `b` parameters for the BM25 ranking algorithm. Can be overridden at the property level. See [**BM25 Configuration**](#bm25) below. |
+| [`bm25`](#bm25)                               | `object`  | `{ "k1": 1.2, "b": 0.75 }` | Sets the `k1` and `b` parameters for the BM25 ranking algorithm. See [**BM25 Configuration**](#bm25) below.                                          |
 | [`stopwords`](#stopwords)                     | `object`  | (Varies)                   | Defines the stopword list to exclude common words from search queries. See [**Stopwords Configuration**](#stopwords) below.                          |
 | [`indexTimestamps`](#indextimestamps)         | `boolean` | `false`                    | If `true`, indexes object creation and update timestamps, enabling filtering by `creationTimeUnix` and `lastUpdateTimeUnix`.                         |
 | [`indexNullState`](#indexnullstate)           | `boolean` | `false`                    | If `true`, indexes the null/non-null state of each property, enabling filtering for `null` values.                                                   |
 | [`indexPropertyLength`](#indexpropertylength) | `boolean` | `false`                    | If `true`, indexes the length of each property, enabling filtering by property length.                                                               |
+| [`stopwordPresets`](#stopwordpresets)         | `object`  | `{}`                       | Named stopword lists that properties can reference through `textAnalyzer.stopwordPreset`. See [**Stopword presets**](#stopwordpresets) below.        |
+| [`tokenizerUserDict`](#tokenizeruserdict)     | `array`   | `[]`                       | Per-collection user dictionary for the Japanese and Korean tokenizers. See [**Tokenizer user dictionary**](#tokenizeruserdict) below.                |
+| `cleanupIntervalSeconds`                      | `integer` | `60`                       | How often the asynchronous inverted index cleanup runs, in seconds.                                                                                  |
+| `usingBlockMaxWAND`                           | `boolean` | `true` for collections created in `v1.30` and later | Whether the collection uses the [BlockMax WAND algorithm](../../concepts/indexing/inverted-index.md#blockmax-wand-algorithm) for BM25 and hybrid searches. Collections created before `v1.30` need [migration](/deploy/migration/weaviate-1-30.md). |
 
 :::caution Performance Impact
 Enabling `indexTimestamps`, `indexNullState`, or `indexPropertyLength` adds overhead as these additional indexes must be created and maintained. Only enable them if you require these specific filtering capabilities.
@@ -82,7 +86,7 @@ This code example shows how to configure inverted index parameters through a cli
 
 Part of `invertedIndexConfig`. The settings for BM25 are the [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function), and they are optional. The defaults (`k1` = 1.2 and `b` = 0.75) work well for most cases.
 
-They can be configured per collection, and can optionally be overridden per property.
+They are set per collection. There is no property-level `bm25` setting: a `bm25` object inside a property definition is discarded, so `k1` and `b` always come from the collection.
 
 <details>
   <summary>Example `bm25` configuration -  JSON object</summary>
@@ -104,13 +108,6 @@ An example of a complete collection object with `bm25` configuration:
       "name": "title",
       "description": "title of the article",
       "dataType": ["text"],
-      // Property-level settings override the collection-level settings
-      "invertedIndexConfig": {
-        "bm25": {
-          "b": 0.75,
-          "k1": 1.2
-        }
-      },
       "indexFilterable": true,
       "indexSearchable": true
     }
@@ -227,6 +224,34 @@ Part of a **property definition** (not `invertedIndexConfig`). Configures text a
 
 `asciiFoldIgnore` changes which tokens are written to disk. It cannot be modified after the property is created. Schema updates that change the ignore list are rejected. To change it, create a new property and reindex.
 
+:::
+
+#### `tokenizerUserDict` {#tokenizeruserdict}
+
+Part of `invertedIndexConfig`. Added in `v1.34.1`. Sets a per-collection user dictionary for the Japanese (`kagome_ja`) and Korean (`kagome_kr`) tokenizers, so that terms the shipped dictionary splits incorrectly are segmented the way you choose. No other tokenizer accepts a user dictionary.
+
+<details>
+  <summary>Example <code>tokenizerUserDict</code> configuration - JSON object</summary>
+
+```json
+"invertedIndexConfig": {
+  "tokenizerUserDict": [
+    {
+      "tokenizer": "kagome_ja",
+      "replacements": [
+        { "source": "関西国際空港", "target": "関西 国際 空港" }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+Each entry sets one tokenizer, and a tokenizer may appear only once. `source` is the term as it appears in the text, and `target` is how that term should be segmented, with a space between tokens. Both fields are required, and each `source` must be unique within the entry.
+
+:::caution Existing data is not re-tokenized
+Changing a user dictionary does not re-tokenize data that is already indexed. The new segmentation applies only to objects written after the change. To apply it to existing objects, re-import them.
 :::
 
 #### `indexTimestamps`

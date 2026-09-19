@@ -203,12 +203,12 @@ response = articles.query.bm25(
     # highlight-end
     return_properties=["title", "draft"],
 )
+# END BoostNegativeWeight
 
 # The draft article is still in results, just no longer first.
 all_titles = [o.properties["title"] for o in response.objects]
 assert any("Draft" in t for t in all_titles)
 assert response.objects[0].properties["draft"] is False
-# END BoostNegativeWeight
 
 
 # ==========================================

@@ -109,6 +109,7 @@ def test_datatypes(empty_weaviates, script_loc):
         "./_includes/code/howto/manage-data.update.ts",
         "./_includes/code/howto/manage-data.collections.ts",
         "./_includes/code/howto/manage-data.multi-tenancy.ts",
+        "./_includes/code/config-refs/reference.collections.ts",
         "./_includes/code/howto/manage-data.ttl.ts",
     ],
 )

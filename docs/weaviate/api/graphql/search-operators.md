@@ -325,11 +325,11 @@ The score depends on the rank of the result. The score is equal to `1/(RANK + 60
   </tr>
   <tr>
     <td>Keyword</td>
-    <td>(1): 0.0154</td><td>(0): 0.0160</td><td>(2): 0.0161</td><td>(4): 0.0167</td><td>(3): 0.0166</td>
+    <td>(1): 0.016667</td><td>(0): 0.016393</td><td>(2): 0.016129</td><td>(4): 0.015873</td><td>(3): 0.015625</td>
   </tr>
   <tr>
     <td>Vector</td>
-    <td>(2): 0.016502</td><td>(4): 0.016502</td><td>(0): 0.016503</td><td>(1): 0.016503</td><td>(3): 0.016666</td>
+    <td>(2): 0.016667</td><td>(4): 0.016393</td><td>(0): 0.016129</td><td>(1): 0.015873</td><td>(3): 0.015625</td>
   </tr>
 </table>
 
@@ -369,7 +369,7 @@ Now, we can add the scores for each document up and compare the results from bot
   </tr>
   <tr>
     <td>Ranked</td>
-    <td>(2): 0.016301</td><td>(1): 0.015952</td><td>(0): 0.015952</td><td>(4): 0.016600</td><td>(3): 0.016630</td>
+    <td>(2): 0.016398</td><td>(1): 0.016270</td><td>(0): 0.016261</td><td>(4): 0.016133</td><td>(3): 0.015625</td>
   </tr>
   <tr>
     <td>Relative</td>

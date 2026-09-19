@@ -12,7 +12,13 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
-import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
+import JavaV6CodeMultiTenancy from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
+import CSharpCodeMultiTenancy from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMultiTenancyTest.cs";
+import TSCodeReference from "!!raw-loader!/_includes/code/config-refs/reference.collections.ts";
+import JavaV6CodeReference from "!!raw-loader!/_includes/code/java-v6/src/test/java/ReferenceCollectionsTest.java";
+import CSharpCodeReference from "!!raw-loader!/_includes/code/csharp/ReferenceCollectionsTest.cs";
 
 A **collection definition** specifies how to store and index a set of data objects in Weaviate. This page discusses the available parameters for configuring a collection.
 
@@ -34,6 +40,7 @@ These are the top-level parameters you can set when creating a collection.
 | [`shardingConfig`](#sharding)                | Object | Controls sharding behavior in a multi-node cluster.                                                                   | See [Sharding section](#sharding)                                                                                                                                                                     | No            |
 | [`replicationConfig`](#replication)          | Object | Controls data replication settings for fault tolerance.                                                               | See [Replication section](#replication)                                                                                                                                                               | Partially     |
 | [`multiTenancyConfig`](#multi-tenancy)       | Object | Configuration to enable multi-tenancy for the collection.                                                             | See [Multi-tenancy section](#multi-tenancy)                                                                                                                                                           | Partially     |
+| [`objectTtlConfig`](#object-ttl)             | Object | Sets a time to live (TTL) after which the collection's objects expire.                                                 | Disabled                                                                                                                                                                                              | Yes           |
 
 \* [New properties can be added](../manage-collections/collection-operations.mdx#add-a-property); existing properties cannot be modified<br/>
 \*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors); some vector index settings are mutable<br/>
@@ -117,22 +124,30 @@ This code example shows how to configure the collection parameters through a cli
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START BasicCreateCollection"
-      endMarker="// END BasicCreateCollection"
+      text={TSCodeReference}
+      startMarker="// START ReferenceFullDefinition"
+      endMarker="// END ReferenceFullDefinition"
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START BasicCreateCollection"
-      endMarker="// END BasicCreateCollection"
-      language="gonew"
+      text={JavaV6CodeReference}
+      startMarker="// START ReferenceFullDefinition"
+      endMarker="// END ReferenceFullDefinition"
+      language="java"
     />
-  </TabItem> -->
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCodeReference}
+      startMarker="// START ReferenceFullDefinition"
+      endMarker="// END ReferenceFullDefinition"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
@@ -178,7 +193,6 @@ A description of the collection. This is for your reference and can also provide
 | [`indexFilterable`](#inverted-index)     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering.                                 | `true`     | No      |
 | [`indexSearchable`](#inverted-index)     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search.                              | `true`     | No      |
 | [`indexRangeFilters`](#inverted-index)   | Boolean | If `true`, builds a roaring bitmap index for numerical range-based filtering.                                                | `false`    | No      |
-| [`invertedIndexConfig`](#inverted-index) | Object  | Property-level overrides for inverted index settings, such as `bm25` parameters.                                             | `{}`       | No      |
 | `moduleConfig`                           | Object  | Module-specific settings, such as skipping vectorization for this property.                                                  | `{}`       | No      |
 
 <details>
@@ -222,22 +236,30 @@ This code example shows how to configure the property parameters through a clien
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
+      text={TSCodeReference}
+      startMarker="// START ReferencePropertyOptions"
+      endMarker="// END ReferencePropertyOptions"
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
-      language="gonew"
+      text={JavaV6CodeReference}
+      startMarker="// START ReferencePropertyOptions"
+      endMarker="// END ReferencePropertyOptions"
+      language="java"
     />
-  </TabItem> -->
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCodeReference}
+      startMarker="// START ReferencePropertyOptions"
+      endMarker="// END ReferencePropertyOptions"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
@@ -395,11 +417,18 @@ Tokenization is a property-level configuration for `text` properties. [See how t
 The standard tokenization methods work well for English and other languages that use spaces to separate words. For languages like Chinese, Japanese, and Korean that don't rely on spaces, Weaviate provides specialized tokenization methods.
 
 <details>
-  <summary>`gse` and `trigram` tokenization methods</summary>
+  <summary>`gse`, `gse_ch` and `trigram` tokenization methods</summary>
 
-For Japanese and Chinese text, we recommend use of `gse` or `trigram` tokenization methods. These methods work better with these languages than the other methods as these languages are not easily able to be tokenized using whitespaces.
+For Japanese and Chinese text, we recommend use of the `gse` family or `trigram` tokenization methods. These methods work better with these languages than the other methods as these languages are not easily able to be tokenized using whitespaces.
 
-The `gse` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_GSE` to `true` on the Weaviate instance.
+There are two `gse` values, and they load different dictionaries:
+
+- `gse` uses the Japanese dictionary. Set `ENABLE_TOKENIZER_GSE` to `true` to load it.
+- `gse_ch` uses the Chinese dictionary. Set `ENABLE_TOKENIZER_GSE_CH` to `true` to load it.
+
+Use `gse_ch` for Chinese text. `gse` segments Chinese text with the Japanese dictionary, which returns poor tokens without raising an error.
+
+Neither tokenizer is loaded by default, to save resources.
 
 `gse` tokenization examples:
 
@@ -505,7 +534,7 @@ Use this table to quickly identify the right tokenization method for your data.
 | Code, technical IDs with `_` or `-` | `lowercase` | Preserves symbols, case-insensitive |
 | Names, acronyms where case matters | `whitespace` | Case-sensitive, preserves symbols |
 | Email addresses, URLs, unique IDs | `field` | Requires exact matches |
-| Chinese text | `gse` or `trigram` | Proper word segmentation |
+| Chinese text | `gse_ch` or `trigram` | Proper word segmentation |
 | Japanese text | `kagome_ja` or `trigram` | Proper morphological analysis |
 | Korean text | `kagome_kr` or `trigram` | Proper morphological analysis |
 
@@ -533,7 +562,7 @@ Use this table to quickly identify the right tokenization method for your data.
 Weaviate uses **inverted indexes** to enable fast and efficient filtering and searching. The inverted index maps values (like words or numbers) to the objects that contain them in order to speed-up all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
 Disabling indexing for properties you will never query can speed up data imports and reduce disk usage.
 
-More details about the `indexFilterable`, `indexSearchable`, `indexRangeFilters` and `invertedIndexConfig` parameters can be found in [Reference: Inverted index](./indexing/inverted-index.mdx).
+More details about the `indexFilterable`, `indexSearchable` and `indexRangeFilters` property parameters, and about the collection-level `invertedIndexConfig` object, can be found in [Reference: Inverted index](./indexing/inverted-index.mdx).
 
 ---
 
@@ -594,6 +623,22 @@ This code example shows how to configure the vectorizer parameters for a single 
       language="ts"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6CodeReference}
+      startMarker="// START ReferenceVectorizer"
+      endMarker="// END ReferenceVectorizer"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCodeReference}
+      startMarker="// START ReferenceVectorizer"
+      endMarker="// END ReferenceVectorizer"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -635,6 +680,22 @@ This code example shows how to configure multiple named vectors through a client
       startMarker="// START BasicNamedVectors"
       endMarker="// END BasicNamedVectors"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6CodeReference}
+      startMarker="// START ReferenceNamedVectors"
+      endMarker="// END ReferenceNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCodeReference}
+      startMarker="// START ReferenceNamedVectors"
+      endMarker="// END ReferenceNamedVectors"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -769,7 +830,7 @@ This code example shows how to configure the replication parameters through a cl
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AllReplicationSettings"
@@ -777,14 +838,22 @@ This code example shows how to configure the replication parameters through a cl
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={GoCode}
+      text={JavaV6Code}
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
-      language="gonew"
+      language="java"
     />
-  </TabItem> -->
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCodeReference}
+      startMarker="// START ReferenceReplicationSettings"
+      endMarker="// END ReferenceReplicationSettings"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
@@ -843,7 +912,7 @@ This code example shows how to configure the sharding parameters through a clien
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ShardingSettings"
@@ -851,14 +920,22 @@ This code example shows how to configure the sharding parameters through a clien
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={GoCode}
+      text={JavaV6Code}
       startMarker="// START ShardingSettings"
       endMarker="// END ShardingSettings"
-      language="gonew"
+      language="java"
     />
-  </TabItem> -->
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
@@ -889,7 +966,7 @@ To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyCon
 
 #### Code example - How to configure multi-tenancy
 
-This code example shows how to configure the multi-tenancy parameters through a client library:
+This code example enables multi-tenancy on a new collection. `autoTenantCreation` and `autoTenantActivation` are set the same way, and can also be changed later. For worked examples of both, see [How-to: Multi-tenancy operations](../manage-collections/multi-tenancy.mdx#automatically-add-new-tenants).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -900,22 +977,30 @@ This code example shows how to configure the multi-tenancy parameters through a 
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="ts" label="JavaScript/TypeScript">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
-      language="ts"
+      language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={GoCodeMultiTenancy}
+      text={JavaV6CodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
-      language="go"
+      language="java"
     />
-  </TabItem> -->
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCodeMultiTenancy}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
@@ -924,9 +1009,42 @@ For more code example and configuration guides visit the [How-to: Manage collect
 
 :::
 
+### Object TTL {#object-ttl}
+
+`objectTtlConfig` sets an expiration time for the collection's objects. The expiry is measured from the object's creation time, its last update time, or a `date` property that you name.
+
+| Parameter              | Type    | Description                                                                                                                          | Default | Mutable |
+| :--------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------ | :------ | :------ |
+| `enabled`              | Boolean | If `true`, objects in this collection expire.                                                                                        | `false` | Yes     |
+| `deleteOn`             | String  | The base time for the expiry: `_creationTimeUnix`, `_lastUpdateTimeUnix`, or the name of a `date` property.                          | -       | Yes     |
+| `defaultTtl`           | Integer | Seconds added to the `deleteOn` value to get the expiration time. Must be positive for `_creationTimeUnix` and `_lastUpdateTimeUnix`. | `0`     | Yes     |
+| `filterExpiredObjects` | Boolean | If `true`, expired objects that the background process has not deleted yet are excluded from query results.                          | `false` | Yes     |
+
+Expired objects are only deleted if the [`OBJECTS_TTL_DELETE_SCHEDULE`](/deploy/configuration/env-vars/index.md#OBJECTS_TTL_DELETE_SCHEDULE) environment variable is set on the instance. It is empty by default, which disables the deletion process.
+
+For code examples, see [How-to: Time to live (TTL)](../manage-collections/time-to-live.mdx).
+
 ## Mutability
 
 Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it.
+
+| Parameter                            | Mutable after creation?                                            | How                                                                                                                     | If immutable                                                                                                |
+| :----------------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------ |
+| `class` (the collection name)        | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx). To serve an existing collection under another name, use a [collection alias](#collection-aliases). |
+| `description`                        | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | -                                                                                                           |
+| `properties`                         | New properties only                                                | [Add a property](../manage-collections/collection-operations.mdx#add-a-property)                                        | To change an existing property, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
+| `invertedIndexConfig`                | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | Changing [`tokenizerUserDict`](./indexing/inverted-index.mdx#tokenizeruserdict) is allowed, but existing objects keep the old tokenization until they are re-imported. |
+| `objectTtlConfig`                    | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | -                                                                                                           |
+| `vectorConfig` (named vectors)       | New named vectors only                                             | [Add new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors)                                  | To change an existing named vector, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
+| `vectorizer`                         | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
+| `vectorIndexType`                    | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
+| `vectorIndexConfig`                  | Some settings. See the mutability column in the [vector index reference](./indexing/vector-index.mdx). | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition) | For an immutable setting such as `distance` or `efConstruction`, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
+| `moduleConfig`                       | Generative and reranker modules only, from `v1.26.8` and `v1.27.1` | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | For other module settings, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
+| `replicationConfig.factor`           | No, from `v1.25`                                                   | -                                                                                                                       | See the [replication section](#replication).                                                                |
+| `replicationConfig.deletionStrategy` | Yes, from `v1.27.0`                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | -                                                                                                           |
+| `multiTenancyConfig.enabled`         | No                                                                 | -                                                                                                                       | Create a new collection with multi-tenancy enabled and [migrate the data](../manage-collections/migrate.mdx). |
+| `multiTenancyConfig.autoTenantCreation`, `multiTenancyConfig.autoTenantActivation` | Yes                           | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | -                                                                                                           |
+| `shardingConfig`                     | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
 
 <details>
   <summary>Mutable parameters</summary>
