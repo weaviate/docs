@@ -103,8 +103,8 @@ import APITable from '@site/src/components/APITable';
 | `PERSISTENCE_LSM_ACCESS_STRATEGY` | Function used to access disk data in virtual memory. Default: `mmap` | `string` | `mmap` or `pread` |
 | `PERSISTENCE_LSM_MAX_SEGMENT_SIZE` | Maximum size of a segment in the [LSM store](/weaviate/concepts/storage.md#object-and-inverted-index-store). Set this to limit disk usage spikes during compaction to ~2x the segment size. Default: no limit | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
 | `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](/deploy/configuration/monitoring.md). The other `PROMETHEUS_*` variables take effect only when this is `true`. | `boolean` | `false` |
-| `PROMETHEUS_MONITORING_GROUP` | If set, Weaviate groups metrics for the same class across all shards. | `boolean` | `true` |
-| `PROMETHEUS_MONITORING_METRIC_NAMESPACE` | Prefix added to every metric name. Empty by default, so metric names carry no prefix. | `string` | `weaviate` |
+| `PROMETHEUS_MONITORING_GROUP` | If set, Weaviate groups metrics for the same collection across all shards. The `class_name` and `shard_name` labels are reported as `n/a`, and the per-segment LSM and vector-dimension metrics are not reported. Default: `false` | `boolean` | `true` |
+| `PROMETHEUS_MONITORING_METRIC_NAMESPACE` | Namespace reserved for metric names. Default: empty | `string` | `weaviate` |
 | `PROMETHEUS_MONITORING_PORT` | Port the metrics endpoint listens on. Default: `2112` | `string - number` | `2112` |
 | `PROMETHEUS_MONITOR_CRITICAL_BUCKETS_ONLY` | Report per-segment LSM metrics only for the objects bucket and the compressed-vector buckets, instead of every bucket. Use it to cut metric cardinality on clusters with many collections or tenants. Default: `false` | `boolean` | `true` |
 | `QUERY_BOOST_DEFAULT_DEPTH` | Default candidate-pool size used when a [Boost](/weaviate/search/boost.md) query does not set its own `depth`. The primary search retrieves this many candidates before the boost rescorer runs. Must be a positive integer and is hard-capped by `QUERY_MAXIMUM_RESULTS`. Default: `100`<br/>Added in `v1.38` | `string - number` | `200` |
@@ -122,6 +122,8 @@ import APITable from '@site/src/components/APITable';
 | `TOMBSTONE_DELETION_CONCURRENCY` | The maximum number of cores to use for tombstone deletion. Set this to limit the number of cores used for cleanup. Default: Half of the available cores. | `string - int` | `4` |
 | `TOMBSTONE_DELETION_MAX_PER_CYCLE` | Maximum number of tombstones to delete per cleanup cycle. Set this to limit cleanup cycles, as they are resource-intensive. As an example, set a maximum of 10000000 (10M) for a cluster with 300 million-object shards. Default: none | `string - int` | `10000000` |
 | `TOMBSTONE_DELETION_MIN_PER_CYCLE` | Minimum number of tombstones to delete per cleanup cycle. Set this to prevent triggering unnecessary cleanup cycles below a threshold. As an example, set a minimum of 1000000 (1M) for a cluster with 300 million-object shards. Default: 0 | `string - int` | `100000` |
+| `TRACK_VECTOR_DIMENSIONS` | If set, Weaviate tracks the vector dimensions stored per shard and reports them through the `vector_dimensions_sum` and `vector_segments_sum` [metrics](/deploy/configuration/monitoring.md#general-vector-index). Required by the [usage modules](/weaviate/modules/usage-modules.md) before `v1.32.1`. Has no effect while `PROMETHEUS_MONITORING_GROUP` is `true`. Default: `false` | `boolean` | `true` |
+| `TRACK_VECTOR_DIMENSIONS_INTERVAL` | How often the vector dimension tracker recalculates its totals. Only takes effect when `TRACK_VECTOR_DIMENSIONS` is `true`. Default: `5m` | `string - duration` | `10m` |
 | `USE_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/collections.mdx) for use. <br/> (The same as `ENABLE_TOKENIZER_GSE`. We recommend using `ENABLE_TOKENIZER_GSE` for consistency in naming with other optional tokenizers.) | `boolean` | `true` |
 | `USE_INVERTED_SEARCHABLE` | Store searchable properties using a more efficient in-disk format, designed for the BlockMax WAND algorithm. Set as `true` together with `USE_BLOCKMAX_WAND` to enable BlockMax WAND at query time. Default: `false` <br/> From `v1.30` default: `true` <br/><Link to="/weaviate/concepts/indexing/inverted-index#blockmax-wand-algorithm">Read more</Link> | `boolean` | `true` |
 | `USE_BLOCKMAX_WAND` | Use BlockMax WAND algorithm for BM25 and hybrid searches. Enable it together with `USE_INVERTED_SEARCHABLE` to get the performance benefits. <br/> From `v1.30` Default: `true` <br/><Link to="/weaviate/concepts/indexing/inverted-index#blockmax-wand-algorithm">Read more</Link> | `boolean` | `true` |
@@ -130,7 +132,6 @@ import APITable from '@site/src/components/APITable';
 </APITable>
 ```
 
-<!--
 
 ## OpenTelemetry tracing
 
@@ -159,7 +160,6 @@ Weaviate can export traces over OTLP to a collector. Tracing is off by default; 
 </APITable>
 ```
 
--->
 
 ## Module-specific
 
