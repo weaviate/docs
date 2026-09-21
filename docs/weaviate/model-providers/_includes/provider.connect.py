@@ -75,10 +75,6 @@ morph_key = os.getenv("MORPH_APIKEY")
 # Recommended: save sensitive data as environment variables
 nvidia_key = os.getenv("NVIDIA_API_KEY")
 # END NVIDIAInstantiation
-# START OctoAIInstantiation
-# Recommended: save sensitive data as environment variables
-octoai_key = os.getenv("OCTOAI_API_KEY")
-# END OctoAIInstantiation
 # START OpenAIInstantiation
 # Recommended: save sensitive data as environment variables
 openai_key = os.getenv("OPENAI_API_KEY")
@@ -134,10 +130,10 @@ headers = {
     "X-Digitalocean-Api-Key": digitalocean_key,
 # END DigitalOceanInstantiation
 # START FriendliInstantiation
-    "X-Friendli-Api-Key": friendli_key,
+    "X-Friendli-Token": friendli_key,
 # END FriendliInstantiation
 # START FriendliDedicatedInstantiation
-    "X-Friendli-Api-Key": friendli_key,
+    "X-Friendli-Token": friendli_key,
     "X-Friendli-Baseurl": "https://inference.friendli.ai/dedicated",
 # END FriendliDedicatedInstantiation
 # START GoogleInstantiation  # START GoogleVertexInstantiation
@@ -162,9 +158,6 @@ headers = {
 # START NVIDIAInstantiation
     "X-NVIDIA-Api-Key": nvidia_key,
 # END NVIDIAInstantiation
-# START OctoAIInstantiation
-    "X-OctoAI-Api-Key": octoai_key,
-# END OctoAIInstantiation
 # START OpenAIInstantiation
     "X-OpenAI-Api-Key": openai_key,
 # END OpenAIInstantiation

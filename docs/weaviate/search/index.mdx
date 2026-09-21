@@ -69,11 +69,32 @@ export const searchTopicsData = [
     icon: "fas fa-robot",
   },
   {
+    title: "Boost",
+    description:
+      "Promote or demote matching results by recency, popularity or a filter, without removing them.",
+    link: "/weaviate/search/boost",
+    icon: "fas fa-arrow-up",
+  },
+  {
     title: "Reranking",
     description:
       "Refine and re-order search results using integrated reranker modules.",
     link: "/weaviate/search/rerank",
     icon: "fas fa-sort-amount-down",
+  },
+  {
+    title: "Multiple target vectors",
+    description:
+      "Search several named vectors at once and combine their scores.",
+    link: "/weaviate/search/multi-vector",
+    icon: "fas fa-bullseye",
+  },
+  {
+    title: "Query profiling",
+    description:
+      "Get per-shard timing breakdowns to find out where a slow query spends its time.",
+    link: "/weaviate/search/query-profile",
+    icon: "fas fa-stopwatch",
   },
   {
     title: "Aggregation",
@@ -94,6 +115,18 @@ export const searchTopicsData = [
 <br />
 <CardsSection items={searchTopicsData} recipeCards />
 <br />
+
+## Which search type?
+
+| Search type | What it matches | Use it when | Cost |
+| :-- | :-- | :-- | :-- |
+| [Vector](./similarity.md) | Meaning, through vector distance | The wording of the query and the data differ, or the data is not text | One vector search per query |
+| [Keyword (BM25)](./bm25.md) | Exact terms, ranked by BM25F | Names, codes, error strings, or any term that must appear literally | Inverted index lookup |
+| [Hybrid](./hybrid.md) | Both, fused into one ranking | You want one query to handle both cases. A good default for text search | Both of the above, plus fusion |
+| [Boost](./boost.md) | The search above, re-scored | Ranking should also reflect recency, popularity or a category, without dropping anything | In-memory rescoring of the candidates |
+| [Rerank](./rerank.md) | The search above, re-ordered by a model | Precision at the top of the list matters more than latency | One model call per query |
+
+Boost and rerank are second-stage operations: they reorder what the first search retrieved. Neither adds results, so if an object is not in the initial result set, neither can pull it in. Use a [filter](./filters.md) when a condition must remove objects instead of demoting them.
 
 ## Questions and feedback
 

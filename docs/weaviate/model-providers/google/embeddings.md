@@ -231,14 +231,27 @@ The following examples show how to configure Google-specific options.
 
 **Google AI Studio (Gemini API) parameters:**
 - `modelId` (Optional): e.g. `gemini-embedding-001`
+- `dimensions` (Optional): The length of the returned vector. Default: `768`
+- `taskType` (Optional): What the embeddings are for. Default: `RETRIEVAL_QUERY`
 
 **Vertex AI parameters:**
 - `projectId` (Required): Your Google Cloud project ID, e.g. `cloud-large-language-models`
 - `location` (Optional): The Google Cloud region to send requests to, e.g. `europe-west1`.
 - `apiEndpoint` (Optional): Regional endpoint, e.g. `us-central1-aiplatform.googleapis.com`
 - `modelId` (Optional): e.g. `gemini-embedding-001`, `text-embedding-005`
+- `dimensions` (Optional): The length of the returned vector. Default: `768`
+- `taskType` (Optional): What the embeddings are for. Default: `RETRIEVAL_QUERY`
 
 Set `location` together with a matching `apiEndpoint` to keep data in a specific region.
+
+`dimensions` defaults to `768` for backward compatibility with the earlier `textembedding-gecko@001` and `embedding-001` models. `gemini-embedding-001` produces 3072 dimensions natively, so leaving the default in place truncates its output. Set `dimensions` explicitly if you want the model's full vector.
+
+<details>
+  <summary>`taskType` parameter</summary>
+
+`taskType` tells Google what the embeddings are for, and it changes the vectors the model returns, so it affects retrieval quality. The accepted values are `RETRIEVAL_QUERY` (the default), `QUESTION_ANSWERING`, `FACT_VERIFICATION`, `CODE_RETRIEVAL_QUERY`, `CLASSIFICATION`, `CLUSTERING`, and `SEMANTIC_SIMILARITY`. For the retrieval task types, Weaviate sends the matching document task type when it embeds objects and the query task type when it embeds a search query. `CLASSIFICATION`, `CLUSTERING`, and `SEMANTIC_SIMILARITY` are used for both.
+
+</details>
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

@@ -118,11 +118,11 @@ The score depends on the rank of each result and is computed according to `1/(RA
   </tr>
   <tr>
     <td>Keyword</td>
-    <td>(1): 0.0154</td><td>(0): 0.0160</td><td>(2): 0.0161</td><td>(4): 0.0167</td><td>(3): 0.0166</td>
+    <td>(1): 0.016667</td><td>(0): 0.016393</td><td>(2): 0.016129</td><td>(4): 0.015873</td><td>(3): 0.015625</td>
   </tr>
   <tr>
     <td>Vector</td>
-    <td>(2): 0.016502</td><td>(4): 0.016502</td><td>(0): 0.016503</td><td>(1): 0.016503</td><td>(3): 0.016666</td>
+    <td>(2): 0.016667</td><td>(4): 0.016393</td><td>(0): 0.016129</td><td>(1): 0.015873</td><td>(3): 0.015625</td>
   </tr>
 </table>
 

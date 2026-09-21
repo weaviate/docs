@@ -31,6 +31,21 @@ variable:
 PROMETHEUS_MONITORING_PORT=3456
 ```
 
+<details>
+  <summary>Advanced metrics configuration options</summary>
+
+These are all the variables that shape the metrics Weaviate exposes. They take effect only while `PROMETHEUS_MONITORING_ENABLED` is `true`:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| [`PROMETHEUS_MONITORING_ENABLED`](./env-vars/index.md#PROMETHEUS_MONITORING_ENABLED) | Collect metrics and serve them at `/metrics`. | `false` |
+| [`PROMETHEUS_MONITORING_PORT`](./env-vars/index.md#PROMETHEUS_MONITORING_PORT) | Port the metrics endpoint listens on. | `2112` |
+| [`PROMETHEUS_MONITORING_GROUP`](./env-vars/index.md#PROMETHEUS_MONITORING_GROUP) | Group metrics for the same collection across all shards, rather than reporting one series per shard. | `false` |
+| [`PROMETHEUS_MONITORING_METRIC_NAMESPACE`](./env-vars/index.md#PROMETHEUS_MONITORING_METRIC_NAMESPACE) | Prefix added to every metric name. Empty by default, so metric names carry no prefix. | `""` |
+| [`PROMETHEUS_MONITOR_CRITICAL_BUCKETS_ONLY`](./env-vars/index.md#PROMETHEUS_MONITOR_CRITICAL_BUCKETS_ONLY) | Report per-segment LSM metrics only for the objects bucket and the compressed-vector buckets. Cuts cardinality on clusters with many collections or tenants. | `false` |
+
+</details>
+
 ### Scrape metrics from Weaviate
 
 Metrics are typically scraped into a time-series database, such as Prometheus.
@@ -501,13 +516,49 @@ Label values:
 
 <!-- TODO[g-despot] First we need to create this guide for adding metrics - Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).-->
 
+<!--
+
+## What to alert on
+
+Most of the metrics above are for investigating a problem you already know about. This shortlist is for finding out you have one. Every metric named here is defined in a table on this page.
+
+| Alert on | Metric | Why |
+| --- | --- | --- |
+| A node has gone read-only | `weaviate_index_shards_total{status="READONLY"}` above `0` | Writes are being rejected. Usually disk or memory pressure — see [disk pressure warnings and limits](./persistence.md#disk-pressure-warnings-and-limits). |
+| Requests are failing | `requests_total{status="failed"}` rising | The broadest signal that clients are seeing errors. Break it down by `class_name` and `api`. |
+| Writes cannot reach a consistency level | `replication_coordinator_writes_failed` rising | Replicas are down or unreachable, so writes at the requested consistency level fail. |
+| Replicas are drifting apart | `async_replication_propagation_failure_count` rising, or `async_replication_scheduler_queue_depth` growing steadily | Background repair is failing or falling behind, so replicas stay out of sync. |
+| Vector indexing is falling behind | `queue_size` growing steadily while `queue_paused` is `0` | New objects are searchable by keyword but not yet by vector. |
+| Deletes are not being cleaned up | `vector_index_tombstones` rising while `vector_index_tombstone_cleaned` is flat | Tombstones accumulate, costing memory and search quality. |
+| The store cannot persist | `lsm_memtable_flush_failures_total` or `lsm_bucket_compaction_failure_count` rising | Disk-level failures. Left alone, they end in a read-only node. |
+| Memory mappings are running out | `mmap_proc_maps` approaching the host's `vm.max_map_count` | Shards stop loading once the limit is near — see [not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings). |
+| Runtime overrides stopped applying | `weaviate_runtime_config_last_load_success` equal to `0` | The overrides file is unreadable, so the cluster is running the last good configuration. |
+| A model provider is rate-limiting you | `weaviate_module_response_status_total{status="429"}` rising | Imports slow down or fail while a provider throttles requests. |
+
+## OpenTelemetry tracing
+
+:::caution Experimental
+OpenTelemetry tracing is experimental. The variables below, and the spans they produce, may change or be removed in any release.
+:::
+
+Alongside Prometheus metrics, Weaviate can export traces over OTLP to an OpenTelemetry collector. Tracing is off by default. Turn it on and point it at your collector:
+
+```sh
+EXPERIMENTAL_OTEL_ENABLED=true
+EXPERIMENTAL_OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+```
+
+By default Weaviate uses the gRPC protocol and samples 1% of traces. The [`EXPERIMENTAL_OTEL_*` environment variables](./env-vars/index.md#opentelemetry-tracing) cover the protocol, the service name and environment reported on each span, the sampling rate, and the export batching.
+
+-->
+
 ## Sample Dashboards
 
-Weaviate does not ship with any dashboards by default, but here is a list of
-dashboards being used by the various Weaviate teams, both during development,
-and when helping users. These do not come with any support, but may still be
-helpful. Treat them as inspiration to design your own dashboards which fit
-your uses perfectly:
+Weaviate does not install any dashboards for you, but the Weaviate repository
+holds the ones the various Weaviate teams use, both during development and when
+helping users. These do not come with any support, but may still be helpful.
+Treat them as inspiration to design your own dashboards which fit your uses
+perfectly:
 
 | Dashboard                                                                                                                     | Purpose                                                                                                                 | Preview                                                                                                            |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -519,6 +570,8 @@ your uses perfectly:
 | [Startup](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/startup.json)                         | Visualize the startup process, including recovery operations                                                            | ![Startup](./img/weaviate-sample-dashboard-startup.png "Vector Index")                                             |
 | [Usage](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/usage.json)                             | Obtain usage metrics, such as number of objects imported, etc.                                                          | ![Usage](./img/weaviate-sample-dashboard-usage.png "Usage")                                                        |
 | [Aysnc index queue](https://github.com/weaviate/weaviate/blob/main/tools/dev/grafana/dashboards/index_queue.json)             | Observe index queue activity                                                                                            | ![Async index queue](./img/weaviate-sample-dashboard-async-queue.png "Async index queue")                          |
+
+The dashboards above are not the only ones. The Weaviate repository holds a few more in [`tools/dev/grafana/dashboards`](https://github.com/weaviate/weaviate/tree/main/tools/dev/grafana/dashboards) — one JSON file each, importable straight into Grafana.
 
 ## Query profiling
 

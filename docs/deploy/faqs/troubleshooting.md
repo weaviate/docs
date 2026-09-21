@@ -25,6 +25,8 @@ As a first step, you'll want to examine your cluster's logs to identify the prob
 #### Resolving the issue
 
 To solve this mystery, you'll need to increase the available disk space for your nodes. Once the disk space is increased, then you'll need to manually mark the affected shards or collections as writeable again.
+To get ahead of it next time, use the disk thresholds: [`DISK_USE_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#DISK_USE_WARNING_PERCENTAGE) (default `80`) logs a warning as the disk fills, and [`DISK_USE_READONLY_PERCENTAGE`](/deploy/configuration/env-vars/index.md#DISK_USE_READONLY_PERCENTAGE) (default `90`) is the threshold that marks shards read-only in the first place. See [disk pressure warnings and limits](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits).
+
 You can also set the [`MEMORY_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
 
 </details>
@@ -55,7 +57,7 @@ Check whether asynchronous replication is enabled. If `ASYNC_REPLICATION_DISABLE
 
 Start with the logs of a node that is failing to join. A membership problem reads differently from a data problem: you'll see repeated attempts to contact the founding member, gossip timeouts, or Raft messages about an election that never settles on a leader. A node in this state can still pass its own health checks, so if the <SkipLink href="/weaviate/api/rest#tag/well-known/GET/.well-known/live">live endpoint</SkipLink> answers while the node stays outside the cluster, the process is healthy and the problem is membership.
 
-To confirm it, query the <SkipLink href="/weaviate/api/rest#tag/cluster/get/cluster/statistics">`/v1/cluster/statistics`</SkipLink> endpoint. If it reports fewer nodes than you expect, or the top-level `synchronized` field is `false`, then your cluster has not reached consensus.
+To confirm it, query the <SkipLink href="/weaviate/api/rest#tag/cluster/GET/cluster/statistics">`/v1/cluster/statistics`</SkipLink> endpoint. If it reports fewer nodes than you expect, or the top-level `synchronized` field is `false`, then your cluster has not reached consensus.
 
 #### Resolving the issue
 

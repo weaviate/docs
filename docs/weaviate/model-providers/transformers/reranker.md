@@ -66,6 +66,7 @@ services:
   weaviate:
     # Other Weaviate configuration
     environment:
+      ENABLE_MODULES: reranker-transformers # Enable this module
       RERANKER_INFERENCE_API: http://reranker-transformers:8080  # Set the inference API endpoint
   reranker-transformers:  # Set the name of the inference container
     image: cr.weaviate.io/semitechnologies/reranker-transformers:cross-encoder-ms-marco-MiniLM-L-6-v2

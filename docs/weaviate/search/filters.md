@@ -351,7 +351,7 @@ The output is like this:
 
 ## `ContainsAny` Filter
 
-The `ContainsAny` operator works on text properties and take an array of values as input. It will match objects where the property **contains any (i.e. one or more)** of the values in the array.
+The `ContainsAny` operator takes an array of values as input and matches objects where the property **contains any (i.e. one or more)** of them. It works on `text`, `int`, `number`, `boolean`, `date` and `uuid` properties, and on their array variants.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -420,7 +420,7 @@ The output is like this:
 
 ## `ContainsAll` Filter
 
-The `ContainsAll` operator works on text properties and take an array of values as input. It will match objects where the property **contains all** of the values in the array.
+The `ContainsAll` operator takes an array of values as input and matches objects where the property **contains all** of them. It works on `text`, `int`, `number`, `boolean`, `date` and `uuid` properties, and on their array variants.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -489,7 +489,7 @@ The output is like this:
 
 ## `ContainsNone` Filter
 
-The `ContainsNone` operator works on text properties and take an array of values as input. It will match objects where the property **contains none** of the values in the array.
+The `ContainsNone` operator takes an array of values as input and matches objects where the property **contains none** of them. It works on `text`, `int`, `number`, `boolean`, `date` and `uuid` properties, and on their array variants.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

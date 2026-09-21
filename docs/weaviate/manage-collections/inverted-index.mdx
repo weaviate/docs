@@ -209,7 +209,9 @@ Tokenization determines how text content is broken down into individual terms th
 
 **`trigram`** - Breaks text into overlapping 3-character sequences. Enables fuzzy matching and is useful for handling typos or partial matches.
 
-**`gse`** - Language-aware tokenization for Chinese and Japanese text. Disabled by default. Enable with the `ENABLE_TOKENIZER_GSE` environment variable. For Korean text, see the `kagome_kr` option.
+**`gse`** - Language-aware tokenization for Japanese text. Disabled by default. Enable with the `ENABLE_TOKENIZER_GSE` environment variable.
+
+**`gse_ch`** - The same tokenizer with the Chinese dictionary. Use this value, not `gse`, for Chinese text. Disabled by default. Enable with the `ENABLE_TOKENIZER_GSE_CH` environment variable. For Korean text, see the `kagome_kr` option.
 
 For the full list of supported tokenizers (including `kagome_ja`, `kagome_kr`, and the per-property text-analyzer options), see the [tokenization reference](../config-refs/collections.mdx#tokenization).
 

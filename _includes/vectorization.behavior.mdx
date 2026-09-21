@@ -8,7 +8,10 @@ Unless specified otherwise in the collection definition, the default behavior is
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
-- Prepend the class name (unless `vectorizeClassName` is `false`)
-- Convert the produced string to lowercase
+- Prepend the collection name if `vectorizeClassName` is `true` (the default differs by integration — check this page's parameter table)
+
+<br/>
+
+Since `v1.27`, the string is sent to the model as is. Earlier versions lowercase it first, and you can restore that behavior with the [`LOWERCASE_VECTORIZATION_INPUT`](/deploy/configuration/env-vars#module-specific) environment variable.
 
 <!-- TODO: Add an actual example -->

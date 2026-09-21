@@ -78,6 +78,7 @@ services:
   weaviate:
     # Other Weaviate configuration
     environment:
+      ENABLE_MODULES: text2vec-gpt4all # Enable this module
       GPT4ALL_INFERENCE_API: http://text2vec-gpt4all:8080  # Set the inference API endpoint
   text2vec-gpt4all:  # Set the name of the inference container
     image: cr.weaviate.io/semitechnologies/gpt4all-inference:all-MiniLM-L6-v2

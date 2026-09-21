@@ -185,7 +185,7 @@ Aside from setting the default model provider when creating the collection, you 
 
 You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
 
-- `X-Friendli-Api-Key`: The Friendli API key.
+- `X-Friendli-Token`: The Friendli API key.
 - `X-Friendli-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Friendli URL.
 
 Any additional headers provided at runtime will override the existing Weaviate configuration.

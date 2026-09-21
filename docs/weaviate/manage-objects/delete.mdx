@@ -79,23 +79,11 @@ To delete by id, specify the collection name and the object id.
   </TabItem>
 </Tabs>
 
-<!-- ## Error handling
+### Error handling
 
-If the id doesn't exist in the specified class, a 404 error will be returned.
+If the id does not exist, the status you get back depends on the collection's topology. A delete that lands on a single, unreplicated shard (replication factor `1`) returns `404 Not Found`. In a replicated collection, the same request can return a success status, so success is not proof that the object was there.
 
-You can handle errors as follows:
-
-<Tabs className="code" groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START DeleteError"
-      endMarker="# END DeleteError"
-      language="py"
-    />
-  </TabItem>
-
-</Tabs> -->
+The clients surface this differently. The Python client's `delete_by_id()` returns `False` for the 404 and does not raise, while the TypeScript client's `deleteById()` rejects. If your code depends on knowing whether the object existed, [check that the object exists](./read.mdx#check-object-existence) first rather than reading the delete response.
 
 ## Delete multiple objects
 

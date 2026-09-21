@@ -405,6 +405,24 @@ from = "/weaviate/modules/other-modules/custom-modules"
 to   = "/weaviate/modules/custom-modules"
 status = 301
 
+## Removed integration redirects
+### OctoAI shut down its service; the integration pages were removed. Send
+### readers to the integration index so they can pick a live provider.
+[[redirects]]
+from = "/weaviate/model-providers/octoai/embeddings"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/model-providers/octoai/generative"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/model-providers/octoai"
+to   = "/weaviate/model-providers"
+status = 301
+
 ## Other modules/model-providers redirects
 [[redirects]]
 from = "/weaviate/api/rest/modules"
