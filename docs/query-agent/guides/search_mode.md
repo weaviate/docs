@@ -88,7 +88,6 @@ The `.search()` method accepts several arguments:
 | `limit` | `number` | The maximum number of results returned in this page of results. Defaults to `20`. Use [`.next()`](#pagination) to fetch additional pages. |
 | `filtering` | `"recall" \| "precision"` | Either `"recall"` or `"precision"` to control filter generation. `"recall"` favors more results across filter interpretations; `"precision"` favors strict intent match. See [Customized filtering](#customized-filtering) below. |
 | `diversityWeight` | `number` | A value between `0.0` and `1.0` that biases the result ranking towards diversity using Maximal Marginal Relevance (MMR). See [Diversity ranking](#diversity-ranking) below. |
-| `effort` | `"medium" \| "high" \| "ultrahigh"` | The amount of effort the agent puts into the search. Higher effort may improve result quality at the expense of increased latency and cost. See [Effort](#effort) below. |
 
 </TabItem>
 </Tabs>
@@ -99,24 +98,14 @@ For more advanced searches, you can also specify _additional filters_ within the
 
 The optional `effort` parameter controls the amount of effort the agent puts into the search. It accepts one of `"medium"`, `"high"`, or `"ultrahigh"`. Higher effort may improve result quality at the expense of increased latency and cost.
 
-<Tabs className="code" groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START EffortExample"
-            endMarker="# END EffortExample"
-            language="py"
-        />
-    </TabItem>
-    <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START EffortExample"
-            endMarker="// END EffortExample"
-            language="ts"
-        />
-    </TabItem>
-</Tabs>
+`effort` is available in the Python client only. It is not yet in the published JavaScript/TypeScript client.
+
+<FilteredTextBlock
+    text={PyCode}
+    startMarker="# START EffortExample"
+    endMarker="# END EffortExample"
+    language="py"
+/>
 
 ### Customized filtering
 

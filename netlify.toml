@@ -110,7 +110,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/platform/support-levels"
-to   = "https://weaviate.io/suport-plans"
+to   = "https://weaviate.io/support-plans"
 status = 301
 
 [[redirects]]

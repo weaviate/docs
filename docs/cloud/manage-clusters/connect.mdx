@@ -58,8 +58,8 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 <summary>Steps to create a new API key</summary>
 
 1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
-2.  Navigate to the `API Keys` section, found in the `Cluster details` panel.
-3.  If you need a new API key, click the `New key` button.
+2.  Navigate to the `API Keys` section of the cluster `Dashboard`. A new cluster has no API keys.
+3.  Click the `+ New key` button.
 4.  In the `Create API Key` form, provide a descriptive name for your key.
 5.  Choose the role for this API key. You can either select an existing role like `admin` or `viewer`, or [create a new role](/cloud/manage-clusters/authorization) with specific permissions.
 6.  Click the `Create key` button.
@@ -71,7 +71,7 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 
 <summary>Steps to retrieve your REST Endpoint</summary>
 
-1. On the `Cluster details` page or within the API Keys section, find the `REST Endpoint` URL.
+1. On the cluster `Dashboard` or within the API Keys section, find the `REST Endpoint` URL.
 2. Copy the `REST Endpoint` URL and store it securely.
 
 </details>
@@ -174,7 +174,7 @@ weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be
 
 When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections continue to work. However, the new gRPC URL and the old HTTP URL are different, so connections that require gRPC fail.
 
-To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match. Compare the Cluster URL with the connection URL in your application. The old URL and the new URL are similar, but the new one may have an extra subdomain such as `.c0.region`. If the URLs are different, update your application's connection code to use the new Cluster URL.
+To check the URLs, open the Weaviate Cloud console and check the cluster `Dashboard`. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match. Compare the Cluster URL with the connection URL in your application. The old URL and the new URL are similar, but the new one may have an extra subdomain such as `.c0.region`. If the URLs are different, update your application's connection code to use the new Cluster URL.
 
 ## More resources
 

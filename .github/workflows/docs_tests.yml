@@ -293,6 +293,15 @@ jobs:
           yarn link weaviate-client
           echo "✅ Branch override linked"
 
+      # Reported, not enforced: `tsx` transpiles without type-checking, so an
+      # unknown client option passes the snippet lane. Known pre-existing
+      # failures keep this non-blocking for now.
+      - name: Typecheck TypeScript snippets
+        continue-on-error: true
+        run: |
+          echo "🔍 Type-checking TypeScript snippet sources..."
+          yarn typecheck:ts
+
       - name: Start services
         run: |
           echo "🚀 Starting Weaviate and Ollama services..."

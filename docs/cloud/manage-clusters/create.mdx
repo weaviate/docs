@@ -7,16 +7,49 @@ image: og/wcd/user_guides.jpg
 
 [Weaviate Cloud (WCD)](/go/console?utm_content=cloud) provides two cluster types.
 
-- **[Free clusters](#free-clusters)**: Free clusters are free forever and need no credit card, which makes them the easiest way to get started. They are perfect for learning, hobby projects, and small workloads, and you can upgrade to a paid plan at any time without losing your data. For the current free tier limits, see the [pricing page](https://weaviate.io/pricing).
+- **[Free clusters](#free-clusters)**: Free clusters are free forever and need no credit card, which makes them the easiest way to get started. They are perfect for learning, hobby projects, and small workloads, and you can upgrade to a paid plan at any time without losing your data. See the [free tier allowance](#free-tier-allowance) below.
 - **[Shared Cloud clusters](#shared-cloud-clusters)**: Shared Cloud clusters are robust, paid clusters designed for production use.
 
-When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters. There are no clusters when you log in to a new account.
+When you log into the Weaviate Cloud web console, you land on the [Overview](/cloud/console-overview) page. The `Database` card lists your clusters, and the `CLUSTER` selector in the left sidebar switches between them. A new account has no clusters yet.
 
 ## Free clusters
 
 Free clusters are the easiest way to start building with Weaviate. They are free forever, need no credit card, and are ideal for learning, hobby projects, and small workloads. Each user can create one free cluster, and you can upgrade to a paid plan at any time without losing your data.
 
-The free tier includes a monthly allowance for the database, [Weaviate Embeddings](/cloud/embeddings/index.md), and the [Query Agent](/query-agent/index.md). For the current limits, see the [pricing page](https://weaviate.io/pricing).
+The free tier includes an allowance for the database, [Weaviate Embeddings](/cloud/embeddings/index.md), and the [Query Agent](/query-agent/index.md). The create-cluster form shows the current allowance as you create the cluster.
+
+### Free tier allowance {#free-tier-allowance}
+
+As of September 2026. The [pricing page](https://weaviate.io/pricing) is the authority for current limits.
+
+| Resource | Allowance |
+| :-- | :-- |
+| Clusters | 1 free cluster per user, always free |
+| Object limit | 100,000 objects |
+| Collections | 1 |
+| Tenants | Up to 3 |
+| Embedding service | Up to 2,000 requests daily |
+| Query Agent | 1,000 requests per month |
+
+import FreeTierQuota from "/docs/cloud/img/weaviate-cloud-free-tier-quota.png";
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img
+        src={FreeTierQuota}
+        alt="The create-cluster form with the Free plan selected, showing the Overview and Quota panel with the object limit, collections, tenants, embedding service, and Query Agent allowances"
+      />
+    </div>
+    <div class="card__body">
+      <p>
+        With <code>Free</code> selected, the create-cluster form shows the{" "}
+        <code>Quota</code> panel with the current free tier allowance.
+      </p>
+    </div>
+  </div>
+</div>
+<br />
 
 <div
   style={{
@@ -51,18 +84,18 @@ The free tier includes a monthly allowance for the database, [Weaviate Embedding
 
 To create a free cluster, follow these steps:
 
-1. In the clusters sidebar, click the plus button.
+1. Click the `+` button next to the `CLUSTER` label in the left sidebar.
 2. Select the `Free` option.
 3. Choose a name for your cluster.
 4. The [optimization profile](#optimization-profile) is set to `Cost Optimized` for free clusters.
-5. Select a cloud provider (GCP by default).
-6. Configure the `Advanced configuration` settings if needed (auto schema generation and CORS settings).
-7. Click the `Create cluster` button.
+5. Configure the `Advanced configuration` settings if needed (AWS region, auto schema generation, and CORS settings).
+6. Click the `Create cluster` button.
 
 #### Advanced cluster configuration
 
 The following advanced configuration settings are available:
 
+- AWS region. Free clusters run on AWS, and you select the region.
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
 
@@ -113,19 +146,18 @@ Shared Cloud clusters require billing details. Weaviate Cloud prompts you to add
 
 To create a Shared Cloud cluster, follow these steps:
 
-1. In the clusters sidebar, click the plus button.
+1. Click the `+` button next to the `CLUSTER` label in the left sidebar.
 2. Select the `Shared Cloud` option.
 3. Choose a name for your cluster.
 4. Select an [optimization profile](#optimization-profile) (`Cost Optimized` or `Performance Optimized`).
-5. Select a cloud provider (GCP by default).
-6. Select if you need high-availability (enabled by default).
-7. Configure the `Advanced configuration` settings if needed (auto schema generation, CORS, and the MCP read-only setting).
-8. Click the `Create cluster` button.
+5. Configure the `Advanced configuration` settings if needed (cloud provider and region, auto schema generation, CORS, and the MCP read-only setting).
+6. Click the `Create cluster` button.
 
 #### Advanced configuration for Shared Cloud clusters
 
 The following advanced configuration settings are available:
 
+- Cloud provider and region. Shared Cloud clusters can run on AWS or GCP.
 - [`Enable auto schema generation`](/weaviate/config-refs/collections#auto-schema)
 - `Allow all CORS origins`
 - [`Enable MCP Read-Only`](/weaviate/configuration/mcp-server#weaviate-cloud)
@@ -144,7 +176,7 @@ When you create a cluster, the **Optimization profile** sets the default [vector
 The optimization profile only sets the *default* for new collections. You can still configure the [vector index and compression for each collection](/weaviate/manage-collections/vector-config) when you create it.
 
 :::note Free clusters
-Free clusters support the **Cost Optimized** (HFresh) profile only. To use the **Performance Optimized** (HNSW) profile, [upgrade to a paid plan](https://weaviate.io/pricing).
+Index type and compression are enforced on the free tier: free clusters use the **Cost Optimized** (HFresh) profile. To choose your own optimization profile, including **Performance Optimized** (HNSW), [upgrade to Shared](https://weaviate.io/pricing).
 :::
 
 ## Authentication
@@ -165,8 +197,6 @@ If RBAC is not enabled (before `v1.30`), clusters use the traditional approach w
 
 - **Admin keys**: Provide read-write access to the database
 - **ReadOnly keys**: Provide read-only access to the database
-
-Shared Cloud clusters can create, delete, edit, and rotate API keys, while free clusters cannot modify the default keys.
 
 ## Weaviate Database version
 

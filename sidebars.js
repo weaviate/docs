@@ -1576,6 +1576,11 @@ const sidebars = {
       label: "Quickstart",
     },
     {
+      type: "doc",
+      id: "cloud/console-overview",
+      label: "Console overview",
+    },
+    {
       type: "html",
       value: "<hr class='sidebar-divider' />",
     },
@@ -1647,7 +1652,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Agents",
+      label: "Agents and tools",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1657,26 +1662,14 @@ const sidebars = {
           id: "cloud/tools/query-agent",
           className: "sidebar-item",
         },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Other tools",
-      className: "sidebar-main-category",
-      collapsed: true,
-      items: [
         {
           type: "doc",
           id: "cloud/tools/explorer-tool",
           className: "sidebar-item",
         },
         {
-          type: "ref",
-          id: "weaviate/configuration/mcp-server",
+          type: "link",
+          href: "http://localhost:3000/weaviate/configuration/mcp-server#weaviate-cloud",
           label: "MCP server",
           className: "sidebar-item",
         },

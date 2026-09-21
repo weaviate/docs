@@ -24,24 +24,22 @@ import DisableWeaviateEmbeddings from '/docs/cloud/img/weaviate-cloud-disable-em
         Open the <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-       Click on <code>Weaviate Embeddings</code> in the left sidebar (<span class="callout">1</span>).
+       Click on <code>Embeddings</code> in the left sidebar.
       </li>
       <li>
-       Use the toggle button <code>Enabled</code> to either disable or enable the service. (<span class="callout">2</span>).
+       Use the <code>Enable Embeddings</code> toggle to disable or enable the service.
       </li>
     </ol>
   </div>
   <div class="col col--8">
     <div class="card">
       <div class="card__image">
-        <img src={DisableWeaviateEmbeddings} alt="Disable Weaviate Embeddings globally" />
+        <img src={DisableWeaviateEmbeddings} alt="The Weaviate Embeddings page with the Enable Embeddings toggle and the available embedding models" />
       </div>
-      <div class="card__body">Disable Weaviate Embeddings globally.</div>
+      <div class="card__body">The <code>Enable Embeddings</code> toggle turns Weaviate Embeddings on or off for the whole organization.</div>
     </div>
   </div>
 </div>
-
-<!-- TODO[g-despot] Update screenshot if necessary -->
 
 ## Pricing and billing
 
