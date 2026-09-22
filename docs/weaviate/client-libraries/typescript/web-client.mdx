@@ -13,11 +13,9 @@ image: og/docs/client-libraries.jpg
 
 It has the same API as `weaviate-client`, but sends queries over gRPC-Web. Connect options take one HTTP(S) endpoint. There is no gRPC host or port to set, because Weaviate serves gRPC-Web on the REST port.
 
-Use a `connectTo*` helper. The low-level `weaviate.client(params)` entry point does not add the `/v1/grpc-web` prefix. `grpcHost`, `grpcPort` and `grpcSecure` are not connect options. If you pass them, they are ignored.
-
 :::caution Alpha
 
-`@weaviate/web` `3.15.0-alpha.2` is an alpha. The `latest` tag still points at `3.15.0-alpha.1`, an older alpha that cannot resolve its own dependencies, so always install the version explicitly. The API may change. Do not use it in production yet.
+`@weaviate/web` `3.15.0-alpha.2` is an alpha. The `latest` tag still points at `3.15.0-alpha.1`, an older alpha that cannot resolve its own dependencies, so always install the version explicitly.
 
 :::
 
@@ -33,7 +31,9 @@ Both parts matter. The package does not declare its `protobufjs` dependency yet,
 
 Use the ESM entry point. The package also ships a CommonJS build, but it requires an ESM-only dependency, so it loads only on Node 22.12 and later. The ESM entry works on Node 18 and later.
 
-## Server version
+## Connect to Weaviate
+
+Use a `connectTo*` helper. The low-level `weaviate.client(params)` entry point does not add the `/v1/grpc-web` prefix. `grpcHost`, `grpcPort` and `grpcSecure` are not connect options. If you pass them, they are ignored.
 
 :::info Added in `v1.38.3`
 Weaviate serves gRPC-Web by default from `v1.38.3`. 
@@ -48,9 +48,6 @@ So the web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to co
 
 For the server side, see [gRPC-Web](../../api/grpc.md#grpc-web).
 
-## TypeScript setup
-
-A browser-only `tsconfig.json` needs `"skipLibCheck": true`. The `@weaviate/core` type declarations refer to Node's `http` module and `Buffer`, so the project fails to typecheck without it. Most Vite and Next.js starters set it already. These are type-only references, so they do not reach the bundle.
 
 ## Browser notes
 
