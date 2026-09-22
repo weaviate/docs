@@ -11,39 +11,50 @@ The majority of these settings are configured via environment variables. For mor
 
 ## Weaviate Database settings
 
-These settings control core database functionality and limits. User configurable settings can be viewed and updated in "Show advanced options" in cluster details.
+These settings control core database functionality and limits. User configurable settings can be viewed and updated under `Advanced configuration` on the cluster `Dashboard`.
 
 import AdvancedOptions from "/docs/cloud/img/weaviate-cloud-cluster-advanced-settings.png";
 
 | Setting | Requires restart | Default value | User configurable |
 | --- | --- | --- | --- |
-| [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 | No |
-| [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes (<span class="callout">2</span>) |
+| [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) | No | 1000 on paid plans. The [free tier allowance](/cloud/manage-clusters/create#free-tier-allowance) is 1 collection. | No |
+| [`AUTOSCHEMA_ENABLED`](/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) | No | true | Yes |
 | [`MCP_SERVER_ENABLED`](/deploy/configuration/env-vars/index.md#MCP_SERVER_ENABLED) | No | true (always enabled on Weaviate Cloud) | No |
 | `Enable MCP Read-Only` (console setting) | No | false | Yes (see [Weaviate MCP server](/weaviate/configuration/mcp-server#weaviate-cloud)) |
 | [`ASYNC_REPLICATION_DISABLED`](/deploy/configuration/env-vars/index.md#ASYNC_REPLICATION_DISABLED) | No | false | No |
 | [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md#ASYNC_INDEXING) | Yes | true | No |
-| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | [RQ-8](/weaviate/configuration/compression/rq-compression.md) | Yes (<span class="callout">1</span>) |
+| [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) | No | Set by the cluster's [optimization profile](/cloud/manage-clusters/create#optimization-profile) | Yes (via the optimization profile) |
 | [`DEFAULT_VECTOR_INDEX`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_INDEX) | No | Set by the cluster's [optimization profile](/cloud/manage-clusters/create#optimization-profile) | Yes (via the optimization profile) |
 | [`DISABLE_GRAPHQL`](/deploy/configuration/env-vars/index.md#DISABLE_GRAPHQL) | No | true (new clusters) | No |
-| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) (<span class="callout">3</span>) |
+| `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
 | [`REPLICATION_MINIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MINIMUM_FACTOR) | Yes | 3 (for HA clusters) | No |
+
+The user configurable settings appear as toggles in the `Advanced configuration` section of the cluster `Dashboard`: `Enable MCP Read-Only`, `Enable auto schema generation`, and `Allow all CORS origins`.
 
 <div class="row">
   <div class="card">
     <div class="card__image">
-      <img src={AdvancedOptions} alt="Cluster advanced options" />
+      <img
+        src={AdvancedOptions}
+        alt="The Advanced configuration section of a Weaviate Cloud cluster dashboard, with the Enable MCP Read-Only, Enable auto schema generation, and Allow all CORS origins toggles, and the Save Configuration button"
+      />
     </div>
     <div class="card__body">
-      <p>Update advanced options for Weaviate Cloud cluster.</p>
+      <p>
+        <code>Advanced configuration</code> on the cluster{" "}
+        <code>Dashboard</code>. Select <code>Save Configuration</code> to apply
+        your changes; the CORS setting takes effect after a cluster restart.
+      </p>
     </div>
   </div>
 </div>
 <br />
 
-:::note Default vector index and the optimization profile
+The `Optimization profile` and the cluster details (Weaviate Database version, cloud provider, cloud region, product, and deployment) are further down the same `Dashboard` page. On a free cluster, `Cost Optimized` is the current profile and `Performance Optimized` is available for Shared.
 
-`DEFAULT_VECTOR_INDEX` is not set directly. It is determined by the [optimization profile](/cloud/manage-clusters/create#optimization-profile) you pick when you create the cluster: the `Cost Optimized` profile makes HFresh the default vector index, and the `Performance Optimized` profile makes HNSW the default. Free clusters support the `Cost Optimized` profile only.
+:::note Default vector index, quantization, and the optimization profile
+
+`DEFAULT_VECTOR_INDEX` and `DEFAULT_QUANTIZATION` are not set directly. They are determined by the [optimization profile](/cloud/manage-clusters/create#optimization-profile) you pick when you create the cluster: the `Cost Optimized` profile defaults to the HFresh vector index with automatic compression, and the `Performance Optimized` profile defaults to HNSW with [RQ](/weaviate/configuration/compression/rq-compression.md). Index type and compression are enforced on the free tier, which uses `Cost Optimized`. Upgrade to Shared to choose your own profile.
 
 The profile only sets the default for new collections. An explicit vector index in a [collection definition](/weaviate/manage-collections/vector-config) always takes precedence.
 

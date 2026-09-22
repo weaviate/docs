@@ -69,8 +69,8 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
   }}
 >
   <iframe
-    id="mk6l470aqk"
-    src="https://app.guideflow.com/embed/mk6l470aqk"
+    id="3r3vg6mcnp"
+    src="https://app.guideflow.com/embed/3r3vg6mcnp"
     width="100%"
     height="100%"
     style={{ overflow: "hidden", position: "absolute", border: "none" }}
@@ -83,7 +83,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
   />
   <script
     src="https://app.guideflow.com/assets/opt.js"
-    data-iframe-id="mk6l470aqk"
+    data-iframe-id="3r3vg6mcnp"
   ></script>
 </div>
 
@@ -117,8 +117,8 @@ You can retrieve them both from the [WCD console](/go/console?utm_content=quicks
   }}
 >
   <iframe
-    id="ok8l954sxr"
-    src="https://app.guideflow.com/embed/ok8l954sxr"
+    id="6kwn8ldczk"
+    src="https://app.guideflow.com/embed/6kwn8ldczk"
     width="100%"
     height="100%"
     style={{ overflow: "hidden", position: "absolute", border: "none" }}
@@ -131,7 +131,7 @@ You can retrieve them both from the [WCD console](/go/console?utm_content=quicks
   />
   <script
     src="https://app.guideflow.com/assets/opt.js"
-    data-iframe-id="ok8l954sxr"
+    data-iframe-id="6kwn8ldczk"
   ></script>
 </div>
 

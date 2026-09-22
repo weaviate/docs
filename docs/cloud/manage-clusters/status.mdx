@@ -44,9 +44,9 @@ image: og/wcd/user_guides.jpg
     <summary>Select your cluster</summary>
 
 1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
-2. Open the `Clusters` list from the left sidebar.
+2. Open the `CLUSTER` selector in the left sidebar.
 3. Select the cluster you want to inspect.
-4. The cluster details panel will open to the right.
+4. The cluster `Dashboard` opens.
 
 </details>
 
@@ -90,8 +90,8 @@ Depending on the data available for your cluster, the following metrics dashboar
     <summary>Explore cluster metrics</summary>
 
 1. Open the [Weaviate Cloud console](/go/console?utm_content=cloud).
-2. Select the cluster you want to inspect from the left sidebar.
-3. Locate the cluster `Metrics` section on the `Cluster details` page.
+2. Select the cluster you want to inspect from the `CLUSTER` selector in the left sidebar.
+3. Locate the cluster `Metrics` section on the cluster `Dashboard`.
 4. Click the `View all Metrics` button to find all the available metrics for your cluster.
 
 </details>
@@ -100,11 +100,10 @@ Depending on the data available for your cluster, the following metrics dashboar
 
 You can see the following cluster statistics at the top of the page:
 
-- `Dimensions stored`
 - `Object count`
-- `Cluster expires on` (only for free clusters, based on inactivity)
+- `Endpoint health check`
 
-You can find the following information on the cluster details page:
+You can find the following information on the cluster `Dashboard`:
 
 - `Name of the cluster`
 - `REST Endpoint`
@@ -115,9 +114,12 @@ You can find the following information on the cluster details page:
 - `Cloud provider`
 - `Cloud region`
 - `Created at`
-- `Type` (Shared Cloud or Free)
+- `Product` (for example, `Free`)
+- `Deployment` (for example, `Shared`)
 - `Backup retention days` (only for Shared Cloud cluster)
 - `Availability SLA` (only for Shared Cloud cluster)
+
+`Product` is the plan you pay for and `Deployment` is the infrastructure the cluster runs on. They are separate: a `Free` cluster runs on a `Shared` deployment, so `Deployment: Shared` on its own does not mean you are being billed.
 
 Clusters also have an `Advanced configuration` section to configure or check the status of these additional settings:
 
@@ -146,11 +148,13 @@ import ClusterStatusModules from "/docs/cloud/img/weaviate-cloud-available-modul
     <ol>
       <li>Open the Weaviate Cloud console.</li>
       <li>
-        Click on <code>Clusters</code> and select the cluster you want to check.
+        Open the <code>CLUSTER</code> selector in the left sidebar and select
+        the cluster you want to check.
       </li>
       <li>
-        Scroll to the <code>Available modules</code> section under{" "}
-        <code>Advanced options</code>.
+        On the cluster <code>Dashboard</code>, scroll to the{" "}
+        <code>Active modules</code> section below{" "}
+        <code>Advanced configuration</code>.
       </li>
       <li>You can click on a module to open its documentation.</li>
     </ol>
@@ -158,9 +162,16 @@ import ClusterStatusModules from "/docs/cloud/img/weaviate-cloud-available-modul
   <div class="col col--8">
     <div class="card">
       <div class="card__image">
-        <img src={ClusterStatusModules} alt="Create a cluster" />
+        <img
+          src={ClusterStatusModules}
+          alt="The Active modules list below Advanced configuration on a Weaviate Cloud cluster dashboard"
+        />
       </div>
-      <div class="card__body">Available modules for your cluster.</div>
+      <div class="card__body">
+        <code>Active modules</code> sits below{" "}
+        <code>Advanced configuration</code> on the cluster{" "}
+        <code>Dashboard</code>.
+      </div>
     </div>
   </div>
 </div>

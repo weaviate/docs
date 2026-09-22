@@ -21,51 +21,51 @@ import MFA from "/docs/cloud/img/weaviate-cloud-mfa.png";
         Open the{" "}
         <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
       </li>
+      <li>Click on the user menu in the top-right corner of the console.</li>
       <li>
-        Click on the <code>Account</code> dropdown menu in the lower left corner
-        of the console (<span class="callout">1</span>).
-      </li>
-      <li>
-        Select <code>Account Settings</code> (<span class="callout">2</span>).
-      </li>
-      <li>
-        Click on <code>Enable MFA</code> button (<span class="callout">3</span>
-        ).
+        Select <code>Account Settings</code>.
       </li>
     </ol>
   </div>
   <div class="col col--8">
     <div class="card">
       <div class="card__image">
-        <img src={EnableMFA} alt="Multi-factor authentication page" />
+        <img
+          src={EnableMFA}
+          alt="The user menu in the top-right corner of the Weaviate Cloud console, with Account Settings and Logout"
+        />
       </div>
       <div class="card__body">
-        Open the Multi-factor authentication page and find the{" "}
-        <code>Enable MFA</code> button.
+        The user menu in the top-right corner holds{" "}
+        <code>Account Settings</code>.
       </div>
     </div>
   </div>
 </div>
 <br />
 <div class="row">
-  <div class="col col--6">
-    <ol start="5">
+  <div class="col col--4">
+    <ol start="4">
       <li>
-        Open your authenticator application and scan the QR code (
-        <span class="callout">4</span>).
+        In the <code>Multi-Factor Authentication</code> section, click{" "}
+        <code>Enable MFA</code>.
       </li>
-      <li>
-        Enter the one-time code from your application (
-        <span class="callout">5</span>).
-      </li>
+      <li>Open your authenticator application and scan the QR code.</li>
+      <li>Enter the one-time code from your application.</li>
     </ol>
   </div>
-  <div class="col col--6">
+  <div class="col col--8">
     <div class="card">
       <div class="card__image">
-        <img src={MFA} alt="Enable MFA" />
+        <img
+          src={MFA}
+          alt="The Multi-Factor Authentication section of the Account page, with the Enable MFA button and the MFA status"
+        />
       </div>
-      <div class="card__body">Set up Multi-factor authentication.</div>
+      <div class="card__body">
+        The <code>Account</code> page shows the <code>Enable MFA</code> button
+        and the current MFA status.
+      </div>
     </div>
   </div>
 </div>

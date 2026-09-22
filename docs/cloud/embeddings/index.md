@@ -19,7 +19,7 @@ With Weaviate Embeddings, you can generate embeddings for your data and queries 
 This means you can perform [keyword](/weaviate/search/bm25), [vector](/weaviate/search/similarity) and [hybrid searches](/weaviate/search/hybrid) without the need to externally generate vector embeddings, or manage additional model providers.
 
 :::tip Quickstart
-Follow the **[quickstart guide](/cloud/embeddings/quickstart)** to get started with Weaviate Embeddings.
+Follow the **[quickstart guide](/weaviate/quickstart)** to get started with Weaviate Embeddings.
 :::
 
 <!--
@@ -81,7 +81,6 @@ We may expand the service to other regions in the future.
 
 ## Additional resources
 
-- [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
 - [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
 - [Model provider integrations: Text Embeddings](/weaviate/model-providers/weaviate/embeddings.md)

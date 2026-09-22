@@ -79,7 +79,7 @@ console.log(JSON.stringify(result.objects, null, 2));
 
 // BatchEx
 const questions = client.collections.use("CollectionName")
-const dataObject = [...]; // your data
+const dataObject = [/* ... */]; // your data
 
 await questions.data.insertMany(dataBatch);
 // END BatchEx
