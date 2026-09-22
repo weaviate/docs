@@ -1657,7 +1657,7 @@ const sidebars = {
         },
         {
           type: "link",
-          href: "http://localhost:3000/weaviate/configuration/mcp-server#weaviate-cloud",
+          href: "https://docs.weaviate.io/weaviate/configuration/mcp-server#weaviate-cloud",
           label: "MCP server",
           className: "sidebar-item",
         },
