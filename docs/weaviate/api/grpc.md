@@ -64,7 +64,7 @@ The gRPC-Web interface is enabled by default. **[Runtime configuration](/deploy/
 
 This setting has no environment variable equivalent. When the interface is disabled, requests to `/v1/grpc-web/` fall through to the REST handler, so other REST endpoints keep working as usual.
 
-The Weaviate client libraries connect over plain gRPC, so they do not use the gRPC-Web interface yet.
+The TypeScript [web client](../client-libraries/typescript/web-client.mdx) connects through gRPC-Web. The other client libraries connect over plain gRPC.
 
 ## Questions and feedback
 
