@@ -1,0 +1,64 @@
+---
+title: Web client
+sidebar_position: 3
+description: "The @weaviate/web package: a browser build of the Weaviate v3 TypeScript client that connects over gRPC-Web."
+image: og/docs/client-libraries.jpg
+---
+
+{/* MAINTENANCE: `3.15.0-alpha.2` is hardcoded in 3 places — the Alpha admonition and the
+    install command below, plus the availability table in weaviate/api/graphql/migration.mdx.
+    Update all 3 together when the package moves. */}
+
+`@weaviate/web` is a browser build of the v3 client. Use it in browsers and edge runtimes such as Cloudflare Workers and Vercel, where a plain gRPC connection is not possible.
+
+It has the same API as `weaviate-client`, but sends queries over gRPC-Web. Connect options take one HTTP(S) endpoint. There is no gRPC host or port to set, because Weaviate serves gRPC-Web on the REST port.
+
+:::caution Alpha
+
+`@weaviate/web` `3.15.0-alpha.2` is an alpha. The `latest` tag still points at `3.15.0-alpha.1`, an older alpha that cannot resolve its own dependencies, so always install the version explicitly.
+
+:::
+
+## Install
+
+Install the alpha explicitly, together with `protobufjs`:
+
+```bash
+npm install @weaviate/web@3.15.0-alpha.2 protobufjs
+```
+
+Both parts matter. The package does not declare its `protobufjs` dependency yet, so the import fails without it. And the `latest` tag still points at an older alpha that cannot resolve its own dependencies, so a bare `npm install @weaviate/web` does not work.
+
+Use the ESM entry point. The package also ships a CommonJS build, but it requires an ESM-only dependency, so it loads only on Node 22.12 and later. The ESM entry works on Node 18 and later.
+
+## Connect to Weaviate
+
+Use a `connectTo*` helper. The low-level `weaviate.client(params)` entry point does not add the `/v1/grpc-web` prefix. `grpcHost`, `grpcPort` and `grpcSecure` are not connect options. If you pass them, they are ignored.
+
+:::info Added in `v1.38.3`
+Weaviate serves gRPC-Web by default from `v1.38.3`. 
+:::
+
+So the web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to connect, and the error names the missing path:
+
+```text
+/grpc.health.v1.Health/Check UNIMPLEMENTED: Received HTTP 404 response:
+{"code":404,"message":"path /v1/grpc-web/grpc.health.v1.Health/Check was not found"}
+```
+
+For the server side, see [gRPC-Web](../../api/grpc.md#grpc-web).
+
+
+## Browser notes
+
+**Do not send custom headers.** Weaviate allows a fixed set of headers on `/v1/grpc-web/`, including `Content-Type`, `X-Grpc-Web`, `X-Weaviate-Client`, `X-User-Agent`, `Grpc-Timeout` and `Authorization`. The client's own headers are all on the list, so cross-origin calls work as shipped. A custom header is sent, then blocked by the browser preflight. Node runs no preflight, so you will not see this in Node tests.
+
+:::warning Browser credentials are visible to the user
+Anyone who loads your page can read whatever the bundle holds, including API keys. Use a read-only API key with the least [RBAC](/deploy/configuration/authorization.md) permissions the app needs. Never ship an admin key to a browser.
+:::
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

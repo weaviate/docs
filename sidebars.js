@@ -822,6 +822,7 @@ const sidebars = {
             id: "weaviate/client-libraries/typescript/index",
           },
           items: [
+            "weaviate/client-libraries/typescript/web-client",
             "weaviate/client-libraries/typescript/notes-best-practices",
             {
               type: "link",

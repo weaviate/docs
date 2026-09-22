@@ -1,0 +1,241 @@
+---
+title: Migrating from the GraphQL API
+description: "How to express your existing GraphQL Get and Aggregate queries with the Weaviate client libraries, the browser client, or the REST Search API."
+image: og/docs/api.jpg
+unlisted: true
+---
+
+import SkipLink from '/src/components/SkipValidationLink'
+
+## Who this guide is for
+
+This guide is for developers who have working GraphQL `Get` and `Aggregate` queries and want to express the same searches through one of Weaviate's other query APIs. Typical reasons to be here:
+
+- You are moving an application to a **new Weaviate Cloud cluster**, which is created with **GraphQL disabled**.
+- You are building in the **browser** or on an edge runtime, where a plain gRPC client cannot run.
+- You maintain an **HTTP-only stack** — a no-code or BI tool, or a language without an official Weaviate client, such as PHP or Ruby.
+
+Start at the top of this table and take the first row that describes your stack.
+
+| Your application | Recommended path | Why |
+| --- | --- | --- |
+| **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
+| **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. Currently an alpha release. |
+| **No client library available** | **[REST Search API](#rest-search-api)** | For a no-code or BI platform, or a language with no official client such as PHP or Ruby. Plain-HTTP JSON endpoints whose request bodies mirror your GraphQL queries closely.
+
+:::info Availability at a glance
+The three paths are at three different maturity levels. Check the **Status** column before you commit to one.
+:::
+
+| Path | Status | Availability |
+| --- | --- | --- |
+| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is currently in [beta release](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-beta.3). Earlier versions of the Go client rely on GraphQL. |
+| **`@weaviate/web`** (browser and edge) | **Alpha** | `3.15.0-alpha.2`. Requires Weaviate `v1.38.3` or later, and an [install workaround](../../client-libraries/typescript/web-client.mdx). |
+| **REST Search API** | **Preview** | From `v1.39` available when [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) is set to `true`. Enabled by default from `v1.40`. See [REST Search API](#rest-search-api). |
+
+## Client libraries (recommended)
+
+The client libraries cover every `Get` and `Aggregate` construct shown on this page, so each one has a direct equivalent. They query over gRPC, and give you typed results and generated request objects.
+
+:::info The Go client and GraphQL
+The current Go client builds its queries as GraphQL under the hood. The upcoming v6 client replaces that with gRPC.
+:::
+
+### GraphQL syntax mapping
+
+| GraphQL | Client concept | How-to |
+| --- | --- | --- |
+| `Get { Collection { ... } }` | Fetch objects from a collection | [Search patterns and basics](../../search/basics.md#list-objects) |
+| `nearText` | Near-text search | [Search with text](../../search/similarity.md#search-with-text) |
+| `nearObject` | Near-object search | [Search with an existing object](../../search/similarity.md#search-with-an-existing-object) |
+| `nearVector` | Near-vector search — pass your own query vector | [Search with a vector](../../search/similarity.md#search-with-a-vector) |
+| `nearImage` and the other media operators | Multimodal search | [Search with image](../../search/similarity.md#search-with-image) |
+| `bm25` | Keyword search, including search operators and property boosts | [Keyword search](../../search/bm25.md) |
+| `hybrid` | Hybrid search, including `alpha`, fusion type, and search vectors | [Hybrid search](../../search/hybrid.md) |
+| `where` | Filters, built with the client's filter helpers | [Filters](../../search/filters.md) |
+| `limit`, `offset` | `limit` and `offset` arguments | [Paginate with limit and offset](../../search/basics.md#paginate-with-limit-and-offset) |
+| `after` (cursor) | Cursor-based iteration over all objects | [Cursor with `after`](./additional-operators.md#cursor-with-after) |
+| `autocut` | `auto_limit` / `autoLimit` | [Limit result groups](../../search/similarity.md#limit-result-groups) |
+| `sort` | Sorting on object retrieval. Sorting is not combined with a search operator — see [sorting considerations](./additional-operators.md#sorting-considerations) | [Sorting](./additional-operators.md#sorting) |
+| `_additional { ... }` | `return_metadata` / `returnMetadata`, returned as a metadata object on each result | [Retrieve metadata values](../../search/basics.md#retrieve-metadata-values) |
+| `_additional { vector }` | `include_vector` / `returnVectors` | [Retrieve the object vector](../../search/basics.md#retrieve-the-object-vector) |
+| `groupBy` | Grouped results | [Group results](../../search/similarity.md#group-results) |
+| `Aggregate { ... }` | The collection's aggregate API, including per-property statistics | [Aggregate data](../../search/aggregate.md) |
+| `_additional { generate { ... } }` | Retrieval augmented generation (single prompt and grouped task) | [Retrieval Augmented Generation (RAG)](../../search/generative.md) |
+| Cross-reference selection (`... on Target { ... }`) | `return_references` / `returnReferences` | [Retrieve cross-referenced properties](../../search/basics.md#retrieve-cross-referenced-properties) |
+| `tenant` | A tenant-scoped collection handle | [Multi-tenancy](../../search/basics.md#multi-tenancy) |
+| `consistencyLevel` | A consistency-level-scoped collection handle | [Replication](../../search/basics.md#replication) |
+
+## TypeScript client for web
+
+If your application runs in a browser or on an edge runtime such as Cloudflare Workers or Vercel, a plain gRPC client cannot run there. `@weaviate/web` is a browser and edge build of the v3 TypeScript client that carries the query path over **gRPC-Web**, so you write the same client code you would on Node against a single HTTP(S) endpoint.
+
+:::caution Alpha
+`@weaviate/web` is an alpha release and is not recommended for production use yet.
+:::
+
+We exercised the alpha against Weaviate `v1.38.3`, `v1.39.4`, `v1.39.5`, and `v1.40.0-rc.1`, with identical results on each apart from one cosmetic difference in self-distance on `v1.38.3`. Connecting, `fetchObjects` with filters, `bm25`, `hybrid`, `nearVector`, `nearObject`, metadata and vector selection, sorting, paging, aggregation, multi-tenancy, the write methods, and API-key authentication all work. `generate` (RAG) needs a generative module on the server, exactly as it does elsewhere.
+
+Install steps, the server version floor and the browser notes are on the [web client page](../../client-libraries/typescript/web-client.mdx). The alpha needs an install workaround, so start there.
+
+## REST Search API
+
+:::caution Preview
+
+The REST Search API is a **preview** feature.
+
+In **`v1.39`** they are available when [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) is set to `true`. They are enabled by default from **`v1.40`**.
+
+:::
+
+The REST Search API is a set of plain-HTTP JSON endpoints intended for stacks that cannot run a client library. 
+Request and response field names may still change, so this path is not recommended for production use yet. It is a deliberate **subset** of what GraphQL offers. Read [Differences to check before you convert](#differences-to-check-before-you-convert) and [Queries without a REST equivalent yet](#queries-without-a-rest-equivalent-yet) before you convert anything.
+
+There are five available `POST` endpoints:
+
+| Endpoint | GraphQL equivalent |
+| --- | --- |
+| <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-text">`POST /v1/search/{collection}/near-text`</SkipLink> | `Get` with `nearText` |
+| <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/bm25">`POST /v1/search/{collection}/bm25`</SkipLink> | `Get` with `bm25` |
+| <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/hybrid">`POST /v1/search/{collection}/hybrid`</SkipLink> | `Get` with `hybrid` |
+| <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-object">`POST /v1/search/{collection}/near-object`</SkipLink> | `Get` with `nearObject` |
+| <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{collection}`</SkipLink> | `Aggregate` |
+
+### An example request
+
+The GraphQL query you are converting from is documented in the [GraphQL reference](./get.md). Its REST equivalent looks like this:
+
+**REST Search API** — <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-text">`POST /v1/search/Movie/near-text`</SkipLink>
+
+```json
+{
+  "query": ["space opera"],
+  "limit": 5,
+  "where": {
+    "operator": "And",
+    "operands": [
+      { "path": ["year"], "operator": "GreaterThanEqual", "valueInt": 1980 },
+      { "path": ["category"], "operator": "Equal", "valueText": "scifi" }
+    ]
+  },
+  "returnProperties": ["title", "year"],
+  "returnMetadata": ["distance"]
+}
+```
+
+The `where` value is the **exact same JSON** you pass in GraphQL — the same 15 operators, the same value fields, the same cross-reference paths, parsed by the same code. There is no new filter language to learn.
+
+The response is a flat envelope rather than the GraphQL `data.Get.<Collection>` nesting:
+
+```json
+{
+  "results": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "properties": { "title": "Dune", "year": 2021 },
+      "metadata": { "distance": 0.12 }
+    }
+  ],
+  "tookMs": 8
+}
+```
+
+### Differences to check before you convert
+
+These are the conversions most likely to cost you time. Some return a perfectly successful response carrying a different answer from the one GraphQL gave; others change the way a failure reaches your code. The silent ones are the dangerous ones. Read this list before the feature gaps below.
+
+<details>
+  <summary>What changes, and what to do about it</summary>
+
+| Difference | What happens | What to do |
+| --- | --- | --- |
+| **Default `limit`** | GraphQL `Get` falls back to `QUERY_DEFAULTS_LIMIT_GRAPHQL` (`100` by default). The REST endpoints fall back to `QUERY_DEFAULTS_LIMIT` (`10` by default) and never reach the GraphQL value. A query you convert without an explicit `limit` silently returns far fewer rows. | **Always set `limit` explicitly.** This is the single most common silent difference. |
+| **Unknown body fields are ignored** | The endpoints accept and discard fields they do not recognize, for platform parity with the rest of the REST API. A typo, or a field borrowed from GraphQL, produces a successful response that ignored your intent. | Check every field name against the tables on this page. |
+| **`bm25.searchOperator`** | There is no REST field for the keyword search operator (`And`, `Or`, `AndCross`) or `minimumOrTokensMatch`. Supplying one is ignored, so the search runs with the default operator. | Use a [client library](#client-libraries-recommended) if your results depend on the search operator. |
+| **`Get`'s `group` argument** | The vector-grouping `group` argument has no REST field and raises no error. Results come back **ungrouped**. | Use a [client library](#client-libraries-recommended) for grouped results. |
+| **A body field named `generate`** | Silently ignored, and the response contains no generated text. The reserved `singlePrompt` and `groupedTask` fields do return `422`. | See [Queries without a REST equivalent yet](#queries-without-a-rest-equivalent-yet). |
+| **`certainty` on a `bm25` search** | Accepted in `returnMetadata`, but certainty cannot be computed for a keyword search, so the field is simply absent from the response. | Request `score` instead for keyword searches. |
+| **`int64` precision** | Integers travel as JSON numbers and are handled as `float64`, so values beyond 2^53 lose precision. | For large integers, use a client library, or store the value as text. |
+| **`_additional` is renamed** | Retrieval metadata arrives under a **`metadata`** key, not `_additional`. Properties and cross-references are also split into their own `properties` and `references` objects rather than sitting flat on the result, and the object `id` is a top-level envelope field. | Update your response parsing. Note `id` is **not** a valid `returnMetadata` entry — supplying it returns `422`. |
+| **Error signalling** | GraphQL returns HTTP `200` with an `errors[]` array. The REST endpoints use real HTTP status codes (`400`, `401`, `403`, `404`, `422`, `429`, `500`, `503`) with a body of the form `{"error":[{"message":"..."}]}`. | Check the status code, not just the body. Client code that only inspected `errors[]` will treat failures as successes. |
+| **Embedding-provider failures** | When the vectorizer module fails, the response is `500` — never `502` — with a deliberately short message; the provider's own response goes to the server log, because it can quote credentials. | Read the server log for provider errors; do not parse the client-facing body. |
+| **The same validation, surfaced differently** | A malformed `where` filter — `And`/`Or` with no operands, a `Not` with more than one, a non-RFC3339 `valueDate`, a `ContainsAny`/`ContainsAll`/`ContainsNone` without an array value, or `IsNull` without `indexNullState` — is rejected by **both** APIs, with the same underlying message. GraphQL returns it inside `errors[]` under HTTP `200`; here it arrives as a status code. Only the missing-operands case is caught at the API layer and returns `400`; the other four are rejected deeper in the engine and return **`500`**. | Do not treat these `500`s as transient server trouble: a retry or alerting rule keyed on `5xx` will retry forever and page someone. Read the message before retrying. |
+| **`fusionType` values differ** | GraphQL's `rankedFusion` and `relativeScoreFusion` are `ranked` and `relativeScore` here. A copied GraphQL value returns `422`. | Translate the value; see the cheat sheet below. |
+
+</details>
+
+### Queries without a REST equivalent yet
+
+These capabilities are not part of the preview. They fail in two very different ways, so check the status column before you port anything: some are **reserved** and return `422` or `400`, which shows the gap in your logs; others are simply **not recognized**, and the request returns `200` with the capability having had no effect at all. The silent ones are the ones to watch. If you need one of these, please [open a GitHub issue](https://github.com/weaviate/weaviate/issues).
+
+<details>
+  <summary>What is missing, and what each returns</summary>
+
+| GraphQL capability | REST status | Path |
+| --- | --- | --- |
+| **`nearVector`** — supplying your own query vector | **No route exists.** There is no `near-vector` endpoint, so the request fails outright. | Any collection configured with `vectorizer: none`, or any workload that computes embeddings client-side, needs a [client library](#client-libraries-recommended) or the [web client](#typescript-client-for-web). |
+| **`hybrid.vector`** — supplying the vector leg of a hybrid search | The `hybrid` route exists but has no `vector` field, so the value is **silently ignored** (`200`) and the search runs against a server-computed vector instead of yours. | [Client libraries](#client-libraries-recommended) or the [web client](#typescript-client-for-web). |
+| **`Aggregate` property statistics** — `sum`, `mean`, `median`, `mode`, `minimum`, `maximum`, `topOccurrences`, `totalTrue`, and the rest | Aggregate is **count-only**. A `property:statistic` entry in `returnMetrics` returns `422`. | [Client libraries](#client-libraries-recommended) |
+| **Aggregate over a search** — `over` and `objectLimit` | Reserved; returns `422`. | [Client libraries](#client-libraries-recommended) |
+| **RAG** — `generate(singleResult:)` and `generate(groupedResult:)` | `singlePrompt` and `groupedTask` are reserved and return `422`. | [Client libraries](#client-libraries-recommended) |
+| **Multiple target vectors** — `targetVectors` and `targets` | `targetVector` takes a **single string**. On `near-text`, `near-object`, and `hybrid` an array returns `400`. On `bm25` there is no `targetVector` field at all, so any value — string or array — is **silently ignored** (`200`) through the [unknown-field path](#differences-to-check-before-you-convert). Multi-target weighting is not available. | [Client libraries](#client-libraries-recommended) |
+| **Media search** — `nearImage`, `nearAudio`, `nearVideo`, `nearDepth`, `nearThermal`, `nearImu` | No routes. | [Client libraries](#client-libraries-recommended) |
+| **`groupBy` in `Get`** | Reserved, but the status depends on the shape you send. The GraphQL-shaped object (`{path, groups, objectsPerGroup}`) — the form you are most likely to port — returns **`400`**, because the reserved field is typed as a string. A bare string returns `422` "groupBy is not yet supported". | [Client libraries](#client-libraries-recommended) |
+| **`rerank`** | Reserved; returns `422`. | [Client libraries](#client-libraries-recommended) |
+| **`sort`** and the `after` cursor | Not fields on the search endpoints, so both are **silently ignored** (`200`, with the result set unchanged and unsorted). Sorting is not combined with search operators — see [sorting considerations](./additional-operators.md#sorting-considerations) — and both remain available on `GET /v1/objects`. | [Client libraries](#client-libraries-recommended), or `GET /v1/objects` |
+| **`nearText` concept steering** — `moveTo`, `moveAwayFrom`, `autocorrect` | Not fields on the `near-text` route, so all three are **silently ignored** (`200`, with the result set unchanged and unsteered). | [Client libraries](#client-libraries-recommended) |
+| **Vectors in the response** — `_additional { vector }` | Vectors are never returned by these endpoints. | [Client libraries](#client-libraries-recommended), or `GET /v1/objects` |
+
+</details>
+
+### GraphQL to REST cheat sheet
+
+Body fields are **camelCase**. Field names not listed here are not recognized, and unrecognized fields are ignored rather than rejected.
+
+<details>
+  <summary>GraphQL to REST field map</summary>
+
+| GraphQL | REST request body |
+| --- | --- |
+| `nearText: { concepts: ["x", "y"] }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-text">`POST /v1/search/{c}/near-text`</SkipLink> with `"query": ["x", "y"]` — always an array, even for one concept |
+| `nearText: { certainty: 0.7 }` or `{ distance: 0.3 }` | `"certainty": 0.7` or `"distance": 0.3` — one or the other, not both |
+| `bm25: { query: "x", properties: ["title^2"] }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/bm25">`POST /v1/search/{c}/bm25`</SkipLink> with `"query": "x", "queryProperties": ["title^2"]` |
+| `hybrid: { query: "x", alpha: 0.5 }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/hybrid">`POST /v1/search/{c}/hybrid`</SkipLink> with `"query": "x", "alpha": 0.5` |
+| `hybrid: { fusionType: rankedFusion }` | `"fusionType": "ranked"` |
+| `hybrid: { fusionType: relativeScoreFusion }` | `"fusionType": "relativeScore"` |
+| `hybrid: { maxVectorDistance: 0.4 }` | `"maxVectorDistance": 0.4` — requires `alpha` greater than `0`, otherwise `400` |
+| `nearObject: { id: "<uuid>" }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-object">`POST /v1/search/{c}/near-object`</SkipLink> with `"id": "<uuid>"` — required, and must be a well-formed UUID |
+| `targetVectors: ["title_vector"]` | `"targetVector": "title_vector"` — a single string |
+| `where: { ...WhereFilter... }` | `"where": { ...the same JSON... }` |
+| `limit: 5, offset: 10` | `"limit": 5, "offset": 10` |
+| `autocut: 1` | `"autoLimit": 1` |
+| A property selection such as `title year` | `"returnProperties": ["title", "year"]` — omit the field for all non-reference properties, or pass `[]` for none |
+| `hasAuthor { ... on Author { name } }` | `"returnReferences": [{ "linkOn": "hasAuthor", "targetCollection": "Author", "returnProperties": ["name"] }]` — dotted paths in `returnProperties` return `400` |
+| `_additional { distance score explainScore }` | `"returnMetadata": ["distance", "score", "explainScore"]` — response key is `metadata` |
+| `_additional { creationTimeUnix lastUpdateTimeUnix }` | `"returnMetadata": ["creationTime", "lastUpdateTime"]` |
+| `_additional { id }` | Nothing to request — `id` is always returned in the envelope. Passing `"id"` in `returnMetadata` returns `422` |
+| `tenant: "tenantA"` | `"tenant": "tenantA"` |
+| `consistencyLevel: ONE` | `"consistencyLevel": "ONE"` — uppercase only; `"one"` returns `422` |
+| `Aggregate { C(groupBy: ["category"]) { meta { count } } }` | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{c}`</SkipLink> with `"groupBy": "category", "returnMetrics": ["count"]` — a **bare property name**, not a path; a dotted value returns `422` |
+| `Aggregate { C { meta { count } } }` | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{c}`</SkipLink> with an empty body, or `"returnMetrics": ["count"]` |
+
+One more request limit worth knowing: in `v1.39`, `limit`, `offset`, and their sum are each capped by `QUERY_MAXIMUM_RESULTS`, and exceeding any of them returns `400`. A request body size cap, returning `413`, is not in `v1.39`; it is planned for `v1.40`.
+
+</details>
+
+## Related pages
+
+- [Search (GraphQL | gRPC)](./index.md) — the GraphQL and gRPC search API reference
+- [gRPC-Web](../grpc.md#grpc-web) — the browser-reachable gRPC interface
+- [Client libraries](../../client-libraries/index.mdx) — installation and connection for each language
+- [Web client](../../client-libraries/typescript/web-client.mdx) — install steps and browser notes for `@weaviate/web`
+- [Search patterns and basics](../../search/basics.md) — the how-to family this guide links throughout
+- [Connect to a cluster](/cloud/manage-clusters/connect.mdx) — where to find your Weaviate Cloud endpoint URLs
+
+## Questions and feedback
+
+All three paths are actively being developed, and feedback on this guide — especially a query you could not convert — directly shapes what gets built next.
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
