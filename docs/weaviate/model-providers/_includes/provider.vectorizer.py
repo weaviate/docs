@@ -1461,33 +1461,6 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
-# START SnowflakeArcticEmbedLV20
-from weaviate.classes.config import Configure, Property, DataType
-
-client.collections.create(
-    "DemoCollection",
-    # highlight-start
-    properties=[
-        Property(name="title", data_type=DataType.TEXT),
-    ],
-    vector_config=[
-        Configure.Vectors.text2vec_weaviate(
-            name="title_vector",
-            source_properties=["title"],
-            model="Snowflake/snowflake-arctic-embed-l-v2.0",
-            # Further options
-            # dimensions=256
-            # base_url="<custom_weaviate_embeddings_url>",
-        )
-    ],
-    # highlight-end
-    # Additional parameters not shown
-)
-# END SnowflakeArcticEmbedLV20
-
-# clean up
-client.collections.delete("DemoCollection")
-
 # START BasicVectorizerMMWeaviate
 from weaviate.classes.config import Configure
 

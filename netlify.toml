@@ -123,6 +123,20 @@ from = "/cloud/tools/query-tool"
 to   = "/cloud/tools/explorer-tool"
 status = 301
 
+## The Cloud and Weaviate Embeddings quickstarts were consolidated onto the
+## single core quickstart, which already runs on Weaviate Cloud with Weaviate
+## Embeddings as its vectorizer.
+
+[[redirects]]
+from = "/cloud/quickstart"
+to   = "/weaviate/quickstart"
+status = 301
+
+[[redirects]]
+from = "/cloud/embeddings/quickstart"
+to   = "/weaviate/quickstart"
+status = 301
+
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
 
 [[redirects]]

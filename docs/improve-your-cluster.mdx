@@ -18,7 +18,7 @@ This page is linked from the banner Weaviate logs once a cluster is up. If you j
 Most errors in the [error messages](/errors) reference come from clusters that were short on headroom, unmonitored, or behind on versions. This page lists what to change so the next one does not happen. Do it once at setup and again when the workload changes shape: a new collection, many more tenants, a much larger import.
 
 :::info You can hand this list off
-Everything on this page is work you can choose not to own. [Weaviate Cloud](/cloud/quickstart) runs the cluster for you, this checklist included. If the cluster has to stay in your own environment, [Enterprise Assurance](https://weaviate.io/product/assurance) adds Weaviate's own engineers and support commitments to the one you run.
+Everything on this page is work you can choose not to own. [Weaviate Cloud](/cloud) runs the cluster for you, this checklist included. If the cluster has to stay in your own environment, [Enterprise Assurance](https://weaviate.io/product/assurance) adds Weaviate's own engineers and support commitments to the one you run.
 :::
 
 export const pillars = [
@@ -106,7 +106,7 @@ Out of the box, Weaviate accepts anonymous requests: `AUTHENTICATION_ANONYMOUS_A
 Everything above applies to a cluster you run yourself. If running it is not the part you want to own:
 
 export const managedOptions = [
-  { title: "Weaviate Cloud", description: "Runs the cluster for you. Start with a Free cluster and point your existing client at it with the same connection code.", link: "/cloud/quickstart", icon: "fa fa-cloud" },
+  { title: "Weaviate Cloud", description: "Runs the cluster for you. Start with a Free cluster and point your existing client at it with the same connection code.", link: "/cloud", icon: "fa fa-cloud" },
   { title: "Enterprise Assurance", description: "Support and response-time commitments for clusters you keep in your own environment, from the engineers who build Weaviate.", link: "https://weaviate.io/product/assurance", icon: "fa fa-handshake" },
   { title: "Weaviate on DigitalOcean", description: "A managed Weaviate operated by DigitalOcean in their cloud. Pricing is public.", link: "https://weaviate.io/deployment", icon: "fa fa-water" },
 ];

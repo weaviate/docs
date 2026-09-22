@@ -1186,33 +1186,6 @@ func main() {
 		}
 	}
 
-	// START SnowflakeArcticEmbedLV20
-	// highlight-start
-	// Define the collection
-	weaviateVectorizerArcticEmbedLV20 := &models.Class{
-		Class: "DemoCollection",
-		VectorConfig: map[string]models.VectorConfig{
-			"title_vector": {
-				VectorIndexType: `hnsw`,
-				Vectorizer: map[string]interface{}{
-					"text2vec-weaviate": map[string]interface{}{
-						"model":      "Snowflake/snowflake-arctic-embed-l-v2.0",
-						"dimensions": 1024, // Or 256
-						// "base_url":   "<custom_weaviate_url>",
-					},
-				},
-			},
-		},
-	}
-
-	// add the collection
-	err = client.Schema().ClassCreator().WithClass(weaviateVectorizerArcticEmbedLV20).Do(ctx)
-	if err != nil {
-		panic(err)
-	}
-	// highlight-end
-	// END SnowflakeArcticEmbedLV20
-
 	// START BasicVectorizerMMWeaviate
 	// highlight-start
 	// Define the collection

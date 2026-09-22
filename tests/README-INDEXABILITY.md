@@ -21,7 +21,7 @@ Documentation content that is hidden behind JavaScript interactions (tabs, colla
 
 ### HTML structure tests (Part 1)
 
-These tests fetch ~12 representative pages from all doc sections and check:
+These tests fetch ~11 representative pages from all doc sections and check:
 
 | Test | What it checks |
 |------|---------------|
@@ -81,7 +81,7 @@ HTML structure tests always run. Agent tests only run if `ANTHROPIC_API_KEY` and
 
 ## Test pages
 
-The suite tests 12 representative URLs covering all doc sections:
+The suite tests 11 representative URLs covering all doc sections:
 
 | Page | Features tested |
 |------|----------------|
@@ -92,7 +92,6 @@ The suite tests 12 representative URLs covering all doc sections:
 | `/weaviate/connections/connect-cloud` | tabs, code |
 | `/weaviate/config-refs/collections` | details, table |
 | `/weaviate/concepts/data-import` | no structural features (200, meta tags, headings, LLM notice only) |
-| `/cloud/quickstart` | code |
 | `/cloud/manage-clusters/create` | no structural features (200, meta tags, headings, LLM notice only) |
 | `/weaviate/manage-collections/tenant-states` | images |
 | `/query-agent/recipes/query-agent-ecommerce-assistant` | code |

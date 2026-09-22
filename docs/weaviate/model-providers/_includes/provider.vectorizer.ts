@@ -1508,35 +1508,6 @@ await client.collections.create({
 // Clean up
 await client.collections.delete('DemoCollection');
 
-// START SnowflakeArcticEmbedLV20
-await client.collections.create({
-  name: 'DemoCollection',
-  properties: [
-    {
-      name: 'title',
-      dataType: 'text' as const,
-    },
-  ],
-  // highlight-start
-  vectorizers: [
-    weaviate.configure.vectors.text2VecWeaviate({
-        name: 'title_vector',
-        sourceProperties: ['title'],
-        model: 'Snowflake/snowflake-arctic-embed-l-v2.0',
-        // Further options
-        // dimensions: 256,
-        // baseURL: '<custom_weaviate_embeddings_url>',
-      },
-    ),
-  ],
-  // highlight-end
-  // Additional parameters not shown
-});
-// END SnowflakeArcticEmbedLV20
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
 // START BasicVectorizerMMWeaviate
 await client.collections.create({
   name: 'DemoCollection',

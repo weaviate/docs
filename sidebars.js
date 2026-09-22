@@ -1559,9 +1559,9 @@ const sidebars = {
       label: "Overview",
     },
     {
-      type: "doc",
-      id: "cloud/quickstart",
+      type: "link",
       label: "Quickstart",
+      href: "https://docs.weaviate.io/weaviate/quickstart",
     },
     {
       type: "doc",
@@ -1675,7 +1675,11 @@ const sidebars = {
   ],
   cloudWeaviateEmbeddings: [
     "cloud/embeddings/index",
-    "cloud/embeddings/quickstart",
+    {
+      type: "link",
+      label: "Quickstart",
+      href: "https://docs.weaviate.io/weaviate/quickstart",
+    },
     "cloud/embeddings/models",
     "cloud/embeddings/administration",
   ],
