@@ -1373,6 +1373,19 @@ status = 301
 # in-file `export const config` alone is silently ignored, which is how the
 # first preview deploy shipped every redirect and no `src` parameter.
 
+# capture-clusterid is PASSIVE: it logs one event per attributed click and
+# always hands off with context.next() -- it never rewrites and never responds,
+# so it cannot change what any reader sees. Its /e/* entry MUST stay ABOVE
+# error-link-src: same-path edge functions run in declaration order, and
+# capture has to see the raw first-hop request, before `src` is added.
+[[edge_functions]]
+  path = "/e/*"
+  function = "capture-clusterid"
+
+[[edge_functions]]
+  path = "/improve-your-cluster"
+  function = "capture-clusterid"
+
 [[edge_functions]]
   path = "/e/*"
   function = "error-link-src"
