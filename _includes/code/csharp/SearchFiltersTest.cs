@@ -7,7 +7,7 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using Xunit;
 
-public class SearchFilterTest : IAsyncLifetime
+public class SearchFiltersTest : IAsyncLifetime
 {
     private WeaviateClient client;
 

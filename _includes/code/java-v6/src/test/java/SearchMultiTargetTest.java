@@ -22,7 +22,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MultiTargetSearchTest {
+class SearchMultiTargetTest {
 
   private static WeaviateClient client;
   private static final String COLLECTION_NAME = "JeopardyTiny";

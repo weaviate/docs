@@ -11,7 +11,7 @@ using Xunit;
 namespace Weaviate.Tests;
 
 [Collection("Sequential")]
-public class MultiTargetVectorsTest : IAsyncLifetime
+public class SearchMultiTargetTest : IAsyncLifetime
 {
     private WeaviateClient client;
     private const string CollectionName = "JeopardyTiny";
