@@ -605,6 +605,10 @@ jobs:
     name: Test C#
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Shares the cloud instance with the Java lane (DemoCollection, JeopardyTiny,
+    # CollectionWithDate); run after it so the two never race.
+    needs: test-java
+    if: ${{ always() }}
 
     steps:
       - name: Checkout code

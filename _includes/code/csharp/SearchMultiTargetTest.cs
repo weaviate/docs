@@ -98,6 +98,23 @@ public class SearchMultiTargetTest : IAsyncLifetime
         {
             throw new Exception($"Import failed: {response.Errors.First().Message}");
         }
+
+        // The object store fills before the cloud vectorizer finishes, so an object count is
+        // ready too early. Poll a vector query (bounded) until the named vectors are queryable.
+        for (int attempt = 0; attempt < 60; attempt++)
+        {
+            var readiness = await collection.Query.NearText(
+                query => query(["a wild animal"]).TargetVectorsMinimum("jeopardy_questions_vector"),
+                limit: 1
+            );
+
+            if (readiness.Objects.Count >= 1)
+            {
+                break;
+            }
+
+            await Task.Delay(1000);
+        }
     }
 
     public async Task DisposeAsync()
