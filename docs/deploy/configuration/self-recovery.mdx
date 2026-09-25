@@ -14,7 +14,9 @@ import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
 
 <EnterpriseEdition/>
 
-Shard Self-Recovery restores a shard whose data directory is missing on a node, for example after a disk replacement or a lost volume. Instead of starting the shard empty, the node copies the shard's files from a healthy replica on another node. Self-recovery runs automatically and needs no manual intervention in the common case.
+Shard Self-Recovery restores a shard whose data directory is missing on a node, for example after a disk replacement or a lost volume. Instead of starting the shard empty, the node copies the shard's files from a healthy replica on another node. Self-recovery runs automatically when the node starts, or when a missing tenant is activated, and needs no manual intervention in the common case.
+
+To learn how a recovery works, see [Concepts: Shard self-recovery](/weaviate/concepts/replication-architecture/consistency.md#shard-self-recovery).
 
 ## Requirements
 
@@ -33,44 +35,6 @@ If `SELF_RECOVERY_ENABLED` is `true` but `REPLICA_MOVEMENT_ENABLED` is not, Weav
 
 Self-recovery only helps shards that have another replica, so it applies to collections with a [replication factor](./replication.md) greater than `1`.
 
-## How it works
-
-### When recovery starts
-
-A node checks for missing shard directories at two points:
-
-- **At startup.** While the node loads its shards, each `HOT` shard whose directory is missing is recovered.
-- **When a tenant is activated.** For a multi-tenant collection, a `COLD` tenant whose shard directory is missing on this node is recovered when the tenant is activated. This only happens when the collection's schema has more than one replica.
-
-A node that starts with no Raft state at all, for example with an empty data volume (a *wiped* node), first catches up with the cluster's schema and only then loads its shards. If the catch-up stops making progress for `SELF_RECOVERY_BARRIER_TIMEOUT` (default `3m`), the node logs a warning and loads its shards anyway. In that case some shards can start empty.
-
-### Choosing a source replica
-
-The node probes all other replicas of the shard in parallel, in random order. The first replica that reports having data for the shard becomes the source for the copy.
-
-The node creates an empty shard, without copying any data, only in these cases:
-
-- The shard has no other replica.
-- No replica was unreachable, and at least one replica reported that it has no data for the shard.
-
-If any replica is unreachable, the node doesn't fall back to an empty shard. It retries, because the unreachable replica might hold the data. A replica that is itself recovering the same shard counts as having no data.
-
-### Copying the data
-
-The node copies the source replica's files into a staging directory named `<shard>.recovering/` next to the shard's normal location. The copy is resumable per file: a file whose CRC32 checksum already matches the source is skipped. When the copy completes, the node renames the staging directory to the shard directory in a single atomic step, and loads the shard.
-
-The copy uses the replication engine's settings. See [Configuration](#configuration).
-
-### Retries and giving up
-
-A recovery makes up to 10 attempts. Probe errors, unreachable replicas, and failures to register or track the copy operation all count as attempts. Between attempts, the node waits 5 seconds, doubling the wait each time up to a limit of 5 minutes. All attempts together take about 20 minutes.
-
-If all attempts fail, the node gives up and logs an error. **The shard stays in the `RECOVERING` state.** It doesn't become empty, and it doesn't serve data. To resolve it, do one of the following:
-
-- Retry the recovery with the [`restart` endpoint](#restart-a-recovery).
-- Accept an empty shard with the [`accept-empty` endpoint](#accept-an-empty-shard).
-- Restart the node. On the next startup, the node submits the recovery again automatically.
-
 ## Configuration
 
 Set these [environment variables](/deploy/configuration/env-vars/index.md) on every node.
@@ -79,62 +43,33 @@ Set these [environment variables](/deploy/configuration/env-vars/index.md) on ev
 | :-- | :-- | :-- |
 | `SELF_RECOVERY_ENABLED` | `false` | Enable Shard Self-Recovery. Also requires a valid license key and `REPLICA_MOVEMENT_ENABLED=true`. |
 | `SELF_RECOVERY_CONCURRENCY` | `10` | The maximum number of shard recoveries that run at the same time on a node. Must be between `1` and `32`. Any other value makes Weaviate fail to start. |
-| `SELF_RECOVERY_BARRIER_TIMEOUT` | `3m` | How long a wiped node waits without catch-up progress before it loads its shards. A duration such as `5m`. Must be positive, or Weaviate fails to start. |
+| `SELF_RECOVERY_BARRIER_TIMEOUT` | `3m` | How long a node that starts with an empty data volume waits for the cluster's schema without progress before it loads its shards. A duration such as `5m`. Must be positive, or Weaviate fails to start. |
 | `REPLICA_MOVEMENT_ENABLED` | `false` | Must be `true`. If it's `false`, Weaviate disables self-recovery and logs a warning. |
 | `REPLICATION_ENGINE_FILE_COPY_WORKERS` | `10` | The number of workers that copy files for a replication operation, including a recovery. |
 | `REPLICATION_ENGINE_MAX_WORKERS` | `10` | The number of replication operations, including recoveries, that the replication engine processes in parallel. |
 | `REPLICATION_ENGINE_FILE_COPY_CHUNK_SIZE` | `1048576` | The chunk size in bytes for file copies. The source node reads this value, so set it on the nodes that serve the data. |
 
-## The `RECOVERING` state
+## Monitor a recovery
 
 While a shard is being recovered, the [nodes endpoint](/deploy/configuration/status.md#cluster-node-data) (`GET /v1/nodes`) reports it with `vectorIndexingStatus: "RECOVERING"` and `loaded: false`. Checking the status doesn't make the node load the shard.
 
-Requests for a recovering shard are either served by another replica or fail with a `422` error that you can retry.
+Requests to a recovering shard are retried or served by another replica. A request can occasionally fail with a `422` error, so configure your clients to retry these requests.
 
-While a registered recovery operation for the shard is in progress, the cluster excludes the recovering replica from read and write routing, so other replicas serve the requests. There are short windows where this exclusion isn't in place yet, or no longer is, for example before the recovery operation is registered. A request that reaches the recovering replica during such a window receives a `422` error that you can retry. Configure your clients to retry these requests.
+A recovery is a replication operation. To see the recovery operations of a node, [list the replication operations](./replica-movement.mdx#list-replication-operations) and filter by the recovering node as the target node, for example with `GET /v1/replication/replicate/list?targetNode=<node>`.
 
-## Observability
-
-### Logs
-
-Self-recovery logs structured entries. Each entry has an `event` field with one of these values:
-
-| `event` | Meaning |
-| :-- | :-- |
-| `self_recovery.started` | A recovery started for a shard. |
-| `self_recovery.peer_probe` | The result of probing a replica, for example an unreachable replica or a replica that doesn't support self-recovery. |
-| `self_recovery.op_registered` | The copy operation was registered. The `op_uuid` field holds the operation ID, and `source_node` holds the source replica. |
-| `self_recovery.completed` | The recovery finished. |
-| `self_recovery.empty_fallback` | The node created an empty shard because no replica had data. |
-| `self_recovery.restart` | An operator restarted the recovery through the debug endpoint. |
-| `self_recovery.accept_empty` | An operator accepted an empty shard through the debug endpoint. |
-| `self_recovery.skipped_maintenance_mode` | The node skipped a recovery because it's in maintenance mode. |
-
-There is no dedicated failure event. Failures, retries, and give-ups are logged at the `warning` or `error` level. To find them, filter the self-recovery entries by level.
-
-### Metrics
-
-When [Prometheus monitoring](/deploy/configuration/monitoring.md) is enabled, Weaviate exposes these metrics:
-
-| Metric | Labels | Type | Description |
-| :-- | :-- | :-- | :-- |
-| `weaviate_self_recovery_in_progress` | | Gauge | The number of recoveries in progress on this node. |
-| `weaviate_self_recovery_started_total` | `source_node` | Counter | Recoveries started, by source replica. |
-| `weaviate_self_recovery_completed_total` | `result` | Counter | Recoveries finished, by result. |
-| `weaviate_self_recovery_duration_seconds` | `result` | Histogram | The total duration of a recovery, by result. |
-| `weaviate_self_recovery_no_data_empty_total` | | Counter | Empty shards created on a node that started with its Raft state. A shard directory disappeared and no replica had data. Alert on this metric. |
-| `weaviate_self_recovery_no_data_during_bootstrap_total` | | Counter | Empty shards created on a wiped node. This usually means a collection or tenant was created while the node was away, not data loss. |
-| `weaviate_self_recovery_unreachable_peer_total` | `peer` | Counter | Probes that couldn't reach a replica, by replica. |
-| `weaviate_self_recovery_giveup_total` | | Counter | Recoveries that used up all attempts. The shard stays `RECOVERING`. |
-| `weaviate_self_recovery_accept_empty_total` | | Counter | Calls to the `accept-empty` endpoint. |
-
-The `result` label has one of these values: `success`, `failure`, `empty_fallback`, `cancelled`, or `skipped`.
+For Prometheus metrics that track recoveries, including in-progress, completed, and given-up recoveries, see [Monitoring: Shard self-recovery](./monitoring.md#shard-self-recovery).
 
 ## Operator controls
 
+If a recovery can't complete after about 20 minutes of retries, it gives up. **The shard stays in the `RECOVERING` state.** It doesn't become empty, and it doesn't serve data. To resolve it, do one of the following:
+
+- Retry the recovery with the [`restart` endpoint](#restart-a-recovery).
+- Accept an empty shard with the [`accept-empty` endpoint](#accept-an-empty-shard).
+- Restart the node. On the next startup, the node submits the recovery again automatically.
+
 ### Cancel a recovery operation
 
-A registered recovery is a replication operation. To cancel it, use the standard cancel endpoint, `POST /v1/replication/replicate/{id}/cancel`. The operation ID is the `op_uuid` field of the `self_recovery.op_registered` log entry. See [Cancel a replication operation](./replica-movement.mdx#cancel-a-replication-operation).
+To cancel a registered recovery, use the standard cancel endpoint, `POST /v1/replication/replicate/{id}/cancel`. To find the operation ID, [list the replication operations](./replica-movement.mdx#list-replication-operations) that target the recovering node. See [Cancel a replication operation](./replica-movement.mdx#cancel-a-replication-operation).
 
 ### Debug endpoints
 
@@ -196,18 +131,20 @@ These tenant status changes are blocked while a replication operation is active 
 
 If a collection or tenant is created while a node is down, and the node restarts with its Raft state intact, the node creates that shard empty. If [async replication](./async-rep.md) is enabled, it fills the shard from the other replicas over time. Otherwise, the replicas stay out of sync.
 
-A wiped node doesn't have this gap, because it catches up with the cluster's schema before it loads its shards.
+A node that starts with an empty data volume doesn't have this gap, because it catches up with the cluster's schema before it loads its shards.
 
 ### Mixed-version clusters
 
-Upgrade every node to `v1.40` or higher before you enable self-recovery. A replica on an older version doesn't support the recovery probe. The recovering node logs a warning for that replica and keeps retrying.
+Upgrade every node to `v1.40` or higher before you enable self-recovery. A replica on an older version doesn't support self-recovery, so a node that needs that replica's data keeps retrying the recovery.
 
 ### Maintenance mode
 
-A node in maintenance mode doesn't start new recoveries. It logs a `self_recovery.skipped_maintenance_mode` entry instead.
+A node in maintenance mode doesn't start new recoveries.
 
 ## Further resources
 
+- [Concepts: Shard self-recovery](/weaviate/concepts/replication-architecture/consistency.md#shard-self-recovery)
+- [Monitoring: Shard self-recovery metrics](./monitoring.md#shard-self-recovery)
 - [Replication](./replication.md)
 - [Replica movement](./replica-movement.mdx)
 - [Async replication](./async-rep.md)
