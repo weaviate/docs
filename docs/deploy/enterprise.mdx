@@ -1,0 +1,143 @@
+---
+title: Weaviate Enterprise Edition
+sidebar_label: Enterprise Edition
+description: "How the Weaviate Community Edition and Enterprise Edition relate, how a license key activates the Enterprise Edition, and where to get help."
+sidebar_position: 5
+image: og/docs/installation.jpg
+# tags: ['installation', 'enterprise', 'license']
+---
+
+Weaviate is open source, with an optional Enterprise Edition that adds advanced features under a commercial license. Self-hosted Weaviate is available in two editions: the **Community Edition (CE)** and the **Enterprise Edition (EE)**. Both editions ship in the same Docker image and binary. A license key selects the edition when Weaviate starts.
+
+## Editions
+
+### Community Edition
+
+The Community Edition is Weaviate without a license key. Its code is everything outside the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the [`weaviate/weaviate`](https://github.com/weaviate/weaviate) repository. That code is licensed under the BSD-3-Clause License, as defined in [`LICENSE-BSD`](https://github.com/weaviate/weaviate/blob/main/LICENSE-BSD).
+
+### Enterprise Edition
+
+The Enterprise Edition is Weaviate started with a Weaviate license key. It adds the code in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the same repository. That code is licensed under the Weaviate License, as defined in [`wl/LICENSE-WEAVIATE`](https://github.com/weaviate/weaviate/blob/main/wl/LICENSE-WEAVIATE).
+
+The repository's top-level [`LICENSE`](https://github.com/weaviate/weaviate/blob/main/LICENSE) file describes which license applies to which code.
+
+## How it works
+
+- **One image, one binary.** The Community Edition and the Enterprise Edition use the same Docker image and the same binary.
+- **No key means Community Edition.** Without a license key, Weaviate runs as the Community Edition.
+- **A key enables the Enterprise Edition.** A valid license key enables Enterprise Edition features at runtime.
+- **Upgrading needs no new download.** To move from the Community Edition to the Enterprise Edition, obtain a license key and restart Weaviate with it. You don't need a new image or a new download.
+
+## Activate the Enterprise Edition
+
+:::info Added in `v1.40`
+:::
+
+Supply the license key to Weaviate through one of these [environment variables](/deploy/configuration/env-vars/index.md):
+
+| Variable | Value |
+| :-- | :-- |
+| `LICENSE_KEY` | The license key itself. |
+| `LICENSE_KEY_FILE` | The path to a file that contains the license key. |
+
+Weaviate reads the key when it starts:
+
+- `LICENSE_KEY` and `LICENSE_KEY_FILE` are mutually exclusive. If you set both, Weaviate fails to start.
+- If `LICENSE_KEY_FILE` points to a file that Weaviate can't read, Weaviate fails to start.
+- If the key is empty or malformed, Weaviate starts and logs a warning. Weaviate never writes the key value to its logs.
+- If neither variable is set, Weaviate starts normally as the Community Edition.
+
+## Get a license
+
+To get an Enterprise Edition license key, contact Weaviate.
+
+{/* TODO(ivan): license request link */}
+
+{/* TODO(ivan): legal page pending. License terms link target: https://weaviate.io/service/enterprise-edition */}
+
+## Enterprise Edition features
+
+This table lists Enterprise Edition features and the Weaviate version that added each one.
+
+| Feature | Available since | Docs |
+| :-- | :-- | :-- |
+| Shard Self-Recovery | `v1.40` | [Shard Self-Recovery](/deploy/configuration/self-recovery) |
+
+## Frequently asked questions
+
+{/* TODO(ivan): sync wording with the final legal licensing FAQ before publish */}
+
+#### Q: Is Weaviate open source?
+
+<details>
+<summary> Answer </summary>
+
+Weaviate is open source, with an optional Enterprise Edition available under a commercial license. The Community Edition, which is all code outside the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the [`weaviate/weaviate`](https://github.com/weaviate/weaviate) repository, is open source under the BSD-3-Clause License. The Enterprise Edition code in the `wl/` directory is source-visible, but it's licensed under the Weaviate License and requires a commercial agreement.
+
+</details>
+
+#### Q: What can I do with the Community Edition?
+
+<details>
+<summary> Answer </summary>
+
+Anything the BSD-3-Clause License allows. You can use, modify, and redistribute the Community Edition, including commercially and in production, at no charge. The license grants no trademark rights, so you may not call a modified version "Weaviate".
+
+{/* TODO(ivan): link trademark policy when it exists */}
+
+</details>
+
+#### Q: The Enterprise Edition code is visible on GitHub. Can I use it?
+
+<details>
+<summary> Answer </summary>
+
+Not without a commercial agreement. The Enterprise Edition code lives in the same public repository for transparency and auditability, but seeing the source doesn't grant a license to use it. Removing or bypassing the license key check doesn't grant any rights either.
+
+</details>
+
+#### Q: Which license applies to the Docker image?
+
+<details>
+<summary> Answer </summary>
+
+One image contains both editions. Without a license key, Weaviate runs as the Community Edition, and everything it does is covered by the BSD-3-Clause License. Enterprise Edition features activate only with a license key, and the enterprise agreement governs them.
+
+{/* TODO(ivan): legal page pending — link weaviate.io/service/enterprise-edition */}
+
+</details>
+
+#### Q: Do I need a new image or download to upgrade to the Enterprise Edition?
+
+<details>
+<summary> Answer </summary>
+
+No. Obtain a license key and restart Weaviate with it. See [Activate the Enterprise Edition](#activate-the-enterprise-edition).
+
+</details>
+
+#### Q: Do Weaviate Cloud users need a license key?
+
+<details>
+<summary> Answer </summary>
+
+No. License keys apply to self-hosted deployments only.
+
+</details>
+
+## Support and feature requests
+
+- **Enterprise Edition:** Submit support requests, including license and activation issues, and feature requests through the [Weaviate support portal](https://support.weaviate.io/).
+- **Community Edition:** Report bugs and request features by opening an issue in the [`weaviate/weaviate` GitHub repository](https://github.com/weaviate/weaviate/issues).
+
+## Further resources
+
+- [Environment variables](/deploy/configuration/env-vars/index.md)
+- [Docker installation](/deploy/installation-guides/docker-installation.md)
+- [Kubernetes installation](/deploy/installation-guides/k8s-installation.md)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />
