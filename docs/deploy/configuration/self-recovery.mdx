@@ -53,7 +53,9 @@ Set these [environment variables](/deploy/configuration/env-vars/index.md) on ev
 
 While a shard is being recovered, the [nodes endpoint](/deploy/configuration/status.md#cluster-node-data) (`GET /v1/nodes`) reports it with `vectorIndexingStatus: "RECOVERING"` and `loaded: false`. Checking the status doesn't make the node load the shard.
 
-Requests to a recovering shard are retried or served by another replica. A request can occasionally fail with a `422` error, so configure your clients to retry these requests.
+While a shard recovers, the healthy replicas serve searches and reads, such as fetching an object by ID, without errors. Operations that must consult every replica, such as aggregations, can be delayed until the recovery finishes, and then succeed.
+
+{/* TODO(ivan): client-facing error contract for direct hits on a recovering shard unconfirmed — internal 503/500 observed, 422 exists only in the local-access code path; confirm with core */}
 
 A recovery is a replication operation. To see the recovery operations of a node, [list the replication operations](./replica-movement.mdx#list-replication-operations) and filter by the recovering node as the target node, for example with `GET /v1/replication/replicate/list?targetNode=<node>`.
 
@@ -85,9 +87,9 @@ Both endpoints take `POST` requests with the query parameters `collection` and `
 | :-- | :-- |
 | `202` | The request was accepted. |
 | `400` | The `collection` or `shard` parameter is missing or invalid. |
-| `404` | The shard isn't in the schema. |
+| `404` | The collection or shard isn't in the schema, or self-recovery is disabled on this node, so the endpoints aren't registered. |
+| `405` | The request uses a method other than `POST`. |
 | `409` | `restart` only: the shard's directory already exists on the node. |
-| `503` | Self-recovery isn't available on this node. |
 
 #### Restart a recovery
 
@@ -140,6 +142,10 @@ Upgrade every node to `v1.40` or higher before you enable self-recovery. A repli
 ### Maintenance mode
 
 A node in maintenance mode doesn't start new recoveries.
+
+### Replica nodes that are down during a recovery
+
+If another node that holds a replica of the shard is down while the shard recovers, the recovery operation stays in the `INTEGRATING` state, and the `weaviate_self_recovery_in_progress` metric stays at `1`, until that node returns. This happens even though the recovered shard is already loaded and serving requests. The operation completes after the node is back.
 
 ## Further resources
 
