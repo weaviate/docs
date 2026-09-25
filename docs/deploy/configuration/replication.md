@@ -143,6 +143,7 @@ Beyond setting the initial replication factor, you can actively manage the place
 
 - [Concepts: Replication Architecture](/weaviate/concepts/replication-architecture/index.md)
 - [Configuring Async Replication](./async-rep.md)
+- [Shard Self-Recovery](./self-recovery.mdx)
 
 ## Questions and feedback
 
