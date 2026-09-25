@@ -67,7 +67,7 @@ The `.ask()` method accepts several arguments:
 | `query` | `str \| list[ChatMessage]` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | `list[str \| QueryAgentCollectionConfig] \| None` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. [See the page on collection configuration for more detail](../reference/advanced_collections.md). |
 | `result_evaluation` | `Literal["llm", "none"]` | Controls whether the agent will ask an LLM to "evaluate" the result based on all retrieved context. Accepts either:<br/>• `"none"` (default): faster and cheaper; where the final answer is the last LLM call and no further analysis is completed.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
-| `output_format` | `dict \| type[BaseModel] \| None` | Optional schema for structured output in the final response. When set, `.ask()` returns a `ParsedAskModeResponse` instead of an `AskModeResponse`: the parsed result is added on a new `final_answer_parsed` field, and `final_answer` still holds the raw model output. See [the response class](#response) and [the page on structured outputs for more details](../reference/structured_outputs.md). |
+| `output_format` | `dict \| type[BaseModel] \| None` | Optional schema for structured output in the final response. When set, `.ask()` returns a `ParsedAskModeResponse` instead of an `AskModeResponse`: the parsed result is added on a new `final_answer_parsed` field, and `final_answer` still holds the raw model output. See [the response class](#response) and [the page on structured outputs for more details](../reference/structured_outputs.md). <br/><br/> You may also pass `QAImage` or a `BaseModel` which includes `QAImage` to request image generation. [See the page on image generation for more details.](../reference/image_generation.md) |
 
 </TabItem>
 <TabItem value="ts_agents" label="JavaScript/TypeScript">
@@ -139,6 +139,21 @@ The type of `finalAnswerParsed` is `Record<string, unknown>` if a raw JSON Schem
     
 </Tabs>
 
+## Image Generation
+
+Ask mode allows you to also request images to be generated, which will be based on any retrieved data from the search. [See the page on image generation for more details.](../reference/image_generation.md)
+
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START ImageGenAskMode"
+            endMarker="# END ImageGenAskMode"
+            language="py"
+        />
+    </TabItem>
+</Tabs>
 
 ## Streaming
 
