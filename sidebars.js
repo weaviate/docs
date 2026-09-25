@@ -1199,6 +1199,12 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "deploy/configuration/self-recovery",
+          className: "sidebar-item",
+          customProps: { enterpriseOnly: true },
+        },
+        {
+          type: "doc",
           id: "deploy/configuration/horizontal-scaling",
           className: "sidebar-item",
         },
@@ -1239,6 +1245,23 @@ const sidebars = {
   ],
   deployProductionSidebar: [
     "deploy/production/index",
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Licensing",
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/enterprise",
+          className: "sidebar-item",
+        },
+      ],
+    },
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",

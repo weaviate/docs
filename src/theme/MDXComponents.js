@@ -4,6 +4,7 @@ import DocsImage from "../components/DocsImage";
 import SkipValidationLink from "../components/SkipValidationLink";
 import CloudOnlyBadge from "../components/CloudOnlyBadge";
 import AcademyBadge from "../components/AcademyBadge";
+import EnterpriseBadge from "../components/EnterpriseBadge";
 import PromptStarter from "../components/PromptStarter";
 
 export default {
@@ -13,5 +14,6 @@ export default {
   SkipValidationLink,
   CloudOnlyBadge,
   AcademyBadge,
+  EnterpriseBadge,
   PromptStarter,
 };

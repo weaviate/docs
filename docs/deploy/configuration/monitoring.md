@@ -492,6 +492,28 @@ These metrics track the replication coordinator's read and write operations acro
 | `replication_coordinator_reads_duration_seconds`  | Duration in seconds of read operations from replicas                           | None   | `Histogram` |
 | `replication_read_repair_duration_seconds`        | Duration in seconds of read repair operations                                  | None   | `Histogram` |
 
+#### Shard self-recovery
+
+{/* DRAFT-HOLD(ivan): PR #11768 unmerged — do not publish before it lands in stable/v1.40 */}
+
+Added in `v1.40`. These metrics track [Shard Self-Recovery](/deploy/configuration/self-recovery), an [Enterprise Edition](/deploy/enterprise) feature that restores missing shard data from healthy replicas.
+
+| Metric                                                  | Description                                                                                                                  | Labels        | Type        |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------- |
+| `weaviate_self_recovery_in_progress`                    | The number of recoveries in progress on this node.                                                                           | None          | `Gauge`     |
+| `weaviate_self_recovery_started_total`                  | Recoveries started, by source replica.                                                                                       | `source_node` | `Counter`   |
+| `weaviate_self_recovery_completed_total`                | Recoveries finished, by result.                                                                                              | `result`      | `Counter`   |
+| `weaviate_self_recovery_duration_seconds`               | The total duration of a recovery, by result.                                                                                 | `result`      | `Histogram` |
+| `weaviate_self_recovery_no_data_empty_total`            | Empty shards created on a node that started with its Raft state. A shard directory disappeared and no replica had data. Alert on this metric. | None | `Counter` |
+| `weaviate_self_recovery_no_data_during_bootstrap_total` | Shards that a rejoining node recreated empty because no other replica holds their data. For a shard with a replication factor of `1`, this means the shard's data was lost with the volume. | None   | `Counter`   |
+| `weaviate_self_recovery_unreachable_peer_total`         | Probes that couldn't reach a replica, by replica.                                                                            | `peer`        | `Counter`   |
+| `weaviate_self_recovery_giveup_total`                   | Recoveries that used up all attempts. The shard stays `RECOVERING`.                                                          | None          | `Counter`   |
+| `weaviate_self_recovery_accept_empty_total`             | Calls to the `accept-empty` endpoint.                                                                                        | None          | `Counter`   |
+
+Label values:
+
+- **`result`**: `success` · `failure` · `empty_fallback` · `cancelled` · `skipped`.
+
 ### MCP server
 
 Added in `v1.38`. These metrics track tool traffic, latency, auth failures, and the live state of the runtime write-access flag for the built-in [Weaviate MCP server](/weaviate/configuration/mcp-server.mdx).

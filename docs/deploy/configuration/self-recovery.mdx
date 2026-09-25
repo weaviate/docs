@@ -1,0 +1,163 @@
+---
+title: Shard Self-Recovery
+description: "Restore missing shard data from healthy replicas when a Weaviate node starts, and monitor and control the recovery."
+image: og/docs/configuration.jpg
+# tags: ['configuration', 'replication', 'enterprise']
+---
+
+{/* DRAFT-HOLD(ivan): PR #11768 unmerged — do not publish before it lands in stable/v1.40 */}
+
+import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
+
+:::info Added in `v1.40`
+:::
+
+<EnterpriseEdition/>
+
+Shard Self-Recovery restores a shard whose data directory is missing on a node, for example after a disk replacement or a lost volume. Instead of starting the shard empty, the node copies the shard's files from a healthy replica on another node. Self-recovery runs automatically when the node starts, or when a missing tenant is activated, and needs no manual intervention in the common case.
+
+To learn how a recovery works, see [Concepts: Shard self-recovery](/weaviate/concepts/replication-architecture/consistency.md#shard-self-recovery).
+
+## Requirements
+
+To enable Shard Self-Recovery, all of these must be true on every node in the cluster:
+
+- `SELF_RECOVERY_ENABLED` is `true`.
+- Weaviate runs with a valid Enterprise Edition license key. See [Activate the Enterprise Edition](/deploy/enterprise#activate-the-enterprise-edition).
+- `REPLICA_MOVEMENT_ENABLED` is `true`. Self-recovery uses the replication engine, which only runs when replica movement is enabled.
+- Every node runs `v1.40` or higher. See [Mixed-version clusters](#mixed-version-clusters).
+
+Without a valid license key, self-recovery does not activate, even when `SELF_RECOVERY_ENABLED` is `true`.
+
+{/* TODO(ivan): spec — confirm exact no-key failure mode with core */}
+
+If `SELF_RECOVERY_ENABLED` is `true` but `REPLICA_MOVEMENT_ENABLED` is not, Weaviate starts normally, logs a warning, and disables self-recovery. This is not a startup error, so check the logs if recovery doesn't happen.
+
+Self-recovery only helps shards that have another replica, so it applies to collections with a [replication factor](./replication.md) greater than `1`.
+
+## Configuration
+
+Set these [environment variables](/deploy/configuration/env-vars/index.md) on every node.
+
+| Variable | Default | Description |
+| :-- | :-- | :-- |
+| `SELF_RECOVERY_ENABLED` | `false` | Enable Shard Self-Recovery. Also requires a valid license key and `REPLICA_MOVEMENT_ENABLED=true`. |
+| `SELF_RECOVERY_CONCURRENCY` | `10` | The maximum number of shard recoveries that run at the same time on a node. Must be between `1` and `32`. Any other value makes Weaviate fail to start. |
+| `SELF_RECOVERY_BARRIER_TIMEOUT` | `3m` | How long a node that starts with an empty data volume waits for the cluster's schema without progress before it loads its shards. A duration such as `5m`. Must be positive, or Weaviate fails to start. |
+| `REPLICA_MOVEMENT_ENABLED` | `false` | Must be `true`. If it's `false`, Weaviate disables self-recovery and logs a warning. |
+| `REPLICATION_ENGINE_FILE_COPY_WORKERS` | `10` | The number of workers that copy files for a replication operation, including a recovery. |
+| `REPLICATION_ENGINE_MAX_WORKERS` | `10` | The number of replication operations, including recoveries, that the replication engine processes in parallel. |
+| `REPLICATION_ENGINE_FILE_COPY_CHUNK_SIZE` | `1048576` | The chunk size in bytes for file copies. The source node reads this value, so set it on the nodes that serve the data. |
+
+## Monitor a recovery
+
+While a shard is being recovered, the [nodes endpoint](/deploy/configuration/status.md#cluster-node-data) (`GET /v1/nodes`) reports it with `vectorIndexingStatus: "RECOVERING"` and `loaded: false`. Checking the status doesn't make the node load the shard.
+
+While a shard recovers, the healthy replicas serve searches and reads, such as fetching an object by ID, without errors. Operations that must consult every replica, such as aggregations, can be delayed until the recovery finishes, and then succeed.
+
+{/* TODO(ivan): client-facing error contract for direct hits on a recovering shard unconfirmed — internal 503/500 observed, 422 exists only in the local-access code path; confirm with core */}
+
+A recovery is a replication operation. To see the recovery operations of a node, [list the replication operations](./replica-movement.mdx#list-replication-operations) and filter by the recovering node as the target node, for example with `GET /v1/replication/replicate/list?targetNode=<node>`.
+
+For Prometheus metrics that track recoveries, including in-progress, completed, and given-up recoveries, see [Monitoring: Shard self-recovery](./monitoring.md#shard-self-recovery).
+
+## Operator controls
+
+If a recovery can't complete after about 20 minutes of retries, it gives up. **The shard stays in the `RECOVERING` state.** It doesn't become empty, and it doesn't serve data. To resolve it, do one of the following:
+
+- Retry the recovery with the [`restart` endpoint](#restart-a-recovery).
+- Accept an empty shard with the [`accept-empty` endpoint](#accept-an-empty-shard).
+- Restart the node. On the next startup, the node submits the recovery again automatically.
+
+### Cancel a recovery operation
+
+To cancel a registered recovery, use the standard cancel endpoint, `POST /v1/replication/replicate/{id}/cancel`. To find the operation ID, [list the replication operations](./replica-movement.mdx#list-replication-operations) that target the recovering node. See [Cancel a replication operation](./replica-movement.mdx#cancel-a-replication-operation).
+
+### Debug endpoints
+
+Two further endpoints are served on the debug port (`GO_PROFILING_PORT`, default `6060`) of the node that holds the shard. They exist only when self-recovery is enabled. The debug listener also requires [`DEBUG_ENDPOINTS_ENABLED`](/deploy/configuration/env-vars/index.md#DEBUG_ENDPOINTS_ENABLED) to be `true`. Otherwise, it answers every request with a `404` status.
+
+:::caution The debug port is unauthenticated
+The debug port serves requests without authentication. Don't expose it outside your cluster's private network.
+:::
+
+Both endpoints take `POST` requests with the query parameters `collection` and `shard`. They return these status codes:
+
+| Status | Meaning |
+| :-- | :-- |
+| `202` | The request was accepted. |
+| `400` | The `collection` or `shard` parameter is missing or invalid. |
+| `404` | The collection or shard isn't in the schema, or self-recovery is disabled on this node, so the endpoints aren't registered. |
+| `405` | The request uses a method other than `POST`. |
+| `409` | `restart` only: the shard's directory already exists on the node. |
+
+#### Restart a recovery
+
+Start the recovery of a shard again from the beginning, for example after it gave up:
+
+```bash
+curl -X POST "http://localhost:6060/debug/self-recovery/restart?collection=Article&shard=4DHWE6iYBU7X"
+```
+
+#### Accept an empty shard
+
+Accept that no replica has the shard's data, and create the shard empty:
+
+```bash
+curl -X POST "http://localhost:6060/debug/self-recovery/accept-empty?collection=Article&shard=4DHWE6iYBU7X"
+```
+
+`accept-empty` doesn't cancel a copy operation that is already registered in the cluster. To stop one, [cancel it](#cancel-a-recovery-operation).
+
+## Operations blocked during replication
+
+While a replication operation is active, Weaviate rejects changes that would break it with a `replica movement in progress` error. This applies to every replication operation, including self-recovery and [replica movement](./replica-movement.mdx). Retry the change after the operation completes.
+
+These changes are blocked while a replication operation is active on the collection:
+
+- Structural changes to a vector index.
+- Adding or removing a named vector.
+- Disabling a property's `indexFilterable`, `indexSearchable`, or `indexRangeFilters` index.
+
+Adding a property is not blocked.
+
+These tenant status changes are blocked while a replication operation is active on the tenant:
+
+- Changing the tenant to `COLD`, including a deactivation.
+- Changing the tenant to `FROZEN`.
+- Changing the tenant from `FROZEN` to another status.
+
+## Limitations
+
+### Collections and tenants created while a node was down
+
+If a collection or tenant is created while a node is down, and the node restarts with its Raft state intact, the node creates that shard empty. If [async replication](./async-rep.md) is enabled, it fills the shard from the other replicas over time. Otherwise, the replicas stay out of sync.
+
+A node that starts with an empty data volume doesn't have this gap, because it catches up with the cluster's schema before it loads its shards.
+
+### Mixed-version clusters
+
+Upgrade every node to `v1.40` or higher before you enable self-recovery. A replica on an older version doesn't support self-recovery, so a node that needs that replica's data keeps retrying the recovery.
+
+### Maintenance mode
+
+A node in maintenance mode doesn't start new recoveries.
+
+### Replica nodes that are down during a recovery
+
+If another node that holds a replica of the shard is down while the shard recovers, the recovery operation stays in the `INTEGRATING` state, and the `weaviate_self_recovery_in_progress` metric stays at `1`, until that node returns. This happens even though the recovered shard is already loaded and serving requests. The operation completes after the node is back.
+
+## Further resources
+
+- [Concepts: Shard self-recovery](/weaviate/concepts/replication-architecture/consistency.md#shard-self-recovery)
+- [Monitoring: Shard self-recovery metrics](./monitoring.md#shard-self-recovery)
+- [Replication](./replication.md)
+- [Replica movement](./replica-movement.mdx)
+- [Async replication](./async-rep.md)
+- [Weaviate Enterprise Edition](/deploy/enterprise)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
