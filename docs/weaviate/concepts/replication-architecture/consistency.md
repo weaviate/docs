@@ -415,7 +415,9 @@ The node copies the source replica's files into a staging directory named `<shar
 
 ### Request routing during recovery
 
-While a registered recovery operation for the shard is in progress, the cluster excludes the recovering replica from read and write routing, so other replicas serve the requests. There are short windows where this exclusion isn't in place yet, or no longer is, for example before the recovery operation is registered. A request that reaches the recovering replica during such a window receives a `422` error that can be retried.
+While a registered recovery operation for the shard is in progress, the cluster excludes the recovering replica from read and write routing, so other replicas serve the requests. Searches and reads, such as fetching an object by ID, succeed through the healthy replicas. Operations that must consult every replica, such as aggregations, can be delayed until the recovery finishes, and then succeed. Internally, the recovering replica rejects requests from other nodes, and the coordinating node handles these rejections.
+
+{/* TODO(ivan): client-facing error contract for direct hits on a recovering shard unconfirmed — internal 503/500 observed, 422 exists only in the local-access code path; confirm with core */}
 
 ### Retries and giving up
 

@@ -44,7 +44,8 @@ Weaviate reads the key when it starts:
 
 - `LICENSE_KEY` and `LICENSE_KEY_FILE` are mutually exclusive. If you set both, Weaviate fails to start.
 - If `LICENSE_KEY_FILE` points to a file that Weaviate can't read, Weaviate fails to start.
-- If the key is empty or malformed, Weaviate starts and logs a warning. Weaviate never writes the key value to its logs.
+- If the key is malformed, or if `LICENSE_KEY_FILE` points to an empty file, Weaviate starts and logs a warning. Weaviate never writes the key value to its logs.
+- An empty `LICENSE_KEY` is treated as unset.
 - If neither variable is set, Weaviate starts normally as the Community Edition.
 
 ## Get a license
