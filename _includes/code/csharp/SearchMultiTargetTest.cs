@@ -11,7 +11,7 @@ using Xunit;
 namespace Weaviate.Tests;
 
 [Collection("Sequential")]
-public class MultiTargetVectorsTest : IAsyncLifetime
+public class SearchMultiTargetTest : IAsyncLifetime
 {
     private WeaviateClient client;
     private const string CollectionName = "JeopardyTiny";
@@ -97,6 +97,23 @@ public class MultiTargetVectorsTest : IAsyncLifetime
         if (response.HasErrors)
         {
             throw new Exception($"Import failed: {response.Errors.First().Message}");
+        }
+
+        // The object store fills before the cloud vectorizer finishes, so an object count is
+        // ready too early. Poll a vector query (bounded) until the named vectors are queryable.
+        for (int attempt = 0; attempt < 60; attempt++)
+        {
+            var readiness = await collection.Query.NearText(
+                query => query(["a wild animal"]).TargetVectorsMinimum("jeopardy_questions_vector"),
+                limit: 1
+            );
+
+            if (readiness.Objects.Count >= 1)
+            {
+                break;
+            }
+
+            await Task.Delay(1000);
         }
     }
 
