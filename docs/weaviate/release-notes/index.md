@@ -17,11 +17,11 @@ These are the supported minor versions and their latest patch releases:
 
 | Minor version | Latest patch | Status |
 | --- | --- | --- |
-| `1.39` | [`v1.39.5`](https://github.com/weaviate/weaviate/releases/tag/v1.39.5) | Latest release |
-| `1.38` | [`v1.38.15`](https://github.com/weaviate/weaviate/releases/tag/v1.38.15) | Supported |
-| `1.37` | [`v1.37.17`](https://github.com/weaviate/weaviate/releases/tag/v1.37.17) | Supported |
+| `1.40` | [`v1.40.0`](https://github.com/weaviate/weaviate/releases/tag/v1.40.0) | Latest release |
+| `1.39` | [`v1.39.5`](https://github.com/weaviate/weaviate/releases/tag/v1.39.5) | Supported |
+| `1.38` | [`v1.38.17`](https://github.com/weaviate/weaviate/releases/tag/v1.38.17) | Supported |
 
-`1.36` and older are no longer maintained. Upgrade to a supported version.
+`1.37` and older are no longer maintained. Upgrade to a supported version.
 
 This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate Database.
 
