@@ -856,6 +856,143 @@ response = collection.generate.near_text(
 # clean up
 client.collections.delete("DemoCollection")
 
+# ---------------------------------------------------------------------------
+# Meta generative integration (generative-meta).
+#
+# These snippets are documented AHEAD of Python client support:
+# `Configure.Generative.meta()` and `GenerativeConfig.meta()` do not yet exist
+# in the released weaviate-client (pinned in pyproject.toml). The blocks below
+# are DISPLAY-ONLY — they are rendered in the docs via FilteredTextBlock (with
+# `language="pyindent"`, which strips the 4-space guard indent) and are
+# intentionally kept out of the test runner's allowlist in tests/test_python.py.
+# The `if META_CLIENT_AVAILABLE:` guard is a belt-and-suspenders measure so that
+# even if this file is ever executed end-to-end, the not-yet-released `meta()`
+# calls can never run.
+# TODO: set META_CLIENT_AVAILABLE = True and drop `pyindent` once the
+# weaviate-client ships Configure.Generative.meta() / GenerativeConfig.meta().
+# ---------------------------------------------------------------------------
+META_CLIENT_AVAILABLE = False
+
+if META_CLIENT_AVAILABLE:
+    # START BasicGenerativeMeta
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.meta()
+        # highlight-end
+        # Additional parameters not shown
+    )
+    # END BasicGenerativeMeta
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
+    # START GenerativeMetaCustomModel
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.meta(
+            model="muse-spark-1.2"
+        )
+        # highlight-end
+        # Additional parameters not shown
+    )
+    # END GenerativeMetaCustomModel
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
+    # START FullGenerativeMeta
+    from weaviate.classes.config import Configure
+
+    client.collections.create(
+        "DemoCollection",
+        # highlight-start
+        generative_config=Configure.Generative.meta(
+            # # These parameters are optional
+            # model="muse-spark-1.2",
+            # temperature=0.7,
+            # top_p=0.9,
+            # max_tokens=500,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
+            # reasoning_effort="low",
+            # base_url="https://api.meta.ai",
+        )
+        # highlight-end
+    )
+    # END FullGenerativeMeta
+
+    # clean up
+    client.collections.delete("DemoCollection")
+    import_data()
+
+    # START RuntimeModelSelectionMeta
+    from weaviate.classes.generate import GenerativeConfig
+
+    collection = client.collections.use("DemoCollection")
+    response = collection.generate.near_text(
+        query="A holiday film",
+        limit=2,
+        grouped_task="Write a tweet promoting these two movies",
+        # highlight-start
+        generative_provider=GenerativeConfig.meta(
+            model="muse-spark-1.1",
+            # # These parameters are optional
+            # temperature=0.7,
+            # top_p=0.9,
+            # max_tokens=500,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
+            # reasoning_effort="low",
+            # base_url="https://api.meta.ai",
+        ),
+        # Additional parameters not shown
+        # highlight-end
+    )
+    # END RuntimeModelSelectionMeta
+
+    # START WorkingWithImagesMeta
+    import base64
+    import requests
+    from weaviate.classes.generate import GenerativeConfig, GenerativeParameters
+
+    src_img_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Winter_forest_silver.jpg/960px-Winter_forest_silver.jpg"
+    base64_image = base64.b64encode(requests.get(src_img_path).content).decode('utf-8')
+
+    prompt = GenerativeParameters.grouped_task(
+        # highlight-start
+        prompt="Which movie is closest to the image in terms of atmosphere",
+        images=[base64_image],      # A list of base64 encoded strings of the image bytes
+        # image_properties=["img"], # Properties containing images in Weaviate
+        # highlight-end
+    )
+
+    collection = client.collections.use("DemoCollection")
+    response = collection.generate.near_text(
+        query="Movies",
+        limit=5,
+        # highlight-start
+        grouped_task=prompt,
+        # highlight-end
+        generative_provider=GenerativeConfig.meta(
+            max_tokens=1000
+        ),
+    )
+
+    # Print the source property and the generated response
+    for o in response.objects:
+        print(f"Title property: {o.properties['title']}")
+    print(f"Grouped task result: {response.generative.text}")
+    # END WorkingWithImagesMeta
+
+    # clean up
+    client.collections.delete("DemoCollection")
+
 # START GenerativeDeepseekCustomModel
 from weaviate.classes.config import Configure
 

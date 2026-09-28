@@ -312,6 +312,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "Meta",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/meta/index",
+              },
+              items: ["weaviate/model-providers/meta/generative"],
+            },
+            {
+              type: "category",
               label: "Mistral",
               className: "sidebar-item",
               link: {
