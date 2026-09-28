@@ -52,7 +52,7 @@ For the server side, see [gRPC-Web](../../api/grpc.md#grpc-web).
 
 ## Browser notes
 
-**Do not send custom headers.** Weaviate allows a fixed set of headers on `/v1/grpc-web/`, including `Content-Type`, `X-Grpc-Web`, `X-Weaviate-Client`, `X-User-Agent`, `Grpc-Timeout` and `Authorization`. The client's own headers are all on the list, so cross-origin calls work as shipped. A custom header is sent, then blocked by the browser preflight. Node runs no preflight, so you will not see this in Node tests.
+**Custom headers do not work in the browser.** Weaviate accepts only the headers the client itself sends on `/v1/grpc-web/`. If you add your own — a model provider API key, for example — the browser's CORS preflight fails and the request is never sent. Node skips this check, so the problem only shows up in a real browser.
 
 :::warning Browser credentials are visible to the user
 Anyone who loads your page can read whatever the bundle holds, including API keys. Use a read-only API key with the least [RBAC](/deploy/configuration/authorization.md) permissions the app needs. Never ship an admin key to a browser.
