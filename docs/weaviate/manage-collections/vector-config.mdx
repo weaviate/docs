@@ -129,6 +129,17 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
   </TabItem>
 </Tabs>
 
+## Create a collection without a vector
+
+:::info Changed in `v1.40`
+:::
+
+To create a collection without a vector, set no vector parameters at all — no `vectorizer`, `vectorIndexType` or `vectorIndexConfig`, and no named vectors. From `v1.40`, Weaviate no longer fills these in from the server defaults, so vector search is not available on the collection. For the rest of the behavior, see [Collections without a vector](/weaviate/config-refs/collections.mdx#no-vector).
+
+You can [add a named vector](#add-new-named-vectors) to it later. The top-level `vectorizer`, `vectorIndexType` and `vectorIndexConfig` parameters cannot be added after creation.
+
+The change is only visible with a client that omits `vectorIndexType` when you do not set one; the Python client does so from `v4.21.2`. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
+
 ## Define named vectors
 
 You can define multiple [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors) per collection. This allows each object to be represented by multiple vector embeddings, each with its own vector index.
@@ -182,7 +193,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 <AddNamedVectors/>
 
-Named vectors can be added to existing collection definitions with named vectors. (This is not possible for collections without named vectors.)
+Named vectors can be added to a collection that already has named vectors, and to a [collection created without a vector](#create-a-collection-without-a-vector). You cannot add one to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

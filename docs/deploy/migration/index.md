@@ -49,6 +49,15 @@ Between `v1.25` and `v1.27`, there are two minor versions, `v1.26` and `v1.27`. 
 
 :::
 
+### Vector configuration defaults (v1.39.1+, v1.40+) {#vector-config-defaults}
+
+Two defaults for **new** collections changed. Existing collections are untouched, and there is no migration step.
+
+- From `v1.39.1`, [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) creates a single named vector called `default` with the vectorizer set to `none`, instead of a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections). [`DEFAULT_VECTORIZER_MODULE`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTORIZER_MODULE) is not applied to it, so supply the vectors yourself for auto-created collections or [add a vector](/weaviate/manage-collections/vector-config.mdx#add-new-named-vectors) after the collection is created.
+- From `v1.40`, a collection definition that sets no vector parameters at all creates a [collection without a vector](/weaviate/config-refs/collections.mdx#no-vector). Previously the server defaults filled in the top-level parameters and created a single vector collection. A definition that sets `vectorizer`, `vectorIndexType` or `vectorIndexConfig` is unaffected and still gets the defaults.
+
+The `v1.40` change is only visible with a client that omits `vectorIndexType` when you do not set one. A client that still sends `vectorIndexType: hnsw` on every collection create keeps getting a single vector collection. The Python client stopped sending it in `v4.21.2`.
+
 ### Raft Migration (v1.25.0+)
 
 Weaviate `v1.25.0` introduced Raft [as the consensus algorithm for cluster metadata](/weaviate/concepts/replication-architecture/cluster-architecture#metadata-replication-raft). This requires a one-time migration of the cluster metadata.

@@ -573,7 +573,7 @@ Weaviate supports two approaches for vector configuration:
 - **Single vector collections**: One vector space per object using top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`)
 - **Multiple named vectors**: Multiple vector spaces per object using the `vectorConfig` parameter (**recommended**)
 
-You cannot combine both approaches in the same collection.
+You cannot combine both approaches in the same collection. A definition that uses neither creates a [collection without a vector](#no-vector).
 
 :::tip We recommend using `vectorConfig`
 
@@ -598,7 +598,7 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 
 #### Single vector collections
 
-If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a _single vector_ collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
+A collection that sets any of the top-level `vectorizer`, `vectorIndexType` or `vectorIndexConfig` parameters has one vector space for the whole collection. Weaviate fills in the remaining top-level parameters from the server defaults.
 
 To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
 
@@ -713,6 +713,35 @@ This code example shows how to configure multiple named vectors through a client
 For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) guide.
 
 :::
+
+#### The `default` vector name {#default-vector-name}
+
+`default` is a reserved vector name, and it means different things in the two approaches.
+
+**Single vector collections.** `default` is an alias for the collection's one vector space. Reads and writes that target `default` resolve to it, and a write that sends `vectors: {"default": [...]}` is stored there. The alias is not part of the collection definition, so `GET /v1/schema` returns the top-level parameters and no `vectorConfig` entry. You cannot add a named vector called `default` to such a collection.
+
+**Collections that use `vectorConfig`.** `default` is an ordinary named vector with no special behavior. It is the name Weaviate gives the vector that [auto-schema](#auto-schema) creates.
+
+#### Collections without a vector {#no-vector}
+
+:::info Changed in `v1.40`
+:::
+
+A collection definition that sets none of `vectorizer`, `vectorIndexType`, `vectorIndexConfig` or `vectorConfig` creates a collection with no vector. Before `v1.40`, the server defaults filled in the top-level parameters, so such a definition produced a single vector collection.
+
+For a collection without a vector:
+
+- `GET /v1/schema/{collection}` returns none of the vector parameters.
+- Objects without vectors are stored as usual. A write that carries a vector is rejected with a `422` error.
+- Vector search reports that the collection has no vector index.
+- You can [add a named vector](../manage-collections/vector-config.mdx#add-new-named-vectors) later.
+- You cannot add the top-level parameters later. An update that sets `vectorizer`, `vectorIndexType` or `vectorIndexConfig` is rejected with a `422` error:
+
+```text
+a class-level vectorizer or vector index cannot be added through an update, add a named vector instead
+```
+
+Existing collections are unchanged, and a definition that does set the top-level parameters still creates a single vector collection.
 
 ---
 
@@ -1065,15 +1094,21 @@ After you create a collection, you can [add new properties](../manage-collection
 
 ## Auto-schema
 
+:::info Changed in `v1.39.1`
+:::
+
 The "Auto-schema" feature generates a collection definition automatically by inferring parameters from data being added. It is enabled by default, and can be disabled (e.g. in `docker-compose.yml`) by setting the environment variable [`AUTOSCHEMA_ENABLED`](/docs/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) to `'false'`.
 
 It will:
 
 - Create a collection if an object is added to a non-existent collection.
+- Create a single [named vector](#named-vectors) called `default` for that collection, with the vectorizer set to `none` and the index type taken from [`DEFAULT_VECTOR_INDEX`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_INDEX), or `hnsw` if that variable is unset. Before `v1.39.1`, it created a [single vector collection](#single-vector-collections) instead.
 - Add any missing property from an object being added.
 - Infer array data types, such as `int[]`, `text[]`, `number[]`, `boolean[]`, `date[]` and `object[]`.
 - Infer nested properties for `object` and `object[]` data types.
 - Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
+
+[`DEFAULT_VECTORIZER_MODULE`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTORIZER_MODULE) is not applied to the `default` vector, so auto-schema does not vectorize your data. Supply the vectors yourself, or define the collection before you import.
 
 :::tip Define the collection manually for production use
 
