@@ -7,6 +7,7 @@ description: "Configure vectorizers and vector index settings with code examples
 
 import SkipLink from "/src/components/SkipValidationLink";
 import AddNamedVectors from '/_includes/feature-notes/add-named-vectors.mdx';
+import DropNamedVector from '/_includes/feature-notes/drop-named-vector.mdx';
 import MultiVector from '/_includes/feature-notes/multi-vector.mdx';
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -231,6 +232,51 @@ Named vectors can be added to existing collection definitions with named vectors
 Adding a new vector to the collection definition [won't trigger vectorization for existing objects](../concepts/data.md#adding-a-named-vector-after-collection-creation). Only objects created after the vector addition will receive these new vector embeddings.
 
 :::
+
+## Drop a named vector
+
+<DropNamedVector/>
+
+:::caution Dropping a named vector deletes its embeddings
+
+**A drop can't be undone.** To get the vector back, re-create it, then re-vectorize or re-import the objects.
+
+:::
+
+Dropping a named vector deletes its index and its embedding from every object. The collection's other named vectors and all object data are unaffected. Cleanup runs in the background and resumes after a restart.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DropNamedVectorIndex"
+      endMarker="# END DropNamedVectorIndex"
+      language="pyindent"
+    />
+  </TabItem>
+  <TabItem value="curl" label="Curl">
+
+```bash
+curl \
+  -X DELETE \
+  https://WEAVIATE_INSTANCE_URL/v1/schema/YourCollection/vectors/YourVectorName/index  # Replace WEAVIATE_INSTANCE_URL with your instance URL
+```
+
+  </TabItem>
+</Tabs>
+
+<!-- TODO[g-despot]: tabs for the other language clients when their support ships -->
+
+<details>
+  <summary>Additional information</summary>
+
+- **Permissions.** You need `update` permission on both the [collection](/weaviate/configuration/rbac/manage-roles.mdx#collections-permissions) and its [data objects](/weaviate/configuration/rbac/manage-roles.mdx#data-permissions), because a drop rewrites every object in the collection. See the <SkipLink href="/weaviate/api/rest#tag/schema">REST API reference</SkipLink> for the request.
+- **When the drop is finished.** The vector disappears from the collection definition. Until then it is still listed, and writes that target the dropped vector are rejected — in a batch, only the objects carrying that vector fail. You can also follow the cluster's background task list, which needs `read` permission on [cluster data](/weaviate/configuration/rbac/manage-roles.mdx#clusters-permissions): the drop's tasks use the `drop-vector-index` namespace and are done only at status `FINISHED`, not `SWAPPING`. A large multi-tenant collection produces a sequence of tasks.
+- **Inactive tenants.** [Inactive tenants](./tenant-states.mdx#inactive) defer completion. The drop isn't finished until those tenants are activated and a later cleanup round covers them.
+- **Reusing the name.** Once the vector is gone from the collection definition, you can add a vector with the same name again, even with a different dimensionality. The new index starts empty, because objects created before the drop don't carry it. If you re-create the name while cleanup is still running, the request is rejected; retry after the vector disappears.
+- **Dropping the last vector.** The collection is left with no vectors at all. Objects and properties survive.
+
+</details>
 
 ## Define multi-vector embeddings (e.g. ColBERT, ColPali)
 

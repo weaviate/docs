@@ -43,7 +43,7 @@ These are the top-level parameters you can set when creating a collection.
 | [`objectTtlConfig`](#object-ttl)             | Object | Sets a time to live (TTL) after which the collection's objects expire.                                                 | Disabled                                                                                                                                                                                              | Yes           |
 
 \* [New properties can be added](../manage-collections/collection-operations.mdx#add-a-property); existing properties cannot be modified<br/>
-\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors); some vector index settings are mutable<br/>
+\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) and, from `v1.40`, [a named vector can be dropped](../manage-collections/vector-config.mdx#drop-a-named-vector); some vector index settings are mutable<br/>
 
 <details>
   <summary>Example collection configuration -  JSON object</summary>
@@ -594,7 +594,7 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 | [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | Index configuration for this named vector                                                                                                                     | Index-specific defaults | Partially\*   |
 
 \* See [vector index mutable parameters](./indexing/vector-index.mdx)
-\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
+\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation, and from `v1.40` [a named vector can be dropped](../manage-collections/vector-config.mdx#drop-a-named-vector)
 
 #### Single vector collections
 
@@ -1035,7 +1035,7 @@ Some, but not all, parameters are mutable after you create your collection. To m
 | `properties`                         | New properties only                                                | [Add a property](../manage-collections/collection-operations.mdx#add-a-property)                                        | To change an existing property, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
 | `invertedIndexConfig`                | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | Changing [`tokenizerUserDict`](./indexing/inverted-index.mdx#tokenizeruserdict) is allowed, but existing objects keep the old tokenization until they are re-imported. |
 | `objectTtlConfig`                    | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | -                                                                                                           |
-| `vectorConfig` (named vectors)       | New named vectors only                                             | [Add new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors)                                  | To change an existing named vector, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
+| `vectorConfig` (named vectors)       | New named vectors, and dropping a named vector from `v1.40`        | [Add new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors), [Drop a named vector](../manage-collections/vector-config.mdx#drop-a-named-vector) | To change an existing named vector, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
 | `vectorizer`                         | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
 | `vectorIndexType`                    | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
 | `vectorIndexConfig`                  | Some settings. See the mutability column in the [vector index reference](./indexing/vector-index.mdx). | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition) | For an immutable setting such as `distance` or `efConstruction`, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
