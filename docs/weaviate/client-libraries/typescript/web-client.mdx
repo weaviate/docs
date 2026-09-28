@@ -5,7 +5,7 @@ description: "The @weaviate/web package: a browser build of the Weaviate v3 Type
 image: og/docs/client-libraries.jpg
 ---
 
-{/* MAINTENANCE: `3.15.0-alpha.6` is hardcoded in 3 places — the Alpha admonition and the
+{/* MAINTENANCE: `3.15.0-alpha.6` is hardcoded in 3 places: the Alpha admonition and the
     install command below, plus the availability table in weaviate/api/graphql/migration.mdx.
     The `latest` tag lags behind, so the admonition also names the version it points at.
     Update all 3 together when the package moves. */}
@@ -52,10 +52,10 @@ For the server side, see [gRPC-Web](../../api/grpc.md#grpc-web).
 
 ## Browser notes
 
-**Custom headers do not work in the browser.** Weaviate accepts only the headers the client itself sends on `/v1/grpc-web/`. If you add your own — a model provider API key, for example — the browser's CORS preflight fails and the request is never sent. Node skips this check, so the problem only shows up in a real browser.
+**Provider API keys work in the browser. Other custom headers do not.** Model provider keys passed through `headers`, such as `X-OpenAI-Api-Key`, are on Weaviate's default CORS allow-list, so they work cross-origin out of the box. Any other header fails the browser's CORS preflight unless the operator lists it in [`CORS_ALLOW_HEADERS`](/deploy/configuration/env-vars/index.md#CORS_ALLOW_HEADERS) on the server. Setting that variable replaces the default list, so include the defaults you still need. Node runs no preflight, so test header behavior in a real browser.
 
 :::warning Browser credentials are visible to the user
-Anyone who loads your page can read whatever the bundle holds, including API keys. Use a read-only API key with the least [RBAC](/deploy/configuration/authorization.md) permissions the app needs. Never ship an admin key to a browser.
+Anyone who loads your page can read whatever the bundle holds, including Weaviate and model provider API keys. Use a read-only API key with the least [RBAC](/deploy/configuration/authorization.md) permissions the app needs. Never ship an admin key to a browser.
 :::
 
 ## Questions and feedback
