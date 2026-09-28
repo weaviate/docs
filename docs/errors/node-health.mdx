@@ -1,0 +1,83 @@
+---
+title: Node health messages
+sidebar_label: Node health
+description: "Weaviate messages and probe failures that mean a node is starting, not ready, or restarting, what each one means, and how to tell a normal startup from a real problem."
+image: og/default.jpg
+toc_max_heading_level: 2
+side_panel: improve-cluster
+---
+
+import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
+import QuickLinks from '@site/src/components/QuickLinks';
+
+<ClusterIdNotice/>
+
+## Node not ready {#node-not-ready}
+
+A node is up but not serving yet. During startup this is normal and clears on its own; if it never clears, or the pod keeps restarting, find out why.
+
+### What you see
+
+In the logs of another node, a warning from async replication, logged once every 20 skipped cycles in a row:
+
+```text
+hashbeat skipped for 20 consecutive cycles: … peer not ready: 503 Node not ready
+```
+
+The entry carries `skip_reason: node_boot`. Search your logs for `Node not ready`. The message does not name the peer.
+
+In Kubernetes, a readiness probe failing on `/v1/.well-known/ready`, and the pod shown as not ready while it keeps running.
+
+### What it means
+
+The node that logs `503 Node not ready` is not the one with the problem. It asked a peer for data, and the peer answered that it is not ready. Look at the **peer**. The 503 comes from Weaviate itself, not from Kubernetes.
+
+A peer answers `503 Node not ready` while it is still starting up or has not caught up on RAFT:
+
+- It is still loading its collections and shards from disk. The more data, the longer this takes.
+- It has not joined the cluster yet: no RAFT leader is known.
+
+The `/v1/.well-known/ready` endpoint returns `503` in those cases too, and also when:
+
+- The node's own gossip health score is above zero, meaning it is falling behind on the cluster membership protocol, typically because it is overloaded or its network is slow.
+- The node is in maintenance mode.
+
+### Liveness and readiness
+
+Weaviate answers two health endpoints. Kubernetes probes them, and external monitors can call the same two.
+
+| Endpoint | Asks | When it fails |
+| --- | --- | --- |
+| `GET /v1/.well-known/live` | Is the process answering at all? | Kubernetes restarts the container. Repeated restarts, from crashes or failed liveness probes, show as `CrashLoopBackOff`. |
+| `GET /v1/.well-known/ready` | Can the node serve traffic? | Kubernetes removes the pod from the Service endpoints. The pod keeps running and nothing is killed. |
+
+The liveness endpoint returns `200` as long as Weaviate's HTTP server responds. It only fails when the process is not listening yet, has crashed, is hung, or has been killed, for example by the OOM killer.
+
+### How to tell normal from a problem
+
+- **Not ready during startup:** expected, and it clears on its own once the shards are loaded and the node has joined RAFT.
+- **Not ready that never clears:** the node never returns to serving. Check its logs for errors while loading shards or joining the cluster.
+- **Not ready and liveness failing:** the pod is in a restart loop. Check liveness first: it is the one causing restarts. Readiness failing on its own is usually a node that is still starting.
+- **Both endpoints failing from outside:** nothing is answering. The pod is down or crash-looping, or no healthy pod is behind the load balancer.
+
+### How to fix it
+
+1. Find the node that is not ready. The warning does not name it, so check which pod Kubernetes shows as not ready, or call `/v1/.well-known/ready` on each node. It is not the node that logged the warning.
+2. Read that node's logs from its last start. A node still loading shards is still making progress; wait for it.
+3. If the pod keeps restarting, look at why the previous container ended (`kubectl describe pod` shows the last state and exit reason). An `OOMKilled` exit means the node needs more memory, or less data held in memory.
+
+On Weaviate Cloud, the probes are managed for you. If a node stays not ready, open a [support ticket](/support) with your cluster URL.
+
+### Learn more
+
+<QuickLinks items={[
+  { title: "Cluster status endpoints", link: "/deploy/configuration/status", icon: "fa fa-heart-pulse" },
+  { title: "Deployment troubleshooting", link: "/deploy/faqs/troubleshooting", icon: "fa fa-wrench" },
+  { title: "Improve your cluster", link: "/improve-your-cluster", icon: "fa fa-list-check" },
+]}/>
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
