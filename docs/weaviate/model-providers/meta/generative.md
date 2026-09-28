@@ -100,9 +100,7 @@ Configure the following generative parameters to customize the model behavior.
   language="pyindent"
 />
 
-Weaviate checks the numeric parameters when you create or update the collection. See [Parameter ranges](#parameter-ranges) for the accepted values.
-
-Weaviate does not write defaults into the stored collection configuration, so reading a collection back shows only the parameters you set.
+Weaviate has no default for `temperature`, `topP`, `maxTokens`, `frequencyPenalty`, `presencePenalty`, or `reasoningEffort`: any one you leave unset is omitted from the request, so Meta's own default applies.
 
 For further details on model parameters, see the [Meta API documentation](https://dev.meta.ai/docs/api-reference).
 
@@ -116,8 +114,6 @@ Aside from setting the default model provider when creating the collection, you 
   endMarker="# END RuntimeModelSelectionMeta"
   language="pyindent"
 />
-
-A parameter set at query time overrides the same parameter in the collection configuration. A parameter you leave out falls back to the collection configuration.
 
 ## Header parameters
 
@@ -172,8 +168,6 @@ In other words, when you have `n` search results, the generative model generates
 
 You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
 
-Use `image_properties` to name `blob` properties on the retrieved objects, or `images` to pass base64-encoded images of your own. Weaviate sends the images from the stored properties first, then the ones you supply. If a named property is missing on an object, Weaviate skips it for that object.
-
 <FilteredTextBlock
   text={PyCode}
   startMarker="# START WorkingWithImagesMeta"
@@ -191,34 +185,7 @@ If you do not set a model, Weaviate uses `muse-spark-1.2`.
 
 For the list of models, see the [Meta API documentation](https://dev.meta.ai/docs/api-reference).
 
-### Parameter ranges
-
-These are the collection-configuration names; the Python client uses the snake_case equivalents, as in the examples above.
-
-Weaviate checks these values when you create or update a collection. A value outside the range fails the request.
-
-- `temperature`: `0.0` to `2.0`
-- `topP`: `0.0` to `1.0`
-- `maxTokens`: `1` or higher. Weaviate sets no upper limit.
-- `frequencyPenalty`: `-2.0` to `2.0`
-- `presencePenalty`: `-2.0` to `2.0`
-- `reasoningEffort`: one of `none`, `minimal`, `low`, `medium`, `high`, `xhigh`
-
-None of these parameters has a Weaviate-side default. A parameter you leave unset is absent from the request, so Meta's own default applies.
-
-:::caution Query-time parameters are not range-checked
-The ranges above are checked only against the collection configuration. When you pass the same parameters at query time, Weaviate checks `reasoningEffort` only. The other values are forwarded as they are, and fail, if at all, as an error from Meta.
-:::
-
-### Streaming
-
-The integration does not stream responses. No Weaviate generative integration does; the generated text is returned after the model finishes.
-
-### Base URL
-
-The default base URL is `https://api.meta.ai`. Set a different one if you have a dedicated endpoint, or if the API is behind a proxy. Set it in the collection configuration, at query time, or in the `X-Meta-Baseurl` header, which takes precedence over the other two.
-
-### Long-running generations
+### Reasoning effort
 
 Weaviate applies the [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT) environment variable to the whole request, including reading the response, and it defaults to 50 seconds. A long generation, such as one with a high `reasoningEffort`, can exceed it. If queries time out, raise this value on your Weaviate instance.
 

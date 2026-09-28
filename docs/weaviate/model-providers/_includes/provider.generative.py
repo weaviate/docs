@@ -915,12 +915,12 @@ if META_CLIENT_AVAILABLE:
         generative_config=Configure.Generative.meta(
             # # These parameters are optional
             # model="muse-spark-1.2",
-            # temperature=0.7,
-            # top_p=0.9,
-            # max_tokens=500,
-            # frequency_penalty=0.0,
-            # presence_penalty=0.0,
-            # reasoning_effort="low",
+            # temperature=0.7,  # 0.0 to 2.0
+            # top_p=0.9,  # 0.0 to 1.0
+            # max_tokens=500,  # 1 or higher; no upper limit
+            # frequency_penalty=0.0,  # -2.0 to 2.0
+            # presence_penalty=0.0,  # -2.0 to 2.0
+            # reasoning_effort="low",  # One of "none", "minimal", "low", "medium", "high", "xhigh"
             # base_url="https://api.meta.ai",
         )
         # highlight-end
