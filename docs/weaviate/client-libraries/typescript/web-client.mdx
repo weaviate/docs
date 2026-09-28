@@ -5,8 +5,9 @@ description: "The @weaviate/web package: a browser build of the Weaviate v3 Type
 image: og/docs/client-libraries.jpg
 ---
 
-{/* MAINTENANCE: `3.15.0-alpha.2` is hardcoded in 3 places — the Alpha admonition and the
+{/* MAINTENANCE: `3.15.0-alpha.6` is hardcoded in 3 places — the Alpha admonition and the
     install command below, plus the availability table in weaviate/api/graphql/migration.mdx.
+    The `latest` tag lags behind, so the admonition also names the version it points at.
     Update all 3 together when the package moves. */}
 
 `@weaviate/web` is a browser build of the v3 client. Use it in browsers and edge runtimes such as Cloudflare Workers and Vercel, where a plain gRPC connection is not possible.
@@ -15,21 +16,21 @@ It has the same API as `weaviate-client`, but sends queries over gRPC-Web. Conne
 
 :::caution Alpha
 
-`@weaviate/web` `3.15.0-alpha.2` is an alpha. The `latest` tag still points at `3.15.0-alpha.1`, an older alpha that cannot resolve its own dependencies, so always install the version explicitly.
+`@weaviate/web` `3.15.0-alpha.6` is an alpha. The `latest` tag still points at `3.15.0-alpha.2`, an older alpha that fails to load, so always install the version explicitly.
 
 :::
 
 ## Install
 
-Install the alpha explicitly, together with `protobufjs`:
+Install the alpha explicitly:
 
 ```bash
-npm install @weaviate/web@3.15.0-alpha.2 protobufjs
+npm install @weaviate/web@3.15.0-alpha.6
 ```
 
-Both parts matter. The package does not declare its `protobufjs` dependency yet, so the import fails without it. And the `latest` tag still points at an older alpha that cannot resolve its own dependencies, so a bare `npm install @weaviate/web` does not work.
+The `latest` tag still points at an older alpha that fails to load, so name the version.
 
-Use the ESM entry point. The package also ships a CommonJS build, but it requires an ESM-only dependency, so it loads only on Node 22.12 and later. The ESM entry works on Node 18 and later.
+The package is ESM-only.
 
 ## Connect to Weaviate
 
