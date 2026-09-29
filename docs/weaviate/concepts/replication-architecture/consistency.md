@@ -374,7 +374,59 @@ When a shard replica is copied, the increased replication factor may become an e
 
 :::
 
+## Shard self-recovery
+
+{/* DRAFT-HOLD(ivan): PR #11768 unmerged — do not publish before it lands in stable/v1.40 */}
+
+import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
+
+:::info Added in `v1.40`
+:::
+
+<EnterpriseEdition/>
+
+Shard self-recovery restores a shard replica whose data directory is missing on a node, for example after a disk replacement or a lost volume. Instead of starting the shard empty, the node copies the shard's files from a healthy replica on another node. A recovery is a replication operation, so it uses the same engine as [replica movement](#replica-movement).
+
+This section describes how a recovery works. To enable, monitor, and control self-recovery, see [Configuration: Shard Self-Recovery](/deploy/configuration/self-recovery).
+
+### When recovery starts
+
+A node checks for missing shard directories at two points:
+
+- **At startup.** While the node loads its shards, each `HOT` shard whose directory is missing is recovered.
+- **When a tenant is activated.** For a multi-tenant collection, a `COLD` tenant whose shard directory is missing on this node is recovered when the tenant is activated. This only happens when the collection's schema has more than one replica.
+
+A node that starts with no Raft state at all, for example with an empty data volume (a *wiped* node), first catches up with the cluster's schema and only then loads its shards. If the catch-up stops making progress for `SELF_RECOVERY_BARRIER_TIMEOUT` (default `3m`), the node logs a warning and loads its shards anyway. In that case some shards can start empty.
+
+### Choosing a source replica
+
+The node probes all other replicas of the shard in parallel, in random order. The first replica that reports having data for the shard becomes the source for the copy.
+
+The node creates an empty shard, without copying any data, only in these cases:
+
+- The shard has no other replica.
+- No replica was unreachable, and at least one replica reported that it has no data for the shard.
+
+If any replica is unreachable, the node doesn't fall back to an empty shard. It retries, because the unreachable replica might hold the data. A replica that is itself recovering the same shard counts as having no data.
+
+### Copying the data
+
+The node copies the source replica's files into a staging directory named `<shard>.recovering/` next to the shard's normal location. The copy is resumable per file: a file whose CRC32 checksum already matches the source is skipped. When the copy completes, the node renames the staging directory to the shard directory in a single atomic step, and loads the shard.
+
+### Request routing during recovery
+
+While a registered recovery operation for the shard is in progress, the cluster excludes the recovering replica from read and write routing, so other replicas serve the requests. Searches and reads, such as fetching an object by ID, succeed through the healthy replicas. Operations that must consult every replica, such as aggregations, can be delayed until the recovery finishes, and then succeed. Internally, the recovering replica rejects requests from other nodes, and the coordinating node handles these rejections.
+
+{/* TODO(ivan): client-facing error contract for direct hits on a recovering shard unconfirmed — internal 503/500 observed, 422 exists only in the local-access code path; confirm with core */}
+
+### Retries and giving up
+
+A recovery makes up to 10 attempts. Probe errors, unreachable replicas, and failures to register or track the copy operation all count as attempts. Between attempts, the node waits 5 seconds, doubling the wait each time up to a limit of 5 minutes. All attempts together take about 20 minutes.
+
+If all attempts fail, the node gives up. The shard stays in the `RECOVERING` state: it doesn't become empty, and it doesn't serve data. On the next startup, the node submits the recovery again. An operator can also [restart the recovery or accept an empty shard](/deploy/configuration/self-recovery#operator-controls).
+
 ## Related pages
+- [Configuration: Shard Self-Recovery](/deploy/configuration/self-recovery)
 - [API References | GraphQL | Get | Consistency Levels](../../api/graphql/get.md#consistency-levels)
 - <SkipLink href="/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
 
