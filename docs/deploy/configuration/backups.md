@@ -446,6 +446,8 @@ GET /v1/backups/{backend}/{backup_id}
 
 The response contains a `"status"` field. If the status is `SUCCESS`, the backup is complete. If the status is `FAILED`, an additional error is provided.
 
+For an [incremental backup](#incremental-backups), the response also contains `incremental_base_backup_id`, the ID of the backup it was built on. As in the [list response](#list-backups), this field is introduced in Weaviate `v1.37.6` and is only returned to root users. The response to the create request itself never contains it, so read it from the status or list endpoint.
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -525,7 +527,9 @@ First, create a regular backup that will serve as the base:
 
 #### Create an incremental backup
 
-To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup:
+To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup.
+
+Weaviate versions older than `v1.37` do not recognize `incremental_base_backup_id`. They ignore it and write a full backup without reporting an error.
 
 <FilteredTextBlock
   text={PyCode}
@@ -559,6 +563,8 @@ Restoring an incremental backup works the same as restoring any other backup. We
 :::caution Keep base backups available
 
 Base backups (and any intermediate incremental backups in a chain) must remain available for as long as you need to restore from any incremental backup that depends on them.
+
+Unchanged files are restored from the base backup rather than from the incremental backup itself. Deleting a base backup therefore breaks every incremental backup built on it, directly or further along the chain.
 
 :::
 
