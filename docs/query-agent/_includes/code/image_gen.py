@@ -88,7 +88,9 @@ response = qa.ask(
 from typing import Annotated
 
 class AnnotatedImagesResponse(BaseModel):
-    image_field: list[Annotated[QAImage, Field(description="<image guidance/style description here>")]]
+    image_field: list[Annotated[QAImage, Field(description="<image guidance/style description here>")]] = Field(
+        max_length = 4 # max_length must be specified for lists of images
+    )
 # END AnnotateListImageExample
 
 # START CustomShapeImageExample
@@ -101,3 +103,5 @@ response = qa.ask(
     output_format=Annotated[QAImage, ImageOptions(shape="portrait")],
 )
 # END CustomShapeImageExample
+
+client.close()
