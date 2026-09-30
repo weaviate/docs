@@ -1,78 +1,131 @@
 ---
 title: Node health messages
 sidebar_label: Node health
-description: "Weaviate messages and probe failures that mean a node is starting, not ready, or restarting, what each one means, and how to tell a normal startup from a real problem."
+description: "Weaviate log messages and health check failures that mean a node is not ready to serve, with the cause and the fix for each one."
 image: og/default.jpg
 toc_max_heading_level: 2
 side_panel: improve-cluster
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
 import QuickLinks from '@site/src/components/QuickLinks';
+import { EntryFacts } from '@site/src/components/ErrorDocs';
 
 <ClusterIdNotice/>
 
+Messages on this page mean that a Weaviate node is running but not ready to serve requests. This is normal while a node starts up, and it clears on its own. It is a problem only when it does not clear, or when the node keeps restarting. If your message is not here, the [message index](/errors) lists the other groups.
+
 ## Node not ready {#node-not-ready}
 
-A node is up but not serving yet. During startup this is normal and clears on its own; if it never clears, or the pod keeps restarting, find out why.
+<EntryFacts
+  raisedBy="Weaviate Database"
+  severity="warning"
+  since="v1.39.1"
+  impact="Async replication skips a peer that is not ready, so the copy on that peer is not repaired until the peer is ready. Nothing is lost. A node that is starting up clears on its own."
+  fix="Find the node that is not ready by calling /v1/.well-known/ready on each node, then read its logs. Most often it is still starting up."
+/>
 
 ### What you see
 
-In the logs of another node, a warning from async replication, logged once every 20 skipped cycles in a row:
+In the logs of a different node, a warning ending in `target replica(s) not ready`:
 
 ```text
-hashbeat skipped for 20 consecutive cycles: … peer not ready: 503 Node not ready
+hashbeat skipped for 20 consecutive cycles: collecting hashtree differences: async replication is not active on this shard: 1 target replica(s) not ready
 ```
 
-The entry carries `skip_reason: node_boot`. Search your logs for `Node not ready`. The message does not name the peer.
+Async replication compares data between nodes on a schedule. Each comparison is a hashbeat cycle. The warning repeats every 20 skipped cycles and stops once a comparison completes. The number in the message counts skipped cycles since the last completed comparison, so it can show 40, 60, or more.
 
-In Kubernetes, a readiness probe failing on `/v1/.well-known/ready`, and the pod shown as not ready while it keeps running.
+The entry carries `class_name` and `shard_name`, which name the shard, and `skip_reason`, which is always `not_active` here. The warning does not name the node that is not ready. Search the logs for `target replica(s) not ready`.
 
-### What it means
+The warning fires only when no other replica of the shard could be compared. With replication factor 3 and one node not ready, the two healthy nodes compare with each other and log nothing. The Prometheus counter `weaviate_async_replication_target_skip_count` still counts every skipped node. Its `reason` label is `node_boot`, `maintenance`, or `not_active`.
 
-The node that logs `503 Node not ready` is not the one with the problem. It asked a peer for data, and the peer answered that it is not ready. Look at the **peer**. The 503 comes from Weaviate itself, not from Kubernetes.
+The warning ships in v1.39.1 and later, and in v1.38.10 and later on the 1.38 line. Older versions log a different line on every cycle, with the peer's address: `hashbeat iteration failed: … 503 Node not ready`.
 
-A peer answers `503 Node not ready` while it is still starting up or has not caught up on RAFT:
+### Why it happens
 
-- It is still loading its collections and shards from disk. The more data, the longer this takes.
-- It has not joined the cluster yet: no RAFT leader is known.
+The node that logs this warning is not the one with the problem. It asked another node, its peer, for data, and the peer answered `503 Node not ready`. Look at the peer. The `503` comes from Weaviate, not from Kubernetes.
 
-The `/v1/.well-known/ready` endpoint returns `503` in those cases too, and also when:
+A peer answers this way while it cannot serve that shard yet:
 
-- The node's own gossip health score is above zero, meaning it is falling behind on the cluster membership protocol, typically because it is overloaded or its network is slow.
-- The node is in maintenance mode.
+- It is still loading its collections and shards from disk. More data takes longer.
+- It does not know the Raft leader. This is normal before it has joined the cluster, and it also happens during a leader election or after the cluster lost quorum.
 
-### Liveness and readiness
+Weaviate has two health endpoints. The readiness endpoint, `/v1/.well-known/ready`, answers `503` in the cases above. It also answers `503` when the node is falling behind on cluster membership messages, usually because it is overloaded or its network is slow. A node with many shards can answer `200` while some of them are still loading in the background. The liveness endpoint, `/v1/.well-known/live`, answers `200` as long as the process responds to HTTP. It fails only when the process is not listening yet, has crashed, has hung, or has been killed.
 
-Weaviate answers two health endpoints. Kubernetes probes them, and external monitors can call the same two.
+<details>
+<summary>How Kubernetes uses the two endpoints</summary>
 
-| Endpoint | Asks | When it fails |
+| Endpoint | What it checks | What Kubernetes does when it fails |
 | --- | --- | --- |
-| `GET /v1/.well-known/live` | Is the process answering at all? | Kubernetes restarts the container. Repeated restarts, from crashes or failed liveness probes, show as `CrashLoopBackOff`. |
-| `GET /v1/.well-known/ready` | Can the node serve traffic? | Kubernetes removes the pod from the Service endpoints. The pod keeps running and nothing is killed. |
+| `GET /v1/.well-known/live` | Is the process responding? | Restarts the container. Repeated restarts show as `CrashLoopBackOff`. |
+| `GET /v1/.well-known/ready` | Can the node serve traffic? | Stops sending traffic to the pod. The pod keeps running. |
 
-The liveness endpoint returns `200` as long as Weaviate's HTTP server responds. It only fails when the process is not listening yet, has crashed, is hung, or has been killed, for example by the OOM killer.
-
-### How to tell normal from a problem
-
-- **Not ready during startup:** expected, and it clears on its own once the shards are loaded and the node has joined RAFT.
-- **Not ready that never clears:** the node never returns to serving. Check its logs for errors while loading shards or joining the cluster.
-- **Not ready and liveness failing:** the pod is in a restart loop. Check liveness first: it is the one causing restarts. Readiness failing on its own is usually a node that is still starting.
-- **Both endpoints failing from outside:** nothing is answering. The pod is down or crash-looping, or no healthy pod is behind the load balancer.
+</details>
 
 ### How to fix it
 
-1. Find the node that is not ready. The warning does not name it, so check which pod Kubernetes shows as not ready, or call `/v1/.well-known/ready` on each node. It is not the node that logged the warning.
-2. Read that node's logs from its last start. A node still loading shards is still making progress; wait for it.
-3. If the pod keeps restarting, look at why the previous container ended (`kubectl describe pod` shows the last state and exit reason). An `OOMKilled` exit means the node needs more memory, or less data held in memory.
+First find the node that is not ready. The warning does not name it. Its `class_name` and `shard_name` fields name the shard, so check the nodes that hold a replica of it. Call the readiness endpoint on each of them directly, not through a load balancer:
 
-On Weaviate Cloud, the probes are managed for you. If a node stays not ready, open a [support ticket](/support) with your cluster URL.
+```bash
+curl -i http://<node-address>:8080/v1/.well-known/ready
+```
+
+A `200` means the node is ready. A `503` means it is the node to look at. What to do next depends on what it is doing:
+
+| What you see | What it means | What to do |
+| --- | --- | --- |
+| Not ready for a while after a start | The node is loading its data or joining the cluster | Wait. It clears on its own. More data takes longer. |
+| Not ready, and it never clears | The node is stuck while loading shards or joining the cluster | Read the node's logs from its last start and look for errors. |
+| Not ready, and the node keeps restarting | Something stops the process before it finishes starting | Find out why it stopped, using the steps for your platform below. |
+
+<Tabs groupId="platform">
+<TabItem value="linux" label="Linux host">
+
+Read the Weaviate logs from the last start. If the process stopped, check whether the kernel's out-of-memory killer ended it:
+
+```bash
+sudo dmesg | grep -i "killed process"
+```
+
+</TabItem>
+<TabItem value="docker" label="Docker">
+
+Read the logs from the last start, and check whether the container ran out of memory. The second command prints `true` if it did:
+
+```bash
+docker logs <container>
+docker inspect --format '{{.State.OOMKilled}}' <container>
+```
+
+</TabItem>
+<TabItem value="kubernetes" label="Kubernetes">
+
+`kubectl get pods` shows which pod is not ready. For a pod that keeps restarting, read the logs of the container that stopped, and the reason it stopped. The reason is under **Last State** in the `describe` output:
+
+```bash
+kubectl logs <pod> --previous
+kubectl describe pod <pod>
+```
+
+</TabItem>
+<TabItem value="cloud" label="Weaviate Cloud">
+
+The nodes and their health checks are managed for you. Open a [support ticket](/support) with the message text and your cluster URL.
+
+</TabItem>
+</Tabs>
+
+If the node ran out of memory, give it more memory or hold less data in memory. See [resource planning](/weaviate/concepts/resources).
 
 ### Learn more
 
 <QuickLinks items={[
-  { title: "Cluster status endpoints", link: "/deploy/configuration/status", icon: "fa fa-heart-pulse" },
-  { title: "Deployment troubleshooting", link: "/deploy/faqs/troubleshooting", icon: "fa fa-wrench" },
+  { title: "Liveness and readiness endpoints", link: "/deploy/configuration/status#readiness", icon: "fa fa-heart-pulse" },
+  { title: "Nodes that will not join a cluster", link: "/deploy/faqs/troubleshooting#your-nodes-wont-communicate-join-a-cluster-or-maintain-consensus", icon: "fa fa-circle-nodes" },
+  { title: "Async replication", link: "/deploy/configuration/async-rep", icon: "fa fa-rotate" },
+  { title: "Resource planning", link: "/weaviate/concepts/resources", icon: "fa fa-gauge-high" },
   { title: "Improve your cluster", link: "/improve-your-cluster", icon: "fa fa-list-check" },
 ]}/>
 
