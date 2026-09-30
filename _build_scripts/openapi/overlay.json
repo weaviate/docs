@@ -1,0 +1,155 @@
+{
+  "basePath": null,
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "root"
+        ]
+      }
+    },
+    "/.well-known/live": {
+      "get": {
+        "tags": [
+          "well-known"
+        ]
+      }
+    },
+    "/.well-known/openid-configuration": {
+      "get": {
+        "tags": [
+          "well-known"
+        ]
+      }
+    },
+    "/.well-known/ready": {
+      "get": {
+        "tags": [
+          "well-known"
+        ]
+      }
+    },
+    "/batch/objects": {
+      "delete": {
+        "tags": [
+          "batch"
+        ]
+      },
+      "post": {
+        "tags": [
+          "batch"
+        ]
+      }
+    },
+    "/batch/references": {
+      "post": {
+        "tags": [
+          "batch"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "{protocol}://{WEAVIATE_HOSTNAME}:{PORT}/v1",
+      "variables": {
+        "protocol": {
+          "default": "https",
+          "enum": [
+            "http",
+            "https"
+          ]
+        },
+        "WEAVIATE_HOSTNAME": {
+          "default": "localhost",
+          "description": "Weaviate server hostname"
+        },
+        "PORT": {
+          "default": "8080",
+          "description": "Weaviate server port"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "root",
+      "description": "The root of the API. Note the base url is `/v1`."
+    },
+    {
+      "name": "schema",
+      "description": "Operations related to managing collections. In Weaviate, 'collections' (formerly called 'classes') store your data objects. Each collection has a definition that specifies its data structure (properties and their data types), vectorizer settings (how vectors are generated or managed), and indexing configuration (how data is indexed for efficient search). These endpoints allow you to create, retrieve, update, and delete collection definitions. For detailed usage and code examples on interacting with collections, see the documentation: [https://weaviate.io/developers/weaviate/manage-data/collections](https://weaviate.io/developers/weaviate/manage-data/collections)."
+    },
+    {
+      "name": "objects",
+      "description": "Operations for managing individual data objects. Objects are the primary units of data stored within Weaviate collections. Each object conforms to the data schema definition of its parent collection, containing specific properties (data fields). Objects have one or multiple associated vector embeddings and can link to other objects via cross-references. These endpoints allow you to perform CRUD (Create, Read, Update, Delete) operations on individual data objects."
+    },
+    {
+      "name": "batch",
+      "description": "Operations for performing actions on multiple data items (objects or references) in a single API request. Batch operations significantly improve performance and efficiency, especially for bulk data imports or large-scale deletions, by reducing network overhead compared to sending individual requests. These endpoints allow for creating multiple objects or deleting objects based on filters."
+    },
+    {
+      "name": "search",
+      "description": "Operations for querying collections over REST. The near-text endpoint performs semantic vector search with server-side embedding of the query text; the bm25 endpoint performs keyword (BM25F) search over the searchable text properties. Each result carries the object's `id`, the selected `properties`, the selected `references` and, when requested, its retrieval `metadata`."
+    },
+    {
+      "name": "aggregate",
+      "description": "Operations for aggregating over collections. The aggregate endpoint counts the objects that match an optional `where` filter, in total or grouped by a property's distinct values."
+    },
+    {
+      "name": "backups",
+      "description": "Operations related to creating and managing backups of Weaviate data. This feature allows you to create snapshots of your collections and store them on external storage backends such as cloud object storage (S3, GCS, Azure) or a shared filesystem. These endpoints enable you to initiate backup and restore processes, monitor their status, list available backups on a backend, and cancel ongoing backups. Backups are essential for disaster recovery, data migration, and maintaining point-in-time copies of your vector database."
+    },
+    {
+      "name": "meta",
+      "description": "Retrieve information about the server such as the hostname, location, versions and modules."
+    },
+    {
+      "name": "cluster",
+      "description": "Retrieve Raft cluster statistics and node health information for the Weaviate database."
+    },
+    {
+      "name": "nodes",
+      "description": "Monitor node status, shard distribution, and resource statistics for the cluster or specific collections."
+    },
+    {
+      "name": "well-known",
+      "description": "Standard discovery endpoints for health checks (liveness, readiness) and OpenID Connect configuration if [OIDC authentication](https://docs.weaviate.io/deploy/configuration/authentication#oidc-authentication) is enabled."
+    },
+    {
+      "name": "graphql",
+      "description": "Query data using the GraphQL query language. See the [Weaviate GraphQL documentation](https://docs.weaviate.io/weaviate/api/graphql) for query syntax details."
+    },
+    {
+      "name": "export",
+      "description": "Operations for exporting Weaviate data to external storage backends (S3, GCS, Azure, or filesystem). The output file format is specified via the 'file_format' field (currently only 'parquet' is supported). Exports provide a way to extract your vector data and object properties into a standardized columnar format for data analysis, archival, or migration. Each collection is exported to a separate file containing object IDs, vectors, properties, and metadata."
+    },
+    {
+      "name": "authz",
+      "description": "Endpoints for managing Weaviate's Role-Based Access Control (RBAC) system. Access to Weaviate resources is granted through roles, which are collections of fine-grained permissions. \n\n**Permissions:** Define allowed actions (e.g., `read_data`, `create_collections`, `delete_users`) on specific resources. Resources can be specified broadly (e.g., all collections: `*`) or narrowly (e.g., a specific collection name, tenant pattern, user name, or role name).\n\n**Roles:** Are named sets of permissions. Managing roles involves creating roles with specific permissions, retrieving role definitions, deleting roles, and adding or removing permissions from existing roles.\n\n**Role assignment:** Roles grant their contained permissions to users or groups. These endpoints allow assigning roles to:\n* `db` users: Users managed directly by Weaviate via API or environment variables, authenticating with API keys.\n* `oidc` users: Users authenticated via an external OpenID Connect provider, managed externally but assigned roles within Weaviate.\n* OIDC `groups`: Users authenticated via OIDC who belong to a group automatically inherit roles assigned to that group.\n\nOperations also include revoking roles, checking if a role has a specific permission, listing roles assigned to a user, and listing users/groups assigned to a role. The authorization framework applies universally to both `db` and `oidc` users based on their assigned roles."
+    },
+    {
+      "name": "users",
+      "description": "Endpoints for user account management in Weaviate. This includes operations specific to Weaviate-managed database users (`db` users), such as creation (which generates an API key), listing, deletion, activation/deactivation, and API key rotation. It also provides operations applicable to any authenticated user (`db` or `oidc`), like retrieving their own information (username and assigned roles).\n\n**User Types:**\n* **`db` users:** Managed entirely within Weaviate (creation, deletion, API keys). Use these endpoints for full lifecycle management.\n* **`oidc` users:** Authenticated via an external OpenID Connect provider. Their lifecycle (creation, credentials) is managed externally, but their role assignments *within Weaviate* are managed via the `authz` endpoints."
+    },
+    {
+      "name": "classifications",
+      "description": "Perform classification operations."
+    },
+    {
+      "name": "replication",
+      "description": "Operations related to managing data replication, including initiating and monitoring shard replica movements between nodes, querying current sharding states, and managing the lifecycle of replication tasks."
+    },
+    {
+      "name": "mcp",
+      "description": "Model Context Protocol (MCP) endpoint. Provides tool discovery and invocation for LLM agents via the MCP Streamable HTTP transport. Check out the [Weaviate MCP server documentation](https://docs.weaviate.io/weaviate/configuration/mcp-server) for more info."
+    },
+    {
+      "name": "namespaces",
+      "description": "Operations for managing cluster-level namespaces. Namespaces group resources under a common administrative unit. Access is gated by the operator-tier `manage_namespaces` action."
+    }
+  ]
+}

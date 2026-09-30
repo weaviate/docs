@@ -1,0 +1,259 @@
+name: OpenAPI Spec Nightly
+
+# Rebuilds static/specs/weaviate-openapi.json (upstream spec at the newest Weaviate
+# release tag, plus the overlay in _build_scripts/openapi/) and opens or updates a PR.
+# Needs "Allow GitHub Actions to create and approve pull requests", or `gh pr create` 403s.
+# GITHUB_TOKEN pushes start no workflows, so this job runs the spec tests and build-dev
+# itself. Close and reopen the PR to run the link checks. Rationale: static/specs/README.md.
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Weaviate release tag to build from, e.g. v1.40.0-rc.1 (empty = newest release)"
+        required: false
+        default: ""
+      base:
+        description: "Branch the PR targets"
+        required: false
+        default: main
+
+# A scheduled run and a dispatch must not force-push the same PR branch at once.
+concurrency:
+  group: openapi-spec-${{ inputs.base || 'main' }}
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_REPO: weaviate/weaviate
+  UPSTREAM_FILE: openapi-specs/schema.json
+  SPEC_PATH: static/specs/weaviate-openapi.json
+  SOURCE_PATH: static/specs/weaviate-openapi.source.json
+  PIPELINE: _build_scripts/openapi
+  BASE: ${{ inputs.base || 'main' }}
+
+jobs:
+  refresh-spec:
+    name: Rebuild the Weaviate OpenAPI spec
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    permissions:
+      # Least privilege for "commit a branch and open a PR": nothing else is touched.
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BASE }}
+
+      - name: Resolve the release tag
+        id: tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          # One long-lived PR branch per base, so a dispatch against a version branch
+          # never replaces the PR against main.
+          pr_branch="chore/refresh-openapi-spec"
+          if [ "${BASE}" != "main" ]; then pr_branch="${pr_branch}-${BASE//\//-}"; fi
+          echo "pr_branch=${pr_branch}" >> "$GITHUB_OUTPUT"
+
+          current=$(jq -r '.tag' "${SOURCE_PATH}")
+          if [ -n "${INPUT_TAG}" ]; then
+            tag="${INPUT_TAG}"
+          else
+            # Not `releases/latest`: that marker is date-ordered, so a 1.38.x patch
+            # published after a 1.39.x one would win. Take the highest vX.Y.Z among
+            # published, non-prerelease releases, sorted numerically on all three parts.
+            tag=$(gh api "repos/${UPSTREAM_REPO}/releases?per_page=100" --jq '
+              [ .[] | select(.prerelease == false and .draft == false) | .tag_name
+                | select(test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) ]
+              | sort_by(ltrimstr("v") | split(".") | map(tonumber)) | last // empty')
+          fi
+          if [ -z "${tag}" ]; then
+            echo "::error::No release tag found in ${UPSTREAM_REPO}."
+            exit 1
+          fi
+          # Prereleases never publish to main. A version branch may take an rc.
+          if [ "${BASE}" = "main" ] && ! [[ "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::${tag} is not a release tag (vX.Y.Z). Prereleases never publish to main."
+            exit 1
+          fi
+          echo "Target tag: ${tag}. Committed spec: ${current}."
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "previous=${current}" >> "$GITHUB_OUTPUT"
+
+          if [ -z "${INPUT_TAG}" ]; then
+            # A quiet night stops here after one API call.
+            if [ "${tag}" = "${current}" ]; then
+              echo "The committed spec is already built from ${tag}. Nothing to do."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            # While an open PR for this tag and this overlay waits for review, do not
+            # rebuild and force-push it every night. That costs two more calls (three in
+            # all). Any mismatch rebuilds: a new overlay on the base, a closed PR, or no
+            # PR branch at all (a 404 reads as empty).
+            pending=$(gh api "repos/${GITHUB_REPOSITORY}/contents/${SOURCE_PATH}?ref=${pr_branch}" \
+              -H "Accept: application/vnd.github.raw" 2>/dev/null || true)
+            pending_tag=$(jq -r '.tag // empty' <<< "${pending}" 2>/dev/null || true)
+            pending_overlay=$(jq -r '.overlay_sha256 // empty' <<< "${pending}" 2>/dev/null || true)
+            base_overlay=$(sha256sum "${PIPELINE}/overlay.json" | cut -d' ' -f1)
+            # On its own line so set -e stops the run if gh fails.
+            open_prs=$(gh pr list --head "${pr_branch}" --base "${BASE}" --state open \
+              --json number --jq 'length')
+            if [ "${pending_tag}" != "${tag}" ]; then
+              echo "Rebuilding: ${pr_branch} is not built from ${tag} (found '${pending_tag}')."
+            elif [ "${pending_overlay}" != "${base_overlay}" ]; then
+              echo "Rebuilding: ${pr_branch} was built with a different overlay than ${BASE}."
+            elif [ "${open_prs}" -lt 1 ]; then
+              echo "Rebuilding: no open PR from ${pr_branch} into ${BASE}."
+            else
+              echo "${pr_branch} is built from ${tag} with the current overlay and awaits review. Nothing to do."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Set up Python
+        if: steps.tag.outputs.skip != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        if: steps.tag.outputs.skip != 'true'
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install Python dependencies
+        if: steps.tag.outputs.skip != 'true'
+        run: uv sync
+
+      - name: Set up Node.js
+        if: steps.tag.outputs.skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Install Node.js dependencies
+        if: steps.tag.outputs.skip != 'true'
+        run: |
+          rm -vrf node_modules/.cache/webpack
+          yarn install --frozen-lockfile
+
+      - name: Download and validate the upstream spec
+        if: steps.tag.outputs.skip != 'true'
+        id: upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+          # The commit the tag points at. Annotated tags point at a tag object first.
+          obj=$(gh api "repos/${UPSTREAM_REPO}/git/ref/tags/${TAG}" --jq '.object')
+          while [ "$(jq -r '.type' <<< "${obj}")" = "tag" ]; do
+            obj=$(gh api "repos/${UPSTREAM_REPO}/git/tags/$(jq -r '.sha' <<< "${obj}")" --jq '.object')
+          done
+          sha=$(jq -r '.sha' <<< "${obj}")
+          echo "commit=${sha}" >> "$GITHUB_OUTPUT"
+
+          # To a temp file first: `>` truncates its target before gh runs, and gh writes
+          # its error body to stdout, so a failed call must never land on a tracked file.
+          gh api "repos/${UPSTREAM_REPO}/contents/${UPSTREAM_FILE}?ref=${TAG}" \
+            -H "Accept: application/vnd.github.raw" > "${RUNNER_TEMP}/schema.json"
+
+          # Refuse anything that is not the Swagger document of exactly this release,
+          # so a rate-limit page or truncated download cannot become the spec.
+          jq -e --arg v "${TAG#v}" \
+            '.swagger == "2.0" and .info.version == $v and (.paths | length > 0)' \
+            "${RUNNER_TEMP}/schema.json" > /dev/null
+          cp "${RUNNER_TEMP}/schema.json" "${PIPELINE}/upstream/schema.json"
+
+      - name: Build the spec and report drift
+        if: steps.tag.outputs.skip != 'true'
+        id: build
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+          COMMIT: ${{ steps.upstream.outputs.commit }}
+        run: |
+          set -euo pipefail
+          {
+            echo "old_paths=$(jq '.paths | length' "${SPEC_PATH}")"
+            echo "old_defs=$(jq '.definitions | length' "${SPEC_PATH}")"
+          } >> "$GITHUB_OUTPUT"
+
+          # Stale overlay entries (target gone upstream) fail the run. Drift does not:
+          # it is reported here and linked from the PR.
+          rc=0
+          python3 "${PIPELINE}/build_spec.py" \
+            --upstream "${PIPELINE}/upstream/schema.json" \
+            --overlay "${PIPELINE}/overlay.json" \
+            --lock "${PIPELINE}/overlay.lock.json" \
+            --out "${SPEC_PATH}" --source-out "${SOURCE_PATH}" \
+            --tag "${TAG}" --upstream-commit "${COMMIT}" \
+            --check-lock --report "${RUNNER_TEMP}/drift.md" || rc=$?
+          cat "${RUNNER_TEMP}/drift.md" >> "$GITHUB_STEP_SUMMARY"
+          exit "${rc}"
+
+      - name: Run the spec tests
+        if: steps.tag.outputs.skip != 'true'
+        run: uv run pytest -m openapi -q tests/openapi
+
+      - name: Build a dev version of the site
+        if: steps.tag.outputs.skip != 'true'
+        run: yarn build-dev
+
+      - name: Open or update the refresh PR
+        if: steps.tag.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          PREVIOUS: ${{ steps.tag.outputs.previous }}
+          PR_BRANCH: ${{ steps.tag.outputs.pr_branch }}
+          OLD_PATHS: ${{ steps.build.outputs.old_paths }}
+          OLD_DEFS: ${{ steps.build.outputs.old_defs }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          # fetched_at changes on every run, so it alone is not a change.
+          if git diff --quiet -- "${SPEC_PATH}" "${PIPELINE}"; then
+            echo "The rebuilt spec is identical to the committed one. Nothing to do."
+            exit 0
+          fi
+
+          title="chore(specs): refresh Weaviate OpenAPI spec to ${TAG}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Force-pushed: a second release landing before the first PR merges updates
+          # that PR instead of opening another.
+          git checkout -B "${PR_BRANCH}"
+          git add -- static/specs "${PIPELINE}"
+          git commit -m "${title}"
+          git push --force origin "${PR_BRANCH}"
+
+          body=$(cat <<EOF
+          Rebuilds \`${SPEC_PATH}\` from \`${UPSTREAM_REPO}\` tag \`${TAG}\` plus the docs overlay in \`${PIPELINE}/\`.
+          Merging changes what \`/openapi.json\` serves and what \`/weaviate/api/rest\` renders. The drift report is in the [run summary](${RUN_URL}).
+          Opened by \`openapi_spec_nightly.yml\`, which ran the spec tests and \`yarn build-dev\`. Close and reopen this PR to run the link checks.
+
+          | | Committed | New |
+          | :-- | :-- | :-- |
+          | Tag | \`${PREVIOUS}\` | \`${TAG}\` |
+          | Paths | ${OLD_PATHS} | $(jq '.paths | length' "${SPEC_PATH}") |
+          | Definitions | ${OLD_DEFS} | $(jq '.definitions | length' "${SPEC_PATH}") |
+          EOF
+          )
+
+          if [ "$(gh pr list --head "${PR_BRANCH}" --base "${BASE}" --state open --json number --jq 'length')" -gt 0 ]; then
+            gh pr edit "${PR_BRANCH}" --title "${title}" --body "${body}"
+          else
+            gh pr create --base "${BASE}" --head "${PR_BRANCH}" --title "${title}" --body "${body}"
+          fi
