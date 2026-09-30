@@ -95,11 +95,8 @@ class AnnotatedImagesResponse(BaseModel):
 from typing import Annotated
 from weaviate.agents.classes import ImageOptions
 
-class AdvertResponse(BaseModel):
-    advert: Annotated[QAImage, ImageOptions(shape="portrait")]
-    
 response = qa.ask(
-    "Find the most expensive hat and generate a picture of someone wearing it",
+    "Generate a picture of someone wearing the most expensive hat",
     collections=["ECommerce"],
     output_format=Annotated[QAImage, ImageOptions(shape="portrait")],
 )

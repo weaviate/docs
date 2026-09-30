@@ -76,7 +76,7 @@ The `.ask()` method accepts several arguments:
 | `query` | `string \| ChatMessage[]` | The user query you want the agent to answer. This can be a simple string (`"What is the highest-grossing product?"`) or a list of chat messages (for conversational context). [See the page on multi-turn conversations for more detail](../reference/multi_turn_conversations.md). |
 | `collections` | `(string \| QueryAgentCollectionConfig)[]` | The name(s) of the collections to search. You can pass one or many collection names as a list of strings (e.g., `["ECommerce", "BookSales"]`), or provide collection configuration objects for more control. [See the page on collection configuration for more detail](../reference/advanced_collections.md). If specified in the `ask` method, it will overwrite those defined in the instantiation of `QueryAgent`. |
 | `resultEvaluation` | `"llm" \| "none"` | Controls whether the agent will ask an LLM to "evaluate" the result based on all retrieved context. Accepts either:<br/>• `"none"`: faster and cheaper; default setting where the final answer is the last LLM call.<br/>• `"llm"`: higher cost/latency - enables a final step where an LLM subsets the sources retrieved to only those used in the answer, as well as enabling the optional fields `is_partial_answer` and `missing_information`. See [the response class](#response) for more details. |
-| `outputFormat` | `ZodType \| object` | Optional schema for structured output in the final response. Pass a [Zod](https://zod.dev/) schema (parsed and validated) or a raw [Draft 2020-12 JSON Schema](https://json-schema.org/draft/2020-12) object (parsed only). When set, `.ask()` returns a `ParsedAskModeResponse<T>` instead of an `AskModeResponse`: the typed result is added on a new `finalAnswerParsed` field, and `finalAnswer` still holds the raw model output. See [the response class](#response) and [the page on structured outputs for more details](../reference/structured_outputs.md). |
+| `outputFormat` | `ZodType \| object` | Optional schema for structured output in the final response. Pass a [Zod](https://zod.dev/) schema (parsed and validated) or a raw [Draft 2020-12 JSON Schema](https://json-schema.org/draft/2020-12) object (parsed only). When set, `.ask()` returns a `ParsedAskModeResponse<T>` instead of an `AskModeResponse`: the typed result is added on a new `finalAnswerParsed` field, and `finalAnswer` still holds the raw model output. See [the response class](#response) and [the page on structured outputs for more details](../reference/structured_outputs.md). <br/><br/> You may also pass `QAImage` or a Zod schema which includes `QAImage` to request image generation. [See the page on image generation for more details.](../reference/image_generation.md) |
 </TabItem>
 </Tabs>
 
@@ -151,6 +151,14 @@ Ask mode allows you to also request images to be generated, which will be based 
             startMarker="# START ImageGenAskMode"
             endMarker="# END ImageGenAskMode"
             language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START ImageGenAskMode"
+            endMarker="// END ImageGenAskMode"
+            language="ts"
         />
     </TabItem>
 </Tabs>
