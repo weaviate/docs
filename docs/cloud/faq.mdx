@@ -111,7 +111,11 @@ Each user can have one (1) free cluster, and by default each organization can ha
 <details>
 <summary> Answer </summary>
 
-New Weaviate Cloud clusters are created with GraphQL disabled (the `DISABLE_GRAPHQL` environment variable is set to `true`). To query your data, use one of these alternatives:
+New Weaviate Cloud clusters are created with GraphQL disabled (the `DISABLE_GRAPHQL` environment variable is set to `true`). The GraphQL API is deprecated, and Weaviate Cloud switches it off on existing clusters on **April 1, 2027**. See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
+
+{/* TODO(ivan): Q7. Confirm whether existing clusters can turn GraphQL off early, and whether extensions exist. */}
+
+To query your data, use one of these alternatives:
 
 - A [client library](/weaviate/client-libraries) for your programming language.
 - The [REST Search endpoints](/weaviate/api/rest).

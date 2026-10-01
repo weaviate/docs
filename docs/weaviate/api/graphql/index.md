@@ -1,23 +1,20 @@
 ---
-title: Search (GraphQL | gRPC)
+title: GraphQL API (deprecated)
 sidebar_position: 0
-description: "GraphQL and gRPC API documentation for flexible querying and data retrieval in Weaviate."
+description: "Reference for Weaviate's deprecated GraphQL query API, and where to find its replacements."
 image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---
 
-:::note GraphQL on Weaviate Cloud
-New Weaviate Cloud clusters are created with GraphQL disabled (the `DISABLE_GRAPHQL` environment variable is set to `true`). To query your data on Weaviate Cloud, use a [client library](../../client-libraries/index.mdx) or the [REST Search endpoints](/weaviate/api/rest).
-:::
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
 
 ## API
 
-Weaviate offers [GraphQL](https://graphql.org/) and gRPC APIs for queries.
+This section is the reference for Weaviate's [GraphQL](https://graphql.org/) query API. To search your data, use a Weaviate [client library](../../client-libraries/index.mdx). The current Python, TypeScript, Java and C# clients query over the [gRPC API](../grpc.md).
 
-We recommend using a Weaviate [client library](../../client-libraries/index.mdx), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
-
-However, you can query Weaviate directly using GraphQL with a POST request to the `/graphql` endpoint, or write your own `gRPC` calls based on the [gRPC](../grpc.md) protobuf specification.
-
+To move existing GraphQL queries to a client library, the web client or the REST Search API, see [Migrating from the GraphQL API](./migration.mdx).
 
 ## All references
 
@@ -33,10 +30,6 @@ All references have their individual subpages. Click on one of the references be
 
 
 ## GraphQL API
-
-### Why GraphQL?
-
-GraphQL is a query language built on using graph data structures. It is an efficient method of data retrieval and mutation, since it mitigates the common over-fetching and under-fetching problems of other query languages.
 
 :::tip GraphQL is case-sensitive
 GraphQL is case-sensitive ([reference](https://spec.graphql.org/June2018/#sec-Names)), so make sure to use the correct casing when writing your queries.

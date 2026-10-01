@@ -6,6 +6,10 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
+
 import SearchOperators from '/_includes/feature-notes/search-operators.mdx';
 
 
