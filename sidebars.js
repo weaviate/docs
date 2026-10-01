@@ -1770,6 +1770,7 @@ const sidebars = {
         "errors/cluster-resources",
         "errors/collection-configuration",
         "errors/model-integrations",
+        "errors/node-health",
       ],
     },
   ],
