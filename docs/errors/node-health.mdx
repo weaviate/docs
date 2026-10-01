@@ -7,8 +7,6 @@ toc_max_heading_level: 2
 side_panel: improve-cluster
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
 import QuickLinks from '@site/src/components/QuickLinks';
 import { EntryFacts } from '@site/src/components/ErrorDocs';
@@ -78,46 +76,12 @@ A `200` means the node is ready. A `503` means it is the node to look at. What t
 | --- | --- | --- |
 | Not ready for a while after a start | The node is loading its data or joining the cluster | Wait. It clears on its own. More data takes longer. |
 | Not ready, and it never clears | The node is stuck while loading shards or joining the cluster | Read the node's logs from its last start and look for errors. |
-| Not ready, and the node keeps restarting | Something stops the process before it finishes starting | Find out why it stopped, using the steps for your platform below. |
+| Not ready, and the node keeps restarting | Something stops the process before it finishes starting | Find out why it stopped. See step 2 below. |
 
-<Tabs groupId="platform">
-<TabItem value="linux" label="Linux host">
+1. Read that node's logs from its last start. A node that is still loading shards or joining the cluster is making progress. Wait for it. If it never becomes ready, look for errors while loading shards or joining the cluster.
+2. If the node keeps restarting, find out why the previous process ended. On Kubernetes, `kubectl describe pod <pod>` shows the reason under Last State, and `kubectl logs <pod> --previous` shows the logs from before the restart. On Docker, `docker inspect --format '{{.State.OOMKilled}}' <container>` prints `true` after an out-of-memory kill. On a Linux host, `sudo dmesg | grep -i "killed process"` shows kernel kills. A node killed for memory needs more memory, or less data held in memory. See [resource planning](/weaviate/concepts/resources).
 
-Read the Weaviate logs from the last start. If the process stopped, check whether the kernel's out-of-memory killer ended it:
-
-```bash
-sudo dmesg | grep -i "killed process"
-```
-
-</TabItem>
-<TabItem value="docker" label="Docker">
-
-Read the logs from the last start, and check whether the container ran out of memory. The second command prints `true` if it did:
-
-```bash
-docker logs <container>
-docker inspect --format '{{.State.OOMKilled}}' <container>
-```
-
-</TabItem>
-<TabItem value="kubernetes" label="Kubernetes">
-
-`kubectl get pods` shows which pod is not ready. For a pod that keeps restarting, read the logs of the container that stopped, and the reason it stopped. The reason is under **Last State** in the `describe` output:
-
-```bash
-kubectl logs <pod> --previous
-kubectl describe pod <pod>
-```
-
-</TabItem>
-<TabItem value="cloud" label="Weaviate Cloud">
-
-The nodes and their health checks are managed for you. Open a [support ticket](/support) with the message text and your cluster URL.
-
-</TabItem>
-</Tabs>
-
-If the node ran out of memory, give it more memory or hold less data in memory. See [resource planning](/weaviate/concepts/resources).
+On Weaviate Cloud, the nodes and their health checks are managed for you. Open a [support ticket](/support) with the message text and your cluster URL.
 
 ### Learn more
 
