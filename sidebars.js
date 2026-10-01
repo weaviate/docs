@@ -875,14 +875,21 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
+          type: "doc",
+          id: "weaviate/api/grpc",
+          label: "gRPC",
+          className: "sidebar-item",
+        },
+        {
           type: "category",
-          label: "Search API - GraphQL/gRPC",
+          label: "GraphQL (deprecated)",
           className: "sidebar-item",
           link: {
             type: "doc",
             id: "weaviate/api/graphql/index",
           },
           items: [
+            "weaviate/api/graphql/migration",
             "weaviate/api/graphql/get",
             "weaviate/api/graphql/aggregate",
             "weaviate/api/graphql/search-operators",
@@ -891,12 +898,6 @@ const sidebars = {
             "weaviate/api/graphql/additional-properties",
             "weaviate/api/graphql/explore",
           ],
-        },
-        {
-          type: "doc",
-          id: "weaviate/api/grpc",
-          label: "gRPC",
-          className: "sidebar-item",
         },
       ],
     },

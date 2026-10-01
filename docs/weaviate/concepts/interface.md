@@ -32,6 +32,10 @@ Weaviate has both a RESTful API and a GraphQL API. Currently, there is no featur
 
 ## GraphQL
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
+
 ### Why GraphQL?
 
 We have chosen to use a GraphQL API, for multiple reasons:
