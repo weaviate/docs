@@ -39,7 +39,9 @@ const CardsSection = ({
           <Link
             key={key}
             to={item.link}
-            className={`${styles.card} ${isActive ? styles.activeCard : ""}`}
+            className={`${styles.card} ${isActive ? styles.activeCard : ""}${
+              item.tag ? ` ${styles.cardTagged}` : ""
+            }`}
           >
             <div
               className={`${styles.cardHeader} ${
@@ -51,6 +53,7 @@ const CardsSection = ({
               )}
               <span className={styles.cardTitle}>{item.title}</span>
             </div>
+            {item.tag && <span className={styles.cornerTag}>{item.tag}</span>}
             <p className={styles.cardDescription}>{item.description}</p>
             {recipeCards && (item.tags || item.cloudOnly) && (
               <div className={styles.cardTags}>
