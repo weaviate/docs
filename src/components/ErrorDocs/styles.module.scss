@@ -189,6 +189,100 @@ $label-size: 0.7rem;
   padding: 0 0.3rem;
 }
 
+/* ---- LinkBox ---- */
+
+.linkBox {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  border: 1px solid var(--docs-cards-border-color);
+  border-left: 4px solid var(--site-primary);
+  border-radius: 0.8rem;
+  background: rgba(0, 105, 180, 0.06);
+  box-shadow: 0px 5px 10px 0px rgba(22, 27, 45, 0.08);
+  padding: 1.1rem 1.3rem;
+  margin: 0 0 1.5rem;
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--site-primary);
+    background: rgba(0, 105, 180, 0.11);
+    box-shadow: 0px 10px 15px 0px rgba(22, 27, 45, 0.1);
+    color: var(--ifm-font-color-base);
+    text-decoration: none;
+
+    .linkBoxCta {
+      text-decoration: underline;
+    }
+
+    .linkBoxArrow {
+      transform: translateX(3px);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--site-primary);
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: 450px) {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding: 1rem;
+  }
+}
+
+.linkBoxIcon {
+  color: var(--site-primary);
+  font-size: 1.5rem;
+  padding-top: 0.2rem;
+}
+
+/* Nested so they outrank the global `.docs-doc-page p` font rule. */
+.linkBox {
+  .linkBoxTitle {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.3rem;
+  }
+
+  .linkBoxText {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0 0 0.6rem;
+    color: var(--ifm-color-emphasis-800);
+  }
+
+  .linkBoxCta {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--site-font-accent-color);
+  }
+}
+
+.linkBoxArrow {
+  margin-left: 0.45rem;
+  font-size: 0.8rem;
+  transition: transform 0.15s ease;
+}
+
+:global([data-theme="dark"]) {
+  .linkBox {
+    background: rgba(96, 165, 250, 0.08);
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(96, 165, 250, 0.15);
+    }
+  }
+}
+
 /* ---- Checklist ---- */
 
 .checklist {
