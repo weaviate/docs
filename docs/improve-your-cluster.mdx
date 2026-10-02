@@ -7,7 +7,7 @@ image: og/default.jpg
 import ClusterIdNotice from '@site/src/components/ClusterIdNotice';
 import CardsSection from '@site/src/components/CardsSection';
 import QuickLinks from '@site/src/components/QuickLinks';
-import { Checklist } from '@site/src/components/ErrorDocs';
+import { Checklist, LinkBox } from '@site/src/components/ErrorDocs';
 
 <ClusterIdNotice/>
 
@@ -17,9 +17,13 @@ This page is linked from the banner Weaviate logs once a cluster is up. If you j
 
 Most errors in the [error messages](/errors) reference come from clusters that were short on headroom, unmonitored, or behind on versions. This page lists what to change so the next one does not happen. Do it once at setup and again when the workload changes shape: a new collection, many more tenants, a much larger import.
 
-:::info You can hand this list off
-Everything on this page is work you can choose not to own. [Weaviate Cloud](/cloud) runs the cluster for you, this checklist included. If the cluster has to stay in your own environment, [Enterprise Assurance](https://weaviate.io/product/assurance) adds Weaviate's own engineers and support commitments to the one you run.
-:::
+<LinkBox
+  to="#easy-deployments-and-enterprise-options"
+  icon="fa fa-people-carry-box"
+  title="Easy deployments & Enterprise options"
+  text="Everything on this page is work you can hand off. Weaviate Cloud runs the cluster for you. If it has to stay in your own environment, there are supported options for that too."
+  linkText="See easier ways to run Weaviate"
+/>
 
 export const pillars = [
   { title: "Give it headroom", description: "Memory, disk, memory mappings, and vector memory are all knowable in advance.", link: "#give-the-cluster-headroom", icon: "fa fa-gauge-high" },
@@ -101,19 +105,29 @@ Out of the box, Weaviate accepts anonymous requests: `AUTHENTICATION_ANONYMOUS_A
   { title: "Limit who can reach the port", text: "Authentication decides who the cluster answers; the network decides who can ask. Keep a cluster that still allows anonymous access on localhost or a private network, and treat network policies as a second layer, not a substitute.", link: "/deploy/production/kubernetes/production-readiness#security", linkText: "Security checklist" },
 ]}/>
 
-## More ways to run and extend Weaviate
+## Easy deployments & Enterprise options {#easy-deployments-and-enterprise-options}
 
-Everything above applies to a cluster you run yourself. If running it is not the part you want to own:
+Everything above applies to a cluster you run yourself. If running it is not the part you want to own, there are other ways to get the same database.
 
-export const managedOptions = [
+### Managed Cloud
+
+export const managedCloudOptions = [
   { title: "Weaviate Cloud", description: "Runs the cluster for you. Start with a Free cluster and point your existing client at it with the same connection code.", link: "/cloud", icon: "fa fa-cloud" },
-  { title: "Enterprise Assurance", description: "Support and response-time commitments for clusters you keep in your own environment, from the engineers who build Weaviate.", link: "https://weaviate.io/product/assurance", icon: "fa fa-handshake" },
-  { title: "Weaviate on DigitalOcean", description: "A managed Weaviate operated by DigitalOcean in their cloud. Pricing is public.", link: "https://weaviate.io/deployment", icon: "fa fa-water" },
+  { title: "Weaviate on DigitalOcean", description: "A managed Weaviate that DigitalOcean runs on its own infrastructure. Connect with the same Weaviate clients you already use.", link: "https://www.digitalocean.com/?utm_source=weaviate&utm_medium=referral", clusterIdParam: "utm_content", icon: "fa-brands fa-digital-ocean", tag: "Partner" },
 ];
 
-<CardsSection items={managedOptions} />
+<CardsSection items={managedCloudOptions} />
 
-And if you want more than the database:
+### Enterprise options
+
+export const enterpriseOptions = [
+  { title: "Weaviate Enterprise Edition", description: "Self-hosted Weaviate with advanced features under a commercial license. Same image as the Community Edition, turned on with a license key.", link: "/deploy/enterprise", icon: "fa fa-building" },
+  { title: "Weaviate Assurance", description: "Support and response-time commitments for clusters you keep in your own environment, from the engineers who build Weaviate.", link: "https://weaviate.io/product/assurance", icon: "fa fa-handshake" },
+];
+
+<CardsSection items={enterpriseOptions} />
+
+## Beyond the database
 
 export const addOns = [
   { title: "Weaviate Embeddings", description: "Generates vectors for your collections inside Weaviate Cloud, so there is no embedding model to run, host, or pay for separately.", link: "/cloud/embeddings", icon: "fa fa-vector-square" },
