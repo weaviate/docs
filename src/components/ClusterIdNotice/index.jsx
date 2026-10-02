@@ -13,9 +13,10 @@ import styles from "./styles.module.scss";
  * through.
  *
  * Rendered on the four /errors entry pages, which is where a message link
- * actually lands, and on /improve-your-cluster, which is one link further on.
- * The redirect rules in netlify.toml carry the parameter to all five; the
- * component is page-agnostic and needs nothing from the page it sits on.
+ * actually lands. The redirect rules in netlify.toml carry the parameter to
+ * those four. The banner link to /improve-your-cluster carries it too, but that
+ * page does not render this notice. The component is page-agnostic and needs
+ * nothing from the page it sits on.
  *
  * ABSENT IS THE NORMAL CASE, NOT AN ERROR. Weaviate's ClusterID() returns an
  * empty string until the raft leader has committed an identity, a cluster may
