@@ -8,13 +8,13 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 ## What is changing and when
 
-The GraphQL API is deprecated as of October 12, 2026. Nothing changes on that day, and existing clusters keep working. Weaviate Cloud switches GraphQL off on April 1, 2027, and self-hosted Weaviate will disable it by default in an upcoming minor release.
+The GraphQL API is deprecated as of October 12, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on April 1, 2027, and self-hosted Weaviate will disable it by default in an upcoming minor release.
 
 {/* TODO(ivan): Q1. Replace "an upcoming minor release" with the version once Dirk confirms. */}
 
 | Stage | Weaviate Cloud | Self-hosted |
 | --- | --- | --- |
-| **Deprecated**, October 12, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already are today. | Nothing changes. |
+| **Deprecated**, October 12, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. |
 | **Disabled by default** | Already the case for new clusters. | In an upcoming minor release. You can turn GraphQL back on. |
 | **Switched off or removed** | Switched off on all clusters on April 1, 2027. | Removed in a later release. |
 
@@ -69,7 +69,7 @@ Check each client your code uses against this table:
 | Client | Queries over gRPC from | Still uses GraphQL when |
 | --- | --- | --- |
 | Python `weaviate-client` | Search: `v4.4.0`. Aggregate: `v4.11.0`, against Weaviate `v1.29.0` or later | Aggregate and `len(collection)` fall back to GraphQL on Weaviate older than `v1.29.0`. `client.graphql_raw_query()` always uses GraphQL. |
-| TypeScript `weaviate-client` | Search: `v3.0.0`. Aggregate: `v3.4.0`, against Weaviate `v1.29.0` or later | Aggregate falls back to GraphQL on Weaviate older than `v1.29.0`. The bundled legacy `weaviateV2` client (`client.graphql.*`) always uses GraphQL. |
+| TypeScript `weaviate-client` | Search: `v3.0.0`. Aggregate: `v3.4.0`, against Weaviate `v1.29.0` or later | Aggregate falls back to GraphQL on Weaviate older than `v1.29.0`. |
 | Java `io.weaviate:client6` | `6.0.0` | Never. |
 | C# | `1.0.0` | Never. |
 | Go `weaviate-go-client/v5` (current stable) | Never | Always. `client.GraphQL().Get()`, `.Aggregate()`, `.Explore()` and `.Raw()` are its search API. |
