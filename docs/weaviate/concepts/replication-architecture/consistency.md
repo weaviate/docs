@@ -376,8 +376,6 @@ When a shard replica is copied, the increased replication factor may become an e
 
 ## Shard self-recovery
 
-{/* DRAFT-HOLD(ivan): PR #11768 unmerged — do not publish before it lands in stable/v1.40 */}
-
 import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
 
 :::info Added in `v1.40`

@@ -25,13 +25,15 @@ The repository's top-level [`LICENSE`](https://github.com/weaviate/weaviate/blob
 
 - **One image, one binary.** The Community Edition and the Enterprise Edition use the same Docker image and the same binary.
 - **No key means Community Edition.** Without a license key, Weaviate runs as the Community Edition.
-- **A key enables the Enterprise Edition.** A valid license key enables Enterprise Edition features at runtime.
+- **A key enables the Enterprise Edition.** A valid license key enables the Enterprise Edition when Weaviate starts.
 - **Upgrading needs no new download.** To move from the Community Edition to the Enterprise Edition, obtain a license key and restart Weaviate with it. You don't need a new image or a new download.
 
 ## Activate the Enterprise Edition
 
 :::info Added in `v1.40`
 :::
+
+To get a license key, see [Get a license](#get-a-license).
 
 Supply the license key to Weaviate through one of these [environment variables](/deploy/configuration/env-vars/index.md):
 
@@ -40,13 +42,51 @@ Supply the license key to Weaviate through one of these [environment variables](
 | `LICENSE_KEY` | The license key itself. |
 | `LICENSE_KEY_FILE` | The path to a file that contains the license key. |
 
-Weaviate reads the key when it starts:
+To activate the Enterprise Edition, set a valid key and restart Weaviate. Each Enterprise Edition feature also has its own environment variable that turns it on. See [Enterprise Edition features](#enterprise-edition-features).
 
-- `LICENSE_KEY` and `LICENSE_KEY_FILE` are mutually exclusive. If you set both, Weaviate fails to start.
+At startup:
+
+- `LICENSE_KEY` and `LICENSE_KEY_FILE` are mutually exclusive. If you set both, Weaviate fails to start, even if one of the values contains only whitespace.
 - If `LICENSE_KEY_FILE` points to a file that Weaviate can't read, Weaviate fails to start.
-- If the key is malformed, or if `LICENSE_KEY_FILE` points to an empty file, Weaviate starts and logs a warning. Weaviate never writes the key value to its logs.
-- An empty `LICENSE_KEY` is treated as unset.
+- If the key is malformed, or if `LICENSE_KEY_FILE` points to an empty file, Weaviate starts and logs a warning. Weaviate never writes the key value to its logs. For a well-formed key, Weaviate logs the license ID at startup and shows it in the `/v1/meta` response. The license ID isn't secret.
+- An empty `LICENSE_KEY` is treated as unset, but a `LICENSE_KEY` that contains only whitespace logs a warning.
 - If neither variable is set, Weaviate starts normally as the Community Edition.
+
+### Check your edition
+
+<details>
+<summary>How to check the edition</summary>
+
+To check which edition a node runs, send a `GET` request to `/v1/meta`. The response contains a `license` object. On the Community Edition, it looks like this:
+
+```json
+{
+  "license": {
+    "documentationHref": "https://docs.weaviate.io/deploy/enterprise",
+    "edition": "community"
+  }
+}
+```
+
+On the Enterprise Edition, the object also contains `status` and `licenseId`:
+
+```json
+{
+  "license": {
+    "documentationHref": "https://docs.weaviate.io/deploy/enterprise",
+    "edition": "enterprise",
+    "licenseId": "lic_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "status": "valid"
+  }
+}
+```
+
+Weaviate also reports the edition in two other places:
+
+- **Logs:** At startup, Weaviate logs a line with `msg="license state"` and the edition. On the Enterprise Edition, the line also contains the status and the license ID.
+- **Metrics:** The `weaviate_license_status` gauge has the labels `edition` and `status`. The series for the current status has the value `1`. It requires [Prometheus monitoring](/deploy/configuration/monitoring.md) (`PROMETHEUS_MONITORING_ENABLED=true`).
+
+</details>
 
 ## Get a license
 
@@ -56,11 +96,15 @@ To get an Enterprise Edition license key, request one at [weaviate.io/enterprise
 
 ## Enterprise Edition features
 
-This table lists Enterprise Edition features and the Weaviate version that added each one.
+This table lists Enterprise Edition features, the Weaviate version that added each one, the environment variable that turns it on, and what happens when the feature is turned on but Weaviate runs without a license key.
 
-| Feature | Available since | Docs |
-| :-- | :-- | :-- |
-| Shard Self-Recovery | `v1.40` | [Shard Self-Recovery](/deploy/configuration/self-recovery) |
+| Feature | Available since | Turned on by | Without a license key |
+| :-- | :-- | :-- | :-- |
+| [Shard Self-Recovery](/deploy/configuration/self-recovery) | `v1.40` | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty. |
+| Namespaces | `v1.40` | `NAMESPACES_ENABLED` | Requests that name a collection return `403`. |
+| Deduplicated backups | `v1.40` | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
+
+An Enterprise Edition feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
 
 ## Frequently asked questions
 

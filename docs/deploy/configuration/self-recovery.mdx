@@ -5,8 +5,6 @@ image: og/docs/configuration.jpg
 # tags: ['configuration', 'replication', 'enterprise']
 ---
 
-{/* DRAFT-HOLD(ivan): PR #11768 unmerged — do not publish before it lands in stable/v1.40 */}
-
 import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
 
 :::info Added in `v1.40`
@@ -27,9 +25,7 @@ To enable Shard Self-Recovery, all of these must be true on every node in the cl
 - `REPLICA_MOVEMENT_ENABLED` is `true`. Self-recovery uses the replication engine, which only runs when replica movement is enabled.
 - Every node runs `v1.40` or higher. See [Mixed-version clusters](#mixed-version-clusters).
 
-Without a valid license key, self-recovery does not activate, even when `SELF_RECOVERY_ENABLED` is `true`.
-
-{/* TODO(ivan): spec — confirm exact no-key failure mode with core */}
+If `SELF_RECOVERY_ENABLED` is `true` but Weaviate runs without a valid license key, Weaviate starts normally and logs a warning. 
 
 If `SELF_RECOVERY_ENABLED` is `true` but `REPLICA_MOVEMENT_ENABLED` is not, Weaviate starts normally, logs a warning, and disables self-recovery. This is not a startup error, so check the logs if recovery doesn't happen.
 
@@ -87,9 +83,11 @@ Both endpoints take `POST` requests with the query parameters `collection` and `
 | :-- | :-- |
 | `202` | The request was accepted. |
 | `400` | The `collection` or `shard` parameter is missing or invalid. |
-| `404` | The collection or shard isn't in the schema, or self-recovery is disabled on this node, so the endpoints aren't registered. |
+| `403` | `restart` only: Weaviate runs without a valid license key. |
+| `404` | The collection or shard isn't in the schema, or self-recovery is disabled on this node, so the endpoints aren't registered. For `accept-empty`, also returned when this node holds no replica of the shard. |
 | `405` | The request uses a method other than `POST`. |
-| `409` | `restart` only: the shard's directory already exists on the node. |
+| `409` | For `restart`, the shard's directory already exists on the node, or the recovery operation is past the `FINALIZING` state and can't be cancelled. For `accept-empty`, a replication operation that targets this replica is still in progress. |
+| `500` | Any other failure, for example when a node in maintenance mode refuses to submit the recovery again. |
 
 #### Restart a recovery
 
@@ -107,7 +105,7 @@ Accept that no replica has the shard's data, and create the shard empty:
 curl -X POST "http://localhost:6060/debug/self-recovery/accept-empty?collection=Article&shard=4DHWE6iYBU7X"
 ```
 
-`accept-empty` doesn't cancel a copy operation that is already registered in the cluster. To stop one, [cancel it](#cancel-a-recovery-operation).
+While a replication operation that targets this replica is in progress, `accept-empty` refuses the request with a `409` status. [Cancel the operation](#cancel-a-recovery-operation) first, and then call `accept-empty` again. An operation that is past the `FINALIZING` state can't be cancelled, and it completes on its own.
 
 ## Operations blocked during replication
 
