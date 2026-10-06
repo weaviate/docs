@@ -1,16 +1,26 @@
 ---
 title: Migrating from the GraphQL API
-description: "How to express your existing GraphQL Get and Aggregate queries with the Weaviate client libraries, the browser client, or the REST Search API."
+description: "The GraphQL API is deprecated. How to find your GraphQL usage and move Get and Aggregate queries to the Weaviate client libraries, the browser client, or the REST Search API."
 image: og/docs/api.jpg
-unlisted: true
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
+## What is changing and when
+
+The GraphQL API is deprecated as of October 12, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on November 1, 2026 for clusters that do not use it, and on April 1, 2027 for all remaining clusters. Self-hosted Weaviate keeps GraphQL working until at least April 1, 2027. The first minor release after that date disables it by default, and you can switch it back on. It is removed in a later release, with no date set yet.
+
+| Stage | Weaviate Cloud | Self-hosted |
+| --- | --- | --- |
+| **Deprecated**, October 12, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. GraphQL keeps working until at least April 1, 2027. |
+| **Disabled by default** | Already the case for new clusters. | In the first minor release after April 1, 2027. You can switch GraphQL back on. |
+| **Switched off or removed** | Switched off on November 1, 2026 for clusters that do not use GraphQL. Switched off on all remaining clusters on April 1, 2027. | Removed in a later release. No date is set yet. |
+
 ## Who this guide is for
 
-This guide is for developers who have working GraphQL `Get` and `Aggregate` queries and want to express the same searches through one of Weaviate's other query APIs. Typical reasons to be here:
+This guide is for developers who have working GraphQL `Get` and `Aggregate` queries and need to express the same searches through one of Weaviate's other query APIs. Typical reasons to be here:
 
+- The GraphQL API is **deprecated**. Code that still sends GraphQL queries stops working once GraphQL is disabled, so it needs to move before [the dates above](#what-is-changing-and-when).
 - You are moving an application to a **new Weaviate Cloud cluster**, which is created with **GraphQL disabled**.
 - You are building in the **browser** or on an edge runtime, where a plain gRPC client cannot run.
 - You maintain an **HTTP-only stack**, such as a no-code or BI tool, or a language without an official Weaviate client such as PHP or Ruby.
@@ -27,11 +37,64 @@ Start at the top of this table and take the first row that describes your stack.
 The three paths are at three different maturity levels. Check the **Status** column before you commit to one.
 :::
 
+{/* TODO(ivan): Q5. Confirm the Preview, Alpha and beta labels below are still right on October 12, 2026. */}
+
 | Path | Status | Availability |
 | --- | --- | --- |
-| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is currently in [beta release](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-beta.3). Earlier versions of the Go client rely on GraphQL. |
+| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is currently a [release candidate](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-rc.0). The current stable Go client, `v5`, relies on GraphQL. |
 | **`@weaviate/web`** (browser and edge) | **Alpha** | `3.15.0-alpha.6`. Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
 | **REST Search API** | **Preview** | Enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it needs [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`. See [REST Search API](#rest-search-api). |
+
+## Do you need to migrate
+
+You need to migrate if any part of your application sends GraphQL to Weaviate. The two checks below tell you whether it does, and let you prove it before GraphQL is switched off.
+
+### Find your GraphQL usage
+
+GraphQL can reach Weaviate in three ways, and an older client can send it without you writing a single query.
+
+<details>
+  <summary>Where GraphQL hides, and which client versions use it</summary>
+
+Your code sends GraphQL queries if it does any of the following:
+
+- **Calls the endpoint directly.** It sends HTTP requests to `/v1/graphql` or `/v1/graphql/batch`, for example with `curl` or a generic HTTP library.
+- **Uses a raw GraphQL helper.** Some clients can pass a GraphQL query string straight to the server. These helpers always use GraphQL, whatever the client generation.
+- **Uses an older client generation.** Older clients build their queries as GraphQL under the hood. The Go client does this in its current stable generation too.
+
+Check each client your code uses against this table:
+
+| Client | Queries over gRPC from | Still uses GraphQL when |
+| --- | --- | --- |
+| Python `weaviate-client` | Search: `v4.4.0`. Aggregate: `v4.11.0`, against Weaviate `v1.29.0` or later | Aggregate and `len(collection)` fall back to GraphQL on Weaviate older than `v1.29.0`. `client.graphql_raw_query()` always uses GraphQL. |
+| TypeScript `weaviate-client` | Search: `v3.0.0`. Aggregate: `v3.4.0`, against Weaviate `v1.29.0` or later | Aggregate falls back to GraphQL on Weaviate older than `v1.29.0`. |
+| Java `io.weaviate:client6` | `6.0.0` | Never. |
+| C# | `1.0.0` | Never. |
+| Go `weaviate-go-client/v5` (current stable) | Never | Always. `client.GraphQL().Get()`, `.Aggregate()`, `.Explore()` and `.Raw()` are its search API. |
+| Go v6 (release candidate) | `v6.0.0-rc.0`. Aggregate covers over-all, near-vector, near-text, near-object, hybrid and near-media | Never. No generative search yet at this tag. |
+
+</details>
+
+### Test with GraphQL disabled
+
+A test instance with GraphQL switched off proves that your application no longer depends on it.
+
+<details>
+  <summary>How to switch GraphQL off, and what a disabled endpoint returns</summary>
+
+Run your application against an instance with GraphQL switched off before you rely on it. On a non-production self-hosted instance, set the [`DISABLE_GRAPHQL`](/deploy/configuration/env-vars/index.md#DISABLE_GRAPHQL) environment variable to `true`. It is also available as the `disable_graphql` [runtime configuration](/deploy/configuration/env-vars/runtime-config.md) key.
+
+With GraphQL disabled, `POST /v1/graphql` and `POST /v1/graphql/batch` return HTTP `422` with this body:
+
+```json
+{"error":[{"message":"graphql api is disabled"}]}
+```
+
+Authorization runs first, so a caller without read permission gets `403` instead. The Python client and the current Go client return an error that carries the same status code and message.
+
+A new Weaviate Cloud cluster is already in this state, so you can also test against one.
+
+</details>
 
 ## Client libraries (recommended)
 
@@ -221,9 +284,24 @@ One more request limit worth knowing: in `v1.39`, `limit`, `offset`, and their s
 
 </details>
 
+## GraphQL features without an equivalent
+
+These GraphQL features have no equivalent in the gRPC API, the client libraries or the REST Search API today:
+
+- `Explore`
+- `ask`, from the `qna` modules
+- Summarization, from the `sum-transformers` module
+- Named entity recognition, from the `ner-transformers` module
+- `spellCheck`
+- The `_additional` properties `featureProjection`, `semanticPath`, `interpretation` and `classification`
+
+If one of these is essential to your application, tell us through the channels under [Questions and feedback](#questions-and-feedback). Within reason, we will add what is missing.
+
+{/* TODO(ivan): Q3. State what happens to these features once Dirk confirms. Until then, keep "no equivalent today". */}
+
 ## Further resources
 
-- [Search (GraphQL | gRPC)](./index.md) - the GraphQL and gRPC search API reference
+- [GraphQL API (deprecated)](./index.md) - the GraphQL API reference
 - [gRPC-Web](../grpc.md#grpc-web) - the browser-reachable gRPC interface
 - [Client libraries](../../client-libraries/index.mdx) - installation and connection for each language
 - [Web client](../../client-libraries/typescript/web-client.mdx) - install steps and browser notes for `@weaviate/web`
@@ -233,6 +311,10 @@ One more request limit worth knowing: in `v1.39`, `limit`, `offset`, and their s
 ## Questions and feedback
 
 All three paths are actively being developed, and feedback on this guide, especially a query you could not convert, directly shapes what gets built next.
+
+We are helping with the migration through office hours, webinars and support tickets. If a query has no equivalent in the paths above, say so. Within reason we will add what is missing, for example additional parameters on the REST Search API.
+
+{/* TODO(ivan): Add dates or links for the office hours and webinars once scheduled. */}
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
