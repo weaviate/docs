@@ -223,7 +223,7 @@ func TestMtAddCrossRef(t *testing.T) {
 		collections.WithTenant("tenantA"),
 	)
 	// highlight-end
-	res, err := collection.Data.AddReferences(ctx, data.Reference{
+	_, err := collection.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{
 			Collection: "MultiTenancyCollection",
 			Property:   "hasCategory",
@@ -236,9 +236,4 @@ func TestMtAddCrossRef(t *testing.T) {
 		panic(err)
 	}
 	// END AddCrossRef
-	for ref, msg := range res.Errors {
-		if msg != "" {
-			t.Fatalf("add reference %v: %s", ref, msg)
-		}
-	}
 }

@@ -61,7 +61,7 @@ func TestAddOneWayCrossReference(t *testing.T) {
 	// START OneWay
 	// Add a reference from the source object (a JeopardyQuestion) to the target
 	// object (a JeopardyCategory) through the "hasCategory" reference property.
-	res, err := questions.Data.AddReferences(ctx, data.Reference{
+	_, err := questions.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{
 			Collection: "JeopardyQuestion",
 			Property:   "hasCategory",
@@ -76,12 +76,6 @@ func TestAddOneWayCrossReference(t *testing.T) {
 		panic(err)
 	}
 	// END OneWay
-
-	for ref, msg := range res.Errors {
-		if msg != "" {
-			t.Fatalf("add reference %v: %s", ref, msg)
-		}
-	}
 }
 
 // TestAddMultipleCrossReferences adds several cross-references from a single
@@ -141,7 +135,7 @@ func TestAddMultipleCrossReferences(t *testing.T) {
 	// to multiple target objects (two JeopardyCategory objects) through the
 	// "hasCategory" reference property.
 	// highlight-start
-	res, err := questions.Data.AddReferences(ctx,
+	_, err := questions.Data.AddReferences(ctx,
 		data.Reference{
 			Origin: data.ObjectPath{Collection: "JeopardyQuestion", Property: "hasCategory", UUID: questionID},
 			UUID:   usCitiesID,
@@ -157,12 +151,6 @@ func TestAddMultipleCrossReferences(t *testing.T) {
 		panic(err)
 	}
 	// END Multiple Go
-
-	for ref, msg := range res.Errors {
-		if msg != "" {
-			t.Fatalf("add reference %v: %s", ref, msg)
-		}
-	}
 }
 
 // TestAddTwoWayCrossReferences shows how to add cross-references in both

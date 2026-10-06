@@ -90,7 +90,7 @@ func TestHybridWithAlpha(t *testing.T) {
 		Query: "food",
 		// Alpha of 0 is pure keyword search, 1 is pure vector search.
 		// highlight-start
-		Alpha: query.Alpha(0.25),
+		Alpha: new(float32(0.25)),
 		// highlight-end
 		Limit: 3,
 	})

@@ -17,7 +17,7 @@ import (
 
 // TestEnableRQ enables 8-bit RQ for a new collection at creation time.
 func TestEnableRQ(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -42,7 +42,7 @@ func TestEnableRQ(t *testing.T) {
 
 // TestEnableRQ1Bit enables 1-bit RQ for a new collection at creation time.
 func TestEnableRQ1Bit(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -68,7 +68,7 @@ func TestEnableRQ1Bit(t *testing.T) {
 // TestRQWithOptions enables RQ and tunes its parameters alongside the vector
 // index configuration.
 func TestRQWithOptions(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -143,7 +143,7 @@ func TestSQCompression(t *testing.T) {
 // client, compression is chosen at collection-creation time, so a definition
 // that omits Compression is the "define a collection without PQ" step.
 func TestPQInitialSchema(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -184,7 +184,7 @@ func TestPQUpdateSchema(t *testing.T) {
 // can be reviewed. GetConfig returns the full collection definition, including
 // each named vector's index and compression configuration.
 func TestPQGetSchema(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

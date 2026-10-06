@@ -41,9 +41,9 @@ func TestConnectCustomURL(t *testing.T) {
 	client, err := weaviate.NewClient(ctx,
 		weaviate.WithScheme("http"),
 		weaviate.WithHTTPHost("localhost"),
-		weaviate.WithHTTPPort(8080),
+		weaviate.WithHTTPPort("8080"),
 		weaviate.WithGRPCHost("localhost"),
-		weaviate.WithGRPCPort(50051),
+		weaviate.WithGRPCPort("50051"),
 	)
 	if err != nil {
 		// handle error
@@ -181,9 +181,9 @@ func TestConnectOIDC(t *testing.T) {
 	client, err := weaviate.NewClient(ctx,
 		weaviate.WithScheme("http"),
 		weaviate.WithHTTPHost("localhost"),
-		weaviate.WithHTTPPort(8080),
+		weaviate.WithHTTPPort("8080"),
 		weaviate.WithGRPCHost("localhost"),
-		weaviate.WithGRPCPort(50051),
+		weaviate.WithGRPCPort("50051"),
 		weaviate.WithBearerToken(oauth2.Token{
 			AccessToken:  os.Getenv("WEAVIATE_OIDC_ACCESS_TOKEN"),
 			RefreshToken: os.Getenv("WEAVIATE_OIDC_REFRESH_TOKEN"),

@@ -19,7 +19,7 @@ import (
 // TestCreateCollectionWithVectorizer configures a vectorizer that generates an
 // embedding for each object.
 func TestCreateCollectionWithVectorizer(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -49,7 +49,7 @@ func TestCreateCollectionWithVectorizer(t *testing.T) {
 // TestVectorizerSettings configures the vectorizer, such as which inference
 // service it calls and which properties it embeds.
 func TestVectorizerSettings(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -85,7 +85,7 @@ func TestVectorizerSettings(t *testing.T) {
 // TestCreateCollectionWithNamedVectors defines multiple named vectors, each
 // with its own configuration.
 func TestCreateCollectionWithNamedVectors(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -129,7 +129,7 @@ func TestAddNamedVectors(t *testing.T) {
 
 // TestSetVectorIndexType selects the vector index type for a named vector.
 func TestSetVectorIndexType(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -155,7 +155,7 @@ func TestSetVectorIndexType(t *testing.T) {
 // TestSetVectorIndexParams tunes the vector index and enables vector
 // compression for a named vector.
 func TestSetVectorIndexParams(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -193,7 +193,7 @@ func TestSetVectorIndexParams(t *testing.T) {
 // TestPropModuleSettings sets property-level options, such as tokenization,
 // and controls which properties the vectorizer embeds.
 func TestPropModuleSettings(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("requires the text2vec-model2vec module, which the docs CI Weaviate does not enable (HTTP 422 no module with name text2vec-model2vec)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

@@ -42,11 +42,7 @@ func TestServerSideBatchImport(t *testing.T) {
 	// not have to tune batch sizes yourself; WithRetryTimes retries a failed
 	// object up to the given number of times.
 	// highlight-start
-	b, err := collection.Batch(ctx, batch.WithRetryTimes(1))
-	if err != nil {
-		// handle error
-		panic(err)
-	}
+	b := collection.Batch(ctx, batch.WithRetryTimes(1))
 
 	// Stream each object. Object() returns a task; the object is written in the
 	// background while the server paces the stream. Fixed ids keep the import

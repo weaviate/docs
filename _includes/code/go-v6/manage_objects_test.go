@@ -167,7 +167,7 @@ func TestDeleteMany(t *testing.T) {
 	}
 
 	// START DeleteMany
-	res, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
+	_, err := questions.Data.DeleteSelected(ctx, data.DeleteSelected{
 		// highlight-start
 		Filter: &filter.Cond{
 			Target:   "category",
@@ -181,12 +181,6 @@ func TestDeleteMany(t *testing.T) {
 		panic(err)
 	}
 	// END DeleteMany
-
-	for id, delErr := range res.Errors {
-		if delErr != nil {
-			t.Fatalf("delete %s: %v", id, delErr)
-		}
-	}
 }
 
 // TestReadObjectByID retrieves a single object by its id. The v6 Go client has no
@@ -421,8 +415,9 @@ func TestDeleteProperty(t *testing.T) {
 }
 
 // TestDeleteDryRun previews a delete-by-filter without removing anything.
-// DeleteSelected discards Matches/Successful/Failed and always reports Took: 0s, so
-// Verbose plus the Errors map is the only way to see which objects matched.
+// DeleteSelectedResult.Matches carries the match count. At rc.0 the per-object ids
+// that Verbose requests are not surfaced for successful matches (only failures land in
+// the returned DeleteError), so the snippet reports the count.
 func TestDeleteDryRun(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
@@ -449,9 +444,7 @@ func TestDeleteDryRun(t *testing.T) {
 		// handle error
 		panic(err)
 	}
-	// With DryRun set nothing is deleted; the result reports what would match.
-	for id := range res.Errors {
-		fmt.Printf("Would delete: %s\n", id)
-	}
+	// With DryRun set nothing is deleted; the result reports how many objects match.
+	fmt.Printf("Would delete %d objects\n", res.Matches)
 	// END DryRun
 }

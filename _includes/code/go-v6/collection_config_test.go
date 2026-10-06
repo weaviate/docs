@@ -27,8 +27,8 @@ func TestEnableInvertedIndex(t *testing.T) {
 		Name: "Article",
 		Properties: []collections.Property{
 			// highlight-start
-			{Name: "title", DataType: collections.DataTypeText, IndexFilterable: true, IndexSearchable: true},
-			{Name: "wordCount", DataType: collections.DataTypeInt, IndexRangeFilters: true},
+			{Name: "title", DataType: collections.DataTypeText, IndexFilterable: new(true), IndexSearchable: new(true)},
+			{Name: "wordCount", DataType: collections.DataTypeInt, IndexRangeable: new(true)},
 			// highlight-end
 		},
 	})
@@ -81,7 +81,7 @@ func TestSetInvertedIndexParams(t *testing.T) {
 // TestAllReplicationSettings configures replication, including the deletion
 // resolution strategy and async replication tuning.
 func TestAllReplicationSettings(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
+	t.Skip("replication factor 3 needs a three-node cluster; the docs CI instance on :8080 is a single node (HTTP 422)")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()

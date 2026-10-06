@@ -118,10 +118,12 @@ func TestCheckIfExists(t *testing.T) {
 
 // TestReadOneCollection reads a single collection definition from the schema.
 func TestReadOneCollection(t *testing.T) {
-	t.Skip("requires a running Weaviate instance")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
+
+	setupArticle(t, client)
+	defer client.Collections.Delete(ctx, "Article")
 
 	// START ReadOneCollection
 	config, err := client.Collections.GetConfig(ctx, "Article")

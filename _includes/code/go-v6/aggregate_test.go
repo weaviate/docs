@@ -131,9 +131,6 @@ func TestAggregateGroupBy(t *testing.T) {
 // This snippet is not yet wired into a docs page, but it exercises the
 // implemented near-vector aggregation path.
 func TestAggregateNearVector(t *testing.T) {
-	// A server-side bug, not a client or snippet issue, and the snippet is wired to
-	// no docs page.
-	t.Skip("Weaviate 1.38 panics on aggregate near-vector over a BYO-vector collection; fixed in 1.39.x, so re-enable after a live check")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -147,7 +144,7 @@ func TestAggregateNearVector(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	result, err := jeopardy.Aggregate.NearVector(ctx, aggregate.NearVector{
 		Query: query.NearVector{
-			Target:     &types.Vector{Name: "default", Single: vector},
+			Target:     &types.Vector{Single: vector},
 			Similarity: query.Distance(0.3),
 		},
 		ObjectLimit: 10,
