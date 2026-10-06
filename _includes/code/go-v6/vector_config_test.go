@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/collections"
@@ -17,7 +19,6 @@ const p2dSkipModel2VecVectorConfig = "requires the text2vec-model2vec module, wh
 // TestCreateCollectionWithVectorizer configures a vectorizer that generates an
 // embedding for each object.
 func TestCreateCollectionWithVectorizer(t *testing.T) {
-	t.Skip(p2dSkipModel2VecVectorConfig)
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -34,7 +35,7 @@ func TestCreateCollectionWithVectorizer(t *testing.T) {
 		},
 		// highlight-start
 		Vectors: map[string]collections.VectorConfig{
-			"default": {Vectorizer: model2vec.Text2Vec{}},
+			"default": {Vectorizer: openai.Text2Vec{}},
 		},
 		// highlight-end
 	})
@@ -43,6 +44,39 @@ func TestCreateCollectionWithVectorizer(t *testing.T) {
 		panic(err)
 	}
 	// END CreateCollectionWithVectorizer
+	p2dRequireVectorizer(t, "Article", "default", "text2vec-openai")
+	p2dRequireTextProperties(t, "Article", "title", "body")
+}
+
+// p2dRequireTextProperties asserts through the REST schema that the collection
+// has exactly the named text properties, in order.
+func p2dRequireTextProperties(t *testing.T, collection string, names ...string) {
+	t.Helper()
+	resp, err := http.Get("http://localhost:8080/v1/schema/" + collection)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("GET /v1/schema/%s: HTTP %d", collection, resp.StatusCode)
+	}
+	var schema struct {
+		Properties []struct {
+			Name     string   `json:"name"`
+			DataType []string `json:"dataType"`
+		} `json:"properties"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&schema); err != nil {
+		t.Fatal(err)
+	}
+	if len(schema.Properties) != len(names) {
+		t.Fatalf("%s: properties = %v, want %v", collection, schema.Properties, names)
+	}
+	for i, p := range schema.Properties {
+		if p.Name != names[i] || len(p.DataType) != 1 || p.DataType[0] != "text" {
+			t.Errorf("%s: property %d = %s %v, want %s [text]", collection, i, p.Name, p.DataType, names[i])
+		}
+	}
 }
 
 // TestVectorizerSettings configures the vectorizer, such as which inference
