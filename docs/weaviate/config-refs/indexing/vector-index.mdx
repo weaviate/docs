@@ -191,10 +191,33 @@ HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is 
 | `replicas`         | integer | `4`      | No      | Number of posting lists in which a vector is added. Min: `1`, Max: `10`.                                                                                                        |
 | `searchProbe`      | integer | `256`    | Yes     | Number of posting lists to search during a query. The default is `256` in `v1.36.20`, `v1.37.10`, `v1.38.2` and later. Earlier releases on each of those lines default to `64`.                        |
 | `rq`               | object  | --       | Partial | Rotational quantization (RQ) compression configuration. RQ is mandatory for HFresh and cannot be turned off. Its `bits` value is fixed at `1`; a request that sets a wider width is rejected. Its `rescoreLimit` (default `350`), the number of candidates rescored against uncompressed vectors, is mutable at runtime.                                                                                 |
+| `multivector`      | object  | --       | No      | Multi-vector configuration. On HFresh, multi-vector embeddings require MUVERA encoding. See [Multi-vector embeddings on HFresh](#hfresh-multi-vector).<br/><br/>Added in `v1.40`                                                                                                                                                                                                                         |
 
 :::tip Tuning HFresh recall
 Start with the defaults. If recall is too low, increase `searchProbe` (search more posting lists per query) or the RQ `rescoreLimit` (rescore more candidates with full-precision vectors). Both are mutable at runtime and take effect **without reindexing**.
 :::
+
+### Multi-vector embeddings on HFresh {#hfresh-multi-vector}
+
+import HFreshMultiVector from "/_includes/feature-notes/hfresh_multivector.mdx";
+
+<HFreshMultiVector />
+
+HFresh supports multi-vector embeddings only with [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding), so `multivector.muvera.enabled` is required.
+
+:::caution On HFresh, `multivector.enabled` alone has no effect
+The collection is created, but it behaves as a single-vector collection and rejects multi-vector imports and queries. Set `multivector.muvera.enabled`. Multi-vector search on HFresh also needs a named vector with `"vectorizer": "none"`.
+:::
+
+| Parameter                    | Type    | Default | Mutable | Details                                                                                                                                                                                   |
+| :--------------------------- | :------ | :------ | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `multivector.muvera.enabled` | boolean | `false` | No      | Enables MUVERA encoding, which is required for multi-vector search on HFresh. Setting it to `true` also turns on `multivector.enabled`. Cannot be changed after the collection is created.  |
+
+For what `ksim`, `dprojections` and `repetitions` mean and what they default to, see [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding).
+
+On HFresh these three have upper limits, checked whenever you create or update a collection: `ksim` at most `10`, `dprojections` at most `1024`, `repetitions` at most `256`, and at most 1,048,576 float32 values (4 MiB per vector) for the encoding they produce together so the three maximums cannot be combined. Set the values when you create the collection, changing them later is accepted but has no effect.
+
+On a multi-vector index, `searchProbe` and `rq.rescoreLimit` set the [routing and rescore budgets](../../concepts/indexing/vector-index.md#multi-vector-embeddings-on-hfresh), `max(limit, searchProbe)` and `max(limit, rq.rescoreLimit)`. Because both include the query limit, neither parameter can reduce the number of results returned.
 
 ## Quantization parameters
 
