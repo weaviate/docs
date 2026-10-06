@@ -6,7 +6,7 @@ client = load_client_internally()
 
 # START BasicImageExample
 from weaviate.agents.query import QueryAgent
-from weaviate.agents.classes import QAImage
+from weaviate.agents.classes import GeneratedImage
 
 qa = QueryAgent(
     client=client, # your Weaviate cloud client
@@ -14,7 +14,7 @@ qa = QueryAgent(
 response = qa.ask(
     "Chart the temperature for the first four weeks of 2023",
     collections=["Weather"],
-    output_format=QAImage
+    output_format=GeneratedImage
 )
 
 response.final_answer_parsed.base64 # base64 of the image
@@ -72,7 +72,7 @@ from pydantic import BaseModel, Field
 
 class AdvertsResponse(BaseModel):
     speech: str = Field(description="What to say during the presentation")
-    adverts: list[QAImage] = Field(
+    adverts: list[GeneratedImage] = Field(
         description="A list of advertisements for each of the best selling products",
         min_length = 2,
         max_length = 4 # max_length must be specified for lists of images
@@ -87,7 +87,7 @@ response = qa.ask(
 
 # START UnionImageExample
 class UnionResponse(BaseModel):
-    chart: QAImage | None # Union[QAImage, None] for Python < 3.10
+    chart: GeneratedImage | None # Union[GeneratedImage, None] for Python < 3.10
 
 response = qa.ask(
     "Chart the temperature for the first four weeks of 2024. If no data exists, return null",
@@ -101,7 +101,7 @@ print(response.final_answer_parsed.chart is None)
 # START ComplexBaseModelImageExample
 class Slide(BaseModel):
     speech: str = Field(description = "What to say during this particular slide")
-    slide: QAImage = Field(
+    slide: GeneratedImage = Field(
         description = "A presentation slide detailing a single product"
     )
 
@@ -122,7 +122,7 @@ response = qa.ask(
 from typing import Annotated
 
 class AnnotatedImagesResponse(BaseModel):
-    image_field: list[Annotated[QAImage, Field(description="<image guidance/style description here>")]] = Field(
+    image_field: list[Annotated[GeneratedImage, Field(description="<image guidance/style description here>")]] = Field(
         max_length = 4 # max_length must be specified for lists of images
     )
 # END AnnotateListImageExample
@@ -134,7 +134,7 @@ from weaviate.agents.classes import ImageOptions
 response = qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
     collections=["ECommerce"],
-    output_format=Annotated[QAImage, ImageOptions(shape="portrait")],
+    output_format=Annotated[GeneratedImage, ImageOptions(shape="portrait")],
 )
 # END CustomShapeImageExample
 

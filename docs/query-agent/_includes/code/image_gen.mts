@@ -4,12 +4,12 @@ const { loadClientInternally } = await import('./util.mjs').catch(() => import('
 const client = await loadClientInternally();
 
 // START BasicImageExample
-import { QueryAgent, QAImage } from 'weaviate-agents';
+import { QueryAgent, GeneratedImage } from 'weaviate-agents';
 
 const qa = new QueryAgent(client); // your Weaviate Cloud client
 const response = await qa.ask(
     "Chart the temperature for the first four weeks of 2023",
-    { collections: ["Weather"], outputFormat: QAImage }
+    { collections: ["Weather"], outputFormat: GeneratedImage }
 );
 
 response.finalAnswerParsed.base64; // base64 of the image
@@ -57,7 +57,7 @@ import { z } from 'zod';
 
 const AdvertsResponse = z.object({
     speech: z.string().describe("What to say during the presentation"),
-    adverts: z.array(QAImage)
+    adverts: z.array(GeneratedImage)
         .min(2)
         .max(4) // max must be specified for lists of images
         .describe("A list of advertisements for each of the best selling products"),
@@ -71,7 +71,7 @@ const advertsResult = await qa.ask(
 
 // START UnionImageExample
 const UnionResponse = z.object({
-    chart: QAImage.nullable(), // same as z.union([QAImage, z.null()])
+    chart: GeneratedImage.nullable(), // same as z.union([GeneratedImage, z.null()])
 });
 
 const unionResult = await qa.ask(
@@ -85,7 +85,7 @@ console.log(unionResult.finalAnswerParsed.chart === null);
 // START ComplexBaseModelImageExample
 const Slide = z.object({
     speech: z.string().describe("What to say during this particular slide"),
-    slide: QAImage.describe("A presentation slide detailing a single product"),
+    slide: GeneratedImage.describe("A presentation slide detailing a single product"),
 });
 
 const PresentationResponse = z.object({
@@ -101,7 +101,7 @@ const presentationResult = await qa.ask(
 
 // START AnnotateListImageExample
 const AnnotatedImagesResponse = z.object({
-    image_field: z.array(QAImage.describe("<image guidance/style description here>")).max(4),
+    image_field: z.array(GeneratedImage.describe("<image guidance/style description here>")).max(4),
 });
 // END AnnotateListImageExample
 

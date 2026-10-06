@@ -34,10 +34,10 @@ res = qa.ask(
 # END BasicAskMode
 
 # START ImageGenAskMode
-from weaviate.agents.classes import QAImage
+from weaviate.agents.classes import GeneratedImage
 res = qa.ask(
     query = "Generate a picture of a model wearing the best-selling T-shirt",
-    output_format=QAImage
+    output_format=GeneratedImage
 )
 # END ImageGenAskMode
 

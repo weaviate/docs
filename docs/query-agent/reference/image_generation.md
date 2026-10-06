@@ -13,7 +13,7 @@ import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/image_gen.mts'
 
 In ask mode, as part of your response, you can ask the query agent to output an image type. The image generation is grounded in data retrieved from any searches performed.
 
-To generate an image, you can set the output format argument, which controls the structured output, to be a `QAImage`, imported and used as below:
+To generate an image, you can set the output format argument, which controls the structured output, to be a `GeneratedImage`, imported and used as below:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -34,7 +34,7 @@ To generate an image, you can set the output format argument, which controls the
     </TabItem>
 </Tabs>
 
-`QAImage` is a custom object containing two fields, `base64` and `image_prompt`. This object can be placed anywhere within a structured output model to add an image's base64 to that field. 
+`GeneratedImage` is a custom object containing two fields, `base64` and `image_prompt`. This object can be placed anywhere within a structured output model to add an image's base64 to that field. 
 
 <details>
 <summary>Saving and displaying the image</summary>
@@ -140,7 +140,7 @@ You can also search using the base64 directly on a [collection that is set up fo
 
 ## Structured outputs with images
 
-You can also use the `QAImage` type within a structured output specification, allowing any field to return a generated image as part of a structured response. For example:
+You can also use the `GeneratedImage` type within a structured output specification, allowing any field to return a generated image as part of a structured response. For example:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -191,7 +191,7 @@ If you are describing a list of images, the description is placed upon the list 
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-        Using `image_field: list[QAImage] = Field(description="...")`, will place a shared image description across the entire list, and won't be seen (directly) by the image generation model. To describe individual images, use the following:
+        Using `image_field: list[GeneratedImage] = Field(description="...")`, will place a shared image description across the entire list, and won't be seen (directly) by the image generation model. To describe individual images, use the following:
         <FilteredTextBlock
             text={PyCode}
             startMarker="# START AnnotateListImageExample"
@@ -200,7 +200,7 @@ If you are describing a list of images, the description is placed upon the list 
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        Using `image_field: z.array(QAImage).max(4).describe("...")`, will place a shared image description across the entire list, and won't be seen (directly) by the image generation model. To describe individual images, use the following:
+        Using `image_field: z.array(GeneratedImage).max(4).describe("...")`, will place a shared image description across the entire list, and won't be seen (directly) by the image generation model. To describe individual images, use the following:
         <FilteredTextBlock
             text={TSCode}
             startMarker="// START AnnotateListImageExample"
@@ -213,7 +213,7 @@ If you are describing a list of images, the description is placed upon the list 
 
 ## Union types with images
 
-Since the `QAImage` is a type, you can also do, for example, unions on the type. This allows the model to either fill in an image, or if some other condition is met, fill in something else. A simple example involves outputting a null type if no relevant data is found:
+Since the `GeneratedImage` is a type, you can also do, for example, unions on the type. This allows the model to either fill in an image, or if some other condition is met, fill in something else. A simple example involves outputting a null type if no relevant data is found:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -240,7 +240,7 @@ You can optionally change the shape of a generated image by sending an additiona
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-        Import `ImageOptions` and add it as an annotation to the `QAImage` class itself. 
+        Import `ImageOptions` and add it as an annotation to the `GeneratedImage` class itself. 
         <FilteredTextBlock
             text={PyCode}
             startMarker="# START CustomShapeImageExample"
@@ -249,7 +249,7 @@ You can optionally change the shape of a generated image by sending an additiona
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        Import `imageWithOptions` and use this class instead of `QAImage`.
+        Import `imageWithOptions` and use this class instead of `GeneratedImage`.
         <FilteredTextBlock
             text={TSCode}
             startMarker="// START CustomShapeImageExample"
