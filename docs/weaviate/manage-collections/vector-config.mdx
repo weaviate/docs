@@ -236,7 +236,7 @@ Adding a new vector to the collection definition [won't trigger vectorization fo
 
 <MultiVector/>
 
-Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
+Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are available for `hnsw` and, since `v1.40`, `hfresh` indexes ([with MUVERA encoding only](../config-refs/indexing/vector-index.mdx#hfresh-multi-vector)), for named vectors. To use multi-vectors, enable it for the appropriate named vector.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
