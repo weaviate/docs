@@ -33,6 +33,40 @@ image = Image.open(BytesIO(image_bytes))
 image.show()
 # END DisplayImage
 
+# START SaveImage
+with open("image.png", "wb") as f:
+    f.write(image_bytes)
+# END SaveImage
+
+# START UploadWeaviateImage
+from weaviate.classes.config import Configure, Property, DataType, Multi2VecField
+
+collection = client.collections.create(
+    "QueryAgentImageUpload",
+    vector_config=Configure.Vectors.multi2vec_jinaai(
+        name="image_vector",
+        image_fields=[Multi2VecField(name="image")],
+    ),
+    properties=[
+        Property(name="image", data_type=DataType.BLOB),
+    ]
+)
+
+collection.data.insert(
+    properties={
+        "image": response.final_answer_parsed.base64,
+    }
+)
+# END UploadWeaviateImage
+
+# START SearchWeaviateImage
+search_response = collection.query.near_image(
+    near_image=response.final_answer_parsed.base64,
+    return_properties=["image"]
+)
+# END SearchWeaviateImage 
+
+
 # START BaseModelImageExample
 from pydantic import BaseModel, Field
 
@@ -126,4 +160,7 @@ response = qa.ask(
 ),
 # END RawJSONSchemaImageExample
 
+if client.collections.exists("QueryAgentImageUpload"):
+    client.collections.delete("QueryAgentImageUpload")
+    
 client.close()

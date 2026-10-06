@@ -20,11 +20,37 @@ response.finalAnswerParsed.image_prompt; // prompt used to generate image based 
 const imageBytes = Buffer.from(response.finalAnswerParsed.base64, "base64"); // PNG
 // END ReadImageBase64
 
-// START DisplayImage
+// START SaveImage
 import { writeFileSync } from 'node:fs';
 
 writeFileSync("image.png", imageBytes);
-// END DisplayImage
+// END SaveImage
+
+// START UploadWeaviateImage
+import weaviate from 'weaviate-client';
+
+const collection = await client.collections.create({
+    name: "QueryAgentImageUpload",
+    vectorizers: weaviate.configure.vectors.multi2VecJinaAI({
+        name: "image_vector",
+        imageFields: [{ name: "image" }],
+    }),
+    properties: [
+        { name: "image", dataType: weaviate.configure.dataType.BLOB },
+    ],
+});
+
+await collection.data.insert({
+    image: response.finalAnswerParsed.base64,
+});
+// END UploadWeaviateImage
+
+// START SearchWeaviateImage
+const searchResponse = await collection.query.nearImage(
+    response.finalAnswerParsed.base64,
+    { returnProperties: ["image"] }
+);
+// END SearchWeaviateImage
 
 // START BaseModelImageExample
 import { z } from 'zod';
@@ -110,5 +136,9 @@ const res = await qa.ask(
     }
 );
 // END RawJSONSchemaImageExample
+
+if (await client.collections.exists("QueryAgentImageUpload")) {
+    await client.collections.delete("QueryAgentImageUpload");
+}
 
 await client.close();

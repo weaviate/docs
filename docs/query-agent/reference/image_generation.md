@@ -36,6 +36,9 @@ To generate an image, you can set the output format argument, which controls the
 
 `QAImage` is a custom object containing two fields, `base64` and `image_prompt`. This object can be placed anywhere within a structured output model to add an image's base64 to that field. 
 
+<details>
+<summary>Saving and displaying the image</summary>
+
 To read an image from its base64, for example, you can do the following:
 
 <Tabs className="code" groupId="languages">
@@ -44,6 +47,13 @@ To read an image from its base64, for example, you can do the following:
             text={PyCode}
             startMarker="# START ReadImageBase64"
             endMarker="# END ReadImageBase64"
+            language="py"
+        />
+        Optionally, you can display the image using [PIL](https://pypi.org/project/pillow/)
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START DisplayImage"
+            endMarker="# END DisplayImage"
             language="py"
         />
     </TabItem>
@@ -57,26 +67,76 @@ To read an image from its base64, for example, you can do the following:
     </TabItem>
 </Tabs>
 
-and display it with [PIL](https://pypi.org/project/pillow/) in Python, or save it as a PNG file in JavaScript/TypeScript:
+You can save it as a PNG file:
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START DisplayImage"
-            endMarker="# END DisplayImage"
+            startMarker="# START SaveImage"
+            endMarker="# END SaveImage"
             language="py"
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
         <FilteredTextBlock
             text={TSCode}
-            startMarker="// START DisplayImage"
-            endMarker="// END DisplayImage"
+            startMarker="// START SaveImage"
+            endMarker="// END SaveImage"
             language="ts"
         />
     </TabItem>
 </Tabs>
+</details>
+
+
+<details>
+<summary>Uploading/searching the image with Weaviate</summary>
+
+Provided you have a valid multimodal embedding vectorizer set up on your Weaviate collection, [for example, from the JinaAI multi2vec module](https://docs.weaviate.io/weaviate/model-providers/jinaai/embeddings-multimodal), you can upload the base64 of the image directly to your collection.
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START UploadWeaviateImage"
+            endMarker="# END UploadWeaviateImage"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START UploadWeaviateImage"
+            endMarker="// END UploadWeaviateImage"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+You can also search using the base64 directly on a [collection that is set up for image searching](https://docs.weaviate.io/weaviate/search/image#by-the-base64-representation).
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SearchWeaviateImage"
+            endMarker="# END SearchWeaviateImage"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SearchWeaviateImage"
+            endMarker="// END SearchWeaviateImage"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+[See more about building an image search application in Weaviate.](https://weaviate.io/blog/how-to-build-an-image-search-application-with-weaviate#image-vectorization)
+</details>
 
 ## Structured outputs with images
 
