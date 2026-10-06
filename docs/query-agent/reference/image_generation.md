@@ -305,7 +305,7 @@ If you specify an optional image, for example a list with a variable number of i
 
 **Images are generated independently**, meaning that if you want a consistent theme amongst your requested images, you should add a consistent description to your image field. Try specifying specific layout instructions, hex color codes and stylistic choices.
 
-**Timeouts**: image generation adds latency. In Python, when your output format contains images, the client's default timeout rises from 60 to 180 seconds. If you set your own `timeout`, make sure it's long enough.
+**Timeouts**: image generation adds latency. In Python, when your output format contains images, the client's default timeout rises to 60 seconds. If you set your own `timeout`, make sure it's long enough.
 
 The following requests will be rejected before any generation attempt is made:
 * You cannot have more than 10 image requests per structured output request.
