@@ -20,7 +20,7 @@ export const goCardsData = [
 
 A release candidate of the [next major version of the Go client](./go-v6.md) is available. It is a ground-up redesign built around a collections-first API: you obtain a handle for a collection and run data, query, and aggregation operations through that handle, instead of composing requests with the older builder pattern.
 
-The new client is a pre-release, and its API can still change before the final release. The client documented on this page remains the right choice for production today. On pages that support it, a second Go tab for the new client appears beside the `Go` tab. Use it to preview the new API for that operation. For more details, see the [Go client v6](./go-v6.md) page.
+Its API can still change before the final release. The client documented on this page remains the right choice for production today. On pages that support it, a second Go tab for the new client appears beside the `Go` tab. Use it to preview the new API for that operation. For more details, see the [Go client v6](./go-v6.md) page.
 
 :::
 
