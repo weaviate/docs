@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"testing"
 
 	weaviate "github.com/weaviate/weaviate-go-client/v6"
+	"github.com/weaviate/weaviate-go-client/v6/rbac"
 	"golang.org/x/oauth2"
 )
 
@@ -22,12 +24,15 @@ func TestConnectLocalNoAuth(t *testing.T) {
 		panic(err)
 	}
 	defer client.Close()
-	// END LocalNoAuth
 
 	ready, err := client.IsReady(ctx)
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	fmt.Println(ready)
+	// END LocalNoAuth
+
 	if !ready {
 		t.Fatal("weaviate is not ready")
 	}
@@ -40,9 +45,9 @@ func TestConnectCustomURL(t *testing.T) {
 	// START CustomURL
 	client, err := weaviate.NewClient(ctx,
 		weaviate.WithScheme("http"),
-		weaviate.WithHTTPHost("localhost"),
+		weaviate.WithHTTPHost("127.0.0.1"),
 		weaviate.WithHTTPPort("8080"),
-		weaviate.WithGRPCHost("localhost"),
+		weaviate.WithGRPCHost("127.0.0.1"),
 		weaviate.WithGRPCPort("50051"),
 	)
 	if err != nil {
@@ -50,25 +55,29 @@ func TestConnectCustomURL(t *testing.T) {
 		panic(err)
 	}
 	defer client.Close()
+
+	ready, err := client.IsReady(ctx)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println(ready)
 	// END CustomURL
 
-	if _, err := client.IsReady(ctx); err != nil {
-		t.Fatal(err)
+	if !ready {
+		t.Fatal("weaviate is not ready")
 	}
 }
 
-// TestConnectLocalAuth connects to a local instance with a Weaviate API key.
-//
-// It is skipped in docs CI: the default-port local Weaviate there is anonymous,
-// while the API-key instance runs on a non-default port that NewLocal's defaults
-// cannot target. Unlike the Python and TypeScript snippets, Go snippets are not
-// port-substituted before the tests run, so this would dial the anonymous
-// instance and fail with HTTP 401. The snippet is still compiled and rendered.
+// TestConnectLocalAuth connects with a Weaviate API key. The region dials the
+// default local ports, while the API-key instance in the docs test stack runs
+// on 8580, so the test is compile-only.
 func TestConnectLocalAuth(t *testing.T) {
-	t.Skip("docs CI local Weaviate is anonymous on the default port; the API-key instance is on a non-default port that NewLocal cannot target")
+	t.Skip("the region dials the default local ports. The API-key instance in the docs test stack runs on 8580")
 	ctx := context.Background()
 
 	// START LocalAuth
+	// Best practice: store your credentials in environment variables
 	client, err := weaviate.NewLocal(ctx,
 		weaviate.WithAPIKey(os.Getenv("WEAVIATE_API_KEY")),
 	)
@@ -77,10 +86,17 @@ func TestConnectLocalAuth(t *testing.T) {
 		panic(err)
 	}
 	defer client.Close()
+
+	ready, err := client.IsReady(ctx)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println(ready)
 	// END LocalAuth
 
-	if _, err := client.IsReady(ctx); err != nil {
-		t.Fatal(err)
+	if !ready {
+		t.Fatal("weaviate is not ready")
 	}
 }
 
@@ -103,10 +119,17 @@ func TestConnectLocalThirdPartyAPIKeys(t *testing.T) {
 		panic(err)
 	}
 	defer client.Close()
+
+	ready, err := client.IsReady(ctx)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println(ready)
 	// END LocalThirdPartyAPIKeys
 
-	if _, err := client.IsReady(ctx); err != nil {
-		t.Fatal(err)
+	if !ready {
+		t.Fatal("weaviate is not ready")
 	}
 }
 
@@ -128,10 +151,17 @@ func TestConnectCloud(t *testing.T) {
 		panic(err)
 	}
 	defer client.Close()
+
+	ready, err := client.IsReady(ctx)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println(ready)
 	// END APIKeyWCD
 
-	if _, err := client.IsReady(ctx); err != nil {
-		t.Fatal(err)
+	if !ready {
+		t.Fatal("weaviate is not ready")
 	}
 }
 
@@ -157,36 +187,41 @@ func TestConnectCloudThirdPartyAPIKeys(t *testing.T) {
 		panic(err)
 	}
 	defer client.Close()
+
+	ready, err := client.IsReady(ctx)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println(ready)
 	// END ThirdPartyAPIKeys
 
-	if _, err := client.IsReady(ctx); err != nil {
-		t.Fatal(err)
+	if !ready {
+		t.Fatal("weaviate is not ready")
 	}
 }
 
-// TestConnectOIDC connects to a self-hosted instance using an OIDC bearer token
-// obtained from an identity provider.
+// TestConnectOIDC connects to the OIDC-enabled instance with a bearer token
+// obtained from the identity provider.
 func TestConnectOIDC(t *testing.T) {
-	// The default-port CI instance is anonymous with no OIDC provider, so dialing
-	// it with a bearer token fails at discovery with HTTP 404 "get openid
-	// configuration". OIDC needs an OIDC-configured instance, which is a later CI
-	// tier. The snippet is still compiled and rendered.
-	t.Skip("anon :8080 CI instance has no OIDC provider (HTTP 404 'get openid configuration'); OIDC connection needs an OIDC-configured instance — a later CI tier")
 	if os.Getenv("WEAVIATE_OIDC_ACCESS_TOKEN") == "" {
 		t.Skip("WEAVIATE_OIDC_ACCESS_TOKEN must be set for the OIDC connection test")
 	}
 	ctx := context.Background()
 
 	// START OIDCConnect
+	// Connect to a self-hosted Weaviate instance configured with OIDC.
+	// Obtain the access token from your identity provider before connecting.
 	client, err := weaviate.NewClient(ctx,
 		weaviate.WithScheme("http"),
 		weaviate.WithHTTPHost("localhost"),
-		weaviate.WithHTTPPort("8080"),
+		weaviate.WithHTTPPort("8580"),
 		weaviate.WithGRPCHost("localhost"),
-		weaviate.WithGRPCPort("50051"),
+		weaviate.WithGRPCPort("50551"),
 		weaviate.WithBearerToken(oauth2.Token{
 			AccessToken:  os.Getenv("WEAVIATE_OIDC_ACCESS_TOKEN"),
 			RefreshToken: os.Getenv("WEAVIATE_OIDC_REFRESH_TOKEN"),
+			ExpiresIn:    60, // Lifetime of the access token in seconds.
 		}),
 	)
 	if err != nil {
@@ -196,7 +231,8 @@ func TestConnectOIDC(t *testing.T) {
 	defer client.Close()
 	// END OIDCConnect
 
-	if _, err := client.IsReady(ctx); err != nil {
-		t.Fatal(err)
+	// IsReady is unauthenticated, so make an authorized call.
+	if _, err := client.Users.OIDC.AssignedRoles(ctx, rbac.AssignedRolesOptions{ID: "test-admin"}); err != nil {
+		t.Fatalf("authorized call with the OIDC token failed: %v", err)
 	}
 }

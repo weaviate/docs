@@ -23,7 +23,7 @@ func main() {
 	}
 	defer client.Close()
 
-	// Step 2.2: Semantic (vector) search. text2vec-contextionary turns the query
+	// Step 2.2: Semantic (vector) search. text2vec-ollama turns the query
 	// text into a vector server-side and returns the closest matches.
 	movies := client.Collections.Use("Movie")
 	// highlight-start

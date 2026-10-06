@@ -12,13 +12,14 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/data"
 )
 
-// text2vecContextionary is a one-line custom-module vectorizer. The v6 client
-// encodes a module from its Name(), so this selects the built-in
-// text2vec-contextionary module, which embeds text properties server-side with
-// no external service or API key.
-type text2vecContextionary struct{}
+// The client has no typed Ollama vectorizer yet, so this small custom module
+// type names text2vec-ollama. Its JSON-tagged fields are the module settings.
+type text2vecOllama struct {
+	APIEndpoint string `json:"apiEndpoint,omitempty"`
+	Model       string `json:"model,omitempty"`
+}
 
-func (text2vecContextionary) Name() string { return "text2vec-contextionary" }
+func (text2vecOllama) Name() string { return "text2vec-ollama" }
 
 func main() {
 	ctx := context.Background()
@@ -31,8 +32,7 @@ func main() {
 	}
 	defer client.Close()
 
-	// Step 1.2: Create a collection. Its text properties are vectorized
-	// server-side by the text2vec-contextionary module (see the type above).
+	// Step 1.2: Create a collection vectorized by the Ollama embedding integration.
 	// highlight-start
 	if _, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Movie",
@@ -42,7 +42,10 @@ func main() {
 			{Name: "genre", DataType: collections.DataTypeText},
 		},
 		Vectors: map[string]collections.VectorConfig{
-			"default": {Vectorizer: text2vecContextionary{}},
+			"default": {Vectorizer: text2vecOllama{
+				APIEndpoint: "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
+				Model:       "nomic-embed-text",
+			}},
 		},
 	}); err != nil {
 		// handle error

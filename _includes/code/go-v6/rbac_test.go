@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"testing"
 	"time"
 
@@ -11,11 +14,7 @@ import (
 )
 
 // The RBAC snippets run against the RBAC-enabled instance (connectRBACAdmin,
-// service weaviate_rbac on :8580). TestRBACAdminClient stays skipped: its connect
-// is INSIDE the snippet marker (weaviate.NewLocal + WithAPIKey), so it cannot be
-// redirected to the non-default RBAC port without leaking the port into the
-// rendered snippet — the same class as TestConnectLocalAuth.
-const rbacSkip = "connect is inside the snippet marker (NewLocal+WithAPIKey); cannot redirect to the non-default RBAC port without leaking it into the rendered snippet"
+// service weaviate_rbac on :8580).
 
 // -----------------------------------------------------------------------------
 // Test-only isolation helpers. They live outside every snippet marker, so the
@@ -80,19 +79,130 @@ func seedDBUser(t *testing.T, client *weaviate.Client, userID string) {
 	}
 }
 
+// rbacREST sends a raw REST GET to the RBAC instance as the root user, so the
+// tests can check what the server stored independently of the client.
+func rbacREST(t *testing.T, path string) (int, []byte) {
+	t.Helper()
+	url := "http://" + getenvOr("WEAVIATE_RBAC_HTTP_HOST", "localhost") + ":" +
+		getenvOr("WEAVIATE_RBAC_HTTP_PORT", "8580") + path
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Authorization", "Bearer "+getenvOr("WEAVIATE_RBAC_API_KEY", "root-user-key"))
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return resp.StatusCode, body
+}
+
+// assertRESTStatus checks the HTTP status of a raw REST GET on the RBAC instance.
+func assertRESTStatus(t *testing.T, path string, want int) {
+	t.Helper()
+	if got, body := rbacREST(t, path); got != want {
+		t.Fatalf("GET %s: status %d, want %d: %s", path, got, want, body)
+	}
+}
+
+// assertRoleActions reads a role through raw REST and checks that every action
+// in want is stored and no action in absent is.
+func assertRoleActions(t *testing.T, roleID string, want, absent []string) {
+	t.Helper()
+	status, body := rbacREST(t, "/v1/authz/roles/"+roleID)
+	if status != http.StatusOK {
+		t.Fatalf("GET role %q: status %d: %s", roleID, status, body)
+	}
+	var role struct {
+		Permissions []struct {
+			Action string `json:"action"`
+		} `json:"permissions"`
+	}
+	if err := json.Unmarshal(body, &role); err != nil {
+		t.Fatal(err)
+	}
+	stored := map[string]bool{}
+	for _, p := range role.Permissions {
+		stored[p.Action] = true
+	}
+	for _, a := range want {
+		if !stored[a] {
+			t.Errorf("role %q: action %q not stored by the server (stored: %v)", roleID, a, stored)
+		}
+	}
+	for _, a := range absent {
+		if stored[a] {
+			t.Errorf("role %q: action %q stored but should be absent", roleID, a)
+		}
+	}
+}
+
+// checkRoleIDs checks a list of assigned roles against want and absent.
+func checkRoleIDs(t *testing.T, who string, roles []rbac.Role, want, absent []string) {
+	t.Helper()
+	got := map[string]bool{}
+	for _, r := range roles {
+		got[r.ID] = true
+	}
+	for _, id := range want {
+		if !got[id] {
+			t.Errorf("%s: role %q not assigned (got %v)", who, id, got)
+		}
+	}
+	for _, id := range absent {
+		if got[id] {
+			t.Errorf("%s: role %q still assigned", who, id)
+		}
+	}
+}
+
+func assertDBUserRoles(t *testing.T, client *weaviate.Client, userID string, want, absent []string) {
+	t.Helper()
+	roles, err := client.Users.DB.AssignedRoles(context.Background(), rbac.AssignedRolesOptions{ID: userID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkRoleIDs(t, "db user "+userID, roles, want, absent)
+}
+
+func assertOIDCUserRoles(t *testing.T, client *weaviate.Client, userID string, want, absent []string) {
+	t.Helper()
+	roles, err := client.Users.OIDC.AssignedRoles(context.Background(), rbac.AssignedRolesOptions{ID: userID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkRoleIDs(t, "oidc user "+userID, roles, want, absent)
+}
+
+func assertGroupRoles(t *testing.T, client *weaviate.Client, groupID string, want, absent []string) {
+	t.Helper()
+	roles, err := client.Groups.AssignedRoles(context.Background(), rbac.AssignedRolesOptions{ID: groupID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkRoleIDs(t, "oidc group "+groupID, roles, want, absent)
+}
+
 // -----------------------------------------------------------------------------
 // Requirements
 // -----------------------------------------------------------------------------
 
-// TestRBACAdminClient connects with a key belonging to a user that has the
-// permissions needed to manage roles and users.
+// TestRBACAdminClient connects as the root user. The region dials the default
+// local ports, while the docs test stack runs the RBAC instance on 8580, so the
+// test is compile-only. The other RBAC tests reach 8580 via connectRBACAdmin.
 func TestRBACAdminClient(t *testing.T) {
-	t.Skip(rbacSkip)
+	t.Skip("the region dials the default local ports. The RBAC instance in the docs test stack runs on 8580")
 	ctx := context.Background()
 
 	// START AdminClient
+	// Connect to Weaviate as root user
 	client, err := weaviate.NewLocal(ctx,
-		weaviate.WithAPIKey("admin-api-key"),
+		weaviate.WithAPIKey("root-user-key"),
 	)
 	if err != nil {
 		// handle error
@@ -106,36 +216,15 @@ func TestRBACAdminClient(t *testing.T) {
 // Role management: create roles with permissions
 // -----------------------------------------------------------------------------
 
-// TestRBACAddManageRolesPermission creates a role that can manage other roles.
+// TestRBACAddManageRolesPermission is a placeholder: at v6.0.0-rc.0
+// Roles.Create returns nil but the server stores no Roles permission.
 func TestRBACAddManageRolesPermission(t *testing.T) {
-	ctx := context.Background()
-	client := connectRBACAdmin(t)
-	defer client.Close()
-	deleteRoleIfExists(client, "testRole")
-	defer deleteRoleIfExists(client, "testRole")
+	t.Skip("fails at v6.0.0-rc.0: Roles.Create silently drops Roles permissions and returns nil")
 
+	// TODO[g-despot]: manage-roles permission snippet pending a v6 client fix for dropped Roles permissions
 	// START AddManageRolesPermission
-	err := client.Roles.Create(ctx, rbac.Role{
-		ID: "testRole",
-		Permissions: rbac.Permissions{
-			Roles: []rbac.RolePermission{
-				{
-					RoleID: "testRole*", // Applies to all roles starting with "testRole".
-					// Match limits role management to the current user's permission
-					// level; use rbac.RoleScopeAll to allow managing all permissions.
-					Scope:  rbac.RoleScopeMatch,
-					Create: true, // Allow creating roles.
-					Read:   true, // Allow reading roles.
-					Update: true, // Allow updating roles.
-					Delete: true, // Allow deleting roles.
-				},
-			},
-		},
-	})
+	// Coming soon
 	// END AddManageRolesPermission
-	if err != nil {
-		t.Fatal(err)
-	}
 }
 
 // TestRBACAddManageUsersPermission creates a role that can manage users.
@@ -162,10 +251,12 @@ func TestRBACAddManageUsersPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddManageUsersPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddManageUsersPermission
+	assertRoleActions(t, "testRole", []string{"create_users", "read_users", "update_users", "delete_users", "assign_and_revoke_users"}, nil)
 }
 
 // TestRBACAddCollectionsPermission creates a role with collection permissions.
@@ -191,10 +282,12 @@ func TestRBACAddCollectionsPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddCollectionsPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddCollectionsPermission
+	assertRoleActions(t, "testRole", []string{"create_collections", "read_collections", "update_collections", "delete_collections"}, nil)
 }
 
 // TestRBACAddTenantPermission creates a role with tenant permissions.
@@ -221,10 +314,12 @@ func TestRBACAddTenantPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddTenantPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddTenantPermission
+	assertRoleActions(t, "testRole", []string{"create_tenants", "read_tenants", "update_tenants", "delete_tenants"}, nil)
 }
 
 // TestRBACAddDataObjectPermission creates a role with data object permissions.
@@ -251,10 +346,12 @@ func TestRBACAddDataObjectPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddDataObjectPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddDataObjectPermission
+	assertRoleActions(t, "testRole", []string{"create_data", "read_data", "update_data"}, []string{"delete_data"})
 }
 
 // TestRBACAddBackupPermission creates a role with backup permissions.
@@ -277,10 +374,12 @@ func TestRBACAddBackupPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddBackupPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddBackupPermission
+	assertRoleActions(t, "testRole", []string{"manage_backups"}, nil)
 }
 
 // TestRBACAddClusterPermission creates a role with cluster read permission.
@@ -300,37 +399,23 @@ func TestRBACAddClusterPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddClusterPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddClusterPermission
+	assertRoleActions(t, "testRole", []string{"read_cluster"}, nil)
 }
 
-// TestRBACAddNodesPermission creates a role with node read permission.
+// TestRBACAddNodesPermission is a placeholder: at v6.0.0-rc.0
+// Roles.Create returns nil but the server stores no Nodes permission.
 func TestRBACAddNodesPermission(t *testing.T) {
-	ctx := context.Background()
-	client := connectRBACAdmin(t)
-	defer client.Close()
-	deleteRoleIfExists(client, "testRole")
-	defer deleteRoleIfExists(client, "testRole")
+	t.Skip("fails at v6.0.0-rc.0: Roles.Create silently drops Nodes permissions and returns nil")
 
+	// TODO[g-despot]: nodes permission snippet pending a v6 client fix for dropped Nodes permissions
 	// START AddNodesPermission
-	err := client.Roles.Create(ctx, rbac.Role{
-		ID: "testRole",
-		Permissions: rbac.Permissions{
-			Nodes: []rbac.NodesPermission{
-				{
-					Collection: "TargetCollection*",       // Verbose reads are scoped to a collection.
-					Verbosity:  rbac.NodeVerbosityVerbose, // Or rbac.NodeVerbosityMinimal for all collections.
-					Read:       true,                      // Allow reading node metadata.
-				},
-			},
-		},
-	})
+	// Coming soon
 	// END AddNodesPermission
-	if err != nil {
-		t.Fatal(err)
-	}
 }
 
 // TestRBACAddAliasPermission creates a role with alias permissions.
@@ -357,10 +442,12 @@ func TestRBACAddAliasPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddAliasPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddAliasPermission
+	assertRoleActions(t, "testRole", []string{"create_aliases", "read_aliases", "update_aliases"}, []string{"delete_aliases"})
 }
 
 // TestRBACAddReplicationsPermission creates a role with replication permissions.
@@ -387,10 +474,12 @@ func TestRBACAddReplicationsPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddReplicationsPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddReplicationsPermission
+	assertRoleActions(t, "testRole", []string{"create_replicate", "read_replicate", "update_replicate"}, []string{"delete_replicate"})
 }
 
 // TestRBACAddGroupsPermission creates a role with group permissions.
@@ -415,10 +504,12 @@ func TestRBACAddGroupsPermission(t *testing.T) {
 			},
 		},
 	})
-	// END AddGroupsPermission
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddGroupsPermission
+	assertRoleActions(t, "testRole", []string{"read_groups", "assign_and_revoke_groups"}, nil)
 }
 
 // -----------------------------------------------------------------------------
@@ -442,10 +533,12 @@ func TestRBACAddRoles(t *testing.T) {
 			},
 		},
 	})
-	// END AddRoles
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AddRoles
+	assertRoleActions(t, "testRole", []string{"create_data"}, nil)
 }
 
 // TestRBACRemovePermissions removes permissions from a role.
@@ -468,10 +561,12 @@ func TestRBACRemovePermissions(t *testing.T) {
 			},
 		},
 	})
-	// END RemovePermissions
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END RemovePermissions
+	assertRoleActions(t, "testRole", []string{"update_collections", "read_cluster"}, []string{"create_collections", "read_collections", "delete_collections", "read_data"})
 }
 
 // TestRBACCheckRoleExists checks whether a role exists.
@@ -558,10 +653,12 @@ func TestRBACDeleteRole(t *testing.T) {
 
 	// START DeleteRole
 	err := client.Roles.Delete(ctx, "testRole")
-	// END DeleteRole
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END DeleteRole
+	assertRESTStatus(t, "/v1/authz/roles/testRole", http.StatusNotFound)
 }
 
 // -----------------------------------------------------------------------------
@@ -629,10 +726,12 @@ func TestRBACDeleteUser(t *testing.T) {
 
 	// START DeleteUser
 	err := client.Users.DB.Delete(ctx, "custom-user")
-	// END DeleteUser
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END DeleteUser
+	assertRESTStatus(t, "/v1/users/db/custom-user", http.StatusNotFound)
 }
 
 // TestRBACRotateApiKey rotates a database user's API key.
@@ -668,10 +767,12 @@ func TestRBACAssignRole(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"testRole", "viewer"},
 	})
-	// END AssignRole
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AssignRole
+	assertDBUserRoles(t, client, "custom-user", []string{"testRole", "viewer"}, nil)
 }
 
 // TestRBACRevokeRoles revokes roles from a database user.
@@ -696,10 +797,12 @@ func TestRBACRevokeRoles(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"testRole"},
 	})
-	// END RevokeRoles
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END RevokeRoles
+	assertDBUserRoles(t, client, "custom-user", nil, []string{"testRole"})
 }
 
 // TestRBACListUserRoles lists the roles assigned to a database user.
@@ -746,10 +849,12 @@ func TestRBACAssignOidcUserRole(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"testRole", "viewer"},
 	})
-	// END AssignOidcUserRole
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AssignOidcUserRole
+	assertOIDCUserRoles(t, client, "custom-user", []string{"testRole", "viewer"}, nil)
 }
 
 // TestRBACRevokeOidcUserRoles revokes roles from an OIDC user.
@@ -772,10 +877,12 @@ func TestRBACRevokeOidcUserRoles(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"testRole"},
 	})
-	// END RevokeOidcUserRoles
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END RevokeOidcUserRoles
+	assertOIDCUserRoles(t, client, "custom-user", nil, []string{"testRole"})
 }
 
 // TestRBACListOidcUserRoles lists the roles assigned to an OIDC user.
@@ -820,10 +927,12 @@ func TestRBACAssignOidcGroupRoles(t *testing.T) {
 		ID:    "/admin-group",
 		Roles: []string{"testRole", "viewer"},
 	})
-	// END AssignOidcGroupRoles
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END AssignOidcGroupRoles
+	assertGroupRoles(t, client, "/admin-group", []string{"testRole", "viewer"}, nil)
 }
 
 // TestRBACRevokeOidcGroupRoles revokes roles from an OIDC group.
@@ -846,10 +955,12 @@ func TestRBACRevokeOidcGroupRoles(t *testing.T) {
 		ID:    "/admin-group",
 		Roles: []string{"testRole"},
 	})
-	// END RevokeOidcGroupRoles
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END RevokeOidcGroupRoles
+	assertGroupRoles(t, client, "/admin-group", nil, []string{"testRole"})
 }
 
 // TestRBACGetOidcGroupRoles lists the roles assigned to an OIDC group.
@@ -886,10 +997,10 @@ func TestRBACGetOidcGroupRoles(t *testing.T) {
 	// END GetOidcGroupRoles
 }
 
-// TestRBACGetKnownOidcGroups is a placeholder: the v6 Go client cannot yet list
-// all known OIDC groups.
+// TestRBACGetKnownOidcGroups is a placeholder: rc.0 has the list-groups endpoint
+// only in an internal package, and GroupsClient does not expose it.
 func TestRBACGetKnownOidcGroups(t *testing.T) {
-	t.Skip("listing all known OIDC groups is not yet available in the v6 Go client")
+	t.Skip("not available at v6.0.0-rc.0: GroupsClient has no call that lists known OIDC groups")
 
 	// TODO[g-despot]: list-known-OIDC-groups snippet pending v6 client support
 	// START GetKnownOidcGroups
@@ -927,53 +1038,15 @@ func TestRBACGetGroupAssignments(t *testing.T) {
 // outside the snippet marker and cleans it up afterwards.
 // -----------------------------------------------------------------------------
 
-// TestRBACReadWritePermissionDefinition creates the tutorial's read-and-write
-// role: full collection and collection-data access to collections starting with
-// "TargetCollection", plus backup, node and cluster reads.
+// TestRBACReadWritePermissionDefinition is a placeholder: the tutorial role
+// includes a Nodes permission, which Roles.Create drops at v6.0.0-rc.0.
 func TestRBACReadWritePermissionDefinition(t *testing.T) {
-	ctx := context.Background()
-	client := connectRBACAdmin(t)
-	defer client.Close()
-	deleteRoleIfExists(client, "rw_role")
-	defer deleteRoleIfExists(client, "rw_role")
+	t.Skip("fails at v6.0.0-rc.0: Roles.Create silently drops the Nodes permission in this role and returns nil")
 
+	// TODO[g-despot]: tutorial read-and-write role pending a v6 client fix for dropped Nodes permissions
 	// START ReadWritePermissionDefinition
-	// Confer read and write rights to collections starting with "TargetCollection",
-	// plus read access to backups, nodes and cluster metadata.
-	err := client.Roles.Create(ctx, rbac.Role{
-		ID: "rw_role",
-		Permissions: rbac.Permissions{
-			Collections: []rbac.CollectionPermission{
-				{
-					Collection: "TargetCollection*",
-					Create:     true, // Allow creating collections.
-					Read:       true, // Allow reading collection config.
-					Update:     true, // Allow updating collection config.
-					Delete:     true, // Allow deleting collections.
-				},
-			},
-			Data: []rbac.DataPermission{
-				{
-					Collection: "TargetCollection*",
-					Create:     true, // Allow data inserts.
-					Read:       true, // Allow query and fetch operations.
-					Update:     true, // Allow data updates.
-					// Delete is left false, disallowing data deletes.
-				},
-			},
-			Backups: []rbac.BackupsPermission{
-				{Collection: "TargetCollection*", Manage: true},
-			},
-			Nodes: []rbac.NodesPermission{
-				{Collection: "TargetCollection*", Verbosity: rbac.NodeVerbosityVerbose, Read: true},
-			},
-			Cluster: []rbac.ClusterPermission{{Read: true}},
-		},
-	})
+	// Coming soon
 	// END ReadWritePermissionDefinition
-	if err != nil {
-		t.Fatal(err)
-	}
 }
 
 // TestRBACReadWritePermissionAssignment assigns the read-and-write role to the
@@ -993,10 +1066,12 @@ func TestRBACReadWritePermissionAssignment(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"rw_role"},
 	})
-	// END ReadWritePermissionAssignment
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END ReadWritePermissionAssignment
+	assertDBUserRoles(t, client, "custom-user", []string{"rw_role"}, nil)
 }
 
 // TestRBACViewerPermissionDefinition creates the tutorial's viewer role:
@@ -1022,10 +1097,12 @@ func TestRBACViewerPermissionDefinition(t *testing.T) {
 			},
 		},
 	})
-	// END ViewerPermissionDefinition
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END ViewerPermissionDefinition
+	assertRoleActions(t, "viewer_role", []string{"read_collections", "read_data"}, []string{"create_collections", "create_data"})
 }
 
 // TestRBACViewerPermissionAssignment assigns the viewer role to the tutorial's
@@ -1045,10 +1122,12 @@ func TestRBACViewerPermissionAssignment(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"viewer_role"},
 	})
-	// END ViewerPermissionAssignment
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END ViewerPermissionAssignment
+	assertDBUserRoles(t, client, "custom-user", []string{"viewer_role"}, nil)
 }
 
 // TestRBACMTPermissionsExample creates the tutorial's tenant-manager role: full
@@ -1087,10 +1166,12 @@ func TestRBACMTPermissionsExample(t *testing.T) {
 			},
 		},
 	})
-	// END MTPermissionsExample
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END MTPermissionsExample
+	assertRoleActions(t, "tenant_manager", []string{"create_tenants", "read_tenants", "update_tenants", "delete_tenants", "create_data", "read_data", "update_data", "delete_data"}, nil)
 }
 
 // TestRBACMTPermissionsAssignment assigns the tenant-manager role to the
@@ -1110,8 +1191,10 @@ func TestRBACMTPermissionsAssignment(t *testing.T) {
 		ID:    "custom-user",
 		Roles: []string{"tenant_manager"},
 	})
-	// END MTPermissionsAssignment
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END MTPermissionsAssignment
+	assertDBUserRoles(t, client, "custom-user", []string{"tenant_manager"}, nil)
 }

@@ -22,7 +22,7 @@ func main() {
 	// Step 1.1: Connect to your Weaviate Cloud instance.
 	client, err := weaviate.NewWeaviateCloud(
 		ctx,
-		os.Getenv("WEAVIATE_URL"),     // e.g. "my-cluster.weaviate.network"
+		os.Getenv("WEAVIATE_URL"),     // e.g. "my-cluster.weaviate.cloud"
 		os.Getenv("WEAVIATE_API_KEY"), // an admin API key
 	)
 	if err != nil {
