@@ -193,7 +193,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 <AddNamedVectors/>
 
-Named vectors can be added to a collection that already has named vectors, and to a [collection created without a vector](#create-a-collection-without-a-vector). You cannot add one to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections).
+Named vectors can be added to a collection that already has named vectors, to a [collection created without a vector](#create-a-collection-without-a-vector), and to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections). In a single vector collection you cannot add one called `default`, because that name is already taken by the collection's own vector space.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

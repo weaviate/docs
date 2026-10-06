@@ -33,7 +33,7 @@ These are the top-level parameters you can set when creating a collection.
 | [`properties`](#properties)                  | Array  | An array of property objects defining the data schema.                                                                | `[]`                                                                                                                                                                                                  | Partially\*   |
 | [`invertedIndexConfig`](#inverted-index)     | Object | Configuration for the inverted index, affecting filtering and keyword search.                                         | See [Inverted Index reference](./indexing/inverted-index.mdx#inverted-index-parameters)                                                                                                               | Yes           |
 | [`vectorConfig`](#vector-configuration)      | Object | Configure multiple named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields. | `null`                                                                                                                                                                                                | Partially\*\* |
-| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | Default vectorizer defined by [environment variable](/deploy/configuration/env-vars#DEFAULT_VECTORIZER_MODULE). See [Model provider](../model-providers/index.md) for module-specific config defaults | No            |
+| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | `none`. See [Model provider](../model-providers/index.md) for module-specific config defaults                                                                                                         | No            |
 | [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`, `hfresh`).                                                | `hnsw`                                                                                                                                                                                                | No            |
 | [`moduleConfig`](#module-configuration)      | Object | Module-specific configuration settings.                                                                               | See [Module configuration](#module-configuration)                                                                                                                                                     | Partially     |
 | [`vectorIndexConfig`](#vector-configuration) | Object | Configuration settings specific to the chosen `vectorIndexType`.                                                      | See [Vector index reference](./indexing/vector-index.mdx)                                                                                                                                             | Partially     |
@@ -573,7 +573,7 @@ Weaviate supports two approaches for vector configuration:
 - **Single vector collections**: One vector space per object using top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`)
 - **Multiple named vectors**: Multiple vector spaces per object using the `vectorConfig` parameter (**recommended**)
 
-You cannot combine both approaches in the same collection. A definition that uses neither creates a [collection without a vector](#no-vector).
+You cannot combine both approaches in the same collection definition at creation time. A definition that uses neither creates a [collection without a vector](#no-vector).
 
 :::tip We recommend using `vectorConfig`
 
@@ -585,7 +585,7 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 
 | Parameter                                                                | Type   | Description                                                                                                                                                   | Default                 | Mutable       |
 | :----------------------------------------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------- | :------------ |
-| `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | Module-specific default | No            |
+| `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | `none`                  | No            |
 | [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, `dynamic`, or `hfresh`                                                                                           | `hnsw`                  | No            |
 | [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | Configuration settings for your chosen `vectorIndexType`                                                                                                      | Index-specific defaults | Partially\*   |
 | `vectorConfig`                                                           | Object | **Alternative to above**: Define multiple named vector spaces                                                                                                 | `null`                  | Partially\*\* |
@@ -598,7 +598,17 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 
 #### Single vector collections
 
-A collection that sets any of the top-level `vectorizer`, `vectorIndexType` or `vectorIndexConfig` parameters has one vector space for the whole collection. Weaviate fills in the remaining top-level parameters from the server defaults.
+:::caution Prefer named vectors for new collections
+
+Configuring a single vector with the top-level parameters is the older approach, and it is the more limited data model: the collection is fixed at one vector space. Use [named vectors](#named-vectors) for new collections.
+
+:::
+
+A collection that sets any of the top-level `vectorizer`, `vectorIndexType` or `vectorIndexConfig` parameters has one vector space for the whole collection. Weaviate fills in the remaining top-level parameters:
+
+- `vectorizer` becomes `none`. From `v1.40` this is fixed, so a collection that does not name a vectorizer does not vectorize your data.
+- `vectorIndexType` becomes the value of [`DEFAULT_VECTOR_INDEX`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_INDEX), or `hnsw` if that variable is unset.
+- `vectorIndexConfig.distance` becomes the value of [`DEFAULT_VECTOR_DISTANCE_METRIC`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_DISTANCE_METRIC), or [`cosine`](./distances.md) if that variable is unset.
 
 To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
 
@@ -718,7 +728,9 @@ For more code example and configuration guides visit the [How-to: Vectorizer and
 
 `default` is a reserved vector name, and it means different things in the two approaches.
 
-**Single vector collections.** `default` is an alias for the collection's one vector space. Reads and writes that target `default` resolve to it, and a write that sends `vectors: {"default": [...]}` is stored there. The alias is not part of the collection definition, so `GET /v1/schema` returns the top-level parameters and no `vectorConfig` entry. You cannot add a named vector called `default` to such a collection.
+**Single vector collections.** `default` is an alias for the collection's one vector space. A write that sends `vectors: {"default": [...]}` is stored there. On searches the alias is only partly supported: GraphQL accepts `default` as an explicit target, while gRPC search and aggregate and the REST Search API reject it. Simply omit the target on a single vector collection so the collection's one vector space is used.
+
+The alias is not part of the collection definition, so `GET /v1/schema` returns the top-level parameters and no `vectorConfig` entry. You cannot add a named vector called `default` to such a collection, because that name is already taken by the collection's own vector space.
 
 **Collections that use `vectorConfig`.** `default` is an ordinary named vector with no special behavior. It is the name Weaviate gives the vector that [auto-schema](#auto-schema) creates.
 
@@ -733,7 +745,7 @@ For a collection without a vector:
 
 - `GET /v1/schema/{collection}` returns none of the vector parameters.
 - Objects without vectors are stored as usual. A write that carries a vector is rejected with a `422` error.
-- Vector search reports that the collection has no vector index.
+- Vector search fails with an index-not-found error.
 - You can [add a named vector](../manage-collections/vector-config.mdx#add-new-named-vectors) later.
 - You cannot add the top-level parameters later. An update that sets `vectorizer`, `vectorIndexType` or `vectorIndexConfig` is rejected with a `422` error:
 
@@ -1108,7 +1120,9 @@ It will:
 - Infer nested properties for `object` and `object[]` data types.
 - Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
 
-[`DEFAULT_VECTORIZER_MODULE`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTORIZER_MODULE) is not applied to the `default` vector, so auto-schema does not vectorize your data. Supply the vectors yourself, or define the collection before you import.
+Auto-schema never vectorizes your data: the `default` vector's vectorizer is always `none`. Supply the vectors yourself, or define the collection before you import.
+
+[`DEFAULT_VECTORIZER_MODULE`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTORIZER_MODULE) does not change this. **Deprecated in `v1.40`.** Ignored, and logs a startup warning.
 
 :::tip Define the collection manually for production use
 
