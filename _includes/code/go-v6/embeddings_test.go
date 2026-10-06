@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"net/http"
+	"os"
+	"strings"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/collections"
@@ -13,8 +13,9 @@ import (
 
 // TestVectorizerWeaviate configures a collection whose named vector is produced
 // by the Weaviate Embeddings service through the text2vec-weaviate module.
+// Creating the collection needs no Weaviate Embeddings access. No object is
+// inserted, so nothing calls the service.
 func TestVectorizerWeaviate(t *testing.T) {
-	t.Skip("requires Weaviate Embeddings, which only a Weaviate Cloud instance provides")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -23,8 +24,7 @@ func TestVectorizerWeaviate(t *testing.T) {
 	defer client.Collections.Delete(ctx, "DemoCollection")
 
 	// START BasicVectorizerWeaviate
-	// wembed aliases "github.com/weaviate/weaviate-go-client/v6/modules/weaviate";
-	// the alias avoids colliding with the root client package, also named weaviate.
+	// import wembed "github.com/weaviate/weaviate-go-client/v6/modules/weaviate"
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "DemoCollection",
 		Properties: []collections.Property{
@@ -45,12 +45,39 @@ func TestVectorizerWeaviate(t *testing.T) {
 		panic(err)
 	}
 	// END BasicVectorizerWeaviate
+	conf := p2dRequireVectorizer(t, "DemoCollection", "title_vector", "text2vec-weaviate")
+	if fmt.Sprint(conf["properties"]) != "[title]" {
+		t.Errorf("properties = %v, want [title]", conf["properties"])
+	}
+}
+
+// p2eRegion returns the lines between the START and END markers of a region,
+// matched per line the way FilteredTextBlock matches them.
+func p2eRegion(t *testing.T, file, region string) string {
+	t.Helper()
+	src, err := os.ReadFile(file)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out []string
+	in := false
+	for _, line := range strings.Split(string(src), "\n") {
+		switch {
+		case strings.Contains(line, "// START "+region):
+			in = true
+		case strings.Contains(line, "// END "+region):
+			return strings.Join(out, "\n")
+		case in:
+			out = append(out, line)
+		}
+	}
+	t.Fatalf("%s: region %s not found", file, region)
+	return ""
 }
 
 // TestVectorizerWeaviateCustomModel selects a specific Weaviate Embeddings model
 // for the text2vec-weaviate vectorizer.
 func TestVectorizerWeaviateCustomModel(t *testing.T) {
-	t.Skip("requires Weaviate Embeddings, which only a Weaviate Cloud instance provides")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -59,6 +86,7 @@ func TestVectorizerWeaviateCustomModel(t *testing.T) {
 	defer client.Collections.Delete(ctx, "DemoCollection")
 
 	// START VectorizerWeaviateCustomModel
+	// import wembed "github.com/weaviate/weaviate-go-client/v6/modules/weaviate"
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "DemoCollection",
 		Properties: []collections.Property{
@@ -80,55 +108,16 @@ func TestVectorizerWeaviateCustomModel(t *testing.T) {
 		panic(err)
 	}
 	// END VectorizerWeaviateCustomModel
-}
-
-// TestVectorizerWeaviateConfigLandsREST creates the VectorizerWeaviateCustomModel
-// config on the local instance, which loads text2vec-weaviate but cannot reach
-// Weaviate Embeddings, and checks the stored vectorizer config through REST.
-// No object is inserted, so nothing calls the service.
-func TestVectorizerWeaviateConfigLandsREST(t *testing.T) {
-	ctx := context.Background()
-	client := connectLocal(t)
-	defer client.Close()
-
-	const name = "GoV6EmbeddingsTwin"
-	_ = client.Collections.Delete(ctx, name)
-	defer client.Collections.Delete(ctx, name)
-	_, err := client.Collections.Create(ctx, collections.Collection{
-		Name:       name,
-		Properties: []collections.Property{{Name: "title", DataType: collections.DataTypeText}},
-		Vectors: map[string]collections.VectorConfig{
-			"title_vector": {Vectorizer: wembed.Text2Vec{
-				Properties: []string{"title"},
-				Model:      wembed.SnowflakeArcticEmbedLv2_0,
-			}},
-		},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	resp, err := http.Get("http://localhost:8080/v1/schema/" + name)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer resp.Body.Close()
-	var schema struct {
-		VectorConfig map[string]struct {
-			Vectorizer map[string]map[string]any `json:"vectorizer"`
-		} `json:"vectorConfig"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&schema); err != nil {
-		t.Fatal(err)
-	}
-	conf := schema.VectorConfig["title_vector"].Vectorizer["text2vec-weaviate"]
-	if conf == nil {
-		t.Fatalf("title_vector has no text2vec-weaviate vectorizer: %+v", schema.VectorConfig)
-	}
+	conf := p2dRequireVectorizer(t, "DemoCollection", "title_vector", "text2vec-weaviate")
 	if conf["model"] != wembed.SnowflakeArcticEmbedLv2_0 {
 		t.Errorf("model = %v, want %s", conf["model"], wembed.SnowflakeArcticEmbedLv2_0)
 	}
 	if fmt.Sprint(conf["properties"]) != "[title]" {
 		t.Errorf("properties = %v, want [title]", conf["properties"])
+	}
+	// The server stores this model by default, so REST cannot tell whether the
+	// region sets it. Check the rendered region text instead.
+	if !strings.Contains(p2eRegion(t, "embeddings_test.go", "VectorizerWeaviateCustomModel"), "Model: wembed.SnowflakeArcticEmbedLv2_0,") {
+		t.Error("region VectorizerWeaviateCustomModel no longer sets Model")
 	}
 }

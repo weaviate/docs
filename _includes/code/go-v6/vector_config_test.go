@@ -8,6 +8,7 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/collections/vectorindex"
 	"github.com/weaviate/weaviate-go-client/v6/modules/model2vec"
+	"github.com/weaviate/weaviate-go-client/v6/modules/openai"
 	"github.com/weaviate/weaviate-go-client/v6/modules/selfprovided"
 )
 
@@ -128,7 +129,6 @@ func TestAddNamedVectors(t *testing.T) {
 
 // TestSetVectorIndexType selects the vector index type for a named vector.
 func TestSetVectorIndexType(t *testing.T) {
-	t.Skip(p2dSkipModel2VecVectorConfig)
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -145,7 +145,7 @@ func TestSetVectorIndexType(t *testing.T) {
 		},
 		Vectors: map[string]collections.VectorConfig{
 			"default": {
-				Vectorizer: model2vec.Text2Vec{},
+				Vectorizer: openai.Text2Vec{},
 				// highlight-start
 				Index: vectorindex.HNSW{}, // Use the HNSW index
 				// Index: vectorindex.Flat{}, // Use the flat index
@@ -161,11 +161,11 @@ func TestSetVectorIndexType(t *testing.T) {
 	}
 	// END SetVectorIndexType
 	p2dRequireIndexConfig(t, "Article", "default", "hnsw", "", nil)
+	p2dRequireVectorizer(t, "Article", "default", "text2vec-openai")
 }
 
 // TestSetVectorIndexParams tunes the HNSW index for a named vector.
 func TestSetVectorIndexParams(t *testing.T) {
-	t.Skip(p2dSkipModel2VecVectorConfig)
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -178,7 +178,7 @@ func TestSetVectorIndexParams(t *testing.T) {
 		Name: "Article",
 		Vectors: map[string]collections.VectorConfig{
 			"default": {
-				Vectorizer: model2vec.Text2Vec{},
+				Vectorizer: openai.Text2Vec{},
 				// highlight-start
 				Index: vectorindex.HNSW{
 					EfConstruction: 300,
@@ -197,6 +197,7 @@ func TestSetVectorIndexParams(t *testing.T) {
 	p2dRequireIndexConfig(t, "Article", "default", "hnsw", "", map[string]any{
 		"efConstruction": 300, "distance": "cosine", "filterStrategy": "acorn",
 	})
+	p2dRequireVectorizer(t, "Article", "default", "text2vec-openai")
 }
 
 // TestPropModuleSettings sets property-level options, such as tokenization,
@@ -274,9 +275,8 @@ func TestDistanceMetric(t *testing.T) {
 	p2dRequireIndexConfig(t, "Article", "default", "hnsw", "", map[string]any{"distance": "cosine"})
 }
 
-// TestVectorIndexConfigLandsREST creates the index configs of
-// SetVectorIndexType and SetVectorIndexParams with self-provided vectors (the
-// docs CI has no text2vec-model2vec) and proves them through the REST schema.
+// TestVectorIndexConfigLandsREST proves the commented-out index alternatives in
+// SetVectorIndexType, which the region itself never runs. Keep in sync with region SetVectorIndexType.
 func TestVectorIndexConfigLandsREST(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
@@ -289,15 +289,9 @@ func TestVectorIndexConfigLandsREST(t *testing.T) {
 		indexType string
 		want      map[string]any
 	}{
-		{"SetVectorIndexType", vectorindex.HNSW{}, "hnsw", nil},
 		{"SetVectorIndexType/flat", vectorindex.Flat{}, "flat", nil},
 		{"SetVectorIndexType/dynamic", vectorindex.Dynamic{Threshold: 10000}, "dynamic", map[string]any{"threshold": 10000}},
 		{"SetVectorIndexType/hfresh", vectorindex.HFresh{MaxPostingSizeKB: 8}, "hfresh", nil},
-		{"SetVectorIndexParams", vectorindex.HNSW{
-			EfConstruction: 300,
-			Distance:       vectorindex.DistanceCosine,
-			FilterStrategy: vectorindex.FilterStrategyACORN,
-		}, "hnsw", map[string]any{"efConstruction": 300, "distance": "cosine", "filterStrategy": "acorn"}},
 	}
 	for _, c := range cases {
 		t.Run(c.region, func(t *testing.T) {
