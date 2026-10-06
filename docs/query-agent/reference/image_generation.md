@@ -249,7 +249,7 @@ You can optionally change the shape of a generated image by sending an additiona
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        Import `imageWithOptions` and use this class instead of `GeneratedImage`.
+        Import `generatedImageWithOptions` and use this class instead of `GeneratedImage`.
         <FilteredTextBlock
             text={TSCode}
             startMarker="// START CustomShapeImageExample"

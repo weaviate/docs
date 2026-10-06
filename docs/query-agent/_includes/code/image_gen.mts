@@ -106,11 +106,11 @@ const AnnotatedImagesResponse = z.object({
 // END AnnotateListImageExample
 
 // START CustomShapeImageExample
-import { imageWithOptions } from 'weaviate-agents';
+import { generatedImageWithOptions } from 'weaviate-agents';
 
 const advertResult = await qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
-    { collections: ["ECommerce"], outputFormat: imageWithOptions({ shape: "portrait" }) }
+    { collections: ["ECommerce"], outputFormat: generatedImageWithOptions({ shape: "portrait" }) }
 );
 // END CustomShapeImageExample
 
