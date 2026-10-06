@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/collections"
@@ -10,14 +13,8 @@ import (
 
 // TestVectorizerWeaviate configures a collection whose named vector is produced
 // by the Weaviate Embeddings service through the text2vec-weaviate module.
-//
-// Weaviate Embeddings is a Weaviate Cloud service, so this test is compile-only:
-// the docs CI runs against an anonymous local instance with no Embeddings
-// service. t.Skip is the first statement, so the suite compiles the idiomatic
-// configuration without dialing. It backs the "Go v6" tab of the Weaviate
-// Embeddings model-provider page.
 func TestVectorizerWeaviate(t *testing.T) {
-	t.Skip("requires Weaviate Embeddings / a cloud instance")
+	t.Skip("requires Weaviate Embeddings, which only a Weaviate Cloud instance provides")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -50,13 +47,10 @@ func TestVectorizerWeaviate(t *testing.T) {
 	// END BasicVectorizerWeaviate
 }
 
-// TestVectorizerWeaviateCustomModel is the model-selection form of the
-// text2vec-weaviate vectorizer: it pins a specific Weaviate Embeddings model and
-// the embedding dimensionality. Compile-only for the same reason as
-// TestVectorizerWeaviate. It backs the "Go v6" tab of the model-provider page's
-// "Select a model" section.
+// TestVectorizerWeaviateCustomModel selects a specific Weaviate Embeddings model
+// for the text2vec-weaviate vectorizer.
 func TestVectorizerWeaviateCustomModel(t *testing.T) {
-	t.Skip("requires Weaviate Embeddings / a cloud instance")
+	t.Skip("requires Weaviate Embeddings, which only a Weaviate Cloud instance provides")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -75,8 +69,7 @@ func TestVectorizerWeaviateCustomModel(t *testing.T) {
 				Vectorizer: wembed.Text2Vec{
 					Properties: []string{"title"},
 					// highlight-start
-					Model:      wembed.SnowflakeArcticEmbedLv2_0,
-					Dimensions: 256,
+					Model: wembed.SnowflakeArcticEmbedLv2_0,
 					// highlight-end
 				},
 			},
@@ -87,4 +80,55 @@ func TestVectorizerWeaviateCustomModel(t *testing.T) {
 		panic(err)
 	}
 	// END VectorizerWeaviateCustomModel
+}
+
+// TestVectorizerWeaviateConfigLandsREST creates the VectorizerWeaviateCustomModel
+// config on the local instance, which loads text2vec-weaviate but cannot reach
+// Weaviate Embeddings, and checks the stored vectorizer config through REST.
+// No object is inserted, so nothing calls the service.
+func TestVectorizerWeaviateConfigLandsREST(t *testing.T) {
+	ctx := context.Background()
+	client := connectLocal(t)
+	defer client.Close()
+
+	const name = "GoV6EmbeddingsTwin"
+	_ = client.Collections.Delete(ctx, name)
+	defer client.Collections.Delete(ctx, name)
+	_, err := client.Collections.Create(ctx, collections.Collection{
+		Name:       name,
+		Properties: []collections.Property{{Name: "title", DataType: collections.DataTypeText}},
+		Vectors: map[string]collections.VectorConfig{
+			"title_vector": {Vectorizer: wembed.Text2Vec{
+				Properties: []string{"title"},
+				Model:      wembed.SnowflakeArcticEmbedLv2_0,
+			}},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	resp, err := http.Get("http://localhost:8080/v1/schema/" + name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	var schema struct {
+		VectorConfig map[string]struct {
+			Vectorizer map[string]map[string]any `json:"vectorizer"`
+		} `json:"vectorConfig"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&schema); err != nil {
+		t.Fatal(err)
+	}
+	conf := schema.VectorConfig["title_vector"].Vectorizer["text2vec-weaviate"]
+	if conf == nil {
+		t.Fatalf("title_vector has no text2vec-weaviate vectorizer: %+v", schema.VectorConfig)
+	}
+	if conf["model"] != wembed.SnowflakeArcticEmbedLv2_0 {
+		t.Errorf("model = %v, want %s", conf["model"], wembed.SnowflakeArcticEmbedLv2_0)
+	}
+	if fmt.Sprint(conf["properties"]) != "[title]" {
+		t.Errorf("properties = %v, want [title]", conf["properties"])
+	}
 }
