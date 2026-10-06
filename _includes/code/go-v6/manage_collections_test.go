@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/weaviate/weaviate-go-client/v6/collections"
@@ -9,8 +10,8 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/modules/selfprovided"
 )
 
-// TestCreateCollectionExample creates a collection that exercises the main
-// top-level configuration parameters at once — properties, a named vector,
+// TestCreateCollectionExample creates a collection that sets the main
+// top-level configuration parameters at once: properties, a named vector,
 // sharding, replication, and multi-tenancy. It backs the "how to create a
 // collection" reference example.
 func TestCreateCollectionExample(t *testing.T) {
@@ -31,29 +32,31 @@ func TestCreateCollectionExample(t *testing.T) {
 		},
 		Vectors: map[string]collections.VectorConfig{
 			"default": {
-				Index: vectorindex.HFresh{
-					Distance:         vectorindex.DistanceCosine,
-					MaxPostingSizeKB: 8,
+				Index: vectorindex.HNSW{
+					EfConstruction: 300,
+					Distance:       vectorindex.DistanceCosine,
+					FilterStrategy: vectorindex.FilterStrategySweeping,
 				},
 				Vectorizer: selfprovided.Vectorizer,
 			},
 		},
-		Replication: &collections.ReplicationConfig{Factor: 1},
+		MultiTenancy: &collections.MultiTenancyConfig{Enabled: false},
 		Sharding: &collections.ShardingConfig{
 			VirtualPerPhysical:  128,
 			DesiredCount:        1,
 			DesiredVirtualCount: 128,
 		},
-		MultiTenancy: &collections.MultiTenancyConfig{Enabled: false},
+		Replication: &collections.ReplicationConfig{
+			Factor:           1,
+			DeletionStrategy: collections.TimeBasedResolution,
+		},
 	})
-	// END CreateCollectionExample
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END CreateCollectionExample
 }
-
-// The collection-management snippets below run against a live server. They are
-// kept out of the CI run set (compile-only) and skip when executed directly.
 
 // TestBasicCreateCollection creates a collection with only a name. Missing
 // properties are added by auto-schema when data is first inserted.
@@ -69,10 +72,11 @@ func TestBasicCreateCollection(t *testing.T) {
 	_, err := client.Collections.Create(ctx, collections.Collection{
 		Name: "Article",
 	})
-	// END BasicCreateCollection
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END BasicCreateCollection
 }
 
 // TestCreateCollectionWithProperties defines the collection properties and
@@ -95,10 +99,11 @@ func TestCreateCollectionWithProperties(t *testing.T) {
 		},
 		// highlight-end
 	})
-	// END CreateCollectionWithProperties
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END CreateCollectionWithProperties
 }
 
 // TestCheckIfExists reports whether a collection is defined in the schema.
@@ -109,11 +114,12 @@ func TestCheckIfExists(t *testing.T) {
 
 	// START CheckIfExists
 	exists, err := client.Collections.Exists(ctx, "Article")
-	// END CheckIfExists
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("Article exists: %v", exists)
+	fmt.Println(exists)
+	// END CheckIfExists
 }
 
 // TestReadOneCollection reads a single collection definition from the schema.
@@ -127,11 +133,18 @@ func TestReadOneCollection(t *testing.T) {
 
 	// START ReadOneCollection
 	config, err := client.Collections.GetConfig(ctx, "Article")
-	// END ReadOneCollection
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
-	t.Logf("%s", config.Name)
+	// GetConfig returns nil when the collection does not exist.
+	if config != nil {
+		fmt.Println(config.Name)
+		for _, p := range config.Properties {
+			fmt.Printf("  %s (%s)\n", p.Name, p.DataType)
+		}
+	}
+	// END ReadOneCollection
 }
 
 // TestReadAllCollections reads every collection definition in the schema.
@@ -142,22 +155,23 @@ func TestReadAllCollections(t *testing.T) {
 
 	// START ReadAllCollections
 	configs, err := client.Collections.List(ctx)
-	// END ReadAllCollections
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, config := range configs {
-		t.Logf("%s", config.Name)
+		fmt.Println(config.Name)
 	}
+	// END ReadAllCollections
 }
 
-// TestUpdateCollection is a placeholder: the v6 Go client cannot yet update an
-// existing collection definition. Collection settings must be chosen at
-// creation time; to change an immutable setting, recreate the collection.
+// TestUpdateCollection is a placeholder. The client exposes the Config.Update*
+// calls, but each one re-sends the whole collection and the server rejects it
+// with HTTP 422 on any collection that has a property or an HNSW vector.
 func TestUpdateCollection(t *testing.T) {
-	t.Skip("updating a collection definition is not yet available in the v6 Go client")
+	t.Skip("fails at v6.0.0-rc.0: every Config.Update* call returns HTTP 422 on a collection with properties or an HNSW vector")
 
-	// TODO[g-despot]: update-collection snippet pending v6 client support
+	// TODO[g-despot]: update-collection snippet pending a client fix for the HTTP 422
 	// START UpdateCollection
 	// Coming soon
 	// END UpdateCollection

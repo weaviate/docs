@@ -11,9 +11,6 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/tenant"
 )
 
-// The multi-tenancy snippets below run against a live server. They are kept out
-// of the CI run set (compile-only) and skip when executed directly.
-
 // TestEnableMultiTenancy creates a collection with multi-tenancy turned on.
 func TestEnableMultiTenancy(t *testing.T) {
 	ctx := context.Background()
@@ -21,6 +18,7 @@ func TestEnableMultiTenancy(t *testing.T) {
 	defer client.Close()
 
 	_ = client.Collections.Delete(ctx, "MultiTenancyCollection")
+	defer client.Collections.Delete(ctx, "MultiTenancyCollection")
 
 	// START EnableMultiTenancy
 	_, err := client.Collections.Create(ctx, collections.Collection{
@@ -31,45 +29,47 @@ func TestEnableMultiTenancy(t *testing.T) {
 		},
 		// highlight-end
 	})
-	// END EnableMultiTenancy
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END EnableMultiTenancy
 }
 
-// TestEnableAutoMT creates a multi-tenancy collection that also creates and
-// activates tenants automatically when data is inserted for an unknown tenant.
+// TestEnableAutoMT creates a multi-tenancy collection that creates tenants
+// automatically when data is inserted for an unknown tenant.
 func TestEnableAutoMT(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	_ = client.Collections.Delete(ctx, "MultiTenancyCollection")
+	_ = client.Collections.Delete(ctx, "CollectionWithAutoMTEnabled")
+	defer client.Collections.Delete(ctx, "CollectionWithAutoMTEnabled")
 
 	// START EnableAutoMT
 	_, err := client.Collections.Create(ctx, collections.Collection{
-		Name: "MultiTenancyCollection",
+		Name: "CollectionWithAutoMTEnabled",
 		// highlight-start
 		MultiTenancy: &collections.MultiTenancyConfig{
-			Enabled:              true,
-			AutoTenantCreation:   true,
-			AutoTenantActivation: true,
+			Enabled:            true,
+			AutoTenantCreation: true,
 		},
 		// highlight-end
 	})
-	// END EnableAutoMT
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END EnableAutoMT
 }
 
-// TestUpdateAutoMT is a placeholder: the v6 Go client cannot yet update an
-// existing collection's configuration, so auto-tenant settings can only be set
-// at creation time.
+// TestUpdateAutoMT is a placeholder. Config.UpdateMultiTenancyConfig exists,
+// but it re-sends the whole collection and the server rejects it with HTTP 422
+// on any collection that has a property.
 func TestUpdateAutoMT(t *testing.T) {
-	t.Skip("updating a collection's configuration is not yet available in the v6 Go client")
+	t.Skip("fails at v6.0.0-rc.0: every Config.Update* call returns HTTP 422 on a collection with properties or an HNSW vector")
 
-	// TODO[g-despot]: update-collection (auto-tenant) snippet pending v6 client support
+	// TODO[g-despot]: update-auto-tenant snippet pending a client fix for the HTTP 422
 	// START UpdateAutoMT
 	// Coming soon
 	// END UpdateAutoMT
@@ -87,15 +87,26 @@ func TestAddTenantsToClass(t *testing.T) {
 
 	// START AddTenantsToClass
 	collection := client.Collections.Use("MultiTenancyCollection")
+
+	// Add two tenants to the collection
 	// highlight-start
 	err := collection.Tenants.Create(ctx,
-		tenant.Tenant{Name: "tenantA"},                          // Active by default.
-		tenant.Tenant{Name: "tenantB", Status: tenant.Inactive}, // Created on disk, not loaded.
+		tenant.Tenant{Name: "tenantA"},
+		tenant.Tenant{Name: "tenantB"},
 	)
 	// highlight-end
+	if err != nil {
+		// handle error
+		panic(err)
+	}
 	// END AddTenantsToClass
+
+	got, err := collection.Tenants.Get(ctx)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if len(got) != 2 {
+		t.Fatalf("got %d tenants, want 2", len(got))
 	}
 }
 
@@ -139,10 +150,11 @@ func TestRemoveTenants(t *testing.T) {
 	// highlight-start
 	err := collection.Tenants.Delete(ctx, "tenantB", "tenantX")
 	// highlight-end
-	// END RemoveTenants
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END RemoveTenants
 }
 
 // TestCreateMtObject inserts an object into a specific tenant. The tenant is
@@ -165,13 +177,14 @@ func TestCreateMtObject(t *testing.T) {
 	// highlight-end
 	_, err := collection.Data.Insert(ctx, &data.Object{
 		Properties: map[string]any{
-			"question": "This vector DB is OSS and supports automatic property type inference on import",
+			"question": "This vector DB is OSS & supports automatic property type inference on import",
 		},
 	})
-	// END CreateMtObject
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END CreateMtObject
 }
 
 // TestMtSearch runs a query scoped to a single tenant.

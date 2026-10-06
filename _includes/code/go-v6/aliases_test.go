@@ -13,18 +13,18 @@ import (
 )
 
 // The alias snippets run live against the local instance. Aliases are
-// instance-global, so each test seeds the collections it needs (Article and
+// instance-global, so each test seeds the collections it needs (Articles and
 // ArticlesV2) and the specific alias it operates on, rather than depending on
 // the order the tests execute in.
 
-// setupArticleForAliases (re)creates Article and ArticlesV2 and seeds Article so
+// setupArticleForAliases (re)creates Articles and ArticlesV2 and seeds Articles so
 // a query through an alias returns data.
 func setupArticleForAliases(t *testing.T, client *weaviate.Client) {
 	t.Helper()
 	ctx := context.Background()
-	_ = client.Collections.Delete(ctx, "Article")
+	_ = client.Collections.Delete(ctx, "Articles")
 	_ = client.Collections.Delete(ctx, "ArticlesV2")
-	for _, name := range []string{"Article", "ArticlesV2"} {
+	for _, name := range []string{"Articles", "ArticlesV2"} {
 		if _, err := client.Collections.Create(ctx, collections.Collection{
 			Name: name,
 			Properties: []collections.Property{
@@ -35,7 +35,7 @@ func setupArticleForAliases(t *testing.T, client *weaviate.Client) {
 			t.Fatalf("create %s collection: %v", name, err)
 		}
 	}
-	articles := client.Collections.Use("Article")
+	articles := client.Collections.Use("Articles")
 	// Fixed, non-leading-zero ids keep the alias query deterministic (a
 	// server-assigned 0x00-leading id flakes gRPC queries; see filterByIdSeedUUID).
 	a1 := uuid.MustParse("b1c2d3e4-f5a6-4b7c-8d9e-1f2a3b4c5d6e")
@@ -44,7 +44,7 @@ func setupArticleForAliases(t *testing.T, client *weaviate.Client) {
 		&data.Object{UUID: &a1, Properties: map[string]any{"title": "Weaviate", "body": "An open-source vector database"}},
 		&data.Object{UUID: &a2, Properties: map[string]any{"title": "Vectors", "body": "Numeric representations of data"}},
 	); err != nil {
-		t.Fatalf("seed Article: %v", err)
+		t.Fatalf("seed Articles: %v", err)
 	}
 	waitForCount(t, articles, 2)
 }
@@ -64,8 +64,8 @@ func ensureAlias(t *testing.T, client *weaviate.Client, alias, collection string
 // cleanupAliases removes the alias and collections created for the alias
 // snippets. Call it with defer so the deletes run while the client is open.
 func cleanupAliases(ctx context.Context, client *weaviate.Client) {
-	_ = client.Alias.Delete(ctx, "ArticlesProd")
-	_ = client.Collections.Delete(ctx, "Article")
+	_ = client.Alias.Delete(ctx, "ArticlesAlias")
+	_ = client.Collections.Delete(ctx, "Articles")
 	_ = client.Collections.Delete(ctx, "ArticlesV2")
 }
 
@@ -76,17 +76,22 @@ func TestCreateAlias(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	_ = client.Alias.Delete(ctx, "ArticlesProd") // clean slate: the snippet creates it
+	_ = client.Alias.Delete(ctx, "ArticlesAlias") // clean slate: the snippet creates it
 	defer cleanupAliases(ctx, client)
 
 	// START CreateAlias
 	err := client.Alias.Create(ctx, collections.Alias{
-		Alias:      "ArticlesProd",
-		Collection: "Article",
+		Alias:      "ArticlesAlias",
+		Collection: "Articles",
 	})
-	// END CreateAlias
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
+	}
+	// END CreateAlias
+
+	if got, err := client.Alias.Get(ctx, "ArticlesAlias"); err != nil || got == nil || got.Collection != "Articles" {
+		t.Fatalf("alias after create: %+v, %v", got, err)
 	}
 }
 
@@ -97,7 +102,7 @@ func TestListAllAliases(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	ensureAlias(t, client, "ArticlesProd", "Article")
+	ensureAlias(t, client, "ArticlesAlias", "Articles")
 	defer cleanupAliases(ctx, client)
 
 	// START ListAllAliases
@@ -119,7 +124,7 @@ func TestListCollectionAliases(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	ensureAlias(t, client, "ArticlesProd", "Article")
+	ensureAlias(t, client, "ArticlesAlias", "Articles")
 	defer cleanupAliases(ctx, client)
 
 	// START ListCollectionAliases
@@ -130,7 +135,7 @@ func TestListCollectionAliases(t *testing.T) {
 	}
 	// The client lists all aliases; filter by the target collection.
 	for _, a := range aliases {
-		if a.Collection == "Article" {
+		if a.Collection == "Articles" {
 			fmt.Printf("alias %q -> collection %q\n", a.Alias, a.Collection)
 		}
 	}
@@ -144,11 +149,11 @@ func TestGetAlias(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	ensureAlias(t, client, "ArticlesProd", "Article")
+	ensureAlias(t, client, "ArticlesAlias", "Articles")
 	defer cleanupAliases(ctx, client)
 
 	// START GetAlias
-	alias, err := client.Alias.Get(ctx, "ArticlesProd")
+	alias, err := client.Alias.Get(ctx, "ArticlesAlias")
 	if err != nil {
 		// handle error
 		panic(err)
@@ -164,17 +169,22 @@ func TestUpdateAlias(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	ensureAlias(t, client, "ArticlesProd", "Article")
+	ensureAlias(t, client, "ArticlesAlias", "Articles")
 	defer cleanupAliases(ctx, client)
 
 	// START UpdateAlias
 	err := client.Alias.Update(ctx, collections.Alias{
-		Alias:      "ArticlesProd",
+		Alias:      "ArticlesAlias",
 		Collection: "ArticlesV2",
 	})
-	// END UpdateAlias
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
+	}
+	// END UpdateAlias
+
+	if got, err := client.Alias.Get(ctx, "ArticlesAlias"); err != nil || got == nil || got.Collection != "ArticlesV2" {
+		t.Fatalf("alias after update: %+v, %v", got, err)
 	}
 }
 
@@ -185,15 +195,16 @@ func TestDeleteAlias(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	ensureAlias(t, client, "ArticlesProd", "Article")
+	ensureAlias(t, client, "ArticlesAlias", "Articles")
 	defer cleanupAliases(ctx, client)
 
 	// START DeleteAlias
-	err := client.Alias.Delete(ctx, "ArticlesProd")
-	// END DeleteAlias
+	err := client.Alias.Delete(ctx, "ArticlesAlias")
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END DeleteAlias
 }
 
 // TestUseAlias queries through an alias. Anywhere a collection name is expected,
@@ -204,12 +215,12 @@ func TestUseAlias(t *testing.T) {
 	defer client.Close()
 
 	setupArticleForAliases(t, client)
-	ensureAlias(t, client, "ArticlesProd", "Article")
+	ensureAlias(t, client, "ArticlesAlias", "Articles")
 	defer cleanupAliases(ctx, client)
 
 	// START UseAlias
-	// "ArticlesProd" is an alias; the query runs against its target collection.
-	articles := client.Collections.Use("ArticlesProd")
+	// "ArticlesAlias" is an alias; the query runs against its target collection.
+	articles := client.Collections.Use("ArticlesAlias")
 	response, err := articles.Query.OverAll(ctx, query.OverAll{
 		Limit: 2,
 	})

@@ -17,9 +17,8 @@ func TestSetReranker(t *testing.T) {
 	// END SetReranker
 }
 
-// TestUpdateReranker is a placeholder: updating a collection's reranker model
-// integration requires a collection update, which is not yet available in the
-// v6 Go client.
+// TestUpdateReranker is a placeholder: the v6 Go client has no reranker model
+// configuration on a collection, so there is nothing to update.
 func TestUpdateReranker(t *testing.T) {
 	t.Skip("updating a reranker model on a collection is not yet available in the v6 Go client")
 
@@ -40,9 +39,8 @@ func TestSetGenerative(t *testing.T) {
 	// END SetGenerative
 }
 
-// TestUpdateGenerative is a placeholder: updating a collection's generative
-// model integration requires a collection update, which is not yet available in
-// the v6 Go client.
+// TestUpdateGenerative is a placeholder: the v6 Go client has no generative
+// model configuration on a collection, so there is nothing to update.
 func TestUpdateGenerative(t *testing.T) {
 	t.Skip("updating a generative model on a collection is not yet available in the v6 Go client")
 

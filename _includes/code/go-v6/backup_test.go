@@ -9,13 +9,14 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/backup"
 )
 
-// The backup snippets below require a configured backup backend (for example the
-// filesystem module). They are kept out of the CI run set (compile-only) and
-// skip when executed directly.
+// The docs instance has the filesystem backend, but these snippets use a fixed
+// backup ID. Backups persist on the instance, so a second run collides with the
+// first, and an unscoped backup or restore acts on every collection of the shared
+// instance. They stay skipped and compile only.
 
 // TestCreateBackup starts a backup and waits for it to complete.
 func TestCreateBackup(t *testing.T) {
-	t.Skip("requires a Weaviate instance with a backup backend module enabled")
+	t.Skip("fixed backup ID: backups persist on the shared instance, so a rerun collides with the existing backup")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -43,7 +44,7 @@ func TestCreateBackup(t *testing.T) {
 
 // TestStatusCreateBackup polls the status of an in-progress backup creation.
 func TestStatusCreateBackup(t *testing.T) {
-	t.Skip("requires a Weaviate instance with a backup backend module enabled")
+	t.Skip("fixed backup ID: backups persist on the shared instance, so a rerun collides with the existing backup")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -63,7 +64,7 @@ func TestStatusCreateBackup(t *testing.T) {
 
 // TestCancelBackup cancels an in-progress backup creation.
 func TestCancelBackup(t *testing.T) {
-	t.Skip("requires a Weaviate instance with a backup backend module enabled")
+	t.Skip("needs an in-flight backup with this fixed ID: cancelling a finished backup returns HTTP 422 and an unknown ID is a no-op")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -71,17 +72,18 @@ func TestCancelBackup(t *testing.T) {
 	// START CancelBackup
 	err := client.Backup.CancelCreate(ctx, backup.CancelOptions{
 		Backend: "filesystem",
-		ID:      "my-backup",
+		ID:      "some-unwanted-backup",
 	})
-	// END CancelBackup
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
+	// END CancelBackup
 }
 
 // TestRestoreBackup restores a backup and waits for it to complete.
 func TestRestoreBackup(t *testing.T) {
-	t.Skip("requires a Weaviate instance with a backup backend module enabled")
+	t.Skip("fixed backup ID: backups persist on the shared instance, so a rerun collides with the existing backup")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
@@ -107,7 +109,7 @@ func TestRestoreBackup(t *testing.T) {
 
 // TestStatusRestoreBackup polls the status of an in-progress backup restore.
 func TestStatusRestoreBackup(t *testing.T) {
-	t.Skip("requires a Weaviate instance with a backup backend module enabled")
+	t.Skip("fixed backup ID: backups persist on the shared instance, so a rerun collides with the existing backup")
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
