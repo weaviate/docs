@@ -92,8 +92,12 @@ Using an admin list will allow you to define your admin or read-only user/API-ke
 - Implement horizontal scaling to ensure high availability:
 
 ```yaml
-replicaCount: 3
+replicas: 3
 ```
+
+:::caution More pods does not mean more copies of your data
+`replicas` sets the number of Weaviate pods. It does not replicate your data. To keep a collection available when a node goes down, also set a [replication factor](/deploy/configuration/replication.md) of at least 3 on the collection.
+:::
 
 - Define CPU/memory limits and requests to optimize pod efficiency.
 
@@ -140,7 +144,6 @@ serviceMonitor:
 updateStrategy:
   type: RollingUpdate
   rollingUpdate:
-    maxSurge: 1
     maxUnavailable: 0
 ```
 

@@ -106,6 +106,20 @@ Each user can have one (1) free cluster, and by default each organization can ha
 
 </details>
 
+#### Q: Can I use GraphQL with Weaviate Cloud? {#graphql}
+
+<details>
+<summary> Answer </summary>
+
+New Weaviate Cloud clusters are created with GraphQL disabled (the `DISABLE_GRAPHQL` environment variable is set to `true`). To query your data, use one of these alternatives:
+
+- A [client library](/weaviate/client-libraries) for your programming language.
+- The [REST Search endpoints](/weaviate/api/rest).
+
+The Query tool was removed from the Weaviate Cloud console on **September 14, 2026**. Use the [Explorer tool](/cloud/tools/explorer-tool) to work with your data in the console instead.
+
+</details>
+
 ## Infrastructure
 
 #### Q: What infrastructure does Weaviate Cloud run on?
@@ -113,7 +127,11 @@ Each user can have one (1) free cluster, and by default each organization can ha
 <details>
 <summary> Answer </summary>
 
-Weaviate Cloud currently runs on **Google Cloud Platform (GCP)**. Support for **AWS** and **Azure** is on the roadmap.
+Weaviate Cloud runs on **AWS** and **Google Cloud Platform (GCP)**.
+
+Free clusters run on AWS. You can pick the AWS region under **Show advanced configuration** on the create-cluster form.
+
+Shared Cloud clusters can choose which provider to use. Choose the provider and the region under **Show advanced configuration**.
 
 </details>
 

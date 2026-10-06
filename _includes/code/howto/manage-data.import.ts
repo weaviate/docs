@@ -443,6 +443,6 @@ async function batchInsert() {
   }
 }
 
-const dataObject = [...]; // your data
+const dataObject = [/* ... */]; // your data
 await batchInsert(dataObject);
 // START BatchGRPC

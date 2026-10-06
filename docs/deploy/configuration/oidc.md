@@ -117,8 +117,8 @@ url = "http://localhost:8080"  # <-- Replace with your actual Weaviate URL
 
 # Get Weaviate's OIDC configuration
 weaviate_open_id_config = requests.get(url + "/v1/.well-known/openid-configuration")
-if weaviate_open_id_config.status_code == "404":
-    print("Your Weaviate instance is not configured with openid")
+if weaviate_open_id_config.status_code == 404:
+    raise SystemExit("Your Weaviate instance is not configured with OIDC")
 
 response_json = weaviate_open_id_config.json()
 client_id = response_json["clientId"]

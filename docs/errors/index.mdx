@@ -40,7 +40,7 @@ export const errorGroups = [
   {
     title: "Cluster resources",
     description:
-      "Shards that will not load, and other messages that mean the node has run out of memory, memory mappings, or disk.",
+      "Shards that will not load because the node has run out of memory mappings.",
     link: "/errors/cluster-resources",
     icon: "fa fa-server",
   },
@@ -57,6 +57,13 @@ export const errorGroups = [
       "Renamed and retired embedding, multimodal, and generative model integrations.",
     link: "/errors/model-integrations",
     icon: "fa fa-diagram-project",
+  },
+  {
+    title: "Node health",
+    description:
+      "Nodes that are not ready to serve, while they start up or when they never finish starting.",
+    link: "/errors/node-health",
+    icon: "fa fa-heart-pulse",
   },
 ];
 

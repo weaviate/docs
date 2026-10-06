@@ -286,7 +286,7 @@ jobs:
 
       - name: Override TypeScript client branch
         run: |
-          TS_BRANCH="${{ inputs.typescript_client_branch || 'v3.13.1' }}"
+          TS_BRANCH="${{ inputs.typescript_client_branch || 'v3.14.0' }}"
           echo "📦 Building weaviate-client from branch: $TS_BRANCH"
           git clone --depth 1 -b "$TS_BRANCH" https://github.com/weaviate/typescript-client.git /tmp/ts-client
           cd /tmp/ts-client
@@ -299,6 +299,15 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           yarn link weaviate-client
           echo "✅ Branch override linked"
+
+      # Reported, not enforced: `tsx` transpiles without type-checking, so an
+      # unknown client option passes the snippet lane. Known pre-existing
+      # failures keep this non-blocking for now.
+      - name: Typecheck TypeScript snippets
+        continue-on-error: true
+        run: |
+          echo "🔍 Type-checking TypeScript snippet sources..."
+          yarn typecheck:ts
 
       - name: Start services
         run: |
@@ -731,9 +740,12 @@ jobs:
 
   test-csharp:
     name: Test C#
-    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
+    if: ${{ always() && github.ref != 'refs/heads/docs/go-v6-scaffold' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Shares the cloud instance with the Java lane (DemoCollection, JeopardyTiny,
+    # CollectionWithDate); run after it so the two never race.
+    needs: test-java
 
     steps:
       - name: Checkout code
@@ -759,7 +771,7 @@ jobs:
 
       - name: Clone C# client
         run: |
-          CSHARP_BRANCH="${{ inputs.csharp_client_branch || '1.1.1' }}"
+          CSHARP_BRANCH="${{ inputs.csharp_client_branch || '1.2.0' }}"
           echo "📦 Cloning C# client from branch: $CSHARP_BRANCH"
           git clone --depth 1 -b "$CSHARP_BRANCH" https://github.com/weaviate/csharp-client.git "${{ github.workspace }}/../csharp-client"
           echo "✅ C# client cloned to $(realpath "${{ github.workspace }}/../csharp-client")"

@@ -1,0 +1,16 @@
+{
+  // Type-checks the executable TypeScript snippet sources (.mts) that the docs
+  // test lane runs. `tsx` transpiles without checking, so an unknown client
+  // option (e.g. a parameter that only exists on an unreleased client branch)
+  // runs green; `tsc --noEmit` catches it.
+  // moduleResolution must be "bundler" (not the root config's "node"): the
+  // client packages are exports-only, and "node" cannot see their type
+  // declarations at all.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "include": ["_includes/**/*.mts", "docs/**/*.mts"]
+}

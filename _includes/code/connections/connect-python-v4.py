@@ -120,6 +120,7 @@ client.close()
 #########################
 
 # START APIKeyWCD
+import os
 import weaviate
 from weaviate.classes.init import Auth
 
@@ -159,6 +160,7 @@ client.close()
 #############################
 
 # START LocalAuth
+import os
 import weaviate
 from weaviate.classes.init import Auth
 

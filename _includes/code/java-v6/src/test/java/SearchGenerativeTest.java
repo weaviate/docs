@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Map;
 
-class GenerativeSearchTest {
+class SearchGenerativeTest {
 
   private static WeaviateClient client;
 

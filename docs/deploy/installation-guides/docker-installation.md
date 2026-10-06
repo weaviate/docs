@@ -430,6 +430,57 @@ services:
 ...
 ```
 
+### `bind: address already in use`
+
+Docker refuses to start a container when a port it publishes is already taken on the host. The message names the port, which tells you which part of Weaviate cannot start:
+
+| Port | Used for | If it is taken |
+| --- | --- | --- |
+| `8080` | REST API, and the readiness and liveness endpoints | Nothing can reach Weaviate. Clients fail to connect. |
+| `50051` | gRPC API, which the clients use for queries and batch imports | The REST API works, but client connections fail their gRPC health check. |
+| `6060` | Go profiling endpoint, published only by the three-node example | Only profiling is affected. |
+
+The three-node example publishes one set per node, so it also uses `8081` and `8082`, `50052` and `50053`, and `6061` and `6062`.
+
+The clustering ports are not published to the host: `7100`–`7105` (`CLUSTER_GOSSIP_BIND_PORT` and `CLUSTER_DATA_BIND_PORT`) and `8300` and `8301` (Raft) are reached over the Compose network between containers, so they cannot collide with a process on your machine. Change the left-hand side of a `ports` mapping to move a published port, for example `8081:8080`.
+
+### A port stays busy after a crash
+
+If Docker or the container stopped without a clean shutdown, a `docker-proxy` process can keep holding the published port. `docker ps` shows nothing, but the next `docker compose up` still fails with `address already in use`.
+
+Find what holds the port:
+
+```bash
+sudo lsof -i :8080
+```
+
+If the holder is `docker-proxy`, restart Docker — `sudo systemctl restart docker` on Linux, or quit and reopen Docker Desktop — which releases the port and leaves Docker's own bookkeeping consistent.
+
+### Running Weaviate from a UI with no Compose file
+
+Some container UIs, such as Portainer, let you create a container but give you no way to put a `docker-compose.yml` on the server's filesystem. Nothing in the sample Compose file needs one: it is an image, two port mappings, a volume, and a set of environment variables. Pass them directly instead:
+
+```bash
+docker run -d --name weaviate -p 8080:8080 -p 50051:50051 -v weaviate_data:/var/lib/weaviate -e PERSISTENCE_DATA_PATH=/var/lib/weaviate -e CLUSTER_HOSTNAME=node1 -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=false -e AUTHENTICATION_APIKEY_ENABLED=true -e AUTHENTICATION_APIKEY_ALLOWED_KEYS=user-a-key -e AUTHENTICATION_APIKEY_USERS=user-a -e AUTHORIZATION_ENABLE_RBAC=true -e AUTHORIZATION_RBAC_ROOT_USERS=user-a cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+```
+
+In a UI, put the same values into its image, ports, volumes, and environment-variable fields.
+
+### What survives a restart, `down`, and `down -v` {#what-survives-what}
+
+The sample Compose files mount a named volume, `weaviate_data`, at `/var/lib/weaviate`, and point `PERSISTENCE_DATA_PATH` at it. A named volume has its own lifecycle, separate from the container:
+
+| What you do | Container | Data |
+| --- | --- | --- |
+| Crash, `docker restart`, host reboot | Restarted or recreated | Kept |
+| `docker compose down` | Removed | Kept — the named volume is left alone |
+| `docker compose down -v` | Removed | **Deleted** — `-v` removes the named volume too |
+| `docker rm weaviate` | Removed | Kept |
+
+Run `docker compose down` rather than killing the container: it gives Weaviate time to flush in-memory data to disk.
+
+The one case where data does not survive is a container started with no volume at all — including the `docker run` command at the top of this page. Its data lives in the container's writable layer and goes away with the container. Add `-v weaviate_data:/var/lib/weaviate` and set `PERSISTENCE_DATA_PATH` to `/var/lib/weaviate` to keep it.
+
 ## Related pages
 
 - If you are new to Docker, see [Docker Introduction for Weaviate Users](https://weaviate.io/blog/docker-and-containers-with-weaviate).

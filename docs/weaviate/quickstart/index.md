@@ -69,8 +69,8 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
   }}
 >
   <iframe
-    id="mk6l470aqk"
-    src="https://app.guideflow.com/embed/mk6l470aqk"
+    id="3r3vg6mcnp"
+    src="https://app.guideflow.com/embed/3r3vg6mcnp"
     width="100%"
     height="100%"
     style={{ overflow: "hidden", position: "absolute", border: "none" }}
@@ -83,7 +83,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
   />
   <script
     src="https://app.guideflow.com/assets/opt.js"
-    data-iframe-id="mk6l470aqk"
+    data-iframe-id="3r3vg6mcnp"
   ></script>
 </div>
 
@@ -117,8 +117,8 @@ You can retrieve them both from the [WCD console](/go/console?utm_content=quicks
   }}
 >
   <iframe
-    id="ok8l954sxr"
-    src="https://app.guideflow.com/embed/ok8l954sxr"
+    id="6kwn8ldczk"
+    src="https://app.guideflow.com/embed/6kwn8ldczk"
     width="100%"
     height="100%"
     style={{ overflow: "hidden", position: "absolute", border: "none" }}
@@ -131,7 +131,7 @@ You can retrieve them both from the [WCD console](/go/console?utm_content=quicks
   />
   <script
     src="https://app.guideflow.com/assets/opt.js"
-    data-iframe-id="ok8l954sxr"
+    data-iframe-id="6kwn8ldczk"
   ></script>
 </div>
 
@@ -156,6 +156,27 @@ Follow the instructions below to install one of the official client libraries, a
 import CodeClientInstall from "/\_includes/code/quickstart/clients.install.new.mdx";
 
 <CodeClientInstall />
+
+<details>
+  <summary>Verify your setup</summary>
+
+Before you create anything, you can also check that the client can reach your cluster:
+
+import QuickstartIsReady from "/\_includes/code/quickstart/quickstart.is_ready.mdx";
+
+<QuickstartIsReady />
+
+Some common first errors include:
+
+| What you see | What it means |
+| --- | --- |
+| `unauthorized: invalid api key` (HTTP 401) | The key is wrong or is not an admin key. Copy the **Admin** key from your cluster's **API keys** tab. |
+| `Unfortunately, the gRPC health check against Weaviate could not be completed.` | The client reached REST but not gRPC. Check the endpoint format for your client: the Go and C# clients want a bare hostname, without `https://`. On a self-hosted instance, also check that port `50051` is published and not blocked. |
+| `no vectorizer found for class "Movie"` | You ran a `nearText` query against a collection that has no vectorizer. Create the collection with a vectorizer, or query with `nearVector` and supply the vector yourself. |
+| `no api key found neither in request header: ... nor in environment variable under ...` | The model provider key never reached Weaviate. Pass it in the connection headers, as in the [model provider](../model-providers/index.md) examples. |
+| `Con004: The connection to Weaviate was not closed properly.` | The script finished without closing the client. Call `client.close()`, or use a context manager. |
+
+</details>
 
 ---
 

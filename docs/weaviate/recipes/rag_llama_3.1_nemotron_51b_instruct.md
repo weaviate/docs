@@ -104,7 +104,7 @@ True
 
 Collection stores your data and vector embeddings.
 
-Full list of [generative models](https://weaviate.io/developers/weaviate/model-providers/octoai/generative#available-models)
+Full list of [generative models](/weaviate/model-providers/nvidia/generative#available-models)
 
 ```python
 # Note: in practice, you shouldn't rerun this cell, as it deletes your data

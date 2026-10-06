@@ -1034,7 +1034,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.nvidia(
         # # These parameters are optional
-        # base_url="https://integrate.api.nvidia.com/v1",
+        # base_url="https://integrate.api.nvidia.com",
         # model="meta/llama-3.3-70b-instruct",
         # temperature=0.7,
         # max_tokens=1024
@@ -1060,7 +1060,7 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.nvidia(
         # # These parameters are optional
-        # base_url="https://integrate.api.nvidia.com/v1",
+        # base_url="https://integrate.api.nvidia.com",
         # model="meta/llama-3.3-70b-instruct",
         # temperature=0.7,
         # max_tokens=1024
@@ -1069,52 +1069,6 @@ response = collection.generate.near_text(
     # highlight-end
 )
 # END RuntimeModelSelectionNVIDIA
-
-# clean up
-client.collections.delete("DemoCollection")
-
-# START BasicGenerativeOctoAI
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "DemoCollection",
-    generative_config=Configure.Generative.octoai()
-    # Additional parameters not shown
-)
-# END BasicGenerativeOctoAI
-
-# clean up
-client.collections.delete("DemoCollection")
-
-# START GenerativeOctoAICustomModel
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "DemoCollection",
-    generative_config=Configure.Generative.octoai(
-        model="meta-llama-3-70b-instruct"
-    )
-    # Additional parameters not shown
-)
-# END GenerativeOctoAICustomModel
-
-# clean up
-client.collections.delete("DemoCollection")
-
-# START FullGenerativeOctoAI
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "DemoCollection",
-    generative_config=Configure.Generative.octoai(
-        # # These parameters are optional
-        model = "meta-llama-3-70b-instruct",
-        max_tokens = 500,
-        temperature = 0.7,
-        base_url = "https://text.octoai.run"
-    )
-)
-# END FullGenerativeOctoAI
 
 # clean up
 client.collections.delete("DemoCollection")

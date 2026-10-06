@@ -20,6 +20,16 @@ This approach of upgrading one minor version at a time helps to minimize the ris
 
 ### Version-specific migration guides
 
+These guides cover upgrades that need steps beyond swapping the image:
+
+| Guide | Applies when |
+| --- | --- |
+| [1.25 (for Kubernetes users)](./weaviate-1-25.md) | Upgrading a Kubernetes deployment to `1.25.x` from `1.24.x` or lower. |
+| [1.30 (BlockMax WAND migration)](./weaviate-1-30.md) | Moving collections created before `1.30` to the BlockMax WAND inverted index format. |
+| [Archive](./archive.md) | Versions `1.19` and older. |
+
+Two further notes apply to versions without their own guide:
+
 - When upgrading to version `1.25.x` from `1.24.x` (or lower), you must perform a [Raft migration](#raft-migration-v1250).
 - When upgrading to version `1.26.x` or higher (from the preceding version), ensure that the cluster metadata is synchronized.
     - To do so, poll the `/cluster/statistics` endpoint, and check that the correct number of nodes are reporting statistics, and the `synchronized` flag is showing `true`, before proceeding with the upgrade.
@@ -65,7 +75,7 @@ If you are upgrading from a version before `v1.23.13`, we recommend that you:
 
 Multi-node instances of Weaviate running `1.28.13+`, `1.29.5+`, or `1.30.2+` may experience problems if downgraded to a `v1.27.x` version earlier than `1.27.26`. The cluster may not reach a **Ready** state due to a change in the way that RAFT snapshots are stored in the database.
 
-A fix for this issue will be released with `1.27.26`, which safely handles the downgrade path to `1.27`.
+The fix shipped in `1.27.26`, which safely handles the downgrade path to `1.27`.
 
 If you need to downgrade Weaviate to `v1.27.x`, use `1.27.26` or higher.
 

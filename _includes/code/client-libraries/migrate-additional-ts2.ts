@@ -37,7 +37,7 @@ console.log(JSON.stringify(result, null, 2));
 
 // BatchEx
 let className = 'CollectionName';  // Replace with your collection name
-let dataObject = [...];
+let dataObject = [/* ... */];
 
 let batcher5 = client.batch.objectsBatcher();
 for (const dataObj of dataObject)

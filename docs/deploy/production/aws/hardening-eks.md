@@ -163,6 +163,10 @@ Enable the "restricted" pod security standard on your Weaviate namespace.
 - Host namespace access
 - Other dangerous configurations
 
+:::caution Disable the sysctl init container first
+By default, the Weaviate Helm chart runs a `configure-sysctl` init container that is privileged and runs as root. The `restricted` standard rejects it, so every pod fails admission. Before you apply the standard, set `initContainers.sysctlInitContainer.enabled: false` in your values, and raise `vm.max_map_count` at the node level instead — through your node group's user data, a custom AMI, or a privileged `DaemonSet`. See [Not enough memory mappings](/errors/cluster-resources#not-enough-memory-mappings) for the value to set and why Weaviate needs it.
+:::
+
 ### Configure non-root containers
 
 Secure your container runtime.

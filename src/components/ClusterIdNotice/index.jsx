@@ -6,10 +6,11 @@ import styles from "./styles.module.scss";
  * Shows the cluster id carried in the link, when the link carried one.
  *
  * Weaviate can append `?clusterid=<uuid>` to the docs links it prints, so the
- * reader lands holding it. This renders it. From Weaviate v1.40 the banner
- * (logged once the cluster has an id, never before), the docs_url log field
- * and the link in error messages all carry it, on clusters with telemetry
- * enabled. The redirect rules pass the parameter through.
+ * reader lands holding it. This renders it. The banner (logged once the
+ * cluster has an id, never before) carries it since Weaviate v1.39.4; the
+ * docs_url log field and the link in error messages carry it since v1.39.5,
+ * on clusters with telemetry enabled. The redirect rules pass the parameter
+ * through.
  *
  * Rendered on the four /errors entry pages, which is where a message link
  * actually lands, and on /improve-your-cluster, which is one link further on.

@@ -318,7 +318,7 @@ If your read consistency is set to `All` or `Quorum`, the read coordinator will 
 The read repair process also depends on the read and write consistency levels used.
 
 | Write consistency level | Read consistency level | Action |
-| :- | :- |
+| :- | :- | :- |
 | `ONE` | `ALL` | Weaviate has to verify all nodes to guarantee repair. |
 | `QUORUM` | `QUORUM` or `ALL` | Weaviate attempts to fix the sync issues. |
 | `ALL` | - | This situation should not occur. The write should have failed. |

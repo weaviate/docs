@@ -220,6 +220,10 @@ To enable tenant offloading, see the [modules page](../configuration/modules.md#
 
 Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them.
 
+Activation is the only automatic state change. Weaviate never deactivates or offloads a tenant on its own: there is no idle timeout, no usage-based policy, and no background process that moves a tenant to `INACTIVE` or `OFFLOADED`. A tenant stays `ACTIVE`, and keeps using its resources, until you change its state.
+
+To reclaim resources on a schedule, run your own job. A common pattern is a daily job that lists the collection's tenants, selects the ones your application has not used within your chosen window, and then calls [Deactivate tenant](#deactivate-tenant) or [Offload tenant](#offload-tenant) for them in one batched update. Track last use in your own application, and pair the job with `autoTenantActivation` so that a tenant that becomes active again is brought back on the next request.
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock

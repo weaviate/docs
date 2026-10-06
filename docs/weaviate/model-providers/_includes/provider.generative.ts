@@ -793,7 +793,7 @@ await client.collections.create({
   generative: weaviate.configure.generative.nvidia({
     // These parameters are optional
     // model: 'nvidia/llama-3.1-nemotron-70b-instruct'
-    // baseURL: "https://integrate.api.nvidia.com/v1",
+    // baseURL: "https://integrate.api.nvidia.com",
     // temperature: 0.7,
     // maxTokens: 1024
   }),
@@ -809,7 +809,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.nvidia({
     // These parameters are optional
-    // baseURL: "https://integrate.api.nvidia.com/v1",
+    // baseURL: "https://integrate.api.nvidia.com",
     // model: 'nvidia/llama-3.1-nemotron-70b-instruct',
     // temperature: 0.7,
     // maxTokens: 1000,
@@ -821,52 +821,6 @@ response = await myCollection.generate.nearText("A holiday film", {
   // Additional parameters not shown
 )
 // END RuntimeModelSelectionNVIDIA
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
-// START BasicGenerativeOctoAI
-await client.collections.create({
-  name: 'DemoCollection',
-  // highlight-start
-  generative: weaviate.configure.generative.octoai(),
-  // highlight-end
-  // Additional parameters not shown
-});
-// END BasicGenerativeOctoAI
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
-// START GenerativeOctoAICustomModel
-await client.collections.create({
-  name: 'DemoCollection',
-  // highlight-start
-  generative: weaviate.configure.generative.octoai({
-    model: 'meta-llama-3-70b-instruct'
-  }),
-  // highlight-end
-  // Additional parameters not shown
-});
-// END GenerativeOctoAICustomModel
-
-// Clean up
-await client.collections.delete('DemoCollection');
-
-// START FullGenerativeOctoAI
-await client.collections.create({
-  name: 'DemoCollection',
-  // highlight-start
-  generative: weaviate.configure.generative.octoai({
-    model: 'meta-llama-3-70b-instruct',
-    maxTokens: 500,
-    temperature: 0.7,
-    baseURL: 'https://text.octoai.run'
-  }),
-  // highlight-end
-  // Additional parameters not shown
-});
-// END FullGenerativeOctoAI
 
 // Clean up
 await client.collections.delete('DemoCollection');

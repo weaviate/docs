@@ -48,9 +48,6 @@ const morphApiKey = process.env.MORPH_APIKEY || '';  // Replace with your infere
 // START NVIDIAInstantiation
 const nvidiaApiKey = process.env.NVIDIA_API_KEY || '';  // Replace with your inference API key
 // END NVIDIAInstantiation
-// START OctoAIInstantiation
-const octoaiApiKey = process.env.OCTOAI_API_KEY || '';  // Replace with your inference API key
-// END OctoAIInstantiation
 // START OpenAIInstantiation
 const openaiApiKey = process.env.OPENAI_API_KEY || '';  // Replace with your inference API key
 // END OpenAIInstantiation
@@ -97,7 +94,7 @@ const client = await weaviate.connectToWeaviateCloud(
       'X-Digitalocean-Api-Key': digitaloceanApiKey,
       // END DigitalOceanInstantiation
       // START FriendliInstantiation  // START FriendliDedicatedInstantiation
-      'X-Friendli-Api-Key': friendliApiKey,
+      'X-Friendli-Token': friendliApiKey,
       // END FriendliInstantiation  // END FriendliDedicatedInstantiation
       // START FriendliDedicatedInstantiation
       'X-Friendli-Baseurl': 'https://inference.friendli.ai/dedicated',
@@ -124,9 +121,6 @@ const client = await weaviate.connectToWeaviateCloud(
       // START NVIDIAInstantiation
       'X-NVIDIA-Api-Key': nvidiaApiKey,
       // END NVIDIAInstantiation
-      // START OctoAIInstantiation
-      'X-OctoAI-Api-Key': octoaiApiKey,
-      // END OctoAIInstantiation
       // START OpenAIInstantiation
       'X-OpenAI-Api-Key': openaiApiKey,
       // END OpenAIInstantiation

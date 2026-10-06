@@ -50,6 +50,10 @@ The following environment variables are used to control runtime configuration ma
 
 ## Available overrides
 
+:::caution An unrecognized key is ignored, not rejected
+Weaviate reads only the keys listed below. Any other key in the overrides file is skipped silently — there is no error and no log entry — so a typo or a key from a newer version leaves the setting at its environment-variable value while the file looks correct. Check spelling against this list, then confirm the change took effect in the logs (see [Configuration changes](#configuration-changes)).
+:::
+
 The following overrides are currently supported:
 
 ### General
@@ -66,6 +70,7 @@ The following overrides are currently supported:
 | `default_quantization`                           | `DEFAULT_QUANTIZATION`                       |
 | `default_sharding_count`                         | `DEFAULT_SHARDING_COUNT`                     |
 | `default_vector_index`                           | `DEFAULT_VECTOR_INDEX`                       |
+| `disable_graphql`                                | `DISABLE_GRAPHQL`                            |
 | `export_default_bucket`                          | `EXPORT_DEFAULT_BUCKET`                      |
 | `export_default_path`                            | `EXPORT_DEFAULT_PATH`                        |
 | `export_enabled`                                 | `EXPORT_ENABLED`                             |
@@ -82,7 +87,6 @@ The following overrides are currently supported:
 | `query_slow_log_enabled`                         | `QUERY_SLOW_LOG_ENABLED`                     |
 | `query_slow_log_threshold`                       | `QUERY_SLOW_LOG_THRESHOLD`                   |
 | `replica_movement_minimum_async_wait`            | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT`        |
-| `replicated_indices_request_queue_enabled`       | `REPLICATED_INDICES_REQUEST_QUEUE_ENABLED`   |
 | `revectorize_check_disabled`                     | `REVECTORIZE_CHECK_DISABLED`                 |
 | `tenant_activity_read_log_level`                 | `TENANT_ACTIVITY_READ_LOG_LEVEL`             |
 | `tenant_activity_write_log_level`                | `TENANT_ACTIVITY_WRITE_LOG_LEVEL`            |
@@ -104,7 +108,7 @@ The following overrides are currently supported:
 | `usage_s3_bucket`              | `USAGE_S3_BUCKET`              |
 | `usage_s3_prefix`              | `USAGE_S3_PREFIX`              |
 | `usage_scrape_interval`        | `USAGE_SCRAPE_INTERVAL`        |
-| `usage_shard_jitter_interval`  | `USAGE_SHARD_JITTER_INTERVAL`  |
+| `usage_shard_concurrency`      | `USAGE_SHARD_CONCURRENCY`      |
 | `usage_verify_permissions`     | `USAGE_VERIFY_PERMISSIONS`     |
 
 ### Authentication
@@ -171,11 +175,11 @@ loading runtime config every 2m failed, using old config: invalid yaml
 
 ### Failure modes
 
-Runtime configuration management follows a "fail early, fail fast" principle to prevent data corruption and silent failures:
+A file Weaviate cannot parse at all follows a "fail early, fail fast" principle. A single bad value does not: it is skipped and logged, and the rest of the file still applies. An unrecognized key is not read at all.
 
-**1. Startup with invalid configuration** - If Weaviate attempts to start with an invalid runtime configuration file, the process will fail to start and exit. This ensures Weaviate never runs with incorrect settings.
+**1. Startup with a malformed file** - If Weaviate attempts to start with a runtime configuration file it cannot parse, such as malformed YAML, the process will fail to start and exit. This ensures Weaviate never runs with incorrect settings.
 
-**2. Invalid configuration during runtime** - When Weaviate is running and the runtime configuration file becomes invalid:
+**2. A malformed file during runtime** - When Weaviate is running and the runtime configuration file becomes unparseable:
 
 - Weaviate continues using the last valid configuration stored in memory
 - Error logs and metrics indicate the configuration loading failure

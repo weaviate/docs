@@ -165,9 +165,10 @@ Sets the maximum number of objects included in each batch when propagating data 
 #### `ASYNC_REPLICATION_FREQUENCY`
 Defines how often each node initiates the process of comparing its local data (via the hash tree) with other nodes storing the same shard. This regularly checks for inconsistencies, even if no changes have been explicitly triggered.
 - Its default value is `30s`. The value requires a time unit suffix (e.g. `30s`, `1m`).
+- The value is an **interval between comparisons**, not a rate. A larger number means comparisons run less often.
 - **Use Case(s)**
-  - Decreasing the frequency can be beneficial for applications that require faster convergence to eventual consistency. 
-  - Increasing the frequency can be beneficial for reducing the load on the system by relaxing the eventual consistency. 
+  - Lower the value, for example to `10s`, when an application needs faster convergence to eventual consistency. Comparisons run more often, at the cost of more background work.
+  - Raise the value, for example to `2m`, to reduce load on the cluster. Comparisons run less often, and replicas stay out of sync for longer.
 
 #### `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING`
 Defines a shorter frequency for subsequent comparison and propagation attempts when a previous propagation cycle did not complete (i.e., not all detected differences were synchronized).

@@ -35,7 +35,7 @@ This page broadly covers the Weaviate Python client (`v4` release). For usage in
 
 ## Installation
 
-The Python client library is developed and tested using Python 3.8+. It is available on [PyPI.org](https://pypi.org/project/weaviate-client/), and can be installed with:
+The Python client library requires Python 3.10 or later. It is available on [PyPI.org](https://pypi.org/project/weaviate-client/), and can be installed with:
 
 ```bash
 pip install -U weaviate-client
@@ -55,7 +55,7 @@ pip install --pre -U "weaviate-client==4.*"`
 
 #### Weaviate version compatibility
 
-The `v4` Python client requires Weaviate `v1.23.7` and later. Generally, we encourage you to use the latest version of the Python client and the Weaviate Database.
+The `v4` Python client requires Weaviate `v1.27.0` and later. Against an older server the client raises `Weaviate version <version> is not supported. Please use Weaviate version 1.27.0 or higher.` Generally, we encourage you to use the latest version of the Python client and the Weaviate Database.
 
 In Weaviate Cloud, clusters are compatible with the `v4` client as of 31 January, 2024. Clusters created before this date will not be compatible with the `v4` client.
 

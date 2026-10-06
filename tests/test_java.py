@@ -65,6 +65,10 @@ def test_llms_txt(empty_weaviates, test_class):
         "ManageCollectionsCrossReferencesTest",
         "ManageCollectionsMigrateDataTest",
         "ManageCollectionsMultiTenancyTest",
+        "ReferenceCollectionsTest",
+        # Needs OBJECTS_TTL_ALLOW_SECONDS + OBJECTS_TTL_DELETE_SCHEDULE, which
+        # docker-compose-anon.yml sets on the :8080 instance this test connects to.
+        "ManageDataTTLTest",
         "ManageObjectsCreateTest",
         "ManageObjectsDeleteTest",
         "ManageObjectsImportTest",
@@ -85,13 +89,14 @@ def test_manage_data(empty_weaviates, test_class):
         "SearchSimilarityTest",
         "SearchKeywordTest",
         "SearchHybridTest",
-        "SearchFilterTest",
+        "SearchFiltersTest",
         "SearchAggregateTest",
-        "GenerativeSearchTest",
-        "MultiTargetSearchTest",
+        "SearchGenerativeTest",
+        "SearchMultiTargetTest",
         "SearchImageTest",
-        "RerankTest",
+        "RerankerTest",
         "SearchProfileTest",
+        "SearchBoostTest",
     ],
 )
 def test_search(empty_weaviates, test_class):

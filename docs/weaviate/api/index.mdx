@@ -11,11 +11,12 @@ Weaviate provides multiple Application Programming Interfaces (APIs) to interact
 
   - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
   - The machine-readable specification behind this reference is published at <SkipValidationLink href="/openapi.json">`https://docs.weaviate.io/openapi.json`</SkipValidationLink>. See [Machine-readable API specification](#machine-readable-api-specification) below.
-  - The reference also lists an experimental REST Search API (the `/v1/search/{collection}/...` and `/v1/aggregate/{collection}` endpoints), which is disabled by default and rejects requests with a `422` status until [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) is set to `true`.
+  - The reference also lists an experimental REST Search API (the `/v1/search/{collection}/...` and `/v1/aggregate/{collection}` endpoints), which is enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it is disabled unless [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) is set to `true`, and rejects requests with a `422` status.
 
 - **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
 
   - Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
+  - Not available on new Weaviate Cloud clusters. They are created with GraphQL disabled. Use a [client library](../client-libraries/index.mdx) or the [REST Search endpoints](/weaviate/api/rest) instead.
 
 - **[Search API - gRPC](./grpc.md)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
 

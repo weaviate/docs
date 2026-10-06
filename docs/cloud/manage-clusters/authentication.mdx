@@ -5,6 +5,8 @@ description: "Configure authentication options for Weaviate Cloud clusters by ad
 image: og/wcd/user_guides.jpg
 ---
 
+A new cluster ships with no API keys — create one before you connect. This applies to free and Shared Cloud clusters alike, and both can create, edit, rotate and delete keys.
+
 [Weaviate Cloud (WCD)](/go/console?utm_content=cloud) uses [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) to manage authentication. Below, you can find guides on how to create, edit, rotate and delete API keys for accessing Weaviate Cloud.
 
 ### Create an API key
@@ -45,8 +47,8 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 To create an API key, follow these steps:
 
 1.  Open the [Weaviate Cloud console](/go/console?utm_content=cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
-2.  Navigate to the `API Keys` section, found in the `Cluster details` panel.
-3.  If you need a new API key, click the `New key` button.
+2.  Navigate to the `API Keys` section of the cluster `Dashboard`. A new cluster shows the empty state `There are no API keys for this cluster yet`.
+3.  Click the `+ New key` button.
 4.  In the `Create API Key` form, provide a descriptive name for your key.
 5.  Choose the role for this API key. You can either select an existing role like `admin` or `viewer`, or [create a new role](/cloud/manage-clusters/authorization) with specific permissions.
 6.  Click the `Create key` button.

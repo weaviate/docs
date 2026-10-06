@@ -158,7 +158,7 @@ On Weaviate Cloud, the MCP server is always enabled. There is no console setting
 
 To change the switch on an existing cluster:
 
-1. Open the cluster details page in the [Weaviate Cloud console](https://console.weaviate.cloud/) and click `Show advanced options`.
+1. Open the cluster `Dashboard` in the [Weaviate Cloud console](https://console.weaviate.cloud/) and click `Show advanced options`.
 2. Under `Advanced configuration`, set `Enable MCP Read-Only`.
 3. Click `Save Configuration`.
 
@@ -168,7 +168,7 @@ The switch is cluster-wide, while a `viewer` API key is per-credential: to keep 
 
 :::caution Connecting to a Weaviate Cloud cluster
 
-Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL:
+Use your cluster's REST endpoint with `/v1/mcp` appended and a cluster [API key](/cloud/manage-clusters/authentication) as the Bearer token. If the cluster vectorizes with [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) (`text2vec-weaviate`), the client must also send the `X-Weaviate-Cluster-Url` header set to the cluster URL. The `MCP` tab of the cluster's `How to connect` modal in the console generates this setup for you.
 
 ```json
 {

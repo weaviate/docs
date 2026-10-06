@@ -164,6 +164,10 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 - rerank-1
 - rerank-lite-1 (default)
 
+:::caution The module default is a retired model
+`rerank-lite-1` is a first-generation model that Voyage AI has retired. The built-in default of the `reranker-voyageai` module is still `rerank-lite-1`, so a collection created without a `model` points at a retired model. Set `model` on every collection you create.
+:::
+
 <details>
   <summary>
     Model support history

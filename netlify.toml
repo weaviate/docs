@@ -45,7 +45,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/platform/ssconsole"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -55,7 +55,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/console"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -85,7 +85,7 @@ status = 301
 
 [[redirects]]
 from = "/cloud/guides/console"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
@@ -105,17 +105,36 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/tutorials/console"
-to   = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
 status = 301
 
 [[redirects]]
 from = "/cloud/platform/support-levels"
-to   = "https://weaviate.io/suport-plans"
+to   = "https://weaviate.io/support-plans"
 status = 301
 
 [[redirects]]
 from = "/cloud/tools/import-tool"
 to   = "/cloud/tools/collections-tool"
+status = 301
+
+[[redirects]]
+from = "/cloud/tools/query-tool"
+to   = "/cloud/tools/explorer-tool"
+status = 301
+
+## The Cloud and Weaviate Embeddings quickstarts were consolidated onto the
+## single core quickstart, which already runs on Weaviate Cloud with Weaviate
+## Embeddings as its vectorizer.
+
+[[redirects]]
+from = "/cloud/quickstart"
+to   = "/weaviate/quickstart"
+status = 301
+
+[[redirects]]
+from = "/cloud/embeddings/quickstart"
+to   = "/weaviate/quickstart"
 status = 301
 
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
@@ -398,6 +417,24 @@ status = 301
 [[redirects]]
 from = "/weaviate/modules/other-modules/custom-modules"
 to   = "/weaviate/modules/custom-modules"
+status = 301
+
+## Removed integration redirects
+### OctoAI shut down its service; the integration pages were removed. Send
+### readers to the integration index so they can pick a live provider.
+[[redirects]]
+from = "/weaviate/model-providers/octoai/embeddings"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/model-providers/octoai/generative"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/model-providers/octoai"
+to   = "/weaviate/model-providers"
 status = 301
 
 ## Other modules/model-providers redirects
@@ -1263,6 +1300,13 @@ status = 301
 from = "/weaviate/tutorials/query"
 to   = "/weaviate/search"
 status = 301
+
+## TEMPORARY: serve the Enterprise Edition page from its v1-40/ee branch preview
+## until the v1.40 docs (PR #551) merge. Remove this block when /deploy/enterprise ships on main.
+[[redirects]]
+from = "/deploy/enterprise"
+to   = "https://v1-40-ee--docs-weaviate-io.netlify.app/deploy/enterprise"
+status = 302
 
 ### ==================== ERROR-MESSAGE REDIRECTOR (/e/<id>) ==================== ###
 #

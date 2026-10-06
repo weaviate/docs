@@ -32,9 +32,7 @@ TEST_PAGES = [
     ("/weaviate/connections/connect-cloud", {"tabs", "code"}),
     ("/weaviate/config-refs/collections", {"details", "table"}),
     ("/weaviate/concepts/data-import", set()),
-    ("/cloud/quickstart", {"code"}),
     ("/cloud/manage-clusters/create", set()),
-    ("/cloud/tools/query-tool", {"images"}),
     ("/weaviate/manage-collections/tenant-states", {"images"}),
     ("/query-agent/recipes/query-agent-ecommerce-assistant", {"code"}),
     ("/weaviate/search", set()),
@@ -641,7 +639,8 @@ def test_chatgpt_can_search_code_tabs():
     text = response.output_text
     text_lower = text.lower()
 
-    # The live web-search model cites either /weaviate/quickstart or /cloud/quickstart,
+    # The live web-search model cites either /weaviate/quickstart or the retired
+    # /cloud/quickstart (still in search indexes; it 301s to /weaviate/quickstart),
     # so the URL is not a reliable assertion target; the content assertions below carry the signal.
     found_quickstart_url = (
         "docs.weaviate.io/weaviate/quickstart" in text

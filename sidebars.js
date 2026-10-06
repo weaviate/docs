@@ -350,19 +350,6 @@ const sidebars = {
             },
             {
               type: "category",
-              label: "OctoAI (deprecated)",
-              className: "sidebar-item",
-              link: {
-                type: "doc",
-                id: "weaviate/model-providers/octoai/index",
-              },
-              items: [
-                "weaviate/model-providers/octoai/embeddings",
-                "weaviate/model-providers/octoai/generative",
-              ],
-            },
-            {
-              type: "category",
               label: "OpenAI",
               className: "sidebar-item",
               link: {
@@ -835,6 +822,7 @@ const sidebars = {
             id: "weaviate/client-libraries/typescript/index",
           },
           items: [
+            "weaviate/client-libraries/typescript/web-client",
             "weaviate/client-libraries/typescript/notes-best-practices",
             {
               type: "link",
@@ -1326,6 +1314,7 @@ const sidebars = {
     "query-agent/index",
     "query-agent/installation",
     "query-agent/quickstart",
+    "query-agent/changelog",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
@@ -1576,9 +1565,14 @@ const sidebars = {
       label: "Overview",
     },
     {
-      type: "doc",
-      id: "cloud/quickstart",
+      type: "link",
       label: "Quickstart",
+      href: "https://docs.weaviate.io/weaviate/quickstart",
+    },
+    {
+      type: "doc",
+      id: "cloud/console-overview",
+      label: "Console overview",
     },
     {
       type: "html",
@@ -1652,7 +1646,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Agents",
+      label: "Agents and tools",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1662,31 +1656,14 @@ const sidebars = {
           id: "cloud/tools/query-agent",
           className: "sidebar-item",
         },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Other tools",
-      className: "sidebar-main-category",
-      collapsed: true,
-      items: [
         {
           type: "doc",
           id: "cloud/tools/explorer-tool",
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "cloud/tools/query-tool",
-          className: "sidebar-item",
-        },
-        {
-          type: "ref",
-          id: "weaviate/configuration/mcp-server",
+          type: "link",
+          href: "https://docs.weaviate.io/weaviate/configuration/mcp-server#weaviate-cloud",
           label: "MCP server",
           className: "sidebar-item",
         },
@@ -1704,7 +1681,11 @@ const sidebars = {
   ],
   cloudWeaviateEmbeddings: [
     "cloud/embeddings/index",
-    "cloud/embeddings/quickstart",
+    {
+      type: "link",
+      label: "Quickstart",
+      href: "https://docs.weaviate.io/weaviate/quickstart",
+    },
     "cloud/embeddings/models",
     "cloud/embeddings/administration",
   ],
@@ -1794,6 +1775,7 @@ const sidebars = {
         "errors/cluster-resources",
         "errors/collection-configuration",
         "errors/model-integrations",
+        "errors/node-health",
       ],
     },
   ],

@@ -72,6 +72,7 @@ services:
   weaviate:
     # Other Weaviate configuration
     environment:
+      ENABLE_MODULES: text2vec-model2vec # Enable this module
       MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080  # Set the inference API endpoint
   text2vec-model2vec:  # Set the name of the inference container
     image: cr.weaviate.io/semitechnologies/model2vec-inference:minishlab-potion-base-32M
