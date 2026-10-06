@@ -37,9 +37,9 @@ To get a license key, see [Get a license](#get-a-license).
 
 Supply the license key to Weaviate through one of these [environment variables](/deploy/configuration/env-vars/index.md):
 
-| Variable | Value |
-| :-- | :-- |
-| `LICENSE_KEY` | The license key itself. |
+| Variable           | Value                                             |
+| :----------------- | :------------------------------------------------ |
+| `LICENSE_KEY`      | The license key itself.                           |
 | `LICENSE_KEY_FILE` | The path to a file that contains the license key. |
 
 To activate the Enterprise Edition, set a valid key and restart Weaviate. Each Enterprise Edition feature also has its own environment variable that turns it on. See [Enterprise Edition features](#enterprise-edition-features).
@@ -90,7 +90,7 @@ Weaviate also reports the edition in two other places:
 
 ## Get a license
 
-To get an Enterprise Edition license key, request one at [weaviate.io/enterprise-edition](https://weaviate.io/enterprise-edition).
+To get an Enterprise Edition license key, request one at [console.weaviate.cloud/enterprise-edition-trial](https://console.weaviate.cloud/enterprise-edition-trial).
 
 {/* TODO(ivan): legal page pending. License terms link target: https://weaviate.io/service/enterprise-edition */}
 
@@ -98,11 +98,11 @@ To get an Enterprise Edition license key, request one at [weaviate.io/enterprise
 
 This table lists Enterprise Edition features, the Weaviate version that added each one, the environment variable that turns it on, and what happens when the feature is turned on but Weaviate runs without a license key.
 
-| Feature | Available since | Turned on by | Without a license key |
-| :-- | :-- | :-- | :-- |
-| [Shard Self-Recovery](/deploy/configuration/self-recovery) | `v1.40` | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty. |
-| Namespaces | `v1.40` | `NAMESPACES_ENABLED` | Requests that name a collection return `403`. |
-| Deduplicated backups | `v1.40` | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
+| Feature                                                    | Available since | Turned on by            | Without a license key                                                              |
+| :--------------------------------------------------------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
+| [Shard Self-Recovery](/deploy/configuration/self-recovery) | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
+| Namespaces                                                 | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
+| Deduplicated backups                                       | `v1.40`         | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
 
 An Enterprise Edition feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
 
@@ -181,6 +181,6 @@ No. License keys apply to self-hosted deployments only.
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
