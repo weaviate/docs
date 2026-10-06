@@ -1428,6 +1428,11 @@ const sidebars = {
           id: "query-agent/clients/typescript",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "query-agent/clients/mcp",
+          className: "sidebar-item",
+        },
       ],
     },
     {
