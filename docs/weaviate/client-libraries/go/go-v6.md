@@ -155,8 +155,8 @@ The most visible changes are:
 - **Context first, with no terminator call.** Every operation takes a request context and returns a result and an error directly. The trailing call that executed a builder chain is gone.
 - **Named vectors by default.** Vectors are represented as named vectors throughout, which keeps single-vector and multi-vector collections consistent.
 - **Grouped sub-clients.** Cluster-wide concerns are grouped under dedicated sub-clients: collections, aliases, roles, users, groups, backups, cluster, and replication. So are per-collection concerns: data, query, aggregation, configuration, and tenants.
-- **Collection configuration.** `collection.Config` reads a collection's configuration and updates parts of it. Several updates fail in this release. See [Known limitations](#known-limitations).
-- **Vector index configuration.** You can configure an HNSW, flat, dynamic, or HFresh vector index, with compression, when you create a collection.
+- **Collection configuration.** `collection.Config` reads a collection's configuration and updates parts of it. The update calls fail in this release. See [Known limitations](#known-limitations).
+- **Vector index configuration.** You can configure an HNSW, flat, dynamic, or HFresh vector index, with compression, when you create a collection. Compression needs an explicit index type. See [Known limitations](#known-limitations).
 - **More vectorizers.** The `modules/openai`, `modules/google`, and `modules/huggingface` packages configure those providers' text vectorizers.
 - **Aggregation with search.** Aggregations can run over a near text, near object, near media, or hybrid search.
 - **Typed results.** Query results can be decoded into your own types.
@@ -171,26 +171,32 @@ The following behaviors are present in `v6.0.0-rc.0`.
 
 | Call | Failure | Workaround |
 | :--- | :------ | :--------- |
-| Cancelling the context of a batch stream (`collection.Batch(...)`) while `Close()` is draining | Panics the process from a client goroutine with `close of closed channel`. Your code cannot recover the panic | None known |
+| Cancelling the context of a batch stream (`collection.Batch(...)`) while `Close()` is draining | Panics the process with `close of closed channel` in 7 of 10 test runs. The panic comes from a client goroutine, so your code cannot recover it | None known |
+| `Config.UpdateVectorConfig` on a collection without named vectors | Panics with `assignment to entry in nil map` | Change the configuration with the REST API or another client |
 | A batch stream carrying a reference via `b.Reference(...)` | `Close()` never returns, and `Wait()` on the reference's task never returns, even though the reference is written | Use the batch stream for objects only, and write references with `Data.AddReferences` |
-| A batch stream `Add` with a context that is already cancelled | The `Add` returns `context canceled`, and the stream is then broken. `Close()` usually hangs and the next object is not written. When `Close()` does return, the cancelled object can be written anyway | None known |
-| `Config.UpdateVectorConfig`, `UpdateInvertedIndexConfig`, `UpdateReplicationConfig`, `UpdateMultiTenancyConfig`, `UpdateObjectTTLConfig`, and `SetPropertyDescription` | Fail with HTTP 422 on every collection with an HNSW or dynamic index and on most with a flat index, for example `multivector enabled is immutable`. These calls write back the configuration that `Config.Get` read, which is wrong (see the next table) | None known. `Config.AddProperty` and `Config.DropPropertyIndex` are not affected |
+| A batch stream `Add` with a context that is already cancelled | Often returns `context canceled`. Then `Close()` hangs and later objects are not written. Otherwise the `Add` succeeds and the cancelled object is written anyway | None known |
+| OIDC authentication with `WithBearerToken`, `WithClientCredentials`, or `WithResourceOwnerPasswordCredentials` | The client requests tokens from the discovery document URL and gets `oauth2: "HTTP 404 Not Found"`. Client credentials, password credentials, and a bearer token without `ExpiresIn` fail in `NewClient`. With `ExpiresIn` set, every call fails from 30 seconds before the access token expires | Use an API key, or create a new client with a fresh token before the old one expires |
+| `Config.UpdateVectorConfig`, `UpdateInvertedIndexConfig`, `UpdateReplicationConfig`, `UpdateMultiTenancyConfig`, `UpdateObjectTTLConfig`, and `SetPropertyDescription` | Fail with HTTP 422 on any collection that has a property, and on any HNSW or dynamic index. `SetPropertyDescription` never succeeds. Treat these calls as unusable in this release | Change the configuration with the REST API or another client. `Config.AddProperty`, `Config.AddReference`, and `Config.DropPropertyIndex` are not affected |
 
 ### Calls that silently return the wrong thing
 
 | Call | Behavior | Workaround |
 | :--- | :------- | :--------- |
 | Any filter on a `date` property, including in `Data.DeleteSelected` | The filter value is truncated to whole seconds, so the wrong objects match. `Data.DeleteSelected` with such a filter deletes the wrong objects | None known |
-| `Config.Get` (and `Collections.GetConfig`) | Vector index settings read back wrong. The compression is a random quantizer whenever the server lists disabled ones, so a flat index with no compression can come back as PQ, SQ, RQ, or BQ. Read-back compression values cannot be trusted. `Dynamic.Threshold` reads `0`. A flat index has no `Distance` field | None known |
-| `Aggregate` requests with a `Filter` in the search | The filter is ignored. Counts and metrics cover every object the search matches | None known |
-| `Roles.Create` with `Nodes` or `Roles` permissions | Those permissions are dropped. The call returns `nil` and the role is stored without them | None known |
-| `Data.Insert` with a `date` or `date[]` property | Sub-second precision is dropped. `03:04:05.678` is stored as `03:04:05` | None known |
-| `Data.Insert` and the batch stream `Object` call | The client changes the `Properties` map you pass in. Array values are removed and `time.Time` values become strings. Inserting the same map again stores fewer properties | Build a new properties map for each insert |
+| A `VectorConfig` with `Compression` but no `Index` | The compression is dropped. The collection is created without it, and no error is returned | Set `Index` explicitly, for example `vectorindex.HNSW{}` |
+| `Config.Get` (and `Collections.GetConfig`) | Compression reads back as a random quantizer, whether or not one is enabled. `Dynamic.Threshold` reads `0`. A flat index has no `Distance` field | None known |
+| `Aggregate` requests with a `Filter` in the search | The filter is ignored. Counts and metrics cover every object the search matches. `Aggregate.OverAll` has no filter option | None known |
+| `Roles.Create`, `Roles.AddPermissions`, `Roles.Get`, and `Roles.List` with `Nodes` or `Roles` permissions | `Create` drops them and returns `nil`. `AddPermissions` with only such permissions fails with HTTP 400. `Get` and `List` return them with every action flag `false` | None known |
+| A `vectorindex.Muvera` encoder on a multi-vector index | The encoder is accepted on create but stored disabled. No error is returned | None known |
+| `Data.Insert` and the batch stream `Object` call with a `date` or `date[]` property | Sub-second precision is dropped. `03:04:05.678` is stored as `03:04:05` | None known |
+| `Data.Insert` and the batch stream `Object` call | The client changes the `Properties` map you pass in. Array values are removed, and `time.Time` and `uuid.UUID` values become strings. Inserting the same map again stores fewer properties | Build a new properties map for each insert |
 | `Query.NearVector` with a nil `Target`, or a `NearVector` with a nil `Target` nested in `Query.Hybrid` | The standalone query returns every object in the collection, ignores `Distance` and `Certainty`, and returns no error. The nested one is dropped, so the hybrid search vectorizes the query text instead, or fails on a collection without a vectorizer | Set a vector target |
-| Any query using `query.AllTokensMatchCross` or the `query/boost` package | The client sends these to every server without checking its version. `AllTokensMatchCross` is ignored below Weaviate `1.37.15` / `1.38.8` / `1.39.0` and the search silently behaves as plain OR. A `Boost` is ignored below `1.38.0`. Same rows, same scores, no error | Check your Weaviate version before relying on either feature |
+| Any query using `query.AllTokensMatchCross` or the `query/boost` package | The client does not check the server version. `AllTokensMatchCross` is ignored below Weaviate `1.37.15` / `1.38.8` / `1.39.0`, so the search behaves as plain OR. A `Boost` is ignored below `1.38.0`, with no error in either case | Check your Weaviate version before relying on either feature |
 
 ### Other caveats
 
+- A `types.Vector` with an empty `Name` is not resolved to the collection's vector on writes. `Data.Insert`, `Data.Replace`, and `Data.Update` fail with `does not have configuration for vector`. Set `Name`, for example to `default`.
+- In a batch stream, a second `Add` with the same UUID returns `batch.ErrDuplicatedTask` only while the first is still in flight. Once the first object has been flushed, the second `Add` is accepted and overwrites it.
 - `Config.ListShards` returns no shard status, so a read-only shard does not show as read-only.
 - `Data.DeleteSelected` always reports `Took` as `0s` and returns no successful or failed counts. Per-object failures come back as a `data.DeleteError` error.
 - `Data.Update` with a cross-reference adds the reference to the existing list rather than replacing it.
