@@ -10,6 +10,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import QuickLinks from "/src/components/QuickLinks";
 import GoV6ConnectCode from "!!raw-loader!/_includes/code/go-v6/connect_test.go";
 import GoV6QuickstartCode from "!!raw-loader!/_includes/code/go-v6/quickstart_test.go";
+import GoV6LocalCreateCode from "!!raw-loader!/_includes/code/go-v6/quickstart/local_create/main.go";
 
 export const goV6CardsData = [
   {
@@ -132,10 +133,10 @@ OIDC authentication does not work in this release. See [Known limitations](#know
 The following example connects to a local instance, [creates a collection](../../manage-collections/index.mdx) whose text properties are vectorized server-side, and [imports](../../manage-objects/import.mdx) three objects:
 
 <FilteredTextBlock
-  text={GoV6QuickstartCode}
+  text={GoV6LocalCreateCode}
   startMarker="// START LocalCreate"
   endMarker="// END LocalCreate"
-  language="go6"
+  language="go6full"
 />
 
 ### Search

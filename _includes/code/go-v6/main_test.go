@@ -334,47 +334,6 @@ func cleanupMultiTenancy(ctx context.Context, client *weaviate.Client) {
 	_ = client.Collections.Delete(ctx, "JeopardyCategory")
 }
 
-// setupMultiTenancyJeopardy (re)creates a multi-tenant JeopardyQuestion
-// collection and seeds tenantA. The "read all objects" multi-tenancy search
-// snippet binds tenantA on a JeopardyQuestion handle, so this seeds that exact
-// collection name (distinct from the non-tenant JeopardyQuestion demo).
-func setupMultiTenancyJeopardy(t *testing.T, client *weaviate.Client) {
-	t.Helper()
-	ctx := context.Background()
-	_ = client.Collections.Delete(ctx, "JeopardyQuestion")
-	if _, err := client.Collections.Create(ctx, collections.Collection{
-		Name: "JeopardyQuestion",
-		Properties: []collections.Property{
-			{Name: "question", DataType: collections.DataTypeText},
-			{Name: "answer", DataType: collections.DataTypeText},
-			{Name: "category", DataType: collections.DataTypeText},
-			{Name: "points", DataType: collections.DataTypeInt},
-		},
-		MultiTenancy: &collections.MultiTenancyConfig{Enabled: true},
-	}); err != nil {
-		t.Fatalf("create multi-tenant JeopardyQuestion: %v", err)
-	}
-
-	collection := client.Collections.Use("JeopardyQuestion")
-	if err := collection.Tenants.Create(ctx, tenant.Tenant{Name: "tenantA"}); err != nil {
-		t.Fatalf("create tenantA: %v", err)
-	}
-
-	tenantA := client.Collections.Use("JeopardyQuestion", collections.WithTenant("tenantA"))
-	// Fixed, non-leading-zero ids keep the tenant read/search snippets deterministic
-	// (a server-assigned 0x00-leading id flakes gRPC queries; see filterByIdSeedUUID).
-	mtjLiver := uuid.MustParse("77777777-7777-4777-8777-777777777777")
-	mtjElephant := uuid.MustParse("88888888-8888-4888-8888-888888888888")
-	if _, err := tenantA.Data.Insert(ctx,
-		&data.Object{UUID: &mtjLiver, Properties: map[string]any{"question": "This organ removes excess glucose from the blood", "answer": "Liver", "category": "SCIENCE", "points": 100}},
-		&data.Object{UUID: &mtjElephant, Properties: map[string]any{"question": "The only living mammal in the order Proboscidea", "answer": "Elephant", "category": "ANIMALS", "points": 200}},
-	); err != nil {
-		t.Fatalf("seed tenantA: %v", err)
-	}
-
-	waitForCount(t, tenantA, 2)
-}
-
 // contextionaryVectorizer is a test-only Vectorizer that selects the
 // text2vec-contextionary module, which is enabled on the docs test instance
 // (deterministic, no model download, no API key). The v6 client encodes any

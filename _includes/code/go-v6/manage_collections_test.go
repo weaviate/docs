@@ -56,6 +56,17 @@ func TestCreateCollectionExample(t *testing.T) {
 		panic(err)
 	}
 	// END CreateCollectionExample
+
+	p2yExpect(t, p2yRESTClass(t, "Article"), map[string]any{
+		"vectorConfig.default.vectorIndexType":                  "hnsw",
+		"vectorConfig.default.vectorIndexConfig.efConstruction": 300,
+		"vectorConfig.default.vectorIndexConfig.distance":       "cosine",
+		"vectorConfig.default.vectorIndexConfig.filterStrategy": "sweeping",
+		"replicationConfig.factor":                              1,
+		"replicationConfig.deletionStrategy":                    "TimeBasedResolution",
+		"shardingConfig.virtualPerPhysical":                     128,
+		"multiTenancyConfig.enabled":                            false,
+	})
 }
 
 // TestBasicCreateCollection creates a collection with only a name. Missing
@@ -137,14 +148,15 @@ func TestReadOneCollection(t *testing.T) {
 		// handle error
 		panic(err)
 	}
-	// GetConfig returns nil when the collection does not exist.
-	if config != nil {
-		fmt.Println(config.Name)
-		for _, p := range config.Properties {
-			fmt.Printf("  %s (%s)\n", p.Name, p.DataType)
-		}
+	fmt.Println(config.Name)
+	for _, p := range config.Properties {
+		fmt.Printf("  %s (%s)\n", p.Name, p.DataType)
 	}
 	// END ReadOneCollection
+
+	if config.Name != "Article" {
+		t.Fatalf("GetConfig returned collection %q, want Article", config.Name)
+	}
 }
 
 // TestReadAllCollections reads every collection definition in the schema.

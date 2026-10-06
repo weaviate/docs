@@ -201,17 +201,22 @@ func TestConnectCloudThirdPartyAPIKeys(t *testing.T) {
 	}
 }
 
-// TestConnectOIDC connects to the OIDC-enabled instance with a bearer token
-// obtained from the identity provider.
+// TestConnectOIDC is a placeholder: at v6.0.0-rc.0 the client sends token
+// refreshes to the OIDC discovery URL, so an OIDC connection fails once the
+// access token needs refreshing. The code after the region is the check to
+// restore when the client is fixed.
 func TestConnectOIDC(t *testing.T) {
+	t.Skip("fails at v6.0.0-rc.0: the client uses the OIDC discovery URL as the token endpoint, so every token refresh returns HTTP 404")
 	if os.Getenv("WEAVIATE_OIDC_ACCESS_TOKEN") == "" {
 		t.Skip("WEAVIATE_OIDC_ACCESS_TOKEN must be set for the OIDC connection test")
 	}
 	ctx := context.Background()
 
+	// TODO[g-despot]: OIDC connection snippet pending a v6 client fix for the token refresh endpoint
 	// START OIDCConnect
-	// Connect to a self-hosted Weaviate instance configured with OIDC.
-	// Obtain the access token from your identity provider before connecting.
+	// Coming soon
+	// END OIDCConnect
+
 	client, err := weaviate.NewClient(ctx,
 		weaviate.WithScheme("http"),
 		weaviate.WithHTTPHost("localhost"),
@@ -221,15 +226,13 @@ func TestConnectOIDC(t *testing.T) {
 		weaviate.WithBearerToken(oauth2.Token{
 			AccessToken:  os.Getenv("WEAVIATE_OIDC_ACCESS_TOKEN"),
 			RefreshToken: os.Getenv("WEAVIATE_OIDC_REFRESH_TOKEN"),
-			ExpiresIn:    60, // Lifetime of the access token in seconds.
+			ExpiresIn:    60,
 		}),
 	)
 	if err != nil {
-		// handle error
-		panic(err)
+		t.Fatalf("connect with OIDC: %v", err)
 	}
 	defer client.Close()
-	// END OIDCConnect
 
 	// IsReady is unauthenticated, so make an authorized call.
 	if _, err := client.Users.OIDC.AssignedRoles(ctx, rbac.AssignedRolesOptions{ID: "test-admin"}); err != nil {

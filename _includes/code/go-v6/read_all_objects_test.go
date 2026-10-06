@@ -3,6 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
+	"slices"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -72,6 +76,7 @@ func TestReadAllProps(t *testing.T) {
 	p2bSetupWineReview(t, client, "WineReview", false)
 	defer client.Collections.Delete(ctx, "WineReview")
 
+	output := p2yCaptureStdout(t)
 	// START ReadAllProps
 	collection := client.Collections.Use("WineReview")
 
@@ -91,8 +96,14 @@ func TestReadAllProps(t *testing.T) {
 	}
 	// END ReadAllProps
 
-	if n := p2bCount(t, client, "WineReview"); n != int64(len(p2bWineReviews)) {
-		t.Fatalf("count = %d, want %d", n, len(p2bWineReviews))
+	lines := output()
+	if len(lines) != len(p2bWineReviews) {
+		t.Fatalf("iterator yielded %d objects, want %d: %q", len(lines), len(p2bWineReviews), lines)
+	}
+	for _, seed := range p2bWineReviews {
+		if !slices.ContainsFunc(lines, func(l string) bool { return strings.HasPrefix(l, seed.UUID.String()+" ") }) {
+			t.Errorf("iterator did not yield %s", seed.UUID)
+		}
 	}
 }
 
@@ -147,6 +158,7 @@ func TestReadAllTenants(t *testing.T) {
 	p2bSetupWineReview(t, client, "WineReviewMT", true)
 	defer client.Collections.Delete(ctx, "WineReviewMT")
 
+	output := p2yCaptureStdout(t)
 	// START ReadAllTenants
 	multiCollection := client.Collections.Use("WineReviewMT")
 
@@ -179,7 +191,51 @@ func TestReadAllTenants(t *testing.T) {
 	}
 	// END ReadAllTenants
 
+	lines := output()
 	if len(tenants) != 2 {
 		t.Fatalf("tenants = %d, want 2", len(tenants))
 	}
+	for _, name := range []string{"tenantA", "tenantB"} {
+		n := 0
+		for _, l := range lines {
+			if strings.HasPrefix(l, name+": ") {
+				n++
+			}
+		}
+		if n != len(p2bWineReviews) {
+			t.Errorf("iterator yielded %d objects for %s, want %d", n, name, len(p2bWineReviews))
+		}
+	}
+}
+
+// p2yCaptureStdout redirects os.Stdout until the returned function is called,
+// which restores it and returns the captured lines.
+func p2yCaptureStdout(t *testing.T) func() []string {
+	t.Helper()
+	orig := os.Stdout
+	r, w, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	os.Stdout = w
+	done := make(chan []byte)
+	go func() {
+		b, _ := io.ReadAll(r)
+		done <- b
+	}()
+	restored := false
+	restore := func() []string {
+		if restored {
+			return nil
+		}
+		restored = true
+		w.Close()
+		os.Stdout = orig
+		b := <-done
+		r.Close()
+		orig.Write(b)
+		return strings.Split(strings.TrimRight(string(b), "\n"), "\n")
+	}
+	t.Cleanup(func() { restore() })
+	return restore
 }

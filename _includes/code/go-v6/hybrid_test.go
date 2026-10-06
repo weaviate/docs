@@ -280,6 +280,24 @@ func TestHybridWithVector(t *testing.T) {
 		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridWithVector
+
+	// No object matches "food" by keyword, so every result comes from the
+	// supplied vector: pure keyword search (alpha 0) must return nothing.
+	if len(response.Objects) != 3 {
+		t.Fatalf("HybridWithVector returned %d objects, want 3", len(response.Objects))
+	}
+	keyword, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
+		Query:      "food",
+		NearVector: &query.NearVector{Target: &types.Vector{Single: vector}},
+		Alpha:      new(float32(0)),
+		Limit:      3,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(keyword.Objects) != 0 {
+		t.Fatalf("alpha 0 returned %d objects, want 0", len(keyword.Objects))
+	}
 }
 
 func TestHybridLimit(t *testing.T) {
@@ -289,6 +307,7 @@ func TestHybridLimit(t *testing.T) {
 
 	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitSearchVectorsIndexed(t, client.Collections.Use("JeopardyQuestion"), 6)
 
 	// START HybridLimit
 	jeopardy := client.Collections.Use("JeopardyQuestion")
@@ -307,6 +326,20 @@ func TestHybridLimit(t *testing.T) {
 		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END HybridLimit
+
+	// The offset must skip the top-ranked object.
+	all, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{Query: "food", Limit: 4})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(response.Objects) != 3 || len(all.Objects) != 4 {
+		t.Fatalf("limit/offset not applied: got %d objects, %d without offset", len(response.Objects), len(all.Objects))
+	}
+	for i, obj := range response.Objects {
+		if obj.UUID != all.Objects[i+1].UUID {
+			t.Fatalf("result %d is %v, want %v (offset 1 of the unoffset query)", i, obj.UUID, all.Objects[i+1].UUID)
+		}
+	}
 }
 
 func TestHybridAutocut(t *testing.T) {

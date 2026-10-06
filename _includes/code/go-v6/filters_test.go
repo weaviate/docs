@@ -43,6 +43,15 @@ func TestSingleFilter(t *testing.T) {
 		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END SingleFilter
+
+	if len(response.Objects) == 0 {
+		t.Fatal("SingleFilter returned no objects")
+	}
+	for _, obj := range response.Objects {
+		if obj.Properties["round"] != "Double Jeopardy!" {
+			t.Errorf("object %v has round %v, want Double Jeopardy!", obj.UUID, obj.Properties["round"])
+		}
+	}
 }
 
 func TestMultipleFiltersAnd(t *testing.T) {

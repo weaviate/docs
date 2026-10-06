@@ -2,9 +2,13 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"strings"
 	"testing"
 
+	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
 	"github.com/weaviate/weaviate-go-client/v6/query"
@@ -61,6 +65,11 @@ func TestEnableAutoMT(t *testing.T) {
 		panic(err)
 	}
 	// END EnableAutoMT
+
+	p2yExpect(t, p2yRESTClass(t, "CollectionWithAutoMTEnabled"), map[string]any{
+		"multiTenancyConfig.enabled":            true,
+		"multiTenancyConfig.autoTenantCreation": true,
+	})
 }
 
 // TestUpdateAutoMT is a placeholder. Config.UpdateMultiTenancyConfig exists,
@@ -215,14 +224,15 @@ func TestMtSearch(t *testing.T) {
 	// END Search
 }
 
-// TestMtAddCrossRef adds a cross-reference from an object that belongs to a
-// tenant. The tenant is bound on the handle used to make the request.
+// TestMtAddCrossRef adds a cross-reference property to a multi-tenancy
+// collection, then a cross-reference from an object that belongs to a tenant.
+// The tenant is bound on the handle used to make the request.
 func TestMtAddCrossRef(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupMultiTenancy(t, client)
+	p2ySetupMultiTenancyNoRef(t, client)
 	defer cleanupMultiTenancy(ctx, client)
 
 	// Reference a seeded MultiTenancyCollection question (in tenantA) as the
@@ -231,12 +241,24 @@ func TestMtAddCrossRef(t *testing.T) {
 	targetID := mtCategoryID
 
 	// START AddCrossRef
+	collection := client.Collections.Use("MultiTenancyCollection")
+	// Add the cross-reference property to the multi-tenancy collection
+	err := collection.Config.AddReference(ctx, collections.Reference{
+		Name:        "hasCategory",
+		Collections: []string{"JeopardyCategory"},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+
+	// Get a handle bound to the required tenant
 	// highlight-start
-	collection := client.Collections.Use("MultiTenancyCollection",
-		collections.WithTenant("tenantA"),
-	)
+	tenantA := collection.WithOptions(collections.WithTenant("tenantA"))
 	// highlight-end
-	_, err := collection.Data.AddReferences(ctx, data.Reference{
+
+	// Add a reference from a MultiTenancyCollection object to a JeopardyCategory object
+	_, err = tenantA.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{
 			Collection: "MultiTenancyCollection",
 			Property:   "hasCategory",
@@ -249,4 +271,63 @@ func TestMtAddCrossRef(t *testing.T) {
 		panic(err)
 	}
 	// END AddCrossRef
+
+	p2yExpect(t, p2yRESTClass(t, "MultiTenancyCollection"), map[string]any{
+		"properties.hasCategory.dataType": []any{"JeopardyCategory"},
+	})
+	resp, err := http.Get("http://localhost:8080/v1/objects/MultiTenancyCollection/" + sourceID.String() + "?tenant=tenantA")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	var obj struct {
+		Properties struct {
+			HasCategory []struct {
+				Beacon string `json:"beacon"`
+			} `json:"hasCategory"`
+		} `json:"properties"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&obj); err != nil {
+		t.Fatal(err)
+	}
+	if refs := obj.Properties.HasCategory; len(refs) != 1 || !strings.HasSuffix(refs[0].Beacon, targetID.String()) {
+		t.Fatalf("hasCategory on the tenantA object = %+v, want one reference to %s", refs, targetID)
+	}
+}
+
+// p2ySetupMultiTenancyNoRef seeds MultiTenancyCollection (tenantA) and
+// JeopardyCategory like setupMultiTenancy, but without the hasCategory
+// reference property, so the AddCrossRef snippet creates it.
+func p2ySetupMultiTenancyNoRef(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	cleanupMultiTenancy(ctx, client)
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name:       "JeopardyCategory",
+		Properties: []collections.Property{{Name: "title", DataType: collections.DataTypeText}},
+	}); err != nil {
+		t.Fatalf("create JeopardyCategory: %v", err)
+	}
+	if _, err := client.Collections.Use("JeopardyCategory").Data.Insert(ctx,
+		&data.Object{UUID: &mtCategoryID, Properties: map[string]any{"title": "Software"}},
+	); err != nil {
+		t.Fatalf("seed JeopardyCategory: %v", err)
+	}
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name:         "MultiTenancyCollection",
+		Properties:   []collections.Property{{Name: "question", DataType: collections.DataTypeText}},
+		MultiTenancy: &collections.MultiTenancyConfig{Enabled: true},
+	}); err != nil {
+		t.Fatalf("create MultiTenancyCollection: %v", err)
+	}
+	if err := client.Collections.Use("MultiTenancyCollection").Tenants.Create(ctx, tenant.Tenant{Name: "tenantA"}); err != nil {
+		t.Fatalf("create tenantA: %v", err)
+	}
+	tenantA := client.Collections.Use("MultiTenancyCollection", collections.WithTenant("tenantA"))
+	if _, err := tenantA.Data.Insert(ctx, &data.Object{UUID: &mtSourceID, Properties: map[string]any{
+		"question": "This vector DB is OSS and supports automatic property type inference on import",
+	}}); err != nil {
+		t.Fatalf("seed tenantA: %v", err)
+	}
+	waitForCount(t, tenantA, 1)
 }

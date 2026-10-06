@@ -205,6 +205,19 @@ func TestDeleteAlias(t *testing.T) {
 		panic(err)
 	}
 	// END DeleteAlias
+
+	aliases, err := client.Alias.List(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, a := range aliases {
+		if a.Alias == "ArticlesAlias" {
+			t.Fatalf("ArticlesAlias still exists after Delete: %+v", a)
+		}
+	}
+	if got, err := client.Alias.Get(ctx, "ArticlesAlias"); err == nil {
+		t.Fatalf("Get still finds ArticlesAlias after Delete: %+v", got)
+	}
 }
 
 // TestUseAlias queries through an alias. Anywhere a collection name is expected,
