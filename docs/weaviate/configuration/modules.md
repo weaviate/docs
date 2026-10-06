@@ -97,18 +97,9 @@ services:
 
 ### Default vectorizer module
 
-You can specify a default vectorization module with the `DEFAULT_VECTORIZER_MODULE` variable as below.
+`DEFAULT_VECTORIZER_MODULE` is **deprecated in `v1.40`**. It is ignored, and Weaviate logs a startup warning when it is set.
 
-If a default vectorizer module is not set, you must set a vectorizer in the schema before you can use `near<Media>` or vectorization at import time.
-
-This code sets `text2vec-huggingface` as the default vectorizer. Thus, `text2vec-huggingface` module will be used unless another vectorizer is specified for that class.
-
-``` yaml
-services:
-  weaviate:
-    environment:
-      DEFAULT_VECTORIZER_MODULE: text2vec-huggingface
-```
+Set the `vectorizer` explicitly in each collection definition instead. A collection that does not name one is not vectorized, so you cannot use `near<Media>` or vectorization at import time for it. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
 
 ## Generative model integrations
 
