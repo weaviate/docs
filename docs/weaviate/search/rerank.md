@@ -17,6 +17,7 @@ import SimilarityPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.simila
 import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
 import GoV6Code from '!!raw-loader!/_includes/code/go-v6/search_rerank_test.go';
+import GoV6SimilarityCode from '!!raw-loader!/_includes/code/go-v6/search_test.go';
 import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
@@ -73,9 +74,9 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
   <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
-      text={GoV6Code}
-      startMarker="// START RerankNamedVectorNearText"
-      endMarker="// END RerankNamedVectorNearText"
+      text={GoV6SimilarityCode}
+      startMarker="// START NamedVectorNearText"
+      endMarker="// END NamedVectorNearText"
       language="go6"
     />
   </TabItem>

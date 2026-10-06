@@ -11,7 +11,7 @@ import "testing"
 // TestGenerativeSinglePrompt is a placeholder: single-prompt generative search is
 // not yet available in the v6 Go client.
 func TestGenerativeSinglePrompt(t *testing.T) {
-	t.Skip("generative (RAG) search is not yet available in the v6 Go client")
+	t.Skip("not available at v6.0.0-rc.0: the query package has no generative search")
 
 	// TODO[g-despot]: single-prompt generative search snippet pending v6 client support
 	// START GenerativeSinglePrompt
@@ -22,7 +22,7 @@ func TestGenerativeSinglePrompt(t *testing.T) {
 // TestGenerativeGroupedTask is a placeholder: grouped-task generative search is
 // not yet available in the v6 Go client.
 func TestGenerativeGroupedTask(t *testing.T) {
-	t.Skip("generative (RAG) search is not yet available in the v6 Go client")
+	t.Skip("not available at v6.0.0-rc.0: the query package has no generative search")
 
 	// TODO[g-despot]: grouped-task generative search snippet pending v6 client support
 	// START GenerativeGroupedTask
@@ -33,7 +33,7 @@ func TestGenerativeGroupedTask(t *testing.T) {
 // TestGenerativeGroupedProperties is a placeholder: setting the prompt properties
 // for a grouped-task generative search is not yet available in the v6 Go client.
 func TestGenerativeGroupedProperties(t *testing.T) {
-	t.Skip("generative (RAG) search is not yet available in the v6 Go client")
+	t.Skip("not available at v6.0.0-rc.0: the query package has no generative search")
 
 	// TODO[g-despot]: grouped-task prompt-properties snippet pending v6 client support
 	// START GenerativeGroupedProperties

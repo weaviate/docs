@@ -389,7 +389,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
   </TabItem>
   <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
-      text={GoV6PlaceholderCode}
+      text={GoV6Code}
       startMarker="// START AggregateNearText"
       endMarker="// END AggregateNearText"
       language="go6"
@@ -466,9 +466,9 @@ Use `distance` to specify how similar the objects should be. A `distance` limits
   </TabItem>
   <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
-      text={GoV6PlaceholderCode}
-      startMarker="// START AggregateNearText"
-      endMarker="// END AggregateNearText"
+      text={GoV6Code}
+      startMarker="// START AggregateDistanceNearText"
+      endMarker="// END AggregateDistanceNearText"
       language="go6"
     />
   </TabItem>
@@ -543,7 +543,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator. As with a 
   </TabItem>
   <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
-      text={GoV6PlaceholderCode}
+      text={GoV6Code}
       startMarker="// START AggregateHybrid"
       endMarker="// END AggregateHybrid"
       language="go6"

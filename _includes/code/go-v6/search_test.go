@@ -118,6 +118,7 @@ func TestGetNearVector(t *testing.T) {
 
 	setupJeopardySearch(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitNearVectorIndexed(t, client.Collections.Use("JeopardyQuestion"), 3, []float32{0.12, 0.20, 0.33})
 
 	// START GetNearVector
 	// A query vector, for example an embedding produced by your model.
@@ -126,7 +127,7 @@ func TestGetNearVector(t *testing.T) {
 	jeopardy := client.Collections.Use("JeopardyQuestion")
 	// highlight-start
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Name: "default", Single: vector},
+		Target: &types.Vector{Single: vector},
 		Limit:  2,
 		ReturnMetadata: query.ReturnMetadata{
 			Distance: true,
@@ -144,6 +145,11 @@ func TestGetNearVector(t *testing.T) {
 		}
 	}
 	// END GetNearVector
+
+	// An unnamed target must still run a vector search: two hits, each with a distance.
+	if len(response.Objects) != 2 || response.Objects[0].Metadata.Distance == nil {
+		t.Fatalf("near-vector search did not run: %d objects", len(response.Objects))
+	}
 }
 
 // TestNamedVectorNearText searches a named vector by passing the vector name as
@@ -175,25 +181,25 @@ func TestNamedVectorNearText(t *testing.T) {
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)
+		fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 	}
 	// END NamedVectorNearText
 }
 
-// TestGetWithDistance sets a maximum distance threshold on a vector search.
+// TestGetWithDistance sets a maximum distance threshold on a near-text search.
 func TestGetWithDistance(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupJeopardySearch(t, client)
+	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitSearchVectorsIndexed(t, client.Collections.Use("JeopardyQuestion"), 6)
 
 	// START GetWithDistance
-	vector := []float32{0.12, 0.20, 0.33}
-
 	jeopardy := client.Collections.Use("JeopardyQuestion")
-	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Name: "default", Single: vector},
+	response, err := jeopardy.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"animals in movies"},
 		// highlight-start
 		Similarity: query.Distance(0.25),
 		// highlight-end
@@ -207,29 +213,38 @@ func TestGetWithDistance(t *testing.T) {
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)
+		fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 	}
 	// END GetWithDistance
+
+	for _, obj := range response.Objects {
+		if *obj.Metadata.Distance > 0.25 {
+			t.Fatalf("distance %v exceeds the 0.25 threshold", *obj.Metadata.Distance)
+		}
+	}
 }
 
-// TestGetLimitOffset paginates a vector search with limit and offset.
+// TestGetLimitOffset paginates a near-text search with limit and offset.
 func TestGetLimitOffset(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupJeopardySearch(t, client)
+	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitSearchVectorsIndexed(t, client.Collections.Use("JeopardyQuestion"), 6)
 
 	// START GetLimitOffset
-	vector := []float32{0.12, 0.20, 0.33}
-
 	jeopardy := client.Collections.Use("JeopardyQuestion")
-	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Name: "default", Single: vector},
+	response, err := jeopardy.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"animals in movies"},
 		// highlight-start
 		Limit:  2,
 		Offset: 1,
 		// highlight-end
+		ReturnMetadata: query.ReturnMetadata{
+			Distance: true,
+		},
 	})
 	if err != nil {
 		// handle error
@@ -237,29 +252,40 @@ func TestGetLimitOffset(t *testing.T) {
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)
+		fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 	}
 	// END GetLimitOffset
+
+	// The offset must skip the nearest object.
+	all, err := jeopardy.Query.NearText(ctx, query.NearText{Concepts: []string{"animals in movies"}, Limit: 3})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(response.Objects) != 2 || len(all.Objects) != 3 || response.Objects[0].UUID != all.Objects[1].UUID {
+		t.Fatalf("limit/offset not applied: got %d objects", len(response.Objects))
+	}
 }
 
-// TestAutocut limits results to the first N distance clusters (autocut).
+// TestAutocut limits near-text results to the first distance cluster (autocut).
 func TestAutocut(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupJeopardySearch(t, client)
+	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitSearchVectorsIndexed(t, client.Collections.Use("JeopardyQuestion"), 6)
 
 	// START Autocut
-	vector := []float32{0.12, 0.20, 0.33}
-
 	jeopardy := client.Collections.Use("JeopardyQuestion")
-	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Name: "default", Single: vector},
-		// Return objects from the first similarity cluster only.
+	response, err := jeopardy.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"animals in movies"},
 		// highlight-start
-		AutoLimit: 1,
+		AutoLimit: 1, // number of close groups
 		// highlight-end
+		ReturnMetadata: query.ReturnMetadata{
+			Distance: true,
+		},
 	})
 	if err != nil {
 		// handle error
@@ -267,44 +293,69 @@ func TestAutocut(t *testing.T) {
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)
+		fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 	}
 	// END Autocut
+
+	if n := len(response.Objects); n == 0 || n >= 6 {
+		t.Fatalf("autocut returned %d of 6 objects", n)
+	}
 }
 
-// TestGetWithGroupBy groups the results of a vector search by a property.
+// TestGetWithGroupBy groups the results of a near-text search by a property.
 func TestGetWithGroupBy(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupJeopardySearch(t, client)
+	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitSearchVectorsIndexed(t, client.Collections.Use("JeopardyQuestion"), 6)
 
 	// START GetWithGroupBy
-	vector := []float32{0.12, 0.20, 0.33}
-
 	jeopardy := client.Collections.Use("JeopardyQuestion")
-	response, err := jeopardy.Query.NearVector.GroupBy(ctx,
-		query.NearVector{
-			Target: &types.Vector{Name: "default", Single: vector},
-			Limit:  10,
+	// highlight-start
+	response, err := jeopardy.Query.NearText.GroupBy(ctx,
+		query.NearText{
+			Concepts: []string{"animals in movies"},
+			Limit:    10, // maximum total objects
+			ReturnMetadata: query.ReturnMetadata{
+				Distance: true,
+			},
 		},
-		// highlight-start
 		query.GroupBy{
-			Property:       "category",
-			NumberOfGroups: 2,
-			ObjectLimit:    2,
+			Property:       "round", // group by this property
+			ObjectLimit:    2,       // maximum objects per group
+			NumberOfGroups: 2,       // maximum number of groups
 		},
-		// highlight-end
 	)
+	// highlight-end
 	if err != nil {
 		// handle error
 		panic(err)
 	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.UUID)
+		fmt.Printf("%v\n", obj.BelongsToGroup)
+		fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
+	}
 	for name, group := range response.Groups {
-		fmt.Printf("group %q holds %d objects\n", name, group.Size)
+		fmt.Printf("========== %s ==========\n", name)
+		fmt.Printf("%d\n", group.Size)
+		for _, obj := range group.Objects {
+			fmt.Printf("%v\n", obj.Properties)
+		}
 	}
 	// END GetWithGroupBy
+
+	if n := len(response.Groups); n == 0 || n > 2 {
+		t.Fatalf("got %d groups, want 1 or 2", n)
+	}
+	for name := range response.Groups {
+		if name != "Jeopardy!" && name != "Double Jeopardy!" && name != "Final Jeopardy!" {
+			t.Fatalf("group %q is not a round", name)
+		}
+	}
 }
 
 // TestGetNearObject searches for the objects most similar to an existing one,
@@ -344,29 +395,31 @@ func TestGetNearObject(t *testing.T) {
 	// END NearObject
 }
 
-// TestGetWithFilter narrows a vector search with a property filter.
+// TestGetWithFilter narrows a near-text search with a property filter.
 func TestGetWithFilter(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupJeopardySearch(t, client)
+	setupJeopardyVectorized(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitSearchVectorsIndexed(t, client.Collections.Use("JeopardyQuestion"), 6)
 
 	// START GetWithFilter
-	vector := []float32{0.12, 0.20, 0.33}
-
 	jeopardy := client.Collections.Use("JeopardyQuestion")
-	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
-		Target: &types.Vector{Name: "default", Single: vector},
-		Limit:  2,
+	response, err := jeopardy.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"animals in movies"},
 		// highlight-start
 		Filter: &filter.Cond{
-			Target:   "category",
+			Target:   "round",
 			Operator: filter.Equal,
-			Value:    "ANIMALS",
+			Value:    "Double Jeopardy!",
 		},
 		// highlight-end
+		Limit: 2,
+		ReturnMetadata: query.ReturnMetadata{
+			Distance: true,
+		},
 	})
 	if err != nil {
 		// handle error
@@ -374,6 +427,16 @@ func TestGetWithFilter(t *testing.T) {
 	}
 	for _, obj := range response.Objects {
 		fmt.Printf("%v\n", obj.Properties)
+		fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
 	}
 	// END GetWithFilter
+
+	if len(response.Objects) != 2 {
+		t.Fatalf("got %d objects, want 2", len(response.Objects))
+	}
+	for _, obj := range response.Objects {
+		if obj.Properties["round"] != "Double Jeopardy!" {
+			t.Fatalf("filter not applied: round=%v", obj.Properties["round"])
+		}
+	}
 }

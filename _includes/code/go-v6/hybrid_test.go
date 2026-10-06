@@ -254,6 +254,7 @@ func TestHybridWithVector(t *testing.T) {
 	// takes caller-supplied vectors rather than the vectorized one.
 	setupJeopardySearch(t, client)
 	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	waitNearVectorIndexed(t, client.Collections.Use("JeopardyQuestion"), 3, []float32{0.12, 0.20, 0.33})
 
 	// START HybridWithVector
 	// A query vector, for example an embedding produced by your model.
@@ -265,9 +266,10 @@ func TestHybridWithVector(t *testing.T) {
 		// Supply the vector for the vector-search half of the query.
 		// highlight-start
 		NearVector: &query.NearVector{
-			Target: &types.Vector{Name: "default", Single: vector},
+			Target: &types.Vector{Single: vector},
 		},
 		// highlight-end
+		Alpha: new(float32(0.25)),
 		Limit: 3,
 	})
 	if err != nil {
@@ -293,7 +295,8 @@ func TestHybridLimit(t *testing.T) {
 	response, err := jeopardy.Query.Hybrid(ctx, query.Hybrid{
 		Query: "food",
 		// highlight-start
-		Limit: 3,
+		Limit:  3,
+		Offset: 1,
 		// highlight-end
 	})
 	if err != nil {

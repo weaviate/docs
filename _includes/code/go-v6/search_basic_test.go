@@ -6,9 +6,12 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	weaviate "github.com/weaviate/weaviate-go-client/v6"
 	"github.com/weaviate/weaviate-go-client/v6/collections"
 	"github.com/weaviate/weaviate-go-client/v6/data"
 	"github.com/weaviate/weaviate-go-client/v6/query"
+	"github.com/weaviate/weaviate-go-client/v6/tenant"
+	"github.com/weaviate/weaviate-go-client/v6/types"
 )
 
 func TestBasicQuery(t *testing.T) {
@@ -34,13 +37,14 @@ func TestBasicQuery(t *testing.T) {
 	response, err := articles.Query.OverAll(ctx, query.OverAll{
 		Limit: 2,
 	})
-	// END BasicQuery
 	if err != nil {
-		t.Fatal(err)
+		// handle error
+		panic(err)
 	}
 	for _, obj := range response.Objects {
-		t.Logf("%v", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties)
 	}
+	// END BasicQuery
 }
 
 // TestBasicGet lists objects without any search parameters.
@@ -230,9 +234,22 @@ func TestGetWithCrossRefs(t *testing.T) {
 		panic(err)
 	}
 	for _, obj := range response.Objects {
-		fmt.Printf("%v\n", obj.Properties)
+		fmt.Printf("%v\n", obj.Properties["question"])
+		// Print the referenced objects.
+		refs := obj.References.(map[string][]types.Object[map[string]any])
+		for _, ref := range refs["hasCategory"] {
+			fmt.Printf("%v\n", ref.Properties)
+		}
 	}
 	// END GetWithCrossRefs
+
+	var nrefs int
+	for _, obj := range response.Objects {
+		nrefs += len(obj.References.(map[string][]types.Object[map[string]any])["hasCategory"])
+	}
+	if nrefs == 0 {
+		t.Fatal("no referenced objects returned")
+	}
 }
 
 // TestGetWithMetadata returns object metadata such as the creation timestamp.
@@ -266,24 +283,55 @@ func TestGetWithMetadata(t *testing.T) {
 	// END GetWithMetadata
 }
 
+// setupWineReviewMTSearch (re)creates the multi-tenant WineReviewMT collection
+// with tenantA and seeds it, for the tenant search snippet.
+func setupWineReviewMTSearch(t *testing.T, client *weaviate.Client) {
+	t.Helper()
+	ctx := context.Background()
+	_ = client.Collections.Delete(ctx, "WineReviewMT")
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "WineReviewMT",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+			{Name: "review_body", DataType: collections.DataTypeText},
+		},
+		MultiTenancy: &collections.MultiTenancyConfig{Enabled: true},
+	}); err != nil {
+		t.Fatalf("create WineReviewMT: %v", err)
+	}
+	if err := client.Collections.Use("WineReviewMT").Tenants.Create(ctx, tenant.Tenant{Name: "tenantA"}); err != nil {
+		t.Fatalf("create tenantA: %v", err)
+	}
+	tenantA := client.Collections.Use("WineReviewMT", collections.WithTenant("tenantA"))
+	w1 := uuid.MustParse("9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d")
+	if _, err := tenantA.Data.Insert(ctx, &data.Object{UUID: &w1, Properties: map[string]any{
+		"title":       "Schloss Vollrads Riesling",
+		"review_body": "A sweet white wine with notes of peach and honey.",
+	}}); err != nil {
+		t.Fatalf("seed tenantA: %v", err)
+	}
+	waitForCount(t, tenantA, 1)
+}
+
 // TestMultiTenancy queries a specific tenant of a multi-tenant collection.
 func TestMultiTenancy(t *testing.T) {
 	ctx := context.Background()
 	client := connectLocal(t)
 	defer client.Close()
 
-	setupMultiTenancyJeopardy(t, client)
-	defer client.Collections.Delete(ctx, "JeopardyQuestion")
+	setupWineReviewMTSearch(t, client)
+	defer client.Collections.Delete(ctx, "WineReviewMT")
 
 	// START MultiTenancy
 	// Bind the tenant once when you take the collection handle.
 	// highlight-start
-	jeopardy := client.Collections.Use("JeopardyQuestion",
+	reviews := client.Collections.Use("WineReviewMT",
 		collections.WithTenant("tenantA"),
 	)
 	// highlight-end
-	response, err := jeopardy.Query.OverAll(ctx, query.OverAll{
-		Limit: 2,
+	response, err := reviews.Query.OverAll(ctx, query.OverAll{
+		ReturnProperties: []string{"review_body", "title"},
+		Limit:            1,
 	})
 	if err != nil {
 		// handle error
@@ -293,4 +341,8 @@ func TestMultiTenancy(t *testing.T) {
 		fmt.Printf("%v\n", obj.Properties)
 	}
 	// END MultiTenancy
+
+	if len(response.Objects) != 1 || response.Objects[0].Properties["title"] != "Schloss Vollrads Riesling" {
+		t.Fatalf("tenant query returned %d objects", len(response.Objects))
+	}
 }

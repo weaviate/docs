@@ -22,9 +22,8 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/query"
 )
 
-// The image snippets search a multimodal collection with collection.Query.NearMedia.
-// The v6 client takes a base64 string for every media kind and never encodes for
-// you, so the snippets show the encoding step explicitly.
+// The image snippets search a multimodal collection with collection.Query.NearMedia,
+// which takes media as a base64 string.
 
 // clipVectorizer is a test-only Vectorizer that selects the multi2vec-clip module,
 // which vectorizes images and text into one space. The v6 client encodes any
@@ -122,7 +121,7 @@ func TestSearchImageByPath(t *testing.T) {
 	}
 
 	// START ImageByPath
-	// The v6 client takes a base64 string, so read the file and encode it.
+	// Read the file and encode its bytes as base64.
 	img, err := os.ReadFile("./images/search-image.jpg")
 	if err != nil {
 		// handle error
@@ -131,8 +130,6 @@ func TestSearchImageByPath(t *testing.T) {
 
 	dogs := client.Collections.Use("Dog")
 	response, err := dogs.Query.NearMedia(ctx, query.NearMedia{
-		// Always name the media kind. A NearMedia with no Media runs no search
-		// at all: it returns arbitrary objects and drops any distance cutoff.
 		// highlight-start
 		Media: query.Image(base64.StdEncoding.EncodeToString(img)),
 		// highlight-end
@@ -155,13 +152,20 @@ func TestSearchImageByBase64(t *testing.T) {
 	client := connectLocal(t)
 	defer client.Close()
 
-	imgBytes := setupDogImages(t, client)
+	setupDogImages(t, client)
 	defer client.Collections.Delete(ctx, "Dog")
 
+	// The snippet sends a placeholder string, which the server rejects. The
+	// NearMedia call itself is proven by TestSearchImageByPath.
+	defer func() {
+		if r := recover(); r != nil {
+			t.Logf("placeholder image rejected as expected: %v", r)
+		}
+	}()
+
 	// START ImageByBase64
-	// imgBytes holds the raw image; the v6 client wants it base64-encoded.
 	// highlight-start
-	base64String := base64.StdEncoding.EncodeToString(imgBytes)
+	base64String := "SOME_BASE_64_REPRESENTATION"
 	// highlight-end
 
 	dogs := client.Collections.Use("Dog")
@@ -187,8 +191,7 @@ func TestSearchImageByBase64(t *testing.T) {
 
 func TestSearchImageBase64Helper(t *testing.T) {
 	// START ImageBase64Helper
-	// The v6 client never encodes media for you, so fetch the image and
-	// base64-encode it before passing it to query.Image.
+	// Fetch the image and encode its bytes as base64.
 	urlToBase64 := func(url string) (string, error) {
 		req, err := http.NewRequest(http.MethodGet, url, nil)
 		if err != nil {

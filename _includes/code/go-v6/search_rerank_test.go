@@ -7,21 +7,10 @@ import "testing"
 // contains only a "Coming soon" line. The Go v6 doc tab renders that placeholder
 // while the surrounding test compiles and skips.
 
-// TestRerankNamedVectorNearText is a placeholder: reranking a named-vector
-// near-text search is not yet available in the v6 Go client.
-func TestRerankNamedVectorNearText(t *testing.T) {
-	t.Skip("reranking search results is not yet available in the v6 Go client")
-
-	// TODO[g-despot]: named-vector near-text rerank snippet pending v6 client support
-	// START RerankNamedVectorNearText
-	// Coming soon
-	// END RerankNamedVectorNearText
-}
-
 // TestRerankVectorResults is a placeholder: reranking vector search results is
 // not yet available in the v6 Go client.
 func TestRerankVectorResults(t *testing.T) {
-	t.Skip("reranking search results is not yet available in the v6 Go client")
+	t.Skip("not available at v6.0.0-rc.0: search queries have no reranker parameter")
 
 	// TODO[g-despot]: rerank vector-search-results snippet pending v6 client support
 	// START RerankVectorResults
@@ -32,7 +21,7 @@ func TestRerankVectorResults(t *testing.T) {
 // TestRerankKeywordResults is a placeholder: reranking keyword (BM25) search
 // results is not yet available in the v6 Go client.
 func TestRerankKeywordResults(t *testing.T) {
-	t.Skip("reranking search results is not yet available in the v6 Go client")
+	t.Skip("not available at v6.0.0-rc.0: search queries have no reranker parameter")
 
 	// TODO[g-despot]: rerank keyword-search-results snippet pending v6 client support
 	// START RerankKeywordResults
