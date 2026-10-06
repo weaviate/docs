@@ -240,7 +240,7 @@ You can optionally change the shape of a generated image by sending an additiona
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-        Import `ImageOptions` and add it as an annotation to the `GeneratedImage` class itself. 
+        Import `GeneratedImageOptions` and add it as an annotation to the `GeneratedImage` class itself. 
         <FilteredTextBlock
             text={PyCode}
             startMarker="# START CustomShapeImageExample"
