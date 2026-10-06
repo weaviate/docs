@@ -1597,6 +1597,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "cloud/manage-clusters/cli",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "cloud/manage-clusters/authentication",
           className: "sidebar-item",
         },
