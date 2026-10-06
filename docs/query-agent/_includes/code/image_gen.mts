@@ -88,4 +88,27 @@ const advertResult = await qa.ask(
 );
 // END CustomShapeImageExample
 
+// START RawJSONSchemaImageExample
+const res = await qa.ask(
+    "Find the most expensive item in the store",
+    {
+        outputFormat: {
+            type: "object",
+            properties: {
+                answer: { type: "string" },
+                image: {
+                    "X-query-agent-image": true,
+                    "X-image-shape": "square",
+                    description: "A product photo on a white background",
+                    type: "object",
+                    properties: {
+                        image_prompt: { "type": "string" }
+                    }
+                },
+            }
+        }
+    }
+);
+// END RawJSONSchemaImageExample
+
 await client.close();

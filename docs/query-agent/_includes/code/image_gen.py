@@ -104,4 +104,26 @@ response = qa.ask(
 )
 # END CustomShapeImageExample
 
+# START RawJSONSchemaImageExample
+response = qa.ask(
+    "Find the most expensive item in the store",
+    collections=["ECommerce"],
+    output_format={
+        "type": "object",
+        "properties": {
+            "answer": { "type": "string" },
+            "image": {
+                "X-query-agent-image": True,
+                "X-image-shape": "square",
+                "description": "A product photo on a white background",
+                "type": "object",
+                "properties": {
+                    "image_prompt": { "type": "string" }
+                }
+            }
+        }
+    }
+),
+# END RawJSONSchemaImageExample
+
 client.close()

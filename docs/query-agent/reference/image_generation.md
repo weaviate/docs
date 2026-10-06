@@ -204,31 +204,34 @@ Currently, the only supported optional keyword on images is image shape. These s
 * `"landscape"` (default): 1536×1024
 * `"portrait"`: 1024×1536
 
-## Non-client usage
+## Raw JSON Schema
 
-If you pass the output format as a raw JSON Schema instead of a Pydantic model or Zod schema, add `"X-query-agent-image": true` to any object you want generated as an image. This is a custom keyword that the Query Agent recognises. Other JSON Schema tools ignore it, so your schema stays valid. The object needs an `image_prompt` string property, where the agent writes the prompt for the image model. Don't declare a `base64` property yourself: the server adds it to the response, holding the generated PNG as a base64 string.
+If you pass the output format as a raw JSON Schema (instead of a Pydantic model or Zod schema), add `"X-query-agent-image": true` to any object you want generated as an image. This is a custom keyword that the Query Agent recognises. Other JSON Schema tools ignore it, so your schema stays valid. The object needs an `image_prompt` string property, where the agent writes the prompt for the image model. Don't declare a `base64` property yourself: the server adds it to the response, holding the generated PNG as a base64 string.
 
 You can also set `"X-image-shape"` on the object to `"square"`, `"landscape"` (the default) or `"portrait"`. Any description you give the field is passed to the image model as extra instructions. Image quality can't be configured. You can add other properties next to `image_prompt`, such as `alt_text`, and the agent fills them in like any other field.
 
 For example, your output format can be:
 
-```json
-{
-  "type": "object",
-  "properties": {
-    "answer": { "type": "string" },
-    "image": {
-      "X-query-agent-image": true,
-      "X-image-shape": "square",
-      "description": "A product photo on a white background",
-      "type": "object",
-      "properties": {
-        "image_prompt": { "type": "string" }
-      }
-    }
-  }
-}
-```
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START RawJSONSchemaImageExample"
+            endMarker="# END RawJSONSchemaImageExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START RawJSONSchemaImageExample"
+            endMarker="// END RawJSONSchemaImageExample"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
+This declares two fields: `answer` and `image`, where the `image` field is an object with only the declared property `image_prompt`. The `base64` property will be added to the `image` object on the response from the server. 
 
 ## Cost
 
