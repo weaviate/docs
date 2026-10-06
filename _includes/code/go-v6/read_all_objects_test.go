@@ -26,9 +26,16 @@ var p2bWineReviews = []*data.Object{
 	{UUID: new(uuid.MustParse("a7b8c9d0-0003-4a00-8000-000000000003")), Properties: map[string]any{"title": "Mosel Riesling", "country": "Germany"}},
 }
 
+// p2bWineReviewsB seeds tenantB with objects that differ from tenantA's, so a
+// read of the wrong tenant shows up in TestReadAllTenants.
+var p2bWineReviewsB = []*data.Object{
+	{UUID: new(uuid.MustParse("a7b8c9d0-0004-4a00-8000-000000000004")), Properties: map[string]any{"title": "Rioja Reserva", "country": "Spain"}},
+	{UUID: new(uuid.MustParse("a7b8c9d0-0005-4a00-8000-000000000005")), Properties: map[string]any{"title": "Douro Tinto", "country": "Portugal"}},
+}
+
 // p2bSetupWineReview (re)creates a WineReview-shaped collection whose "default"
 // vector is produced by text2vec-contextionary. With multiTenant set it adds
-// tenantA and tenantB and seeds both.
+// tenantA (seeded with p2bWineReviews) and tenantB (seeded with p2bWineReviewsB).
 func p2bSetupWineReview(t *testing.T, client *weaviate.Client, name string, multiTenant bool) {
 	t.Helper()
 	ctx := context.Background()
@@ -51,6 +58,7 @@ func p2bSetupWineReview(t *testing.T, client *weaviate.Client, name string, mult
 	}
 
 	handles := []*collections.Handle{client.Collections.Use(name)}
+	seeds := [][]*data.Object{p2bWineReviews}
 	if multiTenant {
 		if err := handles[0].Tenants.Create(ctx, tenant.Tenant{Name: "tenantA"}, tenant.Tenant{Name: "tenantB"}); err != nil {
 			t.Fatalf("create tenants: %v", err)
@@ -59,12 +67,13 @@ func p2bSetupWineReview(t *testing.T, client *weaviate.Client, name string, mult
 			client.Collections.Use(name, collections.WithTenant("tenantA")),
 			client.Collections.Use(name, collections.WithTenant("tenantB")),
 		}
+		seeds = [][]*data.Object{p2bWineReviews, p2bWineReviewsB}
 	}
-	for _, h := range handles {
-		if _, err := h.Data.Insert(ctx, p2bWineReviews...); err != nil {
+	for i, h := range handles {
+		if _, err := h.Data.Insert(ctx, seeds[i]...); err != nil {
 			t.Fatalf("seed %s: %v", name, err)
 		}
-		waitForCount(t, h, len(p2bWineReviews))
+		waitForCount(t, h, len(seeds[i]))
 	}
 }
 
@@ -195,15 +204,22 @@ func TestReadAllTenants(t *testing.T) {
 	if len(tenants) != 2 {
 		t.Fatalf("tenants = %d, want 2", len(tenants))
 	}
-	for _, name := range []string{"tenantA", "tenantB"} {
-		n := 0
+	for name, seed := range map[string][]*data.Object{"tenantA": p2bWineReviews, "tenantB": p2bWineReviewsB} {
+		var got []string
 		for _, l := range lines {
 			if strings.HasPrefix(l, name+": ") {
-				n++
+				got = append(got, l)
 			}
 		}
-		if n != len(p2bWineReviews) {
-			t.Errorf("iterator yielded %d objects for %s, want %d", n, name, len(p2bWineReviews))
+		if len(got) != len(seed) {
+			t.Errorf("iterator yielded %d objects for %s, want %d: %q", len(got), name, len(seed), got)
+			continue
+		}
+		for _, obj := range seed {
+			title := obj.Properties["title"].(string)
+			if !slices.ContainsFunc(got, func(l string) bool { return strings.Contains(l, "title:"+title) }) {
+				t.Errorf("%s: no object titled %q in %q", name, title, got)
+			}
 		}
 	}
 }

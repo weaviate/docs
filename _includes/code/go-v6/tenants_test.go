@@ -258,6 +258,7 @@ func TestMtAddCrossRef(t *testing.T) {
 	// highlight-end
 
 	// Add a reference from a MultiTenancyCollection object to a JeopardyCategory object
+	// sourceID: MultiTenancyCollection object id. targetID: JeopardyCategory id.
 	_, err = tenantA.Data.AddReferences(ctx, data.Reference{
 		Origin: data.ObjectPath{
 			Collection: "MultiTenancyCollection",

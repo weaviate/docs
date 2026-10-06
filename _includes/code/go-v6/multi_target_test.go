@@ -128,6 +128,7 @@ func TestMultiTargetNearVector(t *testing.T) {
 	v2 := []float32{0.14, 0.19, 0.30}
 
 	// START MultiTargetNearVector
+	// v1 and v2 are []float32 query vectors
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		// Pair each named target vector with its own query vector.
@@ -165,6 +166,7 @@ func TestMultiTargetMultipleNearVectorsV1(t *testing.T) {
 	v3 := []float32{0.11, 0.20, 0.34}
 
 	// START MultiTargetMultipleNearVectorsV1
+	// v1, v2 and v3 are []float32 query vectors
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		// A target vector name may appear more than once, each with its own vector.
@@ -202,6 +204,7 @@ func TestMultiTargetMultipleNearVectorsV2(t *testing.T) {
 	v3 := []float32{0.11, 0.20, 0.34}
 
 	// START MultiTargetMultipleNearVectorsV2
+	// v1, v2 and v3 are []float32 query vectors
 	jeopardy := client.Collections.Use("JeopardyTiny")
 	response, err := jeopardy.Query.NearVector(ctx, query.NearVector{
 		// Weight each query vector; repeated targets are weighted independently.

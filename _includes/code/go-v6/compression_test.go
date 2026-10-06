@@ -14,7 +14,7 @@ import (
 	"github.com/weaviate/weaviate-go-client/v6/modules/openai"
 )
 
-const p2dSkipConfigUpdate = "fails at v6.0.0-rc.0: every Config.Update* call returns HTTP 422 (multivector enabled is immutable)"
+const p2dSkipConfigUpdate = "fails at v6.0.0-rc.0: every Config.Update* call returns HTTP 422 on a collection with properties or an HNSW vector"
 
 // p2dIndexConfig reads one vector's index type and index config straight from
 // the REST schema endpoint. GetConfig misreports the quantizer at rc.0, so the

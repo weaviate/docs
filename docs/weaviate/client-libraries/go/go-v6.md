@@ -126,7 +126,7 @@ Connect to Weaviate Cloud with an API key. Pass the cluster hostname only, witho
 
 `WithAPIKey` also works against a plain `http` endpoint, such as a local instance.
 
-OIDC authentication does not work in this release. See [Known limitations](#known-limitations).
+OIDC authentication fails in this release as soon as the client has to fetch or refresh a token. See [Known limitations](#known-limitations).
 
 ### Create a collection and import data
 
@@ -175,9 +175,9 @@ The following behaviors are present in `v6.0.0-rc.0`.
 | Call | Failure | Workaround |
 | :--- | :------ | :--------- |
 | `Config.UpdateVectorConfig`, `UpdateInvertedIndexConfig`, `UpdateReplicationConfig`, `UpdateMultiTenancyConfig`, `UpdateObjectTTLConfig`, and `SetPropertyDescription` | On a collection without named vectors, `UpdateVectorConfig` panics with `assignment to entry in nil map`. Otherwise the update calls fail with HTTP 422 on any collection that has a property, and on any HNSW or dynamic index. `Config.AddProperty`, `Config.AddReference`, and `Config.DropPropertyIndex` are not affected | Treat these calls as unusable in this release. Change the configuration with the REST API or another client |
-| Canceling the context of a batch stream (`collection.Batch(...)`) while `Close()` is draining | Panics the process with `close of closed channel` in 7 of 10 test runs. The panic comes from a client goroutine, so your code cannot recover it | None known |
+| Canceling the context of a batch stream (`collection.Batch(...)`) while `Close()` is draining | Can panic the process with `close of closed channel`. The panic comes from a client goroutine, so your code cannot recover it. | None known |
 | A batch stream carrying a reference via `b.Reference(...)` | `Close()` never returns, and `Wait()` on the reference's task never returns, even though the reference is written | Use the batch stream for objects only, and write references with `Data.AddReferences` |
-| A batch stream `Add` with a context that is already canceled | In 6 of 10 test runs, `Add` returned `context canceled`. `Close()` then hung, and later objects were not written. In the other 4 runs, `Add` returned no error and the canceled object was written anyway | None known |
+| A batch stream `Add` with a context that is already canceled | `Add` can return `context canceled`. `Close()` then hangs, and later objects are not written. Other times `Add` returns no error and writes the canceled object anyway. | None known |
 | OIDC authentication with `WithBearerToken`, `WithClientCredentials`, or `WithResourceOwnerPasswordCredentials` | The client requests tokens from the discovery document URL and gets `oauth2: "HTTP 404 Not Found"`. Client credentials, password credentials, and a bearer token without `ExpiresIn` fail in `NewClient`. With `ExpiresIn` set, every call fails from 30 seconds before the access token expires | Use an API key, or create a new client with a fresh token before the old one expires |
 
 ### Calls that return wrong results without an error
