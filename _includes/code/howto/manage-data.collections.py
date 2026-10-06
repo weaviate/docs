@@ -710,6 +710,26 @@ assert config.vector_config["body_vector"].vectorizer.vectorizer == "text2vec-co
 assert config.properties[0].tokenization.name == "TRIGRAM"
 
 
+# =====================================
+# ===== DROP A NAMED VECTOR INDEX =====
+# =====================================
+
+# TODO[g-despot]: unguard when `delete_vector_index` ships in a weaviate-client release.
+# Merged in weaviate-python-client PR #1991, absent from 4.23.1, so the block is kept out
+# of the CI run. To unguard: set the flag to True, de-indent the block, and switch the
+# docs page (manage-collections/vector-config.mdx) from language="pyindent" to "py".
+DROP_VECTOR_INDEX_CLIENT_AVAILABLE = False
+
+if DROP_VECTOR_INDEX_CLIENT_AVAILABLE:
+    # START DropNamedVectorIndex
+    articles = client.collections.use("Article")
+
+    # Deletes the index and the stored embeddings for the "body_vector" named vector.
+    # The call returns once the drop is committed; cleanup continues in the background.
+    articles.config.delete_vector_index("body_vector")
+    # END DropNamedVectorIndex
+
+
 # ===========================
 # ===== DISTANCE METRIC =====
 # ===========================
