@@ -141,7 +141,7 @@ The type of `finalAnswerParsed` is `Record<string, unknown>` if a raw JSON Schem
 
 ## Image Generation
 
-Ask mode allows you to also request images to be generated, which will be based on any retrieved data from the search. [See the page on image generation for more details.](../reference/image_generation.md)
+Ask mode allows you to also request images to be generated, which will be based on any retrieved data. [See the page on image generation for more details.](../reference/image_generation.md)
 
 
 <Tabs className="code" groupId="languages">
