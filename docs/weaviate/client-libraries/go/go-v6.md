@@ -1,7 +1,7 @@
 ---
 title: Go client v6
 sidebar_label: Go v6
-description: "Install and use the beta Weaviate Go client v6: connect to Weaviate, create a collection, import objects, and run a semantic search with the collections-first Go API."
+description: "Install and use the release candidate of the Weaviate Go client v6: connect to Weaviate, create a collection, import objects, and run a semantic search with the collections-first Go API."
 image: og/docs/client-libraries.jpg
 # tags: ['go', 'go v6', 'client library']
 ---
@@ -24,35 +24,29 @@ export const goV6CardsData = [
   },
 ];
 
-:::caution Beta release
+:::caution Release candidate
 
-The Go `v6` client is a pre-release: the API can still change, and `v6` does not yet cover the whole Weaviate feature set. For production work, use the [`v5` client](./index.md).
+The Go `v6` client is a release candidate. The API can still change before the final release. `v6` does not yet cover the whole Weaviate feature set. For example, it has no generative search or reranking. For production work, use the [`v5` client](./index.md).
 
 :::
 
 :::note Go v6 client (SDK)
 
-The latest Go v6 client is version `v6.0.0-beta.2`.
+The latest Go v6 client is version `v6.0.0-rc.0`. The `Go v6` code examples in the documentation are written for and tested against this release.
 
 <QuickLinks items={goV6CardsData} />
 
 :::
 
-This page covers the Weaviate Go client `v6`, a ground-up redesign of the [Go client](./index.md) built around a collections-first API — see [what changed](#what-changed-in-the-v6-client). For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
+This page covers the Weaviate Go client `v6`, a ground-up redesign of the [Go client](./index.md) built around a collections-first API. See [what changed](#what-changed-in-the-v6-client). For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
 ## Installation
 
 ```bash
-go get github.com/weaviate/weaviate-go-client/v6@v6.0.0-beta.2
+go get github.com/weaviate/weaviate-go-client/v6@v6.0.0-rc.0
 ```
 
-Pin the version. `v6` is published to the public Go module proxy, so a bare `go get` resolves to the newest pre-release today, but it will move you onto `v6.0.0` without warning the moment that version ships.
-
-:::info Which client version the examples target
-
-The `Go v6` code examples throughout the documentation are written against the client's `v6` branch at commit [`dc3715f`](https://github.com/weaviate/weaviate-go-client/tree/dc3715f). Features merged after `v6.0.0-beta.2` do not compile against the published beta.
-
-:::
+Pin the version. A bare `go get` resolves to the release candidate today. It will move you onto `v6.0.0` without warning when that version ships.
 
 The client lives at the module root and its package is named `weaviate`:
 
@@ -65,7 +59,7 @@ import weaviate "github.com/weaviate/weaviate-go-client/v6"
 
 #### Go version
 
-The `v6` client module requires Go `1.25.8` or higher.
+The `v6` client module requires Go `1.26.0` or higher. On an older Go with the default `GOTOOLCHAIN=auto`, `go get` downloads a Go 1.26 toolchain and raises the `go` line in your `go.mod` to `1.26.0` without asking. With `GOTOOLCHAIN=local`, it fails with `requires go >= 1.26.0`.
 
 #### Weaviate version compatibility
 
@@ -73,7 +67,7 @@ The `v6` client requires Weaviate `1.38.8` or higher. Earlier servers truncate l
 
 #### gRPC
 
-The `v6` client uses remote procedure calls (RPCs) under-the-hood. It needs both the REST and the gRPC endpoint of your instance to be reachable, so a port for gRPC must be open to your Weaviate server.
+The `v6` client uses remote procedure calls (RPCs) under-the-hood. It needs both the REST and the gRPC endpoint of your instance to be reachable, so a port for gRPC must be open to your Weaviate server. Creating the client and `client.IsReady` only check the REST endpoint. If the gRPC port is unreachable, the first data or query call fails with `code = Unavailable`.
 
 <details>
   <summary>docker-compose.yml example</summary>
@@ -129,11 +123,7 @@ Connect to Weaviate Cloud with an API key. Pass the cluster hostname only, witho
   language="go6"
 />
 
-:::caution Bearer credentials require TLS
-
-API keys and OIDC tokens are sent as bearer credentials over gRPC, which requires transport-level security. Passing `WithAPIKey`, `WithBearerToken`, or any other token source alongside a plaintext `http` endpoint fails while the client is being constructed, in `NewClient`, with `credentials require transport level security`. Authenticate against an `https` endpoint. `NewLocal` defaults to `http`, so a local instance needs both `weaviate.WithScheme("https")` and TLS terminated in front of Weaviate.
-
-:::
+`WithAPIKey` also works against a plain `http` endpoint, such as a local instance.
 
 ### Create a collection and import data
 
@@ -148,7 +138,7 @@ The following example connects to a local instance, [creates a collection](../..
 
 ### Search
 
-Run a [semantic search](../../search/index.mdx) over the collection. The collection has exactly one vector, so the query resolves to it; with several vectors, name one with the `Target` field:
+Run a [semantic search](../../search/index.mdx) over the collection. The collection has exactly one vector, so the query resolves to it. With several vectors, name one with the `Target` field:
 
 <FilteredTextBlock
   text={GoV6QuickstartCode}
@@ -164,37 +154,49 @@ The most visible changes are:
 - **Collections-first.** Operations are organized around collections. You get a handle for a collection once, then read, write, and search through it, rather than naming the collection on every request.
 - **Context first, with no terminator call.** Every operation takes a request context and returns a result and an error directly. The trailing call that executed a builder chain is gone.
 - **Named vectors by default.** Vectors are represented as named vectors throughout, which keeps single-vector and multi-vector collections consistent.
-- **Grouped sub-clients.** Cluster-wide concerns, such as collections, roles, users, backups, and replication, and per-collection concerns, such as data, query, aggregation, and tenants, are grouped under dedicated sub-clients.
+- **Grouped sub-clients.** Cluster-wide concerns are grouped under dedicated sub-clients: collections, aliases, roles, users, groups, backups, cluster, and replication. So are per-collection concerns: data, query, aggregation, configuration, and tenants.
+- **Collection configuration.** `collection.Config` reads a collection's configuration and updates parts of it. Several updates fail in this release. See [Known limitations](#known-limitations).
+- **Vector index configuration.** You can configure an HNSW, flat, dynamic, or HFresh vector index, with compression, when you create a collection.
+- **More vectorizers.** The `modules/openai`, `modules/google`, and `modules/huggingface` packages configure those providers' text vectorizers.
+- **Aggregation with search.** Aggregations can run over a near text, near object, near media, or hybrid search.
 - **Typed results.** Query results can be decoded into your own types.
 
 Where an operation is not yet available, the `Go v6` tab shows a short "Coming soon" note. To compare the two clients side by side, open the [connection pages](/weaviate/connections/index.mdx) and [how-to guides](../../guides.mdx) and switch between the `Go` and `Go v6` tabs.
 
 ## Known limitations
 
-The following behaviors are present in `v6.0.0-beta.2`.
+The following behaviors are present in `v6.0.0-rc.0`.
 
-### Calls that crash or hang
+### Calls that crash, hang, or fail
 
 | Call | Failure | Workaround |
 | :--- | :------ | :--------- |
-| `Query.NearObject` with `ExcludeSelf: true` | Panics the calling process with `uuid.UUID are not supported`, on every call and for every input | Leave `ExcludeSelf` unset and drop the source object from the results yourself |
-| A batch stream (`collection.Batch(...)`) carrying a reference via `b.Reference(...)` | `Close()` never returns and the stream's goroutine leaks, even though the reference is written. Errors on this path are swallowed, and `Wait()` can report a failure for a reference that actually succeeded | Use the batch stream for objects only, and write references with `Data.AddReferences` |
-| `Query.Hybrid` with a nested `NearVector` whose `Target` is empty | Panics (nil dereference). A `NearVector` with a populated `Target` works. A standalone `Query.NearVector` with the same empty or nil `Target` does not panic, but returns every object in the collection with the `Distance` cutoff dropped and no error | Set a vector target, on the nested `NearVector` or on the standalone one |
+| Cancelling the context of a batch stream (`collection.Batch(...)`) while `Close()` is draining | Panics the process from a client goroutine with `close of closed channel`. Your code cannot recover the panic | None known |
+| A batch stream carrying a reference via `b.Reference(...)` | `Close()` never returns, and `Wait()` on the reference's task never returns, even though the reference is written | Use the batch stream for objects only, and write references with `Data.AddReferences` |
+| A batch stream `Add` with a context that is already cancelled | The `Add` returns `context canceled`, and the stream is then broken. `Close()` usually hangs and the next object is not written. When `Close()` does return, the cancelled object can be written anyway | None known |
+| `Config.UpdateVectorConfig`, `UpdateInvertedIndexConfig`, `UpdateReplicationConfig`, `UpdateMultiTenancyConfig`, `UpdateObjectTTLConfig`, and `SetPropertyDescription` | Fail with HTTP 422 on every collection with an HNSW or dynamic index and on most with a flat index, for example `multivector enabled is immutable`. These calls write back the configuration that `Config.Get` read, which is wrong (see the next table) | None known. `Config.AddProperty` and `Config.DropPropertyIndex` are not affected |
 
 ### Calls that silently return the wrong thing
 
 | Call | Behavior | Workaround |
 | :--- | :------- | :--------- |
-| `Query.NearMedia` with an unset `Media` | Runs no similarity search at all: it returns arbitrary objects with a `nil` error, and any `Distance` or `Certainty` cutoff is dropped | Always set `Media`, using `query.Image`, `query.Audio`, `query.Video`, `query.Depth`, `query.Thermal`, or `query.IMU` |
-| Any query using `query.AllTokensMatchCross` or the `query/boost` package | The client sends these to every server without checking its version. `AllTokensMatchCross` is ignored below Weaviate `1.37.15` / `1.38.8` / `1.39.0` and the search silently behaves as plain OR; a `Boost` is ignored below `1.38.0`. Same rows, same scores, no error | Check your Weaviate version before relying on either feature |
-| Two objects with the same UUID inside one batch stream | Both `Add` calls succeed, one task is orphaned and blocks forever, `Close()` returns `nil`, and the write that survives is the *losing* one | Keep object IDs distinct within a single stream |
-| A batch delete (`Data.DeleteSelected`) | `Matches`, `Successful`, and `Failed` are discarded and `Took` is always `0s` | Set `Verbose: true` and read the `Errors` map to see which objects were affected |
-| `Tenants.Get` | Tenant activity statuses are not folded, so a HOT tenant compares equal to `tenant.Hot`, not to `tenant.Active` | Compare against the specific status values |
+| Any filter on a `date` property, including in `Data.DeleteSelected` | The filter value is truncated to whole seconds, so the wrong objects match. `Data.DeleteSelected` with such a filter deletes the wrong objects | None known |
+| `Config.Get` (and `Collections.GetConfig`) | Vector index settings read back wrong. The compression is a random quantizer whenever the server lists disabled ones, so a flat index with no compression can come back as PQ, SQ, RQ, or BQ. Read-back compression values cannot be trusted. `Dynamic.Threshold` reads `0`. A flat index has no `Distance` field | None known |
+| `Aggregate` requests with a `Filter` in the search | The filter is ignored. Counts and metrics cover every object the search matches | None known |
+| `Roles.Create` with `Nodes` or `Roles` permissions | Those permissions are dropped. The call returns `nil` and the role is stored without them | None known |
+| `Data.Insert` with a `date` or `date[]` property | Sub-second precision is dropped. `03:04:05.678` is stored as `03:04:05` | None known |
+| `Data.Insert` and the batch stream `Object` call | The client changes the `Properties` map you pass in. Array values are removed and `time.Time` values become strings. Inserting the same map again stores fewer properties | Build a new properties map for each insert |
+| `Query.NearVector` with a nil `Target`, or a `NearVector` with a nil `Target` nested in `Query.Hybrid` | The standalone query returns every object in the collection, ignores `Distance` and `Certainty`, and returns no error. The nested one is dropped, so the hybrid search vectorizes the query text instead, or fails on a collection without a vectorizer | Set a vector target |
+| Any query using `query.AllTokensMatchCross` or the `query/boost` package | The client sends these to every server without checking its version. `AllTokensMatchCross` is ignored below Weaviate `1.37.15` / `1.38.8` / `1.39.0` and the search silently behaves as plain OR. A `Boost` is ignored below `1.38.0`. Same rows, same scores, no error | Check your Weaviate version before relying on either feature |
 
 ### Other caveats
 
-- `Data.Replace` rejects an object that carries cross-references with HTTP 422 `invalid object: reference property is not a map`. Replace the object without its references, then add them back with `Data.AddReferences`.
-- When the client fails to marshal a request locally — for example an empty vector target, or a property whose type it does not know — the error message is prefixed with a long `%!s(int32=...)` dump of the request. Server-side errors are not affected.
+- `Config.ListShards` returns no shard status, so a read-only shard does not show as read-only.
+- `Data.DeleteSelected` always reports `Took` as `0s` and returns no successful or failed counts. Per-object failures come back as a `data.DeleteError` error.
+- `Data.Update` with a cross-reference adds the reference to the existing list rather than replacing it.
+- A batch task's `Wait()` called before `Close()` blocks until the batch is flushed.
+- With `KeepAlive.PermitWithoutStream` set to `true`, a default Weaviate server closes the idle connection after about three minutes with `too_many_pings`. The next call reconnects.
+- When the client fails to marshal a request locally, for example a property whose type it does not know, the error message is prefixed with a long `%!s(int32=...)` dump of the request. Server-side errors are not affected.
 - The `Hybrid.Alpha` godoc published on pkg.go.dev has the semantics inverted. An `Alpha` of `0` is pure keyword search and `1` is pure vector search, as described in these docs and implemented by the server.
 
 Please [open an issue](https://github.com/weaviate/weaviate-go-client/issues) if you hit another.
