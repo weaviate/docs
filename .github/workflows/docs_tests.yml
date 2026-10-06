@@ -30,14 +30,15 @@ on:
         required: false
         default: ''
       go_client_branch:
-        description: 'Go client branch (leave empty to use the workflow default below)'
+        description: 'Go client branch or tag to test instead of the release pinned in go.mod (leave empty to use the pinned release)'
         required: false
         default: ''
 
 env:
   # Centralize versions for easier maintenance
   PYTHON_VERSION: "3.10"
-  GO_VERSION: "1.25"
+  WEAVIATE_VERSION: "1.35.0"
+  GO_VERSION: "1.26"
   OLLAMA_VERSION: "0.9.6"
   CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
   KEYCLOAK_VERSION: "24.0.3"
@@ -45,7 +46,6 @@ env:
 jobs:
   test-agents:
     name: Test Agents
-    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -98,7 +98,6 @@ jobs:
 
   test-python:
     name: Test Python
-    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -262,7 +261,6 @@ jobs:
 
   test-typescript:
     name: Test TypeScript
-    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -442,7 +440,6 @@ jobs:
 
   test-java:
     name: Test Java
-    if: github.ref != 'refs/heads/docs/go-v6-scaffold'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -614,10 +611,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
-    # Smoke lane for the Go v6 client (_includes/code/go-v6). Mirrors "Test Java"
-    # but intentionally omits the Ollama-model and Keycloak steps: the smoke set
-    # (connect / create-collection / insert / basic fetch) needs neither an
-    # embedding provider nor OIDC. Broaden this when the Go docs breadth lands.
+    # Runs the full Go v6 snippet suite (_includes/code/go-v6) against the local stack.
+    # No Keycloak or Ollama-model steps, so the OIDC connection snippet is compile-only.
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -642,14 +637,14 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
           cache-dependency-path: _includes/code/go-v6/go.sum
 
-      - name: Clone Go client and wire replace
+      - name: Override Go client branch
+        if: ${{ inputs.go_client_branch != '' }}
+        env:
+          GO_REF: ${{ inputs.go_client_branch }}
         run: |
-          GO_BRANCH="${{ inputs.go_client_branch || 'v6' }}"
-          echo "📦 Wiring Go client from branch: $GO_BRANCH"
-          # v6 IS on the module proxy (newest tag: v6.0.0-beta.2), but the committed
-          # go.mod requires a placeholder version that does not exist there, so CI
-          # redirects it to a fresh clone and snippets test against branch HEAD.
-          git clone --depth 1 -b "$GO_BRANCH" https://github.com/weaviate/weaviate-go-client.git /tmp/go-client
+          # Replaces the release pinned in go.mod with a clone of the requested ref.
+          echo "📦 Wiring Go client from ref: $GO_REF"
+          git clone --depth 1 -b "$GO_REF" https://github.com/weaviate/weaviate-go-client.git /tmp/go-client
           cd _includes/code/go-v6
           go mod edit -replace github.com/weaviate/weaviate-go-client/v6=/tmp/go-client
           go mod tidy
@@ -696,6 +691,10 @@ jobs:
       - name: Record test start time
         run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
+      - name: Vet Go snippets (builds the quickstart programs)
+        working-directory: _includes/code/go-v6
+        run: go vet ./...
+
       - name: Run Go tests
         id: run-tests
         continue-on-error: true
@@ -740,12 +739,12 @@ jobs:
 
   test-csharp:
     name: Test C#
-    if: ${{ always() && github.ref != 'refs/heads/docs/go-v6-scaffold' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     # Shares the cloud instance with the Java lane (DemoCollection, JeopardyTiny,
     # CollectionWithDate); run after it so the two never race.
     needs: test-java
+    if: ${{ always() }}
 
     steps:
       - name: Checkout code

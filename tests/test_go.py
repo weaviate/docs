@@ -58,10 +58,8 @@ def parse_go_json(stdout):
     Returns ``(results, build_output)`` where ``results`` maps each top-level
     test name to ``{"outcome": "pass"|"fail"|"skip"|None, "output": str}`` and
     ``build_output`` is the concatenated package-level output. Compiler errors
-    live in ``build_output`` because a failed build emits events with no ``Test``
-    field (plus, on some toolchains, plain non-JSON lines) — capturing them is
-    what lets a build failure surface loudly instead of silently yielding zero
-    results.
+    land in ``build_output``: Go 1.24+ emits them as ``build-output`` events,
+    older toolchains as package-level ``output`` events or plain non-JSON lines.
     """
     results = {}
     build_output = []
@@ -80,7 +78,7 @@ def parse_go_json(stdout):
         test = event.get("Test")
         if not test:
             # Package-level event (start/pass/fail/output for the whole build).
-            if action == "output":
+            if action in ("output", "build-output"):
                 build_output.append(event.get("Output", ""))
             continue
         # Roll subtests (TestFoo/case) up under their parent so reporting stays
@@ -162,15 +160,23 @@ def go_suite_results(empty_weaviates):
 # Each Go test function is reported as its own pytest case (regression
 # visibility): a pass passes, a t.Skip becomes a pytest SKIP carrying its
 # reason, and a failure fails the case with that test's own captured output.
+# Sentinel parameter for an empty discovery, so a moved or missing module fails.
+_NO_TESTS_DISCOVERED = "<no Go tests discovered>"
+
+
 @pytest.mark.go
-@pytest.mark.parametrize("test_name", discover_test_names())
-def test_go_v6(go_suite_results, test_name):
-    result = go_suite_results.get(test_name)
+@pytest.mark.parametrize("test_name", discover_test_names() or [_NO_TESTS_DISCOVERED])
+def test_go_v6(request, test_name):
+    if test_name == _NO_TESTS_DISCOVERED:
+        pytest.fail(f"no Go tests discovered under {GO_V6_CWD} (no *_test.go files)")
+    # Requested lazily so the sentinel fails without starting the stack or `go test`.
+    result = request.getfixturevalue("go_suite_results").get(test_name)
     if result is None:
         pytest.fail(
             f"{test_name}: no result captured from `go test -json`. The test was "
             "discovered in the source but did not run — the suite may have failed "
-            "to build, or the function name drifted."
+            "to build, the function name drifted, or an earlier test panicked "
+            "and aborted the package."
         )
     outcome = result["outcome"]
     output = result["output"]

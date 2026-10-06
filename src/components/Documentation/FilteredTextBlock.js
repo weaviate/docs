@@ -121,11 +121,7 @@ const FilteredTextBlock = ({
             format = (input) => input.replace(/\t/g, '  ');
             break;
         case 'gonew':
-        // `go6` snippets are extracted from inside test functions, so every line
-        // carries a base indent. Reuse the `gonew` formatter: it converts tabs to
-        // spaces and strips one level, which preserves nesting. The `go` case
-        // below cannot be used — it strips two tabs from doubly-indented lines and
-        // one from singly-indented lines, collapsing both to column 0.
+        // `go6` snippets sit inside test functions: strip exactly one indent level.
         case 'go6':
             format = (input) =>
                 input
@@ -176,9 +172,7 @@ const FilteredTextBlock = ({
         case 'go6full':
         case 'gonew':
         case 'goraw':
-        // `go6` selects the v6 doc system above (pkg.go.dev .../v6) for docRefs,
-        // but Prism has no `go6`/`go6full` grammar, so it must highlight as plain
-        // `go`. Without this the whole block renders unhighlighted.
+        // Prism has no `go6`/`go6full` grammar.
         case 'go6':
             language2 = 'go';
             break;
