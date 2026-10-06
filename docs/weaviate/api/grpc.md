@@ -7,7 +7,7 @@ image: og/docs/api.jpg
 
 The gRPC API is Weaviate's search API. The client libraries use it to run searches and aggregations. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
 
-The gRPC interface was introduced in Weaviate `v1.19.0` and is considered stable as of `v1.23.7`. The current [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries query over gRPC. The current stable [Go](../client-libraries/go.md) client still queries over the [deprecated GraphQL API](./graphql/index.md). The Go client v6, currently a pre-release, queries over gRPC.
+The gRPC interface was introduced in Weaviate `v1.19.0` and is considered stable as of `v1.23.7`. The current [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries query over gRPC. The current stable [Go](../client-libraries/go.md) client still queries over the [deprecated GraphQL API](./graphql/index.md). The Go client v6, currently a release candidate, queries over gRPC.
 
 ## Protocol Buffer (Protobuf) definitions
 
@@ -46,7 +46,7 @@ services:
 
 ### Client-side
 
-You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The current stable [Go](../client-libraries/go.md) client sends batch imports over gRPC, but queries over GraphQL. The Go client v6, currently a pre-release, queries over gRPC. See [Migrating from the GraphQL API](./graphql/migration.mdx#find-your-graphql-usage).
+You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The current stable [Go](../client-libraries/go.md) client sends batch imports over gRPC, but queries over GraphQL. The Go client v6, currently a release candidate, queries over gRPC. See [Migrating from the GraphQL API](./graphql/migration.mdx#find-your-graphql-usage).
 
 Alternatively, you can use other tools, such as the `grpcurl` command-line tool, to interact with the gRPC API. Some options include:
 

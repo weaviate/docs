@@ -8,15 +8,13 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 ## What is changing and when
 
-The GraphQL API is deprecated as of October 12, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on April 1, 2027, and self-hosted Weaviate will disable it by default in an upcoming minor release.
-
-{/* TODO(ivan): Q1. Replace "an upcoming minor release" with the version once Dirk confirms. */}
+The GraphQL API is deprecated as of October 12, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on November 1, 2026 for clusters that do not use it, and on April 1, 2027 for all remaining clusters. Self-hosted Weaviate keeps GraphQL working until at least April 1, 2027. The first minor release after that date disables it by default, and you can switch it back on. It is removed in a later release, with no date set yet.
 
 | Stage | Weaviate Cloud | Self-hosted |
 | --- | --- | --- |
-| **Deprecated**, October 12, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. |
-| **Disabled by default** | Already the case for new clusters. | In an upcoming minor release. You can turn GraphQL back on. |
-| **Switched off or removed** | Switched off on all clusters on April 1, 2027. | Removed in a later release. |
+| **Deprecated**, October 12, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. GraphQL keeps working until at least April 1, 2027. |
+| **Disabled by default** | Already the case for new clusters. | In the first minor release after April 1, 2027. You can switch GraphQL back on. |
+| **Switched off or removed** | Switched off on November 1, 2026 for clusters that do not use GraphQL. Switched off on all remaining clusters on April 1, 2027. | Removed in a later release. No date is set yet. |
 
 ## Who this guide is for
 
@@ -43,7 +41,7 @@ The three paths are at three different maturity levels. Check the **Status** col
 
 | Path | Status | Availability |
 | --- | --- | --- |
-| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is currently in [beta release](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-beta.3). The current stable Go client, `v5`, relies on GraphQL. |
+| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is currently a [release candidate](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-rc.0). The current stable Go client, `v5`, relies on GraphQL. |
 | **`@weaviate/web`** (browser and edge) | **Alpha** | `3.15.0-alpha.6`. Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
 | **REST Search API** | **Preview** | Enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it needs [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`. See [REST Search API](#rest-search-api). |
 
@@ -73,7 +71,7 @@ Check each client your code uses against this table:
 | Java `io.weaviate:client6` | `6.0.0` | Never. |
 | C# | `1.0.0` | Never. |
 | Go `weaviate-go-client/v5` (current stable) | Never | Always. `client.GraphQL().Get()`, `.Aggregate()`, `.Explore()` and `.Raw()` are its search API. |
-| Go v6 (pre-release) | `v6.0.0-beta.3`. Aggregate covers over-all and near-vector only | Never. No generative search yet at this tag. |
+| Go v6 (release candidate) | `v6.0.0-rc.0`. Aggregate covers over-all, near-vector, near-text, near-object, hybrid and near-media | Never. No generative search yet at this tag. |
 
 </details>
 
@@ -297,6 +295,8 @@ These GraphQL features have no equivalent in the gRPC API, the client libraries 
 - `spellCheck`
 - The `_additional` properties `featureProjection`, `semanticPath`, `interpretation` and `classification`
 
+If one of these is essential to your application, tell us through the channels under [Questions and feedback](#questions-and-feedback). Within reason, we will add what is missing.
+
 {/* TODO(ivan): Q3. State what happens to these features once Dirk confirms. Until then, keep "no equivalent today". */}
 
 ## Further resources
@@ -311,6 +311,10 @@ These GraphQL features have no equivalent in the gRPC API, the client libraries 
 ## Questions and feedback
 
 All three paths are actively being developed, and feedback on this guide, especially a query you could not convert, directly shapes what gets built next.
+
+We are helping with the migration through office hours, webinars and support tickets. If a query has no equivalent in the paths above, say so. Within reason we will add what is missing, for example additional parameters on the REST Search API.
+
+{/* TODO(ivan): Add dates or links for the office hours and webinars once scheduled. */}
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
