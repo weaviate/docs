@@ -10,7 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!./_includes/quickstart.py';
 import CurlCode from '!!raw-loader!./_includes/quickstart.sh';
 
-Engram is a memory server for LLM agents and applications. It automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
+Engram is a managed memory service for LLM agents and applications. It automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
 This guide walks you through the core Engram workflow: create a project, get an API key, store a memory, and search for it.
 
@@ -38,28 +38,37 @@ uv add weaviate-engram
 
 ## Step 1: Create a project
 
-Every memory in Engram belongs to a project. Create one in the [Weaviate Cloud console](https://console.weaviate.cloud).
+Every memory in Engram belongs to a project. Create one in the [Engram console](console.md), the Engram section of [Weaviate Cloud](https://console.weaviate.cloud).
 
 Follow this interactive walkthrough to create a project with the **Personalization** template, set up its group and the `UserKnowledge` topic, and generate an API key to connect to it:
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe
     id="xrg3yooiwk"
+    title="Create an Engram project walkthrough"
     src="https://app.guideflow.com/embed/xrg3yooiwk"
     width="100%"
     height="100%"
     style={{overflow: "hidden", position: "absolute", border: "none"}}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
-    webKitAllowFullScreen
-    mozAllowFullScreen
     allowFullScreen
-    allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="xrg3yooiwk"></script>
 </div>
 
-You can select a predefined template when creating a project. For this tutorial, use the **Personalization template**.
+<details>
+  <summary>The same steps in text:</summary>
+
+1. Sign in to [Weaviate Cloud](https://console.weaviate.cloud) and select **Engram** in the top navigation.
+2. Select **Create project** and give the project a name.
+3. Choose the **Personalization** template.
+4. Review the group and its topics. The template pre-fills the `default` group with the `UserKnowledge` topic. Leave **Include Conversation Summary Topic** cleared unless you want per-conversation summaries — enabling it makes `conversation_id` required on every write.
+5. Create the project, then open **API Keys** in the left-hand menu.
+6. Select **Create key** and copy the key — it is shown only once (this is [Step 2](#step-2-create-an-api-key)).
+
+The [Engram console](console.md) page describes each of these screens in more detail.
+
+</details>
 
 The template sets up the project's `default` [group](concepts/groups.md) with default [topics](concepts/topics.md), such as `UserKnowledge` for general information about the user. This is enough to get started.
 
@@ -81,8 +90,7 @@ Visit the [concepts section](concepts/index.md) to learn more about how these wo
 
 ## Step 2: Create an API key
 
-Generate an API key for your project in the Weaviate Cloud console. The full key is only shown once — save it securely.
-
+Generate an API key for your project in the Engram console. The full key is only shown once — save it securely.
 
 Set it as an environment variable for the examples below:
 
@@ -113,11 +121,15 @@ Initialize the client with your API key.
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+Every endpoint lives under `https://api.engram.weaviate.io/v1` — the `/v1` prefix is required, and there is no project ID in the path, because the API key identifies the project.
+
 All `curl` commands authenticate via the `Authorization` header with a Bearer token:
 
 ```bash
 -H "Authorization: Bearer $ENGRAM_API_KEY"
 ```
+
+`Bearer` is case-sensitive and the key must start with `eng_`.
 
 </TabItem>
 </Tabs>
@@ -163,6 +175,39 @@ Engram processes memories asynchronously and immediately returns a `run_id`. In 
 
 </details>
 
+<details>
+
+<summary>Confirm the run finished</summary>
+
+If you do want to wait — on a first run, or while debugging — poll the run until it reaches a terminal status:
+
+<Tabs className="code" groupId="languages" docsUrl="engram">
+<TabItem value="py_engram" label="Python">
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START CheckRun"
+  endMarker="# END CheckRun"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+<FilteredTextBlock
+  text={CurlCode}
+  startMarker="# START CheckRun"
+  endMarker="# END CheckRun"
+  language="bash"
+/>
+
+</TabItem>
+</Tabs>
+
+[Check run status](guides/check-run-status.md) covers the response fields, and [`runs.get` versus `runs.wait`](guides/check-run-status.md#runsget-versus-runswait).
+
+</details>
+
 ## Step 5: Search memories
 
 Search for relevant memories using a natural language query.
@@ -200,24 +245,24 @@ Search for relevant memories using a natural language query.
     {
       "id": "memory-uuid",
       "project_id": "project-uuid",
-      "user_id": "user-uuid",
+      "user_id": "alice",
       "content": "The user prefers dark mode.",
       "topic": "UserKnowledge",
       "group": "default",
       "created_at": "2025-01-01T00:00:01Z",
       "updated_at": "2025-01-01T00:00:01Z",
-      "score": 1
+      "score": 0.92
     },
     {
       "id": "memory-uuid-2",
       "project_id": "project-uuid",
-      "user_id": "user-uuid",
+      "user_id": "alice",
       "content": "The user uses VS Code as their primary editor.",
       "topic": "UserKnowledge",
       "group": "default",
       "created_at": "2025-01-01T00:00:01Z",
       "updated_at": "2025-01-01T00:00:01Z",
-      "score": 1
+      "score": 0.74
     }
   ],
   "total": 2
@@ -230,7 +275,7 @@ Search for relevant memories using a natural language query.
 
 - Learn about [core concepts](concepts/index.md) like topics, groups, and pipelines.
 - Explore different ways to [store memories](guides/store-memories.md), including conversations and pre-extracted data.
-- See all [search options](guides/search-memories.md) including vector, BM25, and hybrid retrieval.
+- See all [search options](guides/search-memories.md), including vector, BM25, hybrid, and fetch retrieval.
 
 ## Questions and feedback
 

@@ -8,7 +8,7 @@ When you send content to Engram, it runs through an asynchronous pipeline that e
 
 :::info Pipeline configuration
 
-Configurable pipelines are available on enterprise plans.
+Every plan runs the personalization pipeline. The preset pipelines for other use cases are available from the Starter plan up, and the custom pipeline builder is an Enterprise feature. See the [pricing page](https://weaviate.io/pricing) (Engram tab) for the current breakdown.
 
 :::
 

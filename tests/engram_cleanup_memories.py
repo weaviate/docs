@@ -1,3 +1,10 @@
+"""Maintenance helper: delete every memory an Engram test user accumulated.
+
+Not a documentation snippet and not part of test_engram.py — run it by hand
+(ENGRAM_API_KEY, optional ENGRAM_USER_ID and ENGRAM_GROUP) when a failed
+snippet run leaves memories behind.
+"""
+
 import os
 from engram import EngramClient
 

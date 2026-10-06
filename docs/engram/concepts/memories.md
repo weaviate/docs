@@ -15,7 +15,7 @@ A memory is a discrete piece of information stored in Engram. Each memory has:
 | `project_id` | The project this memory belongs to |
 | [`user_id`](scopes.md) | The user this memory is scoped to (if user-scoped) |
 | [`properties`](scopes.md) | Custom scope properties attached to the memory (e.g. `{"conversation_id": "abc"}` for conversation-scoped topics) |
-| `created_at` | When the memory was created (RFC 3339) |
+| `created_at` | When the memory was created, or last rewritten (RFC 3339). An update to an existing memory refreshes this along with `updated_at`, so treat it as a last-write time rather than a stable creation time. |
 | `updated_at` | When the memory was last updated (RFC 3339) |
 | `score` | Relevance score (only present in search results) |
 

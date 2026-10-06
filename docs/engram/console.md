@@ -1,6 +1,6 @@
 ---
-title: Engram Web Console
-description: "Browse and manage Engram projects, memories, users, runs, and API keys from the Weaviate Cloud console."
+title: Engram console
+description: "Browse and manage Engram projects, memories, users, runs, and API keys from the Engram console in Weaviate Cloud."
 image: og/docs/engram.png
 ---
 
@@ -30,6 +30,8 @@ The **Groups** section lists the project's [groups](concepts/groups.md) and the 
 
 :::note
 Groups and topics are defined when a project is created. Editing them in the console is read-only for now, and creating new groups from the console is coming soon.
+
+The console is the only place they are created: there is no public API for creating or editing a project, group, or topic, and none for adding or removing a topic afterwards. Your application can read the configuration with [`GET /v1/groups`](/engram/api/rest), which returns every group with its topics, each topic's description, whether it is bounded, and the [scope](concepts/scopes.md) it requires.
 :::
 
 ## Users
@@ -138,7 +140,7 @@ import ApiKeysImg from '/docs/engram/_includes/console/api-keys.png';
 
 ## Plans
 
-The **Plans** page shows your current plan and lets you upgrade. Your plan determines limits such as the number of pipeline runs allowed per month. When a free plan reaches its monthly run cap, new runs are rejected until the cap resets.
+The **Plans** page shows your current plan, your usage in the current billing period, and the option to upgrade. Your plan sets how many [pipeline runs](concepts/pipelines.md#runs) you can make per month and how many projects you can create: the free plan allows **1,000 runs per month** and **1 project**. Once the cap is reached, further runs are rejected with a `429` response until the next billing period — nothing is queued, so retry after the reset or upgrade. See the [pricing page](https://weaviate.io/pricing) (Engram tab) for every plan's limits and prices.
 
 ## Questions and feedback
 

@@ -1,13 +1,19 @@
-import os
-import uuid
-from engram import EngramClient, HybridRetrieval
+from engram import HybridRetrieval
 
 # START Setup
+import os
+from engram import EngramClient
+
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
 )
-user_id = f"tutorial-chat-{uuid.uuid4().hex[:8]}"
+user_id = "alice"  # any stable, unique string per user
 # END Setup
+
+# The tested run uses a throwaway user so repeat runs stay isolated.
+import uuid
+
+user_id = f"tutorial-chat-{uuid.uuid4().hex[:8]}"
 
 
 # START ChatFunctionAnthropic
@@ -141,6 +147,8 @@ for _retry in range(5):
         time.sleep(3)
 
 # START SearchMemories
+from engram import HybridRetrieval
+
 results = client.memories.search(
     query="What kind of coffee does the user like?",
     user_id=user_id,
@@ -170,7 +178,9 @@ assert any(
 # START FullLoopAnthropic
 def memory_chat_loop_anthropic():
     """Complete chat loop with Engram memory and Anthropic."""
+    import os
     import anthropic
+    from engram import EngramClient, HybridRetrieval
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
@@ -230,7 +240,9 @@ if __name__ == "__main__":
 # START FullLoopOpenAI
 def memory_chat_loop_openai():
     """Complete chat loop with Engram memory and OpenAI."""
+    import os
     from openai import OpenAI
+    from engram import EngramClient, HybridRetrieval
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
