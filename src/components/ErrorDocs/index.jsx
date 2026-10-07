@@ -107,6 +107,24 @@ export function IdAnatomy({ origin, category, number, originHint, categoryHint, 
   );
 }
 
+/** A full-width box that is one link: title, a sentence or two, and a
+ *  "go there" line. For a page's main next step, so it must not hold links. */
+export function LinkBox({ to, title, text, linkText, icon }) {
+  return (
+    <Link to={to} className={styles.linkBox}>
+      {icon && <i className={`${icon} ${styles.linkBoxIcon}`} aria-hidden="true" />}
+      <div>
+        <p className={styles.linkBoxTitle}>{title}</p>
+        <p className={styles.linkBoxText}>{text}</p>
+        <p className={styles.linkBoxCta}>
+          {linkText}
+          <i className={`fa fa-arrow-right ${styles.linkBoxArrow}`} aria-hidden="true" />
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 /** Checklist items: a short lead, one line of why, and where to do it.
  *  An item may carry `subitems` ([{ title?, text }]): advice that belongs to
  *  the item above it rather than at the top level. Optional; items without
