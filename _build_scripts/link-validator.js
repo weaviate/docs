@@ -33,9 +33,11 @@ const domainsToIgnore = [
     'https://console.cloud.google.com',
     'corpus-texmex.irisa.fr', // academic dataset server, frequent network timeouts
     'https://db-engines.com', // 403s automated requests
+    'https://dl.acm.org', // 403s automated requests
     'https://docs.anthropic.com',
     'https://docs.aws.amazon.com', // 403s automated/bot requests
     'https://docs.x.ai',
+    'https://doi.org', // 403s automated requests (resolves to dl.acm.org)
     'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link
     'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
     'https://huggingface.co', // 429 Too Many Requests when validating many model/dataset links
