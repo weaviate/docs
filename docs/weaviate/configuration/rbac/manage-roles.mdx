@@ -9,6 +9,7 @@ image: og/docs/configuration.jpg
 import Link from "@docusaurus/Link";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import SkipLink from "/src/components/SkipValidationLink";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts";
@@ -405,6 +406,12 @@ This example creates a role called `testRole` with permissions to:
 </Tabs>
 
 #### Create a role with `Backups` permissions {#backups-permissions}
+
+:::info Added in `v1.39.10`
+
+The `read_backups` action lists backups and reads backup and restore status. It cannot create, restore or cancel a backup. Like `manage_backups`, it is scoped by collection. The client libraries do not have a helper for it yet. Grant it through the <SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> with `"action": "read_backups"` and a `backups` resource.
+
+:::
 
 This example creates a role called `testRole` with permissions to:
 

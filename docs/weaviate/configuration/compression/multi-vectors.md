@@ -110,8 +110,12 @@ These parameters can be used to fine-tune MUVERA:
   the dimensionality of the final encoding but can lead to better approximation
   of the original multi-vector similarity.
 
+:::note MUVERA is required on the HFresh index (added in `v1.40`)
+MUVERA is optional on the `hnsw` index but required on the `hfresh` index. See [Multi-vector embeddings on HFresh](../../config-refs/indexing/vector-index.mdx#hfresh-multi-vector).
+:::
+
 :::note Quantization
-Quantization is also available as a compression technique for multi-vector embeddings. It reduces the memory footprint of individual vectors by approximating their values with less precision. Just like with single vectors, multi-vectors support [PQ](./pq-compression.md), [BQ](./bq-compression.md), [RQ](./rq-compression.md) and [SQ](./sq-compression.md) quantization.
+Quantization is also available as a compression technique for multi-vector embeddings. It reduces the memory footprint of individual vectors by approximating their values with less precision. Just like with single vectors, multi-vectors on an `hnsw` index support [PQ](./pq-compression.md), [BQ](./bq-compression.md), [RQ](./rq-compression.md) and [SQ](./sq-compression.md) quantization.
 :::
 
 ## Further resources

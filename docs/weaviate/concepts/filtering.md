@@ -6,6 +6,8 @@ image: og/docs/concepts.jpg
 # tags: ['architecture', 'filtered vector search', 'pre-filtering']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
+
 Weaviate provides powerful filtered vector search capabilities, allowing you to combine vector searches with structured, scalar filters. This enables you to find the closest vectors to a query vector that also match certain conditions.
 
 Filtered vector search in Weaviate is based on the concept of pre-filtering. This means that the filter is constructed before the vector search is performed. Unlike some pre-filtering implementations, Weaviate's pre-filtering does not require a brute-force vector search and is highly efficient.
@@ -34,7 +36,7 @@ In the section about Storage, [we have described in detail which parts make up a
 
 ## Filter strategy
 
-Weaviate supports two filter strategies: `sweeping` and `acorn` specifically for the HNSW index type.
+Weaviate supports three filter strategies for the HNSW index type: `sweeping`, `acorn` and `pathseer`.
 
 ### ACORN
 
@@ -57,6 +59,24 @@ The `sweeping` strategy is based on the concept of "sweeping" through the HNSW g
 The algorithm starts at the root node and traverses the graph, evaluating the distance to the query vector at each node, while keeping the "allow list" of the filter as context. If the filter is not met, the node is skipped and the traversal continues. This process is repeated until the desired number of results is reached.
 
 The `sweeping` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
+
+### PathSeer
+
+:::info Added in `v1.40`
+:::
+
+`PathSeer` comes from the SIGMOD 2026 paper <SkipLink href="https://doi.org/10.1145/3802098">PathSeer: Adaptive Neighbor Handling for Efficient Filtered ANN Search</SkipLink> by Zhiyue Li, Guangyan Zhang and colleagues. The paper's first author contributed the implementation to Weaviate.
+
+`PathSeer` searches the bottom layer of the HNSW graph like `sweeping`, with two additions. While the result set is still filling, it also checks the filter on the neighbors of each candidate's neighbors and computes distances only for the ones that match, like `ACORN`. Once the result set is full, it skips the non-matching neighbors of a non-matching candidate without computing their distance. The decision is made per node, so there is no selectivity threshold and no new parameter to tune.
+
+{/* TODO(ivan): link the PathSeer blog post once it is published */}
+In Weaviate's benchmarks, `PathSeer` was the fastest strategy, or within a few percent of the fastest, on random, topical and combined filters. `ACORN` remains faster for sparse filters that are negatively correlated with the query, where the matching objects lie far from where the search starts.
+
+`PathSeer` changes only how a filtered query walks the graph. It stores nothing extra, so it adds no import cost and no memory overhead, and you can switch an existing collection to `pathseer` or away from it at any time without reindexing. The [flat-search cutoff](#flat-search-cutoff) still applies first. The default strategy is `acorn`. To use `PathSeer`, set the `filterStrategy` field of the HNSW vector index to `pathseer` [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
+
+:::caution Downgrading from `v1.40`
+Earlier Weaviate versions do not accept `pathseer` as a filter strategy. Before you downgrade, set `filterStrategy` to `acorn` or `sweeping` on every collection that uses it.
+:::
 
 ## `indexFilterable` {#indexFilterable}
 

@@ -1,7 +1,7 @@
 {
-  "tag": "v1.39.10",
-  "upstream_commit": "ff4d42c158b170f1b9857745028ab10f9c5fd8ab",
-  "fetched_at": "2026-10-07T03:08:57Z",
-  "overlay_sha256": "9c9f4fe2c533a8dedf436df378e47d4d2605150528f0275fe1912957487f447b",
+  "tag": "v1.40.0",
+  "upstream_commit": "db0ac995b171c3c181ad6a2f6d06a875fb8de3a9",
+  "fetched_at": "2026-10-07T11:06:30Z",
+  "overlay_sha256": "6e269739d7dbb58eed5f95edf67ea1a713d5b411d0dba04a92d503e47a7611d0",
   "rules_version": 1
 }

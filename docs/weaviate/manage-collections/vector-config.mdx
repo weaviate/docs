@@ -207,7 +207,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 <AddNamedVectors/>
 
-Named vectors can be added to existing collection definitions with named vectors. (This is not possible for collections without named vectors.)
+Named vectors can be added to a collection that already has named vectors, to a [collection created without a vector](/weaviate/config-refs/collections.mdx#no-vector), and to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections). In a single vector collection you cannot add one called `default`. See [The `default` vector name](/weaviate/config-refs/collections.mdx#default-vector-name).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -269,7 +269,7 @@ Adding a new vector to the collection definition [won't trigger vectorization fo
 
 <MultiVector/>
 
-Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
+Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are available for named vectors on `hnsw` indexes. From `v1.40`, they are also available on `hfresh` indexes [with MUVERA encoding only](../config-refs/indexing/vector-index.mdx#hfresh-multi-vector). To use multi-vectors, enable it for the appropriate named vector.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

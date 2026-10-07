@@ -147,11 +147,11 @@ RQ can also be enabled for an existing collection by updating the collection def
 
 <Rq4bit/>
 
-[4-bit RQ](../../concepts/vector-quantization.md#4-bit-rq) stores each dimension in 4 bits instead of 8, so a compressed vector is about half the size of the 8-bit equivalent and roughly 8x smaller than the uncompressed vector. It sits between 8-bit RQ and 1-bit RQ: it trades some accuracy in the compressed distance calculation for a smaller index, and it depends more heavily on rescoring against the uncompressed vectors to recover that accuracy.
+4-bit RQ stores each dimension in 4 bits, which gives a smaller index than 8-bit RQ at some cost in accuracy. For sizes and trade-offs, see [4-bit RQ](../../concepts/vector-quantization.md#4-bit-rq).
 
 :::note 4-bit RQ requires the `hnsw` index
 
-4-bit RQ is supported on the `hnsw` index type only. The `flat` and `hfresh` index types reject `bits` set to `4`, and a `dynamic` index only uses 4-bit RQ after it converts to HNSW. For the bit widths that each index type accepts, see [RQ parameters](#rq-parameters).
+A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widths each index type accepts, see [RQ parameters](#rq-parameters).
 
 :::
 
@@ -441,7 +441,7 @@ import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 :::note Multi-vector performance
-RQ supports multi-vector embeddings. Each token vector is rounded up to a multiple of 64 dimensions, which may result in less than the nominal compression ratio for very short vectors. This is a technical limitation that may be addressed in future versions.
+RQ supports multi-vector embeddings. On an `hnsw` index, each token vector is rounded up to a multiple of 64 dimensions, which may result in less than the nominal compression ratio for very short vectors. This is a technical limitation that may be addressed in future versions.
 :::
 
 ## Further resources

@@ -12,7 +12,6 @@ Weaviate's functionality can be customized by using [modules](/weaviate/concepts
 At the instance (i.e. Weaviate cluster) level, you can:
 
 - Enable modules
-- Configure the default vectorizer module
 - Configure module-specific variables (e.g. API keys), where applicable
 
 This can be done by setting the appropriate [environment variables](/deploy/configuration/env-vars/index.md) as shown below.
@@ -97,18 +96,10 @@ services:
 
 ### Default vectorizer module
 
-You can specify a default vectorization module with the `DEFAULT_VECTORIZER_MODULE` variable as below.
+:::info Deprecated in `v1.40`
+:::
 
-If a default vectorizer module is not set, you must set a vectorizer in the schema before you can use `near<Media>` or vectorization at import time.
-
-This code sets `text2vec-huggingface` as the default vectorizer. Thus, `text2vec-huggingface` module will be used unless another vectorizer is specified for that class.
-
-``` yaml
-services:
-  weaviate:
-    environment:
-      DEFAULT_VECTORIZER_MODULE: text2vec-huggingface
-```
+Weaviate ignores `DEFAULT_VECTORIZER_MODULE`, so set the `vectorizer` in each collection definition. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
 
 ## Generative model integrations
 

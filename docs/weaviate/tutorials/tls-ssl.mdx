@@ -123,7 +123,6 @@ services:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "false"
       PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
-      DEFAULT_VECTORIZER_MODULE: "none"
       CLUSTER_HOSTNAME: "node1"
     volumes:
       - weaviate_data:/var/lib/weaviate
@@ -438,7 +437,6 @@ services:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "false"
       PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
-      DEFAULT_VECTORIZER_MODULE: "none"
       CLUSTER_HOSTNAME: "node1"
     volumes:
       - weaviate_data:/var/lib/weaviate
@@ -720,8 +718,6 @@ spec:
               value: "false"
             - name: PERSISTENCE_DATA_PATH
               value: "/var/lib/weaviate"
-            - name: DEFAULT_VECTORIZER_MODULE
-              value: "none"
             - name: CLUSTER_HOSTNAME
               value: "node1"
           volumeMounts:

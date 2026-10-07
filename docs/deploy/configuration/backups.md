@@ -240,6 +240,8 @@ ENABLE_MODULES=backup-gcs,text2vec-cohere
 | `BACKUP_GCS_BUCKET` | yes | The name of the GCS bucket for all backups. |
 | `BACKUP_GCS_USE_AUTH` | no | Whether or not credentials will be used for authentication. Defaults to `true`. A case for `false` would be for use with a local GCS emulator. |
 | `BACKUP_GCS_PATH` | no | The root path inside your bucket that all your backups will be copied into and retrieved from. <br/><br/>Optional, defaults to `""` which means that the backups will be stored in the bucket root instead of a sub-folder. |
+| `GCS_MODULE_TRANSPORT` | no | The API the module uses to talk to GCS: `grpc` or `http`. Applies to both backups and exports. A local GCS emulator that serves only the JSON API needs `http`. <br/><br/>Added in `v1.38.10` and `v1.39.1`. Changed in `v1.40`: the default is now `grpc`. |
+| `GCS_MODULE_GRPC_CONN_POOL` | no | The number of gRPC channels each GCS client opens when the transport is `grpc`. An integer from `1` to `64`. Defaults to `4`. <br/><br/>Added in `v1.38.10` and `v1.39.1`. |
 
 #### Google Application Default Credentials
 
