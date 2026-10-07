@@ -8,9 +8,7 @@ image: og/docs/client-libraries.jpg
 
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import QuickLinks from "/src/components/QuickLinks";
-import GoV6ConnectCode from "!!raw-loader!/_includes/code/go-v6/connect_test.go";
-import GoV6QuickstartCode from "!!raw-loader!/_includes/code/go-v6/quickstart_test.go";
-import GoV6LocalCreateCode from "!!raw-loader!/_includes/code/go-v6/quickstart/local_create/main.go";
+import GoV6GetStartedCode from "!!raw-loader!/_includes/code/go-v6/quickstart/get_started/main.go";
 
 export const goV6CardsData = [
   {
@@ -39,7 +37,7 @@ The latest Go v6 client is version `v6.0.0-rc.0`. The Go v6 code examples in the
 
 :::
 
-This page covers the Weaviate Go client `v6`, a ground-up redesign of the [Go client](./index.md) built around a collections-first API. See [what changed](#what-changed-in-the-v6-client). For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
+This page covers the Weaviate Go client `v6`, a ground-up redesign of the [Go client](./index.md) built around a collections-first API. For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
 ## Installation
 
@@ -91,78 +89,21 @@ import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
 
 <BasicPrereqs />
 
-### Connect to Weaviate
+The following code demonstrates how to:
 
-The client holds a gRPC connection, so always close it with `defer client.Close()`. Use `client.IsReady(ctx)` to check whether the instance is serving.
-
-Connect to a local instance on the default ports (REST on `localhost:8080`, gRPC on `localhost:50051`):
-
-<FilteredTextBlock
-  text={GoV6ConnectCode}
-  startMarker="// START LocalNoAuth"
-  endMarker="// END LocalNoAuth"
-  language="go6"
-/>
-
-To set the REST and gRPC endpoints yourself:
+1. [Connect](../../connections/index.mdx) to a local Weaviate instance.
+1. [Create a new collection](../../manage-collections/index.mdx).
+1. [Import data](../../manage-objects/import.mdx) and vectorize it.
+1. Perform a [vector search](../../search/index.mdx).
 
 <FilteredTextBlock
-  text={GoV6ConnectCode}
-  startMarker="// START CustomURL"
-  endMarker="// END CustomURL"
-  language="go6"
-/>
-
-### Authentication
-
-Connect to Weaviate Cloud with an API key. Pass the cluster hostname only, without a scheme:
-
-<FilteredTextBlock
-  text={GoV6ConnectCode}
-  startMarker="// START APIKeyWCD"
-  endMarker="// END APIKeyWCD"
-  language="go6"
-/>
-
-`WithAPIKey` also works against a plain `http` endpoint, such as a local instance.
-
-### Create a collection and import data
-
-The following example connects to a local instance, [creates a collection](../../manage-collections/index.mdx) whose text properties are vectorized server-side, and [imports](../../manage-objects/import.mdx) three objects:
-
-<FilteredTextBlock
-  text={GoV6LocalCreateCode}
-  startMarker="// START LocalCreate"
-  endMarker="// END LocalCreate"
+  text={GoV6GetStartedCode}
+  startMarker="// START GetStarted"
+  endMarker="// END GetStarted"
   language="go6full"
 />
 
-### Search
-
-Run a [semantic search](../../search/index.mdx) over the collection. The collection has exactly one vector, so the query resolves to it. With several vectors, name one with the `Target` field:
-
-<FilteredTextBlock
-  text={GoV6QuickstartCode}
-  startMarker="// START NearText"
-  endMarker="// END NearText"
-  language="go6"
-/>
-
-## What changed in the v6 client
-
-The most visible changes are:
-
-- **Collections-first.** Operations are organized around collections. You get a handle for a collection once, then read, write, and search through it, rather than naming the collection on every request.
-- **Context first, with no terminator call.** Every operation takes a request context and returns a result and an error directly. The trailing call that executed a builder chain is gone.
-- **Named vectors by default.** Vectors are represented as named vectors throughout, which keeps single-vector and multi-vector collections consistent.
-- **Grouped sub-clients.** Cluster-wide concerns are grouped under dedicated sub-clients: collections, aliases, roles, users, groups, backups, cluster, and replication. So are per-collection concerns: data, query, aggregation, configuration, and tenants.
-- **Collection configuration.** `collection.Config` is the API for reading and changing a collection's configuration.
-- **Vector index configuration.** You can configure an HNSW, flat, dynamic, or HFresh vector index, with compression, when you create a collection. Set the index type explicitly when you configure compression.
-- **More vectorizers.** The `modules/openai`, `modules/google`, and `modules/huggingface` packages configure those providers' text vectorizers.
-- **Aggregation with search.** Aggregations can run over a near text, near object, near media, or hybrid search.
-- **Typed results.** Query results can be decoded into your own types.
-
-Where an operation is not yet available, the Go v6 tab shows a short "Coming soon" note. To compare the two clients side by side, open the [connection pages](/weaviate/connections/index.mdx) and [how-to guides](../../guides.mdx) and switch between the Go and Go v6 tabs.
+For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section. Where an operation is not yet available in the `v6` client, the Go v6 tab shows a short "Coming soon" note.
 
 ## Releases
 

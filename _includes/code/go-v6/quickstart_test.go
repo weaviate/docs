@@ -53,7 +53,14 @@ func (text2vecOllama) Name() string { return "text2vec-ollama" }
 // that the custom text2vec-ollama module carried its endpoint and model.
 func assertMovieOllamaConfig(t *testing.T) {
 	t.Helper()
-	resp, err := http.Get("http://localhost:8080/v1/schema/Movie")
+	assertOllamaConfig(t, "Movie")
+}
+
+// assertOllamaConfig reads a collection's schema through raw REST and checks
+// that the custom text2vec-ollama module carried its endpoint and model.
+func assertOllamaConfig(t *testing.T, name string) {
+	t.Helper()
+	resp, err := http.Get("http://localhost:8080/v1/schema/" + name)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +75,7 @@ func assertMovieOllamaConfig(t *testing.T) {
 	}
 	cfg, ok := class.VectorConfig["default"].Vectorizer["text2vec-ollama"]
 	if !ok {
-		t.Fatalf("Movie has no text2vec-ollama vectorizer: %+v", class.VectorConfig)
+		t.Fatalf("%s has no text2vec-ollama vectorizer: %+v", name, class.VectorConfig)
 	}
 	if cfg["apiEndpoint"] != "http://ollama:11434" || cfg["model"] != "nomic-embed-text" {
 		t.Fatalf("text2vec-ollama settings not stored: %v", cfg)
@@ -171,6 +178,84 @@ func TestQuickstartLocal(t *testing.T) {
 		}
 	}
 	// END NearText
+}
+
+// TestGetStarted is the live twin of quickstart/get_started/main.go, the
+// program on the Go v6 client page: connect, create a Question collection
+// vectorized with Ollama, import objects, and run a near-text search.
+func TestGetStarted(t *testing.T) {
+	ctx := context.Background()
+
+	// Step 1: Connect to your local Weaviate instance.
+	client, err := weaviate.NewLocal(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+
+	// NOT SHOWN TO THE USER: start from a clean slate so re-runs are deterministic.
+	_ = client.Collections.Delete(ctx, "Question")
+	defer client.Collections.Delete(ctx, "Question")
+
+	// Step 2: Create a collection vectorized by the Ollama embedding integration.
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "Question",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+			{Name: "category", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"default": {Vectorizer: text2vecOllama{
+				APIEndpoint: "http://ollama:11434",
+				Model:       "nomic-embed-text",
+			}},
+		},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	assertOllamaConfig(t, "Question")
+
+	// Step 3: Import a few objects. The server vectorizes each one on import.
+	questions := client.Collections.Use("Question")
+	if _, err := questions.Data.Insert(ctx,
+		&data.Object{Properties: map[string]any{
+			"question": "This organ removes excess glucose from the blood & stores it as glycogen",
+			"answer":   "Liver",
+			"category": "SCIENCE",
+		}},
+		&data.Object{Properties: map[string]any{
+			"question": "It's the only living mammal in the order Proboseidea",
+			"answer":   "Elephant",
+			"category": "ANIMALS",
+		}},
+		&data.Object{Properties: map[string]any{
+			"question": "The gavial looks very much like a crocodile except for this bodily feature",
+			"answer":   "the nose or snout",
+			"category": "ANIMALS",
+		}},
+	); err != nil {
+		t.Fatal(err)
+	}
+
+	// NOT SHOWN: async indexing lets the count and the vector index lag Insert.
+	waitForCount(t, questions, 3)
+	waitForNearText(t, questions, []string{"biology"})
+
+	// Step 4: Run a semantic (vector) search.
+	response, err := questions.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"biology"},
+		Limit:    2,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(response.Objects) == 0 {
+		t.Fatal("near-text search returned no results")
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
 }
 
 // TestQuickstartCloud is the Weaviate Cloud form of the quickstart. It is
