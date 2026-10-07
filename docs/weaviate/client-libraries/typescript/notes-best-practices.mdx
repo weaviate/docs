@@ -23,7 +23,7 @@ The v3 client provides helper functions to connect your application to your Weav
 <TabItem value="wcd" label="WCD">
 
 ```ts
-import weaviate from "weaviate-client";
+import weaviate from "@weaviate/node";
 
 const client = await weaviate.connectToWeaviateCloud("WEAVIATE_INSTANCE_URL", {
   // Replace WEAVIATE_INSTANCE_URL with your instance URL
@@ -40,7 +40,7 @@ console.log(client);
 <TabItem value="local" label="Local">
 
 ```ts
-import weaviate from "weaviate-client";
+import weaviate from "@weaviate/node";
 
 const client = await weaviate.connectToLocal();
 
@@ -51,7 +51,7 @@ console.log(client);
 <TabItem value="custom" label="Custom">
 
 ```ts
-import weaviate from "weaviate-client";
+import weaviate from "@weaviate/node";
 
 const client = await weaviate.connectToCustom({
   httpHost: "localhost",
@@ -85,7 +85,7 @@ import ClientAuthApiKey from "/docs/weaviate/client-libraries/_components/client
 <ClientAuthApiKey />
 
 ```ts
-import weaviate, { WeaviateClient } from "weaviate-client";
+import weaviate, { WeaviateClient } from "@weaviate/node";
 
 // Instantiate the client with the auth config
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
@@ -101,7 +101,7 @@ console.log(client);
 To include custom headers, such as API keys for third party services, add the custom headers to the `headers` section when you initialize the client:
 
 ```ts
-import weaviate, { WeaviateClient } from "weaviate-client";
+import weaviate, { WeaviateClient } from "@weaviate/node";
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
   "WEAVIATE_INSTANCE_URL", // Replace WEAVIATE_INSTANCE_URL with your instance URL
@@ -123,7 +123,7 @@ When establishing a connection to the Weaviate server, the client performs a ser
 You can set `skipInitChecks` to `true` to skip these checks.
 
 ```js
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal({
   skipInitChecks: true,
@@ -139,7 +139,7 @@ For additional connection configuration, see [Timeout values](#timeout-values).
 TypeScript users can define custom Generics. Generics make it easier to manipulate objects and their properties. Compile time type checks help to ensure that operations like `insert()` and `create()` are safe and error free.
 
 ```js
-import weaviate from "weaviate-client";
+import weaviate from "@weaviate/node";
 
 type Article = {
   title: string,
@@ -172,12 +172,12 @@ for await (const article of articles.iterator()) {
 
 The v3 client enables strong typing with custom TypeScript types and user-defined generics.
 
-You can find the type definitions in the folder that stores your Weaviate client package. The package is stored in a folder under the `node/` directory. Custom type definitions are stored in sub-folder for each bundle.
+You can find the type definitions in the folder that stores your Weaviate client package. The package is stored in the `node_modules/@weaviate/node/` directory. Custom type definitions are stored in a sub-folder for each bundle.
 
 For example, the `index.d.ts` file stores type definitions for the `cjs` bundle:
 
 ```bash
-node/cjs/index.d.ts
+node_modules/@weaviate/node/dist/cjs/src/index.d.ts
 ```
 
 The v3 client also adds internal features that make JavaScript development more type-safe.
@@ -187,7 +187,7 @@ The v3 client also adds internal features that make JavaScript development more 
 You can set timeout values, in seconds, for the client. Use the `timeout` property to configure the timeout values for initialization checks as well as query and insert operations.
 
 ```js
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal({
   timeout: {

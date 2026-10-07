@@ -18,7 +18,7 @@ const client: WeaviateClient = weaviate.client({
 */
 
 // EndToEndExample  // InstantiationExample  // NearTextExample
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -39,7 +39,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 
 // EndToEndExample  // CustomVectorExample
 // START CreateCollection
-import { vectors, generative } from 'weaviate-client' 
+import { vectors, generative } from '@weaviate/node' 
 
 async function createCollection() {
   const questions = await client.collections.create({

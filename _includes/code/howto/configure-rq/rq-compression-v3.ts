@@ -6,7 +6,7 @@
 
 import assert from 'assert';
 // START EnableRQ // START 4BitEnableRQ // START 1BitEnableRQ // START RQWithOptions // START Uncompressed
-import weaviate, { configure } from 'weaviate-client';
+import weaviate, { configure } from '@weaviate/node';
 // END EnableRQ // END 4BitEnableRQ // END 1BitEnableRQ // END RQWithOptions // END Uncompressed
 
 
@@ -149,7 +149,7 @@ client.collections.create({
 })
 
 // START UpdateSchema // START 1BitUpdateSchema
-import { reconfigure } from 'weaviate-client';
+import { reconfigure } from '@weaviate/node';
 
 const collection = client.collections.use("MyCollection")
 // END UpdateSchema // END 1BitUpdateSchema

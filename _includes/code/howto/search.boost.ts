@@ -1,6 +1,6 @@
 // How-to: Search > Boost results - TypeScript examples.
 //
-// Requires Weaviate v1.38+ and weaviate-client v3.14.0 or higher. Boost is
+// Requires Weaviate v1.38+. Boost is
 // gRPC-only - REST/curl is not supported.
 //
 // Uses the text2vec-transformers vectorizer. Run against the local stack
@@ -12,7 +12,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-import weaviate, { dataType, tokenization, vectors } from 'weaviate-client';
+import weaviate, { dataType, tokenization, vectors } from '@weaviate/node';
 
 const client = await weaviate.connectToLocal();
 

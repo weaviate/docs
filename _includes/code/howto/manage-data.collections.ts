@@ -5,8 +5,8 @@ import assert from 'assert';
 // ================================
 // ===== INSTANTIATION-COMMON =====
 // ================================
-import weaviate, { WeaviateClient, vectorIndex } from 'weaviate-client';
-import { configure, reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
+import weaviate, { WeaviateClient, vectorIndex } from '@weaviate/node';
+import { configure, reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from '@weaviate/node';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -25,7 +25,7 @@ let result
 
 /*
 // START UpdateCollection // START UpdateReranker // START UpdateGenerative
-import { reconfigure } from 'weaviate-client';
+import { reconfigure } from '@weaviate/node';
 
 // END UpdateCollection // END UpdateReranker // END UpdateGenerative
 */
@@ -64,7 +64,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START CreateCollectionWithProperties
-import { dataType } from 'weaviate-client';
+import { dataType } from '@weaviate/node';
 
 // END CreateCollectionWithProperties
 */
@@ -114,7 +114,7 @@ await client.collections.delete('ArticleNV')
 
 /*
 // START BasicNamedVectors
-import { vectors, dataType } from 'weaviate-client';
+import { vectors, dataType } from '@weaviate/node';
 
 // END BasicNamedVectors
 */
@@ -177,7 +177,7 @@ await client.collections.delete('Article')
 
 /*
 // START Vectorizer
-import { vectors, dataType } from 'weaviate-client';
+import { vectors, dataType } from '@weaviate/node';
 
 // END Vectorizer
 */
@@ -213,7 +213,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetVectorIndexType
-import { vectors, dataType, configure } from 'weaviate-client';
+import { vectors, dataType, configure } from '@weaviate/node';
 
 // END SetVectorIndexType
 */
@@ -251,7 +251,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetVectorIndexParams
-import { configure, vectors } from 'weaviate-client';
+import { configure, vectors } from '@weaviate/node';
 
 // END SetVectorIndexParams
 */
@@ -293,7 +293,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START ModuleSettings
-import { vectors } from 'weaviate-client';
+import { vectors } from '@weaviate/node';
 
 // END ModuleSettings
 */
@@ -328,7 +328,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START PropModuleSettings
-import { vectors, dataType, tokenization } from 'weaviate-client';
+import { vectors, dataType, tokenization } from '@weaviate/node';
 
 // END PropModuleSettings
 */
@@ -398,7 +398,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START TrigramTokenization
-import { vectors, dataType, tokenization } from 'weaviate-client';
+import { vectors, dataType, tokenization } from '@weaviate/node';
 
 // END TrigramTokenization
 */
@@ -471,7 +471,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START DistanceMetric
-import { configure, vectors, vectorDistances } from 'weaviate-client';
+import { configure, vectors, vectorDistances } from '@weaviate/node';
 
 // END DistanceMetric
 */
@@ -501,7 +501,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetInvertedIndexParams
-import { dataType } from 'weaviate-client';
+import { dataType } from '@weaviate/node';
 
 // END SetInvertedIndexParams
 */
@@ -581,7 +581,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetReranker
-import { vectors, reranker } from 'weaviate-client';
+import { vectors, reranker } from '@weaviate/node';
 
 // END SetReranker
 */
@@ -609,7 +609,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetGenerative
-import { vectors, generative } from 'weaviate-client';
+import { vectors, generative } from '@weaviate/node';
 
 // END SetGenerative
 */
@@ -639,7 +639,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START ReplicationSettings
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 // END ReplicationSettings
 */
@@ -668,7 +668,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START AsyncRepair
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 // END AsyncRepair
 */
@@ -699,7 +699,7 @@ await replicationClient.collections.delete(collectionName)
 
 /*
 // START AllReplicationSettings
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 // END AllReplicationSettings
 */
@@ -747,7 +747,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START ShardingSettings
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 // END ShardingSettings
 */
@@ -877,7 +877,7 @@ await client.collections.delete("DemoCollection")
 
 /*
 // START MultiValueVectorMuvera
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 // END MultiValueVectorMuvera
 */
 // START MultiValueVectorMuvera

@@ -20,7 +20,7 @@ Start at the top of this table and take the first row that describes your stack.
 | Your application | Recommended path | Why |
 | --- | --- | --- |
 | **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
-| **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. Currently an alpha release. |
+| **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. |
 | **No client library available** | **[REST Search API](#rest-search-api)** | For a no-code or BI platform, or a language with no official client such as PHP or Ruby. Plain-HTTP JSON endpoints whose request bodies mirror your GraphQL queries closely.
 
 :::info Availability at a glance
@@ -29,8 +29,8 @@ The three paths are at three different maturity levels. Check the **Status** col
 
 | Path | Status | Availability |
 | --- | --- | --- |
-| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is currently in [beta release](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-beta.3). Earlier versions of the Go client rely on GraphQL. |
-| **`@weaviate/web`** (browser and edge) | **Alpha** | `3.15.0-alpha.6`. Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
+| **Official client libraries** | Available | Python, JavaScript/TypeScript, Java, and C# are available. The Go client v6 is in [beta release](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-beta.3). Earlier versions of the Go client rely on GraphQL. |
+| **`@weaviate/web`** (browser and edge) | Available | Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
 | **REST Search API** | **Preview** | Enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it needs [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`. See [REST Search API](#rest-search-api). |
 
 ## Client libraries (recommended)
@@ -68,11 +68,7 @@ The current Go client builds its queries as GraphQL under the hood. The upcoming
 
 ## TypeScript client for web
 
-If your application runs in a browser or on an edge runtime such as Cloudflare Workers or Vercel, a plain gRPC client cannot run there. `@weaviate/web` is a browser and edge build of the v3 TypeScript client that carries the query path over **gRPC-Web**, so you write the same client code you would on Node against a single HTTP(S) endpoint.
-
-:::caution Alpha
-`@weaviate/web` is an alpha release and is not recommended for production use yet.
-:::
+If your application runs in a browser or on an edge runtime such as Cloudflare Workers or Vercel, a plain gRPC client cannot run there. `@weaviate/web` is the browser and edge build of the v3 TypeScript client. It uses gRPC-Web, so you write the same code as on Node, against one HTTP(S) endpoint.
 
 Install steps, the server version floor and the browser notes are on the [web client page](../../client-libraries/typescript/web-client.mdx).
 

@@ -1,7 +1,7 @@
 import assert from 'assert';
-import weaviate, { BQConfig, PQConfig, VectorIndexConfigHNSW } from 'weaviate-client';
+import weaviate, { BQConfig, PQConfig, VectorIndexConfigHNSW } from '@weaviate/node';
 // START CollectionWithAutoPQ
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 // END CollectionWithAutoPQ
 const client = await weaviate.connectToLocal();

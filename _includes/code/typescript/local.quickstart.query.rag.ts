@@ -1,5 +1,5 @@
 // RAG
-import weaviate, { WeaviateClient, generativeParameters } from 'weaviate-client';
+import weaviate, { WeaviateClient, generativeParameters } from '@weaviate/node';
 
 const client: WeaviateClient = await weaviate.connectToLocal();
 

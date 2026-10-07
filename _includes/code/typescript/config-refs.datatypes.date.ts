@@ -1,8 +1,8 @@
 import assert from 'assert';
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 // START ConfigureDataType
-import { dataType } from 'weaviate-client';
+import { dataType } from '@weaviate/node';
 
 // END ConfigureDataType
 

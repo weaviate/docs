@@ -1,4 +1,4 @@
-import weaviate, { WeaviateClient } from 'weaviate-client'
+import weaviate, { WeaviateClient } from '@weaviate/node'
 import assert from 'assert'
 
 const client: WeaviateClient = await weaviate.connectToLocal({

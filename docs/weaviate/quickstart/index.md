@@ -162,7 +162,7 @@ import CodeClientInstall from "/\_includes/code/quickstart/clients.install.new.m
 
 Before you create anything, you can also check that the client can reach your cluster:
 
-import QuickstartIsReady from "/\_includes/code/quickstart/quickstart.is_ready.mdx";
+import QuickstartIsReady from "/\_includes/code/quickstart/quickstart.short.is_ready.mdx";
 
 <QuickstartIsReady />
 

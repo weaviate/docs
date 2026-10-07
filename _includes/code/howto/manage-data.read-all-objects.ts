@@ -1,7 +1,7 @@
 // How-to: Manage data -> Read all objects - TypeScript examples
 // run with: node --loader=ts-node/esm read-all-objects.ts
 import assert from 'assert';
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(
   'WEAVIATE_INSTANCE_URL',  // Replace WEAVIATE_INSTANCE_URL with your instance URL

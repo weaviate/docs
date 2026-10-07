@@ -17,7 +17,7 @@ import PyCode from '!!raw-loader!/_includes/code/connections/connect-python-v4.p
 <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal()
 const response = await client.getMeta()

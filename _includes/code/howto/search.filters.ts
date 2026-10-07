@@ -1,14 +1,14 @@
 // Howto: Search -> Filters - TypeScript examples
 
 import assert from 'assert';
-import { vectors, dataType } from 'weaviate-client';
+import { vectors, dataType } from '@weaviate/node';
 
 // ================================
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
 // searchMultipleFiltersAnd // searchMultipleFiltersNested // START ContainsNoneFilter
-import weaviate, { Filters } from 'weaviate-client';
+import weaviate, { Filters } from '@weaviate/node';
 
 // END searchMultipleFiltersAnd // END searchMultipleFiltersNested // END ContainsNoneFilter
 
