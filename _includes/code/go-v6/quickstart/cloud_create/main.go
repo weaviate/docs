@@ -1,9 +1,9 @@
-package main
-
 // Complete, runnable program for the Weaviate Cloud quickstart's
 // create-collection step.
 
 // START CloudCreate
+package main
+
 import (
 	"context"
 	"fmt"

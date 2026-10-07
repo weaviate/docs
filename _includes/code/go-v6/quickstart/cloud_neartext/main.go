@@ -1,9 +1,9 @@
-package main
-
 // Complete, runnable program for the Weaviate Cloud quickstart's near-text
 // (semantic search) step.
 
 // START CloudNearText
+package main
+
 import (
 	"context"
 	"fmt"

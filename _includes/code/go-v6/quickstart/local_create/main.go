@@ -1,8 +1,8 @@
-package main
-
 // Complete, runnable program for the local quickstart's create-collection step.
 
 // START LocalCreate
+package main
+
 import (
 	"context"
 	"fmt"

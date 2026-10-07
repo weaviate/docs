@@ -1,9 +1,9 @@
-package main
-
 // Complete, runnable program for the local quickstart's near-text (semantic
 // search) step.
 
 // START NearText
+package main
+
 import (
 	"context"
 	"fmt"

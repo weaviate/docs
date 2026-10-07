@@ -106,24 +106,51 @@ def _skip_reason(output):
 
 
 class GoBuildError(Exception):
-    """Raised when `go test` produced no per-test results (build/compile failure)."""
+    """Raised when `go test` failed in a way no parametrized case would report."""
 
 
-def _results_or_raise(returncode, stdout, stderr):
+def _failure_detail(headline, build_output, stderr, extra=()):
+    detail = [headline, *extra]
+    build_tail = build_output.splitlines()[-200:]
+    if build_tail:
+        detail.append("\n--- BUILD OUTPUT ---\n" + "\n".join(build_tail))
+    if stderr:
+        detail.append("\n--- STDERR ---\n" + "\n".join(stderr.splitlines()[-200:]))
+    return "\n".join(detail)
+
+
+def _results_or_raise(returncode, stdout, stderr, reported_names=None):
     results, build_output = parse_go_json(stdout)
     if not results:
         # No per-test events at all => the suite never ran. Fail loudly with the
         # compiler output so the break is diagnosable, not an opaque "0 tests".
-        detail = [
+        raise GoBuildError(_failure_detail(
             f"Go suite produced no test results (go test exit code {returncode}); "
-            "the suite likely failed to build."
-        ]
-        build_tail = build_output.splitlines()[-200:]
-        if build_tail:
-            detail.append("\n--- BUILD OUTPUT ---\n" + "\n".join(build_tail))
-        if stderr:
-            detail.append("\n--- STDERR ---\n" + "\n".join(stderr.splitlines()[-200:]))
-        raise GoBuildError("\n".join(detail))
+            "the suite likely failed to build.",
+            build_output, stderr,
+        ))
+    if returncode != 0:
+        # A nonzero exit must surface as a failing pytest case. Only tests that
+        # get a case (reported_names) count, and a missing terminal event fails
+        # its case too. Anything else, e.g. a sub-package that failed to build
+        # or a test outside the discovered set, would otherwise pass silently.
+        reported = set(results) if reported_names is None else set(reported_names)
+        if not any(
+            name in reported and entry["outcome"] in ("fail", None)
+            for name, entry in results.items()
+        ):
+            unreported = [
+                f"\n--- {name} ({entry['outcome'] or 'no terminal event'}) ---\n"
+                + "\n".join(entry["output"].splitlines()[-50:])
+                for name, entry in sorted(results.items())
+                if entry["outcome"] in ("fail", None)
+            ]
+            raise GoBuildError(_failure_detail(
+                f"go test exited with code {returncode} but no reported test "
+                "failed; a package failed to build or a test outside the "
+                "reported set failed.",
+                build_output, stderr, unreported,
+            ))
     return results
 
 
@@ -138,7 +165,9 @@ def run_go_suite():
         command, cwd=GO_V6_CWD, env=dict(os.environ),
         capture_output=True, text=True,
     )
-    return _results_or_raise(proc.returncode, proc.stdout, proc.stderr)
+    return _results_or_raise(
+        proc.returncode, proc.stdout, proc.stderr, discover_test_names()
+    )
 
 
 # --------------------------------------------------------------------------- #
