@@ -1,0 +1,354 @@
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+	"testing"
+	"time"
+
+	weaviate "github.com/weaviate/weaviate-go-client/v6"
+	"github.com/weaviate/weaviate-go-client/v6/collections"
+	"github.com/weaviate/weaviate-go-client/v6/data"
+	wembed "github.com/weaviate/weaviate-go-client/v6/modules/weaviate"
+	"github.com/weaviate/weaviate-go-client/v6/query"
+)
+
+// waitForNearText polls a near-text search until it returns at least one object.
+// The docs test stack runs with async vector indexing, so a collection's vector
+// index can lag the object count that waitForCount settles; a near-text issued
+// in that window hits an empty index and returns no results (an HTTP 200 with an
+// empty list, not an error). Polling the search itself closes that race so the
+// rendered near-text step is deterministic. It sits outside every snippet marker,
+// so it never appears in a rendered snippet.
+func waitForNearText(t *testing.T, handle *collections.Handle, concepts []string) {
+	t.Helper()
+	ctx := context.Background()
+	deadline := time.Now().Add(30 * time.Second)
+	for time.Now().Before(deadline) {
+		resp, err := handle.Query.NearText(ctx, query.NearText{Concepts: concepts, Limit: 1})
+		if err == nil && len(resp.Objects) > 0 {
+			return
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
+	t.Fatalf("waitForNearText: %q returned no near-text results before timeout", handle.CollectionName())
+}
+
+// START LocalCreate
+// The client has no typed Ollama vectorizer yet, so this small custom module
+// type names text2vec-ollama. Its JSON-tagged fields are the module settings.
+type text2vecOllama struct {
+	APIEndpoint string `json:"apiEndpoint,omitempty"`
+	Model       string `json:"model,omitempty"`
+}
+
+func (text2vecOllama) Name() string { return "text2vec-ollama" }
+
+// END LocalCreate
+
+// assertMovieOllamaConfig reads the Movie schema through raw REST and checks
+// that the custom text2vec-ollama module carried its endpoint and model.
+func assertMovieOllamaConfig(t *testing.T) {
+	t.Helper()
+	assertOllamaConfig(t, "Movie")
+}
+
+// assertOllamaConfig reads a collection's schema through raw REST and checks
+// that the custom text2vec-ollama module carried its endpoint and model.
+func assertOllamaConfig(t *testing.T, name string) {
+	t.Helper()
+	resp, err := http.Get("http://localhost:8080/v1/schema/" + name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	var class struct {
+		VectorConfig map[string]struct {
+			Vectorizer map[string]map[string]any `json:"vectorizer"`
+		} `json:"vectorConfig"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&class); err != nil {
+		t.Fatal(err)
+	}
+	cfg, ok := class.VectorConfig["default"].Vectorizer["text2vec-ollama"]
+	if !ok {
+		t.Fatalf("%s has no text2vec-ollama vectorizer: %+v", name, class.VectorConfig)
+	}
+	if cfg["apiEndpoint"] != "http://ollama:11434" || cfg["model"] != "nomic-embed-text" {
+		t.Fatalf("text2vec-ollama settings not stored: %v", cfg)
+	}
+}
+
+// TestQuickstartLocal runs the locally hosted quickstart end to end against the
+// docs test stack: connect, create a vectorized collection, import objects, and
+// run a semantic (near-text) search. It backs the "Go v6" tab of the local
+// quickstart's create-collection and near-text steps.
+func TestQuickstartLocal(t *testing.T) {
+	ctx := context.Background()
+
+	// START LocalCreate
+	// Step 1.1: Connect to your local Weaviate instance.
+	client, err := weaviate.NewLocal(ctx)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	defer client.Close()
+	// END LocalCreate
+
+	// NOT SHOWN TO THE USER — start from a clean slate so re-runs are deterministic.
+	_ = client.Collections.Delete(ctx, "Movie")
+	defer client.Collections.Delete(ctx, "Movie")
+
+	// START LocalCreate
+	// Step 1.2: Create a collection vectorized by the Ollama embedding integration.
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "Movie",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+			{Name: "description", DataType: collections.DataTypeText},
+			{Name: "genre", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"default": {Vectorizer: text2vecOllama{
+				APIEndpoint: "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
+				Model:       "nomic-embed-text",
+			}},
+		},
+	}); err != nil {
+		// handle error
+		panic(err)
+	}
+
+	// Step 1.3: Import a few objects. The server vectorizes each one on import.
+	if _, err := client.Collections.Use("Movie").Data.Insert(ctx,
+		&data.Object{Properties: map[string]any{
+			"title":       "The Matrix",
+			"description": "A computer hacker learns about the true nature of reality and his role in the war against its controllers.",
+			"genre":       "Science Fiction",
+		}},
+		&data.Object{Properties: map[string]any{
+			"title":       "Spirited Away",
+			"description": "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.",
+			"genre":       "Animation",
+		}},
+		&data.Object{Properties: map[string]any{
+			"title":       "The Lord of the Rings: The Fellowship of the Ring",
+			"description": "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.",
+			"genre":       "Fantasy",
+		}},
+	); err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println("Imported & vectorized 3 objects into the Movie collection")
+	// END LocalCreate
+
+	assertMovieOllamaConfig(t)
+
+	// NOT SHOWN — the docs stack runs with async indexing, so both the object count
+	// and the vector index settle a moment after Insert returns. Wait for the
+	// objects, then wait until the vector index answers a near-text search, so the
+	// rendered near-text step is stable (not an empty-index short-circuit).
+	waitForCount(t, client.Collections.Use("Movie"), 3)
+	waitForNearText(t, client.Collections.Use("Movie"), []string{"science fiction movie"})
+
+	// START NearText
+	// Step 2: Semantic (vector) search. text2vec-ollama turns the query
+	// text into a vector server-side and returns the closest matches.
+	movies := client.Collections.Use("Movie")
+	response, err := movies.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"science fiction movie"},
+		Limit:    2,
+		ReturnMetadata: query.ReturnMetadata{
+			Distance: true,
+		},
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+		if obj.Metadata.Distance != nil {
+			fmt.Printf("distance: %v\n", *obj.Metadata.Distance)
+		}
+	}
+	// END NearText
+}
+
+// TestGetStarted is the live twin of quickstart/get_started/main.go, the
+// program on the Go v6 client page: connect, create a Question collection
+// vectorized with Ollama, import objects, and run a near-text search.
+func TestGetStarted(t *testing.T) {
+	ctx := context.Background()
+
+	// Step 1: Connect to your local Weaviate instance.
+	client, err := weaviate.NewLocal(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+
+	// NOT SHOWN TO THE USER: start from a clean slate so re-runs are deterministic.
+	_ = client.Collections.Delete(ctx, "Question")
+	defer client.Collections.Delete(ctx, "Question")
+
+	// Step 2: Create a collection vectorized by the Ollama embedding integration.
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "Question",
+		Properties: []collections.Property{
+			{Name: "question", DataType: collections.DataTypeText},
+			{Name: "answer", DataType: collections.DataTypeText},
+			{Name: "category", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"default": {Vectorizer: text2vecOllama{
+				APIEndpoint: "http://ollama:11434",
+				Model:       "nomic-embed-text",
+			}},
+		},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	assertOllamaConfig(t, "Question")
+
+	// Step 3: Import a few objects. The server vectorizes each one on import.
+	questions := client.Collections.Use("Question")
+	if _, err := questions.Data.Insert(ctx,
+		&data.Object{Properties: map[string]any{
+			"question": "This organ removes excess glucose from the blood & stores it as glycogen",
+			"answer":   "Liver",
+			"category": "SCIENCE",
+		}},
+		&data.Object{Properties: map[string]any{
+			"question": "It's the only living mammal in the order Proboseidea",
+			"answer":   "Elephant",
+			"category": "ANIMALS",
+		}},
+		&data.Object{Properties: map[string]any{
+			"question": "The gavial looks very much like a crocodile except for this bodily feature",
+			"answer":   "the nose or snout",
+			"category": "ANIMALS",
+		}},
+	); err != nil {
+		t.Fatal(err)
+	}
+
+	// NOT SHOWN: async indexing lets the count and the vector index lag Insert.
+	waitForCount(t, questions, 3)
+	waitForNearText(t, questions, []string{"biology"})
+
+	// Step 4: Run a semantic (vector) search.
+	response, err := questions.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"biology"},
+		Limit:    2,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(response.Objects) == 0 {
+		t.Fatal("near-text search returned no results")
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+}
+
+// TestQuickstartCloud is the Weaviate Cloud form of the quickstart. It is
+// compile-only: the docs CI stack has no Weaviate Cloud instance wired for this
+// snippet, so it is kept out of the live run (t.Skip). The calls below are the
+// idiomatic Cloud shape — connect with an API key and vectorize with Weaviate
+// Embeddings (the text2vec-weaviate typed helper). It backs the "Go v6" tab of
+// the Cloud quickstart's create-collection and near-text steps.
+func TestQuickstartCloud(t *testing.T) {
+	t.Skip("Weaviate Cloud quickstart: requires a Weaviate Cloud instance with Weaviate Embeddings; compile-only in docs CI")
+	ctx := context.Background()
+
+	// START CloudCreate
+	// Best practice: store your credentials in environment variables.
+	// Step 1.1: Connect to your Weaviate Cloud instance.
+	client, err := weaviate.NewWeaviateCloud(
+		ctx,
+		os.Getenv("WEAVIATE_URL"),     // e.g. "my-cluster.weaviate.cloud"
+		os.Getenv("WEAVIATE_API_KEY"), // an admin API key
+	)
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	defer client.Close()
+
+	// Step 1.2: Create a collection vectorized by Weaviate Embeddings
+	// (the text2vec-weaviate module).
+	if _, err := client.Collections.Create(ctx, collections.Collection{
+		Name: "Movie",
+		Properties: []collections.Property{
+			{Name: "title", DataType: collections.DataTypeText},
+			{Name: "description", DataType: collections.DataTypeText},
+			{Name: "genre", DataType: collections.DataTypeText},
+		},
+		Vectors: map[string]collections.VectorConfig{
+			"default": {Vectorizer: wembed.Text2Vec{}},
+		},
+	}); err != nil {
+		// handle error
+		panic(err)
+	}
+
+	// Step 1.3: Import a few objects. Weaviate Embeddings vectorizes each on import.
+	if _, err := client.Collections.Use("Movie").Data.Insert(ctx,
+		&data.Object{Properties: map[string]any{
+			"title":       "The Matrix",
+			"description": "A computer hacker learns about the true nature of reality and his role in the war against its controllers.",
+			"genre":       "Science Fiction",
+		}},
+		&data.Object{Properties: map[string]any{
+			"title":       "Spirited Away",
+			"description": "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.",
+			"genre":       "Animation",
+		}},
+		&data.Object{Properties: map[string]any{
+			"title":       "The Lord of the Rings: The Fellowship of the Ring",
+			"description": "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.",
+			"genre":       "Fantasy",
+		}},
+	); err != nil {
+		// handle error
+		panic(err)
+	}
+	fmt.Println("Imported & vectorized 3 objects into the Movie collection")
+	// END CloudCreate
+
+	// START CloudNearText
+	// Step 2: Semantic (vector) search. Weaviate Embeddings vectorizes the query
+	// text server-side and returns the closest matches.
+	movies := client.Collections.Use("Movie")
+	response, err := movies.Query.NearText(ctx, query.NearText{
+		Concepts: []string{"science fiction movie"},
+		Limit:    2,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	for _, obj := range response.Objects {
+		fmt.Printf("%v\n", obj.Properties)
+	}
+	// END CloudNearText
+}
+
+// TestQuickstartRAG is the placeholder for the quickstart's retrieval augmented
+// generation (RAG) step. The v6 Go client has no generative/RAG support yet
+// (no collection-level generative config and no generate query), so this
+// compiles and skips; the rendered snippet shows only a "Coming soon" note.
+func TestQuickstartRAG(t *testing.T) {
+	t.Skip("not available at v6.0.0-rc.0: the client has no generative query and no collection-level generative config")
+	// TODO[g-despot]: generative (RAG) query pending v6 client support
+	// START RAG
+	// Coming soon
+	// END RAG
+}
