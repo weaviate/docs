@@ -626,7 +626,7 @@ Configuring a single vector with the top-level parameters is the older approach.
 
 A collection that sets any of the top-level `vectorizer`, `vectorIndexType` or `vectorIndexConfig` parameters is a single vector collection. Weaviate fills in the remaining top-level parameters:
 
-- `vectorizer` becomes `none`. From `v1.40`, `DEFAULT_VECTORIZER_MODULE` no longer changes this, so a collection that does not name a vectorizer does not vectorize your data.
+- `vectorizer` becomes `none`. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
 - `vectorIndexType` becomes the value of [`DEFAULT_VECTOR_INDEX`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_INDEX), or `hnsw` if that variable is unset.
 - `vectorIndexConfig.distance` becomes the value of [`DEFAULT_VECTOR_DISTANCE_METRIC`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_DISTANCE_METRIC), or [`cosine`](./distances.md) if that variable is unset.
 
@@ -777,19 +777,11 @@ The alias is not part of the collection definition, so `GET /v1/schema` returns 
 
 A collection definition that sets none of `vectorizer`, `vectorIndexType`, `vectorIndexConfig` or `vectorConfig` creates a collection without a vector. Before `v1.40`, the server defaults filled in the top-level parameters, so such a definition produced a single vector collection.
 
-For a collection without a vector:
-
-- `GET /v1/schema/{collection}` returns none of the vector parameters.
-- Objects without vectors are stored as usual. A write that carries a vector is rejected (`422` for a single-object write, a per-object error in a batch).
-- Vector search fails with an index-not-found error.
-- You can [add a named vector](../manage-collections/vector-config.mdx#add-new-named-vectors) later.
-- You cannot add the top-level parameters later. An update that sets `vectorizer`, `vectorIndexType` or `vectorIndexConfig` is rejected with a `422` error:
+You can [add a named vector](../manage-collections/vector-config.mdx#add-new-named-vectors) later. You cannot add the top-level parameters later. An update that sets them is rejected with a `422` error:
 
 ```text
 a class-level vectorizer or vector index cannot be added through an update, add a named vector instead
 ```
-
-Existing collections are unchanged, and a definition that does set the top-level parameters still creates a single vector collection.
 
 ---
 
@@ -1180,9 +1172,7 @@ It will:
 - Infer nested properties for `object` and `object[]` data types.
 - Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
 
-Auto-schema never vectorizes your data: the `default` vector's vectorizer is always `none`. Supply the vectors yourself, or define the collection before you import.
-
-[`DEFAULT_VECTORIZER_MODULE`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTORIZER_MODULE) (deprecated in `v1.40`) is ignored, so it does not change this.
+Supply the vectors yourself for auto-created collections, or define the collection before you import.
 
 :::tip Define the collection manually for production use
 

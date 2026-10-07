@@ -40,7 +40,6 @@ While you can do so manually, we recommend using the [Weaviate configuration too
 Weaviate:
 
 - `ENABLE_MODULES` (Required): The modules to enable. Include `img2vec-neural` to enable the module.
-- `DEFAULT_VECTORIZER_MODULE`: Deprecated in `v1.40`. Weaviate ignores it and logs a warning at startup. Set `vectorizer` to `img2vec-neural` in each collection definition instead.
 - `IMAGE_INFERENCE_API` (Required): The URL of the inference container.
 
 Inference container:

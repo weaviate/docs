@@ -28,7 +28,7 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 
 {/* TODO(ivan): remove this admonition and name the minimum weaviate-client version once generative-meta ships in a client release */}
 :::info Python client support is not released yet
-Python client support for Meta is coming in an upcoming `weaviate-client` release. The `Configure.Generative.meta()` and `GenerativeConfig.meta()` helpers are already merged in the client's main branch. The snippets below do not run with the current client release.
+Python client support for Meta is coming in an upcoming `weaviate-client` release. The snippets below do not run with the current client release.
 :::
 
 ## Requirements
@@ -146,9 +146,9 @@ You can provide the API key as well as some optional parameters at runtime throu
 - `X-Meta-Api-Key`: The Meta API key.
 - `X-Meta-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Meta URL.
 
-`X-Meta-Api-Key` takes precedence over the `META_APIKEY` environment variable. The API key is never part of the collection configuration, so if neither the header nor the environment variable is set, the request fails with `api key: no api key found neither in request header: X-Meta-Api-Key nor in environment variable under META_APIKEY`.
+`X-Meta-Api-Key` overrides `META_APIKEY`, and a request with neither fails with an `api key` error.
 
-`X-Meta-Baseurl` takes precedence over a `baseURL` set at query time, which in turn takes precedence over the `baseURL` in the collection configuration. If none of them are set, Weaviate uses `https://api.meta.ai`. Provide an API root rather than a full endpoint path, because Weaviate appends `/v1/chat/completions` to it.
+`X-Meta-Baseurl` overrides any `baseURL` setting (default `https://api.meta.ai`) and must be an API root, because Weaviate appends `/v1/chat/completions`.
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
@@ -215,15 +215,11 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-Weaviate forwards the configured model name to Meta as-is. There is no allowlist on the Weaviate side, so any model name that Meta serves is accepted. An unknown name is accepted when you create the collection and fails later, as an error from Meta at query time.
+Weaviate passes the model name through unchecked. See [Meta's documentation](https://dev.meta.ai/docs/api-reference) for the current models.
 
 If you do not set a model, Weaviate uses `muse-spark-1.2`.
 
-For the list of models, see the [Meta API documentation](https://dev.meta.ai/docs/api-reference).
-
-### Timeouts
-
-Weaviate applies the [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT) environment variable to the whole request, including reading the response, and it defaults to 50 seconds. A long generation, such as one with a high `reasoningEffort`, can exceed it. If queries time out, raise this value on your Weaviate instance.
+If long generations time out, raise [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT).
 
 ## Further resources
 

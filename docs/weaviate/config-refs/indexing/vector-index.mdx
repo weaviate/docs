@@ -203,21 +203,19 @@ import HFreshMultiVector from "/_includes/feature-notes/hfresh_multivector.mdx";
 
 <HFreshMultiVector />
 
-HFresh supports multi-vector embeddings only with [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding), so `multivector.muvera.enabled` is required.
-
 :::caution On HFresh, `multivector.enabled` alone has no effect
 The collection is created, but it behaves as a single vector without multi-vector support and rejects multi-vector imports and queries. Set `multivector.muvera.enabled`. Multi-vector search on HFresh also needs a named vector with `"vectorizer": "none"`.
 :::
 
 | Parameter                    | Type    | Default | Mutable | Details                                                                                                                                                                                   |
 | :--------------------------- | :------ | :------ | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `multivector.muvera.enabled` | boolean | `false` | No      | Enables MUVERA encoding, which is required for multi-vector search on HFresh. Setting it to `true` also turns on `multivector.enabled`. Cannot be changed after the collection is created.  |
+| `multivector.muvera.enabled` | boolean | `false` | No      | Enables MUVERA encoding. Setting it to `true` also turns on `multivector.enabled`. Cannot be changed after the collection is created.  |
 
 For what `ksim`, `dprojections` and `repetitions` mean and what they default to, see [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding).
 
 On HFresh these three have upper limits. Weaviate checks them whenever you create or update a collection. `ksim` can be at most `10`, `dprojections` at most `1024` and `repetitions` at most `256`. The encoding they produce together can hold at most 1,048,576 float32 values (4 MiB per vector), so the three maximums cannot be combined. Set the values when you create the collection. Changing them later is accepted but has no effect once objects have been imported.
 
-On a multi-vector index, `searchProbe` sets the [routing budget](../../concepts/indexing/vector-index.md#multi-vector-embeddings-on-hfresh), `max(limit, searchProbe)`. `rq.rescoreLimit` sets the rescore budget, `max(limit, rescoreLimit)`. Because both include the query limit, neither parameter can reduce the number of results returned.
+On a multi-vector index, `searchProbe` and `rq.rescoreLimit` set the routing and rescore budgets, `max(limit, searchProbe)` and `max(limit, rescoreLimit)`. Neither can reduce the number of results below `limit`. For how a query uses them, see [Multi-vector embeddings on HFresh](../../concepts/indexing/vector-index.md#multi-vector-embeddings-on-hfresh).
 
 ## Quantization parameters
 

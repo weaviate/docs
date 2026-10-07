@@ -99,9 +99,7 @@ services:
 :::info Deprecated in `v1.40`
 :::
 
-Weaviate ignores `DEFAULT_VECTORIZER_MODULE` and logs a startup warning when it is set.
-
-Set the `vectorizer` explicitly in each collection definition instead. A collection that does not name one is not vectorized, so you cannot use `near<Media>` or vectorization at import time for it. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
+Weaviate ignores `DEFAULT_VECTORIZER_MODULE`, so set the `vectorizer` in each collection definition. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
 
 ## Generative model integrations
 

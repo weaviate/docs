@@ -296,17 +296,17 @@ Performs a hybrid search combining vector similarity and keyword matching (BM25)
 - `query` (string, required): The natural language search text.
 - `collection_name` (string, required): The collection to search.
 - `tenant_name` (string, optional): Tenant to search within for multi-tenant collections.
-- `alpha` (float, optional): Weighting between the two searches. `0.0` = pure keyword search, `1.0` = pure vector search. Defaults to `0.75`. Changed in `v1.40`: a value outside `0` to `1` is rejected.
-- `limit` (int, optional): Maximum number of results. Defaults to `100`. Changed in `v1.40`: a value of `0` uses the default limit, and a negative value is rejected. Before `v1.40`, `0` returned no results.
+- `alpha` (float, optional): Weighting between the two searches. `0.0` = pure keyword search, `1.0` = pure vector search. Defaults to `0.75`. Must be between `0` and `1`. Changed in `v1.40`.
+- `limit` (int, optional): Maximum number of results. Defaults to `100`. A value of `0` uses the default. A negative value is rejected.
 - `target_vectors` (array, optional): Named vectors to use for vector search.
 - `target_properties` (array, optional): Properties to search with BM25. If omitted, searches all text properties.
 - `return_properties` (array, optional): Properties to include in results. If omitted, every property is returned in full, long text included, so set this to keep responses small.
 - `return_metadata` (array, optional): Metadata fields to return (e.g., `id`, `vector`, `distance`, `score`, `creationTimeUnix`, `lastUpdateTimeUnix`). Values are case-insensitive, and unknown values are ignored.
 - `filters` (object, optional): A [where filter](/weaviate/api/graphql/filters.md) applied before scoring.
 
-A leaf filter is an object with `path` (an array of property names), `operator`, and a typed value field. The typed value field is one of `valueText`, `valueInt`, `valueNumber`, `valueBoolean`, `valueDate`, the corresponding `value*Array` field for a `Contains*` operator, or `valueGeoRange` for `WithinGeoRange`. Combine leaves with `{"operator": "And" | "Or", "operands": [ ... ]}`, nested to any depth. The supported operators are `And`, `Or`, `Not`, `Equal`, `NotEqual`, `Like`, `GreaterThan`, `GreaterThanEqual`, `LessThan`, `LessThanEqual`, `ContainsAny`, `ContainsAll`, `ContainsNone`, `WithinGeoRange`, and `IsNull`. See [Concepts: Filtering](/weaviate/concepts/filtering.md) for how filters interact with search.
+The filter uses the `where` filter structure, with the operators and typed value fields listed in the [filters reference](/weaviate/api/graphql/filters.md#filter-structure).
 
-The tool combines the keyword and vector results with [relative score fusion](/weaviate/search/hybrid.md#change-the-fusion-method), the same default as the other APIs. Changed in `v1.40`. Previously the tool used ranked fusion.
+The tool combines the keyword and vector results with [relative score fusion](/weaviate/search/hybrid.md#change-the-fusion-method), the same default as the other APIs.
 
 **Returns:** Ranked objects. Each result carries the object's properties at the top level, its `id`, and an `_additional` object with the requested metadata.
 
@@ -341,8 +341,8 @@ With [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) enabled (t
 - **Authentication:** when anonymous access is disabled, a missing or invalid API key is rejected by the REST layer with HTTP `401` and a JSON body before the request reaches the MCP server: for example, `{"code": 401, "message": "unauthorized: invalid api key"}` for an invalid key, or a `message` of `anonymous access not enabled. Please authenticate through one of the available methods: [API-keys, OIDC]` for a missing one. This applies to `initialize` and `tools/list` as well as to tool calls.
 - **Authorization:** a permission failure is a tool result, not an HTTP error: HTTP `200` with `isError: true` and the RBAC message as text (see [Permissions](#permissions)).
 - **Server or write access disabled:** a request to `/v1/mcp` on an instance where the MCP server is disabled returns HTTP `503` with a JSON error body. Where only write access is disabled, `weaviate-objects-upsert` is absent from the `tools/list` response, and calling it returns a tool result with `isError: true` and the text `MCP write access is disabled: ...`.
-- **Invalid arguments:** Added in `v1.40`. Tool arguments are checked against the tool's input schema. An unknown argument key, a missing required argument, or `null` for a required argument is rejected. An optional argument set to `null` counts as not set. The rejection is a tool result with `isError: true`, not an HTTP error. Before `v1.40`, unknown keys were silently dropped.
-- **Unsupported protocol version:** Added in `v1.40`. A request whose `MCP-Protocol-Version` header names a version the server does not support returns HTTP `400`. The JSON error body lists the supported versions so the client can fall back.
+- **Invalid arguments:** Tool arguments are checked against the tool's input schema. An unknown argument key, a missing required argument, or `null` for a required argument is rejected. An optional argument set to `null` counts as not set. The rejection is a tool result with `isError: true`, not an HTTP error.
+- **Unsupported protocol version:** A request whose `MCP-Protocol-Version` header names a version the server does not support returns HTTP `400`. The JSON error body lists the supported versions so the client can fall back.
 - **Request duration:** on Weaviate Cloud, a request that takes longer than about 60 seconds from its first byte to the response is cut off by the server's write timeout and surfaces as a plain-text HTTP `503` from the ingress (`upstream connect error or disconnect/reset before headers ...`), not as a JSON-RPC error. Nothing from a cut-off upsert is written. Weaviate does not enforce a request-size limit on `/v1/mcp`, so size `weaviate-objects-upsert` batches by how long they take to upload and process, not by bytes, and keep each call well under a minute.
 
 ---

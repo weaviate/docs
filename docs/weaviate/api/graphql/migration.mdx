@@ -220,7 +220,7 @@ Body fields are **camelCase**. Field names not listed here are not recognized, a
 | `Aggregate { C(groupBy: ["category"]) { meta { count } } }` | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{c}`</SkipLink> with `"groupBy": "category", "returnMetrics": ["count"]`. Use a **bare property name**, not a path. A dotted value returns `422` |
 | `Aggregate { C { meta { count } } }` | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{c}`</SkipLink> with an empty body, or `"returnMetrics": ["count"]` |
 
-One more request limit worth knowing: in `v1.39`, `limit`, `offset`, and their sum are each capped by `QUERY_MAXIMUM_RESULTS`, and exceeding any of them returns `400`. A request body size cap, returning `413`, is not in `v1.39`. It is planned for `v1.40`.
+One more request limit worth knowing: `limit`, `offset`, and their sum are each capped by `QUERY_MAXIMUM_RESULTS`, and exceeding any of them returns `400`. From `v1.39.7`, a request body larger than 4 MiB returns `413`.
 
 </details>
 

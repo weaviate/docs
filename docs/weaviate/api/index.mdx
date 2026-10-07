@@ -11,7 +11,7 @@ Weaviate provides multiple Application Programming Interfaces (APIs) to interact
 
   - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
   - The machine-readable specification behind this reference is published at <SkipValidationLink href="/openapi.json">`https://docs.weaviate.io/openapi.json`</SkipValidationLink>. See [Machine-readable API specification](#machine-readable-api-specification) below.
-  - The reference also lists the REST Search API (the `/v1/search/{collection}/...` and `/v1/aggregate/{collection}` endpoints). It is a preview feature, enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it is disabled unless [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) is set to `true`, and rejects requests with a `422` status.
+  - The reference also lists the REST Search API, a preview feature. See the [migration guide](/weaviate/api/graphql/migration.mdx).
 
 - **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
 
