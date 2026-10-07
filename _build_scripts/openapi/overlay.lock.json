@@ -1,0 +1,17 @@
+{
+  "tag": "v1.39.7",
+  "rules_version": 1,
+  "entries": {
+    "/basePath": "f41fbfbd8a3dfd8dd83c893761fb3b3a99b0c60d7b8be0f2386efb0feddc5e70",
+    "/consumes": "beae53ae94578f48534a20e9963bb25c6f04d184fd606d00240db4976837a794",
+    "/paths/~1.well-known~1live/get/tags": "absent",
+    "/paths/~1.well-known~1openid-configuration/get/tags": "a8b53e87ddfb10e7e18edb05a9dbc9336615e3760083e0d90bd8a7b15778d88a",
+    "/paths/~1.well-known~1ready/get/tags": "absent",
+    "/paths/~1/get/tags": "absent",
+    "/paths/~1batch~1objects/delete/tags": "48dee18f96d46848140a10d09d4f9663fa5e9f3358ad51807c66ff85950a4a63",
+    "/paths/~1batch~1objects/post/tags": "48dee18f96d46848140a10d09d4f9663fa5e9f3358ad51807c66ff85950a4a63",
+    "/paths/~1batch~1references/post/tags": "44191a40e71251bdd49515d54966352d8adf3dd667f7ec7f4680cbafc25bed2b",
+    "/servers": "absent",
+    "/tags": "ef9a28ecce44042297948817377dd572c71d747a3908706c52421697e4f1df5a"
+  }
+}

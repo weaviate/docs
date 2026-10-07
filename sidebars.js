@@ -832,6 +832,7 @@ const sidebars = {
             id: "weaviate/client-libraries/typescript/index",
           },
           items: [
+            "weaviate/client-libraries/typescript/web-client",
             "weaviate/client-libraries/typescript/notes-best-practices",
             {
               type: "link",
@@ -851,9 +852,14 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "weaviate/client-libraries/go",
+          type: "category",
+          label: "Go",
           className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/go/index",
+          },
+          items: ["weaviate/client-libraries/go/go-v6"],
         },
         {
           type: "doc",
@@ -1779,6 +1785,7 @@ const sidebars = {
         "errors/cluster-resources",
         "errors/collection-configuration",
         "errors/model-integrations",
+        "errors/node-health",
       ],
     },
   ],

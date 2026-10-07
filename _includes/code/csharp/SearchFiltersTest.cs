@@ -7,7 +7,7 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using Xunit;
 
-public class SearchFilterTest : IAsyncLifetime
+public class SearchFiltersTest : IAsyncLifetime
 {
     private WeaviateClient client;
 
@@ -512,6 +512,24 @@ public class SearchFilterTest : IAsyncLifetime
                     headquartersGeoLocation = new GeoCoordinate(52.3932696f, 4.8374263f),
                 }
             );
+
+            // A fresh write is not queryable the moment Insert returns. Wait (bounded) for it
+            // to land, so the assertion below tests the geo filter and not write visibility.
+            for (int attempt = 0; attempt < 30; attempt++)
+            {
+                var readiness = await publications.Query.FetchObjects(
+                    filters: Filter
+                        .Property("headquartersGeoLocation")
+                        .IsWithinGeoRange(new GeoCoordinate(52.39f, 4.84f), 1000.0f)
+                );
+
+                if (readiness.Objects.Count >= 1)
+                {
+                    break;
+                }
+
+                await Task.Delay(1000);
+            }
 
             // START FilterbyGeolocation
             var response = await publications.Query.FetchObjects(

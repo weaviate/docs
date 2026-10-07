@@ -1301,6 +1301,13 @@ from = "/weaviate/tutorials/query"
 to   = "/weaviate/search"
 status = 301
 
+## TEMPORARY: serve the Enterprise Edition page from its v1-40/ee branch preview
+## until the v1.40 docs (PR #551) merge. Remove this block when /deploy/enterprise ships on main.
+[[redirects]]
+from = "/deploy/enterprise"
+to   = "https://v1-40-ee--docs-weaviate-io.netlify.app/deploy/enterprise"
+status = 302
+
 ### ==================== ERROR-MESSAGE REDIRECTOR (/e/<id>) ==================== ###
 #
 # Stable short links carried in error and warning messages emitted by Weaviate

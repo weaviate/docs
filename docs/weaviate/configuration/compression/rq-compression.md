@@ -12,6 +12,7 @@ import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
@@ -59,6 +60,14 @@ RQ can be enabled at collection creation time through the collection definition:
         startMarker="// START EnableRQ"
         endMarker="// END EnableRQ"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START EnableRQ"
+        endMarker="// END EnableRQ"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -122,6 +131,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         startMarker="// START 8BitUpdateSchema"
         endMarker="// END 8BitUpdateSchema"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQUpdateSchema"
+        endMarker="// END RQUpdateSchema"
+        language="go6"
       />
   </TabItem>
 </Tabs>
@@ -259,6 +276,14 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START 1BitEnableRQ"
+        endMarker="// END 1BitEnableRQ"
+        language="go6"
+      />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -304,6 +329,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         startMarker="// START 1BitUpdateSchema"
         endMarker="// END 1BitUpdateSchema"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQ1BitUpdateSchema"
+        endMarker="// END RQ1BitUpdateSchema"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -357,6 +390,14 @@ RQ supports the `cosine`, `dot` and `l2-squared` distance metrics. Other distanc
         startMarker="// START RQWithOptions"
         endMarker="// END RQWithOptions"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQWithOptions"
+        endMarker="// END RQWithOptions"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">

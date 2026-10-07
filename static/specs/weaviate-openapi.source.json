@@ -1,0 +1,7 @@
+{
+  "tag": "v1.39.8",
+  "upstream_commit": "12536f50a8a4e5ec2af2a0e8f8393e9c85984d62",
+  "fetched_at": "2026-10-02T03:05:55Z",
+  "overlay_sha256": "9c9f4fe2c533a8dedf436df378e47d4d2605150528f0275fe1912957487f447b",
+  "rules_version": 1
+}

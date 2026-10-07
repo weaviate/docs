@@ -125,6 +125,12 @@ All client v3 methods, with the exception of `collection.use()`, use ES6 Promise
 
 When there is an asynchronous code error, a promise returns the specific error message. If you use `async` and `await`, a rejected promises acts like a thrown exception
 
+## Web client (`@weaviate/web`)
+
+`@weaviate/web` is a browser build of the v3 client, for browsers and edge runtimes where a plain gRPC connection is not possible. It has the same API and talks to Weaviate over gRPC-Web on the HTTPS port. It is an alpha.
+
+For install steps and browser notes, see [Web client](./web-client.mdx).
+
 ## Releases
 
 Go to the [GitHub releases page](https://github.com/weaviate/typescript-client/releases) to see the history of the TypeScript client library releases and change logs.
