@@ -857,6 +857,21 @@ A restore goes through the following phases:
   </TabItem>
 </Tabs>
 
+## Deduplicated backups
+
+import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
+
+:::info Added in `v1.40`
+:::
+
+<EnterpriseEdition/>
+
+Deduplicated backups are an opt-in backup mode for replicated collections. When Weaviate can prove that a shard's replicas hold identical data, one replica uploads the shard instead of every replica. Backup storage for an in-sync collection drops from N times the data to 1 time, where N is the replication factor.
+
+A shard is never left out of a backup. Any shard that cannot be proven in sync is archived by every replica, as before.
+
+Restoring a deduplicated backup works like any other restore and never requires the feature to be enabled.
+
 ## Kubernetes configuration
 
 When running Weaviate on Kubernetes, you can configure the backup provider using Helm chart values.

@@ -102,7 +102,7 @@ This table lists Enterprise Edition features, the Weaviate version that added ea
 | :--------------------------------------------------------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
 | [Shard Self-Recovery](/deploy/configuration/self-recovery) | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
 | Namespaces                                                 | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
-| Deduplicated backups                                       | `v1.40`         | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
+| [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups) | `v1.40` | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
 
 An Enterprise Edition feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
 
