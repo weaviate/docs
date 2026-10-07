@@ -44,6 +44,7 @@ const domainsToIgnore = [
     'https://ieeexplore.ieee.org', // 403s automated requests
     'https://instagram.com/',
     'https://www.iso.org',
+    'https://www.linkedin.com', // 429 Too Many Requests for automated requests (footer link on every page)
     'medium.com', // TODO[g-despot]: started throwing Forbidden 403 (incl. subdomains, e.g. *.medium.com)
     'https://www.npmjs.com',
     'https://openai.com',
