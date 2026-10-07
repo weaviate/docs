@@ -1,5 +1,5 @@
 {
-  "tag": "v1.39.7",
+  "tag": "v1.40.0",
   "rules_version": 1,
   "entries": {
     "/basePath": "f41fbfbd8a3dfd8dd83c893761fb3b3a99b0c60d7b8be0f2386efb0feddc5e70",
@@ -12,6 +12,6 @@
     "/paths/~1batch~1objects/post/tags": "48dee18f96d46848140a10d09d4f9663fa5e9f3358ad51807c66ff85950a4a63",
     "/paths/~1batch~1references/post/tags": "44191a40e71251bdd49515d54966352d8adf3dd667f7ec7f4680cbafc25bed2b",
     "/servers": "absent",
-    "/tags": "ef9a28ecce44042297948817377dd572c71d747a3908706c52421697e4f1df5a"
+    "/tags": "277724b4b02ed0d9fa7778098310a58e4eab856b039fc50e167b70f7b263d033"
   }
 }

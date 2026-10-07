@@ -457,6 +457,7 @@
           "description": "Allowed actions in weaviate.",
           "enum": [
             "manage_backups",
+            "read_backups",
             "read_cluster",
             "create_data",
             "read_data",
@@ -1877,7 +1878,7 @@
           "$ref": "#/definitions/ObjectTtlConfig"
         },
         "vectorizer": {
-          "description": "Specify how the vectors for this collection should be determined. The options are either `none` - this means you have to import a vector with each object yourself - or the name of a module that provides vectorization capabilities, such as `text2vec-weaviate`. If left empty, it will use the globally configured default ([`DEFAULT_VECTORIZER_MODULE`](https://docs.weaviate.io/deploy/configuration/env-vars)) which can itself either be `none` or a specific module.",
+          "description": "Specify how the vectors for this collection should be determined. The options are either `none` - this means you have to import a vector with each object yourself - or the name of a module that provides vectorization capabilities, such as `text2vec-weaviate`. If left empty, it defaults to `none`.",
           "type": "string"
         },
         "moduleConfig": {
@@ -2094,11 +2095,18 @@
           "type": "string"
         },
         "status": {
-          "description": "Status of the shard",
+          "description": "Deprecated: value is not consistent in replicated clusters.",
           "type": "string"
         },
+        "per_node_status": {
+          "description": "Status of the shard on each of its replicas",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
         "vectorQueueSize": {
-          "description": "Size of the vector queue of the shard",
+          "description": "Deprecated: value is not consistent in replicated clusters.",
           "type": "integer",
           "x-omitempty": false
         }
@@ -2248,6 +2256,20 @@
             "ZstdBestCompression",
             "NoCompression"
           ]
+        },
+        "dedupeReplicas": {
+          "description": "If true, shards of replicated collections proven in sync by async-replication checkpoints are archived by one replica instead of all, and restore copies them back to every replica; other shards are archived by every replica. Requires async replication, BACKUP_DEDUPE_ENABLED=true (else 422) and a Weaviate license key (else 403) on every node. Such backups restore only on versions that support this option; restoring needs no license.",
+          "type": "boolean",
+          "default": false,
+          "x-nullable": false
+        },
+        "dedupeConvergenceTimeoutSeconds": {
+          "description": "How long the coordinator waits for replica convergence proof before shards fall back to being archived by every replica. Only used when dedupeReplicas is set. The wait happens synchronously inside the backup creation request, which blocks for roughly 10 seconds plus up to this timeout; size client timeouts accordingly.",
+          "type": "integer",
+          "default": 60,
+          "minimum": 1,
+          "maximum": 600,
+          "x-nullable": false
         }
       }
     },
@@ -2296,7 +2318,7 @@
       }
     },
     "BackupCreateRequest": {
-      "description": "Request body for creating a backup for a set of collections.",
+      "description": "Request body for creating a backup. The resolved selection must contain at least one collection, dynamic user, or RBAC role.",
       "properties": {
         "id": {
           "description": "The ID of the backup (required). Must be URL-safe and work as a filesystem path, only lowercase, numbers, underscore, minus characters allowed.",
@@ -2308,28 +2330,28 @@
           "$ref": "#/definitions/BackupConfig"
         },
         "include": {
-          "description": "List of collections to include in the backup creation process. If not set, all collections the caller may back up are included. Cannot be used together with `exclude`. Permits wildcards, e.g. `*` or `prefix*`, which match only collections the caller may back up. A list that matches no collection is rejected.",
+          "description": "List of collections to include in the backup creation process. If not set, all collections the caller may back up are included. Cannot be used together with `exclude`. Permits wildcards, e.g. `*` or `prefix*`, which match only collections the caller may back up. A list that matches no collection is allowed when users or roles are selected, including through omitted identity selectors.",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "exclude": {
-          "description": "List of collections to exclude from the backup creation process. If not set, all collections the caller may back up are included. Cannot be used together with `include`. Permits wildcards, e.g. `*` or `prefix*`.",
+          "description": "List of collections to exclude from the backup creation process. If not set, all collections the caller may back up are included. Cannot be used together with `include`. Permits wildcards, e.g. `*` or `prefix*`. Excluding every collection is allowed when users or roles are selected, including through omitted identity selectors.",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "includeUsers": {
-          "description": "List of dynamic DB users to include in the backup. Permits `*` and `?` wildcards, e.g. `*` or `prefix*`. When omitted, the whole dynamic-user store is captured as part of the cluster snapshot and no per-user permission check is applied; when set, only matching users are captured. An exact user name that does not exist is rejected; wildcards that match nothing back up no users.",
+          "description": "List of dynamic DB users to include in the backup. Permits `*` and `?` wildcards, e.g. `*` or `prefix*`. When omitted or null, the whole dynamic-user store is captured. An empty list or wildcards matching nothing omit the user snapshot; restoring it leaves existing users untouched. Otherwise, only matching users are captured. An exact user name that does not exist is rejected. Selected users, including those selected by omission, permit a backup with zero collections. No per-user permission check is applied.",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "includeRoles": {
-          "description": "List of RBAC roles to include in the backup. Permits `*` and `?` wildcards, e.g. `*` or `prefix*`. When omitted, the whole RBAC state is captured as part of the cluster snapshot; when set, the RBAC blob is filtered to the matching roles. An exact role name that does not exist is rejected; wildcards that match nothing back up no roles. Built-in roles are rejected and are never selected by wildcards (they are re-applied automatically on restore). No per-role permission check is applied.",
+          "description": "List of RBAC roles to include in the backup. Permits `*` and `?` wildcards, e.g. `*` or `prefix*`. When omitted or null, the whole RBAC state is captured, including built-in roles and assignments. An empty list or wildcards matching nothing omit the RBAC snapshot; restoring it leaves existing roles untouched. Otherwise, only matching roles are captured. An exact role name that does not exist is rejected. Explicit selectors cannot select built-in roles: exact names are rejected and wildcards exclude them. Selected roles, including built-in roles selected by omission, permit a backup with zero collections. No per-role permission check is applied.",
           "type": "array",
           "items": {
             "type": "string"
@@ -2444,7 +2466,7 @@
       }
     },
     "BackupRestoreRequest": {
-      "description": "Request body for restoring a backup for a set of collections (classes).",
+      "description": "Request body for restoring a backup. A backup with no collections can restore users or roles when the matching restore option is enabled.",
       "properties": {
         "config": {
           "description": "Custom configuration for the backup restoration process.",
@@ -2452,14 +2474,14 @@
           "$ref": "#/definitions/RestoreConfig"
         },
         "include": {
-          "description": "List of collections (classes) to include in the backup restoration process. If not set, all collections in the backup the caller may restore are included. Permits wildcards, e.g. `*` or `prefix*`, which match only collections the caller may restore. A list that matches no collection is rejected.",
+          "description": "List of collections (classes) to include in the backup restoration process. If not set, all collections in the backup the caller may restore are included. Permits wildcards, e.g. `*` or `prefix*`, which match only collections the caller may restore. A list that matches no collection is rejected. Any entry is rejected when the backup contains no collections.",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "exclude": {
-          "description": "List of collections (classes) to exclude from the backup restoration process.",
+          "description": "List of collections (classes) to exclude from the backup restoration process. Any entry is rejected when the backup contains no collections.",
           "type": "array",
           "items": {
             "type": "string"
@@ -4504,7 +4526,7 @@
     },
     "description": "# Introduction<br/> Weaviate is an open source, AI-native vector database that helps developers create intuitive and reliable AI-powered applications. <br/> ### Base Path <br/>The base path for the Weaviate server is structured as `[YOUR-WEAVIATE-HOST]:[PORT]/v1`. As an example, if you wish to access the `schema` endpoint on a local instance, you would navigate to `http://localhost:8080/v1/schema`. Ensure you replace `[YOUR-WEAVIATE-HOST]` and `[PORT]` with your actual server host and port number respectively. <br/> ### Questions? <br/>If you have any comments or questions, please feel free to reach out to us at the community forum [https://forum.weaviate.io/](https://forum.weaviate.io/). <br/>### Issues? <br/>If you find a bug or want to file a feature request, please open an issue on our GitHub repository for [Weaviate](https://github.com/weaviate/weaviate). <br/>### Need more documentation? <br/>For a quickstart, code examples, concepts and more, please visit our [documentation page](https://docs.weaviate.io/weaviate).",
     "title": "Weaviate REST API",
-    "version": "1.39.8"
+    "version": "1.40.0"
   },
   "parameters": {
     "CommonAfterParameterQuery": {
@@ -10687,7 +10709,7 @@
     "/namespaces": {
       "get": {
         "summary": "List namespaces",
-        "description": "Retrieve the list of all namespaces the caller has permission to see. Callers without any applicable `manage_namespaces` permission receive an empty list (never 403).",
+        "description": "Retrieve the list of all namespaces the caller has permission to see. Callers without any applicable `manage_namespaces` permission receive an empty list rather than 403.",
         "operationId": "listNamespaces",
         "tags": [
           "namespaces"
@@ -10701,6 +10723,12 @@
           },
           "401": {
             "description": "Unauthorized or invalid credentials."
+          },
+          "403": {
+            "description": "Forbidden: no well-formed Weaviate license key is configured on this node",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           },
           "404": {
             "description": "Not Found - The namespaces feature is not enabled on this cluster.",
@@ -10759,7 +10787,7 @@
             "description": "Unauthorized or invalid credentials."
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden: insufficient permissions, or no well-formed Weaviate license key is configured on this node",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -10817,7 +10845,7 @@
             "description": "Unauthorized or invalid credentials."
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden: insufficient permissions, or no well-formed Weaviate license key is configured on this node",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -10878,7 +10906,7 @@
             "description": "Unauthorized or invalid credentials."
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden: insufficient permissions, or no well-formed Weaviate license key is configured on this node",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -10927,7 +10955,7 @@
             "description": "Unauthorized or invalid credentials."
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden: insufficient permissions, or no well-formed Weaviate license key is configured on this node",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -10978,7 +11006,7 @@
             "description": "Unauthorized or invalid credentials."
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden: insufficient permissions, or no well-formed Weaviate license key is configured on this node",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -11041,7 +11069,7 @@
             "description": "Unauthorized or invalid credentials."
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden: insufficient permissions, or no well-formed Weaviate license key is configured on this node",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -12709,7 +12737,7 @@
     },
     {
       "name": "schema",
-      "description": "Operations related to managing collections. In Weaviate, 'collections' (formerly called 'classes') store your data objects. Each collection has a definition that specifies its data structure (properties and their data types), vectorizer settings (how vectors are generated or managed), and indexing configuration (how data is indexed for efficient search). These endpoints allow you to create, retrieve, update, and delete collection definitions. For detailed usage and code examples on interacting with collections, see the documentation: [https://weaviate.io/developers/weaviate/manage-data/collections](https://weaviate.io/developers/weaviate/manage-data/collections)."
+      "description": "Operations related to managing collections. In Weaviate, 'collections' (formerly called 'classes') store your data objects. Each collection has a definition that specifies its data structure (properties and their data types), vectorizer settings (how vectors are generated or managed), and indexing configuration (how data is indexed for efficient search). These endpoints allow you to create, retrieve, update, and delete collection definitions. For detailed usage and code examples on interacting with collections, see the documentation: [https://docs.weaviate.io/weaviate/manage-collections](https://docs.weaviate.io/weaviate/manage-collections)."
     },
     {
       "name": "backups",
@@ -12737,7 +12765,7 @@
     },
     {
       "name": "namespaces",
-      "description": "Operations for managing cluster-level namespaces. Namespaces group resources under a common administrative unit. Access is gated by the operator-tier `manage_namespaces` action."
+      "description": "Operations for managing cluster-level namespaces. Namespaces group resources under a common administrative unit. Access is gated by the operator-tier `manage_namespaces` action and, on namespace-enabled clusters, a well-formed Weaviate license key on the serving node."
     }
   ]
 }
