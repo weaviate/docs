@@ -18,7 +18,7 @@ import PyCode from '!!raw-loader!/_includes/code/rest.well-known.py';
 <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal()
 const response = await client.isReady()

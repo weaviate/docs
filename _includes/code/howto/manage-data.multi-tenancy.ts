@@ -1,11 +1,11 @@
 // Howto: Manage data -> Multi-tenancy operations - TypeScript examples
 
 import assert from 'assert';
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 /*
 // START UpdateAutoMT
-import { reconfigure } from 'weaviate-client';
+import { reconfigure } from '@weaviate/node';
 
 // END UpdateAutoMT
 */

@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // ===== Instantiation, not shown in snippet
 const client = await weaviate.connectToWeaviateCloud(
@@ -88,7 +88,7 @@ console.log(response?.vectors.review_body) // print the review_body vector
 // ==================================
 
 // CheckObject START
-import { generateUuid5 } from 'weaviate-client';
+import { generateUuid5 } from '@weaviate/node';
 
 // generate uuid based on the key properties used during data insert
 // highlight-start

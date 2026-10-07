@@ -1,5 +1,5 @@
 // RAG
-import weaviate, { WeaviateClient, generativeParameters } from 'weaviate-client';
+import weaviate, { WeaviateClient, generativeParameters } from '@weaviate/node';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL as string;

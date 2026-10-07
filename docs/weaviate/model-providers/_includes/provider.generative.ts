@@ -3,10 +3,10 @@ import assert from 'assert';
 // ================================
 // ===== INSTANTIATION-COMMON =====
 // ================================
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // START RuntimeModelSelectionAnthropic  // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama // START RuntimeModelSelectionxAI
-import { generativeParameters } from 'weaviate-client';
+import { generativeParameters } from '@weaviate/node';
 
 // END RuntimeModelSelectionAnthropic  // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama // END RuntimeModelSelectionxAI
 

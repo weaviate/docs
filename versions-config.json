@@ -14,7 +14,7 @@
   "python_client_version": "4.23.1",
   "go_client_version": "5.7.3",
   "java_client_version": "6.3.1",
-  "typescript_client_version": "3.14.0",
+  "typescript_client_version": "3.15.0",
   "spark_connector_version": "1.4.0",
   "csharp_client_version": "1.2.0"
 }

@@ -39,15 +39,28 @@ import TSClientIntro from "/_includes/clients/ts-client-intro.mdx";
 
 ## Installation
 
-This section details how install and configure the v3 TypeScript client.
+This section details how to install and configure the v3 TypeScript client.
 
 #### Install the package
 
-The v3 client package has a new name, `weaviate-client`. Use [npm](https://www.npmjs.com/) to install the TypeScript client library package:
+Use [npm](https://www.npmjs.com/) to install the `@weaviate/node` package. It needs Node.js 22 or later.
 
 ```bash
-npm install weaviate-client
+npm install @weaviate/node
 ```
+
+The client ships as these packages:
+
+| Package | Use it for |
+| --- | --- |
+| `@weaviate/node` | Node.js applications. |
+| `@weaviate/web` | Browsers and edge runtimes. See [Web client](./web-client.mdx). |
+| `@weaviate/core` | The shared base of both clients. Apps do not install it. |
+| `weaviate-client` | Existing projects. The previous package name, still released for a transition period. |
+
+Move existing projects to `@weaviate/node`. The v2 compatibility export is only in `weaviate-client`.
+
+The quickstart and the Query Agent pages still use `weaviate-client` until `weaviate-agents` supports `@weaviate/node`.
 
 #### Import the Client
 
@@ -59,14 +72,14 @@ If your code requires `CommonJS` compatibility, use the `CommonJS` import style:
 <TabItem value="esm" label="ES Modules">
 
 ```ts
-import weaviate from "weaviate-client";
+import weaviate from "@weaviate/node";
 ```
 
 </TabItem>
 <TabItem value="cjs" label="CommonJS">
 
 ```ts
-const weaviate = require("weaviate-client").default;
+const weaviate = require("@weaviate/node").default;
 ```
 
 </TabItem>
@@ -127,7 +140,7 @@ When there is an asynchronous code error, a promise returns the specific error m
 
 ## Web client (`@weaviate/web`)
 
-`@weaviate/web` is a browser build of the v3 client, for browsers and edge runtimes where a plain gRPC connection is not possible. It has the same API and talks to Weaviate over gRPC-Web on the HTTPS port. It is an alpha.
+`@weaviate/web` has the same API as `@weaviate/node` and connects over gRPC-Web on the HTTP(S) port.
 
 For install steps and browser notes, see [Web client](./web-client.mdx).
 

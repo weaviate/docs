@@ -2,7 +2,7 @@
 import assert from 'assert';
 
 // TokenizeEndpointFreeform
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal();
 

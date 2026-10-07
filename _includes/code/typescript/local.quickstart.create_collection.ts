@@ -1,5 +1,5 @@
 // CreateCollection
-import weaviate, { WeaviateClient, vectors, generative } from 'weaviate-client';
+import weaviate, { WeaviateClient, vectors, generative } from '@weaviate/node';
 
 const client: WeaviateClient = await weaviate.connectToLocal();
 

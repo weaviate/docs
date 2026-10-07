@@ -8,7 +8,7 @@ const MAX_ROWS_TO_IMPORT = 50;  // limit vectorization calls
 // ================================
 
 // START JSON streaming  // START CSV streaming
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 import fs from 'fs';
 // END JSON streaming  // END CSV streaming
 
@@ -86,7 +86,7 @@ client.collections.delete('MyCollection')
 
 // START BatchImportWithIDExample
 // highlight-start
-import { generateUuid5 } from 'weaviate-client';  // requires v1.3.2+
+import { generateUuid5 } from '@weaviate/node';  // requires v1.3.2+
 // highlight-end
 
 // END BatchImportWithIDExample

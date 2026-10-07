@@ -5,30 +5,15 @@ description: "The @weaviate/web package: a browser build of the Weaviate v3 Type
 image: og/docs/client-libraries.jpg
 ---
 
-{/* MAINTENANCE: `3.15.0-alpha.6` is hardcoded in 3 places: the Alpha admonition and the
-    install command below, plus the availability table in weaviate/api/graphql/migration.mdx.
-    The `latest` tag lags behind, so the admonition also names the version it points at.
-    Update all 3 together when the package moves. */}
-
 `@weaviate/web` is a browser build of the v3 client. Use it in browsers and edge runtimes such as Cloudflare Workers and Vercel, where a plain gRPC connection is not possible.
 
-It has the same API as `weaviate-client`, but sends queries over gRPC-Web. Connect options take one HTTP(S) endpoint. There is no gRPC host or port to set, because Weaviate serves gRPC-Web on the REST port.
-
-:::caution Alpha
-
-`@weaviate/web` `3.15.0-alpha.6` is an alpha. The `latest` tag still points at `3.15.0-alpha.2`, an older alpha that fails to load, so always install the version explicitly.
-
-:::
+It has the same API as `@weaviate/node`, but sends queries over gRPC-Web. Connect options take one HTTP(S) endpoint. There is no gRPC host or port to set, because Weaviate serves gRPC-Web on the REST port.
 
 ## Install
 
-Install the alpha explicitly:
-
 ```bash
-npm install @weaviate/web@3.15.0-alpha.6
+npm install @weaviate/web
 ```
-
-The `latest` tag still points at an older alpha that fails to load, so name the version.
 
 The package is ESM-only.
 
@@ -37,10 +22,10 @@ The package is ESM-only.
 Use a `connectTo*` helper. The low-level `weaviate.client(params)` entry point does not add the `/v1/grpc-web` prefix. `grpcHost`, `grpcPort` and `grpcSecure` are not connect options. If you pass them, they are ignored.
 
 :::info Added in `v1.38.3`
-Weaviate serves gRPC-Web by default from `v1.38.3`. 
+Weaviate serves gRPC-Web by default from `v1.38.3`.
 :::
 
-So the web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to connect, and the error names the missing path:
+The web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to connect, and the error names the missing path:
 
 ```text
 /grpc.health.v1.Health/Check UNIMPLEMENTED: Received HTTP 404 response:
@@ -49,8 +34,14 @@ So the web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to co
 
 For the server side, see [gRPC-Web](../../api/grpc.md#grpc-web).
 
-
 ## Browser notes
+
+**Server-side batching is not available.** These calls throw in the web client:
+
+```ts
+client.batch.stream()
+collection.data.ingest()
+```
 
 **Provider API keys work in the browser. Other custom headers do not.** Model provider keys passed through `headers`, such as `X-OpenAI-Api-Key`, are on Weaviate's default CORS allow-list, so they work cross-origin out of the box. Any other header fails the browser's CORS preflight unless the operator lists it in [`CORS_ALLOW_HEADERS`](/deploy/configuration/env-vars/index.md#CORS_ALLOW_HEADERS) on the server. Setting that variable replaces the default list, so include the defaults you still need. Node runs no preflight, so test header behavior in a real browser.
 

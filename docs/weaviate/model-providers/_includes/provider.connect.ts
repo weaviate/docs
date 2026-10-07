@@ -1,5 +1,5 @@
 // START-ANY
-import weaviate from 'weaviate-client'
+import weaviate from '@weaviate/node'
 
 // END-ANY
 

@@ -1,5 +1,5 @@
 // InstantiationExample
-import weaviate, { WeaviateClient } from '@weaviate/node';
+import weaviate, { WeaviateClient } from 'weaviate-client';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL as string;

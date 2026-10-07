@@ -1,7 +1,7 @@
 import assert from 'assert';
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 // START-ANY
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 // END-ANY
 

@@ -6,7 +6,7 @@
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal({
   headers: { 'X-Openai-Api-Key': process.env.OPENAI_API_KEY || '' },
