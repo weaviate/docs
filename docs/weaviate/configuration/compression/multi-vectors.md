@@ -110,8 +110,8 @@ These parameters can be used to fine-tune MUVERA:
   the dimensionality of the final encoding but can lead to better approximation
   of the original multi-vector similarity.
 
-:::note MUVERA is required on the HFresh index
-MUVERA is optional on the `hnsw` index. The `hfresh` index supports multi-vector embeddings only with MUVERA encoding, so there you always have to set `multivector.muvera.enabled`. See [Multi-vector embeddings on HFresh](../../config-refs/indexing/vector-index.mdx#hfresh-multi-vector). Added in `v1.40`.
+:::note MUVERA is required on the HFresh index (added in `v1.40`)
+MUVERA is optional on the `hnsw` index. The `hfresh` index supports multi-vector embeddings only with MUVERA encoding, so there you always have to set `multivector.muvera.enabled`. See [Multi-vector embeddings on HFresh](../../config-refs/indexing/vector-index.mdx#hfresh-multi-vector).
 :::
 
 :::note Quantization

@@ -49,7 +49,7 @@ Between `v1.25` and `v1.27`, there are two minor versions, `v1.26` and `v1.27`. 
 
 :::
 
-### Vector configuration defaults (v1.39.1+, v1.40+) {#vector-config-defaults}
+### Vector configuration defaults (v1.39.1+, v1.40.0+) {#vector-config-defaults}
 
 Three defaults for **new** collections changed. Existing collections are untouched, but if you rely on `DEFAULT_VECTORIZER_MODULE` you must act before upgrading to `v1.40`.
 
@@ -57,9 +57,9 @@ Three defaults for **new** collections changed. Existing collections are untouch
 - From `v1.40`, a collection definition that sets no vector parameters at all creates a [collection without a vector](/weaviate/config-refs/collections.mdx#no-vector). Previously the server defaults filled in the top-level parameters and created a single vector collection.
 - From `v1.40`, the default top-level `vectorizer` is always `none`. It used to come from `DEFAULT_VECTORIZER_MODULE`, which is now deprecated and ignored.
 
-The last change is breaking for anyone who relied on `DEFAULT_VECTORIZER_MODULE` to vectorize collections. A definition that sets `vectorIndexType` or `vectorIndexConfig` but no `vectorizer` still creates a single vector collection, but that collection no longer vectorizes your data, and nothing in the response says so. Before you upgrade, name the vectorizer explicitly in every collection definition that needs one.
+The last change is breaking for anyone who relied on `DEFAULT_VECTORIZER_MODULE` to vectorize collections. A definition that sets `vectorIndexType` or `vectorIndexConfig` but no `vectorizer` still creates a single vector collection. That collection no longer vectorizes your data. Weaviate returns no error or warning. Before you upgrade, name the vectorizer explicitly in every collection definition that needs one.
 
-The new-collection change is only visible with a client that omits `vectorIndexType` when you do not set one. A client that still sends `vectorIndexType: hnsw` on every collection create keeps getting a single vector collection. 
+The new-collection change is only visible with a client that omits all top-level vector parameters when you do not set any. A client that still sends `vectorIndexType: hnsw` on every collection create keeps getting a single vector collection.
 
 ### Raft Migration (v1.25.0+)
 

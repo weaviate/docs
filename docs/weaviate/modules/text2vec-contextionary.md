@@ -42,7 +42,7 @@ While you can do so manually, we recommend using the [Weaviate configuration too
 Weaviate:
 
 - `ENABLE_MODULES` (Required): The modules to enable. Include `text2vec-contextionary` to enable the module.
-- `DEFAULT_VECTORIZER_MODULE`: **Deprecated in `v1.40`.** Ignored, and logs a startup warning. Set `vectorizer` to `text2vec-contextionary` in each collection definition instead.
+- `DEFAULT_VECTORIZER_MODULE`: Deprecated in `v1.40`. Weaviate ignores it and logs a warning at startup. Set `vectorizer` to `text2vec-contextionary` in each collection definition instead.
 
 Contextionary:
 
@@ -53,7 +53,7 @@ Contextionary:
 
 #### Example
 
-This configuration enables `text2vec-contextionary`, sets it as the default vectorizer, and sets the parameters for the Contextionary Docker container.
+This configuration enables `text2vec-contextionary` and sets the parameters for the Contextionary Docker container.
 
 ```yaml
 ---

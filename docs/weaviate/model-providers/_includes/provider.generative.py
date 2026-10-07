@@ -859,15 +859,8 @@ client.collections.delete("DemoCollection")
 # ---------------------------------------------------------------------------
 # Meta generative integration (generative-meta).
 #
-# These snippets are documented AHEAD of Python client support:
-# `Configure.Generative.meta()` and `GenerativeConfig.meta()` do not yet exist
-# in the released weaviate-client (pinned in pyproject.toml). The blocks below
-# are DISPLAY-ONLY — they are rendered in the docs via FilteredTextBlock (with
-# `language="pyindent"`, which strips the 4-space guard indent) and are
-# intentionally kept out of the test runner's allowlist in tests/test_python.py.
-# The `if META_CLIENT_AVAILABLE:` guard is a belt-and-suspenders measure so that
-# even if this file is ever executed end-to-end, the not-yet-released `meta()`
-# calls can never run.
+# The test suite does not execute this file. The Meta blocks are also guarded
+# below because no released weaviate-client has Generative.meta() yet.
 # TODO: set META_CLIENT_AVAILABLE = True and drop `pyindent` once the
 # weaviate-client ships Configure.Generative.meta() / GenerativeConfig.meta().
 # ---------------------------------------------------------------------------
@@ -941,7 +934,7 @@ if META_CLIENT_AVAILABLE:
         grouped_task="Write a tweet promoting these two movies",
         # highlight-start
         generative_provider=GenerativeConfig.meta(
-            model="muse-spark-1.1",
+            model="muse-spark-1.2",
             # # These parameters are optional
             # temperature=0.7,
             # top_p=0.9,

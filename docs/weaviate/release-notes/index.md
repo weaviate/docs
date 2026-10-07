@@ -18,8 +18,8 @@ These are the supported minor versions and their latest patch releases:
 | Minor version | Latest patch | Status |
 | --- | --- | --- |
 | `1.40` | [`v1.40.0`](https://github.com/weaviate/weaviate/releases/tag/v1.40.0) | Latest release |
-| `1.39` | [`v1.39.5`](https://github.com/weaviate/weaviate/releases/tag/v1.39.5) | Supported |
-| `1.38` | [`v1.38.17`](https://github.com/weaviate/weaviate/releases/tag/v1.38.17) | Supported |
+| `1.39` | [`v1.39.10`](https://github.com/weaviate/weaviate/releases/tag/v1.39.10) | Supported |
+| `1.38` | [`v1.38.20`](https://github.com/weaviate/weaviate/releases/tag/v1.38.20) | Supported |
 
 `1.37` and older are no longer maintained. Upgrade to a supported version.
 

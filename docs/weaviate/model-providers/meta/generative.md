@@ -8,6 +8,12 @@ image: og/docs/model-provider-integrations.jpg
 
 # Meta Generative AI with Weaviate
 
+import Meta from '/_includes/feature-notes/meta.mdx';
+
+<Meta/>
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyConnect from '!!raw-loader!../_includes/provider.connect.py';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
@@ -20,8 +26,9 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 
 ![RAG integration illustration](../_includes/integration_meta_rag.png)
 
+{/* TODO(ivan): remove this admonition and name the minimum weaviate-client version once generative-meta ships in a client release */}
 :::info Python client support is not released yet
-`Configure.Generative.meta()` and `GenerativeConfig.meta()` ship in an upcoming `weaviate-client` release, so the snippets below do not run with the current client. Examples for the other client languages will follow.
+Python client support for Meta is coming in an upcoming `weaviate-client` release. The `Configure.Generative.meta()` and `GenerativeConfig.meta()` helpers are already merged in the client's main branch. The snippets below do not run with the current client release.
 :::
 
 ## Requirements
@@ -29,9 +36,6 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 ### Weaviate configuration
 
 Your Weaviate instance must be configured with the Meta generative AI integration (`generative-meta`) module.
-
-:::info Added in `v1.39.3`
-:::
 
 `generative-meta` is an API-based module. Weaviate enables API-based modules by default, so the module is present on any `v1.39.3` or later instance that has not disabled them.
 
@@ -54,12 +58,16 @@ Provide the API key to Weaviate using one of the following methods:
 - Set the `META_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
-<FilteredTextBlock
-  text={PyConnect}
-  startMarker="# START MetaInstantiation"
-  endMarker="# END MetaInstantiation"
-  language="py"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyConnect}
+      startMarker="# START MetaInstantiation"
+      endMarker="# END MetaInstantiation"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
 
 ## Configure collection
 
@@ -69,23 +77,31 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use a Meta generative model:
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START BasicGenerativeMeta"
-  endMarker="# END BasicGenerativeMeta"
-  language="pyindent"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BasicGenerativeMeta"
+      endMarker="# END BasicGenerativeMeta"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
 
 ### Select a model
 
 Name the model in the collection configuration:
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START GenerativeMetaCustomModel"
-  endMarker="# END GenerativeMetaCustomModel"
-  language="pyindent"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GenerativeMetaCustomModel"
+      endMarker="# END GenerativeMetaCustomModel"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
 
 See [Available models](#available-models) for the names you can use and for the default. You can also [override the model at query time](#select-a-model-at-runtime).
 
@@ -93,12 +109,16 @@ See [Available models](#available-models) for the names you can use and for the 
 
 Configure the following generative parameters to customize the model behavior.
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START FullGenerativeMeta"
-  endMarker="# END FullGenerativeMeta"
-  language="pyindent"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START FullGenerativeMeta"
+      endMarker="# END FullGenerativeMeta"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
 
 Weaviate has no default for `temperature`, `topP`, `maxTokens`, `frequencyPenalty`, `presencePenalty`, or `reasoningEffort`: any one you leave unset is omitted from the request, so Meta's own default applies.
 
@@ -108,12 +128,16 @@ For further details on model parameters, see the [Meta API documentation](https:
 
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START RuntimeModelSelectionMeta"
-  endMarker="# END RuntimeModelSelectionMeta"
-  language="pyindent"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START RuntimeModelSelectionMeta"
+      endMarker="# END RuntimeModelSelectionMeta"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
 
 ## Header parameters
 
@@ -122,7 +146,7 @@ You can provide the API key as well as some optional parameters at runtime throu
 - `X-Meta-Api-Key`: The Meta API key.
 - `X-Meta-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Meta URL.
 
-`X-Meta-Api-Key` takes precedence over the `META_APIKEY` environment variable. The API key is never part of the collection configuration, so if neither the header nor the environment variable is set, the request fails with `no api key found neither in request header: X-Meta-Api-Key nor in environment variable under META_APIKEY`.
+`X-Meta-Api-Key` takes precedence over the `META_APIKEY` environment variable. The API key is never part of the collection configuration, so if neither the header nor the environment variable is set, the request fails with `api key: no api key found neither in request header: X-Meta-Api-Key nor in environment variable under META_APIKEY`.
 
 `X-Meta-Baseurl` takes precedence over a `baseURL` set at query time, which in turn takes precedence over the `baseURL` in the collection configuration. If none of them are set, Weaviate uses `https://api.meta.ai`. Provide an API root rather than a full endpoint path, because Weaviate appends `/v1/chat/completions` to it.
 
@@ -142,12 +166,16 @@ The example below generates outputs for each of the `n` search results, where `n
 
 When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START SinglePromptExample"
-  endMarker="# END SinglePromptExample"
-  language="py"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SinglePromptExample"
+      endMarker="# END SinglePromptExample"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
 
 ### Grouped task
 
@@ -157,23 +185,31 @@ To generate one text for the entire set of search results, use the grouped task 
 
 In other words, when you have `n` search results, the generative model generates one output for the entire group.
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START GroupedTaskExample"
-  endMarker="# END GroupedTaskExample"
-  language="py"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GroupedTaskExample"
+      endMarker="# END GroupedTaskExample"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
 
 ### RAG with images
 
 You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
 
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START WorkingWithImagesMeta"
-  endMarker="# END WorkingWithImagesMeta"
-  language="pyindent"
-/>
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START WorkingWithImagesMeta"
+      endMarker="# END WorkingWithImagesMeta"
+      language="pyindent"
+    />
+  </TabItem>
+</Tabs>
 
 ## References
 
@@ -185,7 +221,7 @@ If you do not set a model, Weaviate uses `muse-spark-1.2`.
 
 For the list of models, see the [Meta API documentation](https://dev.meta.ai/docs/api-reference).
 
-### Reasoning effort
+### Timeouts
 
 Weaviate applies the [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT) environment variable to the whole request, including reading the response, and it defaults to 50 seconds. A long generation, such as one with a high `reasoningEffort`, can exceed it. If queries time out, raise this value on your Weaviate instance.
 

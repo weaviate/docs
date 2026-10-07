@@ -384,6 +384,7 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `shards_unloaded`                                     | Number of shards not loaded                  | None                                                    | `Gauge`     |
 | `shards_loading`                                      | Number of shards in process of loading       | None                                                    | `Gauge`     |
 | `shards_unloading`                                    | Number of shards in process of unloading     | None                                                    | `Gauge`     |
+| `weaviate_shards`                                     | Number of shards the node holds, by lifecycle state and by whether the collection opens its shards eagerly at creation or lazily on first access. For each `state`, the sum over `registration` equals the matching `shards_*` gauge. The sum over all labels equals the number of shards in the node's shard map. Added in `v1.39.3`. | `state` (loaded, unloaded, loading, unloading), `registration` (eager, lazy) | `Gauge`     |
 | `weaviate_index_shards_total`                         | Total number of shards per index status      | `status` (READONLY, INDEXING, LOADING, READY, SHUTDOWN) | `Gauge`     |
 | `weaviate_index_shard_status_update_duration_seconds` | Time taken to update shard status in seconds | `status` (READONLY, INDEXING, LOADING, READY, SHUTDOWN) | `Histogram` |
 

@@ -225,11 +225,32 @@ For details on the configuration parameters, see the following:
 
 ## Inspect shards (for a collection)
 
+:::info Changed in `v1.40`
+:::
+
 An index itself can be comprised of multiple shards.
 
 import CodeSchemaShardsGet from "/_includes/code/howto/manage-data.shards.inspect.mdx";
 
 <CodeSchemaShardsGet />
+
+`GET /v1/schema/{collection}/shards` reports the status of each shard on every replica. Each entry has a `per_node_status` object that maps a node name to the shard's status on that node. A replica that cannot be reached, or that cannot serve reads, reports `UNAVAILABLE`.
+
+```json
+[
+  {
+    "name": "shard-0",
+    "status": "READY",
+    "per_node_status": {
+      "node-0": "READY",
+      "node-1": "UNAVAILABLE"
+    },
+    "vectorQueueSize": 0
+  }
+]
+```
+
+The top-level `status` and `vectorQueueSize` fields are deprecated. They describe a single replica, so they are not consistent in a replicated cluster. Use `per_node_status` instead.
 
 ## Update shard status
 

@@ -6,6 +6,8 @@ image: og/docs/concepts.jpg
 # tags: ['architecture', 'filtered vector search', 'pre-filtering']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
+
 Weaviate provides powerful filtered vector search capabilities, allowing you to combine vector searches with structured, scalar filters. This enables you to find the closest vectors to a query vector that also match certain conditions.
 
 Filtered vector search in Weaviate is based on the concept of pre-filtering. This means that the filter is constructed before the vector search is performed. Unlike some pre-filtering implementations, Weaviate's pre-filtering does not require a brute-force vector search and is highly efficient.
@@ -34,7 +36,7 @@ In the section about Storage, [we have described in detail which parts make up a
 
 ## Filter strategy
 
-Weaviate supports two filter strategies: `sweeping` and `acorn` specifically for the HNSW index type.
+Weaviate supports three filter strategies for the HNSW index type: `sweeping`, `acorn` and `pathseer`.
 
 ### ACORN
 
@@ -57,6 +59,27 @@ The `sweeping` strategy is based on the concept of "sweeping" through the HNSW g
 The algorithm starts at the root node and traverses the graph, evaluating the distance to the query vector at each node, while keeping the "allow list" of the filter as context. If the filter is not met, the node is skipped and the traversal continues. This process is repeated until the desired number of results is reached.
 
 The `sweeping` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
+
+### PathSeer
+
+:::info Added in `v1.40`
+:::
+
+The `pathseer` strategy is based on the paper <SkipLink href="https://doi.org/10.1145/3802098">PathSeer: Adaptive Neighbor Handling for Efficient Filtered ANN Search</SkipLink> by Zhiyue Li, Guangyan Zhang, Ruochun Jin, Bojun Li, Xiaoguang Ren and Wenjing Yang. It was published in Proceedings of the ACM on Management of Data (2026). The paper's first author contributed the implementation to Weaviate.
+
+`PathSeer` combines the other two strategies on the bottom layer of the HNSW graph. It computes the distance to the direct neighbors of a candidate first and then applies the filter, like `sweeping`. While the result set holds fewer than `ef` results, it also looks at the neighbors of those neighbors. It applies the filter to them first and only computes distances for the ones that match, like `ACORN`. Once the result set is full, Weaviate skips the non-matching neighbors of a non-matching candidate without computing their distance. The upper layers of the graph are searched without the filter. `PathSeer` normally does not add the extra entry points that `ACORN` uses.
+
+`PathSeer` can help when the objects that match the filter have weak or negative correlation with the query vector. In that case `sweeping` spends many distance calculations on objects that the filter excludes. `PathSeer` reaches matching objects through two-hop neighbors without the extra expansion that `ACORN` performs.
+
+`PathSeer` works at query time only. It does not build or store anything in the index, so it adds no import cost and no memory overhead. You can switch an existing collection to `pathseer`, or away from it, at any time. The next filtered query uses the new strategy.
+
+The [flat-search cutoff](#flat-search-cutoff) still applies first. If the filter matches fewer objects than `flatSearchCutoff`, Weaviate uses a flat search and `PathSeer` does not run. `PathSeer` works with PQ, BQ, SQ and RQ compression, and with multi-vector embeddings.
+
+The default strategy is `acorn`. To use `PathSeer`, set the `filterStrategy` field of the HNSW vector index to `pathseer` [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters). For a [dynamic index](./indexing/vector-index.md#dynamic-index), set it in the `hnsw` configuration. It applies once the index switches to HNSW. The flat index ignores the setting. The HFresh index has no `filterStrategy` setting and always uses `ACORN`.
+
+:::caution Downgrading from `v1.40`
+Earlier Weaviate versions do not accept `pathseer` as a filter strategy. Before you downgrade, set `filterStrategy` to `acorn` or `sweeping` on every collection that uses `pathseer`.
+:::
 
 ## `indexFilterable` {#indexFilterable}
 

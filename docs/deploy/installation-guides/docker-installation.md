@@ -241,6 +241,8 @@ services:
 
 Note that transformer models are neural networks built to run on GPUs. Running Weaviate with the `text2vec-transformers` module and without GPU is possible, but it will be slower. Enable CUDA with `ENABLE_CUDA=1` if you have a GPU available.
 
+Set `vectorizer` to `text2vec-transformers` in each collection definition that should use it. Weaviate does not apply a default vectorizer. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
+
 For more information on how to set up the environment with the
 `text2vec-transformers` integration, see [this
 page](/weaviate/model-providers/transformers/embeddings.md).

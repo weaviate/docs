@@ -278,7 +278,9 @@ import HFreshMultiVector from '/_includes/feature-notes/hfresh_multivector.mdx';
 
 <HFreshMultiVector />
 
-HFresh can index [multi-vector embeddings](../../configuration/compression/multi-vectors.md), such as ColBERT or ColPali representations, but only with MUVERA encoding. On HNSW, MUVERA is optional but on HFresh it is what makes multi-vector search work, so you have to turn it on when you create the collection. For how the encoding itself works, and how candidates are scored exactly with MaxSim, see [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding).
+HFresh can index [multi-vector embeddings](../../configuration/compression/multi-vectors.md), such as ColBERT or ColPali representations, but only with MUVERA encoding. MUVERA is optional on HNSW. On HFresh it is required, so enable it when you create the collection. For how the encoding itself works, see [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding).
+
+A query is encoded with MUVERA and searched like a single vector. `searchProbe` sets how many posting lists are scanned. `rq.rescoreLimit` sets how many candidates are kept after rescoring against the full MUVERA vectors. Those candidates are then scored exactly with MaxSim against their original token vectors.
 
 For the configuration parameters, see [Multi-vector embeddings on HFresh](../../config-refs/indexing/vector-index.mdx#hfresh-multi-vector).
 

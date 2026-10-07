@@ -12,7 +12,6 @@ Weaviate's functionality can be customized by using [modules](/weaviate/concepts
 At the instance (i.e. Weaviate cluster) level, you can:
 
 - Enable modules
-- Configure the default vectorizer module
 - Configure module-specific variables (e.g. API keys), where applicable
 
 This can be done by setting the appropriate [environment variables](/deploy/configuration/env-vars/index.md) as shown below.
@@ -97,7 +96,10 @@ services:
 
 ### Default vectorizer module
 
-`DEFAULT_VECTORIZER_MODULE` is **deprecated in `v1.40`**. It is ignored, and Weaviate logs a startup warning when it is set.
+:::info Deprecated in `v1.40`
+:::
+
+Weaviate ignores `DEFAULT_VECTORIZER_MODULE` and logs a startup warning when it is set.
 
 Set the `vectorizer` explicitly in each collection definition instead. A collection that does not name one is not vectorized, so you cannot use `near<Media>` or vectorization at import time for it. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
 

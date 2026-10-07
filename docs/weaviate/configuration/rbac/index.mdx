@@ -103,6 +103,8 @@ All roles can also be assigned through the Weaviate API, including the predefine
 
 Refer to the [RBAC: Configuration](/deploy/configuration/configuring-rbac.md) page for more information on how to assign predefined roles to users.
 
+Weaviate may also ship other predefined roles like the `operator_metadata_reader`. For more info see [Enable and configure RBAC](/deploy/configuration/configuring-rbac.md#metadata-reader-role).
+
 ### Custom roles
 
 Any authenticated user that is not assigned a predefined role has no roles or permissions by default.
@@ -293,7 +295,10 @@ Permissions can be defined with the following resources, access levels and optio
           <strong>Backups</strong>
         </Link>
       </td>
-      <td>Manage backups</td>
+      <td>
+        <div class="access-level">Manage backups</div>
+        <div class="access-level">Read backups (added in <code>v1.39.10</code>)</div>
+      </td>
       <td>
         <p>Collection name filter:</p>
         <ul>

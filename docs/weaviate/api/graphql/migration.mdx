@@ -89,7 +89,7 @@ The endpoints are enabled by default from **`v1.39.7`**. In `v1.39.0` through `v
 The REST Search API is a set of plain-HTTP JSON endpoints intended for stacks that cannot run a client library. 
 Request and response field names may still change, so this path is not recommended for production use yet. It is a deliberate **subset** of what GraphQL offers. Read [Differences to check before you convert](#differences-to-check-before-you-convert) and [Queries without a REST equivalent yet](#queries-without-a-rest-equivalent-yet) before you convert anything.
 
-There are five available `POST` endpoints:
+There are six available `POST` endpoints:
 
 | Endpoint | GraphQL equivalent |
 | --- | --- |
@@ -97,7 +97,10 @@ There are five available `POST` endpoints:
 | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/bm25">`POST /v1/search/{collection}/bm25`</SkipLink> | `Get` with `bm25` |
 | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/hybrid">`POST /v1/search/{collection}/hybrid`</SkipLink> | `Get` with `hybrid` |
 | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-object">`POST /v1/search/{collection}/near-object`</SkipLink> | `Get` with `nearObject` |
+| <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-vector">`POST /v1/search/{collection}/near-vector`</SkipLink> | `Get` with `nearVector` |
 | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{collection}`</SkipLink> | `Aggregate` |
+
+The `near-vector` endpoint is available from `v1.39.8`. It takes your own query vector, so it also works on collections without a vectorizer.
 
 ### An example request
 
@@ -171,7 +174,6 @@ These capabilities are not part of the preview. They fail in two very different 
 
 | GraphQL capability | REST status | Path |
 | --- | --- | --- |
-| **`nearVector`**, supplying your own query vector | **No route exists.** There is no `near-vector` endpoint, so the request fails outright. | Any collection configured with `vectorizer: none`, or any workload that computes embeddings client-side, needs a [client library](#client-libraries-recommended) or the [web client](#typescript-client-for-web). |
 | **`hybrid.vector`**, supplying the vector leg of a hybrid search | The `hybrid` route exists but has no `vector` field, so the value is **silently ignored** (`200`) and the search runs against a server-computed vector instead of yours. | [Client libraries](#client-libraries-recommended) or the [web client](#typescript-client-for-web). |
 | **`Aggregate` property statistics** such as `sum`, `mean`, `median`, `mode`, `minimum`, `maximum`, `topOccurrences`, `totalTrue`, and the rest | Aggregate is **count-only**. A `property:statistic` entry in `returnMetrics` returns `422`. | [Client libraries](#client-libraries-recommended) |
 | **Aggregate over a search**, `over` and `objectLimit` | Reserved, returns `422`. | [Client libraries](#client-libraries-recommended) |
@@ -203,6 +205,7 @@ Body fields are **camelCase**. Field names not listed here are not recognized, a
 | `hybrid: { fusionType: relativeScoreFusion }` | `"fusionType": "relativeScore"` |
 | `hybrid: { maxVectorDistance: 0.4 }` | `"maxVectorDistance": 0.4`. Requires `alpha` greater than `0`, otherwise `400` |
 | `nearObject: { id: "<uuid>" }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-object">`POST /v1/search/{c}/near-object`</SkipLink> with `"id": "<uuid>"`. Required, and must be a well-formed UUID |
+| `nearVector: { vector: [0.1, 0.2] }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-vector">`POST /v1/search/{c}/near-vector`</SkipLink> with `"vector": [0.1, 0.2]`. Required. Accepts `certainty` or `distance` like `near-text` |
 | `targetVectors: ["title_vector"]` | `"targetVector": "title_vector"`. A single string |
 | `where: { ...WhereFilter... }` | `"where": { ...the same JSON... }` |
 | `limit: 5, offset: 10` | `"limit": 5, "offset": 10` |

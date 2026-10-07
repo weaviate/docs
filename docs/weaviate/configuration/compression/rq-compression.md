@@ -441,7 +441,7 @@ import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 :::note Multi-vector performance
-RQ supports multi-vector embeddings. Each token vector is rounded up to a multiple of 64 dimensions, which may result in less than the nominal compression ratio for very short vectors. This is a technical limitation that may be addressed in future versions.
+RQ supports multi-vector embeddings. On an `hnsw` index, each token vector is rounded up to a multiple of 64 dimensions, which may result in less than the nominal compression ratio for very short vectors. This is a technical limitation that may be addressed in future versions.
 :::
 
 ## Further resources

@@ -99,7 +99,7 @@ These settings control default query behavior.
 
 ## Modules
 
-Weaviate Cloud clusters do not have a default vectorizer module configured. As a result, you must specify a vectorizer integration when creating collections, or import your own vectors.
+Weaviate Cloud clusters do not have a default vectorizer module configured. To use vector search, configure a vector when you create a collection. Specify a vectorizer integration, or configure a vector for your own embeddings (for example `self_provided`) and import them.
 
 To view the list of enabled modules on your cluster, see [Cluster Status: Enabled Modules](/cloud/manage-clusters/status#enabled-modules).
 
