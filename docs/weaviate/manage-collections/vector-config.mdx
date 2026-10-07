@@ -146,17 +146,6 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
   </TabItem>
 </Tabs>
 
-## Create a collection without a vector
-
-:::info Changed in `v1.40`
-:::
-
-To create a collection without a vector, set no vector parameters at all. Do not set `vectorizer`, `vectorIndexType`, `vectorIndexConfig`, or any named vector. From `v1.40`, Weaviate no longer fills these in from the server defaults, so vector search is not available on the collection. For the rest of the behavior, see [Collections without a vector](/weaviate/config-refs/collections.mdx#no-vector).
-
-You can [add a named vector](#add-new-named-vectors) to it later. The top-level `vectorizer`, `vectorIndexType` and `vectorIndexConfig` parameters cannot be added after creation.
-
-The change is only visible with a client that omits all top-level vector parameters when you do not set any. The Python client does so from `v4.21.2`. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
-
 ## Define named vectors
 
 You can define multiple [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors) per collection. This allows each object to be represented by multiple vector embeddings, each with its own vector index.
@@ -218,7 +207,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 <AddNamedVectors/>
 
-Named vectors can be added to a collection that already has named vectors, to a [collection created without a vector](#create-a-collection-without-a-vector), and to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections). In a single vector collection you cannot add one called `default`. See [The `default` vector name](/weaviate/config-refs/collections.mdx#default-vector-name).
+Named vectors can be added to a collection that already has named vectors, to a [collection created without a vector](/weaviate/config-refs/collections.mdx#no-vector), and to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections). In a single vector collection you cannot add one called `default`. See [The `default` vector name](/weaviate/config-refs/collections.mdx#default-vector-name).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
