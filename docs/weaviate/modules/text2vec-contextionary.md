@@ -45,8 +45,8 @@ Weaviate:
 
 Contextionary:
 
-* `EXTENSIONS_STORAGE_MODE`: Location of storage for extensions to the Contextionary
-* `EXTENSIONS_STORAGE_ORIGIN`: The host of the custom extension storage
+* `EXTENSIONS_STORAGE_MODE`: **Removed in `v1.38.16` and `v1.39.6`.** Previously set the location of storage for [extensions to the Contextionary](#extending-the-contextionary). The `weaviate` mode used extension storage inside Weaviate, which no longer exists.
+* `EXTENSIONS_STORAGE_ORIGIN`: **Removed in `v1.38.16` and `v1.39.6`.** Previously set the host of the custom extension storage.
 * `NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE`: this can be used to hide very rare words. If you set it to '5', this means the 5th percentile of words by occurrence are removed in the nearestNeighbor search (for example used in the GraphQL `_additional { nearestNeighbors }` feature).
 * `ENABLE_COMPOUND_SPLITTING`: see [here](#compound-splitting).
 
@@ -83,8 +83,6 @@ services:
   contextionary:
     environment:
       OCCURRENCE_WEIGHT_LINEAR_FACTOR: 0.75
-      EXTENSIONS_STORAGE_MODE: weaviate
-      EXTENSIONS_STORAGE_ORIGIN: http://weaviate:8080
       NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE: 5
       ENABLE_COMPOUND_SPLITTING: 'false'
     image: cr.weaviate.io/semitechnologies/contextionary:en0.16.0-v1.2.1
@@ -190,87 +188,11 @@ import CodeNearText from '/_includes/code/graphql.filters.nearText.mdx';
 
 ### Find concepts
 
-To find concepts or words or to check if a concept is part of the Contextionary, use the `v1/modules/text2vec-contextionary/concepts/<concept>` endpoint.
+:::caution Removed in `v1.38.16` and `v1.39.6`
+The endpoint no longer exists. Vectorization with `text2vec-contextionary` is not affected.
+:::
 
-```js
-GET /v1/modules/text2vec-contextionary/concepts/<concept>
-```
-
-#### Parameters
-
-The only parameter `concept` is a string that should be camelCased in case of compound words or a list of words.
-
-#### Response
-<!-- TODO: (phase 2) can we make a list of parameters like this look better? -->
-The result contains the following fields:
-- `"individualWords"`: a list of the results of individual words or concepts in the query, which contains:
-  - `"word"`: a string of requested concept or single word from the concept.
-  - `"present"`: a boolean value which is `true` if the word exists in the Contextionary.
-  - `"info"`: an object with the following fields:
-    - `""nearestNeighbors"`: a list with the nearest neighbors, containing `"word"` and `"distance"` (between the two words in the high dimensional space). Note that `"word"` can also be a data object.
-    - `"vector"`: the raw 300-long vector value.
-  - `"concatenatedWord"`: an object of the concatenated concept.
-    - `"concatenatedWord"`: the concatenated word if the concept given is a camelCased word.
-      - `"singleWords"`: a list of the single words in the concatenated concept.
-      - `"concatenatedVector"`: a list of vector values of the concatenated concept.
-      - `"concatenatedNearestNeighbors"`: a list with the nearest neighbors, containing `"word"` and `"distance"` (between the two words in the high dimensional space). Note that `"word"` can also be a data object.
-
-#### Example
-
-```bash
-curl http://localhost:8080/v1/modules/text2vec-contextionary/concepts/magazine
-```
-
-or (note the camelCased compound concept)
-
-import CodeContextionary from '/_includes/code/contextionary.get.mdx';
-
-<CodeContextionary />
-
-with a result similar to:
-
-```json
-{
-  "individualWords": [
-    {
-      "inC11y": true,
-      "info": {
-        "nearestNeighbors": [
-          {
-            "word": "magazine"
-          },
-          {
-            "distance": 6.186641,
-            "word": "editorial"
-          },
-          {
-            "distance": 6.372504,
-            "word": "featured"
-          },
-          {
-            "distance": 6.5695524,
-            "word": "editor"
-          },
-          {
-            "distance": 7.0328364,
-            "word": "titled"
-          },
-          ...
-        ],
-        "vector": [
-          0.136228,
-          0.706469,
-          -0.073645,
-          -0.099225,
-          0.830348,
-          ...
-        ]
-      },
-      "word": "magazine"
-    }
-  ]
-}
-```
+In earlier versions, the `GET /v1/modules/text2vec-contextionary/concepts/<concept>` endpoint returned whether a word or concept was in the Contextionary. It also returned the concept's vector and nearest neighbors.
 
 ### Model details
 
@@ -298,54 +220,11 @@ Contextionary models are available for the following languages:
 
 ### Extending the Contextionary
 
-Custom words or abbreviations (i.e., "concepts") can be added to `text2vec-contextionary` through the `v1/modules/text2vec-contextionary/extensions/` endpoint.
+:::caution Removed in `v1.38.16` and `v1.39.6`
+The endpoint no longer exists. Vectorization with `text2vec-contextionary` is not affected.
+:::
 
-Using this endpoint will enrich the Contextionary with your own words, abbreviations or concepts in context by [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning). Using the `v1/modules/text2vec-contextionary/extensions/` endpoint adds or updates the concepts in real-time.
-
-Note that you need to introduce the new concepts in to Weaviate before adding the data, as this will note cause Weaviate to automatically update the vectors.
-
-#### Parameters
-
-A body (in JSON or YAML) with the extension word or abbreviation you want to add to the Contextionary with the following fields includes a:
-- `"concept"`: a string with the word, compound word or abbreviation
-- `"definition"`: a clear description of the concept, which will be used to create the context of the concept and place it in the high dimensional Contextionary space.
-- `"weight"`: a float with the relative weight of the concept (default concepts in the Contextionary have a weight of 1.0)
-
-#### Response
-
-The same fields as the input parameters will be in the response body if the extension was successful.
-
-#### Example
-
-Let's add the concept `"weaviate"` to the Contextionary.
-
-import CodeContextionaryExtensions from '/_includes/code/contextionary.extensions.mdx';
-
-<CodeContextionaryExtensions />
-
-You can always check if the new concept exists in the Contextionary:
-
-```bash
-curl http://localhost:8080/v1/modules/text2vec-contextionary/concepts/weaviate
-```
-
-Note that it is not (yet) possible to extend the Contextionary with concatenated words or concepts consisting of more than one word.
-
-You can also overwrite current concepts with this endpoint. Let's say you are using the abbreviation `API` for `Academic Performance Index` instead of `Application Programming Interface`, and you want to reposition this concept in the Contextionary:
-
-```bash
-curl \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "concept": "api",
-    "definition": "Academic Performance Index a measurement of academic performance and progress of individual schools in California",
-    "weight": 1
-  }' \
-  http://localhost:8080/v1/modules/text2vec-contextionary/extensions
-```
-
-The meaning of the concept `API` has now changed in your Weaviate setting.
+In earlier versions, the `POST /v1/modules/text2vec-contextionary/extensions/` endpoint added custom words, abbreviations or concepts to the Contextionary. It could also overwrite existing concepts. The request body had the fields `concept`, `definition` and `weight`.
 
 ### Stopwords
 
