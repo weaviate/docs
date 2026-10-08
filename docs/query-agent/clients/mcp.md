@@ -85,11 +85,15 @@ Pass the server to a [Pydantic AI](https://ai.pydantic.dev/mcp/client/) agent as
 
 This example uses Pydantic AI 2.x and was written against `pydantic-ai-slim` 2.54.0. It uses the `MCPToolset` class. Older versions of Pydantic AI connected to MCP servers with `MCPServerStreamableHTTP` instead.
 
-```shell
-uv add "pydantic-ai-slim[mcp,openai]==2.54.0"
-```
+Save the following script as `query_agent_pydantic_ai.py`. The `# /// script` block at the top lists its dependencies, so uv installs them in an isolated environment when you run it:
 
 ```python
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#     "pydantic-ai-slim[mcp,openai]==2.54.0",
+# ]
+# ///
 import asyncio
 import os
 
@@ -116,6 +120,12 @@ async def main():
 asyncio.run(main())
 ```
 
+Then run it with uv. The example uses an OpenAI model, so also set `OPENAI_API_KEY`:
+
+```shell
+uv run query_agent_pydantic_ai.py
+```
+
 </TabItem>
 <TabItem value="langchain" label="LangChain">
 
@@ -123,11 +133,17 @@ Use the [`langchain-mcp-adapters`](https://github.com/langchain-ai/langchain-mcp
 
 This example uses LangChain 1.x and was written against `langchain` 1.4.3, `langchain-mcp-adapters` 0.3.2 and `langchain-openai` 1.6.7. It uses the `create_agent` function, which was introduced in LangChain 1.0 and does not exist in LangChain 0.x.
 
-```shell
-uv add "langchain==1.4.3" "langchain-mcp-adapters==0.3.2" "langchain-openai==1.6.7"
-```
+Save the following script as `query_agent_langchain.py`. The `# /// script` block at the top lists its dependencies, so uv installs them in an isolated environment when you run it:
 
 ```python
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#     "langchain==1.4.3",
+#     "langchain-mcp-adapters==0.3.2",
+#     "langchain-openai==1.6.7",
+# ]
+# ///
 import asyncio
 import os
 
@@ -158,6 +174,12 @@ async def main():
 
 
 asyncio.run(main())
+```
+
+Then run it with uv. The example uses an OpenAI model, so also set `OPENAI_API_KEY`:
+
+```shell
+uv run query_agent_langchain.py
 ```
 
 </TabItem>
