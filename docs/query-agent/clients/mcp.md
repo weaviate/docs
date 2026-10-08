@@ -5,6 +5,9 @@ image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'clients', 'mcp']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The Query Agent is available as a remote [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server hosted by Weaviate. Any MCP-compatible client can use it to query the data in your Weaviate Cloud cluster, with no client library to install. Examples include coding assistants such as Claude Code and Cursor, workspace assistants such as Notion AI, and agent frameworks such as LangChain or Pydantic AI.
 
 The server exposes two tools that map to the Query Agent's [Ask Mode](../guides/ask_mode.md) and [Search Mode](../guides/search_mode.md):
@@ -37,19 +40,128 @@ The MCP server uses the permissions of the API key you provide. It can only see 
 
 :::
 
-## Connect a client
+## Connect an MCP client
 
 To connect any MCP client, point it at the server URL using the Streamable HTTP transport, and set the headers from [Connection details](#connection-details).
 
-For step-by-step examples, see the following recipes:
+The examples below read your cluster URL and API key from the `WEAVIATE_URL` and `WEAVIATE_API_KEY` environment variables. If your collections use a third-party model provider, add its header (such as `X-OpenAI-Api-Key`) alongside the others.
 
-<!-- TODO: link each item to its Weaviate Recipes page once published. -->
+<Tabs groupId="mcp-clients">
+<TabItem value="claude-code" label="Claude Code">
 
-- Claude Code (coming soon)
-- Cursor (coming soon)
-- Notion AI (coming soon)
-- LangChain (coming soon)
-- Pydantic AI (coming soon)
+Add the server with the `claude mcp add` command. The `--scope user` option makes it available in every project:
+
+```shell
+claude mcp add --transport http --scope user weaviate-query-agent https://api.agents.weaviate.io/mcp \
+  --header "Authorization: Bearer $WEAVIATE_API_KEY" \
+  --header "X-Weaviate-Cluster-Url: $WEAVIATE_URL"
+```
+
+Your shell expands the environment variables when you run this command, so their values are stored in your user-level Claude Code configuration.
+
+To share the server with everyone who works on a repository instead, commit an `.mcp.json` file at the repository root. Claude Code expands the `${...}` placeholders from each user's environment, so no secrets are committed:
+
+```json
+{
+  "mcpServers": {
+    "weaviate-query-agent": {
+      "type": "http",
+      "url": "https://api.agents.weaviate.io/mcp",
+      "headers": {
+        "Authorization": "Bearer ${WEAVIATE_API_KEY}",
+        "X-Weaviate-Cluster-Url": "${WEAVIATE_URL}"
+      }
+    }
+  }
+}
+```
+
+Run `claude mcp list` to check that the server is connected, or run `/mcp` inside a Claude Code session. The tools appear as `mcp__weaviate-query-agent__query_agent_ask` and `mcp__weaviate-query-agent__query_agent_search`.
+
+</TabItem>
+<TabItem value="pydantic-ai" label="Pydantic AI">
+
+Pass the server to a [Pydantic AI](https://ai.pydantic.dev/mcp/client/) agent as a toolset.
+
+This example uses Pydantic AI 2.x and was written against `pydantic-ai-slim` 2.54.0. It uses the `MCPToolset` class. Older versions of Pydantic AI connected to MCP servers with `MCPServerStreamableHTTP` instead.
+
+```shell
+uv add "pydantic-ai-slim[mcp,openai]==2.54.0"
+```
+
+```python
+import asyncio
+import os
+
+from pydantic_ai import Agent
+from pydantic_ai.mcp import MCPToolset
+
+query_agent = MCPToolset(
+    "https://api.agents.weaviate.io/mcp",
+    headers={
+        "Authorization": f"Bearer {os.environ['WEAVIATE_API_KEY']}",
+        "X-Weaviate-Cluster-Url": os.environ["WEAVIATE_URL"],
+    },
+)
+
+agent = Agent("openai:gpt-5", toolsets=[query_agent])
+
+
+async def main():
+    async with agent:
+        result = await agent.run("What are the most expensive blue t-shirts?")
+    print(result.output)
+
+
+asyncio.run(main())
+```
+
+</TabItem>
+<TabItem value="langchain" label="LangChain">
+
+Use the [`langchain-mcp-adapters`](https://github.com/langchain-ai/langchain-mcp-adapters) package to load the server's tools as LangChain tools, then pass them to an agent.
+
+This example uses LangChain 1.x and was written against `langchain` 1.4.3, `langchain-mcp-adapters` 0.3.2 and `langchain-openai` 1.6.7. It uses the `create_agent` function, which was introduced in LangChain 1.0 and does not exist in LangChain 0.x.
+
+```shell
+uv add "langchain==1.4.3" "langchain-mcp-adapters==0.3.2" "langchain-openai==1.6.7"
+```
+
+```python
+import asyncio
+import os
+
+from langchain.agents import create_agent
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
+
+async def main():
+    client = MultiServerMCPClient(
+        {
+            "weaviate-query-agent": {
+                "transport": "streamable_http",
+                "url": "https://api.agents.weaviate.io/mcp",
+                "headers": {
+                    "Authorization": f"Bearer {os.environ['WEAVIATE_API_KEY']}",
+                    "X-Weaviate-Cluster-Url": os.environ["WEAVIATE_URL"],
+                },
+            }
+        }
+    )
+    tools = await client.get_tools()
+
+    agent = create_agent("openai:gpt-5", tools)
+    response = await agent.ainvoke(
+        {"messages": [{"role": "user", "content": "What are the most expensive blue t-shirts?"}]}
+    )
+    print(response["messages"][-1].content)
+
+
+asyncio.run(main())
+```
+
+</TabItem>
+</Tabs>
 
 ## Choosing collections
 
