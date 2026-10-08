@@ -41,6 +41,14 @@ const res = await qa.ask("What was the average temperature in the first week of 
 
 // END BasicAskMode
 
+// START ImageGenAskMode
+import { GeneratedImage } from 'weaviate-agents';
+
+const imageRes = await qa.ask("Generate a picture of a model wearing the best-selling T-shirt", {
+    outputFormat: GeneratedImage,
+});
+// END ImageGenAskMode
+
 // START StreamingAskMode
 for await (const output of qa.askStream("What was the average temperature in the first week of May 2025?")) {
     // Do something with the output
