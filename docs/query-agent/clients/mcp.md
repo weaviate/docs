@@ -202,6 +202,30 @@ To query these collections, use the [Python](./python.md) or [TypeScript](./type
 
 ### `query_agent_ask`
 
+The model sees this tool description. The server adds the last line when a client lists the tools, naming the collections in your cluster (here, an example cluster with four collections):
+
+```text
+Ask Mode transforms your query into actionable searches or
+aggregations, and then provides a final answer to the question.
+
+For example, you could ask:
+
+"How many orders related to books were placed last week?"
+
+And the agent will filter for orders, perform semantic search for books
+and sort or filter for timestamps from the last week. Then, the agent
+will provide a response, answering this question exactly based on the
+data retrieved.
+
+The result always carries final_answer. When result_evaluation is
+'llm', it additionally carries is_partial_answer (whether information
+the query asked for is missing from the answer), missing_information
+(what exactly could not be found in the data), and sources (the
+retrieved objects the answer actually drew on).
+
+Collections available in this cluster: Brands, ECommerce, FinancialContracts, Weather.
+```
+
 Turns a natural-language question into searches and aggregations, then writes an answer based on the retrieved data. See [Ask Mode](../guides/ask_mode.md) for how this works.
 
 | Argument | Type | Default | Description |
@@ -230,6 +254,38 @@ The result always contains `final_answer`. With `result_evaluation: "llm"`, it a
 ```
 
 ### `query_agent_search`
+
+The model sees this tool description. The server adds the last line when a client lists the tools, naming the collections in your cluster (here, an example cluster with four collections):
+
+```text
+Search Mode combines AI-powered semantic search with structured
+filtering and returns the matching Weaviate objects directly.
+
+For example, you could ask:
+
+"Find me some vintage shoes under $70"
+
+And the agent will perform semantic search for vintage shoes, apply a
+filter for price < 70, and return the matching objects from your
+collections, ready for you to render or post-process.
+
+You could also ask:
+
+"Something comfortable to wear on a long flight"
+
+And the agent will use AI-powered search to find relevant objects, even
+when terms like comfortable or long flight never appear in your data.
+
+Under the hood, Search Mode does more than embed your query as-is. The
+agent writes one or more optimized semantic and structured queries,
+executes them against your collections, and reranks the retrieved
+objects by how well each one matches your original request.
+
+The result's `results` field lists the matching objects in rank order
+(best match first), each as a dict of property names to values.
+
+Collections available in this cluster: Brands, ECommerce, FinancialContracts, Weather.
+```
 
 Combines AI-powered semantic search with structured filtering and returns the matching objects directly. See [Search Mode](../guides/search_mode.md) for how this works.
 
