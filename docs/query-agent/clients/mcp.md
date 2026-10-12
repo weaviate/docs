@@ -15,7 +15,7 @@ The server exposes two tools that map to the Query Agent's [Ask Mode](../guides/
 | Tool | Description |
 | --- | --- |
 | `query_agent_ask` | Answers a natural-language question from your data, returning a written answer. |
-| `query_agent_search` | Runs an AI-powered search and returns the matching objects, best match first. |
+| `query_agent_search` | Runs an AI-powered search and returns the matching objects, ranked by relevance (optionally balanced against diversity) or sorted by a property. |
 
 Both tools are read-only: they run searches, filtered retrieval queries and aggregations on your data, but never modify it.
 
@@ -26,7 +26,7 @@ Both tools are read-only: they run searches, filtered retrieval queries and aggr
 | Server URL | `https://api.agents.weaviate.io/mcp` |
 | Transport | Streamable HTTP |
 
-Every request must include the following HTTP headers:
+The server reads the following HTTP headers. Every request must include `Authorization` and `X-Weaviate-Cluster-Url`. Model provider keys are only needed for some collections:
 
 | Header | Required | Value |
 | --- | --- | --- |
@@ -49,7 +49,7 @@ The examples below read your cluster URL and API key from the `WEAVIATE_URL` and
 <Tabs groupId="mcp-clients">
 <TabItem value="claude-code" label="Claude Code">
 
-Add the server with the `claude mcp add` command. The `--scope user` option makes it available in every project:
+Add the server to [Claude Code](https://code.claude.com/docs/en/mcp#option-1-add-a-remote-http-server) with the `claude mcp add` command. The `--scope user` option makes it available in every project:
 
 ```shell
 claude mcp add --transport http --scope user weaviate-query-agent https://api.agents.weaviate.io/mcp \
@@ -299,7 +299,13 @@ Combines AI-powered semantic search with structured filtering and returns the ma
 | `filtering` | `"recall"` \| `"precision"` | `"recall"` | `"precision"` applies the agent's filters strictly. `"recall"` also searches without uncertain filters, so plausible matches are not filtered out. See [Customized filtering](../guides/search_mode.md#customized-filtering). |
 | `diversity_weight` | `number` \| unset | unset | Value from `0` (pure relevance) to `1` (maximum diversity). See [diversity ranking](../guides/search_mode.md#diversity-ranking). |
 
-The result contains a `results` list with the matching objects in rank order. Each object is given as a map of its property names to their values:
+The result contains a `results` list with the matching objects. The order depends on the query and arguments:
+
+- By default, the results are ranked by relevance, best match first.
+- If you set `diversity_weight`, the ranking balances relevance against diversity, so that similar objects don't crowd out the rest.
+- If the query asks for a sort order, such as "cheapest first", the results are sorted by that property instead. This takes precedence over `diversity_weight`.
+
+Each object is given as a map of its property names to their values:
 
 ```json
 {
