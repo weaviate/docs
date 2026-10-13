@@ -17,7 +17,7 @@ The server exposes two tools that map to the Query Agent's [Ask Mode](../guides/
 | `query_agent_ask` | Answers a natural-language question from your data, returning a written answer. |
 | `query_agent_search` | Runs an AI-powered search and returns the matching objects, ranked by relevance (optionally balanced against diversity) or sorted by a property. |
 
-Both tools are read-only: they run searches, filtered retrieval queries and aggregations on your data, but never modify it.
+Both tools are read-only: they search, filter and aggregate your data, but never modify it.
 
 ## Connection details
 
@@ -202,6 +202,11 @@ To query these collections, use the [Python](./python.md) or [TypeScript](./type
 
 ### `query_agent_ask`
 
+Turns a natural-language question into searches and aggregations, then writes an answer based on the retrieved data. See [Ask Mode](../guides/ask_mode.md) for how this works.
+
+<details>
+<summary>Tool description</summary>
+
 The model sees this tool description. The server adds the last line when a client lists the tools, naming the collections in your cluster (here, an example cluster with four collections):
 
 ```text
@@ -226,7 +231,7 @@ retrieved objects the answer actually drew on).
 Collections available in this cluster: Brands, ECommerce, FinancialContracts, Weather.
 ```
 
-Turns a natural-language question into searches and aggregations, then writes an answer based on the retrieved data. See [Ask Mode](../guides/ask_mode.md) for how this works.
+</details>
 
 | Argument | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -254,6 +259,11 @@ The result always contains `final_answer`. With `result_evaluation: "llm"`, it a
 ```
 
 ### `query_agent_search`
+
+Combines AI-powered semantic search with structured filtering and returns the matching objects directly. See [Search Mode](../guides/search_mode.md) for how this works.
+
+<details>
+<summary>Tool description</summary>
 
 The model sees this tool description. The server adds the last line when a client lists the tools, naming the collections in your cluster (here, an example cluster with four collections):
 
@@ -287,7 +297,7 @@ The result's `results` field lists the matching objects in rank order
 Collections available in this cluster: Brands, ECommerce, FinancialContracts, Weather.
 ```
 
-Combines AI-powered semantic search with structured filtering and returns the matching objects directly. See [Search Mode](../guides/search_mode.md) for how this works.
+</details>
 
 | Argument | Type | Default | Description |
 | --- | --- | --- | --- |
