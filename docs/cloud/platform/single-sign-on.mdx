@@ -30,7 +30,7 @@ Before you configure SSO, check that each _Owner_ can sign in through the identi
 1. On the [Overview page](/cloud/console-overview), open **Organization settings**.
 1. Click the `SSO Configuration` tab.
 1. In the `SAML Single Sign-On` panel, click `Configure SSO`.
-1. If the console shows a warning, read it and confirm. See [Warnings before setup](#warnings-before-setup).
+1. If the console shows a warning, read it and confirm. 
 1. The SSO setup page opens in a new browser tab. The setup link is valid for 24 hours.
 1. Follow the setup page to connect your identity provider and verify your email domains.
 1. Return to the console tab.
@@ -68,16 +68,12 @@ Before you configure SSO, check that each _Owner_ can sign in through the identi
 */}
 
 :::caution
-SSO is enforced as soon as setup completes. From then on, every member must sign in with SSO. Members whose email address is not on a verified domain lose access to the organization.
-:::
-
-### Warnings before setup {#warnings-before-setup}
-
-The console can show up to two warnings before the setup page opens.
 
 - **Members are on different email domains:** Some members use email domains that SSO will not cover. These members lose access to the organization when SSO is enforced. The dialog says they "could lose access once SSO is enforced". The console does not remove anyone from the organization.
 
 - **MFA enforcement will be turned off:** This warning shows if the organization enforces MFA. Completing SSO setup turns MFA enforcement off. See [MFA enforcement and SSO](/cloud/platform/multi-factor-auth#mfa-enforcement-and-sso).
+
+:::
 
 ## How members sign in {#how-members-sign-in}
 
