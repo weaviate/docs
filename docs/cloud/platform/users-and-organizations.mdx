@@ -98,6 +98,8 @@ To switch between organizations, select an organization name in the organization
 You cannot delete an organization that still has clusters. Delete all clusters first.
 :::
 
+_Owners_ also see the `SSO Configuration` tab here, where they set up [single sign-on](/cloud/platform/single-sign-on). They turn on [MFA enforcement](/cloud/platform/multi-factor-auth#mfa-enforcement) on the `Users and Members` tab.
+
 ## Manage organization members
 
 ### User roles {#user-roles}
@@ -112,6 +114,8 @@ Each member of an organization has one role that controls console access and man
 | **Viewer** | Read-only            | No              | No      | No         | No                  |
 
 Only _Owners_ and _Admins_ can add or remove users and change their roles.
+
+Only _Owners_ can see and change [single sign-on](/cloud/platform/single-sign-on) and [MFA enforcement](/cloud/platform/multi-factor-auth#mfa-enforcement).
 
 ### Add a user
 
@@ -147,12 +151,16 @@ To add a user, follow these steps:
 
 <br />
 
+In an organization that uses SSO, you can invite only email addresses on the SSO domains. See [Invite members](/cloud/platform/single-sign-on#invite-members).
+
 ### Remove a user
 
 To remove a user, follow these steps:
 
+{/* TODO(Ivan) [verify]: the tab name `Users and Members` replaces the stale `Users and Roles`. It comes from the spec frames. */}
+
 1. Open the [Organization settings](#organization-settings) page.
-1. Find the user's email address in the `Users and Roles` section.
+1. Find the user's email address in the `Users and Members` tab.
 1. Click the trashcan icon to delete the user.
 1. Enter the email of the user and click `Confirm and remove`.
 

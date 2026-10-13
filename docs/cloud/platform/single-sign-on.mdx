@@ -1,0 +1,203 @@
+---
+title: Single sign-on (SSO)
+sidebar_label: Single sign-on
+sidebar_position: 70
+description: "Set up SAML single sign-on (SSO) for a Weaviate Cloud organization."
+image: og/wcd/user_guides.jpg
+---
+
+With single sign-on (SSO), members sign in through your identity provider instead of a Weaviate Cloud password. Weaviate Cloud supports SAML SSO. OIDC is not supported.
+
+SSO is available to Managed organizations (organizations on a Weaviate-managed contract). Only organization _Owners_ can see and change SSO. _Admins_, _Editors_, and _Viewers_ do not see the setting. See [User roles](/cloud/platform/users-and-organizations#user-roles).
+
+:::info
+SSO controls how people sign in to the Weaviate Cloud console. It does not affect cluster API keys. For cluster access, see [Authentication](/cloud/manage-clusters/authentication).
+:::
+
+## Before you start {#before-you-start}
+
+- You are an _Owner_ of a Managed organization (an organization on a Weaviate-managed contract).
+- You have admin access to your identity provider and can exchange SAML metadata with it.
+- You can add a DNS TXT record for each company email domain.
+
+:::tip
+Before you configure SSO, check that each _Owner_ can sign in through the identity provider.
+:::
+
+## Set up SSO {#set-up-sso}
+
+1. Open the <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
+1. On the [Overview page](/cloud/console-overview), open **Organization settings**.
+1. Click the `SSO Configuration` tab.
+1. In the `SAML Single Sign-On` panel, click `Configure SSO`.
+1. If the console shows a warning, read it and confirm. See [Warnings before setup](#warnings-before-setup).
+1. The SSO setup page opens in a new browser tab. The setup link is valid for 24 hours.
+1. Follow the setup page to connect your identity provider and verify your email domains.
+1. Return to the console tab.
+
+{/* TODO(Ivan) G1: record guideflow "Configure SSO in the Weaviate Cloud console". Click script: Overview > expand Organization settings > SSO Configuration tab > hover the "Not configured." panel > Configure SSO > Continue on "Members are on different email domains" > Continue on "MFA enforcement will be turned off" > end where the new tab opens (do not record the setup app). Then replace GUIDEFLOW_ID_G1 and uncomment the block below. */}
+
+{/*
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="GUIDEFLOW_ID_G1"
+    src="https://app.guideflow.com/embed/GUIDEFLOW_ID_G1"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="GUIDEFLOW_ID_G1"
+  ></script>
+</div>
+
+<br />
+*/}
+
+:::caution
+SSO is enforced as soon as setup completes. From then on, every member must sign in with SSO. Members whose email address is not on a verified domain lose access to the organization.
+:::
+
+### Warnings before setup {#warnings-before-setup}
+
+The console can show up to two warnings before the setup page opens.
+
+- **Members are on different email domains:** Some members use email domains that SSO will not cover. These members lose access to the organization when SSO is enforced. The dialog says they "could lose access once SSO is enforced". The console does not remove anyone from the organization.
+
+- **MFA enforcement will be turned off:** This warning shows if the organization enforces MFA. Completing SSO setup turns MFA enforcement off. See [MFA enforcement and SSO](/cloud/platform/multi-factor-auth#mfa-enforcement-and-sso).
+
+## How members sign in {#how-members-sign-in}
+
+Members can sign in with SSO in two ways:
+
+- On the Weaviate Cloud sign-in page, the member enters their work email address. The page sends them to the identity provider. There is no password option.
+- The member opens the organization's `SSO Sign-in URL` and clicks `Log in with SSO`.
+
+Invite links to the organization also lead to the SSO sign-in.
+
+SSO sign-ins never ask for a Weaviate Cloud MFA code. See [MFA enforcement and SSO](/cloud/platform/multi-factor-auth#mfa-enforcement-and-sso).
+
+{/* TODO(Ivan) S4: capture docs/cloud/img/weaviate-cloud-sso-login.png. Open the SSO Sign-in URL in a private window, signed out. Frame 05 can be reused, optionally cropped to the left panel.
+    Alt: "Weaviate Cloud sign-in page with a single Log in with SSO button".
+    Then uncomment the import and the card below, and delete the live list above (the card repeats it in the left column). */}
+
+{/* import SSOLogin from "/docs/cloud/img/weaviate-cloud-sso-login.png"; */}
+
+{/*
+<div class="row">
+  <div class="col col--4">
+    <p>Members can sign in with SSO in two ways:</p>
+    <ul>
+      <li>
+        On the Weaviate Cloud sign-in page, the member enters their work email
+        address. The page sends them to the identity provider. There is no
+        password option.
+      </li>
+      <li>
+        The member opens the organization's <code>SSO Sign-in URL</code> and
+        clicks <code>Log in with SSO</code>.
+      </li>
+    </ul>
+  </div>
+  <div class="col col--8">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={SSOLogin}
+          alt="Weaviate Cloud sign-in page with a single Log in with SSO button"
+        />
+      </div>
+      <div class="card__body">
+        The <code>SSO Sign-in URL</code> opens a page with a <code>Log in with SSO</code>{" "}
+        button.
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+*/}
+
+:::caution
+After a person's first SSO sign-in, their Weaviate Cloud account signs in with SSO only. Email and password sign-in and Google sign-in stop working for that account. This applies in every organization the person belongs to.
+:::
+
+A person without a Weaviate Cloud account gets a new account at their first SSO sign-in. They join the organization as a _Viewer_. An _Owner_ can change the role later. Existing members keep their role. See [User roles](/cloud/platform/users-and-organizations#user-roles).
+
+## Invite members {#invite-members}
+
+While SSO is on, _Owners_ and _Admins_ can invite only email addresses on the SSO domains. If you enter another address, the `Invite user` dialog shows "This email can't be invited".
+
+To invite a member, see [Add a user](/cloud/platform/users-and-organizations#add-a-user).
+
+{/* TODO(Ivan) S5: capture docs/cloud/img/weaviate-cloud-sso-invite-blocked.png. Users and Members tab, invite a user, enter an off-domain address such as user@example.com (SSO org with domain company.com). Frame 06 can be reused as is.
+    Alt: "Invite user dialog saying this email can't be invited because the organization uses SSO with another domain". Then uncomment the import and the card below. */}
+
+{/* import SSOInviteBlocked from "/docs/cloud/img/weaviate-cloud-sso-invite-blocked.png"; */}
+
+{/*
+<div class="row">
+  <div class="col col--8 col--offset-2">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={SSOInviteBlocked}
+          alt="Invite user dialog saying this email can't be invited because the organization uses SSO with another domain"
+        />
+      </div>
+      <div class="card__body">
+        While SSO is on, you can invite only addresses on the SSO domains.
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+*/}
+
+## Change SSO settings {#change-sso-settings}
+
+On the `SSO Configuration` tab, click `Update SSO`. The setup page opens again. There you can change the identity provider settings or the email domains.
+
+## Turn off SSO {#turn-off-sso}
+
+:::caution
+You cannot turn off SSO in the console. To turn off SSO, [contact Weaviate support](https://support.weaviate.io).
+:::
+
+After SSO is turned off, MFA enforcement stays off. See [MFA enforcement and SSO](/cloud/platform/multi-factor-auth#mfa-enforcement-and-sso).
+
+## If someone is locked out {#if-someone-is-locked-out}
+
+Some examples of a lockout:
+
+- An _Owner_ cannot sign in because the identity provider is not working.
+- A member cannot sign in because their email address is not on an SSO domain.
+
+There is no self-service way around SSO. [Contact Weaviate support](https://support.weaviate.io).
+
+## Further resources
+
+- [Multi-factor authentication](/cloud/platform/multi-factor-auth)
+- [Users and organizations](/cloud/platform/users-and-organizations)
+- [Authentication](/cloud/manage-clusters/authentication) for cluster API keys
+- [Console overview](/cloud/console-overview)
+
+## Support
+
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
+
+<SupportAndTrouble />
