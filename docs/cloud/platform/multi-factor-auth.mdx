@@ -1,11 +1,17 @@
 ---
 title: Multi-factor authentication
 sidebar_position: 60
-description: "Enhanced security setup with multi-factor authentication for Weaviate Cloud browser logins."
+description: "Set up multi-factor authentication for your own Weaviate Cloud account, or require it for every member of your organization."
 image: og/wcd/user_guides.jpg
 ---
 
 Multi-factor authentication (MFA) increases the security of browser logins. MFA is not enabled by default.
+
+Any member can enable MFA for their own account. Organization _Owners_ can also require MFA for all members. See [Require MFA for all members](#mfa-enforcement).
+
+:::note Who can change these settings
+Every member manages MFA for their own account. Only organization _Owners_ can see and change MFA enforcement. _Admins_, _Editors_, and _Viewers_ do not see that setting. See [User roles](/cloud/platform/users-and-organizations#user-roles).
+:::
 
 ## Enable multi-factor authentication
 
@@ -48,7 +54,8 @@ import MFA from "/docs/cloud/img/weaviate-cloud-mfa.png";
     <ol start="4">
       <li>
         In the <code>Multi-Factor Authentication</code> section, click{" "}
-        <code>Enable MFA</code>.
+        <code>Enable MFA</code>. Once MFA is on, the button reads{" "}
+        <code>Manage</code>.
       </li>
       <li>Open your authenticator application and scan the QR code.</li>
       <li>Enter the one-time code from your application.</li>
@@ -74,17 +81,232 @@ import MFA from "/docs/cloud/img/weaviate-cloud-mfa.png";
 
 After you configure MFA, Weaviate Cloud prompts you to supply the one-time authentication code each time you log in.
 
+### Change your authenticator app
+
+To set up a new authenticator app, open the `Manage MFA` dialog as described in [Disable MFA](#disable-mfa) and enter your 6-digit code. Then click `Update MFA`.
+
+{/* TODO(Ivan) [verify]: confirm that Update MFA shows a new QR code to scan. */}
+
 ## Disable MFA
 
-To disable MFA, [contact support](https://support.weaviate.io).
+You turn off MFA for your own account in the console.
 
-## MFA and applications
+1. Open the <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
+1. Click on the user menu in the top-right corner of the console.
+1. Select `Account Settings`.
+1. In the `Multi-Factor Authentication` section, click `Manage`.
+1. Enter the 6-digit code from your authenticator application.
+1. Click `Remove`.
 
-If you use a JavaScript/TypeScript client to connect a browser hosted application to Weaviate, do not enable MFA for that client's account.
+After that, you sign in with your password only.
 
-There is no way to pass the one-time authentication code to the application, so the application cannot connect to Weaviate Cloud.
+If an organization you belong to requires MFA, you cannot turn it off. See [Require MFA for all members](#mfa-enforcement).
 
-Use API keys to connect browser based client applications to Weaviate Cloud.
+{/* TODO(Ivan) S12: capture docs/cloud/img/weaviate-cloud-mfa-manage.png, the Manage MFA dialog after a valid code, showing the Update MFA and Remove buttons. Your three Desktop screenshots from 07:49 on 2026-10-13 cover this flow. The Account page one shows your real email and organization name, so redact it or re-shoot on a test account before copying anything into docs/cloud/img.
+    Alt: "The Manage MFA dialog with the Update MFA and Remove buttons". Then uncomment the import and the card below. */}
+
+{/* import MFAManage from "/docs/cloud/img/weaviate-cloud-mfa-manage.png"; */}
+
+{/*
+<div class="row">
+  <div class="col col--8 col--offset-2">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={MFAManage}
+          alt="The Manage MFA dialog with the Update MFA and Remove buttons"
+        />
+      </div>
+      <div class="card__body">
+        Click <code>Remove</code> to turn off MFA.
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+*/}
+
+## Require MFA for all members {#mfa-enforcement}
+
+MFA enforcement requires every member of the organization to use MFA when they sign in. It is available to every organization. It is off by default.
+
+{/* TODO(Ivan) [verify]: every UI label, dialog title, tooltip and number in the MFA enforcement sections comes from the stage-New spec. Check each one in the live console.
+    The spec frames disagree with the spec text in two places in these sections: frame 08 "including you", frame 09 prompt text vs the spec heading. Each spot has its own TODO below. */}
+
+### Turn on MFA enforcement {#turn-on-mfa-enforcement}
+
+1. Open the <Link to="/go/console?utm_content=cloud">Weaviate Cloud console</Link>.
+1. On the [Overview page](/cloud/console-overview), open **Organization settings**.
+1. Click the `Users and Members` tab.
+1. Below the member list, find the `MFA enforcement` section.
+1. Turn on `Require MFA for all members`.
+1. In the "Enforce multi-factor authentication?" dialog, click `Enforce MFA`.
+
+:::note
+MFA enforcement includes you. If you have not set up an authenticator app yet, you set one up at your next sign-in.
+:::
+
+{/* TODO(Ivan) G2: record guideflow "Require MFA for all organization members". Click script: Overview > expand Organization settings > Users and Members tab > scroll below the member list to MFA enforcement > click Require MFA for all members > Enforce MFA in the dialog > end on the switch shown on. Use an account that already has an authenticator app. Then replace GUIDEFLOW_ID_G2 and uncomment the block below. */}
+
+{/*
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="GUIDEFLOW_ID_G2"
+    src="https://app.guideflow.com/embed/GUIDEFLOW_ID_G2"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="GUIDEFLOW_ID_G2"
+  ></script>
+</div>
+
+<br />
+*/}
+
+{/* TODO(Ivan) [verify] frame 09: the prompt shows "An organization you belong to requires multi-factor authentication..." and no "Set up multi-factor authentication" heading as in the spec. Not quoted here. */}
+
+At their next sign-in, a member without MFA sees a prompt to set up an authenticator app. The prompt has a `Set up MFA` button. Members cannot skip this step. An authenticator app is the only supported method. The member scans a QR code and enters the 6-digit code from the app.
+
+{/* TODO(Ivan) S6 and S7: capture docs/cloud/img/weaviate-cloud-mfa-enforced-prompt.png (sign in as a member with no MFA in an enforcing org, frame 09 reusable) and docs/cloud/img/weaviate-cloud-mfa-enforced-qr.png (click Set up MFA, throwaway account, blur the QR code, never use frame 10).
+    Alt S6: "Sign-in screen saying an organization you belong to requires multi-factor authentication, with a Set up MFA button". Alt S7: "Screen with a QR code to scan with an authenticator app and six boxes for the code".
+    Then uncomment both imports and the card row below. */}
+
+{/* import MFAEnforcedPrompt from "/docs/cloud/img/weaviate-cloud-mfa-enforced-prompt.png"; */}
+
+{/* import MFAEnforcedQR from "/docs/cloud/img/weaviate-cloud-mfa-enforced-qr.png"; */}
+
+{/*
+<div class="row">
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={MFAEnforcedPrompt}
+          alt="Sign-in screen saying an organization you belong to requires multi-factor authentication, with a Set up MFA button"
+        />
+      </div>
+      <div class="card__body">
+        Members without MFA must set up an authenticator app.
+      </div>
+    </div>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={MFAEnforcedQR}
+          alt="Screen with a QR code to scan with an authenticator app and six boxes for the code"
+        />
+      </div>
+      <div class="card__body">
+        The member scans the QR code and enters the 6-digit code.
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+*/}
+
+MFA enforcement is an organization setting, but it applies to people. If a person belongs to any organization that enforces MFA, they must use MFA at every sign-in. This is true whichever organization they open.
+
+SSO sign-ins are the exception. See [MFA enforcement and SSO](#mfa-enforcement-and-sso).
+
+### Turn off MFA enforcement {#turn-off-mfa-enforcement}
+
+1. On the `Users and Members` tab, go to the `MFA enforcement` section.
+1. Turn off `Require MFA for all members`.
+1. In the "Stop enforcing multi-factor authentication?" dialog, click `Stop enforcing`.
+
+Members no longer have to use MFA. Members who set up an authenticator app keep it. Each member manages MFA for their own account. See [Enable multi-factor authentication](#enable-multi-factor-authentication).
+
+{/* TODO(Ivan) S9: capture docs/cloud/img/weaviate-cloud-mfa-stop-enforcing.png. Users and Members tab, click the switch while enforcement is on (no SSO), capture the dialog. Frame 12 can be reused as is.
+    Alt: "Dialog asking whether to stop enforcing multi-factor authentication, with Cancel and Stop enforcing buttons". Then uncomment the import and the card below. */}
+
+{/* import MFAStopEnforcing from "/docs/cloud/img/weaviate-cloud-mfa-stop-enforcing.png"; */}
+
+{/*
+<div class="row">
+  <div class="col col--8 col--offset-2">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={MFAStopEnforcing}
+          alt="Dialog asking whether to stop enforcing multi-factor authentication, with Cancel and Stop enforcing buttons"
+        />
+      </div>
+      <div class="card__body">
+        Confirm with <code>Stop enforcing</code>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+*/}
+
+## MFA enforcement and SSO {#mfa-enforcement-and-sso}
+
+SSO takes priority over MFA enforcement. With SSO, your identity provider handles sign-in security, including its own second factor.
+
+- When [SSO setup](/cloud/platform/single-sign-on#set-up-sso) completes, MFA enforcement turns off. The [warning before setup](/cloud/platform/single-sign-on#warnings-before-setup) says so.
+- After that, the `Require MFA for all members` switch is grayed out.
+- SSO sign-ins never ask for a Weaviate Cloud MFA code.
+
+Some people belong to an SSO organization and also to an organization that enforces MFA. After their first SSO sign-in, every sign-in they make is an SSO sign-in. Weaviate Cloud does not ask them for an MFA code, whichever organization they open. The second factor of their identity provider applies instead.
+
+{/* TODO(Ivan) S10: capture docs/cloud/img/weaviate-cloud-mfa-enforcement-disabled-sso.png. Users and Members tab of an SSO org, scroll to MFA enforcement, hover the grayed switch until the tooltip shows. Include the bottom edge of the member list.
+    Alt: "The MFA enforcement switch grayed out, with a tooltip saying the organization has SSO enabled so MFA cannot be enforced". Then uncomment the import and the card below. */}
+
+{/* import MFAEnforcementDisabledSSO from "/docs/cloud/img/weaviate-cloud-mfa-enforcement-disabled-sso.png"; */}
+
+{/*
+<div class="row">
+  <div class="col col--8 col--offset-2">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={MFAEnforcementDisabledSSO}
+          alt="The MFA enforcement switch grayed out, with a tooltip saying the organization has SSO enabled so MFA cannot be enforced"
+        />
+      </div>
+      <div class="card__body">
+        With SSO configured, you cannot enforce MFA.
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+*/}
+
+:::caution
+If SSO is turned off later, MFA enforcement stays off. An _Owner_ must turn it on again.
+:::
+
+We recommend that you enforce MFA in your identity provider.
+
+## Further resources
+
+- [Single sign-on (SSO)](/cloud/platform/single-sign-on)
+- [Users and organizations](/cloud/platform/users-and-organizations)
+- [Authentication](/cloud/manage-clusters/authentication) for cluster API keys
 
 ## Support
 

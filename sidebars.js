@@ -1703,8 +1703,17 @@ const sidebars = {
     "cloud/platform/billing",
     "cloud/platform/version",
     "cloud/platform/create-account",
-    "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
+    {
+      type: "category",
+      label: "Security",
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        "cloud/platform/multi-factor-auth",
+        "cloud/platform/single-sign-on",
+      ],
+    },
   ],
   engramSidebar: [
     { type: "doc", id: "engram/index", label: "Introduction" },
