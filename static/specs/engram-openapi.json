@@ -212,6 +212,63 @@
         },
         "type": "object"
       },
+      "Group": {
+        "additionalProperties": false,
+        "properties": {
+          "group_id": {
+            "description": "Unique identifier of the group.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name used to address this group when storing or searching memories.",
+            "type": "string"
+          },
+          "topics": {
+            "description": "Topics configured within this group.",
+            "items": {
+              "$ref": "#/components/schemas/Topic"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "group_id",
+          "name",
+          "topics"
+        ],
+        "type": "object"
+      },
+      "GroupList": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://api.engram.weaviate.io/schemas/GroupList.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "groups": {
+            "description": "All memory groups configured for the project.",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "groups"
+        ],
+        "type": "object"
+      },
       "Input": {
         "additionalProperties": false,
         "properties": {
@@ -699,6 +756,16 @@
               "array",
               "null"
             ]
+          },
+          "created_at": {
+            "description": "When the conversation started (RFC 3339). Defaults to now.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "When the conversation was last updated (RFC 3339). Defaults to now.",
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
@@ -766,6 +833,57 @@
           "id"
         ],
         "type": "object"
+      },
+      "Topic": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "description": "Human-readable description of what memories belong to this topic.",
+            "type": "string"
+          },
+          "is_bounded": {
+            "description": "Whether each scope can hold at most one memory in this topic.",
+            "type": "boolean"
+          },
+          "scoping": {
+            "$ref": "#/components/schemas/TopicScoping",
+            "description": "Scope configuration for memories in this topic."
+          },
+          "topic_name": {
+            "description": "The unique name of the topic within the group.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "topic_name",
+          "description",
+          "is_bounded",
+          "scoping"
+        ],
+        "type": "object"
+      },
+      "TopicScoping": {
+        "additionalProperties": false,
+        "properties": {
+          "scope_properties": {
+            "description": "Additional scope properties configured for this topic.",
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "user_scoped": {
+            "description": "Whether memories in this topic are scoped to a specific user.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "user_scoped"
+        ],
+        "type": "object"
       }
     }
   },
@@ -776,7 +894,64 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/memories": {
+    "/v1/auth/verify": {
+      "get": {
+        "description": "Validates the provided API key, returning a success response if it is valid and 401 otherwise. Intended for credential-test flows in integrations (e.g. n8n). Does not touch memories or topics, so it works regardless of the project's scope configuration.",
+        "operationId": "verify-api-key",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Verify API key",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/v1/groups": {
+      "get": {
+        "description": "List all memory groups configured for the project, including each group's topics and their scoping requirements.",
+        "operationId": "list-groups",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupList"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "List groups",
+        "tags": [
+          "Groups"
+        ]
+      }
+    },
+    "/v1/memories": {
       "post": {
         "description": "Send content to be processed through the memory pipeline. Accepts raw text, pre-extracted facts, or a multi-turn conversation. Processing is asynchronous — use the returned `run_id` to track progress.",
         "operationId": "create-memory",
@@ -818,7 +993,7 @@
         ]
       }
     },
-    "/memories/list": {
+    "/v1/memories/list": {
       "post": {
         "description": "Returns all memories in the project. Results are scoped to the API key's project.",
         "operationId": "list-memories",
@@ -860,7 +1035,7 @@
         ]
       }
     },
-    "/memories/search": {
+    "/v1/memories/search": {
       "post": {
         "description": "Find relevant memories using vector similarity, BM25 keyword matching, or hybrid search.",
         "operationId": "search-memories",
@@ -902,7 +1077,7 @@
         ]
       }
     },
-    "/memories/{id}": {
+    "/v1/memories/{id}": {
       "delete": {
         "description": "Permanently remove a memory by its ID. You must provide `user_id` if the topic is user-scoped.",
         "operationId": "delete-memory",
@@ -1023,7 +1198,7 @@
         ]
       }
     },
-    "/runs/{run_id}": {
+    "/v1/runs/{run_id}": {
       "get": {
         "description": "Check the status of an asynchronous pipeline run. Returns the current state and, once completed, the list of memory operations that were committed (created, updated, or deleted).",
         "operationId": "get-run-status",

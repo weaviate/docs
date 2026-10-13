@@ -1,14 +1,20 @@
-import os
 import time
-import uuid
-from engram import EngramClient, HybridRetrieval, FetchRetrieval
+from engram import HybridRetrieval, FetchRetrieval
 
 # START Setup
+import os
+from engram import EngramClient
+
 client = EngramClient(
     api_key=os.environ["ENGRAM_API_KEY"]
 )
-user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
+user_id = "alice"  # any stable, unique string per user
 # END Setup
+
+# The tested run uses a throwaway user so repeat runs stay isolated.
+import uuid
+
+user_id = f"tutorial-context-{uuid.uuid4().hex[:8]}"
 
 
 # START NaiveChatAnthropic
@@ -132,7 +138,9 @@ time.sleep(5)  # Allow tenant indexing to complete
 # START MemoryAugmentedChatAnthropic
 def memory_augmented_chat_anthropic():
     """Memory-augmented approach: use Engram instead of full history."""
+    import os
     import anthropic
+    from engram import EngramClient, HybridRetrieval
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
@@ -191,7 +199,9 @@ Relevant context from previous conversations:
 # START MemoryAugmentedChatOpenAI
 def memory_augmented_chat_openai():
     """Memory-augmented approach: use Engram instead of full history."""
+    import os
     from openai import OpenAI
+    from engram import EngramClient, HybridRetrieval
 
     engram = EngramClient(
         api_key=os.environ["ENGRAM_API_KEY"],
@@ -281,6 +291,8 @@ for _retry in range(5):
         time.sleep(3)
 
 # START TopicFiltering
+from engram import HybridRetrieval
+
 results = client.memories.search(
     query="What tech stack does the user prefer?",
     topics=["UserKnowledge"],
@@ -299,28 +311,32 @@ assert all(m.topic == "UserKnowledge" for m in results), (
 )
 
 # START ConversationSummary
+import uuid
+from engram import FetchRetrieval
+from engram.errors import APIError
+
 conversation_id = f"session-{uuid.uuid4().hex[:8]}"
 
-# Add messages tied to a conversation_id. If the project enabled the
-# `ConversationSummary` topic, the pipeline maintains one summary memory
-# per conversation_id and rewrites it in place on each add.
-run = client.memories.add(
-    [
-        {"role": "user", "content": "I'm planning a trip to Lisbon next month."},
-        {"role": "assistant", "content": "Great choice! Any specific neighborhoods?"},
-        {"role": "user", "content": "I'd love to stay in Alfama for the historic vibe."},
-    ],
-    user_id=user_id,
-    group="default",
-    properties={"conversation_id": conversation_id},
-)
-client.runs.wait(run.run_id)
-
-# Fetch the running summary — `fetch` returns the bounded memory directly
-# by topic + scope, without ranking by query relevance. The topic must be
-# enabled in the project; otherwise the search returns a "topic not found"
-# error.
+# Both halves need the `ConversationSummary` topic to be enabled in the
+# project: the add is rejected if no topic declares `conversation_id`, and
+# the search reports "topic not found". Guard the whole sequence.
 try:
+    # If the topic is enabled, the pipeline maintains one summary memory
+    # per conversation_id and rewrites it in place on each add.
+    run = client.memories.add(
+        [
+            {"role": "user", "content": "I'm planning a trip to Lisbon next month."},
+            {"role": "assistant", "content": "Great choice! Any specific neighborhoods?"},
+            {"role": "user", "content": "I'd love to stay in Alfama for the historic vibe."},
+        ],
+        user_id=user_id,
+        group="default",
+        properties={"conversation_id": conversation_id},
+    )
+    client.runs.wait(run.run_id)
+
+    # `fetch` returns the bounded memory directly by topic + scope, without
+    # ranking by query relevance.
     summary_results = client.memories.search(
         query="conversation summary",  # ignored by fetch retrieval
         user_id=user_id,

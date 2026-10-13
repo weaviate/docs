@@ -43,6 +43,8 @@ async def main():
     assert status.status == "completed"
 
     # START StorePreExtracted
+    from engram import PreExtractedInput, PreExtractedItem
+
     run = await client.memories.add(
         PreExtractedInput(items=[
             PreExtractedItem(content="User prefers dark mode", topic="UserKnowledge"),

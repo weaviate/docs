@@ -42,6 +42,8 @@ assert len(results) >= 1
 assert any("Python" in m.content or "dark mode" in m.content or "RAG" in m.content for m in results)
 
 # START StorePreExtracted
+from engram import PreExtractedInput, PreExtractedItem
+
 run = client.memories.add(
     PreExtractedInput(items=[
         PreExtractedItem(content="User prefers dark mode", topic="UserKnowledge"),

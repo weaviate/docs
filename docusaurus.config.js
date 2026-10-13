@@ -202,7 +202,7 @@ const config = {
       image: "og/default.jpg",
       announcementBar: {
         id: "announcement-bar-engram-2026",
-        content: `<a href="/engram/">Introducing <b>Engram</b> — managed memory for AI agents, built on Weaviate</a>`,
+        content: `<a href="/engram/">Introducing <b>Engram</b> — a managed memory service for AI agents, built on Weaviate</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,

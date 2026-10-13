@@ -20,7 +20,7 @@ dependencies = [
     "weaviate-agents>=1.7.0",
     "weaviate-client==4.23.0",
     "weaviate-demo-datasets>=0.8.1",
-    "weaviate-engram>=0.3.0",
+    "weaviate-engram>=1.0.1",
     "anthropic>=0.40.0",
     "openai>=1.50.0",
 ]

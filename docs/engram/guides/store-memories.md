@@ -1,6 +1,6 @@
 ---
 title: Store memories
-description: "How to store memories in Engram using string, pre-extracted, or conversation content types."
+description: "How to store memories in Engram using string, conversation, or pre-extracted content types."
 image: og/docs/engram.png
 ---
 
@@ -182,10 +182,10 @@ A successful response means the pipeline has started, not that the memories have
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `user_id` | string | [Scope](../concepts/scopes.md) the memory to a specific user. Required if the target topic is user-scoped. |
+| `user_id` | string | [Scope](../concepts/scopes.md) the memory to a specific user. Required if the target topic is user-scoped. User IDs are case-insensitive, so `Alice` and `alice` are the same user, and a user is created automatically the first time you write with an ID that does not exist yet. |
 | `properties` | object\<string, string\> | Custom [scope properties](../concepts/scopes.md) (e.g. `{"conversation_id": "abc-123"}`). Must include every key any target topic is scoped by. |
 | `group` | string | Memory [group](../concepts/groups.md) name (defaults to `default`) |
-| `root` | string | Pipeline root name (for advanced pipeline configurations) |
+| `root` | string | **REST only.** Pipeline root name, which overrides the pipeline's default entry step (for advanced pipeline configurations). The Python SDK's `memories.add()` does not accept it. |
 
 :::info
 Which parameters are required depends on the topic's [scoping](../concepts/scopes.md) configuration, not the content type. If a topic is user-scoped, you must include `user_id`. If a topic is scoped by a custom property (e.g. `conversation_id`), pass it in `properties`. These scoping parameters apply equally to all three content types.
