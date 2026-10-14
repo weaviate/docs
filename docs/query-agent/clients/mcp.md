@@ -57,8 +57,6 @@ claude mcp add --transport http --scope user weaviate-query-agent https://api.ag
   --header 'X-Weaviate-Cluster-Url: ${WEAVIATE_URL}'
 ```
 
-The single quotes stop your shell from expanding the variables when you run this command. Claude Code stores the `${...}` placeholders instead of your key and cluster URL, and expands them from your environment each time it connects. Use the `${VAR}` form: Claude Code does not expand `$VAR` without braces.
-
 To share the server with everyone who works on a repository instead, commit an `.mcp.json` file at the repository root. Claude Code expands the `${...}` placeholders from each user's environment, so no secrets are committed:
 
 ```json
