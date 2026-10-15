@@ -50,7 +50,7 @@ response = jeopardy.aggregate.over_all(
     return_metrics=Metrics("answer").text(
         top_occurrences_count=True,
         top_occurrences_value=True,
-        min_occurrences=5  # Threshold minimum count
+        limit=5  # Maximum number of top occurrences to return
     )
     # highlight-end
 )
@@ -60,7 +60,7 @@ print(response.properties["answer"].top_occurrences)
 
 # Tests
 assert type(response.properties["answer"].top_occurrences) == list
-assert response.properties["answer"].top_occurrences[0].count >= 5
+assert len(response.properties["answer"].top_occurrences) <= 5
 # End test
 
 
