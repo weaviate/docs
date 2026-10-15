@@ -236,11 +236,11 @@ Since the `GeneratedImage` is a type, you can also do, for example, unions on th
 
 ## Customizing shape
 
-You can optionally change the shape of a generated image by sending an additional field to the image request. This works for direct requests or any structured output model fields.
+You can optionally change the shape of a generated image by sending an additional field to the image request.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
-        Import `GeneratedImageOptions` and add it as an annotation to the `GeneratedImage` class itself. 
+        Import `GeneratedImageOptions` and add it as an annotation to a `GeneratedImage` field in your structured output model. 
         <FilteredTextBlock
             text={PyCode}
             startMarker="# START CustomShapeImageExample"
@@ -249,7 +249,7 @@ You can optionally change the shape of a generated image by sending an additiona
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        Import `generatedImageWithOptions` and use this class instead of `GeneratedImage`.
+        Import `generatedImageWithOptions` and use this class instead of `GeneratedImage`. This works for direct requests or any structured output model fields.
         <FilteredTextBlock
             text={TSCode}
             startMarker="// START CustomShapeImageExample"

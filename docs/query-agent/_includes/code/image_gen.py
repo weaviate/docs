@@ -131,10 +131,13 @@ class AnnotatedImagesResponse(BaseModel):
 from typing import Annotated
 from weaviate.agents.classes import GeneratedImageOptions
 
+class HatResponse(BaseModel):
+    picture: Annotated[GeneratedImage, GeneratedImageOptions(shape="portrait")]
+
 response = qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
     collections=["ECommerce"],
-    output_format=Annotated[GeneratedImage, GeneratedImageOptions(shape="portrait")],
+    output_format=HatResponse,
 )
 # END CustomShapeImageExample
 
