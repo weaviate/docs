@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Link from "@docusaurus/Link";
 import { useLocation } from "@docusaurus/router";
+import { readClusterId } from "@site/src/components/CardsSection/clusterId";
 import styles from "./styles.module.scss";
 
 /**
@@ -39,11 +41,6 @@ import styles from "./styles.module.scss";
  * not add a second one -- two canonical tags on a page are worth less than one.
  */
 
-// Canonical 8-4-4-4-12 hex, version-agnostic on purpose. Weaviate mints a v7
-// and falls back to v4 when the monotonic-random source fails, so a regex that
-// pinned the version nibble would reject exactly the ids born on a bad day.
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
 export default function ClusterIdNotice() {
   const location = useLocation();
   const [clusterId, setClusterId] = useState(null);
@@ -52,9 +49,7 @@ export default function ClusterIdNotice() {
   // built without a query string, so resolving this inline would make the first
   // client render disagree with it and trip a hydration mismatch.
   useEffect(() => {
-    const raw = new URLSearchParams(location.search).get("clusterid");
-    const value = (raw || "").trim();
-    setClusterId(UUID.test(value) ? value.toLowerCase() : null);
+    setClusterId(readClusterId(location.search));
   }, [location.search]);
 
   if (!clusterId) return null;
@@ -66,8 +61,9 @@ export default function ClusterIdNotice() {
         <code>{clusterId}</code>
       </p>
       <p className={styles.body}>
-        Weaviate put this id in the link you opened. Include it if you contact
-        support; this page does nothing else with it.
+        This is your anonymous <code>Cluster ID</code>. You can add it to your
+        ticket when contacting{" "}
+        <Link to="https://support.weaviate.io/">support</Link>.
       </p>
     </aside>
   );
