@@ -33,6 +33,14 @@ res = qa.ask(
 
 # END BasicAskMode
 
+# START ImageGenAskMode
+from weaviate.agents.classes import GeneratedImage
+res = qa.ask(
+    query = "Generate a picture of a model wearing the best-selling T-shirt",
+    output_format=GeneratedImage
+)
+# END ImageGenAskMode
+
 # START StreamingAskMode
 for output in qa.ask_stream("What was the average temperature in the first week of May 2025?"):
     pass # Do something with the output
