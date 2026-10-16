@@ -1,11 +1,11 @@
 ---
 title: gRPC
-description: "gRPC API integration guide for high-performance, efficient communication with Weaviate database instances."
+description: "The gRPC API is Weaviate's search API, used by the client libraries for high-performance queries."
 image: og/docs/api.jpg
 # tags: ['schema']
 ---
 
-Starting with Weaviate `v1.19.0`, a gRPC interface has been progressively added to Weaviate. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
+The gRPC API is Weaviate's search API. The client libraries use it to run searches and aggregations. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
 
 As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries use gRPC. The [Go](../client-libraries/go/index.md) client uses gRPC for batch imports, and offers gRPC search through its experimental API. The [new Go client](../client-libraries/go/go-v6.md) uses gRPC for queries and batch imports.
 

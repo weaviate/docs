@@ -6,6 +6,10 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'explore{}']
 ---
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
+
 :::note Vector spaces and Explore
 
 The `Explore` function is disabled where multiple inference (e.g. `text2vec-xxx`) modules are enabled.
