@@ -8,13 +8,13 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 ## What is changing and when
 
-The GraphQL API is deprecated as of October 12, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on November 1, 2026 for clusters that do not use it, and on April 1, 2027 for all remaining clusters. Self-hosted Weaviate keeps GraphQL working until at least April 1, 2027. The first minor release after that date disables it by default, and you can switch it back on. It is removed in a later release, with no date set yet.
+The GraphQL API is deprecated as of October 26, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on December 1, 2026 for clusters that have not used it in the last 30 days, and on May 1, 2027 for all remaining clusters. Self-hosted Weaviate keeps GraphQL working until at least May 1, 2027. The first minor release after that date disables it by default, and you can switch it back on. It is removed in a later release, with no date set yet.
 
 | Stage | Weaviate Cloud | Self-hosted |
 | --- | --- | --- |
-| **Deprecated**, October 12, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. GraphQL keeps working until at least April 1, 2027. |
-| **Disabled by default** | Already the case for new clusters. | In the first minor release after April 1, 2027. You can switch GraphQL back on. |
-| **Switched off or removed** | Switched off on November 1, 2026 for clusters that do not use GraphQL. Switched off on all remaining clusters on April 1, 2027. | Removed in a later release. No date is set yet. |
+| **Deprecated**, October 26, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. GraphQL keeps working until at least May 1, 2027. |
+| **Disabled by default** | Already the case for new clusters. | In the first minor release after May 1, 2027. You can switch GraphQL back on. |
+| **Switched off or removed** | Switched off on December 1, 2026 for clusters that have not used GraphQL in the last 30 days. Switched off on all remaining clusters on May 1, 2027. | Removed in a later release. No date is set yet. |
 
 ## Who this guide is for
 
@@ -37,7 +37,7 @@ Start at the top of this table and take the first row that describes your stack.
 The three paths are at three different maturity levels. Check the **Status** column before you commit to one.
 :::
 
-{/* TODO(ivan): Q5. Confirm the Preview, Alpha and beta labels below are still right on October 12, 2026. */}
+{/* TODO(ivan): Q5. Confirm the Preview, Alpha and beta labels below are still right on October 26, 2026. */}
 
 | Path | Status | Availability |
 | --- | --- | --- |
@@ -315,9 +315,7 @@ If one of these is essential to your application, tell us through the channels u
 
 All three paths are actively being developed, and feedback on this guide, especially a query you could not convert, directly shapes what gets built next.
 
-We are helping with the migration through office hours, webinars and support tickets. If a query has no equivalent in the paths above, say so. Within reason we will add what is missing, for example additional parameters on the REST Search API.
-
-{/* TODO(ivan): Add dates or links for the office hours and webinars once scheduled. */}
+We are helping with the migration through the [support portal](https://support.weaviate.io/) and support@weaviate.io. If a query has no equivalent in the paths above, say so. Within reason we will add what is missing, for example additional parameters on the REST Search API.
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 

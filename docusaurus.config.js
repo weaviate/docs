@@ -202,7 +202,7 @@ const config = {
       image: "og/default.jpg",
       announcementBar: {
         id: "announcement-bar-graphql-deprecation-2026",
-        content: `<a href="/weaviate/api/graphql/migration">The GraphQL API is deprecated and will be switched off on Weaviate Cloud on April 1, 2027. See the migration guide</a>`,
+        content: `<a href="/weaviate/api/graphql/migration">The GraphQL API is deprecated and will be switched off on Weaviate Cloud on May 1, 2027. See the migration guide</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,
