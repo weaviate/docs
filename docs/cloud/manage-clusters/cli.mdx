@@ -8,7 +8,7 @@ image: og/wcd/user_guides.jpg
 
 :::caution Limited availability
 
-`wcloud` is available to allowlisted accounts only: if your account is not on the allowlist, any command that calls the Weaviate Cloud API fails with the error code `access_restricted` and exit code `5`.
+`wcloud` is available to allowlisted accounts only: if your account is not on the allowlist, any command that calls the Weaviate Cloud API fails with the error code `access_restricted` and exit code `5`. Exit code `5` also covers `permission_denied`, so read `error.code` to tell the two apart.
 
 `wcloud` is also still under development, and its commands, flags, and output may change in future releases, including potential breaking changes. **We do not recommend using it in production environments at this time.** Public availability has not been announced.
 
@@ -22,7 +22,7 @@ AI coding agents do not need a separate integration. Install `wcloud` once, and 
 
 ## Install the wcloud CLI
 
-The package is named `weaviate-cloud`; the command it installs is `wcloud`.
+The package is named `weaviate-cloud`. The command it installs is `wcloud`.
 
 ### Homebrew (recommended)
 
@@ -30,7 +30,7 @@ The package is named `weaviate-cloud`; the command it installs is `wcloud`.
 brew install weaviate/tap/weaviate-cloud
 ```
 
-This is the recommended channel on macOS and Linux. It installs the prebuilt, checksum-pinned release binary, needs no Go toolchain, and upgrades with `brew upgrade`. You do not need to tap `weaviate/tap` first; `brew install` taps it for you.
+This is the recommended channel on macOS and Linux. It installs the prebuilt, checksum-pinned release binary, needs no Go toolchain, and upgrades with `brew upgrade`. You do not need to tap `weaviate/tap` first, because `brew install` taps it for you.
 
 ### npm
 
@@ -48,7 +48,7 @@ go install github.com/weaviate/weaviate-cloud/cmd/wcloud@latest
 
 This builds from source and suits Go developers who already have a toolchain. Two caveats apply:
 
-- The module requires **Go 1.26.6 or newer**. On an older Go, the toolchain switching built into Go downloads a suitable version automatically; if switching is disabled (`GOTOOLCHAIN=local`), the install fails.
+- The module requires **Go 1.26.9 or newer**. On an older Go, the toolchain switching built into Go downloads a suitable version automatically. If switching is disabled (`GOTOOLCHAIN=local`), the install fails.
 - `wcloud version` reports the correct release version, but its `commit` field reads `unknown`. A build from the module proxy carries no version-control stamp, so only the released binaries report a commit.
 
 ### Verify the installation
@@ -113,11 +113,11 @@ On macOS and Linux, credential files are written with `0600` permissions, in a d
 wcloud cluster create --name my-cluster --wait
 ```
 
-`--name` is optional; without it, Weaviate Cloud generates a name. `--wait` blocks until the cluster reaches the `READY` state, for up to 15 minutes by default, and writes progress to standard error while it polls. It also stops early if the cluster lands in a terminal status that is not `READY` (`FAILED`, `DELETED`, `EXPIRED`, or `SUSPENDED`). Without `--wait`, the command returns as soon as the cluster is accepted, and you check on it later with `wcloud cluster status`.
+`--name` is optional. Without it, Weaviate Cloud generates a name. `--wait` blocks until the cluster reaches the `READY` state, for up to 15 minutes by default, and writes progress to standard error while it polls. `--timeout` changes that limit. Since v0.1.2, passing `--timeout` without `--wait` is rejected with exit code `2`. `--wait` also stops early if the cluster lands in a terminal status that is not `READY` (`FAILED`, `DELETED`, `EXPIRED`, or `SUSPENDED`). Without `--wait`, the command returns as soon as the cluster is accepted, and you check on it later with `wcloud cluster status`.
 
 The result includes the cluster's REST and gRPC endpoints and a **one-time API key**. The key is shown once, either by a `--wait` create when the cluster becomes `READY` or by the first `wcloud cluster get` after it is ready. `wcloud` never stores it, and every later call returns the key field empty, so save it when you see it. To add, rotate, or delete cluster API keys afterwards, see [Authentication](/cloud/manage-clusters/authentication).
 
-`wcloud` provisions with your account's defaults. It accepts `--tier` and `--region` if you want to choose them yourself; run `wcloud region list` to see the regions available to your account. To choose a paid cluster type, an optimization profile, or advanced settings, create the cluster in the console instead, as described in [Create a cluster](/cloud/manage-clusters/create).
+Without flags, `wcloud` takes Weaviate Cloud's defaults: a `free` cluster in `eu-central-1`. `--region` picks another region from the ones available to your account, which `wcloud region list` prints. `--tier` accepts only `free`. To create a paid [Shared Cloud](/cloud/manage-clusters/create#shared-cloud-clusters) cluster, choose an optimization profile, or set advanced settings, create the cluster in the console instead, as described in [Create a cluster](/cloud/manage-clusters/create).
 
 ### Inspect clusters and regions
 
@@ -134,13 +134,13 @@ Once a cluster is `READY`, [connect a client library to it](/weaviate/connection
 
 ### There is no delete command
 
-`wcloud` can create and inspect clusters, but it cannot delete one. Deleting a cluster is a console action: open the [Weaviate Cloud console](https://console.weaviate.cloud/), find the cluster on the dashboard, and use its `⋮` menu.
+`wcloud` can create and inspect clusters, but it cannot delete one. Deleting a cluster is a console action: open the [Weaviate Cloud console](https://console.weaviate.cloud/), select the cluster with the `CLUSTER` selector in the left sidebar, and delete it from its `Dashboard`. See the [console overview](/cloud/console-overview) for the console layout.
 
 ### One free cluster per user
 
-Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`. The limit is per account and spans every organization the account belongs to, while `wcloud cluster list` shows only the current organization's clusters, so a create can be refused with `quota_exceeded` even when the list shows no free cluster. The [Weaviate Cloud console](https://console.weaviate.cloud/) shows all of your organizations.
+Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`. The limit is per account and spans every organization the account belongs to, while `wcloud cluster list` shows only the current organization's clusters, so a create can be refused with `quota_exceeded` even when the list shows no free cluster. A suspended free cluster also keeps the slot, and `wcloud cluster list` may not show it, so an empty list is never proof that you have no free cluster. [Free clusters](/cloud/manage-clusters/create#free-clusters) covers when a free cluster is suspended and when it is deleted. The [Weaviate Cloud console](https://console.weaviate.cloud/) shows all of your organizations.
 
-Retrying does not help, and repeated create attempts are rate limited: the API returns the error code `rate_limited` and exit code `8`, with a `retry_after_seconds` hint in the error details. Because `wcloud` has no delete command, the way forward is the console: delete the existing cluster there, or [upgrade to a paid plan](https://weaviate.io/pricing). For the current free tier limits, see [Create a cluster](/cloud/manage-clusters/create#free-clusters).
+Retrying does not help, and repeated create attempts are rate limited: the API returns the error code `rate_limited` and exit code `8`, with a `retry_after_seconds` hint in the error details. Because `wcloud` has no delete command, the way forward is the console: delete the existing cluster there, or [upgrade to a paid plan](https://weaviate.io/pricing). For the current free tier limits, see [Free tier allowance](/cloud/manage-clusters/create#free-tier-allowance).
 
 ## Use wcloud from an AI coding agent
 
@@ -152,13 +152,15 @@ wcloud guide
 
 `wcloud guide` prints a Markdown document written for agents: the output and error contract, the full exit-code table, the end-to-end provisioning workflow, and how to handle each failure. It writes raw Markdown and ignores the `--output` flag, so do not parse it as JSON.
 
+For data-plane work after the cluster is ready, `wcloud guide` points agents at the cluster's own [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud) at `https://<your-cluster-host>/v1/mcp` as the recommended route, with the [client libraries](/weaviate/client-libraries) as the fallback.
+
 ```bash
 wcloud skill install --all
 ```
 
 `wcloud skill install` writes that same document as a `SKILL.md` into your coding harnesses, so an agent picks it up without being told. Use `--harness` to pick specific harnesses (`claude-code`, `codex`, `cursor`, `gemini-cli`, `copilot`, or `opencode`), or `--project` to install into the current project instead of your user directory. `--all` writes two files rather than one per harness, because every harness except Claude Code reads from the same cross-vendor location.
 
-Cluster creation requests include an `X-Provisioned-By` header that records whether the request came from the CLI directly or from an AI coding agent.
+Cluster creation requests include an `X-Provisioned-By` header whose value is one word, `cli` or `agent`, and it is sent only to the Weaviate Cloud API.
 
 ## Machine-readable output for scripts and agents
 
@@ -170,7 +172,7 @@ Pass `-o json` to force JSON. The default, `-o auto`, prints human-readable text
 - The `CI` environment variable is unset or empty.
 - `TERM` is not `dumb`.
 
-Otherwise it prints JSON, so in CI and in most agent harnesses you get JSON without asking for it. `wcloud guide` and the `--help` output are always plain text. Exit codes are part of the same contract; `wcloud guide` lists all of them.
+Otherwise it prints JSON, so in CI and in most agent harnesses you get JSON without asking for it. `wcloud guide` and the `--help` output are always plain text. Exit codes are part of the same contract, and `wcloud guide` lists all of them.
 
 ## Further resources
 
