@@ -11,6 +11,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure.pq-compression
 import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.autopq.ts';
 import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigurePQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigurePQTest.cs";
 
@@ -144,6 +145,14 @@ Follow these steps to manually enable PQ.
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START PQInitialSchema"
+      endMarker="// END PQInitialSchema"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -203,6 +212,14 @@ To enable PQ, update your collection definition as shown below. For additional c
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START PQUpdateSchema"
+      endMarker="// END PQUpdateSchema"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -294,6 +311,14 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       startMarker="// START GetSchema"
       endMarker="// END GetSchema"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START PQGetSchema"
+      endMarker="// END PQGetSchema"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

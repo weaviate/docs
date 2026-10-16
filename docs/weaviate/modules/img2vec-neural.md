@@ -40,7 +40,6 @@ While you can do so manually, we recommend using the [Weaviate configuration too
 Weaviate:
 
 - `ENABLE_MODULES` (Required): The modules to enable. Include `img2vec-neural` to enable the module.
-- `DEFAULT_VECTORIZER_MODULE` (Optional): The default vectorizer module. You can set this to `img2vec-neural` to make it the default for all classes.
 - `IMAGE_INFERENCE_API` (Required): The URL of the inference container.
 
 Inference container:
@@ -49,7 +48,7 @@ Inference container:
 
 #### Example
 
-This configuration enables `img2vec-neural`, sets it as the default vectorizer, and sets the parameters for the Docker container, including setting it to use `img2vec-pytorch:resnet50` image.
+This configuration enables `img2vec-neural` and sets the parameters for the Docker container, including setting it to use `img2vec-pytorch:resnet50` image.
 
 ```yaml
 services:

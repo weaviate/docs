@@ -15,6 +15,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
 import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
@@ -58,6 +59,14 @@ Collection level settings override default values and general configuration para
       startMarker="// START CreateCollectionWithVectorizer"
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -111,6 +120,14 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START VectorizerSettings"
+      endMarker="// END VectorizerSettings"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -160,6 +177,14 @@ As such, each named vector configuration can include its own vectorizer and vect
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -182,7 +207,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 <AddNamedVectors/>
 
-Named vectors can be added to existing collection definitions with named vectors. (This is not possible for collections without named vectors.)
+Named vectors can be added to a collection that already has named vectors, to a [collection created without a vector](/weaviate/config-refs/collections.mdx#no-vector), and to a [single vector collection](/weaviate/config-refs/collections.mdx#single-vector-collections). In a single vector collection you cannot add one called `default`. See [The `default` vector name](/weaviate/config-refs/collections.mdx#default-vector-name).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -207,6 +232,14 @@ Named vectors can be added to existing collection definitions with named vectors
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START AddNamedVectors"
+      endMarker="// END AddNamedVectors"
+      language="go6"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -236,7 +269,7 @@ Adding a new vector to the collection definition [won't trigger vectorization fo
 
 <MultiVector/>
 
-Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
+Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are available for named vectors on `hnsw` indexes. From `v1.40`, they are also available on `hfresh` indexes [with MUVERA encoding only](../config-refs/indexing/vector-index.mdx#hfresh-multi-vector). To use multi-vectors, enable it for the appropriate named vector.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -306,6 +339,14 @@ The [vector index type](../config-refs/indexing/vector-index.mdx) can be set for
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -360,6 +401,14 @@ Set [vector index parameters](../config-refs/indexing/vector-index.mdx) such as 
       startMarker="// START SetVectorIndexParams"
       endMarker="// END SetVectorIndexParams"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -422,6 +471,14 @@ Configure individual properties in a collection. Each property can have it's own
       language="gonew"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -467,6 +524,14 @@ If you choose to bring your own vectors, you should specify the `distance metric
       startMarker="// START DistanceMetric"
       endMarker="// END DistanceMetric"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

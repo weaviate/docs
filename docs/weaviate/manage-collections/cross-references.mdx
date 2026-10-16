@@ -16,6 +16,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsCrossReferencesTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsCrossReferencesTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/cross_references_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
 Use cross-references to establish directional relationships between collections.
@@ -96,6 +97,14 @@ It is also possible to add a cross-reference property to an existing collection 
       startMarker="// START Collections TwoWay Category2"
       endMarker="// END Collections TwoWay Category2"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START TwoWayCategory2"
+      endMarker="// END TwoWayCategory2"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -182,6 +191,14 @@ Specify the required id and properties for the source and the target.
       startMarker="// START OneWay"
       endMarker="// END OneWay"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START OneWay"
+      endMarker="// END OneWay"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -299,6 +316,14 @@ Modify `JeopardyCategory` to add the reference to `JeopardyQuestion`:
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START TwoWayCategory2"
+      endMarker="// END TwoWayCategory2"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -342,6 +367,14 @@ And add the cross-references:
       startMarker="// TwoWay Go"
       endMarker="// END TwoWay Go"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// TwoWay Go"
+      endMarker="// END TwoWay Go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -389,6 +422,14 @@ Weaviate allows creation of multiple cross-references from one source object.
       startMarker="// Multiple Go"
       endMarker="// END Multiple Go"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// Multiple Go"
+      endMarker="// END Multiple Go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -477,6 +518,14 @@ Deleting a cross-reference with the same parameters used to define the cross-ref
       language="go"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// Delete Go"
+      endMarker="// END Delete Go"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -532,6 +581,14 @@ The targets of a cross-reference can be updated.
       startMarker="// Update Go"
       endMarker="// END Update Go"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// Update Go"
+      endMarker="// END Update Go"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

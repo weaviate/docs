@@ -14,6 +14,7 @@ import TSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac
 import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py';
 import UserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.users.py';
 import RoleTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts';
+import RbacGoV6Code from '!!raw-loader!/_includes/code/go-v6/rbac_test.go';
 import UserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.users.ts';
 
 **Role-Based Access Control (RBAC)** is a powerful security mechanism that allows you to manage who can access and modify your Weaviate instance. In this tutorial, you'll learn how to set up RBAC in Weaviate by defining roles with tailored permissions and assigning them to users. This enables granular control over operations, from reading and writing data to managing collections and tenants, ensuring that only authorized users can perform specific actions.
@@ -139,6 +140,14 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 ### Step 2: Creating a new role with custom permissions
@@ -160,6 +169,14 @@ This grants read and write permissions for collections starting with `TargetColl
       startMarker="// START ReadWritePermissionDefinition"
       endMarker="// END ReadWritePermissionDefinition"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START ReadWritePermissionDefinition"
+      endMarker="// END ReadWritePermissionDefinition"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -185,6 +202,14 @@ First, let's create the new user `custom-user`:
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 Now, you can assign the role `rw_role` to `custom-user`:
@@ -204,6 +229,14 @@ Now, you can assign the role `rw_role` to `custom-user`:
       startMarker="// START ReadWritePermissionAssignment"
       endMarker="// END ReadWritePermissionAssignment"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START ReadWritePermissionAssignment"
+      endMarker="// END ReadWritePermissionAssignment"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -233,6 +266,14 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 ### Step 2: Creating a new role with custom permissions
@@ -254,6 +295,14 @@ This grants viewer permissions for collections starting with `TargetCollection`.
       startMarker="// START ViewerPermissionDefinition"
       endMarker="// END ViewerPermissionDefinition"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START ViewerPermissionDefinition"
+      endMarker="// END ViewerPermissionDefinition"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -279,6 +328,14 @@ First, let's create the new user `custom-user`:
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 Now, you can assign the role `viewer_role` to `custom-user`:
@@ -298,6 +355,14 @@ Now, you can assign the role `viewer_role` to `custom-user`:
       startMarker="// START ViewerPermissionAssignment"
       endMarker="// END ViewerPermissionAssignment"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START ViewerPermissionAssignment"
+      endMarker="// END ViewerPermissionAssignment"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -327,6 +392,14 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 ### Step 2: Creating a new role with custom permissions
@@ -352,6 +425,14 @@ This grants permissions to:
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START MTPermissionsExample"
+      endMarker="// END MTPermissionsExample"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 ### Step 3: Assigning the role to a new user
@@ -375,6 +456,14 @@ First, let's create the new user `custom-user`:
       language="ts"
     />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="go6"
+    />
+  </TabItem>
 </Tabs>
 
 Now, you can assign the role `tenant_manager` to `custom-user`:
@@ -394,6 +483,14 @@ Now, you can assign the role `tenant_manager` to `custom-user`:
       startMarker="// START MTPermissionsAssignment"
       endMarker="// END MTPermissionsAssignment"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START MTPermissionsAssignment"
+      endMarker="// END MTPermissionsAssignment"
+      language="go6"
     />
   </TabItem>
 </Tabs>

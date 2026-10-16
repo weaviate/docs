@@ -16,6 +16,14 @@ export const goCardsData = [
   },
 ];
 
+:::info Go client v6
+
+A release candidate of the [next major version of the Go client](./go-v6.md) is available. It is a ground-up redesign built around a collections-first API: you obtain a handle for a collection and run data, query, and aggregation operations through that handle, instead of composing requests with the older builder pattern.
+
+Its API can still change before the final release. The client documented on this page remains the right choice for production today. On pages that support it, a second Go tab for the new client appears beside the `Go` tab. Use it to preview the new API for that operation. For more details, see the [Go client v6](./go-v6.md) page.
+
+:::
+
 :::note Go client (SDK)
 
 The latest Go client is version `v||site.go_client_version||`.
@@ -24,13 +32,13 @@ The latest Go client is version `v||site.go_client_version||`.
 
 :::
 
+This page covers the Weaviate Go client (`v5` release).
+
 :::warning The Go client and the deprecated GraphQL API
 
-The current Go client sends its queries over the [GraphQL API](/weaviate/api/graphql), which is deprecated. Those calls fail once GraphQL is disabled. The Go client v6 queries over gRPC instead. It is currently a [release candidate](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-rc.0). See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
+The current Go client sends its queries over the [GraphQL API](/weaviate/api/graphql), which is deprecated. Those calls fail once GraphQL is disabled. The [Go client v6](./go-v6.md) queries over gRPC instead. It is currently a release candidate. See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
 
 :::
-
-{/* TODO(ivan): Q5. Confirm the Go client v6 is still a pre-release on October 12, 2026. */}
 
 For the minimum supported Go version, see the [`go` directive in `go.mod`](https://github.com/weaviate/weaviate-go-client/blob/v||site.go_client_version||/go.mod) for client `v||site.go_client_version||`.
 

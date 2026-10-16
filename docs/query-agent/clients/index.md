@@ -1,11 +1,11 @@
 ---
 title: Client libraries
-description: "Use the Python or TypeScript client to interact with the Query Agent."
+description: "Use the Python client, the TypeScript client, or the MCP server to interact with the Query Agent."
 image: og/docs/query-agent.png
 # tags: ['agents', 'query-agent', 'clients']
 ---
 
-You can interact with the Query Agent through official client libraries, currently supporting either Python or JavaScript/TypeScript:
+You can interact with the Query Agent through the official Python and JavaScript/TypeScript client libraries, or connect any MCP-compatible tool or agent through the hosted MCP server:
 
 
 import CardsSection from "/src/components/CardsSection";
@@ -23,6 +23,13 @@ export const agentsClientLibrariesData = [
     description: "Use the official Query Agent TypeScript/JavaScript client.",
     link: "/query-agent/clients/typescript/",
     icon: "fab fa-js",
+  },
+  {
+    title: "MCP Server",
+    description:
+      "Connect Claude Code, Cursor, or your own agents to the Query Agent over MCP.",
+    link: "/query-agent/clients/mcp/",
+    icon: "fas fa-plug",
   }
 ];
 

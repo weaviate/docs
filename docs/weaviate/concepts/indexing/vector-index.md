@@ -272,6 +272,18 @@ HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is 
 
 For configuration details, see the [HFresh index parameters](../../config-refs/indexing/vector-index.mdx#hfresh-index-parameters).
 
+### Multi-vector embeddings on HFresh
+
+import HFreshMultiVector from '/_includes/feature-notes/hfresh_multivector.mdx';
+
+<HFreshMultiVector />
+
+HFresh can index [multi-vector embeddings](../../configuration/compression/multi-vectors.md), such as ColBERT or ColPali representations, but only with MUVERA encoding. For how the encoding itself works, see [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding).
+
+A query is encoded with MUVERA and searched like a single vector. `searchProbe` sets how many posting lists are scanned. `rq.rescoreLimit` sets how many candidates are kept after rescoring against the full MUVERA vectors. Those candidates are then scored exactly with MaxSim against their original token vectors.
+
+For the configuration parameters, see [Multi-vector embeddings on HFresh](../../config-refs/indexing/vector-index.mdx#hfresh-multi-vector).
+
 ## Vector cache considerations
 
 For optimal search and import performance, previously imported vectors need to be in memory. A disk lookup for a vector is orders of magnitudes slower than memory lookup, so the disk cache should be used sparingly. However, Weaviate can limit the number of vectors in memory. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created.
@@ -333,6 +345,7 @@ Here's a quick guide to choosing the right index:
 
 | Feature                       | Flat                             | HNSW                        | HFresh                                              |
 | ----------------------------- | -------------------------------- | --------------------------- | --------------------------------------------------- |
+| Multi-vector support          | No                               | Yes, MUVERA optional        | Yes, MUVERA required                                |
 | Memory usage                  | Very low                         | High                        | Low                                                 |
 | Search speed (small datasets) | Fast                             | Very fast                   | Moderate                                            |
 | Search speed (large datasets) | Slow                             | Very fast                   | Fast                                                |

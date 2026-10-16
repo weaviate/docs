@@ -17,16 +17,18 @@ const SEVERITY_LABEL = {
 export function EntryFacts({ ids = [], raisedBy, severity, since, impact, fix }) {
   return (
     <div className={styles.facts} data-copy-exclude="">
-      <div>
-        <p className={styles.factLabel}>Message id{ids.length > 1 ? "s" : ""}</p>
-        <p className={`${styles.factValue} ${styles.ids}`}>
-          {ids.map((id) => (
-            <code key={id} className={styles.id}>
-              {id}
-            </code>
-          ))}
-        </p>
-      </div>
+      {ids.length > 0 && (
+        <div>
+          <p className={styles.factLabel}>Message id{ids.length > 1 ? "s" : ""}</p>
+          <p className={`${styles.factValue} ${styles.ids}`}>
+            {ids.map((id) => (
+              <code key={id} className={styles.id}>
+                {id}
+              </code>
+            ))}
+          </p>
+        </div>
+      )}
       {raisedBy && (
         <div>
           <p className={styles.factLabel}>Raised by</p>

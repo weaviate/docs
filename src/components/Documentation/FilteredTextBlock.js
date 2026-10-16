@@ -40,6 +40,14 @@ DOC_SYSTEMS.tsindent = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
 DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;
+DOC_SYSTEMS.go6 = {
+    baseUrl:
+        'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v6',
+    constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
+    icon: '/img/site/logo-go.svg',
+};
+// `go6full` renders complete standalone v6 programs (with the v6 doc links).
+DOC_SYSTEMS.go6full = DOC_SYSTEMS.go6;
 DOC_SYSTEMS.javaraw = DOC_SYSTEMS.java;
 DOC_SYSTEMS.csharpraw = DOC_SYSTEMS.csharp;
 
@@ -106,7 +114,15 @@ const FilteredTextBlock = ({
                     // replace remaining tabs with 2 spaces
                     .replace(/\t/g, '    ');
             break;
+        case 'go6full':
+            // Standalone complete programs: package/imports/func main start at
+            // column 0, so (unlike go6) do NOT strip a leading indent level —
+            // just convert tabs to 2 spaces.
+            format = (input) => input.replace(/\t/g, '  ');
+            break;
         case 'gonew':
+        // `go6` snippets sit inside test functions: strip exactly one indent level.
+        case 'go6':
             format = (input) =>
                 input
                     // replace remaining tabs with 2 spaces
@@ -153,8 +169,11 @@ const FilteredTextBlock = ({
         case 'tsindent':
             language2 = 'ts';
             break;
+        case 'go6full':
         case 'gonew':
         case 'goraw':
+        // Prism has no `go6`/`go6full` grammar.
+        case 'go6':
             language2 = 'go';
             break;
         case 'javaraw':

@@ -12,6 +12,7 @@ import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
@@ -59,6 +60,14 @@ RQ can be enabled at collection creation time through the collection definition:
         startMarker="// START EnableRQ"
         endMarker="// END EnableRQ"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START EnableRQ"
+        endMarker="// END EnableRQ"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -124,17 +133,25 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQUpdateSchema"
+        endMarker="// END RQUpdateSchema"
+        language="go6"
+      />
+  </TabItem>
 </Tabs>
 
 ## 4-bit RQ
 
 <Rq4bit/>
 
-[4-bit RQ](../../concepts/vector-quantization.md#4-bit-rq) stores each dimension in 4 bits instead of 8, so a compressed vector is about half the size of the 8-bit equivalent and roughly 8x smaller than the uncompressed vector. It sits between 8-bit RQ and 1-bit RQ: it trades some accuracy in the compressed distance calculation for a smaller index, and it depends more heavily on rescoring against the uncompressed vectors to recover that accuracy.
+4-bit RQ stores each dimension in 4 bits, which gives a smaller index than 8-bit RQ at some cost in accuracy. For sizes and trade-offs, see [4-bit RQ](../../concepts/vector-quantization.md#4-bit-rq).
 
 :::note 4-bit RQ requires the `hnsw` index
 
-4-bit RQ is supported on the `hnsw` index type only. The `flat` and `hfresh` index types reject `bits` set to `4`, and a `dynamic` index only uses 4-bit RQ after it converts to HNSW. For the bit widths that each index type accepts, see [RQ parameters](#rq-parameters).
+A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widths each index type accepts, see [RQ parameters](#rq-parameters).
 
 :::
 
@@ -259,6 +276,14 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START 1BitEnableRQ"
+        endMarker="// END 1BitEnableRQ"
+        language="go6"
+      />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -304,6 +329,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         startMarker="// START 1BitUpdateSchema"
         endMarker="// END 1BitUpdateSchema"
         language="go"
+      />
+  </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQ1BitUpdateSchema"
+        endMarker="// END RQ1BitUpdateSchema"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -359,6 +392,14 @@ RQ supports the `cosine`, `dot` and `l2-squared` distance metrics. Other distanc
         language="go"
       />
   </TabItem>
+  <TabItem value="go6" label="Go v6 (beta)">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START RQWithOptions"
+        endMarker="// END RQWithOptions"
+        language="go6"
+      />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -400,7 +441,7 @@ import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 :::note Multi-vector performance
-RQ supports multi-vector embeddings. Each token vector is rounded up to a multiple of 64 dimensions, which may result in less than the nominal compression ratio for very short vectors. This is a technical limitation that may be addressed in future versions.
+RQ supports multi-vector embeddings. On an `hnsw` index, each token vector is rounded up to a multiple of 64 dimensions, which may result in less than the nominal compression ratio for very short vectors. This is a technical limitation that may be addressed in future versions.
 :::
 
 ## Further resources
