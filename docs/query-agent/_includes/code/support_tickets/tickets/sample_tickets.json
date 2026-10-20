@@ -1,0 +1,218 @@
+[
+  {
+    "ticket_id": "SUP-101",
+    "title": "Login loops after SSO redirect",
+    "status": "Open",
+    "priority": "High",
+    "product": "Identity",
+    "description": "After signing in through SSO, the browser returns to the login screen. It happens when the user switches between two workspaces in the same browser. Standard email login still works.",
+    "workaround": "Sign out of both workspaces, clear this site's session cookies, then sign in to one workspace."
+  },
+  {
+    "ticket_id": "SUP-102",
+    "title": "Password reset link expires before use",
+    "status": "Open",
+    "priority": "High",
+    "product": "Identity",
+    "description": "Password reset emails arrive after the reset link expires. Users cannot regain access. Reports come from mailboxes whose security gateway delays delivery.",
+    "workaround": "An administrator can send a new reset email while the user watches their inbox. No permanent fix is documented."
+  },
+  {
+    "ticket_id": "SUP-103",
+    "title": "Mobile login fails with an expired session",
+    "status": "In progress",
+    "priority": "Medium",
+    "product": "Identity",
+    "description": "The mobile app shows a blank page after an expired session. Closing and reopening the app does not start the login flow.",
+    "workaround": "Clear the app's local storage and sign in again."
+  },
+  {
+    "ticket_id": "SUP-104",
+    "title": "MFA verification rejects valid codes",
+    "status": "Open",
+    "priority": "High",
+    "product": "Identity",
+    "description": "Time-based MFA codes are rejected for users whose device clock is several minutes behind. Password verification succeeds, but the second factor fails.",
+    "workaround": "Enable automatic date and time on the device, then enter a newly generated code."
+  },
+  {
+    "ticket_id": "SUP-105",
+    "title": "SSO login fails for uppercase email addresses",
+    "status": "Resolved",
+    "priority": "Medium",
+    "product": "Identity",
+    "description": "The identity provider sent an uppercase email address while the account used lowercase. Account matching failed. The matching logic now normalizes email casing.",
+    "workaround": "The fix is released. No workaround is needed."
+  },
+  {
+    "ticket_id": "SUP-106",
+    "title": "Sign-in button unresponsive in private browsing",
+    "status": "Open",
+    "priority": "Medium",
+    "product": "Identity",
+    "description": "In private browsing, selecting Sign in has no effect when browser storage is blocked. No session is created.",
+    "workaround": ""
+  },
+  {
+    "ticket_id": "SUP-107",
+    "title": "Repeated sign-outs during workspace switching",
+    "status": "In progress",
+    "priority": "High",
+    "product": "Identity",
+    "description": "Switching workspaces invalidates the active session and signs the user out. The issue affects accounts with access to several workspaces.",
+    "workaround": "Use a separate browser profile for each workspace until the session fix is released."
+  },
+  {
+    "ticket_id": "SUP-108",
+    "title": "Invitation link opens the wrong workspace",
+    "status": "Resolved",
+    "priority": "Low",
+    "product": "Identity",
+    "description": "An accepted invitation opened the user's previous workspace. Invitation routing now selects the invited workspace after sign-in.",
+    "workaround": "Open the workspace switcher and select the invited workspace."
+  },
+  {
+    "ticket_id": "SUP-109",
+    "title": "Invoice downloaded with missing company name",
+    "status": "Open",
+    "priority": "Medium",
+    "product": "Billing",
+    "description": "PDF invoices omit the company name even though the billing profile contains it. The invoice amount and tax fields remain correct.",
+    "workaround": ""
+  },
+  {
+    "ticket_id": "SUP-110",
+    "title": "Annual plan charged at the monthly rate",
+    "status": "In progress",
+    "priority": "High",
+    "product": "Billing",
+    "description": "After switching from a monthly to an annual plan, the next invoice used the old monthly rate. The plan page correctly shows annual billing.",
+    "workaround": "Ask the billing team to review the invoice before changing the plan again."
+  },
+  {
+    "ticket_id": "SUP-111",
+    "title": "Duplicate receipt after payment retry",
+    "status": "Resolved",
+    "priority": "Low",
+    "product": "Billing",
+    "description": "A payment retry sent two receipt emails for one successful charge. The notification deduplication fix is released; no duplicate charge occurred.",
+    "workaround": "Check the transaction ID: both receipt emails refer to the same payment."
+  },
+  {
+    "ticket_id": "SUP-112",
+    "title": "Payment method form does not save",
+    "status": "Open",
+    "priority": "High",
+    "product": "Billing",
+    "description": "Saving a new payment method displays a generic error when the billing postcode is absent. The form does not highlight the missing field.",
+    "workaround": "Enter the complete billing address, including postcode, and submit again."
+  },
+  {
+    "ticket_id": "SUP-113",
+    "title": "Usage total lags behind dashboard",
+    "status": "Open",
+    "priority": "Low",
+    "product": "Billing",
+    "description": "The billing usage page shows yesterday's total while the dashboard includes today's activity. The difference disappears after the daily billing sync.",
+    "workaround": "Use the dashboard for current-day usage and the billing page for finalized daily totals."
+  },
+  {
+    "ticket_id": "SUP-114",
+    "title": "VAT ID validation accepts spaces incorrectly",
+    "status": "Resolved",
+    "priority": "Medium",
+    "product": "Billing",
+    "description": "VAT IDs with embedded spaces were stored without validation. The form now strips spaces and validates the normalized value.",
+    "workaround": "Remove spaces from the VAT ID before saving."
+  },
+  {
+    "ticket_id": "SUP-115",
+    "title": "CSV export times out on large reports",
+    "status": "Open",
+    "priority": "High",
+    "product": "Reports",
+    "description": "Exports over 50,000 rows time out after one minute. Smaller reports complete successfully. The export job currently runs in the request path.",
+    "workaround": "Split the date range into weekly exports and combine the CSV files locally."
+  },
+  {
+    "ticket_id": "SUP-116",
+    "title": "CSV export shifts timestamps by one hour",
+    "status": "In progress",
+    "priority": "Medium",
+    "product": "Reports",
+    "description": "Exports spanning a daylight-saving transition apply one timezone offset to all rows. The dashboard displays the correct local times.",
+    "workaround": "Export timestamps in UTC and convert them using a timezone-aware tool."
+  },
+  {
+    "ticket_id": "SUP-117",
+    "title": "Scheduled report email has no attachment",
+    "status": "Open",
+    "priority": "Medium",
+    "product": "Reports",
+    "description": "The scheduled report email arrives but has no CSV attached when the report contains no rows. The email does not explain that the result is empty.",
+    "workaround": "Open the saved report to check whether its filters return any rows."
+  },
+  {
+    "ticket_id": "SUP-118",
+    "title": "PDF chart labels overlap on narrow pages",
+    "status": "Resolved",
+    "priority": "Low",
+    "product": "Reports",
+    "description": "Long category labels overlapped in portrait PDF exports. The renderer now wraps labels and reserves more space.",
+    "workaround": "Choose landscape orientation for reports with long category names."
+  },
+  {
+    "ticket_id": "SUP-119",
+    "title": "Report filters reset after refresh",
+    "status": "Open",
+    "priority": "Medium",
+    "product": "Reports",
+    "description": "Refreshing a report resets unsaved date and product filters. Users expect the URL to preserve the selected filters.",
+    "workaround": "Save the report with the desired filters before refreshing."
+  },
+  {
+    "ticket_id": "SUP-120",
+    "title": "Webhook delivery retries after a successful response",
+    "status": "Open",
+    "priority": "High",
+    "product": "API",
+    "description": "The receiver returns HTTP 200 after six seconds, but the webhook sender times out after five seconds and retries. Duplicate events reach the receiver.",
+    "workaround": "Acknowledge the request promptly, process it asynchronously, and deduplicate using the event ID."
+  },
+  {
+    "ticket_id": "SUP-121",
+    "title": "API pagination skips records during bulk updates",
+    "status": "In progress",
+    "priority": "High",
+    "product": "API",
+    "description": "Offset pagination skips records when bulk updates change sort order between requests. Clients see inconsistent result sets.",
+    "workaround": "Use cursor pagination with a stable sort key."
+  },
+  {
+    "ticket_id": "SUP-122",
+    "title": "Rate-limit responses omit retry timing",
+    "status": "Open",
+    "priority": "Medium",
+    "product": "API",
+    "description": "HTTP 429 responses have no Retry-After header. Clients cannot determine the suggested delay from the response.",
+    "workaround": "Use exponential backoff with jitter and cap the retry count."
+  },
+  {
+    "ticket_id": "SUP-123",
+    "title": "API token revoke action leaves cached access",
+    "status": "Resolved",
+    "priority": "High",
+    "product": "API",
+    "description": "Revoked tokens remained valid until the authorization cache expired. Revocation now invalidates cached authorization immediately.",
+    "workaround": "The fix is released. Rotate any token suspected of exposure."
+  },
+  {
+    "ticket_id": "SUP-124",
+    "title": "Webhook signature check fails after JSON formatting",
+    "status": "Open",
+    "priority": "Medium",
+    "product": "API",
+    "description": "The receiver parses and re-serializes JSON before verifying the signature. Whitespace changes cause signature mismatches.",
+    "workaround": "Verify the signature against the original request body bytes before parsing JSON."
+  }
+]

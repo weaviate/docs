@@ -1,0 +1,15 @@
+.states
+*.py[cod]
+assets/external/
+.web
+*.db
+.env
+.venv/
+.web/
+reflex.lock/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.log
+!.python-version
+!tickets/__init__.py
