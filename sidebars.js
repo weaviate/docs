@@ -1484,6 +1484,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "query-agent/recipes/query-agent-reflex-support-tickets",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "query-agent/recipes/query-agent-vs-diy",
           className: "sidebar-item",
         },
