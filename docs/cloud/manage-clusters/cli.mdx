@@ -6,6 +6,9 @@ description: "Install the wcloud CLI and create Weaviate Cloud clusters from the
 image: og/wcd/user_guides.jpg
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 :::caution Limited availability
 
 `wcloud` is available to allowlisted accounts only: if your account is not on the allowlist, any command that calls the Weaviate Cloud API fails with the error code `access_restricted` and exit code `5`. Exit code `5` also covers `permission_denied`, so read `error.code` to tell the two apart.
@@ -24,7 +27,8 @@ AI coding agents do not need a separate integration. Install `wcloud` once, and 
 
 The package is named `weaviate-cloud`. The command it installs is `wcloud`.
 
-### Homebrew (recommended)
+<Tabs groupId="wcloud-install">
+<TabItem value="brew" label="Homebrew (recommended)">
 
 ```bash
 brew install weaviate/tap/weaviate-cloud
@@ -32,7 +36,8 @@ brew install weaviate/tap/weaviate-cloud
 
 This is the recommended channel on macOS and Linux. It installs the prebuilt, checksum-pinned release binary, needs no Go toolchain, and upgrades with `brew upgrade`. You do not need to tap `weaviate/tap` first, because `brew install` taps it for you.
 
-### npm
+</TabItem>
+<TabItem value="npm" label="npm">
 
 ```bash
 npm install -g weaviate-cloud
@@ -40,7 +45,8 @@ npm install -g weaviate-cloud
 
 The npm package wraps the same release binary that Homebrew installs, so the two are interchangeable. It installs the command under two names: `wcloud` and a `weaviate-cloud` alias. On Windows, npm is the install route, because the Homebrew formula covers macOS and Linux only and the npm package ships a Windows binary for x64.
 
-### Go
+</TabItem>
+<TabItem value="go" label="Go">
 
 ```bash
 go install github.com/weaviate/weaviate-cloud/cmd/wcloud@latest
@@ -50,6 +56,9 @@ This builds from source and suits Go developers who already have a toolchain. Tw
 
 - The module requires **Go 1.26.9 or newer**. On an older Go, the toolchain switching built into Go downloads a suitable version automatically. If switching is disabled (`GOTOOLCHAIN=local`), the install fails.
 - `wcloud version` reports the correct release version, but its `commit` field reads `unknown`. A build from the module proxy carries no version-control stamp, so only the released binaries report a commit.
+
+</TabItem>
+</Tabs>
 
 ### Verify the installation
 
@@ -81,17 +90,29 @@ wcloud auth logout
 
 `wcloud auth logout` revokes the cached refresh token and deletes the local credential file.
 
-Until you sign in, every command that calls the Weaviate Cloud API fails immediately, with exit code `3`:
+Until you sign in, every command that calls the Weaviate Cloud API fails immediately, with exit code `3`.
+
+<details>
+  <summary>Example error output</summary>
 
 ```text
 Error: not signed in. Run 'wcloud auth login' to authenticate. (auth_required)
 ```
 
+</details>
+
 ### There is no non-interactive sign-in
 
-Browser sign-in is the only way to authenticate. There is no API key flag, no token flag, and no environment variable that supplies credentials.
+Browser sign-in is the only way to authenticate, so **`wcloud` cannot sign in on a headless machine**.
 
-This has a consequence worth planning around: **`wcloud` cannot sign in on a headless machine**. The OAuth redirect has to reach `127.0.0.1` on the same machine that runs `wcloud`, so a remote SSH session, a container without a browser, or a CI runner cannot complete the flow. The sign-in URL is not transferable either, because it is tied to the listener that the waiting command holds open. Run `wcloud auth login` on a workstation where you can open a browser.
+<details>
+  <summary>Why, and what to do instead</summary>
+
+There is no API key flag, no token flag, and no environment variable that supplies credentials.
+
+The OAuth redirect has to reach `127.0.0.1` on the same machine that runs `wcloud`, so a remote SSH session, a container without a browser, or a CI runner cannot complete the flow. The sign-in URL is not transferable either, because it is tied to the listener that the waiting command holds open. Run `wcloud auth login` on a workstation where you can open a browser.
+
+</details>
 
 Once you are signed in, `wcloud` refreshes the cached credential on its own, so subsequent commands do not prompt.
 
@@ -113,7 +134,14 @@ On macOS and Linux, credential files are written with `0600` permissions, in a d
 wcloud cluster create --name my-cluster --wait
 ```
 
-`--name` is optional. Without it, Weaviate Cloud generates a name. `--wait` blocks until the cluster reaches the `READY` state, for up to 15 minutes by default, and writes progress to standard error while it polls. `--timeout` changes that limit. Since v0.1.2, passing `--timeout` without `--wait` is rejected with exit code `2`. `--wait` also stops early if the cluster lands in a terminal status that is not `READY` (`FAILED`, `DELETED`, `EXPIRED`, or `SUSPENDED`). Without `--wait`, the command returns as soon as the cluster is accepted, and you check on it later with `wcloud cluster status`.
+`--name` is optional. Without it, Weaviate Cloud generates a name. `--wait` blocks until the cluster reaches the `READY` state, for up to 15 minutes by default, and writes progress to standard error while it polls. Without `--wait`, the command returns as soon as the cluster is accepted, and you check on it later with `wcloud cluster status`.
+
+<details>
+  <summary>`--wait` timeouts and early exits</summary>
+
+`--timeout` changes the 15-minute limit. Since v0.1.2, passing `--timeout` without `--wait` is rejected with exit code `2`. `--wait` also stops early if the cluster lands in a terminal status that is not `READY` (`FAILED`, `DELETED`, `EXPIRED`, or `SUSPENDED`).
+
+</details>
 
 The result includes the cluster's REST and gRPC endpoints and a **one-time API key**. The key is shown once, either by a `--wait` create when the cluster becomes `READY` or by the first `wcloud cluster get` after it is ready. `wcloud` never stores it, and every later call returns the key field empty, so save it when you see it. To add, rotate, or delete cluster API keys afterwards, see [Authentication](/cloud/manage-clusters/authentication).
 
@@ -138,7 +166,14 @@ Once a cluster is `READY`, [connect a client library to it](/weaviate/connection
 
 ### One free cluster per user
 
-Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`. The limit is per account and spans every organization the account belongs to, while `wcloud cluster list` shows only the current organization's clusters, so a create can be refused with `quota_exceeded` even when the list shows no free cluster. A suspended free cluster also keeps the slot, and `wcloud cluster list` may not show it, so an empty list is never proof that you have no free cluster. [Free clusters](/cloud/manage-clusters/create#free-clusters) covers when a free cluster is suspended and when it is deleted. The [Weaviate Cloud console](https://console.weaviate.cloud/) shows all of your organizations.
+Each user can have one free cluster at a time. If you already have one, `wcloud cluster create` fails with the error code `quota_exceeded` and exit code `7`.
+
+<details>
+  <summary>An empty cluster list is not proof that you have no free cluster</summary>
+
+The limit is per account and spans every organization the account belongs to, while `wcloud cluster list` shows only the current organization's clusters, so a create can be refused with `quota_exceeded` even when the list shows no free cluster. A suspended free cluster also keeps the slot, and `wcloud cluster list` may not show it, so an empty list is never proof that you have no free cluster. [Free clusters](/cloud/manage-clusters/create#free-clusters) covers when a free cluster is suspended and when it is deleted. The [Weaviate Cloud console](https://console.weaviate.cloud/) shows all of your organizations.
+
+</details>
 
 Retrying does not help, and repeated create attempts are rate limited: the API returns the error code `rate_limited` and exit code `8`, with a `retry_after_seconds` hint in the error details. Because `wcloud` has no delete command, the way forward is the console: delete the existing cluster there, or [upgrade to a paid plan](https://weaviate.io/pricing). For the current free tier limits, see [Free tier allowance](/cloud/manage-clusters/create#free-tier-allowance).
 
