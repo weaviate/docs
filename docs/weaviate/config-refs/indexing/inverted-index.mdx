@@ -9,7 +9,7 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
 import PyTokenizeEndpoint from "!!raw-loader!/_includes/code/tutorials/tokenization/tokenize_endpoint.py";
 
@@ -71,15 +71,15 @@ This code example shows how to configure inverted index parameters through a cli
 </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CollectionConfigCode}
       startMarker="// START SetInvertedIndexParams"

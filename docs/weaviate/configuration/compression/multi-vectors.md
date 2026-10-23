@@ -52,14 +52,14 @@ The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/em
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Go support coming soon
 ```
 
 </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CompressionCode}
       startMarker="// START MuveraEncoding"

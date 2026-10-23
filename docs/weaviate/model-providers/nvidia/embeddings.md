@@ -16,7 +16,7 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect/main.go';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
 Weaviate's integration with NVIDIA's APIs allows you to access their models' capabilities directly from Weaviate.
 
@@ -84,7 +84,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
       text={GoConnect}
       startMarker="// START NVIDIAInstantiation"
@@ -117,9 +117,9 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicVectorizerNVIDIA"
       endMarker="// END BasicVectorizerNVIDIA"
       language="goraw"
@@ -151,9 +151,9 @@ You can specify one of the [available models](#available-models) for the vectori
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START VectorizerNVIDIACustomModel"
       endMarker="// END VectorizerNVIDIACustomModel"
       language="goraw"
@@ -196,9 +196,9 @@ The following examples show how to configure NVIDIA-specific options.
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FullVectorizerNVIDIA"
       endMarker="// END FullVectorizerNVIDIA"
       language="goraw"
@@ -232,9 +232,9 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BatchImportExample"
       endMarker="// END BatchImportExample"
       language="goraw"
@@ -279,9 +279,9 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NearTextExample"
       endMarker="// END NearTextExample"
       language="goraw"
@@ -320,9 +320,9 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="goraw"

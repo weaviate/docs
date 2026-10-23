@@ -30,7 +30,7 @@ Start at the top of this table and take the first row that describes your stack.
 | Your application | Recommended path | Why |
 | --- | --- | --- |
 | **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
-| **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. Currently an alpha release. |
+| **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. |
 | **No client library available** | **[REST Search API](#rest-search-api)** | For a no-code or BI platform, or a language with no official client such as PHP or Ruby. Plain-HTTP JSON endpoints whose request bodies mirror your GraphQL queries closely.
 
 :::info Availability at a glance
@@ -41,7 +41,7 @@ The three paths are at three different maturity levels. Check the **Status** col
 
 | Path | Status | Availability |
 | --- | --- | --- |
-| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Java, and C# are generally available while the Go client v6 is available as a [release candidate](../../client-libraries/go/go-v6.md). The current stable Go client, `v5`, relies on GraphQL. |
+| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Go, Java, and C# are generally available. |
 | **`@weaviate/web`** (browser and edge) | **Alpha** | `3.15.0-alpha.6`. Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
 | **REST Search API** | **Preview** | Enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it needs [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`. See [REST Search API](#rest-search-api). |
 
@@ -70,8 +70,7 @@ Check each client your code uses against this table:
 | TypeScript `weaviate-client` | Search: `v3.0.0`. Aggregate: `v3.4.0`, against Weaviate `v1.29.0` or later | Aggregate falls back to GraphQL on Weaviate older than `v1.29.0`. |
 | Java `io.weaviate:client6` | `6.0.0` | Never. |
 | C# | `1.0.0` | Never. |
-| Go `weaviate-go-client/v5` (current stable) | Never | Always. `client.GraphQL().Get()`, `.Aggregate()`, `.Explore()` and `.Raw()` are its search API. |
-| Go v6 (release candidate) | `v6.0.0-rc.0`. Aggregate covers over-all, near-vector, near-text, near-object, hybrid and near-media | Never. No generative search yet at this tag. |
+| Go | `v6.0.0`. | `v5` and older |
 
 </details>
 
@@ -149,7 +148,7 @@ The endpoints are enabled by default from **`v1.39.7`**. In `v1.39.0` through `v
 
 :::
 
-The REST Search API is a set of plain-HTTP JSON endpoints intended for stacks that cannot run a client library. 
+The REST Search API is a set of plain-HTTP JSON endpoints intended for stacks that cannot run a client library.
 Request and response field names may still change, so this path is not recommended for production use yet. It is a deliberate **subset** of what GraphQL offers. Read [Differences to check before you convert](#differences-to-check-before-you-convert) and [Queries without a REST equivalent yet](#queries-without-a-rest-equivalent-yet) before you convert anything.
 
 There are six available `POST` endpoints:

@@ -20,7 +20,7 @@ import AutocutTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.
 import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.additional-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/graphql.additional.ts';
-import GoCode from '!!raw-loader!/_includes/code/graphql.additional.go';
+import GoV5Code from '!!raw-loader!/_includes/code/graphql.additional.go';
 import CurlCode from '!!raw-loader!/_includes/code/graphql.additional.sh';
 
 <TryEduDemo />
@@ -269,7 +269,7 @@ import GraphQLFiltersAfter from '/_includes/code/graphql.filters.after.mdx';
 
 ## Sorting
 
-You can sort results by any primitive property, such as `text`, `number`, or `int`. 
+You can sort results by any primitive property, such as `text`, `number`, or `int`.
 
 ### Sorting considerations
 
@@ -322,9 +322,9 @@ The sort function takes either an object, or an array of objects, that describe 
 
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START Sorting"
       endMarker="// END Sorting"
       language="go"
@@ -399,9 +399,9 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
 
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START MultiplePropSorting"
       endMarker="// END MultiplePropSorting"
       language="go"
@@ -451,9 +451,9 @@ To sort with metadata, add an underscore to the property name.
 
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AdditionalPropSorting"
       endMarker="// END AdditionalPropSorting"
       language="go"

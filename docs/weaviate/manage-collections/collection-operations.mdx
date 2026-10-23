@@ -12,7 +12,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6ManageCode from "!!raw-loader!/_includes/code/go-v6/manage_collections_test.go";
 import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
@@ -54,15 +54,15 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicCreateCollection"
       endMarker="// END BasicCreateCollection"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START BasicCreateCollection"
@@ -140,15 +140,15 @@ For details, see:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithProperties"
       endMarker="// END CreateCollectionWithProperties"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START CreateCollectionWithProperties"
@@ -202,15 +202,15 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithVectorizer"
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START CreateCollectionWithVectorizer"
@@ -269,7 +269,7 @@ Get a boolean indicating whether a given collection exists.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START CheckIfExists"
@@ -316,15 +316,15 @@ Retrieve a collection definition from the schema.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ReadOneCollection"
       endMarker="// END ReadOneCollection"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START ReadOneCollection"
@@ -542,15 +542,15 @@ Fetch the database schema to retrieve all of the collection definitions.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ReadAllCollections"
       endMarker="// END ReadAllCollections"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START ReadAllCollections"
@@ -601,15 +601,15 @@ You can update a collection definition to change the [mutable collection setting
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START UpdateCollection"
       endMarker="// END UpdateCollection"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START UpdateCollection"

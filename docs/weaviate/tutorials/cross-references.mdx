@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import XRefCrudPythonCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
 import XRefCrudTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts';
-import XRefCrudGoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go';
+import XRefCrudGoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go';
 import XRefCrudGoV6Code from '!!raw-loader!/_includes/code/go-v6/cross_references_test.go';
 
 import SearchBasicsPythonCode from '!!raw-loader!/_includes/code/howto/search.basics.py';
@@ -122,15 +122,15 @@ An example syntax is shown below:
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={XRefCrudGoCode}
+      text={XRefCrudGoV5Code}
       startMarker="// START OneWay"
       endMarker="// END OneWay"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={XRefCrudGoV6Code}
       startMarker="// START OneWay"

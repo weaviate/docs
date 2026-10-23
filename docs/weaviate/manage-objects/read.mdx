@@ -12,7 +12,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.read.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -46,15 +46,15 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// ReadObject START"
       endMarker="// ReadObject END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ReadObject"
@@ -105,15 +105,15 @@ Object vectors can be retrieved by specifying its return.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// ReadObjectWithVector START"
       endMarker="// ReadObjectWithVector END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ReadWithVector"

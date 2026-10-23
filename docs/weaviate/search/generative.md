@@ -13,7 +13,7 @@ import GenerativeConfig from '/_includes/feature-notes/generative-config.mdx';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.generative.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.generative-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
 import GoV6Code from '!!raw-loader!/_includes/code/go-v6/search_generative_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchGenerativeTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchGenerativeTest.cs";
@@ -51,7 +51,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Go support coming soon
@@ -189,15 +189,15 @@ The properties you use in the prompt do not have to be among the properties you 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SingleGenerativeProperties"
       endMarker="// END SingleGenerativeProperties"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GenerativeSinglePrompt"
@@ -267,7 +267,7 @@ You can use *generative parameters* to specify additional options when performin
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Go support coming soon
@@ -344,15 +344,15 @@ Grouped task search returns one response that includes all of the query results.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GroupedGenerativeBasic"
       endMarker="// END GroupedGenerativeBasic"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GenerativeGroupedTask"
@@ -416,15 +416,15 @@ Define object `properties` to use in the prompt. This limits the information in 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GroupedGenerativeProperties"
       endMarker="// END GroupedGenerativeProperties"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GenerativeGroupedProperties"
@@ -490,7 +490,7 @@ You can use *generative parameters* to specify additional options when performin
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Go support coming soon
@@ -531,7 +531,7 @@ Metadata: usage {
 
 ## Working with images
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
 The following fields are available for generative search with images:
 - `images`: A base64 encoded string of the image bytes.
 - `image_properties`: Names of the properties in Weaviate that store images for additional context.
@@ -553,7 +553,7 @@ The following fields are available for generative search with images:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Go support coming soon

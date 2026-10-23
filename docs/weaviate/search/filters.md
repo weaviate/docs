@@ -13,7 +13,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.filters.py';
 import PyCodeNested from '!!raw-loader!/\_includes/code/howto/search.filters.nested.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.filters-v3.py';
 import JavaScriptCode from '!!raw-loader!/\_includes/code/howto/search.filters.ts';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
 import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/filters_test.go';
 import GoV6PlaceholderCode from '!!raw-loader!/\_includes/code/go-v6/search_placeholders_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchFiltersTest.java";
@@ -43,15 +43,15 @@ Add a `filter` to your query, to limit the result set.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SingleFilter"
       endMarker="// END SingleFilter"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START SingleFilter"
@@ -159,15 +159,15 @@ These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To 
     language="ts"
   />
 </TabItem>
-<TabItem value="go" label="Go">
+<TabItem value="gov5" label="Go (v5)">
 <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START MultipleFiltersAnd"
       endMarker="// END MultipleFiltersAnd"
       language="gonew"
     />
 </TabItem>
-<TabItem value="go6" label="Go v6 (beta)">
+<TabItem value="go" label="Go">
 <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START MultipleFiltersAnd"
@@ -236,15 +236,15 @@ Group and nest filter conditions with `And` and `Or` operators to express compou
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START MultipleFiltersNested"
       endMarker="// END MultipleFiltersNested"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START MultipleFiltersNested"
@@ -327,15 +327,15 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START searchFilterNearText"
       endMarker="// END searchFilterNearText"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START NearTextWithFilter"
@@ -404,15 +404,15 @@ The `ContainsAny` operator takes an array of values as input and matches objects
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ContainsAnyFilter"
       endMarker="// END ContainsAnyFilter"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ContainsAnyFilter"
@@ -481,15 +481,15 @@ The `ContainsAll` operator takes an array of values as input and matches objects
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ContainsAllFilter"
       endMarker="// END ContainsAllFilter"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ContainsAllFilter"
@@ -558,15 +558,15 @@ The `ContainsNone` operator takes an array of values as input and matches object
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ContainsNoneFilter"
       endMarker="// END ContainsNoneFilter"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ContainsNoneFilter"
@@ -662,15 +662,15 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START LikeFilter"
       endMarker="// END LikeFilter"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START LikeFilter"
@@ -755,15 +755,15 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CrossReference"
       endMarker="// END CrossReference"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CrossReferenceFilter"
@@ -834,15 +834,15 @@ import GeoLimitations from '/\_includes/geo-limitations.mdx';
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FilterbyGeolocation"
       endMarker="// END FilterbyGeolocation"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6PlaceholderCode}
       startMarker="// START GeoFilter"
@@ -897,15 +897,15 @@ To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FilterByDateDatatype"
       endMarker="// END FilterByDateDatatype"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByDate"
@@ -956,15 +956,15 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FilterById"
       endMarker="// END FilterById"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterById"
@@ -1019,15 +1019,15 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FilterByTimestamp"
       endMarker="// END FilterByTimestamp"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByTimestamp"
@@ -1082,15 +1082,15 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FilterByPropertyLength"
       endMarker="// END FilterByPropertyLength"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByPropertyLength"
@@ -1145,15 +1145,15 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FilterByPropertyNullState"
       endMarker="// END FilterByPropertyNullState"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START FilterByPropertyNullState"

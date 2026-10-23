@@ -19,7 +19,7 @@ import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts"
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
-import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
+import GoV5Code from "!!raw-loader!/_includes/code/connections/connect.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/connect_test.go";
 
 Follow these steps to connect to a locally hosted Weaviate instance.
@@ -51,15 +51,15 @@ To connect to a local instance without authentication, follow these examples.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START LocalNoAuth"
       endMarker="// END LocalNoAuth"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START LocalNoAuth"
@@ -114,15 +114,15 @@ To change the default URL or port number, follow these examples.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CustomURL"
       endMarker="// END CustomURL"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CustomURL"
@@ -177,15 +177,15 @@ To authenticate with a Weaviate API key, follow these examples.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START LocalAuth"
       endMarker="// END LocalAuth"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START LocalAuth"
@@ -244,15 +244,15 @@ Integrations that use external APIs often need API keys. To add third party API 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START LocalThirdPartyAPIKeys"
       endMarker="// END LocalThirdPartyAPIKeys"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START LocalThirdPartyAPIKeys"

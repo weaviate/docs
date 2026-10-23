@@ -859,7 +859,7 @@ const sidebars = {
             type: "doc",
             id: "weaviate/client-libraries/go/index",
           },
-          items: ["weaviate/client-libraries/go/go-v6"],
+          items: ["weaviate/client-libraries/go/go-v5"],
         },
         {
           type: "doc",

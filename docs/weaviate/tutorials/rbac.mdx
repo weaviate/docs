@@ -21,11 +21,11 @@ import UserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.
 
 In the steps that follow, we’ll cover:
 
-1. **Connecting to Weaviate**  
+1. **Connecting to Weaviate**
   Ensure you're authenticated with a user who has the necessary role management permissions.
-1. **Creating custom roles**  
+1. **Creating custom roles**
   Define roles with specific permissions, such as read, write, tenant management, etc.
-1. **Assigning roles to new users**  
+1. **Assigning roles to new users**
   Apply these roles to a new user and limit their access across different resources.
 
 ![RBAC Tutorial Diagram](./_includes/rbac-tutorial-diagram.png)
@@ -36,11 +36,11 @@ By the end of this guide, you’ll have a clear roadmap for implementing RBAC in
 
 We are going to create the following roles:
 
-- **[Read and write permissions](#read-and-write-permissions):** `rw_role`  
+- **[Read and write permissions](#read-and-write-permissions):** `rw_role`
   Learn how to create a custom role that grants read and write access to collections and data, and assign it to a user.
-- **[Viewer permissions](#viewer-permissions):** `viewer_role`  
+- **[Viewer permissions](#viewer-permissions):** `viewer_role`
   Set up a role that restricts users to read-only access for specific collections.
-- **[Tenant permissions](#tenant-permissions):** `tenant_manager`  
+- **[Tenant permissions](#tenant-permissions):** `tenant_manager`
   Configure roles with permissions to manage tenants, including creating, reading, and updating tenant information.
 
 ## Prerequisites
@@ -92,7 +92,7 @@ services:
       AUTHENTICATION_APIKEY_ENABLED: 'true'
       AUTHENTICATION_APIKEY_USERS: 'root-user'
       AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'root-user-key'
- 
+
 volumes:
   weaviate_data:
 ```
@@ -102,10 +102,10 @@ volumes:
 
 - `AUTHORIZATION_ENABLE_RBAC`: Enable RBAC to be used.
 - `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED`: Enable/disable anonymous users from accessing your Weaviate instance.
-- `AUTHENTICATION_DB_USERS_ENABLED`: Enable/disable runtime user management. 
-- `AUTHENTICATION_APIKEY_ENABLED`: Enable API key-based authentication. 
+- `AUTHENTICATION_DB_USERS_ENABLED`: Enable/disable runtime user management.
+- `AUTHENTICATION_APIKEY_ENABLED`: Enable API key-based authentication.
 - `AUTHENTICATION_APIKEY_USERS`: The API-key based identities that correspond to the `AUTHENTICATION_APIKEY_ENABLED` variable.
-- `AUTHENTICATION_APIKEY_ALLOWED_KEYS`: The allowed API keys, they correspond to a specific user identity. 
+- `AUTHENTICATION_APIKEY_ALLOWED_KEYS`: The allowed API keys, they correspond to a specific user identity.
 - `AUTHORIZATION_RBAC_ROOT_USERS`: Define your root/admin user(s).
 
 More environment variables can be found [here](/deploy/configuration/env-vars/index.md).
@@ -140,7 +140,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AdminClient"
@@ -171,7 +171,7 @@ This grants read and write permissions for collections starting with `TargetColl
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START ReadWritePermissionDefinition"
@@ -202,7 +202,7 @@ First, let's create the new user `custom-user`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START CreateUser"
@@ -231,7 +231,7 @@ Now, you can assign the role `rw_role` to `custom-user`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START ReadWritePermissionAssignment"
@@ -245,8 +245,8 @@ Now, you can assign the role `rw_role` to `custom-user`:
 
 ### Step 1: Connecing to Weaviate
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
-You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac) 
+Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles.
+You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac)
 or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles#role-management).
 
 <Tabs className="code" groupId="languages">
@@ -266,7 +266,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AdminClient"
@@ -297,7 +297,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START ViewerPermissionDefinition"
@@ -328,7 +328,7 @@ First, let's create the new user `custom-user`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START CreateUser"
@@ -357,7 +357,7 @@ Now, you can assign the role `viewer_role` to `custom-user`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START ViewerPermissionAssignment"
@@ -371,8 +371,8 @@ Now, you can assign the role `viewer_role` to `custom-user`:
 
 ### Step 1: Connecting to Weaviate
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
-You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) 
+Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles.
+You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md)
 or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
 <Tabs className="code" groupId="languages">
@@ -392,7 +392,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AdminClient"
@@ -425,7 +425,7 @@ This grants permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START MTPermissionsExample"
@@ -456,7 +456,7 @@ First, let's create the new user `custom-user`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START CreateUser"
@@ -485,7 +485,7 @@ Now, you can assign the role `tenant_manager` to `custom-user`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START MTPermissionsAssignment"

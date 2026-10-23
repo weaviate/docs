@@ -17,7 +17,7 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect/main.go';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
 Weaviate's integration with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
 
@@ -124,7 +124,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
       text={GoConnect}
       startMarker="// START GoogleInstantiation"
@@ -141,7 +141,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 :::info Important: Different vectorizers for different services
 
-- **Google AI Studio (Gemini API)**: Use `text2vec_google_gemini()` 
+- **Google AI Studio (Gemini API)**: Use `text2vec_google_gemini()`
 - **Vertex AI**: Use `text2vec_google()`
 
 :::
@@ -171,9 +171,9 @@ For Google AI Studio, use the Gemini-specific vectorizer. A Google Cloud project
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicVectorizerGoogleStudio"
       endMarker="// END BasicVectorizerGoogleStudio"
       language="goraw"
@@ -205,9 +205,9 @@ For Vertex AI, use the `text2vec_google()` vectorizer. You must provide your Goo
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicVectorizerGoogleVertex"
       endMarker="// END BasicVectorizerGoogleVertex"
       language="goraw"
@@ -278,9 +278,9 @@ You can [update](/weaviate/manage-collections/collection-operations.mdx#update-a
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FullVectorizerGoogle"
       endMarker="// END FullVectorizerGoogle"
       language="goraw"
@@ -313,9 +313,9 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BatchImportExample"
       endMarker="// END BatchImportExample"
       language="goraw"
@@ -360,9 +360,9 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NearTextExample"
       endMarker="// END NearTextExample"
       language="goraw"
@@ -401,9 +401,9 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="goraw"

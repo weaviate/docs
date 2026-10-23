@@ -11,8 +11,8 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMultiTenancyTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
-import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
+import GoV5CodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
 import TenantsGoV6Code from "!!raw-loader!/_includes/code/go-v6/tenants_test.go";
 import CurlCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh";
 import SkipLink from "/src/components/SkipValidationLink";
@@ -44,15 +44,15 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START EnableMultiTenancy"
@@ -103,15 +103,15 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCodeAuto}
+      text={GoV5CodeAuto}
       startMarker="// START enable autoMT"
       endMarker="// END enable autoMT"
       language="goraw"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START EnableAutoMT"
@@ -166,15 +166,15 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCodeAuto}
+      text={GoV5CodeAuto}
       startMarker="// Start update autoMT"
       endMarker="// END update autoMT"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START UpdateAutoMT"
@@ -238,15 +238,15 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddTenantsToClass"
       endMarker="// END AddTenantsToClass"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START AddTenantsToClass"
@@ -295,15 +295,15 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ListTenants"
       endMarker="// END ListTenants"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START ListTenants"
@@ -436,15 +436,15 @@ Deleting a tenant deletes all associated objects.
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RemoveTenants"
       endMarker="// END RemoveTenants"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START RemoveTenants"
@@ -536,15 +536,15 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateMtObject"
       endMarker="// END CreateMtObject"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START CreateMtObject"
@@ -591,15 +591,15 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START Search"
       endMarker="// END Search"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START Search"
@@ -655,15 +655,15 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddCrossRef"
       endMarker="// END AddCrossRef"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={TenantsGoV6Code}
       startMarker="// START AddCrossRef"

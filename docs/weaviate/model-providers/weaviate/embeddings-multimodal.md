@@ -21,7 +21,7 @@ import GoConnect from "!!raw-loader!/\_includes/code/howto/go/docs/model-provide
 
 import PyCode from "!!raw-loader!../\_includes/provider.vectorizer.py";
 import TSCode from "!!raw-loader!../\_includes/provider.vectorizer.ts";
-import GoCode from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
+import GoV5Code from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.cs";
 
@@ -71,7 +71,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
       text={GoConnect}
       startMarker="// START WeaviateInstantiation"
@@ -126,7 +126,7 @@ The ColModernVBERT model outputs multi-vector embeddings that can consume signif
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Coming soon
@@ -168,7 +168,7 @@ If you prefer to store the raw multi-vector embeddings without MUVERA compressio
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // Coming soon
@@ -256,9 +256,9 @@ The query below returns the `n` most similar objects from the database, set by `
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NearTextExample"
       endMarker="// END NearTextExample"
       language="goraw"
@@ -310,9 +310,9 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="ts"
     />
   </TabItem>
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="goraw"
