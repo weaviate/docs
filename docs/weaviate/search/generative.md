@@ -53,6 +53,8 @@ To use RAG with a [generative model integration](../model-providers/index.md):
   </TabItem>
   <TabItem value="go" label="Go">
 
+{/* TODO: Replace this placeholder with a Go v6 snippet once the full Go client `v6` release with generative search ships. */}
+
 ```go
 // Go support coming soon
 ```
@@ -268,6 +270,8 @@ You can use *generative parameters* to specify additional options when performin
     />
   </TabItem>
   <TabItem value="go" label="Go">
+
+{/* TODO: Replace this placeholder with a Go v6 snippet once the full Go client `v6` release with generative search ships. */}
 
 ```go
 // Go support coming soon
@@ -492,6 +496,8 @@ You can use *generative parameters* to specify additional options when performin
   </TabItem>
   <TabItem value="go" label="Go">
 
+{/* TODO: Replace this placeholder with a Go v6 snippet once the full Go client `v6` release with generative search ships. */}
+
 ```go
 // Go support coming soon
 ```
@@ -554,6 +560,8 @@ The following fields are available for generative search with images:
     />
   </TabItem>
   <TabItem value="go" label="Go">
+
+{/* TODO: Replace this placeholder with a Go v6 snippet once the full Go client `v6` release with generative search ships. */}
 
 ```go
 // Go support coming soon
