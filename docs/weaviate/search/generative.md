@@ -51,7 +51,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
       language="ts"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
+  <TabItem value="go" label="Go">
 
 ```go
 // Go support coming soon
@@ -267,7 +267,7 @@ You can use *generative parameters* to specify additional options when performin
       language="ts"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
+  <TabItem value="go" label="Go">
 
 ```go
 // Go support coming soon
@@ -490,7 +490,7 @@ You can use *generative parameters* to specify additional options when performin
       language="ts"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
+  <TabItem value="go" label="Go">
 
 ```go
 // Go support coming soon
@@ -553,7 +553,7 @@ The following fields are available for generative search with images:
       language="ts"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
+  <TabItem value="go" label="Go">
 
 ```go
 // Go support coming soon

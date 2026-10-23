@@ -126,7 +126,7 @@ The ColModernVBERT model outputs multi-vector embeddings that can consume signif
       language="ts"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
+  <TabItem value="go" label="Go">
 
 ```go
 // Coming soon
@@ -168,7 +168,7 @@ If you prefer to store the raw multi-vector embeddings without MUVERA compressio
       language="ts"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
+  <TabItem value="go" label="Go">
 
 ```go
 // Coming soon

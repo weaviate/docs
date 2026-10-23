@@ -29,7 +29,7 @@ Start at the top of this table and take the first row that describes your stack.
 
 | Your application | Recommended path | Why |
 | --- | --- | --- |
-| **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
+| **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Go, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
 | **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. |
 | **No client library available** | **[REST Search API](#rest-search-api)** | For a no-code or BI platform, or a language with no official client such as PHP or Ruby. Plain-HTTP JSON endpoints whose request bodies mirror your GraphQL queries closely.
 
@@ -60,7 +60,7 @@ Your code sends GraphQL queries if it does any of the following:
 
 - **Calls the endpoint directly.** It sends HTTP requests to `/v1/graphql` or `/v1/graphql/batch`, for example with `curl` or a generic HTTP library.
 - **Uses a raw GraphQL helper.** Some clients can pass a GraphQL query string straight to the server. These helpers always use GraphQL, whatever the client generation.
-- **Uses an older client generation.** Older clients build their queries as GraphQL under the hood. The Go client does this in its current stable generation too.
+- **Uses an older client generation.** Older clients, including the Go client `v5`, build their queries as GraphQL under the hood.
 
 Check each client your code uses against this table:
 
@@ -70,7 +70,8 @@ Check each client your code uses against this table:
 | TypeScript `weaviate-client` | Search: `v3.0.0`. Aggregate: `v3.4.0`, against Weaviate `v1.29.0` or later | Aggregate falls back to GraphQL on Weaviate older than `v1.29.0`. |
 | Java `io.weaviate:client6` | `6.0.0` | Never. |
 | C# | `1.0.0` | Never. |
-| Go | `v6.0.0`. | `v5` and older |
+| Go `weaviate-go-client/v6` | `v6.0.0` | Never. |
+| Go `weaviate-go-client/v5` | Never | Always. `client.GraphQL().Get()`, `.Aggregate()`, `.Explore()` and `.Raw()` are its search API. |
 
 </details>
 
@@ -89,7 +90,7 @@ With GraphQL disabled, `POST /v1/graphql` and `POST /v1/graphql/batch` return HT
 {"error":[{"message":"graphql api is disabled"}]}
 ```
 
-Authorization runs first, so a caller without read permission gets `403` instead. The Python client and the current Go client return an error that carries the same status code and message.
+Authorization runs first, so a caller without read permission gets `403` instead. The Python client and the Go client `v5` return an error that carries the same status code and message.
 
 A new Weaviate Cloud cluster is already in this state, so you can also test against one.
 
@@ -99,8 +100,10 @@ A new Weaviate Cloud cluster is already in this state, so you can also test agai
 
 The client libraries cover every `Get` and `Aggregate` construct shown on this page, so each one has a direct equivalent. They query over gRPC, and give you typed results and generated request objects.
 
+{/* TODO: Remove the statement that the Go client `v6` has no RAG equivalent once the full `v6` release with generative search ships. Keep the `v5` sentence. */}
+
 :::info The Go client and GraphQL
-The current Go client builds its queries as GraphQL under the hood. The upcoming v6 client replaces that with gRPC.
+The Go client `v6` queries over gRPC, but it does not yet support retrieval augmented generation. It has no equivalent for `_additional { generate { ... } }`. The Go client `v5` builds its queries as GraphQL.
 :::
 
 ### GraphQL syntax mapping

@@ -21,11 +21,11 @@ import UserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.
 
 In the steps that follow, we’ll cover:
 
-1. **Connecting to Weaviate**
+1. **Connecting to Weaviate**  
   Ensure you're authenticated with a user who has the necessary role management permissions.
-1. **Creating custom roles**
+1. **Creating custom roles**  
   Define roles with specific permissions, such as read, write, tenant management, etc.
-1. **Assigning roles to new users**
+1. **Assigning roles to new users**  
   Apply these roles to a new user and limit their access across different resources.
 
 ![RBAC Tutorial Diagram](./_includes/rbac-tutorial-diagram.png)
@@ -36,11 +36,11 @@ By the end of this guide, you’ll have a clear roadmap for implementing RBAC in
 
 We are going to create the following roles:
 
-- **[Read and write permissions](#read-and-write-permissions):** `rw_role`
+- **[Read and write permissions](#read-and-write-permissions):** `rw_role`  
   Learn how to create a custom role that grants read and write access to collections and data, and assign it to a user.
-- **[Viewer permissions](#viewer-permissions):** `viewer_role`
+- **[Viewer permissions](#viewer-permissions):** `viewer_role`  
   Set up a role that restricts users to read-only access for specific collections.
-- **[Tenant permissions](#tenant-permissions):** `tenant_manager`
+- **[Tenant permissions](#tenant-permissions):** `tenant_manager`  
   Configure roles with permissions to manage tenants, including creating, reading, and updating tenant information.
 
 ## Prerequisites

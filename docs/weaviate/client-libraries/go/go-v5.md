@@ -34,7 +34,7 @@ go mod init github.com/weaviate-go-client
 go mod tidy
 ```
 
-To get the latest stable version of the Go client library, run the following:
+To install the `v5` client, run the following:
 
 ```bash
 go get github.com/weaviate/weaviate-go-client/v5

@@ -46,7 +46,7 @@ services:
 
 ### Client-side
 
-You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The [Go](../client-libraries/go/index.md) client sends batch imports over gRPC. Its gRPC search API is still experimental. The [new Go client](../client-libraries/go/index.md) uses gRPC for queries and batch imports.
+You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The [Go](../client-libraries/go/index.md) client uses gRPC for queries and batch imports. The [Go client `v5`](../client-libraries/go/go-v5.md) sends batch imports over gRPC, and its gRPC search API is experimental.
 
 Alternatively, you can use other tools, such as the `grpcurl` command-line tool, to interact with the gRPC API. Some options include:
 

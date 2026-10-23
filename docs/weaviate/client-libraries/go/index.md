@@ -31,17 +31,13 @@ The latest Go client is version `v||site.go_client_version||`.
 
 :::
 
-This page covers the Weaviate Go client `v6`, a ground-up redesign of the [Go client](./index.md) built around a collections-first API. For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
-
-For the minimum supported Go version, see the [`go` directive in `go.mod`](https://github.com/weaviate/weaviate-go-client/blob/v||site.go_client_version||/go.mod) for client `v||site.go_client_version||`.
+This page covers the Weaviate Go client `v6`, a ground-up redesign of the [`v5` Go client](./go-v5.md) built around a collections-first API. For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
 ## Installation
 
 ```bash
-go get github.com/weaviate/weaviate-go-client/v6@v6.0.0-rc.0
+go get github.com/weaviate/weaviate-go-client/v6
 ```
-
-Pin the version. An unpinned `go get` picks up whatever pre-release or final release is newest, and its API can differ from the one these docs describe.
 
 The client lives at the module root and its package is named `weaviate`:
 
@@ -96,16 +92,16 @@ The following code demonstrates how to:
   text={GoV6GetStartedCode}
   startMarker="// START GetStarted"
   endMarker="// END GetStarted"
-  language="go6full"
+  language="gofull"
 />
 
-For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section. Where an operation is not yet available in the `v6` client, the Go v6 tab shows a short "Coming soon" note.
+For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section. Where an operation is not yet available in the `v6` client, the Go tab shows a short "Coming soon" note.
 
 ## Releases
 
-Go to the [GitHub releases page](https://github.com/weaviate/weaviate-go-client/releases) to see the history of the Go client library releases and change logs. Pre-releases of `v6` are tagged there alongside the stable `v5` releases.
+Go to the [GitHub releases page](https://github.com/weaviate/weaviate-go-client/releases) to see the history of the Go client library releases and change logs.
 
-The client and server compatibility table on the [Go client page](./index.md#releases) tracks the `v5` client. For `v6`, see [Installation](#installation).
+The client and server compatibility table on the [Go (v5) page](./go-v5.md#releases) tracks the `v5` client. For `v6`, see [Weaviate version compatibility](#weaviate-version-compatibility).
 
 ## Code examples & further resources
 

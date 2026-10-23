@@ -52,13 +52,6 @@ The [Weaviate Embeddings multimodal model](/weaviate/model-providers/weaviate/em
       language="java"
     />
   </TabItem>
-  <TabItem value="gov5" label="Go (v5)">
-
-```go
-// Go support coming soon
-```
-
-</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CompressionCode}
