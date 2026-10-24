@@ -16,7 +16,7 @@ import TSConnect from "!!raw-loader!../\_includes/provider.connect.weaviate.ts";
 import GoConnect from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go";
 import PyCode from "!!raw-loader!../\_includes/provider.vectorizer.py";
 import TSCode from "!!raw-loader!../\_includes/provider.vectorizer.ts";
-import GoCode from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
+import GoV5Code from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
 import GoV6Code from "!!raw-loader!/\_includes/code/go-v6/embeddings_test.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.cs";
@@ -61,7 +61,7 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
       text={GoConnect}
       startMarker="// START WeaviateInstantiation"
@@ -108,15 +108,15 @@ Your Weaviate Cloud credentials are automatically used to authorize your access 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicVectorizerWeaviate"
       endMarker="// END BasicVectorizerWeaviate"
       language="goraw"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START BasicVectorizerWeaviate"
@@ -163,15 +163,15 @@ You can specify one of the [available models](#available-models) for the vectori
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START VectorizerWeaviateCustomModel"
       endMarker="// END VectorizerWeaviateCustomModel"
       language="goraw"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START VectorizerWeaviateCustomModel"
@@ -234,9 +234,9 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BatchImportExample"
       endMarker="// END BatchImportExample"
       language="goraw"
@@ -293,9 +293,9 @@ The query below returns the `n` most similar objects from the database, set by `
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NearTextExample"
       endMarker="// END NearTextExample"
       language="goraw"
@@ -347,9 +347,9 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="ts"
     />
   </TabItem>
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="goraw"

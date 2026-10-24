@@ -12,7 +12,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.create.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
 
@@ -43,15 +43,15 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// CreateObject START"
       endMarker="// CreateObject END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CreateObject"
@@ -113,15 +113,15 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// CreateObjectWithVector START"
       endMarker="// CreateObjectWithVector END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CreateWithVector"
@@ -211,15 +211,15 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// CreateObjectWithId START"
       endMarker="// CreateObjectWithId END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CreateWithId"
@@ -270,14 +270,14 @@ A deterministic ID is not random: the same object value always generates the sam
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 ```go
 // This feature is under development
 ```
 
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START CreateWithDeterministicId"
@@ -398,15 +398,15 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// ValidateObject START"
       endMarker="// ValidateObject END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ValidateObject"

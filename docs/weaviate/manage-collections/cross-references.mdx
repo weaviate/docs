@@ -15,7 +15,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsCrossReferencesTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsCrossReferencesTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/cross_references_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -99,7 +99,7 @@ It is also possible to add a cross-reference property to an existing collection 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START TwoWayCategory2"
@@ -185,15 +185,15 @@ Specify the required id and properties for the source and the target.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START OneWay"
       endMarker="// END OneWay"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START OneWay"
@@ -316,7 +316,7 @@ Modify `JeopardyCategory` to add the reference to `JeopardyQuestion`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START TwoWayCategory2"
@@ -361,15 +361,15 @@ And add the cross-references:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// TwoWay Go"
       endMarker="// END TwoWay Go"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// TwoWay Go"
@@ -416,15 +416,15 @@ Weaviate allows creation of multiple cross-references from one source object.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// Multiple Go"
       endMarker="// END Multiple Go"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// Multiple Go"
@@ -510,15 +510,15 @@ Deleting a cross-reference with the same parameters used to define the cross-ref
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// Delete Go"
       endMarker="// END Delete Go"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// Delete Go"
@@ -575,15 +575,15 @@ The targets of a cross-reference can be updated.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// Update Go"
       endMarker="// END Update Go"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// Update Go"

@@ -11,7 +11,7 @@ import Rq4bit from '/_includes/feature-notes/rq-4bit.mdx';
 import Rq1bit from '/_includes/feature-notes/rq-1bit.mdx';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
@@ -54,15 +54,15 @@ RQ can be enabled at collection creation time through the collection definition:
         language="ts"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START EnableRQ"
         endMarker="// END EnableRQ"
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START EnableRQ"
@@ -125,15 +125,15 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="csharp"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START 8BitUpdateSchema"
         endMarker="// END 8BitUpdateSchema"
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START RQUpdateSchema"
@@ -176,9 +176,9 @@ A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widt
         language="ts"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START 4BitEnableRQ"
         endMarker="// END 4BitEnableRQ"
         language="go"
@@ -215,9 +215,9 @@ A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widt
         language="py"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START 4BitUpdateSchema"
         endMarker="// END 4BitUpdateSchema"
         language="go"
@@ -268,15 +268,15 @@ RQ can be enabled at collection creation time through the collection definition:
         language="ts"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START 1BitEnableRQ"
         endMarker="// END 1BitEnableRQ"
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START 1BitEnableRQ"
@@ -323,15 +323,15 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="ts"
       />
   </TabItem>
-      <TabItem value="go" label="Go">
+      <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START 1BitUpdateSchema"
         endMarker="// END 1BitUpdateSchema"
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START RQ1BitUpdateSchema"
@@ -384,15 +384,15 @@ RQ supports the `cosine`, `dot` and `l2-squared` distance metrics. Other distanc
         language="ts"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START RQWithOptions"
         endMarker="// END RQWithOptions"
         language="go"
       />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoV6CompressionCode}
         startMarker="// START RQWithOptions"

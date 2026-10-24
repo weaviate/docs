@@ -11,7 +11,7 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import AliasesGoV6Code from "!!raw-loader!/_includes/code/go-v6/aliases_test.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsAliasTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsAliasTest.cs";
@@ -47,15 +47,15 @@ To create an alias, specify the alias name and the target collection it should p
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// CreateAlias START"
       endMarker="// CreateAlias END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START CreateAlias"
@@ -110,15 +110,15 @@ Retrieve all aliases in your Weaviate instance.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// ListAllAliases START"
       endMarker="// ListAllAliases END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START ListAllAliases"
@@ -165,15 +165,15 @@ Get all aliases that point to a specific collection.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// ListCollectionAliases START"
       endMarker="// ListCollectionAliases END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START ListCollectionAliases"
@@ -220,15 +220,15 @@ Retrieve information about a specific alias.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// GetAlias START"
       endMarker="// GetAlias END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START GetAlias"
@@ -275,15 +275,15 @@ Change the target collection that an alias points to. This operation is atomic a
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// UpdateAlias START"
       endMarker="// UpdateAlias END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START UpdateAlias"
@@ -343,15 +343,15 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// DeleteAlias START"
       endMarker="// DeleteAlias END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START DeleteAlias"
@@ -404,15 +404,15 @@ Once created, aliases can be used instead of collection names in all object-rela
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// UseAlias START"
       endMarker="// UseAlias END"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={AliasesGoV6Code}
       startMarker="// START UseAlias"

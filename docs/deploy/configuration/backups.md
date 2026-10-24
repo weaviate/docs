@@ -13,7 +13,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/configure.backups.py';
 import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.backup.ts';
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
 import BackupGoV6Code from '!!raw-loader!/_includes/code/go-v6/backup_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
@@ -87,15 +87,15 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START CreateBackup"
@@ -392,15 +392,15 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START CreateBackup"
@@ -484,15 +484,15 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START StatusCreateBackup"
       endMarker="// END StatusCreateBackup"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START StatusCreateBackup"
@@ -689,15 +689,15 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CancelBackup"
       endMarker="// END CancelBackup"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START CancelBackup"
@@ -750,15 +750,15 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RestoreBackup"
       endMarker="// END RestoreBackup"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START RestoreBackup"
@@ -816,15 +816,15 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START StatusRestoreBackup"
       endMarker="// END StatusRestoreBackup"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={BackupGoV6Code}
       startMarker="// START StatusRestoreBackup"

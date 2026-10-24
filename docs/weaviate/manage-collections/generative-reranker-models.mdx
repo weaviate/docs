@@ -12,7 +12,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/generative_reranker_test.go";
 
 :::tip Embedding models / Vectorizers
@@ -47,15 +47,15 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetReranker"
       endMarker="// END SetReranker"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START SetReranker"
@@ -106,15 +106,15 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START UpdateReranker"
       endMarker="// END UpdateReranker"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START UpdateReranker"
@@ -166,15 +166,15 @@ Specify a `generative` model integration for a collection (for RAG).
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetGenerative"
       endMarker="// END SetGenerative"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START SetGenerative"
@@ -225,15 +225,15 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START UpdateGenerative"
       endMarker="// END UpdateGenerative"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START UpdateGenerative"

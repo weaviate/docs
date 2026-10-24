@@ -12,7 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.hybrid-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.ts';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
 import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/hybrid_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchHybridTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchHybridTest.cs";
@@ -49,15 +49,15 @@ Combine the results of a vector search and a keyword search. The search uses a s
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START Basic"
       endMarker="// END Basic"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridBasic"
@@ -187,15 +187,15 @@ To see the object rankings, set the `explain score` field in your query. The sea
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithScore"
       endMarker="// END WithScore"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithScore"
@@ -269,15 +269,15 @@ If you do not set `alpha`, the effective weighting depends on your client. See [
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithAlpha"
       endMarker="// END WithAlpha"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithAlpha"
@@ -349,15 +349,15 @@ The output is like this:
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithFusionType"
       endMarker="// END WithFusionType"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithFusionType"
@@ -445,7 +445,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithBM25OperatorOrWithMin"
@@ -500,7 +500,7 @@ With the `and` operator, the search returns objects where all tokens in the sear
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithBM25OperatorAnd"
@@ -555,15 +555,15 @@ The keyword search portion of hybrid search can be directed to only search a sub
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithProperties"
       endMarker="// END WithProperties"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithProperties"
@@ -632,15 +632,15 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithPropertyWeighting"
       endMarker="// END WithPropertyWeighting"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithPropertyWeighting"
@@ -709,15 +709,15 @@ The vector component of hybrid search can use a query string or a query vector. 
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithVector"
       endMarker="// END WithVector"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithVector"
@@ -933,15 +933,15 @@ Optionally, use `offset` to paginate the results.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START limit"
       endMarker="// END limit"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridLimit"
@@ -1004,15 +1004,15 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START autocut"
       endMarker="// END autocut"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridAutocut"
@@ -1081,15 +1081,15 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
   language="ts"
 />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START WithFilter"
       endMarker="// END WithFilter"
       language="go"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START HybridWithFilter"
