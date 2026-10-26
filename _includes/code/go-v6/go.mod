@@ -1,9 +1,9 @@
 module weaviate.io/docs-go-v6
 
-go 1.26.0
+go 1.26.10
 
 // TODO: pin v6.0.0 once released, then run `go mod tidy` and commit go.sum.
-require github.com/weaviate/weaviate-go-client/v6 v6.0.0-rc.0
+require github.com/weaviate/weaviate-go-client/v6 v6.0.0
 
 require (
 	github.com/google/uuid v1.6.0
