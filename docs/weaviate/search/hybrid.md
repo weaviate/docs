@@ -54,7 +54,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
       text={GoV5Code}
       startMarker="// START Basic"
       endMarker="// END Basic"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -192,7 +192,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
       text={GoV5Code}
       startMarker="// START WithScore"
       endMarker="// END WithScore"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -274,7 +274,7 @@ If you do not set `alpha`, the effective weighting depends on your client. See [
       text={GoV5Code}
       startMarker="// START WithAlpha"
       endMarker="// END WithAlpha"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -354,7 +354,7 @@ The output is like this:
       text={GoV5Code}
       startMarker="// START WithFusionType"
       endMarker="// END WithFusionType"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -560,7 +560,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
       text={GoV5Code}
       startMarker="// START WithProperties"
       endMarker="// END WithProperties"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -637,7 +637,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       text={GoV5Code}
       startMarker="// START WithPropertyWeighting"
       endMarker="// END WithPropertyWeighting"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -714,7 +714,7 @@ The vector component of hybrid search can use a query string or a query vector. 
       text={GoV5Code}
       startMarker="// START WithVector"
       endMarker="// END WithVector"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -938,7 +938,7 @@ Optionally, use `offset` to paginate the results.
       text={GoV5Code}
       startMarker="// START limit"
       endMarker="// END limit"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -1009,7 +1009,7 @@ To learn more about the different fusion algorithms, visit the [search operators
       text={GoV5Code}
       startMarker="// START autocut"
       endMarker="// END autocut"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -1086,7 +1086,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       text={GoV5Code}
       startMarker="// START WithFilter"
       endMarker="// END WithFilter"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">

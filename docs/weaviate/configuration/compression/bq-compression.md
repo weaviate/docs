@@ -56,7 +56,7 @@ BQ can be enabled at collection creation time through the collection definition:
       text={GoV5Code}
       startMarker="// START EnableBQ"
       endMarker="// END EnableBQ"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -107,7 +107,7 @@ BQ can also be enabled for an existing collection by updating the collection def
         text={GoV5Code}
         startMarker="// START UpdateSchema"
         endMarker="// END UpdateSchema"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -168,7 +168,7 @@ For example:
       text={GoV5Code}
       startMarker="// START BQWithOptions"
       endMarker="// END BQWithOptions"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">

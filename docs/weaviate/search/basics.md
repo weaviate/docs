@@ -51,7 +51,7 @@ You can get objects without specifying any parameters. This returns objects in a
       text={GoV5Code}
       startMarker="// START BasicGet"
       endMarker="// END BasicGet"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -135,7 +135,7 @@ Use `limit` to set a fixed maximum number of objects to return.
       text={GoV5Code}
       startMarker="// START GetWithLimit"
       endMarker="// END GetWithLimit"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -214,7 +214,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
       text={GoV5Code}
       startMarker="// START GetWithOffset"
       endMarker="// END GetWithOffset"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -293,7 +293,7 @@ You can specify which object properties to return. By default, all properties an
       text={GoV5Code}
       startMarker="// START GetProperties"
       endMarker="// END GetProperties"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -370,7 +370,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
       text={GoV5Code}
       startMarker="// START GetObjectVector"
       endMarker="// END GetObjectVector"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -447,7 +447,7 @@ You can retrieve the object `id` (uuid).
       text={GoV5Code}
       startMarker="// START GetObjectId"
       endMarker="// END GetObjectId"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -532,7 +532,7 @@ To retrieve properties from cross-referenced objects, specify:
       text={GoV5Code}
       startMarker="// START GetWithCrossRefs"
       endMarker="// END GetWithCrossRefs"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -609,7 +609,7 @@ You can specify metadata fields to be returned.
       text={GoV5Code}
       startMarker="// START GetWithMetadata"
       endMarker="// END GetWithMetadata"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -678,7 +678,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
       text={GoV5Code}
       startMarker="// START MultiTenancy"
       endMarker="// END MultiTenancy"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">

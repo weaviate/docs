@@ -142,7 +142,7 @@ Follow these steps to manually enable PQ.
       text={GoV5Code}
       startMarker="// START InitialSchema"
       endMarker="// END InitialSchema"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -211,7 +211,7 @@ To enable PQ, update your collection definition as shown below. For additional c
       text={GoV5Code}
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -310,7 +310,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       text={GoV5Code}
       startMarker="// START GetSchema"
       endMarker="// END GetSchema"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">

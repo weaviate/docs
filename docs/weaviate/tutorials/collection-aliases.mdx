@@ -98,7 +98,7 @@ First, connect to your Weaviate instance using your preferred client library.
       text={GoV5Code}
       startMarker="// START ConnectToWeaviate"
       endMarker="// END ConnectToWeaviate"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -153,7 +153,7 @@ Let's create our initial products collection and populate it with data.
       text={GoV5Code}
       startMarker="// START Step1CreateOriginal"
       endMarker="// END Step1CreateOriginal"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -208,7 +208,7 @@ Now create an alias that your application will use. This decouples your applicat
       text={GoV5Code}
       startMarker="// START Step2CreateAlias"
       endMarker="// END Step2CreateAlias"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -263,7 +263,7 @@ Your application code should reference the alias, not the underlying collection.
       text={GoV5Code}
       startMarker="// START MigrationUseAlias"
       endMarker="// END MigrationUseAlias"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -320,7 +320,7 @@ Now let's create a new version of the collection with an additional field (e.g.,
       text={GoV5Code}
       startMarker="// START Step3NewCollection"
       endMarker="// END Step3NewCollection"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -375,7 +375,7 @@ Copy data from the old collection to the new one, adding default values for new 
       text={GoV5Code}
       startMarker="// START Step4MigrateData"
       endMarker="// END Step4MigrateData"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -430,7 +430,7 @@ This is the magic moment - update the alias to point to the new collection. This
       text={GoV5Code}
       startMarker="// START Step5UpdateAlias"
       endMarker="// END Step5UpdateAlias"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -485,7 +485,7 @@ After verifying that everything works correctly with the new collection, you can
       text={GoV5Code}
       startMarker="// START Step6Cleanup"
       endMarker="// END Step6Cleanup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">

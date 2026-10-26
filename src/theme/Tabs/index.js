@@ -44,14 +44,6 @@ const DOCS_URL_PRESETS = {
   // },
 };
 
-// API reference links by tab value. DOC_SYSTEMS is keyed by FilteredTextBlock
-// `language`, where `go` means v5 code; the `go` tab holds v6 code instead.
-const TAB_DOC_SYSTEMS = {
-  ...DOC_SYSTEMS,
-  go: DOC_SYSTEMS.go6,
-  gov5: DOC_SYSTEMS.go,
-};
-
 // Tab values to try, in order, when a tab group has no tab for the selected
 // language. `go6` is a selection stored while the Go v6 tab was in beta.
 const LANGUAGE_FALLBACKS = {
@@ -252,7 +244,7 @@ const CodeDropdownTabs = ({
     ];
   }
 
-  const docSystem = TAB_DOC_SYSTEMS[selectedValue];
+  const docSystem = DOC_SYSTEMS[selectedValue];
   const resolvedDocsUrl = typeof docsUrl === "string" ? DOCS_URL_PRESETS[docsUrl] : docsUrl;
   const overrideDocsUrl = resolvedDocsUrl && resolvedDocsUrl[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";

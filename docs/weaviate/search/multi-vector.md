@@ -64,7 +64,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
       text={GoV5Code}
       startMarker="// START MultiBasic"
       endMarker="// END MultiBasic"
-      language="go"
+      language="gov5"
     />
     <details>
       <summary>Complete code</summary>
@@ -72,7 +72,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
         text={GoV5Code}
         startMarker="// START BasicFull"
         endMarker="// END BasicFull"
-        language="go"
+        language="gov5"
       />
     </details>
   </TabItem>

@@ -59,7 +59,7 @@ RQ can be enabled at collection creation time through the collection definition:
         text={GoV5Code}
         startMarker="// START EnableRQ"
         endMarker="// END EnableRQ"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -130,7 +130,7 @@ RQ can also be enabled for an existing collection by updating the collection def
         text={GoV5Code}
         startMarker="// START 8BitUpdateSchema"
         endMarker="// END 8BitUpdateSchema"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -181,7 +181,7 @@ A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widt
         text={GoV5Code}
         startMarker="// START 4BitEnableRQ"
         endMarker="// END 4BitEnableRQ"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -220,7 +220,7 @@ A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widt
         text={GoV5Code}
         startMarker="// START 4BitUpdateSchema"
         endMarker="// END 4BitUpdateSchema"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -273,7 +273,7 @@ RQ can be enabled at collection creation time through the collection definition:
         text={GoV5Code}
         startMarker="// START 1BitEnableRQ"
         endMarker="// END 1BitEnableRQ"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -328,7 +328,7 @@ RQ can also be enabled for an existing collection by updating the collection def
         text={GoV5Code}
         startMarker="// START 1BitUpdateSchema"
         endMarker="// END 1BitUpdateSchema"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -389,7 +389,7 @@ RQ supports the `cosine`, `dot` and `l2-squared` distance metrics. Other distanc
         text={GoV5Code}
         startMarker="// START RQWithOptions"
         endMarker="// END RQWithOptions"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">

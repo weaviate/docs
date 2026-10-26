@@ -92,7 +92,7 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
       text={GoV5Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -397,7 +397,7 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
       text={GoV5Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -489,7 +489,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       text={GoV5Code}
       startMarker="// START StatusCreateBackup"
       endMarker="// END StatusCreateBackup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -694,7 +694,7 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       text={GoV5Code}
       startMarker="// START CancelBackup"
       endMarker="// END CancelBackup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -755,7 +755,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       text={GoV5Code}
       startMarker="// START RestoreBackup"
       endMarker="// END RestoreBackup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -821,7 +821,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       text={GoV5Code}
       startMarker="// START StatusRestoreBackup"
       endMarker="// END StatusRestoreBackup"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="go" label="Go">

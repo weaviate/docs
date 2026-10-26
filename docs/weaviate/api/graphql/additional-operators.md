@@ -327,7 +327,7 @@ The sort function takes either an object, or an array of objects, that describe 
       text={GoV5Code}
       startMarker="// START Sorting"
       endMarker="// END Sorting"
-      language="go"
+      language="gov5"
     />
   </TabItem>
 
@@ -404,7 +404,7 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
       text={GoV5Code}
       startMarker="// START MultiplePropSorting"
       endMarker="// END MultiplePropSorting"
-      language="go"
+      language="gov5"
     />
   </TabItem>
 
@@ -456,7 +456,7 @@ To sort with metadata, add an underscore to the property name.
       text={GoV5Code}
       startMarker="// START AdditionalPropSorting"
       endMarker="// END AdditionalPropSorting"
-      language="go"
+      language="gov5"
     />
   </TabItem>
 

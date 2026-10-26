@@ -49,7 +49,7 @@ SQ can be enabled at collection creation time through the collection definition:
         text={GoV5Code}
         startMarker="// START EnableSQ"
         endMarker="// END EnableSQ"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -108,7 +108,7 @@ SQ can also be enabled for an existing collection by updating the collection def
         text={GoV5Code}
         startMarker="// START UpdateSchema"
         endMarker="// END UpdateSchema"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -167,7 +167,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         text={GoV5Code}
         startMarker="// START SQWithOptions"
         endMarker="// END SQWithOptions"
-        language="go"
+        language="gov5"
       />
   </TabItem>
   <TabItem value="go" label="Go">
