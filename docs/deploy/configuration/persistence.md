@@ -85,9 +85,13 @@ Starting with `v1.12.0` there are two levels of disk usage notifications and act
 | `DISK_USE_WARNING_PERCENTAGE` | `80` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk |
 | `DISK_USE_READONLY_PERCENTAGE` | `90` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. |
 
-If a shard was marked `READONLY` due to disk pressure and you want to mark the
-shard as ready again (either because you have made more space available or
-changed the thresholds) you can use the <SkipLink href="/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> to do so.
+Starting with `v1.36.0`, shards marked `READONLY` because of disk pressure go back to `READY` automatically once disk usage drops below `DISK_USE_READONLY_PERCENTAGE`, for example after you free space, grow the volume or raise the threshold. If `MEMORY_READONLY_PERCENTAGE` is set, memory usage must be below its threshold too. A shard you set to `READONLY` yourself stays read-only.
+
+:::caution
+Don't set these shards to `READY` through the <SkipLink href="/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> while the disk is still full: they will accept writes on a full disk.
+:::
+
+On versions before `v1.36.0`, use the Shards API to mark the shards as `READY` again once you have made more space available or changed the thresholds.
 
 ## Disk access method
 
