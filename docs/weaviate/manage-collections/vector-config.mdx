@@ -14,7 +14,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
@@ -53,15 +53,15 @@ Collection level settings override default values and general configuration para
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithVectorizer"
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START CreateCollectionWithVectorizer"
@@ -112,15 +112,15 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ModuleSettings"
       endMarker="// END ModuleSettings"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START VectorizerSettings"
@@ -169,15 +169,15 @@ As such, each named vector configuration can include its own vectorizer and vect
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithNamedVectors"
       endMarker="// END CreateCollectionWithNamedVectors"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START CreateCollectionWithNamedVectors"
@@ -227,13 +227,6 @@ Named vectors can be added to a collection that already has named vectors, to a 
     />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
-  </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START AddNamedVectors"
@@ -331,15 +324,15 @@ The [vector index type](../config-refs/indexing/vector-index.mdx) can be set for
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetVectorIndexType"
       endMarker="// END SetVectorIndexType"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START SetVectorIndexType"
@@ -395,15 +388,15 @@ Set [vector index parameters](../config-refs/indexing/vector-index.mdx) such as 
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetVectorIndexParams"
       endMarker="// END SetVectorIndexParams"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START SetVectorIndexParams"
@@ -463,15 +456,15 @@ Configure individual properties in a collection. Each property can have it's own
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START PropModuleSettings"
@@ -518,15 +511,15 @@ If you choose to bring your own vectors, you should specify the `distance metric
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START DistanceMetric"
       endMarker="// END DistanceMetric"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START DistanceMetric"

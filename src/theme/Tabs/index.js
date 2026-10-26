@@ -26,8 +26,8 @@ const LANGUAGE_CONFIG = {
     label: "JavaScript/TypeScript (Agents)",
     icon: "/img/site/logo-ts.svg",
   },
-  go: { label: "Go", icon: "/img/site/logo-go.svg" },
-  go6: { label: "Go v6 (beta)", icon: "/img/site/logo-go.svg" },
+  go: { label: "Go (v6)", icon: "/img/site/logo-go.svg" },
+  gov5: { label: "Go (v5)", icon: "/img/site/logo-go.svg" },
   java: { label: "Java", icon: "/img/site/logo-java.svg" },
   csharp: { label: "C#", icon: "/img/site/logo-csharp.svg" },
   curl: { label: "Curl", icon: "/img/site/logo-curl.svg" },
@@ -42,6 +42,32 @@ const DOCS_URL_PRESETS = {
   //   py_engram: "https://github.com/weaviate/engram-python-sdk",
   //   py_engram_async: "https://github.com/weaviate/engram-python-sdk",
   // },
+};
+
+// Tab values to try, in order, when a tab group has no tab for the selected
+// language. `go6` is a selection stored while the Go v6 tab was in beta.
+const LANGUAGE_FALLBACKS = {
+  py: ["py_agents", "py_engram"],
+  py_agents: ["py", "py_engram"],
+  py_engram: ["py", "py_agents"],
+  py_engram_async: ["py_engram", "py", "py_agents"],
+  ts: ["ts_agents"],
+  ts_agents: ["ts"],
+  go: ["gov5"],
+  gov5: ["go"],
+  go6: ["go", "gov5"],
+};
+
+// Returns the language itself when no fallback applies, so the dropdown shows
+// it as a disabled option above the available tabs.
+const resolveTabValue = (language, availableLangs) => {
+  if (availableLangs.includes(language)) {
+    return language;
+  }
+  const fallback = (LANGUAGE_FALLBACKS[language] || []).find((value) =>
+    availableLangs.includes(value)
+  );
+  return fallback || language;
 };
 
 // Context for sharing selected language across all code dropdowns
@@ -156,63 +182,10 @@ const CodeDropdownTabs = ({
     const targetLang = groupValue || globalValue;
 
     if (targetLang) {
-      const availableLangs = tabValues.map((t) => t.value);
-
-      if (availableLangs.includes(targetLang)) {
-        return targetLang;
-      }
-
-      if (targetLang === "py" && availableLangs.includes("py_agents")) {
-        return "py_agents";
-      }
-      if (targetLang === "py_agents" && availableLangs.includes("py")) {
-        return "py";
-      }
-
-      if (targetLang === "py" && availableLangs.includes("py_engram")) {
-        return "py_engram";
-      }
-      if (targetLang === "py_engram" && availableLangs.includes("py")) {
-        return "py";
-      }
-      if (targetLang === "py_agents" && availableLangs.includes("py_engram")) {
-        return "py_engram";
-      }
-      if (targetLang === "py_engram" && availableLangs.includes("py_agents")) {
-        return "py_agents";
-      }
-
-      if (
-        targetLang === "py_engram_async" &&
-        availableLangs.includes("py_engram")
-      ) {
-        return "py_engram";
-      }
-      if (targetLang === "py_engram_async" && availableLangs.includes("py")) {
-        return "py";
-      }
-      if (
-        targetLang === "py_engram_async" &&
-        availableLangs.includes("py_agents")
-      ) {
-        return "py_agents";
-      }
-
-      if (targetLang === "ts" && availableLangs.includes("ts_agents")) {
-        return "ts_agents";
-      }
-      if (targetLang === "ts_agents" && availableLangs.includes("ts")) {
-        return "ts";
-      }
-
-      if (targetLang === "go6" && availableLangs.includes("go")) {
-        return "go";
-      }
-      if (targetLang === "go" && availableLangs.includes("go6")) {
-        return "go6";
-      }
-
-      return targetLang;
+      return resolveTabValue(
+        targetLang,
+        tabValues.map((t) => t.value)
+      );
     }
 
     return defaultValue || tabValues[0]?.value;
@@ -226,71 +199,12 @@ const CodeDropdownTabs = ({
         return;
       }
 
-      const newGlobalLang = event.detail;
-      const availableLangs = tabValues.map((t) => t.value);
-      let valueToSet = newGlobalLang;
-
-      if (!availableLangs.includes(newGlobalLang)) {
-        if (newGlobalLang === "py" && availableLangs.includes("py_agents")) {
-          valueToSet = "py_agents";
-        } else if (
-          newGlobalLang === "py_agents" &&
-          availableLangs.includes("py")
-        ) {
-          valueToSet = "py";
-        } else if (
-          newGlobalLang === "py" &&
-          availableLangs.includes("py_engram")
-        ) {
-          valueToSet = "py_engram";
-        } else if (
-          newGlobalLang === "py_engram" &&
-          availableLangs.includes("py")
-        ) {
-          valueToSet = "py";
-        } else if (
-          newGlobalLang === "py_agents" &&
-          availableLangs.includes("py_engram")
-        ) {
-          valueToSet = "py_engram";
-        } else if (
-          newGlobalLang === "py_engram" &&
-          availableLangs.includes("py_agents")
-        ) {
-          valueToSet = "py_agents";
-        } else if (
-          newGlobalLang === "py_engram_async" &&
-          availableLangs.includes("py_engram")
-        ) {
-          valueToSet = "py_engram";
-        } else if (
-          newGlobalLang === "py_engram_async" &&
-          availableLangs.includes("py")
-        ) {
-          valueToSet = "py";
-        } else if (
-          newGlobalLang === "py_engram_async" &&
-          availableLangs.includes("py_agents")
-        ) {
-          valueToSet = "py_agents";
-        } else if (
-          newGlobalLang === "ts" &&
-          availableLangs.includes("ts_agents")
-        ) {
-          valueToSet = "ts_agents";
-        } else if (
-          newGlobalLang === "ts_agents" &&
-          availableLangs.includes("ts")
-        ) {
-          valueToSet = "ts";
-        } else if (newGlobalLang === "go6" && availableLangs.includes("go")) {
-          valueToSet = "go";
-        } else if (newGlobalLang === "go" && availableLangs.includes("go6")) {
-          valueToSet = "go6";
-        }
-      }
-
-      setSelectedValue(valueToSet);
+      setSelectedValue(
+        resolveTabValue(
+          event.detail,
+          tabValues.map((t) => t.value)
+        )
+      );
     };
 
     window.addEventListener("codeLanguageChange", handleLanguageChange);

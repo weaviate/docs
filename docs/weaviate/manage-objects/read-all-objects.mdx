@@ -13,7 +13,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-obje
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadAllTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadAllTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/read_all_objects_test.go";
 
 Weaviate provides the necessary APIs to iterate through all your data. This is useful when you want to manually copy/migrate your data (and vector embeddings) from one place to another.
@@ -45,15 +45,15 @@ The following code iterates through all objects, providing the properties and id
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ReadAllProps"
       endMarker="// END ReadAllProps"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ReadAllProps"
@@ -104,7 +104,7 @@ Read through all data including the vectors. (Also applicable where [named vecto
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ReadAllVectors"
@@ -155,7 +155,7 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ReadAllTenants"

@@ -3,7 +3,7 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.query.rag.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.query.rag.ts";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_3/quickstart.short.query.rag.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_3/quickstart.short.query.rag.go";
 import GoV6Code from "!!raw-loader!/_includes/code/go-v6/quickstart_test.go";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/quickstart/QuickstartQueryNearTextRAG.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/QuickstartQueryNearTextRAG.cs";
@@ -25,18 +25,20 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/quickstart/Quickstar
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RAG"
       endMarker="// END RAG"
       language="goraw"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
 
-:::note Go client `v6` (pre-release)
-Generative (RAG) queries are not yet available in the [`v6` Go client](/weaviate/client-libraries/go/go-v6).
+{/* TODO: Remove this note and add the Go v6 RAG snippet once the full Go client `v6` release with generative search ships. */}
+
+:::note Go client `v6`
+Generative (RAG) queries are not yet available in the [`v6` Go client](/weaviate/client-libraries/go).
 :::
 
     <FilteredTextBlock

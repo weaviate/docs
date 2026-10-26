@@ -12,7 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/search.similarity.py';
 import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.similarity-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/search_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchSimilarityTest.cs";
@@ -45,15 +45,15 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetNearText"
       endMarker="// END GetNearText"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GetNearText"
@@ -170,15 +170,15 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetNearObject"
       endMarker="// END GetNearObject"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START NearObject"
@@ -242,9 +242,9 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetNearVector"
       endMarker="// END GetNearVector"
       language="gonew"
@@ -260,7 +260,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 </details>
 
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GetNearVector"
@@ -315,15 +315,15 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START NamedVectorNearText"
@@ -392,15 +392,15 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetWithDistance"
       endMarker="// END GetWithDistance"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GetWithDistance"
@@ -468,15 +468,15 @@ Optionally, use `offset` to paginate the results.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetLimitOffset"
       endMarker="// END GetLimitOffset"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GetLimitOffset"
@@ -531,15 +531,15 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START Autocut"
       endMarker="// END Autocut"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START Autocut"
@@ -608,15 +608,15 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetWithGroupBy"
       endMarker="// END GetWithGroupBy"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GetWithGroupBy"
@@ -685,15 +685,15 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetWithFilter"
       endMarker="// END GetWithFilter"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START GetWithFilter"

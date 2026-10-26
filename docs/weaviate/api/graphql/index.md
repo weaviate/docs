@@ -12,7 +12,7 @@ import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
 
 ## API
 
-This section is the reference for Weaviate's [GraphQL](https://graphql.org/) query API. To search your data, use a Weaviate [client library](../../client-libraries/index.mdx). The current Python, TypeScript, Java and C# clients query over the [gRPC API](../grpc.md).
+This section is the reference for Weaviate's [GraphQL](https://graphql.org/) query API. To search your data, use a Weaviate [client library](../../client-libraries/index.mdx). The current Python, TypeScript, Go, Java, and C# clients query over the [gRPC API](../grpc.md).
 
 To move existing GraphQL queries to a client library, the web client or the REST Search API, see [Migrating from the GraphQL API](./migration.mdx).
 

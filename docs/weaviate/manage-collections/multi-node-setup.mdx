@@ -12,7 +12,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
 
 ## Replication settings
@@ -43,15 +43,15 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     language="ts"
   />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CollectionConfigCode}
       startMarker="// START AllReplicationSettings"
@@ -178,15 +178,15 @@ Configure sharding per collection.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ShardingSettings"
       endMarker="// END ShardingSettings"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CollectionConfigCode}
       startMarker="// START ShardingSettings"

@@ -9,7 +9,7 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
 import GoV6ManageCode from "!!raw-loader!/_includes/code/go-v6/manage_collections_test.go";
 import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
@@ -136,7 +136,7 @@ This code example shows how to configure the collection parameters through a cli
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START CreateCollectionExample"
@@ -256,7 +256,7 @@ This code example shows how to configure the property parameters through a clien
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6ManageCode}
       startMarker="// START CreateCollectionWithProperties"
@@ -669,15 +669,15 @@ This code example shows how to configure the vectorizer parameters for a single 
       language="csharp"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithVectorizer"
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START CreateCollectionWithVectorizer"
@@ -736,15 +736,15 @@ This code example shows how to configure multiple named vectors through a client
       language="csharp"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithNamedVectors"
       endMarker="// END CreateCollectionWithNamedVectors"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6VectorCode}
       startMarker="// START CreateCollectionWithNamedVectors"
@@ -907,7 +907,7 @@ This code example shows how to configure the replication parameters through a cl
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CollectionConfigCode}
       startMarker="// START AllReplicationSettings"
@@ -997,7 +997,7 @@ This code example shows how to configure the sharding parameters through a clien
       language="ts"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6CollectionConfigCode}
       startMarker="// START ShardingSettings"
@@ -1070,7 +1070,7 @@ This code example enables multi-tenancy on a new collection. `autoTenantCreation
       language="tsindent"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6TenantsCode}
       startMarker="// START EnableMultiTenancy"

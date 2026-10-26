@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/search.image.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.image.ts';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-image_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-image_test.go';
 import GoV6Code from '!!raw-loader!/\_includes/code/go-v6/search_image_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchImageTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchImageTest.cs";
@@ -55,15 +55,15 @@ If your query image is stored in a file, pass the file to the client library. So
     language="ts"
   />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ImageFileSearch"
       endMarker="// END ImageFileSearch"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ImageByPath"
@@ -122,15 +122,15 @@ You can search by a base64 representation of an image:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START search with base64"
       endMarker="// END search with base64"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ImageByBase64"
@@ -189,15 +189,15 @@ You can create a base64 representation of an online image, and use it as input f
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START helper base64 functions"
       endMarker="// END helper base64 functions"
       language="gonew"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoV6Code}
       startMarker="// START ImageBase64Helper"

@@ -21,7 +21,14 @@ export const DOC_SYSTEMS = {
         constructUrl: (baseUrl, ref) => `${baseUrl}/${ref}.html`,
         icon: '/img/site/logo-ts.svg',
     },
+    // The v6 package is at the module root, unlike v5's `/weaviate` subpackage.
     go: {
+        baseUrl:
+            'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v6',
+        constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
+        icon: '/img/site/logo-go.svg',
+    },
+    gov5: {
         baseUrl:
             'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v5/weaviate',
         constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
@@ -29,7 +36,7 @@ export const DOC_SYSTEMS = {
     },
     java: {
         baseUrl:
-            'https://javadoc.io/doc/io.weaviate/client/latest/',
+            'https://javadoc.io/doc/io.weaviate/client6/latest/',
         constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
         icon: '/img/site/logo-java.svg',
     },
@@ -38,18 +45,13 @@ export const DOC_SYSTEMS = {
 DOC_SYSTEMS.python = DOC_SYSTEMS.py;
 DOC_SYSTEMS.tsindent = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
-DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
-DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;
-DOC_SYSTEMS.go6 = {
-    baseUrl:
-        'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v6',
-    constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
-    icon: '/img/site/logo-go.svg',
-};
-// `go6full` renders complete standalone v6 programs (with the v6 doc links).
-DOC_SYSTEMS.go6full = DOC_SYSTEMS.go6;
+DOC_SYSTEMS.gonew = DOC_SYSTEMS.gov5;
+DOC_SYSTEMS.goraw = DOC_SYSTEMS.gov5;
+// `go6` is an alias for `go`, the v6 client.
+DOC_SYSTEMS.go6 = DOC_SYSTEMS.go;
+// `gofull` renders complete standalone v6 programs (with the v6 doc links).
+DOC_SYSTEMS.gofull = DOC_SYSTEMS.go;
 DOC_SYSTEMS.javaraw = DOC_SYSTEMS.java;
-DOC_SYSTEMS.csharpraw = DOC_SYSTEMS.csharp;
 
 // Custom styles for badges
 const badgeStyles = {
@@ -114,14 +116,15 @@ const FilteredTextBlock = ({
                     // replace remaining tabs with 2 spaces
                     .replace(/\t/g, '    ');
             break;
-        case 'go6full':
+        case 'gofull':
             // Standalone complete programs: package/imports/func main start at
             // column 0, so (unlike go6) do NOT strip a leading indent level —
             // just convert tabs to 2 spaces.
             format = (input) => input.replace(/\t/g, '  ');
             break;
         case 'gonew':
-        // `go6` snippets sit inside test functions: strip exactly one indent level.
+        // v6 snippets sit inside test functions: strip exactly one indent level.
+        case 'go':
         case 'go6':
             format = (input) =>
                 input
@@ -129,7 +132,7 @@ const FilteredTextBlock = ({
                     .replace(/\t/g, '  ')
                     .replace(/^  /g, '');
             break;
-        case 'go':
+        case 'gov5':
             format = (input) =>
                 input
                     // remove leading indent of 2 or 1 tabs
@@ -169,10 +172,11 @@ const FilteredTextBlock = ({
         case 'tsindent':
             language2 = 'ts';
             break;
-        case 'go6full':
+        case 'gofull':
         case 'gonew':
         case 'goraw':
-        // Prism has no `go6`/`go6full` grammar.
+        // Prism has no `gov5`/`go6`/`gofull` grammar.
+        case 'gov5':
         case 'go6':
             language2 = 'go';
             break;

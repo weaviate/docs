@@ -1,460 +1,116 @@
 ---
-title: Go
-sidebar_position: 70
+title: Go client
+sidebar_label: Go
 description: "Official Go client library documentation for integrating Weaviate with Go applications and services."
 image: og/docs/client-libraries.jpg
-# tags: ['go', 'client library']
+# tags: ['go', 'go v6', 'client library']
 ---
 
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import QuickLinks from "/src/components/QuickLinks";
+import GoV6GetStartedCode from "!!raw-loader!/_includes/code/go-v6/quickstart/get_started/main.go";
 
-export const goCardsData = [
+export const goV6CardsData = [
   {
-  title: "weaviate/weaviate-go-client",
-  link: "https://github.com/weaviate/weaviate-go-client",
-  icon: "fa-brands fa-github",
+    title: "weaviate/weaviate-go-client",
+    link: "https://github.com/weaviate/weaviate-go-client",
+    icon: "fa-brands fa-github",
+  },
+  {
+    title: "Reference manual",
+    link: "https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v6",
+    icon: "fa-solid fa-book",
   },
 ];
 
-:::info Go client v6
-
-A release candidate of the [next major version of the Go client](./go-v6.md) is available. It is a ground-up redesign built around a collections-first API: you obtain a handle for a collection and run data, query, and aggregation operations through that handle, instead of composing requests with the older builder pattern.
-
-Its API can still change before the final release. The client documented on this page remains the right choice for production today. On pages that support it, a second Go tab for the new client appears beside the `Go` tab. Use it to preview the new API for that operation. For more details, see the [Go client v6](./go-v6.md) page.
-
-:::
-
-:::note Go client (SDK)
+:::note Go v6 client (SDK)
 
 The latest Go client is version `v||site.go_client_version||`.
 
-<QuickLinks items={goCardsData} />
+<QuickLinks items={goV6CardsData} />
 
 :::
 
-This page covers the Weaviate Go client (`v5` release).
-
-:::warning The Go client and the deprecated GraphQL API
-
-The current Go client sends its queries over the [GraphQL API](/weaviate/api/graphql), which is deprecated. Those calls fail once GraphQL is disabled. The [Go client v6](./go-v6.md) queries over gRPC instead. It is currently a release candidate. See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
-
-:::
-
-For the minimum supported Go version, see the [`go` directive in `go.mod`](https://github.com/weaviate/weaviate-go-client/blob/v||site.go_client_version||/go.mod) for client `v||site.go_client_version||`.
+This page covers the Weaviate Go client `v6`, a ground-up redesign of the [`v5` Go client](./go-v5.md) built around a collections-first API. For usage information that is not specific to the Go client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
 ## Installation
-The client doesn't support the old Go modules system. Create a repository for your code before you import the Weaviate client.
-
-Create a repository:
 
 ```bash
-go mod init github.com/weaviate-go-client
-go mod tidy
+go get github.com/weaviate/weaviate-go-client/v6
 ```
 
-To get the latest stable version of the Go client library, run the following:
-
-```bash
-go get github.com/weaviate/weaviate-go-client/v5
-```
-
-## Example
-
-This example establishes a connection to your Weaviate instance and retrieves the schema.:
-
-``` go
-package main
-
-import (
-	"context"
-	"fmt"
-	"github.com/weaviate/weaviate-go-client/v5/weaviate"
-)
-
-func GetSchema() {
-    cfg := weaviate.Config{
-        Host:   "localhost:8080",
-		  Scheme: "http",
-    }
-    client, err := weaviate.NewClient(cfg)
-    if err != nil {
-        panic(err)
-    }
-
-    schema, err := client.Schema().Getter().Do(context.Background())
-    if err != nil {
-        panic(err)
-    }
-    fmt.Printf("%v", schema)
-}
-
-func main() {
-   GetSchema()
-}
-```
-
-## Authentication
-
-import ClientAuthIntro from '/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx'
-
-<ClientAuthIntro clientName="Go"/>
-
-### WCD authentication
-
-import ClientAuthWCD from '/docs/weaviate/client-libraries/_components/client.auth.wcs.mdx'
-
-<ClientAuthWCD />
-
-### API key authentication
-
-:::info Added in Weaviate Go client version `4.7.0`.
-:::
-
-import ClientAuthApiKey from '/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx'
-
-<ClientAuthApiKey />
-
+The client lives at the module root and its package is named `weaviate`:
 
 ```go
-cfg := weaviate.Config{
-	Host:       "weaviate.example.com",
-	Scheme:     "http",
-	AuthConfig: auth.ApiKey{Value: "my-secret-key"},
-	Headers:    nil,
-}
-client, err := weaviate.NewClient(cfg)
-if err != nil{
-  fmt.Println(err)
-}
+import weaviate "github.com/weaviate/weaviate-go-client/v6"
 ```
-
-### OIDC authentication
-
-import ClientAuthOIDCIntro from '/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx'
-
-<ClientAuthOIDCIntro />
-
-#### <i class="fa-solid fa-key"></i> Resource Owner Password Flow
-
-import ClientAuthFlowResourceOwnerPassword from '/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx'
-
-<ClientAuthFlowResourceOwnerPassword />
-
-```go
-cfg := weaviate.Config{
-	Host:   "weaviate.example.com",
-	Scheme: "http",
-	AuthConfig: auth.ResourceOwnerPasswordFlow{
-		Username: "Your user",
-		Password: "Your password",
-		Scopes:   []string{"offline_access"}, // optional, depends on the configuration of your identity provider (not required with WCD)
-	},
-	Headers: nil,
-}
-client, err := weaviate.NewClient(cfg)
-if err != nil{
-	fmt.Println(err)
-}
-```
-
-#### <i class="fa-solid fa-key"></i> Client Credentials flow
-
-import ClientAuthFlowClientCredentials from '/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx'
-
-<ClientAuthFlowClientCredentials />
-
-```go
-cfg := weaviate.Config{
-	Host:   "weaviate.example.com",
-	Scheme: "http",
-	AuthConfig: auth.ClientCredentials{
-		ClientSecret: "your_client_secret",
-		Scopes:       []string{"scope1 scope2"}, // optional, depends on the configuration of your identity provider (not required with WCD)
-	},
-	Headers: nil,
-}
-client, err := weaviate.NewClient(cfg)
-if err != nil{
-	fmt.Println(err)
-}
-```
-
-#### <i class="fa-solid fa-key"></i> Refresh Token flow
-
-import ClientAuthBearerToken from '/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx'
-
-<ClientAuthBearerToken />
-
-```go
-cfg := weaviate.Config{
-	Host:   "weaviate.example.com",
-	Scheme: "http",
-	AuthConfig: auth.BearerToken{
-		AccessToken:  "some token",
-		RefreshToken: "other token",
-		ExpiresIn:    uint(500), // in seconds
-	},
-	Headers: nil,
-}
-client, err := weaviate.NewClient(cfg)
-if err != nil{
-	fmt.Println(err)
-}
-```
-
-## Custom headers
-
-You can pass custom headers to the client, which are added at initialization:
-
-```go
-cfg := weaviate.Config{
-  Host:"weaviate.example.com",
-  Scheme: "http",
-  AuthConfig: nil,
-  Headers: map[string]string{
-    "header_key1": "value",
-    "header_key2": "otherValue",
-    },
-}
-client, err := weaviate.NewClient(cfg)
-if err != nil{
-  fmt.Println(err)
-}
-```
-
-## References
-
-All [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](/weaviate/api) references covered by the Go client, and explained on those reference pages in the code blocks.
-
-## Design
-
-### Builder pattern
-
-The Go client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/weaviate/api/rest) and the [GraphQL reference pages](/weaviate/api).
-
-The code snippet above shows a simple query similar to `RESTful GET /v1/schema`. The client is initiated by requiring the package and connecting to the running instance. Then, a query is constructed by getting the `.Schema` with `.Getter()`. The query will be sent with the `.Go()` function, this object is thus required for every function you want to build and execute.
-
-## Migration Guides
-
-### From `v2` to `v4`
-
-#### Unnecessary `.Objects()` removed from `GraphQL.Get()`
-
-Before:
-
-```go
-client.GraphQL().Get().Objects().WithClassName...
-```
-
-After:
-
-```go
-client.GraphQL().Get().WithClassName
-```
-
-#### GraphQL `Get().WithNearVector()` uses a builder pattern
-
-In `v2` specifying a `nearVector` argument to `client.GraphQL().Get()` required passing a string. As a result the user had to know the structure of the GraphQL API. `v4` fixes this by using a builder pattern like so:
-
-Before:
-
-```go
-client.GraphQL().Get().
-  WithNearVector("{vector: [0.1, -0.2, 0.3]}")...
-```
-
-After
-
-```go
-nearVector := client.GraphQL().NearVectorArgBuilder().
-  WithVector([]float32{0.1, -0.2, 0.3})
-
-client.GraphQL().Get().
-  WithNearVector(nearVector)...
-```
-
-
-#### All `where` filters use the same builder
-
-In `v2` filters were sometimes specified as strings, sometimes in a structured way. `v4` unifies this and makes sure that you can always use the same builder pattern.
-
-##### GraphQL Get
-
-Before:
-
-```go
-// using filter encoded as string
-where := `where :{
-  operator: Equal
-  path: ["id"]
-  valueText: "5b6a08ba-1d46-43aa-89cc-8b070790c6f2"
-}`
-
-client.GraphQL().Get().
-  Objects().
-  WithWhere(where)...
-```
-
-```go
-// using deprecated graphql arg builder
-where := client.GraphQL().WhereArgBuilder().
-  WithOperator(graphql.Equal).
-  WithPath([]string{"id"}).
-  WithValueString("5b6a08ba-1d46-43aa-89cc-8b070790c6f2")
-
-client.GraphQL().Get().
-  Objects().
-  WithWhere(where)...
-```
-
-After:
-
-```go
-where := filters.Where().
-  WithPath([]string{"id"}).
-  WithOperator(filters.Equal).
-  WithValueString("5b6a08ba-1d46-43aa-89cc-8b070790c6f2")
-
-client.GraphQL().Get().
-  WithWhere(where)...
-```
-
-##### GraphQL Aggregate
-
-Before:
-
-```go
-where := client.GraphQL().WhereArgBuilder().
-  WithPath([]string{"id"}).
-  WithOperator(graphql.Equal).
-  WithValueString("5b6a08ba-1d46-43aa-89cc-8b070790c6f2")
-
-client.GraphQL().Aggregate().
-  Objects().
-  WithWhere(where)...
-```
-
-After:
-
-```go
-where := filters.Where().
-  WithPath([]string{"id"}).
-  WithOperator(filters.Equal).
-  WithValueString("5b6a08ba-1d46-43aa-89cc-8b070790c6f2")
-
-client.GraphQL().Aggregate().
-  WithWhere(where)...
-```
-
-##### Classification
-
-Before:
-
-```go
-valueInt := 100
-valueText  := "Government"
-
-sourceWhere := &models.WhereFilter{
-  ValueInt: &valueInt,
-  Operator: string(graphql.GreaterThan),
-  Path:     []string{"wordCount"},
-}
-
-targetWhere := &models.WhereFilter{
-  ValueString: &valueText,
-  Operator:    string(graphql.NotEqual),
-  Path:        []string{"name"},
-}
-
-client.Classifications().Scheduler().
-  WithSourceWhereFilter(sourceWhere).
-  WithTargetWhereFilter(targetWhere)...
-```
-
-After:
-
-```go
-sourceWhere := filters.Where().
-  WithOperator(filters.GreaterThan).
-  WithPath([]string{"wordCount"}).
-  WithValueInt(100)
-
-targetWhere := filters.Where().
-  WithOperator(filters.NotEqual).
-  WithPath([]string{"name"}).
-  WithValueString("Government")
-
-client.Classifications().Scheduler().
-  WithSourceWhereFilter(sourceWhere).
-  WithTargetWhereFilter(targetWhere)...
-```
-
-#### GraphQL `Get().WithFields()`
-
-In `v2` `.WithFields()` took a GraphQL string that required knowledge of how GraphQL fields are structured. Now this can be done with a variadic function. E.g:
-
-Before:
-
-```go
-client.GraphQL.Get().WithClassName("MyClass").WithFields("name price age")...
-```
-
-After:
-
-```go
-client.GraphQL.Get().WithClassName("MyClass").
-  WithFields(graphql.Field{Name: "name"},graphql.Field{Name: "price"}, graphql.Field{Name: "age"})...
-```
-
-#### Graphql `Get().WithGroup()`
-
-In `v2` `.WithFields()` took a GraphQL string that required knowledge of how GraphQL fields are structured. Now this can be done with a builder. E.g:
-
-Before:
-
-```go
-client.GraphQL.Get().WithClassName("MyClass")
-  .WithGroup("{type:merge force:1.0}")
-```
-
-After:
-
-```go
-group := client.GraphQL().GroupArgBuilder()
-  .WithType(graphql.Merge).WithForce(1.0)
-
-client.GraphQL.Get().WithClassName("MyClass").WithGroup(group)
-```
-
-#### Graphql `Data().Validator()` property renamed
-
-In `v2` the naming of the method to specify the Schema was inconsistent with other places in the client. This has been fixed in `v4`. Rename according to the following:
-
-Before:
-```go
-client.Data().Validator().WithSchema(properties)
-```
-
-After:
-```go
-client.Data().Validator().WithProperties(properties)
-```
-
-## Releases
-
-Go to the [GitHub releases page](https://github.com/weaviate/weaviate-go-client/releases) to see the history of the Go client library releases.
 
 <details>
-  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+  <summary>Requirements: Go and Weaviate version compatibility & gRPC</summary>
 
-import ReleaseHistory from '/_includes/release-history.md';
+#### Go version
 
-<ReleaseHistory />
+The `v6` client module requires Go `1.26.0` or higher. On an older Go with the default `GOTOOLCHAIN=auto`, `go get` downloads a Go 1.26 toolchain and raises the `go` line in your `go.mod` to `1.26.0` without asking. With `GOTOOLCHAIN=local`, it fails with `requires go >= 1.26.0`.
+
+#### Weaviate version compatibility
+
+The `v6` client requires Weaviate `1.38.8` or higher. Earlier servers truncate leading zero bytes in the gRPC `id_as_bytes` field, so the client rejects the whole search response with `invalid UUID (got 15 bytes)`. Around one object in 256 has an affected ID, and every search that returns that object fails until you upgrade. Generally, we encourage you to use the latest version of the Go client and the Weaviate Database.
+
+#### gRPC
+
+The `v6` client uses remote procedure calls (RPCs) under the hood. It needs both the REST and the gRPC endpoint of your instance to be reachable, so a port for gRPC must be open to your Weaviate server. Creating the client and `client.IsReady` only check the REST endpoint. If the gRPC port is unreachable, the first data or query call fails with `code = Unavailable`.
+
+<details>
+  <summary>docker-compose.yml example</summary>
+
+If you are running Weaviate with Docker, you can map the default port (`50051`) by adding the following to your `docker-compose.yml` file:
+
+```yaml
+ports:
+  - 8080:8080
+  - 50051:50051
+```
 
 </details>
 
+</details>
+
+## Get started
+
+import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
+
+<BasicPrereqs />
+
+The following code demonstrates how to:
+
+1. [Connect](../../connections/index.mdx) to a local Weaviate instance.
+1. [Create a new collection](../../manage-collections/index.mdx).
+1. [Import data](../../manage-objects/import.mdx) and vectorize it.
+1. Perform a [vector search](../../search/index.mdx).
+
+<FilteredTextBlock
+  text={GoV6GetStartedCode}
+  startMarker="// START GetStarted"
+  endMarker="// END GetStarted"
+  language="gofull"
+/>
+
+For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section. Where an operation is not yet available in the `v6` client, the Go tab shows a short "Coming soon" note.
+
+## Releases
+
+Go to the [GitHub releases page](https://github.com/weaviate/weaviate-go-client/releases) to see the history of the Go client library releases and change logs.
+
+The client and server compatibility table on the [Go (v5) page](./go-v5.md#releases) tracks the `v5` client. For `v6`, see [Weaviate version compatibility](#weaviate-version-compatibility).
+
+## Code examples & further resources
+
+import CodeExamples from "/_includes/clients/code-examples.mdx";
+
+<CodeExamples />
+
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

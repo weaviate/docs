@@ -17,7 +17,7 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect/main.go';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
 Weaviate's integration with AWS's [SageMaker](https://aws.amazon.com/sagemaker/) and [Bedrock](https://aws.amazon.com/bedrock/) APIs allows you to access their models' capabilities directly from Weaviate.
 
@@ -77,7 +77,7 @@ Provide the API credentials to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
       text={GoConnect}
       startMarker="// START AWSInstantiation"
@@ -129,9 +129,9 @@ For Bedrock, you must provide the model name in the vectorizer configuration.
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicVectorizerAWSBedrock"
       endMarker="// END BasicVectorizerAWSBedrock"
       language="goraw"
@@ -163,9 +163,9 @@ For SageMaker, you must provide the endpoint address in the vectorizer configura
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicVectorizerAWSSagemaker"
       endMarker="// END BasicVectorizerAWSSagemaker"
       language="goraw"
@@ -233,9 +233,9 @@ The following examples show how to configure AWS-specific options for each servi
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START FullVectorizerAWS"
       endMarker="// END FullVectorizerAWS"
       language="goraw"
@@ -268,9 +268,9 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BatchImportExample"
       endMarker="// END BatchImportExample"
       language="goraw"
@@ -315,9 +315,9 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NearTextExample"
       endMarker="// END NearTextExample"
       language="goraw"
@@ -356,9 +356,9 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="go" label="Go">
+ <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="goraw"
@@ -375,8 +375,8 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 - `amazon.titan-embed-text-v1`
 - `amazon.titan-embed-text-v2:0`
-- `cohere.embed-english-v3` 
-- `cohere.embed-multilingual-v3` 
+- `cohere.embed-english-v3`
+- `cohere.embed-multilingual-v3`
 
 Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out if the model is available in your region and how request access to a model.
 

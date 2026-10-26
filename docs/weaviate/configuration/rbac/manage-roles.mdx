@@ -16,7 +16,7 @@ import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac
 import RolePyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py";
 import RoleTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
 import RbacGoV6Code from "!!raw-loader!/_includes/code/go-v6/rbac_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
@@ -52,15 +52,15 @@ Role management requires appropriate `role` resource permissions that can be obt
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AdminClient"
       endMarker="// END AdminClient"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AdminClient"
@@ -139,15 +139,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddManageRolesPermission"
       endMarker="// END AddManageRolesPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddManageRolesPermission"
@@ -197,15 +197,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddManageUsersPermission"
       endMarker="// END AddManageUsersPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddManageUsersPermission"
@@ -254,15 +254,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddCollectionsPermission"
       endMarker="// END AddCollectionsPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddCollectionsPermission"
@@ -313,15 +313,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddTenantPermission"
       endMarker="// END AddTenantPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddTenantPermission"
@@ -371,15 +371,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddDataObjectPermission"
       endMarker="// END AddDataObjectPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddDataObjectPermission"
@@ -434,15 +434,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddBackupPermission"
       endMarker="// END AddBackupPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddBackupPermission"
@@ -491,15 +491,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddClusterPermission"
       endMarker="// END AddClusterPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddClusterPermission"
@@ -548,15 +548,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddNodesPermission"
       endMarker="// END AddNodesPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddNodesPermission"
@@ -605,15 +605,15 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddAliasPermission"
       endMarker="// END AddAliasPermission"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddAliasPermission"
@@ -661,15 +661,15 @@ This example creates a role called `testRole` with permissions to:
 ```
 
 </TabItem>
-<TabItem value="go" label="Go">
+<TabItem value="gov5" label="Go (v5)">
 <FilteredTextBlock
-text={GoCode}
+text={GoV5Code}
 startMarker="// START AddReplicationsPermission"
 endMarker="// END AddReplicationsPermission"
-language="go"
+language="gov5"
 />
 </TabItem>
-<TabItem value="go6" label="Go v6 (beta)">
+<TabItem value="go" label="Go">
 <FilteredTextBlock
 text={RbacGoV6Code}
 startMarker="// START AddReplicationsPermission"
@@ -717,15 +717,15 @@ language="py"
 ```
 
 </TabItem>
-<TabItem value="go" label="Go">
+<TabItem value="gov5" label="Go (v5)">
 <FilteredTextBlock
-text={GoCode}
+text={GoV5Code}
 startMarker="// START AddGroupsPermission"
 endMarker="// END AddGroupsPermission"
-language="go"
+language="gov5"
 />
 </TabItem>
-<TabItem value="go6" label="Go v6 (beta)">
+<TabItem value="go" label="Go">
 <FilteredTextBlock
 text={RbacGoV6Code}
 startMarker="// START AddGroupsPermission"
@@ -787,15 +787,15 @@ This example grants additional permissions to the role `testRole` to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddRoles"
       endMarker="// END AddRoles"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AddRoles"
@@ -847,15 +847,15 @@ This example removes the following permissions from the role `testRole`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RemovePermissions"
       endMarker="// END RemovePermissions"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START RemovePermissions"
@@ -902,15 +902,15 @@ Check if the role `testRole` exists:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CheckRoleExists"
       endMarker="// END CheckRoleExists"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START CheckRoleExists"
@@ -957,15 +957,15 @@ View the permissions assigned to a role.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START InspectRole"
       endMarker="// END InspectRole"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START InspectRole"
@@ -1012,15 +1012,15 @@ View all roles in the system and their permissions.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ListAllRoles"
       endMarker="// END ListAllRoles"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START ListAllRoles"
@@ -1067,15 +1067,15 @@ List all users who have the role `testRole`.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AssignedUsers"
       endMarker="// END AssignedUsers"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START AssignedUsers"
@@ -1122,15 +1122,15 @@ Deleting a role will remove it from the system, and revoke the associated permis
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START DeleteRole"
       endMarker="// END DeleteRole"
-      language="go"
+      language="gov5"
     />
   </TabItem>
-  <TabItem value="go6" label="Go v6 (beta)">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={RbacGoV6Code}
       startMarker="// START DeleteRole"
