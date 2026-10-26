@@ -341,6 +341,6 @@ Swizzled Docusaurus components in `src/theme/`:
 - `SearchBar/` - Custom search implementation
 
 Styling in `src/css/`:
-- `custom.scss` - Main styles
+- `custom.scss` -  Main styles
 - Theme variables for light/dark mode
 - Component-specific styles
