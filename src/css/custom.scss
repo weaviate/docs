@@ -58,7 +58,8 @@
     // font-family: var(--site-font-heading-family);
     font-weight: var(--ifm-heading-font-weight);
     line-height: var(--ifm-heading-line-height);
-    margin: var(--ifm-heading-margin-top) 0 var(--ifm-heading-margin-bottom) 0;
+    // TODO - delete below if confirmed to be no longer needed
+    // margin: var(--ifm-heading-margin-top) 0 var(--ifm-heading-margin-bottom) 0;  // Commented out during upgrade to Docusaurus Fast (Oct 2026)
   }
   // Weaviate configurator styling
   .configuratin-generator-app {
