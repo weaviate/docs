@@ -13,7 +13,7 @@ Looking for guidance on deploying Weaviate in a production environment? Whether 
 
 <summary> Answer </summary>
 
-This almost always means you've run out of disk space. Weaviate protects itself by switching to read-only mode when disk usage exceeds a configured threshold. You'll need to increase the disk size available to Weaviate and then reset the read-only status.
+This almost always means you've run out of disk space. Weaviate protects itself by switching to read-only mode when disk usage exceeds a configured threshold. You'll need to increase the disk size available to Weaviate. From `v1.36.0` on, the shards become writable again automatically. On earlier versions, you also need to reset the read-only status. See [disk pressure warnings and limits](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits).
 
 </details>
 
