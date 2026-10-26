@@ -34,6 +34,12 @@ The latest Go client is version `v||site.go_client_version||`.
 
 This page covers the Weaviate Go client (`v5` release).
 
+:::warning The Go client and the deprecated GraphQL API
+
+The current Go client sends its queries over the [GraphQL API](/weaviate/api/graphql), which is deprecated. Those calls fail once GraphQL is disabled. The [Go client v6](./go-v6.md) queries over gRPC instead. It is currently a release candidate. See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
+
+:::
+
 For the minimum supported Go version, see the [`go` directive in `go.mod`](https://github.com/weaviate/weaviate-go-client/blob/v||site.go_client_version||/go.mod) for client `v||site.go_client_version||`.
 
 ## Installation

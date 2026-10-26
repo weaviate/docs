@@ -5,6 +5,11 @@ description: "Syntax reference for additional operators that extend query functi
 image: og/docs/api.jpg
 # tags: ['graphql', 'additional operators']
 ---
+
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
