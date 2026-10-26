@@ -24,10 +24,10 @@ As a first step, you'll want to examine your cluster's logs to identify the prob
 
 #### Resolving the issue
 
-To solve this mystery, you'll need to increase the available disk space for your nodes. From `v1.36.0` on, the affected shards become writable again automatically; on earlier versions, you'll need to manually mark the affected shards or collections as writeable again.
+To solve this mystery, you'll need to increase the available disk space for your nodes. From `v1.36.0` on, the affected shards become writable again automatically. On earlier versions, you'll need to manually mark the affected shards or collections as writable again.
 To get ahead of it next time, use the disk thresholds: [`DISK_USE_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#DISK_USE_WARNING_PERCENTAGE) (default `80`) logs a warning as the disk fills, and [`DISK_USE_READONLY_PERCENTAGE`](/deploy/configuration/env-vars/index.md#DISK_USE_READONLY_PERCENTAGE) (default `90`) is the threshold that marks shards read-only in the first place. See [disk pressure warnings and limits](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits).
 
-You can also set the [`MEMORY_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
+The [`MEMORY_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable logs the same warning for memory usage.
 
 </details>
 
