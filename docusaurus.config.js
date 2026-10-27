@@ -27,6 +27,12 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
+  future: {
+    experimental_faster: true,
+    // Required by experimental_faster.ssgWorkerThreads. Set alone rather than
+    // `v4: true`, which also enables useCssCascadeLayers and changes CSS precedence.
+    v4: { removeLegacyPostBuildHeadAttribute: true },
+  },
   clientModules: [require.resolve("./src/components/UTM/capture.js")],
   markdown: {
     hooks: {
@@ -51,7 +57,7 @@ const config = {
     locales: ["en"],
   },
 
-  headTags: [commonRoomScript, hubspotScript, scarfScript],
+  headTags: [commonRoomScript, hubspotScript],
 
   plugins: [
     "docusaurus-plugin-sass",
@@ -162,6 +168,15 @@ const config = {
         containerId: process.env.GOOGLE_CONTAINER_ID || "None",
       },
     ],
+    // The Scarf pixel is an <img>, which is not allowed in <head>: HTML parsers
+    // end <head> at it and move every later head tag into <body>. Inject it at
+    // the end of <body> instead of through headTags.
+    function scarfPixelPlugin() {
+      return {
+        name: "scarf-pixel",
+        injectHtmlTags: () => ({ postBodyTags: [scarfScript] }),
+      };
+    },
   ],
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
