@@ -6,6 +6,9 @@ image: og/docs/engram.png
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/input_data_types.py';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 Engram accepts three types of input content when storing memories:
 

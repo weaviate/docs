@@ -4,6 +4,10 @@ description: "Engram's multi-level scoping system: project, user, and custom pro
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 Engram uses a multi-level scoping system to isolate memories:
 
 - **Project** — Inherited from the API key. Every memory belongs to exactly one project, so you never set it explicitly.

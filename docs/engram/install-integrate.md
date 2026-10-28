@@ -6,6 +6,9 @@ image: og/docs/engram.png
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 There are several ways to use Engram, from calling the API directly to dropping it into an agent framework as a memory provider.
 

@@ -9,6 +9,9 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_includes/quickstart.py';
 import CurlCode from '!!raw-loader!./_includes/quickstart.sh';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 Engram is a memory server for LLM agents and applications. It automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 

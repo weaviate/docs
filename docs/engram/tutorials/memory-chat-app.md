@@ -8,6 +8,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/tutorial_memory_chat_app.py';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 LLMs are stateless — every API call starts from scratch with no memory of past conversations. Engram adds persistent memory so your chatbot can remember user preferences, past discussions, and context across sessions.
 

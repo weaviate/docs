@@ -4,6 +4,10 @@ description: "Browse and manage Engram projects, memories, users, runs, and API 
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 The Engram console is a graphical interface for inspecting and managing your Engram projects in [Weaviate Cloud](https://console.weaviate.cloud). Browse memories, users, and runs, manage API keys, and review your project's groups and topics, all without writing code.
 
 To open it, sign in to [Weaviate Cloud](https://console.weaviate.cloud), select the **Engram** product from the top navigation, and choose a project. The left-hand menu gives you access to the **Dashboard**, **Users**, **Memories**, **Runs**, **API Keys**, and **Plans** pages.
