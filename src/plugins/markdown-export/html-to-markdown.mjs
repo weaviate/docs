@@ -42,6 +42,11 @@ export const MARKDOWN_SOURCE_ATTRIBUTE = "data-markdown-source";
  * - KaTeX: the LaTeX source, as `$...$` or `$$...$$`.
  * - Mermaid (`[data-markdown-source="mermaid"]`): a `mermaid` fence.
  * - Embedded iframes: a link to the embed URL.
+ * - Images: `![alt](url)` linking to the original image file, so an agent can
+ *   fetch it. An image inside a link stays linked (`[![alt](url)](href)`).
+ *   Themed light/dark pairs keep only the light variant. Images with an
+ *   explicit empty `alt=""` are decorative (such as the Cloud-only icon) and
+ *   are removed; images with no `alt` attribute are kept.
  * - Root-relative links and image sources: absolute, prefixed with `siteUrl`.
  *   Links point to the HTML pages, not to their `.md` versions.
  * - Removed: elements marked `[data-copy-exclude]`, heading anchor links,
