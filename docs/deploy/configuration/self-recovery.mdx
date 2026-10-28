@@ -51,8 +51,6 @@ While a shard is being recovered, the [nodes endpoint](/deploy/configuration/sta
 
 While a shard recovers, the healthy replicas serve searches and reads, such as fetching an object by ID, without errors. Operations that must consult every replica, such as aggregations, can be delayed until the recovery finishes, and then succeed.
 
-{/* TODO(ivan): client-facing error contract for direct hits on a recovering shard unconfirmed — internal 503/500 observed, 422 exists only in the local-access code path; confirm with core */}
-
 A recovery is a replication operation. To see the recovery operations of a node, [list the replication operations](./replica-movement.mdx#list-replication-operations) and filter by the recovering node as the target node, for example with `GET /v1/replication/replicate/list?targetNode=<node>`.
 
 For Prometheus metrics that track recoveries, including in-progress, completed, and given-up recoveries, see [Monitoring: Shard self-recovery](./monitoring.md#shard-self-recovery).

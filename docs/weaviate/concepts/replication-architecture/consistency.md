@@ -415,8 +415,6 @@ The node copies the source replica's files into a staging directory named `<shar
 
 While a registered recovery operation for the shard is in progress, the cluster excludes the recovering replica from read and write routing, so other replicas serve the requests. Searches and reads, such as fetching an object by ID, succeed through the healthy replicas. Operations that must consult every replica, such as aggregations, can be delayed until the recovery finishes, and then succeed. Internally, the recovering replica rejects requests from other nodes, and the coordinating node handles these rejections.
 
-{/* TODO(ivan): client-facing error contract for direct hits on a recovering shard unconfirmed — internal 503/500 observed, 422 exists only in the local-access code path; confirm with core */}
-
 ### Retries and giving up
 
 A recovery makes up to 10 attempts. Probe errors, unreachable replicas, and failures to register or track the copy operation all count as attempts. Between attempts, the node waits 5 seconds, doubling the wait each time up to a limit of 5 minutes. All attempts together take about 20 minutes.
