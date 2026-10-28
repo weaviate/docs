@@ -67,7 +67,9 @@ It also adds a visually hidden notice, outside `.theme-doc-markdown` and styled 
 
 > LLM/AI agent notice: A Markdown version of this page is at https://docs.weaviate.io/weaviate/search/basics.md. Requests for any docs page with `Accept: text/markdown` return Markdown.
 
-## Decisions for review
+## Decisions
+
+Reviewed after checkpoint 1. D2, D3 and D6 were approved. D1, D4 and D5 had no preference, so the recommendation stands.
 
 | # | Decision | Recommendation | Trade-off |
 |---|---|---|---|
@@ -109,5 +111,5 @@ The conversion rules were tested in a throwaway prototype on the Oct 26 local bu
 
 | Checkpoint | Status |
 |---|---|
-| 1 | Awaiting review |
+| 1 | Reviewed; image rules added to the `convertDocPage` contract |
 | 2–6 | Not started |
