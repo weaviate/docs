@@ -710,6 +710,19 @@ assert config.vector_config["body_vector"].vectorizer.vectorizer == "text2vec-co
 assert config.properties[0].tokenization.name == "TRIGRAM"
 
 
+# =====================================
+# ===== DROP A NAMED VECTOR INDEX =====
+# =====================================
+
+# START DropNamedVectorIndex
+articles = client.collections.use("Article")
+
+# Deletes the index and the stored embeddings for the "body_vector" named vector.
+# The call returns once the drop is committed; cleanup continues in the background.
+articles.config.delete_vector_index("body_vector")
+# END DropNamedVectorIndex
+
+
 # ===========================
 # ===== DISTANCE METRIC =====
 # ===========================
