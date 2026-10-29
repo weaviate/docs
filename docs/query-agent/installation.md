@@ -7,7 +7,7 @@ image: og/docs/query-agent.png
 
 <CloudOnlyBadge />
 
-Install the Query Agent client package alongside the regular Weaviate client. Below are the prerequisites and the install commands for Python and JavaScript/TypeScript.
+Install the Query Agent client package alongside the regular Weaviate client. Below are the prerequisites and the install commands for Python and JavaScript/TypeScript, and how to connect to the MCP server.
 
 ## Prerequisites
 
@@ -60,6 +60,18 @@ You can install for TypeScript or JavaScript via `npm`:
 ```shell
 npm install weaviate-agents@latest
 ```
+
+## MCP server
+
+To use the Query Agent from an MCP-compatible tool or agent, such as Claude Code, Cursor, or LangChain, you don't need to install anything. Connect your MCP client to the hosted server:
+
+| Setting | Value |
+| --- | --- |
+| Server URL | `https://api.agents.weaviate.io/mcp` |
+| Transport | Streamable HTTP |
+| Headers | `Authorization: Bearer <WEAVIATE_API_KEY>` and `X-Weaviate-Cluster-Url: <WEAVIATE_URL>` |
+
+[See the MCP server page for more detail](./clients/mcp.md#connection-details).
 
 ## Questions and feedback
 

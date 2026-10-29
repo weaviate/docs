@@ -9,7 +9,7 @@ const headers = {
     'X-OpenAI-API-Key': process.env.OPENAI_API_KEY as string,
     // START WeaviateSetup
     // Provide your required API key(s), e.g. Cohere, OpenAI, etc. for the configured vectorizer(s)
-    'X-INFERENCE-PROVIDER-API-KEY': process.env.YOUR_INFERENCE_PROVIDER_KEY as string,
+    'X-INFERENCE-PROVIDER-API-KEY': process.env.YOUR_INFERENCE_PROVIDER_KEY ?? '',
 };
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {

@@ -94,6 +94,7 @@ This page describes metrics and their uses. Typically metrics are quite granular
 | Metric                                      | Description                                                                                                                   | Labels                                       | Type    |
 | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------- |
 | `weaviate_build_info`                       | Provides general information about the build (What version is currently running? How long has this version been running, etc) | `version`, `revision`, `branch`, `goVersion` | `Gauge` |
+| `weaviate_license_status`                   | The [edition](/deploy/enterprise#check-your-edition) and license status of this node. The series for the current status has the value `1`, and the others `0`. Added in `v1.40`. | `edition`, `status`                          | `Gauge` |
 | `weaviate_runtime_config_hash`              | Hash value of the currently active runtime configuration, useful for tracking when new configurations take effect             | `sha256`                                     | `Gauge` |
 | `weaviate_runtime_config_last_load_success` | Indicates whether the last loading attempt was successful (`1` for success, `0` for failure)                                  | None                                         | `Gauge` |
 | `weaviate_schema_collections`               | Shows the total number of collections at any given point                                                                      | `nodeID`                                     | `Gauge` |
@@ -384,6 +385,7 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `shards_unloaded`                                     | Number of shards not loaded                  | None                                                    | `Gauge`     |
 | `shards_loading`                                      | Number of shards in process of loading       | None                                                    | `Gauge`     |
 | `shards_unloading`                                    | Number of shards in process of unloading     | None                                                    | `Gauge`     |
+| `weaviate_shards`                                     | Number of shards the node holds, by lifecycle state and by whether the collection opens its shards eagerly at creation or lazily on first access. For each `state`, the sum over `registration` equals the matching `shards_*` gauge. The sum over all labels equals the number of shards in the node's shard map. Added in `v1.39.3`. | `state` (loaded, unloaded, loading, unloading), `registration` (eager, lazy) | `Gauge`     |
 | `weaviate_index_shards_total`                         | Total number of shards per index status      | `status` (READONLY, INDEXING, LOADING, READY, SHUTDOWN) | `Gauge`     |
 | `weaviate_index_shard_status_update_duration_seconds` | Time taken to update shard status in seconds | `status` (READONLY, INDEXING, LOADING, READY, SHUTDOWN) | `Histogram` |
 
@@ -491,6 +493,27 @@ These metrics track the replication coordinator's read and write operations acro
 | `replication_coordinator_writes_duration_seconds` | Duration in seconds of write operations to replicas                            | None   | `Histogram` |
 | `replication_coordinator_reads_duration_seconds`  | Duration in seconds of read operations from replicas                           | None   | `Histogram` |
 | `replication_read_repair_duration_seconds`        | Duration in seconds of read repair operations                                  | None   | `Histogram` |
+
+#### Shard self-recovery
+
+Added in `v1.40`. These metrics track [Shard Self-Recovery](/deploy/configuration/self-recovery), an [Enterprise Edition](/deploy/enterprise) feature that restores missing shard data from healthy replicas.
+
+| Metric                                                  | Description                                                                                                                  | Labels        | Type        |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------- |
+| `weaviate_self_recovery_in_progress`                    | The number of recoveries in progress on this node.                                                                           | None          | `Gauge`     |
+| `weaviate_self_recovery_started_total`                  | Recoveries started, by source replica.                                                                                       | `source_node` | `Counter`   |
+| `weaviate_self_recovery_completed_total`                | Recoveries finished, by result.                                                                                              | `result`      | `Counter`   |
+| `weaviate_self_recovery_duration_seconds`               | The total duration of a recovery, by result.                                                                                 | `result`      | `Histogram` |
+| `weaviate_self_recovery_no_data_empty_total`            | Empty shards created on a node that started with its Raft state. A shard directory disappeared, no replica had data, and no healthy replica confirmed the shard empty. Alert on this metric. | None | `Counter` |
+| `weaviate_self_recovery_no_data_during_bootstrap_total` | Empty shards created on a node that started without its Raft state, plus every recovery at tenant activation that ends with an empty shard. This typically means that a collection or tenant was created while the node was away, not that data was lost. | None   | `Counter`   |
+| `weaviate_self_recovery_no_data_confirmed_empty_total`  | Empty shards created because a healthy replica confirmed that the shard exists and holds no objects.                        | None          | `Counter`   |
+| `weaviate_self_recovery_unreachable_peer_total`         | Probes that couldn't reach a replica, by replica.                                                                            | `peer`        | `Counter`   |
+| `weaviate_self_recovery_giveup_total`                   | Recoveries that used up all attempts. The shard stays `RECOVERING`.                                                          | None          | `Counter`   |
+| `weaviate_self_recovery_accept_empty_total`             | Calls to the `accept-empty` endpoint.                                                                                        | None          | `Counter`   |
+
+Label values:
+
+- **`result`**: `success` · `failure` · `empty_fallback` · `cancelled` · `skipped`.
 
 ### MCP server
 

@@ -27,6 +27,12 @@ const config = {
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
+  future: {
+    experimental_faster: true,
+    // Required by experimental_faster.ssgWorkerThreads. Set alone rather than
+    // `v4: true`, which also enables useCssCascadeLayers and changes CSS precedence.
+    v4: { removeLegacyPostBuildHeadAttribute: true },
+  },
   clientModules: [require.resolve("./src/components/UTM/capture.js")],
   markdown: {
     hooks: {
@@ -51,7 +57,7 @@ const config = {
     locales: ["en"],
   },
 
-  headTags: [commonRoomScript, hubspotScript, scarfScript],
+  headTags: [commonRoomScript, hubspotScript],
 
   plugins: [
     "docusaurus-plugin-sass",
@@ -162,6 +168,15 @@ const config = {
         containerId: process.env.GOOGLE_CONTAINER_ID || "None",
       },
     ],
+    // The Scarf pixel is an <img>, which is not allowed in <head>: HTML parsers
+    // end <head> at it and move every later head tag into <body>. Inject it at
+    // the end of <body> instead of through headTags.
+    function scarfPixelPlugin() {
+      return {
+        name: "scarf-pixel",
+        injectHtmlTags: () => ({ postBodyTags: [scarfScript] }),
+      };
+    },
   ],
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
@@ -201,8 +216,8 @@ const config = {
     ({
       image: "og/default.jpg",
       announcementBar: {
-        id: "announcement-bar-engram-2026",
-        content: `<a href="/engram/">Introducing <b>Engram</b> — managed memory for AI agents, built on Weaviate</a>`,
+        id: "announcement-bar-graphql-deprecation-2026",
+        content: `<a href="/weaviate/api/graphql/migration">The GraphQL API is deprecated and will be switched off on Weaviate Cloud on May 1, 2027. See the migration guide</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,

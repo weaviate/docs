@@ -312,6 +312,16 @@ const sidebars = {
             },
             {
               type: "category",
+              label: "Meta",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/meta/index",
+              },
+              items: ["weaviate/model-providers/meta/generative"],
+            },
+            {
+              type: "category",
               label: "Mistral",
               className: "sidebar-item",
               link: {
@@ -822,6 +832,7 @@ const sidebars = {
             id: "weaviate/client-libraries/typescript/index",
           },
           items: [
+            "weaviate/client-libraries/typescript/web-client",
             "weaviate/client-libraries/typescript/notes-best-practices",
             {
               type: "link",
@@ -841,9 +852,14 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "weaviate/client-libraries/go",
+          type: "category",
+          label: "Go",
           className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/go/index",
+          },
+          items: ["weaviate/client-libraries/go/go-v5"],
         },
         {
           type: "doc",
@@ -874,14 +890,21 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
+          type: "doc",
+          id: "weaviate/api/grpc",
+          label: "gRPC",
+          className: "sidebar-item",
+        },
+        {
           type: "category",
-          label: "Search API - GraphQL/gRPC",
+          label: "GraphQL (deprecated)",
           className: "sidebar-item",
           link: {
             type: "doc",
             id: "weaviate/api/graphql/index",
           },
           items: [
+            "weaviate/api/graphql/migration",
             "weaviate/api/graphql/get",
             "weaviate/api/graphql/aggregate",
             "weaviate/api/graphql/search-operators",
@@ -890,12 +913,6 @@ const sidebars = {
             "weaviate/api/graphql/additional-properties",
             "weaviate/api/graphql/explore",
           ],
-        },
-        {
-          type: "doc",
-          id: "weaviate/api/grpc",
-          label: "gRPC",
-          className: "sidebar-item",
         },
       ],
     },
@@ -1199,6 +1216,12 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "deploy/configuration/self-recovery",
+          className: "sidebar-item",
+          customProps: { enterpriseOnly: true },
+        },
+        {
+          type: "doc",
           id: "deploy/configuration/horizontal-scaling",
           className: "sidebar-item",
         },
@@ -1239,6 +1262,23 @@ const sidebars = {
   ],
   deployProductionSidebar: [
     "deploy/production/index",
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Licensing",
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/enterprise",
+          className: "sidebar-item",
+        },
+      ],
+    },
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
@@ -1432,6 +1472,11 @@ const sidebars = {
           id: "query-agent/clients/typescript",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "query-agent/clients/mcp",
+          className: "sidebar-item",
+        },
       ],
     },
     {
@@ -1601,6 +1646,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "cloud/manage-clusters/cli",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "cloud/manage-clusters/authentication",
           className: "sidebar-item",
         },
@@ -1692,8 +1742,17 @@ const sidebars = {
     "cloud/platform/billing",
     "cloud/platform/version",
     "cloud/platform/create-account",
-    "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
+    {
+      type: "category",
+      label: "Security",
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        "cloud/platform/multi-factor-auth",
+        "cloud/platform/single-sign-on",
+      ],
+    },
   ],
   engramSidebar: [
     { type: "doc", id: "engram/index", label: "Introduction" },
@@ -1774,6 +1833,7 @@ const sidebars = {
         "errors/cluster-resources",
         "errors/collection-configuration",
         "errors/model-integrations",
+        "errors/node-health",
       ],
     },
   ],

@@ -229,7 +229,6 @@ services:
       QUERY_DEFAULTS_LIMIT: 20
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: "./data"
-      DEFAULT_VECTORIZER_MODULE: text2vec-transformers
       ENABLE_MODULES: text2vec-transformers
       TRANSFORMERS_INFERENCE_API: http://text2vec-transformers:8080
       CLUSTER_HOSTNAME: 'node1'
@@ -241,6 +240,8 @@ services:
 ```
 
 Note that transformer models are neural networks built to run on GPUs. Running Weaviate with the `text2vec-transformers` module and without GPU is possible, but it will be slower. Enable CUDA with `ENABLE_CUDA=1` if you have a GPU available.
+
+Set `vectorizer` to `text2vec-transformers` in each collection definition that should use it. Weaviate does not apply a default vectorizer. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
 
 For more information on how to set up the environment with the
 `text2vec-transformers` integration, see [this

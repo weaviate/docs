@@ -30,6 +30,7 @@ This enables an enhanced developed experience, such as the ability to:
 | [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
 | [Hugging Face](./huggingface/index.md) | [Text](./huggingface/embeddings.md) | - | - |
 | [Jina AI](./jinaai/index.md) | [Text](./jinaai/embeddings.md), [Multimodal](./jinaai/embeddings-multimodal.md) | - | [Reranker](./jinaai/reranker.md) |
+| [Meta](./meta/index.md) | - | [Text](./meta/generative.md) | - |
 | [Mistral](./mistral/index.md) | [Text](./mistral/embeddings.md) | [Text](./mistral/generative.md) | - |
 | [Morph](./morph/index.md) | [Text](./morph/embeddings.md) | - | - |
 | [NVIDIA](./nvidia/index.md) | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md) | [Text](./nvidia/generative.md) | [Reranker](./nvidia/reranker.md) |

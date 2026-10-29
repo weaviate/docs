@@ -12,7 +12,9 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
+import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
 
 An **inverted index** is a data structure in Weaviate that enables efficient text search and filtering operations.
 
@@ -59,12 +61,20 @@ The inverted index in Weaviate can be enabled through parameters at the property
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START EnableInvertedIndex"
+      endMarker="// END EnableInvertedIndex"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -123,12 +133,20 @@ The inverted index in Weaviate can be configured through various parameters at t
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -172,12 +190,20 @@ The following index types can be dropped: `searchable`, `filterable`, `rangeFilt
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START DropInvertedIndex"
       endMarker="// END DropInvertedIndex"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START DropInvertedIndex"
+      endMarker="// END DropInvertedIndex"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -234,12 +260,20 @@ For the full list of supported tokenizers (including `kagome_ja`, `kagome_kr`, a
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

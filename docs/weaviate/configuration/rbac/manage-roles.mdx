@@ -9,13 +9,15 @@ image: og/docs/configuration.jpg
 import Link from "@docusaurus/Link";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import SkipLink from "/src/components/SkipValidationLink";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts";
 import RolePyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py";
 import RoleTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/RBACTest.java";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
+import RbacGoV6Code from "!!raw-loader!/_includes/code/go-v6/rbac_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/RBACTest.cs";
 
 In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
@@ -50,12 +52,20 @@ Role management requires appropriate `role` resource permissions that can be obt
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AdminClient"
       endMarker="// END AdminClient"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -129,12 +139,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddManageRolesPermission"
       endMarker="// END AddManageRolesPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddManageRolesPermission"
+      endMarker="// END AddManageRolesPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -179,12 +197,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddManageUsersPermission"
       endMarker="// END AddManageUsersPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddManageUsersPermission"
+      endMarker="// END AddManageUsersPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -228,12 +254,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddCollectionsPermission"
       endMarker="// END AddCollectionsPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddCollectionsPermission"
+      endMarker="// END AddCollectionsPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -279,12 +313,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddTenantPermission"
       endMarker="// END AddTenantPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddTenantPermission"
+      endMarker="// END AddTenantPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -329,12 +371,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddDataObjectPermission"
       endMarker="// END AddDataObjectPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddDataObjectPermission"
+      endMarker="// END AddDataObjectPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -357,6 +407,12 @@ This example creates a role called `testRole` with permissions to:
 
 #### Create a role with `Backups` permissions {#backups-permissions}
 
+:::info Added in `v1.39.10`
+
+The `read_backups` action lists backups and reads backup and restore status. It cannot create, restore or cancel a backup. Like `manage_backups`, it is scoped by collection. The client libraries do not have a helper for it yet. Grant it through the <SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> with `"action": "read_backups"` and a `backups` resource.
+
+:::
+
 This example creates a role called `testRole` with permissions to:
 
 - Manage backups for collections starting with `TargetCollection`.
@@ -378,12 +434,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddBackupPermission"
       endMarker="// END AddBackupPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddBackupPermission"
+      endMarker="// END AddBackupPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -427,12 +491,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddClusterPermission"
       endMarker="// END AddClusterPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddClusterPermission"
+      endMarker="// END AddClusterPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -476,12 +548,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddNodesPermission"
       endMarker="// END AddNodesPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddNodesPermission"
+      endMarker="// END AddNodesPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -525,12 +605,20 @@ This example creates a role called `testRole` with permissions to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddAliasPermission"
       endMarker="// END AddAliasPermission"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddAliasPermission"
+      endMarker="// END AddAliasPermission"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -573,12 +661,20 @@ This example creates a role called `testRole` with permissions to:
 ```
 
 </TabItem>
-<TabItem value="go" label="Go">
+<TabItem value="gov5" label="Go (v5)">
 <FilteredTextBlock
-text={GoCode}
+text={GoV5Code}
 startMarker="// START AddReplicationsPermission"
 endMarker="// END AddReplicationsPermission"
-language="go"
+language="gov5"
+/>
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+text={RbacGoV6Code}
+startMarker="// START AddReplicationsPermission"
+endMarker="// END AddReplicationsPermission"
+language="go6"
 />
 </TabItem>
 <TabItem value="java" label="Java">
@@ -621,12 +717,20 @@ language="py"
 ```
 
 </TabItem>
-<TabItem value="go" label="Go">
+<TabItem value="gov5" label="Go (v5)">
 <FilteredTextBlock
-text={GoCode}
+text={GoV5Code}
 startMarker="// START AddGroupsPermission"
 endMarker="// END AddGroupsPermission"
-language="go"
+language="gov5"
+/>
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+text={RbacGoV6Code}
+startMarker="// START AddGroupsPermission"
+endMarker="// END AddGroupsPermission"
+language="go6"
 />
 </TabItem>
 <TabItem value="java" label="Java">
@@ -683,12 +787,20 @@ This example grants additional permissions to the role `testRole` to:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AddRoles"
       endMarker="// END AddRoles"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AddRoles"
+      endMarker="// END AddRoles"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -735,12 +847,20 @@ This example removes the following permissions from the role `testRole`:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RemovePermissions"
       endMarker="// END RemovePermissions"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START RemovePermissions"
+      endMarker="// END RemovePermissions"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -782,12 +902,20 @@ Check if the role `testRole` exists:
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CheckRoleExists"
       endMarker="// END CheckRoleExists"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START CheckRoleExists"
+      endMarker="// END CheckRoleExists"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -829,12 +957,20 @@ View the permissions assigned to a role.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START InspectRole"
       endMarker="// END InspectRole"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START InspectRole"
+      endMarker="// END InspectRole"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -876,12 +1012,20 @@ View all roles in the system and their permissions.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ListAllRoles"
       endMarker="// END ListAllRoles"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START ListAllRoles"
+      endMarker="// END ListAllRoles"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -923,12 +1067,20 @@ List all users who have the role `testRole`.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AssignedUsers"
       endMarker="// END AssignedUsers"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START AssignedUsers"
+      endMarker="// END AssignedUsers"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -970,12 +1122,20 @@ Deleting a role will remove it from the system, and revoke the associated permis
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START DeleteRole"
       endMarker="// END DeleteRole"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START DeleteRole"
+      endMarker="// END DeleteRole"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -9,7 +9,11 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6VectorCode from "!!raw-loader!/_includes/code/go-v6/vector_config_test.go";
+import GoV6ManageCode from "!!raw-loader!/_includes/code/go-v6/manage_collections_test.go";
+import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
+import GoV6TenantsCode from "!!raw-loader!/_includes/code/go-v6/tenants_test.go";
 import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
@@ -33,8 +37,8 @@ These are the top-level parameters you can set when creating a collection.
 | [`properties`](#properties)                  | Array  | An array of property objects defining the data schema.                                                                | `[]`                                                                                                                                                                                                  | Partially\*   |
 | [`invertedIndexConfig`](#inverted-index)     | Object | Configuration for the inverted index, affecting filtering and keyword search.                                         | See [Inverted Index reference](./indexing/inverted-index.mdx#inverted-index-parameters)                                                                                                               | Yes           |
 | [`vectorConfig`](#vector-configuration)      | Object | Configure multiple named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields. | `null`                                                                                                                                                                                                | Partially\*\* |
-| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | Default vectorizer defined by [environment variable](/deploy/configuration/env-vars#DEFAULT_VECTORIZER_MODULE). See [Model provider](../model-providers/index.md) for module-specific config defaults | No            |
-| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`, `hfresh`).                                                | `hnsw`                                                                                                                                                                                                | No            |
+| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | `none` if any other top-level vector parameter is set. Otherwise unset: the collection has no vector (see [Collections without a vector](#no-vector)). See [Model provider](../model-providers/index.md) for module-specific config defaults | No            |
+| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`, `hfresh`).                                                | `hnsw` if any other top-level vector parameter is set. Otherwise unset: the collection has no vector (see [Collections without a vector](#no-vector)) | No            |
 | [`moduleConfig`](#module-configuration)      | Object | Module-specific configuration settings.                                                                               | See [Module configuration](#module-configuration)                                                                                                                                                     | Partially     |
 | [`vectorIndexConfig`](#vector-configuration) | Object | Configuration settings specific to the chosen `vectorIndexType`.                                                      | See [Vector index reference](./indexing/vector-index.mdx)                                                                                                                                             | Partially     |
 | [`shardingConfig`](#sharding)                | Object | Controls sharding behavior in a multi-node cluster.                                                                   | See [Sharding section](#sharding)                                                                                                                                                                     | No            |
@@ -43,7 +47,7 @@ These are the top-level parameters you can set when creating a collection.
 | [`objectTtlConfig`](#object-ttl)             | Object | Sets a time to live (TTL) after which the collection's objects expire.                                                 | Disabled                                                                                                                                                                                              | Yes           |
 
 \* [New properties can be added](../manage-collections/collection-operations.mdx#add-a-property); existing properties cannot be modified<br/>
-\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors); some vector index settings are mutable<br/>
+\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) and, from `v1.40`, [a named vector can be dropped](../manage-collections/vector-config.mdx#drop-a-named-vector); some vector index settings are mutable<br/>
 
 <details>
   <summary>Example collection configuration -  JSON object</summary>
@@ -130,6 +134,14 @@ This code example shows how to configure the collection parameters through a cli
       startMarker="// START ReferenceFullDefinition"
       endMarker="// END ReferenceFullDefinition"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6ManageCode}
+      startMarker="// START CreateCollectionExample"
+      endMarker="// END CreateCollectionExample"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -242,6 +254,14 @@ This code example shows how to configure the property parameters through a clien
       startMarker="// START ReferencePropertyOptions"
       endMarker="// END ReferencePropertyOptions"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6ManageCode}
+      startMarker="// START CreateCollectionWithProperties"
+      endMarker="// END CreateCollectionWithProperties"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -573,7 +593,7 @@ Weaviate supports two approaches for vector configuration:
 - **Single vector collections**: One vector space per object using top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`)
 - **Multiple named vectors**: Multiple vector spaces per object using the `vectorConfig` parameter (**recommended**)
 
-You cannot combine both approaches in the same collection.
+You cannot combine both approaches in the same collection definition at creation time. A definition that uses neither creates a [collection without a vector](#no-vector).
 
 :::tip We recommend using `vectorConfig`
 
@@ -585,8 +605,8 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 
 | Parameter                                                                | Type   | Description                                                                                                                                                   | Default                 | Mutable       |
 | :----------------------------------------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------- | :------------ |
-| `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | Module-specific default | No            |
-| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, `dynamic`, or `hfresh`                                                                                           | `hnsw`                  | No            |
+| `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | `none` if any other top-level vector parameter is set. Otherwise unset: the collection has no vector (see [Collections without a vector](#no-vector)) | No            |
+| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, `dynamic`, or `hfresh`                                                                                           | `hnsw` if any other top-level vector parameter is set. Otherwise unset: the collection has no vector (see [Collections without a vector](#no-vector)) | No            |
 | [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | Configuration settings for your chosen `vectorIndexType`                                                                                                      | Index-specific defaults | Partially\*   |
 | `vectorConfig`                                                           | Object | **Alternative to above**: Define multiple named vector spaces                                                                                                 | `null`                  | Partially\*\* |
 | ↪ `vectorConfig.<name>.vectorizer`                                       | Object | Vectorizer config for this named vector (e.g., `{"text2vec-openai": {"properties": ["title"]}}`)                                                              | (Required)              | No            |
@@ -594,11 +614,21 @@ Using the `vectorConfig` parameter allows you to start with one vector per colle
 | [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | Index configuration for this named vector                                                                                                                     | Index-specific defaults | Partially\*   |
 
 \* See [vector index mutable parameters](./indexing/vector-index.mdx)
-\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
+\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation, and from `v1.40` [a named vector can be dropped](../manage-collections/vector-config.mdx#drop-a-named-vector)
 
 #### Single vector collections
 
-If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a _single vector_ collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
+:::caution Prefer named vectors for new collections
+
+Configuring a single vector with the top-level parameters is the older approach. Use [named vectors](#named-vectors) for new collections. You can [add named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors) to a single vector collection later, but the original vector keeps its top-level configuration.
+
+:::
+
+A collection that sets any of the top-level `vectorizer`, `vectorIndexType` or `vectorIndexConfig` parameters is a single vector collection. Weaviate fills in the remaining top-level parameters:
+
+- `vectorizer` becomes `none`. See [Vector configuration defaults](/deploy/migration/index.md#vector-config-defaults).
+- `vectorIndexType` becomes the value of [`DEFAULT_VECTOR_INDEX`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_INDEX), or `hnsw` if that variable is unset.
+- `vectorIndexConfig.distance` becomes the value of [`DEFAULT_VECTOR_DISTANCE_METRIC`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_DISTANCE_METRIC), or [`cosine`](./distances.md) if that variable is unset.
 
 To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
 
@@ -639,12 +669,20 @@ This code example shows how to configure the vectorizer parameters for a single 
       language="csharp"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithVectorizer"
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -698,12 +736,20 @@ This code example shows how to configure multiple named vectors through a client
       language="csharp"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateCollectionWithNamedVectors"
       endMarker="// END CreateCollectionWithNamedVectors"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6VectorCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -713,6 +759,29 @@ This code example shows how to configure multiple named vectors through a client
 For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) guide.
 
 :::
+
+#### The `default` vector name {#default-vector-name}
+
+`default` is a reserved vector name, and it means different things in the two approaches.
+
+**Single vector collections.** `default` is an alias for the collection's top-level vector. A write that sends `vectors: {"default": [...]}` is stored there. On searches the alias is only partly supported: GraphQL accepts `default` as an explicit target, while gRPC search and aggregate and the REST Search API reject it. Omit the target on a single vector collection to use the top-level vector.
+
+The alias is not part of the collection definition, so `GET /v1/schema` returns the top-level parameters and no `vectorConfig` entry, unless named vectors were added later. You can add named vectors to such a collection, but not one called `default`, because that name is already taken by the top-level vector.
+
+**Collections that use `vectorConfig`.** `default` is an ordinary named vector with no special behavior. It is the name Weaviate gives the vector that [auto-schema](#auto-schema) creates.
+
+#### Collections without a vector {#no-vector}
+
+:::info Changed in `v1.40`
+:::
+
+A collection definition that sets none of `vectorizer`, `vectorIndexType`, `vectorIndexConfig` or `vectorConfig` creates a collection without a vector. Before `v1.40`, the server defaults filled in the top-level parameters, so such a definition produced a single vector collection.
+
+You can [add a named vector](../manage-collections/vector-config.mdx#add-new-named-vectors) later. You cannot add the top-level parameters later. An update that sets them is rejected with a `422` error:
+
+```text
+a class-level vectorizer or vector index cannot be added through an update, add a named vector instead
+```
 
 ---
 
@@ -838,6 +907,14 @@ This code example shows how to configure the replication parameters through a cl
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -920,6 +997,14 @@ This code example shows how to configure the sharding parameters through a clien
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -985,6 +1070,14 @@ This code example enables multi-tenancy on a new collection. `autoTenantCreation
       language="tsindent"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6TenantsCode}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="go6"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaV6CodeMultiTenancy}
@@ -1035,7 +1128,7 @@ Some, but not all, parameters are mutable after you create your collection. To m
 | `properties`                         | New properties only                                                | [Add a property](../manage-collections/collection-operations.mdx#add-a-property)                                        | To change an existing property, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
 | `invertedIndexConfig`                | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | Changing [`tokenizerUserDict`](./indexing/inverted-index.mdx#tokenizeruserdict) is allowed, but existing objects keep the old tokenization until they are re-imported. |
 | `objectTtlConfig`                    | Yes                                                                | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition)       | -                                                                                                           |
-| `vectorConfig` (named vectors)       | New named vectors only                                             | [Add new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors)                                  | To change an existing named vector, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
+| `vectorConfig` (named vectors)       | New named vectors, and dropping a named vector from `v1.40`        | [Add new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors), [Drop a named vector](../manage-collections/vector-config.mdx#drop-a-named-vector) | To change an existing named vector, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
 | `vectorizer`                         | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
 | `vectorIndexType`                    | No                                                                 | -                                                                                                                       | Create a new collection and [migrate the data](../manage-collections/migrate.mdx).                          |
 | `vectorIndexConfig`                  | Some settings. See the mutability column in the [vector index reference](./indexing/vector-index.mdx). | [Update the collection definition](../manage-collections/collection-operations.mdx#update-a-collection-definition) | For an immutable setting such as `distance` or `efConstruction`, create a new collection and [migrate the data](../manage-collections/migrate.mdx). |
@@ -1065,15 +1158,21 @@ After you create a collection, you can [add new properties](../manage-collection
 
 ## Auto-schema
 
+:::info Changed in `v1.39.1`
+:::
+
 The "Auto-schema" feature generates a collection definition automatically by inferring parameters from data being added. It is enabled by default, and can be disabled (e.g. in `docker-compose.yml`) by setting the environment variable [`AUTOSCHEMA_ENABLED`](/docs/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) to `'false'`.
 
 It will:
 
 - Create a collection if an object is added to a non-existent collection.
+- Create a single [named vector](#named-vectors) called `default` for that collection, with the vectorizer set to `none` and the index type taken from [`DEFAULT_VECTOR_INDEX`](/deploy/configuration/env-vars/index.md#DEFAULT_VECTOR_INDEX), or `hnsw` if that variable is unset. Before `v1.39.1`, it created a [single vector collection](#single-vector-collections) instead.
 - Add any missing property from an object being added.
 - Infer array data types, such as `int[]`, `text[]`, `number[]`, `boolean[]`, `date[]` and `object[]`.
 - Infer nested properties for `object` and `object[]` data types.
 - Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
+
+Supply the vectors yourself for auto-created collections, or define the collection before you import.
 
 :::tip Define the collection manually for production use
 

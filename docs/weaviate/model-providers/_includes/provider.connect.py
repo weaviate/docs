@@ -63,6 +63,10 @@ huggingface_key = os.getenv("HUGGINGFACE_API_KEY")
 # Recommended: save sensitive data as environment variables
 jinaai_key = os.getenv("JINAAI_API_KEY")
 # END JinaAIInstantiation
+# START MetaInstantiation
+# Recommended: save sensitive data as environment variables
+meta_key = os.getenv("META_APIKEY")
+# END MetaInstantiation
 # START MistralInstantiation
 # Recommended: save sensitive data as environment variables
 mistral_key = os.getenv("MISTRAL_API_KEY")
@@ -147,6 +151,10 @@ headers = {
 # START JinaAIInstantiation
     "X-JinaAI-Api-Key": jinaai_key,
 # END JinaAIInstantiation
+# START MetaInstantiation
+    "X-Meta-Api-Key": meta_key,
+    # "X-Meta-Baseurl": "https://api.meta.ai",  # Optional; for providing a custom base URL
+# END MetaInstantiation
 # START MistralInstantiation
     "X-Mistral-Api-Key": mistral_key,
 # END MistralInstantiation

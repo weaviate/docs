@@ -13,6 +13,7 @@ Weaviate comes with a set of predefined roles. These roles are:
 
 - `root`: The root role has full access to all resources in Weaviate.
 - `viewer`: The viewer role has read-only access to all resources in Weaviate.
+- `operator_metadata_reader`: Added in `v1.39.10`. The metadata reader role can read cluster metadata but never objects or vectors. See [Metadata reader role](#metadata-reader-role).
 
 The `root` role can be assigned through the Weaviate configuration file. A predefined role cannot be modified. The user can, however, be assigned additional roles through the Weaviate API.
 
@@ -94,6 +95,49 @@ This configuration:
 - Configures `root-user` as a user with built-in admin permissions
 
 You can connect to your instance with the root user in order to [create new users](/weaviate/configuration/rbac/manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](/weaviate/configuration/rbac/manage-roles.mdx).
+
+## Metadata reader role
+
+:::info Added in `v1.39.10`
+:::
+
+<details>
+  <summary>Permissions and configuration</summary>
+
+The built-in `operator_metadata_reader` role reads cluster metadata and access-control configuration. It never reads objects or vectors. The role has these permissions:
+
+| Action | Resources |
+| --- | --- |
+| `read_collections` | All collections |
+| `read_tenants` | All tenants |
+| `read_nodes` | All collections, `verbose` |
+| `read_cluster` | Cluster metadata |
+| `read_aliases` | All aliases |
+| `read_replicate` | All collections and shards |
+| `read_users` | All users |
+| `read_roles` | All roles |
+| `read_groups` | All OIDC groups |
+| `read_backups` | All collections |
+
+The role does not include `read_data`, `read_mcp` or any action that changes state.
+
+The role appears in role listings, such as `GET /v1/authz/roles`, for any user with `read_roles`. It does nothing until you bind it to OIDC groups.
+
+The only way to bind the role is the `metadata_groups` key under `authorization.rbac` in a configuration file. Pass the file to Weaviate with `--config-file`:
+
+```yaml
+authorization:
+  rbac:
+    enabled: true
+    metadata_groups:
+    - platform-observers
+```
+
+There is no environment variable for this key. The binding applies to OIDC groups only. Deployments that use only API keys cannot use this role.
+
+The role cannot be assigned, revoked, deleted or recreated through the Weaviate API. The binding is reset from the configuration file every time Weaviate starts.
+
+</details>
 
 ## Authorization audit logging
 

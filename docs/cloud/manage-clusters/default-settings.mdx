@@ -29,6 +29,10 @@ import AdvancedOptions from "/docs/cloud/img/weaviate-cloud-cluster-advanced-set
 | `CORS_ALLOW_ORIGIN` | Yes | https://console.weaviate.cloud | Yes (to allow any) |
 | [`REPLICATION_MINIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MINIMUM_FACTOR) | Yes | 3 (for HA clusters) | No |
 
+The GraphQL API is deprecated. Weaviate Cloud switches it off on existing clusters on May 1, 2027. Clusters that have not used GraphQL in the last 30 days have it switched off from December 1, 2026. See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
+
+{/* TODO(ivan): Q7. Confirm Weaviate Cloud sets DISABLE_GRAPHQL to true on existing clusters at the switch-off, or uses another mechanism. */}
+
 The user configurable settings appear as toggles in the `Advanced configuration` section of the cluster `Dashboard`: `Enable MCP Read-Only`, `Enable auto schema generation`, and `Allow all CORS origins`.
 
 <div class="row">
@@ -99,7 +103,7 @@ These settings control default query behavior.
 
 ## Modules
 
-Weaviate Cloud clusters do not have a default vectorizer module configured. As a result, you must specify a vectorizer integration when creating collections, or import your own vectors.
+Weaviate Cloud clusters do not have a default vectorizer module configured. To use vector search, configure a vector when you create a collection. Specify a vectorizer integration, or configure a vector for your own embeddings (for example `self_provided`) and import them.
 
 To view the list of enabled modules on your cluster, see [Cluster Status: Enabled Modules](/cloud/manage-clusters/status#enabled-modules).
 

@@ -11,7 +11,7 @@ Logs can be used to debug issues, monitor operational health, track authorizatio
 For example, the following logs showing system initialization:
 
 ```json
-{"action":"startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","default_vectorizer_module":"none","level":"info","msg":"the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer","time":"2026-01-06T15:51:32Z"}
+{"action":"startup","auto_schema_enabled":true,"build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"auto schema enabled setting is set to \"true\"","time":"2026-01-06T15:51:32Z"}
 {"action":"grpc_startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"grpc server listening at [::]:50051","time":"2026-01-06T15:51:34Z"}
 {"action":"restapi_management","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"Serving weaviate at http://[::]:8080","time":"2026-01-06T15:51:34Z","version":"1.35.1"}
 ```
@@ -53,7 +53,7 @@ LOG_FORMAT=json
 JSON format produces structured logs that are ideal for parsing by log aggregation systems:
 
 ```json
-{"action":"startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","default_vectorizer_module":"none","level":"info","msg":"the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer","time":"2026-01-06T15:51:32Z"}
+{"action":"startup","auto_schema_enabled":true,"build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"auto schema enabled setting is set to \"true\"","time":"2026-01-06T15:51:32Z"}
 {"action":"authorize","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","component":"RBAC","level":"info","msg":"","permissions":[{"resource":"[Domain: collections, Collection: TempCollection]","results":"success"}],"rbac_log_version":2,"request_action":"D","source_ip":"192.168.65.1","time":"2026-01-06T15:51:36Z","user":"root-user"}
 ```
 
@@ -67,7 +67,7 @@ JSON format produces structured logs that are ideal for parsing by log aggregati
 Text format produces human-readable logs suitable for direct viewing:
 
 ```text
-time="2026-01-06T15:54:58Z" level=info msg="the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer" action=startup build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1 default_vectorizer_module=none
+time="2026-01-06T15:54:58Z" level=info msg="auto schema enabled setting is set to \"true\"" action=startup auto_schema_enabled=true build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1
 time="2026-01-06T15:55:01Z" level=info action=authorize build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1 component=RBAC permissions="[map[resource:[Domain: collections, Collection: TempCollection] results:success]]" rbac_log_version=2 request_action=D source_ip=192.168.65.1 user=root-user
 ```
 

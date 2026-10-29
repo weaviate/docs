@@ -277,10 +277,6 @@ If you want to populate the new named vector for existing objects, delete and re
 
 <!-- TODO: I wonder we should show an example - maybe once the vectorizer syntax is updated with 1.32 -->
 
-:::caution Not available for legacy (unnamed) vectorizers
-The ability to add a named vector after collection creation is only available for collections configured with named vectors.
-:::
-
 ### Time to live (TTL)
 
 import TtlStatus from '/_includes/feature-notes/ttl-status.mdx';

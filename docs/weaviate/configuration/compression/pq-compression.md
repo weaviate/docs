@@ -10,7 +10,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.py';
 import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.autopq.ts';
 import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigurePQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigurePQTest.cs";
 
@@ -136,12 +137,20 @@ Follow these steps to manually enable PQ.
        language="ts"
      />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START InitialSchema"
       endMarker="// END InitialSchema"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START PQInitialSchema"
+      endMarker="// END PQInitialSchema"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -197,12 +206,20 @@ To enable PQ, update your collection definition as shown below. For additional c
        language="ts"
      />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START PQUpdateSchema"
+      endMarker="// END PQUpdateSchema"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -288,12 +305,20 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START GetSchema"
       endMarker="// END GetSchema"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START PQGetSchema"
+      endMarker="// END PQGetSchema"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -5,6 +5,10 @@ description: "GraphQL API guide for accessing metadata and additional properties
 image: og/docs/api.jpg
 ---
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
+
 import SkipLink from '/src/components/SkipValidationLink'
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 

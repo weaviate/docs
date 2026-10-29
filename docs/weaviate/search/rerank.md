@@ -15,7 +15,9 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.rerank.ts';
 import SimilarityPyCode from '!!raw-loader!/_includes/code/howto/search.similarity.py';
 import SimilarityPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.similarity-v3.py';
 import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
+import GoV6Code from '!!raw-loader!/_includes/code/go-v6/search_rerank_test.go';
+import GoV6SimilarityCode from '!!raw-loader!/_includes/code/go-v6/search_test.go';
 import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
@@ -62,12 +64,20 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6SimilarityCode}
+      startMarker="// START NamedVectorNearText"
+      endMarker="// END NamedVectorNearText"
+      language="go6"
     />
   </TabItem>
 
@@ -106,12 +116,20 @@ To rerank the results of a vector search, configure the object properties to sor
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RerankNearText"
       endMarker="// END RerankNearText"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START RerankVectorResults"
+      endMarker="// END RerankVectorResults"
+      language="go6"
     />
   </TabItem>
 
@@ -164,12 +182,20 @@ To rerank the results of a keyword search, configure the object properties to so
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START bm25Rerank"
       endMarker="// END bm25Rerank"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START RerankKeywordResults"
+      endMarker="// END RerankKeywordResults"
+      language="go6"
     />
   </TabItem>
 
