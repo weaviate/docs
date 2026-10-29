@@ -88,6 +88,30 @@
   gap: 10px;
 }
 
+// Optional `tag` on a card item: a small pill in the card's top-right corner.
+.cardTagged {
+  position: relative;
+}
+
+// Small cards have little top padding, so keep the title clear of the pill.
+.smallCards .cardTagged .cardHeader {
+  padding-right: 3.5rem;
+}
+
+.cornerTag {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: var(--site-primary) 1px solid;
+  color: var(--site-font-accent-color);
+  white-space: nowrap;
+}
+
 .cardIcon {
   width: 1.25rem;
   height: 1.25rem;
