@@ -37,7 +37,9 @@
 export const config = {
   path: "/*",
   // Static assets never have a Markdown version; skip invoking the function.
+  // /e/* belongs to error-link-src.ts. Keep in sync with netlify.toml.
   excludedPath: [
+    "/e/*",
     "/assets/*",
     "/img/*",
     "/fonts/*",
@@ -65,7 +67,18 @@ export const config = {
  *   prefersMarkdown(null)                                          === false
  */
 export function prefersMarkdown(accept: string | null): boolean {
-  throw new Error("Not implemented: prefersMarkdown");
+  if (!accept) return false;
+
+  const quality = new Map<string, number>();
+  for (const entry of accept.toLowerCase().split(",")) {
+    const [mediaType, ...parameters] = entry.split(";").map((part) => part.trim());
+    const q = parameters.find((parameter) => parameter.startsWith("q="));
+    const value = q === undefined ? 1 : Number(q.slice(2));
+    quality.set(mediaType, Number.isFinite(value) ? value : 0);
+  }
+
+  const markdown = quality.get("text/markdown") ?? 0;
+  return markdown > 0 && markdown >= (quality.get("text/html") ?? 0);
 }
 
 /**
@@ -74,9 +87,36 @@ export function prefersMarkdown(accept: string | null): boolean {
  * return the same result.
  */
 export function markdownPathForRoute(routePath: string): string {
-  throw new Error("Not implemented: markdownPathForRoute");
+  return `${routePath.replace(/\/+$/, "") || "/index"}.md`;
 }
 
 export default async (request: Request, context: any) => {
-  throw new Error("Not implemented: markdown-negotiation");
+  const url = new URL(request.url);
+
+  if (url.pathname.endsWith(".md")) {
+    const response = await context.next();
+    if (!response.ok) return response;
+    const pagePath = url.pathname.slice(0, -".md".length).replace(/^\/index$/, "/");
+    return withMarkdownHeaders(response, new URL(pagePath, url.origin));
+  }
+
+  if (!["GET", "HEAD"].includes(request.method) || !prefersMarkdown(request.headers.get("accept"))) {
+    return context.next();
+  }
+
+  // Fetch rather than rewrite, so a missing .md (a redirected or non-doc URL)
+  // can fall back to the normal response and its redirect rules. The
+  // subrequest passes through this function's .md branch above.
+  const markdown = await fetch(new URL(markdownPathForRoute(url.pathname), url.origin), { method: request.method });
+  if (!markdown.ok) return context.next();
+  return withMarkdownHeaders(markdown, new URL(url.pathname, url.origin));
 };
+
+function withMarkdownHeaders(response: Response, pageUrl: URL): Response {
+  const headers = new Headers(response.headers);
+  headers.set("Content-Type", "text/markdown; charset=utf-8");
+  headers.set("Vary", "Accept");
+  headers.set("X-Robots-Tag", "noindex");
+  headers.set("Link", `<${pageUrl.href}>; rel="canonical"`);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}

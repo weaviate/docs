@@ -28,6 +28,9 @@ jobs:
       # so it runs first and fails fast.
       - name: Validate the error-message redirects
         run: node _build_scripts/validate-redirects.js
+      # Unit tests for the Markdown export (build plugin and edge function).
+      - name: Test the Markdown export
+        run: node --test "src/plugins/markdown-export/*.test.mjs"
       - name: Build a dev version
         run: yarn build-dev
       - name: Validate links from the build.dev folder
