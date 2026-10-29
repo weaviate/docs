@@ -10,7 +10,7 @@ const DeployCardsSection = ({ items }) => {
     <div className={styles.deploySection}>
       {items.map((item, idx) => (
         <Link key={idx} to={item.button.link} className={styles.deployBox}>
-          <div className={styles.tabContainer}>
+          <div className={styles.tabContainer} data-copy-exclude="">
             {item.tabs.map((tab, index) => (
               <span
                 key={index}
