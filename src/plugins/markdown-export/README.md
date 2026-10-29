@@ -50,11 +50,12 @@ The response should have `content-type: text/markdown; charset=utf-8`.
 ## Change the conversion
 
 - **Remove UI text from the Markdown:** add `data-copy-exclude` to the element in its React component. The "Copy page" button in `src/components/ContextualMenu` honors the same marker.
-- **Add content that only the Markdown needs:** render it as `<pre hidden data-markdown-source="<kind>">` and handle that kind in `html-to-markdown.mjs`. [`src/theme/Mermaid/index.js`](../../theme/Mermaid/index.js) does this for diagram source, because Mermaid draws diagrams in the browser and the built HTML has none.
+- **Add content that only the Markdown needs:** render it as `<pre hidden data-markdown-source="<kind>" data-markdown-content="<URI-encoded content>">` and handle that kind in `html-to-markdown.mjs`. [`src/theme/Mermaid/index.js`](../../theme/Mermaid/index.js) does this for diagram source, because Mermaid draws diagrams in the browser and the built HTML has none. The content goes in an attribute because the HTML minifier unescapes text: `&amp;&lt;br>` in a `<pre>` became a real `<br>` element.
+- **Make a visual layout readable as text:** if a component's DOM order only makes sense on screen, as in the `IdAnatomy` grid in `src/components/ErrorDocs`, mark the visual part `aria-hidden="true" data-copy-exclude=""` and render a visually hidden list next to it. Screen readers and the export both read the list.
 - **Handle new rendered markup:** add a rewrite in `rewriteForMarkdown`, a fixture that contains the markup, and a test.
 
 ## Constraints
 
 - The edge function keeps its own copy of `markdownPathForRoute` because Deno bundles it separately. A test checks that the copy matches [`markdown-path.mjs`](markdown-path.mjs).
 - `netlify deploy --no-build` deploys only edge functions declared in `netlify.toml`, and ignores the `config` export in the function file. A test checks that the `path` and `excludedPath` in both places match.
-- [`src/theme/Mermaid/index.js`](../../theme/Mermaid/index.js) repeats the `data-markdown-source` attribute name instead of importing it: importing `html-to-markdown.mjs` would add its Markdown dependencies to the browser bundle.
+- [`src/theme/Mermaid/index.js`](../../theme/Mermaid/index.js) repeats the `data-markdown-source` and `data-markdown-content` attribute names instead of importing them: importing `html-to-markdown.mjs` would add its Markdown dependencies to the browser bundle.

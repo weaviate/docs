@@ -17,12 +17,22 @@ import { SKIP, visit } from "unist-util-visit";
 /**
  * Marks an element that exists only so the Markdown export can read it.
  *
- * The element must also carry `hidden`. Its value names the content kind.
- * "mermaid" is the only kind: the Mermaid theme wrapper renders the diagram
- * source as `<pre hidden data-markdown-source="mermaid">`, because the diagram
- * itself is drawn in the browser and is absent from the built HTML.
+ * The element must also carry `hidden`. Its value names the content kind, and
+ * MARKDOWN_CONTENT_ATTRIBUTE holds the content, URI-encoded. "mermaid" is the
+ * only kind: the Mermaid theme wrapper renders the diagram source as
+ * `<pre hidden data-markdown-source="mermaid" data-markdown-content="flowchart%20TB...">`,
+ * because the diagram itself is drawn in the browser and is absent from the
+ * built HTML.
  */
 export const MARKDOWN_SOURCE_ATTRIBUTE = "data-markdown-source";
+
+/**
+ * The URI-encoded content of a MARKDOWN_SOURCE_ATTRIBUTE element.
+ *
+ * Content travels in an attribute because the HTML minifier may unescape text:
+ * a literal `&<br>` in Mermaid source would become a <br> element.
+ */
+export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
 
 /**
  * Converts the HTML of one built page to a Markdown document.
@@ -45,8 +55,12 @@ export const MARKDOWN_SOURCE_ATTRIBUTE = "data-markdown-source";
  *   in bold (`**Go (v5)**`), with the fence language from the rendered block.
  * - Default Docusaurus tabs: every panel, under an `####` heading with the tab label.
  * - Admonitions: GitHub alert blockquotes (`> [!TIP]`), with the admonition
- *   title in bold when it differs from the type.
+ *   title in bold when it differs from the type. Links in the title are kept.
  * - `<details>`: the summary in bold, followed by the expanded body.
+ * - Tables: GFM tables. A cell with block content puts each block on its own
+ *   line, separated by `<br>`, with list items marked `• `.
+ * - A link that wraps a list or button (a card): the card content, followed by
+ *   one link labelled with the button text.
  * - KaTeX: the LaTeX source, as `$...$` or `$$...$$`.
  * - Mermaid (`[data-markdown-source="mermaid"]`): a `mermaid` fence.
  * - Embedded iframes: a link to the embed URL.
@@ -58,7 +72,8 @@ export const MARKDOWN_SOURCE_ATTRIBUTE = "data-markdown-source";
  * - Root-relative links and image sources: absolute, prefixed with `siteUrl`.
  *   Links point to the HTML pages, not to their `.md` versions.
  * - Removed: elements marked `[data-copy-exclude]`, heading anchor links,
- *   buttons, `<select>`, SVG icons, scripts, and React SSR comments.
+ *   buttons, `<select>`, SVG and Font Awesome icons, scripts, and React SSR
+ *   comments.
  *
  * @param {object} page
  * @param {string} page.html Complete HTML document written by `docusaurus build`.
@@ -84,7 +99,7 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
     rewriteForMarkdown(docsBody, siteUrl);
 
     const mdast = unified()
-      .use(rehypeRemark, { handlers: { [ALERT_TAG]: alertHandler } })
+      .use(rehypeRemark, { handlers: { [ALERT_TAG]: alertHandler, [LINE_BREAK_TAG]: lineBreakHandler } })
       .runSync({ type: "root", children: [docsBody] });
     const body = unified()
       .use(remarkGfm)
@@ -123,9 +138,9 @@ function rewriteForMarkdown(docsBody, siteUrl) {
   // React SSR emits <!-- --> between adjacent text nodes.
   removeNodes(docsBody, (node) => node.type === "comment");
 
-  visitElements(docsBody, (node) => node.properties[toPropertyName(MARKDOWN_SOURCE_ATTRIBUTE)] === "mermaid", (node) => {
-    node.tagName = "pre";
-    node.properties = { className: ["language-mermaid"] };
+  rewriteElements(docsBody, (node) => node.properties[toPropertyName(MARKDOWN_SOURCE_ATTRIBUTE)] === "mermaid", (node) => {
+    const source = decodeURIComponent(node.properties[toPropertyName(MARKDOWN_CONTENT_ATTRIBUTE)] ?? "");
+    return element("pre", { className: ["language-mermaid"] }, [text(source)]);
   });
 
   // KaTeX renders MathML with the LaTeX source in an annotation, plus an
@@ -184,8 +199,8 @@ function rewriteForMarkdown(docsBody, siteUrl) {
     const heading = node.children.find((child) => hasClass(child, /admonitionHeading/));
     const content = node.children.find((child) => hasClass(child, /admonitionContent/));
     const title = heading ? toText(heading).trim() : "";
-    const titleParagraph =
-      title && title.toLowerCase() !== type ? [element("p", {}, [element("strong", {}, [text(title)])])] : [];
+    // Keep the heading's children, not its text, so links in a custom title survive.
+    const titleParagraph = title && title.toLowerCase() !== type ? [boldParagraph(heading.children)] : [];
     return element(ALERT_TAG, { alertType: GITHUB_ALERT_TYPES[type] ?? "NOTE" }, [
       ...titleParagraph,
       ...(content?.children ?? []),
@@ -195,7 +210,7 @@ function rewriteForMarkdown(docsBody, siteUrl) {
   rewriteElements(docsBody, (node) => node.tagName === "details", (node) => {
     const summary = node.children.find((child) => child.tagName === "summary");
     return element("div", {}, [
-      ...(summary ? [element("p", {}, [element("strong", {}, [text(toText(summary).trim())])])] : []),
+      ...(summary ? [boldParagraph(summary.children)] : []),
       ...node.children.filter((child) => child !== summary),
     ]);
   });
@@ -204,6 +219,19 @@ function rewriteForMarkdown(docsBody, siteUrl) {
     element("p", {}, [element("a", { href: node.properties.src }, [text(node.properties.title || "Embedded content")])]),
   );
 
+  // A card that is one big link (src/components/DeploymentCards) wraps a list
+  // and a button. Inside a link, rehype-remark flattens the list into the link
+  // text. Keep the card's content as blocks and add a single link, labelled
+  // with the button text. Runs before removal, which drops the button.
+  rewriteElements(docsBody, (node) => node.tagName === "a" && select("ul, ol, button", node), (node) => {
+    const button = select("button", node);
+    const label = button ? toText(button).trim() : node.properties.href;
+    return element("div", {}, [
+      ...node.children,
+      element("p", {}, [element("a", { href: node.properties.href }, [text(label)])]),
+    ]);
+  });
+
   removeNodes(
     docsBody,
     (node) =>
@@ -211,8 +239,17 @@ function rewriteForMarkdown(docsBody, siteUrl) {
       (node.properties.dataCopyExclude !== undefined ||
         REMOVED_TAGS.has(node.tagName) ||
         hasClass(node, /^hash-link$/) ||
+        // Font Awesome icons are empty <i> elements, which would become `**`.
+        (node.tagName === "i" && toText(node).trim() === "") ||
         (node.tagName === "img" && (node.properties.alt === "" || hasClass(node, /themedComponent--dark/)))),
   );
+
+  // GFM table cells hold one line, so rehype-remark runs block content
+  // together ("Create rolesRead role info"). Put each block on its own line,
+  // separated by a literal <br>, with list items marked "• ".
+  visitElements(docsBody, (node) => ["td", "th"].includes(node.tagName) && node.children.some(isBlock), (node) => {
+    node.children = cellLines(node.children).flatMap((line, index) => (index ? [element(LINE_BREAK_TAG, {}, []), ...line] : line));
+  });
 
   visitElements(docsBody, () => true, (node) => {
     for (const attribute of ["href", "src"]) {
@@ -247,6 +284,46 @@ function alertHandler(state, node) {
   };
   state.patch(node, result);
   return result;
+}
+
+// A temporary hast element for a line break inside a table cell, emitted as a
+// raw <br>. rehype-remark turns a real <br> in a cell into a space.
+const LINE_BREAK_TAG = "markdown-line-break";
+
+function lineBreakHandler(state, node) {
+  const result = { type: "html", value: "<br>" };
+  state.patch(node, result);
+  return result;
+}
+
+const BLOCK_TAGS = new Set(["blockquote", "div", "dl", "dd", "dt", "h1", "h2", "h3", "h4", "h5", "h6", "li", "ol", "p", "pre", "ul"]);
+
+function isBlock(node) {
+  return node.type === "element" && BLOCK_TAGS.has(node.tagName);
+}
+
+// Splits a table cell's content into lines of inline nodes: one line per
+// block, with whitespace-only lines dropped.
+function cellLines(children) {
+  const lines = [[]];
+  for (const child of children) {
+    if (!isBlock(child)) {
+      lines.at(-1).push(child);
+      continue;
+    }
+    const inner = cellLines(child.children);
+    if (child.tagName === "li" && inner.length) inner[0].unshift(text("• "));
+    lines.push(...inner, []);
+  }
+  return lines.filter((line) => line.some((node) => node.type !== "text" || node.value.trim()));
+}
+
+// A title paragraph in bold. Bold inside the title is unwrapped: nested, it
+// would print as `****TIP:** ...**`.
+function boldParagraph(children) {
+  const unwrapBold = (nodes) =>
+    nodes.flatMap((node) => (["strong", "b"].includes(node.tagName) ? unwrapBold(node.children) : [node]));
+  return element("p", {}, [element("strong", {}, unwrapBold(children))]);
 }
 
 function element(tagName, properties, children) {

@@ -112,8 +112,8 @@ The conversion rules were tested in a throwaway prototype on the Oct 26 local bu
 | Checkpoint | Status |
 |---|---|
 | 1 | Reviewed; image rules added to the `convertDocPage` contract |
-| 2 | Passed. The build wrote 393 `.md` files for 393 docs pages in 6.7 s; a scan for UI text found only page content. |
-| 3 | Fences passed: all 21 diagrams on the 14 Mermaid pages. Browser rendering not verified: Docker was not running. |
+| 2 | Passed. The build wrote 393 `.md` files for 393 docs pages in 6.7 s; a scan for UI text found only page content. Repaired after QA of the rspack build: table cells with blocks, link-wrapped cards, Font Awesome icons, links and bold in admonition and details titles. The QA script (outside the repo) passes every check except one MDX source defect on `/weaviate/configuration/rbac/manage-roles`. |
+| 3 | Fences passed: all 21 diagrams on the 14 Mermaid pages. Repaired: the source moved to a URI-encoded attribute, because the rspack minifier turned `&amp;&lt;br>` into a `<br>` element. Browser rendering not verified: Docker was not running. |
 | 4 | Passed. 393 of 393 docs pages have the head link and notice; tag, 404 and REST API pages have neither; every link resolves to a file in `build/` and `build.dev/`. |
 | 5 | Unit tests passed (10). Netlify behavior needs a deploy preview. |
 | 6 | Partly done. README written, commented-out signalwire config removed, CI step added. Not done: removing the signalwire package (needs `yarn remove`) and running `validate-links-pr.js` (binds a port). The sandbox blocks both. |

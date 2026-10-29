@@ -79,6 +79,18 @@ describe("convertDocPage", () => {
     assert.match(info, /> \[!NOTE\]\n>\n> \*\*Authentication and authorization\*\*/);
   });
 
+  test("keeps links in an admonition title", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    assert.match(markdown, /> \*\*Requires a \[generative model integration\]\(https:\/\/docs\.weaviate\.io\/weaviate\/model-providers\)\*\*/);
+  });
+
+  test("does not nest bold inside a bold title", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    assert.match(markdown, /^\*\*Step 0: Set up a collection\*\*$/m);
+  });
+
   test("expands details under a bold summary", () => {
     const markdown = convertFixture("admonition-details-table");
 
@@ -89,6 +101,30 @@ describe("convertDocPage", () => {
     const markdown = convertFixture("admonition-details-table");
 
     assert.match(markdown, /^\| .+ \|\n\| -+/m);
+  });
+
+  test("puts each block in a table cell on its own line", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    assert.match(markdown, /\| Create roles<br>Read role info<br>Update role permissions<br>Delete roles \|/);
+    assert.match(markdown, /\| Role name filter:<br>• `string or regex`: specifies which roles can be managed<br>Role scope:<br>• `all`: /);
+  });
+
+  test("turns a card that is one big link into its content plus one link", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    assert.match(
+      markdown,
+      /\nWeaviate Cloud\n\n- From evaluation \(free tier\) to production\n- Shared Cloud \(infrastructure managed by Weaviate\)\n\n\[Set up a WCD instance\]\(https:\/\/docs\.weaviate\.io\/cloud\/manage-clusters\/create\)\n/,
+    );
+    assert.ok(!markdown.includes("Evaluation"), "stage tabs are marked data-copy-exclude");
+  });
+
+  test("drops Font Awesome icons instead of leaving empty emphasis", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    // Previously `[**New to Weaviate?](...)`: the empty <i> became `**`.
+    assert.match(markdown, /^\[New to Weaviate\?\]\(https:\/\/docs\.weaviate\.io\/weaviate\/quickstart\)$/m);
   });
 
   test("replaces embedded iframes with a link", () => {
@@ -125,6 +161,17 @@ describe("convertDocPage", () => {
     const markdown = convertFixture("mermaid");
 
     assert.match(markdown, /```mermaid\nflowchart TB\n {4}User\(\["Authenticated User"\]\) --> AuthScheme/);
+  });
+
+  test("keeps a literal <br> in Mermaid source", () => {
+    // The rspack minifier unescaped this text to a real <br> element when the
+    // source was the <pre>'s text, so the source now travels URI-encoded.
+    const source = 'flowchart LR\n    core["💾 Data &<br> vector store"]';
+    const html = `<html><body><div class="theme-doc-markdown"><h1>M</h1><pre hidden data-markdown-source=mermaid data-markdown-content="${encodeURIComponent(source)}"></pre></div></body></html>`;
+
+    const markdown = convertDocPage({ html, pageUrl: `${SITE_URL}/m`, siteUrl: SITE_URL });
+
+    assert.ok(markdown.includes("```mermaid\n" + source + "\n```"));
   });
 
   test("returns null for a page without a docs body", () => {
