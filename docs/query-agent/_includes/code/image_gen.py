@@ -73,6 +73,7 @@ search_response = collection.query.near_image(
 
 # START BaseModelImageExample
 from pydantic import BaseModel, Field
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 class AdvertsResponse(BaseModel):
     speech: str = Field(description="What to say during the presentation")
@@ -84,7 +85,12 @@ class AdvertsResponse(BaseModel):
 
 response = qa.ask(
     "Find the best selling items in the store and then create a series of adverts for them.",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=AdvertsResponse,
 )
 # END BaseModelImageExample
@@ -103,6 +109,8 @@ print(response.final_answer_parsed.chart is None)
 # END UnionImageExample
 
 # START ComplexBaseModelImageExample
+from weaviate.agents.classes import QueryAgentCollectionConfig
+
 class Slide(BaseModel):
     speech: str = Field(description = "What to say during this particular slide")
     slide: GeneratedImage = Field(
@@ -117,7 +125,12 @@ class PresentationResponse(BaseModel):
 
 response = qa.ask(
     "Find the best selling items in the store and then create a presentation for them.",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=PresentationResponse,
 )
 # END ComplexBaseModelImageExample
@@ -134,21 +147,34 @@ class AnnotatedImagesResponse(BaseModel):
 # START CustomShapeImageExample
 from typing import Annotated
 from weaviate.agents.classes import GeneratedImageOptions
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 class HatResponse(BaseModel):
     picture: Annotated[GeneratedImage, GeneratedImageOptions(shape="portrait")]
 
 response = qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=HatResponse,
 )
 # END CustomShapeImageExample
 
 # START RawJSONSchemaImageExample
+from weaviate.agents.classes import QueryAgentCollectionConfig
+
 response = qa.ask(
     "Find the most expensive item in the store",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format={
         "type": "object",
         "properties": {

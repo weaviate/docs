@@ -35,9 +35,15 @@ res = qa.ask(
 
 # START ImageGenAskMode
 from weaviate.agents.classes import GeneratedImage
+from weaviate.agents.classes import QueryAgentCollectionConfig
 res = qa.ask(
     query = "Generate a picture of a model wearing the best-selling T-shirt",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=GeneratedImage
 )
 # END ImageGenAskMode
