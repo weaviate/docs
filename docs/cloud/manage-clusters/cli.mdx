@@ -11,9 +11,9 @@ import TabItem from "@theme/TabItem";
 
 `wcloud` is a command-line interface for [Weaviate Cloud (WCD)](/go/console?utm_content=cloud). You can use it from a terminal, and AI coding agents can use it too.
 
-`wcloud` creates, lists, and inspects clusters, and lists regions. It does not touch data in a cluster. For that, use a [client library](/weaviate/client-libraries). It cannot delete a cluster, change a plan, or manage billing, users, or organizations. Use the [Weaviate Cloud console](https://console.weaviate.cloud/) for those.
+`wcloud` creates clusters, lists them, and shows their details. It also lists regions. It does not touch the data in a cluster. For that, use a [client library](/weaviate/client-libraries). It cannot delete a cluster, change a plan, or manage billing, users, or organizations. Use the [Weaviate Cloud console](https://console.weaviate.cloud/) for those.
 
-AI coding agents do not need a separate integration. An agent learns `wcloud` by running [`wcloud guide` or `wcloud skill install`](#use-wcloud-from-an-ai-coding-agent).
+AI coding agents use the same `wcloud` you do. An agent learns it by running [`wcloud guide` or `wcloud skill install`](#use-wcloud-from-an-ai-coding-agent).
 
 ## Install the wcloud CLI
 
@@ -24,7 +24,7 @@ AI coding agents do not need a separate integration. An agent learns `wcloud` by
 brew install weaviate/tap/weaviate-cloud
 ```
 
-Homebrew is recommended on macOS and Linux. It needs no Go toolchain.
+Homebrew is recommended on macOS and Linux. You do not need Go installed.
 
 </TabItem>
 <TabItem value="npm" label="npm">
@@ -33,7 +33,7 @@ Homebrew is recommended on macOS and Linux. It needs no Go toolchain.
 npm install -g weaviate-cloud
 ```
 
-npm wraps the same binary. Use it on Windows (x64).
+npm installs the same program. Use it on Windows (x64).
 
 </TabItem>
 <TabItem value="go" label="Go">
@@ -42,7 +42,7 @@ npm wraps the same binary. Use it on Windows (x64).
 go install github.com/weaviate/weaviate-cloud/cmd/wcloud@latest
 ```
 
-Go builds from source. For the minimum Go version, see the [wcloud README](https://github.com/weaviate/weaviate-cloud#install).
+This builds the program from source. For the minimum Go version, see the [wcloud README](https://github.com/weaviate/weaviate-cloud#install).
 
 </TabItem>
 </Tabs>
@@ -53,7 +53,7 @@ Check the installation:
 wcloud version
 ```
 
-For the details of each install channel, see the README's [Install section](https://github.com/weaviate/weaviate-cloud#install).
+For the details of each install method, see the README's [Install section](https://github.com/weaviate/weaviate-cloud#install).
 
 ## Sign in
 
@@ -63,9 +63,9 @@ wcloud auth whoami
 wcloud auth logout
 ```
 
-Browser OAuth is the only way to sign in, so **`wcloud` cannot sign in on a headless machine**. There is no API key flag, token flag, or environment variable. The browser must run on the same machine as `wcloud`.
+You can only sign in through a browser, so **`wcloud` cannot sign in on a machine without a browser**. You cannot sign in with an API key flag, a token flag, or an environment variable. The browser must run on the same machine as `wcloud`.
 
-Once signed in, `wcloud` refreshes the credential itself. For the sign-in timeout, the listener ports, and the credential file locations, see the README's [Authentication section](https://github.com/weaviate/weaviate-cloud#authentication).
+Once you are signed in, `wcloud` renews your sign-in on its own. For the sign-in timeout, the local ports it uses, and where it saves your sign-in details, see the README's [Authentication section](https://github.com/weaviate/weaviate-cloud#authentication).
 
 ## Create a free cluster
 
@@ -73,13 +73,13 @@ Once signed in, `wcloud` refreshes the credential itself. For the sign-in timeou
 wcloud cluster create --name my-cluster --wait
 ```
 
-`--name` is optional. `--wait` blocks until the cluster is `READY`. Otherwise, poll `wcloud cluster status`.
+`--name` is optional. `--wait` keeps the command running until the cluster is `READY`. Without it, run `wcloud cluster status` until it reports `READY`.
 
-The result includes the cluster's REST and gRPC endpoints and a **one-time API key**. The key is shown once, either by a `--wait` create when the cluster becomes `READY` or by the first `wcloud cluster get` after it is ready. `wcloud` never stores it, and every later call returns the key field empty, so save it when you see it. To add, rotate, or delete cluster API keys afterwards, see [Authentication](/cloud/manage-clusters/authentication).
+The result includes the cluster's REST and gRPC endpoints and a **one-time API key**. The key is shown once, either by `wcloud cluster create --wait` when the cluster becomes `READY`, or by the first `wcloud cluster get` after it is ready. `wcloud` never stores it, and every later call shows the key field empty, so save it when you see it. To add, rotate, or delete cluster API keys afterwards, see [Authentication](/cloud/manage-clusters/authentication).
 
 By default, `wcloud` creates a `free` cluster in `eu-central-1`, currently the only region. `--tier` accepts only `free`. For a paid [Shared Cloud](/cloud/manage-clusters/create#shared-cloud-clusters) cluster or advanced settings, use the console as in [Create a cluster](/cloud/manage-clusters/create). For every flag, see the README's [Commands section](https://github.com/weaviate/weaviate-cloud#commands).
 
-Inspect clusters and regions:
+View clusters and regions:
 
 ```bash
 wcloud cluster list
@@ -108,21 +108,21 @@ When the slot is taken, `wcloud cluster create` fails with the error code `quota
 wcloud guide
 ```
 
-`wcloud guide` prints agent-facing Markdown that is always current with the installed binary. It ignores `--output`.
+`wcloud guide` prints a Markdown guide written for AI coding agents. It always matches the installed version of `wcloud`. It ignores `--output`.
 
-Once the cluster is ready, the guide tells the agent what to offer next. First comes [`weaviate/agent-skills`](https://github.com/weaviate/agent-skills), which works in the same session. Next is the cluster's [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud), which most harnesses only load after a restart. The [client libraries](/weaviate/client-libraries) are the fallback.
+Once the cluster is ready, the guide tells the agent what to offer next. First comes [`weaviate/agent-skills`](https://github.com/weaviate/agent-skills), which works in the same session. Next is the cluster's [MCP server](/weaviate/configuration/mcp-server#weaviate-cloud), which most coding agents only pick up after a restart. The [client libraries](/weaviate/client-libraries) are the last option.
 
 ```bash
 wcloud skill install --all
 ```
 
-This writes the guide as a `SKILL.md` where each supported harness reads it. `--harness` picks harnesses, and `--project` writes to the current project instead of your user directory. For the supported harnesses and the install options, see the README's [coding agent section](https://github.com/weaviate/weaviate-cloud#using-wcloud-with-a-coding-agent).
+This writes the guide as a `SKILL.md` file in the place where each supported coding agent looks for it. `--harness` picks which coding agents to install it for. `--project` writes it to the current project instead of your user directory. For the supported coding agents and the install options, see the README's [coding agent section](https://github.com/weaviate/weaviate-cloud#using-wcloud-with-a-coding-agent).
 
 Cluster creation requests include an `X-Provisioned-By` header whose value is one word, `cli` or `agent`, and it is sent only to the Weaviate Cloud API.
 
-## Machine-readable output
+## JSON output
 
-Commands that return a result write a JSON envelope (`data` or `error`, plus `metadata`) to standard output. `-o json` forces it. The default `auto` picks JSON when stdout is not a terminal or `CI` is set. Exit codes are part of the contract. For the envelope, the `auto` rules, and the exit-code table, see the README's [Status](https://github.com/weaviate/weaviate-cloud#status), [Commands](https://github.com/weaviate/weaviate-cloud#commands), and [Exit codes](https://github.com/weaviate/weaviate-cloud#exit-codes) sections.
+Commands that return a result print a JSON object with `data` or `error`, plus `metadata`. `-o json` always prints JSON. The default, `auto`, picks JSON when the output is not going to a terminal, for example when it goes to a file or another command. It also picks JSON when the `CI` environment variable is set. Scripts can rely on the exit codes staying the same. For the JSON format, the `auto` rules, and the full list of exit codes, see the README's [Status](https://github.com/weaviate/weaviate-cloud#status), [Commands](https://github.com/weaviate/weaviate-cloud#commands), and [Exit codes](https://github.com/weaviate/weaviate-cloud#exit-codes) sections.
 
 ## Further resources
 
