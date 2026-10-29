@@ -78,7 +78,7 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  *   Markdown headings do not keep custom heading IDs. Links point to the HTML
  *   pages, not to their `.md` versions.
  * - Removed: elements marked `[data-copy-exclude]`, heading anchor links,
- *   buttons, `<select>`, SVG and Font Awesome icons, scripts, and React SSR
+ *   buttons (except the text of a button inside a paragraph), `<select>`, SVG and Font Awesome icons, scripts, and React SSR
  *   comments.
  *
  * @param {object} page
@@ -271,6 +271,11 @@ function rewriteForMarkdown(docsBody, { pageUrl, siteUrl }) {
       ]),
   );
 
+  // A button inside a paragraph is part of the sentence: KapaAI renders "use
+  // the <button>Ask AI</button> feature". Keep its text; other buttons are
+  // controls and are removed below.
+  replaceElements(docsBody, (node, parent) => node.tagName === "button" && parent.tagName === "p", (node) => text(toText(node)));
+
   removeNodes(
     docsBody,
     (node) =>
@@ -406,10 +411,10 @@ function rewriteElements(tree, test, rewrite) {
 }
 
 // Replaces each matching element with the returned node, which may be text.
-// Nothing inside a replaced element is visited.
+// `test` also receives the parent. Nothing inside a replaced element is visited.
 function replaceElements(tree, test, replace) {
   visit(tree, "element", (node, index, parent) => {
-    if (!parent || !test(node)) return;
+    if (!parent || !test(node, parent)) return;
     parent.children[index] = replace(node);
     return SKIP;
   });

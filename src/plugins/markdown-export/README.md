@@ -49,7 +49,7 @@ The plugin also adds two head links to each Scalar page: `type="text/markdown"` 
 node --test "src/plugins/markdown-export/*.test.mjs"
 ```
 
-CI runs these in `.github/workflows/pull_requests.yaml`. The converter tests use HTML fixtures in [`fixtures/`](fixtures), which are trimmed copies of real build output. When a component's rendered markup changes, refresh the affected fixture from a new build so the tests keep matching what the site renders.
+They need Node 22.19 or later, the version `package.json` requires: the edge function tests import the `.ts` file directly, which Node supports from 22.18, and the Scalar converter needs 22.19. CI runs these in `.github/workflows/pull_requests.yaml`. The converter tests use HTML fixtures in [`fixtures/`](fixtures), which are trimmed copies of real build output. When a component's rendered markup changes, refresh the affected fixture from a new build so the tests keep matching what the site renders.
 
 The edge function tests use a fake Netlify context. They cannot show that Netlify deploys the function; check that on a deploy preview with:
 

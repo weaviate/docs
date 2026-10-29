@@ -136,6 +136,12 @@ describe("convertDocPage", () => {
     );
   });
 
+  test("keeps the text of a button inside a sentence", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    assert.match(markdown, /use the Ask AI feature\./);
+  });
+
   test("prefixes fragment links with the page URL", () => {
     const markdown = convertFixture("cards-and-cells", `${SITE_URL}/weaviate/config-refs/collections`);
 
