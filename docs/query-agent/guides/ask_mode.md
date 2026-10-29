@@ -82,7 +82,7 @@ The `.ask()` method accepts several arguments:
 
 For more advanced searches, you can also specify _additional filters_ within the collection configuration. [See the page on additional filters for more detail](../reference/additional_filters.md).
 
-These arguments allow you to customize agent behavior, data access, and the type of answer you receive. 
+These arguments allow you to customize agent behavior, data access, and the type of answer you receive.
 
 ## Response
 The `AskModeResponse` class has the following properties:
@@ -136,12 +136,12 @@ The type of `finalAnswerParsed` is `Record<string, unknown>` if a raw JSON Schem
 
 [See the client documentation for more detail.](https://weaviate.github.io/agents-typescript-client/types/ParsedAskModeResponse.html)
 </TabItem>
-    
+
 </Tabs>
 
-## Image Generation
+## Image generation
 
-Ask mode allows you to also request images to be generated, which will be based on any retrieved data. [See the page on image generation for more details.](../reference/image_generation.md)
+Ask Mode can also generate images grounded in the data it retrieves. [See the image generation page for more details](../reference/image_generation.md).
 
 
 <Tabs className="code" groupId="languages">
@@ -165,7 +165,7 @@ Ask mode allows you to also request images to be generated, which will be based 
 
 ## Streaming
 
-While regular Ask Mode returns a single object, you can choose to stream updates and tokens from the workflow of Ask Mode instead. 
+While regular Ask Mode returns a single object, you can choose to stream updates and tokens from the workflow of Ask Mode instead.
 
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -283,7 +283,7 @@ You can handle each streamed payload differently depending on their class, or th
 <Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
 
-In Python, the above examples use the synchronous client, but Ask Mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client. 
+In Python, the above examples use the synchronous client, but Ask Mode can also be called asynchronously. This requires the `AsyncQueryAgent` class (instantiated the same way as its sync counterpart) together with an async Weaviate client.
 
 <FilteredTextBlock
     text={PyCode}

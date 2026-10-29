@@ -17,7 +17,7 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 
 qa = QueryAgent(
-    client=client, 
+    client=client,
     collections=["Weather"]
 )
 # END BasicAskMode
@@ -37,6 +37,7 @@ res = qa.ask(
 from weaviate.agents.classes import GeneratedImage
 res = qa.ask(
     query = "Generate a picture of a model wearing the best-selling T-shirt",
+    collections=["ECommerce"],
     output_format=GeneratedImage
 )
 # END ImageGenAskMode
@@ -65,7 +66,7 @@ for output in qa.ask_stream("What was the average temperature in the first week 
 # -- Async examples below require await inside a function, for simplicity of code snippets we can wrap them in strings
 # then define a function that runs this below (so tests run the same)
 """
-# START AsyncInstantiation        
+# START AsyncInstantiation
 from weaviate.agents.query import AsyncQueryAgent
 
 async_client = weaviate.use_async_with_weaviate_cloud(

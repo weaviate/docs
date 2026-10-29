@@ -7,6 +7,12 @@ image: og/docs/query-agent.png
 
 This page documents changes and notable updates to the Weaviate Query Agent. As the Query Agent is a managed service, improvements roll out automatically though sometimes you may need to upgrade the client to use new features.
 
+## October 2026
+
+### Image generation in Ask Mode
+
+Ask Mode can now generate images grounded in your data. Pass `GeneratedImage` as the output format, or include it in a structured output schema. See the [image generation reference](./reference/image_generation.md).
+
 ## September 2026
 
 ### Faster responses for long conversations

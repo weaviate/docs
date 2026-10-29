@@ -1,7 +1,12 @@
 import 'dotenv/config'
-const { loadClientInternally } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
+const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 
 const client = await loadClientInternally();
+await populateWeaviate(client, false);
+
+if (await client.collections.exists("QueryAgentImageUpload")) {
+    await client.collections.delete("QueryAgentImageUpload");
+}
 
 // START BasicImageExample
 import { QueryAgent, GeneratedImage } from 'weaviate-agents';
@@ -108,9 +113,13 @@ const AnnotatedImagesResponse = z.object({
 // START CustomShapeImageExample
 import { generatedImageWithOptions } from 'weaviate-agents';
 
-const advertResult = await qa.ask(
+const HatResponse = z.object({
+    picture: generatedImageWithOptions({ shape: "portrait" }),
+});
+
+const hatResult = await qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
-    { collections: ["ECommerce"], outputFormat: generatedImageWithOptions({ shape: "portrait" }) }
+    { collections: ["ECommerce"], outputFormat: HatResponse }
 );
 // END CustomShapeImageExample
 
@@ -118,6 +127,7 @@ const advertResult = await qa.ask(
 const res = await qa.ask(
     "Find the most expensive item in the store",
     {
+        collections: ["ECommerce"],
         outputFormat: {
             type: "object",
             properties: {

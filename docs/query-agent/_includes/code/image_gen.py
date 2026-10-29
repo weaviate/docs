@@ -1,8 +1,12 @@
 import sys
 sys.path.insert(0, "docs/query-agent/_includes/code")
-from util import load_client_internally
+from util import load_client_internally, populate_weaviate
 
 client = load_client_internally()
+populate_weaviate(client, False)
+
+if client.collections.exists("QueryAgentImageUpload"):
+    client.collections.delete("QueryAgentImageUpload")
 
 # START BasicImageExample
 from weaviate.agents.query import QueryAgent
@@ -64,7 +68,7 @@ search_response = collection.query.near_image(
     near_image=response.final_answer_parsed.base64,
     return_properties=["image"]
 )
-# END SearchWeaviateImage 
+# END SearchWeaviateImage
 
 
 # START BaseModelImageExample
@@ -77,7 +81,7 @@ class AdvertsResponse(BaseModel):
         min_length = 2,
         max_length = 4 # max_length must be specified for lists of images
     )
-    
+
 response = qa.ask(
     "Find the best selling items in the store and then create a series of adverts for them.",
     collections=["ECommerce"],
@@ -160,10 +164,10 @@ response = qa.ask(
             }
         }
     }
-),
+)
 # END RawJSONSchemaImageExample
 
 if client.collections.exists("QueryAgentImageUpload"):
     client.collections.delete("QueryAgentImageUpload")
-    
+
 client.close()
