@@ -276,6 +276,7 @@ def populate_recipe_ecommerce(client):
 def load_client_internally():
     headers = {
         "X-OpenAI-API-Key": os.environ.get("OPENAI_API_KEY"),
+        "X-JinaAI-Api-Key": os.environ.get("JINAAI_API_KEY", ""),
         "X-INFERENCE-PROVIDER-API-KEY": os.environ.get("YOUR_INFERENCE_PROVIDER_KEY", ""),
     }
 

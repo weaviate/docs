@@ -62,7 +62,8 @@ def populate_inference_api_keys(codeblock_in: str) -> str:
     for pattern, my_env_var, repl_pattern in [
         (r'(["\'])X-Cohere-Api-Key\1: \1(.+?)\1', "COHERE_API_KEY", r'\1X-Cohere-Api-Key\1: \1'),
         (r'(["\'])X-OpenAI-Api-Key\1: \1(.+?)\1', "OPENAI_API_KEY", r'\1X-OpenAI-Api-Key\1: \1'),
-        (r'(["\'])X-HuggingFace-Api-Key\1: \1(.+?)\1', "HUGGINGFACE_API_KEY", r'\1X-HuggingFace-Api-Key\1: \1')
+        (r'(["\'])X-HuggingFace-Api-Key\1: \1(.+?)\1', "HUGGINGFACE_API_KEY", r'\1X-HuggingFace-Api-Key\1: \1'),
+        (r'(["\'])X-JinaAI-Api-Key\1: \1(.+?)\1', "JINAAI_API_KEY", r'\1X-JinaAI-Api-Key\1: \1')
     ]:
         if re.search(pattern, codeblock_out) is not None:
             my_api_key = os.environ[my_env_var]
@@ -188,26 +189,26 @@ def run_script(command: list, script_path: str) -> None:
         if result.stdout.strip():
             print(f"\n--- Output from {script_path} ---")
             print(result.stdout)
-            
+
     except subprocess.CalledProcessError as error:
         error_details = [
             f"\nScript execution failed: {script_path}",
             f"Exit code: {error.returncode}",
             f"Command: {' '.join(str(c) for c in command)}",  # Convert all to str
         ]
-        
+
         if error.stderr:
             error_details.extend([
                 "\n--- STDERR ---",
                 error.stderr
             ])
-        
+
         if error.stdout:
             error_details.extend([
-                "\n--- STDOUT ---", 
+                "\n--- STDOUT ---",
                 error.stdout
             ])
-            
+
         raise Exception("\n".join(error_details))
 
 # ---------------------------------------------------------------------------

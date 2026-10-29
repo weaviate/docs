@@ -13,6 +13,7 @@ See the different configuration options for the Query Agent and how you can cust
 * **[Additional Filters](./additional_filters.md)**: Define persistent filters that get added to every search the Query Agent performs.
 * **[Collection Configuration](./advanced_collections.md)**: Setup your collections with more advanced configurations, such as named vectors, multi-tenancy and additional filters.
 * **[Structured Outputs](./structured_outputs.md)**: Configure the format of the Ask Mode response to conform to a schema.
+* **[Image Generation](./image_generation.md)**: Generate images grounded in your data as part of an Ask Mode response.
 
 
 ## Questions and feedback
