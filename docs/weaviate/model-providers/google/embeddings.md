@@ -244,6 +244,12 @@ The following examples show how to configure Google-specific options.
 
 Set `location` together with a matching `apiEndpoint` to keep data in a specific region.
 
+:::tip Vertex AI location affects latency
+
+Use the Vertex AI region closest to your Weaviate cluster rather than `global`. The `global` location can route requests to any region, which may add latency. Set `apiEndpoint` to match, for example `location: europe-west1` with `apiEndpoint: europe-west1-aiplatform.googleapis.com`. Check that your model is available in the region you choose.
+
+:::
+
 :::info Changed in `v1.38.20` and `v1.39.10`
 
 You can [update](/weaviate/manage-collections/collection-operations.mdx#update-a-collection-definition) `apiEndpoint`, `projectId` and `location` on an existing collection. This lets you switch a collection between Google AI Studio (`apiEndpoint: generativelanguage.googleapis.com`) and Vertex AI, or move it to another project or region. Every other vectorizer setting, including `modelId` and `dimensions`, stays immutable. Weaviate does not check that the new endpoint serves the collection's model. If it does not, vectorization fails until the collection points at an endpoint that serves the model.
