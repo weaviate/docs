@@ -10,56 +10,7 @@
 <div class="theme-doc-markdown markdown">
 <header><h1>Authorization</h1></header>
 <p>The following diagram illustrates the flow of a user request through the authentication and authorization process:</p>
-<pre hidden data-markdown-source="mermaid">flowchart TB
-    User(["Authenticated User"]) --> AuthScheme{"Authorization&#x3C;br> Scheme?"}
-
-    subgraph rbac ["RBAC Authorization"]
-        direction TB
-        AdminRole["Admin Role"]
-        ViewerRole["Viewer Role"]
-        CustomRole["Custom Roles"]
-
-        Perms1["Full Access&#x3C;br> All Operations"]
-        Perms2["Read-only&#x3C;br> Access"]
-        Perms3["Custom&#x3C;br> Permissions"]
-
-        AdminRole --> Perms1
-        ViewerRole --> Perms2
-        CustomRole --> Perms3
-    end
-
-    subgraph adminlist ["Admin List Authorization"]
-        direction TB
-        AdminUser["Admin Users"]
-        ReadOnly["Read-only Users"]
-        AnonUser["Anonymous Users&#x3C;br> (Optional)"]
-
-        AllPerms["Full Access&#x3C;br> All Operations"]
-        ReadPerms["Read-only&#x3C;br> Access"]
-
-        AdminUser --> AllPerms
-        ReadOnly --> ReadPerms
-        AnonUser -.->|"If enabled"| AllPerms
-        AnonUser -.->|"If enabled"| ReadPerms
-    end
-
-    subgraph undiffer ["Undifferentiated Access"]
-        AllAccess["Full Access&#x3C;br> All Operations"]
-    end
-
-    AuthScheme -->|"RBAC"| rbac
-    AuthScheme -->|"Admin List"| adminlist
-    AuthScheme -->|"Undifferentiated"| undiffer
-
-    %% Style nodes
-    style User fill:#f9f9f9,stroke:#666
-    style AuthScheme fill:#f5f5f5,stroke:#666
-    style AnonUser fill:#f9f9f9,stroke:#666,stroke-dasharray: 5 5
-
-    %% Style subgraphs
-    style rbac fill:#e6f3ff,stroke:#4a90e2
-    style adminlist fill:#e6ffe6,stroke:#2ea44f
-    style undiffer fill:#fff0e6,stroke:#ff9933</pre>
+<pre hidden data-markdown-source="mermaid" data-markdown-content="flowchart%20TB%0A%20%20%20%20User(%5B%22Authenticated%20User%22%5D)%20--%3E%20AuthScheme%7B%22Authorization%3Cbr%3E%20Scheme%3F%22%7D%0A%0A%20%20%20%20subgraph%20rbac%20%5B%22RBAC%20Authorization%22%5D%0A%20%20%20%20%20%20%20%20direction%20TB%0A%20%20%20%20%20%20%20%20AdminRole%5B%22Admin%20Role%22%5D%0A%20%20%20%20%20%20%20%20ViewerRole%5B%22Viewer%20Role%22%5D%0A%20%20%20%20%20%20%20%20CustomRole%5B%22Custom%20Roles%22%5D%0A%0A%20%20%20%20%20%20%20%20Perms1%5B%22Full%20Access%3Cbr%3E%20All%20Operations%22%5D%0A%20%20%20%20%20%20%20%20Perms2%5B%22Read-only%3Cbr%3E%20Access%22%5D%0A%20%20%20%20%20%20%20%20Perms3%5B%22Custom%3Cbr%3E%20Permissions%22%5D%0A%0A%20%20%20%20%20%20%20%20AdminRole%20--%3E%20Perms1%0A%20%20%20%20%20%20%20%20ViewerRole%20--%3E%20Perms2%0A%20%20%20%20%20%20%20%20CustomRole%20--%3E%20Perms3%0A%20%20%20%20end%0A%0A%20%20%20%20subgraph%20adminlist%20%5B%22Admin%20List%20Authorization%22%5D%0A%20%20%20%20%20%20%20%20direction%20TB%0A%20%20%20%20%20%20%20%20AdminUser%5B%22Admin%20Users%22%5D%0A%20%20%20%20%20%20%20%20ReadOnly%5B%22Read-only%20Users%22%5D%0A%20%20%20%20%20%20%20%20AnonUser%5B%22Anonymous%20Users%3Cbr%3E%20(Optional)%22%5D%0A%0A%20%20%20%20%20%20%20%20AllPerms%5B%22Full%20Access%3Cbr%3E%20All%20Operations%22%5D%0A%20%20%20%20%20%20%20%20ReadPerms%5B%22Read-only%3Cbr%3E%20Access%22%5D%0A%0A%20%20%20%20%20%20%20%20AdminUser%20--%3E%20AllPerms%0A%20%20%20%20%20%20%20%20ReadOnly%20--%3E%20ReadPerms%0A%20%20%20%20%20%20%20%20AnonUser%20-.-%3E%7C%22If%20enabled%22%7C%20AllPerms%0A%20%20%20%20%20%20%20%20AnonUser%20-.-%3E%7C%22If%20enabled%22%7C%20ReadPerms%0A%20%20%20%20end%0A%0A%20%20%20%20subgraph%20undiffer%20%5B%22Undifferentiated%20Access%22%5D%0A%20%20%20%20%20%20%20%20AllAccess%5B%22Full%20Access%3Cbr%3E%20All%20Operations%22%5D%0A%20%20%20%20end%0A%0A%20%20%20%20AuthScheme%20--%3E%7C%22RBAC%22%7C%20rbac%0A%20%20%20%20AuthScheme%20--%3E%7C%22Admin%20List%22%7C%20adminlist%0A%20%20%20%20AuthScheme%20--%3E%7C%22Undifferentiated%22%7C%20undiffer%0A%0A%20%20%20%20%25%25%20Style%20nodes%0A%20%20%20%20style%20User%20fill%3A%23f9f9f9%2Cstroke%3A%23666%0A%20%20%20%20style%20AuthScheme%20fill%3A%23f5f5f5%2Cstroke%3A%23666%0A%20%20%20%20style%20AnonUser%20fill%3A%23f9f9f9%2Cstroke%3A%23666%2Cstroke-dasharray%3A%205%205%0A%0A%20%20%20%20%25%25%20Style%20subgraphs%0A%20%20%20%20style%20rbac%20fill%3A%23e6f3ff%2Cstroke%3A%234a90e2%0A%20%20%20%20style%20adminlist%20fill%3A%23e6ffe6%2Cstroke%3A%232ea44f%0A%20%20%20%20style%20undiffer%20fill%3A%23fff0e6%2Cstroke%3A%23ff9933"></pre>
 </div>
 </article></main>
 </body>
