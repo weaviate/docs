@@ -75,7 +75,7 @@ export function LinkFlow({ steps }) {
     <ol className={styles.flow}>
       {steps.map((step, i) => (
         <li key={i} className={styles.step}>
-          <span className={styles.stepNumber} aria-hidden="true">
+          <span className={styles.stepNumber} aria-hidden="true" data-copy-exclude="">
             {i + 1}
           </span>
           <p className={styles.stepTitle}>{step.title}</p>

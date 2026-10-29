@@ -120,11 +120,26 @@ describe("convertDocPage", () => {
     assert.ok(!markdown.includes("Evaluation"), "stage tabs are marked data-copy-exclude");
   });
 
-  test("drops Font Awesome icons instead of leaving empty emphasis", () => {
+  test("turns a title-and-description card into one link and its description", () => {
     const markdown = convertFixture("cards-and-cells");
 
-    // Previously `[**New to Weaviate?](...)`: the empty <i> became `**`.
-    assert.match(markdown, /^\[New to Weaviate\?\]\(https:\/\/docs\.weaviate\.io\/weaviate\/quickstart\)$/m);
+    // The empty Font Awesome <i> in the title is dropped; it once became `**`.
+    assert.match(markdown, /^\[New to Weaviate\?\]\(https:\/\/docs\.weaviate\.io\/weaviate\/quickstart\): Start with the Quickstart tutorial$/m);
+  });
+
+  test("turns a row of badge links into one See also line", () => {
+    const markdown = convertFixture("cards-and-cells");
+
+    assert.match(
+      markdown,
+      /^See also: \[\.connect\\_to\\_weaviate\\_cloud\]\(https:\/\/weaviate-python-client\.readthedocs\.io\/[^)]+\), \[\.Auth\]\(https:\/\/[^)]+#weaviate\.auth\.Auth\)$/m,
+    );
+  });
+
+  test("prefixes fragment links with the page URL", () => {
+    const markdown = convertFixture("cards-and-cells", `${SITE_URL}/weaviate/config-refs/collections`);
+
+    assert.match(markdown, /\[Collections without a vector\]\(https:\/\/docs\.weaviate\.io\/weaviate\/config-refs\/collections#no-vector\)/);
   });
 
   test("replaces embedded iframes with a link", () => {
