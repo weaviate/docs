@@ -26,7 +26,8 @@ Elastic uses the same `.md` URL scheme, head link and `Accept` handling: `https:
 |---|---|
 | B1 | The build writes one `.md` per docs route, following the contract in `html-to-markdown.mjs`, with no UI text from tooltips, dropdowns, buttons or heading anchors. |
 | B2 | Mermaid diagrams appear as `mermaid` fences, and the HTML page still renders the diagram. |
-| B3 | Docs pages include the head link and the hidden notice. Pages without a docs body (tags, 404, REST API reference) include neither. |
+| B3 | Docs pages include the head link and the hidden notice. Tag and 404 pages include neither. |
+| B6 | Added after review: the Scalar REST API pages get Markdown from their OpenAPI spec (an index plus one file per tag for Weaviate, one file for Engram) and a head link to it. |
 | B4 | The edge function follows the contract in `netlify/edge-functions/markdown-negotiation.ts`. |
 | B5 | The existing pull request checks pass: `validate-redirects.js`, `yarn build-dev` and `validate-links-pr.js`. |
 
@@ -117,6 +118,7 @@ The conversion rules were tested in a throwaway prototype on the Oct 26 local bu
 | 4 | Passed. 393 of 393 docs pages have the head link and notice; tag, 404 and REST API pages have neither; every link resolves to a file in `build/` and `build.dev/`. |
 | 5 | Unit tests passed (10). Netlify behavior needs a deploy preview. |
 | 6 | Partly done. README written, commented-out signalwire config removed, CI step added. Not done: removing the signalwire package (needs `yarn remove`) and running `validate-links-pr.js` (binds a port). The sandbox blocks both. |
+| 7 | B6 passed locally: 24 files for the 2 Scalar pages, both head links present, 39 unit tests pass. Tested against a scratch install of `@scalar/openapi-to-markdown`; `yarn.lock` still needs `yarn install` outside the sandbox. |
 
 ### How this was verified
 

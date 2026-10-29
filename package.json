@@ -31,6 +31,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.0.0",
     "@scalar/docusaurus": "^0.8.7",
+    "@scalar/openapi-to-markdown": "^1.7.2",
     "@weaviate/agents": "^1.8.0",
     "@weaviate/node": "^3.15.0",
     "clsx": "^2.0.0",
@@ -89,7 +90,7 @@
     ]
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=22.19"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

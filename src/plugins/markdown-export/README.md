@@ -26,10 +26,22 @@ less build/weaviate/search/basics.md
 The build log reports the result:
 
 ```
-[markdown-export] Wrote 393 Markdown files in 6.7s; skipped 19 routes without a docs body.
+[markdown-export] Wrote 393 Markdown files and 24 for 2 API reference pages in 5.8s; skipped 17 other routes without a docs body.
 ```
 
-Routes without a docs body (tag listings, the 404 page, the REST API reference) are skipped. If a docs page fails to convert, the build fails with an error that names the page URL.
+Routes without a docs body (tag listings, the 404 page) are skipped. If a page fails to convert, the build fails with an error that names the page URL.
+
+## REST API reference pages
+
+Scalar renders `/weaviate/api/rest` and `/engram/api/rest` in the browser, so their HTML has nothing to convert. The plugin finds each `@scalar/docusaurus` entry in `docusaurus.config.js` and converts its spec file (`static/specs/*.json`) with Scalar's [`@scalar/openapi-to-markdown`](https://www.npmjs.com/package/@scalar/openapi-to-markdown) instead:
+
+| File | Content |
+|---|---|
+| `/weaviate/api/rest.md` | Introduction, servers and authentication, then each tag's operations and a link to its file |
+| `/weaviate/api/rest/<tag>.md` | Every operation in one tag, with parameters, schemas and examples |
+| `/engram/api/rest.md` | The whole reference. Its spec declares no tags, and at 30 KB it fits in one file. |
+
+The plugin also adds two head links to each Scalar page: `type="text/markdown"` for the `.md`, and `type="application/json"` for the spec. The rules are in the `convertOpenApiPage` doc comment in [`openapi-to-markdown.mjs`](openapi-to-markdown.mjs). The converter requires Node 22.19 or later, which is why `package.json` sets `engines.node`.
 
 ## Run the tests
 
