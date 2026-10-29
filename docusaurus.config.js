@@ -10,6 +10,7 @@ import hubspotScript from "./src/scripts/hubspot.js";
 import scarfScript from "./src/scripts/scarf.js";
 
 const remarkReplace = require("./src/remark/remark-replace");
+const remarkExcludeFeedbackHeading = require("./src/remark/remark-exclude-feedback-heading");
 // Math equation plugins
 const math = require("remark-math");
 const katex = require("rehype-katex");
@@ -121,7 +122,7 @@ const config = {
           path: "docs",
           routeBasePath: "/",
           editUrl: "https://github.com/weaviate/docs/tree/main/",
-          remarkPlugins: [remarkReplace, math],
+          remarkPlugins: [remarkReplace, remarkExcludeFeedbackHeading, math],
           rehypePlugins: [katex],
         },
         pages: {

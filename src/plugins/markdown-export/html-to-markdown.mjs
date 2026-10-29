@@ -59,8 +59,12 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  * - `<details>`: the summary in bold, followed by the expanded body.
  * - Tables: GFM tables. A cell with block content puts each block on its own
  *   line, separated by `<br>`, with list items marked `• `.
- * - A link that wraps a list or button (a card): the card content, followed by
- *   one link labelled with the button text.
+ * - A link that wraps a list or button (a deployment card): the card content,
+ *   followed by one link labelled with the button text.
+ * - Any other link that wraps blocks (a card with a title and description):
+ *   `[Title](url): Description`.
+ * - A row of badge links under a code block: `See also: [View full example
+ *   code](url), [.Auth](url)`.
  * - KaTeX: the LaTeX source, as `$...$` or `$$...$$`.
  * - Mermaid (`[data-markdown-source="mermaid"]`): a `mermaid` fence.
  * - Embedded iframes: a link to the embed URL.
@@ -70,7 +74,9 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  *   explicit empty `alt=""` are decorative (such as the Cloud-only icon) and
  *   are removed; images with no `alt` attribute are kept.
  * - Root-relative links and image sources: absolute, prefixed with `siteUrl`.
- *   Links point to the HTML pages, not to their `.md` versions.
+ *   Fragment links (`#no-vector`) are prefixed with `pageUrl`, because
+ *   Markdown headings do not keep custom heading IDs. Links point to the HTML
+ *   pages, not to their `.md` versions.
  * - Removed: elements marked `[data-copy-exclude]`, heading anchor links,
  *   buttons, `<select>`, SVG and Font Awesome icons, scripts, and React SSR
  *   comments.
@@ -96,7 +102,7 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
       url: pageUrl,
     };
 
-    rewriteForMarkdown(docsBody, siteUrl);
+    rewriteForMarkdown(docsBody, { pageUrl, siteUrl });
 
     const mdast = unified()
       .use(rehypeRemark, { handlers: { [ALERT_TAG]: alertHandler, [LINE_BREAK_TAG]: lineBreakHandler } })
@@ -138,7 +144,7 @@ export function formatFrontMatter({ title, description, url }) {
 // Order matters: Mermaid and KaTeX are replaced before the generic code-block
 // and removal passes would misread them, and code blocks are normalized before
 // tab groups read their fence languages.
-function rewriteForMarkdown(docsBody, siteUrl) {
+function rewriteForMarkdown(docsBody, { pageUrl, siteUrl }) {
   // React SSR emits <!-- --> between adjacent text nodes.
   removeNodes(docsBody, (node) => node.type === "comment");
 
@@ -236,6 +242,35 @@ function rewriteForMarkdown(docsBody, siteUrl) {
     ]);
   });
 
+  // Any other link that wraps blocks is a card (src/components/CardsSection):
+  // a title block, then a description. As one link, rehype-remark makes each
+  // block a separate link to the same URL.
+  rewriteElements(docsBody, (node) => node.tagName === "a" && node.children.some(isBlock), (node) => {
+    const [title = [], ...description] = cellLines(node.children);
+    const separator = description.length ? [text(": ")] : [];
+    return element("p", {}, [
+      element("a", { href: node.properties.href }, title),
+      ...separator,
+      ...description.flatMap((line, index) => (index ? [text(" "), ...line] : line)),
+    ]);
+  });
+
+  // FilteredTextBlock renders a row of badge links (GitHub source, client API
+  // docs) under a code block. Their labels start with &nbsp; and nothing
+  // separates them.
+  rewriteElements(
+    docsBody,
+    (node) => node.children.length > 0 && node.children.every((child) => child.tagName === "a" && hasClass(child, /^badge$/)),
+    (node) =>
+      element("p", {}, [
+        text("See also: "),
+        ...node.children.flatMap((badge, index) => [
+          ...(index ? [text(", ")] : []),
+          element("a", { href: badge.properties.href }, [text(toText(badge).replace(/\s+/g, " ").trim())]),
+        ]),
+      ]),
+  );
+
   removeNodes(
     docsBody,
     (node) =>
@@ -260,6 +295,8 @@ function rewriteForMarkdown(docsBody, siteUrl) {
       const value = node.properties[attribute];
       if (typeof value === "string" && value.startsWith("/") && !value.startsWith("//")) {
         node.properties[attribute] = siteUrl + value;
+      } else if (attribute === "href" && typeof value === "string" && value.startsWith("#")) {
+        node.properties[attribute] = pageUrl + value;
       }
     }
   });
