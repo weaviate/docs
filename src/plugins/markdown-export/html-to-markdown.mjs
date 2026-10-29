@@ -121,7 +121,11 @@ function readTitle(document, docsBody) {
   return String(ogTitle).replace(/ \| [^|]*$/, "");
 }
 
-function formatFrontMatter({ title, description, url }) {
+/**
+ * The front matter block that starts every exported Markdown file, followed by
+ * a blank line. `description` is omitted when empty; strings are JSON-quoted.
+ */
+export function formatFrontMatter({ title, description, url }) {
   const lines = ["---", `title: ${JSON.stringify(title)}`];
   if (description) lines.push(`description: ${JSON.stringify(String(description))}`);
   lines.push(`url: ${url}`, "---", "");
