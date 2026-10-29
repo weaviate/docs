@@ -45,6 +45,10 @@ const res = await qa.ask("What was the average temperature in the first week of 
 import { GeneratedImage } from 'weaviate-agents';
 
 const imageRes = await qa.ask("Generate a picture of a model wearing the best-selling T-shirt", {
+    collections: [{
+        name: "ECommerce",
+        targetVector: ["name_description_brand_vector"],
+    }],
     outputFormat: GeneratedImage,
 });
 // END ImageGenAskMode

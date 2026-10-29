@@ -1,7 +1,12 @@
 import 'dotenv/config'
-const { loadClientInternally } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
+const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 
 const client = await loadClientInternally();
+await populateWeaviate(client, false);
+
+if (await client.collections.exists("QueryAgentImageUpload")) {
+    await client.collections.delete("QueryAgentImageUpload");
+}
 
 // START BasicImageExample
 import { QueryAgent, GeneratedImage } from 'weaviate-agents';
@@ -65,7 +70,13 @@ const AdvertsResponse = z.object({
 
 const advertsResult = await qa.ask(
     "Find the best selling items in the store and then create a series of adverts for them.",
-    { collections: ["ECommerce"], outputFormat: AdvertsResponse }
+    {
+        collections: [{
+            name: "ECommerce",
+            targetVector: ["name_description_brand_vector"],
+        }],
+        outputFormat: AdvertsResponse,
+    }
 );
 // END BaseModelImageExample
 
@@ -95,7 +106,13 @@ const PresentationResponse = z.object({
 
 const presentationResult = await qa.ask(
     "Find the best selling items in the store and then create a presentation for them.",
-    { collections: ["ECommerce"], outputFormat: PresentationResponse }
+    {
+        collections: [{
+            name: "ECommerce",
+            targetVector: ["name_description_brand_vector"],
+        }],
+        outputFormat: PresentationResponse,
+    }
 );
 // END ComplexBaseModelImageExample
 
@@ -108,9 +125,19 @@ const AnnotatedImagesResponse = z.object({
 // START CustomShapeImageExample
 import { generatedImageWithOptions } from 'weaviate-agents';
 
-const advertResult = await qa.ask(
+const HatResponse = z.object({
+    picture: generatedImageWithOptions({ shape: "portrait" }),
+});
+
+const hatResult = await qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
-    { collections: ["ECommerce"], outputFormat: generatedImageWithOptions({ shape: "portrait" }) }
+    {
+        collections: [{
+            name: "ECommerce",
+            targetVector: ["name_description_brand_vector"],
+        }],
+        outputFormat: HatResponse,
+    }
 );
 // END CustomShapeImageExample
 
@@ -118,6 +145,10 @@ const advertResult = await qa.ask(
 const res = await qa.ask(
     "Find the most expensive item in the store",
     {
+        collections: [{
+            name: "ECommerce",
+            targetVector: ["name_description_brand_vector"],
+        }],
         outputFormat: {
             type: "object",
             properties: {

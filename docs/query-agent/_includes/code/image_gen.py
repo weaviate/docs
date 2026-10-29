@@ -1,8 +1,12 @@
 import sys
 sys.path.insert(0, "docs/query-agent/_includes/code")
-from util import load_client_internally
+from util import load_client_internally, populate_weaviate
 
 client = load_client_internally()
+populate_weaviate(client, False)
+
+if client.collections.exists("QueryAgentImageUpload"):
+    client.collections.delete("QueryAgentImageUpload")
 
 # START BasicImageExample
 from weaviate.agents.query import QueryAgent
@@ -64,11 +68,12 @@ search_response = collection.query.near_image(
     near_image=response.final_answer_parsed.base64,
     return_properties=["image"]
 )
-# END SearchWeaviateImage 
+# END SearchWeaviateImage
 
 
 # START BaseModelImageExample
 from pydantic import BaseModel, Field
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 class AdvertsResponse(BaseModel):
     speech: str = Field(description="What to say during the presentation")
@@ -77,10 +82,15 @@ class AdvertsResponse(BaseModel):
         min_length = 2,
         max_length = 4 # max_length must be specified for lists of images
     )
-    
+
 response = qa.ask(
     "Find the best selling items in the store and then create a series of adverts for them.",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=AdvertsResponse,
 )
 # END BaseModelImageExample
@@ -99,6 +109,8 @@ print(response.final_answer_parsed.chart is None)
 # END UnionImageExample
 
 # START ComplexBaseModelImageExample
+from weaviate.agents.classes import QueryAgentCollectionConfig
+
 class Slide(BaseModel):
     speech: str = Field(description = "What to say during this particular slide")
     slide: GeneratedImage = Field(
@@ -113,7 +125,12 @@ class PresentationResponse(BaseModel):
 
 response = qa.ask(
     "Find the best selling items in the store and then create a presentation for them.",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=PresentationResponse,
 )
 # END ComplexBaseModelImageExample
@@ -130,21 +147,34 @@ class AnnotatedImagesResponse(BaseModel):
 # START CustomShapeImageExample
 from typing import Annotated
 from weaviate.agents.classes import GeneratedImageOptions
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 class HatResponse(BaseModel):
     picture: Annotated[GeneratedImage, GeneratedImageOptions(shape="portrait")]
 
 response = qa.ask(
     "Generate a picture of someone wearing the most expensive hat",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format=HatResponse,
 )
 # END CustomShapeImageExample
 
 # START RawJSONSchemaImageExample
+from weaviate.agents.classes import QueryAgentCollectionConfig
+
 response = qa.ask(
     "Find the most expensive item in the store",
-    collections=["ECommerce"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+        )
+    ],
     output_format={
         "type": "object",
         "properties": {
@@ -160,10 +190,10 @@ response = qa.ask(
             }
         }
     }
-),
+)
 # END RawJSONSchemaImageExample
 
 if client.collections.exists("QueryAgentImageUpload"):
     client.collections.delete("QueryAgentImageUpload")
-    
+
 client.close()
