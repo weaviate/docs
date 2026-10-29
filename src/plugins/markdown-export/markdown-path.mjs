@@ -17,5 +17,5 @@
  * @returns {string} Root-relative URL path ending in ".md".
  */
 export function markdownPathForRoute(routePath) {
-  throw new Error("Not implemented: markdownPathForRoute");
+  return `${routePath.replace(/\/+$/, "") || "/index"}.md`;
 }

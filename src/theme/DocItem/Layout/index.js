@@ -3,6 +3,7 @@ import clsx from "clsx";
 import Head from "@docusaurus/Head";
 import { useWindowSize } from "@docusaurus/theme-common";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import DocItemPaginator from "@theme/DocItem/Paginator";
 import DocVersionBanner from "@theme/DocVersionBanner";
 import DocVersionBadge from "@theme/DocVersionBadge";
@@ -19,6 +20,7 @@ import FeedbackComponent from "@site/src/components/Feedback";
 import PageRatingWidget from "@site/src/components/PageRatingWidget";
 import ContextualMenu from "@site/src/components/ContextualMenu";
 import ErrorSidePanel from "@site/src/components/ErrorSidePanel";
+import { markdownPathForRoute } from "@site/src/plugins/markdown-export/markdown-path.mjs";
 /* ---- END: Customizations ---- */
 
 // Opt-in addition to the right-hand column, keyed on the `side_panel`
@@ -56,6 +58,41 @@ function FaqJsonLd({ faq }) {
     </Head>
   );
 }
+
+// Point agents at the Markdown version of this page, which
+// src/plugins/markdown-export writes for every docs page at build time: a
+// <link rel="alternate"> for tools that read <head>, and a visually hidden
+// notice for tools that only read page text. The notice sits outside the docs
+// body, so it does not appear in the Markdown itself.
+function MarkdownAlternate({ permalink }) {
+  const { siteConfig } = useDocusaurusContext();
+  const markdownPath = markdownPathForRoute(permalink);
+  return (
+    <>
+      <Head>
+        <link rel="alternate" type="text/markdown" href={markdownPath} />
+      </Head>
+      <div style={VISUALLY_HIDDEN} aria-hidden="true" data-llm-notice="true">
+        LLM/AI agent notice: A Markdown version of this page is at{" "}
+        {siteConfig.url + markdownPath}. Requests for any docs page with{" "}
+        Accept: text/markdown return Markdown.
+      </div>
+    </>
+  );
+}
+
+// Same visually hidden style as the site-wide notice in src/theme/Root.js.
+const VISUALLY_HIDDEN = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0,0,0,0)",
+  whiteSpace: "nowrap",
+  borderWidth: 0,
+};
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -100,6 +137,7 @@ export default function DocItemLayout({ children }) {
   return (
     <>
       <FaqJsonLd faq={frontMatter.faq} />
+      <MarkdownAlternate permalink={metadata.permalink} />
       <div className="row">
         <div
           className={clsx(

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Authorization | Weaviate Documentation</title>
+<meta property="og:title" content="Authorization | Weaviate Documentation">
+</head>
+<body>
+<main><article>
+<div class="theme-doc-markdown markdown">
+<header><h1>Authorization</h1></header>
+<p>The following diagram illustrates the flow of a user request through the authentication and authorization process:</p>
+<pre hidden data-markdown-source="mermaid">flowchart TB
+    User(["Authenticated User"]) --> AuthScheme{"Authorization&#x3C;br> Scheme?"}
+
+    subgraph rbac ["RBAC Authorization"]
+        direction TB
+        AdminRole["Admin Role"]
+        ViewerRole["Viewer Role"]
+        CustomRole["Custom Roles"]
+
+        Perms1["Full Access&#x3C;br> All Operations"]
+        Perms2["Read-only&#x3C;br> Access"]
+        Perms3["Custom&#x3C;br> Permissions"]
+
+        AdminRole --> Perms1
+        ViewerRole --> Perms2
+        CustomRole --> Perms3
+    end
+
+    subgraph adminlist ["Admin List Authorization"]
+        direction TB
+        AdminUser["Admin Users"]
+        ReadOnly["Read-only Users"]
+        AnonUser["Anonymous Users&#x3C;br> (Optional)"]
+
+        AllPerms["Full Access&#x3C;br> All Operations"]
+        ReadPerms["Read-only&#x3C;br> Access"]
+
+        AdminUser --> AllPerms
+        ReadOnly --> ReadPerms
+        AnonUser -.->|"If enabled"| AllPerms
+        AnonUser -.->|"If enabled"| ReadPerms
+    end
+
+    subgraph undiffer ["Undifferentiated Access"]
+        AllAccess["Full Access&#x3C;br> All Operations"]
+    end
+
+    AuthScheme -->|"RBAC"| rbac
+    AuthScheme -->|"Admin List"| adminlist
+    AuthScheme -->|"Undifferentiated"| undiffer
+
+    %% Style nodes
+    style User fill:#f9f9f9,stroke:#666
+    style AuthScheme fill:#f5f5f5,stroke:#666
+    style AnonUser fill:#f9f9f9,stroke:#666,stroke-dasharray: 5 5
+
+    %% Style subgraphs
+    style rbac fill:#e6f3ff,stroke:#4a90e2
+    style adminlist fill:#e6ffe6,stroke:#2ea44f
+    style undiffer fill:#fff0e6,stroke:#ff9933</pre>
+</div>
+</article></main>
+</body>
+</html>

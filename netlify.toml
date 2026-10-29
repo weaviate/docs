@@ -1382,6 +1382,16 @@ status = 301
   path = "/e/*"
   function = "error-link-src"
 
+# Markdown for agents: serves <route>.md (written by src/plugins/markdown-export)
+# to requests whose Accept header prefers text/markdown, and sets Markdown
+# headers on direct .md requests. Behavior: netlify/edge-functions/markdown-negotiation.ts.
+# Declared here for the same reason as error-link-src above. Keep excludedPath
+# in sync with the `config` export in that file.
+[[edge_functions]]
+  path = "/*"
+  excludedPath = ["/e/*", "/assets/*", "/img/*", "/fonts/*", "/js/*", "/og/*", "/specs/*", "/config/*", "/prompts/*"]
+  function = "markdown-negotiation"
+
 # /improve-your-cluster IS ALSO A CONTRACT. Weaviate prints it in the startup
 # banner of every release from v1.40 as a readable URL rather than an /e/ id, so
 # it is compiled into binaries the same way the ids are. If the page ever moves,

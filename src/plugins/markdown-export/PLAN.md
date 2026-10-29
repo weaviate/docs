@@ -112,4 +112,17 @@ The conversion rules were tested in a throwaway prototype on the Oct 26 local bu
 | Checkpoint | Status |
 |---|---|
 | 1 | Reviewed; image rules added to the `convertDocPage` contract |
-| 2–6 | Not started |
+| 2 | Passed. The build wrote 393 `.md` files for 393 docs pages in 6.7 s; a scan for UI text found only page content. |
+| 3 | Fences passed: all 21 diagrams on the 14 Mermaid pages. Browser rendering not verified: Docker was not running. |
+| 4 | Passed. 393 of 393 docs pages have the head link and notice; tag, 404 and REST API pages have neither; every link resolves to a file in `build/` and `build.dev/`. |
+| 5 | Unit tests passed (10). Netlify behavior needs a deploy preview. |
+| 6 | Partly done. README written, commented-out signalwire config removed, CI step added. Not done: removing the signalwire package (needs `yarn remove`) and running `validate-links-pr.js` (binds a port). The sandbox blocks both. |
+
+### How this was verified
+
+The sandbox cannot read `~/.yarnrc`, so `yarn` does not start, and `node_modules` predates the `@docusaurus/faster` dependency. The checks therefore used:
+
+- `package.json` entries whose ranges already match `yarn.lock` keys, so the lockfile is unchanged;
+- `docusaurus build` run directly, with a temporary config that imports the site config and sets `experimental_faster: false` (webpack instead of rspack). Production and dev configs both built.
+
+Rerun `yarn install && yarn build && yarn build-dev && yarn validate-links-dev` outside the sandbox before merge.
