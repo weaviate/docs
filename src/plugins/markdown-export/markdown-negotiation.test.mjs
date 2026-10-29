@@ -37,9 +37,9 @@ function request(path, { accept, method = "GET" } = {}) {
 const realFetch = globalThis.fetch;
 const fetchedUrls = [];
 function stubFetch(respond) {
-  globalThis.fetch = async (url) => {
+  globalThis.fetch = async (url, init = {}) => {
     fetchedUrls.push(String(url));
-    return respond(String(url));
+    return respond(String(url), init);
   };
 }
 afterEach(() => {
@@ -108,6 +108,25 @@ describe("markdown-negotiation", () => {
     assert.equal(context.nextCalls, 1);
     assert.equal(response.status, 301);
     assert.equal(response.headers.get("Location"), "/cloud/faq");
+  });
+
+  test("falls back to the page's own redirect when the .md path is redirected", async () => {
+    // netlify.toml redirects /weaviate/schema/* to /weaviate/manage-collections,
+    // so the .md lookup is redirected too. A followed redirect returns that
+    // page's HTML with status 200.
+    stubFetch((url, init) =>
+      init.redirect === "manual"
+        ? new Response(null, { status: 301, headers: { Location: "/weaviate/manage-collections" } })
+        : new Response("<html>manage collections</html>", { headers: { "Content-Type": "text/html" } }),
+    );
+    const redirect = new Response(null, { status: 301, headers: { Location: "/weaviate/config-refs/datatypes" } });
+    const context = fakeContext(redirect);
+
+    const response = await handler(request("/weaviate/schema/datatypes", { accept: AGENT_ACCEPT }), context);
+
+    assert.equal(context.nextCalls, 1);
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get("Location"), "/weaviate/config-refs/datatypes");
   });
 
   test("passes browser requests through without fetching", async () => {

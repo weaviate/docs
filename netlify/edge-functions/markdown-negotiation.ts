@@ -107,7 +107,14 @@ export default async (request: Request, context: any) => {
   // Fetch rather than rewrite, so a missing .md (a redirected or non-doc URL)
   // can fall back to the normal response and its redirect rules. The
   // subrequest passes through this function's .md branch above.
-  const markdown = await fetch(new URL(markdownPathForRoute(url.pathname), url.origin), { method: request.method });
+  //
+  // redirect: "manual", because the .md path of a moved page can match a
+  // wildcard redirect: /weaviate/schema/datatypes.md matches /weaviate/schema/*.
+  // Following it would return another page's HTML, labelled as Markdown.
+  const markdown = await fetch(new URL(markdownPathForRoute(url.pathname), url.origin), {
+    method: request.method,
+    redirect: "manual",
+  });
   if (!markdown.ok) return context.next();
   return withMarkdownHeaders(markdown, new URL(url.pathname, url.origin));
 };
