@@ -103,6 +103,28 @@ describe("convertDocPage", () => {
     assert.match(markdown, /^\| .+ \|\n\| -+/m);
   });
 
+  test("does not pad table cells to the column width", () => {
+    const markdown = convertFixture("admonition-details-table");
+    const tableLines = markdown.split("\n").filter((line) => line.startsWith("|"));
+
+    assert.ok(tableLines.length > 0);
+    assert.deepEqual(tableLines.filter((line) => /\S {2,}\||\| {2,}\S/.test(line)), []);
+  });
+
+  test("shortens vector literals in code and says so after the block", () => {
+    const vector = Array.from({ length: 1536 }, (_, i) => (i % 7 === 0 ? -0.0125 : 0.0042)).join(", ");
+    const html =
+      '<html><body><div class="theme-doc-markdown"><h1>Vectors</h1>' +
+      `<pre><code class="language-py">response = jeopardy.query.near_vector(\n    near_vector=[${vector}],\n    limit=2,\n)\n</code></pre>` +
+      '<pre><code class="language-py">ids = [1, 2, 3, 4]</code></pre></div></body></html>';
+
+    const markdown = convertDocPage({ html, pageUrl: `${SITE_URL}/vectors`, siteUrl: SITE_URL });
+
+    assert.match(markdown, /near_vector=\[-0\.0125, 0\.0042, 0\.0042, \.\.\.\],\n/);
+    assert.match(markdown, /```\n\n\*This example's 1,536-number vector is shortened to its first 3 values\. The HTML page has the full vector\.\*\n/);
+    assert.match(markdown, /ids = \[1, 2, 3, 4\]\n```\n$/);
+  });
+
   test("puts each block in a table cell on its own line", () => {
     const markdown = convertFixture("cards-and-cells");
 

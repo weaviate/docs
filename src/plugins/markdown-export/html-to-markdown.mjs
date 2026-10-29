@@ -53,12 +53,17 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  * Body conversion rules:
  * - Code tab groups: every variant, each fence preceded by its dropdown label
  *   in bold (`**Go (v5)**`), with the fence language from the rendered block.
+ * - Vector literals in code: a bracketed list of 16 or more numbers keeps its
+ *   first three values and `...` (`[0.0042, -0.0215, 0.0118, ...]`), and an
+ *   italic sentence after the block gives the full length. The HTML page keeps
+ *   the full vector.
  * - Default Docusaurus tabs: every panel, under an `####` heading with the tab label.
  * - Admonitions: GitHub alert blockquotes (`> [!TIP]`), with the admonition
  *   title in bold when it differs from the type. Links in the title are kept.
  * - `<details>`: the summary in bold, followed by the expanded body.
- * - Tables: GFM tables. A cell with block content puts each block on its own
- *   line, separated by `<br>`, with list items marked `• `.
+ * - Tables: GFM tables, without padding cells to the column width. A cell
+ *   with block content puts each block on its own line, separated by `<br>`,
+ *   with list items marked `• `.
  * - A link that wraps a list or button (a deployment card): the card content,
  *   followed by one link labelled with the button text.
  * - Any other link that wraps blocks (a card with a title and description):
@@ -107,8 +112,11 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
     const mdast = unified()
       .use(rehypeRemark, { handlers: { [ALERT_TAG]: alertHandler, [LINE_BREAK_TAG]: lineBreakHandler } })
       .runSync({ type: "root", children: [docsBody] });
+    shortenVectorLiterals(mdast);
+    // Aligned pipes pad every cell to its column's widest cell, which was
+    // half of release-notes.md and 7% of the whole export.
     const body = unified()
-      .use(remarkGfm)
+      .use(remarkGfm, { tablePipeAlign: false })
       .use(remarkStringify, { bullet: "-", fences: true, rule: "-" })
       .stringify(mdast);
 
@@ -116,6 +124,37 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
   } catch (error) {
     throw new Error(`Markdown export failed for ${pageUrl}: ${error.message}`, { cause: error });
   }
+}
+
+const NUMBER = String.raw`-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?`;
+// An embedding vector written out in a code example. Across the built site,
+// 16 or more numbers in one list match only the 300- and 1,536-number
+// vectors, and no other array.
+const VECTOR_LITERAL = new RegExp(String.raw`\[\s*(?:${NUMBER}\s*,\s*){15,}${NUMBER}\s*,?\s*\]`, "g");
+const KEPT_VECTOR_VALUES = 3;
+
+// Shortens each vector literal in the page's code blocks and adds a sentence
+// after the block that says so. The snippets under _includes/ run as tests
+// against a live instance, so the full vectors stay in the source and HTML.
+function shortenVectorLiterals(mdast) {
+  visit(mdast, "code", (node, index, parent) => {
+    const lengths = [];
+    node.value = node.value.replace(VECTOR_LITERAL, (literal) => {
+      const values = literal.match(new RegExp(NUMBER, "g"));
+      lengths.push(values.length.toLocaleString("en-US"));
+      return `[${values.slice(0, KEPT_VECTOR_VALUES).join(", ")}, ...]`;
+    });
+    if (!lengths.length || !parent) return;
+    const note =
+      lengths.length === 1
+        ? `This example's ${lengths[0]}-number vector is shortened to its first ${KEPT_VECTOR_VALUES} values.`
+        : `This example's vectors (${lengths.join(", ")} numbers) are shortened to their first ${KEPT_VECTOR_VALUES} values.`;
+    parent.children.splice(index + 1, 0, {
+      type: "paragraph",
+      children: [{ type: "emphasis", children: [{ type: "text", value: `${note} The HTML page has the full vector.` }] }],
+    });
+    return index + 2;
+  });
 }
 
 // The page title is the docs body's <h1>. og:title carries the same text plus
