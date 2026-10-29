@@ -4010,24 +4010,6 @@
   resolved "https://registry.npmjs.org/@sideway/pinpoint/-/pinpoint-2.0.0.tgz"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@signalwire/docusaurus-plugin-llms-txt@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/@signalwire/docusaurus-plugin-llms-txt/-/docusaurus-plugin-llms-txt-1.2.2.tgz"
-  integrity sha512-Qo5ZBDZpyXFlcrWwise77vs6B0R3m3/qjIIm1IHf4VzW6sVYgaR/y46BJwoAxMrV3WJkn0CVGpyYC+pMASFBZw==
-  dependencies:
-    fs-extra "^11.0.0"
-    hast-util-select "^6.0.4"
-    hast-util-to-html "^9.0.5"
-    hast-util-to-string "^3.0.1"
-    p-map "^7.0.2"
-    rehype-parse "^9"
-    rehype-remark "^10"
-    remark-gfm "^4"
-    remark-stringify "^11"
-    string-width "^5.0.0"
-    unified "^11"
-    unist-util-visit "^5"
-
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.8.tgz"
@@ -8703,7 +8685,7 @@ from2@^2.1.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
 
-fs-extra@^11.0.0, fs-extra@^11.1.1, fs-extra@^11.2.0:
+fs-extra@^11.1.1, fs-extra@^11.2.0:
   version "11.3.0"
   resolved "https://registry.npmjs.org/fs-extra/-/fs-extra-11.3.0.tgz"
   integrity sha512-Z4XaCL6dUDHfP/jT25jJKMmtxvuwbkrD1vNSMFlo9lNLY2c5FHYSQgHPRZUjAB26TpDEoW9HCOgplrdbaPV/ew==
@@ -9272,7 +9254,7 @@ hast-util-to-estree@^3.0.0:
     unist-util-position "^5.0.0"
     zwitch "^2.0.0"
 
-hast-util-to-html@^9.0.0, hast-util-to-html@^9.0.5:
+hast-util-to-html@^9.0.0:
   version "9.0.5"
   resolved "https://registry.npmjs.org/hast-util-to-html/-/hast-util-to-html-9.0.5.tgz"
   integrity sha512-OguPdidb+fbHQSU4Q4ZiLKnzWo8Wwsf5bZfbvu7//a9oTYoqD/fWpe96NuHkoS9h0ccGOTe0C4NGXdtS0iObOw==
@@ -9343,7 +9325,7 @@ hast-util-to-parse5@^8.0.0:
     web-namespaces "^2.0.0"
     zwitch "^2.0.0"
 
-hast-util-to-string@^3.0.0, hast-util-to-string@^3.0.1:
+hast-util-to-string@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/hast-util-to-string/-/hast-util-to-string-3.0.1.tgz"
   integrity sha512-XelQVTDWvqcl3axRfI0xSeoVKzyIFPwsAGSLIsKdJKQMXDYJS4WYrBNF/8J7RdhIcFI2BOHgAifggsvsxp/3+A==
@@ -12533,7 +12515,7 @@ p-map@^4.0.0:
   dependencies:
     aggregate-error "^3.0.0"
 
-p-map@^7.0.0, p-map@^7.0.1, p-map@^7.0.2:
+p-map@^7.0.0, p-map@^7.0.1:
   version "7.0.3"
   resolved "https://registry.npmjs.org/p-map/-/p-map-7.0.3.tgz"
   integrity sha512-VkndIv2fIB99swvQoA65bm+fsmt6UNdGeIB0oxBs+WhAhdh08QA04JXpI7rbB9r08/nkbysKoya9rtDERYOYMA==
@@ -14291,7 +14273,7 @@ remark-frontmatter@^5.0.0:
     micromark-extension-frontmatter "^2.0.0"
     unified "^11.0.0"
 
-remark-gfm@^4, remark-gfm@^4.0.0:
+remark-gfm@^4.0.0:
   version "4.0.1"
   resolved "https://registry.npmjs.org/remark-gfm/-/remark-gfm-4.0.1.tgz"
   integrity sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==
@@ -14342,7 +14324,7 @@ remark-rehype@^11.0.0:
     unified "^11.0.0"
     vfile "^6.0.0"
 
-remark-stringify@^11, remark-stringify@^11.0.0:
+remark-stringify@^11.0.0:
   version "11.0.0"
   resolved "https://registry.npmjs.org/remark-stringify/-/remark-stringify-11.0.0.tgz"
   integrity sha512-1OSmLd3awB/t8qdoEOMazZkNsfVTeY4fTsgzcQFdXNq8ToTN4ZGwrMnlda4K6smTFKD+GRV6O48i6Z4iKgPPpw==
@@ -15251,7 +15233,7 @@ string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
     is-fullwidth-code-point "^3.0.0"
     strip-ansi "^6.0.1"
 
-string-width@^5.0.0, string-width@^5.0.1, string-width@^5.1.2:
+string-width@^5.0.1, string-width@^5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/string-width/-/string-width-5.1.2.tgz"
   integrity sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==
@@ -15929,7 +15911,7 @@ unicorn-magic@^0.4.0:
   resolved "https://registry.yarnpkg.com/unicorn-magic/-/unicorn-magic-0.4.0.tgz#78c6a090fd6d07abd2468b83b385603e00dfdb24"
   integrity sha512-wH590V9VNgYH9g3lH9wWjTrUoKsjLF6sGLjhR4sH1LWpLmCOH0Zf7PukhDA8BiS7KHe4oPNkcTHqYkj7SOGUOw==
 
-unified@^11, unified@^11.0.0, unified@^11.0.3, unified@^11.0.4:
+unified@^11.0.0, unified@^11.0.3, unified@^11.0.4:
   version "11.0.5"
   resolved "https://registry.npmjs.org/unified/-/unified-11.0.5.tgz"
   integrity sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==
@@ -16001,7 +15983,7 @@ unist-util-visit-parents@^6.0.0:
     "@types/unist" "^3.0.0"
     unist-util-is "^6.0.0"
 
-unist-util-visit@^5, unist-util-visit@^5.0.0:
+unist-util-visit@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/unist-util-visit/-/unist-util-visit-5.0.0.tgz"
   integrity sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==
