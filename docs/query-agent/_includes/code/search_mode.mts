@@ -1,13 +1,13 @@
 import 'dotenv/config'
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 // START BasicSearchMode
-import weaviate from 'weaviate-client';
-import { QueryAgent } from 'weaviate-agents';
+import weaviate from '@weaviate/node';
+import { QueryAgent } from '@weaviate/agents';
 
 // END BasicSearchMode
 
 // START ImportSearchResponse
-import { SearchModeResponse } from 'weaviate-agents';
+import { SearchModeResponse } from '@weaviate/agents';
 // END ImportSearchResponse
 
 // START BasicSearchMode

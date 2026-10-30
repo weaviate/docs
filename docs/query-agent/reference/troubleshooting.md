@@ -13,7 +13,7 @@ Things to check when the Query Agent isn't behaving as expected, plus the soft u
 
 - **Agents are not enabled for your organization.** Agents is an organization-level page in the [Weaviate Cloud console](/go/console?utm_content=agents), under `Agents` in the sidebar. If `Enable Agents` is off, switch it on — it is set once for the whole organization.
 - **The instance is not a Weaviate Cloud instance.** The Query Agent runs as a Weaviate Cloud service. A locally running Weaviate instance does not support it. See [Installation](../installation.md).
-- **The client package is missing or out of date.** Install `weaviate-agents` alongside the Weaviate client, and check you are on a version that has the feature you are using. See the [Python](../clients/python.md) and [JavaScript/TypeScript](../clients/typescript.md) client pages.
+- **The client package is missing or out of date.** Install the agents package (`weaviate-agents` for Python, `@weaviate/agents` for JavaScript/TypeScript) alongside the Weaviate client, and check you are on a version that has the feature you are using. See the [Python](../clients/python.md) and [JavaScript/TypeScript](../clients/typescript.md) client pages.
 
 ### You run out of free requests
 

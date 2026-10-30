@@ -3,17 +3,17 @@ const { populateWeaviate } = await import('./util.mjs').catch(() => import('../d
 
 
 // START BasicAskMode
-import weaviate from 'weaviate-client';
-import { QueryAgent } from 'weaviate-agents';
+import weaviate from '@weaviate/node';
+import { QueryAgent } from '@weaviate/agents';
 
 // END BasicAskMode
 
 // START ImportAskResponse
-import { AskModeResponse } from 'weaviate-agents';
+import { AskModeResponse } from '@weaviate/agents';
 // END ImportAskResponse
 
 // START StreamingExample
-import { ProgressMessage, StreamedTokens } from 'weaviate-agents';
+import { ProgressMessage, StreamedTokens } from '@weaviate/agents';
 // END StreamingExample
 
 // START BasicAskMode

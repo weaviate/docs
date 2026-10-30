@@ -4721,6 +4721,11 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.42.tgz#a413cf21262502662354cda3b65ab31bca979202"
   integrity sha512-2rPxex1jQf4jvl9MOHl6YaXCPcrNqz/FstMOEh3QWY+/OME9nQTvl9WYeCwhW7AFjaR0SnngZGlp/wkR6rkI6g==
 
+"@weaviate/agents@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@weaviate/agents/-/agents-1.8.0.tgz#01e0d2ab95d468e67e072fb5161d4023e5fc7262"
+  integrity sha512-aRtI/aiY1tb6XpnOiuWPAS8J+3kSV5v1ZS7n0QPOPQpq7bHWKdA1yNwYr7o5oNxrZKdJUXYja4AY0pgV88Hoew==
+
 "@weaviate/core@3.15.0":
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/@weaviate/core/-/core-3.15.0.tgz#deb8dec695894444f1e3573e785dde03e5e64115"
@@ -8630,14 +8635,6 @@ graphql-request@^5.2.0:
     extract-files "^9.0.0"
     form-data "^3.0.0"
 
-graphql-request@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.npmjs.org/graphql-request/-/graphql-request-6.1.0.tgz"
-  integrity sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==
-  dependencies:
-    "@graphql-typed-document-node/core" "^3.2.0"
-    cross-fetch "^3.1.5"
-
 graphql-request@^7.4.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-7.4.0.tgz#97a1fc871e79f682d816963446ac6b7f99c963f9"
@@ -11655,14 +11652,6 @@ netlify-redirector@^0.5.0:
   resolved "https://registry.yarnpkg.com/netlify-redirector/-/netlify-redirector-0.5.0.tgz#9611dd8497dab4e13d9f6a6f1595b9528b9e7abf"
   integrity sha512-4zdzIP+6muqPCuE8avnrgDJ6KW/2+UpHTRcTbMXCIRxiRmyrX+IZ4WSJGZdHPWF3WmQpXpy603XxecZ9iygN7w==
 
-nice-grpc-client-middleware-retry@^3.1.13:
-  version "3.1.15"
-  resolved "https://registry.yarnpkg.com/nice-grpc-client-middleware-retry/-/nice-grpc-client-middleware-retry-3.1.15.tgz#dc3ca5ca1664d9527bdafb8484f4fb3cf5dcf196"
-  integrity sha512-fXfNNdtjCQzc3O/w3WsK1AOU+xdE1V7FCm4FEQWS/UUVsV1616S2oryvWqsZAF8aOvuMir8lFtNmgH3DeP+PBg==
-  dependencies:
-    abort-controller-x "^0.5.0"
-    nice-grpc-common "^2.0.3"
-
 nice-grpc-client-middleware-retry@^3.1.15:
   version "3.1.16"
   resolved "https://registry.yarnpkg.com/nice-grpc-client-middleware-retry/-/nice-grpc-client-middleware-retry-3.1.16.tgz#7141ad09c3e56a1c967a2b4f0f61d47726de19ea"
@@ -11670,13 +11659,6 @@ nice-grpc-client-middleware-retry@^3.1.15:
   dependencies:
     abort-controller-x "^0.5.0"
     nice-grpc-common "^2.0.4"
-
-nice-grpc-common@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/nice-grpc-common/-/nice-grpc-common-2.0.2.tgz"
-  integrity sha512-7RNWbls5kAL1QVUOXvBsv1uO0wPQK3lHv+cY1gwkTzirnG1Nop4cBJZubpgziNbaVc/bl9QJcyvsf/NQxa3rjQ==
-  dependencies:
-    ts-error "^1.0.6"
 
 nice-grpc-common@^2.0.3:
   version "2.0.3"
@@ -11691,15 +11673,6 @@ nice-grpc-common@^2.0.4:
   integrity sha512-gOEXlD6ShXZMZ8k+49wm/bA2j1+3IKbEFV9WYREJcvZV4kM5L1KkILYTX9VYBzZF2OuYCe1wp8c82bQkvR0fHw==
   dependencies:
     ts-error "^1.0.6"
-
-nice-grpc@^2.1.14:
-  version "2.1.16"
-  resolved "https://registry.yarnpkg.com/nice-grpc/-/nice-grpc-2.1.16.tgz#10f335eeb8c9c5aca85cc04e618a9e86c9d6b4fa"
-  integrity sha512-Cl3Pn00212Hl8/U6bpgMxmhZj5lyv3nWoJov4cd3FjWarktrMHP4DNvSjCnDwkMWYx4W1tyscEia4JX6Y4GVCQ==
-  dependencies:
-    "@grpc/grpc-js" "^1.14.0"
-    abort-controller-x "^0.5.0"
-    nice-grpc-common "^2.0.3"
 
 nice-grpc@^2.1.16:
   version "2.1.17"
@@ -15868,26 +15841,6 @@ wcwidth@^1.0.1:
   integrity sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==
   dependencies:
     defaults "^1.0.3"
-
-weaviate-agents@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/weaviate-agents/-/weaviate-agents-1.6.0.tgz#29139b1afa51c65b64b20b6c8ad180f6c46f7915"
-  integrity sha512-rOFYiZz9c+RdFj/G28xWp+6jx5I2Nl88dMB14QwZWPNBbieRTFzo8S+DeZbh/7zsXa9/oRjRiTMkxMb/VoNyVA==
-
-weaviate-client@^3.12.1:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/weaviate-client/-/weaviate-client-3.13.0.tgz#1422f63bdc1e652a2eec691e8ba6cdf3c5920555"
-  integrity sha512-0tB8UbsKoAs6Ax/w0kkGIUtozu5STLlR1FOeLRENQwb4/B8mXqA9UENJfxDA+G98Mz4Otn3gEdHelru9O+MwnQ==
-  dependencies:
-    "@datastructures-js/deque" "^1.0.8"
-    abort-controller-x "^0.5.0"
-    graphql "^16.12.0"
-    graphql-request "^6.1.0"
-    long "^5.3.2"
-    nice-grpc "^2.1.14"
-    nice-grpc-client-middleware-retry "^3.1.13"
-    nice-grpc-common "^2.0.2"
-    uuid "^14.0.0"
 
 weaviate-ts-client@^1.3.3:
   version "1.6.0"

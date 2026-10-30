@@ -55,10 +55,10 @@ pip install -U weaviate-agents==||site.agents_python_version||
 
 ## JavaScript/TypeScript client
 
-You can install for TypeScript or JavaScript via `npm`:
+The agents package for TypeScript and JavaScript is `@weaviate/agents`. Install it alongside the `@weaviate/node` client via `npm`:
 
 ```shell
-npm install weaviate-agents@latest
+npm install @weaviate/node @weaviate/agents
 ```
 
 ## Questions and feedback

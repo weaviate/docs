@@ -4,7 +4,7 @@ const client = await loadClientInternally();
 await populateWeaviate(client, false);
 
 // START InstantiateWithSystemPrompt
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 // Define a custom system prompt to guide the agent's behavior
 const systemPrompt = `

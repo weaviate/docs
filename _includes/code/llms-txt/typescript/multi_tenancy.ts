@@ -1,5 +1,5 @@
 // llms.txt snippet: multi-tenancy. Section "Python / TypeScript > Multi-tenancy".
-import weaviate, { vectors, configure } from 'weaviate-client';
+import weaviate, { vectors, configure } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
@@ -7,7 +7,7 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Docs__MtTs');
 
 // START llms_multi_tenancy
-import { vectors, configure } from 'weaviate-client';
+import { vectors, configure } from '@weaviate/node';
 
 await client.collections.create({
   name: 'Docs__MtTs',

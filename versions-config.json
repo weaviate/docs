@@ -10,7 +10,7 @@
   "helm_version": "17.8.3",
   "weaviate_cli_version": "3.4.2",
   "agents_python_version": "1.8.0",
-  "agents_typescript_version": "1.7.0",
+  "agents_typescript_version": "1.8.0",
   "python_client_version": "4.23.1",
   "go_client_version": "5.7.3",
   "java_client_version": "6.3.1",

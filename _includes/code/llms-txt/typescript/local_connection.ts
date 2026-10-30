@@ -1,8 +1,8 @@
 // llms.txt snippet: local connection. Section "Python / TypeScript > Local connection".
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // START llms_local_connection
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal();
 // END llms_local_connection

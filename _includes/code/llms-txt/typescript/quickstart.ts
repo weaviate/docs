@@ -1,7 +1,7 @@
 // llms.txt snippet: quickstart (Weaviate Cloud). Section "Quickstart > Cloud".
 
 // START llms_quickstart
-import weaviate, { vectors } from 'weaviate-client';
+import weaviate, { vectors } from '@weaviate/node';
 
 const dataObjects = [
   {

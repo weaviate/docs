@@ -1,5 +1,5 @@
 // llms.txt snippet: filtering. Section "Python / TypeScript > Filtering".
-import weaviate, { vectors, dataType, Filters } from 'weaviate-client';
+import weaviate, { vectors, dataType, Filters } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
@@ -7,7 +7,7 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Restaurant__FilteringTs');
 
 // START llms_filtering_create_minimal
-import { vectors } from 'weaviate-client';
+import { vectors } from '@weaviate/node';
 
 // Minimal: auto-schema sets filterable + searchable defaults on every property
 await client.collections.create({
@@ -19,7 +19,7 @@ await client.collections.create({
 await client.collections.delete('Restaurant__FilteringTs');
 
 // START llms_filtering_create_full
-import { vectors, dataType } from 'weaviate-client';
+import { vectors, dataType } from '@weaviate/node';
 
 // Full control: all options set explicitly
 await client.collections.create({
@@ -45,7 +45,7 @@ await col.data.insertMany([
 ]);
 
 // START llms_filtering_query
-import { Filters } from 'weaviate-client';
+import { Filters } from '@weaviate/node';
 
 // Single condition
 const cheapRamen = await col.query.hybrid('ramen', {

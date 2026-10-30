@@ -2,8 +2,8 @@ import 'dotenv/config'
 const { populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 
 // START SuggestQueries
-import weaviate from 'weaviate-client';
-import { QueryAgent } from 'weaviate-agents';
+import weaviate from '@weaviate/node';
+import { QueryAgent } from '@weaviate/agents';
 
 // END SuggestQueries
 
@@ -42,7 +42,7 @@ for (const suggestedQuery of response.queries) {
 // END AccessResponse
 
 // START SuggestQueriesWithConversation
-import { ChatMessage } from 'weaviate-agents';
+import { ChatMessage } from '@weaviate/agents';
 
 // Build a conversation history
 const suggestConversation: ChatMessage[] = [

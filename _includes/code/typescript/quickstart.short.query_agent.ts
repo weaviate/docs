@@ -1,6 +1,6 @@
 // START QueryAgent
-import weaviate, { WeaviateClient, ApiKey } from 'weaviate-client';
-import { QueryAgent } from 'weaviate-agents';
+import weaviate, { WeaviateClient, ApiKey } from '@weaviate/node';
+import { QueryAgent } from '@weaviate/agents';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL!;

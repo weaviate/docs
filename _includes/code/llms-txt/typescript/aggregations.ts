@@ -1,5 +1,5 @@
 // llms.txt snippet: aggregations. Section "Python / TypeScript > Aggregations".
-import weaviate, { vectors, dataType } from 'weaviate-client';
+import weaviate, { vectors, dataType } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),

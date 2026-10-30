@@ -34,37 +34,39 @@ The latest Query Agent TypeScript client is version `v||site.agents_typescript_v
 
 ## Installation
 
-The Query Agent TypeScript client is distributed as the [`weaviate-agents`](https://www.npmjs.com/package/weaviate-agents) package on npm, and depends on the [`weaviate-client`](https://www.npmjs.com/package/weaviate-client) package, which it declares as a peer dependency. You should install both packages together:
+The Query Agent TypeScript client is distributed as the [`@weaviate/agents`](https://www.npmjs.com/package/@weaviate/agents) package on npm. It has peer dependencies on `@weaviate/core` and `zod`. Both `@weaviate/node` and `@weaviate/web` install `@weaviate/core`. Install the agents package together with `@weaviate/node`:
 
 ```shell
-npm install weaviate-client weaviate-agents
+npm install @weaviate/node @weaviate/agents
 ```
 
 Or with `yarn` / `pnpm`:
 
 ```shell
-yarn add weaviate-client weaviate-agents
+yarn add @weaviate/node @weaviate/agents
 ```
 
 ```shell
-pnpm add weaviate-client weaviate-agents
+pnpm add @weaviate/node @weaviate/agents
 ```
+
+In a browser app, use `@weaviate/web` in place of `@weaviate/node`.
 
 ### Imports
 
-Import the agent class directly from the `weaviate-agents` package, alongside your usual `weaviate-client` imports:
+Import the agent class directly from the `@weaviate/agents` package, alongside your usual `@weaviate/node` imports:
 
 ```typescript
-import weaviate from "weaviate-client";
-import { QueryAgent } from "weaviate-agents";
+import weaviate from "@weaviate/node";
+import { QueryAgent } from "@weaviate/agents";
 ```
 
 #### Troubleshooting: Force `npm` to install the latest version
 
-For existing installations, `npm install` may not upgrade `weaviate-agents` to the [latest version](https://www.npmjs.com/package/weaviate-agents). If this occurs, explicitly upgrade the package:
+For existing installations, `npm install` may not upgrade `@weaviate/agents` to the [latest version](https://www.npmjs.com/package/@weaviate/agents). If this occurs, explicitly upgrade the package:
 
 ```shell
-npm install weaviate-agents@latest
+npm install @weaviate/agents@latest
 ```
 
 ## Questions and feedback

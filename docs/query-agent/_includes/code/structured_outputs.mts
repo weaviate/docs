@@ -6,7 +6,7 @@ await populateWeaviate(client, false);
 
 
 // START SOInstantiate
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 import { z } from 'zod';
 
 const qa = new QueryAgent(client, { collections: ['FinancialContracts'] });

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import weaviate, { type WeaviateClient, vectors, dataType, configure } from 'weaviate-client';
+import weaviate, { type WeaviateClient, vectors, dataType, configure } from '@weaviate/node';
 
 interface DatasetItem {
     properties: any;
