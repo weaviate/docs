@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-import weaviate, { GenerateOptions, WeaviateClient } from 'weaviate-client';
+import weaviate, { GenerateOptions, WeaviateClient } from '@weaviate/node';
 
 const weaviateURL = process.env.WEAVIATE_URL as string;
 const weaviateKey = process.env.WEAVIATE_API_KEY as string;
@@ -25,7 +25,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 let genResults;
 
 // START SingleGenerativeParametersTS // START GroupedGenerativeParametersTS // START WorkingWithImages // START DynamicRag
-import { generativeParameters } from 'weaviate-client';
+import { generativeParameters } from '@weaviate/node';
 
 // END SingleGenerativeParametersTS // END GroupedGenerativeParametersTS // END WorkingWithImages // END DynamicRag
 

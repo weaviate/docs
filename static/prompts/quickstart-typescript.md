@@ -21,14 +21,14 @@ Build a web application using Next.js and Weaviate with 5 sequential sections:
 ```bash
 npx create-next-app@latest weaviate-demo --typescript --tailwind --app
 cd weaviate-demo
-npm install weaviate-client@^3.11.0 weaviate-agents@^1.1.0
+npm install @weaviate/node@^3.15.0 @weaviate/agents@^1.8.0
 ```
 
 Required packages:
 - `next` - React framework for production (installed via create-next-app)
 - `react` and `react-dom` - React library (installed via create-next-app)
-- `weaviate-client@^3.11.0` - Weaviate TypeScript client for database operations (minimum version 3.11.0)
-- `weaviate-agents@^1.1.0` - Weaviate agents library for natural language query capabilities (minimum version 1.1.0)
+- `@weaviate/node@^3.15.0` - Weaviate TypeScript client for database operations (minimum version 3.15.0)
+- `@weaviate/agents@^1.8.0` - Weaviate agents library for natural language query capabilities (minimum version 1.8.0)
 - `tailwindcss` - Utility-first CSS framework (installed via create-next-app)
 
 Create `.env.local` with WEAVIATE_URL, WEAVIATE_API_KEY, ANTHROPIC_API_KEY
@@ -77,7 +77,7 @@ Input placeholders:
 ## Connection Setup
 
 ```typescript
-import weaviate, { WeaviateClient, ApiKey } from 'weaviate-client';
+import weaviate, { WeaviateClient, ApiKey } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(
   process.env.WEAVIATE_URL!,

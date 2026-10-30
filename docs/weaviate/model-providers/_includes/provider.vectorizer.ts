@@ -3,7 +3,7 @@ import assert from 'assert';
 // ================================
 // ===== INSTANTIATION-COMMON =====
 // ================================
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 async function main() {
 

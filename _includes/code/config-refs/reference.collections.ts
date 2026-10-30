@@ -4,8 +4,8 @@
 // Python examples in reference.collections.py one-for-one.
 
 import assert from 'assert';
-import weaviate, { WeaviateClient } from 'weaviate-client';
-import { configure, dataType, tokenization, vectorDistances, vectors } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
+import { configure, dataType, tokenization, vectorDistances, vectors } from '@weaviate/node';
 
 const openaiKey = process.env.OPENAI_API_KEY as string;
 
@@ -24,7 +24,7 @@ await client.collections.delete('Article');
 
 /*
 // START ReferenceFullDefinition
-import { configure, dataType, vectorDistances, vectors } from 'weaviate-client';
+import { configure, dataType, vectorDistances, vectors } from '@weaviate/node';
 
 // END ReferenceFullDefinition
 */
@@ -73,7 +73,7 @@ await client.collections.delete('Article');
 
 /*
 // START ReferencePropertyOptions
-import { dataType, tokenization, vectors } from 'weaviate-client';
+import { dataType, tokenization, vectors } from '@weaviate/node';
 
 // END ReferencePropertyOptions
 */

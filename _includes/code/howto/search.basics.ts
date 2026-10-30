@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 // ===== Instantiation, not shown in snippet
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
   process.env.WEAVIATE_URL,

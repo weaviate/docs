@@ -1,12 +1,12 @@
 import 'dotenv/config'
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await loadClientInternally();
 await populateWeaviate(client, false);
 
 // START FirstExample
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 const qa = new QueryAgent(
     client, // your Weaviate cloud client

@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-import weaviate, { Bm25Operator } from 'weaviate-client';
+import weaviate, { Bm25Operator } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(
   process.env.WEAVIATE_URL as string,

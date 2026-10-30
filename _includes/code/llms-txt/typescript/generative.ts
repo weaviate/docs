@@ -1,5 +1,5 @@
 // llms.txt snippet: generative search. Section "Python / TypeScript > Generative search".
-import weaviate, { vectors, configure } from 'weaviate-client';
+import weaviate, { vectors, configure } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
@@ -8,7 +8,7 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Movie__GenTs');
 
 // START llms_generative_config
-import { vectors, configure } from 'weaviate-client';
+import { vectors, configure } from '@weaviate/node';
 
 await client.collections.create({
   name: 'Movie__GenTs',

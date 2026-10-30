@@ -1,5 +1,5 @@
 // START NearText
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 // Step 2.1: Connect to your local Weaviate instance
 const client: WeaviateClient = await weaviate.connectToLocal();

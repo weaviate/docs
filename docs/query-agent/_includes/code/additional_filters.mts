@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 const client = await loadClientInternally();
 await populateWeaviate(client, false);
@@ -9,7 +9,7 @@ const financialCollection = client.collections.use('FinancialContracts');
 const ecommerceCollection = client.collections.use('ECommerce');
 
 // START OverviewInInit
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 const qa = new QueryAgent(client, {
     collections: [
@@ -44,7 +44,7 @@ const badResponse = await qa.ask(
 
 
 // START FilterExampleGood
-import { Filters } from 'weaviate-client';
+import { Filters } from '@weaviate/node';
 const goodResponse = await qa.ask(
     `What products were sold last month?`,
     {

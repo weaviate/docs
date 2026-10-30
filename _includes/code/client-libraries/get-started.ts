@@ -1,5 +1,5 @@
 // START GetStarted
-import weaviate, { WeaviateClient, vectors } from 'weaviate-client';
+import weaviate, { WeaviateClient, vectors } from '@weaviate/node';
 
 const client: WeaviateClient = await weaviate.connectToLocal();
 

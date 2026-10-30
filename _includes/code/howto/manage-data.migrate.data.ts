@@ -1,6 +1,6 @@
 import assert from 'assert'
 // START CreateCollectionCollectionToCollection  // START CreateCollectionTenantToCollection  // START CreateCollectionCollectionToTenant  // START CreateCollectionTenantToTenant // START TenantToTenant
-import weaviate, { Collection, WeaviateClient } from 'weaviate-client'
+import weaviate, { Collection, WeaviateClient } from '@weaviate/node'
 
 let client_src: WeaviateClient,client_tgt: WeaviateClient;
 let reviews_mt_tgt, reviews_mt_src;

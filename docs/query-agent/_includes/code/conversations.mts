@@ -1,6 +1,6 @@
 import 'dotenv/config'
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 const client = await loadClientInternally();
 await populateWeaviate(client, false);
@@ -9,7 +9,7 @@ const qa = new QueryAgent(client, {
 });
 
 // START BasicConversation
-import { ChatMessage } from 'weaviate-agents';
+import { ChatMessage } from '@weaviate/agents';
 
 const conversation: ChatMessage[] = [
     {

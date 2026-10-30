@@ -2,7 +2,7 @@
 import assert from 'assert';
 
 // AccentFoldingCreateCollection
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // Instantiate your client (not shown). e.g.:
 // const client = await weaviate.connectToWeaviateCloud(...) or
@@ -54,7 +54,7 @@ for (const text of testStrings) {
 // END AccentFoldingAddObjects
 
 // AccentFoldingFilter
-import { Filters } from 'weaviate-client';
+import { Filters } from '@weaviate/node';
 
 const queries = ['cafe', 'Café', 'lodz', 'sao paulo', 'muller'];
 const properties = ['text_default', 'text_folded', 'text_folded_keep_e'];

@@ -7,14 +7,12 @@ image: og/docs/client-libraries.jpg
 
 `@weaviate/web` is a browser build of the v3 client. Use it in browsers and edge runtimes such as Cloudflare Workers and Vercel, where a plain gRPC connection is not possible.
 
-It has the same API as `weaviate-client`, but sends queries over gRPC-Web. Connect options take one HTTP(S) endpoint. There is no gRPC host or port to set, because Weaviate serves gRPC-Web on the REST port.
+It has the same API as `@weaviate/node`, but sends queries over gRPC-Web. Connect options take one HTTP(S) endpoint. There is no gRPC host or port to set, because Weaviate serves gRPC-Web on the REST port.
 
 ## Install
 
-Install the package:
-
 ```bash
-npm install @weaviate/web@latest
+npm install @weaviate/web
 ```
 
 The package is ESM-only.
@@ -27,7 +25,7 @@ Use a `connectTo*` helper. The low-level `weaviate.client(params)` entry point d
 Weaviate serves gRPC-Web by default from `v1.38.3`.
 :::
 
-So the web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to connect, and the error names the missing path:
+The web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to connect, and the error names the missing path:
 
 ```text
 /grpc.health.v1.Health/Check UNIMPLEMENTED: Received HTTP 404 response:
@@ -36,8 +34,14 @@ So the web client needs Weaviate `v1.38.3` or later. On `v1.38.2` it fails to co
 
 For the server side, see [gRPC-Web](../../api/grpc.md#grpc-web).
 
-
 ## Browser notes
+
+**Server-side batching is not available.** These calls throw in the web client:
+
+```ts
+client.batch.stream()
+collection.data.ingest()
+```
 
 **Provider API keys work in the browser. Other custom headers do not.** Model provider keys passed through `headers`, such as `X-OpenAI-Api-Key`, are on Weaviate's default CORS allow-list, so they work cross-origin out of the box. Any other header fails the browser's CORS preflight unless the operator lists it in [`CORS_ALLOW_HEADERS`](/deploy/configuration/env-vars/index.md#CORS_ALLOW_HEADERS) on the server. Setting that variable replaces the default list, so include the defaults you still need. Node runs no preflight, so test header behavior in a real browser.
 

@@ -6,7 +6,7 @@ const client = await loadClientInternally();
 await populateWeaviate(client, true);
 
 // START SimpleConfig
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 const qaSimple = new QueryAgent(client, {
     collections: ['ECommerce', 'FinancialContracts'],

@@ -185,6 +185,7 @@ def test_quickstart_local(empty_weaviates, script_loc):
 @pytest.mark.parametrize(
     "script_loc",
     [
+        "_includes/code/typescript/quickstart.short.is_ready.ts",
         "_includes/code/typescript/quickstart.short.create_collection.ts",
         "_includes/code/typescript/quickstart.short.query.neartext.ts",
         "_includes/code/typescript/quickstart.short.query.rag.ts",

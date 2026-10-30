@@ -1,5 +1,5 @@
 // InstantiationExample
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 // highlight-start
 const client: WeaviateClient = await weaviate.connectToLocal();

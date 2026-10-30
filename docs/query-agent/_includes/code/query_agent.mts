@@ -1,6 +1,6 @@
 import 'dotenv/config'
-import weaviate from 'weaviate-client';
-import { ChatMessage } from 'weaviate-agents';
+import weaviate from '@weaviate/node';
+import { ChatMessage } from '@weaviate/agents';
 const { loadClientInternally, populateWeaviate } = await import('./util.mjs').catch(() => import('../docs/query-agent/_includes/code/util.mjs'));
 const client = await loadClientInternally();
 // Recreate ECommerce so it always has the `name_description_brand_vector` named
@@ -10,7 +10,7 @@ await populateWeaviate(client, true);
 
 
 // START InstantiateQueryAgent
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 // Instantiate a new agent object
 const queryAgent = new QueryAgent(

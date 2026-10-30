@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 // START AdminClient
-import weaviate, { type WeaviateClient } from 'weaviate-client'
+import weaviate, { type WeaviateClient } from '@weaviate/node'
 
 // Connect to Weaviate as root user
 const client: WeaviateClient = await weaviate.connectToLocal({

@@ -4,7 +4,7 @@ import assert from "assert";
  * Complete example of how to configure RBAC with OIDC groups in Weaviate
  */
 
-import weaviate, { type WeaviateClient } from "weaviate-client";
+import weaviate, { type WeaviateClient } from "@weaviate/node";
 
 const { permissions } = weaviate;
 

@@ -1,5 +1,5 @@
 // llms.txt snippet: Query Agent (Cloud only). Section "Python / TypeScript > Query Agent".
-import weaviate, { vectors } from 'weaviate-client';
+import weaviate, { vectors } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
@@ -19,7 +19,7 @@ await client.collections.use('Reviews').data.insertMany([
 ]);
 
 // START llms_query_agent
-import { QueryAgent } from 'weaviate-agents';
+import { QueryAgent } from '@weaviate/agents';
 
 const qa = new QueryAgent(client, { collections: ['Movies', 'Reviews'] });
 const response = await qa.ask('Recommend sci-fi movies with good reviews under $15');

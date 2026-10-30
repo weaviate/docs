@@ -1,5 +1,5 @@
 import assert from 'assert'
-import weaviate, { type WeaviateClient } from 'weaviate-client'
+import weaviate, { type WeaviateClient } from '@weaviate/node'
 // START AdminClient
 
 // Connect to Weaviate as root user

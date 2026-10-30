@@ -5,7 +5,7 @@
 // ==============================
 
 // START ConnectCode // START UpdateSingleCollectionHNSW // START UpdateSingleCollectionDynamic // START UpdateLegacyCollection // START ListCollectionsByIndexType // START UpdateMultipleCollections // START CheckCompressionStatus
-import weaviate, { reconfigure } from 'weaviate-client';
+import weaviate, { reconfigure } from '@weaviate/node';
 // END ConnectCode // END UpdateSingleCollectionHNSW // END UpdateSingleCollectionDynamic // END UpdateLegacyCollection // END ListCollectionsByIndexType // END UpdateMultipleCollections // END CheckCompressionStatus
 
 // START ConnectCode
@@ -18,7 +18,7 @@ const client = await weaviate.connectToWeaviateCloud(weaviateUrl, {
 })
 // END ConnectCode
 
-import { configure } from 'weaviate-client';
+import { configure } from '@weaviate/node';
 
 await client.collections.delete("MyUncompressedCollection")
 await client.collections.create({

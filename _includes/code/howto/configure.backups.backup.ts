@@ -1,6 +1,6 @@
 import assert from 'assert';
 // START CreateBackup
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal();
 

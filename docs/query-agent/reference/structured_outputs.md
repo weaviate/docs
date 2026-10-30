@@ -17,7 +17,7 @@ Structured outputs ensure that the Query Agent's final response adheres to a sch
 Structured outputs are supported in **[Ask Mode](../guides/ask_mode.md) only.**
 
 :::info Client versions
-Structured outputs require `weaviate-agents` **1.7.0 or later** in Python, and **1.6.0 or later** in JavaScript/TypeScript. The JavaScript/TypeScript examples that use a Zod schema also require **Zod 4 or later**. [See the installation page](../installation.md).
+In Python, structured outputs require `weaviate-agents` **1.7.0 or later**. In JavaScript/TypeScript, use the `@weaviate/agents` package. The JavaScript/TypeScript examples that use a Zod schema also require **Zod 4 or later**. [See the installation page](../installation.md).
 :::
 
 The example outputs on this page will not match yours exactly. The Query Agent is non-deterministic, so the wording and the records it picks vary between runs. Your schema controls the shape of the response, not the content.

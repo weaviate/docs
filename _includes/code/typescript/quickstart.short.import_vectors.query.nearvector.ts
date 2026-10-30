@@ -1,5 +1,5 @@
 // START NearText
-import weaviate, { WeaviateClient, ApiKey } from 'weaviate-client';
+import weaviate, { WeaviateClient, ApiKey } from '@weaviate/node';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL!;

@@ -1,7 +1,7 @@
 // How-to: Search -> Query profiling - TypeScript examples
 import assert from 'assert';
 
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToLocal();
 

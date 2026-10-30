@@ -1,9 +1,9 @@
 // START ConnectToWeaviate
-import weaviate, { WeaviateClient} from 'weaviate-client'
+import weaviate, { WeaviateClient} from '@weaviate/node'
 
 // END ConnectToWeaviate
 // START ColBERTCollectionConfig  // START UserEmbeddingCollectionConfig
-import { generateUuid5, vectors, configure, dataType } from 'weaviate-client'
+import { generateUuid5, vectors, configure, dataType } from '@weaviate/node'
 
 // END ColBERTCollectionConfig  // END UserEmbeddingCollectionConfig
 

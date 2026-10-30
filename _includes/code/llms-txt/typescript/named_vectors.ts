@@ -1,5 +1,5 @@
 // llms.txt snippet: named vectors. Section "Python / TypeScript > Named vectors".
-import weaviate, { vectors, dataType } from 'weaviate-client';
+import weaviate, { vectors, dataType } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
@@ -7,7 +7,7 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, 
 await client.collections.delete('Article__NvTs');
 
 // START llms_named_vectors
-import { vectors, dataType } from 'weaviate-client';
+import { vectors, dataType } from '@weaviate/node';
 
 await client.collections.create({
   name: 'Article__NvTs',

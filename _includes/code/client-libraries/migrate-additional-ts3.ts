@@ -3,7 +3,7 @@
 // ======================
 
 // ConnectCloud
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(
   'WEAVIATE_INSTANCE_URL', { // Replace WEAVIATE_INSTANCE_URL with your instance URL
@@ -18,7 +18,7 @@ console.log(client)
 // END ConnectCloud
 
 // ConnectLocal
-import weaviate from 'weaviate-client'
+import weaviate from '@weaviate/node'
 
 const client = await weaviate.connectToLocal()
  
@@ -26,7 +26,7 @@ console.log(client)
 // END ConnectLocal
 
 // ConnectCustom
-import weaviate from 'weaviate-client'
+import weaviate from '@weaviate/node'
 
 const client = await weaviate.connectToCustom({
   httpHost: 'localhost',
@@ -89,7 +89,7 @@ await questions.data.insertMany(dataBatch);
 // =============================
 
 // FilterDataEx
-import weaviate, { Filters } from 'weaviate-client';
+import weaviate, { Filters } from '@weaviate/node';
 const myCollection = client.collections.use('JeopardyQuestion');
 
 const result = await myCollection.query.fetchObjects({

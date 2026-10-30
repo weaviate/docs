@@ -1,5 +1,5 @@
 // llms.txt snippet: RBAC. Section "Python / TypeScript > RBAC".
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // RBAC requires an authenticated connection; the test instance runs on :8580
 const client = await weaviate.connectToLocal({
@@ -11,7 +11,7 @@ try { await client.roles.delete('movie_reader'); } catch { /* not present */ }
 try { await client.users.db.delete('alice'); } catch { /* not present */ }
 
 // START llms_rbac
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // Create a role scoped to one collection
 await client.roles.create('movie_reader', [

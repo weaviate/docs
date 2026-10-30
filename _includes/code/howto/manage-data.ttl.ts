@@ -2,8 +2,8 @@
 // Requires OBJECTS_TTL_DELETE_SCHEDULE set to a frequent interval (e.g. "*/10 * * * * *")
 // and OBJECTS_TTL_ALLOW_SECONDS=true on the Weaviate instance.
 import assert from 'assert';
-import weaviate from 'weaviate-client';
-import { configure, dataType } from 'weaviate-client';
+import weaviate from '@weaviate/node';
+import { configure, dataType } from '@weaviate/node';
 
 const client = await weaviate.connectToLocal();
 

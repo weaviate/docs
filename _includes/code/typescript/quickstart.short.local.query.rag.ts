@@ -1,5 +1,5 @@
 // START RAG
-import weaviate, { WeaviateClient, generativeParameters } from 'weaviate-client';
+import weaviate, { WeaviateClient, generativeParameters } from '@weaviate/node';
 
 // Step 2.1: Connect to your local Weaviate instance
 const client: WeaviateClient = await weaviate.connectToLocal();

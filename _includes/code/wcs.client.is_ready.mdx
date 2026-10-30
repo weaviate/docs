@@ -15,7 +15,7 @@ import PyClientCode from '!!raw-loader!/_includes/code/wcs.client.is_ready.py';
 <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node';
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
   'https://WEAVIATE_INSTANCE_URL', {                    // Replace with your Weaviate endpoint

@@ -14,7 +14,7 @@ import TSCode from '!!raw-loader!/docs/query-agent/_includes/code/image_gen.mts'
 In Ask Mode, the Query Agent can generate images as part of its response. Each image is grounded in the data the agent retrieves.
 
 :::info Client versions
-Image generation requires `weaviate-agents` **1.9.0 or later** in Python, and **1.8.0 or later** in JavaScript/TypeScript. [See the installation page](../installation.md).
+In Python, image generation requires `weaviate-agents` **1.9.0 or later**. In JavaScript/TypeScript, use the `@weaviate/agents` package. [See the installation page](../installation.md).
 :::
 
 To generate an image, pass `GeneratedImage` as the output format:

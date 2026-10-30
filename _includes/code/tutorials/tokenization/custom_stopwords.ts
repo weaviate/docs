@@ -2,7 +2,7 @@
 import assert from 'assert';
 
 // CustomStopwordsCreate
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 // Instantiate your client (not shown). e.g.:
 // const client = await weaviate.connectToWeaviateCloud(...) or

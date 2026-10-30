@@ -1,5 +1,5 @@
 // llms.txt snippet: queries (nearText, bm25). Section "Python / TypeScript > Queries".
-import weaviate, { vectors } from 'weaviate-client';
+import weaviate, { vectors } from '@weaviate/node';
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL!, {
   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),

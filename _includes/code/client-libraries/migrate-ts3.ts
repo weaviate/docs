@@ -1,5 +1,5 @@
 // CompleteScript // Imports
-import weaviate, { WeaviateClient} from 'weaviate-client';
+import weaviate, { WeaviateClient} from '@weaviate/node';
 import 'dotenv/config';
 // END CompleteScript // END Imports
 

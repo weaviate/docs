@@ -1,7 +1,7 @@
 // Bring your own vectors - TypeScript complete sample
 
-import weaviate, { WeaviateClient } from 'weaviate-client'
-import { vectors } from 'weaviate-client';
+import weaviate, { WeaviateClient } from '@weaviate/node'
+import { vectors } from '@weaviate/node';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string

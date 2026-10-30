@@ -173,7 +173,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # From the repo root directory
 uv sync         # Python deps
-yarn install    # Node deps (tsx + weaviate-client + sample-script deps)
+yarn install    # Node deps (tsx + @weaviate/node + sample-script deps)
 ```
 
 Node deps live in a single root `package.json` / `yarn.lock` — there are no nested `package.json` files in `_includes/code/` or `tests/`. The TypeScript test harness shells out to `npx tsx`, which resolves modules from the root `node_modules/`.

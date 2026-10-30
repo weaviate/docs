@@ -38,7 +38,7 @@ console.log(fileToBase64('./your-image-here.jpg'))
 // ===== Search by base64 representation =====
 // ===========================================
 
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
@@ -60,7 +60,7 @@ const content = await response.buffer();
 
 {
   // START search with base64
-  import { toBase64FromMedia } from 'weaviate-client';
+  import { toBase64FromMedia } from '@weaviate/node';
 
   const myCollection = client.collections.use('Dog');
   const filePath = './images/search-image.jpg'

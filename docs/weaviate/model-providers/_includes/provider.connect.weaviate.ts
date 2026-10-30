@@ -1,5 +1,5 @@
 // START WeaviateInstantiation
-import weaviate from 'weaviate-client'
+import weaviate from '@weaviate/node'
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL as string;        // Weaviate URL: "REST Endpoint" in Weaviate Cloud console

@@ -5,7 +5,7 @@ import assert from 'assert';
 // ================================
 // ===== INSTANTIATION-COMMON =====
 // ================================
-import weaviate, { WeaviateClient, WeaviateNonGenericObject, WeaviateObject, WeaviateReturn } from 'weaviate-client';
+import weaviate, { WeaviateClient, WeaviateNonGenericObject, WeaviateObject, WeaviateReturn } from '@weaviate/node';
 
 const client: WeaviateClient = await weaviate.connectToLocal({
    headers: {
@@ -20,7 +20,7 @@ let result: WeaviateNonGenericObject | null;
 
 // CreateObjectWithDeterministicId START
 // highlight-start
-import { generateUuid5 } from 'weaviate-client';
+import { generateUuid5 } from '@weaviate/node';
 // highlight-end
 // CreateObjectWithDeterministicId END
 

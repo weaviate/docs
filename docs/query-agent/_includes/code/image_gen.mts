@@ -9,7 +9,7 @@ if (await client.collections.exists("QueryAgentImageUpload")) {
 }
 
 // START BasicImageExample
-import { QueryAgent, GeneratedImage } from 'weaviate-agents';
+import { QueryAgent, GeneratedImage } from '@weaviate/agents';
 
 const qa = new QueryAgent(client); // your Weaviate Cloud client
 const response = await qa.ask(
@@ -32,7 +32,7 @@ writeFileSync("image.png", imageBytes);
 // END SaveImage
 
 // START UploadWeaviateImage
-import weaviate from 'weaviate-client';
+import weaviate from '@weaviate/node';
 
 const collection = await client.collections.create({
     name: "QueryAgentImageUpload",
@@ -123,7 +123,7 @@ const AnnotatedImagesResponse = z.object({
 // END AnnotateListImageExample
 
 // START CustomShapeImageExample
-import { generatedImageWithOptions } from 'weaviate-agents';
+import { generatedImageWithOptions } from '@weaviate/agents';
 
 const HatResponse = z.object({
     picture: generatedImageWithOptions({ shape: "portrait" }),

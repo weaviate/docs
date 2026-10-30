@@ -1,4 +1,4 @@
-import weaviate, { WeaviateClient } from 'weaviate-client'
+import weaviate, { WeaviateClient } from '@weaviate/node'
 
 const openaiKey = process.env.OPENAI_API_KEY as string
 

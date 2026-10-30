@@ -1,5 +1,5 @@
 // START CreateCollection
-import weaviate, { WeaviateClient, ApiKey, vectors } from 'weaviate-client';
+import weaviate, { WeaviateClient, ApiKey, vectors } from '@weaviate/node';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL!;
