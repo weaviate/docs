@@ -8,6 +8,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/tutorial_personalized_rag.py';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 Standard RAG retrieves the same documents for every user. But a Python developer and a JavaScript developer asking "How do I use the API?" should get different answers — tailored to their language, experience level, and preferences.
 

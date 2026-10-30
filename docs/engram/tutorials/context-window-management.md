@@ -8,6 +8,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_includes/tutorial_context_window_mgmt.py';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 Every time you call an LLM, you pay for every token in the request — including the full conversation history. As conversations grow, so does your cost and latency. A 50-turn conversation can easily exceed 10,000 input tokens per request.
 

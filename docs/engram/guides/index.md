@@ -4,6 +4,10 @@ description: "Step-by-step guides for storing, searching, and managing memories 
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 These guides cover common Engram operations with detailed examples.
 
 ## Available guides

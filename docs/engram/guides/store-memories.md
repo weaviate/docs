@@ -10,6 +10,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/store_memories.py';
 import AsyncPyCode from '!!raw-loader!../_includes/store_memories_async.py';
 import CurlCode from '!!raw-loader!../_includes/store_memories.sh';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 Engram supports three [content types](../concepts/input-data-types.md) for storing memories. Each content type is a different entrypoint into the same [pipeline](../concepts/pipelines.md).
 

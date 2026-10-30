@@ -10,6 +10,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/check_run_status.py';
 import AsyncPyCode from '!!raw-loader!../_includes/check_run_status_async.py';
 import CurlCode from '!!raw-loader!../_includes/check_run_status.sh';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 When you [store memories](store-memories.md), Engram processes them asynchronously through a [pipeline](../concepts/pipelines.md). Each request returns a `run_id` that you can use to track progress.
 

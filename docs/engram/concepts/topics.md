@@ -4,6 +4,10 @@ description: "Topics in Engram: named categories within a group that control ext
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 Topics are named categories within a [group](groups.md). They tell Engram what kinds of information to extract and how to scope it.
 
 Each topic has:

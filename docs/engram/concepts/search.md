@@ -4,6 +4,10 @@ description: "Engram search retrieval types: vector, BM25, and hybrid search str
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 Engram supports three search strategies for finding relevant memories:
 
 | Type | Description | Best for |

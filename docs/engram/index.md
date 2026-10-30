@@ -5,6 +5,10 @@ description: "Engram is a memory server for LLM agents and applications that pro
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 Engram is a memory server for LLM agents and applications. It provides a [REST API](/engram/api/rest) and [Python SDK](https://github.com/weaviate/engram-python-sdk) that automatically extracts, transforms, and stores memories using vector embeddings and LLM-powered processing.
 
 Use Engram to give your agents persistent memory that they can write to and search across conversations, users, and [topics](concepts/topics.md).
