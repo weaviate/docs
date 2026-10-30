@@ -3,7 +3,8 @@ import BrowserOnly from "@docusaurus/BrowserOnly";
 import styles from "./styles.module.scss";
 
 export default function FeedbackComponent() {
-  // Initial state reads localStorage, so rendering during hydration mismatches the server HTML.
+  // Render only after hydration: the initial state reads localStorage, which
+  // the server can't, so an earlier render would not match the server HTML.
   return <BrowserOnly>{() => <FeedbackWidget />}</BrowserOnly>;
 }
 
