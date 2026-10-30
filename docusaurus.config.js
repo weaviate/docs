@@ -69,12 +69,10 @@ const config = {
         route: "/weaviate/api/rest",
         cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
-          spec: {
-            // The committed copy is the single source of truth: this page and
-            // /openapi.json render the same file. Do not point this back at a
-            // raw.githubusercontent branch URL — see static/specs/README.md.
-            url: "/specs/weaviate-openapi.json",
-          },
+          // The committed copy is the single source of truth: this page and
+          // /openapi.json render the same file. Do not point this back at a
+          // raw.githubusercontent branch URL — see static/specs/README.md.
+          url: "/specs/weaviate-openapi.json",
           hideModels: true,
           showSidebar: true,
         },
@@ -88,9 +86,7 @@ const config = {
         route: "/engram/api/rest",
         cdn: "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.49.0",
         configuration: {
-          spec: {
-            url: "/specs/engram-openapi.json",
-          },
+          url: "/specs/engram-openapi.json",
           hideModels: true,
           showSidebar: true,
         },

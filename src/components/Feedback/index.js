@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import styles from "./styles.module.scss";
 
 export default function FeedbackComponent() {
+  // Render only after hydration: the initial state reads localStorage, which
+  // the server can't, so an earlier render would not match the server HTML.
+  return <BrowserOnly>{() => <FeedbackWidget />}</BrowserOnly>;
+}
+
+function FeedbackWidget() {
   const [isVisible, setIsVisible] = useState(() => {
     // 1. Initialize state synchronously from localStorage to prevent flicker.
     if (typeof window === "undefined") {
