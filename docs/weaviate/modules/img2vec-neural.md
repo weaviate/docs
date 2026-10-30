@@ -187,7 +187,7 @@ import CodeNearImage from '/_includes/code/img2vec-neural.nearimage.mdx';
 
 ## About the model
 
-[`resnet50`](https://arxiv.org/abs/1512.03385) is a residual convolutional neural network with 25.5 million parameters trained on more than a million images from the [ImageNet database](https://www.image-net.org/). As the name suggests, it has a total of 50 layers: 48 convolution layers, 1 MaxPool layer and 1 Average Pool layer.
+[`resnet50`](https://arxiv.org/abs/1512.03385) is a residual convolutional neural network with 25.5 million parameters trained on more than a million images from the [ImageNet database](https://en.wikipedia.org/wiki/ImageNet). As the name suggests, it has a total of 50 layers: 48 convolution layers, 1 MaxPool layer and 1 Average Pool layer.
 
 ### Available img2vec-neural models
 
