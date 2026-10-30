@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import styles from "./styles.module.scss";
 
+/**
+ * Floating "Ask AI" widget for doc pages. Renders nothing on the server or
+ * during hydration; it appears after mount, in the state saved in localStorage.
+ */
 export default function FeedbackComponent() {
+  // The widget's initial state comes from localStorage, which the server
+  // cannot read. Rendering it during hydration would produce markup that
+  // differs from the server HTML (React error #418).
+  return <BrowserOnly>{() => <FeedbackWidget />}</BrowserOnly>;
+}
+
+function FeedbackWidget() {
   const [isVisible, setIsVisible] = useState(() => {
     // 1. Initialize state synchronously from localStorage to prevent flicker.
     if (typeof window === "undefined") {
