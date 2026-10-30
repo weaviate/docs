@@ -12,7 +12,8 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.update.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.update.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsUpdateTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsUpdateTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/manage_objects_test.go";
 import RestObjectsCRUDClassnameNote from "/_includes/rest-objects-crud-classname-note.md";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -58,12 +59,20 @@ However, if you add a _new_ property to your collection definition, Weaviate onl
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// UpdateProps START"
       endMarker="// UpdateProps END"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateMerge"
+      endMarker="// END UpdateMerge"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -106,9 +115,12 @@ The object vector can also be updated similarly to properties. For [named vector
     />
   </TabItem>
   <TabItem value="go" label="Go">
-
-> Coming soon
-
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateVector"
+      endMarker="// END UpdateVector"
+      language="go6"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -149,12 +161,20 @@ The entire object can be replaced by providing the collection name, id and the n
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// Replace START"
       endMarker="// Replace END"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START UpdateReplace"
+      endMarker="// END UpdateReplace"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -198,12 +218,20 @@ At object level, you can replace the object with a copy that has those propertie
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// DelProps START"
       endMarker="// DelProps END"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START DelProps"
+      endMarker="// END DelProps"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

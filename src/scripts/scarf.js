@@ -7,9 +7,7 @@ const scarfScript = {
     style: "display: none;",
     // Decorative, hidden analytics beacon: aria-hidden is what keeps it out of
     // the accessibility tree, so assistive technology never reaches it and never
-    // has to announce it. Do not add `alt: ""` here: Docusaurus validates
-    // headTags attributes with a Joi `string()` schema that rejects the empty
-    // string, so an empty alt fails the site build outright.
+    // has to announce it.
     "aria-hidden": "true",
   },
 };

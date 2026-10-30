@@ -12,7 +12,8 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV5Code from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import GoV6CollectionConfigCode from "!!raw-loader!/_includes/code/go-v6/collection_config_test.go";
 
 ## Replication settings
 
@@ -42,12 +43,20 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     language="ts"
   />
 </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -169,12 +178,20 @@ Configure sharding per collection.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ShardingSettings"
       endMarker="// END ShardingSettings"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CollectionConfigCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -208,15 +225,26 @@ For details on the configuration parameters, see the following:
 
 ## Inspect shards (for a collection)
 
+:::info Changed in `v1.40`
+:::
+
 An index itself can be comprised of multiple shards.
 
 import CodeSchemaShardsGet from "/_includes/code/howto/manage-data.shards.inspect.mdx";
 
 <CodeSchemaShardsGet />
 
+`GET /v1/schema/{collection}/shards` reports the status of each shard on every replica. Each entry has a `per_node_status` object that maps a node name to the shard's status on that node. A replica that cannot be reached, or that cannot serve reads, reports `UNAVAILABLE`.
+
+```json
+"per_node_status": { "node-0": "READY", "node-1": "UNAVAILABLE" }
+```
+
+`status` and `vectorQueueSize` are deprecated. Use `per_node_status`.
+
 ## Update shard status
 
-You can manually update a shard to change it's status. For example, update the shard status from `READONLY` to `READY` after you make other changes.
+You can manually update a shard to change its status, for example to `READONLY` to stop writes, or back to `READY`. Shards marked `READONLY` because of disk pressure return to `READY` automatically from `v1.36.0` on. See [disk pressure warnings and limits](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits).
 
 import CodeSchemaShardsUpdate from "/_includes/code/howto/manage-data.shards.update.mdx";
 

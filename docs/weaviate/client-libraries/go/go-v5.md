@@ -1,9 +1,9 @@
 ---
-title: Go
+title: Go (v5)
 sidebar_position: 70
 description: "Official Go client library documentation for integrating Weaviate with Go applications and services."
 image: og/docs/client-libraries.jpg
-# tags: ['go', 'client library']
+# tags: ['go', 'go v5', 'client library']
 ---
 
 import QuickLinks from "/src/components/QuickLinks";
@@ -16,15 +16,13 @@ export const goCardsData = [
   },
 ];
 
-:::note Go client (SDK)
+This page covers the Weaviate `v5` Go client.
 
-The latest Go client is version `v||site.go_client_version||`.
+:::warning The `v5` Go client and the deprecated GraphQL API
 
-<QuickLinks items={goCardsData} />
+The `v5` Go client sends its queries over the [GraphQL API](/weaviate/api/graphql), which is deprecated. Those calls fail once GraphQL is disabled. The [Go client v6](./index.md) queries over gRPC instead. See [Migrating from the GraphQL API](/weaviate/api/graphql/migration).
 
 :::
-
-For the minimum supported Go version, see the [`go` directive in `go.mod`](https://github.com/weaviate/weaviate-go-client/blob/v||site.go_client_version||/go.mod) for client `v||site.go_client_version||`.
 
 ## Installation
 The client doesn't support the old Go modules system. Create a repository for your code before you import the Weaviate client.
@@ -36,7 +34,7 @@ go mod init github.com/weaviate-go-client
 go mod tidy
 ```
 
-To get the latest stable version of the Go client library, run the following:
+To install the `v5` client, run the following:
 
 ```bash
 go get github.com/weaviate/weaviate-go-client/v5

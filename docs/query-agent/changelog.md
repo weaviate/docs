@@ -7,6 +7,16 @@ image: og/docs/query-agent.png
 
 This page documents changes and notable updates to the Weaviate Query Agent. As the Query Agent is a managed service, improvements roll out automatically though sometimes you may need to upgrade the client to use new features.
 
+## October 2026
+
+### Image generation in Ask Mode
+
+Ask Mode can now generate images grounded in your data. Pass `GeneratedImage` as the output format, or include it in a structured output schema. See the [image generation reference](./reference/image_generation.md).
+
+### Query Agent MCP server
+
+The Query Agent is now available as a hosted MCP server at `https://api.agents.weaviate.io/mcp`. Connect Claude Code, Cursor, or any MCP-compatible agent to your Weaviate Cloud cluster with your API key, and query your data through the `query_agent_ask` and `query_agent_search` tools. No client library is needed. See the [MCP server page](./clients/mcp.md) to get started.
+
 ## September 2026
 
 ### Faster responses for long conversations

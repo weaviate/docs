@@ -4,6 +4,10 @@ description: "Core concepts in Engram: memories, topics, groups, scoping, pipeli
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 Engram organizes and processes memories for your AI applications. Here's how the core concepts work together.
 
 | Concept                                 | Description                                                                                                                                                                                |

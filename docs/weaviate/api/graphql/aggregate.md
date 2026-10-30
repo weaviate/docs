@@ -6,6 +6,10 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'aggregate', 'aggregate{}', 'meta']
 ---
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
+
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';

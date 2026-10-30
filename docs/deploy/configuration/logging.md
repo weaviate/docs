@@ -11,7 +11,7 @@ Logs can be used to debug issues, monitor operational health, track authorizatio
 For example, the following logs showing system initialization:
 
 ```json
-{"action":"startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","default_vectorizer_module":"none","level":"info","msg":"the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer","time":"2026-01-06T15:51:32Z"}
+{"action":"startup","auto_schema_enabled":true,"build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"auto schema enabled setting is set to \"true\"","time":"2026-01-06T15:51:32Z"}
 {"action":"grpc_startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"grpc server listening at [::]:50051","time":"2026-01-06T15:51:34Z"}
 {"action":"restapi_management","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"Serving weaviate at http://[::]:8080","time":"2026-01-06T15:51:34Z","version":"1.35.1"}
 ```
@@ -53,7 +53,7 @@ LOG_FORMAT=json
 JSON format produces structured logs that are ideal for parsing by log aggregation systems:
 
 ```json
-{"action":"startup","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","default_vectorizer_module":"none","level":"info","msg":"the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer","time":"2026-01-06T15:51:32Z"}
+{"action":"startup","auto_schema_enabled":true,"build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","level":"info","msg":"auto schema enabled setting is set to \"true\"","time":"2026-01-06T15:51:32Z"}
 {"action":"authorize","build_git_commit":"5f0048c","build_go_version":"go1.25.5","build_image_tag":"v1.35.1","build_wv_version":"1.35.1","component":"RBAC","level":"info","msg":"","permissions":[{"resource":"[Domain: collections, Collection: TempCollection]","results":"success"}],"rbac_log_version":2,"request_action":"D","source_ip":"192.168.65.1","time":"2026-01-06T15:51:36Z","user":"root-user"}
 ```
 
@@ -67,7 +67,7 @@ JSON format produces structured logs that are ideal for parsing by log aggregati
 Text format produces human-readable logs suitable for direct viewing:
 
 ```text
-time="2026-01-06T15:54:58Z" level=info msg="the default vectorizer modules is set to \"none\", as a result all new schema classes without an explicit vectorizer setting, will use this vectorizer" action=startup build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1 default_vectorizer_module=none
+time="2026-01-06T15:54:58Z" level=info msg="auto schema enabled setting is set to \"true\"" action=startup auto_schema_enabled=true build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1
 time="2026-01-06T15:55:01Z" level=info action=authorize build_git_commit=5f0048c build_go_version=go1.25.5 build_image_tag=v1.35.1 build_wv_version=1.35.1 component=RBAC permissions="[map[resource:[Domain: collections, Collection: TempCollection] results:success]]" rbac_log_version=2 request_action=D source_ip=192.168.65.1 user=root-user
 ```
 
@@ -280,7 +280,7 @@ A log entry whose cause has a documented fix carries a `docs_url` field. The lin
 
 The field is separate from the message, so alerts and filters that match on message text keep working, and in JSON logs you can select on it directly. The error returned to the client for the same failure carries the same link at the end of its message, as `(see https://docs.weaviate.io/e/core-mem001)`. Added in `v1.40`.
 
-When telemetry is enabled, the link also carries the cluster id as `?clusterid=<uuid>`, the same id telemetry reports. The docs page shows it back to you so you can quote it to support, and does nothing else with it. With `DISABLE_TELEMETRY=true` the link is bare.
+When telemetry is enabled, the link also carries the cluster id as `?clusterid=<uuid>`, the same id telemetry reports. With `DISABLE_TELEMETRY=true` the link is bare.
 
 Weaviate also logs an information banner shortly after startup, and again every [`BANNER_INTERVAL`](./env-vars/index.md#BANNER_INTERVAL) (24 hours by default). The banner content is fetched from `https://weaviate.io/banner/` when it can be, and when that file carries a `message`, such as a release announcement, the banner prints it as a `► News:` line (at most three lines). The banner runs only while telemetry is enabled, so a cluster with `DISABLE_TELEMETRY=true` never logs one. Set [`DISABLE_STARTUP_BANNER`](./env-vars/index.md#DISABLE_STARTUP_BANNER) to turn it off.
 

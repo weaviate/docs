@@ -10,7 +10,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.ts';
 import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
+import GoV6CompressionCode from '!!raw-loader!/\_includes/code/go-v6/compression_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureBQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureBQTest.cs";
 
@@ -50,12 +51,20 @@ BQ can be enabled at collection creation time through the collection definition:
         language="ts"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START EnableBQ"
       endMarker="// END EnableBQ"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START EnableBQ"
+      endMarker="// END EnableBQ"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -93,12 +102,20 @@ BQ can also be enabled for an existing collection by updating the collection def
         language="py"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
       <FilteredTextBlock
-        text={GoCode}
+        text={GoV5Code}
         startMarker="// START UpdateSchema"
         endMarker="// END UpdateSchema"
-        language="go"
+        language="gov5"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoV6CompressionCode}
+        startMarker="// START BQUpdateSchema"
+        endMarker="// END BQUpdateSchema"
+        language="go6"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -146,12 +163,20 @@ For example:
         language="ts"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BQWithOptions"
       endMarker="// END BQWithOptions"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6CompressionCode}
+      startMarker="// START BQWithOptions"
+      endMarker="// END BQWithOptions"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

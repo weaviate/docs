@@ -1,16 +1,26 @@
 ---
 title: Migrating from the GraphQL API
-description: "How to express your existing GraphQL Get and Aggregate queries with the Weaviate client libraries, the browser client, or the REST Search API."
+description: "The GraphQL API is deprecated. How to find your GraphQL usage and move Get and Aggregate queries to the Weaviate client libraries, the browser client, or the REST Search API."
 image: og/docs/api.jpg
-unlisted: true
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
+## What is changing and when
+
+The GraphQL API is deprecated as of October 26, 2026. **Nothing changes on that day, and existing clusters keep working.** Weaviate Cloud switches GraphQL off on December 1, 2026 for clusters that have not used it in the last 30 days, and on May 1, 2027 for all remaining clusters. Self-hosted Weaviate keeps GraphQL working until at least May 1, 2027. The first minor release after that date disables it by default, and you can switch it back on. It is removed in a later release, with no date set yet.
+
+| Stage | Weaviate Cloud | Self-hosted |
+| --- | --- | --- |
+| **Deprecated**, October 26, 2026 | Existing clusters keep working. New clusters are created with GraphQL disabled, as they already were before. | Nothing changes. GraphQL keeps working until at least May 1, 2027. |
+| **Disabled by default** | Already the case for new clusters. | In the first minor release after May 1, 2027. You can switch GraphQL back on. |
+| **Switched off or removed** | Switched off on December 1, 2026 for clusters that have not used GraphQL in the last 30 days. Switched off on all remaining clusters on May 1, 2027. | Removed in a later release. No date is set yet. |
+
 ## Who this guide is for
 
-This guide is for developers who have working GraphQL `Get` and `Aggregate` queries and want to express the same searches through one of Weaviate's other query APIs. Typical reasons to be here:
+This guide is for developers who have working GraphQL `Get` and `Aggregate` queries and need to express the same searches through one of Weaviate's other query APIs. Typical reasons to be here:
 
+- The GraphQL API is **deprecated**. Code that still sends GraphQL queries stops working once GraphQL is disabled, so it needs to move before [the dates above](#what-is-changing-and-when).
 - You are moving an application to a **new Weaviate Cloud cluster**, which is created with **GraphQL disabled**.
 - You are building in the **browser** or on an edge runtime, where a plain gRPC client cannot run.
 - You maintain an **HTTP-only stack**, such as a no-code or BI tool, or a language without an official Weaviate client such as PHP or Ruby.
@@ -19,7 +29,7 @@ Start at the top of this table and take the first row that describes your stack.
 
 | Your application | Recommended path | Why |
 | --- | --- | --- |
-| **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
+| **Server or container app** | **[Client libraries](#client-libraries-recommended)** | For Python, JavaScript/TypeScript on Node, Go, Java, and C#. Covers every `Get` and `Aggregate` construct and gives you typed results and generated request objects. The recommended path, and the right one for the large majority of applications. |
 | **Browser or edge runtime** | **[TypeScript client for web](#typescript-client-for-web)** | For the browser and runtimes such as Cloudflare Workers or Vercel. The same client API, carried over gRPC-Web so it works where plain gRPC cannot. |
 | **No client library available** | **[REST Search API](#rest-search-api)** | For a no-code or BI platform, or a language with no official client such as PHP or Ruby. Plain-HTTP JSON endpoints whose request bodies mirror your GraphQL queries closely.
 
@@ -29,17 +39,64 @@ The three paths are at three different maturity levels. Check the **Status** col
 
 | Path | Status | Availability |
 | --- | --- | --- |
-| **Official client libraries** | Available | Python, JavaScript/TypeScript, Java, and C# are available. The Go client v6 is in [beta release](https://github.com/weaviate/weaviate-go-client/releases/tag/v6.0.0-beta.3). Earlier versions of the Go client rely on GraphQL. |
-| **`@weaviate/web`** (browser and edge) | Available | Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
-| **REST Search API** | **Preview** | Enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it needs [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`. See [REST Search API](#rest-search-api). |
+| **Official client libraries** | Generally available | Python, JavaScript/TypeScript, Go, Java, and C# are generally available. |
+| **`@weaviate/web`** (browser and edge) | Generally available | `3.15.0` and up. Requires Weaviate `v1.38.3` or later. See the [web client page](../../client-libraries/typescript/web-client.mdx). |
+| **REST Search API** | **Preview** | Enabled on all Weaviate Cloud clusters. For open-source releases, enabled by default from `v1.39.7`. In `v1.39.0` through `v1.39.6` it needs [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`. See [REST Search API](#rest-search-api). |
+
+## Do you need to migrate
+
+You need to migrate if any part of your application sends GraphQL to Weaviate. The two checks below tell you whether it does, and let you prove it before GraphQL is switched off.
+
+### Find your GraphQL usage
+
+GraphQL can reach Weaviate in three ways, and an older client can send it without you writing a single query.
+
+<details>
+  <summary>Where GraphQL hides, and which client versions use it</summary>
+
+Your code sends GraphQL queries if it does any of the following:
+
+- **Calls the endpoint directly.** It sends HTTP requests to `/v1/graphql` or `/v1/graphql/batch`, for example with `curl` or a generic HTTP library.
+- **Uses a raw GraphQL helper.** Some clients can pass a GraphQL query string straight to the server. These helpers always use GraphQL, whatever the client generation.
+- **Uses an older client generation.** Older clients, including the Go client `v5`, build their queries as GraphQL under the hood.
+
+Check each client your code uses against this table:
+
+| Client | Queries over gRPC from | Still uses GraphQL when |
+| --- | --- | --- |
+| Python `weaviate-client` | Search: `v4.4.0`. Aggregate: `v4.11.0`, against Weaviate `v1.29.0` or later | Aggregate and `len(collection)` fall back to GraphQL on Weaviate older than `v1.29.0`. `client.graphql_raw_query()` always uses GraphQL. |
+| TypeScript `weaviate-client` | Search: `v3.0.0`. Aggregate: `v3.4.0`, against Weaviate `v1.29.0` or later | Aggregate falls back to GraphQL on Weaviate older than `v1.29.0`. |
+| Java `io.weaviate:client6` | `6.0.0` | Never. |
+| C# | `1.0.0` | Never. |
+| Go `weaviate-go-client/v6` | `v6.0.0` | Never. |
+| Go `weaviate-go-client/v5` | Never | Always. `client.GraphQL().Get()`, `.Aggregate()`, `.Explore()` and `.Raw()` are its search API. |
+
+</details>
+
+### Test with GraphQL disabled
+
+A test instance with GraphQL switched off proves that your application no longer depends on it.
+
+<details>
+  <summary>How to switch GraphQL off, and what a disabled endpoint returns</summary>
+
+Run your application against an instance with GraphQL switched off before you rely on it. On a non-production self-hosted instance, set the [`DISABLE_GRAPHQL`](/deploy/configuration/env-vars/index.md#DISABLE_GRAPHQL) environment variable to `true`. It is also available as the `disable_graphql` [runtime configuration](/deploy/configuration/env-vars/runtime-config.md) key.
+
+With GraphQL disabled, `POST /v1/graphql` and `POST /v1/graphql/batch` return HTTP `422` with this body:
+
+```json
+{"error":[{"message":"graphql api is disabled"}]}
+```
+
+Authorization runs first, so a caller without read permission gets `403` instead. The Python client and the Go client `v5` return an error that carries the same status code and message.
+
+A new Weaviate Cloud cluster is already in this state, so you can also test against one.
+
+</details>
 
 ## Client libraries (recommended)
 
 The client libraries cover every `Get` and `Aggregate` construct shown on this page, so each one has a direct equivalent. They query over gRPC, and give you typed results and generated request objects.
-
-:::info The Go client and GraphQL
-The current Go client builds its queries as GraphQL under the hood. The upcoming v6 client replaces that with gRPC.
-:::
 
 ### GraphQL syntax mapping
 
@@ -76,16 +133,14 @@ Install steps, the server version floor and the browser notes are on the [web cl
 
 :::caution Preview
 
-The REST Search API is a **preview** feature.
-
-The endpoints are enabled by default from **`v1.39.7`**. In `v1.39.0` through `v1.39.6` they need [`EXPERIMENTAL_REST_SEARCH_ENABLED`](/deploy/configuration/env-vars/index.md#EXPERIMENTAL_REST_SEARCH_ENABLED) set to `true`, and return `422` without it.
+As of Oct 26, 2026, the REST Search API is a **preview** feature.
 
 :::
 
-The REST Search API is a set of plain-HTTP JSON endpoints intended for stacks that cannot run a client library. 
+The REST Search API is a set of plain-HTTP JSON endpoints intended for stacks that cannot run a client library.
 Request and response field names may still change, so this path is not recommended for production use yet. It is a deliberate **subset** of what GraphQL offers. Read [Differences to check before you convert](#differences-to-check-before-you-convert) and [Queries without a REST equivalent yet](#queries-without-a-rest-equivalent-yet) before you convert anything.
 
-There are five available `POST` endpoints:
+There are six available `POST` endpoints:
 
 | Endpoint | GraphQL equivalent |
 | --- | --- |
@@ -93,7 +148,10 @@ There are five available `POST` endpoints:
 | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/bm25">`POST /v1/search/{collection}/bm25`</SkipLink> | `Get` with `bm25` |
 | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/hybrid">`POST /v1/search/{collection}/hybrid`</SkipLink> | `Get` with `hybrid` |
 | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-object">`POST /v1/search/{collection}/near-object`</SkipLink> | `Get` with `nearObject` |
+| <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-vector">`POST /v1/search/{collection}/near-vector`</SkipLink> | `Get` with `nearVector` |
 | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{collection}`</SkipLink> | `Aggregate` |
+
+The `near-vector` endpoint is available from `v1.39.8`. It takes your own query vector, so it also works on collections without a vectorizer.
 
 ### An example request
 
@@ -167,7 +225,6 @@ These capabilities are not part of the preview. They fail in two very different 
 
 | GraphQL capability | REST status | Path |
 | --- | --- | --- |
-| **`nearVector`**, supplying your own query vector | **No route exists.** There is no `near-vector` endpoint, so the request fails outright. | Any collection configured with `vectorizer: none`, or any workload that computes embeddings client-side, needs a [client library](#client-libraries-recommended) or the [web client](#typescript-client-for-web). |
 | **`hybrid.vector`**, supplying the vector leg of a hybrid search | The `hybrid` route exists but has no `vector` field, so the value is **silently ignored** (`200`) and the search runs against a server-computed vector instead of yours. | [Client libraries](#client-libraries-recommended) or the [web client](#typescript-client-for-web). |
 | **`Aggregate` property statistics** such as `sum`, `mean`, `median`, `mode`, `minimum`, `maximum`, `topOccurrences`, `totalTrue`, and the rest | Aggregate is **count-only**. A `property:statistic` entry in `returnMetrics` returns `422`. | [Client libraries](#client-libraries-recommended) |
 | **Aggregate over a search**, `over` and `objectLimit` | Reserved, returns `422`. | [Client libraries](#client-libraries-recommended) |
@@ -199,6 +256,7 @@ Body fields are **camelCase**. Field names not listed here are not recognized, a
 | `hybrid: { fusionType: relativeScoreFusion }` | `"fusionType": "relativeScore"` |
 | `hybrid: { maxVectorDistance: 0.4 }` | `"maxVectorDistance": 0.4`. Requires `alpha` greater than `0`, otherwise `400` |
 | `nearObject: { id: "<uuid>" }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-object">`POST /v1/search/{c}/near-object`</SkipLink> with `"id": "<uuid>"`. Required, and must be a well-formed UUID |
+| `nearVector: { vector: [0.1, 0.2] }` | <SkipLink href="/weaviate/api/rest#tag/search/POST/search/{collection}/near-vector">`POST /v1/search/{c}/near-vector`</SkipLink> with `"vector": [0.1, 0.2]`. Required. Accepts `certainty` or `distance` like `near-text` |
 | `targetVectors: ["title_vector"]` | `"targetVector": "title_vector"`. A single string |
 | `where: { ...WhereFilter... }` | `"where": { ...the same JSON... }` |
 | `limit: 5, offset: 10` | `"limit": 5, "offset": 10` |
@@ -213,13 +271,28 @@ Body fields are **camelCase**. Field names not listed here are not recognized, a
 | `Aggregate { C(groupBy: ["category"]) { meta { count } } }` | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{c}`</SkipLink> with `"groupBy": "category", "returnMetrics": ["count"]`. Use a **bare property name**, not a path. A dotted value returns `422` |
 | `Aggregate { C { meta { count } } }` | <SkipLink href="/weaviate/api/rest#tag/aggregate/POST/aggregate/{collection}">`POST /v1/aggregate/{c}`</SkipLink> with an empty body, or `"returnMetrics": ["count"]` |
 
-One more request limit worth knowing: in `v1.39`, `limit`, `offset`, and their sum are each capped by `QUERY_MAXIMUM_RESULTS`, and exceeding any of them returns `400`. A request body size cap, returning `413`, is not in `v1.39`. It is planned for `v1.40`.
+One more request limit worth knowing: `limit`, `offset`, and their sum are each capped by `QUERY_MAXIMUM_RESULTS`, and exceeding any of them returns `400`. From `v1.39.7`, a request body larger than 4 MiB returns `413`.
 
 </details>
 
+## GraphQL features without an equivalent
+
+These GraphQL features have no equivalent in the gRPC API, the client libraries or the REST Search API today:
+
+- `Explore`
+- `ask`, from the `qna` modules
+- Summarization, from the `sum-transformers` module
+- Named entity recognition, from the `ner-transformers` module
+- `spellCheck`
+- The `_additional` properties `featureProjection`, `semanticPath`, `interpretation` and `classification`
+
+If one of these is essential to your application, tell us through the channels under [Questions and feedback](#questions-and-feedback). Within reason, we will add what is missing.
+
+{/* TODO(ivan): Q3. State what happens to these features once Dirk confirms. Until then, keep "no equivalent today". */}
+
 ## Further resources
 
-- [Search (GraphQL | gRPC)](./index.md) - the GraphQL and gRPC search API reference
+- [GraphQL API (deprecated)](./index.md) - the GraphQL API reference
 - [gRPC-Web](../grpc.md#grpc-web) - the browser-reachable gRPC interface
 - [Client libraries](../../client-libraries/index.mdx) - installation and connection for each language
 - [Web client](../../client-libraries/typescript/web-client.mdx) - install steps and browser notes for `@weaviate/web`
@@ -229,6 +302,8 @@ One more request limit worth knowing: in `v1.39`, `limit`, `offset`, and their s
 ## Questions and feedback
 
 All three paths are actively being developed, and feedback on this guide, especially a query you could not convert, directly shapes what gets built next.
+
+We are helping with the migration through the [support portal](https://support.weaviate.io/) and support@weaviate.io. If a query has no equivalent in the paths above, tell us. We will work with you to find a solution, for example by adding additional parameters on the REST Search API.
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 

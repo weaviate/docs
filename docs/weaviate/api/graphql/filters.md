@@ -6,6 +6,9 @@ image: og/docs/api.jpg
 # tags: ['graphql', 'filters']
 ---
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
+<GraphQLDeprecation />
 
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 

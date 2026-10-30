@@ -4,6 +4,10 @@ description: "Groups in Engram: containers of topics and pipelines that map 1:1 
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 A group is a container of [topics](topics.md) and a [pipeline](pipelines.md) definition — a bundle of configuration that maps 1:1 to a use case. If you have multiple use cases (e.g. personalization and continual learning), create separate groups for each.
 
 Each project can have multiple named groups, but most use cases only need the `default` group.

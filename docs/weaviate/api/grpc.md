@@ -1,13 +1,13 @@
 ---
 title: gRPC
-description: "gRPC API integration guide for high-performance, efficient communication with Weaviate database instances."
+description: "The gRPC API is Weaviate's search API, used by the client libraries for high-performance queries."
 image: og/docs/api.jpg
 # tags: ['schema']
 ---
 
-Starting with Weaviate `v1.19.0`, a gRPC interface has been progressively added to Weaviate. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
+The gRPC API is Weaviate's search API. The client libraries use it to run searches and aggregations. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
 
-As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries use gRPC. The [Go](../client-libraries/go.md) client uses gRPC for batch imports, and offers gRPC search through its experimental API.
+As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries use gRPC. The [Go](../client-libraries/go/index.md) client uses gRPC for queries and batch imports.
 
 ## Protocol Buffer (Protobuf) definitions
 
@@ -46,7 +46,7 @@ services:
 
 ### Client-side
 
-You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The [Go](../client-libraries/go.md) client sends batch imports over gRPC. Its gRPC search API is still experimental, and is reached through `Experimental().Search()` rather than the regular query builder.
+You can use the gRPC interface through the [Python](../client-libraries/python/index.mdx), [TypeScript](../client-libraries/typescript/index.mdx), [Java](../client-libraries/java/index.mdx), and [C#](../client-libraries/csharp.mdx) client libraries. The [Go](../client-libraries/go/index.md) client uses gRPC for queries and batch imports. The [Go client `v5`](../client-libraries/go/go-v5.md) sends batch imports over gRPC, and its gRPC search API is experimental.
 
 Alternatively, you can use other tools, such as the `grpcurl` command-line tool, to interact with the gRPC API. Some options include:
 

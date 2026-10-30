@@ -8,6 +8,7 @@ import type LinkType from '@theme/DocSidebarItem/Link';
 import type {WrapperProps} from '@docusaurus/types';
 import CloudOnlyBadge from '@site/src/components/CloudOnlyBadge';
 import AcademyBadge from '@site/src/components/AcademyBadge';
+import EnterpriseBadge from '@site/src/components/EnterpriseBadge';
 import styles from './styles.module.scss';
 
 type Props = WrapperProps<typeof LinkType>;
@@ -37,6 +38,7 @@ export default function LinkWrapper(props: Props): ReactNode {
   const openInNewTab = item?.customProps?.openInNewTab;
   const cloudOnly = item?.customProps?.cloudOnly;
   const academyOnly = item?.customProps?.academyOnly;
+  const enterpriseOnly = item?.customProps?.enterpriseOnly;
 
   // Render a custom link that opens in a new tab
   if (openInNewTab && 'href' in item) {
@@ -66,7 +68,7 @@ export default function LinkWrapper(props: Props): ReactNode {
     );
   }
 
-  if (!cloudOnly && !academyOnly) {
+  if (!cloudOnly && !academyOnly && !enterpriseOnly) {
     // If no badge, just render the original Link without wrapper
     return <Link {...props} />;
   }
@@ -80,6 +82,7 @@ export default function LinkWrapper(props: Props): ReactNode {
       <div className={`${styles.badgeContainer} ${isExternalLink ? styles.externalLink : ''}`}>
         {cloudOnly && <CloudOnlyBadge iconOnly />}
         {academyOnly && <AcademyBadge iconOnly />}
+        {enterpriseOnly && <EnterpriseBadge iconOnly />}
       </div>
     </div>
   );

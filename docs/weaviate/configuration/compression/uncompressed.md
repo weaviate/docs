@@ -9,7 +9,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
-import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
+import GoV5Code from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java";
 import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
@@ -74,7 +74,7 @@ import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 :::note Multi-vector performance
-RQ supports multi-vector embeddings. Each token vector is rounded up to a multiple of 64 dimensions, which may result in less than 4x compression for very short vectors. This is a technical limitation that may be addressed in future versions.
+RQ supports multi-vector embeddings. On an `hnsw` index, each token vector is rounded up to a multiple of 64 dimensions, which may result in less than 4x compression for very short vectors. This is a technical limitation that may be addressed in future versions.
 :::
 
 ## Further resources

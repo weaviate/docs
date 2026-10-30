@@ -10,6 +10,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!../_includes/manage_memories.py';
 import AsyncPyCode from '!!raw-loader!../_includes/manage_memories_async.py';
 import CurlCode from '!!raw-loader!../_includes/manage_memories.sh';
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
 
 You can retrieve and delete individual [memories](../concepts/memories.md) using their ID.
 

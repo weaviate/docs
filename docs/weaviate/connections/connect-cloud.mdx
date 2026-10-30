@@ -14,7 +14,8 @@ import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
-import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
+import GoV5Code from "!!raw-loader!/_includes/code/connections/connect.go";
+import GoV6Code from "!!raw-loader!/_includes/code/go-v6/connect_test.go";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 
 <CloudOnlyBadge />
@@ -78,12 +79,21 @@ import HostnameWarning from "/_includes/wcs/hostname-warning.mdx";
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START APIKeyWCD"
       endMarker="// END APIKeyWCD"
       language="goraw"
+    />
+    <HostnameWarning />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START APIKeyWCD"
+      endMarker="// END APIKeyWCD"
+      language="go6"
     />
     <HostnameWarning />
   </TabItem>
@@ -134,12 +144,20 @@ If you use API-based models for vectorization or RAG, you must provide an API ke
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START ThirdPartyAPIKeys"
       endMarker="// END ThirdPartyAPIKeys"
       language="goraw"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoV6Code}
+      startMarker="// START ThirdPartyAPIKeys"
+      endMarker="// END ThirdPartyAPIKeys"
+      language="go6"
     />
   </TabItem>
   <TabItem value="java" label="Java">

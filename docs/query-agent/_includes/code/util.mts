@@ -139,6 +139,7 @@ export async function loadClientInternally(): Promise<WeaviateClient> {
     const headers = {
         'X-Cohere-API-Key': process.env.COHERE_API_KEY as string,
         'X-OpenAI-API-Key': process.env.OPENAI_API_KEY as string,
+        'X-JinaAI-Api-Key': process.env.JINAAI_API_KEY ?? '',
         'X-INFERENCE-PROVIDER-API-KEY': process.env.YOUR_INFERENCE_PROVIDER_KEY ?? '',
     };
 

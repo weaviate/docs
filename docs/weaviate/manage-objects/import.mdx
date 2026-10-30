@@ -12,7 +12,8 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
 import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsImportTest.java';
 import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportTest.cs';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
+import GoV6ImportCode from '!!raw-loader!/_includes/code/go-v6/batch_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
 [Batch imports](../tutorials/import.mdx) are an efficient way to add multiple data objects and cross-references. For most use cases, we recommend **server-side batching** as the starting point: the server tells the client how much data to send next, so you don't have to tune batch parameters yourself. When you need manual control over the batch size and concurrency, or you are using a client that does not yet support server-side batching, use [manual batching](#manual-batching) instead.
@@ -64,10 +65,18 @@ In TypeScript, `data.ingest()` is the server-side batching API, with no separate
       language="ts"
     />
   </TabItem>
+  <TabItem value="gov5" label="Go (v5)">
+
+This client does not support server-side batching. Use [manual batching](#manual-batching) instead.
+
+  </TabItem>
   <TabItem value="go" label="Go">
-
-The Go client does not support server-side batching; use [manual batching](#manual-batching) instead.
-
+    <FilteredTextBlock
+      text={GoV6ImportCode}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="go6"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
 
@@ -120,7 +129,7 @@ When your objects are already in an array, pass the array directly to `data.inge
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 The Go client does not support server-side batching; use [manual batching](#manual-batching) instead.
 
@@ -145,7 +154,7 @@ In the C# client, `Batch.InsertMany` uses server-side batching under the hood.
 
 ## Manual batching
 
-Use manual (client-side) batching when you want to control the batch size and concurrency yourself, or when using a client that does not yet support server-side batching (such as the Go client). The following example adds objects to the `MyCollection` collection.
+Use manual (client-side) batching when you want to control the batch size and concurrency yourself, or when using a client that does not yet support server-side batching. The following example adds objects to the `MyCollection` collection.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -164,15 +173,15 @@ Use manual (client-side) batching when you want to control the batch size and co
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 Configure the Go client's gRPC connection parameters as described on the [connection configuration](../connections/connect-custom.mdx) page.
 
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BasicBatchImportExample"
       endMarker="// END BasicBatchImportExample"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -214,7 +223,7 @@ Find out more about error handling on the Python client [reference page](/weavia
 `data.ingest()` returns a result object. Inspect its `errors` field for the objects that failed to import.
 
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
 
 Inspect the per-object errors on the result returned by the batcher.
 
@@ -259,12 +268,12 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BatchImportWithIDExample"
       endMarker="// END BatchImportWithIDExample"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -306,12 +315,12 @@ Use the `vector` property to specify a vector for each object.
       language="ts"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START BatchImportWithVectorExample"
       endMarker="// END BatchImportWithVectorExample"
-      language="go"
+      language="gov5"
     />
   </TabItem>
   <TabItem value="java" label="Java">

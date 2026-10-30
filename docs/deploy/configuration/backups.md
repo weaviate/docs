@@ -13,7 +13,8 @@ import PyCode from '!!raw-loader!/_includes/code/howto/configure.backups.py';
 import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.backup.ts';
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
+import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
+import BackupGoV6Code from '!!raw-loader!/_includes/code/go-v6/backup_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/java-v6/src/test/java/BackupsTest.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
@@ -86,12 +87,20 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START CreateBackup"
+      endMarker="// END CreateBackup"
+      language="go6"
     />
   </TabItem>
 
@@ -231,6 +240,8 @@ ENABLE_MODULES=backup-gcs,text2vec-cohere
 | `BACKUP_GCS_BUCKET` | yes | The name of the GCS bucket for all backups. |
 | `BACKUP_GCS_USE_AUTH` | no | Whether or not credentials will be used for authentication. Defaults to `true`. A case for `false` would be for use with a local GCS emulator. |
 | `BACKUP_GCS_PATH` | no | The root path inside your bucket that all your backups will be copied into and retrieved from. <br/><br/>Optional, defaults to `""` which means that the backups will be stored in the bucket root instead of a sub-folder. |
+| `GCS_MODULE_TRANSPORT` | no | The API the module uses to talk to GCS: `grpc` or `http`. Applies to both backups and exports. A local GCS emulator that serves only the JSON API needs `http`. <br/><br/>Added in `v1.38.10` and `v1.39.1`. Changed in `v1.40`: the default is now `grpc`. |
+| `GCS_MODULE_GRPC_CONN_POOL` | no | The number of gRPC channels each GCS client opens when the transport is `grpc`. An integer from `1` to `64`. Defaults to `4`. <br/><br/>Added in `v1.38.10` and `v1.39.1`. |
 
 #### Google Application Default Credentials
 
@@ -381,12 +392,20 @@ The `*` character matches any sequence of characters. For example, `Article*` ma
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CreateBackup"
       endMarker="// END CreateBackup"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START CreateBackup"
+      endMarker="// END CreateBackup"
+      language="go6"
     />
   </TabItem>
 
@@ -446,6 +465,8 @@ GET /v1/backups/{backend}/{backup_id}
 
 The response contains a `"status"` field. If the status is `SUCCESS`, the backup is complete. If the status is `FAILED`, an additional error is provided.
 
+For an [incremental backup](#incremental-backups), the response also contains `incremental_base_backup_id`, the ID of the backup it was built on. As in the [list response](#list-backups), this field is introduced in Weaviate `v1.37.6` and is only returned to root users. The response to the create request itself never contains it, so read it from the status or list endpoint.
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -465,12 +486,20 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START StatusCreateBackup"
       endMarker="// END StatusCreateBackup"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START StatusCreateBackup"
+      endMarker="// END StatusCreateBackup"
+      language="go6"
     />
   </TabItem>
 
@@ -525,7 +554,9 @@ First, create a regular backup that will serve as the base:
 
 #### Create an incremental backup
 
-To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup:
+To create an incremental backup, pass the `incremental_base_backup_id` parameter with the ID of the base backup.
+
+Weaviate versions older than `v1.37` do not recognize `incremental_base_backup_id`. They ignore it and write a full backup without reporting an error.
 
 <FilteredTextBlock
   text={PyCode}
@@ -559,6 +590,8 @@ Restoring an incremental backup works the same as restoring any other backup. We
 :::caution Keep base backups available
 
 Base backups (and any intermediate incremental backups in a chain) must remain available for as long as you need to restore from any incremental backup that depends on them.
+
+Unchanged files are restored from the base backup rather than from the incremental backup itself. Deleting a base backup therefore breaks every incremental backup built on it, directly or further along the chain.
 
 :::
 
@@ -662,12 +695,20 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START CancelBackup"
       endMarker="// END CancelBackup"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START CancelBackup"
+      endMarker="// END CancelBackup"
+      language="go6"
     />
   </TabItem>
 </Tabs>
@@ -715,12 +756,20 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START RestoreBackup"
       endMarker="// END RestoreBackup"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START RestoreBackup"
+      endMarker="// END RestoreBackup"
+      language="go6"
     />
   </TabItem>
 
@@ -773,12 +822,20 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
   </TabItem>
 
 
-  <TabItem value="go" label="Go">
+  <TabItem value="gov5" label="Go (v5)">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoV5Code}
       startMarker="// START StatusRestoreBackup"
       endMarker="// END StatusRestoreBackup"
-      language="go"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={BackupGoV6Code}
+      startMarker="// START StatusRestoreBackup"
+      endMarker="// END StatusRestoreBackup"
+      language="go6"
     />
   </TabItem>
 
@@ -856,6 +913,21 @@ A restore goes through the following phases:
     />
   </TabItem>
 </Tabs>
+
+## Deduplicated backups
+
+import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
+
+:::info Added in `v1.40`
+:::
+
+<EnterpriseEdition/>
+
+Deduplicated backups are an opt-in backup mode for replicated collections. When Weaviate can prove that a shard's replicas hold identical data, one replica uploads the shard instead of every replica. Backup storage for an in-sync collection drops from N times the data to 1 time, where N is the replication factor.
+
+A shard is never left out of a backup. Any shard that cannot be proven in sync is archived by every replica, as before.
+
+Restoring a deduplicated backup works like any other restore and never requires the feature to be enabled.
 
 ## Kubernetes configuration
 
