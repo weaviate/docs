@@ -12,10 +12,10 @@ For a page with language groups, the build also writes one code page per languag
 
 | File | Content |
 |---|---|
-| `import.md` | The page. After the title, a line links each code page. Each language group keeps its Python panels (or, without Python, the first language's) under a line such as `Python shown. Other languages: [JS/TS](import.typescript.md#server-side-batching) · [Go](import.go.md#server-side-batching)`. |
+| `import.md` | The page. After the title, a line links each code page. Each language group keeps its Python panels (or, without Python, the first language's) under a line such as `Python shown. Other languages: [JS/TS](/weaviate/manage-objects/import.typescript.md#server-side-batching) · ...`. |
 | `import.<language>.md` | One section per group with that language, headed by a link to the nearest preceding heading on `import.md`, then a list of the page's sections without an example in that language. The languages are `python`, `typescript`, `go`, `go-v5`, `java`, `csharp`, `curl` and `graphql`. |
 
-Links between these files are relative to the file name, so they work on any host. The layout rules are in the `splitCodePages` doc comment.
+Links between these files are root-relative, so they work on any host and from any URL that serves the page, including a trailing-slash URL. The layout rules are in the `splitCodePages` doc comment.
 
 ## How agents find the Markdown
 

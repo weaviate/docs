@@ -126,8 +126,8 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
     };
 
     rewriteForMarkdown(docsBody, { pageUrl, siteUrl });
-    const landingFile = markdownPathForRoute(new URL(pageUrl).pathname).split("/").at(-1);
-    const codePages = splitCodePages(docsBody, { title: frontMatter.title, landingFile });
+    const landingPath = markdownPathForRoute(new URL(pageUrl).pathname);
+    const codePages = splitCodePages(docsBody, { title: frontMatter.title, landingPath });
 
     return {
       markdown: `${formatFrontMatter(frontMatter)}\n${toMarkdown({ type: "root", children: [docsBody] })}`,

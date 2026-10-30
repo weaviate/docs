@@ -51,10 +51,10 @@ describe("convertDocPage", () => {
   test("keeps the Python variant of a code tab group and moves the others to code pages, with their fence languages", () => {
     const { markdown, codePages } = convertFixturePages("code-tabs", `${SITE_URL}/weaviate/search/basics`);
 
-    assert.match(markdown, /\n\nPython shown\. Other languages: \[JS\/TS\]\(basics\.typescript\.md#list-objects\) · .+\n\n```py\njeopardy = client\.collections\.use\("JeopardyQuestion"\)\n/);
+    assert.match(markdown, /\n\nPython shown\. Other languages: \[JS\/TS\]\(\/weaviate\/search\/basics\.typescript\.md#list-objects\) · .+\n\n```py\njeopardy = client\.collections\.use\("JeopardyQuestion"\)\n/);
     assert.ok(!markdown.includes("```ts"));
     assert.deepEqual(Object.keys(codePages), ["python", "typescript", "go", "go-v5", "java", "csharp", "graphql"]);
-    assert.match(codePages.typescript, /## \[List objects\]\(basics\.md#list-objects\)\n\n```ts\n/);
+    assert.match(codePages.typescript, /## \[List objects\]\(\/weaviate\/search\/basics\.md#list-objects\)\n\n```ts\n/);
     assert.match(codePages["go-v5"], /```go\nresponse, err := client\.GraphQL\(\)/);
     assert.match(codePages.go, /```go\njeopardy := client\.Collections\.Use/);
     assert.match(codePages.java, /```java\n/);
@@ -251,7 +251,7 @@ describe("code pages", () => {
 
     assert.match(
       markdown,
-      /\n# Batch import\n\nCode examples by language: \[Python\]\(import\.python\.md\) · \[JS\/TS\]\(import\.typescript\.md\) · \[Go\]\(import\.go\.md\) · \[Go v5\]\(import\.go-v5\.md\) · \[Java\]\(import\.java\.md\) · \[C#\]\(import\.csharp\.md\)\n\nImport objects in batches\.\n/,
+      /\n# Batch import\n\nCode examples by language: \[Python\]\(\/weaviate\/manage-objects\/import\.python\.md\) · \[JS\/TS\]\(\/weaviate\/manage-objects\/import\.typescript\.md\) · \[Go\]\(\/weaviate\/manage-objects\/import\.go\.md\) · \[Go v5\]\(\/weaviate\/manage-objects\/import\.go-v5\.md\) · \[Java\]\(\/weaviate\/manage-objects\/import\.java\.md\) · \[C#\]\(\/weaviate\/manage-objects\/import\.csharp\.md\)\n\nImport objects in batches\.\n/,
     );
   });
 
@@ -260,10 +260,10 @@ describe("code pages", () => {
 
     assert.match(
       markdown,
-      /Let the server choose the batch size\.\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#server-side-batching\) · \[Go\]\(import\.go\.md#server-side-batching\) · \[Java\]\(import\.java\.md#server-side-batching\)\n\n```py\nwith collection\.batch\.experimental\(\) as batch:\n/,
+      /Let the server choose the batch size\.\n\nPython shown\. Other languages: \[JS\/TS\]\(\/weaviate\/manage-objects\/import\.typescript\.md#server-side-batching\) · \[Go\]\(\/weaviate\/manage-objects\/import\.go\.md#server-side-batching\) · \[Java\]\(\/weaviate\/manage-objects\/import\.java\.md#server-side-batching\)\n\n```py\nwith collection\.batch\.experimental\(\) as batch:\n/,
     );
     assert.ok(!markdown.includes("insertMany"));
-    assert.match(codePages.java, /## \[Server-side batching\]\(import\.md#server-side-batching\)\n\n```java\ncollection\.batch\.experimental\(\);\n```/);
+    assert.match(codePages.java, /## \[Server-side batching\]\(\/weaviate\/manage-objects\/import\.md#server-side-batching\)\n\n```java\ncollection\.batch\.experimental\(\);\n```/);
   });
 
   test("map default tabs labelled with languages, keeping prose inside a panel", () => {
@@ -271,11 +271,11 @@ describe("code pages", () => {
 
     assert.match(
       markdown,
-      /## Accent folding\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#accent-folding\) · \[Java\]\(import\.java\.md#accent-folding\) · \[C#\]\(import\.csharp\.md#accent-folding\)\n\n```py\nTokenization\.WORD\n```\n\n## Go clients/,
+      /## Accent folding\n\nPython shown\. Other languages: \[JS\/TS\]\(\/weaviate\/manage-objects\/import\.typescript\.md#accent-folding\) · \[Java\]\(\/weaviate\/manage-objects\/import\.java\.md#accent-folding\) · \[C#\]\(\/weaviate\/manage-objects\/import\.csharp\.md#accent-folding\)\n\n```py\nTokenization\.WORD\n```\n\n## Go clients/,
     );
     assert.ok(!markdown.includes("#### Python"));
-    assert.match(codePages.java, /## \[Accent folding\]\(import\.md#accent-folding\)\n\nThe Java client sets folding on the property\.\n\n```java\n/);
-    assert.match(codePages.csharp, /## \[Accent folding\]\(import\.md#accent-folding\)\n\n```csharp\nTokenization = PropertyTokenization\.Word\n```/);
+    assert.match(codePages.java, /## \[Accent folding\]\(\/weaviate\/manage-objects\/import\.md#accent-folding\)\n\nThe Java client sets folding on the property\.\n\n```java\n/);
+    assert.match(codePages.csharp, /## \[Accent folding\]\(\/weaviate\/manage-objects\/import\.md#accent-folding\)\n\n```csharp\nTokenization = PropertyTokenization\.Word\n```/);
   });
 
   test("write a group without a language panel inline, as before", () => {
@@ -290,26 +290,26 @@ describe("code pages", () => {
 
     assert.match(
       markdown,
-      /## Go clients\n\nGo \(v6\) shown\. Other languages: \[Go v5\]\(import\.go-v5\.md#go-clients\)\n\n```go\ncollection\.Batch\.Experimental\(\)\n```\n\n## Example/,
+      /## Go clients\n\nGo \(v6\) shown\. Other languages: \[Go v5\]\(\/weaviate\/manage-objects\/import\.go-v5\.md#go-clients\)\n\n```go\ncollection\.Batch\.Experimental\(\)\n```\n\n## Example/,
     );
-    assert.match(codePages["go-v5"], /## \[Go clients\]\(import\.md#go-clients\)\n\n```go\nclient\.Batch\(\)\.ObjectsBatcher\(\)\n```/);
-    assert.match(codePages.python, /## Sections without a Python example\n\n- \[Go clients\]\(import\.md#go-clients\)\n$/);
+    assert.match(codePages["go-v5"], /## \[Go clients\]\(\/weaviate\/manage-objects\/import\.md#go-clients\)\n\n```go\nclient\.Batch\(\)\.ObjectsBatcher\(\)\n```/);
+    assert.match(codePages.python, /## Sections without a Python example\n\n- \[Go clients\]\(\/weaviate\/manage-objects\/import\.md#go-clients\)\n$/);
   });
 
   test("number repeated section anchors on a code page", () => {
     const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
 
     // Two groups under one heading, and two headings with the same text.
-    assert.match(markdown, /Then check for errors\.\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#server-side-batching-2\)\n/);
-    assert.match(markdown, /## Example\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#example-2\)\n/);
-    assert.match(codePages.typescript, /## \[Example\]\(import\.md#example\)\n\n```ts\n.+\n```\n\n## \[Example\]\(import\.md#example-1\)\n/);
+    assert.match(markdown, /Then check for errors\.\n\nPython shown\. Other languages: \[JS\/TS\]\(\/weaviate\/manage-objects\/import\.typescript\.md#server-side-batching-2\)\n/);
+    assert.match(markdown, /## Example\n\nPython shown\. Other languages: \[JS\/TS\]\(\/weaviate\/manage-objects\/import\.typescript\.md#example-2\)\n/);
+    assert.match(codePages.typescript, /## \[Example\]\(\/weaviate\/manage-objects\/import\.md#example\)\n\n```ts\n.+\n```\n\n## \[Example\]\(\/weaviate\/manage-objects\/import\.md#example-1\)\n/);
   });
 
   test("label each panel when a language has several in one group", () => {
     const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
 
-    assert.match(markdown, /Python and Python \(Async\) shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#example\)\n\n\*\*Python\*\*\n\n```py\n.+\n```\n\n\*\*Python \(Async\)\*\*\n/);
-    assert.match(codePages.python, /## \[Example\]\(import\.md#example\)\n\n### Python\n\n```py\nclient\.memories\.add\(content\)\n```\n\n### Python \(Async\)\n\n```py\nawait /);
+    assert.match(markdown, /Python and Python \(Async\) shown\. Other languages: \[JS\/TS\]\(\/weaviate\/manage-objects\/import\.typescript\.md#example\)\n\n\*\*Python\*\*\n\n```py\n.+\n```\n\n\*\*Python \(Async\)\*\*\n/);
+    assert.match(codePages.python, /## \[Example\]\(\/weaviate\/manage-objects\/import\.md#example\)\n\n### Python\n\n```py\nclient\.memories\.add\(content\)\n```\n\n### Python \(Async\)\n\n```py\nawait /);
   });
 
   test("start each code page with its title, links, and end with the sections it lacks", () => {
@@ -318,13 +318,13 @@ describe("code pages", () => {
     assert.ok(
       codePages.go.startsWith(
         "# Batch import: Go code examples\n\n" +
-          "Full page: [Batch import](import.md). Other languages: [Python](import.python.md) · [JS/TS](import.typescript.md) · [Go v5](import.go-v5.md) · [Java](import.java.md) · [C#](import.csharp.md)\n\n" +
-          "## [Server-side batching](import.md#server-side-batching)\n",
+          "Full page: [Batch import](/weaviate/manage-objects/import.md). Other languages: [Python](/weaviate/manage-objects/import.python.md) · [JS/TS](/weaviate/manage-objects/import.typescript.md) · [Go v5](/weaviate/manage-objects/import.go-v5.md) · [Java](/weaviate/manage-objects/import.java.md) · [C#](/weaviate/manage-objects/import.csharp.md)\n\n" +
+          "## [Server-side batching](/weaviate/manage-objects/import.md#server-side-batching)\n",
       ),
     );
     assert.match(
       codePages.go,
-      /\n## Sections without a Go example\n\n- \[Accent folding\]\(import\.md#accent-folding\)\n- \[Example\]\(import\.md#example\)\n- \[Example\]\(import\.md#example-1\)\n$/,
+      /\n## Sections without a Go example\n\n- \[Accent folding\]\(\/weaviate\/manage-objects\/import\.md#accent-folding\)\n- \[Example\]\(\/weaviate\/manage-objects\/import\.md#example\)\n- \[Example\]\(\/weaviate\/manage-objects\/import\.md#example-1\)\n$/,
     );
   });
 

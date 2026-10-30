@@ -7,12 +7,13 @@
  * page is rewritten. For `/weaviate/manage-objects/import`, the landing page
  * `import.md` keeps each group's Python panels under a line such as
  *
- *   Python shown. Other languages: [JS/TS](import.typescript.md#server-side-batching) · [Go](import.go.md#server-side-batching)
+ *   Python shown. Other languages: [JS/TS](/weaviate/manage-objects/import.typescript.md#server-side-batching) · ...
  *
  * and `import.typescript.md`, `import.go.md` and so on hold each language's
  * panels, one section per group, linked back to the landing page's heading.
- * Links between these files are relative to the landing file name, so they
- * resolve on any host.
+ * Links between these files are root-relative, so they resolve on any host
+ * and from any URL that serves the page, such as `/import/` with an
+ * `Accept: text/markdown` header.
  */
 import { toText } from "hast-util-to-text";
 import { SKIP, visit } from "unist-util-visit";
@@ -121,11 +122,11 @@ export function languageGroup(kind, panels) {
  * Code page for each language on the page, Python included:
  *
  *   # <title>: <name> code examples
- *   Full page: [<title>](import.md). Other languages: [Python](import.python.md) · ...
- *   ## [<nearest preceding heading>](import.md#<heading id>)       one per group with this language
+ *   Full page: [<title>](/<route>.md). Other languages: [Python](/<route>.python.md) · ...
+ *   ## [<nearest preceding heading>](/<route>.md#<heading id>)     one per group with this language
  *   <the language's panels; each under a ### label when there are several>
  *   ## Sections without a <name> example                          when any
- *   - [<heading>](import.md#<heading id>)
+ *   - [<heading>](/<route>.md#<heading id>)
  *
  * The nearest preceding heading is the last `<h2>`-`<h6>` with an `id` before
  * the group, outside other groups; before any, the page title, linked without
@@ -135,19 +136,20 @@ export function languageGroup(kind, panels) {
  * @param {object} docsBody The rewritten `.theme-doc-markdown` element.
  * @param {object} page
  * @param {string} page.title The page title, used in code page titles.
- * @param {string} page.landingFile The landing page's file name, such as
- *   `import.md`. Every link between the files is relative to it.
+ * @param {string} page.landingPath The landing page's site path, such as
+ *   `/weaviate/manage-objects/import.md`. Links to code pages replace its
+ *   `.md` with `.<language>.md`.
  * @returns {Array<{ language: string, tree: object }>} One hast root per
  *   language key on the page, in LANGUAGES order. Empty when the page has no
  *   language group, and then `docsBody` is unchanged.
  */
-export function splitCodePages(docsBody, { title, landingFile }) {
+export function splitCodePages(docsBody, { title, landingPath }) {
   const groups = collectGroups(docsBody);
   if (!groups.length) return [];
 
   const languages = LANGUAGES.filter(({ key }) => groups.some((group) => group.languages.has(key)));
   const anchors = sectionAnchors(groups, languages, title);
-  const fileFor = (language) => codePagePath(landingFile, language);
+  const fileFor = (language) => codePagePath(landingPath, language);
 
   for (const group of groups) {
     const shownLanguage = LANGUAGES.find(({ key }) => group.languages.has(key)).key;
@@ -175,7 +177,7 @@ export function splitCodePages(docsBody, { title, landingFile }) {
 
   return languages.map(({ key, name }) => ({
     language: key,
-    tree: codePageTree({ language: key, name, groups, languages, anchors, title, landingFile, fileFor }),
+    tree: codePageTree({ language: key, name, groups, languages, anchors, title, landingPath, fileFor }),
   }));
 }
 
@@ -230,17 +232,17 @@ function sectionAnchors(groups, languages, title) {
   return anchors;
 }
 
-function codePageTree({ language, name, groups, languages, anchors, title, landingFile, fileFor }) {
+function codePageTree({ language, name, groups, languages, anchors, title, landingPath, fileFor }) {
   const sectionLink = (heading) =>
     heading
-      ? link(`${landingFile}#${heading.properties.id}`, headingContent(heading))
-      : link(landingFile, [text(title)]);
+      ? link(`${landingPath}#${heading.properties.id}`, headingContent(heading))
+      : link(landingPath, [text(title)]);
 
   const children = [
     element("h1", {}, [text(`${title}: ${name} code examples`)]),
     element("p", {}, [
       text("Full page: "),
-      link(landingFile, [text(title)]),
+      link(landingPath, [text(title)]),
       text(". Other languages: "),
       ...joinLinks(languages.filter(({ key }) => key !== language).map(({ key, name: other }) => link(fileFor(key), [text(other)]))),
     ]),
