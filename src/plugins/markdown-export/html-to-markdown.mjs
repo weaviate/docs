@@ -52,7 +52,8 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  *
  * Body conversion rules:
  * - Code tab groups: every variant, each fence preceded by its dropdown label
- *   in bold (`**Go (v5)**`), with the fence language from the rendered block.
+ *   in bold (`**Go (v5, legacy)**`), with the fence language from the rendered
+ *   block. A Go v5 panel listed before the Go v6 panel moves to just after it.
  * - Vector literals in code: a bracketed list of 16 or more numbers keeps its
  *   first three values and `...` (`[0.0042, -0.0215, 0.0118, ...]`), and an
  *   italic sentence after the block gives the full length. The HTML page keeps
@@ -221,11 +222,14 @@ function rewriteForMarkdown(docsBody, { pageUrl, siteUrl }) {
   // same children as the panels, in order; a disabled option is appended only
   // when the reader's stored language has no panel.
   visitElements(docsBody, (node) => hasClass(node, /codeDropdownContainer/), (node) => {
-    const labels = selectAll("option", node)
-      .filter((option) => !option.properties.disabled)
-      .map((option) => toText(option).trim());
-    node.children = selectAll('[role="tabpanel"]', node).flatMap((panel, index) => [
-      ...(labels[index] ? [element("p", {}, [element("strong", {}, [text(labels[index])])])] : []),
+    const options = selectAll("option", node).filter((option) => !option.properties.disabled);
+    const variants = selectAll('[role="tabpanel"]', node).map((panel, index) => ({
+      value: options[index]?.properties.value,
+      label: options[index] ? toText(options[index]).trim() : "",
+      panel,
+    }));
+    node.children = goV6BeforeV5(variants).flatMap(({ label, panel }) => [
+      ...(label ? [element("p", {}, [element("strong", {}, [text(label)])])] : []),
       ...panel.children,
     ]);
   });
@@ -409,6 +413,18 @@ function boldParagraph(children) {
   const unwrapBold = (nodes) =>
     nodes.flatMap((node) => (["strong", "b"].includes(node.tagName) ? unwrapBold(node.children) : [node]));
   return element("p", {}, [element("strong", {}, unwrapBold(children))]);
+}
+
+// Most pages list the Go v5 tab before Go v6 in their MDX, so a reader of the
+// Markdown, which shows every panel in order, meets the legacy client first.
+// Only the export reorders; the HTML dropdown keeps the MDX order.
+function goV6BeforeV5(variants) {
+  const v5 = variants.find((variant) => variant.value === "gov5");
+  const v6 = variants.find((variant) => variant.value === "go");
+  if (!v5 || !v6 || variants.indexOf(v5) > variants.indexOf(v6)) return variants;
+  const reordered = variants.filter((variant) => variant !== v5);
+  reordered.splice(reordered.indexOf(v6) + 1, 0, v5);
+  return reordered;
 }
 
 function element(tagName, properties, children) {

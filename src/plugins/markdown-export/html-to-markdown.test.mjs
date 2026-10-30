@@ -51,6 +51,12 @@ describe("convertDocPage", () => {
     assert.match(markdown, /\*\*C#\*\*\n\n```csharp\n/);
   });
 
+  test("moves a Go v5 panel listed before Go v6 to just after it", () => {
+    const markdown = convertFixture("code-tabs");
+
+    assert.match(markdown, /\*\*Go\*\*\n\n```go\n[^]*?```\n\n\*\*Go \(v5\)\*\*\n\n```go\n[^]*?```\n\n\*\*Java\*\*/);
+  });
+
   test("keeps code line breaks without doubling them", () => {
     const markdown = convertFixture("code-tabs");
 
