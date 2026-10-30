@@ -15,13 +15,9 @@ For instructions on upgrading Weaviate one minor version at a time, see the [Mig
 
 These are the supported minor versions and their latest patch releases:
 
-| Minor version | Latest patch | Status |
-| --- | --- | --- |
-| `1.40` | [`v1.40.0`](https://github.com/weaviate/weaviate/releases/tag/v1.40.0) | Latest release |
-| `1.39` | [`v1.39.10`](https://github.com/weaviate/weaviate/releases/tag/v1.39.10) | Supported |
-| `1.38` | [`v1.38.20`](https://github.com/weaviate/weaviate/releases/tag/v1.38.20) | Supported |
+import SupportedVersionsTable from '@site/src/components/SupportedVersionsTable';
 
-`1.37` and older are no longer maintained. Upgrade to a supported version.
+<SupportedVersionsTable />
 
 This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate Database.
 
