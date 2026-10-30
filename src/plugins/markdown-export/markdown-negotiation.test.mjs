@@ -8,10 +8,12 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { afterEach, describe, test } from "node:test";
 import handler, {
+  CODE_PAGE_LANGUAGES,
   config,
   markdownPathForRoute as edgeMarkdownPathForRoute,
   prefersMarkdown,
 } from "../../../netlify/edge-functions/markdown-negotiation.ts";
+import { LANGUAGES } from "./code-pages.mjs";
 import { markdownPathForRoute } from "./markdown-path.mjs";
 
 const AGENT_ACCEPT = "text/markdown, text/html, */*"; // Claude Code's web fetch
@@ -68,6 +70,10 @@ test("the edge function's path mapping matches the build's", () => {
   for (const route of ["/", "/weaviate", "/weaviate/search/basics", "/weaviate/search/basics/"]) {
     assert.equal(edgeMarkdownPathForRoute(route), markdownPathForRoute(route), route);
   }
+});
+
+test("the edge function's code page languages match the build's", () => {
+  assert.deepEqual(CODE_PAGE_LANGUAGES, LANGUAGES.map(({ key }) => key));
 });
 
 // netlify.toml is what deploys the function (the in-file config is ignored by
@@ -155,6 +161,15 @@ describe("markdown-negotiation", () => {
 
     assert.equal(response.headers.get("Content-Type"), "text/markdown; charset=utf-8");
     assert.equal(response.headers.get("Link"), '<https://docs.weaviate.io/>; rel="canonical"');
+  });
+
+  test("gives a code page its docs page as the canonical URL", async () => {
+    const context = fakeContext(new Response("# Batch import: Go v5 code examples"));
+
+    const response = await handler(request("/weaviate/manage-objects/import.go-v5.md"), context);
+
+    assert.equal(response.headers.get("Content-Type"), "text/markdown; charset=utf-8");
+    assert.equal(response.headers.get("Link"), '<https://docs.weaviate.io/weaviate/manage-objects/import>; rel="canonical"');
   });
 
   test("leaves a missing .md as a 404", async () => {

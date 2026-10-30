@@ -5,8 +5,10 @@
  * After `docusaurus build` renders the HTML, the plugin converts each route's
  * page with `convertDocPage` and writes the result to
  * `<outDir><markdownPathForRoute(route)>`. For example, `/weaviate/search/basics`
- * gets `build/weaviate/search/basics.md`. Routes without a docs body, such as
- * tag listings, get no file.
+ * gets `build/weaviate/search/basics.md`. A page with language tab groups also
+ * gets one code page per language next to it, at `codePagePath`:
+ * `build/weaviate/search/basics.typescript.md`. Routes without a docs body,
+ * such as tag listings, get no file.
  *
  * Scalar API reference pages (each `@scalar/docusaurus` entry in
  * `siteConfig.plugins` whose `configuration.spec.url` is a site path) are
@@ -24,7 +26,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { convertDocPage } from "./html-to-markdown.mjs";
-import { markdownPathForRoute } from "./markdown-path.mjs";
+import { codePagePath, markdownPathForRoute } from "./markdown-path.mjs";
 import { convertOpenApiPage } from "./openapi-to-markdown.mjs";
 
 /**
@@ -43,20 +45,26 @@ export default function markdownExportPlugin(context) {
       const startedAt = Date.now();
       const siteUrl = siteConfig.url.replace(/\/+$/, "");
       let written = 0;
+      let codePages = 0;
       let skipped = 0;
 
       for (const routePath of new Set(routesPaths)) {
         const htmlFile = await findHtmlFile(outDir, routePath);
-        const markdown = htmlFile
+        const page = htmlFile
           ? convertDocPage({ html: await fs.readFile(htmlFile, "utf8"), pageUrl: siteUrl + routePath, siteUrl })
           : null;
-        if (markdown === null) {
+        if (page === null) {
           skipped += 1;
           continue;
         }
 
-        await writeSiteFile(outDir, markdownPathForRoute(routePath), markdown);
+        const markdownPath = markdownPathForRoute(routePath);
+        await writeSiteFile(outDir, markdownPath, page.markdown);
+        for (const { language, markdown } of page.codePages) {
+          await writeSiteFile(outDir, codePagePath(markdownPath, language), markdown);
+        }
         written += 1;
+        codePages += page.codePages.length;
       }
 
       const apiPages = scalarPages(siteConfig);
@@ -79,7 +87,7 @@ export default function markdownExportPlugin(context) {
 
       const seconds = ((Date.now() - startedAt) / 1000).toFixed(1);
       console.log(
-        `[markdown-export] Wrote ${written} Markdown files and ${apiFiles} for ${apiPages.length} API reference pages in ${seconds}s; ` +
+        `[markdown-export] Wrote ${written} Markdown files with ${codePages} code pages, and ${apiFiles} for ${apiPages.length} API reference pages in ${seconds}s; ` +
           `skipped ${skipped - apiPages.length} other routes without a docs body.`,
       );
     },

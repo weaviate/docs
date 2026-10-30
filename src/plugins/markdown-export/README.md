@@ -2,7 +2,20 @@
 
 Every docs page at `https://docs.weaviate.io/<route>` has a Markdown version at `https://docs.weaviate.io/<route>.md`, written at build time for agents and LLM tools. For example, `/weaviate/search/basics` has `/weaviate/search/basics.md`.
 
-Each file starts with front matter (`title`, `description`, `url`), followed by the page body: headings, prose, tables, admonitions as GitHub alerts, every code tab variant under its label, Mermaid source, and images linked to their original files. The full list of conversion rules is in the `convertDocPage` doc comment in [`html-to-markdown.mjs`](html-to-markdown.mjs).
+Each file starts with front matter (`title`, `description`, `url`), followed by the page body: headings, prose, tables, admonitions as GitHub alerts, the Python variant of each language tab group, every variant of other tab groups under its label, Mermaid source, and images linked to their original files. The full list of conversion rules is in the `convertDocPage` doc comment in [`html-to-markdown.mjs`](html-to-markdown.mjs).
+
+## Code pages
+
+A tab group is a language group when every panel maps to a language and it covers at least two languages: code tabs map by `<option value>` (`py`, `ts`, `gov5`), and default tabs by label ("Python", "Java v6"). The mapping is in [`code-pages.mjs`](code-pages.mjs). A tab group with any other panel, such as Docker/Kubernetes or Bash/PowerShell, stays inline with every variant.
+
+For a page with language groups, the build also writes one code page per language next to the page's `.md`, at `<route>.<language>.md`. For `/weaviate/manage-objects/import`:
+
+| File | Content |
+|---|---|
+| `import.md` | The page. After the title, a line links each code page. Each language group keeps its Python panels (or, without Python, the first language's) under a line such as `Python shown. Other languages: [JS/TS](import.typescript.md#server-side-batching) · [Go](import.go.md#server-side-batching)`. |
+| `import.<language>.md` | One section per group with that language, headed by a link to the nearest preceding heading on `import.md`, then a list of the page's sections without an example in that language. The languages are `python`, `typescript`, `go`, `go-v5`, `java`, `csharp`, `curl` and `graphql`. |
+
+Links between these files are relative to the file name, so they work on any host. The layout rules are in the `splitCodePages` doc comment.
 
 ## How agents find the Markdown
 
@@ -12,7 +25,7 @@ Each file starts with front matter (`title`, `description`, `url`), followed by 
 | A visually hidden notice on each docs page that names the `.md` URL | Same component |
 | A request for the normal page URL with `Accept: text/markdown` returns the Markdown | [`netlify/edge-functions/markdown-negotiation.ts`](../../../netlify/edge-functions/markdown-negotiation.ts), declared in `netlify.toml` |
 
-The edge function also sets `Content-Type: text/markdown`, `X-Robots-Tag: noindex` and a canonical `Link` header on `.md` responses. Claude Code's web fetch tool sends `Accept: text/markdown, text/html, */*`, so it gets Markdown from the normal page URL.
+The edge function also sets `Content-Type: text/markdown`, `X-Robots-Tag: noindex` and a canonical `Link` header on `.md` responses. A code page's canonical URL is its docs page. Claude Code's web fetch tool sends `Accept: text/markdown, text/html, */*`, so it gets Markdown from the normal page URL.
 
 ## Check the output locally
 
@@ -26,7 +39,7 @@ less build/weaviate/search/basics.md
 The build log reports the result:
 
 ```
-[markdown-export] Wrote 393 Markdown files and 24 for 2 API reference pages in 5.8s; skipped 17 other routes without a docs body.
+[markdown-export] Wrote 393 Markdown files with 589 code pages, and 24 for 2 API reference pages in 5.8s; skipped 17 other routes without a docs body.
 ```
 
 Routes without a docs body (tag listings, the 404 page) are skipped. If a page fails to convert, the build fails with an error that names the page URL.
@@ -68,6 +81,6 @@ The response should have `content-type: text/markdown; charset=utf-8`.
 
 ## Constraints
 
-- The edge function keeps its own copy of `markdownPathForRoute` because Deno bundles it separately. A test checks that the copy matches [`markdown-path.mjs`](markdown-path.mjs).
+- The edge function keeps its own copy of `markdownPathForRoute` and of the code page language keys because Deno bundles it separately. Tests check that the copies match [`markdown-path.mjs`](markdown-path.mjs) and `LANGUAGES` in [`code-pages.mjs`](code-pages.mjs).
 - `netlify deploy --no-build` deploys only edge functions declared in `netlify.toml`, and ignores the `config` export in the function file. A test checks that the `path` and `excludedPath` in both places match.
 - [`src/theme/Mermaid/index.js`](../../theme/Mermaid/index.js) repeats the `data-markdown-source` and `data-markdown-content` attribute names instead of importing them: importing `html-to-markdown.mjs` would add its Markdown dependencies to the browser bundle.

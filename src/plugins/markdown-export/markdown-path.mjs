@@ -19,3 +19,18 @@
 export function markdownPathForRoute(routePath) {
   return `${routePath.replace(/\/+$/, "") || "/index"}.md`;
 }
+
+/**
+ * Returns the path of a page's code page for one language: the Markdown path
+ * with `.md` replaced by `.<language>.md`.
+ *
+ *   codePagePath("/weaviate/manage-objects/import.md", "go-v5") === "/weaviate/manage-objects/import.go-v5.md"
+ *   codePagePath("import.md", "python")                         === "import.python.md"
+ *
+ * @param {string} markdownPath A path or file name from `markdownPathForRoute`.
+ * @param {string} language A language key from `LANGUAGES` in code-pages.mjs.
+ * @returns {string}
+ */
+export function codePagePath(markdownPath, language) {
+  return markdownPath.replace(/\.md$/, `.${language}.md`);
+}

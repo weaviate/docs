@@ -13,6 +13,8 @@ import remarkStringify from "remark-stringify";
 import { select, selectAll } from "hast-util-select";
 import { toText } from "hast-util-to-text";
 import { SKIP, visit } from "unist-util-visit";
+import { codeTabLanguage, languageGroup, splitCodePages, tabLabelLanguage } from "./code-pages.mjs";
+import { markdownPathForRoute } from "./markdown-path.mjs";
 
 /**
  * Marks an element that exists only so the Markdown export can read it.
@@ -35,11 +37,12 @@ export const MARKDOWN_SOURCE_ATTRIBUTE = "data-markdown-source";
 export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
 
 /**
- * Converts the HTML of one built page to a Markdown document.
+ * Converts the HTML of one built page to a Markdown landing page and one code
+ * page per language.
  *
  * Reads only the docs body (`.theme-doc-markdown`), so the navbar, sidebar,
- * breadcrumbs, table of contents and footer are left out. The returned
- * document is:
+ * breadcrumbs, table of contents and footer are left out. The landing page
+ * (`markdown`) is:
  *
  *   ---
  *   title: "Search patterns and basics"
@@ -51,13 +54,21 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  *   ...
  *
  * Body conversion rules:
- * - Code tab groups: every variant, each fence preceded by its dropdown label
- *   in bold (`**Go (v5)**`), with the fence language from the rendered block.
+ * - Language tab groups: a code tab group whose `<option value>`s, or a
+ *   default tab group whose labels, all name a language, with at least two
+ *   languages (`py` and `ts`; "Python" and "Java v6"). The landing page keeps
+ *   the Python panels under a line that links each other language's code
+ *   page; the code pages hold the rest. Layout and the value and label
+ *   mapping: `splitCodePages` and `LANGUAGES` in code-pages.mjs.
+ * - Other code tab groups: every variant, each fence preceded by its dropdown
+ *   label in bold (`**Windows PowerShell**`), with the fence language from the
+ *   rendered block.
  * - Vector literals in code: a bracketed list of 16 or more numbers keeps its
  *   first three values and `...` (`[0.0042, -0.0215, 0.0118, ...]`), and an
  *   italic sentence after the block gives the full length. The HTML page keeps
  *   the full vector.
- * - Default Docusaurus tabs: every panel, under an `####` heading with the tab label.
+ * - Other default Docusaurus tabs: every panel, under an `####` heading with
+ *   the tab label.
  * - Admonitions: GitHub alert blockquotes (`> [!TIP]`), with the admonition
  *   title in bold when it differs from the type. Links in the title are kept.
  * - `<details>`: the summary in bold, followed by the expanded body.
@@ -90,8 +101,15 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  * @param {string} page.html Complete HTML document written by `docusaurus build`.
  * @param {string} page.pageUrl Absolute URL of the HTML page; written as `url`.
  * @param {string} page.siteUrl `siteConfig.url`, without a trailing slash.
- * @returns {string | null} The Markdown document, or `null` when the HTML has
- *   no docs body, as on tag listings, the 404 page and the Scalar API reference.
+ * Code pages start at their `#` title, without front matter, and convert
+ * panel content by the same rules.
+ *
+ * @returns {{ markdown: string, codePages: Array<{ language: string, markdown: string }> } | null}
+ *   The landing page and the code pages, with `language` a key from
+ *   `LANGUAGES` (write each at `codePagePath(markdownPath, language)`).
+ *   `codePages` is empty when the page has no language group. `null` when
+ *   the HTML has no docs body, as on tag listings, the 404 page and the
+ *   Scalar API reference.
  * @throws {Error} When the page has a docs body but conversion fails. The
  *   message names `pageUrl`.
  */
@@ -108,22 +126,29 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
     };
 
     rewriteForMarkdown(docsBody, { pageUrl, siteUrl });
+    const landingFile = markdownPathForRoute(new URL(pageUrl).pathname).split("/").at(-1);
+    const codePages = splitCodePages(docsBody, { title: frontMatter.title, landingFile });
 
-    const mdast = unified()
-      .use(rehypeRemark, { handlers: { [ALERT_TAG]: alertHandler, [LINE_BREAK_TAG]: lineBreakHandler } })
-      .runSync({ type: "root", children: [docsBody] });
-    shortenVectorLiterals(mdast);
-    // Aligned pipes pad every cell to its column's widest cell, which was
-    // half of release-notes.md and 7% of the whole export.
-    const body = unified()
-      .use(remarkGfm, { tablePipeAlign: false })
-      .use(remarkStringify, { bullet: "-", fences: true, rule: "-" })
-      .stringify(mdast);
-
-    return `${formatFrontMatter(frontMatter)}\n${body}`;
+    return {
+      markdown: `${formatFrontMatter(frontMatter)}\n${toMarkdown({ type: "root", children: [docsBody] })}`,
+      codePages: codePages.map(({ language, tree }) => ({ language, markdown: toMarkdown(tree) })),
+    };
   } catch (error) {
     throw new Error(`Markdown export failed for ${pageUrl}: ${error.message}`, { cause: error });
   }
+}
+
+function toMarkdown(hast) {
+  const mdast = unified()
+    .use(rehypeRemark, { handlers: { [ALERT_TAG]: alertHandler, [LINE_BREAK_TAG]: lineBreakHandler } })
+    .runSync(hast);
+  shortenVectorLiterals(mdast);
+  // Aligned pipes pad every cell to its column's widest cell, which was
+  // half of release-notes.md and 7% of the whole export.
+  return unified()
+    .use(remarkGfm, { tablePipeAlign: false })
+    .use(remarkStringify, { bullet: "-", fences: true, rule: "-" })
+    .stringify(mdast);
 }
 
 const NUMBER = String.raw`-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?`;
@@ -221,13 +246,23 @@ function rewriteForMarkdown(docsBody, { pageUrl, siteUrl }) {
   // same children as the panels, in order; a disabled option is appended only
   // when the reader's stored language has no panel.
   visitElements(docsBody, (node) => hasClass(node, /codeDropdownContainer/), (node) => {
-    const labels = selectAll("option", node)
-      .filter((option) => !option.properties.disabled)
-      .map((option) => toText(option).trim());
-    node.children = selectAll('[role="tabpanel"]', node).flatMap((panel, index) => [
-      ...(labels[index] ? [element("p", {}, [element("strong", {}, [text(labels[index])])])] : []),
-      ...panel.children,
-    ]);
+    const options = selectAll("option", node).filter((option) => !option.properties.disabled);
+    const labels = options.map((option) => toText(option).trim());
+    const panels = selectAll('[role="tabpanel"]', node);
+    const group = languageGroup(
+      "code",
+      panels.map((panel, index) => ({
+        language: codeTabLanguage(String(options[index]?.properties.value ?? "")),
+        label: labels[index] ?? "",
+        children: panel.children,
+      })),
+    );
+    node.children = group
+      ? [group]
+      : panels.flatMap((panel, index) => [
+          ...(labels[index] ? [element("p", {}, [element("strong", {}, [text(labels[index])])])] : []),
+          ...panel.children,
+        ]);
   });
 
   // Default Docusaurus tabs: a role="tablist" followed by a wrapper of panels,
@@ -237,10 +272,20 @@ function rewriteForMarkdown(docsBody, { pageUrl, siteUrl }) {
     const labels = selectAll('[role="tab"]', tablist).map((tab) => toText(tab).trim());
     const panelWrapper = node.children[node.children.indexOf(tablist) + 1];
     const panels = (panelWrapper?.children ?? []).filter((child) => child.properties?.role === "tabpanel");
-    node.children = panels.flatMap((panel, index) => [
-      ...(labels[index] ? [element("h4", {}, [text(labels[index])])] : []),
-      ...panel.children,
-    ]);
+    const group = languageGroup(
+      "tabs",
+      panels.map((panel, index) => ({
+        language: labels[index] ? tabLabelLanguage(labels[index]) : undefined,
+        label: labels[index] ?? "",
+        children: panel.children,
+      })),
+    );
+    node.children = group
+      ? [group]
+      : panels.flatMap((panel, index) => [
+          ...(labels[index] ? [element("h4", {}, [text(labels[index])])] : []),
+          ...panel.children,
+        ]);
   });
 
   rewriteElements(docsBody, (node) => hasClass(node, /^theme-admonition$/), (node) => {

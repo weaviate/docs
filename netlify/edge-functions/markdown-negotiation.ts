@@ -10,7 +10,8 @@
  * Behavior by request:
  *
  * - Path ends in `.md`: the static file, with the Markdown response headers
- *   below. A missing file stays a 404.
+ *   below. A missing file stays a 404. This includes a page's code pages,
+ *   such as `/weaviate/manage-objects/import.go-v5.md`.
  * - `prefersMarkdown(Accept)` and a `.md` file exists for the path: that file
  *   with the Markdown response headers, status 200.
  * - `prefersMarkdown(Accept)` and no `.md` file exists (redirected or
@@ -25,6 +26,9 @@
  *   Vary: Accept
  *   X-Robots-Tag: noindex
  *   Link: <https://docs.weaviate.io/<route>>; rel="canonical"
+ *
+ * A code page's canonical URL is its docs page: `/<route>.go-v5.md` gives
+ * `/<route>`.
  *
  * `noindex` keeps the `.md` copies out of search results while still letting
  * crawlers that obey robots.txt fetch them.
@@ -90,13 +94,25 @@ export function markdownPathForRoute(routePath: string): string {
   return `${routePath.replace(/\/+$/, "") || "/index"}.md`;
 }
 
+/**
+ * Language keys of code pages (`LANGUAGES` in
+ * src/plugins/markdown-export/code-pages.mjs), kept here for the same reason as
+ * `markdownPathForRoute`. A test checks that both list the same keys.
+ */
+export const CODE_PAGE_LANGUAGES = ["python", "typescript", "go", "go-v5", "java", "csharp", "curl", "graphql"];
+
+const CODE_PAGE_SUFFIX = new RegExp(`\\.(?:${CODE_PAGE_LANGUAGES.join("|")})$`);
+
 export default async (request: Request, context: any) => {
   const url = new URL(request.url);
 
   if (url.pathname.endsWith(".md")) {
     const response = await context.next();
     if (!response.ok) return response;
-    const pagePath = url.pathname.slice(0, -".md".length).replace(/^\/index$/, "/");
+    const pagePath = url.pathname
+      .slice(0, -".md".length)
+      .replace(CODE_PAGE_SUFFIX, "")
+      .replace(/^\/index$/, "/");
     return withMarkdownHeaders(response, new URL(pagePath, url.origin));
   }
 

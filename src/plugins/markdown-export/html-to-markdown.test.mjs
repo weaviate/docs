@@ -6,13 +6,21 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { describe, test } from "node:test";
 import { convertDocPage } from "./html-to-markdown.mjs";
-import { markdownPathForRoute } from "./markdown-path.mjs";
+import { codePagePath, markdownPathForRoute } from "./markdown-path.mjs";
 
 const SITE_URL = "https://docs.weaviate.io";
 
-function convertFixture(name, pageUrl = `${SITE_URL}/fixture`) {
+// The landing page and code pages: { markdown, codePages: { [language]: markdown } }.
+function convertFixturePages(name, pageUrl = `${SITE_URL}/fixture`) {
   const html = fs.readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), "utf8");
-  return convertDocPage({ html, pageUrl, siteUrl: SITE_URL });
+  const page = convertDocPage({ html, pageUrl, siteUrl: SITE_URL });
+  if (page === null) return null;
+  return { markdown: page.markdown, codePages: Object.fromEntries(page.codePages.map((code) => [code.language, code.markdown])) };
+}
+
+// The landing page only.
+function convertFixture(name, pageUrl) {
+  return convertFixturePages(name, pageUrl)?.markdown ?? null;
 }
 
 describe("convertDocPage", () => {
@@ -40,15 +48,17 @@ describe("convertDocPage", () => {
     assert.match(markdown, /^---\ntitle: "Authorization"\nurl: /);
   });
 
-  test("keeps every code tab variant, labelled, with its fence language", () => {
-    const markdown = convertFixture("code-tabs");
+  test("keeps the Python variant of a code tab group and moves the others to code pages, with their fence languages", () => {
+    const { markdown, codePages } = convertFixturePages("code-tabs", `${SITE_URL}/weaviate/search/basics`);
 
-    assert.match(markdown, /\*\*Python\*\*\n\n```py\njeopardy = client\.collections\.use\("JeopardyQuestion"\)\n/);
-    assert.match(markdown, /\*\*JavaScript\/TypeScript\*\*\n\n```ts\n/);
-    assert.match(markdown, /\*\*Go \(v5\)\*\*\n\n```go\nresponse, err := client\.GraphQL\(\)/);
-    assert.match(markdown, /\*\*Go\*\*\n\n```go\njeopardy := client\.Collections\.Use/);
-    assert.match(markdown, /\*\*Java\*\*\n\n```java\n/);
-    assert.match(markdown, /\*\*C#\*\*\n\n```csharp\n/);
+    assert.match(markdown, /\n\nPython shown\. Other languages: \[JS\/TS\]\(basics\.typescript\.md#list-objects\) · .+\n\n```py\njeopardy = client\.collections\.use\("JeopardyQuestion"\)\n/);
+    assert.ok(!markdown.includes("```ts"));
+    assert.deepEqual(Object.keys(codePages), ["python", "typescript", "go", "go-v5", "java", "csharp", "graphql"]);
+    assert.match(codePages.typescript, /## \[List objects\]\(basics\.md#list-objects\)\n\n```ts\n/);
+    assert.match(codePages["go-v5"], /```go\nresponse, err := client\.GraphQL\(\)/);
+    assert.match(codePages.go, /```go\njeopardy := client\.Collections\.Use/);
+    assert.match(codePages.java, /```java\n/);
+    assert.match(codePages.csharp, /```csharp\n/);
   });
 
   test("keeps code line breaks without doubling them", () => {
@@ -118,7 +128,7 @@ describe("convertDocPage", () => {
       `<pre><code class="language-py">response = jeopardy.query.near_vector(\n    near_vector=[${vector}],\n    limit=2,\n)\n</code></pre>` +
       '<pre><code class="language-py">ids = [1, 2, 3, 4]</code></pre></div></body></html>';
 
-    const markdown = convertDocPage({ html, pageUrl: `${SITE_URL}/vectors`, siteUrl: SITE_URL });
+    const { markdown } = convertDocPage({ html, pageUrl: `${SITE_URL}/vectors`, siteUrl: SITE_URL });
 
     assert.match(markdown, /near_vector=\[-0\.0125, 0\.0042, 0\.0042, \.\.\.\],\n/);
     assert.match(markdown, /```\n\n\*This example's 1,536-number vector is shortened to its first 3 values\. The HTML page has the full vector\.\*\n/);
@@ -212,7 +222,7 @@ describe("convertDocPage", () => {
     const source = 'flowchart LR\n    core["💾 Data &<br> vector store"]';
     const html = `<html><body><div class="theme-doc-markdown"><h1>M</h1><pre hidden data-markdown-source=mermaid data-markdown-content="${encodeURIComponent(source)}"></pre></div></body></html>`;
 
-    const markdown = convertDocPage({ html, pageUrl: `${SITE_URL}/m`, siteUrl: SITE_URL });
+    const { markdown } = convertDocPage({ html, pageUrl: `${SITE_URL}/m`, siteUrl: SITE_URL });
 
     assert.ok(markdown.includes("```mermaid\n" + source + "\n```"));
   });
@@ -233,6 +243,96 @@ describe("convertDocPage", () => {
   });
 });
 
+describe("code pages", () => {
+  const IMPORT_URL = `${SITE_URL}/weaviate/manage-objects/import`;
+
+  test("link every code page after the landing page title", () => {
+    const { markdown } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.match(
+      markdown,
+      /\n# Batch import\n\nCode examples by language: \[Python\]\(import\.python\.md\) · \[JS\/TS\]\(import\.typescript\.md\) · \[Go\]\(import\.go\.md\) · \[Go v5\]\(import\.go-v5\.md\) · \[Java\]\(import\.java\.md\) · \[C#\]\(import\.csharp\.md\)\n\nImport objects in batches\.\n/,
+    );
+  });
+
+  test("keep Python from a code tab group under a line that links the other languages", () => {
+    const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.match(
+      markdown,
+      /Let the server choose the batch size\.\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#server-side-batching\) · \[Go\]\(import\.go\.md#server-side-batching\) · \[Java\]\(import\.java\.md#server-side-batching\)\n\n```py\nwith collection\.batch\.experimental\(\) as batch:\n/,
+    );
+    assert.ok(!markdown.includes("insertMany"));
+    assert.match(codePages.java, /## \[Server-side batching\]\(import\.md#server-side-batching\)\n\n```java\ncollection\.batch\.experimental\(\);\n```/);
+  });
+
+  test("map default tabs labelled with languages, keeping prose inside a panel", () => {
+    const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.match(
+      markdown,
+      /## Accent folding\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#accent-folding\) · \[Java\]\(import\.java\.md#accent-folding\) · \[C#\]\(import\.csharp\.md#accent-folding\)\n\n```py\nTokenization\.WORD\n```\n\n## Go clients/,
+    );
+    assert.ok(!markdown.includes("#### Python"));
+    assert.match(codePages.java, /## \[Accent folding\]\(import\.md#accent-folding\)\n\nThe Java client sets folding on the property\.\n\n```java\n/);
+    assert.match(codePages.csharp, /## \[Accent folding\]\(import\.md#accent-folding\)\n\n```csharp\nTokenization = PropertyTokenization\.Word\n```/);
+  });
+
+  test("write a group without a language panel inline, as before", () => {
+    const { markdown } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.match(markdown, /#### Docker\n\n```bash\ndocker compose up -d\n```\n\n#### Kubernetes\n\n```bash\nhelm install /);
+    assert.match(markdown, /\*\*Bash\*\*\n\n```bash\nexport WEAVIATE_URL=localhost\n```\n\n\*\*Windows PowerShell\*\*\n\n```powershell\n/);
+  });
+
+  test("show the first language in link order when a group has no Python", () => {
+    const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.match(
+      markdown,
+      /## Go clients\n\nGo \(v6\) shown\. Other languages: \[Go v5\]\(import\.go-v5\.md#go-clients\)\n\n```go\ncollection\.Batch\.Experimental\(\)\n```\n\n## Example/,
+    );
+    assert.match(codePages["go-v5"], /## \[Go clients\]\(import\.md#go-clients\)\n\n```go\nclient\.Batch\(\)\.ObjectsBatcher\(\)\n```/);
+    assert.match(codePages.python, /## Sections without a Python example\n\n- \[Go clients\]\(import\.md#go-clients\)\n$/);
+  });
+
+  test("number repeated section anchors on a code page", () => {
+    const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    // Two groups under one heading, and two headings with the same text.
+    assert.match(markdown, /Then check for errors\.\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#server-side-batching-2\)\n/);
+    assert.match(markdown, /## Example\n\nPython shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#example-2\)\n/);
+    assert.match(codePages.typescript, /## \[Example\]\(import\.md#example\)\n\n```ts\n.+\n```\n\n## \[Example\]\(import\.md#example-1\)\n/);
+  });
+
+  test("label each panel when a language has several in one group", () => {
+    const { markdown, codePages } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.match(markdown, /Python and Python \(Async\) shown\. Other languages: \[JS\/TS\]\(import\.typescript\.md#example\)\n\n\*\*Python\*\*\n\n```py\n.+\n```\n\n\*\*Python \(Async\)\*\*\n/);
+    assert.match(codePages.python, /## \[Example\]\(import\.md#example\)\n\n### Python\n\n```py\nclient\.memories\.add\(content\)\n```\n\n### Python \(Async\)\n\n```py\nawait /);
+  });
+
+  test("start each code page with its title, links, and end with the sections it lacks", () => {
+    const { codePages } = convertFixturePages("language-tabs", IMPORT_URL);
+
+    assert.ok(
+      codePages.go.startsWith(
+        "# Batch import: Go code examples\n\n" +
+          "Full page: [Batch import](import.md). Other languages: [Python](import.python.md) · [JS/TS](import.typescript.md) · [Go v5](import.go-v5.md) · [Java](import.java.md) · [C#](import.csharp.md)\n\n" +
+          "## [Server-side batching](import.md#server-side-batching)\n",
+      ),
+    );
+    assert.match(
+      codePages.go,
+      /\n## Sections without a Go example\n\n- \[Accent folding\]\(import\.md#accent-folding\)\n- \[Example\]\(import\.md#example\)\n- \[Example\]\(import\.md#example-1\)\n$/,
+    );
+  });
+
+  test("are not written for a page without a language group", () => {
+    assert.deepEqual(convertFixturePages("default-tabs").codePages, {});
+  });
+});
+
 describe("markdownPathForRoute", () => {
   test("appends .md and ignores a trailing slash", () => {
     assert.equal(markdownPathForRoute("/weaviate/search/basics"), "/weaviate/search/basics.md");
@@ -241,5 +341,12 @@ describe("markdownPathForRoute", () => {
 
   test("maps the site root to /index.md", () => {
     assert.equal(markdownPathForRoute("/"), "/index.md");
+  });
+});
+
+describe("codePagePath", () => {
+  test("puts the language before .md", () => {
+    assert.equal(codePagePath("/weaviate/manage-objects/import.md", "go-v5"), "/weaviate/manage-objects/import.go-v5.md");
+    assert.equal(codePagePath("/index.md", "python"), "/index.python.md");
   });
 });
