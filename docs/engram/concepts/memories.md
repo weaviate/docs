@@ -4,6 +4,10 @@ description: "What memories are in Engram: content, topic, group, scope, and vec
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 A memory is a discrete piece of information stored in Engram. Each memory has:
 
 | Field | Description |

@@ -4,6 +4,10 @@ description: "Engram's async processing pipelines: extract, transform, and commi
 image: og/docs/engram.png
 ---
 
+import EngramSunset from '/_includes/engram-sunset.mdx';
+
+<EngramSunset />
+
 When you send content to Engram, it runs through an asynchronous pipeline that extracts, transforms, and commits memories. Pipelines are defined as a directed acyclic graph (DAG) of steps — different [input content types](input-data-types.md) enter the DAG at different extraction steps, and downstream steps like transform and commit are often shared between them.
 
 :::info Pipeline configuration
