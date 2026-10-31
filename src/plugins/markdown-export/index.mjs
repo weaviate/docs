@@ -9,7 +9,7 @@
  * tag listings, get no file.
  *
  * Scalar API reference pages (each `@scalar/docusaurus` entry in
- * `siteConfig.plugins` whose `configuration.spec.url` is a site path) are
+ * `siteConfig.plugins` whose `configuration.url` is a site path) are
  * converted from that spec file with `convertOpenApiPage` instead. Their HTML
  * gets two head links, which docs pages get from src/theme/DocItem/Layout:
  *
@@ -91,7 +91,7 @@ export default function markdownExportPlugin(context) {
 function scalarPages(siteConfig) {
   return siteConfig.plugins
     .filter((plugin) => Array.isArray(plugin) && plugin[0] === "@scalar/docusaurus")
-    .map(([, options]) => ({ routePath: options.route, specUrl: options.configuration?.spec?.url }))
+    .map(([, options]) => ({ routePath: options.route, specUrl: options.configuration?.url ?? options.configuration?.spec?.url }))
     .filter(({ specUrl }) => typeof specUrl === "string" && specUrl.startsWith("/"));
 }
 
