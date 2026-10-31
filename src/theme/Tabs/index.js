@@ -342,7 +342,11 @@ const CodeDropdownTabs = ({
       </div>
       <div className={styles.codeContent}>
         {isLanguageAvailable ? (
-          // Render ALL children, but hide non-selected ones with CSS
+          // Render ALL children, but hide non-selected ones with CSS.
+          // Hide them only through the stylesheet class: Readability-based
+          // page extractors (used by agent fetch tools) drop elements with
+          // inline display:none, aria-hidden="true", or "hidden" in the class
+          // name, which would leave only the selected language in their text.
           Children.map(children, (child) => {
             if (!isValidElement(child)) return null;
 
@@ -352,10 +356,9 @@ const CodeDropdownTabs = ({
               <div
                 key={child.props.value}
                 className={clsx(styles.tabPanel, {
-                  [styles.tabPanelHidden]: !isSelected,
+                  [styles.tabPanelInactive]: !isSelected,
                 })}
-                style={{ display: isSelected ? "block" : "none" }}
-                aria-hidden={!isSelected}
+                data-tab-inactive={isSelected ? undefined : ""}
               >
                 {child}
               </div>
