@@ -175,10 +175,10 @@
   width: 100%;
 }
 
-.tabPanelHidden {
-  /* Hidden tabs are still in DOM but not visible */
-  /* The inline display:none handles the hiding */
-  /* This class exists for potential future enhancements */
+/* Inactive tabs stay in the DOM for page extractors. Keep "hidden" out of this
+   class name: Readability scores it as junk and removes the panel. */
+.tabPanelInactive {
+  display: none;
 }
 
 @keyframes fadeIn {
