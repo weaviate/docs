@@ -40,7 +40,7 @@ export const quickstartOptions = [
 
 Weaviate is an open-source vector database built to power AI applications. This quickstart guide will show you how to:
 
-1. **Set up a collection** - Create a collection and import data into it. 
+1. **Set up a collection** - Create a collection and import data into it.
 2. **Search** - Perform a similarity (vector) search on your data.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
 
@@ -176,7 +176,11 @@ import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart
 
 ## Step 2: Semantic (vector) search {#semantic-search}
 
-This step shows vector search on its own. For most applications, start with [hybrid search](../search/hybrid.md), which combines vector search with keyword (BM25) search.
+:::tip For production use
+
+This step shows vector search on its own. For most applications, start with [hybrid search](../search/hybrid.md), which combines vector search with lexical or keyword (BM25) search for a "best of both worlds" performance.
+
+:::
 
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
