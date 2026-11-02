@@ -94,6 +94,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 - Cluster provisioning typically takes 1-3 minutes.
 - When the cluster is ready, Weaviate Cloud displays a checkmark (`✔️`) next to the cluster name.
 - Note that Weaviate Cloud may add a random suffix to cluster names to ensure uniqueness.
+- If you prefer a terminal, the [wcloud CLI](/cloud/manage-clusters/cli) creates a free cluster and prints the endpoint and API key.
 
 :::
 
