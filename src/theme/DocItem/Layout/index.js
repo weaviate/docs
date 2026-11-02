@@ -59,15 +59,13 @@ function FaqJsonLd({ faq }) {
 }
 
 // Point agents at the Markdown version of this page, which
-// src/plugins/markdown-export writes for every docs page at build time
+// src/plugins/markdown-export writes for every docs page at build time.
 function MarkdownAlternate({ permalink }) {
   const markdownPath = markdownPathForRoute(permalink);
   return (
-    <>
-      <Head>
-        <link rel="alternate" type="text/markdown" href={markdownPath} />
-      </Head>
-    </>
+    <Head>
+      <link rel="alternate" type="text/markdown" href={markdownPath} />
+    </Head>
   );
 }
 

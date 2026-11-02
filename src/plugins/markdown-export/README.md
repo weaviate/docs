@@ -9,7 +9,6 @@ Each file starts with front matter (`title`, `description`, `url`), followed by 
 | Mechanism | Where |
 |---|---|
 | `<link rel="alternate" type="text/markdown" href="/<route>.md">` in each docs page's `<head>` | `MarkdownAlternate` in [`src/theme/DocItem/Layout/index.js`](../../theme/DocItem/Layout/index.js) |
-| A visually hidden notice on each docs page that names the `.md` URL | Same component |
 | A request for the normal page URL with `Accept: text/markdown` returns the Markdown | [`netlify/edge-functions/markdown-negotiation.ts`](../../../netlify/edge-functions/markdown-negotiation.ts), declared in `netlify.toml` |
 
 The edge function also sets `Content-Type: text/markdown`, `X-Robots-Tag: noindex` and a canonical `Link` header on `.md` responses. Claude Code's web fetch tool sends `Accept: text/markdown, text/html, */*`, so it gets Markdown from the normal page URL.
