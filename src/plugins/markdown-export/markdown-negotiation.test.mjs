@@ -129,6 +129,27 @@ describe("markdown-negotiation", () => {
     assert.equal(response.headers.get("Location"), "/weaviate/config-refs/datatypes");
   });
 
+  // A path starting with // must stay a path on this origin. Parsed as a URL
+  // reference, //evil.example/x.md resolves to https://evil.example/x.md.
+  test("keeps the .md lookup for a //host path on this origin", async () => {
+    stubFetch(() => new Response("Not found", { status: 404 }));
+    const context = fakeContext(new Response("Not found", { status: 404 }));
+
+    const response = await handler(request("//evil.example/x", { accept: AGENT_ACCEPT }), context);
+
+    assert.deepEqual(fetchedUrls, ["https://docs.weaviate.io//evil.example/x.md"]);
+    assert.equal(context.nextCalls, 1);
+    assert.equal(response.status, 404);
+  });
+
+  test("keeps the canonical link for a //host path on this origin", async () => {
+    const context = fakeContext(new Response("# Page", { headers: { "Content-Type": "application/octet-stream" } }));
+
+    const response = await handler(request("//evil.example/x.md"), context);
+
+    assert.equal(response.headers.get("Link"), '<https://docs.weaviate.io//evil.example/x>; rel="canonical"');
+  });
+
   test("passes browser requests through without fetching", async () => {
     stubFetch(() => assert.fail("fetch should not run"));
     const context = fakeContext();

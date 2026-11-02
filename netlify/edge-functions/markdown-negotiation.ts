@@ -97,7 +97,7 @@ export default async (request: Request, context: any) => {
     const response = await context.next();
     if (!response.ok) return response;
     const pagePath = url.pathname.slice(0, -".md".length).replace(/^\/index$/, "/");
-    return withMarkdownHeaders(response, new URL(pagePath, url.origin));
+    return withMarkdownHeaders(response, sameOriginUrl(url, pagePath));
   }
 
   if (!["GET", "HEAD"].includes(request.method) || !prefersMarkdown(request.headers.get("accept"))) {
@@ -111,13 +111,26 @@ export default async (request: Request, context: any) => {
   // redirect: "manual", because the .md path of a moved page can match a
   // wildcard redirect: /weaviate/schema/datatypes.md matches /weaviate/schema/*.
   // Following it would return another page's HTML, labelled as Markdown.
-  const markdown = await fetch(new URL(markdownPathForRoute(url.pathname), url.origin), {
+  const markdown = await fetch(sameOriginUrl(url, markdownPathForRoute(url.pathname)), {
     method: request.method,
     redirect: "manual",
   });
   if (!markdown.ok) return context.next();
-  return withMarkdownHeaders(markdown, new URL(url.pathname, url.origin));
+  return withMarkdownHeaders(markdown, sameOriginUrl(url, url.pathname));
 };
+
+/**
+ * Returns `pathname` on the origin of `requestUrl`.
+ *
+ * `new URL(pathname, origin)` would parse a path such as `//evil.example/x`
+ * as a protocol-relative URL and return https://evil.example/x. Setting
+ * `pathname` keeps the result on the request's origin.
+ */
+function sameOriginUrl(requestUrl: URL, pathname: string): URL {
+  const target = new URL(requestUrl.origin);
+  target.pathname = pathname;
+  return target;
+}
 
 function withMarkdownHeaders(response: Response, pageUrl: URL): Response {
   const headers = new Headers(response.headers);
