@@ -95,7 +95,7 @@ export default function ContextualMenu({
       // docker-compose "With authentication" variant). Instead surface ALL
       // panels — label each with an <h3> and un-hide it — then remove the
       // tablist. This targets ONLY default tabs; our custom CODE tabs use
-      // <select> + aria-hidden/display:none (no role=tablist/[hidden]), so they
+      // <select> + [data-tab-inactive] (no role=tablist/[hidden]), so they
       // are untouched and stay selected-language-only.
       clone.querySelectorAll('[role="tablist"]').forEach((tablist) => {
         const labels = Array.from(
@@ -128,17 +128,18 @@ export default function ContextualMenu({
 
       // Strip non-prose chrome from the clone before converting. Only stable
       // (non-CSS-module-hashed) selectors are used here.
-      //   [aria-hidden="true"] - our custom code Tabs (src/theme/Tabs/index.js)
-      //     render EVERY language panel and hide the non-selected ones with
-      //     display:none + aria-hidden="true"; removing them leaves only the
-      //     selected language. (Also drops decorative aria-hidden icons.)
+      //   [aria-hidden="true"] - decorative aria-hidden icons.
+      //   [data-tab-inactive]  - our custom code Tabs (src/theme/Tabs/index.js)
+      //     render EVERY language panel and mark the non-selected ones;
+      //     removing them leaves only the selected language.
       //   [role="tablist"]     - DEFAULT Docusaurus <Tabs> label strip. Normally
       //     already removed by the pre-strip step above (which surfaces every
       //     panel under an <h3>); kept here as a fallback so any un-processed
       //     tablist doesn't leak as a bullet list of labels.
       //   [hidden]             - fallback for any inactive DEFAULT-tab panel the
-      //     pre-strip step didn't un-hide (custom code tabs use style+aria-hidden,
-      //     never `hidden`/role=tablist, so this never touches code tabs).
+      //     pre-strip step didn't un-hide (custom code tabs use
+      //     [data-tab-inactive], never `hidden`/role=tablist, so this never
+      //     touches code tabs).
       //   select               - the per-tab language dropdown.
       //   a.badge              - FilteredTextBlock's chrome badge row, which are
       //     all <a class="badge badge--secondary"> (FilteredTextBlock.js:198,222).
@@ -160,7 +161,7 @@ export default function ContextualMenu({
       // by a targeted strip just below.
       clone
         .querySelectorAll(
-          '[aria-hidden="true"], [role="tablist"], [hidden], select, a.badge, nav, img[alt=""], .hash-link, [data-copy-exclude]',
+          '[aria-hidden="true"], [data-tab-inactive], [role="tablist"], [hidden], select, a.badge, nav, img[alt=""], .hash-link, [data-copy-exclude]',
         )
         .forEach((node) => node.remove());
 
