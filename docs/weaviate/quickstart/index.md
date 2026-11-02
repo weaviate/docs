@@ -210,6 +210,12 @@ import CreateCollectionCustomVectors from "/\_includes/code/quickstart/quickstar
 
 ## Step 2: Semantic (vector) search {#semantic-search}
 
+:::tip For production use
+
+This step shows vector search on its own. For most applications, start with [hybrid search](../search/hybrid.md), which combines vector search with lexical or keyword (BM25) search for a "best of both worlds" performance.
+
+:::
+
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
