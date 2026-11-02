@@ -316,7 +316,7 @@ yarn add @scalar/docusaurus@latest
 
 ## Environment Requirements
 
-- Node.js 18+ (preferably v22)
+- Node.js 22.19+ (the Markdown export depends on `@scalar/openapi-to-markdown`, which requires it)
 - Python 3.8+ (for tests)
 - Docker (for running Weaviate test instances)
 - Java 8+ and Maven (for Java tests)

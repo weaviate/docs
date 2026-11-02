@@ -19,6 +19,7 @@ import FeedbackComponent from "@site/src/components/Feedback";
 import PageRatingWidget from "@site/src/components/PageRatingWidget";
 import ContextualMenu from "@site/src/components/ContextualMenu";
 import ErrorSidePanel from "@site/src/components/ErrorSidePanel";
+import { markdownPathForRoute } from "@site/src/plugins/markdown-export/markdown-path.mjs";
 /* ---- END: Customizations ---- */
 
 // Opt-in addition to the right-hand column, keyed on the `side_panel`
@@ -53,6 +54,17 @@ function FaqJsonLd({ faq }) {
   return (
     <Head>
       <script type="application/ld+json">{JSON.stringify(data)}</script>
+    </Head>
+  );
+}
+
+// Point agents at the Markdown version of this page, which
+// src/plugins/markdown-export writes for every docs page at build time.
+function MarkdownAlternate({ permalink }) {
+  const markdownPath = markdownPathForRoute(permalink);
+  return (
+    <Head>
+      <link rel="alternate" type="text/markdown" href={markdownPath} />
     </Head>
   );
 }
@@ -100,6 +112,7 @@ export default function DocItemLayout({ children }) {
   return (
     <>
       <FaqJsonLd faq={frontMatter.faq} />
+      <MarkdownAlternate permalink={metadata.permalink} />
       <div className="row">
         <div
           className={clsx(

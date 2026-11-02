@@ -75,7 +75,7 @@ export function LinkFlow({ steps }) {
     <ol className={styles.flow}>
       {steps.map((step, i) => (
         <li key={i} className={styles.step}>
-          <span className={styles.stepNumber} aria-hidden="true">
+          <span className={styles.stepNumber} aria-hidden="true" data-copy-exclude="">
             {i + 1}
           </span>
           <p className={styles.stepTitle}>{step.title}</p>
@@ -87,23 +87,32 @@ export function LinkFlow({ steps }) {
   );
 }
 
-/** A message id taken apart: origin, category and number, each labelled. */
+/** A message id taken apart: origin, category and number, each labelled.
+ *  The grid reads row by row (parts, labels, hints), so it is hidden from
+ *  screen readers and the Markdown export, which read a list grouped by part. */
 export function IdAnatomy({ origin, category, number, originHint, categoryHint, numberHint }) {
   return (
-    <div className={styles.anatomy}>
-      <span className={`${styles.part} ${styles.partOrigin}`}>{origin}</span>
-      <span className={styles.dash} aria-hidden="true">-</span>
-      <span className={`${styles.part} ${styles.partCategory}`}>{category}</span>
-      <span className={`${styles.part} ${styles.partNumber}`}>{number}</span>
-      <span className={styles.partLabel}>Origin</span>
-      <span aria-hidden="true" />
-      <span className={styles.partLabel}>Category</span>
-      <span className={styles.partLabel}>Number</span>
-      <span className={styles.partHint}>{originHint}</span>
-      <span aria-hidden="true" />
-      <span className={styles.partHint}>{categoryHint}</span>
-      <span className={styles.partHint}>{numberHint}</span>
-    </div>
+    <>
+      <div className={styles.anatomy} aria-hidden="true" data-copy-exclude="">
+        <span className={`${styles.part} ${styles.partOrigin}`}>{origin}</span>
+        <span className={styles.dash} aria-hidden="true">-</span>
+        <span className={`${styles.part} ${styles.partCategory}`}>{category}</span>
+        <span className={`${styles.part} ${styles.partNumber}`}>{number}</span>
+        <span className={styles.partLabel}>Origin</span>
+        <span aria-hidden="true" />
+        <span className={styles.partLabel}>Category</span>
+        <span className={styles.partLabel}>Number</span>
+        <span className={styles.partHint}>{originHint}</span>
+        <span aria-hidden="true" />
+        <span className={styles.partHint}>{categoryHint}</span>
+        <span className={styles.partHint}>{numberHint}</span>
+      </div>
+      <ul className={styles.anatomyText}>
+        <li>Origin, <code>{origin}</code>: {originHint}</li>
+        <li>Category, <code>{category}</code>: {categoryHint}</li>
+        <li>Number, <code>{number}</code>: {numberHint}</li>
+      </ul>
+    </>
   );
 }
 
