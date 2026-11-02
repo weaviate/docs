@@ -3,7 +3,6 @@ import clsx from "clsx";
 import Head from "@docusaurus/Head";
 import { useWindowSize } from "@docusaurus/theme-common";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import DocItemPaginator from "@theme/DocItem/Paginator";
 import DocVersionBanner from "@theme/DocVersionBanner";
 import DocVersionBadge from "@theme/DocVersionBadge";
@@ -60,39 +59,17 @@ function FaqJsonLd({ faq }) {
 }
 
 // Point agents at the Markdown version of this page, which
-// src/plugins/markdown-export writes for every docs page at build time: a
-// <link rel="alternate"> for tools that read <head>, and a visually hidden
-// notice for tools that only read page text. The notice sits outside the docs
-// body, so it does not appear in the Markdown itself.
+// src/plugins/markdown-export writes for every docs page at build time
 function MarkdownAlternate({ permalink }) {
-  const { siteConfig } = useDocusaurusContext();
   const markdownPath = markdownPathForRoute(permalink);
   return (
     <>
       <Head>
         <link rel="alternate" type="text/markdown" href={markdownPath} />
       </Head>
-      <div style={VISUALLY_HIDDEN} aria-hidden="true" data-llm-notice="true">
-        LLM/AI agent notice: A Markdown version of this page is at{" "}
-        {siteConfig.url + markdownPath}. Requests for any docs page with{" "}
-        Accept: text/markdown return Markdown.
-      </div>
     </>
   );
 }
-
-// Same visually hidden style as the site-wide notice in src/theme/Root.js.
-const VISUALLY_HIDDEN = {
-  position: "absolute",
-  width: "1px",
-  height: "1px",
-  padding: 0,
-  margin: "-1px",
-  overflow: "hidden",
-  clip: "rect(0,0,0,0)",
-  whiteSpace: "nowrap",
-  borderWidth: 0,
-};
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
