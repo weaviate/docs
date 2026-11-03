@@ -108,6 +108,7 @@ describe("markdown-negotiation", () => {
     assert.equal(context.nextCalls, 1);
     assert.equal(response.status, 301);
     assert.equal(response.headers.get("Location"), "/cloud/faq");
+    assert.equal(response.headers.get("Vary"), "Accept");
   });
 
   test("falls back to the page's own redirect when the .md path is redirected", async () => {
@@ -158,6 +159,18 @@ describe("markdown-negotiation", () => {
 
     assert.equal(context.nextCalls, 1);
     assert.equal(response.headers.get("Content-Type"), "text/html");
+  });
+
+  // A shared cache keys a stored response on the URL plus the headers its Vary
+  // names. If the HTML omitted Accept, a cached HTML copy would be returned to
+  // a client asking for Markdown.
+  test("adds Accept to the HTML response's Vary header", async () => {
+    const html = new Response("<html>page</html>", { headers: { "Content-Type": "text/html", Vary: "Accept-Encoding" } });
+    const context = fakeContext(html);
+
+    const response = await handler(request("/weaviate/search/basics", { accept: BROWSER_ACCEPT }), context);
+
+    assert.equal(response.headers.get("Vary"), "Accept-Encoding, Accept");
   });
 
   test("passes non-GET requests through", async () => {
