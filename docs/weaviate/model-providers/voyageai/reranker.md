@@ -106,7 +106,7 @@ Configure a Weaviate collection to use a Voyage AI reranker model as follows:
 
 </Tabs>
 
-You can specify one of the [available models](#available-models) for the reranker to use.
+You can specify [a model](#available-models) for the reranker to use.
 
 The [default model](#available-models) is used if no model is specified.
 
@@ -157,31 +157,13 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-- rerank-2.5
-- rerank-2.5-lite
-- rerank-2
-- rerank-2-lite
-- rerank-1
-- rerank-lite-1 (default)
+Weaviate does not validate the model name, so you can set any model that your Voyage AI account can reach.
 
 :::caution The module default is a retired model
-`rerank-lite-1` is a first-generation model that Voyage AI has retired. The built-in default of the `reranker-voyageai` module is still `rerank-lite-1`, so a collection created without a `model` points at a retired model. Set `model` on every collection you create.
+`rerank-lite-1` is a first-generation model that Voyage AI has retired. The server default of the `reranker-voyageai` module is still `rerank-lite-1`, so a collection created without a `model` points at a retired model. Set `model` on every collection you create.
 :::
 
-<details>
-  <summary>
-    Model support history
-  </summary>
-
-- Added `rerank-2.5`, `rerank-2.5-lite`
-- `v1.24.25`, `v1.25.18`, `v1.26.5`:
-    - Added `rerank-2`, `rerank-2-lite`
-- `v1.24.18`, `v1.25.3`:
-    - Added `rerank-1`
-- `1.24.7`:
-    - Introduced `reranker-voyageai`, with `rerank-lite-1` support
-
-</details>
+See the [Voyage AI reranker documentation](https://docs.voyageai.com/docs/reranker) for the list of available models.
 
 ## Further resources
 

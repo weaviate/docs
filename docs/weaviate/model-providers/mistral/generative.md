@@ -108,7 +108,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -131,7 +131,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -264,14 +264,13 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-* `open-mistral-7b` (aka `mistral-tiny-2312`) (default)
-* `open-mixtral-8x7b` (aka `mistral-small-2312`)
-* `mistral-tiny`
-* `mistral-small`
-* `mistral-small-latest` (aka `mistral-small-2402`)
-* `mistral-medium`
-* `mistral-medium-latest` (aka `mistral-medium-2312`)
-* `mistral-large-latest` (aka `mistral-large-2402`)
+Weaviate does not validate the model name, so you can set any model that your Mistral account can reach.
+
+:::caution The module default is a retired model
+The server default is `open-mistral-7b`. Mistral retired it on 2025-03-30. Set `model` explicitly when you create a collection.
+:::
+
+See the [Mistral model documentation](https://docs.mistral.ai/models) for the list of available models.
 
 ## Further resources
 
