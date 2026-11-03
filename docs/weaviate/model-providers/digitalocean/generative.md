@@ -160,9 +160,11 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-Weaviate forwards the configured model name to DigitalOcean as-is. The `generative-digitalocean` module keeps no list of model names and does not check the name, so a name that DigitalOcean does not serve is accepted when you create the collection and fails later, as an error from DigitalOcean at query time.
+When the server has a DigitalOcean API key, Weaviate checks the model name against the `GET /v1/models` list for that account when you create the collection. Without a server-side key, Weaviate skips this check, and DigitalOcean rejects an unknown model at request time.
 
-For the models available to your account, query `GET /v1/models` on the inference endpoint, or see the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the live list, as model availability can change.
+The server default is `llama-4-maverick`.
+
+To list the models your account can use, query `GET /v1/models` on the inference endpoint. See the [DigitalOcean Serverless Inference guide](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the list of available models.
 
 ## Further resources
 

@@ -106,7 +106,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -129,7 +129,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -262,13 +262,13 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-* `meta-llama-3.1-70b-instruct` (default)
-* `meta-llama-3.1-8b-instruct`
-* `mixtral-8x7b-instruct-v0-1`
+Weaviate does not validate the model name, so you can set any model that your FriendliAI account can reach, including models you deploy on Friendli Suite.
 
-You can use any model deployed on Friendli Suite with Weaviate.
+The server default is `meta-llama-3.1-70b-instruct`.
 
-FriendliAI's provide a wide range of [available models](https://friendli.ai/models), which can optionally be fine-tuned. See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
+See the [FriendliAI models page](https://friendli.ai/models) for the list of available models.
+
+FriendliAI models can optionally be fine-tuned. See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
 
 If using a dedicated FriendliAI endpoint with the Weaviate integration, specify it as shown below:
 
