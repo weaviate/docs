@@ -179,12 +179,19 @@ def run_script(command: list, script_path: str) -> None:
     """
     Run a script command and provide detailed error output on failure.
     """
+    env = None
+    if "tsx" in command:
+        # Raise Node fetch timeouts for slow calls (see tests/ts-preload.mjs)
+        preload = Path(__file__).resolve().parent / "ts-preload.mjs"
+        env = os.environ.copy()
+        env["NODE_OPTIONS"] = f"{env.get('NODE_OPTIONS', '')} --import {preload.as_uri()}".strip()
     try:
         result = subprocess.run(
             command,
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            env=env,
         )
         if result.stdout.strip():
             print(f"\n--- Output from {script_path} ---")

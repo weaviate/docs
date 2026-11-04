@@ -17,10 +17,6 @@ on:
         description: 'Python client branch (leave empty to use pinned version from pyproject.toml)'
         required: false
         default: ''
-      typescript_client_branch:
-        description: 'TypeScript client branch (leave empty to use the workflow default below)'
-        required: false
-        default: ''
       java_client_branch:
         description: 'Java client branch (leave empty to use the workflow default below)'
         required: false
@@ -282,22 +278,6 @@ jobs:
         uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Override TypeScript client branch
-        run: |
-          TS_BRANCH="${{ inputs.typescript_client_branch || 'v3.14.0' }}"
-          echo "📦 Building weaviate-client from branch: $TS_BRANCH"
-          git clone --depth 1 -b "$TS_BRANCH" https://github.com/weaviate/typescript-client.git /tmp/ts-client
-          cd /tmp/ts-client
-          npm install
-          npm run build
-          # `yarn add file:` won't replace node_modules/weaviate-client when a
-          # peer dep (weaviate-agents) pins the same registry version, so the
-          # registry tarball wins. Use `yarn link` to force a symlink instead.
-          yarn link
-          cd "$GITHUB_WORKSPACE"
-          yarn link weaviate-client
-          echo "✅ Branch override linked"
 
       # Reported, not enforced: `tsx` transpiles without type-checking, so an
       # unknown client option passes the snippet lane. Known pre-existing

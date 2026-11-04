@@ -15,10 +15,18 @@ client = weaviate.connect_to_local(
 )
 # END AdminClient
 
+from weaviate.exceptions import UnexpectedStatusCodeError
+
 all_roles = client.roles.list_all()
 for role_name, _ in all_roles.items():
     if role_name not in ["viewer", "root", "admin", "read-only"]:
-        client.roles.delete(role_name=role_name)
+        try:
+            client.roles.delete(role_name=role_name)
+        except UnexpectedStatusCodeError as e:
+            # Newer servers ship more built-in roles, which cannot be deleted
+            if e.status_code == 400 and "built-in role" in str(e):
+                continue
+            raise
 
 # # START CreateRole
 # client.roles.create(role_name="testRole")

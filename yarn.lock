@@ -5283,10 +5283,10 @@
   resolved "https://registry.yarnpkg.com/@weaviate/agents/-/agents-1.8.0.tgz#01e0d2ab95d468e67e072fb5161d4023e5fc7262"
   integrity sha512-aRtI/aiY1tb6XpnOiuWPAS8J+3kSV5v1ZS7n0QPOPQpq7bHWKdA1yNwYr7o5oNxrZKdJUXYja4AY0pgV88Hoew==
 
-"@weaviate/core@3.15.0":
-  version "3.15.0"
-  resolved "https://registry.yarnpkg.com/@weaviate/core/-/core-3.15.0.tgz#deb8dec695894444f1e3573e785dde03e5e64115"
-  integrity sha512-Lm4ZTUHxrNGWOKpBBYgYDJkYG7BsrLgloNolFxO5ZemfNoQc4caZkMpmUsgnyFimoDaMt+68xyGPEkmJ6N8USQ==
+"@weaviate/core@3.15.2":
+  version "3.15.2"
+  resolved "https://registry.yarnpkg.com/@weaviate/core/-/core-3.15.2.tgz#1313d65424680bb533eef2961547e2118d0e8398"
+  integrity sha512-g/vrdRzkbrePyVqpFV6onJcfMaNweSVibKm1bZgJG5h8PCrKh17XbXy5sSmVU1xbMNxvs8byEASVUpFieuLtwg==
   dependencies:
     "@datastructures-js/deque" "^1.0.8"
     abort-controller-x "^0.5.0"
@@ -5298,12 +5298,12 @@
     protobufjs "^7.5.5"
     uuid "^14.0.0"
 
-"@weaviate/node@^3.15.0":
-  version "3.15.0"
-  resolved "https://registry.yarnpkg.com/@weaviate/node/-/node-3.15.0.tgz#a5841849b098183b470f6e5649e046bca2ced57a"
-  integrity sha512-9wNPSc8JIq4N+m3c3eXLYoGCZVqIUl2sGnM7v/ogsKHxxDpFNklgCp6Pe3KWR3WcOhKin+iZpM2o3t63oHdRLA==
+"@weaviate/node@^3.15.2":
+  version "3.15.2"
+  resolved "https://registry.yarnpkg.com/@weaviate/node/-/node-3.15.2.tgz#2d78deda56fa35f12a198193a885f10edfa71867"
+  integrity sha512-aMrrO0268IuO6Az7iojRSvpXloRHX28O9Id1EyH8rC4BvWjlT+cAsk+9yrcSou/4a9IjDCCRm0lSRdRUg0JsXg==
   dependencies:
-    "@weaviate/core" "3.15.0"
+    "@weaviate/core" "3.15.2"
     nice-grpc "^2.1.16"
     nice-grpc-client-middleware-retry "^3.1.15"
 
@@ -16239,6 +16239,11 @@ undici@8.12.3:
   version "8.12.3"
   resolved "https://registry.yarnpkg.com/undici/-/undici-8.12.3.tgz#e76a91feee9c275ad0f43bfc0eb632b6124d3bb6"
   integrity sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw==
+
+undici@^7.30.1:
+  version "7.30.1"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-7.30.1.tgz#360b3de104b94abc52729aa1a4a07e027aa71f73"
+  integrity sha512-03KrMbjIFDWQR5RNPrSw3bd1r12JpyFQl9/yxjUbJtqkjmllqC5lFjZh6ujeuJCKr8EOQvRW872Oy/az+nLYxg==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.1"
