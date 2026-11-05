@@ -123,7 +123,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -155,7 +155,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -329,17 +329,13 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-The server default changed in `v1.32.0`, and was backported to `v1.31.6`. Earlier releases on each of those lines default to `jina-embeddings-v2-base-en`.
+Weaviate does not validate the model name, so you can set any model that your Jina AI account can reach.
 
-- `jina-embeddings-v4` (server default)
-    - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
-- `jina-embeddings-v3`
-    - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
-- `jina-embeddings-v2-base-en` (previous server default)
-- `jina-embeddings-v2-small-en`
-- `jina-embeddings-v2-base-zh`
-- `jina-embeddings-v2-base-es`
-- `jina-embeddings-v2-base-code`
+The server default is `jina-embeddings-v4`.
+
+See the [Jina AI models page](https://jina.ai/models/) for the list of available models.
+
+For `jina-embeddings-v3`, Weaviate sets the `task` type to `retrieval.passage` for embedding objects and `retrieval.query` for queries.
 
 If you do not set `dimensions`, Weaviate does not send a dimension count and the Jina AI API applies its own default for the model. Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
 
