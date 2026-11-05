@@ -36,24 +36,24 @@ The table lists every field in the payload and the Weaviate version that introdu
 | `collectionsCount` | The number of collections in the schema. | — |
 | `clientUsage` | The number of requests received in the period, grouped by client library and client library version. The library is identified from the `X-Weaviate-Client` header that the official Weaviate clients send. Requests without that header are not counted. | `v1.36` |
 | `clientIntegrationUsage` | The number of requests received in the period, grouped by integration name and version, taken from the `X-Weaviate-Client-Integration` header. Integrations such as framework connectors set this header to identify themselves. Requests without that header are not counted. | `v1.38` |
-| `cloudProvider`, `uniqueID` | The cloud provider (`AWS`, `GCP`, or `Azure`) and the account identifier for that provider. See [Cloud metadata](#cloud-metadata) for details and exact versions. | `v1.33` |
-| `nodeId` | The name of this node, which is the value of [`CLUSTER_HOSTNAME`](/deploy/configuration/env-vars/index.md). If `CLUSTER_HOSTNAME` is not set, Weaviate uses the host's operating-system hostname. | `v1.39` |
-| `clusterId` | A random UUID generated once per cluster and stored in the cluster's Raft state. Unlike `machineId`, it is the same on every node and persists across restarts. | `v1.39` |
-| `nodeCount` | The number of nodes in the cluster. | `v1.39` |
-| `maxReplicationFactor`, `replicationEnabled` | The highest replication factor of any collection, and whether it is greater than one. | `v1.39` |
-| `mtCollectionCount` | The number of collections with multi-tenancy enabled. | `v1.39` |
-| `namedVectorCollectionCount` | The number of collections that use named vectors. | `v1.39` |
-| `asyncIndexingEnabled` | Whether [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md) is on. | `v1.39` |
-| `vectorIndexTypeCounts` | The number of vector indexes of each type (for example `hnsw`, `flat`, `dynamic`). | `v1.39` |
+| `cloudProvider`, `uniqueID` | The cloud provider (`AWS`, `GCP`, or `Azure`) and the account identifier for that provider. See [Cloud metadata](#cloud-metadata) for details. | — |
+| `nodeId` | The name of this node, which is the value of [`CLUSTER_HOSTNAME`](/deploy/configuration/env-vars/index.md). If `CLUSTER_HOSTNAME` is not set, Weaviate uses the host's operating-system hostname. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `clusterId` | A random UUID generated once per cluster and stored in the cluster's Raft state. Unlike `machineId`, it is the same on every node and persists across restarts. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `nodeCount` | The number of nodes in the cluster. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `maxReplicationFactor`, `replicationEnabled` | The highest replication factor of any collection, and whether it is greater than one. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `mtCollectionCount` | The number of collections with multi-tenancy enabled. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `namedVectorCollectionCount` | The number of collections that use named vectors. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `asyncIndexingEnabled` | Whether [`ASYNC_INDEXING`](/deploy/configuration/env-vars/index.md) is on. | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
+| `vectorIndexTypeCounts` | The number of vector indexes of each type (for example `hnsw`, `flat`, `dynamic`). | `v1.36.24`, `v1.37.14`, `v1.38.7`, `v1.39.0` |
 
-Each payload is also logged at `info` level with `action=telemetry_push`, so you can see exactly what your node sent.
+Each payload is also logged as a summary at `info` level with `action=telemetry_push`.
 
 ## Other requests to weaviate.io
 
 When telemetry is enabled, Weaviate also makes these requests. They stop when telemetry is disabled.
 
 - **Startup banner.** Since `v1.39.4`, each node fetches the art for the startup banner from `https://weaviate.io/banner/v1.json` on startup and again every [`BANNER_INTERVAL`](/deploy/configuration/env-vars/index.md). The request carries the Weaviate version in its `User-Agent` header. You can keep telemetry on but turn off the banner with [`DISABLE_STARTUP_BANNER`](/deploy/configuration/env-vars/index.md).
-- **Cluster ID in documentation links.** Since `v1.39`, links to `docs.weaviate.io` that Weaviate writes into log lines, error responses, and the startup banner carry the `clusterId` as a `?clusterid=` query parameter. Following such a link sends the cluster ID to the docs site. Nothing is sent unless the link is opened.
+- **Cluster ID in documentation links.** Since `v1.39.4`, links to `docs.weaviate.io` that Weaviate writes into log lines, error responses, and the startup banner carry the `clusterId` as a `?clusterid=` query parameter. Following such a link sends the cluster ID to the docs site. Nothing is sent unless the link is opened.
 
 ## Disabling telemetry data
 
@@ -69,7 +69,7 @@ Two further variables adjust telemetry without disabling it: [`TELEMETRY_PUSH_IN
 
 ## Cloud metadata
 
-Since Weaviate version `v1.33.13`, `v1.34.12`, `v1.35.4`, and `v1.36.0`, Weaviate will, when available, collect basic metadata from metadata endpoints it has access to on selected cloud providers (Google Cloud, Amazon Web Services, Azure). On startup, Weaviate probes each provider's metadata endpoint with a one-second timeout and logs a notice when one responds.
+When available, Weaviate collects basic metadata from metadata endpoints it has access to on selected cloud providers (Google Cloud, Amazon Web Services, Azure). On startup, Weaviate probes each provider's metadata endpoint with a one-second timeout and logs a notice when one responds.
 
 More information about the metadata endpoints:
 
