@@ -38,10 +38,11 @@ const HTTP_METHODS = ["get", "put", "post", "delete", "options", "head", "patch"
  *   converter migrates older versions, so the output says OpenAPI 3.2.
  * @param {string} page.routePath Route of the Scalar page, such as "/weaviate/api/rest".
  * @param {string} page.siteUrl `siteConfig.url`, without a trailing slash.
+ * @param {string} [page.notice] Agent notice line to put after each file's front matter.
  * @returns {Promise<Array<{ path: string, markdown: string }>>} Files to write,
  *   with paths from the site root, such as "/weaviate/api/rest/schema.md".
  */
-export async function convertOpenApiPage({ spec, routePath, siteUrl }) {
+export async function convertOpenApiPage({ spec, routePath, siteUrl, notice = "" }) {
   const renderer = await createOpenApiMarkdownRenderer(spec);
   const pageUrl = siteUrl + routePath;
   const title = spec.info?.title ?? routePath;
@@ -49,7 +50,7 @@ export async function convertOpenApiPage({ spec, routePath, siteUrl }) {
   const declared = spec.tags ?? [];
 
   if (!declared.length) {
-    return [{ path: markdownPathForRoute(routePath), markdown: formatFrontMatter({ title, url: pageUrl }) + "\n" + (await renderer.render()) }];
+    return [{ path: markdownPathForRoute(routePath), markdown: formatFrontMatter({ title, url: pageUrl }) + "\n" + notice + (await renderer.render()) }];
   }
 
   // Operations may use tags the document never declares, such as "experimental".
@@ -65,11 +66,11 @@ export async function convertOpenApiPage({ spec, routePath, siteUrl }) {
     index.push(...(operations.get(tag.name) ?? []).map(({ method, path, summary }) => `- \`${method} ${path}\`: ${summary}`), "");
 
     const frontMatter = formatFrontMatter({ title: `${title}: ${tag.name}`, description: tag.description, url: pageUrl });
-    tagFiles.push({ path: tagPath, markdown: frontMatter + "\n" + (await renderer.render({ tag: tag.name })) });
+    tagFiles.push({ path: tagPath, markdown: frontMatter + "\n" + notice + (await renderer.render({ tag: tag.name })) });
   }
 
   return [
-    { path: markdownPathForRoute(routePath), markdown: formatFrontMatter({ title, url: pageUrl }) + "\n" + index.join("\n") },
+    { path: markdownPathForRoute(routePath), markdown: formatFrontMatter({ title, url: pageUrl }) + "\n" + notice + index.join("\n") },
     ...tagFiles,
   ];
 }
