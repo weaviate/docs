@@ -106,6 +106,66 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicMMVectorizerAWS
+from weaviate.classes.config import Property, DataType, Configure, Multi2VecField
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=Configure.Vectors.multi2vec_aws_bedrock(
+        name="title_vector",
+        region="us-east-1",
+        # Define the fields to be used for the vectorization - using image_fields, text_fields
+        image_fields=[
+            Multi2VecField(name="poster", weight=0.9)
+        ],
+        text_fields=[
+            Multi2VecField(name="title", weight=0.1)
+        ],
+    ),
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicMMVectorizerAWS
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullMMVectorizerAWS
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vector_config=Configure.Vectors.multi2vec_aws_bedrock(
+        name="title_vector",
+        region="us-east-1",
+        model="amazon.titan-embed-image-v1",
+        # Further options
+        # dimensions=<embedding_size>,          # Amazon models only
+        image_fields=[
+            Multi2VecField(name="poster", weight=0.9)
+        ],
+        text_fields=[
+            Multi2VecField(name="title", weight=0.1)
+        ],
+    ),
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullMMVectorizerAWS
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerCohere
 from weaviate.classes.config import Configure
 
