@@ -90,7 +90,6 @@ client.collections.create(
         # model="claude-haiku-4-5",
         # max_tokens=512,
         # temperature=0.7,
-        # stop_sequences=["\n\n"],
         # top_p=0.9,
         # top_k=5,
     )
@@ -229,7 +228,7 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.anyscale(
         # # These parameters are optional
-        # base_url="https://api.anthropic.com",
+        # base_url="<anyscale-endpoint-url>",
         # model="meta-llama/Llama-2-70b-chat-hf",
         # temperature=0.7,
     ),
@@ -324,7 +323,7 @@ response = jeopardy.generate.near_text(
     generative_provider=GenerativeConfig.aws(
         region="us-east-1",
         service="bedrock", # You can also use sagemaker
-        model="cohere.command-r-plus-v1:0"
+        model="amazon.nova-lite-v1:0"
     ),
 )
 
@@ -380,7 +379,6 @@ client.collections.create(
         # # These parameters are optional
         # model="command-r",
         # temperature=0.7,
-        # max_tokens=500,
         # k=5,
         # stop_sequences=["\n\n"],
     )
@@ -462,7 +460,7 @@ client.collections.create(
         # # These parameters are optional
         # model="v2",
         # temperature=0.7,
-        # max_tokens=1024,
+        # max_new_tokens=1024,
         # top_p=0.9,
         # system_prompt="You are a helpful assistant"
         # avoid_commentary=True,
@@ -491,7 +489,7 @@ response = collection.generate.near_text(
         # # These parameters are optional
         # model="v2",
         # temperature=0.7,
-        # max_tokens=1024,
+        # max_new_tokens=1024,
         # top_p=0.9,
         # system_prompt="You are a helpful assistant"
         # avoid_commentary=True,
@@ -556,11 +554,11 @@ response = collection.generate.near_text(
     grouped_task="Write a tweet promoting these two movies",
     # highlight-start
     generative_provider=GenerativeConfig.databricks(
+        endpoint=databricks_generative_endpoint,
         # # These parameters are optional
         # max_tokens=500,
         # temperature=0.7,
         # top_p=0.7,
-        # top_k=0.1
     ),
     # Additional parameters not shown
     # highlight-end
@@ -590,7 +588,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.friendliai(
-        model="meta-llama-3.1-70b-instruct",
+        model="zai-org/GLM-5.3-Flash",
     )
     # highlight-end
     # Additional parameters not shown
@@ -607,10 +605,10 @@ client.collections.create(
     "DemoCollection",
     generative_config=Configure.Generative.friendliai(
         # # These parameters are optional
-        # model="meta-llama-3.1-70b-instruct",
+        # model="zai-org/GLM-5.3-Flash",
         # max_tokens=500,
         # temperature=0.7,
-        # base_url="https://inference.friendli.ai"
+        # base_url="https://api.friendli.ai/serverless"
     )
 )
 # END FullGenerativeFriendliAI
@@ -631,10 +629,10 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.friendliai(
         # # These parameters are optional
-        # model="meta-llama-3.1-70b-instruct",
+        # model="zai-org/GLM-5.3-Flash",
         # max_tokens=500,
         # temperature=0.7,
-        # base_url="https://inference.friendli.ai"
+        # base_url="https://api.friendli.ai/serverless"
     ),
     # Additional parameters not shown
     # highlight-end
@@ -666,7 +664,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.google(
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
-        model_id="gemini-2.5-flash"
+        model_id="gemini-3.5-flash-lite"
     )
     # highlight-end
     # Additional parameters not shown
@@ -682,9 +680,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    generative_config=Configure.Generative.google(
-        model_id="gemini-2.5-flash"
-    )
+    generative_config=Configure.Generative.google_gemini(model="gemini-3.5-flash-lite")
     # highlight-end
     # Additional parameters not shown
 )
@@ -700,13 +696,12 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.google(
-        # project_id="<google-cloud-project-id>",  # Required for Vertex AI
+        project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # model_id="<google-model-id>",
         # api_endpoint="<google-api-endpoint>",
         # temperature=0.7,
         # top_k=5,
         # top_p=0.9,
-        # vectorize_collection_name=False,
     )
     # highlight-end
     # Additional parameters not shown
@@ -730,12 +725,11 @@ response = collection.generate.near_text(
     generative_provider=GenerativeConfig.google(
         # # These parameters are optional
         # project_id="<google-cloud-project-id>",  # Required for Vertex AI
-        # model_id="<google-model-id>",
+        # model="<google-model-id>",
         # api_endpoint="<google-api-endpoint>",
         # temperature=0.7,
         # top_k=5,
         # top_p=0.9,
-        # vectorize_collection_name=False,
     ),
     # Additional parameters not shown
     # highlight-end
@@ -858,133 +852,126 @@ client.collections.delete("DemoCollection")
 
 # ---------------------------------------------------------------------------
 # Meta generative integration (generative-meta).
-#
-# The test suite does not execute this file. The Meta blocks are also guarded
-# below because no released weaviate-client has Generative.meta() yet.
-# TODO: set META_CLIENT_AVAILABLE = True and drop `pyindent` once the
-# weaviate-client ships Configure.Generative.meta() / GenerativeConfig.meta().
 # ---------------------------------------------------------------------------
-META_CLIENT_AVAILABLE = False
 
-if META_CLIENT_AVAILABLE:
-    # START BasicGenerativeMeta
-    from weaviate.classes.config import Configure
+# START BasicGenerativeMeta
+from weaviate.classes.config import Configure
 
-    client.collections.create(
-        "DemoCollection",
-        # highlight-start
-        generative_config=Configure.Generative.meta()
-        # highlight-end
-        # Additional parameters not shown
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.meta()
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicGenerativeMeta
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START GenerativeMetaCustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.meta(
+        model="muse-spark-1.2"
     )
-    # END BasicGenerativeMeta
+    # highlight-end
+    # Additional parameters not shown
+)
+# END GenerativeMetaCustomModel
 
-    # clean up
-    client.collections.delete("DemoCollection")
+# clean up
+client.collections.delete("DemoCollection")
 
-    # START GenerativeMetaCustomModel
-    from weaviate.classes.config import Configure
+# START FullGenerativeMeta
+from weaviate.classes.config import Configure
 
-    client.collections.create(
-        "DemoCollection",
-        # highlight-start
-        generative_config=Configure.Generative.meta(
-            model="muse-spark-1.2"
-        )
-        # highlight-end
-        # Additional parameters not shown
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.meta(
+        # # These parameters are optional
+        # model="muse-spark-1.2",
+        # temperature=0.7,  # 0.0 to 2.0
+        # top_p=0.9,  # 0.0 to 1.0
+        # max_tokens=500,  # 1 or higher; no upper limit
+        # frequency_penalty=0.0,  # -2.0 to 2.0
+        # presence_penalty=0.0,  # -2.0 to 2.0
+        # reasoning_effort="low",  # One of "none", "minimal", "low", "medium", "high", "xhigh"
+        # base_url="https://api.meta.ai",
     )
-    # END GenerativeMetaCustomModel
+    # highlight-end
+)
+# END FullGenerativeMeta
 
-    # clean up
-    client.collections.delete("DemoCollection")
+# clean up
+client.collections.delete("DemoCollection")
+import_data()
 
-    # START FullGenerativeMeta
-    from weaviate.classes.config import Configure
+# START RuntimeModelSelectionMeta
+from weaviate.classes.generate import GenerativeConfig
 
-    client.collections.create(
-        "DemoCollection",
-        # highlight-start
-        generative_config=Configure.Generative.meta(
-            # # These parameters are optional
-            # model="muse-spark-1.2",
-            # temperature=0.7,  # 0.0 to 2.0
-            # top_p=0.9,  # 0.0 to 1.0
-            # max_tokens=500,  # 1 or higher; no upper limit
-            # frequency_penalty=0.0,  # -2.0 to 2.0
-            # presence_penalty=0.0,  # -2.0 to 2.0
-            # reasoning_effort="low",  # One of "none", "minimal", "low", "medium", "high", "xhigh"
-            # base_url="https://api.meta.ai",
-        )
-        # highlight-end
-    )
-    # END FullGenerativeMeta
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="A holiday film",
+    limit=2,
+    grouped_task="Write a tweet promoting these two movies",
+    # highlight-start
+    generative_provider=GenerativeConfig.meta(
+        model="muse-spark-1.2",
+        # # These parameters are optional
+        # temperature=0.7,
+        # top_p=0.9,
+        # max_tokens=500,
+        # frequency_penalty=0.0,
+        # presence_penalty=0.0,
+        # reasoning_effort="low",
+        # base_url="https://api.meta.ai",
+    ),
+    # Additional parameters not shown
+    # highlight-end
+)
+# END RuntimeModelSelectionMeta
 
-    # clean up
-    client.collections.delete("DemoCollection")
-    import_data()
+# START WorkingWithImagesMeta
+import base64
+import requests
+from weaviate.classes.generate import GenerativeConfig, GenerativeParameters
 
-    # START RuntimeModelSelectionMeta
-    from weaviate.classes.generate import GenerativeConfig
+src_img_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Winter_forest_silver.jpg/960px-Winter_forest_silver.jpg"
+base64_image = base64.b64encode(requests.get(src_img_path).content).decode('utf-8')
 
-    collection = client.collections.use("DemoCollection")
-    response = collection.generate.near_text(
-        query="A holiday film",
-        limit=2,
-        grouped_task="Write a tweet promoting these two movies",
-        # highlight-start
-        generative_provider=GenerativeConfig.meta(
-            model="muse-spark-1.2",
-            # # These parameters are optional
-            # temperature=0.7,
-            # top_p=0.9,
-            # max_tokens=500,
-            # frequency_penalty=0.0,
-            # presence_penalty=0.0,
-            # reasoning_effort="low",
-            # base_url="https://api.meta.ai",
-        ),
-        # Additional parameters not shown
-        # highlight-end
-    )
-    # END RuntimeModelSelectionMeta
+prompt = GenerativeParameters.grouped_task(
+    # highlight-start
+    prompt="Which movie is closest to the image in terms of atmosphere",
+    images=[base64_image],      # A list of base64 encoded strings of the image bytes
+    # image_properties=["img"], # Properties containing images in Weaviate
+    # highlight-end
+)
 
-    # START WorkingWithImagesMeta
-    import base64
-    import requests
-    from weaviate.classes.generate import GenerativeConfig, GenerativeParameters
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="Movies",
+    limit=5,
+    # highlight-start
+    grouped_task=prompt,
+    # highlight-end
+    generative_provider=GenerativeConfig.meta(
+        max_tokens=1000
+    ),
+)
 
-    src_img_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Winter_forest_silver.jpg/960px-Winter_forest_silver.jpg"
-    base64_image = base64.b64encode(requests.get(src_img_path).content).decode('utf-8')
+# Print the source property and the generated response
+for o in response.objects:
+    print(f"Title property: {o.properties['title']}")
+print(f"Grouped task result: {response.generative.text}")
+# END WorkingWithImagesMeta
 
-    prompt = GenerativeParameters.grouped_task(
-        # highlight-start
-        prompt="Which movie is closest to the image in terms of atmosphere",
-        images=[base64_image],      # A list of base64 encoded strings of the image bytes
-        # image_properties=["img"], # Properties containing images in Weaviate
-        # highlight-end
-    )
-
-    collection = client.collections.use("DemoCollection")
-    response = collection.generate.near_text(
-        query="Movies",
-        limit=5,
-        # highlight-start
-        grouped_task=prompt,
-        # highlight-end
-        generative_provider=GenerativeConfig.meta(
-            max_tokens=1000
-        ),
-    )
-
-    # Print the source property and the generated response
-    for o in response.objects:
-        print(f"Title property: {o.properties['title']}")
-    print(f"Grouped task result: {response.generative.text}")
-    # END WorkingWithImagesMeta
-
-    # clean up
-    client.collections.delete("DemoCollection")
+# clean up
+client.collections.delete("DemoCollection")
 
 # START GenerativeDeepseekCustomModel
 from weaviate.classes.config import Configure
@@ -1358,7 +1345,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     generative_config=Configure.Generative.xai(
-        model="grok-2-latest"
+        model="grok-4.7"
     )
     # Additional parameters not shown
 )
@@ -1372,8 +1359,8 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.xai(
         # # These parameters are optional
-        # base_url="https://api.x.ai/v1"
-        # model="grok-2-latest",
+        # base_url="https://api.x.ai"
+        # model="grok-4.7",
         # max_tokens=500,
         # temperature=0.7,
     )
@@ -1397,8 +1384,8 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.xai(
         # # These parameters are optional
-        # base_url="https://api.x.ai/v1"
-        # model="grok-2-latest",
+        # base_url="https://api.x.ai"
+        # model="grok-4.7",
         # max_tokens=500,
         # temperature=0.7,
     ),

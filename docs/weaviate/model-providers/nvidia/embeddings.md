@@ -336,7 +336,9 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 Weaviate does not validate the model name, so you can set any model that your NVIDIA account can reach.
 
-The server default is `nvidia/nv-embed-v1`.
+:::caution The module default is a retired model
+The server default is `nvidia/nv-embed-v1`. NVIDIA retired it on 2026-08-25. Set `model` explicitly when you create a collection.
+:::
 
 See the [NVIDIA NIM API catalog](https://build.nvidia.com/models) for the list of available models.
 

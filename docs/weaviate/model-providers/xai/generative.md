@@ -257,7 +257,9 @@ In other words, when you have `n` search results, the generative model generates
 
 Weaviate does not validate the model name, so you can set any model that your xAI account can reach.
 
-The server default is `grok-2-latest`.
+:::caution Set the model explicitly
+The server default is `grok-2-latest`. The xAI models page no longer lists it. Set `model` explicitly when you create a collection.
+:::
 
 See the [xAI models page](https://docs.x.ai/docs/models) for the list of available models.
 

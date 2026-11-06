@@ -264,7 +264,9 @@ In other words, when you have `n` search results, the generative model generates
 
 Weaviate does not validate the model name, so you can set any model that your FriendliAI account can reach, including models you deploy on Friendli Suite.
 
-The server default is `meta-llama-3.1-70b-instruct`.
+:::caution The module defaults no longer work
+The server defaults are the model `meta-llama-3.1-70b-instruct` and the base URL `https://inference.friendli.ai`. FriendliAI serves neither. Set `model` explicitly and set `baseURL` to `https://api.friendli.ai/serverless` when you create a collection.
+:::
 
 See the [FriendliAI models page](https://friendli.ai/models) for the list of available models.
 
