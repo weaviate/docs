@@ -134,7 +134,7 @@ Configure the reranker behavior, including the model to use, through the followi
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 For further details on model parameters, see the [Contextual AI API documentation](https://docs.contextual.ai/api-reference/rerank/rerank).
 
@@ -180,11 +180,15 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 </Tabs>
 
-## Available models
+## References
 
-- `ctxl-rerank-v1-instruct`
-- `ctxl-rerank-v2-instruct-multilingual-mini`
-- `ctxl-rerank-v2-instruct-multilingual` (default)
+### Available models
+
+Weaviate does not validate the model name, so you can set any model that your Contextual AI account can reach.
+
+The server default is `ctxl-rerank-v2-instruct-multilingual`.
+
+See the [Contextual AI rerank API reference](https://docs.contextual.ai/api-reference/rerank/rerank) for the list of available models.
 
 ## Further resources
 

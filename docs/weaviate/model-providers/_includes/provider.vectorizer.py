@@ -798,7 +798,7 @@ client.collections.create(
         Configure.Vectors.text2vec_nvidia(
             name="title_vector",
             source_properties=["title"],
-            model="nvidia/nv-embed-v1"
+            model="nvidia/nemotron-3.5-embed-1b"
         )
     ],
     # highlight-end
@@ -819,7 +819,7 @@ client.collections.create(
         Configure.Vectors.text2vec_nvidia(
             name="title_vector",
             source_properties=["title"],
-            model="nvidia/nv-embed-v1",
+            model="nvidia/nemotron-3.5-embed-1b",
             base_url="https://integrate.api.nvidia.com",
         )
     ],

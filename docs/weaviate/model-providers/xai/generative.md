@@ -110,7 +110,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -133,7 +133,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -255,9 +255,13 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-You can use any generative model [on xAI's API](https://docs.x.ai/docs/models) with Weaviate.
+Weaviate does not validate the model name, so you can set any model that your xAI account can reach.
 
-The default model is `grok-2-latest`.
+:::caution Set the model explicitly
+The server default is `grok-2-latest`. The xAI models page no longer lists it. Set `model` explicitly when you create a collection.
+:::
+
+See the [xAI models page](https://docs.x.ai/docs/models) for the list of available models.
 
 ## Further resources
 

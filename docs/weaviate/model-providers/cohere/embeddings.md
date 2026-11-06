@@ -355,7 +355,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
+Weaviate does not validate the model name, so you can set any model that your Cohere account can reach.
 
 The server default is `embed-multilingual-v3.0`.
 

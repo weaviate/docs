@@ -122,7 +122,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -154,7 +154,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -169,7 +169,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 The following examples show how to configure Jina AI-specific options.
 
-Note that `dimensions` is not applicable for the `jina-colbert-v1` model.
+`dimensions` does not apply to the `jina-colbert-v1` model.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -328,11 +328,15 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-- `jina-colbert-v2` (server default)
-    - By default, Weaviate uses `128` dimensions
-- `jina-colbert-v1`
+Weaviate does not validate the model name, so you can set any model that your Jina AI account can reach.
 
-Note that `dimensions` is not applicable for the `jina-colbert-v1` model.
+The server default is `jina-colbert-v2`.
+
+See the [Jina AI models page](https://jina.ai/models/) for the list of available models.
+
+Weaviate uses `128` dimensions by default for `jina-colbert-v2`.
+
+`dimensions` does not apply to the `jina-colbert-v1` model.
 
 ## Further resources
 
