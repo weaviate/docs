@@ -446,7 +446,7 @@ Then, set `TRANSFORMERS_INFERENCE_API="http://localhost:8000"`. If Weaviate is p
 
 This integration automatically chunks text if it exceeds the model's maximum token length before it is passed to the model. It will then return the pooled vectors.
 
-See [HuggingFaceVectorizer.vectorizer()](https://github.com/weaviate/text2vec-transformers-models/blob/main/vectorizer.py) for the exact implementation.
+See [HuggingFaceVectorizer.vectorizer()](https://github.com/weaviate/t2v-transformers-models/blob/main/vectorizer.py) for the exact implementation.
 
 ### Code examples
 
