@@ -1,13 +1,13 @@
 ---
-title: Weaviate Enterprise Edition
-sidebar_label: Enterprise Edition
-description: "How the Weaviate Community Edition and Enterprise Edition relate, how a license key activates the Enterprise Edition, and where to get help."
+title: Weaviate Enterprise Editions
+sidebar_label: Enterprise Editions
+description: "How the Weaviate Community Edition, Enterprise Edition, and Platform Edition relate, how a license key activates a licensed edition, and where to get help."
 sidebar_position: 5
 image: og/docs/installation.jpg
 # tags: ['installation', 'enterprise', 'license']
 ---
 
-Weaviate is open source, with an optional Enterprise Edition that adds advanced features under a commercial license. Self-hosted Weaviate is available in two editions: the **Community Edition (CE)** and the **Enterprise Edition (EE)**. Both editions ship in the same Docker image and binary. A license key selects the edition when Weaviate starts.
+Weaviate is open source, with optional Enterprise and Platform Editions that add advanced features under a commercial license. Self-hosted Weaviate is available in three editions: the **Community Edition (CE)**, the **Enterprise Edition (EE)**, and the **Platform Edition**. All three editions ship in the same Docker image and binary. A license key selects the edition when Weaviate starts.
 
 ## Editions
 
@@ -17,16 +17,22 @@ The Community Edition is Weaviate without a license key. Its code is everything 
 
 ### Enterprise Edition
 
-The Enterprise Edition is Weaviate started with a Weaviate license key. It adds the code in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the same repository. That code is licensed under the Weaviate License, as defined in [`wl/LICENSE-WEAVIATE`](https://github.com/weaviate/weaviate/blob/main/wl/LICENSE-WEAVIATE).
+The Enterprise Edition is Weaviate started with an Enterprise Edition license key. It adds the code in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the same repository. That code is licensed under the Weaviate License, as defined in [`wl/LICENSE-WEAVIATE`](https://github.com/weaviate/weaviate/blob/main/wl/LICENSE-WEAVIATE).
 
-The repository's top-level [`LICENSE`](https://github.com/weaviate/weaviate/blob/main/LICENSE) file describes which license applies to which code.
+### Platform Edition
+
+The Platform Edition is Weaviate started with a Platform Edition license key. Its code also lives in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) and is licensed under the Weaviate License. It's for platform teams that run Weaviate as one shared service for many teams or end users. The Platform Edition includes everything in the Enterprise Edition, plus:
+
+- **Namespaces:** Isolated virtual clusters, one per team or end user, managed centrally as one shared service.
+- **Isolation:** Separation between namespaces, so each team or end user sees only its own data.
+- **Security and observability:** Controls that work across tenants and virtual clusters.
 
 ## How it works
 
-- **One image, one binary.** The Community Edition and the Enterprise Edition use the same Docker image and the same binary.
+- **One image, one binary.** All three editions use the same Docker image and the same binary.
 - **No key means Community Edition.** Without a license key, Weaviate runs as the Community Edition.
-- **A key enables the Enterprise Edition.** A valid license key enables the Enterprise Edition when Weaviate starts.
-- **Upgrading needs no new download.** To move from the Community Edition to the Enterprise Edition, obtain a license key and restart Weaviate with it. You don't need a new image or a new download.
+- **A key enables a licensed edition.** A valid license key enables the Enterprise Edition or the Platform Edition when Weaviate starts, depending on the license.
+- **Upgrading needs no new download.** To move from the Community Edition to the Enterprise Edition or the Platform Edition, obtain a license key and restart Weaviate with it. You don't need a new image or a new download.
 
 ## Activate the Enterprise Edition
 
@@ -42,7 +48,7 @@ Supply the license key to Weaviate through one of these [environment variables](
 | `LICENSE_KEY`      | The license key itself.                           |
 | `LICENSE_KEY_FILE` | The path to a file that contains the license key. |
 
-To activate the Enterprise Edition, set a valid key and restart Weaviate. Each Enterprise Edition feature also has its own environment variable that turns it on. See [Enterprise Edition features](#enterprise-edition-features).
+To activate the Enterprise Edition or the Platform Edition, set a valid key for that edition and restart Weaviate. Each licensed feature also has its own environment variable that turns it on. See [Enterprise and Platform Edition features](#enterprise-edition-features).
 
 At startup:
 
@@ -92,17 +98,23 @@ Weaviate also reports the edition in two other places:
 
 The official way to request an Enterprise Edition license key is through [weaviate.io/enterprise-edition](https://weaviate.io/enterprise-edition). You receive a trial key that is valid for 30 days, and we contact you by email during the trial about continuing with a full license.
 
-## Enterprise Edition features
+The Platform Edition has no self-serve trial. To get a Platform Edition license, contact sales at [weaviate.io/contact](https://weaviate.io/contact).
 
-This table lists Enterprise Edition features, the Weaviate version that added each one, the environment variable that turns it on, and what happens when the feature is turned on but Weaviate runs without a license key.
+<!-- TODO(Ivan): replace both weaviate.io/contact links on this page (here and in the Platform Edition trial FAQ) with the Platform Edition page on weaviate.io once it is live. -->
 
-| Feature                                                    | Available since | Turned on by            | Without a license key                                                              |
-| :--------------------------------------------------------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
-| [Shard Self-Recovery](/deploy/configuration/self-recovery) | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
-| Namespaces                                                 | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
-| [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups) | `v1.40` | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
+## Enterprise and Platform Edition features {#enterprise-edition-features}
 
-An Enterprise Edition feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
+This table lists the features of the Enterprise Edition and the Platform Edition, the edition that adds each one, the Weaviate version that added each one, the environment variable that turns it on, and what happens when the feature is turned on but Weaviate runs without a license key. The Platform Edition includes every Enterprise Edition feature.
+
+| Feature                                                                    | Edition    | Available since | Turned on by            | Without a license key                                                              |
+| :------------------------------------------------------------------------- | :--------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
+| [Shard Self-Recovery](/deploy/configuration/self-recovery)                 | Enterprise | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
+| [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups) | Enterprise | `v1.40`         | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
+| Namespaces                                                                 | Platform   | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
+
+A licensed feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
+
+<!-- TODO(Ivan): decide what to document for a Platform Edition feature that is turned on with an Enterprise Edition license key. On core main 85bd085e6f gating is per key, not per edition: any well-formed key enables every licensed feature. -->
 
 ## Frequently asked questions
 
@@ -111,7 +123,7 @@ An Enterprise Edition feature that is turned on without a well-formed license ke
 <details>
 <summary> Answer </summary>
 
-Weaviate is open source, with an optional Enterprise Edition available under a commercial license. The Community Edition, which is all code outside the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the [`weaviate/weaviate`](https://github.com/weaviate/weaviate) repository, is open source under the BSD-3-Clause License. The Enterprise Edition code in the `wl/` directory is source-visible, but it's licensed under the Weaviate License and requires a commercial agreement.
+Weaviate is open source, with optional Enterprise and Platform Editions available under a commercial license. The Community Edition, which is all code outside the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the [`weaviate/weaviate`](https://github.com/weaviate/weaviate) repository, is open source under the BSD-3-Clause License. The Enterprise Edition and Platform Edition code in the `wl/` directory is source-visible, but it's licensed under the Weaviate License and requires a commercial agreement.
 
 </details>
 
@@ -129,7 +141,7 @@ Anything the BSD-3-Clause License allows. You can use, modify, and redistribute 
 <details>
 <summary> Answer </summary>
 
-Not without a commercial agreement. The Enterprise Edition code lives in the same public repository for transparency and auditability, but seeing the source doesn't grant a license to use it. Removing or bypassing the license key check doesn't grant any rights either.
+Not without a commercial agreement. The Enterprise Edition and Platform Edition code lives in the same public repository for transparency and auditability, but seeing the source doesn't grant a license to use it. Removing or bypassing the license key check doesn't grant any rights either.
 
 </details>
 
@@ -138,7 +150,7 @@ Not without a commercial agreement. The Enterprise Edition code lives in the sam
 <details>
 <summary> Answer </summary>
 
-One image contains both editions. Without a license key, Weaviate runs as the Community Edition, and everything it does is covered by the BSD-3-Clause License. Enterprise Edition features activate only with a license key, and the enterprise agreement governs them.
+One image contains all three editions. Without a license key, Weaviate runs as the Community Edition, and everything it does is covered by the BSD-3-Clause License. Enterprise Edition and Platform Edition features activate only with a license key, and your commercial agreement governs them.
 
 </details>
 
@@ -147,7 +159,25 @@ One image contains both editions. Without a license key, Weaviate runs as the Co
 <details>
 <summary> Answer </summary>
 
-No. Obtain a license key and restart Weaviate with it. See [Activate the Enterprise Edition](#activate-the-enterprise-edition).
+No. For the Enterprise Edition or the Platform Edition, obtain a license key and restart Weaviate with it. See [Activate the Enterprise Edition](#activate-the-enterprise-edition).
+
+</details>
+
+#### Q: What is the difference between the Enterprise Edition and the Platform Edition?
+
+<details>
+<summary> Answer </summary>
+
+The Platform Edition includes everything in the Enterprise Edition, plus namespaces. Namespaces are isolated virtual clusters, one per team or end user, managed centrally as one shared service. The Platform Edition is for platform teams that run Weaviate as a shared service. If you don't need namespaces, the Enterprise Edition has every other licensed feature. See [Enterprise and Platform Edition features](#enterprise-edition-features).
+
+</details>
+
+#### Q: Is there a trial for the Platform Edition?
+
+<details>
+<summary> Answer </summary>
+
+No. To get a Platform Edition license, [contact sales](https://weaviate.io/contact). The Enterprise Edition has a free 30-day trial. See [Get a license](#get-a-license).
 
 </details>
 
@@ -162,7 +192,7 @@ No. License keys apply to self-hosted deployments only.
 
 ## Support and feature requests
 
-- **Enterprise Edition:** Submit support requests, including license and activation issues, and feature requests through the [Weaviate support portal](https://support.weaviate.io/).
+- **Enterprise Edition and Platform Edition:** Submit support requests, including license and activation issues, and feature requests through the [Weaviate support portal](https://support.weaviate.io/).
 - **Community Edition:** Report bugs and request features by opening an issue in the [`weaviate/weaviate` GitHub repository](https://github.com/weaviate/weaviate/issues).
 
 ## Further resources
