@@ -124,7 +124,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -156,7 +156,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -341,47 +341,15 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-- voyage-4
-- voyage-4-lite
-- voyage-4-large
-- voyage-3.5
-- voyage-3.5-lite
-- voyage-context-3 (contextual embeddings)
-- voyage-3-large
-- voyage-3 (default)
-- voyage-3-lite
-- voyage-large-2 (default for &lt;= `v1.24.24`, `v1.25.17`, `v1.26.4`)
-- voyage-code-2
-- voyage-2
-- voyage-law-2
-- voyage-large-2-instruct
-- voyage-finance-2
-- voyage-multilingual-2
+Weaviate does not validate the model name, so you can set any model that your Voyage AI account can reach.
+
+The server default is `voyage-3`. 
+
+See the [Voyage AI embeddings documentation](https://docs.voyageai.com/docs/embeddings) for the list of available models.
 
 :::note Contextual embeddings
-The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https://docs.voyageai.com/docs/contextualized-chunk-embeddings). When you configure this model, Weaviate automatically routes requests to the `/contextualizedembeddings` endpoint. This model is optimized for retrieval-augmented generation (RAG) use cases where document context improves retrieval quality.
+The `voyage-context-3` model uses Voyage AI's [contextual embeddings API](https://docs.voyageai.com/docs/contextualized-chunk-embeddings). When you configure this model, Weaviate automatically routes requests to the `/contextualizedembeddings` endpoint.
 :::
-
-<details>
-  <summary>
-    Model support history
-  </summary>
-
-- `v1.36`:
-    - Added `voyage-4`, `voyage-4-lite`, `voyage-4-large`
-- Added `voyage-3.5`, `voyage-3.5-lite`, `voyage-context-3`
-- `v1.24.25`, `v1.25.18`, `v1.26.5`:
-    - Added `voyage-3`, `voyage-3-lite`
-    - Default model changed to `voyage-3` from `voyage-large-2`
-- `v1.24.14`, `v1.25.1`:
-    - Added `voyage-large-2-instruct`
-    - Removed `voyage-lite-02-instruct`
-- `v1.24.9`:
-    - Added `voyage-law-2`, `voyage-lite-02-instruct`
-- `v1.24.2`:
-    - Introduced `text2vec-voyage`, with `voyage-large-2`, `voyage-code-2`, `voyage-2` support
-
-</details>
 
 ## Further resources
 
