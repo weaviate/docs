@@ -103,7 +103,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -126,7 +126,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -294,9 +294,11 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-You can use any multimodal embedding model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
+Weaviate does not validate the model name, so you can set any model that your NVIDIA account can reach.
 
-The default model is `nvidia/nvclip`.
+The server default is `nvidia/nvclip`.
+
+See the [NVIDIA NIM API catalog](https://build.nvidia.com/models) for the list of available models.
 
 ## Further resources
 

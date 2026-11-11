@@ -123,7 +123,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration examples.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -155,7 +155,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -304,7 +304,11 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-As of September 2024, the only available model is `mistral-embed`.
+Weaviate does not validate the model name, so you can set any model that your Mistral account can reach.
+
+The server default is `mistral-embed`.
+
+See the [Mistral models page](https://docs.mistral.ai/models) for the list of available models.
 
 ## Further resources
 
