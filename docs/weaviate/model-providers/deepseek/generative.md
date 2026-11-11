@@ -167,9 +167,9 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-Weaviate forwards the configured model name to DeepSeek as-is. There is no allowlist on the Weaviate side, so any current DeepSeek model name is accepted.
+Weaviate does not validate the model name, so you can set any model that your DeepSeek account can reach.
 
-The current model names are `deepseek-v4-flash` and `deepseek-v4-pro`. For the full list of models and pricing, see the [DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing) and the [DeepSeek API documentation](https://api-docs.deepseek.com/).
+See the [DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing) for the list of available models.
 
 :::caution The module default is a retired model
 The `deepseek-chat` and `deepseek-reasoner` aliases are retired and DeepSeek no longer serves them. They previously pointed at `deepseek-v4-flash` in its non-thinking and thinking modes respectively.

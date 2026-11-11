@@ -129,7 +129,7 @@ You must provide a DigitalOcean API key to Weaviate for this integration. Genera
 
 ### Vectorizer parameters
 
-- `model`: **Required.** The DigitalOcean Serverless Inference model id, for example `qwen3-embedding-0.6b`. Query `GET /v1/models` on the inference endpoint to see the catalogue of available models for your account.
+- `model`: **Required.** The DigitalOcean Serverless Inference model ID, for example `qwen3-embedding-0.6b`. Query `GET /v1/models` on the inference endpoint to see the catalog of available models for your account.
 - `baseURL`: Optional. The base URL where API requests should go. Defaults to `https://inference.do-ai.run`. Override only if you're proxying or running against a non-default endpoint.
 
 ## Header parameters
@@ -158,17 +158,21 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 ### Hybrid search {#hybrid-search}
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keyword and vector ranking. The text query is embedded with the configured DigitalOcean model; the keyword side uses Weaviate's inverted index.
+When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keyword and vector ranking. The text query is embedded with the configured DigitalOcean model. The keyword side uses Weaviate's inverted index.
 
 ## References
 
 ### Available models
 
-DigitalOcean's Serverless Inference catalogue includes several embedding-capable models. See the [DigitalOcean Serverless Inference docs](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the live list, as model availability and dimensions can change.
+When the server has a DigitalOcean API key, Weaviate checks the model name against the `GET /v1/models` list for that account when you create the collection. Without a server-side key, Weaviate skips this check, and DigitalOcean rejects an unknown model at request time.
+
+There is no server default. You must set `model` when you configure the vectorizer.
+
+See the [DigitalOcean Serverless Inference guide](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the list of available models.
 
 :::note Dimensions parameter currently not supported
 
-DigitalOcean's `/v1/embeddings` endpoint does not accept a `dimensions` request field at the time of writing, even for [Matryoshka Representation Learning (MRL)](https://huggingface.co/blog/matryoshka)-capable models like `qwen3-embedding-0.6b` whose native output could otherwise be truncated. Weaviate intentionally does not forward a `dimensions` parameter to avoid silent no-ops; the embedding dimension is always the model's native size.
+DigitalOcean's `/v1/embeddings` endpoint does not accept a `dimensions` request field at the time of writing, even for [Matryoshka Representation Learning (MRL)](https://huggingface.co/blog/matryoshka)-capable models like `qwen3-embedding-0.6b` whose native output could otherwise be truncated. Weaviate intentionally does not forward a `dimensions` parameter to avoid silent no-ops. The embedding dimension is always the model's native size.
 
 :::
 

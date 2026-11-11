@@ -107,7 +107,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -130,7 +130,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -293,7 +293,7 @@ For most models, the default `maxTokens` value is `4096`, which is the maximum, 
 
 #### Base URL
 
-Note that for Anthropic, you can provide a custom base URL for the API endpoint. This is useful for users who have a dedicated API endpoint, or is behind a proxy.
+You can provide a custom base URL for the Anthropic API endpoint. This is useful if you have a dedicated API endpoint or are behind a proxy.
 
 The custom base URL can be provided via the collection configuration as shown above, or in the header of the request. To provide it in the header, instantiate the Weaviate client using the `X-Anthropic-Baseurl` key and the custom base URL as the value.
 
@@ -301,9 +301,11 @@ The default base URL is `https://api.anthropic.com`.
 
 ### Available models
 
-Any model available in the Anthropic API can be used with Weaviate. If you do not specify a model, Weaviate uses `claude-haiku-4-5` by default. That default was set in `v1.34.0`, and backported to `v1.31.20`, `v1.32.17`, and `v1.33.5`. Earlier releases on each of those lines default to `claude-3-5-sonnet-20240620`.
+Weaviate does not validate the model name, so you can set any model that your Anthropic account can reach.
 
-See the [Anthropic API documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-names) for the most up-to-date list of available models.
+The server default is `claude-haiku-4-5`.
+
+See the [Anthropic API documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-names) for the list of available models.
 
 ## Further resources
 

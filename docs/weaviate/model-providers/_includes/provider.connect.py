@@ -138,7 +138,7 @@ headers = {
 # END FriendliInstantiation
 # START FriendliDedicatedInstantiation
     "X-Friendli-Token": friendli_key,
-    "X-Friendli-Baseurl": "https://inference.friendli.ai/dedicated",
+    "X-Friendli-Baseurl": "https://api.friendli.ai/dedicated",
 # END FriendliDedicatedInstantiation
 # START GoogleInstantiation  # START GoogleVertexInstantiation
     "X-Goog-Vertex-Api-Key": vertex_key,
