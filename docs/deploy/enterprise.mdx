@@ -7,7 +7,7 @@ image: og/docs/installation.jpg
 # tags: ['installation', 'enterprise', 'license']
 ---
 
-Weaviate is open source, with an optional Enterprise Edition that adds advanced features under a commercial license. Self-hosted Weaviate is available in two editions: the **Community Edition (CE)** and the **Enterprise Edition (EE)**. Both editions ship in the same Docker image and binary. A license key selects the edition when Weaviate starts.
+Weaviate is open source, with an optional Enterprise Edition that adds advanced features under a commercial license. Self-hosted Weaviate is available as the **Community Edition (CE)** or the **Enterprise Edition (EE)**. Both editions ship in the same Docker image and binary. A license key selects the edition when Weaviate starts. For organizations that run Weaviate as a shared service, the [Platform Edition](#platform-edition) builds on the Enterprise Edition.
 
 ## Editions
 
@@ -20,6 +20,14 @@ The Community Edition is Weaviate without a license key. Its code is everything 
 The Enterprise Edition is Weaviate started with a Weaviate license key. It adds the code in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the same repository. That code is licensed under the Weaviate License, as defined in [`wl/LICENSE-WEAVIATE`](https://github.com/weaviate/weaviate/blob/main/wl/LICENSE-WEAVIATE).
 
 The repository's top-level [`LICENSE`](https://github.com/weaviate/weaviate/blob/main/LICENSE) file describes which license applies to which code.
+
+### Platform Edition
+
+The Platform Edition includes everything in the Enterprise Edition, plus 'namespaces': isolated virtual clusters, one per team or end user.
+
+It is built for platform teams that run Weaviate as a shared service across their organization.
+
+The Platform Edition has no self-serve trial. To get it, [contact sales](https://weaviate.io/contact). For details, see [Weaviate Platform Edition](https://weaviate.io/platform-edition).
 
 ## How it works
 
@@ -99,7 +107,6 @@ This table lists Enterprise Edition features, the Weaviate version that added ea
 | Feature                                                    | Available since | Turned on by            | Without a license key                                                              |
 | :--------------------------------------------------------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
 | [Shard Self-Recovery](/deploy/configuration/self-recovery) | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
-| Namespaces                                                 | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
 | [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups) | `v1.40` | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
 
 An Enterprise Edition feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
