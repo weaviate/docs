@@ -23,6 +23,7 @@
  */
 import fs from "node:fs/promises";
 import path from "node:path";
+import { readAgentNotice } from "./agent-notice.mjs";
 import { convertDocPage } from "./html-to-markdown.mjs";
 import { markdownPathForRoute } from "./markdown-path.mjs";
 import { convertOpenApiPage } from "./openapi-to-markdown.mjs";
@@ -44,11 +45,12 @@ export default function markdownExportPlugin(context) {
       const siteUrl = siteConfig.url.replace(/\/+$/, "");
       let written = 0;
       let skipped = 0;
+      const notice = await readAgentNotice(context.siteDir);
 
       for (const routePath of new Set(routesPaths)) {
         const htmlFile = await findHtmlFile(outDir, routePath);
         const markdown = htmlFile
-          ? convertDocPage({ html: await fs.readFile(htmlFile, "utf8"), pageUrl: siteUrl + routePath, siteUrl })
+          ? convertDocPage({ html: await fs.readFile(htmlFile, "utf8"), pageUrl: siteUrl + routePath, siteUrl, notice })
           : null;
         if (markdown === null) {
           skipped += 1;
@@ -63,7 +65,7 @@ export default function markdownExportPlugin(context) {
       let apiFiles = 0;
       for (const { routePath, specUrl } of apiPages) {
         const spec = JSON.parse(await fs.readFile(path.join(outDir, specUrl), "utf8"));
-        const files = await convertOpenApiPage({ spec, routePath, siteUrl }).catch((error) => {
+        const files = await convertOpenApiPage({ spec, routePath, siteUrl, notice }).catch((error) => {
           throw new Error(`Markdown export failed for ${siteUrl + routePath}: ${error.message}`, { cause: error });
         });
         for (const file of files) await writeSiteFile(outDir, file.path, file.markdown);

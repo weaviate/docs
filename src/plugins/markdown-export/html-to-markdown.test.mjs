@@ -10,9 +10,9 @@ import { markdownPathForRoute } from "./markdown-path.mjs";
 
 const SITE_URL = "https://docs.weaviate.io";
 
-function convertFixture(name, pageUrl = `${SITE_URL}/fixture`) {
+function convertFixture(name, pageUrl = `${SITE_URL}/fixture`, notice = "") {
   const html = fs.readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), "utf8");
-  return convertDocPage({ html, pageUrl, siteUrl: SITE_URL });
+  return convertDocPage({ html, pageUrl, siteUrl: SITE_URL, notice });
 }
 
 describe("convertDocPage", () => {
@@ -32,6 +32,12 @@ describe("convertDocPage", () => {
         ].join("\n"),
       ),
     );
+  });
+
+  test("puts a passed notice between the front matter and the title", () => {
+    const markdown = convertFixture("code-tabs", `${SITE_URL}/weaviate/search/basics`, "> Agent notice\n\n");
+
+    assert.match(markdown, /^---\n[^]*?\n---\n\n> Agent notice\n\n# Search patterns and basics\n/);
   });
 
   test("omits description when the page has none", () => {

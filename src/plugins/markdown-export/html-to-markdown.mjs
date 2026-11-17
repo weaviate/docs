@@ -90,12 +90,13 @@ export const MARKDOWN_CONTENT_ATTRIBUTE = "data-markdown-content";
  * @param {string} page.html Complete HTML document written by `docusaurus build`.
  * @param {string} page.pageUrl Absolute URL of the HTML page; written as `url`.
  * @param {string} page.siteUrl `siteConfig.url`, without a trailing slash.
+ * @param {string} [page.notice] Agent notice line to put between the front matter and the body.
  * @returns {string | null} The Markdown document, or `null` when the HTML has
  *   no docs body, as on tag listings, the 404 page and the Scalar API reference.
  * @throws {Error} When the page has a docs body but conversion fails. The
  *   message names `pageUrl`.
  */
-export function convertDocPage({ html, pageUrl, siteUrl }) {
+export function convertDocPage({ html, pageUrl, siteUrl, notice = "" }) {
   const document = unified().use(rehypeParse).parse(html);
   const docsBody = select(".theme-doc-markdown", document);
   if (!docsBody) return null;
@@ -120,7 +121,7 @@ export function convertDocPage({ html, pageUrl, siteUrl }) {
       .use(remarkStringify, { bullet: "-", fences: true, rule: "-" })
       .stringify(mdast);
 
-    return `${formatFrontMatter(frontMatter)}\n${body}`;
+    return `${formatFrontMatter(frontMatter)}\n${notice}${body}`;
   } catch (error) {
     throw new Error(`Markdown export failed for ${pageUrl}: ${error.message}`, { cause: error });
   }

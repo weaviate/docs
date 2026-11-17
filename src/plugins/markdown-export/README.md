@@ -4,6 +4,8 @@ Every docs page at `https://docs.weaviate.io/<route>` has a Markdown version at 
 
 Each file starts with front matter (`title`, `description`, `url`), followed by the page body: headings, prose, tables, admonitions as GitHub alerts, every code tab variant under its label, Mermaid source, and images linked to their original files. The full list of conversion rules is in the `convertDocPage` doc comment in [`html-to-markdown.mjs`](html-to-markdown.mjs).
 
+Every exported file, including the REST API reference files, has the LLM/AI agent notice right after its front matter. The text comes from [`src/data/agent-notice.json`](../../data/agent-notice.json), which [`src/theme/Root.js`](../../theme/Root.js) also renders as a hidden node on every HTML page.
+
 ## How agents find the Markdown
 
 | Mechanism | Where |

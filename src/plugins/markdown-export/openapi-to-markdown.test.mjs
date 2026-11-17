@@ -57,6 +57,22 @@ describe("convertOpenApiPage with tags (Weaviate)", () => {
   });
 });
 
+describe("convertOpenApiPage notice", () => {
+  test("puts a passed notice after the front matter of every file, and an empty one adds nothing", async () => {
+    const spec = readSpec("weaviate-openapi.json");
+    const notice = "> Agent notice\n\n";
+    const withNotice = await convertOpenApiPage({ spec, routePath: "/weaviate/api/rest", siteUrl: SITE_URL, notice });
+    const without = await convertOpenApiPage({ spec, routePath: "/weaviate/api/rest", siteUrl: SITE_URL, notice: "" });
+
+    withNotice.forEach(({ markdown }, i) => {
+      // Front matter ends with "---" and a blank line; the notice follows it.
+      const noticeStart = markdown.indexOf("\n---\n\n") + "\n---\n\n".length;
+      assert.equal(markdown.slice(noticeStart, noticeStart + notice.length), notice);
+      assert.equal(markdown.slice(0, noticeStart) + markdown.slice(noticeStart + notice.length), without[i].markdown);
+    });
+  });
+});
+
 describe("convertOpenApiPage without tags (Engram)", () => {
   test("writes the whole reference to one file", async () => {
     const spec = readSpec("engram-openapi.json");
