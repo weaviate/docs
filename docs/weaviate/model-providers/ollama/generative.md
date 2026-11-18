@@ -117,7 +117,7 @@ import APIEndpoint from '/docs/weaviate/model-providers/_includes/ollama/api-end
 
 <APIEndpoint/>
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ## Select a model at runtime
 
@@ -258,11 +258,11 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-See the [Ollama documentation](https://ollama.com/library) for a list of available models. Note that this list includes both generative models and embedding models; specify a generative model for the `generative-ollama` module.
+The server default is `llama3`.
+
+See the [Ollama model library](https://ollama.com/library) for the list of available models. This list includes both generative models and embedding models. Specify a generative model for the `generative-ollama` module.
 
 Download the desired model with `ollama pull <model-name>`.
-
-If no model is specified, the default model (`llama3`) is used.
 
 ## Further resources
 
@@ -281,7 +281,7 @@ Once the integrations are configured at the collection, the data management and 
 
 - [Ollama models](https://ollama.com/library)
 - [Ollama repository](https://github.com/ollama/ollama)
-- [How to change the host and port of the Ollama server](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-expose-ollama-on-my-network)
+- [How to change the host and port of the Ollama server](https://docs.ollama.com/faq#how-can-i-expose-ollama-on-my-network)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

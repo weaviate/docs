@@ -119,7 +119,7 @@ Provide the API key to Weaviate using one of the following methods:
   </TabItem>
 </Tabs>
 
-You can specify one of the [available models](#available-models) for the vectorizer to use. If you do not specify a model, Weaviate uses the server default, `sentence-transformers/msmarco-bert-base-dot-v5`.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -179,7 +179,7 @@ The `endpointURL` parameter is used to specify a [custom Hugging Face Inference 
 :::
 
 :::caution `queryModel` no longer has any effect
-Weaviate no longer reads the `queryModel` parameter. Support for a separate [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) query model was removed in `v1.26.9`, `v1.27.2` and `v1.28.0`. The client libraries still accept `queryModel` (`query_model` in Python) and send it to the server without an error, so any value you set there is silently ignored. Remove it from your collection configuration and use `model` or `passageModel` instead.
+Weaviate does not read the `queryModel` parameter. Support for a separate [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) query model was removed. The client libraries still accept `queryModel` (`query_model` in Python) and send it to the server without an error, so any value you set there is silently ignored. Remove it from your collection configuration and use `model` or `passageModel` instead.
 :::
 
 #### Additional parameters
@@ -313,6 +313,8 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 You can use any Hugging Face embedding model with `text2vec-huggingface`, including public and private Hugging Face models. [Sentence similarity models](https://huggingface.co/models?pipeline_tag=sentence-similarity&sort=downloads) generally work best.
+
+The server default is `sentence-transformers/msmarco-bert-base-dot-v5`.
 
 ## Further resources
 

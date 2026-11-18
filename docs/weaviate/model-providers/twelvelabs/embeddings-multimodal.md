@@ -146,7 +146,7 @@ With any other client library, configure the vectorizer by sending the collectio
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -188,7 +188,7 @@ curl -X POST http://localhost:8080/v1/schema \
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -372,9 +372,11 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-The default model is `marengo3.0`, which produces 512-dimensional vectors.
+Weaviate does not validate the model name, so you can set any model that the TwelveLabs embedding endpoint accepts for your account.
 
-Weaviate does not validate the model name, so you can set any model that the TwelveLabs embedding endpoint accepts for your account. Weaviate does not publish the list of accepted names; see the [TwelveLabs documentation on creating embeddings](https://docs.twelvelabs.io/v1.3/docs/guides/create-embeddings) for the models that are currently available.
+The server default is `marengo3.0`. It produces 512-dimensional vectors.
+
+See the [TwelveLabs documentation on creating embeddings](https://docs.twelvelabs.io/v1.3/docs/guides/create-embeddings) for the list of available models.
 
 ## Further resources
 

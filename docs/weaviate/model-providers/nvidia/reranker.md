@@ -107,7 +107,7 @@ Configure a Weaviate collection to use an NVIDIA reranker model as follows:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -130,7 +130,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ## Reranking query
 
@@ -168,9 +168,11 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-You can use any reranker model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
+Weaviate does not validate the model name, so you can set any model that your NVIDIA account can reach.
 
-The default model is `nvidia/rerank-qa-mistral-4b`.
+The server default is `nvidia/rerank-qa-mistral-4b`.
+
+See the [NVIDIA NIM API catalog](https://build.nvidia.com/models) for the list of available models.
 
 ## Further resources
 

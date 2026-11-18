@@ -105,7 +105,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -128,7 +128,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -308,8 +308,11 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `voyage-multimodal-3` (Default)
-- `voyage-multimodal-3.5`
+Weaviate does not validate the model name, so you can set any model that your Voyage AI account can reach.
+
+The server default is `voyage-multimodal-3`.
+
+See the [Voyage AI multimodal embeddings page](https://docs.voyageai.com/docs/multimodal-embeddings) for the list of available models.
 
 :::info Video support
 The `voyage-multimodal-3.5` model supports video embeddings in addition to text and images. Configure `video_fields` (Python) or `videoFields` (TypeScript) to enable video vectorization.
