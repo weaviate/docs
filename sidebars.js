@@ -194,6 +194,7 @@ const sidebars = {
               },
               items: [
                 "weaviate/model-providers/aws/embeddings",
+                "weaviate/model-providers/aws/embeddings-multimodal",
                 "weaviate/model-providers/aws/generative",
               ],
             },
