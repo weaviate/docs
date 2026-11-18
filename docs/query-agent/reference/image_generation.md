@@ -238,6 +238,29 @@ If you describe a list of images, the description applies to the list, not to ea
     </TabItem>
 </Tabs>
 
+### Using union types instead of tool calls
+
+Make an image field nullable to let the agent decide whether to generate an image based on the query. This works like a tool call, but the decision is part of the output format you pass to `ask`. The field's description tells the agent when to generate the image. For example:
+
+<Tabs className="code" groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START UnionAsToolCallExample"
+            endMarker="# END UnionAsToolCallExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START UnionAsToolCallExample"
+            endMarker="// END UnionAsToolCallExample"
+            language="ts"
+        />
+    </TabItem>
+</Tabs>
+
 ## Customizing shape
 
 You can set the shape of a generated image. In both clients, you set the shape on an image field in your structured output model.
