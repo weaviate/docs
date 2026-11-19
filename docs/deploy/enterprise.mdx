@@ -17,7 +17,9 @@ The Community Edition is Weaviate without a license key. Its code is everything 
 
 ### Enterprise Edition
 
-The Enterprise Edition is Weaviate started with an Enterprise Edition license key. It adds the code in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the same repository. That code is licensed under the Weaviate License, as defined in [`wl/LICENSE-WEAVIATE`](https://github.com/weaviate/weaviate/blob/main/wl/LICENSE-WEAVIATE).
+The Enterprise Edition is Weaviate started with a Weaviate license key. It adds the code in the [`wl/` directory](https://github.com/weaviate/weaviate/tree/main/wl) of the same repository. That code is licensed under the Weaviate License, as defined in [`wl/LICENSE-WEAVIATE`](https://github.com/weaviate/weaviate/blob/main/wl/LICENSE-WEAVIATE).
+
+The repository's top-level [`LICENSE`](https://github.com/weaviate/weaviate/blob/main/LICENSE) file describes which license applies to which code.
 
 ### Platform Edition
 
@@ -26,8 +28,6 @@ The Platform Edition is Weaviate started with a Platform Edition license key. It
 - **Namespaces:** Isolated virtual clusters, one per team or end user, managed centrally as one shared service.
 - **Isolation:** Separation between namespaces, so each team or end user sees only its own data.
 - **Security and observability:** Controls that work across tenants and virtual clusters.
-
-For an overview, see [Weaviate Platform Edition](https://weaviate.io/platform-edition) on weaviate.io.
 
 ## How it works
 
@@ -113,8 +113,6 @@ This table lists the features of the Enterprise Edition and the Platform Edition
 | Namespaces                                                                 | Platform   | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
 
 A licensed feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
-
-<!-- TODO(Ivan): decide what to document for a Platform Edition feature that is turned on with an Enterprise Edition license key. On core main 85bd085e6f gating is per key, not per edition: any well-formed key enables every licensed feature. -->
 
 ## Frequently asked questions
 
