@@ -106,7 +106,7 @@ Configure a Weaviate collection to use a Jina AI reranker model as follows:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -167,11 +167,11 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-- `jina-reranker-v2-base-multilingual` (server default)
-- `jina-reranker-v1-base-en`
-- `jina-reranker-v1-turbo-en`
-- `jina-reranker-v1-tiny-en`
-- `jina-colbert-v1-en`
+Weaviate does not validate the model name, so you can set any model that your Jina AI account can reach.
+
+The server default is `jina-reranker-v2-base-multilingual`.
+
+See the [Jina AI models page](https://jina.ai/models/) for the list of available models.
 
 ## Further resources
 

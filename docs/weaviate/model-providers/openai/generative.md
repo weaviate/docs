@@ -113,7 +113,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -136,7 +136,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -163,7 +163,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-Two additional parameters are available for reasoning models such as the `gpt-5` family. They were added in `v1.33.0`, and backported to `v1.31.15` and `v1.32.9`:
+Two additional parameters are available for reasoning models such as the `gpt-5` family:
 
 - `reasoningEffort`: How much reasoning the model does before it answers. One of `minimal`, `low`, `medium`, or `high`. If not set, the model provider default applies.
 - `verbosity`: How detailed the generated answer is. One of `low`, `medium`, or `high`. If not set, the model provider default applies.
@@ -311,33 +311,37 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
+Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach.
 
-The server default is `gpt-5-mini`. It changed in `v1.32.3`, and was backported to `v1.30.16` and `v1.31.10`. Earlier releases on each of those lines default to `gpt-3.5-turbo`.
+The server default is `gpt-5-mini`.
 
-See the [OpenAI model documentation](https://platform.openai.com/docs/models) for the list of available models.
+:::caution The server default is being retired
+OpenAI retires `gpt-5-mini` on 2026-12-11. See the [OpenAI deprecations page](https://developers.openai.com/api/docs/deprecations). Set `model` explicitly when you create a collection.
+:::
 
-Weaviate stores a token limit for the models below. The limit caps the `maxTokens` value you can set for those models; it does not restrict which models you can use.
+See the [OpenAI model documentation](https://developers.openai.com/api/docs/models) for the list of available models.
+
+Weaviate stores a token limit for the models below. The limit caps the `maxTokens` value you can set for those models. It does not restrict which models you can use.
 
 <details>
   <summary>Models with a stored token limit</summary>
 
-* [gpt-5](https://platform.openai.com/docs/models/gpt-5)
-* [gpt-5-mini](https://platform.openai.com/docs/models/gpt-5-mini) (server default)
-* [gpt-5-nano](https://platform.openai.com/docs/models/gpt-5-nano)
-* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (previous server default)
-* [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3-5)
-* [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5)
-* [gpt-4](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
-* [gpt-4-1106-preview](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
-* [gpt-4-32k](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
-* [gpt-4o](https://platform.openai.com/docs/models#gpt-4o)
-* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini)
+* `gpt-5`
+* `gpt-5-mini` (server default)
+* `gpt-5-nano`
+* `gpt-3.5-turbo` (previous server default)
+* `gpt-3.5-turbo-16k`
+* `gpt-3.5-turbo-1106`
+* `gpt-4`
+* `gpt-4-1106-preview`
+* `gpt-4-32k`
+* `gpt-4o`
+* `gpt-4o-mini`
 
-These older models also have a stored limit, but are not recommended:
+These older models also have a stored limit. OpenAI shut them down on 2024-01-04, so requests to them fail:
 
-* [davinci 002](https://platform.openai.com/docs/models/overview)
-* [davinci 003](https://platform.openai.com/docs/models/overview)
+* `text-davinci-002`
+* `text-davinci-003`
 
 </details>
 

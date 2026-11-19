@@ -45,7 +45,7 @@ Gemini API is not available in all regions. See [this page](https://ai.google.de
 Your Weaviate instance must be configured with the Google vectorizer integration (`text2vec-google`) module.
 
 :::info Module name change
-`text2vec-google` was called `text2vec-palm` in Weaviate versions prior to `v1.27`.
+`text2vec-google` was previously called `text2vec-palm`.
 :::
 
 <details>
@@ -146,7 +146,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 :::
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Google AI Studio (Gemini API)
 
@@ -422,18 +422,11 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-**Google AI Studio (Gemini API):**
-- `gemini-embedding-2`
-- `gemini-embedding-001` (default)
+Weaviate does not validate the model name, so you can set any model that your Google account can reach.
 
-**Vertex AI:**
+The server default is `gemini-embedding-001`, for both Google AI Studio and Vertex AI.
 
-`gemini-embedding-001`, `text-embedding-005`, and `text-multilingual-embedding-002` were added in `v1.31.5`, and backported to `v1.30.11`.
-
-- `gemini-embedding-2`
-- `gemini-embedding-001` (default)
-- `text-embedding-005`
-- `text-multilingual-embedding-002`
+See the [Gemini API model documentation](https://ai.google.dev/gemini-api/docs/models) for Google AI Studio, and the [Vertex AI model documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for Vertex AI.
 
 <details>
   <summary>Deprecated models</summary>
