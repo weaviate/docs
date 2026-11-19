@@ -69,16 +69,19 @@ An HNSW index comprises a connection graph as well as the vectors. Quantization 
 
 #### Recall
 
-Recall measures how well an algorithm finds true positive matches in a data set.
+For approximate nearest-neighbor search, measure recall as top-k overlap with an exact reference. This checks how the index approximation, including compression, changes the returned objects. It does not establish that those objects answer the user's question; evaluate application relevance separately.
 
-A compressed vector has less information than the corresponding uncompressed vector. An uncompressed vector that would normally match a search query might be missed if the target information is missing in the compressed vector. That missed match lowers recall.
+A recall percentage from another benchmark does not transfer automatically to your vectors, filters, result limit, quantizer, or search settings. Measure it with representative queries:
 
-Typical recall rates:
+1. Create an uncompressed flat reference and a candidate collection with the index and compression settings you plan to serve. Use the same objects, IDs, vectors, distance metric, and target vector in both. Explicitly disable default quantization for the reference; otherwise it is not a full-precision reference. See [uncompressed vector configuration](../../configuration/compression/uncompressed.md).
+2. Import identical data into both and wait for indexing to finish. An import acknowledgment does not establish that an asynchronous vector index has caught up.
+3. Run the same queries with the same filters and `limit` against both collections. Compare IDs within the same tenant when using multi-tenancy.
+4. For each query, divide the number of shared result IDs by the number of IDs the exact reference returned. If it returns fewer than `limit` eligible objects, use that smaller denominator. If it returns none, investigate the data and filter rather than reporting a recall percentage. Equal-distance ties at the cutoff can change ID overlap without changing distance quality.
+5. Repeat across the query set, then measure latency and throughput at the intended concurrency. Record the dataset, index/quantizer configuration, search settings, hardware, and versions alongside the results.
 
-- PQ: Varies based on configuration
-- SQ: 95-97% recall
-- RQ: 98-99% recall for 8-bit RQ; 4-bit and 1-bit RQ start lower and rely on rescoring
-- BQ: Varies significantly based on data and model characteristics
+For example, if the exact reference returns eight IDs and the candidate returns six of those, recall for that query is `6 / 8 = 0.75`, even when the requested limit is ten.
+
+This procedure covers ordinary single-vector embeddings. Flat does not support multi-vector matrices; do not apply this reference recipe to those workloads without a suitable exact evaluation procedure. Also distinguish an uncompressed flat reference from HNSW's filtered flat-scan fallback: a fallback on a compressed index can still use compressed distances and rescoring, so it is not automatically a full-precision exact reference.
 
 To improve recall with compressed vectors, Weaviate over-fetches a list of candidate vectors during a search. For each item on the candidate list, Weaviate fetches the corresponding uncompressed vector. To determine the final ranking, Weaviate calculates the distances from the uncompressed vectors to the query vector.
 

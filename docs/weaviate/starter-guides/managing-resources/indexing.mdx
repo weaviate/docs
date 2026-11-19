@@ -14,13 +14,14 @@ Vector indexes can use *hot* or *warm* resources, depending on the index type. I
 
 :::tip Indexing recommendations
 
-- For multi-tenant configurations, use a [dynamic index](#dynamic-indexes).
-- Consider the size of your data set when choosing an index type:
-    - If your object count is low, consider a flat index.
-    - For larger data sets, use an HNSW index.
-    - If you are unsure, use a dynamic index.
+- Choose an index for the expected workload per collection or tenant, not from multi-tenancy alone.
+- Confirm the choice with representative vectors, filters, result limits, and concurrency:
+    - Consider flat if scanning the eligible vectors meets the measured latency target.
+    - Consider HNSW when its graph and vector working set fit the memory budget.
+    - Consider [dynamic](#dynamic-indexes) when partitions start small and may grow. Check its async-indexing requirement, one-way conversion, and [documented limitations](../../concepts/indexing/vector-index.md#dynamic-index), and budget for its HNSW stage.
+    - Compare compressed HNSW with [HFresh](#hfresh-indexes) when memory is the constraint. Check the supported distance metrics and vector encoding, and measure recall, latency, and disk use.
 - If you can trade off some accuracy, consider using [compression](./compression.mdx):
-    - For HNSW indexes, [PQ](../../configuration/compression/pq-compression.md)/[SQ](../../configuration/compression/sq-compression.md)/[BQ](../../configuration/compression/bq-compression.md) can reduce memory requirements.
+    - For HNSW indexes, [RQ](../../configuration/compression/rq-compression.md), [PQ](../../configuration/compression/pq-compression.md), [SQ](../../configuration/compression/sq-compression.md), and [BQ](../../configuration/compression/bq-compression.md) can reduce cached vector memory. Measure [recall](./compression.mdx#recall) and total resource use; the graph does not shrink in the same ratio.
     - For flat indexes, [binary quantization (BQ)](../../configuration/compression/bq-compression.md) can improve search speeds.
 - Consider your query needs when configuring inverted indexes:
     - If disk space is not a concern, [index all properties](#property-level-configuration) for searching & filtering.
@@ -67,7 +68,7 @@ import DynamicAsyncRequirements from '/_includes/dynamic-index-async-req.mdx';
 
 [Dynamic indexes](/weaviate/concepts/vector-index#dynamic-index) offer a flexible approach to indexing. A dynamic index starts as a flat index and converts automatically to an HNSW index when the object count reaches a threshold value.
 
-In multi-tenant configurations where different tenants have different object counts, dynamic indexes are a good index choice. Collections with dynamic indexes have less overhead since tenants can use flat indexes when the HNSW index isn't needed.
+Dynamic can defer the HNSW cost for small tenants, but the choice still depends on the expected workload and vector format. Conversion completes asynchronously and only goes from flat to HNSW; deleting objects does not switch it back. Budget for the HNSW stage and review the [documented limitations](../../concepts/indexing/vector-index.md#dynamic-index).
 
 The default index conversion threshold is 10,000 objects. You can configure the threshold value when you create the dynamic index.
 
@@ -97,7 +98,7 @@ import HFreshStatus from '/_includes/feature-notes/hfresh_status.mdx';
 
 [HFresh indexes](/weaviate/concepts/vector-index#hfresh-index) are cluster-based vector indexes that use HNSW for the centroid index. They partition vectors into posting lists (clusters) and search only the most relevant clusters for a query.
 
-HFresh indexes are well-suited when memory efficiency is a priority, especially with high-dimensional vectors. They use mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids. Only the compressed centroid index is kept in memory. The posting lists live on disk, so memory usage stays low even as the collection grows. The trade-off is lower peak query throughput than HNSW, so HFresh is a good fit when you can tolerate higher query latency in exchange for smaller memory requirements.
+HFresh uses mandatory 1-bit rotational quantization (RQ) for postings and 8-bit RQ for centroids. It retains the centroid index, posting metadata, and other runtime state in memory while storing posting-list contents on disk. That layout can reduce RAM requirements, but it does not make memory or latency independent of dataset size. Compare recall, memory, disk use, and query latency with compressed HNSW on your data and storage.
 
 :::tip Tuning
 Start with the default parameters. If recall is too low, increase `searchProbe` or the RQ `rescoreLimit`. Both take effect at runtime.

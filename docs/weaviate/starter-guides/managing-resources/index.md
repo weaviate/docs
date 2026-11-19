@@ -18,7 +18,7 @@ This guide provides an overview of these topics to help you make allocate resour
 
 :::tip Resource management Tips
 
-- Start with the dynamic [index type](#vector-index-types) unless you have a reason not to.
+- Choose an [index type](#vector-index-types) using the expected data per collection or tenant, supported vector format, memory budget, and measured latency.
 - Consider [vector compression](#vector-compression) techniques if some loss of accuracy is acceptable.
     - This will improve query speeds.
     - For HNSW indexes, this will reduce memory usage.
@@ -87,47 +87,55 @@ Effective resource management in Weaviate involves balancing performance, cost, 
 
 The choice of vector index type can have a significant impact on performance and resource usage. Weaviate supports the following index types:
 
-| Index Type | Resource Usage | Performance | Suitable for      | Description |
-|------------|----------------|-------------|-------------------|-------------|
-| HNSW       | 🟥 Hot         | Fast        | Any object count  | A memory-based, fast index ([read more](./indexing.mdx#hnsw-indexes)) |
-| Flat       | 🟨 Warm        | Medium      | &lt;~10k objects    | A disk-based, brute-force index ([read more](./indexing.mdx#flat-indexes)) |
-| Dynamic    | Depends        | Depends     | Any object count  | Transitions from flat to HNSW index at a specified threshold ([read more](./indexing.mdx#dynamic-indexes)) |
-| HFresh     | 🟨 Warm        | Fast        | Large collections | A cluster-based index with memory efficiency for large datasets ([read more](./indexing.mdx#hfresh-indexes)) |
+| Index type | Memory and storage | When to evaluate it |
+| --- | --- | --- |
+| [HNSW](./indexing.mdx#hnsw-indexes) | Resident graph and applicable vector caches | The working set fits with room for import and query peaks |
+| [Flat](./indexing.mdx#flat-indexes) | Disk-backed vectors; no HNSW graph | Scanning eligible vectors meets the latency target at the expected size |
+| [Dynamic](./indexing.mdx#dynamic-indexes) | Starts flat, then incurs HNSW costs after conversion | Collections or tenants start small and may grow |
+| [HFresh](./indexing.mdx#hfresh-indexes) | Resident centroid index and metadata; disk-backed posting lists | The workload needs a smaller RAM working set and can tolerate posting-list reads |
 
-The choice of index type depends on the number of objects and the desired performance. As a rule of thumb, use the following guidelines for a multi-tenant collection:
+Use measurements rather than fixed object counts. The following chart gives starting points, not performance guarantees:
 
 ```mermaid
 flowchart LR
     %% Define nodes and connections
     subgraph vectorIndex ["Vector Index Selection"]
         direction LR
-        multiTenant{"Is multi-tenancy<br> enabled?"}
-        objCount{"Does the collection have<br> more than 100k objects?"}
-        stayUnder{"Is the collection likely to stay<br> at under 100k objects?"}
+        multiVector{"Multi-vector<br> embeddings?"}
+        flatLatency{"Does a flat scan meet<br> the measured latency target<br> at the expected size?"}
+        hnswMemory{"Does the HNSW working set<br> fit the memory budget?"}
+        growing{"Do partitions start small<br> and grow, with async<br> indexing acceptable?"}
 
-        multiTenant -->|No| objCount
-        multiTenant -->|Yes| useDynamic["Use Dynamic"]
-        objCount -->|Yes| useHNSW["Use HNSW"]
-        objCount -->|No| stayUnder
-        stayUnder -->|Yes| useFlat["Use Flat"]
-        stayUnder -->|"No/Unsure"| useDynamic["Use Dynamic"]
+        multiVector -->|Yes| checkSupport["Check index and<br> encoding support"]
+        multiVector -->|No| flatLatency
+        flatLatency -->|Yes| useFlat["Evaluate flat"]
+        flatLatency -->|No| hnswMemory
+        hnswMemory -->|No| useHfresh["Compare compressed<br> HNSW and HFresh"]
+        hnswMemory -->|Yes| growing
+        growing -->|Yes| useDynamic["Evaluate dynamic"]
+        growing -->|No| useHNSW["Evaluate HNSW"]
     end
 
     %% Style nodes
-    style multiTenant fill:#ffffff,stroke:#B9C8DF,color:#130C49
-    style objCount fill:#ffffff,stroke:#B9C8DF,color:#130C49
-    style stayUnder fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style multiVector fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style flatLatency fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style hnswMemory fill:#ffffff,stroke:#B9C8DF,color:#130C49
+    style growing fill:#ffffff,stroke:#B9C8DF,color:#130C49
 
     %% Terminal nodes
     style useHNSW fill:#ffffff,stroke:#61BD73,color:#130C49
     style useFlat fill:#ffffff,stroke:#61BD73,color:#130C49
     style useDynamic fill:#ffffff,stroke:#61BD73,color:#130C49
+    style useHfresh fill:#ffffff,stroke:#61BD73,color:#130C49
+    style checkSupport fill:#ffffff,stroke:#D6A400,color:#130C49
 
     %% Style subgraph
     style vectorIndex fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-If you are unsure which index type to use, the dynamic index type is a good starting point, as it automatically transitions from a flat to an HNSW index based on the number of objects.
+Check the [supported multi-vector/index combinations](../../configuration/compression/multi-vectors.md) before following the single-vector path: flat and dynamic do not support multi-vector embeddings, and HFresh requires MUVERA encoding. For dynamic, review the [documented limitations](../../concepts/indexing/vector-index.md#dynamic-index), async-indexing requirement, and one-way conversion, and budget for the HNSW stage.
+
+Measure approximate recall, latency, throughput, peak memory, and disk use with representative vectors, filters, result limits, and concurrency. See [Resource planning](../../concepts/resources.md) and [measuring recall](./compression.mdx#recall).
 
 - [Starter guide: indexes](./indexing.mdx)
 - [How-to: Set the vector index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
@@ -241,7 +249,7 @@ Consider a strategy of deactivating tenants that are not frequently accessed, an
 
 ### Best Practices
 
-- Start with the dynamic [index type](#vector-index-types) for new collections. This is particularly useful for multi-tenant collections, as it allows each tenant to use the most appropriate index type.
+- Use the [index-selection workflow](#vector-index-types) for new collections. Multi-tenancy alone does not make dynamic the best choice; measure each tenant's expected workload and budget for growth.
 - Use [vector compression](#vector-compression) techniques to optimize storage and query performance, especially for large collections or tenants.
 - Conduct thorough testing when changing index types or compression methods to ensure performance meets your requirements.
 
