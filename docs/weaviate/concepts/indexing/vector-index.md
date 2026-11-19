@@ -9,7 +9,7 @@ slug: /weaviate/concepts/vector-index
 
 What is vector indexing? It's a key component of vector databases that helps to [significantly **increase the speed** of the search process of similarity search](https://weaviate.io/blog/vector-search-explained) with only a minimal tradeoff in search accuracy ([HNSW index](#hierarchical-navigable-small-world-hnsw-index)), or efficiently store many subsets of data in a small memory footprint ([flat index](#flat-index)). The [dynamic index](#dynamic-index) can even start off as a flat index and then dynamically switch to the HNSW index as it scales past a threshold.
 
-Weaviate's vector-first storage system takes care of all storage operations with a vector index. Storing data in a vector-first manner not only allows for semantic or context-based search, but also makes it possible to store _very_ large amounts of data without decreasing performance (assuming scaled well horizontally or having sufficient shards for the indexes).
+Vector indexes organize embeddings for similarity retrieval; object and property storage are separate. Index choice, data distribution, hardware, and workload affect performance as data grows. Horizontal scaling and sharding do not guarantee unchanged query latency.
 
 Weaviate supports these vector index types:
 
@@ -66,7 +66,7 @@ HNSW, or "Hierarchical Navigable Small World", is the most common graph index ty
 
 They are very scalable, allow incremental updates, and efficient for high-dimensional vectors.
 
-This is the default index type in Weaviate.
+HNSW is the built-in fallback when a vector index is configured, unless the server specifies another default index type. This does not mean every collection has a vector index.
 
 ### Tree-based indexes
 
@@ -92,7 +92,7 @@ The first method is the HNSW index.
 
 ## Hierarchical Navigable Small World (HNSW) index
 
-**Hierarchical Navigable Small World (HNSW)** is an algorithm that works on multi-layered graphs. It is also an index type, and refers to vector indexes that are created using the HNSW algorithm. HNSW indexes enable very fast queries, but rebuilding the index when you add new vectors can be resource intensive.
+**Hierarchical Navigable Small World (HNSW)** is an algorithm that works on multi-layered graphs. It is also an index type, and refers to vector indexes that are created using the HNSW algorithm. HNSW indexes support fast approximate queries. New vectors are inserted incrementally; finding neighbors and maintaining graph connections can still be resource intensive.
 
 Weaviate's `hnsw` index is a [custom implementation](../../more-resources/faq.md#q-does-weaviate-use-hnswlib) of the Hierarchical Navigable Small World ([HNSW](https://arxiv.org/abs/1603.09320)) algorithm that offers full [CRUD-support](https://db-engines.com/en/blog_post/87).
 
@@ -116,16 +116,11 @@ HNSW is an in-memory index, where each node in the graph as well as each edge be
 
 This means that the size of the index in memory is directly proportional to the number of vectors in the index, as well as the number of connections between vectors.
 
-The size of an HNSW index is dominated by the number of vectors; take a look at the table below for an example:
+Vector memory depends on dimensions, data type, compression, and cache settings. Graph memory depends on connections, layers, node metadata, and allocation overhead. Layer zero allows up to `2 * maxConnections`; upper layers allow `maxConnections` per node. A fixed bytes-per-edge multiplier does not capture the full resident graph cost. See [Resource planning](../resources.md#an-example-calculation) for a scoped sizing example.
 
-| Component | Size derivation | Typical size | Size @1M vectors | Size @100M vectors |
-| --- | --- | --- | --- | --- |
-| Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
-| Edge | 10B x 20 connections | 200B | 200MB | 20GB |
+[Quantization](../vector-quantization.md) reduces vector memory, not graph memory. The graph can therefore become a larger share of memory after compression. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps posting-list contents on disk while retaining its centroid index and other metadata in memory.
 
-As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps only a compressed centroid index in memory, which can dramatically reduce the memory footprint.
-
-HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
+HNSW traversal visits only a subset of nodes, moving from sparse upper layers toward layer zero. This reduces distance evaluations; it does not mean that only the highest graph layer is resident. The in-memory graph includes layer-zero and upper-layer adjacency, while vector representations are managed separately through the applicable cache and compression settings.
 
 Have another look at the diagram; it demonstrates how the HNSW algorithm searches. The search vector in the top layer connects to a partial result in layer one. The objects in layer one lead HNSW to the result set in layer zero. This allows HNSW to skip objects that are unrelated to the search query.
 
@@ -145,7 +140,7 @@ The `ef` parameter dictates the size of the dynamic list used by the HNSW algori
 
 In contrast, a lower `ef` makes the search faster but might compromise on accuracy. This balance is crucial in scenarios where either speed or accuracy is a priority. For instance, in applications where rapid responses are critical, a lower `ef` might be preferable, even at the expense of some accuracy. Conversely, in analytical or research contexts where precision is paramount, a higher `ef` would be more suitable, despite the increased query time.
 
-`ef` can be configured explicitly or dynamically. This feature is particularly beneficial in environments with varying query patterns. When `ef` is configured dynamically, Weaviate optimizes the balance between speed and recall based on real-time query requirements.
+`ef` can be configured explicitly or dynamically. This feature is particularly beneficial in environments with varying query patterns. When `ef` is configured dynamically, Weaviate calculates it deterministically from the requested result limit and the configured bounds and factor.
 
 To enable dynamic `ef`, set `ef`: -1. Weaviate adjusts the size of the ANN list based on the query response limit. The calculation also takes into account the values of `dynamicEfMin`, `dynamicEfMax`, and `dynamicEfFactor`.
 
@@ -157,28 +152,28 @@ The length of the list is determined by the query response limit that you set in
 
 - `dynamicEfMin` sets a lower bound on the list length.
 - `dynamicEfMax` sets an upper bound on the list length.
-- `dynamicEfFactor` sets a range for the list.
+- `dynamicEfFactor` multiplies the requested result limit.
 
-The dynamic list size will be set as the query limit multiplied by `dynamicEfFactor`, modified by a minimum of `dynamicEfMin` and a maximum of `dynamicEfMax`.
+For valid minimum/maximum settings, multiply the query limit by `dynamicEfFactor`, clamp to `dynamicEfMin`/`dynamicEfMax`, and then apply the query limit as a final floor.
 
 In code, this can be expressed as:
 
 ```python
-ef = min(max(dynamicEfMin, queryLimit * dynamicEfFactor), dynamicEfMax)
+ef = max(queryLimit, min(max(dynamicEfMin, queryLimit * dynamicEfFactor), dynamicEfMax))
 ```
 
-To keep search recall high, the actual dynamic `ef` value stays above `dynamicEfMin` even if the query limit is small enough to suggest a lower value.
+The calculated dynamic `ef` is at least `dynamicEfMin` for valid minimum/maximum settings, even if the query limit multiplied by the factor is smaller.
 
-To keep search speed reasonable even when retrieving large result sets, the dynamic `ef` value is limited to `dynamicEfMax`. Weaviate doesn't exceed `dynamicEfMax` even if the query limit is large enough to suggest a higher value. If the query limit is higher than `dynamicEfMax`, `dynamicEfMax` does not have any effect. In this case, dynamic `ef` value is equal to the query limit.
+`dynamicEfMax` caps the calculated value only before the final query-limit floor. If the query limit exceeds `dynamicEfMax`, the resulting `ef` equals the query limit.
 
 To determine the length of the ANN list, Weaviate multiples the query limit by `dynamicEfFactor`. The list range is modified by `dynamicEfMin` and `dynamicEfMax`.
 
-Consider this GraphQL query that sets a limit of 4.
+Consider this vector-search query with a limit of 4. Its illustrative three-dimensional query vector must match the configured target dimension.
 
 ```graphql
 {
   Get {
-    JeopardyQuestion(limit: 4) {
+    JeopardyQuestion(limit: 4, nearVector: {vector: [0.1, 0.2, 0.3]}) {
       answer
       question
     }
@@ -189,12 +184,14 @@ Consider this GraphQL query that sets a limit of 4.
 Imagine the collection has dynamic `ef` configured.
 
 ```json
+{
   "vectorIndexConfig": {
-     "ef": -1,
-     "dynamicEfMin": 5
-     "dynamicEfMax": 25
-     "dynamicEfFactor": 10
+    "ef": -1,
+    "dynamicEfMin": 5,
+    "dynamicEfMax": 25,
+    "dynamicEfFactor": 10
   }
+}
 ```
 
 The resulting search list has these characteristics.
@@ -202,7 +199,7 @@ The resulting search list has these characteristics.
 - A potential length of 40 objects ( ("dynamicEfFactor": 10) \* (limit: 4) ).
 - A minimum length of 5 objects ("dynamicEfMin": 5).
 - A maximum length of 25 objects ("dynamicEfMax": 25).
-- An actual size of 5 to 25 objects.
+- A calculated `ef` of **25**: `max(4, min(max(5, 4 * 10), 25))`. This is a search budget, not a guaranteed result count.
 
 If you use the [`docker-compose.yml` file from Weaviate](/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
@@ -234,7 +231,7 @@ import DynamicAsyncRequirements from '/\_includes/dynamic-index-async-req.mdx';
 
 The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale. When memory is your main constraint, the [HFresh index](#hfresh-index) is another option: it avoids keeping the full index in memory, trading some query speed for much lower memory use.
 
-By configuring a dynamic index, you can automatically switch from flat to HNSW indexes. This switch occurs when the object count exceeds a specified threshold (by default 10,000). This functionality only works with async indexing enabled. When the threshold is hit while importing, all the data piles up in the async queue, the HNSW index is constructed in the background and when ready the swap from flat to HNSW is completed.
+A dynamic index upgrades from flat to HNSW in one direction: a successfully completed upgrade does not revert to flat when the object count decreases. The object-count threshold (by default 10,000) triggers the upgrade process; it is not a synchronous switch at exactly that count. This functionality requires async indexing. Weaviate builds the HNSW index in the background before switching to it. Budget for temporary upgrade and compression work as well as the steady-state HNSW footprint.
 
 Currently, this is only a one-way upgrade from a flat to an HNSW index, it does not support changing back to a flat index even if the object count goes below the threshold due to deletion.
 
@@ -256,7 +253,7 @@ HFresh works by:
 
 This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (number of posting lists each vector is added to).
 
-Only the centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick a few relevant postings, reads only those postings from disk, and rescores the top candidates against the uncompressed vectors. Because only a small subset of the data is read per query, disk I/O stays bounded and latency stays predictable as the dataset grows. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
+The centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). Posting-list contents are stored on disk, compressed with 1-bit RQ. Version and posting metadata, buffers, caches, and runtime state also consume RAM. A query searches the in-memory centroid index to select relevant postings, reads those postings, and rescores the top candidates against the uncompressed vectors. This limits the data searched per query, but does not guarantee fixed I/O or latency as the dataset grows: search settings, recall targets, cache state, storage performance, and concurrent load matter. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
 
 HFresh is particularly well-suited for:
 
@@ -286,9 +283,9 @@ For the configuration parameters, see [Multi-vector embeddings on HFresh](../../
 
 ## Vector cache considerations
 
-For optimal search and import performance, previously imported vectors need to be in memory. A disk lookup for a vector is orders of magnitudes slower than memory lookup, so the disk cache should be used sparingly. However, Weaviate can limit the number of vectors in memory. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created.
+For HNSW workloads, keeping searched vector representations in memory avoids storage lookups. `vectorCacheMaxObjects` sets an entry-count threshold for each applicable vector-index cache, defaulting to one trillion (`1e12`). The collection setting is instantiated separately for shards and named-vector indexes, with additional copies for replicas. It is not a byte budget or a cap on total collection, process, or cluster memory. Cache maintenance is not an instantaneous allocation limit. See [Resource planning](../resources.md#vector-cache) for sizing considerations.
 
-During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drops drastically when there isn't enough memory to hold all of the vectors in the cache.
+For HNSW, including the HNSW stage of a dynamic index, insertion performs graph searches and benefits from an adequately sized vector cache. Size it for the representation in use: compressed HNSW uses compressed-vector storage/cache rather than requiring every original float vector in RAM. Measure import behavior against your memory budget. This is not an all-vectors-in-RAM requirement for flat or HFresh indexes.
 
 After import, when your workload is mostly querying, experiment with vector cache limits that are less than your total dataset size.
 
@@ -296,7 +293,7 @@ Vectors that aren't currently in cache are added to the cache if there is still 
 
 ## Asynchronous indexing
 
-This feature relates to the vector index, specifically only to the HNSW and HFresh indexes.
+This feature relates to HNSW and HFresh vector indexing, and is also required by the dynamic index.
 
 Asynchronous indexing can be enabled by opting in as follows:
 
@@ -331,27 +328,23 @@ Yes, you can read more about it in [vector quantization (compression)](../vector
 
 ### Which vector index is right for me?
 
-Here's a quick guide to choosing the right index:
+Choose using the expected data per collection or tenant, supported vector format, memory budget, and measured latency rather than a universal object-count threshold:
 
-- **Flat index**: Best for SaaS products where each end user (tenant) has their own isolated, small dataset. Fast for small collections with a known size for minimal memory overhead.
-
-- **HNSW index**: Best for large collections requiring high query throughput and low latency. Requires more memory but provides excellent search performance.
-
-- **Dynamic index**: Best for collections that start small but may grow significantly over time. Automatically transitions from flat to HNSW as data scales.
-
-- **HFresh index**: Best when memory efficiency is the priority, especially with high-dimensional vectors. Suitable from small collections up to very large ones.
+- **Flat index**: Consider it when scanning the eligible vectors meets the latency target. It avoids the HNSW graph, but dimensions, filters, caches, and storage affect the cost of the scan.
+- **HNSW index**: Consider it when the graph and applicable vector working set fit in memory with headroom for concurrent queries and imports. Measure approximate recall and latency together.
+- **Dynamic index**: Consider it when partitions start small and may grow. It requires async indexing and only converts from flat to HNSW; budget for the HNSW stage and review its [documented limitations](#dynamic-index).
+- **HFresh index**: Compare it with compressed HNSW when memory is the constraint. It supports `cosine` and `l2-squared`, and its `replicas` setting controls posting-list assignments, not the database replication factor. Measure recall, latency, and disk use on your storage.
 
 #### Comparison between index types
 
-| Feature                       | Flat                             | HNSW                        | HFresh                                              |
-| ----------------------------- | -------------------------------- | --------------------------- | --------------------------------------------------- |
-| Multi-vector support          | No                               | Yes, MUVERA optional        | Yes, MUVERA required                                |
-| Memory usage                  | Very low                         | High                        | Low                                                 |
-| Search speed (small datasets) | Fast                             | Very fast                   | Moderate                                            |
-| Search speed (large datasets) | Slow                             | Very fast                   | Fast                                                |
-| Disk usage                    | Low                              | Moderate                    | Moderate to high                                    |
-| Maintenance                   | None                             | Costlier as the graph grows | Self-balancing in the background, no full rebuilds  |
-| Best for                      | Small collections, multi-tenancy | Large collections, high QPS | Memory-constrained deployments, any size (disk-backed) |
+| Feature | Flat | HNSW | HFresh |
+| --- | --- | --- | --- |
+| Multi-vector support | No | Yes, MUVERA optional | Yes, MUVERA required |
+| Resident structures | Applicable caches and runtime state; no HNSW graph | Graph, applicable vector representations, and runtime state | Centroid index, posting metadata, buffers, and runtime state |
+| Query work | Scan eligible vectors | Approximate graph traversal, with applicable storage reads and rescoring | Centroid search, posting-list reads, and rescoring |
+| Capacity considerations | Scan latency and optional code-cache size | Graph and cache memory, plus import/query peaks | Centroid and metadata growth, posting storage, cache state, and I/O |
+
+There is no fixed latency or throughput ordering across these indexes for every workload. Use the same quality target, filters, result limits, concurrency, and deployment conditions when comparing them.
 
 Note that the vector index type parameter only specifies how the vectors of data objects are _indexed_. The index is used for data retrieval and similarity search.
 
@@ -365,7 +358,7 @@ All of [the distance metrics](/weaviate/config-refs/distances.md), such as cosin
 
 ### How to configure the vector index type in Weaviate?
 
-The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/indexing/vector-index.mdx).
+The index type can be specified in the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type), according to available [vector index settings](../../config-refs/indexing/vector-index.mdx). Each named vector has its own vectorizer, index type, and index configuration. Independent named targets differ from multi-vector matrices of token/patch embeddings within one target; see [vector configuration](../../manage-collections/vector-config.mdx).
 
 ### When to skip indexing
 
@@ -373,7 +366,7 @@ There are situations where it doesn't make sense to vectorize a collection. For 
 
 Importing duplicate vectors into HNSW is very expensive. The import algorithm checks early on if a candidate vector's distance is greater than the worst candidate's distance. When there are lots of duplicate vectors, this early exit condition is never met so each import or query results in an exhaustive search.
 
-To avoid indexing a collection, set `"skip"` to `"true"`. By default, collections are indexed.
+For a configured legacy HNSW index, `"skip": true` disables vector indexing; use a boolean, not a string. From v1.40, creating a collection with no vector parameters instead creates it without a vector index. Explicit self-provided vector configuration is different, and existing collections retain their settings. See [collection vector defaults](../../config-refs/collections.mdx#no-vector).
 
 ### What ANN algorithms exist?
 
