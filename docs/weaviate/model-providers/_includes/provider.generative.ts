@@ -76,7 +76,6 @@ await client.collections.create({
     // model: 'claude-haiku-4-5',
     // maxTokens: 512,
     // temperature: 0.7,
-    // stopSequences: ['\n\n'],
     // topP: 0.9,
     // topK: 5,
   }),
@@ -198,15 +197,11 @@ await client.collections.create({
 response = myCollection.generate.nearText("A holiday film", {
   // highlight-start
   groupedTask: "Write a tweet promoting these two movies",
-  config: generativeParameters.anthropic({
+  config: generativeParameters.anyscale({
     // These parameters are optional
-    // baseURL: "https://api.anthropic.com",
-    // model: "claude-haiku-4-5",
-    // maxTokens: 512,
+    // baseURL: "<anyscale-endpoint-url>",
+    // model: "meta-llama/Llama-2-70b-chat-hf",
     // temperature: 0.7,
-    // stopSequences: ["\n\n"],
-    // topP: 0.9,
-    // topK: 5,
   }),
   // highlight-end
 
@@ -290,7 +285,7 @@ response = await myCollection.generate.nearText("Movies", {
   config: generativeParameters.aws({
     region: 'us-east-1',
     service: 'bedrock', // You can also use sagemaker
-    model: 'cohere.command-r-plus-v1:0',
+    model: 'amazon.nova-lite-v1:0',
   }),
 }, {
   limit: 5,
@@ -345,7 +340,6 @@ await client.collections.create({
     // These parameters are optional
     // model: 'command-r',
     // temperature: 0.7,
-    // maxTokens: 500,
     // k: 5,
     // stopSequences: ['\n\n'],
   }),
@@ -414,7 +408,7 @@ await client.collections.create({
     // These parameters are optional
     model: 'v2',
     // temperature: 0.7,
-    // maxTokens: 1024,
+    // maxNewTokens: 1024,
     // topP: 0.9,
     // systemPrompt: 'You are a helpful assistant',
     // avoidCommentary: true,
@@ -433,7 +427,7 @@ response = await myCollection.generate.nearText("A holiday film", {
     // These parameters are optional
     // model: 'v2',
     // temperature: 0.7,
-    // maxTokens: 1024,
+    // maxNewTokens: 1024,
     // topP: 0.9,
     // systemPrompt: 'You are a helpful assistant',
     // avoidCommentary: true,
@@ -494,7 +488,6 @@ response = await myCollection.generate.nearText("A holiday film", {
     // maxTokens: 500,
     // temperature: 0,
     // topP: 0.7,
-    // topK: 0.1,
   }),
   // highlight-end
 }, {
@@ -525,7 +518,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.friendliai({
-    model: 'meta-llama-3.1-70b-instruct'
+    model: 'zai-org/GLM-5.3-Flash'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -540,10 +533,10 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.friendliai({
-    model: 'meta-llama-3.1-70b-instruct',
+    model: 'zai-org/GLM-5.3-Flash',
     maxTokens: 500,
     temperature: 0.7,
-    baseURL: 'https://inference.friendli.ai'
+    baseURL: 'https://api.friendli.ai/serverless'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -556,10 +549,10 @@ response = await myCollection.generate.nearText("A holiday film", {
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.friendliai({
     // These parameters are optional
-    // model: 'meta-llama-3.1-70b-instruct',
+    // model: 'zai-org/GLM-5.3-Flash',
     // maxTokens: 500,
     // temperature: 0.7,
-    // baseURL: 'https://inference.friendli.ai'
+    // baseURL: 'https://api.friendli.ai/serverless'
   }),
   // highlight-end
 }, {
@@ -594,7 +587,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.google({
     projectId: '<google-cloud-project-id>',  // Required for Vertex AI
-    modelId: 'gemini-2.5-flash'
+    modelId: 'gemini-3.5-flash-lite'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -609,7 +602,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.google({
-    modelId: 'gemini-2.5-flash',
+    modelId: 'gemini-3.5-flash-lite',
   }),
   // highlight-end
   // Additional parameters not shown
@@ -643,7 +636,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   config: generativeParameters.google({
     // These parameters are optional
     // projectId: '<google-cloud-project-id>',  // Required for Vertex AI
-    // modelId: '<google-model-id>',
+    // model: '<google-model-id>',
     // apiEndpoint: '<google-api-endpoint>',
     // temperature: 0.7,
     // topK: 5,
@@ -1104,7 +1097,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.xai({
-    model: 'grok-2-latest'
+    model: 'grok-4.7'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -1120,8 +1113,8 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.xai({
     // // These parameters are optional
-    // baseURL: 'https://api.x.ai/v1',
-    // model: 'grok-2-latest',
+    // baseURL: 'https://api.x.ai',
+    // model: 'grok-4.7',
     // maxTokens: 512,
     // temperature: 0.7,
   }),
@@ -1139,8 +1132,8 @@ response = await myCollection.generate.nearText("A holiday film", {
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.xai({
     // These parameters are optional
-    // baseURL: 'https://api.x.ai/v1',
-    // model: 'grok-2-latest',
+    // baseURL: 'https://api.x.ai',
+    // model: 'grok-4.7',
     // maxTokens: 512,
     // temperature: 0.7,
   }),

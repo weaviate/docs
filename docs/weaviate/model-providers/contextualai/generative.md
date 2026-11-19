@@ -111,7 +111,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -134,7 +134,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -276,10 +276,11 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-Currently, the following Contextual AI generative AI models are available for use with Weaviate:
+Weaviate does not validate the model name, so you can set any model that your Contextual AI account can reach.
 
-- `v1`
-- `v2` (default)
+The server default is `v2`.
+
+See the [Contextual AI generate API reference](https://docs.contextual.ai/api-reference/generate/generate) for the list of available models.
 
 ## Further resources
 

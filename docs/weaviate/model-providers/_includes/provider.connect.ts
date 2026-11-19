@@ -97,7 +97,7 @@ const client = await weaviate.connectToWeaviateCloud(
       'X-Friendli-Token': friendliApiKey,
       // END FriendliInstantiation  // END FriendliDedicatedInstantiation
       // START FriendliDedicatedInstantiation
-      'X-Friendli-Baseurl': 'https://inference.friendli.ai/dedicated',
+      'X-Friendli-Baseurl': 'https://api.friendli.ai/dedicated',
       // END FriendliDedicatedInstantiation
       // START GoogleInstantiation  // START GoogleVertexInstantiation
       'X-Vertex-Api-Key': vertexApiKey,

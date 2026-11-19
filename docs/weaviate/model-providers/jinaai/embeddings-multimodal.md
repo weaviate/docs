@@ -102,7 +102,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+You can specify [a model](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -125,7 +125,7 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-The [default model](#available-models) is used if you do not specify one.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -142,7 +142,7 @@ The following examples show how to configure Jina AI-specific options.
 
 - `model`: The model name.
 - `dimensions`: The number of dimensions for the model.
-  - Note that [not all models](#available-models) support this parameter.
+  - [Not all models](#available-models) support this parameter.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -295,11 +295,15 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `jina-clip-v2` (server default)
-    - This model is a multilingual, multimodal model using [Matryoshka Representation Learning](https://arxiv.org/abs/2205.13147).
-    - It will accept a `dimensions` parameter, which can be any integer between (and including) 64 and 1024. The default value is 1024.
-- `jina-clip-v1`
-    - This model will always return a 768-dimensional embedding.
+Weaviate does not validate the model name, so you can set any model that your Jina AI account can reach.
+
+The server default is `jina-clip-v2`.
+
+See the [Jina AI models page](https://jina.ai/models/) for the list of available models.
+
+`jina-clip-v2` is a multilingual multimodal model trained with [Matryoshka Representation Learning](https://arxiv.org/abs/2205.13147). It accepts a `dimensions` value from 64 to 1024. The default is 1024.
+
+`jina-clip-v1` always returns a 768-dimensional embedding.
 
 ## Further resources
 

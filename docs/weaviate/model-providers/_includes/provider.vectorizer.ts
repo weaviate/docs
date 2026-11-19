@@ -924,7 +924,7 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecNvidia({
       name: 'title_vector',
       sourceProperties: ['title'],
-      model: "nvidia/nv-embed-v1"
+      model: "nvidia/nemotron-3.5-embed-1b"
     })
   ],
   // Additional parameters not shown
@@ -941,7 +941,7 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecNvidia({
       name: 'title_vector',
       sourceProperties: ['title'],
-      model: "nvidia/nv-embed-v1",
+      model: "nvidia/nemotron-3.5-embed-1b",
       baseURL: "https://integrate.api.nvidia.com"
     })
   ],
@@ -981,7 +981,7 @@ await client.collections.create({
   vectorizers: [
     weaviate.configure.vectors.multi2VecNvidia({
       name: 'title_vector',
-      model: "nvidia/nv-embed-v1",
+      model: "nvidia/nvclip",
       imageFields: [{
         name: "poster",
         weight: 0.9
@@ -1005,7 +1005,7 @@ await client.collections.create({
   vectorizers: [
     weaviate.configure.vectors.multi2VecNvidia({
       name: 'title_vector',
-      model: "nvidia/nv-embed-v1",
+      model: "nvidia/nvclip",
       imageFields: [{
         name: "poster",
         weight: 0.9

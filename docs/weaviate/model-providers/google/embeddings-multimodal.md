@@ -35,7 +35,7 @@ At [import time](#data-import), Weaviate generates multimodal object embeddings 
 Your Weaviate instance must be configured with the Google multimodal vectorizer integration (`multi2vec-google`) module.
 
 :::info Module name change
-`multi2vec-google` was called `multi2vec-palm` in Weaviate versions prior to `v1.27`.
+`multi2vec-google` was previously called `multi2vec-palm`.
 :::
 
 <details>
@@ -144,7 +144,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for the vectorizer to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#vectorizer-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -324,8 +324,15 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-- `gemini-embedding-2` (Vertex AI and Gemini API, added in 1.36.13). Supports text, images, PDFs, and audio (Gemini API only, up to 180 seconds); `3072` dimensions
-- `multimodalembedding@001` (default, Vertex AI only). Supports text, images, and video; dimensions: `128`, `256`, `512`, `1408`
+Weaviate does not validate the model name, so you can set any model that your Google account can reach.
+
+The server default is `multimodalembedding@001`.
+
+See the [Vertex AI multimodal embeddings page](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-multimodal-embeddings) and the [Gemini API embeddings page](https://ai.google.dev/gemini-api/docs/embeddings) for the list of available models.
+
+`multimodalembedding@001` is available on Vertex AI only. It supports text, images and video, with `128`, `256`, `512` or `1408` dimensions.
+
+`gemini-embedding-2` is available on Vertex AI and the Gemini API. It supports text, images, PDFs and audio. Audio works on the Gemini API only, for clips up to 180 seconds. The model has `3072` dimensions by default. Weaviate supports it from `v1.36.13`.
 
 ## Further resources
 
