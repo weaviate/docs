@@ -27,6 +27,26 @@ The Platform Edition includes everything in the Enterprise Edition, plus 'namesp
 
 It is built for platform teams that run Weaviate as a shared service across their organization.
 
+:::caution Namespace operating limits in v1.40.6
+
+Namespace-enabled clusters require:
+
+- GraphQL disabled (`DISABLE_GRAPHQL=true`).
+- RBAC enabled (`AUTHORIZATION_RBAC_ENABLED=true`).
+- `REPLICATION_MAXIMUM_FACTOR=1`.
+
+Each namespace's shards are placed on its single `home_node`, not distributed across storage nodes.
+An explicit `shardingConfig.desiredCount` other than `1` is rejected when creating a collection.
+For non-multi-tenant collections, the shard count is also capped to the single home-node candidate.
+Collection multi-tenancy is separate: a namespaced collection can itself have tenants, whose shards
+are also placed on the namespace's home node.
+
+Enabling namespaces is not an in-place migration for ordinary, non-namespaced collections.
+Startup is refused if any such collections remain. Enable namespaces only on a newly bootstrapped
+cluster or one whose collections are already namespace-qualified.
+
+:::
+
 The Platform Edition has no self-serve trial. To get it, [contact sales](https://weaviate.io/contact). For details, see [Weaviate Platform Edition](https://weaviate.io/platform-edition).
 
 ## How it works

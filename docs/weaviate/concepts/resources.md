@@ -67,6 +67,11 @@ For 5,000,000 vectors with 1,024 dimensions, the dimension payload alone is:
 | Float32 | `5,000,000 * 1,024 * 4 bytes` | 20.48 GB |
 | 8-bit codes | `5,000,000 * 1,024 * 1 byte` | 5.12 GB |
 | 4-bit codes | `5,000,000 * 1,024 * 0.5 bytes` | 2.56 GB |
+| 1-bit [BQ](../configuration/compression/bq-compression.md) codes (opt-in) | `5,000,000 * 1,024 / 8 bytes` | 0.64 GB |
+
+The BQ row illustrates an opt-in encoding, not HNSW RQ configuration or a Cloud default.
+In v1.40.6, BQ packs dimensions into 64-bit blocks; 1,024 dimensions need no padding.
+The row covers dimension payload only, not total physical code storage or a recall estimate.
 
 This is encoding arithmetic, not a measured deployment requirement, resident memory (RSS), cost, or latency estimate. The code sizes exclude quantizer metadata and padding. They also exclude the HNSW graph, objects, inverted indexes, caches, replicas, and runtime headroom listed above. The original float32 vectors remain on disk when compression is enabled. A 4x or 8x reduction in dimension payload is not a 4x or 8x reduction in total RAM.
 

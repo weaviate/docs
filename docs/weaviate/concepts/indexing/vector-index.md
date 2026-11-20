@@ -291,10 +291,10 @@ Vectors that aren't currently in cache are added to the cache if there is still 
 
 This feature relates to the vector index, specifically only to the HNSW and HFresh indexes.
 
-Asynchronous indexing can be enabled by opting in as follows:
+For self-hosted Weaviate, opt in by setting the `ASYNC_INDEXING` environment variable to `true`.
 
-- Open-source users can do this by setting the `ASYNC_INDEXING` environment variable to `true`.
-- Weaviate Cloud users can do this by toggling the `Enable async indexing` switch in the Weaviate Cloud Console.
+On Weaviate Cloud, asynchronous indexing is enabled by default and is not user-configurable.
+See [Default cluster settings](/cloud/manage-clusters/default-settings.mdx#weaviate-database-settings).
 
 With synchronous indexing, the vector index is updated in lockstep with the object store. Updating an HNSW index can be an expensive operation, especially as the size of the index grows. As a result, the indexing operation can be the bottleneck in the system, slowing down the time for user requests to be completed.
 
