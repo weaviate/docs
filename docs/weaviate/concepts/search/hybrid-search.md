@@ -8,17 +8,19 @@ image: og/docs/concepts.jpg
 
 Hybrid search combines [vector search](./vector-search.md) and [keyword search (BM25)](./keyword-search.md) to leverage the strengths of both approaches. This takes into account results' semantic similarity (vector search) and exact keyword relevance (BM25), providing more comprehensive search results.
 
-A hybrid search runs both search types in parallel and combines their scores to produce a final ranking of results. This makes it versatile and robust, suitable for a wide range of search use cases.
+A hybrid search runs its enabled search components in parallel and combines their scores to produce a base ranking. At `alpha=0` or `alpha=1`, only one component runs. Optional result refinement can change the final ranking or selection.
 
 ## How hybrid search works
 
 In Weaviate, a hybrid search performs the following steps:
 
-1. Executes both searches in parallel:
+1. Executes the enabled search components in parallel (at `alpha=0` or `alpha=1`, only one component runs):
    - Vector search to find semantically similar content
    - BM25 search to find keyword matches
-1. Combines the normalized scores using a [fusion method](#fusion-strategies)
-1. Returns results ranked by the combined scores
+1. Combines the result sets using a [fusion method](#fusion-strategies)
+1. Produces a base ranking from the combined scores
+
+Optional [Boost](../../search/boost.md), [MMR diversity selection](../../search/hybrid.md#diversity-selection-mmr), or [reranking](../../search/rerank.md) can refine the candidate ranking or selection. The final response therefore need not remain in fused-score order; these stages cannot recover objects absent from retrieval candidates.
 
 ```mermaid
 %%{init: {
@@ -78,7 +80,7 @@ flowchart LR
 
 Weaviate supports two strategies (`relativeScoreFusion` and `rankedFusion`) for combining vector and keyword search scores:
 
-With `relativeScoreFusion` (default from `v1.24`), each object is scored by *normalizing* the metrics output by the vector search and keyword search respectively. The highest value becomes 1, the lowest value becomes 0, and others end up in between according to this scale. The total score is thus calculated by a scaled sum of normalized vector distance and normalized BM25 score.
+With `relativeScoreFusion` (default from `v1.24`), each retrieved component result set is normalized separately. Higher BM25 scores and higher vector similarity (smaller vector distance) receive larger contributions: the best value becomes 1, the worst becomes 0, and intermediate values are scaled between them. If all values in a component are equal, each receives its full component weight. The final score is the alpha-weighted sum of normalized vector similarity and normalized BM25 score. Normalization uses retrieved candidates, not the entire collection or necessarily just the displayed page.
 
 With `rankedFusion` (default for `v1.23` and lower), each object is scored according to its position in the results for the given search, starting from the highest score for the top-ranked object and decreasing down the order. The total score is calculated by adding these rank-based scores from the vector and keyword searches.
 
@@ -90,7 +92,7 @@ We include a concrete example of the two fusion strategies below.
 
 ### Fusion example
 
-Let's say that a search returns **five objects** with **document id** (from 0 to 4), and **scores** from **keyword** and **vector search**, **ordered by score**:
+Assume `alpha=0.5` (equal component weights), not the server default. A search retrieves **five objects** with **document id** (from 0 to 4). The following tables show component scores **before alpha weighting**. The vector values are higher-is-better similarity scores, not lower-is-better distances. Each row is **ordered by score**:
 
 <table>
   <tr>
@@ -109,7 +111,7 @@ Let's say that a search returns **five objects** with **document id** (from 0 to
 
 #### Ranked fusion
 
-The score depends on the rank of each result and is computed according to `1/(RANK + 60)`, resulting in:
+The unweighted contribution depends on the zero-based rank of each result and is computed as `1/(RANK + 60)`, resulting in:
 
 <table>
   <tr>
@@ -143,13 +145,15 @@ In relative score fusion, the largest score is set to 1 and the lowest to 0, and
   </tr>
   <tr>
     <td>Vector</td>
-    <td>(2): 1.0</td><td>(4): 0.996</td><td>(0): 0.993</td><td>(1): 0.986</td><td>(3): 0.0</td>
+    <td>(2): 1.0</td><td>(4): 0.997</td><td>(0): 0.993</td><td>(1): 0.990</td><td>(3): 0.0</td>
   </tr>
 </table>
 
 The scores therefore reflect the relative distribution of the original scores. For example, the vector search scores of the first 4 documents were almost identical, which is still the case for the normalized scores.
 
 #### Comparison
+
+For each fusion strategy, multiply each component contribution by 0.5 and sum the two contributions per object to obtain the final score for this example.
 
 For the vector search, the scores for the top 4 objects (**IDs 2, 4, 0, 1**) were almost identical, and all of them were good results. While for the keyword search, one object (**ID 1**) was much better than the rest.
 
@@ -170,7 +174,7 @@ The alpha value determines the weight of the vector search results in the final 
 Lower `alpha` towards `0` to give the keyword component more influence.
 
 :::caution Set `alpha` explicitly
-`0.75` is the server default. It applies only when a request reaches Weaviate with no `alpha` value, which is the case for GraphQL, and over gRPC from Weaviate `v1.36.7` and later, which added the ability for a client to leave `alpha` unset.
+`0.75` is the server default. It applies only when a request reaches Weaviate with no `alpha` value, which is possible with current GraphQL and gRPC requests. Exact behavior also depends on the client and server versions.
 
 Client libraries do not all leave `alpha` unset. Depending on your client and your server version, the effective weighting can differ from `0.75`, and in some cases can be a pure keyword search. Set `alpha` explicitly whenever the weighting matters, and check your client library page for its behavior.
 :::
@@ -179,19 +183,15 @@ Client libraries do not all leave `alpha` unset. Depending on your client and yo
 
 Hybrid search supports a maximum vector distance threshold through the `max vector distance` parameter.
 
-This threshold applies only to the vector search component of the hybrid search, allowing you to filter out results that are too dissimilar in vector space, regardless of their keyword search scores.
+When a vector leg runs (`alpha > 0`), the cutoff retains retrieved vector candidates whose distance is at or below the threshold. Keyword candidates survive only if they are also in that retained vector-candidate set, regardless of their keyword scores. This is not an exhaustive distance check of every lexical match or a guarantee that every in-threshold object is returned.
 
-For example, consider a maximum vector distance of `0.3`. This means objects with a vector distance higher than `0.3` will be excluded from the hybrid search results, even if they have high keyword search scores.
+For example, with a maximum vector distance of `0.3` and an enabled vector leg, candidates above `0.3` are excluded even if their keyword scores are high. At `alpha=0`, no vector leg runs and the threshold does not provide vector-distance filtering.
 
-This can be useful when you want to ensure semantic similarity meets a minimum standard while still taking advantage of keyword matching.
-
-There is no equivalent threshold parameter for the keyword (BM25) component of hybrid search or the final combined scores.
-
-This is because BM25 scores are not normalized or bounded like vector distances, making a universal threshold less meaningful.
+There is no equivalent built-in threshold for the raw BM25 score or the final fused score. BM25 scores depend on the query and corpus. Choose vector thresholds for the configured metric and data: vector distances are not universally bounded.
 
 ## Keyword (BM25) search parameters
 
-Hybrid search in Weaviate supports all the parameters available for keyword (BM25) search. This includes, for example, the ability to set the tokenization method, stopwords, BM25 parameters (k1, b), [search operators](./keyword-search.md#keyword-search-operators) (`and`, `or`, or `and_cross`), specific properties to search and/or to boost particular properties.
+The keyword component uses the collection/property lexical configuration, including tokenization, stopwords, and BM25 parameters (`k1`, `b`). These are not all per-query controls. At query time, select searchable properties, apply property boosts, and choose supported [search operators](./keyword-search.md#keyword-search-operators) (`and`, `or`, or `and_cross`). See the keyword page for index-format and analyzer compatibility qualifications.
 
 For more information on these parameters, see the [keyword search page](./keyword-search.md).
 

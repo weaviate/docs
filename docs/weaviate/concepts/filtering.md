@@ -12,7 +12,7 @@ Weaviate provides powerful filtered vector search capabilities, allowing you to 
 
 Filtered vector search in Weaviate is based on the concept of pre-filtering. This means that the filter is constructed before the vector search is performed. Unlike some pre-filtering implementations, Weaviate's pre-filtering does not require a brute-force vector search and is highly efficient.
 
-Starting in `v1.34`, Weaviate uses the [`ACORN`](#acorn) filter strategy as the default. This filtering method significantly improves performance for large datasets, especially when the filter has low correlation with the query vector. Because the [HFresh index](./indexing/vector-index.md#hfresh-index) uses an HNSW index for its centroids, it also benefits from ACORN when routing filtered queries.
+[`ACORN`](#acorn) is the built-in default for new HNSW filter configurations, subject to server defaults and explicit per-index settings. Its benefits depend on selectivity and correlation with the query vector. Because the [HFresh index](./indexing/vector-index.md#hfresh-index) uses an HNSW index for its centroids, it also benefits from ACORN when routing filtered queries.
 
 ## Post-Filtering vs Pre-Filtering
 
@@ -21,7 +21,7 @@ Systems that cannot make use of pre-filtering typically have to make use of post
 1. You cannot easily predict how many elements will be contained in the search, as the filter is applied to an already reduced list of candidates.
 2. If the filter is very restrictive, i.e. it matches only a small percentage of data points relative to the size of the data set, there is a chance that the original vector search does not contain any match at all.
 
-The limitations of post-filtering are overcome by pre-filtering. Pre-Filtering describes an approach where eligible candidates are determined before a vector search is started. The vector search then only considers candidates that are present on the "allow" list.
+Pre-filtering determines result eligibility before a vector search starts. Only objects on the "allow" list are eligible for results; graph traversal can still visit nonmatching nodes, depending on the strategy.
 
 :::note
 Some authors make a distinction between "pre-filtering" and "single-stage filtering" where the former implies a brute-force search and the latter does not. We do not make this distinction, as Weaviate does not have to resort to brute-force searches, even when pre-filtering due to the its combined inverted index and HNSW index.
@@ -32,7 +32,7 @@ Some authors make a distinction between "pre-filtering" and "single-stage filter
 In the section about Storage, [we have described in detail which parts make up a shard in Weaviate](./storage.md). Most notably, each shard contains an inverted index right next to the HNSW index. This allows for efficient pre-filtering. The process is as follows:
 
 1. An inverted index (similar to a traditional search engine) is used to create an allow-list of eligible candidates. This list is essentially a list of `uint64` ids, so it can grow very large without sacrificing efficiency.
-2. A vector search is performed where the allow-list is passed to the HNSW index. The index will move along any node's edges normally, but will only add ids to the result set that are present on the allow list. The exit conditions for the search are the same as for an unfiltered search: The search will stop when the desired limit is reached and additional candidates no longer improve the result quality.
+2. A vector search is performed where the allow-list is passed to the HNSW index. Only allow-listed objects are eligible for results. The traversal depends on the selected strategy: sweeping can traverse nonmatching nodes, while ACORN and PathSeer adapt neighborhood exploration. Search terminates according to candidate quality and search budgets, not simply after filling the requested result count.
 
 ## Filter strategy
 
@@ -46,7 +46,7 @@ The `ACORN` algorithm is designed to speed up filtered searches with the [HNSW i
 
 - Objects that do not meet the filters are ignored in distance calculations.
 - The algorithm reaches the relevant part of the HNSW graph faster, by using a multi-hop approach to evaluate the neighborhood of candidates.
-- Additional entrypoints matching the filter are randomly seeded to speed up convergence to the filtered zone.
+- Additional entrypoints matching the filter are seeded to help reach eligible regions of the graph.
 
 The `ACORN` algorithm is especially useful when the filter has low correlation with the query vector. In other words, when a filter excludes many objects in the region of the graph most similar to the query vector.
 
@@ -56,7 +56,7 @@ Our internal testing indicates that for lowly correlated, restrictive filters, t
 
 The `sweeping` strategy is based on the concept of "sweeping" through the HNSW graph.
 
-The algorithm starts at the root node and traverses the graph, evaluating the distance to the query vector at each node, while keeping the "allow list" of the filter as context. If the filter is not met, the node is skipped and the traversal continues. This process is repeated until the desired number of results is reached.
+Sweeping follows the normal HNSW traversal, using the allow list for result admission. A nonmatching node can still be a traversal candidate; it is excluded from results, not necessarily from the walk. Candidate quality and the `ef` search budget govern termination before the result list is trimmed to the requested limit.
 
 The `sweeping` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
 
@@ -72,7 +72,7 @@ The `sweeping` algorithm can be enabled by setting the `filterStrategy` field fo
 {/* TODO(ivan): link the PathSeer blog post once it is published */}
 In Weaviate's benchmarks, `PathSeer` was the fastest strategy, or within a few percent of the fastest, on random, topical and combined filters. `ACORN` remains faster for sparse filters that are negatively correlated with the query, where the matching objects lie far from where the search starts.
 
-`PathSeer` changes only how a filtered query walks the graph. It stores nothing extra, so it adds no import cost and no memory overhead, and you can switch an existing collection to `pathseer` or away from it at any time without reindexing. The [flat-search cutoff](#flat-search-cutoff) still applies first. The default strategy is `acorn`. To use `PathSeer`, set the `filterStrategy` field of the HNSW vector index to `pathseer` [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
+`PathSeer` changes only how a filtered query walks the graph. It requires no additional persisted graph structure, though queries use scratch memory, and you can switch an existing collection to `pathseer` or away from it at any time without reindexing. The [flat-search cutoff](#flat-search-cutoff) still applies first. The built-in default is `acorn`, subject to server defaults and explicit per-index settings. To use `PathSeer`, set the `filterStrategy` field of the HNSW vector index to `pathseer` [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
 
 :::caution Downgrading from `v1.40`
 Earlier Weaviate versions do not accept `pathseer` as a filter strategy. Before you downgrade, set `filterStrategy` to `acorn` or `sweeping` on every collection that uses it.
@@ -104,49 +104,15 @@ Internally, rangeable indexes are implemented as roaring bitmap slices. This dat
 
 ## Recall on Pre-Filtered Searches
 
-Thanks to Weaviate's custom HNSW implementation, which persists in following all links in the HNSW graph normally and only applying the filter condition when considering the result set, graph integrity is kept intact. The recall of a filtered search is typically not any worse than that of an unfiltered search.
-
-The graphic below shows filters of varying levels of restrictiveness. From left (100% of dataset matched) to right (1% of dataset matched) the filters become more restrictive without negatively affecting recall on `k=10`, `k=15` and `k=20` vector searches with filters.
-
-<!-- TODO - replace this graph with ACORN test figures -->
-
-![Recall for filtered vector search](./img/recall-of-filtered-vector-search.png "Recall of filtered vector search in Weaviate")
+Filtered ANN search remains approximate. Recall depends on filter selectivity, correlation with the query vector, strategy, and search parameters. Sweeping's distinction between traversal and result eligibility is useful, but it does not establish equal recall across ACORN, PathSeer, and unfiltered searches. Evaluate recall and latency on a representative workload.
 
 ## Flat-Search Cutoff
 
-<!-- Need to update this section with ACORN figures. -->
+For filtered HNSW search, Weaviate can scan the matching subset instead of walking the graph when the allow-list cardinality is **strictly below** `flatSearchCutoff`. The default is **40,000 IDs per HNSW index/shard**, not a fixed percentage of the collection. Setting it to `0` disables this cutoff.
 
-Weaviate offers an option to automatically switch to a flat (brute-force) vector search when a filter becomes too restrictive. This scenario only applies to combined vector and scalar searches. For a detailed explanation of why HNSW requires switching to a flat search on certain filters, see this article at [medium](https://medium.com/data-science/effects-of-filtered-hnsw-searches-on-recall-and-latency-434becf8041c). In short, if a filter is very restrictive (i.e. a small percentage of the dataset is matched), an HNSW traversal becomes exhaustive. In other words, the more restrictive the filter becomes, the closer the performance of HNSW is to a brute-force search on the entire dataset. However, with such a restrictive filter, we have already narrowed down the dataset to a small fraction. So if the performance is close to brute-force anyway, it is much more efficient to only search on the matching subset as opposed to the entire dataset.
+This decision occurs before selecting sweeping, ACORN, or PathSeer. Selectivity and traversal costs vary by strategy and workload; restrictive filters do not universally imply an exhaustive graph walk. The cutoff is separate from selecting a standalone flat index and does not define HFresh's cutoff behavior.
 
-The following graphic shows filters with varying restrictiveness. From left (0%) to right (100%), the filters become more restrictive. The **cut-off is configured at ~15% of the dataset** size.  This means the right side of the dotted line uses a brute-force search.
-
-![Prefiltering with flat search cutoff](./img/prefiltering-response-times-with-filter-cutoff.png "Prefiltering with flat search cutoff")
-
-As a comparison, with pure HNSW - without the cutoff - the same filters would look like the following:
-
-![Prefiltering with pure HNSW](./img/prefiltering-pure-hnsw-without-cutoff.png "Prefiltering without cutoff, i.e. pure HNSW")
-
-The cutoff value can be configured as [part of the `vectorIndexConfig` settings in the schema](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) for each collection separately.
-
-<!-- TODO - replace figures with updated post-roaring bitmaps figures -->
-
-<!-- ## Performance of vector searches with cached filters
-
-The following was run single-threaded (i.e. you can add more CPU threads to increase throughput) on a dataset of 1M objects with random vectors of 384d with a warm filter cache (pre-`Roaring bitmap` implementation).
-
-Each search uses a completely unique (random) search vector, meaning that only the filter portion is cached, but not the vector search portion, i.e. on `count=100`, 100 unique query vectors were used with the same filter. -->
-
-<!-- TODO - replace table with updated post-roaring bitmaps figures -->
-
-<!-- [![Performance of filtered vector search with caching](./img/filtered-vector-search-with-caches-performance.png "Performance of filtered vector searches with 1M 384d objects")](./img/filtered-vector-search-with-caches-performance.png) -->
-
-<!-- :::note
-Wildcard filters show considerably worse performance than exact match filters. This is because - even with caching - multiple rows need to be read from disk to make sure that no stale entries are served when using wildcards. See also "Automatic Cache Invalidation" below.
-::: -->
-
-<!-- ## Automatic Cache Invalidation
-
-The cache is built in a way that it cannot ever serve a stale entry. Any write to the inverted index updates a hash for the specific row. This hash is used as part of the key in the cache. This means that if the underlying inverted index is changed, the new query would first read the updated hash and then run into a cache miss (as opposed to ever serving a stale entry). The cache has a fixed size and entries for stale hashes - which cannot be accessed anymore - are overwritten when it runs full. -->
+Configure it in the [HNSW vector index settings](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index).
 
 ## Further resources
 

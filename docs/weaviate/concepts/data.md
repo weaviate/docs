@@ -200,7 +200,7 @@ You can [use a deterministic UUID](../manage-objects/import.mdx#specify-an-id-va
 
 If you don't specify an ID, Weaviate generates a random UUID for you.
 
-In requests without any other ordering specified, Weaviate processes them in ascending UUID order. This means that requests to [list objects](../search/basics.md#list-objects), use of the [cursor API](../manage-objects/read-all-objects.mdx), or requests to [delete objects](../manage-objects/delete.mdx#delete-multiple-objects-by-id), without any other ordering specified, will be processed in ascending UUID order.
+The [cursor API](../manage-objects/read-all-objects.mdx) traverses objects in ascending UUID order. This is not a universal ordering contract for every unranked or filter-only request. Use an explicit supported sort when result order matters.
 
 ### Cross-references
 
@@ -290,9 +290,9 @@ A TTL can be set at the collection level. The expiration time can be defined in 
 - The time of the last object update
 - A Weaviate `DATE` property value (a date & time property)
 
-The TTL value is specified in seconds. The TTL must be positive, except for those relative to a `DATE` property, which can also be negative to allow for expiration before the specified date.
+The TTL value is specified in seconds. Creation- and update-time TTLs have a minimum of 60 seconds by default. A `DATE`-relative offset may be zero or negative, allowing expiration at or before the specified date. See [object TTL configuration](../config-refs/collections.mdx#object-ttl) for prerequisites and advanced settings.
 
-Expired objects are deleted by a background process that runs on a cron schedule. The schedule is empty by default, which disables the process, so setting a TTL alone does not delete anything. To delete expired objects, set the [`OBJECTS_TTL_DELETE_SCHEDULE`](/deploy/configuration/env-vars/index.md#OBJECTS_TTL_DELETE_SCHEDULE) environment variable (or `objects_ttl_delete_schedule` in the Helm chart) on the Weaviate instance. Expired, but yet undeleted, objects can optionally be excluded from query results to prevent erroneous data retrieval before the deletion process runs.
+Expired objects are deleted by a background process that runs on a cron schedule. A deletion schedule must be configured before enabling TTL; enabling TTL with an empty schedule is rejected. On deployments exposing these settings, configure [`OBJECTS_TTL_DELETE_SCHEDULE`](/deploy/configuration/env-vars/index.md#OBJECTS_TTL_DELETE_SCHEDULE) (or `objects_ttl_delete_schedule` in the Helm chart). Physical deletion is asynchronous. Expired but not yet deleted objects can optionally be excluded from query results.
 
 Note that for multi-tenant collections, deletions can only occur for active tenants. Deletion operations will be skipped for inactive or offloaded tenants; and the deletion will occur only when the tenant becomes active again.
 
@@ -402,7 +402,7 @@ Sharding has several benefits:
 - Fast, efficient querying
 - Easy and robust setup and clean up
 
-Tenant shards are more lightweight. You can easily have 50,000, or more, active shards per node. This means that you can support 1M concurrently active tenants with just 20 or so nodes.
+Tenant shards provide lightweight data isolation, but capacity depends on tenant sizes, workload, index configurations, replication, and available resources. Use workload-specific testing rather than a fixed tenants-per-node estimate.
 
 Multi-tenancy is especially useful when you want to store data for multiple customers, or when you want to store data for multiple projects.
 
@@ -415,7 +415,7 @@ Deleting a tenant deletes the associated shard. As a result, deleting a tenant a
 Tenants have an activity status (also called a tenant state) that reflects their availability and storage location. A tenant can be `ACTIVE`, `INACTIVE`, `OFFLOADED`, `OFFLOADING`, or `ONLOADING`.
 
 - `ACTIVE` tenants are loaded and available for read and write operations.
-- In all other states, the tenant is not available for read or write access. Access attempts return an error message.
+- In other states, data is not readable or writable until the tenant becomes active. Without automatic activation, access fails. With [automatic tenant activation](../manage-collections/tenant-states.mdx#automatically-activate-tenants) configured, supported requests can trigger activation of `INACTIVE` tenants or onloading of `OFFLOADED` tenants. Activation takes time; requests during transitions can still fail.
     - `INACTIVE` tenants are stored on local disk storage for quick activation.
     - `OFFLOADED` tenants are stored on cloud storage. This status is useful for long-term storage for tenants that are not frequently accessed.
     - `OFFLOADING` tenants are being moved to cloud storage. This is a transient status, and therefore not user-specifiable.
@@ -426,8 +426,8 @@ For more details on managing tenants, see [Multi-tenancy operations](../manage-c
 | Status | Available | Description | User-specifiable |
 | :-- | :-- | :-- | :-- |
 | `ACTIVE` | Yes | Loaded and available for read/write operations. | Yes |
-| `INACTIVE` | No | On local disk storage, no read / write access. Access attempts return an error message. | Yes |
-| `OFFLOADED` | No | On cloud storage, no read / write access. Access attempts return an error message. | Yes |
+| `INACTIVE` | No | On local disk; must be activated before access. Supported requests can trigger configured automatic activation. | Yes |
+| `OFFLOADED` | No | On object storage; must be onloaded and activated before access. Supported requests can trigger configured automatic activation. | Yes |
 | `OFFLOADING` | No | Being moved to cloud storage, no read / write access. Access attempts return an error message. | No |
 | `ONLOADING` | No | Being loaded from cloud storage, no read / write access. Access attempts return an error message. | No |
 
@@ -449,9 +449,9 @@ import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-Offloading tenants requires the relevant `offload-<storage>` module to be [enabled](../configuration/modules.md) in the Weaviate cluster.
+Offloading tenants requires the `offload-s3` module to be [enabled](../configuration/modules.md) in the Weaviate cluster.
 
-When a tenant is offloaded, the entire tenant shard is moved to cloud storage. This is useful for long-term storage of tenants that are not frequently accessed. Offloaded tenants are not available for read or write operations until they are loaded back into the cluster.
+When a tenant is offloaded, the entire tenant shard is moved to cloud storage. This is useful for long-term storage of tenants that are not frequently accessed. Offloaded tenants are not readable or writable until onloading and activation complete. Supported access requests can initiate this when automatic tenant activation is configured.
 
 ### Backups
 
@@ -483,9 +483,9 @@ Cross-references like these are not supported:
 
 ### Key features
 
-- Each tenant has a dedicated, high-performance vector index. Dedicated indexes mean faster query speeds. Instead of searching a shared index space, each tenant responds as if it was the only user on the cluster.
+- Each tenant has isolated shard indexes, including any configured vector indexes. Searches are scoped to that tenant rather than a shared cross-tenant index; performance still depends on workload and shared node resources.
 - Each tenant's data is isolated on a dedicated shard. This means that deletes are fast and do not affect other tenants.
-- To scale out, add a new node to your cluster. Weaviate does not redistribute existing tenants, however Weaviate adds new tenants to the node with the least resource usage.
+- In ordinary, non-namespaced deployments, adding nodes provides capacity for new tenant shards; it does not by itself automatically rebalance existing tenants. Where replica movement is enabled and supported, operators can [copy or move tenant shard replicas](/deploy/configuration/replica-movement.mdx) to rebalance placement. Namespace-enabled deployments have different placement limits: each namespace's tenant shards remain on its single home node, so generic scale-out and replica-movement guidance does not override those [namespace operating limits](/deploy/enterprise.mdx#platform-edition).
 
 :::info Related pages
 - [How-to: Manage Data | Multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
@@ -498,11 +498,9 @@ To group tenants together for monitoring, set [`PROMETHEUS_MONITORING_GROUP = tr
 
 ### Number of tenants per node
 
-The number of tenants per node is limited by operating system constraints. The number of tenants cannot exceed the Linux open file limit per process.
+Tenant capacity depends on active tenant sizes, index choices, replication, memory, disk, file descriptors, and configured tenant quotas. Operating-system open-file limits are one constraint, not a complete capacity model.
 
-For example, a 9-node test cluster built on `n1-standard-8` machines holds around 170k active tenants. There are 18,000 to 19,000 tenants per node.
-
-Note that these numbers relate to active tenants only. If you [set unused tenants as `inactive`](../manage-collections/multi-tenancy.mdx#manage-tenant-states), the open file per process limit does not apply.
+Setting unused tenants to [`INACTIVE`](../manage-collections/multi-tenancy.mdx#manage-tenant-states) reduces active-shard resource use, but does not remove every resource or quota constraint. See [resource guidance](./resources.md) and test with a representative workload.
 
 ## Related pages
 

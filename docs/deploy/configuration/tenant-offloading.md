@@ -14,13 +14,13 @@ import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-To use tenant offloading in Weaviate, you need enable a relevant offloading [module](/weaviate/configuration/modules.md).
+To use tenant offloading in self-managed Weaviate, enable the `offload-s3` [module](/weaviate/configuration/modules.md).
 
 ## `offload-s3` module
 
-The `offload-s3` module enables you to [offload or onload tenants](/weaviate/manage-collections/tenant-states.mdx) to/from an S3 bucket.
+The `offload-s3` module enables you to [offload or onload tenants](/weaviate/manage-collections/tenant-states.mdx) to/from an S3 bucket. Self-managed deployments can set `OFFLOAD_S3_ENDPOINT` to use a custom S3-compatible service. Verify compatibility with the intended service before relying on offloading and onloading; this is not a guarantee for every S3-compatible vendor or a custom-endpoint option for Weaviate Cloud.
 
-To use the `offload-s3` module, add `offload-s3` to the `ENABLE_MODULES` in your docker-compose file as shown below.
+For self-managed deployments, add `offload-s3` to `ENABLE_MODULES` in your docker-compose file as shown below.
 
 ```yaml
 services:
@@ -54,6 +54,7 @@ The `offload-s3` module reads the following environment variables:
 | Env Var | Description | Default Value |
 |---|---|---|
 | `OFFLOAD_S3_BUCKET` | The destination S3 bucket to offload tenants. | `weaviate-offload` |
+| `OFFLOAD_S3_ENDPOINT` | Custom S3-compatible endpoint URL for self-managed deployments. Validate compatibility with your service. | `""` (use the default AWS S3 endpoint) |
 | `OFFLOAD_S3_BUCKET_AUTO_CREATE` | When `true`, Weaviate automatically creates an S3 bucket if it does not exist. | `false` |
 | `OFFLOAD_S3_CONCURRENCY` | The number of concurrent offload operations. | `25` |
 | `OFFLOAD_TIMEOUT` | The timeout for offloading operations (create bucket, upload, download). | `120` (in seconds) |

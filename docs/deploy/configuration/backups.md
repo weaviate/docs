@@ -717,7 +717,24 @@ This operation is particularly useful if you have started a backup by accident, 
 
 ### Restore Backup
 
-You can restore any backup to any machine as long as the name and number of nodes between source and target are identical. The backup does not need to be created on the same instance. Once a backup backend is configured, you can restore a backup with a single request.
+The backup does not need to be created on the same instance. You can restore to an environment with different node names by supplying `node_mapping` in the restore request. It maps node names recorded in the backup to target node names. Without a mapping, restore uses the names recorded in the backup.
+
+Node-name remapping does not establish support for arbitrary node-count changes or many-to-one consolidation. Use a compatible target topology and perform a restore drill for the intended migration. Once a backup backend is configured, you can restore a backup with a single request.
+
+For example, the JSON body for a REST restore request can map two source nodes to two renamed target nodes. `node_mapping` is a top-level field, alongside `config`, not inside it:
+
+```json
+{
+  "node_mapping": {
+    "Old-Node-A": "New-Node-A",
+    "Old-Node-B": "New-Node-B"
+  },
+  "config": {
+    "rolesOptions": "noRestore",
+    "usersOptions": "noRestore"
+  }
+}
+```
 
 As with backup creation, the `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those. In a restore operation, `include` and `exclude` are relative to the collections contained in the backup. The restore process is not aware of collections that existed on the source machine if they were not part of the backup.
 
@@ -734,8 +751,14 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | ---- | ---- | ---- | ---- |---- |
 | `cpuPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
 | `Path`            | string | Required if created at a custom path | `""` | An optional string to manually set the backup location. If not provided, the backup will be restored from the default location. Introduced in Weaviate `v1.27.2`. |
-| `rolesOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
-| `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
+| `rolesOptions`            | string | no | `"noRestore"` | Controls restoration of captured RBAC roles and permissions. Set `"noRestore"` to skip restoration (default), or `"all"` to restore the captured state. Introduced in Weaviate `v1.32.0`. |
+| `usersOptions`            | string | no | `"noRestore"` | Controls restoration of captured dynamic database users. Set `"noRestore"` to skip restoration (default), or `"all"` to restore the captured users. Introduced in Weaviate `v1.32.0`. |
+
+These options control restoration of already captured state, not what was captured when the backup was created. The "What a backup covers" summary above distinguishes capture from optional restoration. Restoration requires the corresponding RBAC or dynamic user management subsystem to be enabled; these options do not restore external OIDC identities or static authentication configuration.
+
+:::caution Review restored access
+Before opting in to role or user restoration, review the captured state against current permissions and revocations. Restoring older access state can reintroduce permissions or users that are no longer intended.
+:::
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

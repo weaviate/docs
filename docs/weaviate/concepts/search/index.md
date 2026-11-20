@@ -28,7 +28,7 @@ The following table and figure illustrate the search process in Weaviate. Around
 flowchart LR
     %% Node definitions
     Query[/"🔍 Query"/]
-    Filter["Filter"]
+    Filter["Filter (Optional)"]
     Key["Keyword Search<br> (BM25F)"]
     Vec["Vector Search<br> (Embeddings)"]
     Hyb["Hybrid Search<br> (Combined)"]
@@ -55,6 +55,8 @@ flowchart LR
     Filter --> search
     retrieval --> Results
     retrieval --> Rerank
+    retrieval --> RAG
+    Rerank --> Results
     Rerank --> RAG
     RAG --> Results
 
@@ -75,7 +77,7 @@ flowchart LR
 
 </center>
 
-Here is a brief overview of each step:
+Here is a brief overview of each step. The animal rankings below are illustrative, not measured outputs or guarantees for a particular model/index configuration:
 
 ### Retrieval: Filter
 
@@ -123,7 +125,7 @@ A filter for `"black"` in the `"description"` would return only the objects with
 - `{'description': 'small domestic black cat'}`
 <br/>
 
-In Weaviate, the order of these results are based on the UUIDs of the objects, if no other ranking is applied. As a result, the order of these objects would be essentially random, as the filter only passes or blocks objects based on the criteria.
+Filtering alone does not assign relevance scores. Do not assume a universal UUID or relevance order for filter-only retrieval; request an explicit supported sort when order matters.
 </details>
 
 ### Retrieval: Search
@@ -251,7 +253,7 @@ See the [vector search](./vector-search.md) page for more details on how vector 
 
 #### Hybrid Search
 
-Combines vector and keyword search to leverage the strengths of both approaches. Both searches are carried out and the results are combined using the selected parameters, such as the hybrid fusion method and the alpha value.
+Combines vector and keyword search to leverage the strengths of both approaches. The alpha value determines which components run and their weights; at `alpha=0` or `alpha=1`, only one component runs. Their results are combined using the selected hybrid fusion method to produce a base ranking.
 
 <details>
   <summary>Hybrid Search: Example</summary>
@@ -306,7 +308,11 @@ Queries can be formulated without any ranking mechanisms.
 
 For example, a query may simply consist of a filter, or you may wish to iterate through the entire dataset, using the [cursor API](../../manage-objects/read-all-objects.mdx).
 
-In such cases of unordered retrieval requests, Weaviate will retrieve objects in order of their UUIDs. This retrieval method will result in an essentially randomly-ordered object list.
+The cursor API traverses objects by UUID, but that is not a universal ordering contract for every unranked or filter-only query. Without explicit sorting, do not rely on a particular relevance or UUID order.
+
+### Optional result refinement
+
+[Boost](../../search/boost.md) applies soft ranking preferences rather than excluding objects as a hard filter does. [Maximal Marginal Relevance (MMR)](../../search/similarity.md#diversity-selection-mmr) selects a diverse subset from retrieved candidates. These stages can refine ranking or selection but cannot recover objects absent from the candidate set. Their availability and parameters depend on the query/API; use the linked guides rather than assuming every refinement composes identically with every search.
 
 ### Rerank
 
@@ -316,7 +322,7 @@ In such cases of unordered retrieval requests, Weaviate will retrieve objects in
 
 Reranking improves search relevance by reordering initial results.
 
-If a collection is [configured with a reranker integration](../../model-providers/index.md), Weaviate will use the configured reranker model to reorder the initial search results.
+When you [request reranking in a query](../../search/rerank.md), Weaviate uses the collection's configured reranker integration to reorder the retrieved candidates. Configuration alone does not request reranking.
 
 This allows you to use a more computationally expensive model on a smaller subset of results, improving the overall search quality. Typically, reranking models such as [Cohere Rerank](../../model-providers/cohere/reranker.md) or [Hugging Face Reranker](../../model-providers/transformers/reranker.md) models are cross-encoder models that can provide a more nuanced understanding of the text.
 
@@ -389,13 +395,13 @@ To do a vector search on a collection with named vectors, specify the vector spa
 
 Use named vectors with [vector similarity searches](/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/weaviate/search/hybrid#named-vectors).
 
-Named vector collections support hybrid search, but only for one vector at a time.
+Hybrid search can also search multiple named vectors in one query. Use [multi-target vector search](../../search/multi-vector.md) to select the targets and how their distances are combined.
 
 [Keyword search](/weaviate/search/bm25) syntax does not change if a collection has named vectors.
 
 ### Query multiple named vectors
 
-Where multiple named vectors are defined in a collection, you can query them in a single search. This is useful for comparing the similarity of an object to multiple named vectors.
+Where multiple named vectors are defined in a collection, you can query them in a single vector or hybrid search. This is useful for comparing the similarity of an object to multiple named vectors.
 
 This is called a "multi-target vector search".
 

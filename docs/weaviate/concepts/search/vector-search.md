@@ -18,7 +18,7 @@ New to vector search? Check out our blog, ["Vector Search Explained"](https://we
 
 ## Object vectors
 
-For vector search, each object must have representative vector embeddings.
+To participate in a vector search, an object needs a compatible embedding for the searched target. Objects can otherwise exist without vectors.
 
 The model used to generate vectors is called a vectorizer model, or an embedding model.
 
@@ -99,7 +99,7 @@ This integration abstracts the vector generation process from the user, allowing
 
 :::info Vectorizer configuration is immutable
 
-Once it is set, the vectorizer cannot be changed for a collection. This ensures that the vectors are generated consistently and stay compatible. If you need to change the vectorizer, you must create a new collection with the desired vectorizer, and [migrate the data to the new collection](../../manage-collections/migrate.mdx).
+An existing vector's vectorizer identity cannot be replaced in place. To introduce another model, either [migrate to a new collection](../../manage-collections/migrate.mdx) or [add a new named vector](../../manage-collections/vector-config.mdx#add-new-named-vectors) to the existing collection. Adding the definition does not populate embeddings for existing objects: explicitly generate and write them for the new target. Some provider-approved settings can be mutable; that does not permit replacing the vectorizer identity.
 
 :::
 
@@ -169,11 +169,15 @@ If using your own model, we recommend explicitly setting the vectorizer as `none
 
 ### Named vectors
 
-A collections can be configured to allow each object to be represented by more than one vector embedding.
+A collection can define multiple independent named vector spaces. Select the intended target when querying a multi-target configuration; a single configured target can be inferred. See [target selection](../../search/similarity.md#named-vectors).
 
 Each such vector works as its distinct vector space that is independent of each other, referred to as a "named vector".
 
 A named vector can be configured with a [vectorizer model integration](#model-provider-integration), and may be provided using the ["bring your own vector"](#bring-your-own-vector) integration.
+
+### Multi-vector embeddings
+
+A named vector can also hold a multi-vector embedding: a set of token- or patch-level vectors representing one object, used by late-interaction models such as ColBERT and ColPali. This differs from joining searches of several independent named vector spaces. Multi-vectors are supported on HNSW and, from v1.40, on HFresh with MUVERA encoding and self-provided vectors. See [defining multi-vector embeddings](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali) and the [multi-vector guide](../../configuration/compression/multi-vectors.md).
 
 ## Query vectors
 
@@ -188,7 +192,7 @@ In each of these cases, the search will return the most similar objects to the q
 
 ### `nearVector`
 
-In a `nearVector` query, the user provides a vector directly to Weaviate. This vector is compared to the vectors of the stored objects to find the most similar objects.
+In a `nearVector` query, the user provides a vector directly to Weaviate. This vector is compared to the stored vectors in the selected target. It must use a compatible vector space, representation, and dimension, including a compatible asymmetric query/document encoder pair where applicable. Matching dimensions alone do not ensure semantic compatibility.
 
 ### `nearObject`
 
@@ -210,9 +214,7 @@ These searches will produce multiple sets of results, each with a vector distanc
 
 Weaviat combines these result sets, using a ["join strategy"](#available-join-strategies) to produce final scores for each result.
 
-If an object is within the search limit or the distance threshold of any of the target vectors, it will be included in the search results.
-
-If an object does not contain vectors for any selected target vector, Weaviate ignores that object and does not include it in the search results.
+Per-target retrieval supplies candidates for the joined result set, not guaranteed final inclusions. Ranking and eligibility depend on the join strategy, final limit, and applicable thresholds. With `minimum`, an object can match through an available target vector. Other strategies require distances for all selected targets; candidates whose missing target distances cannot be retrieved are excluded. See [multi-target vector search](../../search/multi-vector.md) for configuration and join-specific behavior.
 
 ### Available join strategies.
 
@@ -226,9 +228,9 @@ If an object does not contain vectors for any selected target vector, Weaviate i
 
 Weaviate uses vector indexes to facilitate efficient vector searches. Like other types of indexes, a vector index organizes vector embeddings in a way that allows for fast retrieval while optimizing for other needs such as search quality (e.g. recall), search throughput, and resource use (e.g. memory).
 
-In Weaviate, multiple types of vector indexes are available such as `hnsw`, `flat` and `dynamic` indexes.
+In Weaviate, multiple types of vector indexes are available such as `hnsw`, `flat`, `dynamic`, and `hfresh` indexes.
 
-Each [collection](../data.md#collections) or [tenant](../data.md#multi-tenancy) in Weaviate will have its own vector index. Additionally, each collection or tenant can have [multiple vector indexes](../data.md#multiple-vector-embeddings-named-vectors), each with different configurations.
+Each shard has the vector indexes configured for its targets. Collections and tenants can be vectorless or have [multiple named-vector indexes](../data.md#multiple-vector-embeddings-named-vectors), with different configurations.
 
 :::info
 Read more about:
@@ -245,7 +247,7 @@ There are many ways to measure vector distances, such as cosine distance, dot pr
 Weaviate uses cosine distance as the default distance metric for vector searches, as this is the typical distance metric for vectorizer models.
 
 :::tip Distance vs Similarity
-In a "distance", the lower the value, the closer the vectors are to each other. In a "similarity", or "certainty" score, the higher the value, the closer the vectors are to each other. Some metrics, such as cosine distance, can also be expressed as a similarity score. Others, such as Euclidean distance, are only expressable as a distance.
+In a "distance", the lower the value, the closer the vectors are to each other. In a "similarity", or "certainty" score, the higher the value, the closer the vectors are to each other. The returned `certainty` metadata is a cosine-only transformation (`1 - distance / 2`), not a universal calibrated similarity or confidence score for other metrics.
 :::
 
 ## Diversity selection (MMR)
@@ -266,11 +268,11 @@ The algorithm works iteratively. It selects the most relevant item first, then f
 - **λ = 0.5**: Balanced (each result must be both relevant and distinct)
 - **λ = 1.0**: Pure relevance (equivalent to standard vector search)
 
-MMR is applied at query time as a reranking step on top of standard search. No reindexing is needed. The typical pattern is to retrieve a larger candidate set via regular vector search, then rerank a subset using MMR.
+MMR is applied at query time to retrieved candidates; no reindexing is needed. It supports vector and hybrid queries when the selected targets are eligible single-vector targets, not multi-vector targets. Set `balance` explicitly: the server uses `0.0` when it is omitted, but clients can send their own defaults. The search `limit` controls candidate depth; the MMR limit controls the selected result count. It cannot recover objects absent from retrieval candidates.
 
 :::note Result ordering
 
-Results are ordered by MMR score, not query similarity. The first result is always the most relevant, but subsequent results may have lower query similarity because they were chosen for the diversity they add.
+During MMR selection, the first pick is the closest candidate under the selection metric; later picks balance relevance and diversity. A subsequent reranker can change this order, so this is not an unconditional final-response ordering guarantee.
 
 :::
 
@@ -278,12 +280,7 @@ See the [how-to guide](../../search/similarity.md#diversity-selection-mmr) for c
 
 ## Notes and best practices
 
-All compatible vectors are similar to some degree search.
-
-This has two effects:
-
-1. There will always be some "top" search results regardless of relevance.
-1. The entire dataset is always returned.
+A nearest-neighbor search can return the closest available matches even when none is semantically relevant to the query. A result limit caps the number of returned matches but does not itself impose a minimum relevance threshold. Filters, missing embeddings, and thresholds can leave no eligible results; a vector query does not enumerate the whole dataset.
 
 If you search a vector database containing vectors for colors "Red", "Crimson" and "LightCoral" with a query vector for "SkyBlue", the search will still return a result (e.g. "Red"), even if it is not semantically similar to the query. The search is simply returning the closest match, even if it is not a good match in the absolute sense.
 

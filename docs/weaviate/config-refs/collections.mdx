@@ -1110,10 +1110,10 @@ For more code example and configuration guides visit the [How-to: Manage collect
 | :--------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------ | :------ | :------ |
 | `enabled`              | Boolean | If `true`, objects in this collection expire.                                                                                        | `false` | Yes     |
 | `deleteOn`             | String  | The base time for the expiry: `_creationTimeUnix`, `_lastUpdateTimeUnix`, or the name of a `date` property.                          | -       | Yes     |
-| `defaultTtl`           | Integer | Seconds added to the `deleteOn` value to get the expiration time. Must be positive for `_creationTimeUnix` and `_lastUpdateTimeUnix`. | `0`     | Yes     |
+| `defaultTtl`           | Integer | Seconds added to `deleteOn` to get the expiration time. Minimum 60 seconds by default for `_creationTimeUnix` and `_lastUpdateTimeUnix`; `date`-property offsets may be positive, zero, or negative. | `0`     | Yes     |
 | `filterExpiredObjects` | Boolean | If `true`, expired objects that the background process has not deleted yet are excluded from query results.                          | `false` | Yes     |
 
-Expired objects are only deleted if the [`OBJECTS_TTL_DELETE_SCHEDULE`](/deploy/configuration/env-vars/index.md#OBJECTS_TTL_DELETE_SCHEDULE) environment variable is set on the instance. It is empty by default, which disables the deletion process.
+A deletion schedule must be configured before enabling TTL. The [`OBJECTS_TTL_DELETE_SCHEDULE`](/deploy/configuration/env-vars/index.md#OBJECTS_TTL_DELETE_SCHEDULE) environment variable is empty by default, which disables the deletion process; enabling TTL with an empty schedule is rejected. On deployments exposing this setting, configure it before enabling TTL. Deletion runs asynchronously, and only for active tenants in multi-tenant collections.
 
 For code examples, see [How-to: Time to live (TTL)](../manage-collections/time-to-live.mdx).
 
