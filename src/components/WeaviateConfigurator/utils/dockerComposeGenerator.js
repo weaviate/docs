@@ -3,7 +3,7 @@
  */
 export function generateDockerCompose(selections) {
   const {
-    weaviate_version = 'v1.37.0',
+    weaviate_version = 'v1.41.0',
     weaviate_volume = 'named-volume',
     local_modules = [],
     additional_modules = [],
