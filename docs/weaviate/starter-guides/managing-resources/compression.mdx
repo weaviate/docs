@@ -9,9 +9,9 @@ Weaviate stores vector embeddings, also called "embeddings" or simply "vectors."
 
 When collections have millions of objects, the total storage size for the vectors can be very large. The vectors are not just stored, they are indexed as well. This index can also grow very large. The resource costs to host the vectors and the index can be expensive.
 
-Weaviate creates indexes to search the vector space for your collection. The default vector index is a [Hierarchical Navigable Small World (HNSW)](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) index. This data structure includes the vectors as well as an index graph. HNSW indexes allow fast vector searches while maintaining excellent recall, but they can be expensive to use because they are stored in RAM memory.
+Weaviate creates indexes to search the vector space for your collection. The default vector index for self-hosted deployments is [Hierarchical Navigable Small World (HNSW)](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index). HNSW keeps a graph in memory and normally caches vectors in memory. Compression reduces the vector footprint, not the graph. The disk-backed [HFresh index](/weaviate/concepts/vector-index#hfresh-index) instead keeps a compressed centroid index in memory and stores posting lists on disk.
 
-Updating the default index configuration settings can result in significant cost savings and even performance improvements. In many cases, you can use compression or a different index type (such as the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index), which keeps only a compressed centroid index in memory) to change the way Weaviate stores and searches your data, and still maintain high levels of recall.
+Self-hosted deployments apply no optional quantization unless you configure it on a collection or set [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars). HFresh is an exception: its posting lists always use 1-bit RQ, independently of that environment variable. In [Weaviate Cloud](/cloud/manage-clusters/default-settings), the optimization profile sets defaults for new collections: `Performance Optimized` uses HNSW with 8-bit RQ, while `Cost Optimized` uses HFresh with automatic compression. Index type and compression are enforced on the free tier. On paid clusters, explicit collection settings can override profile defaults.
 
 This page discusses compression algorithms. For more on indexes, see [Vector indexing](/weaviate/concepts/vector-index).
 
@@ -46,7 +46,7 @@ This table shows the compression algorithms that are available for each index ty
 
 RQ comes in three bit widths, and they are not equally available. The HNSW index accepts all three: [8-bit](/weaviate/configuration/compression/rq-compression#8-bit-rq), [4-bit](/weaviate/configuration/compression/rq-compression#4-bit-rq) and [1-bit](/weaviate/configuration/compression/rq-compression#1-bit-rq). The flat index accepts 8-bit and 1-bit. The HFresh index accepts 1-bit only: RQ is mandatory on that index, so it can be neither turned off nor set to a wider bit width. A dynamic index holds a flat configuration and an HNSW configuration side by side, so each side follows its own rule: 4-bit RQ can only be set on the HNSW side, and it applies after the collection converts from flat to HNSW.
 
-The [dynamic index](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) is new in v1.25. This type of index is a [flat index](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
+The [dynamic index](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) is experimental and available from v1.25. This type of index is a [flat index](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
 
 ### Cost, recall and speed
 
@@ -54,16 +54,9 @@ Performance includes speed and recall. In real world systems, these factors have
 
 #### Cost
 
-These compression algorithms have different functional tradeoffs, but they all help to control costs the same way. They reduce the size of the vectors so the indexes are smaller. Smaller indexes need less resources so you save money.
+Quantization reduces vector size, which can reduce RAM requirements for in-memory indexes such as HNSW. Weaviate also retains the original vectors on disk for rescoring, so plan for both originals and compressed index data. Whether this lowers total deployment cost depends on the memory, storage, and throughput you need.
 
-Compressed indexes use less RAM when they are loaded into memory, however they also use more disk space than uncompressed vectors. Weaviate stores the uncompressed vector and the compressed vector index. This means increased disk storage costs. However, since the cost of RAM is orders of magnitude higher than the cost of disk, the overall cost to use a compressed index is much lower than the cost of using an uncompressed index.
-
-The cost savings are most visible with in-memory indexes such as HNSW. More RAM reduction means less cost.
-
-- PQ compressed vectors typically use 85% less memory than uncompressed vectors.
-- SQ compressed vectors use 75% less memory than uncompressed vectors.
-- RQ compressed vectors typically use 75% less memory than uncompressed vectors (8-bit RQ; the 4-bit and 1-bit widths save more).
-- BQ compressed vectors use 97% less memory than uncompressed vectors.
+Relative to float32 dimension payloads, SQ and 8-bit RQ use one quarter as many bits per dimension, 4-bit RQ uses one eighth, and BQ and 1-bit RQ use one thirty-second. Actual encoded vectors also carry metadata and may require padding. PQ's reduction depends on its segment configuration. These ratios describe vector encodings, not total RAM savings or Cloud billing discounts. See [Resource planning](/weaviate/concepts/resources#an-example-calculation) for an arithmetic example and the components excluded from it.
 
 An HNSW index comprises a connection graph as well as the vectors. Quantization methods reduce the size of the vectors, but do not affect the size of the graph. As a result the overall reduction in memory usage is less than the reduction in vector size, but still significant. If you need to reduce memory further, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) avoids keeping the full graph in memory altogether.
 
@@ -73,12 +66,7 @@ Recall measures how well an algorithm finds true positive matches in a data set.
 
 A compressed vector has less information than the corresponding uncompressed vector. An uncompressed vector that would normally match a search query might be missed if the target information is missing in the compressed vector. That missed match lowers recall.
 
-Typical recall rates:
-
-- PQ: Varies based on configuration
-- SQ: 95-97% recall
-- RQ: 98-99% recall for 8-bit RQ; 4-bit and 1-bit RQ start lower and rely on rescoring
-- BQ: Varies significantly based on data and model characteristics
+There is no recall percentage that applies across datasets and configurations. Evaluate each method with your embedding model, filters, query mix, and result limit. Compare recall against exact nearest neighbors, and record the search and rescoring settings used. Lower-bit encodings generally discard more information, so candidate selection and rescoring become especially important.
 
 To improve recall with compressed vectors, Weaviate over-fetches a list of candidate vectors during a search. For each item on the candidate list, Weaviate fetches the corresponding uncompressed vector. To determine the final ranking, Weaviate calculates the distances from the uncompressed vectors to the query vector.
 
@@ -86,40 +74,36 @@ import RescoringIllustration from "/docs/weaviate/starter-guides/managing-resour
 
 <img src={RescoringIllustration} width="100%" alt="Rescoring illustration" />
 
-The rescoring process is slower than an in-memory search, but since Weaviate only has to search a limited number of uncompressed vectors, the search is still very fast. Most importantly, rescoring with the uncompressed vectors greatly improves recall.
-
-The search algorithm uses over-fetching and rescoring so that you get the benefits of compression without losing the precision of an uncompressed vector search.
+Rescoring uses full-precision distances to rank the selected candidates. It can improve recall, but it cannot recover a neighbor that was not selected as a candidate. Fetching originals can add disk I/O; increasing the candidate count trades more work and latency for a chance of higher recall.
 
 #### Query speed
 
-Each compression algorithm has its own characteristics with regard to speed.
+Smaller vector encodings can reduce memory traffic and distance-computation work, but that does not guarantee lower end-to-end latency. Graph traversal, filtering, cache misses, and rescoring also contribute. BQ uses bitwise distance calculations, while SQ and RQ use integer encodings; their relative performance depends on the hardware and workload.
 
-- PQ indexes have response rates that approach the response rates of uncompressed indexes when recall reaches 97 percent and higher. At those levels of recall, the [speed profile](https://weaviate.io/blog/pq-rescoring#qps-vs-recall-experiments) for PQ compressed indexes matches the profile for uncompressed indexes.
+Compare latency and throughput at the same recall target, including realistic filters, concurrency, and warm and cold cache conditions. If you disable rescoring to reduce query work, verify the effect on recall rather than assuming it is negligible.
 
-- BQ uses fast, bitwise calculations. BQ's bitwise calculations are extremely efficient. Efficient calculations are important because the flat index relies on brute-force search so it is calculation intensive. Searches of BQ compressed vectors can be as much as [10 to 20 times as fast](https://weaviate.io/blog/binary-quantization/#-performance-improvements-with-bq) as similar searches of uncompressed vectors and with equivalent rates of recall. BQ is sensitive to the underlying data. If you use a flat index, evaluate BQ compression to verify the performance improvements with your data set.
-
-- SQ significantly improves search speeds. It is faster than PQ, perhaps 3 to 4 times as fast as searching uncompressed vectors. SQ has a higher dimensional resolution than BQ that helps recall. Look for an upcoming blog post that discusses the tradeoffs with SQ compression.
-
-- RQ provides the fastest query performance among 8-bit quantization methods. RQ uses SIMD-optimized distance computations that are typically 2-3x faster than uncompressed vectors. RQ can be faster than SQ while providing better recall. For maximum performance, 8-bit RQ can run without rescoring with minimal impact on recall.
+For examples of measured trade-offs in the tested configurations, see the published [PQ QPS-versus-recall experiments](https://weaviate.io/blog/pq-rescoring#qps-vs-recall-experiments) and [BQ performance experiments](https://weaviate.io/blog/binary-quantization/#-performance-improvements-with-bq). Their results depend on the datasets, hardware, and settings used; they are not workload-independent guarantees.
 
 SQ and BQ both have optional vector caches. Use these configurable caches to load frequently used, uncompressed vectors into memory to improve overall search times.
 
 #### Import speed
 
-Importing and compressing vectors takes slightly longer than importing uncompressed vectors, but this is a one time cost. In contrast, loading a compressed index into memory is faster since there is less data to load. This means restarts are faster.
+Compression adds encoding work when vectors are inserted or updated, and some methods also require training. A smaller encoded index can reduce the data loaded into memory at startup, but import and restart times also depend on index construction, storage, and background work. Measure both rather than assuming a fixed speedup.
 
 Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing) feature which effectively speeds up the import process. Consider enabling asynchronous indexing to improve imports.
 
 ### Activate compression
 
-- BQ, SQ, and RQ have to be enabled when you create the collection.
+- Configure compression at collection creation, or use a supported update path. In particular, [RQ can be enabled later](/weaviate/configuration/compression/rq-compression#enable-compression-for-existing-collection) on an uncompressed HNSW collection. Choose RQ's `bits` and `centering` settings before enabling it: neither can be changed afterwards. 4-bit RQ is generally available from v1.40 and works only on HNSW, including the HNSW stage of a dynamic index.
+
+- If a deployment default would enable compression, [opt out at creation](/weaviate/configuration/compression/uncompressed) where the index and deployment allow it. Quantization cannot be disabled once enabled. Enabling compression does not change the vector index type in place; the dynamic index's automatic flat-to-HNSW transition is a separate feature.
 
 - PQ and SQ both require training data before they begin to compress data.
   - PQ's training step defines centroids for each segment.
   - SQ's training step determines the minimum and maximum values for bucket boundaries.
   - PQ and SQ both begin to compress data after you have imported a large enough training set and the training step is complete.
 
-- RQ requires no training and begins compressing data immediately upon vector insertion. This makes RQ ideal for applications that need immediate compression without waiting for a training phase.
+- RQ without centering requires no training and compresses vectors on insertion once enabled. Optional [4-bit RQ centering](/weaviate/configuration/compression/rq-compression#rq-parameters) computes a mean from a sample of vectors before compression starts.
 
 - If you have async indexing and [AutoPQ enabled](/weaviate/configuration/compression/pq-compression#configure-autopq), PQ compression can be enabled anytime. If AutoPQ is not enabled, you should only enable PQ after you have imported enough objects to [train the algorithm](/weaviate/configuration/compression/pq-compression#manually-configure-pq).
 
@@ -127,11 +111,11 @@ Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/c
 
 ## Recommendations
 
-Most applications benefit from compression. The cost savings are significant. In [Weaviate Cloud](https://weaviate.io/pricing), for example, compressed collections can be more than 80% cheaper than uncompressed collections.
+Choose compression using your recall, latency, memory, and cost requirements. For Cloud cost estimates, use the current [pricing calculator](https://weaviate.io/pricing) with your index, compression, and region rather than treating encoding ratios as price reductions.
 
-- For most users with HNSW indexes who want the best combination of simplicity, performance, and recall, **consider 8-bit RQ compression**. 8-bit RQ provides 4x compression with 98-99% recall and requires no configuration or training. It's ideal for standard use cases with embeddings from providers like OpenAI.
+- For HNSW, **consider 8-bit RQ as a starting point** because it needs no training. Compare uncompressed search, 8-bit RQ, and, if memory is a constraint, 4-bit RQ with rescoring. Validate recall and latency on your own data before choosing.
 
-- If you have a small collection that uses a flat index, consider RQ compression. The flat index with RQ enabled is smaller and much faster than the uncompressed equivalent.
+- For a small collection with a flat index, consider RQ. Validate retrieval quality as well as speed, since a smaller encoding does not guarantee the same nearest neighbors.
 
 - If you have a very large data set or specialized search needs, consider PQ compression. PQ compression is very configurable, but it requires more expertise to tune well than SQ, RQ, or BQ.
 

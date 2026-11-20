@@ -58,9 +58,9 @@ The `Optimization profile` and the cluster details (Weaviate Database version, c
 
 :::note Default vector index, quantization, and the optimization profile
 
-`DEFAULT_VECTOR_INDEX` and `DEFAULT_QUANTIZATION` are not set directly. They are determined by the [optimization profile](/cloud/manage-clusters/create#optimization-profile) you pick when you create the cluster: the `Cost Optimized` profile defaults to the HFresh vector index with automatic compression, and the `Performance Optimized` profile defaults to HNSW with [RQ](/weaviate/configuration/compression/rq-compression.md). Index type and compression are enforced on the free tier, which uses `Cost Optimized`. Upgrade to Shared to choose your own profile.
+`DEFAULT_VECTOR_INDEX` and `DEFAULT_QUANTIZATION` are not set directly. They are determined by the [optimization profile](/cloud/manage-clusters/create#optimization-profile) you pick when you create the cluster: the `Cost Optimized` profile defaults to the HFresh vector index with automatic compression (`Auto`), and the `Performance Optimized` profile defaults to HNSW with [8-bit RQ](/weaviate/configuration/compression/rq-compression.md#8-bit-rq) (`RQ-8`). Index type and compression are enforced on the free tier, which uses `Cost Optimized`. Upgrade to Shared to choose your own profile.
 
-The profile only sets the default for new collections. An explicit vector index in a [collection definition](/weaviate/manage-collections/vector-config) always takes precedence.
+On paid clusters, the profile only sets defaults for new collections. Explicit index and compression settings in a [collection definition](/weaviate/manage-collections/vector-config) take precedence. Where supported, you can [opt out of quantization at creation](/weaviate/configuration/compression/uncompressed); you cannot disable it after enabling it. HFresh always uses its built-in compression.
 
 :::
 

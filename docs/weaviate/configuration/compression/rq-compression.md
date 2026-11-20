@@ -21,17 +21,21 @@ import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
 <CompressionByDefault/>
 
-[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast vector compression technique that offers significant performance benefits. Three RQ variants are available in Weaviate:
+[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) compresses vector data. Three RQ variants are available in Weaviate:
 
-- **8-bit RQ**: Up to 4x compression while retaining almost perfect recall (98-99% on most datasets). **Recommended** for most use cases.
-- **4-bit RQ**: Up to 8x compression, roughly half the size of 8-bit RQ, and it depends on rescoring to reach comparable recall. Available for the `hnsw` index only.
-- **1-bit RQ**: Close to 32x compression as dimensionality increases with moderate recall across various datasets.
+- **8-bit RQ**: Up to 4x vector compression without training. A starting point for evaluating compression on HNSW.
+- **4-bit RQ**: Up to 8x vector compression, with rescoring to improve recall. Generally available from [v1.40](https://weaviate.io/blog/weaviate-1-40-release) and supported only by the `hnsw` index, including the HNSW stage of a dynamic index.
+- **1-bit RQ**: Close to 32x vector compression as dimensionality increases, with greater information loss than wider encodings.
+
+These ratios concern vector encodings, not total RAM. Recall and latency depend on the dataset, search settings, and rescoring. See [Compression](/weaviate/starter-guides/managing-resources/compression) for evaluation guidance.
+
+RQ can be enabled at creation or later on an uncompressed HNSW collection. Once enabled, its `bits` and `centering` settings are immutable, and quantization cannot be disabled. To avoid deployment-level compression defaults, [opt out at creation](./uncompressed.md) where supported; this is not available for HFresh's mandatory RQ or the enforced free-tier Cloud configuration.
 
 ## 8-bit RQ
 
 <Rq8bit/>
 
-[8-bit RQ](../../concepts/vector-quantization.md#8-bit-rq) provides up-to 4x compression while maintaining 98-99% recall in internal testing. It is generally recommended for most use cases as the default quantization techniques.
+[8-bit RQ](../../concepts/vector-quantization.md#8-bit-rq) uses 8-bit codes in place of float32 dimensions. It requires no training, but its recall is workload-dependent. It is the default compression for Weaviate Cloud's `Performance Optimized` profile, not a self-hosted default.
 
 ### Enable compression for new collection
 
@@ -90,7 +94,7 @@ RQ can be enabled at collection creation time through the collection definition:
 
 ### Enable compression for existing collection
 
-RQ can also be enabled for an existing collection by updating the collection definition:
+RQ can also be enabled for an existing uncompressed HNSW collection by updating the collection definition:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -204,7 +208,7 @@ A `dynamic` index uses 4-bit RQ only after it converts to HNSW. For the bit widt
 
 ### Enable compression for existing collection
 
-4-bit RQ can also be enabled for an existing collection that is not yet compressed, by updating the collection definition. Weaviate re-encodes the existing vectors in the background.
+4-bit RQ can also be enabled for an existing HNSW collection that is not yet compressed, by updating the collection definition. Weaviate re-encodes the existing vectors in the background. This does not convert an existing 8-bit RQ index to 4-bit RQ.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -304,7 +308,7 @@ RQ can be enabled at collection creation time through the collection definition:
 
 ### Enable compression for existing collection
 
-RQ can also be enabled for an existing collection by updating the collection definition:
+RQ can also be enabled for an existing uncompressed HNSW collection by updating the collection definition:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
