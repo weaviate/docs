@@ -195,6 +195,21 @@ Hybrid search in Weaviate supports all the parameters available for keyword (BM2
 
 For more information on these parameters, see the [keyword search page](./keyword-search.md).
 
+## Filters and ranking stages
+
+Hybrid fusion produces a ranking, but you can also restrict candidates or adjust the retrieved results for your application:
+
+| Goal | Feature | Behavior |
+| --- | --- | --- |
+| Restrict which objects can match | [Filters](../filtering.md) | Build an allow-list before vector search, rather than discarding non-matches afterward. For HNSW, filter strategy and the flat-search cutoff affect how matching vectors are searched. |
+| Prefer recent or otherwise favored objects | [Boost](../../search/boost.md) | Promote or demote retrieved candidates without filtering them out. On hybrid queries, Boost rescores the fused result. |
+| Reduce repetitive results | [Diversity selection (MMR)](../../search/hybrid.md#diversity-selection-mmr) | Select a subset of the fused candidates that balances relevance and diversity. |
+| Score candidates with another model | [Reranking](../reranking.md) | Apply a configured reranker to the retrieved candidates. If MMR is also used, reranking runs after MMR. |
+
+Boost and MMR became generally available in `v1.39`. MMR supports hybrid and vector searches, but not BM25-only queries or multi-vector collections. Its selection limit must be at least 1 and no larger than the query's candidate limit; set the relevance/diversity balance explicitly. Client support varies, so check the examples on the linked how-to pages. Boost, MMR, and reranking are not available through the preview Search REST API.
+
+For RAG, [generative search](../../search/generative.md) passes retrieved results and your prompt to a configured generative model. Evaluate retrieval relevance and generated-answer quality separately; fusion alone does not establish answer quality.
+
 ## Further resources
 
 - [How-to: Search](../../search/index.mdx)

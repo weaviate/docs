@@ -43,12 +43,12 @@ When search throughput is limited, add CPUs to increase the number of queries pe
 ## The role of memory
 
 :::tip Rule of thumb
-Memory determines the maximum supported dataset size. Memory does not directly influence query speed.
+For in-memory HNSW, available memory limits the size of the index you can keep resident. Compression and disk-based indexing change the memory, recall, and latency trade-offs.
 :::
 
-The HNSW index must be stored in memory. The memory required is directly related to the size of your dataset. There is no correlation between the size of your dataset and the current query load. You can use [`product quantization (PQ)`](/weaviate/concepts/vector-quantization#product-quantization) to compress the vectors in your dataset and increase the number of vectors you can hold in memory. If memory is your main constraint, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) is another option.
+The HNSW graph is stored in memory. Its size grows with the number of indexed vectors and their connections, while vector compression reduces the vector payload. [Rotational quantization (RQ)](../configuration/compression/rq-compression.md), PQ, SQ, and BQ offer different memory/recall trade-offs. If memory is your main constraint, the disk-based [HFresh index](/weaviate/concepts/vector-index#hfresh-index) is another option: it keeps a compressed centroid index in memory and compressed posting lists on disk, trading peak query throughput for memory efficiency.
 
-Weaviate lets you configure a limit to the number of vectors held in memory in order to prevent unexpected Out-of-Memory ("OOM") situations. The default value is one trillion (`1e12`) objects per collection. To adjust the number of objects, update the value of [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) in your index settings.
+Weaviate lets you configure a limit to the number of vectors held in memory in order to prevent unexpected Out-of-Memory ("OOM") situations. The default value is one trillion (`1e12`) objects per collection. This is a cache configuration limit, not demonstrated dataset capacity or a memory reservation. To adjust the number of objects, update the value of [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) in your index settings.
 
 Weaviate also uses [memory-mapped files](https://en.wikipedia.org/wiki/Memory-mapped_file) for data stored on disks. Memory-mapped files are efficient, but disk storage is much slower than in-memory storage.
 
@@ -56,13 +56,15 @@ Weaviate also uses [memory-mapped files](https://en.wikipedia.org/wiki/Memory-ma
 
 The HNSW vector index is the primary driver of memory usage. These factors influence the amount of memory Weaviate uses:
 
-- **The total number of object vectors**. The number of vectors is important, but the raw size of the original objects is not important. Only the vector is stored in memory. The size of the original text or other data is not a limiting factor.
+- **The total number and size of vectors**. Count vectors after chunking, rather than source documents. Include each configured vector representation when planning named-vector or multi-vector collections. Dimensions and compression determine the vector payload size.
 - **The `maxConnections` HNSW index setting**. Each object in memory has at most [`maxConnections`](../config-refs/indexing/vector-index.mdx) connections per layer. Each of the connections uses 8-10B of memory. Note that the base layer allows for `2 * maxConnections`.
+
+These vector-index components are not the entire process memory footprint. Also budget for [object and inverted-index data structures](./storage.md#object-and-inverted-index-store), resident metadata, caches, the Go runtime and garbage collection, and allocations during queries and imports. Replication creates additional copies across nodes; account for the [shard and replica layout](./replication-architecture/index.md#replication-vs-sharding) when sizing a cluster.
 
 ### An example calculation
 
 :::note
-The following calculation assumes that you want to hold all vectors in memory. For a hybrid approach that combines in memory and on-disk storage, see [Vector Cache](#vector-cache) below.
+The following calculation is a rough planning heuristic for uncompressed HNSW with all vectors in memory, not a measured whole-process RAM requirement. Do not apply the same multiplier to compressed vectors or HFresh. For HNSW vector-cache trade-offs, see [Vector Cache](#vector-cache) below.
 :::
 
 To estimate your memory needs, use the following rule of thumb:
@@ -75,13 +77,28 @@ For example, consider a model that has one million 384-dimensional vectors of ty
 
 - The memory requirement for one million objects is: `1e6 * 1536 B = 1.5G B`
 
-The rule of thumb says to double the memory requirement. The total memory requirement for one million 384-dimensional vectors of type `float32` is: `2 * 1e6 * 1536 B = 3 GB`.
+The rule of thumb doubles the vector payload: `2 * 1e6 * 1536 B ≈ 3 GB` (decimal). Validate this estimate against the full deployment's memory use.
 
-For a more accurate calculation, include a factor for the [`maxConnections`](../config-refs/indexing/vector-index.mdx) setting instead of multiplying the base requirement by two.
+To make a rough connection-memory contribution explicit, include a factor for the [`maxConnections`](../config-refs/indexing/vector-index.mdx) setting instead of multiplying the base requirement by two.
 
-For example, if `maxConnections` is 64 and the other values are the same, a more accurate memory estimate is `1e6 * (1536B + (64 * 10)) = 2.2 GB`.
+For example, if `maxConnections` is 64 and the other values are the same, a partial vector-plus-connections estimate is `1e6 * (1536B + (64 * 10)) ≈ 2.2 GB`.
 
 The estimate that includes `maxConnections` is smaller than the rule of thumb estimate. However, the `maxConnections` estimate doesn't account for garbage collection. Garbage collection adds overhead that is explained in the next section.
+
+### Compressed vector payload is not total memory
+
+For a 1536-dimensional vector, the RQ payload sizes below follow from the code width and [auxiliary bytes](./vector-quantization.md#rq-characteristics). This dimension count needs no rounding because it is already a multiple of 64.
+
+| Representation | Payload calculation | Bytes per vector |
+| --- | --- | --- |
+| Uncompressed `float32` | `1536 * 4` | 6144 |
+| 8-bit RQ | `1536 + 16` | 1552 |
+| 4-bit RQ | `1536 / 2 + 16` | 784 |
+| 1-bit RQ | `1536 / 8 + 8` | 200 |
+
+For example, 4-bit RQ makes this vector payload about 7.84x smaller, not the entire HNSW index or process. Graph connections and other memory components still need a separate budget. Uncompressed vectors also remain stored for [rescoring](./vector-quantization.md#over-fetching--re-scoring), which adds retrieval and scoring work at query time.
+
+Choose compression and rescoring settings by testing recall and latency on representative data. The recall figures on the [RQ concepts page](./vector-quantization.md#rotational-quantization) are Weaviate's internal test results, not guarantees for a different embedding model, dataset, or query mix.
 
 ## Effects of garbage collection
 
@@ -103,7 +120,9 @@ To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or
 
 The following tactics can help to reduce Weaviate's memory usage:
 
-- **Use vector compression**. Product quantization (PQ) is a technique that reduces the size of vectors. Vector compression impacts recall performance, so we recommend testing PQ on your dataset before using it in production. <br/><br/> For more information, see [Product Quantization](/weaviate/concepts/vector-quantization). <br/> To configure PQ, see [Compression](../configuration/compression/pq-compression.md).
+- **Use vector compression**. For HNSW, [RQ](../configuration/compression/rq-compression.md) is a starting point; [PQ, SQ, and BQ](./vector-quantization.md) are also available. Test the recall, latency, and memory trade-offs on your dataset before using a configuration in production. Check [Cloud defaults](/cloud/manage-clusters/default-settings) before assuming your collection is uncompressed.
+
+- **Consider a disk-based index**. [HFresh](/weaviate/concepts/vector-index#hfresh-index) keeps most vector-index data on disk and rebalances as data changes. It uses mandatory RQ compression, supports `cosine` and `l2-squared` (not dot product), and trades peak query throughput for memory efficiency.
 
 - **Reduce the dimensionality of your vectors.** The most effective approach to reducing memory size, is to reduce the number of dimensions per vector. If you have high dimension vectors, consider using a model that uses fewer dimensions. For example, a model that has 384 dimensions uses far less memory than a model with 1536 dimensions.
 
@@ -118,7 +137,9 @@ Reducing `maxConnections` adversely affects HNSW recall performance. To mitigate
 
 ## Vector Cache
 
-For optimal search and import performance, all previously imported vectors need to be held in memory. The size of the vector cache is specified by the [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) parameter in the collection definition. By default this limit is set to one trillion (`1e12`) objects when you create a new collection.
+The following guidance concerns HNSW vector caching. HFresh has a different [centroid and posting-list layout](/weaviate/concepts/vector-index#hfresh-index).
+
+For optimal HNSW search and import performance, all previously imported vectors need to be held in memory. The size of the vector cache is specified by the [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) parameter in the collection definition. By default this limit is set to one trillion (`1e12`) objects when you create a new collection.
 
 You can reduce the size of `vectorCacheMaxObjects`, but a disk lookup for a vector is orders of magnitudes slower than memory lookup. Only reduce the size of `vectorCacheMaxObjects` with care and as a last resort.
 
