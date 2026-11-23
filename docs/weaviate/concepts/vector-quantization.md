@@ -190,13 +190,26 @@ Learn more about how to [configure rotational quantization](../configuration/com
 
 ## Over-fetching / re-scoring
 
-Weaviate over-fetches results and then re-scores them when you use SQ, RQ, or BQ. This is because the distance calculation on the compressed vectors is not as accurate as the same calculation on the original vector embedding.
+Weaviate over-fetches results and then re-scores them when you use PQ, SQ, RQ, or BQ. This is because the distance calculation on the compressed vectors is not as accurate as the same calculation on the original vector embedding.
 
-When you run a query, Weaviate compares the query limit against a configurable `rescoreLimit` parameter.
+Two quantizer settings control how many candidates are rescored for a query limit `k`: `rescoreLimit` and `rescoreFactor`. Weaviate rescores the best `max(k, rescoreLimit, ceil(k * rescoreFactor))` candidates by compressed distance. Under the `hnsw` index this is also capped at `ef`, the number of candidates the graph search returns. Weaviate fetches the uncompressed vectors of these candidates, recalculates their distances and returns the top `k`.
 
-The query retrieves compressed objects until the object count reaches whichever limit is greater. Then, Weaviate fetches the original, uncompressed vector embeddings that correspond to the compressed vectors. The uncompressed vectors are used to recalculate the query distance scores.
+For example, a query with a limit of 10, a `rescoreLimit` of 200 and a `rescoreFactor` of 2 rescores 200 candidates. With a limit of 150, it rescores 300. This process offsets the loss in search quality (recall) that is caused by compression.
 
-For example, if a query is made with a limit of 10, and a rescore limit of 200, Weaviate fetches 200 objects. After rescoring, the query returns top 10 objects. This process offsets the loss in search quality (recall) that is caused by compression.
+Both settings default to `-1`, which lets Weaviate pick the value per quantizer:
+
+| Index | Quantizer | `rescoreLimit` | `rescoreFactor` |
+| :-- | :-- | :-- | :-- |
+| `hnsw` | PQ | `256` | `2` |
+| `hnsw` | BQ | `512` | `4` |
+| `hnsw` | SQ | `20` | `2` |
+| `hnsw` | RQ, 8-bit and 4-bit | `20` | `2` |
+| `hnsw` | RQ, 1-bit | `512` | `4` |
+| `flat` | BQ, RQ | `k` | `1` |
+
+Under `hnsw`, a `rescoreLimit` of `0` turns rescoring off.
+
+Before `v1.41`, `hnsw` with PQ or BQ rescored every candidate the graph search returned, up to `ef`. With SQ or RQ, a `k` above `rescoreLimit` did the same. From `v1.41` the rescore depth is bounded, so a query with a large `ef` or `k` reads fewer uncompressed vectors. Existing collections keep their stored `rescoreLimit` and use the automatic `rescoreFactor`.
 
 :::note RQ optimization
 With 8-bit RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to `0`) for maximum query performance with minimal impact on search quality.
