@@ -7,8 +7,8 @@ services:
     - '8080'
     - --scheme
     - http
-    # TODO(Ivan): pin 1.41.0 at GA. 1.41.0-rc.0 is the only 1.41 image until then.
-    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0-rc.0
+    # TODO(Ivan): pin 1.41.0 at GA.
+    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0-rc.1
     ports:
     - 8580:8080
     - 50551:50051
