@@ -155,7 +155,7 @@ If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](/depl
 
 In Weaviate, availability is generally favored over consistency. Weaviate's data replication uses a leaderless design, which means there are no primary and secondary nodes. When writing and reading data, the client contacts one or more nodes. A load balancer exists between the user and the nodes, so the user doesn't know which node they are talking to (Weaviate will forward internally if a user is requesting a wrong node).
 
-The [consistency level](./consistency.md#tunable-consistency-strategies) governs how many replicas must respond to a read or acknowledge a write: `ONE` requires one, `QUORUM` a majority, and `ALL` all replicas in the operation's replica set. A write can return before every replica acknowledges it at `ONE` or `QUORUM`. This does not enable background async replication.
+The number of replicas that need to respond to a read or acknowledge a write is [tunable](./consistency.md#tunable-consistency-strategies): `ONE` requires one, `QUORUM` a majority, and `ALL` all replicas in the operation's replica set. A write can return before every replica acknowledges it at `ONE` or `QUORUM`. This does not enable background async replication.
 
 The number of replicas doesn't have to match the number of nodes (cluster size). It is possible to split data in Weaviate based on collections. Note that this is [different from Sharding](#replication-vs-sharding).
 

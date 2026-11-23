@@ -70,7 +70,7 @@ HNSW, or "Hierarchical Navigable Small World", is the most common graph index ty
 
 They are very scalable, allow incremental updates, and efficient for high-dimensional vectors.
 
-HNSW is the default index type in self-managed Weaviate. Cloud defaults depend on the cluster's optimization profile, as described above.
+This is the default index type in self-managed Weaviate unless you configure another index.
 
 ### Tree-based indexes
 
@@ -258,9 +258,9 @@ HFresh works by:
 2. **Using an HNSW index** to efficiently search the centroids.
 3. **Searching only the most relevant posting lists** (clusters) for a query.
 
-Tune the trade-off between memory use and search recall with settings such as `searchProbe`, which controls how many posting lists to search, and `replicas`, which limits how many posting lists HFresh selects for a vector. HFresh may select fewer than `replicas`. This setting does not control [data replication across nodes](/weaviate/concepts/replication-architecture).
+This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (how many posting lists to search) and `replicas` (the maximum number of posting lists selected for a vector). The `replicas` setting does not control [data replication across nodes](/weaviate/concepts/replication-architecture).
 
-HFresh keeps the centroid index in memory with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). It also keeps supporting metadata in memory, including posting sizes and per-vector versions. The posting lists are disk-backed and use 1-bit RQ. A query searches the centroid index to select postings, reads the selected postings, and rescores top candidates against the uncompressed vectors. This avoids scanning all postings, but storage reads and latency depend on the data, query, and cache. HFresh rebalances posting lists in the background as data changes, so it does not require periodic full index rebuilds.
+The centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). Supporting metadata, including posting sizes and per-vector versions, also stays in memory. The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick relevant postings, reads those postings, and rescores the top candidates against the uncompressed vectors. Storage reads and latency depend on the data, query, and cache. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
 
 HFresh is particularly well-suited for:
 

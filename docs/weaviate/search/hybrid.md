@@ -1179,7 +1179,7 @@ Important notes:
 - **Two limits**: the query's top-level `limit` is the candidate window that gets diversified, and the diversity `limit` is the number of results returned. The diversity `limit` must be at least `1` and no larger than the query `limit`.
 - **Ordering**: results come back in MMR order, not fused-score order.
 - **Pagination**: `offset` moves the candidate window, so it must advance by the query `limit`, not by the number of returned objects. Weaviate does not validate this, and getting it wrong silently repeats some objects across pages while skipping others. See [Pagination](./similarity.md#pagination).
-- **Not supported**: queries targeting a multi-vector index. In a collection with both single-vector and multi-vector targets, use a single-vector target.
+- **Not supported**: queries targeting a multi-vector index. Weaviate rejects these queries with an error. In a collection with both single-vector and multi-vector targets, use a single-vector target.
 
 For the parameters, the relevance and diversity trade-off, and vector search examples, see [Diversity selection (MMR)](./similarity.md#diversity-selection-mmr).
 

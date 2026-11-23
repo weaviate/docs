@@ -6,16 +6,16 @@ image: og/docs/concepts.jpg
 # tags: ['architecture', 'resource', 'cpu', 'memory', 'gpu']
 ---
 
-Size a Weaviate deployment from the number of vectors you will index, the properties you will search or filter, and the traffic it must serve. A document can produce several chunks, and each chunk can have several vectors. Object count alone does not establish how much memory or SSD capacity you need.
+Size a Weaviate deployment from the number of vectors you will index, the properties you will search or filter, and the traffic it must serve. A document can produce several chunks, and each chunk can have several vectors. Object count alone does not establish how much memory or SSD capacity you need. CPU and memory are the primary resources for Weaviate instances. Depending on the modules you use, GPUs may also play a role.
 
 Start with the [worked sizing example](#size-a-hybrid-search-workload), then measure a representative import and query workload before choosing production hardware.
 
 
 ## Limit available resources
 
-Use [environment variables](/deploy/configuration/env-vars/index.md) to tune Go runtime resource use. These settings do not cap total process memory or guarantee that imports cannot run out of memory.
+You can set [environment variables](/deploy/configuration/env-vars/index.md) to manage Weaviate's Go runtime resource usage. These settings do not cap total process memory or guarantee that imports cannot run out of memory.
 
-- `LIMIT_RESOURCES`: Set the literal value `true` to have Weaviate set `GOMAXPROCS` at startup from a detected cgroup CPU quota unless you set it explicitly. This overrides Go's default parallelism when a quota is detected; it does not reserve a CPU core. By default, the automatic Go memory limit is 80% of the cgroup memory limit. An explicit `GOMEMLIMIT` normally takes precedence. If the cgroup has no memory limit, automatic setup may leave the Go memory limit unset. On setup error, Weaviate uses 80% of host memory, which can exceed the container's allocation.
+- [`LIMIT_RESOURCES`](/deploy/configuration/env-vars/index.md#LIMIT_RESOURCES): Set the literal value `true` to have Weaviate set `GOMAXPROCS` at startup from a detected cgroup CPU quota unless you set it explicitly. This overrides Go's default parallelism when a quota is detected; it does not reserve a CPU core. By default, the automatic Go memory limit is 80% of the cgroup memory limit. An explicit `GOMEMLIMIT` normally takes precedence. If the cgroup has no memory limit, automatic setup may leave the Go memory limit unset. On setup error, Weaviate uses 80% of host memory, which can exceed the container's allocation.
 - [`GOMEMLIMIT`](/deploy/configuration/env-vars/index.md#GOMEMLIMIT): Sets a soft memory limit for the Go runtime that influences garbage collection. Leave separate headroom for file mappings, non-Go allocations, and operating-system memory.
 - [`GOMAXPROCS`](/deploy/configuration/env-vars/index.md#GOMAXPROCS): Limits how much Go code can execute simultaneously. It does not reserve physical cores or cap the number of OS threads.
 
@@ -24,7 +24,7 @@ Use [environment variables](/deploy/configuration/env-vars/index.md) to tune Go 
 
 HNSW search and index construction can be CPU-intensive when the needed vectors and graph are in memory. A complete request can also be limited by cache misses, fetching objects, storage I/O, or an indexing backlog. You can [tune HNSW settings](../config-refs/indexing/vector-index.mdx) per collection.
 
-HNSW graph traversal is largely single-threaded, but a complete request can include parallel work such as candidate rescoring. Concurrent requests and [batch inserts](/weaviate/manage-objects/import) can also use multiple threads. Multiple shards can expose more import parallelism, including on one node, but they add overhead.
+HNSW graph traversal is largely single-threaded, but a complete request can include parallel work such as candidate rescoring. If you make multiple searches or inserts at the same time, Weaviate can make use of multiple threads. [Batch inserts](/weaviate/manage-objects/import) use multiple threads to process data in parallel. Multiple shards can expose more import parallelism, including on one node, but they add overhead.
 
 ### When to add more CPUs
 
@@ -136,7 +136,7 @@ The following tactics can help to reduce Weaviate's memory usage:
 
 - **Consider a disk-based index**. [HFresh](/weaviate/concepts/vector-index#hfresh-index) keeps most vector-index data on disk and rebalances as data changes. It uses mandatory RQ compression, supports `cosine` and `l2-squared` (not dot product), and trades peak query throughput for memory efficiency.
 
-- **Reduce vector dimensions.** Fewer dimensions reduce the vector payload. Total memory savings and retrieval quality also depend on the embedding model, index settings, and other allocations.
+- **Reduce the dimensionality of your vectors.** If you have high dimension vectors, consider using a model that uses fewer dimensions. Fewer dimensions reduce the vector payload. Total memory savings and retrieval quality also depend on the embedding model, index settings, and other allocations.
 - **Reduce [`maxConnections`](../config-refs/indexing/vector-index.mdx) for HNSW.** A smaller connection budget can reduce graph memory but can also lower recall. When tuning, `efConstruction` controls construction work and can affect the graph's query behavior; `ef` controls the query-time search budget.
 - **Tune the [vector cache](#vector-cache).** Holding fewer vectors in memory can trade memory for storage reads.
 

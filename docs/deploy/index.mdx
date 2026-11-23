@@ -8,7 +8,9 @@ import CardsSection from "/src/components/CardsSection";
 import DeploymentCards from "/src/components/DeploymentCards";
 import styles from "/src/components/CardsSection/styles.module.scss";
 
-Weaviate Cloud runs the database for you. If you need to control the infrastructure or server settings, run Weaviate yourself on your own Kubernetes cluster or use Docker for local development. Both paths use Weaviate Database, but they differ in who operates it, which settings you control, and which features are available.
+Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](/go/console?utm_content=deploy), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
+
+If you are upgrading from a previous version of Weaviate, see the [Migration guide](./migration/index.md) for any changes that may affect your installation.
 
 ## Compare deployment options
 
@@ -42,7 +44,9 @@ If you plan a backup-based move, check what the backup covers, whether the desti
 | [Deduplicated backups on a self-managed cluster](./configuration/backups.md#deduplicated-backups) | From `v1.40`, creating one requires Enterprise or Platform. Restoring one requires a version that supports the deduplicated format, but no license. |
 | [Restore a Cloud-managed backup](/cloud/manage-clusters/default-settings#backups) | Contact Weaviate Cloud support. Do not assume that a Cloud-managed backup is directly available to a self-managed cluster. |
 
-## Installation guides {#deployment-options}
+## Deployment Options
+
+Choose the best deployment method based on your needs:
 
 export const deploymentCardsData = [
   {

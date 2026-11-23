@@ -43,7 +43,7 @@ A backup is taken at instance or collection granularity. Tenants are not a backu
 | Whole instance | Yes. This is the default when you set neither `include` nor `exclude`. | Yes. |
 | A collection | Yes. Name it in `include`, or leave it out of `exclude`. | Yes. On restore, `include` and `exclude` select from the collections the backup contains. |
 | A tenant | Yes, as part of its collection. Since `v1.37`, both `active` (HOT) and `inactive` (COLD) tenants are included; `offloaded` (FROZEN) tenants are skipped, because they hold no local data. | **No.** There is no tenant-level restore — restoring brings back the whole collection. If you need to restore one tenant at a time, give each tenant its own collection. |
-| RBAC roles and dynamic database users | Yes. To narrow what is captured, use `includeRoles` and `includeUsers` in the backup request. Collection `include` and `exclude` do not select roles or users. | Not by default. Set `rolesOptions` or `usersOptions` to `"all"` when you [restore a backup](#restore-backup). |
+| RBAC roles and API-managed [database users](/weaviate/configuration/rbac/manage-users) | Yes, captured alongside the collections. Use `includeRoles` and `includeUsers` to narrow what is captured; collection `include` and `exclude` do not select roles or users. | Not by default. Set `rolesOptions` or `usersOptions` to `"all"` when you [restore a backup](#restore-backup). |
 
 </details>
 
@@ -752,7 +752,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | `cpuPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
 | `Path`            | string | Required if created at a custom path | `""` | An optional string to manually set the backup location. If not provided, the backup will be restored from the default location. Introduced in Weaviate `v1.27.2`. |
 | `rolesOptions`            | string | no | `"noRestore"` | Controls whether to restore captured RBAC roles and permissions. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
-| `usersOptions`            | string | no | `"noRestore"` | Controls whether to restore captured dynamic database users. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
+| `usersOptions`            | string | no | `"noRestore"` | Controls whether to restore captured API-managed database users. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
 
 These options apply only to state already captured in the backup. If a snapshot is absent or the corresponding subsystem is disabled on the target, the restore leaves that state unchanged. The restore does not change external OIDC identities or static authentication configuration.
 
@@ -943,7 +943,7 @@ Creating a deduplicated backup requires [Enterprise or Platform Edition](/deploy
 
 Deduplicated backups are an opt-in backup mode for replicated collections. When Weaviate can prove that a shard's replicas hold identical data, one replica uploads the shard instead of every replica. Backup storage for an in-sync collection drops from N times the data to 1 time, where N is the replication factor.
 
-A shard that cannot be proven in sync is archived by every replica instead of being deduplicated.
+Any shard that cannot be proven in sync is archived by every replica, as before.
 
 To create a deduplicated backup, set `BACKUP_DEDUPE_ENABLED=true` and configure a valid license key on every node. Enable [async replication](/weaviate/concepts/replication-architecture/consistency#async-replication) so Weaviate can verify replica convergence, then set `config.dedupeReplicas` to `true` in the backup request.
 
