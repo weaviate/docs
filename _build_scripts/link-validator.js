@@ -51,6 +51,7 @@ const domainsToIgnore = [
     'https://platform.deepseek.com', // 403s automated requests (site loads fine in a browser)
     'https://platform.openai.com',
     'https://www.researchgate.net',
+    'https://rubydoc.info', // origin returns 521 to automated requests
     'https://simple/',
     'https://static.scarf.sh',
     'https://www.snowflake.com',
