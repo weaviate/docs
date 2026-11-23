@@ -365,7 +365,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
 
 <RQParameters />
 
-RQ supports the `cosine`, `dot` and `l2-squared` distance metrics. Other distance metrics are not supported.
+RQ supports the `cosine`, `dot` and `l2-squared` distance metrics. From `v1.41`, Weaviate rejects a collection definition that enables RQ with the `hamming` or `manhattan` distance metric.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

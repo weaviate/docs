@@ -122,7 +122,7 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ## Rotational quantization
 
-**Rotational quantization (RQ)** provides significant compression while maintaining high recall. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in: **8-bit**, **4-bit** and **1-bit** variants.
+**Rotational quantization (RQ)** provides significant compression while maintaining high recall. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in: **8-bit**, **4-bit** and **1-bit** variants. RQ supports the `cosine`, `dot` and `l2-squared` distance metrics.
 
 ### 8-bit RQ
 
@@ -235,9 +235,9 @@ A flat index accepts 8-bit and 1-bit RQ. [4-bit RQ](#4-bit-rq) is available for 
 
 ## Rescoring
 
-Quantization inherently involves some loss information due to the reduction in information precision. To mitigate this, Weaviate uses a technique called rescoring, using the uncompressed vectors that are also stored alongside compressed vectors. Rescoring recalculates the distance between the original vectors of the returned candidates from the initial search. This ensures that the most accurate results are returned to the user.
+Quantization inherently involves some loss of information due to the reduction in precision. To mitigate this, all quantization methods (PQ, SQ, RQ and BQ) use rescoring. Weaviate stores the original uncompressed vectors alongside the compressed ones and recalculates the distances of the result candidates from the uncompressed vectors. This ensures that the most accurate results are returned to the user.
 
-In some cases, rescoring also includes over-fetching, whereby additional candidates are fetched to ensure that the top candidates are not omitted in the initial search.
+Rescoring also includes over-fetching, where additional candidates are fetched so that the top results are not missed in the initial compressed search. The `rescoreLimit` and `rescoreFactor` settings control how many candidates are rescored. See [Over-fetching / re-scoring](#over-fetching--re-scoring) for details.
 
 ## Further resources
 
