@@ -93,6 +93,29 @@ const unionResult = await qa.ask(
 console.log(unionResult.finalAnswerParsed.chart === null);
 // END UnionImageExample
 
+// START UnionAsToolCallExample
+const UnionAsToolCallResponse = z.object({
+    answer: z.string().describe("The answer to the question"),
+    chart: GeneratedImage.nullable().describe("Generate an image if you think it is necessary"),
+});
+
+async function askWithImage(query: string) {
+    const response = await qa.ask(
+        query,
+        { collections: ["Weather"], outputFormat: UnionAsToolCallResponse }
+    );
+
+    if (response.finalAnswerParsed.chart !== null) {
+        const imageBytes = Buffer.from(response.finalAnswerParsed.chart.base64, "base64");
+        // ... do something with the image
+    }
+
+    return response.finalAnswerParsed.answer;
+}
+// END UnionAsToolCallExample
+
+await askWithImage("What was the average temperature in January 2023? Chart it if useful."); // for testing
+
 // START ComplexBaseModelImageExample
 const Slide = z.object({
     speech: z.string().describe("What to say during this particular slide"),
