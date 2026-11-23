@@ -175,6 +175,8 @@ Weaviate can export traces over OTLP to a collector. Tracing is off by default; 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
 | `BACKUP_*` | Various configuration variables for backup provider modules. They are outlined in detail on the [Backups page](/deploy/configuration/backups.md). | |
+| `BACKUP_DEDUPE_ENABLED` | Allow [deduplicated backups](/deploy/configuration/backups.md#deduplicated-backups). Requires a license key. Default: `false`<br/>Added in `v1.40` | `boolean` | `true` |
+| `BACKUP_DEDUPE_CONVERGENCE_TIMEOUT` | Default wait for replica convergence in a [deduplicated backup](/deploy/configuration/backups.md#deduplicated-backups). Runtime-configurable. Default: `15s`<br/>Added in `v1.40.5` | `string - duration` | `60s` |
 | `AZURE_BLOCK_SIZE` | The block size for Azure Blob Storage for backups. Default: `41943040` (40MB) | `int - bytes` | `10000000` |
 | `AZURE_CONCURRENCY` | The maximum number of parts that will be concurrently uploaded/downloaded during backup operations. Default: `1` | `int` | `3` |
 | `CLIP_INFERENCE_API` | The endpoint where to reach the clip module if enabled | `string` | `http://multi2vec-clip:8080` |

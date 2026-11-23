@@ -927,6 +927,10 @@ Deduplicated backups are an opt-in backup mode for replicated collections. When 
 
 A shard is never left out of a backup. Any shard that cannot be proven in sync is archived by every replica, as before.
 
+To use it, set `BACKUP_DEDUPE_ENABLED=true` and a license key on every node. Then set `dedupeReplicas: true` in the `config` of the backup create request. Only collections with [async replication](./async-rep.md) are deduplicated. Other collections are backed up as usual.
+
+The request waits up to about 10 seconds plus `dedupeConvergenceTimeoutSeconds` for the replicas to agree. That value defaults to [`BACKUP_DEDUPE_CONVERGENCE_TIMEOUT`](./env-vars/index.md).
+
 Restoring a deduplicated backup works like any other restore and never requires the feature to be enabled.
 
 ## Kubernetes configuration
