@@ -312,10 +312,10 @@ Expiration needs a valid [license key](/deploy/enterprise#activate-the-enterpris
 
 <!-- TODO(Ivan): remove this note and the guard in howto.configure.rbac.users.py once the Python client version is known. -->
 :::info Python client not released yet
-The Python examples need the upcoming Python client release with [weaviate-python-client#2249](https://github.com/weaviate/weaviate-python-client/pull/2249).
+The Python examples need the next [Python client release](https://github.com/weaviate/weaviate-python-client/releases).
 :::
 
-To set or change the expiration, pass a time in the future. The REST API takes an `expiresAt` time in ISO 8601 format on a `PUT` request to `/v1/users/db/{user_id}/expiration`.
+To set or change the expiration, provide an expiration time. The time must be later than the current time.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -338,7 +338,7 @@ curl -X PUT http://localhost:8080/v1/users/db/custom-user/expiration \
   </TabItem>
 </Tabs>
 
-To clear the expiration so the key never expires, pass `None` in Python or send `{"neverExpires": true}` with the REST API.
+To clear the expiration so the key never expires:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -386,7 +386,7 @@ curl -X POST http://localhost:8080/v1/users/db/custom-user \
   </TabItem>
 </Tabs>
 
-To read the expiration, [list the users](#list-all-users) or get a single user. The `expiresAt` field (`user_expires_at` in Python) holds the expiration time. If it's absent (`None` in Python), the key never expires.
+To read the expiration, [list the users](#list-all-users) or get a single user. If the user has no expiration time, the key never expires.
 
 :::note
 Without a license key, expired keys still fail and you can't change the expiration until you restore the license key.
