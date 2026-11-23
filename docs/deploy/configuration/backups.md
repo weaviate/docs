@@ -31,6 +31,7 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 
 - **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
 - **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups include both `active` (HOT) and `inactive` (COLD) tenants. Inactive tenants are backed up directly from disk without activation. `Offloaded` (FROZEN) tenants are still skipped since they have no local data. Inactive tenant support was added in `v1.37.0`, and backported to `v1.35.17` and `v1.36.10`. In earlier releases only active tenants are included, so be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
+- **Hard links required**: From `v1.41`, Weaviate refuses a backup if the filesystem of the node's data directory does not support hard links. Clusters whose nodes mix filesystems are not supported.
 :::
 
 <details>
