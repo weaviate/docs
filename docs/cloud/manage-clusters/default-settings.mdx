@@ -86,9 +86,16 @@ For more information on authentication and authorization, see:
 
 ## Backups
 
-Each Weaviate Cloud instance is automatically backed up daily by default. Additional backups can be triggered manually via the API.
+Paid Weaviate Cloud clusters are automatically backed up daily by default. Additional backups can be triggered manually via the API. Retention depends on the plan:
 
-Backups are retained per the applicable backup retention period of that cluster, such as 7 days for Flex Shared Cloud clusters.
+| Plan | Backup retention |
+| --- | --- |
+| Free | No backup retention entitlement |
+| Flex | 7 days |
+| Premium Shared | 30 days |
+| Premium Dedicated | 45 days |
+
+Check the [pricing page](https://weaviate.io/pricing) for current plan entitlements. Backups are charged separately from the paid plan minimum, based on data volume and retention. Do not treat the daily backup schedule as a retention entitlement for Free clusters or as a recovery-time guarantee.
 
 To restore a backup, [contact Weaviate Cloud support](https://support.weaviate.io).
 

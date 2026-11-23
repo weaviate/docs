@@ -8,6 +8,8 @@ image: og/docs/concepts.jpg
 
 Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-collections/multi-node-setup.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
 
+A replication factor of `1` stores only one copy of each shard, even in a multi-node cluster. Sharding alone therefore does not provide high availability for that data. Choose the replication factor together with your [read and write consistency levels](./consistency.md); they determine how many replicas must respond to an operation.
+
 Weaviate utilizes multiple replication architectures:
 
 - [Cluster metadata replication](./consistency.md#cluster-metadata) is managed by the [Raft](https://raft.github.io/) consensus algorithm.
@@ -156,6 +158,10 @@ In Weaviate, availability is generally favored over consistency. Weaviate's data
 The number of nodes that need to acknowledge the read or write (from v1.18) operation is tunable, to `ONE`, `QUORUM` (n/2+1) or `ALL`. When write operations are carried out with consistency level `ALL`, the database works synchronously. If write is not set to `ALL` (possible from v1.18), writing data is asynchronous from the user's perspective.
 
 The number of replicas doesn't have to match the number of nodes (cluster size). It is possible to split data in Weaviate based on collections. Note that this is [different from Sharding](#replication-vs-sharding).
+
+From `v1.38`, [async replication](./consistency.md#async-replication) runs by default on collections with a replication factor greater than `1`, unless disabled cluster-wide. It synchronizes existing data replicas in the background; it does not add replicas to a collection with replication factor `1`. This is separate from [asynchronous vector indexing](../indexing/vector-index.md#asynchronous-indexing), which queues vector-index updates.
+
+For Weaviate Cloud HA clusters, the [default minimum replication factor](/cloud/manage-clusters/default-settings) is `3`. Cloud backup retention and availability SLAs depend on the plan; replication does not replace a [backup and restore plan](/cloud/manage-clusters/default-settings#backups).
 
 Read more about how replication works in Weaviate in [Philosophy](./philosophy.md), [Cluster Architecture](./cluster-architecture.md) and [Consistency](./consistency.md).
 

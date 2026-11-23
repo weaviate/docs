@@ -22,9 +22,17 @@ Retrieval Augmented Generation (RAG) combines information retrieval with generat
 
 In Weaviate, a RAG query consists of two parts: *a search query*, and a *prompt for the model*. Weaviate first performs the search, then passes both the search results and your prompt to a generative AI model before returning the generated response.
 
-import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+## Choose a retrieval and generation workflow
 
-<QueryAgentTip/>
+Generative search, the Query Agent, and the built-in MCP server serve different roles:
+
+| Workflow | Who constructs the search and calls the model? | Deployment and access |
+| --- | --- | --- |
+| Generative search (this page) | Your application supplies the search and prompt. Weaviate retrieves the objects and calls your configured generative model. | Available on self-managed Weaviate and Weaviate Cloud with a generative model integration and provider access. Model inference is not included merely by running the database. |
+| [Query Agent](/query-agent) | The agent plans searches from a natural-language question. Ask mode also generates an answer; Search mode returns retrieved data. | A separate Weaviate Cloud service with its own usage limits and pricing. |
+| [Built-in Weaviate MCP server](../configuration/mcp-server.mdx) | Your MCP client or agent chooses when to call the database tools, including hybrid search. | Built into Weaviate, generally available from `v1.38`, at `/v1/mcp`. Enable it on self-managed instances; it is always enabled on Weaviate Cloud. |
+
+Before connecting an agent to Cloud, check [MCP write access](../configuration/mcp-server.mdx#weaviate-cloud) and the API key's permissions. The `Enable MCP Read-Only` switch is off by default, so the write tool is available unless restricted. Generative-provider and client support varies; use the configuration and language examples below for your setup.
 
 ## Configure a generative model provider
 
