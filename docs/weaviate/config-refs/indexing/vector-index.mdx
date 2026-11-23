@@ -204,7 +204,7 @@ import HFreshMultiVector from "/_includes/feature-notes/hfresh_multivector.mdx";
 <HFreshMultiVector />
 
 :::caution On HFresh, multi-vector embeddings always use MUVERA
-HFresh stores multi-vector embeddings only in MUVERA-encoded form. From `v1.41` (and `v1.40.[TODO: patch]`), Weaviate enforces this: {/* TODO(Ivan): add the v1.40.x patch once it is tagged */}
+HFresh stores multi-vector embeddings only in MUVERA-encoded form. From `v1.40.6` and `v1.41`, Weaviate enforces this:
 
 - With a multi-vector vectorizer, Weaviate turns on `multivector.enabled` and `multivector.muvera.enabled` for you. Setting `multivector.muvera.enabled` to `false` is rejected.
 - When you create or update a collection, `multivector.enabled` without `multivector.muvera.enabled` is rejected.

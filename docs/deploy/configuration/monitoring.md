@@ -366,8 +366,6 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `weaviate_vector_index_restore_duration_seconds` | Seconds to rebuild a vector index from its on-disk state whenever a shard opens, at startup, on tenant activation or on replica movement. Only observed when there was state to restore. Exposes `_sum` and `_count` only. Added in `v1.39.14` and `v1.40.3`. | None | `Summary` |
 | `weaviate_vector_cache_prefill_duration_seconds` | Seconds a vector cache prefill took whenever a shard opens, at startup, on tenant activation or on replica movement. Aborted or failed prefills and shards with nothing to prefill are not observed. Exposes `_sum` and `_count` only. Added in `v1.39.14` and `v1.40.3`. | None | `Summary` |
 
-The three `weaviate_` startup metrics always keep that prefix. [`PROMETHEUS_MONITORING_METRIC_NAMESPACE`](./env-vars/index.md#PROMETHEUS_MONITORING_METRIC_NAMESPACE) does not change them.
-
 #### Backup & restore
 
 | Metric                                    | Description                                                                 | Labels                       | Type        |
