@@ -127,7 +127,7 @@ The size of an HNSW index is dominated by the number of vectors; take a look at 
 | Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
 | Edge | 10B x 20 connections | 200B | 200MB | 20GB |
 
-As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps only a compressed centroid index in memory, which can dramatically reduce the memory footprint.
+As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) can reduce vector-index memory use by storing compressed posting lists on disk.
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
@@ -258,9 +258,9 @@ HFresh works by:
 2. **Using an HNSW index** to efficiently search the centroids.
 3. **Searching only the most relevant posting lists** (clusters) for a query.
 
-This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (number of posting lists each vector is added to). HFresh's `replicas` parameter controls posting-list membership, not [data replication across nodes](/weaviate/concepts/replication-architecture).
+Tune the trade-off between memory use and search recall with settings such as `searchProbe`, which controls how many posting lists to search, and `replicas`, which limits how many posting lists HFresh selects for a vector. HFresh may select fewer than `replicas`. This setting does not control [data replication across nodes](/weaviate/concepts/replication-architecture).
 
-Only the centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick a few relevant postings, reads only those postings from disk, and rescores the top candidates against the uncompressed vectors. Because only a small subset of the data is read per query, disk I/O stays bounded and latency stays predictable as the dataset grows. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
+HFresh keeps the centroid index in memory with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). It also keeps supporting metadata in memory, including posting sizes and per-vector versions. The posting lists are disk-backed and use 1-bit RQ. A query searches the centroid index to select postings, reads the selected postings, and rescores top candidates against the uncompressed vectors. This avoids scanning all postings, but storage reads and latency depend on the data, query, and cache. HFresh rebalances posting lists in the background as data changes, so it does not require periodic full index rebuilds.
 
 HFresh is particularly well-suited for:
 

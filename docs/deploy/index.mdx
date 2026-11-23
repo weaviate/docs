@@ -30,7 +30,7 @@ See the [edition feature list](./enterprise.mdx#enterprise-edition-features) bef
 
 ### Plan a move between Cloud and self-managed
 
-To copy data between instances, follow the [cross-instance data migration examples](/weaviate/manage-collections/migrate). Recreate compatible target collections, then copy object IDs, properties, and vectors with the [object iterator](/weaviate/manage-objects/read-all-objects#read-all-objects-including-vectors). Keep the embedding model and vector dimensions compatible if you intend to reuse the vectors.
+You can copy data in either direction if your client can read the source and write to compatible target collections. Follow the [cross-instance migration examples](/weaviate/manage-collections/migrate): recreate the target collections, then copy object IDs, properties, and vectors with the [object iterator](/weaviate/manage-objects/read-all-objects#read-all-objects-including-vectors). For multi-tenant collections, copy each required tenant's data. If you reuse vectors, keep the embedding model and dimensions compatible and copy all needed named vectors.
 
 A data copy does not move the rest of the deployment. Configure the target's API endpoint and credentials, authentication and permissions, model integrations, index settings, replica layout, backups, and monitoring. Check the target's version, defaults, and [edition entitlements](./enterprise.mdx#enterprise-edition-features). Rehearse the cutover on a copy and verify object counts and representative searches before switching application traffic.
 
@@ -38,8 +38,8 @@ If you plan a backup-based move, check what the backup covers, whether the desti
 
 | Backup operation | What to check |
 | --- | --- |
-| [Self-managed backup and restore](./configuration/backups.md#restore-backup) | Ordinary backup creation and restore do not require an Enterprise or Platform license. Restoring a deduplicated backup also does not require that license. Check the target version, topology, and backup backend. |
-| Create a deduplicated backup on a self-managed cluster | From `v1.40`, creating one requires Enterprise or Platform. This is a creation requirement, not a restore requirement. |
+| [Self-managed backup and restore](./configuration/backups.md#restore-backup) | Ordinary backup creation and restore do not require an Enterprise or Platform license. Check that the target can read the archive and has a compatible version and topology, with no conflicting collections. |
+| [Deduplicated backups on a self-managed cluster](./configuration/backups.md#deduplicated-backups) | From `v1.40`, creating one requires Enterprise or Platform. Restoring one requires a version that supports the deduplicated format, but no license. |
 | [Restore a Cloud-managed backup](/cloud/manage-clusters/default-settings#backups) | Contact Weaviate Cloud support. Do not assume that a Cloud-managed backup is directly available to a self-managed cluster. |
 
 ## Installation guides {#deployment-options}

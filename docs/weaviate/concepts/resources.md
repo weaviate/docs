@@ -15,7 +15,7 @@ Start with the [worked sizing example](#size-a-hybrid-search-workload), then mea
 
 Use [environment variables](/deploy/configuration/env-vars/index.md) to tune Go runtime resource use. These settings do not cap total process memory or guarantee that imports cannot run out of memory.
 
-- `LIMIT_RESOURCES`: Set the literal value `true` to have Weaviate derive `GOMAXPROCS` from the cgroup CPU quota when detection succeeds, unless you set `GOMAXPROCS` explicitly. This does not reserve a CPU core. By default, the automatic Go memory limit is 80% of the cgroup memory limit. An explicit `GOMEMLIMIT` normally takes precedence. If the cgroup has no memory limit, the automatic setting may leave the Go memory limit unset. If the automatic setup returns an error, Weaviate falls back to 80% of system memory.
+- `LIMIT_RESOURCES`: Set the literal value `true` to have Weaviate set `GOMAXPROCS` at startup from a detected cgroup CPU quota unless you set it explicitly. This overrides Go's default parallelism when a quota is detected; it does not reserve a CPU core. By default, the automatic Go memory limit is 80% of the cgroup memory limit. An explicit `GOMEMLIMIT` normally takes precedence. If the cgroup has no memory limit, automatic setup may leave the Go memory limit unset. On setup error, Weaviate uses 80% of host memory, which can exceed the container's allocation.
 - [`GOMEMLIMIT`](/deploy/configuration/env-vars/index.md#GOMEMLIMIT): Sets a soft memory limit for the Go runtime that influences garbage collection. Leave separate headroom for file mappings, non-Go allocations, and operating-system memory.
 - [`GOMAXPROCS`](/deploy/configuration/env-vars/index.md#GOMAXPROCS): Limits how much Go code can execute simultaneously. It does not reserve physical cores or cap the number of OS threads.
 
@@ -100,7 +100,7 @@ The HFresh row illustrates the effect of membership count, not measured posting 
 
 | Budget | HNSW with 8-bit RQ | HFresh |
 | --- | --- | --- |
-| RAM for the vector index | Add graph links and cache bookkeeping to the cached code payload. Do not treat link bytes as the full graph footprint. | Budget centroid codes, the centroid graph, posting metadata, and the file pages used to read postings and rescore candidates. |
+| RAM for the vector index | Add graph links and cache bookkeeping to the cached code payload. Do not treat link bytes as the full graph footprint. | Budget centroid codes, the centroid graph, posting metadata, per-vector version state, and the file pages used to read postings and rescore candidates. |
 | Persistent SSD for the vector index | Count retained originals, codes, and on-disk graph data, not just one compressed copy. | Count retained originals, posting codes and metadata, and centroid data. |
 | Other RAM and SSD | For either design, budget objects, searchable text and filter indexes separately. Measure resident data, file cache and Go runtime memory during queries and import; do not count the same file-backed pages twice. Leave SSD headroom for ingestion, compaction and recovery apart from backup storage. | Same inputs; measure them in the target configuration. |
 
@@ -110,7 +110,7 @@ For example, **64 GiB RAM and 512 GiB SSD per node** are test allocations, not r
 
 - **Measure steady search and import separately.** Track memory and SSD high-water marks during bulk import, compaction, restart, and steady search. Repeat with concurrent writes if the workload needs them. `GOMEMLIMIT` is a Go runtime control, not a cap on all process memory.
 - **Use representative hybrid queries and filters.** Pin the Weaviate version and record the index settings. Hold the corpus, embedding model, filter selectivity and concurrency constant. For each index, tune against the same recall or judged relevance target and record p95/p99 latency, throughput and storage read activity. The payload calculations do not tell you how much SSD I/O an index needs.
-- **Test the replica layout under failure.** Check where copies are placed and whether the remaining nodes can serve the target traffic at your chosen [consistency levels](./replication-architecture/consistency.md). Replication factor 1 gives no data redundancy; replication is not a backup.
+- **Test the replica layout under failure.** Check where copies are placed and whether the remaining nodes can serve the target traffic at your chosen [consistency levels](./replication-architecture/consistency.md). A shard with only one copy has no data redundancy; replication is not a backup.
 
 ## Effects of garbage collection
 

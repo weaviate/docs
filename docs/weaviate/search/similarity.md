@@ -784,9 +784,9 @@ Add the `diversity_selection` parameter to any vector search query:
 Important notes:
 
 - **Result ordering**: Results are ordered by MMR score, not query similarity. The first result is the most relevant, but subsequent results may have lower query similarity because they were chosen for diversity.
-- **No reindexing needed**: MMR is applied at query time. You can use it on any existing collection without schema changes.
+- **No reindexing needed**: MMR is applied at query time. You can use it on an existing single-vector index without schema changes.
 - **Supported queries**: `near_text`, `near_vector`, `near_object`, `near_image`, and `near_media`. Hybrid search is also supported, from `v1.38.6`. See [Diversity selection with hybrid search](./hybrid.md#diversity-selection-mmr).
-- **Not supported**: multi-vector collections. Weaviate rejects these queries with an error instead of ignoring the diversity settings.
+- **Not supported**: queries targeting a multi-vector index. In a collection with both single-vector and multi-vector targets, use a single-vector target.
 
 :::tip
 A larger candidate set (higher top-level `limit`) gives MMR more results to choose from, improving diversity at the cost of slightly more computation. A good starting point is setting the candidate `limit` to 2–4x the MMR `limit`.
