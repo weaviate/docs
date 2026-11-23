@@ -8,25 +8,35 @@ import CardsSection from "/src/components/CardsSection";
 import DeploymentCards from "/src/components/DeploymentCards";
 import styles from "/src/components/CardsSection/styles.module.scss";
 
-Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](/go/console?utm_content=deploy), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
+Weaviate Cloud runs the database for you. If you need to control the infrastructure or server settings, run Weaviate yourself on your own Kubernetes cluster or use Docker for local development. Both paths use Weaviate Database, but they differ in who operates it, which settings you control, and which features are available.
 
-For licensing and feature entitlements, see [Community, Enterprise, and Platform Editions](./enterprise.mdx), including the [Enterprise feature list](./enterprise.mdx#enterprise-edition-features). The shared database binary does not make every feature part of the BSD-3-Clause Community Edition.
+## Compare deployment options
 
-If you are upgrading from a previous version of Weaviate, see the [Migration guide](docs/deploy/migration/index.md) for any changes that may affect your installation.
+| Option | Infrastructure and operations | Where to start |
+| --- | --- | --- |
+| **Weaviate Cloud** | Weaviate provides and operates the cluster. Choose from shared and dedicated plans; regions, availability, network features, and backups vary by plan. Cloud sets some server defaults you cannot change. | [Create a cluster](/cloud/manage-clusters/create) and check [Cloud defaults](/cloud/manage-clusters/default-settings) and [plan entitlements](https://weaviate.io/pricing). |
+| **Self-managed on Kubernetes** | You supply the cluster, in your cloud or on premises. You manage persistent volumes, networking, authentication, capacity, upgrades, replication, and backups. Installed features depend on the database version and edition. | [Install with Helm](./installation-guides/k8s-installation.md) and [plan CPU, RAM, and SSD](/weaviate/concepts/resources#size-a-hybrid-search-workload). |
+| **Self-managed with Docker** | You run and operate the container. Start here for local evaluation and development; don't treat a single local container as a production or high-availability setup. | [Run with Docker](./installation-guides/docker-installation.md). |
 
-Weaviate offers multiple deployment options to satisfy your specific use case in production.
+If you buy through AWS or Google Cloud Marketplace, check the listing for who runs the cluster. A marketplace billing route does not by itself change who operates Weaviate.
 
-This section hosts common deployment topics, including Kubernetes, cloud providers, and best practices, along with detailed tutorials and how-to guides.
-Weaviate is designed for:
+### Choose a self-managed edition
 
-- **Scalability** – Handle billions of vector data points efficiently.
-- **High-Performance Search** – Power AI applications with real-time vector retrieval.
-- **Flexible Integrations** – Connect with various machine learning models and data sources.
-- **Cloud & On-Prem Deployment** – Deploy on Weaviate Cloud, Kubernetes, or managed cloud services.
+- **Community Edition** uses the BSD-3-Clause core without a license key. Community, Enterprise, and Platform use the same database image; sharing an image does not make every feature part of Community Edition.
+- **Enterprise Edition** adds commercial operations features. From `v1.40`, shard self-recovery and creating deduplicated backups require Enterprise or Platform. This license requirement does not apply to ordinary backups or to restoring a deduplicated backup.
+- **Platform Edition** includes Enterprise features and adds namespaces, which are isolated virtual clusters. They are not the same as [multi-tenancy within a collection](/weaviate/concepts/data#multi-tenancy).
 
-## Deployment Options
+See the [edition feature list](./enterprise.mdx#enterprise-edition-features) before choosing a target version and edition. These license keys apply to self-managed deployments; Cloud follows its own plan entitlements.
 
-Choose the best deployment method based on your needs:
+### Plan a move between Cloud and self-managed
+
+Start with the collection definitions, object IDs, properties, and embedding vectors you need to keep. Weaviate's [object iterator](/weaviate/manage-objects/read-all-objects#read-all-objects-including-vectors) can read objects with their vectors, including named vectors, for a manual copy. Recreate compatible collections and import those objects into the target. Keep the embedding model and vector dimensions compatible if you intend to reuse the vectors.
+
+A data copy does not move the rest of the deployment. Configure the target's API endpoint and credentials, authentication and permissions, model integrations, index settings, replica layout, backups, and monitoring. Check the target's version, defaults, and [edition entitlements](./enterprise.mdx#enterprise-edition-features). Rehearse the cutover on a copy and verify object counts and representative searches before switching application traffic.
+
+If you plan a backup-based move, verify that the backup covers your data and that the destination can read it. [Cloud backup restores](/cloud/manage-clusters/default-settings#backups) go through Cloud support; don't assume a Cloud-managed backup is directly available to a self-managed cluster. Check [self-managed backup requirements](./configuration/backups.md) and [version-specific migration notes](./migration/index.md).
+
+## Installation guides {#deployment-options}
 
 export const deploymentCardsData = [
   {

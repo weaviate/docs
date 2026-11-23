@@ -6,7 +6,9 @@ image: og/docs/concepts.jpg
 # tags: ['architecture', 'resource', 'cpu', 'memory', 'gpu']
 ---
 
-Weaviate scales well for large projects. Smaller projects, less than 1M objects, do not require resource planning. For medium and large-scale projects, you should plan how to get the best performance from your resources. While you design you system, keep in mind CPU and memory management. CPU and memory are the primary resources for Weaviate instances. Depending on the modules you use, GPUs may also play a role.
+Size a Weaviate deployment from the number of vectors you will index, the properties you will search or filter, and the traffic it must serve. A document can produce several chunks, and each chunk can have several vectors. Object count alone does not establish how much memory or SSD capacity you need.
+
+Start with the [worked sizing example](#size-a-hybrid-search-workload), then measure a representative import and query workload before choosing production hardware.
 
 
 ## Limit available resources
@@ -99,6 +101,40 @@ For a 1536-dimensional vector, the RQ payload sizes below follow from the code w
 For example, 4-bit RQ makes this vector payload about 7.84x smaller, not the entire HNSW index or process. Graph connections and other memory components still need a separate budget. Uncompressed vectors also remain stored for [rescoring](./vector-quantization.md#over-fetching--re-scoring), which adds retrieval and scoring work at query time.
 
 Choose compression and rescoring settings by testing recall and latency on representative data. The recall figures on the [RQ concepts page](./vector-quantization.md#rotational-quantization) are Weaviate's internal test results, not guarantees for a different embedding model, dataset, or query mix.
+
+## Size a hybrid search workload
+
+Start with the same data and query targets for both designs. For example, compare **HNSW with 8-bit RQ** when query throughput is the priority with **HFresh** when memory is the tighter constraint. HNSW keeps its graph in memory; this example budgets for caching all its 8-bit codes. [HFresh](./indexing/vector-index.md#hfresh-index) searches an in-memory centroid index, reads compressed posting lists from disk, and rescores candidates against full vectors. It does not support dot product and is not designed to beat HNSW on peak query throughput.
+
+### Calculate the vector components
+
+This example assumes **3 million documents, 10 chunks per document, one 1,536-dimensional `float32` vector per chunk, and cosine distance**. Each object has searchable text and a filterable category. In this self-managed example, distribute 30 million vectors evenly across six shards on three nodes at replication factor 2. If each node holds four shard copies, the cluster stores 60 million vector copies and each node holds 20 million. Check the actual [shard and replica layout](./replication-architecture/index.md#replication-vs-sharding); size for the fullest node rather than the average if placement or shard sizes differ.
+
+The following figures use decimal GB and count only the named components. They are **calculations, not measured RAM, SSD use, or hardware requirements**.
+
+| Component | Per node | Cluster (three nodes) |
+| --- | ---: | ---: |
+| Original vector payload on disk, before storage overhead (both indexes): `copies × 6,144 B` | 122.88 GB | 368.64 GB |
+| HNSW 8-bit RQ code payload in memory, if all codes are cached: `copies × 1,552 B` | 31.04 GB | 93.12 GB |
+| HFresh 1-bit posting code payload on disk, **if** each vector occurs in four postings: `copies × 4 × 200 B` | 16.00 GB | 48.00 GB |
+
+The HFresh row illustrates the effect of membership count, not measured posting occupancy or the size of the posting files. A posting record also needs identifiers and other metadata. HFresh's `replicas` setting controls posting-list membership, not node replicas. It does not provide high availability. Count the centroid codes and graph separately; they depend on how many centroids the index builds. Do not reuse the HNSW memory multiplier for HFresh.
+
+### Turn the calculation into a test-node budget
+
+| Budget | HNSW with 8-bit RQ | HFresh |
+| --- | --- | --- |
+| RAM for the vector index | Add graph links and cache bookkeeping to the cached code payload. Do not treat link bytes as the full graph footprint. | Budget centroid codes, the centroid graph, posting metadata, and the file pages used to read postings and rescore candidates. |
+| Persistent SSD for the vector index | Count retained originals, codes, and on-disk graph data, not just one compressed copy. | Count retained originals, posting codes and metadata, and centroid data. |
+| Other RAM and SSD | For either design, budget objects, searchable text and filter indexes separately. Measure resident data, file cache and Go runtime memory during queries and import; do not count the same file-backed pages twice. Leave SSD headroom for ingestion, compaction and recovery apart from backup storage. | Same inputs; measure them in the target configuration. |
+
+For example, **64 GiB RAM and 512 GiB SSD per node** are test allocations, not recommendations. In the all-codes-cached HNSW case, 31.04 GB of codes is about 28.9 GiB, leaving about 35.1 GiB for everything else on a 64 GiB node. Original vectors occupy about 114.4 GiB before any other disk use. These subtotals tell you what to check first; nothing here establishes that the remaining budget fits the graph, indexed text, or import peaks. Use the same initial hardware for HFresh if you want to compare the layouts, then tune the allocation using observed peaks and query results.
+
+### Validate before choosing production hardware
+
+- **Measure steady search and import separately.** Track memory and SSD high-water marks during bulk import, compaction, restart, and steady search. Repeat with concurrent writes if the workload needs them. `GOMEMLIMIT` is a Go runtime control, not a cap on all process memory.
+- **Use representative hybrid queries and filters.** Pin the Weaviate version and record the index settings. Hold the corpus, embedding model, filter selectivity and concurrency constant. For each index, tune against the same recall or judged relevance target and record p95/p99 latency, throughput and storage read activity. The payload calculations do not tell you how much SSD I/O an index needs.
+- **Test the replica layout under failure.** Check where copies are placed and whether the remaining nodes can serve the target traffic at your chosen [consistency levels](./replication-architecture/consistency.md). Replication factor 1 gives no data redundancy; replication is not a backup.
 
 ## Effects of garbage collection
 
