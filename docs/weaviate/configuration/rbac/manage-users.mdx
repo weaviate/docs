@@ -297,6 +297,101 @@ SSs3WGVFbUxMVFhlOEsxVVMrQVBzM1VhQTJIM2xXWngwY01HaXFYVnM1az1fMXlDUEhUNjhSMlNtazdH
 
 </details>
 
+### Set database user API key expiration {#api-key-expiration}
+
+import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
+
+:::info Added in `v1.41`
+:::
+
+<EnterpriseEdition/>
+
+A database user's API key can have an expiration time. After that time, requests with the key fail authentication with a `401` status. Expiration doesn't change the user's `active` status. [Rotating the key](#rotate-user-api-key) keeps the expiration.
+
+Expiration needs a valid [license key](/deploy/enterprise#activate-the-enterprise-edition). Without a license key, requests that set or clear an expiration return `403`.
+
+<!-- TODO(Ivan): remove this note and the guard in howto.configure.rbac.users.py once the Python client version is known. -->
+:::info Python client not released yet
+The Python examples need the next [Python client release](https://github.com/weaviate/weaviate-python-client/releases).
+:::
+
+To set or change the expiration, provide an expiration time. The time must be later than the current time.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START UserExpirationSet"
+    endMarker="# END UserExpirationSet"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT http://localhost:8080/v1/users/db/custom-user/expiration \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"expiresAt": "2030-01-01T00:00:00Z"}'
+```
+
+  </TabItem>
+</Tabs>
+
+To clear the expiration so the key never expires:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START UserExpirationClear"
+    endMarker="# END UserExpirationClear"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT http://localhost:8080/v1/users/db/custom-user/expiration \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"neverExpires": true}'
+```
+
+  </TabItem>
+</Tabs>
+
+You can't set an expiration on your own user, a root user, or a user defined in `AUTHENTICATION_APIKEY_USERS`.
+
+To set the expiration when you create a user, add it to the create request:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START UserExpirationCreate"
+    endMarker="# END UserExpirationCreate"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST http://localhost:8080/v1/users/db/custom-user \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"expiresAt": "2030-01-01T00:00:00Z"}'
+```
+
+  </TabItem>
+</Tabs>
+
+To read the expiration, [list the users](#list-all-users) or get a single user. If the user has no expiration time, the key never expires.
+
+:::note
+Without a license key, expired keys still fail and you can't change the expiration until you restore the license key.
+:::
+
 ## Database users: Permissions management <i class="fas fa-user-lock"></i> {#user-permissions-management}
 
 ### Assign a role to a database user

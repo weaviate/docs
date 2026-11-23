@@ -29,6 +29,38 @@ print(new_api_key)
 # END RotateApiKey
 assert len(new_api_key) > 0 and new_api_key != user_api_key
 
+# Unreleased: needs the Python client release with weaviate-python-client#2249,
+# Weaviate 1.41+ and a license key on the server. The page shows these blocks with pyindent.
+# TODO(Ivan): remove this guard and dedent once the client version is known.
+if hasattr(client.users.db, "update_user_expiration"):
+    # START UserExpirationSet
+    from datetime import datetime, timedelta, timezone
+
+    client.users.db.update_user_expiration(
+        user_id="custom-user",
+        user_expires_at=datetime.now(timezone.utc) + timedelta(days=30),
+    )
+    # END UserExpirationSet
+    assert client.users.db.get(user_id="custom-user").user_expires_at is not None
+
+    # START UserExpirationClear
+    client.users.db.update_user_expiration(user_id="custom-user", user_expires_at=None)
+    # END UserExpirationClear
+    assert client.users.db.get(user_id="custom-user").user_expires_at is None
+
+    client.users.db.delete(user_id="custom-user")
+
+    # START UserExpirationCreate
+    from datetime import datetime, timedelta, timezone
+
+    user_api_key = client.users.db.create(
+        user_id="custom-user",
+        user_expires_at=datetime.now(timezone.utc) + timedelta(days=30),
+    )
+    print(user_api_key)
+    # END UserExpirationCreate
+    assert client.users.db.get(user_id="custom-user").user_expires_at is not None
+
 from weaviate.classes.rbac import Permissions
 
 permissions = [

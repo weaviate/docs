@@ -106,11 +106,12 @@ The Platform Edition has no self-serve trial. To get a Platform Edition license,
 
 This table lists the features of the Enterprise Edition and the Platform Edition, the edition that adds each one, the Weaviate version that added each one, the environment variable that turns it on, and what happens when the feature is turned on but Weaviate runs without a license key. The Platform Edition includes every Enterprise Edition feature.
 
-| Feature                                                                    | Edition    | Available since | Turned on by            | Without a license key                                                              |
-| :------------------------------------------------------------------------- | :--------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
-| [Shard Self-Recovery](/deploy/configuration/self-recovery)                 | Enterprise | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
-| [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups) | Enterprise | `v1.40`         | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
-| Namespaces                                                                 | Platform   | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
+| Feature                                                                            | Edition    | Available since | Turned on by                      | Without a license key                                                              |
+| :--------------------------------------------------------------------------------- | :--------- | :-------------- | :-------------------------------- | :--------------------------------------------------------------------------------- |
+| [Shard Self-Recovery](/deploy/configuration/self-recovery)                         | Enterprise | `v1.40`         | `SELF_RECOVERY_ENABLED`           | New recoveries don't start, and missing shards start empty.                        |
+| [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups)         | Enterprise | `v1.40`         | `BACKUP_DEDUPE_ENABLED`           | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
+| Namespaces                                                                         | Platform   | `v1.40`         | `NAMESPACES_ENABLED`              | Requests that name a collection return `403`.                                      |
+| [API key expiration](/weaviate/configuration/rbac/manage-users#api-key-expiration) | Enterprise | `v1.41`         | `AUTHENTICATION_DB_USERS_ENABLED` | Requests that set or clear an expiration return `403`.                             |
 
 A licensed feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
 
