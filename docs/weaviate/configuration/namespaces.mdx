@@ -1,0 +1,223 @@
+---
+title: Manage namespaces
+sidebar_label: Namespaces
+image: og/docs/configuration.jpg
+description: Enable namespaces on a Weaviate cluster, manage namespaces through the REST API, and create a namespaced database user.
+# tags: ['namespaces', 'operations', 'rbac']
+---
+
+import NamespacesNote from '/_includes/feature-notes/namespaces.mdx';
+
+<NamespacesNote/>
+
+This page shows how to enable namespaces on a cluster, manage namespaces, and create a namespaced database user. To learn what namespaces are, see [Concepts: Namespaces](../concepts/namespaces.md). No Weaviate client has a namespace API, so the examples use the REST API.
+
+## Enable namespaces on a new cluster
+
+You can only enable namespaces on a cluster with no existing collections, and you can't turn them off again. Set these variables on every node before the first start:
+
+| Variable | Value |
+|---|---|
+| [`NAMESPACES_ENABLED`](/deploy/configuration/env-vars/index.md#NAMESPACES_ENABLED) | `true` |
+| [`LICENSE_KEY`](/deploy/enterprise#activate-the-enterprise-edition) or `LICENSE_KEY_FILE` | A valid license key |
+| [`DISABLE_GRAPHQL`](/deploy/configuration/env-vars/index.md#DISABLE_GRAPHQL) | `true` |
+| [`AUTHORIZATION_RBAC_ENABLED`](/deploy/configuration/env-vars/index.md#AUTHORIZATION_RBAC_ENABLED) | `true` |
+| [`REPLICATION_MAXIMUM_FACTOR`](/deploy/configuration/env-vars/index.md#REPLICATION_MAXIMUM_FACTOR) | `1` |
+
+If you use [OIDC](/deploy/configuration/oidc.md), also set [`AUTHENTICATION_OIDC_NAMESPACE_CLAIM`](/deploy/configuration/env-vars/index.md#AUTHENTICATION_OIDC_NAMESPACE_CLAIM) and [`AUTHENTICATION_OIDC_GLOBAL_PRINCIPAL_CLAIM`](/deploy/configuration/env-vars/index.md#AUTHENTICATION_OIDC_GLOBAL_PRINCIPAL_CLAIM).
+
+Weaviate refuses to start if any of these requirements is not met, except the license key. Without a valid license key, Weaviate starts and logs a warning, and requests are refused.
+
+A minimal Docker Compose environment for one node:
+
+```yaml
+services:
+  weaviate:
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    environment:
+      LICENSE_KEY: "<your-license-key>"
+      NAMESPACES_ENABLED: "true"
+      DISABLE_GRAPHQL: "true"
+      REPLICATION_MAXIMUM_FACTOR: "1"
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "false"
+      AUTHENTICATION_APIKEY_ENABLED: "true"
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: "admin-key"
+      AUTHENTICATION_APIKEY_USERS: "admin-user"
+      AUTHENTICATION_DB_USERS_ENABLED: "true"
+      AUTHORIZATION_RBAC_ENABLED: "true"
+      AUTHORIZATION_RBAC_ROOT_USERS: "admin-user"
+```
+
+## The namespace API
+
+| Verb | Path | Purpose | Success |
+|---|---|---|---|
+| `GET` | `/v1/namespaces` | List the namespaces the caller has permission for | `200` |
+| `POST` | `/v1/namespaces/{namespace_id}` | Create a namespace | `201` |
+| `GET` | `/v1/namespaces/{namespace_id}` | Read one namespace | `200` |
+| `PUT` | `/v1/namespaces/{namespace_id}` | Change the home nodes | `200` |
+| `POST` | `/v1/namespaces/{namespace_id}/suspend` | Suspend the namespace | `202` |
+| `POST` | `/v1/namespaces/{namespace_id}/resume` | Return the namespace to `active` | `202` |
+| `DELETE` | `/v1/namespaces/{namespace_id}` | Mark the namespace for deletion | `202` |
+
+The examples below connect as an operator:
+
+```bash
+export WEAVIATE_URL="http://localhost:8080"
+export OPERATOR_API_KEY="admin-key"
+```
+
+## Create a namespace
+
+`home_nodes` is optional. If you omit it, Weaviate picks a node. Each entry must be a current storage node, which you can read from `/v1/nodes`. See [Home nodes](../concepts/namespaces.md#home-nodes).
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"home_nodes": ["weaviate-0"]}'
+```
+
+The response is the namespace:
+
+```json
+{ "name": "customer1", "home_nodes": ["weaviate-0"], "home_node": "weaviate-0", "state": "active" }
+```
+
+**Mixed-version clusters:** `home_node` is deprecated. It holds the first entry of `home_nodes`. Until every node runs `v1.41` or later, send only `home_node` in create and update requests, because older nodes don't read `home_nodes`. Don't send both fields.
+
+## Get and list namespaces
+
+Read one namespace by name, or list every namespace you have permission for. A caller without a matching permission gets an empty list.
+
+```bash
+curl "$WEAVIATE_URL/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY"
+
+curl "$WEAVIATE_URL/v1/namespaces" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY"
+```
+
+## Change the home nodes
+
+`home_nodes` is required in the request body and follows the same entry rules as create. The new list applies to [future placements only](../concepts/namespaces.md#home-nodes).
+
+```bash
+curl -X PUT "$WEAVIATE_URL/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"home_nodes": ["weaviate-1"]}'
+```
+
+## Suspend and resume a namespace
+
+To learn what a suspended namespace refuses, see [What suspension does](../concepts/namespaces.md#what-suspension-does). Suspend a namespace, then return it to `active`:
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1/suspend" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY"
+
+curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1/resume" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY"
+```
+
+## Delete a namespace
+
+```bash
+curl -X DELETE "$WEAVIATE_URL/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY"
+```
+
+Weaviate removes the namespace in the background. See [Deletion is asynchronous](../concepts/namespaces.md#deletion-is-asynchronous).
+
+## Create a namespaced database user
+
+As an operator, put the namespace in the user ID:
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/users/db/customer1:api_user" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+The response contains the new user's API key. Export it as `NAMESPACED_API_KEY` for the last step. A namespace administrator who creates a user in their own namespace sends the short ID instead, and Weaviate adds the prefix.
+
+Define the user's role without a namespace prefix. Weaviate applies its permissions within the namespace of the user who makes each request. A permission that contains a namespace prefix is refused.
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "namespaceUser",
+    "permissions": [
+      { "action": "create_collections", "collections": { "collection": "*" } },
+      { "action": "read_collections",   "collections": { "collection": "*" } }
+    ]
+  }'
+```
+
+Assign the role to the user by its qualified ID:
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/authz/users/customer1:api_user/assign" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"roles": ["namespaceUser"], "userType": "db"}'
+```
+
+The user now works with short names. With the API key from the create call, create a collection:
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/schema" \
+  -H "Authorization: Bearer $NAMESPACED_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"class": "Movies"}'
+```
+
+The cluster stores the collection as `customer1:Movies`, but the user reads it back as `Movies`. On a namespace-enabled cluster, `POST /v1/experimental/import-db-users` requires a target `namespace` in the request body.
+
+## Grant the `manage_namespaces` permission
+
+Every namespace operation requires the `manage_namespaces` permission on a `namespaces` resource. Scope it to one namespace, to a regex, or to all namespaces with `*`:
+
+```bash
+curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
+  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "namespaceAdmin",
+    "permissions": [
+      { "action": "manage_namespaces", "namespaces": { "namespace": "customer1" } }
+    ]
+  }'
+```
+
+## Errors
+
+| Condition | Status |
+|---|---|
+| `NAMESPACES_ENABLED` is `false`, or a `GET` names a namespace that does not exist | `404` |
+| No valid license key | `403` |
+| Create: the name breaks the [naming rules](../concepts/namespaces.md#namespace-names) | `422` |
+| Create or update: `home_nodes` is empty, has an empty, repeated, or unknown entry, or has fewer entries than `REPLICATION_MINIMUM_FACTOR`. Or the request sends both `home_node` and `home_nodes` | `422` |
+| Update, suspend, or resume a namespace that is being deleted, or any other transition that is not allowed | `422` |
+| Create: the namespace already exists, or a namespace with that name is still being deleted | `409` |
+| Suspend or resume: the state changed while the request was in flight. Read the namespace and retry | `409` |
+| There is no cluster leader to accept the change | `503` |
+| An object, batch, or schema-write request targets a collection in a `suspended` or `deleting` namespace | `422` |
+| A user of a suspended namespace logs in, or an OIDC token would make a namespaced principal with the `root` role | `401` |
+| An operator creates a database user with an ID that has no namespace | `422` |
+
+## Further resources
+
+- [Concepts: Namespaces](../concepts/namespaces.md)
+- [RBAC](./rbac/index.mdx)
+- [Weaviate Enterprise Editions](/deploy/enterprise)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

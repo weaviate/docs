@@ -78,6 +78,7 @@ The following overrides are currently supported:
 | `grpc_web_enabled`                               | _(not applicable)_                           |
 | `inverted_sorter_disabled`                       | `INVERTED_SORTER_DISABLED`                   |
 | `maximum_allowed_collections_count`              | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT`          |
+| `namespace_cleanup_interval`                     | `NAMESPACE_CLEANUP_INTERVAL`                 |
 | `objects_ttl_batch_size`                          | `OBJECTS_TTL_BATCH_SIZE`                     |
 | `objects_ttl_concurrency_factor`                  | `OBJECTS_TTL_CONCURRENCY_FACTOR`             |
 | `objects_ttl_delete_schedule`                    | `OBJECTS_TTL_DELETE_SCHEDULE`                |
@@ -88,6 +89,7 @@ The following overrides are currently supported:
 | `query_slow_log_threshold`                       | `QUERY_SLOW_LOG_THRESHOLD`                   |
 | `replica_movement_minimum_async_wait`            | `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT`        |
 | `revectorize_check_disabled`                     | `REVECTORIZE_CHECK_DISABLED`                 |
+| `suspend_reconcile_interval`                     | `SUSPEND_RECONCILE_INTERVAL`                 |
 | `tenant_activity_read_log_level`                 | `TENANT_ACTIVITY_READ_LOG_LEVEL`             |
 | `tenant_activity_write_log_level`                | `TENANT_ACTIVITY_WRITE_LOG_LEVEL`            |
 
