@@ -4,6 +4,6 @@
 
 **Self-managed:** Starting with `v1.33`, [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars#DEFAULT_QUANTIZATION) can set quantization for new collections with compatible indexes unless the collection enables a supported quantizer or sets `skipDefaultQuantization` to `true`. The variable is unset by default. HFresh uses mandatory built-in RQ independently of this variable.
 
-Changing a default does not reconfigure existing collections. Setting a quantizer to disabled on an existing index does not undo compression. The selected method must be supported by the index type; for example, PQ and SQ are not supported for flat indexes.
+Changing a default does not reconfigure existing collections. Once enabled on a collection, quantization can't be disabled in place. The selected method must be supported by the index type; for example, PQ and SQ are not supported for flat indexes.
 
 :::
