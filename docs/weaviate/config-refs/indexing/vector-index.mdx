@@ -203,13 +203,16 @@ import HFreshMultiVector from "/_includes/feature-notes/hfresh_multivector.mdx";
 
 <HFreshMultiVector />
 
-:::caution On HFresh, `multivector.enabled` alone has no effect
-The collection is created, but it behaves as a single vector without multi-vector support and rejects multi-vector imports and queries. Set `multivector.muvera.enabled`. Multi-vector search on HFresh also needs a named vector with `"vectorizer": "none"`.
+:::caution On HFresh, multi-vector embeddings always use MUVERA
+HFresh stores multi-vector embeddings only in MUVERA-encoded form. From `v1.41` (and `v1.40.[TODO: patch]`), Weaviate enforces this: {/* TODO(Ivan): add the v1.40.x patch once it is tagged */}
+
+- With a multi-vector vectorizer, Weaviate turns on `multivector.enabled` and `multivector.muvera.enabled` for you. Setting `multivector.muvera.enabled` to `false` is rejected.
+- When you create or update a collection, `multivector.enabled` without `multivector.muvera.enabled` is rejected.
 :::
 
 | Parameter                    | Type    | Default | Mutable | Details                                                                                                                                                                                   |
 | :--------------------------- | :------ | :------ | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `multivector.muvera.enabled` | boolean | `false` | No      | Enables MUVERA encoding. Setting it to `true` also turns on `multivector.enabled`. Cannot be changed after the collection is created.  |
+| `multivector.muvera.enabled` | boolean | `false` | No      | Enables MUVERA encoding. Setting it to `true` also turns on `multivector.enabled`. Cannot be changed after the collection is created. Forced to `true` with a multi-vector vectorizer.  |
 
 For what `ksim`, `dprojections` and `repetitions` mean and what they default to, see [MUVERA encoding](../../configuration/compression/multi-vectors.md#muvera-encoding).
 
