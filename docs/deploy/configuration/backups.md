@@ -717,7 +717,24 @@ This operation is particularly useful if you have started a backup by accident, 
 
 ### Restore Backup
 
-You can restore any backup to any machine as long as the name and number of nodes between source and target are identical. The backup does not need to be created on the same instance. Once a backup backend is configured, you can restore a backup with a single request.
+You can restore a backup to a different instance that can read it and has a compatible topology. If target node names differ, pass `node_mapping` in the restore request to map source node names recorded in the backup to target node names. Without a mapping, restore uses the recorded names. Renaming nodes does not imply support for changing the node count or consolidating multiple source nodes onto one target node.
+
+In a REST request, `node_mapping` is a top-level field alongside `config`:
+
+```json
+{
+  "node_mapping": {
+    "source-node-a": "target-node-a",
+    "source-node-b": "target-node-b"
+  },
+  "config": {
+    "rolesOptions": "noRestore",
+    "usersOptions": "noRestore"
+  }
+}
+```
+
+Rehearse the restore on the intended target topology before a migration.
 
 As with backup creation, the `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those. In a restore operation, `include` and `exclude` are relative to the collections contained in the backup. The restore process is not aware of collections that existed on the source machine if they were not part of the backup.
 
@@ -734,8 +751,10 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | ---- | ---- | ---- | ---- |---- |
 | `cpuPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
 | `Path`            | string | Required if created at a custom path | `""` | An optional string to manually set the backup location. If not provided, the backup will be restored from the default location. Introduced in Weaviate `v1.27.2`. |
-| `rolesOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
-| `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
+| `rolesOptions`            | string | no | `"noRestore"` | Controls whether to restore captured RBAC roles and permissions. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
+| `usersOptions`            | string | no | `"noRestore"` | Controls whether to restore captured dynamic database users. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
+
+These options only control restoration of state already captured in the backup. Enable the corresponding RBAC or dynamic user management subsystem on the target before restoring that state. These options do not restore external OIDC identities or static authentication configuration. Restoring captured users or custom roles replaces the corresponding target state rather than merging it; users or custom roles absent from the backup can be removed. Review captured users and permissions before restoring them so you do not reintroduce revoked access.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

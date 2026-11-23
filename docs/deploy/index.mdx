@@ -30,11 +30,17 @@ See the [edition feature list](./enterprise.mdx#enterprise-edition-features) bef
 
 ### Plan a move between Cloud and self-managed
 
-Start with the collection definitions, object IDs, properties, and embedding vectors you need to keep. Weaviate's [object iterator](/weaviate/manage-objects/read-all-objects#read-all-objects-including-vectors) can read objects with their vectors, including named vectors, for a manual copy. Recreate compatible collections and import those objects into the target. Keep the embedding model and vector dimensions compatible if you intend to reuse the vectors.
+To copy data between instances, follow the [cross-instance data migration examples](/weaviate/manage-collections/migrate). Recreate compatible target collections, then copy object IDs, properties, and vectors with the [object iterator](/weaviate/manage-objects/read-all-objects#read-all-objects-including-vectors). Keep the embedding model and vector dimensions compatible if you intend to reuse the vectors.
 
 A data copy does not move the rest of the deployment. Configure the target's API endpoint and credentials, authentication and permissions, model integrations, index settings, replica layout, backups, and monitoring. Check the target's version, defaults, and [edition entitlements](./enterprise.mdx#enterprise-edition-features). Rehearse the cutover on a copy and verify object counts and representative searches before switching application traffic.
 
-If you plan a backup-based move, verify that the backup covers your data and that the destination can read it. [Cloud backup restores](/cloud/manage-clusters/default-settings#backups) go through Cloud support; don't assume a Cloud-managed backup is directly available to a self-managed cluster. Check [self-managed backup requirements](./configuration/backups.md) and [version-specific migration notes](./migration/index.md).
+If you plan a backup-based move, check what the backup covers, whether the destination can read it, and the [version-specific migration notes](./migration/index.md).
+
+| Backup operation | What to check |
+| --- | --- |
+| [Self-managed backup and restore](./configuration/backups.md#restore-backup) | Ordinary backup creation and restore do not require an Enterprise or Platform license. Restoring a deduplicated backup also does not require that license. Check the target version, topology, and backup backend. |
+| Create a deduplicated backup on a self-managed cluster | From `v1.40`, creating one requires Enterprise or Platform. This is a creation requirement, not a restore requirement. |
+| [Restore a Cloud-managed backup](/cloud/manage-clusters/default-settings#backups) | Contact Weaviate Cloud support. Do not assume that a Cloud-managed backup is directly available to a self-managed cluster. |
 
 ## Installation guides {#deployment-options}
 
