@@ -23,7 +23,7 @@ The repository's top-level [`LICENSE`](https://github.com/weaviate/weaviate/blob
 
 ### Platform Edition
 
-The Platform Edition includes everything in the Enterprise Edition, plus 'namespaces': isolated virtual clusters, one per team or end user.
+The Platform Edition includes everything in the Enterprise Edition, plus '[namespaces](/weaviate/concepts/namespaces)': isolated virtual clusters, one per team or end user.
 
 It is built for platform teams that run Weaviate as a shared service across their organization.
 
@@ -110,7 +110,7 @@ This table lists the features of the Enterprise Edition and the Platform Edition
 | :------------------------------------------------------------------------- | :--------- | :-------------- | :---------------------- | :--------------------------------------------------------------------------------- |
 | [Shard Self-Recovery](/deploy/configuration/self-recovery)                 | Enterprise | `v1.40`         | `SELF_RECOVERY_ENABLED` | New recoveries don't start, and missing shards start empty.                        |
 | [Deduplicated backups](/deploy/configuration/backups#deduplicated-backups) | Enterprise | `v1.40`         | `BACKUP_DEDUPE_ENABLED` | Creating a backup with `dedupeReplicas` returns `403`. Restores are never blocked. |
-| Namespaces                                                                 | Platform   | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
+| [Namespaces](/weaviate/concepts/namespaces)                                | Platform   | `v1.40`         | `NAMESPACES_ENABLED`    | Requests that name a collection return `403`.                                      |
 
 A licensed feature that is turned on without a well-formed license key never stops Weaviate from starting. Weaviate starts, logs a warning, and the feature refuses or declines requests when they arrive.
 
@@ -166,7 +166,7 @@ No. For the Enterprise Edition or the Platform Edition, obtain a license key and
 <details>
 <summary> Answer </summary>
 
-The Platform Edition includes everything in the Enterprise Edition, plus namespaces. Namespaces are isolated virtual clusters, one per team or end user, managed centrally as one shared service. The Platform Edition is for platform teams that run Weaviate as a shared service. If you don't need namespaces, the Enterprise Edition has every other licensed feature. See [Enterprise and Platform Edition features](#enterprise-edition-features).
+The Platform Edition includes everything in the Enterprise Edition, plus [namespaces](/weaviate/concepts/namespaces). Namespaces are isolated virtual clusters, one per team or end user, managed centrally as one shared service. The Platform Edition is for platform teams that run Weaviate as a shared service. If you don't need namespaces, the Enterprise Edition has every other licensed feature. See [Enterprise and Platform Edition features](#enterprise-edition-features).
 
 </details>
 

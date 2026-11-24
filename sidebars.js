@@ -566,7 +566,11 @@ const sidebars = {
           ],
         },
         "weaviate/configuration/modules",
-        "weaviate/configuration/namespaces",
+        {
+          type: "doc",
+          id: "weaviate/configuration/namespaces",
+          customProps: { enterpriseOnly: true },
+        },
         {
           type: "doc",
           id: "weaviate/configuration/mcp-server",

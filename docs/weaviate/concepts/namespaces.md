@@ -1,6 +1,8 @@
 ---
 title: Namespaces
 sidebar_position: 31
+sidebar_custom_props:
+  enterpriseOnly: true
 image: og/docs/concepts.jpg
 description: Namespaces are cluster-level containers. Each one owns its own collections, aliases, database users, and roles, so a single Weaviate cluster can host many isolated environments.
 # tags: ['namespaces', 'multi-tenancy', 'isolation']
@@ -53,10 +55,6 @@ A reference can't cross namespaces. Weaviate resolves a reference target in the 
 
 Every shard of every collection in a namespace, including tenant shards, is placed on the namespace's home nodes. A namespace-enabled cluster requires `REPLICATION_MAXIMUM_FACTOR=1`, so every namespaced collection has a replication factor of `1`. A new collection or tenant goes on the first available home node in the `home_nodes` list, so later entries act as fallbacks. If you create a namespace without `home_nodes`, Weaviate picks one node.
 
-TODO(Ivan): confirm with core whether the `REPLICATION_MAXIMUM_FACTOR=1` requirement stays for v1.41.0 GA.
-
-<!-- TODO(Ivan): confirm with core whether the REPLICATION_MAXIMUM_FACTOR=1 requirement stays for v1.41.0 GA (adapters/handlers/rest/configure_api.go:1278-1283 at 3507945a). -->
-
 When you change a namespace's home nodes, only future placements use the new list. That covers new collections, new tenants, and reactivated tenants. Existing shards stay where they are.
 
 ## Namespace lifecycle
@@ -78,8 +76,6 @@ Weaviate keeps everything the namespace owns. Nothing is deleted.
 
 Refused logins, and refused database user creation and import, don't name the namespace. They read `instance suspended`. To replace that text, set [`NAMESPACE_SUSPENDED_MESSAGE`](/deploy/configuration/env-vars/index.md#NAMESPACE_SUSPENDED_MESSAGE).
 
-For the status codes of refused requests, see [Errors](../configuration/namespaces.mdx#errors).
-
 ### Deletion is asynchronous
 
 Deleting a namespace marks it `deleting` and returns at once. A background job on the cluster leader then removes the namespace's database users, aliases, collections, and roles, and finally the namespace itself. The job runs every [`NAMESPACE_CLEANUP_INTERVAL`](/deploy/configuration/env-vars/index.md#NAMESPACE_CLEANUP_INTERVAL) and retries until the namespace is empty.
@@ -88,7 +84,7 @@ Deleting a namespace marks it `deleting` and returns at once. A background job o
 
 | Limit | Behavior on a namespace-enabled cluster |
 |---|---|
-| **Shards per collection** | `1`. A collection can't set a `desiredCount` other than `1`. |
+| **Shards per collection** | `1` for a single-tenant collection. A collection can't set a `desiredCount` other than `1`. A multi-tenant collection still has one shard per tenant. |
 | **GraphQL** | Unavailable. Use the REST and gRPC APIs. |
 | **gRPC** | Carries short collection names. gRPC has no namespace field. You manage namespaces over REST only. |
 | **Node removal** | You can't remove a node from the cluster while it is a home node of any namespace. |

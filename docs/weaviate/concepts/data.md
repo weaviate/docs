@@ -320,6 +320,12 @@ For details on configuring your schema, see the [schema tutorial](../starter-gui
 
 To separate data within a cluster, use multi-tenancy. Weaviate partitions the cluster into shards. Each shard holds data for a single tenant.
 
+:::tip
+
+To isolate collections, users and roles, not just data within one collection, see [namespaces](./namespaces.md#namespaces-vs-multi-tenancy).
+
+:::
+
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'background': '#f5f5f5' }}}%%
 flowchart TB

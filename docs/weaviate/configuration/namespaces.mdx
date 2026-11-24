@@ -6,11 +6,15 @@ description: Enable namespaces on a Weaviate cluster, manage namespaces through 
 # tags: ['namespaces', 'operations', 'rbac']
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.namespaces.py";
 import NamespacesNote from '/_includes/feature-notes/namespaces.mdx';
 
 <NamespacesNote/>
 
-This page shows how to enable namespaces on a cluster, manage namespaces, and create a namespaced database user. To learn what namespaces are, see [Concepts: Namespaces](../concepts/namespaces.md). No Weaviate client has a namespace API, so the examples use the REST API.
+This page shows how to enable namespaces on a cluster, manage namespaces, and create a namespaced database user. To learn what namespaces are, see [Concepts: Namespaces](../concepts/namespaces.md).
 
 ## Enable namespaces on a new cluster
 
@@ -34,6 +38,9 @@ A minimal Docker Compose environment for one node:
 services:
   weaviate:
     image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    ports:
+    - 8080:8080
+    - 50051:50051
     environment:
       LICENSE_KEY: "<your-license-key>"
       NAMESPACES_ENABLED: "true"
@@ -48,17 +55,10 @@ services:
       AUTHORIZATION_RBAC_ROOT_USERS: "admin-user"
 ```
 
-## The namespace API
-
-| Verb | Path | Purpose | Success |
-|---|---|---|---|
-| `GET` | `/v1/namespaces` | List the namespaces the caller has permission for | `200` |
-| `POST` | `/v1/namespaces/{namespace_id}` | Create a namespace | `201` |
-| `GET` | `/v1/namespaces/{namespace_id}` | Read one namespace | `200` |
-| `PUT` | `/v1/namespaces/{namespace_id}` | Change the home nodes | `200` |
-| `POST` | `/v1/namespaces/{namespace_id}/suspend` | Suspend the namespace | `202` |
-| `POST` | `/v1/namespaces/{namespace_id}/resume` | Return the namespace to `active` | `202` |
-| `DELETE` | `/v1/namespaces/{namespace_id}` | Mark the namespace for deletion | `202` |
+<!-- TODO(Ivan): remove this note and the guard in howto.configure.namespaces.py once the Python client version is known. -->
+:::info Python client not released yet
+The Python examples need the next [Python client release](https://github.com/weaviate/weaviate-python-client/releases).
+:::
 
 The examples below connect as an operator:
 
@@ -71,12 +71,26 @@ export OPERATOR_API_KEY="admin-key"
 
 `home_nodes` is optional. If you omit it, Weaviate picks a node. Each entry must be a current storage node, which you can read from `/v1/nodes`. See [Home nodes](../concepts/namespaces.md#home-nodes).
 
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START NamespaceCreate"
+    endMarker="# END NamespaceCreate"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
 ```bash
 curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1" \
   -H "Authorization: Bearer $OPERATOR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"home_nodes": ["weaviate-0"]}'
 ```
+
+  </TabItem>
+</Tabs>
 
 The response is the namespace:
 
@@ -90,6 +104,17 @@ The response is the namespace:
 
 Read one namespace by name, or list every namespace you have permission for. A caller without a matching permission gets an empty list.
 
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START NamespaceGetList"
+    endMarker="# END NamespaceGetList"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
 ```bash
 curl "$WEAVIATE_URL/v1/namespaces/customer1" \
   -H "Authorization: Bearer $OPERATOR_API_KEY"
@@ -97,6 +122,9 @@ curl "$WEAVIATE_URL/v1/namespaces/customer1" \
 curl "$WEAVIATE_URL/v1/namespaces" \
   -H "Authorization: Bearer $OPERATOR_API_KEY"
 ```
+
+  </TabItem>
+</Tabs>
 
 ## Change the home nodes
 
@@ -123,16 +151,41 @@ curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1/resume" \
 
 ## Delete a namespace
 
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START NamespaceDelete"
+    endMarker="# END NamespaceDelete"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
 ```bash
 curl -X DELETE "$WEAVIATE_URL/v1/namespaces/customer1" \
   -H "Authorization: Bearer $OPERATOR_API_KEY"
 ```
+
+  </TabItem>
+</Tabs>
 
 Weaviate removes the namespace in the background. See [Deletion is asynchronous](../concepts/namespaces.md#deletion-is-asynchronous).
 
 ## Create a namespaced database user
 
 As an operator, put the namespace in the user ID:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START CreateNamespacedUser"
+    endMarker="# END CreateNamespacedUser"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST "$WEAVIATE_URL/v1/users/db/customer1:api_user" \
@@ -141,9 +194,23 @@ curl -X POST "$WEAVIATE_URL/v1/users/db/customer1:api_user" \
   -d '{}'
 ```
 
+  </TabItem>
+</Tabs>
+
 The response contains the new user's API key. Export it as `NAMESPACED_API_KEY` for the last step. A namespace administrator who creates a user in their own namespace sends the short ID instead, and Weaviate adds the prefix.
 
 Define the user's role without a namespace prefix. Weaviate applies its permissions within the namespace of the user who makes each request. A permission that contains a namespace prefix is refused.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START CreateNamespacedRole"
+    endMarker="# END CreateNamespacedRole"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
@@ -158,7 +225,21 @@ curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
   }'
 ```
 
+  </TabItem>
+</Tabs>
+
 Assign the role to the user by its qualified ID:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START AssignNamespacedRole"
+    endMarker="# END AssignNamespacedRole"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST "$WEAVIATE_URL/v1/authz/users/customer1:api_user/assign" \
@@ -167,7 +248,21 @@ curl -X POST "$WEAVIATE_URL/v1/authz/users/customer1:api_user/assign" \
   -d '{"roles": ["namespaceUser"], "userType": "db"}'
 ```
 
+  </TabItem>
+</Tabs>
+
 The user now works with short names. With the API key from the create call, create a collection:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START NamespacedUserCreateCollection"
+    endMarker="# END NamespacedUserCreateCollection"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST "$WEAVIATE_URL/v1/schema" \
@@ -176,11 +271,25 @@ curl -X POST "$WEAVIATE_URL/v1/schema" \
   -d '{"class": "Movies"}'
 ```
 
+  </TabItem>
+</Tabs>
+
 The cluster stores the collection as `customer1:Movies`, but the user reads it back as `Movies`. On a namespace-enabled cluster, `POST /v1/experimental/import-db-users` requires a target `namespace` in the request body.
 
 ## Grant the `manage_namespaces` permission
 
 Every namespace operation requires the `manage_namespaces` permission on a `namespaces` resource. Scope it to one namespace, to a regex, or to all namespaces with `*`:
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START ManageNamespacesPermission"
+    endMarker="# END ManageNamespacesPermission"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
 curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
@@ -194,21 +303,8 @@ curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
   }'
 ```
 
-## Errors
-
-| Condition | Status |
-|---|---|
-| `NAMESPACES_ENABLED` is `false`, or a `GET` names a namespace that does not exist | `404` |
-| No valid license key | `403` |
-| Create: the name breaks the [naming rules](../concepts/namespaces.md#namespace-names) | `422` |
-| Create or update: `home_nodes` is empty, has an empty, repeated, or unknown entry, or has fewer entries than `REPLICATION_MINIMUM_FACTOR`. Or the request sends both `home_node` and `home_nodes` | `422` |
-| Update, suspend, or resume a namespace that is being deleted, or any other transition that is not allowed | `422` |
-| Create: the namespace already exists, or a namespace with that name is still being deleted | `409` |
-| Suspend or resume: the state changed while the request was in flight. Read the namespace and retry | `409` |
-| There is no cluster leader to accept the change | `503` |
-| An object, batch, or schema-write request targets a collection in a `suspended` or `deleting` namespace | `422` |
-| A user of a suspended namespace logs in, or an OIDC token would make a namespaced principal with the `root` role | `401` |
-| An operator creates a database user with an ID that has no namespace | `422` |
+  </TabItem>
+</Tabs>
 
 ## Further resources
 
