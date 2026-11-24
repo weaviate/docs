@@ -369,6 +369,7 @@ const sidebars = {
               items: [
                 "weaviate/model-providers/openai/embeddings",
                 "weaviate/model-providers/openai/generative",
+                "weaviate/model-providers/openai/reranker",
               ],
             },
             {
@@ -394,6 +395,18 @@ const sidebars = {
               },
               items: [
                 "weaviate/model-providers/twelvelabs/embeddings-multimodal",
+              ],
+            },
+            {
+              type: "category",
+              label: "TypeSafe AI",
+              className: "sidebar-item",
+              link: {
+                type: "doc",
+                id: "weaviate/model-providers/typesafeai/index",
+              },
+              items: [
+                "weaviate/model-providers/typesafeai/reranker",
               ],
             },
             {
