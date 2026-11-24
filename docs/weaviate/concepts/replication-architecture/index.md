@@ -8,8 +8,6 @@ image: og/docs/concepts.jpg
 
 Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-collections/multi-node-setup.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
 
-A replication factor of `1` normally means one copy of each shard, even in a multi-node cluster. A shard can have extra copies during a topology change or after an explicit [per-shard replica copy](./consistency.md#replica-movement). Sharding alone does not provide high availability for the data. Choose the replication factor together with your [read and write consistency levels](./consistency.md); they determine how many replicas must respond to an operation.
-
 Weaviate utilizes multiple replication architectures:
 
 - [Cluster metadata replication](./consistency.md#cluster-metadata) is managed by the [Raft](https://raft.github.io/) consensus algorithm.
@@ -155,13 +153,9 @@ If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](/depl
 
 In Weaviate, availability is generally favored over consistency. Weaviate's data replication uses a leaderless design, which means there are no primary and secondary nodes. When writing and reading data, the client contacts one or more nodes. A load balancer exists between the user and the nodes, so the user doesn't know which node they are talking to (Weaviate will forward internally if a user is requesting a wrong node).
 
-The number of replicas that need to respond to a read or acknowledge a write is [tunable](./consistency.md#tunable-consistency-strategies): `ONE` requires one, `QUORUM` a majority, and `ALL` all replicas in the operation's replica set. A write can return before every replica acknowledges it at `ONE` or `QUORUM`. This does not enable background async replication.
+The number of nodes that need to acknowledge the read or write (from v1.18) operation is tunable, to `ONE`, `QUORUM` (n/2+1) or `ALL`. When write operations are carried out with consistency level `ALL`, the database works synchronously. If write is not set to `ALL` (possible from v1.18), writing data is asynchronous from the user's perspective.
 
 The number of replicas doesn't have to match the number of nodes (cluster size). It is possible to split data in Weaviate based on collections. Note that this is [different from Sharding](#replication-vs-sharding).
-
-From `v1.38`, [async replication](./consistency.md#async-replication) runs by default for collections with a replication factor above `1`, unless disabled cluster-wide. It can also reconcile existing extra copies of a shard at replication factor `1`. Async replication synchronizes existing replicas; it does not create them. This is separate from [asynchronous vector indexing](../indexing/vector-index.md#asynchronous-indexing), which queues vector-index updates.
-
-For Weaviate Cloud HA clusters, the [minimum replication factor](/cloud/manage-clusters/default-settings) is `3`. Cloud backup retention and availability SLAs depend on the plan; replication does not replace a [backup and restore plan](/cloud/manage-clusters/default-settings#backups).
 
 Read more about how replication works in Weaviate in [Philosophy](./philosophy.md), [Cluster Architecture](./cluster-architecture.md) and [Consistency](./consistency.md).
 

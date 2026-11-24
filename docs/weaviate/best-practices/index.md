@@ -336,28 +336,11 @@ At the moment, offloading tenants is only available in the open-source version o
 
 <!-- ### Data validation strategies -->
 
-## Choose filters and ranking tools
+<!-- ## Queries
 
-Choose based on whether you need to change which objects can match or how Weaviate ranks the matches:
+### Consider using a reranker
 
-- Use [filters](../concepts/filtering.md) for requirements every match must meet, such as belonging to a specific category.
-- Use [Boost](../search/boost.md) for preferences that should change the order without excluding matches, such as favoring recent documents.
-- Use [diversity selection (MMR)](../search/hybrid.md#diversity-selection-mmr) when the top results are too similar and you want a more varied set.
-- Use a [reranker](../search/rerank.md) when you want another model to score the retrieved candidates.
-
-Test changes on representative queries. For [RAG](../search/generative.md), evaluate retrieval relevance and generated-answer quality separately.
-
-## Choose a retrieval and generation workflow
-
-Generative search, the Query Agent, and the built-in MCP server serve different roles:
-
-| Option | Who controls retrieval and generation? | Deployment and access |
-| --- | --- | --- |
-| [Generative search](../search/generative.md) | Your application supplies the search and prompt. Weaviate retrieves the objects and calls your configured generative model. | Available on self-managed Weaviate and Weaviate Cloud with a generative model integration and provider access. |
-| [Query Agent](/query-agent) | The agent plans searches from a natural-language question. Ask mode also generates an answer; Search mode returns retrieved data. | A separate Weaviate Cloud service with its own usage limits and [pricing](https://weaviate.io/pricing). |
-| [Built-in Weaviate MCP server](../configuration/mcp-server.mdx) | Your MCP client or agent chooses when to call database tools, including hybrid search. The MCP server does not generate answers. | Enable it on self-managed instances; it is always enabled on Weaviate Cloud. |
-
-Before connecting an agent to Cloud, check [MCP write access](../configuration/mcp-server.mdx#weaviate-cloud) and the API key's permissions.
+### Effective hybrid search strategies -->
 
 ## Application design and integration
 

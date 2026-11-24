@@ -195,12 +195,6 @@ Hybrid search in Weaviate supports all the parameters available for keyword (BM2
 
 For more information on these parameters, see the [keyword search page](./keyword-search.md).
 
-## Filters and ranking stages
-
-[Filters](../filtering.md) restrict which objects can match before hybrid fusion. After fusion, Weaviate applies the ranking stages you configure in this order: [Boost](../../search/boost.md), [diversity selection (MMR)](../../search/hybrid.md#diversity-selection-mmr), then [reranking](../reranking.md).
-
-See [Choose filters and ranking tools](../../best-practices/index.md#choose-filters-and-ranking-tools) for guidance on when to use each feature.
-
 ## Further resources
 
 - [Size a hybrid search workload](../resources.md#size-a-hybrid-search-workload)

@@ -43,7 +43,7 @@ A backup is taken at instance or collection granularity. Tenants are not a backu
 | Whole instance | Yes. This is the default when you set neither `include` nor `exclude`. | Yes. |
 | A collection | Yes. Name it in `include`, or leave it out of `exclude`. | Yes. On restore, `include` and `exclude` select from the collections the backup contains. |
 | A tenant | Yes, as part of its collection. Since `v1.37`, both `active` (HOT) and `inactive` (COLD) tenants are included; `offloaded` (FROZEN) tenants are skipped, because they hold no local data. | **No.** There is no tenant-level restore — restoring brings back the whole collection. If you need to restore one tenant at a time, give each tenant its own collection. |
-| RBAC roles and API-managed [database users](/weaviate/configuration/rbac/manage-users) | Yes, captured alongside the collections. Use `includeRoles` and `includeUsers` to narrow what is captured; collection `include` and `exclude` do not select roles or users. | Not by default. Set `rolesOptions` or `usersOptions` to `"all"` when you [restore a backup](#restore-backup). |
+| RBAC roles and users | Yes, captured alongside the collections. | Not by default. Set `rolesOptions` and `usersOptions` to `"all"` when you [restore a backup](#restore-backup); see the backup API `include` parameters for narrowing what is captured. |
 
 </details>
 
@@ -717,24 +717,7 @@ This operation is particularly useful if you have started a backup by accident, 
 
 ### Restore Backup
 
-You can restore a backup to a different instance that can read it and has a compatible topology. If target node names differ, pass `node_mapping` in the restore request to map source node names recorded in the backup to target node names. Without a mapping, restore uses the recorded names. Renaming nodes does not imply support for changing the node count or consolidating multiple source nodes onto one target node.
-
-In a REST request, `node_mapping` is a top-level field alongside `config`:
-
-```json
-{
-  "node_mapping": {
-    "source-node-a": "target-node-a",
-    "source-node-b": "target-node-b"
-  },
-  "config": {
-    "rolesOptions": "noRestore",
-    "usersOptions": "noRestore"
-  }
-}
-```
-
-Rehearse the restore on the intended target topology before a migration.
+You can restore any backup to any machine as long as the name and number of nodes between source and target are identical. The backup does not need to be created on the same instance. Once a backup backend is configured, you can restore a backup with a single request.
 
 As with backup creation, the `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those. In a restore operation, `include` and `exclude` are relative to the collections contained in the backup. The restore process is not aware of collections that existed on the source machine if they were not part of the backup.
 
@@ -751,12 +734,8 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | ---- | ---- | ---- | ---- |---- |
 | `cpuPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
 | `Path`            | string | Required if created at a custom path | `""` | An optional string to manually set the backup location. If not provided, the backup will be restored from the default location. Introduced in Weaviate `v1.27.2`. |
-| `rolesOptions`            | string | no | `"noRestore"` | Controls whether to restore captured RBAC roles and permissions. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
-| `usersOptions`            | string | no | `"noRestore"` | Controls whether to restore captured API-managed database users. Set `"all"` to restore them, or `"noRestore"` to skip them. Introduced in Weaviate `v1.32.0`. |
-
-These options apply only to state already captured in the backup. If a snapshot is absent or the corresponding subsystem is disabled on the target, the restore leaves that state unchanged. The restore does not change external OIDC identities or static authentication configuration.
-
-With `"all"`, restoring a captured snapshot replaces the corresponding target state rather than merging it, even if you restore only selected collections. Users or custom roles absent from the snapshot can be removed, and RBAC grants, including grants of built-in roles, can change. Review the captured users and permissions before restoring them so you do not reintroduce revoked access.
+| `rolesOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
+| `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -937,17 +916,18 @@ A restore goes through the following phases:
 
 ## Deduplicated backups
 
+import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';
+
 :::info Added in `v1.40`
-Creating a deduplicated backup requires [Enterprise or Platform Edition](/deploy/enterprise). Restoring one does not require a license.
 :::
+
+<EnterpriseEdition/>
 
 Deduplicated backups are an opt-in backup mode for replicated collections. When Weaviate can prove that a shard's replicas hold identical data, one replica uploads the shard instead of every replica. Backup storage for an in-sync collection drops from N times the data to 1 time, where N is the replication factor.
 
-Any shard that cannot be proven in sync is archived by every replica, as before.
+A shard is never left out of a backup. Any shard that cannot be proven in sync is archived by every replica, as before.
 
-To create a deduplicated backup, set `BACKUP_DEDUPE_ENABLED=true` and configure a valid license key on every node. Enable [async replication](/weaviate/concepts/replication-architecture/consistency#async-replication) so Weaviate can verify replica convergence, then set `config.dedupeReplicas` to `true` in the backup request.
-
-To restore a deduplicated backup, use Weaviate `v1.40` or later with the required replica destinations reachable. The restore recreates the archived replica copies from the deduplicated data. The target does not need the creation flag or a license.
+Restoring a deduplicated backup works like any other restore and never requires the feature to be enabled.
 
 ## Kubernetes configuration
 

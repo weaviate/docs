@@ -1,6 +1,6 @@
 :::info Compression by Default
 
-**Weaviate Cloud:** The cluster's [optimization profile](/cloud/manage-clusters/create#optimization-profile) sets defaults for new collections. `Cost Optimized` uses HFresh with automatic compression; `Performance Optimized` uses HNSW with [RQ](/weaviate/configuration/compression/rq-compression). The free tier enforces `Cost Optimized`. On paid Shared clusters, you can choose a profile and explicitly configure each collection's index and compression. See [Cloud default settings](/cloud/manage-clusters/default-settings).
+**Weaviate Cloud:** The cluster's [optimization profile](/cloud/manage-clusters/create#optimization-profile) sets defaults for new collections. See [Cloud default settings](/cloud/manage-clusters/default-settings).
 
 **Self-managed:** Starting with `v1.33`, you can set a default quantization for new collections using the [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars#DEFAULT_QUANTIZATION) environment variable. This variable is not set by default. If set, it applies only if the collection does not enable a supported quantizer or set `skipDefaultQuantization` to `true`. Default quantization won't be applied to a collection if the index type isn't supported (for example PQ and SQ aren't supported for the flat index). HFresh uses mandatory built-in RQ independently of this variable.
 
