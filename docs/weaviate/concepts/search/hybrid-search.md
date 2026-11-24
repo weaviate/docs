@@ -197,20 +197,9 @@ For more information on these parameters, see the [keyword search page](./keywor
 
 ## Filters and ranking stages
 
-Hybrid fusion produces a ranking, but you can also restrict candidates or adjust the retrieved results for your application:
+[Filters](../filtering.md) restrict which objects can match before hybrid fusion. After fusion, Weaviate applies the ranking stages you configure in this order: [Boost](../../search/boost.md), [diversity selection (MMR)](../../search/hybrid.md#diversity-selection-mmr), then [reranking](../reranking.md).
 
-| Goal | Feature | Behavior |
-| --- | --- | --- |
-| Restrict which objects can match | [Filters](../filtering.md) | Build an allow-list before vector search, rather than discarding non-matches afterward. For HNSW, filter strategy and the flat-search cutoff affect how matching vectors are searched. |
-| Prefer recent or otherwise favored objects | [Boost](../../search/boost.md) | Promote or demote retrieved candidates without filtering them out. On hybrid queries, Boost rescores the fused result. |
-| Reduce repetitive results | [Diversity selection (MMR)](../../search/hybrid.md#diversity-selection-mmr) | Select a subset of the fused candidates that balances relevance and diversity. |
-| Score candidates with another model | [Reranking](../reranking.md) | Apply a configured reranker to the retrieved candidates. If MMR is also used, reranking runs after MMR. |
-
-For the HNSW vector component, [`ACORN`](../filtering.md#acorn) is the default filter strategy from `v1.34`. [`PathSeer`](../filtering.md#pathseer), available from `v1.40`, is an alternative, not a replacement default. Weaviate's benchmarks favor PathSeer on random, topical, and combined filters, but ACORN was faster in a test with sparse, negatively correlated filters. Before downgrading below `v1.40`, change every affected index from `pathseer` to `acorn` or `sweeping`. Test with your own filter selectivity and query/filter correlation; neither strategy guarantees recall or latency for your workload. The [flat-search cutoff](../filtering.md#flat-search-cutoff) can instead search the matching subset by brute force when a filter is restrictive.
-
-Boost became generally available in `v1.39`. MMR was added for vector search in `v1.37.3` and for hybrid search in `v1.38.6`. It does not support BM25-only queries or queries targeting a multi-vector index. Its selection limit must be at least 1 and no larger than the query's candidate limit; set the relevance/diversity balance explicitly. Client support varies, so check the examples on the linked how-to pages. Boost, MMR, and reranking are not available through the preview Search REST API.
-
-For RAG, [generative search](../../search/generative.md) passes retrieved results and your prompt to a configured generative model. Evaluate retrieval relevance and generated-answer quality separately; fusion alone does not establish answer quality.
+See [Choose filters and ranking tools](../../best-practices/index.md#choose-filters-and-ranking-tools) for guidance on when to use each feature.
 
 ## Further resources
 
