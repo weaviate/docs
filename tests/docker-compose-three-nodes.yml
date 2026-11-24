@@ -8,8 +8,7 @@ services:
     - '8080'
     - --scheme
     - http
-    # TODO(Ivan): pin 1.41.0 at GA.
-    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0-rc.1
+    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0
     restart: on-failure:0
     ports:
      - "8180:8080"
@@ -37,8 +36,7 @@ services:
     - '8080'
     - --scheme
     - http
-    # TODO(Ivan): pin 1.41.0 at GA.
-    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0-rc.1
+    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0
     restart: on-failure:0
     ports:
      - "8181:8080"
@@ -67,8 +65,7 @@ services:
     - '8080'
     - --scheme
     - http
-    # TODO(Ivan): pin 1.41.0 at GA.
-    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0-rc.1
+    image: cr.weaviate.io/semitechnologies/weaviate:1.41.0
     restart: on-failure:0
     ports:
      - "8182:8080"

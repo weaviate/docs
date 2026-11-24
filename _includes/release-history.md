@@ -1,6 +1,6 @@
 This table lists recent Weaviate Database versions and corresponding client library versions.
 
-{/* TODO(Ivan): 1.41.x row. Confirm the first release date (planned GA 2026-11-23) once v1.41.0 is tagged, and fill each client column that ships a 1.41 release. */}
+{/* TODO(Ivan): fill each client column of the 1.41.x row once that client ships a 1.41 release. */}
 
 | Weaviate Database <br/><small>([GitHub][cWeaviate])</small>         | First <br/>release date |                  Python <br/><small>([GitHub][cPython])</small>                   |   TypeScript/ <br/>JavaScript <br/><small>([GitHub][cTypeScript])</small>    |                   Go <br/><small>([GitHub][cGo])</small>                    |             Java <br/><small>([GitHub][cJava])</small>              |                   C# <br/><small>([GitHub][cCSharp])</small>                    |
 | :------------------------------------------------------------------ | :---------------------- | :-------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------------------: |

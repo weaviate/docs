@@ -4,7 +4,7 @@
   "weaviate_version": "1.41.0",
   "weaviate_recent_versions": [
     "1.41.0",
-    "1.40.6",
+    "1.40.7",
     "1.39.17"
   ],
   "helm_version": "17.8.3",
