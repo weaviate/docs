@@ -10,7 +10,7 @@ client = weaviate.connect_to_local(auth_credentials=Auth.api_key("admin-key"))
 # TODO(Ivan): remove this guard and dedent once the client version is known.
 if hasattr(client, "namespaces"):
     # START NamespaceCreate
-    namespace = client.namespaces.create(name="customer1", home_node="weaviate-0")
+    namespace = client.namespaces.create(name="customer1", home_nodes=["weaviate-0"])
     print(namespace)
     # END NamespaceCreate
     assert namespace.name == "customer1"
@@ -23,6 +23,17 @@ if hasattr(client, "namespaces"):
     print(all_namespaces)
     # END NamespaceGetList
     assert any(ns.name == "customer1" for ns in all_namespaces)
+
+    # START NamespaceUpdate
+    namespace = client.namespaces.update(name="customer1", home_nodes=["weaviate-1"])
+    print(namespace)
+    # END NamespaceUpdate
+    assert namespace.home_nodes == ["weaviate-1"]
+
+    # START NamespaceSuspendResume
+    client.namespaces.suspend(name="customer1")
+    client.namespaces.resume(name="customer1")
+    # END NamespaceSuspendResume
 
     # START CreateNamespacedUser
     namespaced_api_key = client.users.db.create(user_id="customer1:api_user")

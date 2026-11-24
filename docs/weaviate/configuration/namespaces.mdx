@@ -60,16 +60,7 @@ services:
 The Python examples need the next [Python client release](https://github.com/weaviate/weaviate-python-client/releases).
 :::
 
-The examples below connect as an operator:
-
-```bash
-export WEAVIATE_URL="http://localhost:8080"
-export OPERATOR_API_KEY="admin-key"
-```
-
 ## Create a namespace
-
-`home_nodes` is optional. If you omit it, Weaviate picks a node. Each entry must be a current storage node, which you can read from `/v1/nodes`. See [Home nodes](../concepts/namespaces.md#home-nodes).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -83,8 +74,8 @@ export OPERATOR_API_KEY="admin-key"
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+curl -X POST "http://localhost:8080/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"home_nodes": ["weaviate-0"]}'
 ```
@@ -98,7 +89,11 @@ The response is the namespace:
 { "name": "customer1", "home_nodes": ["weaviate-0"], "home_node": "weaviate-0", "state": "active" }
 ```
 
-**Mixed-version clusters:** `home_node` is deprecated. It holds the first entry of `home_nodes`. Until every node runs `v1.41` or later, send only `home_node` in create and update requests, because older nodes don't read `home_nodes`. Don't send both fields.
+Home nodes are optional. If you omit them, Weaviate picks a node. Each home node must be a current storage node. See [Home nodes](../concepts/namespaces.md#home-nodes).
+
+:::note Mixed-version clusters
+`home_node` is deprecated. It holds the first entry of `home_nodes`. Until every node runs `v1.41` or later, send only `home_node` in create and update requests, because older nodes don't read `home_nodes`. Don't send both fields.
+:::
 
 ## Get and list namespaces
 
@@ -116,11 +111,11 @@ Read one namespace by name, or list every namespace you have permission for. A c
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl "$WEAVIATE_URL/v1/namespaces/customer1" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY"
+curl "http://localhost:8080/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY"
 
-curl "$WEAVIATE_URL/v1/namespaces" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY"
+curl "http://localhost:8080/v1/namespaces" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY"
 ```
 
   </TabItem>
@@ -128,26 +123,54 @@ curl "$WEAVIATE_URL/v1/namespaces" \
 
 ## Change the home nodes
 
-`home_nodes` is required in the request body and follows the same entry rules as create. The new list applies to [future placements only](../concepts/namespaces.md#home-nodes).
+The home nodes are required and follow the same rules as on creation. The new list applies to [future placements only](../concepts/namespaces.md#home-nodes).
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START NamespaceUpdate"
+    endMarker="# END NamespaceUpdate"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X PUT "$WEAVIATE_URL/v1/namespaces/customer1" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+curl -X PUT "http://localhost:8080/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"home_nodes": ["weaviate-1"]}'
 ```
+
+  </TabItem>
+</Tabs>
 
 ## Suspend and resume a namespace
 
 To learn what a suspended namespace refuses, see [What suspension does](../concepts/namespaces.md#what-suspension-does). Suspend a namespace, then return it to `active`:
 
-```bash
-curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1/suspend" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY"
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START NamespaceSuspendResume"
+    endMarker="# END NamespaceSuspendResume"
+    language="pyindent"
+  />
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1/resume" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY"
+```bash
+curl -X POST "http://localhost:8080/v1/namespaces/customer1/suspend" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY"
+
+curl -X POST "http://localhost:8080/v1/namespaces/customer1/resume" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY"
 ```
+
+  </TabItem>
+</Tabs>
 
 ## Delete a namespace
 
@@ -163,8 +186,8 @@ curl -X POST "$WEAVIATE_URL/v1/namespaces/customer1/resume" \
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X DELETE "$WEAVIATE_URL/v1/namespaces/customer1" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY"
+curl -X DELETE "http://localhost:8080/v1/namespaces/customer1" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY"
 ```
 
   </TabItem>
@@ -188,8 +211,8 @@ As an operator, put the namespace in the user ID:
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST "$WEAVIATE_URL/v1/users/db/customer1:api_user" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+curl -X POST "http://localhost:8080/v1/users/db/customer1:api_user" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{}'
 ```
@@ -197,7 +220,7 @@ curl -X POST "$WEAVIATE_URL/v1/users/db/customer1:api_user" \
   </TabItem>
 </Tabs>
 
-The response contains the new user's API key. Export it as `NAMESPACED_API_KEY` for the last step. A namespace administrator who creates a user in their own namespace sends the short ID instead, and Weaviate adds the prefix.
+The response contains the new user's API key. Save the key. The last step connects with it. A namespace administrator who creates a user in their own namespace sends the short ID instead, and Weaviate adds the prefix.
 
 Define the user's role without a namespace prefix. Weaviate applies its permissions within the namespace of the user who makes each request. A permission that contains a namespace prefix is refused.
 
@@ -213,8 +236,8 @@ Define the user's role without a namespace prefix. Weaviate applies its permissi
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+curl -X POST "http://localhost:8080/v1/authz/roles" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "namespaceUser",
@@ -242,8 +265,8 @@ Assign the role to the user by its qualified ID:
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST "$WEAVIATE_URL/v1/authz/users/customer1:api_user/assign" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+curl -X POST "http://localhost:8080/v1/authz/users/customer1:api_user/assign" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"roles": ["namespaceUser"], "userType": "db"}'
 ```
@@ -265,7 +288,7 @@ The user now works with short names. With the API key from the create call, crea
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST "$WEAVIATE_URL/v1/schema" \
+curl -X POST "http://localhost:8080/v1/schema" \
   -H "Authorization: Bearer $NAMESPACED_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"class": "Movies"}'
@@ -292,8 +315,8 @@ Every namespace operation requires the `manage_namespaces` permission on a `name
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST "$WEAVIATE_URL/v1/authz/roles" \
-  -H "Authorization: Bearer $OPERATOR_API_KEY" \
+curl -X POST "http://localhost:8080/v1/authz/roles" \
+  -H "Authorization: Bearer $WEAVIATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "namespaceAdmin",
