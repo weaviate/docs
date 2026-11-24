@@ -80,7 +80,7 @@ Typical recall rates:
 - RQ: 98-99% recall for 8-bit RQ; 4-bit and 1-bit RQ start lower and rely on rescoring
 - BQ: Varies significantly based on data and model characteristics
 
-To improve recall with compressed vectors, Weaviate over-fetches a list of candidate vectors during a search. For each item on the candidate list, Weaviate fetches the corresponding uncompressed vector. To determine the final ranking, Weaviate calculates the distances from the uncompressed vectors to the query vector.
+To improve recall with compressed vectors, all quantization methods use rescoring. Weaviate over-fetches a list of candidate vectors during a search. For each item on the candidate list, Weaviate fetches the corresponding uncompressed vector and recalculates its distance to the query vector to determine the final ranking.
 
 import RescoringIllustration from "/docs/weaviate/starter-guides/managing-resources/img/rescore-uncompressed-vectors.png";
 
@@ -88,7 +88,7 @@ import RescoringIllustration from "/docs/weaviate/starter-guides/managing-resour
 
 The rescoring process is slower than an in-memory search, but since Weaviate only has to search a limited number of uncompressed vectors, the search is still very fast. Most importantly, rescoring with the uncompressed vectors greatly improves recall.
 
-The search algorithm uses over-fetching and rescoring so that you get the benefits of compression without losing the precision of an uncompressed vector search.
+The search algorithm uses over-fetching and rescoring so that you get the benefits of compression without losing the precision of an uncompressed vector search. The `rescoreLimit` and `rescoreFactor` settings control how many candidates are rescored. For details, see [Over-fetching / re-scoring](/weaviate/concepts/vector-quantization#over-fetching--re-scoring).
 
 #### Query speed
 

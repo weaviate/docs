@@ -24,7 +24,8 @@
   - `filterStrategy`  (introduced in `v1.27.0`, applicable for HNSW)
   - `flatSearchCutoff`
   - `bq`
-    - `rescoreLimit`
+    - `rescoreLimit`  (for the `hnsw` index type, introduced in `v1.41`)
+    - `rescoreFactor`  (introduced in `v1.41`)
   - `pq`
     - `centroids`
     - `enabled`
@@ -33,10 +34,14 @@
     - `encoder`
       - `type`
       - `distribution`
+    - `rescoreLimit`  (introduced in `v1.41`)
+    - `rescoreFactor`  (introduced in `v1.41`)
   - `rq`
     - `rescoreLimit`
+    - `rescoreFactor`  (introduced in `v1.41`)
   - `sq`
     - `enabled`
     - `rescoreLimit`
+    - `rescoreFactor`  (introduced in `v1.41`)
     - `trainingLimit`
   - `vectorCacheMaxObjects`
