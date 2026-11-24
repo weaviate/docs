@@ -63,6 +63,8 @@ In this case, the `Paragraph` class is configured to generate vectors using the 
 
 Although this example uses text2vec-contextionary to generate vectors for the `Paragraph` class, ref2vec-centroid's behavior remains identical for user-provided vectors. In such a case, ref2vec-centroid's output will still be calculated as an average of the reference vectors; the only difference being the provenance of the reference vectors.
 
+From `v1.41`, the module reads each referenced object's named vector called `default` first. If the referenced object has no `default` named vector, the module uses its legacy unnamed vector.
+
 ```json
 {
   "classes": [

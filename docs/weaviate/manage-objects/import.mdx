@@ -384,6 +384,12 @@ When you create an object, you can specify named vectors (if [configured in your
 
 You can batch create links from an object to another object through cross-references.
 
+:::info Changed in `v1.41`
+The server now returns a unique ID for each cross-reference in a [server-side batching](#server-side-batching) stream. Object imports are not affected.
+
+If you import cross-references with server-side batching, use a client version that supports `v1.41`. See the [release notes](/weaviate/release-notes/index.md).
+:::
+
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
