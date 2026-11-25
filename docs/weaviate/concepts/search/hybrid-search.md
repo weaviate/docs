@@ -197,6 +197,7 @@ For more information on these parameters, see the [keyword search page](./keywor
 
 ## Further resources
 
+- [Size a hybrid search workload](../resources.md#size-a-hybrid-search-workload)
 - [How-to: Search](../../search/index.mdx)
 - [How-to: Hybrid search](../../search/hybrid.md)
 - [Blog: A deep dive into Weaviate's fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms)

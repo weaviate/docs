@@ -20,6 +20,10 @@ Weaviate supports these vector index types:
 
 This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
+:::note Default index depends on deployment
+Self-managed Weaviate defaults to HNSW unless you configure another index. In Weaviate Cloud, the [optimization profile](/cloud/manage-clusters/create#optimization-profile) sets the default for new collections. See [Cloud default settings](/cloud/manage-clusters/default-settings).
+:::
+
 :::info What is a vector index?
 
 In vector databases, a vector index is a data structure that organizes vector embeddings to enable efficient similarity search. Indexing vector databases properly is crucial for performance, and different index types serve different purposes - from the simple flat index to more sophisticated approaches like HNSW and HFresh.
@@ -65,8 +69,6 @@ Graph indexes form a network of vectors, such that similar vectors are connected
 HNSW, or "Hierarchical Navigable Small World", is the most common graph index type. It creates a set of "layers" of vectors, to enable fast traversal of the graph.
 
 They are very scalable, allow incremental updates, and efficient for high-dimensional vectors.
-
-This is the default index type in Weaviate.
 
 ### Tree-based indexes
 
@@ -123,7 +125,7 @@ The size of an HNSW index is dominated by the number of vectors; take a look at 
 | Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
 | Edge | 10B x 20 connections | 200B | 200MB | 20GB |
 
-As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) keeps only a compressed centroid index in memory, which can dramatically reduce the memory footprint.
+As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../vector-quantization.md) can be used to reduce the size of the index in memory. Alternatively, the disk-based [HFresh index](#hfresh-index) can reduce vector-index memory use by storing compressed posting lists on disk.
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
@@ -254,9 +256,9 @@ HFresh works by:
 2. **Using an HNSW index** to efficiently search the centroids.
 3. **Searching only the most relevant posting lists** (clusters) for a query.
 
-This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (number of posting lists each vector is added to).
+This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (the maximum number of posting lists selected for a vector). The `replicas` setting does not control [data replication across nodes](/weaviate/concepts/replication-architecture).
 
-Only the centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick a few relevant postings, reads only those postings from disk, and rescores the top candidates against the uncompressed vectors. Because only a small subset of the data is read per query, disk I/O stays bounded and latency stays predictable as the dataset grows. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
+The centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). Supporting metadata, including posting sizes and per-vector versions, also stays in memory. The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick relevant postings, reads those postings, and rescores the top candidates against the uncompressed vectors. Storage reads and latency depend on the data, query, and cache. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
 
 HFresh is particularly well-suited for:
 
@@ -265,6 +267,8 @@ HFresh is particularly well-suited for:
 - **Cost-sensitive deployments**: Lower memory requirements can reduce infrastructure costs
 
 HFresh is not designed to beat HNSW on raw query throughput. It targets deployments where memory efficiency matters more than peak QPS, and where the application can tolerate slightly higher query latencies.
+
+For a worked comparison of HFresh and HNSW RAM and SSD budgets, see [Resource planning/Size a hybrid search workload](../resources.md#size-a-hybrid-search-workload).
 
 :::note Supported distance metrics
 HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is not supported.
