@@ -907,6 +907,7 @@ await client.collections.create({
   vectorizers: [
     weaviate.configure.vectors.text2VecNvidia({
       name: 'title_vector',
+      model: 'nvidia/nemotron-3.5-embed-1b',
       sourceProperties: ['title'],
     })
   ],

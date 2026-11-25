@@ -504,7 +504,10 @@ await client.collections.delete('DemoCollection');
 await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
-  generative: weaviate.configure.generative.friendliai(),
+  generative: weaviate.configure.generative.friendliai({
+    model: 'zai-org/GLM-5.3-Flash',
+    baseURL: 'https://api.friendli.ai/serverless'
+  }),
   // highlight-end
   // Additional parameters not shown
 });
@@ -518,7 +521,8 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.friendliai({
-    model: 'zai-org/GLM-5.3-Flash'
+    model: 'zai-org/GLM-5.3-Flash',
+    baseURL: 'https://api.friendli.ai/serverless'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -548,11 +552,11 @@ response = await myCollection.generate.nearText("A holiday film", {
   // highlight-start
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.friendliai({
-    // These parameters are optional
-    // model: 'zai-org/GLM-5.3-Flash',
+    // Set model and baseURL, the server defaults no longer work. The other parameters are optional.
+    model: 'zai-org/GLM-5.3-Flash',
     // maxTokens: 500,
     // temperature: 0.7,
-    // baseURL: 'https://api.friendli.ai/serverless'
+    baseURL: 'https://api.friendli.ai/serverless'
   }),
   // highlight-end
 }, {
@@ -571,6 +575,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.friendliai({
     model: 'YOUR_ENDPOINT_ID',
+    baseURL: 'https://api.friendli.ai/dedicated',
   }),
   // highlight-end
   // Additional parameters not shown
@@ -1083,7 +1088,9 @@ await client.collections.delete('DemoCollection');
 await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
-  generative: weaviate.configure.generative.xai(),
+  generative: weaviate.configure.generative.xai({
+    model: 'grok-4.7'
+  }),
   // highlight-end
   // Additional parameters not shown
 });
@@ -1112,9 +1119,9 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.xai({
-    // // These parameters are optional
+    // Set model, the server default is no longer listed. The other parameters are optional.
     // baseURL: 'https://api.x.ai',
-    // model: 'grok-4.7',
+    model: 'grok-4.7',
     // maxTokens: 512,
     // temperature: 0.7,
   }),
@@ -1131,9 +1138,9 @@ response = await myCollection.generate.nearText("A holiday film", {
   // highlight-start
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.xai({
-    // These parameters are optional
+    // Set model, the server default is no longer listed. The other parameters are optional.
     // baseURL: 'https://api.x.ai',
-    // model: 'grok-4.7',
+    model: 'grok-4.7',
     // maxTokens: 512,
     // temperature: 0.7,
   }),

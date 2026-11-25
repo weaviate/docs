@@ -837,6 +837,7 @@ client.collections.create(
     vector_config=[
         Configure.Vectors.text2vec_nvidia(
             name="title_vector",
+            model="nvidia/nemotron-3.5-embed-1b",
             source_properties=["title"],
         )
     ],

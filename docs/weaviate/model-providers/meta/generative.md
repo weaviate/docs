@@ -26,8 +26,6 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 
 ![RAG integration illustration](../_includes/integration_meta_rag.png)
 
-The Python examples require `weaviate-client` `v4.24.0` or later.
-
 ## Requirements
 
 ### Weaviate configuration

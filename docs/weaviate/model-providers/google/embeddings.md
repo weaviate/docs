@@ -438,6 +438,8 @@ The server default is `gemini-embedding-001`, for both Google AI Studio and Vert
 
 See the [Gemini API model documentation](https://ai.google.dev/gemini-api/docs/models) for Google AI Studio, and the [Vertex AI model documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for Vertex AI.
 
+`gemini-embedding-001`, `text-embedding-005`, and `text-multilingual-embedding-002` were added in `v1.31.5`, and backported to `v1.30.11`.
+
 <details>
   <summary>Deprecated models</summary>
 

@@ -264,7 +264,7 @@ Weaviate does not validate the model name, so you can set any model that your Mo
 
 The server default is `morph-embedding-v3`.
 
-Morph's [list models endpoint](https://docs.morphllm.com/api-reference/endpoint/models) returns the model IDs your key can use. Check it before you rely on a model ID, as availability and dimensions can change.
+See the [Morph list models endpoint](https://docs.morphllm.com/api-reference/endpoint/models) for the list of available models. Availability and dimensions can change, so check it before you rely on a model ID.
 
 ## Further resources
 

@@ -163,7 +163,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-Two additional parameters are available for reasoning models such as the `gpt-5` family:
+Two additional parameters are available for reasoning models such as the `gpt-5` family. They were added in `v1.33.0`, and backported to `v1.31.15` and `v1.32.9`:
 
 - `reasoningEffort`: How much reasoning the model does before it answers. One of `minimal`, `low`, `medium`, or `high`. If not set, the model provider default applies.
 - `verbosity`: How detailed the generated answer is. One of `low`, `medium`, or `high`. If not set, the model provider default applies.
@@ -311,7 +311,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach.
+Weaviate does not validate the model name, so you can set any model that your OpenAI account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
 
 The server default is `gpt-5-mini`.
 

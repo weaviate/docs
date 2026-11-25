@@ -573,7 +573,10 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "DemoCollection",
-    generative_config=Configure.Generative.friendliai()
+    generative_config=Configure.Generative.friendliai(
+        model="zai-org/GLM-5.3-Flash",
+        base_url="https://api.friendli.ai/serverless",
+    )
     # Additional parameters not shown
 )
 # END BasicGenerativeFriendliAI
@@ -589,6 +592,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.friendliai(
         model="zai-org/GLM-5.3-Flash",
+        base_url="https://api.friendli.ai/serverless",
     )
     # highlight-end
     # Additional parameters not shown
@@ -604,11 +608,11 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     generative_config=Configure.Generative.friendliai(
-        # # These parameters are optional
-        # model="zai-org/GLM-5.3-Flash",
+        # Set model and base_url, the server defaults no longer work. The other parameters are optional.
+        model="zai-org/GLM-5.3-Flash",
         # max_tokens=500,
         # temperature=0.7,
-        # base_url="https://api.friendli.ai/serverless"
+        base_url="https://api.friendli.ai/serverless"
     )
 )
 # END FullGenerativeFriendliAI
@@ -628,11 +632,11 @@ response = collection.generate.near_text(
     grouped_task="Write a tweet promoting these two movies",
     # highlight-start
     generative_provider=GenerativeConfig.friendliai(
-        # # These parameters are optional
-        # model="zai-org/GLM-5.3-Flash",
+        # Set model and base_url, the server defaults no longer work. The other parameters are optional.
+        model="zai-org/GLM-5.3-Flash",
         # max_tokens=500,
         # temperature=0.7,
-        # base_url="https://api.friendli.ai/serverless"
+        base_url="https://api.friendli.ai/serverless"
     ),
     # Additional parameters not shown
     # highlight-end
@@ -649,6 +653,7 @@ client.collections.create(
     "DemoCollection",
     generative_config=Configure.Generative.friendliai(
         model = "YOUR_ENDPOINT_ID",
+        base_url="https://api.friendli.ai/dedicated",
     )
 )
 # END DedicatedGenerativeFriendliAI
@@ -855,6 +860,7 @@ client.collections.delete("DemoCollection")
 # ---------------------------------------------------------------------------
 
 # START BasicGenerativeMeta
+# Requires weaviate-client v4.24.0 or later
 from weaviate.classes.config import Configure
 
 client.collections.create(
@@ -1333,7 +1339,9 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    generative_config=Configure.Generative.xai()
+    generative_config=Configure.Generative.xai(
+        model="grok-4.7"
+    )
     # highlight-end
     # Additional parameters not shown
 )
@@ -1358,9 +1366,9 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.xai(
-        # # These parameters are optional
+        # Set model, the server default is no longer listed. The other parameters are optional.
         # base_url="https://api.x.ai"
-        # model="grok-4.7",
+        model="grok-4.7",
         # max_tokens=500,
         # temperature=0.7,
     )
@@ -1383,9 +1391,9 @@ response = collection.generate.near_text(
     grouped_task="Write a tweet promoting these two movies",
     # highlight-start
     generative_provider=GenerativeConfig.xai(
-        # # These parameters are optional
+        # Set model, the server default is no longer listed. The other parameters are optional.
         # base_url="https://api.x.ai"
-        # model="grok-4.7",
+        model="grok-4.7",
         # max_tokens=500,
         # temperature=0.7,
     ),

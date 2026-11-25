@@ -160,7 +160,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [xAI API documentation](https://docs.x.ai/docs/guides/chat#parameters).
+For further details on model parameters, see the [xAI API documentation](https://docs.x.ai/developers/model-capabilities/text/generate-text).
 
 ## Select a model at runtime
 
@@ -257,7 +257,7 @@ In other words, when you have `n` search results, the generative model generates
 
 Weaviate does not validate the model name, so you can set any model that your xAI account can reach.
 
-:::caution Set the model explicitly
+:::caution The module default is no longer listed
 The server default is `grok-2-latest`. The xAI models page no longer lists it. Set `model` explicitly when you create a collection.
 :::
 

@@ -179,7 +179,7 @@ The `endpointURL` parameter is used to specify a [custom Hugging Face Inference 
 :::
 
 :::caution `queryModel` no longer has any effect
-Weaviate does not read the `queryModel` parameter. Support for a separate [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) query model was removed. The client libraries still accept `queryModel` (`query_model` in Python) and send it to the server without an error, so any value you set there is silently ignored. Remove it from your collection configuration and use `model` or `passageModel` instead.
+Weaviate does not read the `queryModel` parameter. Support for a separate [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) query model was removed. The client libraries still accept `queryModel` and send it to the server without an error, so any value you set there is silently ignored. Remove it from your collection configuration and use `model` or `passageModel` instead.
 :::
 
 #### Additional parameters

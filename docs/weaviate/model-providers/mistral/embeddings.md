@@ -325,7 +325,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### External resources
 
-- Mistral [Embeddings documentation](https://docs.mistral.ai/capabilities/embeddings/)
+- Mistral [Embeddings documentation](https://docs.mistral.ai/inference/embeddings)
 
 ## Questions and feedback
 

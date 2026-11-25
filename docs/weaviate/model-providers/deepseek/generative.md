@@ -169,13 +169,13 @@ In other words, when you have `n` search results, the generative model generates
 
 Weaviate does not validate the model name, so you can set any model that your DeepSeek account can reach.
 
-See the [DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing) for the list of available models.
-
 :::caution The module default is a retired model
 The `deepseek-chat` and `deepseek-reasoner` aliases are retired and DeepSeek no longer serves them. They previously pointed at `deepseek-v4-flash` in its non-thinking and thinking modes respectively.
 
 The built-in default model of the `generative-deepseek` module is still `deepseek-chat`, so a collection created without a `model` points at a retired alias. Set `model` on every collection you create.
 :::
+
+See the [DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing) for the list of available models.
 
 ### Reasoning models
 

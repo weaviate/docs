@@ -289,7 +289,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 Use the `maxTokens` parameter to set the maximum number of output tokens for the Anthropic Generative AI models. This parameter is separate from the maximum allowable input tokens, also called a "context window".
 
-For most models, the default `maxTokens` value is `4096`, which is the maximum, and the input (context window) size is `200,000`. The specific allowable values may vary between models. Refer to the [Anthropic documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-comparison) for the latest information.
+For most models, the default `maxTokens` value is `4096`, which is the maximum, and the input (context window) size is `200,000`. The specific allowable values may vary between models. Refer to the [Anthropic documentation](https://platform.claude.com/docs/en/models/overview) for the latest information.
 
 #### Base URL
 
@@ -315,7 +315,7 @@ The server default is `claude-haiku-4-5`.
 
 </details>
 
-See the [Anthropic API documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-names) for the list of available models.
+See the [Anthropic API documentation](https://platform.claude.com/docs/en/models/overview) for the list of available models.
 
 ## Further resources
 

@@ -108,7 +108,7 @@ Configure a Weaviate collection to use a Voyage AI reranker model as follows:
 
 You can specify [a model](#available-models) for the reranker to use.
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ## Header parameters
 

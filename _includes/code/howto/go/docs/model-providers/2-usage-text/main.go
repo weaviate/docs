@@ -727,6 +727,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-nvidia": map[string]interface{}{
 						"properties": []string{"title"},
+						"model":      "nvidia/nemotron-3.5-embed-1b",
 					},
 				},
 			},
@@ -751,7 +752,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-nvidia": map[string]interface{}{
 						"properties": []string{"title"},
-						"model":      "nvidia/nv-embed-v1",
+						"model":      "nvidia/nemotron-3.5-embed-1b",
 					},
 				},
 			},
@@ -776,7 +777,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-nvidia": map[string]interface{}{
 						"properties": []string{"title"},
-						// "model":            "nvidia/nv-embed-v1",
+						"model":      "nvidia/nemotron-3.5-embed-1b",
 					},
 				},
 			},
