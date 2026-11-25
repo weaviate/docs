@@ -426,6 +426,16 @@ Weaviate does not validate the model name, so you can set any model that your Go
 
 The server default is `gemini-embedding-001`, for both Google AI Studio and Vertex AI.
 
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `gemini-embedding-001` | `v1.33.0` | `v1.32.4`, `v1.31.10`, `v1.30.16` |
+| `textembedding-gecko@001` on Vertex AI, `embedding-001` on Google AI Studio | before `v1.33.0` | |
+
+</details>
+
 See the [Gemini API model documentation](https://ai.google.dev/gemini-api/docs/models) for Google AI Studio, and the [Vertex AI model documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for Vertex AI.
 
 <details>

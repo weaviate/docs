@@ -333,6 +333,16 @@ Weaviate does not validate the model name, so you can set any model that your Ji
 
 The server default is `jina-embeddings-v4`.
 
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `jina-embeddings-v4` | `v1.32.0` | `v1.31.6` |
+| `jina-embeddings-v2-base-en` | before `v1.32.0` | |
+
+</details>
+
 See the [Jina AI models page](https://jina.ai/models/) for the list of available models.
 
 For `jina-embeddings-v3`, Weaviate sets the `task` type to `retrieval.passage` for embedding objects and `retrieval.query` for queries.
