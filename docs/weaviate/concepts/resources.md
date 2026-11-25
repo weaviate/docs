@@ -22,13 +22,13 @@ You can set [environment variables](/deploy/configuration/env-vars/index.md) to 
 
 ## The role of CPUs
 
-HNSW search and index construction can be CPU-intensive when the needed vectors and graph are in memory. A complete request can also be limited by cache misses, fetching objects, storage I/O, or an indexing backlog. You can [tune HNSW settings](../config-refs/indexing/vector-index.mdx) per collection.
+HNSW search and index construction can be CPU-intensive when the needed vectors and graph are in memory. A complete request can also be limited by cache misses, fetching objects, storage I/O, or an indexing backlog. You can [tune the HNSW index](../config-refs/indexing/vector-index.mdx) on a per collection basis in order to maximize performance for your primary use case.
 
 HNSW graph traversal is largely single-threaded, but a complete request can include parallel work such as candidate rescoring. If you make multiple searches or inserts at the same time, Weaviate can make use of multiple threads. [Batch inserts](/weaviate/manage-objects/import) use multiple threads to process data in parallel. Multiple shards can expose more import parallelism, including on one node, but they add overhead.
 
 ### When to add more CPUs
 
-Add CPUs when measurements show CPU is the bottleneck. Check cache behavior, storage I/O, and indexing queues first: adding CPUs does not resolve those limits.
+When CPU is the bottleneck during imports or search, adding CPUs can increase import speed or the number of queries per second. Check CPU utilization, cache behavior, storage I/O, and indexing queues before adding CPUs.
 
 ## The role of memory
 
@@ -57,7 +57,16 @@ These vector-index components are not the entire process memory footprint. Also 
 The following calculation is a rough planning heuristic for uncompressed HNSW with all vectors in memory, not a measured whole-process RAM requirement. Do not apply the same multiplier to compressed vectors or HFresh. For HNSW vector-cache trade-offs, see [Vector Cache](#vector-cache) below.
 :::
 
-For one copy of an uncompressed HNSW index with all vectors cached, a rough starting heuristic is `2 * (raw float32 vector bytes)`. One million 384-dimensional vectors contain `1e6 * 384 * 4 B = 1.536 GB` of raw values. Doubling gives `3.072 GB` (about `2.86 GiB`).
+To estimate your memory needs for one copy of an uncompressed HNSW index, use the following rule of thumb:
+
+`2 * (raw float32 vector bytes)`
+
+For example, consider one million 384-dimensional vectors of type `float32`.
+
+- The raw payload of a single vector is `384 * 4 B = 1536 B`.
+- The raw payload of one million vectors is `1e6 * 1536 B = 1.536 GB`.
+
+The rule of thumb says to double the vector payload: `2 * 1e6 * 1536 B = 3.072 GB` (about `2.86 GiB`).
 
 The multiplier does not size graph allocations, property indexes, caches, or peak runtime memory separately. It does not guarantee enough headroom for garbage collection or concurrent work. Measure those costs and account for shard and replica placement before choosing capacity.
 
@@ -72,7 +81,7 @@ For a 1536-dimensional vector, the RQ payload sizes below follow from the code w
 | 4-bit RQ | `1536 / 2 + 16` | 784 |
 | 1-bit RQ | `1536 / 8 + 8` | 200 |
 
-For example, 4-bit RQ makes this vector payload about 7.84x smaller, not the entire HNSW index or process. Graph connections and other memory components still need a separate budget. Uncompressed vectors also remain stored for [rescoring](./vector-quantization.md#over-fetching--re-scoring), which adds retrieval and scoring work at query time.
+For example, 4-bit RQ makes this vector payload about 7.84x smaller, not the entire HNSW index or process. Graph connections and other memory components still need a separate budget. Uncompressed vectors also remain stored on disk for [rescoring](./vector-quantization.md#over-fetching--re-scoring), which adds retrieval and scoring work at query time.
 
 Choose compression and rescoring settings by testing recall and latency on representative data. The recall figures on the [RQ concepts page](./vector-quantization.md#rotational-quantization) are Weaviate's internal test results, not guarantees for a different embedding model, dataset, or query mix.
 
@@ -120,7 +129,7 @@ Weaviate is written in Go, which is a garbage-collected language. This means som
 - [Out-of-memory issues](#out-of-memory-issues-due-to-garbage-collection)
 
 ### Memory overhead for the garbage collector
-Imports and queries allocate temporary memory that Go's garbage collector frees asynchronously. Leave headroom above the measured resident working set. The amount depends on allocation rate, concurrency, and runtime settings; the `2 ×` heuristic is not a bound on peak memory.
+While Weaviate imports vectors or runs queries, additional memory is allocated and eventually freed by the garbage collector. The rule of thumb above includes an allowance for garbage collection. Measure peak memory under representative load.
 
 ### Out-of-Memory issues due to garbage collection
 In rare situations - typically on large machines with very high import speeds - Weaviate can allocate memory faster than the garbage collector can free it. When this happens, the system kernel can trigger an `out of memory kill (OOM-Kill)`. This is a known issue that Weaviate is actively working on.

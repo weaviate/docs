@@ -2,7 +2,7 @@
 
 **Weaviate Cloud:** The cluster's [optimization profile](/cloud/manage-clusters/create#optimization-profile) sets defaults for new collections. See [Cloud default settings](/cloud/manage-clusters/default-settings).
 
-**Self-managed:** Starting with `v1.33`, you can set a default quantization for new collections using the [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars#DEFAULT_QUANTIZATION) environment variable. This variable is not set by default. If set, it applies only if the collection does not enable a supported quantizer or set `skipDefaultQuantization` to `true`. Default quantization won't be applied to a collection if the index type isn't supported (for example PQ and SQ aren't supported for the flat index). HFresh uses mandatory built-in RQ independently of this variable.
+**Self-managed:** Starting with `v1.33`, you can set a default quantization for new collections using the [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars#DEFAULT_QUANTIZATION) environment variable. This variable is not set by default. When set (e.g., to `rq-8` for 8-bit [RQ quantization](/weaviate/configuration/compression/rq-compression)), it applies only if the collection does not enable a supported quantizer or set `skipDefaultQuantization` to `true`. Default quantization won't be applied to a collection if the index type isn't supported (for example PQ and SQ aren't supported for the flat index). HFresh uses mandatory built-in RQ independently of this variable.
 
 Changing a default does not reconfigure existing collections. Once enabled on a collection, quantization can't be disabled in place.
 

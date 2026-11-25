@@ -21,7 +21,7 @@ Weaviate supports these vector index types:
 This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
 :::note Default index depends on deployment
-Self-managed Weaviate defaults to HNSW unless you configure another index. In Weaviate Cloud, the [optimization profile](/cloud/manage-clusters/create#optimization-profile) sets the default for new collections: `Cost Optimized` uses HFresh with automatic compression, and `Performance Optimized` uses HNSW with RQ. The free tier enforces `Cost Optimized`; paid Shared clusters allow a choice of profile and explicit per-collection settings. See [Cloud default settings](/cloud/manage-clusters/default-settings).
+Self-managed Weaviate defaults to HNSW unless you configure another index. In Weaviate Cloud, the [optimization profile](/cloud/manage-clusters/create#optimization-profile) sets the default for new collections. See [Cloud default settings](/cloud/manage-clusters/default-settings).
 :::
 
 :::info What is a vector index?
@@ -69,8 +69,6 @@ Graph indexes form a network of vectors, such that similar vectors are connected
 HNSW, or "Hierarchical Navigable Small World", is the most common graph index type. It creates a set of "layers" of vectors, to enable fast traversal of the graph.
 
 They are very scalable, allow incremental updates, and efficient for high-dimensional vectors.
-
-This is the default index type in self-managed Weaviate unless you configure another index.
 
 ### Tree-based indexes
 
@@ -258,7 +256,7 @@ HFresh works by:
 2. **Using an HNSW index** to efficiently search the centroids.
 3. **Searching only the most relevant posting lists** (clusters) for a query.
 
-This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (how many posting lists to search) and `replicas` (the maximum number of posting lists selected for a vector). The `replicas` setting does not control [data replication across nodes](/weaviate/concepts/replication-architecture).
+This approach can provide memory efficiency benefits for large datasets while maintaining good search performance. The key trade-off is between memory usage and search recall, controlled by parameters like `searchProbe` (number of posting lists to search) and `replicas` (the maximum number of posting lists selected for a vector). The `replicas` setting does not control [data replication across nodes](/weaviate/concepts/replication-architecture).
 
 The centroid index stays in memory, compressed with 8-bit [rotational quantization (RQ)](../vector-quantization.md#rotational-quantization). Supporting metadata, including posting sizes and per-vector versions, also stays in memory. The posting lists are stored on disk, compressed with 1-bit RQ. A query searches the in-memory centroid index to pick relevant postings, reads those postings, and rescores the top candidates against the uncompressed vectors. Storage reads and latency depend on the data, query, and cache. HFresh also rebalances its posting lists in the background as data changes, so it does not require periodic full index rebuilds.
 
@@ -270,7 +268,7 @@ HFresh is particularly well-suited for:
 
 HFresh is not designed to beat HNSW on raw query throughput. It targets deployments where memory efficiency matters more than peak QPS, and where the application can tolerate slightly higher query latencies.
 
-The in-memory centroid index is only one part of the deployment's memory use. Budget separately for object and inverted-index data structures, caches, the Go runtime, and query/import allocations. Measure recall, latency, throughput, and memory with your own data and query mix; the index layout alone does not establish a total RAM requirement. See [Resource planning](../resources.md).
+For a worked comparison of HFresh and HNSW RAM and SSD budgets, see [Resource planning/Size a hybrid search workload](../resources.md#size-a-hybrid-search-workload).
 
 :::note Supported distance metrics
 HFresh only supports `cosine` and `l2-squared` distance metrics. Dot product is not supported.
