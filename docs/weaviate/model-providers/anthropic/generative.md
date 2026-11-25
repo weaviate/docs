@@ -305,6 +305,16 @@ Weaviate does not validate the model name, so you can set any model that your An
 
 The server default is `claude-haiku-4-5`.
 
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `claude-haiku-4-5` | `v1.34.0` | `v1.33.5`, `v1.32.17`, `v1.31.20` |
+| `claude-3-5-sonnet-20240620` | before `v1.34.0` | |
+
+</details>
+
 See the [Anthropic API documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-names) for the list of available models.
 
 ## Further resources

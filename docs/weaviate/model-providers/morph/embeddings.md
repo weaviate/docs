@@ -33,7 +33,7 @@ Morph's own documentation labels the Embedding API as legacy and planned for dep
 
 ### Weaviate configuration
 
-Your Weaviate instance must have the `text2vec-morph` module enabled.
+Your Weaviate instance must have the `text2vec-morph` module enabled. The module is available in Weaviate `v1.32.6` and later.
 
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
