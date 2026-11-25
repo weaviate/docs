@@ -414,26 +414,24 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 The server default is `text-embedding-3-small`.
 
-For document embeddings, choose from the following [embedding model families](https://platform.openai.com/docs/models/embeddings):
+For document embeddings, choose from the following [embedding model families](https://developers.openai.com/api/docs/guides/embeddings):
 
 * `text-embedding-3`
     * Available `dimensions` values:
         * `text-embedding-3-large`: `256`, `1024`, `3072` (default)
         * `text-embedding-3-small`: `512`, `1536` (default)
 * `ada`
-* `babbage`
-* `davinci`
 
 <details>
   <summary>Deprecated models</summary>
 
-The following models are available, but deprecated:
+The following models are available, but [deprecated](https://developers.openai.com/api/docs/deprecations):
 * Codex
 * babbage-001
 * davinci-001
 * curie
 
-[Source](https://platform.openai.com/docs/deprecations)
+Weaviate still accepts `babbage`, `curie` and `davinci` as the `model` value, but requests to OpenAI fail. The same applies to `ada` with `type` set to `code` or `modelVersion` set to `001`. Only `ada` with the default `text` type maps to `text-embedding-ada-002`, which OpenAI still serves.
 
 </details>
 

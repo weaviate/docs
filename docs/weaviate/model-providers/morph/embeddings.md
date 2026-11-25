@@ -33,7 +33,7 @@ Morph's own documentation labels the Embedding API as legacy and planned for dep
 
 ### Weaviate configuration
 
-Your Weaviate instance must have the `text2vec-morph` module enabled. The module is available in Weaviate `v1.32.6` and later.
+Your Weaviate instance must have the `text2vec-morph` module enabled.
 
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
@@ -158,7 +158,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 ### Vectorizer parameters
 
-- `model`: The Morph model id. Defaults to `morph-embedding-v3`.
+- `model`: The Morph model ID. Defaults to `morph-embedding-v3`.
 - `baseURL`: The base URL prefix that requests are sent to. Any existing path is preserved when `endpoint` is appended. Defaults to `https://api.morphllm.com`.
 - `endpoint`: The API path that Weaviate appends to the base URL. Defaults to `/v1/embeddings`. Set it if the service you target uses a different path.
 
@@ -222,7 +222,7 @@ Provide the headers as shown in the [API credentials examples](#api-credentials)
 
 :::note How Weaviate builds the request URL
 
-Weaviate builds the request URL by appending the `endpoint` path (`/v1/embeddings` by default) to the base URL. The base URL supplies the scheme and host; `endpoint` supplies only the path. A value in `endpoint` cannot redirect requests to a different host.
+Weaviate builds the request URL by appending the `endpoint` path (`/v1/embeddings` by default) to the base URL. The base URL supplies the scheme and host. `endpoint` supplies only the path. A value in `endpoint` cannot redirect requests to a different host.
 
 If a base URL already carries a path, that path is kept and the `endpoint` path is appended to it.
 
@@ -254,13 +254,17 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 ### Hybrid search {#hybrid-search}
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keyword and vector ranking. The text query is embedded with the configured Morph model; the keyword side uses Weaviate's inverted index.
+When you perform a [hybrid search](../../search/hybrid.md), Weaviate fuses keyword and vector ranking. The text query is embedded with the configured Morph model. The keyword side uses Weaviate's inverted index.
 
 ## References
 
 ### Available models
 
-Weaviate does not restrict which model id you can set, so any model the Morph API accepts can be used. `morph-embedding-v3` is the default. Morph's [list models endpoint](https://docs.morphllm.com/api-reference/endpoint/models) returns the model ids your key can use. Check it before you rely on a model id, as availability and dimensions can change.
+Weaviate does not validate the model name, so you can set any model that your Morph account can reach.
+
+The server default is `morph-embedding-v3`.
+
+Morph's [list models endpoint](https://docs.morphllm.com/api-reference/endpoint/models) returns the model IDs your key can use. Check it before you rely on a model ID, as availability and dimensions can change.
 
 ## Further resources
 

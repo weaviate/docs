@@ -36,7 +36,7 @@ Gemini API is not available in all regions. See [this page](https://ai.google.de
 Your Weaviate instance must be configured with the Google generative AI integration (`generative-google`) module.
 
 :::info Module name change
-`generative-google` was called `generative-palm` in Weaviate versions prior to `v1.27`.
+`generative-google` was previously called `generative-palm`.
 :::
 
 <details>
@@ -128,7 +128,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 Note that the required parameters differ between Vertex AI and Gemini API.
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Vertex AI
 
@@ -320,23 +320,15 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
+Weaviate does not validate the model name, so you can set any model that your Google account can reach.
+
+The server default is a legacy PaLM model, `chat-bison` on Vertex AI and `chat-bison-001` on the Gemini API.
+
 :::caution Always set the model explicitly
 If no model is specified, the server falls back to a legacy PaLM model that Google has deprecated. Set the model explicitly when you configure a collection or when you run a query.
 :::
 
-Vertex AI:
-- `gemini-2.5-pro`
-- `gemini-2.5-flash`
-- `gemini-2.0-flash`
-- `gemini-1.5-pro`
-- `gemini-1.5-flash`
-
-Gemini API:
-- `gemini-2.5-flash`
-- `gemini-2.5-pro`
-- `gemini-2.0-flash`
-- `gemini-1.5-pro`
-- `gemini-1.5-flash`
+See the [Vertex AI model documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for Vertex AI, and the [Gemini API model documentation](https://ai.google.dev/gemini-api/docs/models) for the Gemini API.
 
 <details>
   <summary>Deprecated models</summary>

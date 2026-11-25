@@ -107,7 +107,7 @@ As this integration connects to a local Ollama container, no additional credenti
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 import APIEndpoint from '/docs/weaviate/model-providers/_includes/ollama/api-endpoint.mdx';
 
@@ -247,11 +247,11 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-See the [Ollama documentation](https://ollama.com/library) for a list of available models. This list includes both large language models and embedding models; look for the word `embed` in the name or description to identify embedding models.
+The server default is `nomic-embed-text`.
+
+See the [Ollama model library](https://ollama.com/library) for the list of available models. This list includes both large language models and embedding models. Look for the word `embed` in the name or description to identify embedding models.
 
 Download the desired model with `ollama pull <model-name>`.
-
-If no model is specified, the default model (`nomic-embed-text`) is used.
 
 ## Further resources
 
@@ -270,7 +270,7 @@ Once the integrations are configured at the collection, the data management and 
 
 - [Ollama models](https://ollama.com/library)
 - [Ollama repository](https://github.com/ollama/ollama)
-- [How to change the host and port of the Ollama server](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-expose-ollama-on-my-network)
+- [How to change the host and port of the Ollama server](https://docs.ollama.com/faq#how-can-i-expose-ollama-on-my-network)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

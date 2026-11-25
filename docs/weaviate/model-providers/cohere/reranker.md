@@ -131,7 +131,7 @@ You can specify which [model](#available-models) Weaviate uses, as shown in the 
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ## Header parameters
 
@@ -180,7 +180,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ### Available models
 
-Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
+Weaviate does not validate the model name, so you can set any model that your Cohere account can reach.
 
 The server default is `rerank-v3.5`.
 

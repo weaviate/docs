@@ -94,7 +94,7 @@ Provide the API credentials to Weaviate using one of the following methods:
 
 To use a model via [Bedrock](https://aws.amazon.com/bedrock/), it must be available, and AWS must grant you access to it.
 
-Refer to the [AWS documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for the list of available models, and to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+Refer to [Model support by AWS Region](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for the models available in each region, and to [Request access to models](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to find out how to request access to a model.
 
 #### SageMaker
 
@@ -373,16 +373,15 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 #### Bedrock
 
-- `amazon.titan-embed-text-v1`
-- `amazon.titan-embed-text-v2:0`
-- `cohere.embed-english-v3`
-- `cohere.embed-multilingual-v3`
+Weaviate does not validate the model name, so you can set any Bedrock model that your AWS account can reach.
 
-Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out if the model is available in your region and how request access to a model.
+There is no server default for Bedrock. You must set `model` when you configure the vectorizer.
+
+See [Supported foundation models in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html) for the list of available models, [Model support by AWS Region](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for regional availability, and [Request access to models](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to request model access.
 
 ### SageMaker
 
-Any custom SageMaker name (e.g., "TEI-xxx") can be used as an endpoint.
+SageMaker models are whatever your endpoint serves. Any custom SageMaker endpoint name can be used, for example, `TEI-xxx`.
 
 ## Further resources
 

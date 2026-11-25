@@ -122,7 +122,7 @@ Configure the following generative parameters to customize the model behavior.
 
 Weaviate has no default for `temperature`, `topP`, `maxTokens`, `frequencyPenalty`, `presencePenalty`, or `reasoningEffort`: any one you leave unset is omitted from the request, so Meta's own default applies.
 
-For further details on model parameters, see the [Meta API documentation](https://dev.meta.ai/docs/api-reference).
+For further details on model parameters, see the [Meta API reference](https://dev.meta.ai/docs/api-reference).
 
 ## Select a model at runtime
 
@@ -215,9 +215,11 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-Weaviate passes the model name through unchecked. See [Meta's documentation](https://dev.meta.ai/docs/api-reference) for the current models.
+Weaviate does not validate the model name, so you can set any model that your Meta account can reach.
 
-If you do not set a model, Weaviate uses `muse-spark-1.2`.
+The server default is `muse-spark-1.2`.
+
+See the [Meta API reference](https://dev.meta.ai/docs/api-reference) for the list of available models.
 
 If long generations time out, raise [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT).
 

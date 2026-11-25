@@ -83,7 +83,7 @@ Provide the API credentials to Weaviate using one of the following methods:
 
 To use a model via [Bedrock](https://aws.amazon.com/bedrock/), it must be available, and AWS must grant you access to it.
 
-Refer to the [AWS documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for the list of available models, and to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+Refer to [Model support by AWS Region](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for the models available in each region, and to [Request access to models](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to find out how to request access to a model.
 
 #### SageMaker
 
@@ -274,7 +274,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 Weaviate passes the `model` value through to Amazon Bedrock, so any Bedrock text generation model that your AWS account and region has access to can be used. Weaviate recognizes the model families offered by AI21 Labs, Amazon (Titan and Nova), Anthropic, Cohere, Meta, and Mistral AI, including their cross-region inference profile IDs.
 
-For the current model IDs, see the [Amazon Bedrock supported foundation models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html) documentation. Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how to request access to a model.
+For the current model IDs, see [Supported foundation models in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). See [Request access to models](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to find out how to request access to a model.
 
 #### SageMaker
 
