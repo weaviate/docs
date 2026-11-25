@@ -315,6 +315,16 @@ Weaviate does not validate the model name, so you can set any model that your Op
 
 The server default is `gpt-5-mini`.
 
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `gpt-5-mini` | `v1.33.0` | `v1.32.3`, `v1.31.10`, `v1.30.16` |
+| `gpt-3.5-turbo` | before `v1.33.0` | |
+
+</details>
+
 :::caution The server default is being retired
 OpenAI retires `gpt-5-mini` on 2026-12-11. See the [OpenAI deprecations page](https://developers.openai.com/api/docs/deprecations). Set `model` explicitly when you create a collection.
 :::

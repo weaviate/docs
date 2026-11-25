@@ -184,6 +184,16 @@ Weaviate does not validate the model name, so you can set any model that your Co
 
 The server default is `rerank-v3.5`.
 
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `rerank-v3.5` | `v1.31.0` | `v1.30.3`, `v1.29.7`, `v1.28.15` |
+| `rerank-multilingual-v3.0` | before `v1.31.0` | |
+
+</details>
+
 See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 
 You can also specify a fine-tuned reranker by its model ID, for example `500df123-afr3-...`. For details, see [Fine-Tuning Cohere's Reranker](https://weaviate.io/blog/fine-tuning-coheres-reranker).

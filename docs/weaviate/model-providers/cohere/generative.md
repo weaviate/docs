@@ -268,6 +268,16 @@ Weaviate does not validate the model name, so you can set any model that your Co
 
 The server default is `command-a-03-2025`.
 
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `command-a-03-2025` | `v1.33.0` | `v1.32.10`, `v1.31.17` |
+| `command-r` | before `v1.33.0` | |
+
+</details>
+
 See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 
 ## Further resources
