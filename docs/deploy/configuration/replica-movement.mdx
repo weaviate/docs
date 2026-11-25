@@ -13,6 +13,8 @@ Beyond setting the initial replication factor, you can actively manage the place
 
 Replica movement is disabled by default. To use this feature, set the [`REPLICA_MOVEMENT_ENABLED`](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_ENABLED) environment variable to `true` on all nodes in your cluster.
 
+From `v1.41`, replica movement also requires a filesystem that supports hard links. If the data directory of the node that receives the request does not support them, `POST /v1/replication/replicate` returns `501 Not Implemented`.
+
 :::
 
 When a replica movement is initiated, it changes the replication factor of that shard *only*, not the entire collection. A collection has a particular replication factor, but a shard (a subset of a collection), can have its own replication factor which can be different. If a replica COPY operation is made, this can be incremented.

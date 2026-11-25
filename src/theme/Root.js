@@ -67,6 +67,7 @@ export default function Root({ children }) {
         script.setAttribute("data-mcp-enabled", "true");
         script.setAttribute("data-mcp-server-url", "https://weaviate-docs.mcp.kapa.ai");
         script.setAttribute("data-mcp-button-text", "Use Docs MCP");
+        script.setAttribute("data-webmcp-enabled", "true");
         script.async = true;
         document.body.appendChild(script);
       } else if (!shouldLoadWidget && existingScript) {

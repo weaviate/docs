@@ -105,11 +105,11 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -157,7 +157,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [Anyscale Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/).
+For further details on model parameters, see the [Anyscale LLM serving documentation](https://docs.anyscale.com/llm/serving).
 
 ## Select a model at runtime
 
@@ -263,12 +263,13 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-* `meta-llama/Llama-2-70b-chat-hf` (default)
-* `meta-llama/Llama-2-13b-chat-hf`
-* `meta-llama/Llama-2-7b-chat-hf`
-* `codellama/CodeLlama-34b-Instruct-hf`
-* `mistralai/Mistral-7B-Instruct-v0.1`
-* `mistralai/Mixtral-8x7B-Instruct-v0.1`
+Weaviate does not validate the model name, so you can set any model that your Anyscale deployment serves.
+
+The server default is `meta-llama/Llama-2-70b-chat-hf`.
+
+:::caution Anyscale discontinued its public Endpoints API
+Anyscale shut down the public Endpoints API at `https://api.endpoints.anyscale.com` on 2024-08-01. The default base URL no longer serves any model. To use this integration, deploy a model on the Anyscale platform and point Weaviate at your deployment with the `baseURL` collection parameter or the [`X-Anyscale-Baseurl` header](#header-parameters). The available models are the ones your deployment serves. See the [Anyscale LLM serving documentation](https://docs.anyscale.com/llm/serving).
+:::
 
 ## Further resources
 
@@ -281,7 +282,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### References
 
-- Anyscale [Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/)
+- Anyscale [LLM serving documentation](https://docs.anyscale.com/llm/serving)
 
 ## Questions and feedback
 

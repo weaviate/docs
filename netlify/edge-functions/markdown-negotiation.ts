@@ -17,7 +17,10 @@
  *   non-doc URLs): the normal response, so redirect rules and 404s still apply.
  *   An agent that follows a 301 asks again with the same Accept header at the
  *   new URL.
- * - Anything else: the normal response, unchanged.
+ * - Anything else: the normal response.
+ *
+ * Every page URL response, HTML included, gets `Vary: Accept`, so a shared
+ * cache never returns stored HTML to a Markdown request.
  *
  * Markdown response headers:
  *
@@ -101,7 +104,7 @@ export default async (request: Request, context: any) => {
   }
 
   if (!["GET", "HEAD"].includes(request.method) || !prefersMarkdown(request.headers.get("accept"))) {
-    return context.next();
+    return withVaryAccept(await context.next());
   }
 
   // Fetch rather than rewrite, so a missing .md (a redirected or non-doc URL)
@@ -115,7 +118,7 @@ export default async (request: Request, context: any) => {
     method: request.method,
     redirect: "manual",
   });
-  if (!markdown.ok) return context.next();
+  if (!markdown.ok) return withVaryAccept(await context.next());
   return withMarkdownHeaders(markdown, sameOriginUrl(url, url.pathname));
 };
 
@@ -132,10 +135,16 @@ function sameOriginUrl(requestUrl: URL, pathname: string): URL {
   return target;
 }
 
+function withVaryAccept(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.append("Vary", "Accept");
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
 function withMarkdownHeaders(response: Response, pageUrl: URL): Response {
   const headers = new Headers(response.headers);
   headers.set("Content-Type", "text/markdown; charset=utf-8");
-  headers.set("Vary", "Accept");
+  headers.append("Vary", "Accept");
   headers.set("X-Robots-Tag", "noindex");
   headers.set("Link", `<${pageUrl.href}>; rel="canonical"`);
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });

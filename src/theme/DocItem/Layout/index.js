@@ -134,7 +134,10 @@ export default function DocItemLayout({ children }) {
               </div>
               <DocVersionBadge />
               {docTOC.mobile}
-              <DocItemContent>{children}</DocItemContent>
+              {/* Fix for Readability-based readers (Firefox reader, pi-web-access) so the article outscores any single code tab*/}
+              <section>
+                <DocItemContent>{children}</DocItemContent>
+              </section>
               <DocItemFooter />
             </article>
             <DocItemPaginator />

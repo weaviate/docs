@@ -108,6 +108,28 @@ response = qa.ask(
 print(response.final_answer_parsed.chart is None)
 # END UnionImageExample
 
+
+# START UnionAsToolCallExample
+class UnionAsToolCallResponse(BaseModel):
+    answer: str = Field(description="The answer to the question")
+    chart: GeneratedImage | None = Field(description="Generate an image if you think it is necessary")
+
+def ask_with_image(query: str):
+    response = qa.ask(
+        query,
+        collections=["Weather"],
+        output_format=UnionAsToolCallResponse
+    )
+
+    if response.final_answer_parsed.chart is not None:
+        image_bytes = b64decode(response.final_answer_parsed.chart.base64)
+        # ... do something with the image
+
+    return response.final_answer_parsed.answer
+# END UnionAsToolCallExample
+
+ask_with_image("What was the average temperature in January 2023? Chart it if useful.") # for testing
+
 # START ComplexBaseModelImageExample
 from weaviate.agents.classes import QueryAgentCollectionConfig
 
