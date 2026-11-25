@@ -108,18 +108,17 @@ Configure a Weaviate collection to use a Voyage AI reranker model as follows:
 
 You can specify [a model](#available-models) for the reranker to use.
 
-The [default model](#available-models) is used if no model is specified.
+If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ## Header parameters
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+You can provide the API key at runtime through an additional header in the request:
 
 - `X-VoyageAI-Api-Key`: The Voyage AI API key.
-- `X-VoyageAI-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Voyage AI URL.
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+If the `VOYAGEAI_APIKEY` environment variable is set, Weaviate uses it and ignores the header.
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+Provide the header as shown in the [API credentials examples](#api-credentials) above.
 
 ## Reranking query
 

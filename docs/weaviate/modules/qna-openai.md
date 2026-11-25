@@ -5,10 +5,8 @@ image: og/docs/modules/qna-openai.jpg
 # tags: ['qna', 'qna-openai', 'transformers', 'openai']
 ---
 
-:::caution OpenAI generative integration recommended for new projects
-Currently, `qna-openai` is not maintained and uses older models such as `gpt-3.5-turbo-instruct`. For new projects, we recommend using the [OpenAI generative integration](../model-providers/openai/generative.md) instead of `qna-openai`.
-
-Additionally, the generative integration is more versatile and can be used for a wider range of use cases, not limited to question answering. Since `gpt-3.5-turbo-instruct` is not necessarily strictly trained for question answering, there are limited use cases where `qna-openai` is the best choice.
+:::caution OpenAI has shut down the models this module accepts
+`qna-openai` is not maintained. It accepts only the models listed under [Available models](#available-models). OpenAI shut down the last of them, `gpt-3.5-turbo-instruct`, on 2026-09-28. Use the [OpenAI generative integration](../model-providers/openai/generative.md) instead.
 :::
 
 
@@ -231,12 +229,9 @@ The module performs a semantic search under the hood, so a `text2vec-...` module
 
 ### Available models
 
-We recommend using:
+The module accepts only the following models. OpenAI has shut all of them down.
 
 - `gpt-3.5-turbo-instruct`
-
-The following models are now deprecated:
-
 - `text-ada-001`
 - `text-babbage-001`
 - `text-curie-001`

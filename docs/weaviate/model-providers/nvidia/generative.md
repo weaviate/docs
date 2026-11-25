@@ -106,7 +106,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### Select a model
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+You can specify [a model](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -129,7 +129,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+You can [specify](#generative-parameters) a model for Weaviate to use. If you do not set a model, Weaviate uses the [server default](#available-models).
 
 ### Generative parameters
 
@@ -251,9 +251,11 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-You can use any generative model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
+Weaviate does not validate the model name, so you can set any model that your NVIDIA account can reach.
 
-The default model is `nvidia/llama-3.1-nemotron-51b-instruct`.
+The server default is `nvidia/llama-3.1-nemotron-51b-instruct`.
+
+See the [NVIDIA NIM API catalog](https://build.nvidia.com/models) for the list of available models.
 
 ## Further resources
 

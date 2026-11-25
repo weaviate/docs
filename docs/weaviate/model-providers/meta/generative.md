@@ -26,11 +26,6 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 
 ![RAG integration illustration](../_includes/integration_meta_rag.png)
 
-{/* TODO(ivan): remove this admonition and name the minimum weaviate-client version once generative-meta ships in a client release */}
-:::info Python client support is not released yet
-Python client support for Meta is coming in an upcoming `weaviate-client` release. The snippets below do not run with the current client release.
-:::
-
 ## Requirements
 
 ### Weaviate configuration
@@ -83,7 +78,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
       text={PyCode}
       startMarker="# START BasicGenerativeMeta"
       endMarker="# END BasicGenerativeMeta"
-      language="pyindent"
+      language="py"
     />
   </TabItem>
 </Tabs>
@@ -98,7 +93,7 @@ Name the model in the collection configuration:
       text={PyCode}
       startMarker="# START GenerativeMetaCustomModel"
       endMarker="# END GenerativeMetaCustomModel"
-      language="pyindent"
+      language="py"
     />
   </TabItem>
 </Tabs>
@@ -115,14 +110,14 @@ Configure the following generative parameters to customize the model behavior.
       text={PyCode}
       startMarker="# START FullGenerativeMeta"
       endMarker="# END FullGenerativeMeta"
-      language="pyindent"
+      language="py"
     />
   </TabItem>
 </Tabs>
 
 Weaviate has no default for `temperature`, `topP`, `maxTokens`, `frequencyPenalty`, `presencePenalty`, or `reasoningEffort`: any one you leave unset is omitted from the request, so Meta's own default applies.
 
-For further details on model parameters, see the [Meta API documentation](https://dev.meta.ai/docs/api-reference).
+For further details on model parameters, see the [Meta API reference](https://dev.meta.ai/docs/api-reference).
 
 ## Select a model at runtime
 
@@ -134,7 +129,7 @@ Aside from setting the default model provider when creating the collection, you 
       text={PyCode}
       startMarker="# START RuntimeModelSelectionMeta"
       endMarker="# END RuntimeModelSelectionMeta"
-      language="pyindent"
+      language="py"
     />
   </TabItem>
 </Tabs>
@@ -206,7 +201,7 @@ You can also supply images as a part of the input when performing retrieval augm
       text={PyCode}
       startMarker="# START WorkingWithImagesMeta"
       endMarker="# END WorkingWithImagesMeta"
-      language="pyindent"
+      language="py"
     />
   </TabItem>
 </Tabs>
@@ -215,9 +210,11 @@ You can also supply images as a part of the input when performing retrieval augm
 
 ### Available models
 
-Weaviate passes the model name through unchecked. See [Meta's documentation](https://dev.meta.ai/docs/api-reference) for the current models.
+Weaviate does not validate the model name, so you can set any model that your Meta account can reach.
 
-If you do not set a model, Weaviate uses `muse-spark-1.2`.
+The server default is `muse-spark-1.2`.
+
+See the [Meta API reference](https://dev.meta.ai/docs/api-reference) for the list of available models.
 
 If long generations time out, raise [`MODULES_CLIENT_TIMEOUT`](/deploy/configuration/env-vars/index.md#MODULES_CLIENT_TIMEOUT).
 

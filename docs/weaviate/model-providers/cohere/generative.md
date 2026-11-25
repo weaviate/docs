@@ -266,7 +266,17 @@ In other words, when you have `n` search results, the generative model generates
 
 Weaviate does not validate the model name, so you can set any model that your Cohere account can reach. Name validation was removed in `v1.33.0`, and backported to `v1.31.17` and `v1.32.10`.
 
-The server default is `command-a-03-2025`. It changed in `v1.33.0`, and was backported to `v1.31.17` and `v1.32.10`. Earlier releases on each of those lines default to `command-r`.
+The server default is `command-a-03-2025`.
+
+<details>
+  <summary>Default model history</summary>
+
+| Default model | First release | Backported to |
+| --- | --- | --- |
+| `command-a-03-2025` | `v1.33.0` | `v1.32.10`, `v1.31.17` |
+| `command-r` | before `v1.33.0` | |
+
+</details>
 
 See the [Cohere model documentation](https://docs.cohere.com/docs/models) for the list of available models.
 

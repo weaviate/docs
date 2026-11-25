@@ -129,7 +129,7 @@ Weaviate generates embeddings for objects as follows:
 - Prepends the collection name if configured
 
 :::note Case sensitivity
-For Weaviate versions before `v1.27`, the string created above is lowercased before being sent to the model provider. Starting in `v1.27`, the string is sent as is.
+The string created above is sent to the model provider as is.
 
 If you prefer the text to be lowercased, you can do so by setting the `LOWERCASE_VECTORIZATION_INPUT` environment variable.
 The text is always lowercased for the `text2vec-contextionary` integration.
