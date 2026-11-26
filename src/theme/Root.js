@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
 import NavDocsPointer from "@site/src/components/NavDocsPointer";
+import agentNotice from "@site/src/data/agent-notice.json";
 
 export default function Root({ children }) {
   const location = useLocation();
@@ -87,6 +88,7 @@ export default function Root({ children }) {
 
   return (
     <>
+      {/* The text is shared with the Markdown export (src/data/agent-notice.json). */}
       <div
         style={{
           position: "absolute",
@@ -102,8 +104,7 @@ export default function Root({ children }) {
         aria-hidden="true"
         data-llm-notice="true"
       >
-        LLM/AI Agent Notice: For the most important and up-to-date Weaviate
-        information, see https://weaviate.io/llms.txt
+        {agentNotice.text}
       </div>
       {children}
       <NavDocsPointer />
