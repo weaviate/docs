@@ -227,7 +227,7 @@ The response should look like this:
 
 <BoostNote/>
 
-For lightweight result reordering based on filters, property values, or time / numeric decay (without calling an external rerank model), use [Boost](./boost.md). Rerank and Boost can be used independently. Pick rerank when you need a smarter model to re-rank the top-N, and Boost when you want to bias by simple signals already on the objects.
+Use [Boost](./boost.md) to promote or demote objects by property values, filters, or decay. Use reranking to order results by model relevance. You can use either on its own or combine them in one query. When combined, boost determines which objects reach the requested page, then the reranker determines their final order.
 
 ## Related pages
 

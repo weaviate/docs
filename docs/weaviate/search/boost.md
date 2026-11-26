@@ -28,6 +28,7 @@ A boost is a **post-retrieval rescorer**:
 1. The primary search (vector, hybrid, BM25, ...) fetches `depth` candidate results. Set `depth` higher than `offset + limit` if you want boost to consider candidates beyond the first page.
 2. The boost scorer rescores those candidates in memory by evaluating each condition per candidate, normalizing per result set, and blending with the primary score. There are no new index queries. The cost is per-candidate in-memory scoring, not extra shard fan-out. Both primary and boost scores are min-max normalized into `[0, 1]` before blending, and the final score is renormalized to `[0, 1]`.
 3. The user's original `offset` and `limit` are applied **after** the re-sort.
+4. If the query also requests [reranking](./rerank.md), the reranker reorders that page. For example, with `depth: 100`, `offset: 0`, and `limit: 10`, boost scores up to 100 candidates and the reranker orders the top 10 boosted results.
 
 ## Condition types
 
