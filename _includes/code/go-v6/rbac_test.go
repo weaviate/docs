@@ -752,6 +752,80 @@ func TestRBACRotateApiKey(t *testing.T) {
 	// END RotateApiKey
 }
 
+// assertDBUserActive checks a database user's active status.
+func assertDBUserActive(t *testing.T, client *weaviate.Client, userID string, want bool) {
+	t.Helper()
+	info, err := client.Users.DB.UserInfo(context.Background(), rbac.UserInfoOptions{ID: userID})
+	if err != nil {
+		t.Fatalf("get database user %q: %v", userID, err)
+	}
+	if info.Active != want {
+		t.Fatalf("database user %q active = %t, want %t", userID, info.Active, want)
+	}
+}
+
+// TestRBACDeactivateUser deactivates a database user.
+func TestRBACDeactivateUser(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
+
+	// START DeactivateUser
+	err := client.Users.DB.Deactivate(ctx, rbac.DeactivateUserOptions{
+		ID: "custom-user",
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	// END DeactivateUser
+	assertDBUserActive(t, client, "custom-user", false)
+}
+
+// TestRBACDeactivateAndRevokeKey deactivates a database user and revokes its API key.
+func TestRBACDeactivateAndRevokeKey(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
+
+	// START DeactivateAndRevokeKey
+	err := client.Users.DB.Deactivate(ctx, rbac.DeactivateUserOptions{
+		ID:        "custom-user",
+		RevokeKey: true,
+	})
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	// END DeactivateAndRevokeKey
+	assertDBUserActive(t, client, "custom-user", false)
+}
+
+// TestRBACActivateUser activates a deactivated database user.
+func TestRBACActivateUser(t *testing.T) {
+	ctx := context.Background()
+	client := connectRBACAdmin(t)
+	defer client.Close()
+	seedDBUser(t, client, "custom-user")
+	defer deleteDBUserIfExists(client, "custom-user")
+	if err := client.Users.DB.Deactivate(ctx, rbac.DeactivateUserOptions{ID: "custom-user"}); err != nil {
+		t.Fatalf("deactivate database user: %v", err)
+	}
+
+	// START ActivateUser
+	err := client.Users.DB.Activate(ctx, "custom-user")
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+	// END ActivateUser
+	assertDBUserActive(t, client, "custom-user", true)
+}
+
 // TestRBACAssignRole assigns roles to a database user.
 func TestRBACAssignRole(t *testing.T) {
 	ctx := context.Background()

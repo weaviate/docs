@@ -427,6 +427,26 @@ public class RBACTest : IAsyncLifetime
         Assert.False(string.IsNullOrEmpty(newApiKey));
         Assert.NotEqual(userApiKey, newApiKey);
 
+        // START DeactivateUser
+        await client.Users.Db.Deactivate(testUser);
+        // END DeactivateUser
+        Assert.False((await client.Users.Db.Get(testUser))!.Active);
+
+        // START ActivateUser
+        await client.Users.Db.Activate(testUser);
+        // END ActivateUser
+        Assert.True((await client.Users.Db.Get(testUser))!.Active);
+
+        // START DeactivateAndRevokeKey
+        await client.Users.Db.Deactivate(testUser, revokeKey: true);
+        // END DeactivateAndRevokeKey
+        Assert.False((await client.Users.Db.Get(testUser))!.Active);
+
+        // Activate the user again and issue a new key, as the old one was revoked
+        await client.Users.Db.Activate(testUser);
+        newApiKey = await client.Users.Db.RotateApiKey(testUser);
+        Assert.True((await client.Users.Db.Get(testUser))!.Active);
+
         var permissions = new PermissionScope[]
         {
             new Permissions.Collections("TargetCollection*") { Read = true },

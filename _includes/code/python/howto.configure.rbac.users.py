@@ -29,6 +29,26 @@ print(new_api_key)
 # END RotateApiKey
 assert len(new_api_key) > 0 and new_api_key != user_api_key
 
+# START DeactivateUser
+client.users.db.deactivate(user_id="custom-user")
+# END DeactivateUser
+assert client.users.db.get(user_id="custom-user").active is False
+
+# START ActivateUser
+client.users.db.activate(user_id="custom-user")
+# END ActivateUser
+assert client.users.db.get(user_id="custom-user").active is True
+
+# START DeactivateAndRevokeKey
+client.users.db.deactivate(user_id="custom-user", revoke_key=True)
+# END DeactivateAndRevokeKey
+assert client.users.db.get(user_id="custom-user").active is False
+
+# Activate the user again and issue a new key, as the old one was revoked
+client.users.db.activate(user_id="custom-user")
+new_api_key = client.users.db.rotate_key(user_id="custom-user")
+assert client.users.db.get(user_id="custom-user").active is True
+
 # Unreleased: needs the Python client release with weaviate-python-client#2249,
 # Weaviate 1.41+ and a license key on the server. The page shows these blocks with pyindent.
 # TODO(Ivan): remove this guard and dedent once the client version is known.

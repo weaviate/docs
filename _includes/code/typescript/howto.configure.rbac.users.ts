@@ -31,6 +31,26 @@ console.log(newApiKey)
 // END RotateApiKey
 assert.equal( (newApiKey.length > 0) && (newApiKey != userApiKey), true)
 
+// START DeactivateUser
+await client.users.db.deactivate("custom-user")
+// END DeactivateUser
+assert.equal((await client.users.db.byName("custom-user")).active, false)
+
+// START ActivateUser
+await client.users.db.activate("custom-user")
+// END ActivateUser
+assert.equal((await client.users.db.byName("custom-user")).active, true)
+
+// START DeactivateAndRevokeKey
+await client.users.db.deactivate("custom-user", { revokeKey: true })
+// END DeactivateAndRevokeKey
+assert.equal((await client.users.db.byName("custom-user")).active, false)
+
+// Activate the user again and issue a new key, as the old one was revoked
+await client.users.db.activate("custom-user")
+newApiKey = await client.users.db.rotateKey("custom-user")
+assert.equal((await client.users.db.byName("custom-user")).active, true)
+
 const { permissions } = weaviate
 
 const collectionPermissions = [
