@@ -302,7 +302,7 @@ To configure vectorization on a per-property basis, use `skip` and `vectorizePro
 
 ### Specify which properties to vectorize
 
-To vectorize only a specific set of properties, set `source_properties` (the `properties` field of the vector configuration). Only the listed properties are then vectorized, in the order given.
+To vectorize only a specific set of properties, set `source_properties` (the `properties` field of the vector configuration). Only the listed properties are then vectorized. The order of the list has no effect, the properties are concatenated in alphabetical order.
 
 When `source_properties` is set, listed properties that are **not** text are also vectorized: `number`, `int`, `boolean`, `date`, `object`, and their array variants are converted to a string and concatenated into the input text. (Without `source_properties`, only `text`, `text[]`, and `blob` properties are vectorized. `uuid`, geo-coordinates, and phone-number properties are never vectorized.)
 
