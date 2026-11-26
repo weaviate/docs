@@ -125,7 +125,7 @@ const results = await myCollection.query.nearText(
     limit: 2,
     rerank: {
       property: 'title',                // The property to rerank on
-      query: 'A melodic holiday film'   // If not provided, the original query will be used
+      query: 'A melodic holiday film'   // The rerank query (required)
     }
   }
   // highlight-end

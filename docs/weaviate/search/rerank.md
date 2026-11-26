@@ -18,6 +18,7 @@ import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similari
 import GoV5Code from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
 import GoV6Code from '!!raw-loader!/_includes/code/go-v6/search_rerank_test.go';
 import GoV6SimilarityCode from '!!raw-loader!/_includes/code/go-v6/search_test.go';
+import DecisionPyCode from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.reranker.decision.py';
 import BoostNote from '/_includes/feature-notes/boost.mdx';
 
 Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
@@ -31,13 +32,27 @@ Reranking modules reorder the search result set according to a different set of 
 
 To rerank search results, enable a reranker [model integration](../model-providers/index.md) for your collection.
 
-A collection can have multiple rerankers. If multiple `reranker` modules are enabled, specify the module you want to use in the `moduleConfig` section of your schema.
+A collection uses one reranker, set in the collection configuration.
 
 </details>
 
 import QueryAgentTip from '/_includes/query-agent-tip.mdx';
 
 <QueryAgentTip/>
+
+## Rerank query requirements
+
+Starting in `v1.41`, Weaviate checks the rerank request before the search runs. A request that fails a check returns an error, whether or not the search would return objects. These checks apply to client (gRPC) queries, for every reranker.
+
+- **The rerank query is required.** A missing or blank rerank query fails with `rerank: query is required`. Before `v1.41`, Weaviate sent an empty query to the reranker.
+- **The rerank property must be a `text` or `blob` property.** Any other type fails before the search. Name a top-level property of the collection. For example: `rerank: property "tags" of collection "Tickets" is of type text[]; a rerank reads a text or blob property`.
+- **Only decision-model rerankers rank images.** The [TypeSafe AI](../model-providers/typesafeai/reranker.md) and [OpenAI](../model-providers/openai/reranker.md) rerankers judge images in a `blob` property. Other rerankers send the base64 string to the provider as text, so don't use them on a `blob` property.
+
+When two results get the same rerank score, they stay in the order the search returned them.
+
+### Pagination
+
+A reranker reorders only the objects of the requested page. The next page is the next set of search results, sorted on its own. So an object can appear on two pages, or on none.
 
 ## Named vectors
 
@@ -222,6 +237,27 @@ The response should look like this:
   />
 
 </details>
+
+## Rerank with a condition (decision models)
+
+A [decision model](../concepts/reranking.md#decision-models) judges a condition instead of scoring relevance. In this example, a hybrid search finds tickets about refunds. The decision model then ranks them by how likely the customer is to churn.
+
+:::info Python client release
+The Python example in this section needs the next Python client release. See the [Python client releases](https://github.com/weaviate/weaviate-python-client/releases).
+:::
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={DecisionPyCode}
+      startMarker="# START RerankerDecisionQuery"
+      endMarker="# END RerankerDecisionQuery"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+The collection must use a decision-model reranker. See the [TypeSafe AI](../model-providers/typesafeai/reranker.md) and [OpenAI](../model-providers/openai/reranker.md) reranker pages for setup, images, limits and errors.
 
 ## Soft-rank with Boost
 

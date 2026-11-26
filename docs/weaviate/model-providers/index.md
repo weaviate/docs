@@ -34,9 +34,10 @@ This enables an enhanced developed experience, such as the ability to:
 | [Mistral](./mistral/index.md) | [Text](./mistral/embeddings.md) | [Text](./mistral/generative.md) | - |
 | [Morph](./morph/index.md) | [Text](./morph/embeddings.md) | - | - |
 | [NVIDIA](./nvidia/index.md) | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md) | [Text](./nvidia/generative.md) | [Reranker](./nvidia/reranker.md) |
-| [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
+| [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | [Reranker (decision model)](./openai/reranker.md) |
 | [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
 | [TwelveLabs](./twelvelabs/index.md) | [Multimodal](./twelvelabs/embeddings-multimodal.md) | - | - |
+| [TypeSafe AI](./typesafeai/index.md) | - | - | [Reranker (decision model)](./typesafeai/reranker.md) |
 | [Voyage AI](./voyageai/index.md) | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | - | [Reranker](./voyageai/reranker.md) |
 | [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md), [Multimodal](./weaviate/embeddings-multimodal.md) | - | - |
 | [xAI](./xai/index.md) | - | [Text](./xai/generative.md) | - |

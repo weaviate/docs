@@ -38,6 +38,17 @@ OpenAI's generative AI models can generate human-like text based on given prompt
 
 [OpenAI generative AI integration page](./generative.md)
 
+### Reranker models
+
+<!-- TODO(Ivan): replace placeholder image -->
+![Reranker integration illustration](../_includes/integration_openai_reranker.png)
+
+OpenAI's decision models rerank search results by a condition, such as "The customer is about to churn". Each result gets the probability that the condition holds for it. The models judge text and images.
+
+[The Weaviate reranker integration](./reranker.md) uses OpenAI's Decisions API to reorder search results by that probability.
+
+[OpenAI reranker integration page](./reranker.md)
+
 ## Summary
 
 These integrations enable developers to leverage OpenAI's powerful models directly within Weaviate.
@@ -52,6 +63,7 @@ Then, go to the relevant integration page to learn how to configure Weaviate wit
 
 - [Text Embeddings](./embeddings.md)
 - [Generative AI](./generative.md)
+- [Reranker](./reranker.md)
 
 ## Questions and feedback
 

@@ -173,6 +173,8 @@ More specifically, Weaviate performs an initial search, then reranks the results
 
 Any search in Weaviate can be combined with a reranker to perform reranking operations.
 
+From `v1.41`, the rerank query is required. See [rerank query requirements](../../search/rerank.md#rerank-query-requirements) for the checks that run before the search.
+
 ![Reranker integration illustration](../_includes/integration_transformers_reranker.png)
 
 <Tabs className="code" groupId="languages">
