@@ -77,6 +77,44 @@ func TestUserManagement(t *testing.T) {
 		})
 	})
 
+	t.Run("DeactivateAndActivateUser", func(t *testing.T) {
+		// Ensure user exists
+		_, err := client.Users().DB().Creator().WithUserID("custom-user").Do(ctx)
+		require.NoError(t, err)
+
+		// START DeactivateUser
+		deactivated, err := client.Users().DB().Deactivator().WithUserID("custom-user").Do(ctx)
+		// END DeactivateUser
+		require.NoError(t, err)
+		assert.True(t, deactivated)
+
+		// START ActivateUser
+		activated, err := client.Users().DB().Activator().WithUserID("custom-user").Do(ctx)
+		// END ActivateUser
+		require.NoError(t, err)
+		assert.True(t, activated)
+
+		// START DeactivateAndRevokeKey
+		deactivated, err = client.Users().DB().Deactivator().
+			WithUserID("custom-user").
+			WithRevokeKey(true).
+			Do(ctx)
+		// END DeactivateAndRevokeKey
+		require.NoError(t, err)
+		assert.True(t, deactivated)
+
+		// Activate the user again and issue a new key, as the old one was revoked
+		activated, err = client.Users().DB().Activator().WithUserID("custom-user").Do(ctx)
+		require.NoError(t, err)
+		assert.True(t, activated)
+		_, err = client.Users().DB().KeyRotator().WithUserID("custom-user").Do(ctx)
+		require.NoError(t, err)
+
+		t.Cleanup(func() {
+			client.Users().DB().Deleter().WithUserID("custom-user").Do(ctx)
+		})
+	})
+
 	t.Run("AssignRole", func(t *testing.T) {
 		// Create test role first
 		permissions := []rbac.Permission{

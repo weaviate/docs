@@ -297,6 +297,163 @@ SSs3WGVFbUxMVFhlOEsxVVMrQVBzM1VhQTJIM2xXWngwY01HaXFYVnM1az1fMXlDUEhUNjhSMlNtazdH
 
 </details>
 
+### Deactivate a database user {#deactivate-a-user}
+
+This example deactivates `custom-user`. A deactivated user can't authenticate. Weaviate keeps the user, its roles and its API key, and the user shows as inactive. [Activate the user](#activate-a-user) to restore access.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START DeactivateUser"
+    endMarker="# END DeactivateUser"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={UserTSCode}
+      startMarker="// START DeactivateUser"
+      endMarker="// END DeactivateUser"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="gov5" label="Go (v5)">
+    <FilteredTextBlock
+      text={GoV5Code}
+      startMarker="// START DeactivateUser"
+      endMarker="// END DeactivateUser"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START DeactivateUser"
+      endMarker="// END DeactivateUser"
+      language="go6"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DeactivateUser"
+      endMarker="// END DeactivateUser"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeactivateUser"
+      endMarker="// END DeactivateUser"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
+
+You can also revoke the user's API key when you deactivate the user. The revoked key stays invalid after the user is activated again. [Rotate the key](#rotate-user-api-key) to give the user a working key.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START DeactivateAndRevokeKey"
+    endMarker="# END DeactivateAndRevokeKey"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={UserTSCode}
+      startMarker="// START DeactivateAndRevokeKey"
+      endMarker="// END DeactivateAndRevokeKey"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="gov5" label="Go (v5)">
+    <FilteredTextBlock
+      text={GoV5Code}
+      startMarker="// START DeactivateAndRevokeKey"
+      endMarker="// END DeactivateAndRevokeKey"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START DeactivateAndRevokeKey"
+      endMarker="// END DeactivateAndRevokeKey"
+      language="go6"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeactivateAndRevokeKey"
+      endMarker="// END DeactivateAndRevokeKey"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
+
+The key is revoked only if the request deactivates the user.
+
+### Activate a database user {#activate-a-user}
+
+This example activates `custom-user` again. The user can authenticate with its existing API key, unless the key was revoked on deactivation. 
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={UserPyCode}
+    startMarker="# START ActivateUser"
+    endMarker="# END ActivateUser"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={UserTSCode}
+      startMarker="// START ActivateUser"
+      endMarker="// END ActivateUser"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="gov5" label="Go (v5)">
+    <FilteredTextBlock
+      text={GoV5Code}
+      startMarker="// START ActivateUser"
+      endMarker="// END ActivateUser"
+      language="gov5"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={RbacGoV6Code}
+      startMarker="// START ActivateUser"
+      endMarker="// END ActivateUser"
+      language="go6"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ActivateUser"
+      endMarker="// END ActivateUser"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ActivateUser"
+      endMarker="// END ActivateUser"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
+
 ### Set database user API key expiration {#api-key-expiration}
 
 import EnterpriseEdition from '/_includes/feature-notes/enterprise-edition.mdx';

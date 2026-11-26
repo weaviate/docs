@@ -392,6 +392,16 @@ class RBACTest {
     // END RotateApiKey
     assertThat(newApiKey).isNotNull().isNotEmpty().isNotEqualTo(userApiKey);
 
+    // START DeactivateUser
+    client.users.db.deactivate(testUser);
+    // END DeactivateUser
+    assertThat(client.users.db.byName(testUser)).hasValueSatisfying(u -> assertThat(u.active()).isFalse());
+
+    // START ActivateUser
+    client.users.db.activate(testUser);
+    // END ActivateUser
+    assertThat(client.users.db.byName(testUser)).hasValueSatisfying(u -> assertThat(u.active()).isTrue());
+
     Permission[] permissions = new Permission[] {Permission
         .collections("TargetCollection*", CollectionsPermission.Action.READ),};
     client.roles.create(testRole, permissions);
