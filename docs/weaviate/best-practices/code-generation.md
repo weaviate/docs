@@ -33,19 +33,13 @@ npx skills add weaviate/agent-skills
 
 ### High-performing models
 
-As of July 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/weaviate/client-libraries/python/index.mdx) code.)
+To choose a model for the [Weaviate Python v4 client](/weaviate/client-libraries/python/index.mdx), start with the current [Claude](https://platform.claude.com/docs/en/about-claude/models/overview), [Gemini](https://ai.google.dev/gemini-api/docs/models), or [OpenAI](https://developers.openai.com/api/docs/models) model catalog.
 
-- Anthropic `claude-sonnet-4-20250514`
-- Google `gemini-2.5-pro`
-- Google `gemini-2.5-flash`
-
-If you are using the Python client library, we recommend that you try out one of the above models to see if it performs well for your use case.
-
-Although none of these models performed perfectly at zero-shot code generation tasks (i.e. with only a description of the task), they were able to generate correct code most of the time when provided with in-context examples.
+Compare models on a task your application performs. For example, ask each model to write a query against a test collection using your installed client version. Run the generated code and check that it returns the objects you expect.
 
 ### In-context code examples
 
-We found that performances of the above LLMs improved significantly when provided with in-context examples. We suggest that you can get better results by providing in-context examples relevant to the task you are trying to accomplish.
+In our July 2025 evaluation, models generated working Python v4 client code more often when the prompt included relevant code examples.
 
 As a starting point, we have curated a set of code examples below. Try copy and pasting this block of code into your prompt.
 
@@ -65,7 +59,7 @@ If the above code examples are not sufficient, you can try the following:
 - Use the `Ask AI` feature in the Weaviate Documentation to find examples of how to perform specific tasks. Then, use the provided code in your prompt.
 
 :::tip Small models
-Generally, smaller models don't perform as well at zero-shot code generation tasks. But we have found Anthropic's `claude-3-5-haiku-20241022` and OpenAI's `gpt-4.1` / `gpt-4.1-mini` models to be quite good at generating code when provided with in-context examples.
+When evaluating a smaller model, try the same task with and without a working client example in the prompt.
 :::
 
 ## General tips
