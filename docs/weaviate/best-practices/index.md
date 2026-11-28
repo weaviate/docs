@@ -43,7 +43,7 @@ Generally, a new minor version of Weaviate is released every 6-10 weeks, and new
 For environments with high reliability requirements, high query loads or latency requirements, consider deploying Weaviate in a high availability (HA) configuration. An HA configuration with multiple nodes provide several benefits:
 
 - **Better fault tolerance**: Continue serving requests even if individual nodes experience issues
-- **Rolling upgrades**: Individual nodes can be upgrades without cluster-level downtime
+- **Rolling upgrades**: Individual nodes can be upgraded without cluster-level downtime
 - **Improved query performance**: Distribute query load across multiple nodes to reduce latency
 - **Increased throughput**: Handle more concurrent queries and data operations
 
@@ -56,7 +56,7 @@ For environments with high reliability requirements, high query loads or latency
 
 If using high availability (HA) configurations, consider the following replication settings:
 
-- **Replication factor**: Set the replication factor to an odd number to ensure quorum (majority of cluster size) is possible without excessive replication. Note: If the number of nodes is fewer than the replication factor, Weaviate will not start.
+- **Replication factor**: Set the replication factor to an odd number to ensure a quorum (a majority of the replication factor) is possible without excessive replication. Note: If the number of nodes is fewer than the replication factor, Weaviate will not start.
 - **Deletion strategy**: Use a deletion strategy that fits your use case. The `NoAutomatedResolution` strategy is generally recommended.
 
 ### Use multi-tenancy for data subsets
