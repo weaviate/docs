@@ -176,7 +176,7 @@ Here, we define a collection called `"DemoCollection"`. It has a named vector co
 Now, we can import the data. For this example, we will import a few arbitrary text objects.
 
 :::note Embeddings not required in this scenario
-Recall that we configured the model integration (for `text2colbert-jinaai`) above. This enables Weaviate to obtain embeddings as needed.
+Recall that we configured the model integration (for `text2multivec-jinaai`, formerly `text2colbert-jinaai`) above. This enables Weaviate to obtain embeddings as needed.
 :::
 
 <Tabs className="code" groupId="languages">
