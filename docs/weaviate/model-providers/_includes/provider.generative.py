@@ -1057,7 +1057,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.digitalocean(
-        model="llama-4-maverick"
+        model="nemotron-3.5-super-vl"
     )
     # highlight-end
     # Additional parameters not shown
@@ -1074,7 +1074,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.digitalocean(
-        model="llama-4-maverick",
+        model="nemotron-3.5-super-vl",
         # # These parameters are optional
         # temperature=0.7,
         # top_p=0.9,
@@ -1101,7 +1101,7 @@ response = collection.generate.near_text(
     grouped_task="Write a tweet promoting these two movies",
     # highlight-start
     generative_provider=GenerativeConfig.digitalocean(
-        model="llama-4-maverick",  # Any model your DigitalOcean account can serve
+        model="nemotron-3.5-super-vl",  # Any model your DigitalOcean account can serve
         # # These parameters are optional
         # temperature=0.7,
         # top_p=0.9,

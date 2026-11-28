@@ -29,7 +29,7 @@ DigitalOcean Serverless Inference exposes embedding models (e.g. `qwen3-embeddin
 
 ![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_digitalocean_rag_single.png)
 
-DigitalOcean Serverless Inference exposes chat models (e.g. `llama-4-maverick`) over an OpenAI-compatible `/v1/chat/completions` API at `https://inference.do-ai.run`.
+DigitalOcean Serverless Inference exposes chat models (e.g. `nemotron-3.5-super-vl`) over an OpenAI-compatible `/v1/chat/completions` API at `https://inference.do-ai.run`.
 
 [Weaviate integrates with DigitalOcean's generative models](./generative.md) through the `generative-digitalocean` module. Configure a collection to use a DigitalOcean model and Weaviate performs retrieval augmented generation (RAG) over your search results automatically.
 
