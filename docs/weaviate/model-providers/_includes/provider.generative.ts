@@ -169,7 +169,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.anyscale({
-    model: 'mistralai/Mixtral-8x7B-Instruct-v0.1'
+    model: '<your-deployed-model>'
   }),
   // highlight-end
   // Additional parameters not shown
