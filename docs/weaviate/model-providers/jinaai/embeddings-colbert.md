@@ -29,7 +29,7 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 
 ### Weaviate configuration
 
-Your Weaviate instance must be configured with the Jina AI ColBERT vectorizer integration (`text2colbert-jinaai`) module.
+Your Weaviate instance must be configured with the Jina AI ColBERT vectorizer integration (`text2multivec-jinaai`, formerly `text2colbert-jinaai`) module.
 
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
@@ -169,7 +169,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 The following examples show how to configure Jina AI-specific options.
 
-`dimensions` does not apply to the `jina-colbert-v1` model.
+`dimensions` does not apply to the `jina-colbert-v1-en` model.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -336,7 +336,7 @@ See the [Jina AI models page](https://jina.ai/models/) for the list of available
 
 Weaviate uses `128` dimensions by default for `jina-colbert-v2`.
 
-`dimensions` does not apply to the `jina-colbert-v1` model.
+`dimensions` does not apply to the `jina-colbert-v1-en` model.
 
 ## Further resources
 
