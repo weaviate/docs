@@ -339,7 +339,7 @@ client.collections.create(
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # (Optional) To manually set the model ID
-        model="gemini-embedding-2"
+        model="gemini-embedding-001"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -359,7 +359,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
-        model="gemini-embedding-2"
+        model="gemini-embedding-001"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -400,7 +400,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # Further options
-        model="gemini-embedding-2",
+        model="gemini-embedding-001",
     ),
     # highlight-end
     # Additional parameters not shown
@@ -455,7 +455,7 @@ client.collections.create(
     vector_config=Configure.Vectors.multi2vec_google(
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         location="us-central1",
-        # model_id="<google-model-id>",
+        # model="<google-model-id>",
         # dimensions=512,
         image_fields=[
             Multi2VecField(name="poster", weight=0.9)
