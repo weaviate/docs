@@ -158,8 +158,8 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 Weaviate does not validate the model name, so you can set any model that your Voyage AI account can reach.
 
-:::caution The module default is a retired model
-`rerank-lite-1` is a first-generation model that Voyage AI has retired. The server default of the `reranker-voyageai` module is still `rerank-lite-1`, so a collection created without a `model` points at a retired model. Set `model` on every collection you create.
+:::caution Set the model explicitly
+`rerank-lite-1` is a first-generation model that Voyage AI still serves but recommends replacing. The server default of the `reranker-voyageai` module is still `rerank-lite-1`. Set `model` on every collection you create, for example `rerank-3-lite`.
 :::
 
 See the [Voyage AI reranker documentation](https://docs.voyageai.com/docs/reranker) for the list of available models.

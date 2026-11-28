@@ -165,7 +165,7 @@ client.collections.create(
     # highlight-start
     reranker_config=Configure.Reranker.voyageai(
         # # This parameter is optional
-        # model="rerank-lite-1"
+        # model="rerank-3-lite"
     )
     # highlight-end
     # Additional parameters not shown

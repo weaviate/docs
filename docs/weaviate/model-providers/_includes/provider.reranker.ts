@@ -109,7 +109,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   reranker: weaviate.configure.reranker.voyageAI({
-    model: 'rerank-lite-1',
+    model: 'rerank-3-lite',
   }),
   // highlight-end
 });
