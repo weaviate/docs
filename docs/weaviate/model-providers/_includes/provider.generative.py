@@ -986,7 +986,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.deepseek(
-        model="deepseek-v4-flash"
+        model="deepseek-flash"
     )
     # highlight-end
     # Additional parameters not shown
@@ -1003,7 +1003,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.deepseek(
-        model="deepseek-v4-flash",
+        model="deepseek-flash",
         # # These parameters are optional
         # temperature=0.7,
         # max_tokens=500,
