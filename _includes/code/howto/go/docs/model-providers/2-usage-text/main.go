@@ -188,7 +188,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-cohere": map[string]interface{}{
 						"properties": []string{"title"},
-						"model":      "embed-multilingual-v3.0",
+						"model":      "embed-v4.0",
 					},
 				},
 			},
@@ -213,7 +213,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-cohere": map[string]interface{}{
 						"properties": []string{"title"},
-						// "model":            "embed-multilingual-v3.0",
+						// "model":            "embed-v4.0",
 						// "truncate":         "END", // "NONE", "START" or "END"
 						// "base_url":         "<custom_cohere_url>",
 					},
