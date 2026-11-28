@@ -1140,7 +1140,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     generative_config=Configure.Generative.nvidia(
-        model="nvidia/llama-3.1-nemotron-70b-instruct"
+        model="nvidia/llama-3.3-nemotron-super-49b-v1.5"
     )
     # Additional parameters not shown
 )

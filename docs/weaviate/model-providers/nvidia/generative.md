@@ -253,7 +253,9 @@ In other words, when you have `n` search results, the generative model generates
 
 Weaviate does not validate the model name, so you can set any model that your NVIDIA account can reach.
 
-The server default is `nvidia/llama-3.1-nemotron-51b-instruct`.
+:::caution Set the model explicitly
+The server default is `nvidia/llama-3.1-nemotron-51b-instruct`, which NVIDIA no longer lists among its hosted LLM models. Set `model` explicitly when you create a collection, for example `nvidia/llama-3.3-nemotron-super-49b-v1.5`.
+:::
 
 See the [NVIDIA NIM API catalog](https://build.nvidia.com/models) for the list of available models.
 

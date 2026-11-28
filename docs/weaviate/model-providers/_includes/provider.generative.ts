@@ -774,7 +774,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.nvidia({
-    model: 'nvidia/llama-3.1-nemotron-70b-instruct'
+    model: 'nvidia/llama-3.3-nemotron-super-49b-v1.5'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -790,7 +790,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.nvidia({
     // These parameters are optional
-    // model: 'nvidia/llama-3.1-nemotron-70b-instruct'
+    // model: 'nvidia/llama-3.3-nemotron-super-49b-v1.5'
     // baseURL: "https://integrate.api.nvidia.com",
     // temperature: 0.7,
     // maxTokens: 1024
@@ -808,7 +808,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   config: generativeParameters.nvidia({
     // These parameters are optional
     // baseURL: "https://integrate.api.nvidia.com",
-    // model: 'nvidia/llama-3.1-nemotron-70b-instruct',
+    // model: 'nvidia/llama-3.3-nemotron-super-49b-v1.5',
     // temperature: 0.7,
     // maxTokens: 1000,
   }),

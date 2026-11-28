@@ -170,7 +170,9 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 Weaviate does not validate the model name, so you can set any model that your NVIDIA account can reach.
 
-The server default is `nvidia/rerank-qa-mistral-4b`.
+:::caution The module default is a retired model
+The server default is `nvidia/rerank-qa-mistral-4b`, which NVIDIA has retired. Requests to it return HTTP 404. Set `model` explicitly when you create a collection. NVIDIA serves `nvidia/nv-rerankqa-mistral-4b-v3` at the URL this module calls.
+:::
 
 See the [NVIDIA NIM API catalog](https://build.nvidia.com/models) for the list of available models.
 
