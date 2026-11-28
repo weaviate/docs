@@ -358,7 +358,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.cohere(
-        model="command-r-plus"
+        model="command-r-plus-08-2024"
     )
     # highlight-end
     # Additional parameters not shown
@@ -377,7 +377,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.cohere(
         # # These parameters are optional
-        # model="command-r",
+        # model="command-r-08-2024",
         # temperature=0.7,
         # k=5,
         # stop_sequences=["\n\n"],
@@ -403,7 +403,7 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.cohere(
         # # These parameters are optional
-        # model="command-r",
+        # model="command-r-08-2024",
         # temperature=0.7,
         # max_tokens=500,
         # k=5,

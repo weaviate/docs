@@ -321,7 +321,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.cohere({
-    model: 'command-r-plus'
+    model: 'command-r-plus-08-2024'
   }),
   // highlight-end
   // Additional parameters not shown
@@ -338,7 +338,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.cohere({
     // These parameters are optional
-    // model: 'command-r',
+    // model: 'command-r-08-2024',
     // temperature: 0.7,
     // k: 5,
     // stopSequences: ['\n\n'],
@@ -354,7 +354,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.cohere({
     // These parameters are optional
-    // model: 'command-r',
+    // model: 'command-r-08-2024',
     // temperature: 0.7,
     // maxTokens: 500,
     // k: 5,
