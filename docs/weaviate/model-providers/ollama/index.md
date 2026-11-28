@@ -43,7 +43,7 @@ In turn, they simplify the process of building AI-driven applications to speed u
 
 ## Get started
 
-A locally hosted Weaviate instance is required for these integrations so that you can host your own Ollama models.
+These integrations are enabled by default on Weaviate Cloud (WCD) instances, but your Ollama server must be reachable from your Weaviate instance. For example, a self-hosted Ollama server may need to be exposed to the internet for a WCD instance to reach it.
 
 Go to the relevant integration page to learn how to configure Weaviate with the Ollama models and start using them in your applications.
 
