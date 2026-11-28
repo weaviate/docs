@@ -85,7 +85,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an OpenAI Azure generative model.
 
-To select the model, specify the Azure resource name.
+To select the model, specify the Azure deployment name.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -133,7 +133,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on these parameters, see consult the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+For further details on these parameters, see the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/chat).
 
 ## Header parameters
 
@@ -234,7 +234,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### References
 
-- Azure OpenAI [API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
+- Azure OpenAI [API documentation](https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/chat)
 - Azure OpenAI [models and availability](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models)
 
 ## Questions and feedback
