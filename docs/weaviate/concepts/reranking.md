@@ -18,11 +18,15 @@ Learn how to [set up a reranker for your collection](../manage-collections/gener
 
 :::
 
+import GraphQLDeprecation from '/_includes/graphql-deprecation.mdx';
+
 ## Reranking in Weaviate
 
 With our reranker modules, you can conveniently perform [multi-stage searches](https://weaviate.io/blog/cross-encoders-as-reranker) without leaving Weaviate.
 
 In other words, you can perform a search - for example, a vector search - and then use a reranker to re-rank the results of that search. Our reranker modules are compatible with all of vector, bm25, and hybrid searches.
+
+<GraphQLDeprecation/>
 
 ### An example GraphQL query with a reranker
 
@@ -53,7 +57,7 @@ You can use reranking in a GraphQL query as follows:
 }
 ```
 
-This query retrieves 10 results from the `JeopardyQuestion` class, using a hybrid search with the query “flying”. It then re-ranks the results using the `answer` property, and the query “floating”.
+This query retrieves 10 results from the `JeopardyQuestion` class, using a vector search with the query “flying”. It then re-ranks the results using the `answer` property, and the query “floating”.
 
 You can specify which `property` of the `JeopardyQuestion` class you want to pass to the reranker. Note that here, the returned `score` will include the score from the reranker.
 

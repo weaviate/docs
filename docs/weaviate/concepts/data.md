@@ -253,7 +253,7 @@ The Paul Krugman `Author` object adds a new property, `writesFor`, to capture th
 
 The value of the `beacon` sub-property is the `id` value from the New York Times `Publication` object.
 
-Cross-reference relationships are directional. To make the link bi-directional, update the `Publication` collection to add a `hasAuthors` property points back to the `Author` collection.
+Cross-reference relationships are directional. To make the link bi-directional, update the `Publication` collection to add a `hasAuthors` property that points back to the `Author` collection.
 
 ### Multiple vector embeddings (named vectors)
 
@@ -419,7 +419,7 @@ Tenants have an activity status (also called a tenant state) that reflects their
     - `INACTIVE` tenants are stored on local disk storage for quick activation.
     - `OFFLOADED` tenants are stored on cloud storage. This status is useful for long-term storage for tenants that are not frequently accessed.
     - `OFFLOADING` tenants are being moved to cloud storage. This is a transient status, and therefore not user-specifiable.
-    - `ONLOADING` tenants are being loaded from cloud storage. This is a transient status, and therefore not user-specifiable. An `ONLOADING` tenant may be being warmed to a `ACTIVE` status or a `INACTIVE` status.
+    - `ONLOADING` tenants are being loaded from cloud storage. This is a transient status, and therefore not user-specifiable. An `ONLOADING` tenant may be being warmed to an `ACTIVE` status or an `INACTIVE` status.
 
 For more details on managing tenants, see [Multi-tenancy operations](../manage-collections/multi-tenancy.mdx).
 
@@ -515,7 +515,7 @@ For more information, see the following:
 ## Summary
 
 * The schema defines collections and properties.
-* Collections contain data objects that are describe in JSON documents.
+* Collections contain data objects that are described in JSON documents.
 * Data objects can contain a vector and properties.
 * Vectors come from machine learning models.
 * Different collections represent different vector spaces.

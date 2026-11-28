@@ -278,12 +278,12 @@ See the [how-to guide](../../search/similarity.md#diversity-selection-mmr) for c
 
 ## Notes and best practices
 
-All compatible vectors are similar to some degree search.
+All compatible vectors are similar to some degree.
 
 This has two effects:
 
 1. There will always be some "top" search results regardless of relevance.
-1. The entire dataset is always returned.
+1. Every object in the dataset is a potential match; there is no relevance cut-off.
 
 If you search a vector database containing vectors for colors "Red", "Crimson" and "LightCoral" with a query vector for "SkyBlue", the search will still return a result (e.g. "Red"), even if it is not semantically similar to the query. The search is simply returning the closest match, even if it is not a good match in the absolute sense.
 

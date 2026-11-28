@@ -12,7 +12,7 @@ Weaviate can be scaled horizontally by being run on a set of multiple nodes in a
 
 ### Shards
 
-A collection in Weaviate comprises of one or more "shards", which are the basic units of data storage and retrieval. A shard will contain its own vector index, inverted indexes, and object store. Each shard can be hosted on a different node, allowing for distributed data storage and processing.
+A collection in Weaviate comprises one or more "shards", which are the basic units of data storage and retrieval. A shard will contain its own vector index, inverted indexes, and object store. Each shard can be hosted on a different node, allowing for distributed data storage and processing.
 
 ![Shards explained](./img/shards_explained.png)
 

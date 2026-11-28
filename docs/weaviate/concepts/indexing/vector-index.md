@@ -88,8 +88,6 @@ A flat index is the simplest type of index. It stores all vectors in a single li
 
 This is extremely memory-efficient, but does not scale well, as the search time grows linearly with the number of vectors.
 
-The first method is the HNSW index.
-
 ## Hierarchical Navigable Small World (HNSW) index
 
 **Hierarchical Navigable Small World (HNSW)** is an algorithm that works on multi-layered graphs. It is also an index type, and refers to vector indexes that are created using the HNSW algorithm. HNSW indexes enable very fast queries, but rebuilding the index when you add new vectors can be resource intensive.
@@ -210,7 +208,7 @@ To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you 
 
 ### Deletions
 
-Cleanup is an async process runs that rebuilds the HNSW graph after deletes and updates. Prior to cleanup, objects are marked as deleted, but they are still connected to the HNSW graph. During cleanup, the edges are reassigned and the objects are deleted for good.
+Cleanup is an async process that rebuilds the HNSW graph after deletes and updates. Prior to cleanup, objects are marked as deleted, but they are still connected to the HNSW graph. During cleanup, the edges are reassigned and the objects are deleted for good.
 
 ## Flat index
 
