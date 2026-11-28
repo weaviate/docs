@@ -154,7 +154,7 @@ As this integration connects to a local Model2Vec container, no additional crede
 
 </Tabs>
 
-Note that for this integration, you specify the model to be used in the Weaviate configuration file.
+Note that for this integration, the model is selected by the inference container image tag (for example `minishlab-potion-base-32M`); there is no model parameter in the collection configuration.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
