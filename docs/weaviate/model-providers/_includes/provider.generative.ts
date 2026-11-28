@@ -841,7 +841,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.openAI({
-    model: 'gpt-4-1106-preview',
+    model: 'gpt-6.1-terra',
   }),
   // highlight-end
   // Additional parameters not shown
@@ -857,7 +857,7 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.openAI({
     // These parameters are optional
-    // model: 'gpt-4',
+    // model: 'gpt-6-luna',
     // frequencyPenalty: 0,
     // maxTokens: 500,
     // presencePenalty: 0,
@@ -875,7 +875,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.openAI({
     // These parameters are optional
-    // model: 'gpt-4',
+    // model: 'gpt-6-luna',
     // frequencyPenalty: 0,
     // maxTokens: 500,
     // presencePenalty: 0,

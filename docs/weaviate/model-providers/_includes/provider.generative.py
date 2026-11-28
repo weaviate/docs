@@ -1218,7 +1218,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     generative_config=Configure.Generative.openai(
-        model="gpt-4-1106-preview"
+        model="gpt-6.1-terra"
     )
     # highlight-end
     # Additional parameters not shown
@@ -1236,7 +1236,7 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.openai(
         # # These parameters are optional
-        # model="gpt-4",
+        # model="gpt-6-luna",
         # frequency_penalty=0,
         # max_tokens=500,
         # presence_penalty=0,
@@ -1268,7 +1268,7 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.openai(
         # # These parameters are optional
-        # model="gpt-4",
+        # model="gpt-6-luna",
         # frequency_penalty=0,
         # max_tokens=500,
         # presence_penalty=0,
