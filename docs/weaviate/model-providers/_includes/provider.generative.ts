@@ -445,7 +445,7 @@ response = await myCollection.generate.nearText("A holiday film", {
 await client.collections.delete('DemoCollection');
 
 // START BasicGenerativeDatabricks // START FullGenerativeDatabricks
-const databricksGenerativeEndpoint = process.env.DATABRICKS_VECTORIZER_ENDPOINT || '';  // If saved as an environment variable
+const databricksGenerativeEndpoint = process.env.DATABRICKS_GENERATIVE_ENDPOINT || '';  // If saved as an environment variable
 // START BasicGenerativeDatabricks // END FullGenerativeDatabricks
 
 await client.collections.create({
@@ -472,7 +472,6 @@ await client.collections.create({
     // maxTokens: 500,
     // temperature: 0.7,
     // topP: 0.7,
-    // topK: 0.1
   }),
   // highlight-end
   // Additional parameters not shown

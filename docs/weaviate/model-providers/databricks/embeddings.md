@@ -124,7 +124,7 @@ This will configure Weaviate to use the vectorizer served through the endpoint y
 
 ### Vectorizer parameters
 
-- `endpoint`: The URL of the embedding model hosted on Databricks.
+- `endpoint`: The full URL of the Databricks model serving endpoint, such as `https://<your-workspace>.cloud.databricks.com/serving-endpoints/<endpoint-name>/invocations`. Weaviate sends requests to this URL exactly as provided, so it must include the `/serving-endpoints/<endpoint-name>/invocations` path.
 - `instruction`: An optional instruction to pass to the embedding model.
 
 For further details on model parameters, see the [Databricks documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#embedding-request).

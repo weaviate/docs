@@ -532,7 +532,6 @@ client.collections.create(
         # max_tokens=500,
         # temperature=0.7,
         # top_p=0.7,
-        # top_k=0.1
     )
     # highlight-end
     # Additional parameters not shown
