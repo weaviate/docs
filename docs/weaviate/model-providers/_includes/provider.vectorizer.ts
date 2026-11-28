@@ -1419,7 +1419,6 @@ await client.collections.create({
       // Further options
       model: "voyage-multimodal-3.5",
       truncate: true,  // or false
-      // outputEncoding: "base64"  // or "null"
       // baseURL: "<custom_voyageai_url>"
     })],
     // highlight-end
