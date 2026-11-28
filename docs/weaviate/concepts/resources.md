@@ -36,7 +36,7 @@ Each insert, or search, is single-threaded. However, if you make multiple search
 
 ### When to add more CPUs
 
-When CPU utilization is high during importing, add CPUs to increases import speed.
+When CPU utilization is high during importing, add CPUs to increase import speed.
 
 When search throughput is limited, add CPUs to increase the number of queries per second.
 
@@ -123,11 +123,11 @@ For optimal search and import performance, all previously imported vectors need 
 You can reduce the size of `vectorCacheMaxObjects`, but a disk lookup for a vector is orders of magnitudes slower than memory lookup. Only reduce the size of `vectorCacheMaxObjects` with care and as a last resort.
 
 Generally we recommend that:
-- During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drop drastically when there isn't enough memory to hold all of the vectors in the cache.
+- During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drops drastically when there isn't enough memory to hold all of the vectors in the cache.
 
 - After import, when your workload is mostly querying, experiment with vector cache limits that are less than your total dataset size.
 
-  Vectors that aren't currently in cache are added to the cache if there is still room. If the cache fills, Weaviate drops the whole cache. All future vectors have to be read from disk for the first time. Then, subsequent queries runs against the cache, until it fills again and the procedure repeats. Note that the cache can be a very valuable tool if you have a large dataset, and a large percentage of users only query a specific subset of vectors. In this case you might be able to serve the largest user group from cache while requiring disk lookups for "irregular" queries.
+  Vectors that aren't currently in cache are added to the cache if there is still room. If the cache fills, Weaviate drops the whole cache. All future vectors have to be read from disk for the first time. Then, subsequent queries run against the cache, until it fills again and the procedure repeats. Note that the cache can be a very valuable tool if you have a large dataset, and a large percentage of users only query a specific subset of vectors. In this case you might be able to serve the largest user group from cache while requiring disk lookups for "irregular" queries.
 
 ### When to add more Memory to your Weaviate machine or cluster
 

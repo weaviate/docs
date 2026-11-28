@@ -34,7 +34,6 @@ In this Replication Architecture section, you will find information about:
   * Why replication for Weaviate?
   * Replication vs. Sharding
   * How does replication work in Weaviate?
-  * Roadmap
 
 
 * **[Use Cases](./motivation.md)**
