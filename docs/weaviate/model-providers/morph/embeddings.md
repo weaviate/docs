@@ -25,8 +25,8 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 
 ![Embedding integration illustration](../_includes/integration_morph_embedding.png)
 
-:::caution Morph lists the Embedding API as legacy
-Morph's own documentation labels the Embedding API as legacy and planned for deprecation. Check the current status in [Morph's documentation](https://docs.morphllm.com/) before you build on this integration.
+:::caution Morph does not list the Embeddings API among its public endpoints
+Morph's API documentation currently lists only `/v1/chat/completions` and `/v1/messages`, and the Weaviate default model `morph-embedding-v3` is not in Morph's public model catalog. Morph's current embedding examples use `morph-embedding-v4`. Confirm the model ID with the [List Models](https://docs.morphllm.com/api-reference/endpoint/models) endpoint before you build on this integration.
 :::
 
 ## Requirements
