@@ -422,7 +422,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-Weaviate does not validate the model name, so you can set any model that your Google account can reach.
+Weaviate does not check the model name against a list, so you can set any model that your Google account can reach. It rejects model names that contain `/`, `?`, or `#`.
 
 The server default is `gemini-embedding-001`, for both Google AI Studio and Vertex AI.
 

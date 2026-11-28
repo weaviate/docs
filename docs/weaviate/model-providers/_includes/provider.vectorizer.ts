@@ -356,7 +356,7 @@ await client.collections.create({
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>',
       // (Optional) To manually set the model ID
-      model: 'gemini-embedding-2'
+      model: 'gemini-embedding-001'
     }),
   ],
   // highlight-end
@@ -382,7 +382,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID
-      model: 'gemini-embedding-2'
+      model: 'gemini-embedding-001'
     }),
   ],
   // highlight-end
@@ -497,7 +497,7 @@ await client.collections.create({
         },
       ],
       // videoFields: []
-      // video_interval_seconds: 20
+      // videoIntervalSeconds: 20
     }),
   ],
   // highlight-end

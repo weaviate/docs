@@ -159,7 +159,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 The following examples show how to configure Google-specific options.
 
-- `location` (Required): e.g. `"us-central1"`
+- `location` (Required for Vertex AI): e.g. `"us-central1"`. `gemini-embedding-2` is served only at `global`, so Weaviate ignores this value for that model.
 - `projectId` (Only required if using Vertex AI): e.g. `cloud-large-language-models`
 - `apiEndpoint` (Optional): e.g. `us-central1-aiplatform.googleapis.com`
 - `modelId` (Optional): e.g. `gemini-embedding-2`, `multimodalembedding@001`
@@ -324,7 +324,7 @@ The query below returns the `n` most similar objects to the input image from the
 
 ### Available models
 
-Weaviate does not validate the model name, so you can set any model that your Google account can reach.
+Weaviate does not check the model name against a list, so you can set any model that your Google account can reach. It rejects model names that contain `/`, `?`, or `#`.
 
 The server default is `multimodalembedding@001`.
 
