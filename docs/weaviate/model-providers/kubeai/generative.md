@@ -28,7 +28,7 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 
 ### KubeAI configuration
 
-KubeAI must be deployed in a Kubernetes cluster with an embedding model. For more specific instructions, see this [KubeAI deployment guide](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration).
+KubeAI must be deployed in a Kubernetes cluster with a generative (text-generation) model. For more specific instructions, see this [KubeAI deployment guide](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration).
 
 ### Weaviate configuration
 
