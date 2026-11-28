@@ -289,7 +289,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 Use the `maxTokens` parameter to set the maximum number of output tokens for the Anthropic Generative AI models. This parameter is separate from the maximum allowable input tokens, also called a "context window".
 
-For most models, the default `maxTokens` value is `4096`, which is the maximum, and the input (context window) size is `200,000`. The specific allowable values may vary between models. Refer to the [Anthropic documentation](https://platform.claude.com/docs/en/models/overview) for the latest information.
+The default `maxTokens` value is `4096`, which is well below the output limit of current models. For example, Claude Haiku 4.5 allows up to 64K output tokens with a 200K context window, and the latest Claude models allow 128K output tokens with a 1M context window. Weaviate does not cap `maxTokens`. The specific allowable values may vary between models. Refer to the [Anthropic documentation](https://platform.claude.com/docs/en/models/overview) for the latest information.
 
 #### Base URL
 
