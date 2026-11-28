@@ -94,7 +94,7 @@ Filters reduce the number of objects based on specific criteria. This can includ
 Effective filtering can significantly improve search relevance. This is due to filters' ability to precisely reduce the result set based on exact criteria.
 
 :::info How do filters interact with searches?
-Weaivate applies [pre-filtering](../filtering.md), where filters are performed before searches.
+Weaviate applies [pre-filtering](../filtering.md), where filters are performed before searches.
 <br/>
 
 This ensures that search results overlap with the filter criteria to make sure that the right objects are retrieved.
@@ -201,7 +201,7 @@ See the [keyword search](./keyword-search.md) page for more details on how keywo
 
 Similarity-based search using vector embeddings. This method compares vector embeddings of the query against those of the stored objects to find the closest matches, based on a predefined [distance metric](../../config-refs/distances.md).
 
-In Weaviate, you can perform vector searches in multiple ways. You can search for similar objects based on [a text input](../../search/similarity.md#search-with-text), [a vector input](../../search/similarity.md#search-with-a-vector), or [an exist object](../../search/similarity.md#search-with-an-existing-object). You can even search for similar objects with other modalities such as [with images](../../search/image.md).
+In Weaviate, you can perform vector searches in multiple ways. You can search for similar objects based on [a text input](../../search/similarity.md#search-with-text), [a vector input](../../search/similarity.md#search-with-a-vector), or [an existing object](../../search/similarity.md#search-with-an-existing-object). You can even search for similar objects with other modalities such as [with images](../../search/image.md).
 
 <details>
   <summary>Vector Search: Example</summary>
