@@ -337,8 +337,8 @@ Lists of pre-built Docker images for this integration are below.
 | --- | --- | --- |
 | google/siglip2-so400m-patch16-512 |  `cr.weaviate.io/semitechnologies/multi2vec-clip:google-siglip2-so400m-patch16-512` | SigLIP 2 model with 512x512 input size, added in `multi2vec-clip` `v1.4.0` (Multilingual, 1152d) |
 | google/siglip2-so400m-patch16-384 |  `cr.weaviate.io/semitechnologies/multi2vec-clip:google-siglip2-so400m-patch16-384` | SigLIP 2 model with 384x384 input size, added in `multi2vec-clip` `v1.4.0` (Multilingual, 1152d) |
-| sentence-transformers-clip-ViT-B-32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32` | Texts must be in English. (English, 768d) |
-| sentence-transformers-clip-ViT-B-32-multilingual-v1 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1` | Supports a wide variety of languages for text. See sbert.net for details. (Multilingual, 768d) |
+| sentence-transformers-clip-ViT-B-32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32` | Texts must be in English. (English, 512d) |
+| sentence-transformers-clip-ViT-B-32-multilingual-v1 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1` | Supports a wide variety of languages for text. See sbert.net for details. (Multilingual, 512d) |
 | openai-clip-vit-base-patch16 | `cr.weaviate.io/semitechnologies/multi2vec-clip:openai-clip-vit-base-patch16` | The base model uses a ViT-B/16 Transformer architecture as an image encoder and uses a masked self-attention Transformer as a text encoder. |
 | ViT-B-16-laion2b_s34b_b88k | `cr.weaviate.io/semitechnologies/multi2vec-clip:ViT-B-16-laion2b_s34b_b88k` | The base model uses a ViT-B/16 Transformer architecture as an image encoder trained with LAION-2B dataset using OpenCLIP. |
 | ViT-B-32-quickgelu-laion400m_e32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:ViT-B-32-quickgelu-laion400m_e32` | The base model uses a ViT-B/32 Transformer architecture as an image encoder trained with LAION-400M dataset using OpenCLIP. |
