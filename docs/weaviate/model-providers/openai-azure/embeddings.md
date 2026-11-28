@@ -92,7 +92,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an Azure OpenAI embedding model:
 
-To select the model, specify the Azure resource name.
+To select the model, specify the Azure deployment name.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -171,7 +171,7 @@ The following examples show how to configure Azure OpenAI-specific options.
 
 </Tabs>
 
-For further details on these parameters, see consult the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+For further details on these parameters, see the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/embeddings).
 
 ## Header parameters
 
@@ -312,7 +312,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-See the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#embeddings-models) for a list of available models and their regional availability.
+See the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/models#embeddings) for a list of available models and their regional availability.
 
 ## Further resources
 
@@ -329,8 +329,8 @@ Once the integrations are configured at the collection, the data management and 
 
 ### External resources
 
-- Azure OpenAI [API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
-- Azure OpenAI [models and availability](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#embeddings-models)
+- Azure OpenAI [API documentation](https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/embeddings)
+- Azure OpenAI [models and availability](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/models#embeddings)
 
 ## Questions and feedback
 
