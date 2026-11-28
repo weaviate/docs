@@ -162,7 +162,7 @@ In other words, when you have `n` search results, the generative model generates
 
 When the server has a DigitalOcean API key, Weaviate checks the model name against the `GET /v1/models` list for that account when you create the collection. Without a server-side key, Weaviate skips this check, and DigitalOcean rejects an unknown model at request time.
 
-The server default is `llama-4-maverick`.
+The server default is `nemotron-3.5-super-vl`.
 
 To list the models your account can use, query `GET /v1/models` on the inference endpoint. See the [DigitalOcean Serverless Inference guide](https://docs.digitalocean.com/products/inference/how-to/use-serverless-inference/) for the list of available models.
 
