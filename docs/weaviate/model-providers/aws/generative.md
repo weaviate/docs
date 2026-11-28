@@ -272,7 +272,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 #### Bedrock
 
-Weaviate passes the `model` value through to Amazon Bedrock, so any Bedrock text generation model that your AWS account and region has access to can be used. Weaviate recognizes the model families offered by AI21 Labs, Amazon (Titan and Nova), Anthropic, Cohere, Meta, and Mistral AI, including their cross-region inference profile IDs.
+Weaviate builds the request for each supported model family and passes the `model` value through to Amazon Bedrock. Weaviate recognizes the model families offered by AI21 Labs, Amazon (Titan and Nova), Anthropic, Cohere, Meta, and Mistral AI, including their cross-region inference profile IDs. Models of other families fail with an `unspported model` error.
 
 For the current model IDs, see [Supported foundation models in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). See [Request access to models](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to find out how to request access to a model.
 

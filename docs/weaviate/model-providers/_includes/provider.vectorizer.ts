@@ -58,7 +58,7 @@ await client.collections.create({
       sourceProperties: ['title'],
       region: 'us-east-1',
       service: 'sagemaker',
-      model: '<custom_sagemaker_url>',
+      endpoint: '<custom_sagemaker_name>',
     }),
   ],
   // highlight-end

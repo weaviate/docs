@@ -373,7 +373,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 #### Bedrock
 
-Weaviate does not validate the model name, so you can set any Bedrock model that your AWS account can reach.
+Weaviate does not check the model against a list, but the model ID must contain `amazon.` or `cohere.`. Any other model ID fails with an `unknown model provider` error. Weaviate sends `amazon.nova*` model IDs to the Nova request format and other `amazon.*` IDs to the Titan format.
 
 There is no server default for Bedrock. You must set `model` when you configure the vectorizer.
 
