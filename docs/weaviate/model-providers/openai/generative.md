@@ -348,6 +348,8 @@ Weaviate stores a token limit for the models below. The limit caps the `maxToken
 * `gpt-4o`
 * `gpt-4o-mini`
 
+OpenAI has already shut down `gpt-3.5-turbo`, `gpt-4`, `gpt-4-32k`, and `gpt-4-1106-preview`; `gpt-4o` and `gpt-4o-mini` retire on 2027-01-14.
+
 These older models also have a stored limit. OpenAI shut them down on 2024-01-04, so requests to them fail:
 
 * `text-davinci-002`
