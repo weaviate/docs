@@ -34,7 +34,7 @@ This module is optimized for CPU using the [`ggml` library](https://github.com/g
 
 ## Requirements
 
-Currently, the GPT4All integration is only available for `amd64/x86_64` architecture devices, as the `gpt4all` library currently does not support ARM devices, such as Apple M-series.
+Currently, the GPT4All integration is only available for `amd64/x86_64` architecture devices, as the inference container is published for `linux/amd64` only.
 
 ### Weaviate configuration
 
