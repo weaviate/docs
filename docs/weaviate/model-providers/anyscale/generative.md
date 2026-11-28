@@ -16,7 +16,7 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with Anyscale's Endpoints APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate's integration with Anyscale allows you to access the models you deploy on the Anyscale platform directly from Weaviate.
 
 [Configure a Weaviate collection](#configure-collection) to use a generative AI model with Anyscale. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your Anyscale API key.
 
@@ -47,7 +47,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) instances.
 
 ### API credentials
 
-You must provide a valid Anyscale API key to Weaviate for this integration. Go to [Anyscale](https://www.anyscale.com/) to sign up and obtain an API key.
+You must provide a valid Anyscale API key to Weaviate for this integration. You need an API key for your [Anyscale](https://www.anyscale.com/) deployment.
 
 Provide the API key to Weaviate using one of the following methods:
 
