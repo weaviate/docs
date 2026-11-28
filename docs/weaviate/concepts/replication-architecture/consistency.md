@@ -163,7 +163,7 @@ In other words, the read consistency level only affects which versions of the ob
 
 :::note When might this occur?
 
-By default, Weaviate writes to all nodes on an insert/update/delete. So, most of the time this won't matter as all shards will have identical local indexes to each other. This is a rare care which may only occur if there is a problem, such as a node being down, or there is a network problem.
+By default, Weaviate writes to all nodes on an insert/update/delete. So, most of the time this won't matter as all shards will have identical local indexes to each other. This is a rare case which may only occur if there is a problem, such as a node being down, or there is a network problem.
 
 :::
 
@@ -335,11 +335,11 @@ A shard represents a part of the collection in a single-tenant collection, or a 
 
 Replica movement operates as a state machine with stages that ensure data integrity throughout the process. The feature works for both single-tenant collections and multi-tenant collections. 
 
-Unlike the static replication factor configured at collection creation, replica movement allows the replication factor to be adjusted for specific shards as replicas are moved or copied across the cluster. When a copy operation is performed, the newly created replica increases the replication factor for that specific shard. While a collection may have a default replication factor, individual shards within that collection can have a higher replication factor. However, shards can't have a replication factor lower then the one set on the collection level. 
+Unlike the static replication factor configured at collection creation, replica movement allows the replication factor to be adjusted for specific shards as replicas are moved or copied across the cluster. When a copy operation is performed, the newly created replica increases the replication factor for that specific shard. While a collection may have a default replication factor, individual shards within that collection can have a higher replication factor. However, shards can't have a replication factor lower than the one set on the collection level. 
 
 :::info
 
-Replica movement must be enabled by setting the [`REPLICA_MOVEMENT_ENABLED` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_ENABLED) to `true`. When disabled (the default).
+Replica movement must be enabled by setting the [`REPLICA_MOVEMENT_ENABLED` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_ENABLED) to `true`. When it is disabled (the default), replica movement is unavailable.
 
 The [`REPLICATION_ENGINE_MAX_WORKERS` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICATION_ENGINE_MAX_WORKERS) can be used to adjust the number of workers that process replica movements in parallel. 
 
